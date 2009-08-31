@@ -9,14 +9,13 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.remoting;
+package ccc.remoting.actions;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.remoting.actions.AbstractServletAction;
 
 
 /**

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.remoting.actions.ErrorHandlingAction;
+import ccc.remoting.actions.LogoutAction;
 import ccc.remoting.actions.ServletAction;
 
 
