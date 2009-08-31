@@ -17,8 +17,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.api.PageDelta;
 import ccc.entities.IPage;
+import ccc.rest.PageDelta;
 import ccc.types.Paragraph;
 
 

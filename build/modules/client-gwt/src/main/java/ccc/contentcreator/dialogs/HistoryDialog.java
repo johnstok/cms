@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.LogEntrySummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.rest.LogEntrySummary;
 import ccc.types.CommandType;
 import ccc.types.ID;
 

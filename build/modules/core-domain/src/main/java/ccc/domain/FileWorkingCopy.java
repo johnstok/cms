@@ -14,8 +14,8 @@ package ccc.domain;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.FileDelta;
 import ccc.entities.IFile;
+import ccc.rest.FileDelta;
 import ccc.types.ID;
 import ccc.types.MimeType;
 

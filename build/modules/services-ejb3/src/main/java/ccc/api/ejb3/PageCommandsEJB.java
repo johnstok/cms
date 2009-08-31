@@ -24,8 +24,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.api.PageDelta;
-import ccc.api.ResourceSummary;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreatePageCommand;
 import ccc.commands.PublishCommand;
@@ -39,6 +37,8 @@ import ccc.persistence.AuditLog;
 import ccc.persistence.PageCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.PageDelta;
+import ccc.rest.ResourceSummary;
 import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 import ccc.types.ResourceName;

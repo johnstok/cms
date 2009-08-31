@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.TemplateSummary;
+import ccc.rest.TemplateSummary;
 import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.data.ModelData;

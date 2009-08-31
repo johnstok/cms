@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.ActionSummary;
 import ccc.contentcreator.actions.ListCompletedActionsAction;
 import ccc.contentcreator.actions.ListPendingActionsAction;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.rest.ActionSummary;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.PagingLoader;

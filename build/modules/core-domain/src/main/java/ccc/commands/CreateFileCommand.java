@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.FileDelta;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
@@ -25,6 +24,7 @@ import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
+import ccc.rest.FileDelta;
 import ccc.types.ResourceName;
 
 

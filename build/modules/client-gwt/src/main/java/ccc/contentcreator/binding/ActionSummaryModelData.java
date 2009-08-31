@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.api.ActionSummary;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
+import ccc.rest.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.ID;

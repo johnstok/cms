@@ -11,9 +11,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.PageDelta;
-import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.GwtJson;
+import ccc.rest.PageDelta;
+import ccc.rest.ResourceSummary;
 import ccc.serialization.JsonKeys;
 import ccc.types.ID;
 

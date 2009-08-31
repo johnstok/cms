@@ -34,19 +34,21 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.ResourceSummary;
-import ccc.api.TemplateDelta;
-import ccc.api.rest.AliasNew;
-import ccc.api.rest.FolderNew;
-import ccc.api.rest.TemplateNew;
 import ccc.domain.CommandFailedException;
 import ccc.domain.Failure;
+import ccc.rest.AliasNew;
+import ccc.rest.FolderNew;
 import ccc.rest.Queries;
+import ccc.rest.ResourceSummary;
+import ccc.rest.RestCommands;
 import ccc.rest.SecurityAPI;
+import ccc.rest.TemplateDelta;
+import ccc.rest.TemplateNew;
 import ccc.rest.providers.ActionSummaryCollectionReader;
 import ccc.rest.providers.AliasDeltaReader;
 import ccc.rest.providers.BooleanProvider;
 import ccc.rest.providers.DurationReader;
+import ccc.rest.providers.FailureWriter;
 import ccc.rest.providers.IdReader;
 import ccc.rest.providers.JsonReader;
 import ccc.rest.providers.JsonableWriter;
@@ -59,8 +61,6 @@ import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
-import ccc.ws.FailureWriter;
-import ccc.ws.RestCommands;
 
 
 /**

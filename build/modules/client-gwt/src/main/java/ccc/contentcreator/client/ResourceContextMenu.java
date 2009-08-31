@@ -12,9 +12,6 @@
 package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
-import ccc.api.PageDelta;
-import ccc.api.TemplateSummary;
-import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ApplyWorkingCopyAction;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
@@ -41,6 +38,9 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
+import ccc.rest.PageDelta;
+import ccc.rest.TemplateSummary;
+import ccc.rest.UserSummary;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.event.Events;

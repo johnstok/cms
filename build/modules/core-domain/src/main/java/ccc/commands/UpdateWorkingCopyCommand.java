@@ -14,7 +14,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.PageDelta;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -25,6 +24,7 @@ import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.rest.PageDelta;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 

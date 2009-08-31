@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.UserSummary;
 import ccc.contentcreator.actions.ListUsers;
 import ccc.contentcreator.actions.ListUsersWithEmailAction;
 import ccc.contentcreator.actions.ListUsersWithRoleAction;
@@ -24,6 +23,7 @@ import ccc.contentcreator.actions.OpenEditUserDialogAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
+import ccc.rest.UserSummary;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;

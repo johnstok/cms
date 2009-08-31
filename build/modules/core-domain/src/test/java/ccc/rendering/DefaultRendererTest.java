@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import ccc.api.PageDelta;
 import ccc.commons.Testing;
 import ccc.domain.Alias;
 import ccc.domain.Data;
@@ -50,6 +49,7 @@ import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.StringHeader;
+import ccc.rest.PageDelta;
 import ccc.search.SearchEngine;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;

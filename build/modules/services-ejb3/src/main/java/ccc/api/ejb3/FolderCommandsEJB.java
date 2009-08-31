@@ -28,7 +28,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.api.ResourceSummary;
 import ccc.commands.CreateFolderCommand;
 import ccc.commands.CreateRootCommand;
 import ccc.commands.PublishCommand;
@@ -43,6 +42,7 @@ import ccc.persistence.AuditLog;
 import ccc.persistence.FolderCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.ResourceSummary;
 import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 

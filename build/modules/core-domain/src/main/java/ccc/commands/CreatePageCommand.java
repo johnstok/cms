@@ -14,7 +14,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.PageDelta;
 import ccc.domain.Page;
 import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
@@ -22,6 +21,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.rest.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

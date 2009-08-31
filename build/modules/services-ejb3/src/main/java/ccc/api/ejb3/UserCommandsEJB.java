@@ -24,7 +24,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.api.UserSummary;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
@@ -35,6 +34,7 @@ import ccc.persistence.AuditLog;
 import ccc.persistence.UserCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.UserSummary;
 import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 

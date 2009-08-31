@@ -14,8 +14,8 @@ package ccc.contentcreator.actions;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.FileSummary;
 import ccc.contentcreator.client.GwtJson;
+import ccc.rest.FileSummary;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;

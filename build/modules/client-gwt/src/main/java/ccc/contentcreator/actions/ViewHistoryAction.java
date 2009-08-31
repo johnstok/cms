@@ -3,10 +3,10 @@ package ccc.contentcreator.actions;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.LogEntrySummary;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
+import ccc.rest.LogEntrySummary;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;

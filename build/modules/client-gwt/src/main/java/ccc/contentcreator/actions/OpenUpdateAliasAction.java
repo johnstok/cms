@@ -11,11 +11,11 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.AliasDelta;
-import ccc.api.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.dialogs.UpdateAliasDialog;
+import ccc.rest.AliasDelta;
+import ccc.rest.ResourceSummary;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

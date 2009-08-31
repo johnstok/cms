@@ -14,11 +14,11 @@ package ccc.contentcreator.dialogs;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.FileSummary;
 import ccc.contentcreator.actions.GetContentImagesAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.rest.FileSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

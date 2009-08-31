@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.UserSummary;
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
@@ -24,6 +23,7 @@ import ccc.migration.ccc6.handlers.TemplateFieldsSelector;
 import ccc.migration.ccc6.handlers.UserCommentSelector;
 import ccc.migration.ccc6.handlers.UserMetadataSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
+import ccc.rest.UserSummary;
 
 /**
  * Queries for data migration.

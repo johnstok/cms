@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.UserSummary;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
+import ccc.rest.UserSummary;
 import ccc.types.Username;
 
 /**

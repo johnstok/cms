@@ -13,13 +13,13 @@ package ccc.contentcreator.dialogs;
 
 
 
-import ccc.api.AliasDelta;
-import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.UpdateAliasAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.rest.AliasDelta;
+import ccc.rest.ResourceSummary;
 import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

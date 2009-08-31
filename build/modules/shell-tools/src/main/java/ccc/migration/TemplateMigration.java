@@ -17,9 +17,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.ResourceSummary;
-import ccc.api.TemplateDelta;
 import ccc.domain.CommandFailedException;
+import ccc.rest.ResourceSummary;
+import ccc.rest.TemplateDelta;
 import ccc.services.Commands;
 import ccc.types.ID;
 import ccc.types.MimeType;

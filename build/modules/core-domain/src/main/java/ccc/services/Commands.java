@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.AliasDelta;
-import ccc.api.ResourceSummary;
-import ccc.api.TemplateDelta;
 import ccc.domain.CommandFailedException;
+import ccc.rest.AliasDelta;
+import ccc.rest.ResourceSummary;
+import ccc.rest.TemplateDelta;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ID;

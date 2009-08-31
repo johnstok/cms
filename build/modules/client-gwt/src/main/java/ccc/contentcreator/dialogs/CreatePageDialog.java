@@ -17,9 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ccc.api.PageDelta;
-import ccc.api.ResourceSummary;
-import ccc.api.TemplateSummary;
 import ccc.contentcreator.actions.ComputeTemplateAction;
 import ccc.contentcreator.actions.CreatePageAction;
 import ccc.contentcreator.binding.DataBinding;
@@ -32,6 +29,9 @@ import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.rest.PageDelta;
+import ccc.rest.ResourceSummary;
+import ccc.rest.TemplateSummary;
 import ccc.types.ID;
 import ccc.types.Paragraph;
 

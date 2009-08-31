@@ -23,9 +23,6 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.PageDelta;
-import ccc.api.ResourceSummary;
-import ccc.api.UserSummary;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
@@ -33,7 +30,10 @@ import ccc.domain.CommandFailedException;
 import ccc.persistence.FolderCommands;
 import ccc.persistence.PageCommands;
 import ccc.persistence.UserCommands;
+import ccc.rest.PageDelta;
 import ccc.rest.Queries;
+import ccc.rest.ResourceSummary;
+import ccc.rest.UserSummary;
 import ccc.services.Commands;
 import ccc.types.Decimal;
 import ccc.types.FailureCode;
