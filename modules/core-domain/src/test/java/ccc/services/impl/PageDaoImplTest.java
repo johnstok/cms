@@ -25,7 +25,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 
@@ -60,7 +60,7 @@ public class PageDaoImplTest
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
         page.lock(_u);
 
-        expect(_dao.find(Page.class, page.id())).andReturn(page);
+        expect(_repository.find(Page.class, page.id())).andReturn(page);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -84,19 +84,19 @@ public class PageDaoImplTest
 
 
     private void verifyAll() {
-        verify(_dao, _al);
+        verify(_repository, _al);
     }
 
     private void replayAll() {
-        replay(_dao, _al);
+        replay(_repository, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
         _al = createStrictMock(AuditLog.class);
-        _updatePage = new UpdatePageCommand(_dao, _al);
+        _updatePage = new UpdatePageCommand(_repository, _al);
     }
 
     /** {@inheritDoc} */
@@ -104,10 +104,10 @@ public class PageDaoImplTest
     protected void tearDown() {
         _updatePage = null;
         _al = null;
-        _dao = null;
+        _repository = null;
     }
 
-    private Dao _dao;
+    private Repository _repository;
     private AuditLog _al;
     private UpdatePageCommand _updatePage;
     private final Date _now = new Date();

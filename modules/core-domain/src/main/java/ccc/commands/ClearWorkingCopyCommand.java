@@ -23,7 +23,7 @@ import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -34,17 +34,17 @@ import ccc.types.CommandType;
  */
 public class ClearWorkingCopyCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public ClearWorkingCopyCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public ClearWorkingCopyCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -66,7 +66,7 @@ public class ClearWorkingCopyCommand {
                                        throws UnlockedException,
                                               LockMismatchException,
                                               WorkingCopyNotSupportedException {
-        final Resource r = _dao.find(Resource.class, resourceId);
+        final Resource r = _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WCAware<?>) {

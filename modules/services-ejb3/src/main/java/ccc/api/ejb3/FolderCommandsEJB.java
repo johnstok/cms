@@ -39,7 +39,7 @@ import ccc.domain.Folder;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceOrder;
 import ccc.domain.User;
-import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.services.AuditLog;
 import ccc.services.FolderCommands;
 import ccc.services.UserLookup;
@@ -169,7 +169,7 @@ FolderCommands {
      * ============== */
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _bdao = new BaseDao(_em);
+        _bdao = new JpaRepository(_em);
         _audit = new AuditLogImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }

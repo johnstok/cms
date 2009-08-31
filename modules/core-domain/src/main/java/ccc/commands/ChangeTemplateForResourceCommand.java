@@ -22,7 +22,7 @@ import ccc.domain.Template;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -33,18 +33,18 @@ import ccc.types.CommandType;
  */
 public class ChangeTemplateForResourceCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public ChangeTemplateForResourceCommand(final Dao dao,
+    public ChangeTemplateForResourceCommand(final Repository repository,
                                               final AuditLog audit) {
-        _dao = dao;
+        _repository = repository;
         _audit = audit;
     }
 
@@ -64,13 +64,13 @@ public class ChangeTemplateForResourceCommand {
                         final UUID resourceId,
                         final UUID templateId)
       throws UnlockedException, LockMismatchException {
-        final Resource r = _dao.find(Resource.class, resourceId);
+        final Resource r = _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
         final Template t =
             (null==templateId)
                 ? null
-                : _dao.find(Template.class, templateId);
+                : _repository.find(Template.class, templateId);
 
         r.template(t);
 

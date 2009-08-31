@@ -64,7 +64,7 @@ import ccc.domain.File;
 import ccc.domain.PageHelper;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.services.AuditLog;
 import ccc.services.Commands;
@@ -652,7 +652,7 @@ public class CommandsEJB
      * ============== */
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _bdao = new BaseDao(_em);
+        _bdao = new JpaRepository(_em);
         _audit = new AuditLogImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
         _dm = new DataManagerImpl(new FsCoreData(), _bdao);

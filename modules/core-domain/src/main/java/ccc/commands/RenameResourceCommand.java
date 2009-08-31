@@ -22,7 +22,7 @@ import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 import ccc.types.ResourceName;
 
@@ -34,17 +34,17 @@ import ccc.types.ResourceName;
  */
 public class RenameResourceCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public RenameResourceCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public RenameResourceCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -65,7 +65,7 @@ public class RenameResourceCommand {
                        final UUID resourceId,
                        final String name)
       throws UnlockedException, LockMismatchException, ResourceExistsException {
-        final Resource resource = _dao.find(Resource.class, resourceId);
+        final Resource resource = _repository.find(Resource.class, resourceId);
         resource.confirmLock(actor);
 
         final ResourceName newName = new ResourceName(name);

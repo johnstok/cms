@@ -22,7 +22,7 @@ import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 
 
 /**
@@ -36,11 +36,11 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public ApplyWorkingCopyCommand(final Dao dao, final AuditLog audit) {
-        super(dao, audit);
+    public ApplyWorkingCopyCommand(final Repository repository, final AuditLog audit) {
+        super(repository, audit);
     }
 
     /**

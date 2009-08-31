@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.domain.Resource;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.ResourceDao;
 import ccc.services.impl.ResourceDaoImpl;
 import ccc.types.ResourceName;
@@ -101,7 +101,7 @@ public class FixLinkAction
 
 
     private ResourceDao getResourceDao(final HttpServletRequest req) {
-        return new ResourceDaoImpl((Dao) req.getAttribute(SessionKeys.DAO_KEY));
+        return new ResourceDaoImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 

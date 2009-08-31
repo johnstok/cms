@@ -22,7 +22,7 @@ import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.User;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
 import ccc.types.ResourceName;
@@ -36,15 +36,15 @@ import ccc.types.ResourcePath;
  */
 public class ResourceDaoImpl implements ResourceDao {
 
-    private final Dao            _dao;
+    private final Repository            _repository;
 
     /**
      * Constructor.
      *
-     * @param dao The DAO used for persistence.
+     * @param repository The DAO used for persistence.
      */
-    public ResourceDaoImpl(final Dao dao) {
-        _dao = dao;
+    public ResourceDaoImpl(final Repository repository) {
+        _repository = repository;
     }
 
 
@@ -52,7 +52,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public List<Resource> lockedByUser(final User actor) {
         return
-            _dao.list(QueryNames.RESOURCES_LOCKED_BY_USER,
+            _repository.list(QueryNames.RESOURCES_LOCKED_BY_USER,
                       Resource.class,
                       actor);
     }
@@ -61,14 +61,14 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public List<Resource> locked() {
-        return _dao.list(QueryNames.LOCKED_RESOURCES, Resource.class);
+        return _repository.list(QueryNames.LOCKED_RESOURCES, Resource.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Map<Integer, ? extends Revision<?>> history(final UUID resourceId) {
-        final Resource r = _dao.find(Resource.class, resourceId);
+        final Resource r = _repository.find(Resource.class, resourceId);
         return (r instanceof HistoricalResource<?, ?>)
             ? ((HistoricalResource<?, ?>) r).revisions()
             : new HashMap<Integer, Revision<?>>();
@@ -78,7 +78,7 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public <T extends Resource> T find(final Class<T> type, final UUID id) {
-        return _dao.find(type, id);
+        return _repository.find(type, id);
     }
 
 
@@ -87,7 +87,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public <T> List<T> list(final String queryName,
                             final Class<T> resultType,
                             final Object... params) {
-        return _dao.list(queryName, resultType, params);
+        return _repository.list(queryName, resultType, params);
     }
 
 
@@ -96,7 +96,7 @@ public class ResourceDaoImpl implements ResourceDao {
     public <T> T find(final String queryName,
                       final Class<T> resultType,
                       final Object... params) {
-        return _dao.find(queryName, resultType, params);
+        return _repository.find(queryName, resultType, params);
     }
 
     /**
@@ -105,7 +105,7 @@ public class ResourceDaoImpl implements ResourceDao {
     @Override
     public Resource lookup(final String rootName, final ResourcePath path) {
         final Folder root =
-            _dao.find(
+            _repository.find(
                 QueryNames.ROOT_BY_NAME,
                 Folder.class,
                 new ResourceName(rootName));
@@ -124,7 +124,7 @@ public class ResourceDaoImpl implements ResourceDao {
     /** {@inheritDoc} */
     @Override
     public Resource lookupWithLegacyId(final String legacyId) {
-        return _dao.find(
+        return _repository.find(
             QueryNames.RESOURCE_BY_LEGACY_ID, Resource.class, legacyId);
     }
 }

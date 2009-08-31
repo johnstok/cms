@@ -29,7 +29,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.QueryNames;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
@@ -49,7 +49,7 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_dao.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
+        expect(_repository.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
             .andReturn(Boolean.TRUE);
         replayAll();
 
@@ -67,7 +67,7 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_dao.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
+        expect(_repository.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
             .andReturn(Boolean.FALSE);
         replayAll();
 
@@ -88,12 +88,12 @@ public class UserManagerImplTest extends TestCase {
 
         // ARRANGE
         final Date now = new Date();
-        _dao.create(isA(User.class));
-        _dao.create(isA(Password.class));
+        _repository.create(isA(User.class));
+        _repository.create(isA(Password.class));
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
-        final CreateUserCommand cu = new CreateUserCommand(_dao, _audit);
+        final CreateUserCommand cu = new CreateUserCommand(_repository, _audit);
 
         // ACT
         final User u = cu.execute(_u, now, _uDelta);
@@ -109,7 +109,7 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsers() {
 
         // ARRANGE
-        expect(_dao.uniquify(QueryNames.USERS, User.class))
+        expect(_repository.uniquify(QueryNames.USERS, User.class))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -128,7 +128,7 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithRole() {
 
         // ARRANGE
-        expect(_dao.uniquify(QueryNames.USERS_WITH_ROLE,
+        expect(_repository.uniquify(QueryNames.USERS_WITH_ROLE,
                             User.class,
                             CreatorRoles.ADMINISTRATOR))
             .andReturn(new ArrayList<User>());
@@ -148,7 +148,7 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        expect(_dao.list(QueryNames.USERS_WITH_USERNAME,
+        expect(_repository.list(QueryNames.USERS_WITH_USERNAME,
             User.class, "testname"))
             .andReturn(new ArrayList<User>());
         replayAll();
@@ -167,7 +167,7 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        expect(_dao.list(QueryNames.USERS_WITH_EMAIL,
+        expect(_repository.list(QueryNames.USERS_WITH_EMAIL,
             User.class, "test@civicuk.com"))
             .andReturn(new ArrayList<User>());
         replayAll();
@@ -188,11 +188,11 @@ public class UserManagerImplTest extends TestCase {
 
         // ARRANGE
         final Date now = new Date();
-        expect(_dao.find(User.class, _u.id())).andReturn(_u);
+        expect(_repository.find(User.class, _u.id())).andReturn(_u);
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
-        final UpdateUserCommand uu = new UpdateUserCommand(_dao, _audit);
+        final UpdateUserCommand uu = new UpdateUserCommand(_repository, _audit);
 
         // ACT
         uu.execute(_u, now, _u.id(), _uDelta);
@@ -211,12 +211,12 @@ public class UserManagerImplTest extends TestCase {
         final Date now = new Date();
         final Password pw = new Password(_u, "foo");
 
-        expect(_dao.find(QueryNames.PASSWORD_FOR_USER, Password.class, _u.id()))
+        expect(_repository.find(QueryNames.PASSWORD_FOR_USER, Password.class, _u.id()))
             .andReturn(pw);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdatePasswordAction up = new UpdatePasswordAction(_dao, _audit);
+        final UpdatePasswordAction up = new UpdatePasswordAction(_repository, _audit);
 
         // ACT
         up.execute(_u, now, _u.id(), "newPass");
@@ -229,7 +229,7 @@ public class UserManagerImplTest extends TestCase {
     private User _u;
     private AuditLog _audit;
     private UserSummary _uDelta;
-    private Dao _dao;
+    private Repository _repository;
     private Principal _p;
     private UserManagerImpl _um;
 
@@ -250,9 +250,9 @@ public class UserManagerImplTest extends TestCase {
                 return _u.id().toString();
             }
         };
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
         _audit = createStrictMock(AuditLog.class);
-        _um = new UserManagerImpl(_dao);
+        _um = new UserManagerImpl(_repository);
     }
 
     /** {@inheritDoc} */
@@ -262,15 +262,15 @@ public class UserManagerImplTest extends TestCase {
         _u = null;
         _uDelta = null;
         _p = null;
-        _dao = null;
+        _repository = null;
         _um = null;
     }
 
     private void verifyAll() {
-        verify(_dao, _audit);
+        verify(_repository, _audit);
     }
 
     private void replayAll() {
-        replay(_dao, _audit);
+        replay(_repository, _audit);
     }
 }

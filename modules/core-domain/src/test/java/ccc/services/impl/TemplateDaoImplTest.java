@@ -24,7 +24,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.MimeType;
 
 
@@ -59,11 +59,11 @@ public class TemplateDaoImplTest
         final TemplateDelta td =
             new TemplateDelta("newBody", "newDefn", MimeType.BINARY_DATA);
 
-        expect(_dao.find(Template.class, foo.id())).andReturn(foo);
+        expect(_repository.find(Template.class, foo.id())).andReturn(foo);
         _al.record(isA(LogEntry.class));
-        replay(_dao, _al);
+        replay(_repository, _al);
 
-        final UpdateTemplateCommand ut = new UpdateTemplateCommand(_dao, _al);
+        final UpdateTemplateCommand ut = new UpdateTemplateCommand(_repository, _al);
 
 
         // ACT
@@ -71,7 +71,7 @@ public class TemplateDaoImplTest
 
 
         // ASSERT
-        verify(_dao, _al);
+        verify(_repository, _al);
         assertEquals("newBody", foo.body());
         assertEquals("newDefn", foo.definition());
         assertEquals(MimeType.BINARY_DATA, foo.mimeType());
@@ -81,7 +81,7 @@ public class TemplateDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
         _al = createStrictMock(AuditLog.class);
     }
 
@@ -89,10 +89,10 @@ public class TemplateDaoImplTest
     @Override
     protected void tearDown() {
         _al = null;
-        _dao = null;
+        _repository = null;
     }
 
-    private Dao _dao;
+    private Repository _repository;
     private AuditLog _al;
     private final Date _now = new Date();
     private final User _user = new User("user");

@@ -23,7 +23,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.DataManager;
 import ccc.types.ResourceName;
 
@@ -40,14 +40,14 @@ public class CreateFileCommand extends CreateResourceCommand {
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      * @param data The data manager to use for reading / writing the file data.
      */
-    public CreateFileCommand(final Dao dao,
+    public CreateFileCommand(final Repository repository,
                              final AuditLog audit,
                              final DataManager data) {
-        super(dao, audit);
+        super(repository, audit);
         _data = data;
     }
 

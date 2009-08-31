@@ -19,7 +19,7 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 import ccc.domain.Data;
 import ccc.services.CoreData;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.SearchEngine;
 import ccc.services.DataManager.StreamAction;
 
@@ -34,7 +34,7 @@ public class DataManagerImplTest extends TestCase {
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
-    private Dao _dao;
+    private Repository _repository;
     private DataManagerImpl _dm;
     private SearchEngine _se;
     private CoreData _cd;
@@ -43,26 +43,26 @@ public class DataManagerImplTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-         _dao = createStrictMock(Dao.class);
+         _repository = createStrictMock(Repository.class);
          _se = createStrictMock(SearchEngine.class);
          _cd = createStrictMock(CoreData.class);
-         _dm = new DataManagerImpl(_cd, _dao);
+         _dm = new DataManagerImpl(_cd, _repository);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _dao = null;
+        _repository = null;
         _dm = null;
         _cd = null;
     }
 
     private void replayAll() {
-        replay(_dao, _se, _cd);
+        replay(_repository, _se, _cd);
     }
 
     private void verifyAll() {
-        verify(_dao, _se, _cd);
+        verify(_repository, _se, _cd);
     }
 
 //    /**

@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.LogEntry;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.DBC;
 
 
@@ -29,13 +29,13 @@ public class AuditLogImpl
         AuditLog {
     private static final Logger LOG = Logger.getLogger(AuditLogImpl.class);
 
-    private Dao _em;
+    private Repository _em;
 
     /**
      * Constructor.
      * @param em The entity manager used to perform queries.
      */
-    public AuditLogImpl(final Dao em) {
+    public AuditLogImpl(final Repository em) {
         DBC.require().notNull(em);
         _em = em;
     }

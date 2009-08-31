@@ -19,7 +19,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 
 
 /**
@@ -34,7 +34,7 @@ public abstract class AbstractCommandTest
     protected final User _user = new User("currentUser");
     protected final Date _now = new Date();
 
-    protected Dao _dao;
+    protected Repository _repository;
     protected AuditLog _audit;
 
 
@@ -45,7 +45,7 @@ public abstract class AbstractCommandTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
         _audit = createStrictMock(AuditLog.class);
     }
 
@@ -54,18 +54,18 @@ public abstract class AbstractCommandTest
     @Override
     protected void tearDown() {
         _audit = null;
-        _dao = null;
+        _repository = null;
     }
 
 
     /** Verify all mocks. */
     protected void verifyAll() {
-        verify(_dao, _audit);
+        verify(_repository, _audit);
     }
 
 
     /** Replay all mocks. */
     protected void replayAll() {
-        replay(_dao, _audit);
+        replay(_repository, _audit);
     }
 }

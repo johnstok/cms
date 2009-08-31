@@ -18,7 +18,7 @@ import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -30,18 +30,18 @@ import ccc.types.CommandType;
 class UpdateResourceCommand {
 
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateResourceCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public UpdateResourceCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -107,8 +107,8 @@ class UpdateResourceCommand {
      *
      * @return Returns the DAO.
      */
-    protected Dao getDao() {
-        return _dao;
+    protected Repository getDao() {
+        return _repository;
     }
 
 

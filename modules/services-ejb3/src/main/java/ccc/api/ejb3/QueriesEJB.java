@@ -46,7 +46,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceOrder;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Queries;
 import ccc.services.ActionDao;
 import ccc.services.ModelTranslation;
@@ -86,7 +86,7 @@ public final class QueriesEJB
     private UserManager _users;
     private ResourceDao _resources;
     private UserLookup  _userLookup;
-    private BaseDao     _bdao;
+    private JpaRepository     _bdao;
 
     /**
      * Constructor.
@@ -314,7 +314,7 @@ public final class QueriesEJB
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _bdao = new BaseDao(_em);
+        _bdao = new JpaRepository(_em);
         _resources = new ResourceDaoImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
         _users = new UserManagerImpl(_bdao);

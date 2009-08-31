@@ -39,13 +39,13 @@ public class UnpublishResourceCommandTest
         s.lock(_user);
         s.publish(_user);
 
-        expect(_dao.find(Resource.class, s.id())).andReturn(s);
+        expect(_repository.find(Resource.class, s.id())).andReturn(s);
         _audit.record(isA(LogEntry.class));
 
         replayAll();
 
         final UnpublishResourceCommand c =
-            new UnpublishResourceCommand(_dao, _audit);
+            new UnpublishResourceCommand(_repository, _audit);
 
         // ACT
         c.execute(_user, _now, s.id());

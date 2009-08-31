@@ -20,7 +20,7 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.entities.IData;
 import ccc.services.CoreData;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.DataManager;
 import ccc.services.QueryNames;
 import ccc.types.DBC;
@@ -33,27 +33,27 @@ import ccc.types.DBC;
  */
 public class DataManagerImpl implements DataManager {
 
-    private Dao _dao;
+    private Repository _repository;
     private CoreData _cd;
 
     /**
      * Constructor.
      *
      * @param cd The JDBC datasource used to manage data.
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param repository The DAO used for CRUD operations, etc.
      */
-    public DataManagerImpl(final CoreData cd, final Dao dao) {
+    public DataManagerImpl(final CoreData cd, final Repository repository) {
         DBC.require().notNull(cd);
-        DBC.require().notNull(dao);
+        DBC.require().notNull(repository);
         _cd = cd;
-        _dao = dao;
+        _repository = repository;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public List<File> findImages() {
-        return _dao.list(QueryNames.ALL_IMAGES, File.class);
+        return _repository.list(QueryNames.ALL_IMAGES, File.class);
     }
 
 

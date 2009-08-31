@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import ccc.domain.User;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.UserManager;
 
 
@@ -29,23 +29,23 @@ import ccc.services.UserManager;
  */
 public class UserManagerImpl implements UserManager {
 
-    private Dao _dao;
+    private Repository _repository;
 
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      */
-    public UserManagerImpl(final Dao dao) {
-        _dao = dao;
+    public UserManagerImpl(final Repository repository) {
+        _repository = repository;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsers() {
-        return _dao.uniquify(USERS, User.class);
+        return _repository.uniquify(USERS, User.class);
     }
 
     /** {@inheritDoc} */
@@ -53,7 +53,7 @@ public class UserManagerImpl implements UserManager {
     public Collection<User> listUsersWithUsername(final String username) {
         final String searchParam =
             (null==username) ? "" : username.toLowerCase(Locale.US);
-        return _dao.list(USERS_WITH_USERNAME, User.class, searchParam);
+        return _repository.list(USERS_WITH_USERNAME, User.class, searchParam);
     }
 
     /** {@inheritDoc} */
@@ -61,24 +61,24 @@ public class UserManagerImpl implements UserManager {
     public Collection<User> listUsersWithEmail(final String email) {
         final String searchParam =
             (null==email) ? "" : email.toLowerCase(Locale.US);
-        return _dao.list(USERS_WITH_EMAIL, User.class, searchParam);
+        return _repository.list(USERS_WITH_EMAIL, User.class, searchParam);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsersWithRole(final String role) {
-        return _dao.uniquify(USERS_WITH_ROLE, User.class, role);
+        return _repository.uniquify(USERS_WITH_ROLE, User.class, role);
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean usernameExists(final String username) {
-        return _dao.exists(USERS_WITH_USERNAME, User.class, username);
+        return _repository.exists(USERS_WITH_USERNAME, User.class, username);
     }
 
     /** {@inheritDoc} */
     @Override
     public User find(final UUID userId) {
-        return _dao.find(User.class, userId);
+        return _repository.find(User.class, userId);
     }
 }

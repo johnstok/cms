@@ -31,7 +31,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.ResourceDao;
 import ccc.types.ResourceName;
 
@@ -55,12 +55,12 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        expect(_dao.find(Folder.class, _f.id()))
+        expect(_repository.find(Folder.class, _f.id()))
             .andReturn(_f);
         _al.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateFolderCommand uf = new UpdateFolderCommand(_dao, _al);
+        final UpdateFolderCommand uf = new UpdateFolderCommand(_repository, _al);
 
         // ACT
         uf.execute(_regularUser,
@@ -90,12 +90,12 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_dao.find(Folder.class, _f.id()))
+        expect(_repository.find(Folder.class, _f.id()))
             .andReturn(_f);
         _al.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateFolderCommand uf = new UpdateFolderCommand(_dao, _al);
+        final UpdateFolderCommand uf = new UpdateFolderCommand(_repository, _al);
 
         // ACT
         final List<UUID> order = new ArrayList<UUID>();
@@ -125,7 +125,7 @@ public class FolderDaoImplTest
     protected void setUp() {
         _al = createStrictMock(AuditLog.class);
         _rdao = createStrictMock(ResourceDao.class);
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
 
         _f = new Folder("foo");
     }
@@ -133,17 +133,17 @@ public class FolderDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _dao = null;
+        _repository = null;
         _rdao = null;
         _al = null;
     }
 
     private void replayAll() {
-        replay(_rdao, _al, _dao);
+        replay(_rdao, _al, _repository);
     }
 
     private void verifyAll() {
-        verify(_rdao, _al, _dao);
+        verify(_rdao, _al, _repository);
     }
     private final User _regularUser = new User("regular");
 
@@ -151,7 +151,7 @@ public class FolderDaoImplTest
 
     private AuditLog _al;
     private ResourceDao _rdao;
-    private Dao _dao;
+    private Repository _repository;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

@@ -35,11 +35,11 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 
 import ccc.domain.Action;
-import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.services.ActionDao;
 import ccc.services.ActionExecutor;
 import ccc.services.Commands;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.LocalCommands;
 import ccc.services.QueryNames;
 import ccc.services.Scheduler;
@@ -69,7 +69,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     @EJB(name=Commands.NAME) private LocalCommands _commands;
 
     private ActionExecutor _executor;
-    private Dao _dao;
+    private Repository _repository;
 
     /** Constructor. */
     public SchedulerEJB() { super(); }
@@ -91,7 +91,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     public void executeAction() {
         LOG.debug("Executing scheduled actions.");
         final List<Action> actions =
-            _dao.list(QueryNames.LATEST_ACTION, Action.class, new Date());
+            _repository.list(QueryNames.LATEST_ACTION, Action.class, new Date());
         LOG.debug("Actions to execute: "+actions.size());
         try {
             if (actions.size() > 0) {
@@ -132,14 +132,14 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     /** {@inheritDoc} */
     @Override
     public Collection<Action> pending() {
-        return _dao.list(QueryNames.PENDING, Action.class);
+        return _repository.list(QueryNames.PENDING, Action.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<Action> executed() {
-        return _dao.list(QueryNames.EXECUTED, Action.class);
+        return _repository.list(QueryNames.EXECUTED, Action.class);
     }
 
 
@@ -159,7 +159,7 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _dao = new BaseDao(_em);
+        _repository = new JpaRepository(_em);
         _executor = new ActionExecutorImpl(_commands);
     }
 }

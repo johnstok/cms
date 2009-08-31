@@ -41,7 +41,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.QueryNames;
 import ccc.types.CommandType;
 import ccc.types.CreatorRoles;
@@ -77,7 +77,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         expect(
-            _dao.find(
+            _repository.find(
                 QueryNames.ROOT_BY_NAME,
                 Folder.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
@@ -115,7 +115,7 @@ public class ResourceDaoImplTest
         foo.add(bar);
 
         expect(
-            _dao.find(
+            _repository.find(
                 QueryNames.ROOT_BY_NAME,
                 Folder.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
@@ -145,12 +145,12 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new IncludeInMainMenuCommand(_dao, _al).execute(
+        new IncludeInMainMenuCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id(), true);
 
         // ASSERT
@@ -168,14 +168,14 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         final Map<String, String> props = new HashMap<String, String>();
         props.put("bodyId", "example");
-        new UpdateResourceMetadataCommand(_dao, _al).execute(
+        new UpdateResourceMetadataCommand(_repository, _al).execute(
             _regularUser,
             new Date(),
             _r.id(),
@@ -201,14 +201,14 @@ public class ResourceDaoImplTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         _r.lock(_regularUser);
 
         // ACT
-        new UnlockResourceCommand(_dao, _al).execute(
+        new UnlockResourceCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id());
 
         // ASSERT
@@ -224,14 +224,14 @@ public class ResourceDaoImplTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         replayAll();
 
         _r.lock(_anotherUser);
 
         // ACT
         try {
-            new UnlockResourceCommand(_dao, _al).execute(
+            new UnlockResourceCommand(_repository, _al).execute(
                 _regularUser, new Date(), _r.id());
             fail("Should fail.");
 
@@ -254,14 +254,14 @@ public class ResourceDaoImplTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         _r.lock(_regularUser);
 
         // ACT
-        new UnlockResourceCommand(_dao, _al).execute(
+        new UnlockResourceCommand(_repository, _al).execute(
             _adminUser, new Date(), _r.id());
 
         // ASSERT
@@ -277,12 +277,12 @@ public class ResourceDaoImplTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new LockResourceCommand(_dao, _al).execute(
+        new LockResourceCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id());
 
         // ASSERT
@@ -298,13 +298,13 @@ public class ResourceDaoImplTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         replayAll();
         _r.lock(_anotherUser);
 
         // ACT
         try {
-            new LockResourceCommand(_dao, _al).execute(
+            new LockResourceCommand(_repository, _al).execute(
                 _regularUser, new Date(), _r.id());
             fail("Lock should fail.");
 
@@ -321,7 +321,7 @@ public class ResourceDaoImplTest
     public void testQueryAllLockedResources() {
 
         // ARRANGE
-        expect(_dao.list(QueryNames.LOCKED_RESOURCES, Resource.class))
+        expect(_repository.list(QueryNames.LOCKED_RESOURCES, Resource.class))
             .andReturn(Collections.singletonList(_r));
         replayAll();
 
@@ -339,7 +339,7 @@ public class ResourceDaoImplTest
     public void testQueryResourcesLockedByUser() {
 
         // ARRANGE
-        expect(_dao.list("resourcesLockedByUser", Resource.class, _regularUser))
+        expect(_repository.list("resourcesLockedByUser", Resource.class, _regularUser))
             .andReturn(Collections.singletonList(_r));
         replayAll();
 
@@ -373,15 +373,15 @@ public class ResourceDaoImplTest
                     "Created."));
         _r.lock(_regularUser);
 
-        expect(_dao.find(Resource.class, _r.id()))
+        expect(_repository.find(Resource.class, _r.id()))
             .andReturn(_r);
-        expect(_dao.find(Template.class, defaultTemplate.id()))
+        expect(_repository.find(Template.class, defaultTemplate.id()))
             .andReturn(defaultTemplate);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new ChangeTemplateForResourceCommand(_dao, _al).execute(
+        new ChangeTemplateForResourceCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id(), defaultTemplate.id());
 
         // ASSERT
@@ -402,13 +402,13 @@ public class ResourceDaoImplTest
         oldParent.add(_r);
         _r.lock(_regularUser);
 
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-        expect(_dao.find(Folder.class, newParent.id())).andReturn(newParent);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Folder.class, newParent.id())).andReturn(newParent);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new MoveResourceCommand(_dao, _al).execute(
+        new MoveResourceCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id(), newParent.id());
 
         // ASSERT
@@ -425,12 +425,12 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new RenameResourceCommand(_dao, _al).rename(
+        new RenameResourceCommand(_repository, _al).rename(
             _regularUser, new Date(), _r.id(), "baz");
 
         // ASSERT
@@ -452,7 +452,7 @@ public class ResourceDaoImplTest
                 _rm,
                 Paragraph.fromText("default", "<H1>Default</H1>"));
 
-        expect(_dao.find(Page.class, bar.id())).andReturn(bar);
+        expect(_repository.find(Page.class, bar.id())).andReturn(bar);
         replayAll();
 
 
@@ -522,12 +522,12 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
         _r.publish(_regularUser);
 
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new UnpublishResourceCommand(_dao, _al).execute(
+        new UnpublishResourceCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id());
 
         // ASSERT
@@ -545,12 +545,12 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new UpdateCachingCommand(_dao, _al).execute(
+        new UpdateCachingCommand(_repository, _al).execute(
             _regularUser, new Date(), _r.id(), new Duration(0, 1, 2, 7));
 
         // ASSERT
@@ -560,19 +560,19 @@ public class ResourceDaoImplTest
 
 
     private void replayAll() {
-        replay(_dao, _al);
+        replay(_repository, _al);
     }
 
     private void verifyAll() {
-        verify(_dao, _al);
+        verify(_repository, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
         _al = createStrictMock(AuditLog.class);
-        _rdao = new ResourceDaoImpl(_dao);
+        _rdao = new ResourceDaoImpl(_repository);
         _r = new Page(new ResourceName("foo"), "foo", null, _rm);
         _parent = new Folder("parent");
         _parent.add(_r);
@@ -585,11 +585,11 @@ public class ResourceDaoImplTest
         _r      = null;
         _rdao   = null;
         _al     = null;
-        _dao    = null;
+        _repository    = null;
     }
 
 
-    private Dao _dao;
+    private Repository _repository;
     private AuditLog _al;
     private ResourceDaoImpl _rdao;
     private Resource _r;

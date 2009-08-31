@@ -19,7 +19,7 @@ import ccc.domain.Password;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 
@@ -31,17 +31,17 @@ import ccc.types.EmailAddress;
  */
 public class CreateUserCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public CreateUserCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public CreateUserCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -62,11 +62,11 @@ public class CreateUserCommand {
         user.email(new EmailAddress(delta.getEmail()));
         user.roles(delta.getRoles());
         user.addMetadata(delta.getMetadata());
-        _dao.create(user);
+        _repository.create(user);
 
         final Password defaultPassword =
             new Password(user, delta.getPassword());
-        _dao.create(defaultPassword);
+        _repository.create(defaultPassword);
 
         _audit.record(
             new LogEntry(
