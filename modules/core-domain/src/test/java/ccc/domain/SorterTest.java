@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ccc.domain.sorting.Sorter;
+import ccc.types.ResourceOrder;
 
 
 /**
@@ -22,7 +24,7 @@ import junit.framework.TestCase;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceOrderTest
+public class SorterTest
     extends
         TestCase {
 
@@ -39,7 +41,7 @@ public class ResourceOrderTest
         }};
 
         // ACT
-        ResourceOrder.NAME_ALPHANUM_ASC.sort(resources);
+        Sorter.sort(resources, ResourceOrder.NAME_ALPHANUM_ASC);
 
         // ASSERT
         assertEquals("a", resources.get(0).name().toString());
@@ -59,7 +61,7 @@ public class ResourceOrderTest
         }};
 
         // ACT
-        ResourceOrder.MANUAL.sort(resources);
+        Sorter.sort(resources, ResourceOrder.MANUAL);
 
         // ASSERT
         assertEquals("z", resources.get(0).name().toString());
@@ -77,7 +79,7 @@ public class ResourceOrderTest
         }};
 
         // ACT
-        ResourceOrder.DATE_CHANGED_ASC.sort(resources);
+        Sorter.sort(resources, ResourceOrder.DATE_CHANGED_ASC);
 
         // ASSERT
         assertEquals("z", resources.get(0).name().toString());
@@ -95,7 +97,7 @@ public class ResourceOrderTest
         }};
 
         // ACT
-        ResourceOrder.DATE_CHANGED_DESC.sort(resources);
+        Sorter.sort(resources, ResourceOrder.DATE_CHANGED_DESC);
 
         // ASSERT
         assertEquals("a", resources.get(0).name().toString());

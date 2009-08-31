@@ -21,6 +21,7 @@ import junit.framework.TestCase;
 import ccc.commons.Exceptions;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
+import ccc.types.ResourceOrder;
 import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
 
