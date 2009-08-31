@@ -33,7 +33,6 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.ResourceOrder;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ActionDao;
@@ -59,6 +58,7 @@ import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
+import ccc.types.ResourceOrder;
 import ccc.types.ResourcePath;
 import ccc.types.Username;
 

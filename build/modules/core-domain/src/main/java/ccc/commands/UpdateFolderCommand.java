@@ -21,13 +21,13 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.ResourceOrder;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
+import ccc.types.ResourceOrder;
 
 
 /**

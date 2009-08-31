@@ -26,7 +26,6 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
-import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
@@ -34,6 +33,7 @@ import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
 import ccc.types.ResourceName;
+import ccc.types.ResourceOrder;
 
 
 /**

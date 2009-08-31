@@ -30,7 +30,6 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
-import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -54,6 +53,7 @@ import ccc.search.SearchEngine;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
+import ccc.types.ResourceOrder;
 
 
 /**

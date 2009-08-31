@@ -15,6 +15,7 @@ package ccc.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.domain.sorting.Sorter;
 import ccc.entities.IFolder;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
@@ -22,6 +23,7 @@ import ccc.serialization.Jsonable;
 import ccc.snapshots.FolderSnapshot;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
+import ccc.types.ResourceOrder;
 import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
 
@@ -130,7 +132,7 @@ public final class Folder extends Resource implements IFolder {
     @Override
     public List<Resource> entries() {
         final List<Resource> entries = new ArrayList<Resource>(_entries);
-        _order.sort(entries);
+        Sorter.sort(entries, _order);
         return entries;
     }
 
@@ -147,7 +149,7 @@ public final class Folder extends Resource implements IFolder {
         to = (to>_entries.size()) ? _entries.size() : to;
 
         final List<Resource> entries = new ArrayList<Resource>(_entries);
-        ResourceOrder.valueOf(sortOrder).sort(entries);
+        Sorter.sort(entries, ResourceOrder.valueOf(sortOrder));
 
         return entries.subList(from, to);
     }
