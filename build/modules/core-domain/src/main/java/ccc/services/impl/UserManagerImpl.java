@@ -11,15 +11,15 @@
  */
 package ccc.services.impl;
 
-import static ccc.services.QueryNames.*;
+import static ccc.persistence.QueryNames.*;
 
 import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
 import ccc.domain.User;
-import ccc.services.Repository;
-import ccc.services.UserManager;
+import ccc.persistence.Repository;
+import ccc.persistence.UserManager;
 
 
 /**

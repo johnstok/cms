@@ -23,8 +23,8 @@ import javax.sql.DataSource;
 
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.services.CoreData;
-import ccc.services.DataManager.StreamAction;
+import ccc.persistence.StreamAction;
+import ccc.persistence.streams.CoreData;
 import ccc.types.DBC;
 
 

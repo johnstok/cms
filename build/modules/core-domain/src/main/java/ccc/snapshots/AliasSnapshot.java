@@ -15,11 +15,11 @@ import java.util.Map;
 
 import ccc.domain.Alias;
 import ccc.domain.Resource;
+import ccc.persistence.DataManager;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
-import ccc.services.DataManager;
-import ccc.services.SearchEngine;
+import ccc.search.SearchEngine;
 
 
 /**

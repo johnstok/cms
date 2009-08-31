@@ -31,7 +31,7 @@ import ccc.content.actions.ReadOnlyTxAction;
 import ccc.content.actions.ReaderAction;
 import ccc.content.actions.RenderResourceAction;
 import ccc.content.actions.ServletAction;
-import ccc.services.SearchEngine;
+import ccc.search.SearchEngine;
 
 
 /**

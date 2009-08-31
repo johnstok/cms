@@ -13,14 +13,14 @@ package ccc.migration;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.persistence.ActionDao;
+import ccc.persistence.FolderCommands;
+import ccc.persistence.PageCommands;
+import ccc.persistence.UserCommands;
 import ccc.rest.Queries;
-import ccc.services.ActionDao;
+import ccc.search.SearchEngine;
 import ccc.services.Commands;
-import ccc.services.FolderCommands;
-import ccc.services.PageCommands;
 import ccc.services.Scheduler;
-import ccc.services.SearchEngine;
-import ccc.services.UserCommands;
 
 
 /**

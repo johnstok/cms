@@ -21,8 +21,8 @@ import java.util.Map;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
-import ccc.services.SearchEngine;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 

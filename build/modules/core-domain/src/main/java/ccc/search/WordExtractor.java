@@ -16,14 +16,14 @@ import java.io.InputStream;
 import org.textmining.extraction.TextExtractor;
 import org.textmining.extraction.word.WordTextExtractorFactory;
 
-import ccc.services.DataManager;
+import ccc.persistence.StreamAction;
 
 /**
  * A stream action that interprets a stream as a MS Word document.
  *
  * @author Civic Computing Ltd.
  */
-public class WordExtractor implements DataManager.StreamAction {
+public class WordExtractor implements StreamAction {
     private final WordTextExtractorFactory _factory =
         new WordTextExtractorFactory();
     private TextExtractor _extractor;

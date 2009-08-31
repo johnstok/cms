@@ -22,7 +22,7 @@ import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.AuditLog;
+import ccc.persistence.AuditLog;
 import ccc.types.CommandType;
 
 

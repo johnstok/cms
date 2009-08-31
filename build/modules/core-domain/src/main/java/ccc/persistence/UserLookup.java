@@ -9,9 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.persistence;
 
-import static ccc.services.QueryNames.*;
+import static ccc.persistence.QueryNames.*;
 
 import java.security.Principal;
 

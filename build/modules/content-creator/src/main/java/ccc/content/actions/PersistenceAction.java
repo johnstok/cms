@@ -19,8 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.persistence.Repository;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.services.Repository;
 
 
 

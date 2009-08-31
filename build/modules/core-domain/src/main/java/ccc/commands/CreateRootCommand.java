@@ -17,9 +17,9 @@ import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
-import ccc.services.QueryNames;
+import ccc.persistence.AuditLog;
+import ccc.persistence.QueryNames;
+import ccc.persistence.Repository;
 
 
 /**

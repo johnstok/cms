@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
@@ -9,26 +9,22 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.persistence;
 
-import ccc.domain.Action;
+import ccc.domain.LogEntry;
 
 
 /**
- * API for executing CCC actions.
+ * Audit logging API.
  *
  * @author Civic Computing Ltd.
  */
-public interface ActionExecutor {
-
-    /** NAME : String. */
-    String NAME = "ActionExecutor";
-
+public interface AuditLog {
 
     /**
-     * Execute the specified action.
+     * Record a log entry.
      *
-     * @param action The action to execute.
+     * @param le The log entry to record.
      */
-    void executeAction(final Action action);
+    void record(LogEntry le);
 }

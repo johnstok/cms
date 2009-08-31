@@ -29,7 +29,7 @@ import org.h2.jdbcx.JdbcDataSource;
 import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.services.DataManager.StreamAction;
+import ccc.persistence.StreamAction;
 
 
 /**

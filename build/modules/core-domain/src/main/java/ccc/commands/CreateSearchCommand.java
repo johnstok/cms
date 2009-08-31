@@ -17,8 +17,8 @@ import java.util.UUID;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Search;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 
 
 /**

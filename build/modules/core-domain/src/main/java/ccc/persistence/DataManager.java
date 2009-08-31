@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
@@ -9,20 +9,27 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+
+package ccc.persistence;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 
 import ccc.domain.Data;
-import ccc.services.DataManager.StreamAction;
+import ccc.domain.File;
+import ccc.entities.IData;
 
 
 /**
- * Abstraction for reading / writing data streams.
+ * API definition for data management.
  *
  * @author Civic Computing Ltd.
  */
-public interface CoreData {
+public interface DataManager {
+
+    /** NAME : String. */
+    String NAME = "DataManager";
 
     /**
      * Create a new item of binary data.
@@ -40,7 +47,23 @@ public interface CoreData {
      * stream.
      *
      * @param data The identifier for the existing data.
+     * @param dataStream The output stream to which the data should be written.
+     */
+    void retrieve(IData data, OutputStream dataStream);
+
+    /**
+     * Retrieve an existing item of binary data and write it to an output
+     * stream.
+     *
+     * @param data The identifier for the existing data.
      * @param action An action to perform with the retrieved data.
      */
     void retrieve(Data data, StreamAction action);
+
+    /**
+     * Returns a list of all images.
+     *
+     * @return The list of resources.
+     */
+    List<File> findImages();
 }

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.persistence;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -17,6 +17,7 @@ import java.util.Date;
 import ccc.api.FileDelta;
 import ccc.api.ResourceSummary;
 import ccc.domain.CommandFailedException;
+import ccc.services.Commands;
 import ccc.types.ID;
 
 

@@ -16,11 +16,11 @@ import java.util.Map;
 import ccc.domain.File;
 import ccc.entities.IData;
 import ccc.entities.IFile;
+import ccc.persistence.DataManager;
 import ccc.rendering.FileBody;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
-import ccc.services.DataManager;
-import ccc.services.SearchEngine;
+import ccc.search.SearchEngine;
 import ccc.types.MimeType;
 
 

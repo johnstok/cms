@@ -17,11 +17,11 @@ import java.util.Set;
 import ccc.domain.Page;
 import ccc.domain.Template;
 import ccc.entities.IPage;
+import ccc.persistence.DataManager;
 import ccc.rendering.PageBody;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
-import ccc.services.DataManager;
-import ccc.services.SearchEngine;
+import ccc.search.SearchEngine;
 import ccc.types.Paragraph;
 
 

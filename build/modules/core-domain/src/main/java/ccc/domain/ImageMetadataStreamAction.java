@@ -18,7 +18,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import ccc.services.DataManager;
+import ccc.persistence.StreamAction;
 
 /**
  * A stream action used to extract metadata from an image file.
@@ -27,7 +27,7 @@ import ccc.services.DataManager;
  */
 final class ImageMetadataStreamAction
     implements
-        DataManager.StreamAction {
+        StreamAction {
 
     private final Map<String, String> _metadata = new HashMap<String, String>();
 

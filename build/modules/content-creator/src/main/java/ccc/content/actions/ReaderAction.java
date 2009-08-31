@@ -18,16 +18,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.persistence.AuditLog;
+import ccc.persistence.DataManager;
+import ccc.persistence.Repository;
+import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.StatefulReader;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
-import ccc.services.DataManager;
-import ccc.services.UserLookup;
+import ccc.rendering.StatefulReaderImpl;
 import ccc.services.impl.AuditLogImpl;
 import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
-import ccc.services.impl.StatefulReaderImpl;
 
 
 /**

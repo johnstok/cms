@@ -24,8 +24,8 @@ import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 import ccc.types.CommandType;
 
 
