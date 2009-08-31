@@ -23,8 +23,8 @@ import org.apache.log4j.Logger;
 
 import ccc.api.ResourceSummary;
 import ccc.domain.CommandFailedException;
-import ccc.domain.JsonImpl;
 import ccc.persistence.LocalCommands;
+import ccc.serialization.JsonImpl;
 import ccc.services.Commands;
 import ccc.types.MimeType;
 

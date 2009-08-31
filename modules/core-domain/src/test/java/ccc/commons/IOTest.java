@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import ccc.serialization.IO;
+
 import junit.framework.TestCase;
 
 

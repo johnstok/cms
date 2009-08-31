@@ -18,11 +18,11 @@ import java.util.UUID;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
 

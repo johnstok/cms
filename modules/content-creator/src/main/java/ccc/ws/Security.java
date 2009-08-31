@@ -21,8 +21,8 @@ import javax.ws.rs.core.Context;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
-import ccc.domain.JsonImpl;
 import ccc.rest.SecurityAPI;
+import ccc.serialization.JsonImpl;
 
 
 /**

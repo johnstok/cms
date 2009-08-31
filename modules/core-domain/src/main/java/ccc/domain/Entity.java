@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.serialization.Json;
+import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.DBC;
