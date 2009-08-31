@@ -35,7 +35,7 @@ import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.rendering.CharEncodingHeader;
 import ccc.rendering.ContentTypeHeader;
 import ccc.rendering.DateHeader;
@@ -470,7 +470,7 @@ public class DefaultRendererTest
 
 
     private DefaultRenderer _renderer;
-    private final DataManager _dm = Testing.dummy(DataManager.class);
+    private final FileRepository _dm = Testing.dummy(FileRepository.class);
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
     private final StatefulReader _sr = Testing.stub(StatefulReader.class);
     private final User _user = new User("fooo");

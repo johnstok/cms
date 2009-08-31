@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.persistence.AuditLog;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.FsCoreData;
@@ -65,7 +65,7 @@ public class ReaderAction
         final AuditLog al = new AuditLogImpl(repository); // TODO: Remove - not used.
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
-        final DataManager dm = new DataManagerImpl(new FsCoreData(), repository);
+        final FileRepository dm = new DataManagerImpl(new FsCoreData(), repository);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =

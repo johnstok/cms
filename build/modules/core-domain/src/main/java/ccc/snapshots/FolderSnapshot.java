@@ -19,7 +19,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.entities.IFolder;
 import ccc.entities.IResource;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
@@ -69,7 +69,7 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,
-                           final DataManager dm) {
+                           final FileRepository dm) {
         if (indexPage() != null) {
             throw new RedirectRequiredException(indexPage());
         }

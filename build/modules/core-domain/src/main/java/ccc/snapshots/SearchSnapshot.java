@@ -15,7 +15,7 @@ import java.util.Map;
 
 import ccc.domain.Resource;
 import ccc.domain.Template;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.rendering.Response;
 import ccc.rendering.SearchBody;
 import ccc.rendering.StatefulReader;
@@ -45,7 +45,7 @@ public class SearchSnapshot
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,
-                           final DataManager dm) {
+                           final FileRepository dm) {
         final Template t =
             computeTemplate(SearchBody.BUILT_IN_SEARCH_TEMPLATE);
         final Response r =

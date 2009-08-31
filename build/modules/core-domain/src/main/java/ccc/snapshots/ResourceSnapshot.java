@@ -24,7 +24,7 @@ import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.entities.IResource;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
@@ -211,7 +211,7 @@ public class ResourceSnapshot implements IResource {
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,
-                           final DataManager dm) {
+                           final FileRepository dm) {
         throw new NotFoundException();
     }
 

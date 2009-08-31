@@ -19,7 +19,7 @@ import java.util.List;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.entities.IData;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.StreamAction;
@@ -29,11 +29,11 @@ import ccc.types.DBC;
 
 
 /**
- * EJB implementation of the {@link DataManager} interface.
+ * EJB implementation of the {@link FileRepository} interface.
  *
  * @author Civic Computing Ltd.
  */
-public class DataManagerImpl implements DataManager {
+public class DataManagerImpl implements FileRepository {
 
     private Repository _repository;
     private CoreData _cd;
