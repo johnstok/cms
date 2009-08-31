@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
 import ccc.rendering.AuthenticationRequiredException;
@@ -83,7 +83,7 @@ public class RenderResourceAction
                         final HttpServletResponse response)
                                           throws ServletException, IOException {
         try {
-            final DataManager data = getDataManager(request);
+            final FileRepository data = getDataManager(request);
             final StatefulReader reader = getStatefulReader(request);
             final ResourceDao rdao = getResourceDao(request);
             final User currentUser = getCurrentUser(request);
@@ -170,7 +170,7 @@ public class RenderResourceAction
     @SuppressWarnings("unchecked")
     private Response prepareResponse(final HttpServletRequest request,
                                      final StatefulReader reader,
-                                     final DataManager dataMgr,
+                                     final FileRepository dataMgr,
                                      final SearchEngine searchEngine,
                                      final Resource rs) {
 
@@ -204,8 +204,8 @@ public class RenderResourceAction
     }
 
 
-    private DataManager getDataManager(final HttpServletRequest request) {
-        return (DataManager) request.getAttribute(SessionKeys.DATA_KEY);
+    private FileRepository getDataManager(final HttpServletRequest request) {
+        return (FileRepository) request.getAttribute(SessionKeys.DATA_KEY);
     }
 
 

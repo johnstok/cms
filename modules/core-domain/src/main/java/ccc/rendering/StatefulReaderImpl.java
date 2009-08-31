@@ -20,7 +20,7 @@ import java.util.UUID;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.entities.IResource;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.persistence.ResourceDao;
 import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
@@ -74,7 +74,7 @@ public final class StatefulReaderImpl
 
 
     private final ResourceDao  _resources;
-    private final DataManager _data;
+    private final FileRepository _data;
 
     /**
      * Constructor.
@@ -83,7 +83,7 @@ public final class StatefulReaderImpl
      * @param data The data manager to use.
      */
     public StatefulReaderImpl(final ResourceDao resources,
-                              final DataManager data) {
+                              final FileRepository data) {
         _resources = resources;
         _data = data;
     }

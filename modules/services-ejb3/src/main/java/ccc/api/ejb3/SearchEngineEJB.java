@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
@@ -82,7 +82,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
      * @param rdao The ResourceDao.
      * @param dm   The DataManager.
      */
-    public SearchEngineEJB(final ResourceDao rdao, final DataManager dm) {
+    public SearchEngineEJB(final ResourceDao rdao, final FileRepository dm) {
         _dao = rdao;
         _lucene = new SimpleLuceneFS(dm);
     }

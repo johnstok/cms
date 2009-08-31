@@ -21,7 +21,7 @@ import org.pdfbox.util.PDFTextStripper;
 
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.types.DBC;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -40,14 +40,14 @@ public abstract class AbstractIndexer
     private static final Logger LOG =
         Logger.getLogger(AbstractIndexer.class.getName());
 
-    protected final DataManager _data;
+    protected final FileRepository _data;
 
     /**
      * Constructor.
      *
      * @param dm The data manager.
      */
-    public AbstractIndexer(final DataManager dm) {
+    public AbstractIndexer(final FileRepository dm) {
         DBC.require().notNull(dm);
         _data = dm;
     }

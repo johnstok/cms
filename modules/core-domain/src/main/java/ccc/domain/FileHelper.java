@@ -13,7 +13,7 @@ package ccc.domain;
 
 import java.util.Map;
 
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 
 
 /**
@@ -31,7 +31,7 @@ public class FileHelper {
      */
     public void extractImageMetadata(final Data data,
                                         final Map<String, String> props,
-                                        final DataManager dm) {
+                                        final FileRepository dm) {
         final ImageMetadataStreamAction img = new ImageMetadataStreamAction();
         dm.retrieve(data, img);
         props.putAll(img.getMetadata());

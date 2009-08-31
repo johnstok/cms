@@ -27,7 +27,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
 
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
 import ccc.search.SearchResult;
@@ -55,7 +55,7 @@ public class SimpleLuceneFS
     /**
      * Constructor.
      */
-    public SimpleLuceneFS(final DataManager dm)  {
+    public SimpleLuceneFS(final FileRepository dm)  {
         super(dm);
         try {
             final InputStream inputStream =

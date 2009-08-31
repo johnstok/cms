@@ -22,14 +22,11 @@ import ccc.entities.IData;
 
 
 /**
- * API definition for data management.
+ * Repository for file entities.
  *
  * @author Civic Computing Ltd.
  */
-public interface DataManager {
-
-    /** NAME : String. */
-    String NAME = "DataManager";
+public interface FileRepository {
 
     /**
      * Create a new item of binary data.

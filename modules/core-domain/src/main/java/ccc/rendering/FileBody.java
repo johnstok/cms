@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import ccc.domain.File;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
 
@@ -30,21 +30,21 @@ public class FileBody
         Body {
 
     private final FileSnapshot _file;
-    private final DataManager _dataManager;
+    private final FileRepository _fileRepository;
 
     /**
      * Constructor.
      *
      * @param f The file this body represents.
-     * @param dataManager The data manager used to retrieve the file's contents
+     * @param fileRepository The data manager used to retrieve the file's contents
      *      from the data store.
      */
-    public FileBody(final FileSnapshot f, final DataManager dataManager) {
+    public FileBody(final FileSnapshot f, final FileRepository fileRepository) {
         DBC.require().notNull(f);
-        DBC.require().notNull(dataManager);
+        DBC.require().notNull(fileRepository);
 
         _file = f;
-        _dataManager = dataManager;
+        _fileRepository = fileRepository;
     }
 
     /** {@inheritDoc} */
@@ -52,6 +52,6 @@ public class FileBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final TextProcessor processor) {
-        _dataManager.retrieve(_file.getData(), os);
+        _fileRepository.retrieve(_file.getData(), os);
     }
 }

@@ -24,7 +24,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
-import ccc.persistence.DataManager;
+import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
 import ccc.types.ID;
 
@@ -36,7 +36,7 @@ import ccc.types.ID;
  */
 public class UpdateFileCommand extends UpdateResourceCommand {
 
-    private final DataManager _data;
+    private final FileRepository _data;
 
     /**
      * Constructor.
@@ -47,7 +47,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      */
     public UpdateFileCommand(final Repository repository,
                              final AuditLog audit,
-                             final DataManager data) {
+                             final FileRepository data) {
         super(repository, audit);
         _data = data;
     }
