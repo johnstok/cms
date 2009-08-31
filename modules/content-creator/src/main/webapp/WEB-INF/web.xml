@@ -72,18 +72,18 @@
     <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>
-            ccc.contentcreator.remoting.CreateFileServlet
+            ccc.remoting.CreateFileServlet
         </servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateFileServlet</servlet-name>
         <servlet-class>
-            ccc.contentcreator.remoting.UpdateFileServlet
+            ccc.remoting.UpdateFileServlet
         </servlet-class>
     </servlet>
     <servlet>
         <servlet-name>preview-content</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.ContentServlet</servlet-class>
+        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>content</param-value>
@@ -95,7 +95,7 @@
     </servlet>
     <servlet>
         <servlet-name>preview-assets</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.ContentServlet</servlet-class>
+        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>assets</param-value>
@@ -107,7 +107,7 @@
     </servlet>
     <servlet>
         <servlet-name>content</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.ContentServlet</servlet-class>
+        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>content</param-value>
@@ -115,7 +115,7 @@
     </servlet>
     <servlet>
         <servlet-name>assets</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.ContentServlet</servlet-class>
+        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>assets</param-value>
@@ -123,15 +123,15 @@
     </servlet>
     <servlet>
         <servlet-name>login</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.LoginServlet</servlet-class>
+        <servlet-class>ccc.remoting.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>logout</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.LogoutServlet</servlet-class>
+        <servlet-class>ccc.remoting.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>broken-links</servlet-name>
-        <servlet-class>ccc.contentcreator.remoting.BrokenLinkServlet</servlet-class>
+        <servlet-class>ccc.remoting.BrokenLinkServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>error</servlet-name>
