@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.remoting;
+package ccc.remoting.actions;
 
 import java.io.IOException;
 
@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
-import ccc.remoting.actions.AbstractServletAction;
 
 
 /**
