@@ -24,7 +24,7 @@ import ccc.domain.Entity;
  *
  * @author Civic Computing Ltd.
  */
-public interface Dao {
+public interface Repository {
 
     /**
      * Find the object with the specified type and id.

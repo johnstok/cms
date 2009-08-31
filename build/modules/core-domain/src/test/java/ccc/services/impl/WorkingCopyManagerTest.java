@@ -26,7 +26,7 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 
@@ -52,12 +52,12 @@ public class WorkingCopyManagerTest
         p.lock(_user);
         p.workingCopy(p.createSnapshot());
 
-        expect(_dao.find(Resource.class, p.id())).andReturn(p);
+        expect(_repository.find(Resource.class, p.id())).andReturn(p);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new ClearWorkingCopyCommand(_dao, _audit).execute(
+        new ClearWorkingCopyCommand(_repository, _audit).execute(
             _user, _now, p.id());
 
         // ASSERT
@@ -83,12 +83,12 @@ public class WorkingCopyManagerTest
         page.lock(_user);
         final PageDelta before = page.createSnapshot();
 
-        expect(_dao.find(Page.class, page.id())).andReturn(page);
+        expect(_repository.find(Page.class, page.id())).andReturn(page);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new UpdateWorkingCopyCommand(_dao, _audit).execute(
+        new UpdateWorkingCopyCommand(_repository, _audit).execute(
             _user, _now, page.id(), before);
 
         // ASSERT
@@ -98,28 +98,28 @@ public class WorkingCopyManagerTest
 
 
     private void verifyAll() {
-        verify(_dao, _audit);
+        verify(_repository, _audit);
     }
 
     private void replayAll() {
-        replay(_dao, _audit);
+        replay(_repository, _audit);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
         _audit = createStrictMock(AuditLog.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _dao = null;
+        _repository = null;
         _audit = null;
     }
 
-    private Dao _dao;
+    private Repository _repository;
     private AuditLog _audit;
     private final User _user = new User("currentUser");
     private final Date _now = new Date();

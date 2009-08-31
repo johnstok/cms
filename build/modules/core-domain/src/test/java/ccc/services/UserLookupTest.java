@@ -37,16 +37,16 @@ public class UserLookupTest
         // ARRANGE
         final Principal p = new Principal() {
             @Override public String getName() { return "foo"; }};
-        expect(_dao.find(QueryNames.USERS_WITH_USERNAME, User.class, "foo"))
+        expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "foo"))
             .andReturn(null);
-        replay(_dao);
-        final UserLookup ul = new UserLookup(_dao);
+        replay(_repository);
+        final UserLookup ul = new UserLookup(_repository);
 
         // ACT
         final User actual = ul.loggedInUser(p);
 
         // ASSERT
-        verify(_dao);
+        verify(_repository);
         assertNull(actual);
     }
 
@@ -59,16 +59,16 @@ public class UserLookupTest
         final User u = new User("user");
         final Principal p = new Principal() {
             @Override public String getName() { return "user"; }};
-        expect(_dao.find(QueryNames.USERS_WITH_USERNAME, User.class, "user"))
+        expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "user"))
             .andReturn(u);
-        replay(_dao);
-        final UserLookup ul = new UserLookup(_dao);
+        replay(_repository);
+        final UserLookup ul = new UserLookup(_repository);
 
         // ACT
         final User actual = ul.loggedInUser(p);
 
         // ASSERT
-        verify(_dao);
+        verify(_repository);
         assertNotNull("Shouldn't be null.", actual);
         assertEquals(u, actual);
     }
@@ -77,14 +77,14 @@ public class UserLookupTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _dao = createStrictMock(Dao.class);
+        _repository = createStrictMock(Repository.class);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _dao = null;
+        _repository = null;
     }
 
-    private Dao _dao;
+    private Repository _repository;
 }

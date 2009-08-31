@@ -22,7 +22,7 @@ import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -33,17 +33,17 @@ import ccc.types.CommandType;
  */
 public abstract class CreateResourceCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateResourceCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public CreateResourceCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -65,12 +65,12 @@ public abstract class CreateResourceCommand {
         newResource.dateCreated(happenedOn);
         newResource.dateChanged(happenedOn);
 
-        final Folder folder = _dao.find(Folder.class, folderId);
+        final Folder folder = _repository.find(Folder.class, folderId);
         if (null==folder) {
             throw new CCCException("No folder exists with id: "+folderId);
         }
         folder.add(newResource);
-        _dao.create(newResource);
+        _repository.create(newResource);
 
         audit(newResource, actor, happenedOn);
     }
@@ -123,8 +123,8 @@ public abstract class CreateResourceCommand {
      *
      * @return Returns the DAO.
      */
-    protected Dao getDao() {
-        return _dao;
+    protected Repository getDao() {
+        return _repository;
     }
 
 

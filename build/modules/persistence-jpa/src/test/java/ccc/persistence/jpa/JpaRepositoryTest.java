@@ -28,13 +28,13 @@ import ccc.types.ResourceName;
 
 
 /**
- * Tests for the {@link BaseDao} class.
+ * Tests for the {@link JpaRepository} class.
  *
  * TODO: Missing tests.
  *
  * @author Civic Computing Ltd.
  */
-public class BaseDaoTest
+public class JpaRepositoryTest
     extends
         TestCase {
 
@@ -56,7 +56,7 @@ public class BaseDaoTest
         expect(em.createNamedQuery("queryName")).andReturn(q);
         replay(em);
 
-        final BaseDao qs = new BaseDao(em);
+        final JpaRepository qs = new JpaRepository(em);
 
         // ACT
         qs.list("queryName", Object.class, p1, p2);
@@ -79,7 +79,7 @@ public class BaseDaoTest
         expect(em.find(Resource.class, _r.id())).andReturn(_r);
         replay(em);
 
-        final BaseDao qs = new BaseDao(em);
+        final JpaRepository qs = new JpaRepository(em);
 
         // ACT
         qs.find(Resource.class, _r.id());

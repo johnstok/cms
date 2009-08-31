@@ -25,7 +25,7 @@ import ccc.domain.User;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -36,17 +36,17 @@ import ccc.types.CommandType;
  */
 public class UpdateWorkingCopyCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateWorkingCopyCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public UpdateWorkingCopyCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -66,7 +66,7 @@ public class UpdateWorkingCopyCommand {
                         final UUID resourceId,
                         final PageDelta delta)
                                throws UnlockedException, LockMismatchException {
-        final Page r = _dao.find(Page.class, resourceId);
+        final Page r = _repository.find(Page.class, resourceId);
         r.confirmLock(actor);
 
         r.workingCopy(delta);
@@ -100,7 +100,7 @@ public class UpdateWorkingCopyCommand {
                                               LockMismatchException,
                                               WorkingCopyNotSupportedException {
         final Resource r =
-            _dao.find(Resource.class, resourceId);
+            _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WorkingCopySupport<?, ?, ?>) {

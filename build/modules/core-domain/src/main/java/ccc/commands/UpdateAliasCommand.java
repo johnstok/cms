@@ -19,7 +19,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 
 
 /**
@@ -32,11 +32,11 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateAliasCommand(final Dao dao, final AuditLog audit) {
-        super(dao, audit);
+    public UpdateAliasCommand(final Repository repository, final AuditLog audit) {
+        super(repository, audit);
     }
 
 

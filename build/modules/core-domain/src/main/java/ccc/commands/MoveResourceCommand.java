@@ -21,7 +21,7 @@ import ccc.domain.Resource;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -32,17 +32,17 @@ import ccc.types.CommandType;
  */
 public class MoveResourceCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public MoveResourceCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public MoveResourceCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -60,10 +60,10 @@ public class MoveResourceCommand {
                         final Date happenedOn,
                         final UUID resourceId,
                         final UUID newParentId) throws CccCheckedException {
-        final Resource resource = _dao.find(Resource.class, resourceId);
+        final Resource resource = _repository.find(Resource.class, resourceId);
         resource.confirmLock(actor);
 
-        final Folder newParent = _dao.find(Folder.class, newParentId);
+        final Folder newParent = _repository.find(Folder.class, newParentId);
         resource.parent().remove(resource);
         newParent.add(resource);
 

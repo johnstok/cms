@@ -33,7 +33,7 @@ import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.velocity.VelocityProcessor;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.DataManager;
 import ccc.services.ResourceDao;
 import ccc.services.SearchEngine;
@@ -195,7 +195,7 @@ public class RenderResourceAction
 
 
     private ResourceDao getResourceDao(final HttpServletRequest req) {
-        return new ResourceDaoImpl((Dao) req.getAttribute(SessionKeys.DAO_KEY));
+        return new ResourceDaoImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 

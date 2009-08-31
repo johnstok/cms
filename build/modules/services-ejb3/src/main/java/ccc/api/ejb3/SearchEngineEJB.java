@@ -33,12 +33,12 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.search.SearchResult;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.DataManager;
 import ccc.services.QueryNames;
 import ccc.services.ResourceDao;
@@ -185,7 +185,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        final Dao bdao = new BaseDao(_em);
+        final Repository bdao = new JpaRepository(_em);
         _dao = new ResourceDaoImpl(bdao);
         _lucene =
             new SimpleLuceneFS(new DataManagerImpl(new FsCoreData(), bdao));

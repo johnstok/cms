@@ -18,7 +18,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.QueryNames;
 
 
@@ -32,11 +32,11 @@ public class CreateRootCommand extends CreateResourceCommand {
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateRootCommand(final Dao dao, final AuditLog audit) {
-        super(dao, audit);
+    public CreateRootCommand(final Repository repository, final AuditLog audit) {
+        super(repository, audit);
     }
 
 

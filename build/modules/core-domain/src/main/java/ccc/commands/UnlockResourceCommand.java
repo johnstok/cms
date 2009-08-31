@@ -21,7 +21,7 @@ import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -32,17 +32,17 @@ import ccc.types.CommandType;
  */
 public class UnlockResourceCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UnlockResourceCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public UnlockResourceCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -64,7 +64,7 @@ public class UnlockResourceCommand {
                         final Date happenedOn,
                         final UUID resourceId)
       throws UnlockedException, InsufficientPrivilegesException {
-        final Resource r = _dao.find(Resource.class, resourceId);
+        final Resource r = _repository.find(Resource.class, resourceId);
         r.unlock(actor);
 
         final LogEntry le =

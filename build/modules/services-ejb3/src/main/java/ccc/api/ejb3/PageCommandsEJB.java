@@ -35,7 +35,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.CommandFailedException;
 import ccc.domain.Page;
 import ccc.domain.User;
-import ccc.persistence.jpa.BaseDao;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.services.AuditLog;
 import ccc.services.PageCommands;
 import ccc.services.UserLookup;
@@ -205,7 +205,7 @@ implements
      * ============== */
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _bdao = new BaseDao(_em);
+        _bdao = new JpaRepository(_em);
         _audit = new AuditLogImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }

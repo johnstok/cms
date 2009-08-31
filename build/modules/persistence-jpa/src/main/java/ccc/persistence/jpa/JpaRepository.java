@@ -21,15 +21,15 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import ccc.domain.Entity;
-import ccc.services.Dao;
+import ccc.services.Repository;
 
 
 /**
- * Implementation of {@link Dao} interface using a JPA entity manager.
+ * Implementation of {@link Repository} interface using a JPA entity manager.
  *
  * @author Civic Computing Ltd.
  */
-public class BaseDao implements Dao {
+public class JpaRepository implements Repository {
 
     private final EntityManager _em;
 
@@ -38,7 +38,7 @@ public class BaseDao implements Dao {
      *
      * @param em The JPA entity manager for this DAO.
      */
-    public BaseDao(final EntityManager em) {
+    public JpaRepository(final EntityManager em) {
         _em = em;
     }
 

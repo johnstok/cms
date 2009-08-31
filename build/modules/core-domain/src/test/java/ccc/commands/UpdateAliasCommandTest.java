@@ -40,12 +40,12 @@ public class UpdateAliasCommandTest
         final Alias alias = new Alias("alias", foo);
         alias.lock(_user);
 
-        expect(_dao.find(Alias.class, alias.id())).andReturn(alias);
-        expect(_dao.find(Resource.class, bar.id())).andReturn(bar);
+        expect(_repository.find(Alias.class, alias.id())).andReturn(alias);
+        expect(_repository.find(Resource.class, bar.id())).andReturn(bar);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateAliasCommand c =  new UpdateAliasCommand(_dao, _audit);
+        final UpdateAliasCommand c =  new UpdateAliasCommand(_repository, _audit);
 
         // ACT
         c.execute(_user, _now, bar.id(), alias.id());

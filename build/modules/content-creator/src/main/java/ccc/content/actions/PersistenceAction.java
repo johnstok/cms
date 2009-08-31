@@ -19,8 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.persistence.jpa.BaseDao;
-import ccc.services.Dao;
+import ccc.persistence.jpa.JpaRepository;
+import ccc.services.Repository;
 
 
 
@@ -57,10 +57,10 @@ public class PersistenceAction
         final EntityManager em = _emf.createEntityManager();
 
         try {
-            final Dao dao = new BaseDao(em);
+            final Repository repository = new JpaRepository(em);
             req.setAttribute(
                 SessionKeys.DAO_KEY,
-                dao);
+                repository);
 
             _delegate.execute(req, resp);
 

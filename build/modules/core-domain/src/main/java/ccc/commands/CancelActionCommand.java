@@ -19,7 +19,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -30,17 +30,17 @@ import ccc.types.CommandType;
  */
 public class CancelActionCommand {
 
-    private final Dao _dao;
+    private final Repository _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The DAO used for CRUD operations, etc.
+     * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public CancelActionCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public CancelActionCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -55,7 +55,7 @@ public class CancelActionCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID actionId) {
-        final Action a = _dao.find(Action.class, actionId);
+        final Action a = _repository.find(Action.class, actionId);
         a.cancel();
 
         _audit.record(

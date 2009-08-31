@@ -19,7 +19,7 @@ import junit.framework.TestCase;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 
 
 /**
@@ -208,7 +208,7 @@ public class AuditLogImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _em = createStrictMock(Dao.class);
+        _em = createStrictMock(Repository.class);
     }
 
     /** {@inheritDoc} */
@@ -220,7 +220,7 @@ public class AuditLogImplTest
 
     private final User _actor = new User("actor");
     private final Date _happenedOn = new Date();
-    private Dao _em;
+    private Repository _em;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

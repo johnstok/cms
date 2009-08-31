@@ -24,15 +24,15 @@ import ccc.domain.User;
  * @author Civic Computing Ltd.
  */
 public final class UserLookup {
-    private final Dao _dao;
+    private final Repository _repository;
 
     /**
      * Constructor.
      *
-     * @param dao The DAO to use for lookups.
+     * @param repository The DAO to use for lookups.
      */
-    public UserLookup(final Dao dao) {
-        _dao = dao;
+    public UserLookup(final Repository repository) {
+        _repository = repository;
     }
 
 
@@ -49,7 +49,7 @@ public final class UserLookup {
         try {
             final String principalName = p.getName();
             final User user =
-                _dao.find(USERS_WITH_USERNAME, User.class, principalName);
+                _repository.find(USERS_WITH_USERNAME, User.class, principalName);
             return user;
         } catch (final IllegalStateException e) {
             return null;

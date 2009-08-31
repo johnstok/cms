@@ -38,13 +38,13 @@ public class IncludeInMainMenuCommandTest
         final Search s = new Search("foo");
         s.lock(_user);
 
-        expect(_dao.find(Resource.class, s.id())).andReturn(s);
+        expect(_repository.find(Resource.class, s.id())).andReturn(s);
         _audit.record(isA(LogEntry.class));
 
         replayAll();
 
         final IncludeInMainMenuCommand c =
-            new IncludeInMainMenuCommand(_dao, _audit);
+            new IncludeInMainMenuCommand(_repository, _audit);
 
         // ACT
         c.execute(_user, _now, s.id(), true);
@@ -64,13 +64,13 @@ public class IncludeInMainMenuCommandTest
         final Search s = new Search("foo");
         s.lock(_user);
 
-        expect(_dao.find(Resource.class, s.id())).andReturn(s);
+        expect(_repository.find(Resource.class, s.id())).andReturn(s);
         _audit.record(isA(LogEntry.class));
 
         replayAll();
 
         final IncludeInMainMenuCommand c =
-            new IncludeInMainMenuCommand(_dao, _audit);
+            new IncludeInMainMenuCommand(_repository, _audit);
 
         // ACT
         c.execute(_user, _now, s.id(), false);

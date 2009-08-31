@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.StatefulReader;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.services.DataManager;
 import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
@@ -55,21 +55,21 @@ public class ReaderAction
     public void execute(final HttpServletRequest req,
                         final HttpServletResponse resp) throws ServletException,
                                                                IOException {
-        final Dao dao =
-            (Dao) req.getAttribute(SessionKeys.DAO_KEY);
+        final Repository repository =
+            (Repository) req.getAttribute(SessionKeys.DAO_KEY);
 
-        final UserLookup ul = new UserLookup(dao);
+        final UserLookup ul = new UserLookup(repository);
         final Principal p = req.getUserPrincipal();
         req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
 
-        final AuditLog al = new AuditLogImpl(dao); // TODO: Remove - not used.
+        final AuditLog al = new AuditLogImpl(repository); // TODO: Remove - not used.
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
-        final DataManager dm = new DataManagerImpl(new FsCoreData(), dao);
+        final DataManager dm = new DataManagerImpl(new FsCoreData(), repository);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
-            new StatefulReaderImpl(new ResourceDaoImpl(dao), dm);
+            new StatefulReaderImpl(new ResourceDaoImpl(repository), dm);
         req.setAttribute(RenderingKeys.READER_KEY, sr);
 
         _delegate.execute(req, resp);

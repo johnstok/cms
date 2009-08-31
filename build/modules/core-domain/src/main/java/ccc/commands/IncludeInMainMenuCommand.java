@@ -21,7 +21,7 @@ import ccc.domain.JsonImpl;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 
 
@@ -32,18 +32,18 @@ import ccc.types.CommandType;
  */
 public class IncludeInMainMenuCommand {
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public IncludeInMainMenuCommand(final Dao dao,
+    public IncludeInMainMenuCommand(final Repository repository,
                                     final AuditLog audit) {
-        _dao = dao;
+        _repository = repository;
         _audit = audit;
     }
 
@@ -63,7 +63,7 @@ public class IncludeInMainMenuCommand {
                         final UUID id,
                         final boolean b)
                                throws UnlockedException, LockMismatchException {
-        final Resource r = _dao.find(Resource.class, id);
+        final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);
 
         r.includeInMainMenu(b);

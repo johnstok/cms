@@ -19,7 +19,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.services.AuditLog;
-import ccc.services.Dao;
+import ccc.services.Repository;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 
@@ -32,17 +32,17 @@ import ccc.types.EmailAddress;
 public class UpdateUserCommand {
 
 
-    private final Dao      _dao;
+    private final Repository      _repository;
     private final AuditLog _audit;
 
     /**
      * Constructor.
      *
-     * @param dao The ResourceDao used for CRUD operations, etc.
+     * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateUserCommand(final Dao dao, final AuditLog audit) {
-        _dao = dao;
+    public UpdateUserCommand(final Repository repository, final AuditLog audit) {
+        _repository = repository;
         _audit = audit;
     }
 
@@ -60,7 +60,7 @@ public class UpdateUserCommand {
                         final Date happenedOn,
                         final UUID userId,
                         final UserSummary delta) {
-        final User current = _dao.find(User.class, userId);
+        final User current = _repository.find(User.class, userId);
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());
