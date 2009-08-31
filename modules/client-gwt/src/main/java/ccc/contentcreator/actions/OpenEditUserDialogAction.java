@@ -11,10 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.UserSummary;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.dialogs.EditUserDialog;
+import ccc.rest.UserSummary;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;

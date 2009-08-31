@@ -11,8 +11,8 @@
  */
 package ccc.persistence;
 
-import ccc.api.UserSummary;
 import ccc.domain.CommandFailedException;
+import ccc.rest.UserSummary;
 import ccc.types.ID;
 
 

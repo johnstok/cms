@@ -20,11 +20,11 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.ResourceSummary;
-import ccc.api.UserSummary;
-import ccc.api.rest.ResourceCacheDurationPU;
-import ccc.api.rest.ResourceTemplatePU;
 import ccc.domain.CommandFailedException;
+import ccc.rest.ResourceCacheDurationPU;
+import ccc.rest.ResourceSummary;
+import ccc.rest.ResourceTemplatePU;
+import ccc.rest.UserSummary;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;

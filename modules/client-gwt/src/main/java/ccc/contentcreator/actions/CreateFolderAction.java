@@ -11,8 +11,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.GwtJson;
+import ccc.rest.ResourceSummary;
 import ccc.serialization.JsonKeys;
 import ccc.types.ID;
 

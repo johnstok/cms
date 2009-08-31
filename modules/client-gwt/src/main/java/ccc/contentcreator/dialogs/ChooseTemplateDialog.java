@@ -13,7 +13,6 @@ package ccc.contentcreator.dialogs;
 
 import java.util.Collection;
 
-import ccc.api.TemplateSummary;
 import ccc.contentcreator.actions.UpdateResourceTemplateAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -21,6 +20,7 @@ import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.rest.TemplateSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

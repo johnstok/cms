@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.api.PageDelta;
 import ccc.commons.Exceptions;
+import ccc.rest.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.ActionSummary;
-import ccc.api.UserSummary;
+import ccc.rest.ActionSummary;
+import ccc.rest.UserSummary;
 import ccc.types.ID;
 import ccc.types.Username;
 

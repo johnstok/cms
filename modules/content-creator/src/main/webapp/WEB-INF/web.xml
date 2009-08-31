@@ -26,9 +26,9 @@
     <context-param>
         <param-name>resteasy.providers</param-name>
         <param-value>
-            ccc.ws.CommandFailedExceptionMapper,
+            ccc.rest.providers.CommandFailedExceptionMapper,
             ccc.rest.providers.DurationReader,
-            ccc.ws.FailureWriter,
+            ccc.rest.providers.FailureWriter,
             ccc.rest.providers.IdReader,
             ccc.rest.providers.AliasDeltaReader,
             ccc.rest.providers.JsonReader,

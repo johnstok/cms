@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.api.AliasDelta;
+import ccc.rest.AliasDelta;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.snapshots.AliasSnapshot;

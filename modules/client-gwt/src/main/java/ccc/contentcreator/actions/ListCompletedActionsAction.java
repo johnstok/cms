@@ -13,8 +13,8 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
-import ccc.api.ActionSummary;
 import ccc.contentcreator.client.ActionTable;
+import ccc.rest.ActionSummary;
 
 import com.google.gwt.http.client.Response;
 

@@ -12,8 +12,6 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.api.ResourceSummary;
-import ccc.api.TemplateDelta;
 import ccc.contentcreator.actions.CreateTemplateAction_;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.actions.UpdateTemplateAction;
@@ -24,6 +22,8 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
+import ccc.rest.ResourceSummary;
+import ccc.rest.TemplateDelta;
 import ccc.types.ID;
 import ccc.types.MimeType;
 

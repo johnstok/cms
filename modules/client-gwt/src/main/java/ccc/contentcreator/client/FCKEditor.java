@@ -16,11 +16,11 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 
-import ccc.api.ResourceSummary;
 import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
+import ccc.rest.ResourceSummary;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;

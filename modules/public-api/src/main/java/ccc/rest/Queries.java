@@ -20,16 +20,6 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.api.ActionSummary;
-import ccc.api.AliasDelta;
-import ccc.api.FileDelta;
-import ccc.api.FileSummary;
-import ccc.api.LogEntrySummary;
-import ccc.api.PageDelta;
-import ccc.api.ResourceSummary;
-import ccc.api.TemplateDelta;
-import ccc.api.TemplateSummary;
-import ccc.api.UserSummary;
 import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.Username;

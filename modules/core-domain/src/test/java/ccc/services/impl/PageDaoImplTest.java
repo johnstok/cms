@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.PageDelta;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -26,6 +25,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.rest.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

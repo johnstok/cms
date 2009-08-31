@@ -16,7 +16,6 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.PageDelta;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LogEntry;
@@ -27,6 +26,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.rest.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

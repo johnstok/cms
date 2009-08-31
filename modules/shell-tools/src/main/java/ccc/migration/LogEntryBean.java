@@ -14,7 +14,7 @@ package ccc.migration;
 
 import java.util.Date;
 
-import ccc.api.UserSummary;
+import ccc.rest.UserSummary;
 
 
 /**

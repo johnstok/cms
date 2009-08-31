@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.FileDelta;
+import ccc.rest.FileDelta;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
 import ccc.types.ID;

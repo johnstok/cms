@@ -13,7 +13,7 @@ package ccc.domain;
 
 import java.util.Date;
 
-import ccc.api.TemplateDelta;
+import ccc.rest.TemplateDelta;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 

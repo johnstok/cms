@@ -11,8 +11,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.api.TemplateDelta;
 import ccc.contentcreator.client.GwtJson;
+import ccc.rest.TemplateDelta;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;

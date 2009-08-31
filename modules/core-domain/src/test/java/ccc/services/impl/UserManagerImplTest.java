@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import junit.framework.TestCase;
-import ccc.api.UserSummary;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
@@ -31,6 +30,7 @@ import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
+import ccc.rest.UserSummary;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
 import ccc.types.Username;

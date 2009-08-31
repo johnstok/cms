@@ -11,7 +11,6 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.api.UserSummary;
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
@@ -20,6 +19,7 @@ import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.dialogs.ErrorDialog;
+import ccc.rest.UserSummary;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;

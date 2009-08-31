@@ -15,8 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.FileDelta;
 import ccc.entities.IFile;
+import ccc.rest.FileDelta;
 import ccc.types.DBC;
 import ccc.types.ID;
 import ccc.types.MimeType;

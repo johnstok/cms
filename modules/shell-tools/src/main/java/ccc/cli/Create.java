@@ -7,10 +7,10 @@ import static ccc.types.PredefinedResourceNames.*;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.ResourceSummary;
 import ccc.domain.CommandFailedException;
 import ccc.migration.ServiceLookup;
 import ccc.persistence.FolderCommands;
+import ccc.rest.ResourceSummary;
 import ccc.services.Commands;
 
 /**

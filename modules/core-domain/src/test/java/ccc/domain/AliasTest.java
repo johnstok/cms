@@ -12,8 +12,8 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.api.AliasDelta;
 import ccc.commons.Exceptions;
+import ccc.rest.AliasDelta;
 import ccc.types.ID;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;

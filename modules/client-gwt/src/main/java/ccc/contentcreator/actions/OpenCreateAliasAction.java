@@ -1,9 +1,9 @@
 package ccc.contentcreator.actions;
 
-import ccc.api.ResourceSummary;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
+import ccc.rest.ResourceSummary;
 
 /**
  * Create an alias.

@@ -14,13 +14,13 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.TemplateDelta;
 import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.rest.TemplateDelta;
 import ccc.types.ResourceName;
 
 

@@ -2,11 +2,11 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
-import ccc.api.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreatePageDialog;
+import ccc.rest.TemplateSummary;
 
 /**
  * Create a page.
