@@ -10,21 +10,21 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.impl;
+package ccc.persistence.streams;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import ccc.commons.IO;
-import ccc.services.DataManager.StreamAction;
+import ccc.persistence.StreamAction;
 
 /**
  * An action to copy from an input stream to an output stream.
  *
  * @author Civic Computing Ltd.
  */
-final class CopyAction
+public final class CopyAction
     implements
         StreamAction {
 
@@ -35,7 +35,7 @@ final class CopyAction
      *
      * @param dataStream The output stream to copy to.
      */
-    CopyAction(final OutputStream dataStream) {
+    public CopyAction(final OutputStream dataStream) {
         _dataStream = dataStream;
     }
 

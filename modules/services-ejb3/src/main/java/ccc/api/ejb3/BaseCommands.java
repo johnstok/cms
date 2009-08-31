@@ -18,9 +18,8 @@ import org.apache.log4j.Logger;
 import ccc.domain.CccCheckedException;
 import ccc.domain.CommandFailedException;
 import ccc.domain.User;
+import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.services.ModelTranslation;
-import ccc.services.UserLookup;
 import ccc.types.ID;
 
 

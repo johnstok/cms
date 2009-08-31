@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.impl;
+package ccc.rendering;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -21,9 +21,9 @@ import ccc.commons.IO;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.entities.IResource;
-import ccc.rendering.StatefulReader;
-import ccc.services.DataManager;
-import ccc.services.ResourceDao;
+import ccc.persistence.DataManager;
+import ccc.persistence.ResourceDao;
+import ccc.persistence.StreamAction;
 import ccc.types.ResourcePath;
 
 
@@ -43,7 +43,7 @@ public final class StatefulReaderImpl
      */
     private static final class ReadContentToStringAction
         implements
-            DataManager.StreamAction {
+            StreamAction {
 
         private final StringBuilder _sb;
         private final String        _charset;

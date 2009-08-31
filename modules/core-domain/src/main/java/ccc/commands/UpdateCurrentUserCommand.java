@@ -11,7 +11,7 @@
  */
 package ccc.commands;
 
-import static ccc.services.QueryNames.*;
+import static ccc.persistence.QueryNames.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -21,8 +21,8 @@ import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 

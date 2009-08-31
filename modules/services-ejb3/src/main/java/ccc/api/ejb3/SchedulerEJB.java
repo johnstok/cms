@@ -34,16 +34,16 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.action.ActionExecutor;
+import ccc.action.ActionExecutorImpl;
 import ccc.domain.Action;
+import ccc.persistence.ActionDao;
+import ccc.persistence.LocalCommands;
+import ccc.persistence.QueryNames;
+import ccc.persistence.Repository;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.services.ActionDao;
-import ccc.services.ActionExecutor;
 import ccc.services.Commands;
-import ccc.services.Repository;
-import ccc.services.LocalCommands;
-import ccc.services.QueryNames;
 import ccc.services.Scheduler;
-import ccc.services.impl.ActionExecutorImpl;
 
 
 /**

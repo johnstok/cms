@@ -21,7 +21,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import ccc.domain.Entity;
-import ccc.services.Repository;
+import ccc.persistence.Repository;
 
 
 /**

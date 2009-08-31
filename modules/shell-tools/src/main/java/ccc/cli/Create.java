@@ -10,8 +10,8 @@ import org.kohsuke.args4j.Option;
 import ccc.api.ResourceSummary;
 import ccc.domain.CommandFailedException;
 import ccc.migration.ServiceLookup;
+import ccc.persistence.FolderCommands;
 import ccc.services.Commands;
-import ccc.services.FolderCommands;
 
 /**
  * Entry class for the 'create' application.

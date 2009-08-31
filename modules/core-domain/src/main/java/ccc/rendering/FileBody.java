@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import ccc.domain.File;
-import ccc.services.DataManager;
+import ccc.persistence.DataManager;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
 

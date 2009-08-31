@@ -17,6 +17,9 @@ import java.security.Principal;
 
 import junit.framework.TestCase;
 import ccc.domain.User;
+import ccc.persistence.QueryNames;
+import ccc.persistence.Repository;
+import ccc.persistence.UserLookup;
 
 
 /**

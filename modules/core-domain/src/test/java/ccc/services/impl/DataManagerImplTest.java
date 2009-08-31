@@ -18,10 +18,10 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 import ccc.domain.Data;
-import ccc.services.CoreData;
-import ccc.services.Repository;
-import ccc.services.SearchEngine;
-import ccc.services.DataManager.StreamAction;
+import ccc.persistence.Repository;
+import ccc.persistence.StreamAction;
+import ccc.persistence.streams.CoreData;
+import ccc.search.SearchEngine;
 
 
 /**

@@ -19,12 +19,12 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.entities.IFolder;
 import ccc.entities.IResource;
+import ccc.persistence.DataManager;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
-import ccc.services.DataManager;
-import ccc.services.SearchEngine;
+import ccc.search.SearchEngine;
 import ccc.types.ResourceType;
 
 

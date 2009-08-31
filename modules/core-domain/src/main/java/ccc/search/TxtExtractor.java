@@ -15,14 +15,14 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import ccc.commons.IO;
-import ccc.services.DataManager;
+import ccc.persistence.StreamAction;
 
 /**
  * A stream action that reads a input stream into a string.
  *
  * @author Civic Computing Ltd.
  */
-public class TxtExtractor implements DataManager.StreamAction {
+public class TxtExtractor implements StreamAction {
 
     private String _content;
 

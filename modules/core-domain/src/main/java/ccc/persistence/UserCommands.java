@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.persistence;
 
 import ccc.api.UserSummary;
 import ccc.domain.CommandFailedException;

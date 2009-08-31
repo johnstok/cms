@@ -22,9 +22,9 @@ import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.User;
-import ccc.services.Repository;
-import ccc.services.QueryNames;
-import ccc.services.ResourceDao;
+import ccc.persistence.QueryNames;
+import ccc.persistence.Repository;
+import ccc.persistence.ResourceDao;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 

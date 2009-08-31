@@ -30,9 +30,9 @@ import ccc.domain.ResourceOrder;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
-import ccc.services.ResourceDao;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
+import ccc.persistence.ResourceDao;
 import ccc.types.ResourceName;
 
 

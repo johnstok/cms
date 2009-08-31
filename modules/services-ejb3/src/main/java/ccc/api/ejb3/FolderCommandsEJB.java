@@ -39,10 +39,10 @@ import ccc.domain.Folder;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.ResourceOrder;
 import ccc.domain.User;
+import ccc.persistence.AuditLog;
+import ccc.persistence.FolderCommands;
+import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.services.AuditLog;
-import ccc.services.FolderCommands;
-import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 

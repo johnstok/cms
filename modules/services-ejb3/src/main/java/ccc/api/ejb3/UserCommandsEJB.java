@@ -31,10 +31,10 @@ import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.CommandFailedException;
+import ccc.persistence.AuditLog;
+import ccc.persistence.UserCommands;
+import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.services.AuditLog;
-import ccc.services.UserCommands;
-import ccc.services.UserLookup;
 import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 

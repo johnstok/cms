@@ -20,8 +20,8 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

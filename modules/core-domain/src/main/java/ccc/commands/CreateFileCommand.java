@@ -22,9 +22,9 @@ import ccc.domain.FileHelper;
 import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
-import ccc.services.DataManager;
+import ccc.persistence.AuditLog;
+import ccc.persistence.DataManager;
+import ccc.persistence.Repository;
 import ccc.types.ResourceName;
 
 

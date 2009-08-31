@@ -21,7 +21,7 @@ import org.pdfbox.util.PDFTextStripper;
 
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.services.DataManager;
+import ccc.persistence.DataManager;
 import ccc.types.DBC;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;

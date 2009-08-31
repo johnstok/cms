@@ -18,8 +18,8 @@ import ccc.api.UserSummary;
 import ccc.domain.LogEntry;
 import ccc.domain.JsonImpl;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 

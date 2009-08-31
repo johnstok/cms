@@ -13,7 +13,7 @@ package ccc.domain;
 
 import java.util.Map;
 
-import ccc.services.DataManager;
+import ccc.persistence.DataManager;
 
 
 /**

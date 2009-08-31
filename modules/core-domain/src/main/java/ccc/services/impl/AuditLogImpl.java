@@ -14,8 +14,8 @@ package ccc.services.impl;
 import org.apache.log4j.Logger;
 
 import ccc.domain.LogEntry;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 import ccc.types.DBC;
 
 

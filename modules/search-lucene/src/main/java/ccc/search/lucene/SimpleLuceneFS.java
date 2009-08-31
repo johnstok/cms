@@ -27,10 +27,10 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
 
+import ccc.persistence.DataManager;
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
 import ccc.search.SearchResult;
-import ccc.services.DataManager;
 
 
 /**

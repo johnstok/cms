@@ -19,10 +19,12 @@ import java.util.List;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.entities.IData;
-import ccc.services.CoreData;
-import ccc.services.Repository;
-import ccc.services.DataManager;
-import ccc.services.QueryNames;
+import ccc.persistence.DataManager;
+import ccc.persistence.QueryNames;
+import ccc.persistence.Repository;
+import ccc.persistence.StreamAction;
+import ccc.persistence.streams.CopyAction;
+import ccc.persistence.streams.CoreData;
 import ccc.types.DBC;
 
 

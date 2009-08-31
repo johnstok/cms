@@ -17,14 +17,14 @@ import java.io.InputStream;
 import org.apache.log4j.Logger;
 import org.pdfbox.pdmodel.PDDocument;
 
-import ccc.services.DataManager;
+import ccc.persistence.StreamAction;
 
 /**
  * A StreamAction that can load a PDF file into memory.
  *
  * @author Civic Computing Ltd.
  */
-public class PdfLoader implements DataManager.StreamAction {
+public class PdfLoader implements StreamAction {
     private static final Logger LOG = Logger.getLogger(PdfLoader.class);
 
     private PDDocument   _document;

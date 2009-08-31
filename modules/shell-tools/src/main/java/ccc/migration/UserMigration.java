@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.UserSummary;
 import ccc.domain.CommandFailedException;
-import ccc.services.UserCommands;
+import ccc.persistence.UserCommands;
 
 
 /**

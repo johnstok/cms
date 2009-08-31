@@ -15,8 +15,8 @@ package ccc.rendering;
 import java.util.Map;
 
 import ccc.domain.Resource;
-import ccc.services.DataManager;
-import ccc.services.SearchEngine;
+import ccc.persistence.DataManager;
+import ccc.search.SearchEngine;
 import ccc.snapshots.ResourceSnapshot;
 import ccc.types.DBC;
 

@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services;
+package ccc.persistence;
 
 import java.util.Collection;
 import java.util.List;

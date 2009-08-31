@@ -18,8 +18,8 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.services.AuditLog;
-import ccc.services.Repository;
+import ccc.persistence.AuditLog;
+import ccc.persistence.Repository;
 
 
 /**

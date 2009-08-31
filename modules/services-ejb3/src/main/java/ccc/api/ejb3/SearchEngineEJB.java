@@ -33,17 +33,17 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.File;
 import ccc.domain.Page;
+import ccc.persistence.DataManager;
+import ccc.persistence.QueryNames;
+import ccc.persistence.Repository;
+import ccc.persistence.ResourceDao;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.persistence.jpa.FsCoreData;
+import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
-import ccc.services.Repository;
-import ccc.services.DataManager;
-import ccc.services.QueryNames;
-import ccc.services.ResourceDao;
 import ccc.services.Scheduler;
-import ccc.services.SearchEngine;
 import ccc.services.impl.DataManagerImpl;
 import ccc.services.impl.ResourceDaoImpl;
 

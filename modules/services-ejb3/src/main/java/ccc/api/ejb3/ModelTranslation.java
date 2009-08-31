@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services;
+package ccc.api.ejb3;
 
 import java.util.ArrayList;
 import java.util.Collection;
