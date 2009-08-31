@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import ccc.commons.IO;
 import ccc.persistence.StreamAction;
+import ccc.serialization.IO;
 
 /**
  * An action to copy from an input stream to an output stream.

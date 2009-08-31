@@ -18,7 +18,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.serialization.InvalidSnapshotException;
 import ccc.serialization.Json;
+import ccc.serialization.JsonImpl;
 import ccc.serialization.Jsonable;
 import ccc.types.Decimal;
 

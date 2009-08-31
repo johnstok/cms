@@ -17,13 +17,13 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
-import ccc.commons.IO;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.entities.IResource;
 import ccc.persistence.DataManager;
 import ccc.persistence.ResourceDao;
 import ccc.persistence.StreamAction;
+import ccc.serialization.IO;
 import ccc.types.ResourcePath;
 
 

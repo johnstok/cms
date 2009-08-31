@@ -22,11 +22,11 @@ import java.io.InputStream;
 import org.apache.log4j.Logger;
 
 import ccc.commons.CCCProperties;
-import ccc.commons.IO;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
+import ccc.serialization.IO;
 
 
 /**

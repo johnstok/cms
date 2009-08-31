@@ -16,10 +16,10 @@ import java.util.UUID;
 
 import ccc.api.UserSummary;
 import ccc.domain.LogEntry;
-import ccc.domain.JsonImpl;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
+import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 
