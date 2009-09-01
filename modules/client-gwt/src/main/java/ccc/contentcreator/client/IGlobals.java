@@ -18,7 +18,7 @@ import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 
 
 /**

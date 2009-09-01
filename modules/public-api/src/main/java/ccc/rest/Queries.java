@@ -20,6 +20,15 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.FileDelta;
+import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.Username;

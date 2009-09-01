@@ -31,7 +31,7 @@ import ccc.persistence.AuditLog;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.UserManagerImpl;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
 import ccc.types.Username;

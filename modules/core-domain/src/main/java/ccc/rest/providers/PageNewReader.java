@@ -22,8 +22,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.PageDelta;
-import ccc.rest.PageNew;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.PageNew;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 

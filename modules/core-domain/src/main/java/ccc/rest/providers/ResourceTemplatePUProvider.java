@@ -23,7 +23,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.ResourceTemplatePU;
+import ccc.rest.dto.ResourceTemplatePU;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 

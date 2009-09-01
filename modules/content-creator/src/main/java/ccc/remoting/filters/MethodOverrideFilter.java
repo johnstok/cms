@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.impl;
+package ccc.remoting.filters;
 
 import java.io.IOException;
 

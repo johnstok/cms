@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.File;
 import ccc.rest.CommandFailedException;
-import ccc.rest.FileDelta;
+import ccc.rest.dto.FileDelta;
 import ccc.types.ID;
 
 

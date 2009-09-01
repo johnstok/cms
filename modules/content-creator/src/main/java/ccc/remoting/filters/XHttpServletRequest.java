@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.impl;
+package ccc.remoting.filters;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Civic Computing Ltd.
  */
-public class XHttpServletRequest
+class XHttpServletRequest
     implements
         HttpServletRequest {
 

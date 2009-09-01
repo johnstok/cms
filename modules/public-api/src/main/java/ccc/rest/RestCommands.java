@@ -22,6 +22,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.AliasNew;
+import ccc.rest.dto.FolderDelta;
+import ccc.rest.dto.FolderNew;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.PageNew;
+import ccc.rest.dto.ResourceCacheDurationPU;
+import ccc.rest.dto.ResourceRevisionPU;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.ResourceTemplatePU;
+import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateNew;
+import ccc.rest.dto.UserSummary;
 import ccc.serialization.Json;
 import ccc.types.ID;
 

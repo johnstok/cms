@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.Username;
 
 /**

@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.rest.ResourceSummary;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

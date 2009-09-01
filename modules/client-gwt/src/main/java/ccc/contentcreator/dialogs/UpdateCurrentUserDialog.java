@@ -16,7 +16,7 @@ import static ccc.contentcreator.validation.Validations.*;
 import ccc.contentcreator.actions.UpdateCurrentUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

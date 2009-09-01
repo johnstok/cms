@@ -42,7 +42,7 @@ import ccc.persistence.FolderCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
 import ccc.types.ResourceOrder;
 

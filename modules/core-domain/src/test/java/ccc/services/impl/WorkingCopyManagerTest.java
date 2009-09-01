@@ -26,7 +26,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

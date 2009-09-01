@@ -21,7 +21,7 @@ import ccc.migration.FileUploader;
 import ccc.persistence.FolderCommands;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Queries;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;
 import ccc.types.ID;
 import ccc.types.ResourcePath;

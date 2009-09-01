@@ -25,7 +25,7 @@ import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
-import ccc.rest.FileDelta;
+import ccc.rest.dto.FileDelta;
 import ccc.types.ID;
 
 

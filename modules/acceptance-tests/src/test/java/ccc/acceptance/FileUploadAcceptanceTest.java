@@ -17,9 +17,9 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.LogEntrySummary;
-import ccc.rest.ResourceRevisionPU;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.ResourceRevisionPU;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;
 
 

@@ -14,10 +14,10 @@ package ccc.acceptance;
 import java.util.Collection;
 import java.util.HashMap;
 
-import ccc.rest.ActionNew;
-import ccc.rest.ActionSummary;
 import ccc.rest.CommandFailedException;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.CommandType;
 
 

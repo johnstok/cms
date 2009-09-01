@@ -11,7 +11,7 @@ import ccc.migration.ServiceLookup;
 import ccc.persistence.FolderCommands;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 
 /**
  * Entry class for the 'create' application.

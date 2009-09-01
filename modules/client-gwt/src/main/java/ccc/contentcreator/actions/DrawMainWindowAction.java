@@ -5,8 +5,8 @@ import java.util.Collection;
 import ccc.contentcreator.client.LeftRightPane;
 import ccc.contentcreator.client.MainMenu;
 import ccc.contentcreator.client.ResourceNavigator;
-import ccc.rest.ResourceSummary;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;

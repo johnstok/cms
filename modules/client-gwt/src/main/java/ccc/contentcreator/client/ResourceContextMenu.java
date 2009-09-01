@@ -38,9 +38,9 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
-import ccc.rest.PageDelta;
-import ccc.rest.TemplateSummary;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.TemplateSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.event.Events;

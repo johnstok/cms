@@ -23,7 +23,7 @@ import ccc.contentcreator.actions.OpenEditUserDialogAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;

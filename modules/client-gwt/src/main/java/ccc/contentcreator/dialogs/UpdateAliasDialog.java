@@ -18,8 +18,8 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.rest.AliasDelta;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

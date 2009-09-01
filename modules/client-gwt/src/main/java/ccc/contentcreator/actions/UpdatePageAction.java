@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 import ccc.serialization.JsonKeys;
 import ccc.types.ID;
 

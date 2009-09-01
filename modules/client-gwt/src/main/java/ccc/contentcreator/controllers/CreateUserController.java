@@ -26,7 +26,7 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.views.ICreateUserDialog;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.Username;
 
 import com.google.gwt.http.client.Response;

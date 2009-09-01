@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.ActionNew;
+import ccc.rest.dto.ActionNew;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommandType;

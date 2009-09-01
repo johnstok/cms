@@ -31,8 +31,8 @@ import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.rest.ResourceSummary;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

@@ -15,7 +15,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.dialogs.EditTemplateDialog;
-import ccc.rest.TemplateDelta;
+import ccc.rest.dto.TemplateDelta;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

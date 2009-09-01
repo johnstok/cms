@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

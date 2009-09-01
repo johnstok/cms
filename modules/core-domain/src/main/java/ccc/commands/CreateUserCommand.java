@@ -18,7 +18,7 @@ import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;

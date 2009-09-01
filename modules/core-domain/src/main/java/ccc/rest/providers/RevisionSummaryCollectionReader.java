@@ -29,7 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.rest.LogEntrySummary;
+import ccc.rest.dto.LogEntrySummary;
 import ccc.serialization.JsonImpl;
 
 

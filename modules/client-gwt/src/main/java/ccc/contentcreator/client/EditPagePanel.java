@@ -19,8 +19,8 @@ import ccc.contentcreator.actions.GetAbsolutePathAction;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
-import ccc.rest.FileSummary;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.PageDelta;
 import ccc.types.ID;
 import ccc.types.Paragraph;
 

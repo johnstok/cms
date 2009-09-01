@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonKeys;
 import ccc.types.ID;
 import ccc.types.ResourceType;

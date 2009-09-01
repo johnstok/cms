@@ -9,46 +9,47 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.dto;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
+import ccc.types.Duration;
 
 
 
 /**
- * A partial update, sets the working copy for a resource.
+ * A partial update, changing a resource's cache duration.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceRevisionPU implements Jsonable {
+public class ResourceCacheDurationPU implements Jsonable {
 
-    private final long _revision;
+    private final Duration _cacheDuration;
 
 
     /**
      * Constructor.
      *
-     * @param revision The revision used to create the working copy.
+     * @param cacheDuration The duration to set (may be NULL).
      */
-    public ResourceRevisionPU(final long revision) {
-        _revision = revision;
+    public ResourceCacheDurationPU(final Duration cacheDuration) {
+        _cacheDuration = cacheDuration;
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the revision.
+     * @return Returns the cacheDuration.
      */
-    public final long getRevision() {
-        return _revision;
+    public final Duration getCacheDuration() {
+        return _cacheDuration;
     }
 
 
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
-        json.set(JsonKeys.REVISION, Long.valueOf(_revision));
+        json.set(JsonKeys.CACHE_DURATION, _cacheDuration);
     }
 }
