@@ -33,12 +33,13 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.File;
 import ccc.domain.Page;
-import ccc.persistence.FileRepository;
+import ccc.domain.Setting;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
-import ccc.persistence.jpa.JpaRepository;
+import ccc.persistence.SettingsRepository;
 import ccc.persistence.jpa.FsCoreData;
+import ccc.persistence.jpa.JpaRepository;
 import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
 import ccc.search.lucene.SimpleLucene;
@@ -69,8 +70,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
 
-    private ResourceDao _dao;
-    private SimpleLucene _lucene;
+    private ResourceDao _resources;
+    private Repository _repo;
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
@@ -80,11 +81,9 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
      * Constructor.
      *
      * @param rdao The ResourceDao.
-     * @param dm   The DataManager.
      */
-    public SearchEngineEJB(final ResourceDao rdao, final FileRepository dm) {
-        _dao = rdao;
-        _lucene = new SimpleLuceneFS(dm);
+    public SearchEngineEJB(final ResourceDao rdao) {
+        _resources = rdao;
     }
 
 
@@ -94,21 +93,22 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     public SearchResult find(final String searchTerms,
                              final int resultCount,
                              final int page) {
-        return _lucene.find(searchTerms, resultCount, page);
+        return createLucene().find(searchTerms, resultCount, page);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void index() {
+        final SimpleLucene lucene = createLucene();
         try {
-            _lucene.startUpdate();
-            indexPages();
-            indexFiles();
-            _lucene.commitUpdate();
+            lucene.startUpdate();
+            indexPages(lucene);
+            indexFiles(lucene);
+            lucene.commitUpdate();
         } catch (final Exception e) {
             LOG.error("Error indexing resources.", e);
-            _lucene.rollbackUpdate();
+            lucene.rollbackUpdate();
         }
     }
 
@@ -163,21 +163,23 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     }
 
 
-    private void indexFiles() {
-        final List<File> files = _dao.list(QueryNames.ALL_FILES, File.class);
+    private void indexFiles(final SimpleLucene lucene) {
+        final List<File> files =
+            _resources.list(QueryNames.ALL_FILES, File.class);
         for (final File f : files) {
             if (f.isVisible() && f.roles().isEmpty()) {
-                _lucene.indexFile(f);
+                lucene.indexFile(f);
             }
         }
     }
 
 
-    private void indexPages() {
-        final List<Page> pages = _dao.list(QueryNames.ALL_PAGES, Page.class);
+    private void indexPages(final SimpleLucene lucene) {
+        final List<Page> pages =
+            _resources.list(QueryNames.ALL_PAGES, Page.class);
         for (final Page p : pages) {
             if (p.isVisible() && p.roles().isEmpty()) {
-                _lucene.indexPage(p);
+                lucene.indexPage(p);
             }
         }
     }
@@ -185,9 +187,15 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        final Repository bdao = new JpaRepository(_em);
-        _dao = new ResourceDaoImpl(bdao);
-        _lucene =
-            new SimpleLuceneFS(new DataManagerImpl(new FsCoreData(), bdao));
+        _repo = new JpaRepository(_em);
+        _resources = new ResourceDaoImpl(_repo);
+    }
+
+
+    private SimpleLucene createLucene() {
+        final SettingsRepository settings = new SettingsRepository(_repo);
+        final Setting indexPath = settings.find(Setting.Name.LUCENE_INDEX_PATH);
+        return new SimpleLuceneFS(
+            new DataManagerImpl(new FsCoreData(), _repo), indexPath.value());
     }
 }

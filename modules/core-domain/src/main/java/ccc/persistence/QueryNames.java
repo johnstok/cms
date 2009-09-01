@@ -81,4 +81,7 @@ public final class QueryNames {
 
     /** ROOTS : String. */
     public static final String ROOTS = "roots";
+
+    /** SETTING_WITH_NAME : String. */
+    public static final String SETTINGS_WITH_NAME = "settings-with-name";
 }

@@ -76,6 +76,8 @@ public class Setting extends Entity {
     public static enum Name {
 
         /** DATABASE_VERSION : Name. */
-        DATABASE_VERSION
+        DATABASE_VERSION,
+        /** LUCENE_INDEX_PATH : Name. */
+        LUCENE_INDEX_PATH;
     }
 }
