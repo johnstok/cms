@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.CccCheckedException;
 import ccc.domain.User;
-import ccc.persistence.UserLookup;
+import ccc.persistence.UserRepository;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.types.ID;
@@ -31,7 +31,7 @@ import ccc.types.ID;
 public abstract class BaseCommands extends ModelTranslation{
 
 
-    UserLookup         _userLookup;
+    UserRepository           _users;
     JpaRepository            _bdao;
     static Logger LOG = Logger.getLogger(BaseCommands.class);
 
@@ -41,7 +41,7 @@ public abstract class BaseCommands extends ModelTranslation{
     }
 
     protected User loggedInUser(final EJBContext context) {
-        return _userLookup.loggedInUser(context.getCallerPrincipal());
+        return _users.loggedInUser(context.getCallerPrincipal());
     }
 
     protected ID loggedInUserId(final EJBContext context) {

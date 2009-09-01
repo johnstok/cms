@@ -31,7 +31,7 @@ import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.UserLookup;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.UserCommands;
@@ -92,7 +92,10 @@ UserCommands {
      * @throws CommandFailedException */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
-    public void updateYourUser(final ID userId, final String email, final String password) throws CommandFailedException {
+    public void updateYourUser(final ID userId,
+                               final String email,
+                               final String password)
+                                                 throws CommandFailedException {
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
         loggedInUser(_context), new Date(), toUUID(userId), email, password);
@@ -109,6 +112,6 @@ UserCommands {
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
         _audit = new LogEntryRepositoryImpl(_bdao);
-        _userLookup = new UserLookup(_bdao);
+        _users = new UserRepositoryImpl(_bdao);
     }
 }

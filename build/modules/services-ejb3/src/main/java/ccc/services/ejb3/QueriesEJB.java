@@ -39,7 +39,6 @@ import ccc.persistence.ActionDao;
 import ccc.persistence.QueryNames;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserLookup;
 import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
@@ -83,7 +82,6 @@ public final class QueriesEJB
 
     private UserRepository _users;
     private ResourceRepository _resources;
-    private UserLookup  _userLookup;
     private JpaRepository     _bdao;
 
     /**
@@ -317,7 +315,6 @@ public final class QueriesEJB
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
         _resources = new ResourceRepositoryImpl(_bdao);
-        _userLookup = new UserLookup(_bdao);
         _users = new UserRepositoryImpl(_bdao);
     }
 
@@ -330,7 +327,7 @@ public final class QueriesEJB
     }
 
     private User currentUser() {
-        return _userLookup.loggedInUser(_context.getCallerPrincipal());
+        return _users.loggedInUser(_context.getCallerPrincipal());
     }
 
     /** {@inheritDoc} */
