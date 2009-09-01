@@ -78,6 +78,6 @@ public class AliasNew implements Jsonable {
     public void toJson(final Json json) {
         json.set(JsonKeys.PARENT_ID, _parentId);
         json.set(JsonKeys.NAME, _name);
-        json.set(JsonKeys.TARGET, _targetId);
+        json.set(JsonKeys.TARGET_ID, _targetId);
     }
 }

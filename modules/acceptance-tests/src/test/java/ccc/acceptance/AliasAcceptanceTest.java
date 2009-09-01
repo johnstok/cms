@@ -41,11 +41,11 @@ public class AliasAcceptanceTest
 
         // ACT
         _commands.lock(rs.getId());
-        _commands.updateAlias(rs.getId(), new AliasDelta(null, folder.getId()));
+        _commands.updateAlias(rs.getId(), new AliasDelta(folder.getId()));
 
         // ASSERT
-        final AliasDelta ad = _queries.aliasDelta(rs.getId());
-        assertEquals(ad.getTargetId(), folder.getId());
+        final String targetName = _queries.aliasTargetName(rs.getId());
+        assertEquals(targetName, folder.getName());
     }
 
 
@@ -65,9 +65,9 @@ public class AliasAcceptanceTest
         final ResourceSummary rs = _commands.createAlias(alias);
 
         // ASSERT
-        final AliasDelta ad = _queries.aliasDelta(rs.getId());
+        final String targetName = _queries.aliasTargetName(rs.getId());
         assertEquals(name, rs.getName());
         assertEquals(folder.getId(), rs.getParentId());
-        assertEquals(ad.getTargetId(), folder.getId());
+        assertEquals(targetName, folder.getName());
     }
 }

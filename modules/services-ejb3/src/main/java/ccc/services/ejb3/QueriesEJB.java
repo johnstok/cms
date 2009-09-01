@@ -42,7 +42,6 @@ import ccc.persistence.UserLookup;
 import ccc.persistence.UserManager;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.ActionSummary;
-import ccc.rest.AliasDelta;
 import ccc.rest.FileDelta;
 import ccc.rest.FileSummary;
 import ccc.rest.LogEntrySummary;
@@ -243,9 +242,12 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public AliasDelta aliasDelta(final ID aliasId) {
-        return
-            deltaAlias(_resources.find(Alias.class, toUUID(aliasId)));
+    public String aliasTargetName(final ID aliasId) {
+        final Alias alias = _resources.find(Alias.class, toUUID(aliasId));
+        if (alias != null) {
+            return alias.target().name().toString();
+        }
+        return null;
     }
 
     /** {@inheritDoc} */

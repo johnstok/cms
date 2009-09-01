@@ -12,14 +12,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.dialogs.UpdateAliasDialog;
-import ccc.rest.AliasDelta;
 import ccc.rest.ResourceSummary;
 
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -49,17 +45,15 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/aliases/" + _alias.getId() + "/delta";
+        return "/aliases/" + _alias.getId() + "/targetname";
     }
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
-        final AliasDelta delta = new AliasDelta(new GwtJson(result));
+        final String targetName = response.getText();
         new UpdateAliasDialog(
-            _alias.getId(), delta, _alias.getName(), _targetRoot)
+            _alias.getId(), targetName, _alias.getName(), _targetRoot)
         .show();
     }
 

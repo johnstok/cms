@@ -86,8 +86,8 @@ public final class JsonKeys {
     public static final String BODY = "body";
     /** DEFINITION : String. */
     public static final String DEFINITION = "definition";
-    /** TARGET : String. */
-    public static final String TARGET = "target"; // FIXME: Should be 'target-id'?
+    /** TARGET_ID : String. */
+    public static final String TARGET_ID = "target-id";
     /** ABSOLUTE_PATH : String. */
     public static final String ABSOLUTE_PATH = "absolute-path";
     /** INDEX_PAGE_ID : String. */

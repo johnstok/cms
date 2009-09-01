@@ -91,9 +91,7 @@ public class Alias extends Resource {
     @Override
     public AliasDelta createSnapshot() {
         final AliasDelta delta =
-            new AliasDelta(
-                target().name().toString(),
-                new ID(target().id().toString()));
+            new AliasDelta(new ID(target().id().toString()));
         return delta;
     }
 
@@ -101,7 +99,7 @@ public class Alias extends Resource {
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.TARGET, target().id().toString());
+        json.set(JsonKeys.TARGET_ID, target().id().toString());
     }
 
 

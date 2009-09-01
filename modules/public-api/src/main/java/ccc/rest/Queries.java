@@ -274,13 +274,13 @@ public interface Queries {
     UserSummary userDelta(@PathParam("id") ID userId);
 
     /**
-     * Retrieve the delta for a alias.
+     * Retrieve the target name for a alias.
      *
      * @param aliasId The alias' id.
-     * @return The corresponding delta.
+     * @return The corresponding target name.
      */
-    @GET @Path("/aliases/{id}/delta") @NoCache
-    AliasDelta aliasDelta(@PathParam("id") ID aliasId);
+    @GET @Path("/aliases/{id}/targetname") @NoCache
+    String aliasTargetName(@PathParam("id") ID aliasId);
 
     /**
      * Retrieve the delta for a page.
