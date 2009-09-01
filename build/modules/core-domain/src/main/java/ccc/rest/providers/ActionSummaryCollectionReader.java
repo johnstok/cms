@@ -28,7 +28,7 @@ import javax.ws.rs.ext.Provider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import ccc.rest.ActionSummary;
+import ccc.rest.dto.ActionSummary;
 import ccc.serialization.Json;
 import ccc.serialization.JsonImpl;
 

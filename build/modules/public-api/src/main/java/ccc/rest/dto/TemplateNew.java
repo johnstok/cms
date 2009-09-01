@@ -9,7 +9,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.dto;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;

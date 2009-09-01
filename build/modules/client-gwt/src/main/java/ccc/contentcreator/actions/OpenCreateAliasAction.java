@@ -3,7 +3,7 @@ package ccc.contentcreator.actions;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.CreateAliasDialog;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 
 /**
  * Create an alias.

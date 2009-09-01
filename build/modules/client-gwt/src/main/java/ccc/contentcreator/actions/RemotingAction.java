@@ -24,8 +24,8 @@ import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.overlays.FailureOverlay;
-import ccc.rest.ActionSummary;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 
 import com.google.gwt.http.client.Request;

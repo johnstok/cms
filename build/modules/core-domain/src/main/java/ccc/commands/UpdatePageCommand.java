@@ -21,7 +21,7 @@ import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 
 
 /**

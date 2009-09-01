@@ -23,7 +23,7 @@ import ccc.migration.ccc6.handlers.TemplateFieldsSelector;
 import ccc.migration.ccc6.handlers.UserCommentSelector;
 import ccc.migration.ccc6.handlers.UserMetadataSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 
 /**
  * Queries for data migration.

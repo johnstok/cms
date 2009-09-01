@@ -14,7 +14,7 @@ package ccc.contentcreator.actions;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.dialogs.EditUserDialog;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;

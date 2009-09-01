@@ -14,8 +14,8 @@ package ccc.persistence;
 import java.util.Date;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.PageDelta;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
 
 

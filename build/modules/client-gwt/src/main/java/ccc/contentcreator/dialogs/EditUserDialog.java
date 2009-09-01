@@ -21,7 +21,7 @@ import ccc.contentcreator.actions.UpdateUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

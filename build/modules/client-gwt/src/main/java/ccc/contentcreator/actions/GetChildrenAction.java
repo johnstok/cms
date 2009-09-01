@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;

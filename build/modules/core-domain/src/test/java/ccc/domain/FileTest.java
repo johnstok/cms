@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.rest.FileDelta;
+import ccc.rest.dto.FileDelta;
 import ccc.types.ID;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;

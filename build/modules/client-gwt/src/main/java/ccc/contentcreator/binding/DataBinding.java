@@ -19,12 +19,12 @@ import java.util.Map.Entry;
 
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.rest.ActionSummary;
-import ccc.rest.FileSummary;
-import ccc.rest.LogEntrySummary;
-import ccc.rest.ResourceSummary;
-import ccc.rest.TemplateSummary;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TemplateSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;

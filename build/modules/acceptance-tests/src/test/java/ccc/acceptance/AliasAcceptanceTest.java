@@ -13,10 +13,10 @@ package ccc.acceptance;
 
 import java.util.UUID;
 
-import ccc.rest.AliasDelta;
-import ccc.rest.AliasNew;
 import ccc.rest.CommandFailedException;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.AliasNew;
+import ccc.rest.dto.ResourceSummary;
 
 
 /**

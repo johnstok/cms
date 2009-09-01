@@ -13,7 +13,7 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateAliasDialog;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 
 import com.google.gwt.http.client.Response;
 

@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.AliasDelta;
+import ccc.rest.dto.AliasDelta;
 import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;

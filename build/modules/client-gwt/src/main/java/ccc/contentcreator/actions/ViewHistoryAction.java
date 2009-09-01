@@ -6,7 +6,7 @@ import java.util.Collection;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
-import ccc.rest.LogEntrySummary;
+import ccc.rest.dto.LogEntrySummary;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;

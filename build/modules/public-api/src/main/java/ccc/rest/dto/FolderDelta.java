@@ -9,7 +9,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.dto;
 
 import java.util.Collection;
 

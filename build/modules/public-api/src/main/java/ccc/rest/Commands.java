@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ID;

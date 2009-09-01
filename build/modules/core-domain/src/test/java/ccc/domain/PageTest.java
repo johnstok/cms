@@ -19,7 +19,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

@@ -19,7 +19,7 @@ import ccc.contentcreator.actions.ListCompletedActionsAction;
 import ccc.contentcreator.actions.ListPendingActionsAction;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.rest.ActionSummary;
+import ccc.rest.dto.ActionSummary;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.PagingLoader;

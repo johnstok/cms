@@ -48,7 +48,7 @@ import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.StringHeader;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 import ccc.search.SearchEngine;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;

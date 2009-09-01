@@ -4,7 +4,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.MoveDialog;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 
 /**
  * Move resource.

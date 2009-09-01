@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 import ccc.persistence.LocalCommands;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
 

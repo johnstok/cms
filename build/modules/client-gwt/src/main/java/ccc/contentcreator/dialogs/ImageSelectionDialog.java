@@ -18,7 +18,7 @@ import ccc.contentcreator.actions.GetContentImagesAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.rest.FileSummary;
+import ccc.rest.dto.FileSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

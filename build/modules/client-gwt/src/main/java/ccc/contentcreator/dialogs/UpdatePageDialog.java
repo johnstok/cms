@@ -24,8 +24,8 @@ import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.rest.PageDelta;
-import ccc.rest.TemplateSummary;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.TemplateSummary;
 import ccc.types.ID;
 import ccc.types.Paragraph;
 

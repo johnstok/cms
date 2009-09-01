@@ -35,7 +35,7 @@ import ccc.persistence.UserCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 
 

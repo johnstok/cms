@@ -19,7 +19,7 @@ import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.dialogs.ErrorDialog;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;

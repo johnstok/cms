@@ -22,8 +22,8 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
-import ccc.rest.ResourceSummary;
-import ccc.rest.TemplateDelta;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TemplateDelta;
 import ccc.types.ID;
 import ccc.types.MimeType;
 

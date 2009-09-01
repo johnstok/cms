@@ -21,7 +21,7 @@ import java.util.Set;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
-import ccc.rest.ActionSummary;
+import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.ID;

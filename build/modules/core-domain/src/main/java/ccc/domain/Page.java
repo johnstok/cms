@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import ccc.commons.WordCharFixer;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
 import ccc.types.Paragraph;

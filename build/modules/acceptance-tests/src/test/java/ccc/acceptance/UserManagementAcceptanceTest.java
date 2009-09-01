@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.UserSummary;
+import ccc.rest.dto.UserSummary;
 import ccc.types.Username;
 
 

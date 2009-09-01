@@ -24,7 +24,7 @@ import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
 import ccc.persistence.AuditLog;
 import ccc.persistence.Repository;
-import ccc.rest.PageDelta;
+import ccc.rest.dto.PageDelta;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 

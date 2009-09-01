@@ -20,7 +20,7 @@ import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.rest.TemplateSummary;
+import ccc.rest.dto.TemplateSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

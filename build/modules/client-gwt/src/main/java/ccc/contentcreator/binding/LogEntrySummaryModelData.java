@@ -20,7 +20,7 @@ import java.util.Set;
 
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
-import ccc.rest.LogEntrySummary;
+import ccc.rest.dto.LogEntrySummary;
 import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.data.ModelData;

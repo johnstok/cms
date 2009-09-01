@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.ResourceSummary;
+import ccc.rest.dto.ResourceSummary;
 
 
 /**
