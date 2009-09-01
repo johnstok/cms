@@ -33,10 +33,13 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.File;
 import ccc.domain.Page;
+import ccc.domain.Scheduler;
 import ccc.domain.Setting;
+import ccc.persistence.DataManagerImpl;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
+import ccc.persistence.ResourceDaoImpl;
 import ccc.persistence.SettingsRepository;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
@@ -44,9 +47,6 @@ import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
-import ccc.services.Scheduler;
-import ccc.services.impl.DataManagerImpl;
-import ccc.services.impl.ResourceDaoImpl;
 
 
 /**

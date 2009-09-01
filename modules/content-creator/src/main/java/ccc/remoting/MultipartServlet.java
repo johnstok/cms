@@ -21,11 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.CommandFailedException;
 import ccc.persistence.LocalCommands;
+import ccc.rest.CommandFailedException;
+import ccc.rest.Commands;
 import ccc.rest.ResourceSummary;
 import ccc.serialization.JsonImpl;
-import ccc.services.Commands;
 import ccc.types.MimeType;
 
 

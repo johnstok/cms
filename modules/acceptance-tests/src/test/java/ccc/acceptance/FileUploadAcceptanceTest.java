@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
 
-import ccc.domain.CommandFailedException;
+import ccc.rest.CommandFailedException;
 import ccc.rest.LogEntrySummary;
 import ccc.rest.ResourceRevisionPU;
 import ccc.rest.ResourceSummary;

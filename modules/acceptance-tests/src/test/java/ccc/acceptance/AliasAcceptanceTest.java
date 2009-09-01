@@ -13,9 +13,9 @@ package ccc.acceptance;
 
 import java.util.UUID;
 
-import ccc.domain.CommandFailedException;
 import ccc.rest.AliasDelta;
 import ccc.rest.AliasNew;
+import ccc.rest.CommandFailedException;
 import ccc.rest.ResourceSummary;
 
 

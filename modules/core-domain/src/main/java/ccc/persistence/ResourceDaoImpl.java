@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.persistence;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +22,6 @@ import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.User;
-import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
-import ccc.persistence.ResourceDao;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.persistence;
 
 import static ccc.persistence.QueryNames.*;
 
@@ -18,8 +18,6 @@ import java.util.Locale;
 import java.util.UUID;
 
 import ccc.domain.User;
-import ccc.persistence.Repository;
-import ccc.persistence.UserManager;
 
 
 /**

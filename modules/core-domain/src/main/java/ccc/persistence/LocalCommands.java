@@ -14,10 +14,10 @@ package ccc.persistence;
 import java.io.InputStream;
 import java.util.Date;
 
-import ccc.domain.CommandFailedException;
+import ccc.rest.CommandFailedException;
+import ccc.rest.Commands;
 import ccc.rest.FileDelta;
 import ccc.rest.ResourceSummary;
-import ccc.services.Commands;
 import ccc.types.ID;
 
 

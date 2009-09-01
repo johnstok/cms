@@ -33,16 +33,16 @@ import ccc.commands.CreateRootCommand;
 import ccc.commands.PublishCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.CccCheckedException;
-import ccc.domain.CommandFailedException;
 import ccc.domain.Folder;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
+import ccc.persistence.AuditLogImpl;
 import ccc.persistence.FolderCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.CommandFailedException;
 import ccc.rest.ResourceSummary;
-import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 import ccc.types.ResourceOrder;
 

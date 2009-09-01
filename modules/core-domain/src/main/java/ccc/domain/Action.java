@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.rest.CommandFailedException;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.ActionStatus;

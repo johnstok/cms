@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.services.impl;
+package ccc.persistence;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,10 +19,6 @@ import java.util.List;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.entities.IData;
-import ccc.persistence.FileRepository;
-import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
-import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.CoreData;
 import ccc.types.DBC;

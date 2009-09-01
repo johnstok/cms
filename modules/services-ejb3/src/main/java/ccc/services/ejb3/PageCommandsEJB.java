@@ -30,16 +30,16 @@ import ccc.commands.PublishCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
-import ccc.domain.CommandFailedException;
 import ccc.domain.Page;
 import ccc.domain.User;
 import ccc.persistence.AuditLog;
+import ccc.persistence.AuditLogImpl;
 import ccc.persistence.PageCommands;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.CommandFailedException;
 import ccc.rest.PageDelta;
 import ccc.rest.ResourceSummary;
-import ccc.services.impl.AuditLogImpl;
 import ccc.types.ID;
 import ccc.types.ResourceName;
 

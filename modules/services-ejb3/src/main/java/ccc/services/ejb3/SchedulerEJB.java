@@ -37,13 +37,13 @@ import org.apache.log4j.Logger;
 import ccc.action.ActionExecutor;
 import ccc.action.ActionExecutorImpl;
 import ccc.domain.Action;
+import ccc.domain.Scheduler;
 import ccc.persistence.ActionDao;
 import ccc.persistence.LocalCommands;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.services.Commands;
-import ccc.services.Scheduler;
+import ccc.rest.Commands;
 
 
 /**

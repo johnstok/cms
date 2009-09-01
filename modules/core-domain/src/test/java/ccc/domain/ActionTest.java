@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
+import ccc.rest.CommandFailedException;
 import ccc.types.ActionStatus;
 import ccc.types.FailureCode;
 

@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.domain.CommandFailedException;
 import ccc.domain.File;
+import ccc.rest.CommandFailedException;
 import ccc.rest.FileDelta;
 import ccc.rest.ResourceSummary;
 import ccc.types.ID;
