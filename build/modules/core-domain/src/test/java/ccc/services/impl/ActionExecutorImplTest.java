@@ -77,7 +77,7 @@ public class ActionExecutorImplTest
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
             FailureCode.UNLOCKED,
-            a.failure().getCode());
+            a.getCode());
     }
 
 

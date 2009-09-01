@@ -12,12 +12,14 @@
 package ccc.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
+import ccc.types.FailureCode;
 
 
 /**
@@ -26,14 +28,15 @@ import ccc.types.CommandType;
  * @author Civic Computing Ltd.
  */
 public class Action extends Entity {
+
     private User                _actor;
     private CommandType         _type;
     private Map<String, String> _parameters;
     private Resource            _subject;
-
     private Date                _executeAfter;
+    private FailureCode         _code;
     private ActionStatus        _status = ActionStatus.Scheduled;
-    private Failure             _failure;
+    private Map<String, String> _params = new HashMap<String, String>();
 
     /** Constructor: for persistence only. */
     protected Action() { super(); }
@@ -114,6 +117,24 @@ public class Action extends Entity {
     }
 
     /**
+     * Accessor.
+     *
+     * @return Returns the code.
+     */
+    public FailureCode getCode() {
+        return _code;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the params.
+     */
+    public Map<String, String> getParams() {
+        return _params;
+    }
+
+    /**
      * Mark the action as failed.
      *
      * @param e The exception that caused the action to fail.
@@ -121,17 +142,10 @@ public class Action extends Entity {
     public void fail(final CommandFailedException e) {
         checkStillScheduled();
         _status = ActionStatus.Failed;
-        _failure = e.getFailure();
+        _code = e.getCode();
+        _params = e.getFailure().getParams();
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The failure, or NULL if the action hasn't failed.
-     */
-    public Failure failure() {
-        return _failure;
-    }
 
     /**
      * Mark the action as cancelled.
@@ -166,6 +180,7 @@ public class Action extends Entity {
         json.set(JsonKeys.SUBJECT_ID, subject().id().toString());
         json.set(JsonKeys.EXECUTE_AFTER, executeAfter());
         json.set(JsonKeys.STATUS, status().name());
-        json.set(JsonKeys.FAILURE, failure());
+        json.set(JsonKeys.CODE, (null==_code) ? null : _code.name());
+        json.set("failure-params", _params);
     }
 }

@@ -353,7 +353,7 @@ public class ModelTranslation {
                 a.subject().type(),
                 a.subject().absolutePath().toString(),
                 a.status(),
-                (null==a.failure()) ? null : a.failure().getCode());
+                (null==a.getCode()) ? null : a.getCode());
         return summary;
     }
 
