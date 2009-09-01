@@ -22,7 +22,7 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.FileDelta;
@@ -46,7 +46,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      * @param data The data manager to use for reading / writing the file data.
      */
     public UpdateFileCommand(final Repository repository,
-                             final AuditLog audit,
+                             final LogEntryRepository audit,
                              final FileRepository data) {
         super(repository, audit);
         _data = data;

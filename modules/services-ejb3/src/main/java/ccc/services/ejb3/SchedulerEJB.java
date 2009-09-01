@@ -39,11 +39,11 @@ import ccc.action.ActionExecutorImpl;
 import ccc.domain.Action;
 import ccc.domain.Scheduler;
 import ccc.persistence.ActionDao;
-import ccc.persistence.LocalCommands;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Commands;
+import ccc.rest.LocalCommands;
 
 
 /**

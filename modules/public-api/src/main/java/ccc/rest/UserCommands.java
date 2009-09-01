@@ -9,9 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence;
+package ccc.rest;
 
-import ccc.rest.CommandFailedException;
 import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 

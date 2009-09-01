@@ -27,11 +27,11 @@ import ccc.types.ResourcePath;
 
 
 /**
- * EJB Implementation of the {@link ResourceDao} interface.
+ * A repository for resource objects.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceDaoImpl implements ResourceDao {
+public class ResourceRepositoryImpl implements ResourceRepository {
 
     private final Repository            _repository;
 
@@ -40,7 +40,7 @@ public class ResourceDaoImpl implements ResourceDao {
      *
      * @param repository The DAO used for persistence.
      */
-    public ResourceDaoImpl(final Repository repository) {
+    public ResourceRepositoryImpl(final Repository repository) {
         _repository = repository;
     }
 

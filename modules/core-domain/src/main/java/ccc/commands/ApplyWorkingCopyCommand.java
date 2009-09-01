@@ -21,7 +21,7 @@ import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 
 
@@ -39,7 +39,7 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public ApplyWorkingCopyCommand(final Repository repository, final AuditLog audit) {
+    public ApplyWorkingCopyCommand(final Repository repository, final LogEntryRepository audit) {
         super(repository, audit);
     }
 

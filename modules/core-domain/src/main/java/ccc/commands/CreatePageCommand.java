@@ -19,7 +19,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
@@ -39,7 +39,7 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreatePageCommand(final Repository repository, final AuditLog audit) {
+    public CreatePageCommand(final Repository repository, final LogEntryRepository audit) {
         super(repository, audit);
     }
 

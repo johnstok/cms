@@ -19,7 +19,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -34,7 +34,7 @@ import ccc.types.Duration;
 public class UpdateCachingCommand {
 
     private final Repository      _repository;
-    private final AuditLog _audit;
+    private final LogEntryRepository _audit;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class UpdateCachingCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateCachingCommand(final Repository repository, final AuditLog audit) {
+    public UpdateCachingCommand(final Repository repository, final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

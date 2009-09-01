@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import ccc.domain.LogEntry;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.UserSummary;
 import ccc.serialization.JsonImpl;
@@ -33,7 +33,7 @@ public class UpdateUserCommand {
 
 
     private final Repository      _repository;
-    private final AuditLog _audit;
+    private final LogEntryRepository _audit;
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public class UpdateUserCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateUserCommand(final Repository repository, final AuditLog audit) {
+    public UpdateUserCommand(final Repository repository, final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

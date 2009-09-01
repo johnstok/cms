@@ -27,10 +27,10 @@ import ccc.commands.UpdateUserCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
-import ccc.persistence.UserManagerImpl;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.rest.dto.UserSummary;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
@@ -38,7 +38,7 @@ import ccc.types.Username;
 
 
 /**
- * Tests for the {@link UserManagerImpl} class.
+ * Tests for the {@link UserRepositoryImpl} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -228,11 +228,11 @@ public class UserManagerImplTest extends TestCase {
     }
 
     private User _u;
-    private AuditLog _audit;
+    private LogEntryRepository _audit;
     private UserSummary _uDelta;
     private Repository _repository;
     private Principal _p;
-    private UserManagerImpl _um;
+    private UserRepositoryImpl _um;
 
     /** {@inheritDoc} */
     @Override
@@ -252,8 +252,8 @@ public class UserManagerImplTest extends TestCase {
             }
         };
         _repository = createStrictMock(Repository.class);
-        _audit = createStrictMock(AuditLog.class);
-        _um = new UserManagerImpl(_repository);
+        _audit = createStrictMock(LogEntryRepository.class);
+        _um = new UserRepositoryImpl(_repository);
     }
 
     /** {@inheritDoc} */

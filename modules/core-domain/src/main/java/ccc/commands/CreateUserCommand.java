@@ -16,7 +16,7 @@ import java.util.Date;
 import ccc.domain.LogEntry;
 import ccc.domain.Password;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.UserSummary;
 import ccc.serialization.JsonImpl;
@@ -32,7 +32,7 @@ import ccc.types.EmailAddress;
 public class CreateUserCommand {
 
     private final Repository      _repository;
-    private final AuditLog _audit;
+    private final LogEntryRepository _audit;
 
     /**
      * Constructor.
@@ -40,7 +40,7 @@ public class CreateUserCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public CreateUserCommand(final Repository repository, final AuditLog audit) {
+    public CreateUserCommand(final Repository repository, final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

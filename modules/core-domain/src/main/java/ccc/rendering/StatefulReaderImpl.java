@@ -21,7 +21,7 @@ import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.entities.IResource;
 import ccc.persistence.FileRepository;
-import ccc.persistence.ResourceDao;
+import ccc.persistence.ResourceRepository;
 import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
 import ccc.types.ResourcePath;
@@ -73,7 +73,7 @@ public final class StatefulReaderImpl
     }
 
 
-    private final ResourceDao  _resources;
+    private final ResourceRepository  _resources;
     private final FileRepository _data;
 
     /**
@@ -82,7 +82,7 @@ public final class StatefulReaderImpl
      * @param resources The DAO to use.
      * @param data The data manager to use.
      */
-    public StatefulReaderImpl(final ResourceDao resources,
+    public StatefulReaderImpl(final ResourceRepository resources,
                               final FileRepository data) {
         _resources = resources;
         _data = data;

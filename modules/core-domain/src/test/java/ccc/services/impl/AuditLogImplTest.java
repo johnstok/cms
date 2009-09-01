@@ -18,12 +18,12 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 
 
 /**
- * Tests for the {@link AuditLog} class.
+ * Tests for the {@link LogEntryRepository} class.
  *
  * @author Civic Computing Ltd.
  */

@@ -21,7 +21,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -35,14 +35,14 @@ public class PublishCommand
     implements
         Command<Void> {
 
-    private AuditLog _audit;
+    private LogEntryRepository _audit;
 
     /**
      * Constructor.
      *
      * @param audit The audit log to record this command.
      */
-    public PublishCommand(final AuditLog audit) {
+    public PublishCommand(final LogEntryRepository audit) {
         _audit = audit;
     }
 

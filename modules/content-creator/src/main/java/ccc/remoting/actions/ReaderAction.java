@@ -18,12 +18,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.persistence.AuditLog;
-import ccc.persistence.AuditLogImpl;
-import ccc.persistence.DataManagerImpl;
+import ccc.persistence.LogEntryRepository;
+import ccc.persistence.LogEntryRepositoryImpl;
+import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
-import ccc.persistence.ResourceDaoImpl;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.StatefulReader;
@@ -62,14 +62,14 @@ public class ReaderAction
         final Principal p = req.getUserPrincipal();
         req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
 
-        final AuditLog al = new AuditLogImpl(repository); // TODO: Remove - not used.
+        final LogEntryRepository al = new LogEntryRepositoryImpl(repository); // TODO: Remove - not used.
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
-        final FileRepository dm = new DataManagerImpl(new FsCoreData(), repository);
+        final FileRepository dm = new FileRepositoryImpl(new FsCoreData(), repository);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
-            new StatefulReaderImpl(new ResourceDaoImpl(repository), dm);
+            new StatefulReaderImpl(new ResourceRepositoryImpl(repository), dm);
         req.setAttribute(RenderingKeys.READER_KEY, sr);
 
         _delegate.execute(req, resp);

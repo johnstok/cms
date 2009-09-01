@@ -9,11 +9,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence;
+package ccc.rest;
 
 import java.util.Date;
 
-import ccc.rest.CommandFailedException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;

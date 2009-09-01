@@ -21,11 +21,11 @@ import ccc.domain.User;
 
 
 /**
- * EJB implementation of the UserManager API.
+ * A repository for user objects.
  *
  * @author Civic Computing Ltd.
  */
-public class UserManagerImpl implements UserManager {
+public class UserRepositoryImpl implements UserRepository {
 
     private Repository _repository;
 
@@ -35,7 +35,7 @@ public class UserManagerImpl implements UserManager {
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      */
-    public UserManagerImpl(final Repository repository) {
+    public UserRepositoryImpl(final Repository repository) {
         _repository = repository;
     }
 

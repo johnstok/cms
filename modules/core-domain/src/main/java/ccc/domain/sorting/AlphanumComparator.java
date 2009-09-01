@@ -26,7 +26,7 @@
  *
  */
 
-package ccc.commons;
+package ccc.domain.sorting;
 
 import java.io.Serializable;
 import java.util.Comparator;

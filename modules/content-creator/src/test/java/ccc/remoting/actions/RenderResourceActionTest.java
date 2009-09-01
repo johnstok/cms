@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.persistence.ResourceDao;
+import ccc.persistence.ResourceRepository;
 import ccc.remoting.actions.RenderResourceAction;
 import ccc.rendering.Body;
 import ccc.rendering.NotFoundException;
@@ -194,7 +194,7 @@ public final class RenderResourceActionTest extends TestCase {
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
         _renderer = createStrictMock(Renderer.class);
-        _rdao = createStrictMock(ResourceDao.class);
+        _rdao = createStrictMock(ResourceRepository.class);
     }
 
     /**
@@ -243,5 +243,5 @@ public final class RenderResourceActionTest extends TestCase {
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
     private Renderer _renderer;
-    private ResourceDao _rdao;
+    private ResourceRepository _rdao;
 }

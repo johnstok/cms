@@ -15,11 +15,11 @@ import ccc.domain.LogEntry;
 
 
 /**
- * Audit logging API.
+ * API for log entry repositories.
  *
  * @author Civic Computing Ltd.
  */
-public interface AuditLog {
+public interface LogEntryRepository {
 
     /**
      * Record a log entry.

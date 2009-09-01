@@ -15,11 +15,11 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Scheduler;
 import ccc.persistence.ActionDao;
-import ccc.persistence.FolderCommands;
-import ccc.persistence.PageCommands;
-import ccc.persistence.UserCommands;
 import ccc.rest.Commands;
+import ccc.rest.FolderCommands;
+import ccc.rest.PageCommands;
 import ccc.rest.Queries;
+import ccc.rest.UserCommands;
 import ccc.search.SearchEngine;
 
 

@@ -18,7 +18,7 @@ import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 
 
@@ -35,7 +35,7 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateAliasCommand(final Repository repository, final AuditLog audit) {
+    public UpdateAliasCommand(final Repository repository, final LogEntryRepository audit) {
         super(repository, audit);
     }
 

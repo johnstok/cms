@@ -20,6 +20,7 @@ import ccc.domain.User;
 
 /**
  * Helper class to look up CCC users.
+ * FIXME: Merge into {@link UserRepositoryImpl}.
  *
  * @author Civic Computing Ltd.
  */

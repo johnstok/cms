@@ -29,7 +29,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class DataManagerImpl implements FileRepository {
+public class FileRepositoryImpl implements FileRepository {
 
     private Repository _repository;
     private CoreData _cd;
@@ -40,7 +40,7 @@ public class DataManagerImpl implements FileRepository {
      * @param cd The JDBC datasource used to manage data.
      * @param repository The DAO used for CRUD operations, etc.
      */
-    public DataManagerImpl(final CoreData cd, final Repository repository) {
+    public FileRepositoryImpl(final CoreData cd, final Repository repository) {
         DBC.require().notNull(cd);
         DBC.require().notNull(repository);
         _cd = cd;

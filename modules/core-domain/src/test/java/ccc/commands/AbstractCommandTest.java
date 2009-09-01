@@ -18,7 +18,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 
 
@@ -35,7 +35,7 @@ public abstract class AbstractCommandTest
     protected final Date _now = new Date();
 
     protected Repository _repository;
-    protected AuditLog _audit;
+    protected LogEntryRepository _audit;
 
 
     /** Constructor. */
@@ -46,7 +46,7 @@ public abstract class AbstractCommandTest
     @Override
     protected void setUp() {
         _repository = createStrictMock(Repository.class);
-        _audit = createStrictMock(AuditLog.class);
+        _audit = createStrictMock(LogEntryRepository.class);
     }
 
 

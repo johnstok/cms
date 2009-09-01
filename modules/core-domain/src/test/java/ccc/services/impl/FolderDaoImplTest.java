@@ -29,9 +29,9 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
-import ccc.persistence.ResourceDao;
+import ccc.persistence.ResourceRepository;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 
@@ -123,8 +123,8 @@ public class FolderDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _al = createStrictMock(AuditLog.class);
-        _rdao = createStrictMock(ResourceDao.class);
+        _al = createStrictMock(LogEntryRepository.class);
+        _rdao = createStrictMock(ResourceRepository.class);
         _repository = createStrictMock(Repository.class);
 
         _f = new Folder("foo");
@@ -149,8 +149,8 @@ public class FolderDaoImplTest
 
     private Folder _f;
 
-    private AuditLog _al;
-    private ResourceDao _rdao;
+    private LogEntryRepository _al;
+    private ResourceRepository _rdao;
     private Repository _repository;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

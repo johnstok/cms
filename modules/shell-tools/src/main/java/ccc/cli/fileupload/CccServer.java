@@ -18,8 +18,8 @@ import org.apache.log4j.Logger;
 
 import ccc.cli.FileUpload;
 import ccc.migration.FileUploader;
-import ccc.persistence.FolderCommands;
 import ccc.rest.CommandFailedException;
+import ccc.rest.FolderCommands;
 import ccc.rest.Queries;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;

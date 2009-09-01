@@ -40,10 +40,10 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
-import ccc.persistence.ResourceDaoImpl;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.types.CommandType;
 import ccc.types.CreatorRoles;
 import ccc.types.Duration;
@@ -56,7 +56,7 @@ import ccc.types.ResourceType;
 
 
 /**
- * Tests for the {@link ResourceDaoImpl} class.
+ * Tests for the {@link ResourceRepositoryImpl} class.
  *
  * TODO: testQueryAllLockedResources cannot be called by non-admin?
  * TODO: Test lock(null) fails with illegal arg exception.
@@ -572,8 +572,8 @@ public class ResourceDaoImplTest
     @Override
     protected void setUp() throws Exception {
         _repository = createStrictMock(Repository.class);
-        _al = createStrictMock(AuditLog.class);
-        _rdao = new ResourceDaoImpl(_repository);
+        _al = createStrictMock(LogEntryRepository.class);
+        _rdao = new ResourceRepositoryImpl(_repository);
         _r = new Page(new ResourceName("foo"), "foo", null, _rm);
         _parent = new Folder("parent");
         _parent.add(_r);
@@ -591,8 +591,8 @@ public class ResourceDaoImplTest
 
 
     private Repository _repository;
-    private AuditLog _al;
-    private ResourceDaoImpl _rdao;
+    private LogEntryRepository _al;
+    private ResourceRepositoryImpl _rdao;
     private Resource _r;
     private Folder _parent;
 

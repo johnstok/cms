@@ -18,14 +18,15 @@ import ccc.types.DBC;
 
 
 /**
- * Implementation of {@link AuditLog}.
+ * Implementation of {@link LogEntryRepository}.
  *
  * @author Civic Computing Ltd.
  */
-public class AuditLogImpl
+public class LogEntryRepositoryImpl
     implements
-        AuditLog {
-    private static final Logger LOG = Logger.getLogger(AuditLogImpl.class);
+        LogEntryRepository {
+    private static final Logger LOG =
+        Logger.getLogger(LogEntryRepositoryImpl.class);
 
     private Repository _em;
 
@@ -33,7 +34,7 @@ public class AuditLogImpl
      * Constructor.
      * @param em The entity manager used to perform queries.
      */
-    public AuditLogImpl(final Repository em) {
+    public LogEntryRepositoryImpl(final Repository em) {
         DBC.require().notNull(em);
         _em = em;
     }

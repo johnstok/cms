@@ -59,15 +59,15 @@ import ccc.domain.File;
 import ccc.domain.PageHelper;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
-import ccc.persistence.AuditLogImpl;
-import ccc.persistence.DataManagerImpl;
-import ccc.persistence.LocalCommands;
+import ccc.persistence.LogEntryRepository;
+import ccc.persistence.LogEntryRepositoryImpl;
+import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
+import ccc.rest.LocalCommands;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -98,8 +98,8 @@ public class CommandsEJB
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
-    private AuditLog           _audit;
-    private DataManagerImpl _dm;
+    private LogEntryRepository           _audit;
+    private FileRepositoryImpl _dm;
 
     /** {@inheritDoc} */
     @Override
@@ -653,9 +653,9 @@ public class CommandsEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
-        _audit = new AuditLogImpl(_bdao);
+        _audit = new LogEntryRepositoryImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
-        _dm = new DataManagerImpl(new FsCoreData(), _bdao);
+        _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
     }
 
     /**

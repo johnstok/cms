@@ -17,15 +17,11 @@ import java.util.UUID;
 import ccc.domain.User;
 
 /**
- * TODO: Add Description for this type.
+ * API for user repositories.
  *
  * @author Civic Computing Ltd.
  */
-public interface UserManager {
-
-    /** NAME : String. */
-    String NAME = "UserManager";
-
+public interface UserRepository {
 
     /**
      * List all users.
