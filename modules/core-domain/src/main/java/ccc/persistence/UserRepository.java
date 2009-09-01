@@ -11,6 +11,7 @@
  */
 package ccc.persistence;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -74,4 +75,12 @@ public interface UserRepository {
      * @return The user corresponding to 'userId'.
      */
     User find(UUID userId);
+
+    /**
+     * Look up a user from a JAAS principal.
+     *
+     * @param p The principal.
+     * @return The corresponding CCC user.
+     */
+    User loggedInUser(final Principal p);
 }

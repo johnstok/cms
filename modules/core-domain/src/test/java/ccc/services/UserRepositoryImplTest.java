@@ -19,15 +19,15 @@ import junit.framework.TestCase;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
-import ccc.persistence.UserLookup;
+import ccc.persistence.UserRepositoryImpl;
 
 
 /**
- * Tests for the {@link UserLookup} class.
+ * Tests for the {@link UserRepositoryImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class UserLookupTest
+public class UserRepositoryImplTest
     extends
         TestCase {
 
@@ -43,7 +43,7 @@ public class UserLookupTest
         expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "foo"))
             .andReturn(null);
         replay(_repository);
-        final UserLookup ul = new UserLookup(_repository);
+        final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
 
         // ACT
         final User actual = ul.loggedInUser(p);
@@ -65,7 +65,7 @@ public class UserLookupTest
         expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "user"))
             .andReturn(u);
         replay(_repository);
-        final UserLookup ul = new UserLookup(_repository);
+        final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
 
         // ACT
         final User actual = ul.loggedInUser(p);

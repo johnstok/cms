@@ -59,10 +59,10 @@ import ccc.domain.File;
 import ccc.domain.PageHelper;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.FileRepositoryImpl;
-import ccc.persistence.UserLookup;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
@@ -654,7 +654,7 @@ public class CommandsEJB
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
         _audit = new LogEntryRepositoryImpl(_bdao);
-        _userLookup = new UserLookup(_bdao);
+        _users = new UserRepositoryImpl(_bdao);
         _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
     }
 

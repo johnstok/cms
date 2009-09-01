@@ -13,6 +13,7 @@ package ccc.persistence;
 
 import static ccc.persistence.QueryNames.*;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
@@ -78,5 +79,21 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User find(final UUID userId) {
         return _repository.find(User.class, userId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public User loggedInUser(final Principal p) {
+        if (null==p) {
+            return null;
+        }
+        try {
+            final String principalName = p.getName();
+            final User user = _repository.find(
+                USERS_WITH_USERNAME, User.class, principalName);
+            return user;
+        } catch (final IllegalStateException e) {
+            return null;
+        }
     }
 }

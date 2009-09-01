@@ -18,13 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.persistence.FileRepository;
+import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.FileRepositoryImpl;
-import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserLookup;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.StatefulReaderImpl;
@@ -58,7 +58,7 @@ public class ReaderAction
         final Repository repository =
             (Repository) req.getAttribute(SessionKeys.DAO_KEY);
 
-        final UserLookup ul = new UserLookup(repository);
+        final UserRepositoryImpl ul = new UserRepositoryImpl(repository);
         final Principal p = req.getUserPrincipal();
         req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
 

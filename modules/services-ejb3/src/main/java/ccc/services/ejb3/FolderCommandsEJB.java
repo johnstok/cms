@@ -38,7 +38,7 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.UserLookup;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.FolderCommands;
@@ -171,7 +171,7 @@ FolderCommands {
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
         _audit = new LogEntryRepositoryImpl(_bdao);
-        _userLookup = new UserLookup(_bdao);
+        _users = new UserRepositoryImpl(_bdao);
     }
 
 }
