@@ -12,9 +12,7 @@
 package ccc.search.lucene;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -47,7 +45,6 @@ public class SimpleLuceneFS
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
 
-    private final Properties _properties = new Properties();
     private final String _indexPath;
     private IndexWriter _writer;
 
@@ -55,17 +52,10 @@ public class SimpleLuceneFS
     /**
      * Constructor.
      */
-    public SimpleLuceneFS(final FileRepository dm)  {
+    public SimpleLuceneFS(final FileRepository dm,
+                          final String indexPath)  {
         super(dm);
-        try {
-            final InputStream inputStream =
-                this.getClass().getClassLoader().
-                getResourceAsStream("lucene.properties");
-            _properties.load(inputStream);
-        } catch (final IOException e) {
-           LOG.error("Loading lucene.properties failed.");
-        }
-        _indexPath = _properties.getProperty("indexPath");
+        _indexPath = indexPath;
     }
 
 

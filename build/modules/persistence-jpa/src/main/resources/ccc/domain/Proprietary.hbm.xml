@@ -119,4 +119,11 @@
         </create>
         <drop/>
     </database-object>
+    <database-object>
+        <create>
+        INSERT INTO SETTINGS (id, vn, value, name)
+        VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c04', 0, '/tmp/CCC7/lucene', 'LUCENE_INDEX_PATH')
+        </create>
+        <drop/>
+    </database-object>
 </hibernate-mapping>

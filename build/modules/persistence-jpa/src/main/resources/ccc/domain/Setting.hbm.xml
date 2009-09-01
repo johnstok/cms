@@ -54,5 +54,5 @@
         
     </class>
     
-    <query name="settingsByName">from ccc.domain.Setting s where s._name=:name</query>
+    <query name="settings-with-name">from ccc.domain.Setting s where s._name=?</query>
 </hibernate-mapping>
