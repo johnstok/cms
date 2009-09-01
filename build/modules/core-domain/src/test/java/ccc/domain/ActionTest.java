@@ -53,7 +53,7 @@ public class ActionTest
             new UnlockedException(p).toRemoteException();
 
         // ACT
-        a.fail(e);
+        a.fail(e.getFailure());
 
         // ASSERT
         assertEquals(ActionStatus.Failed, a.status());

@@ -77,7 +77,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
 
     private void fail(final Action action, final CommandFailedException e) {
-        action.fail(e);
+        action.fail(e.getFailure());
         LOG.info(
             "Failed action: "+action.id()
             +" [CommandFailedException was "

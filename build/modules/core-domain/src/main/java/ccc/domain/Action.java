@@ -15,11 +15,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.rest.CommandFailedException;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
+import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
@@ -38,6 +38,7 @@ public class Action extends Entity {
     private FailureCode         _code;
     private ActionStatus        _status = ActionStatus.Scheduled;
     private Map<String, String> _params = new HashMap<String, String>();
+    private String              _fId;
 
     /** Constructor: for persistence only. */
     protected Action() { super(); }
@@ -120,7 +121,7 @@ public class Action extends Entity {
     /**
      * Accessor.
      *
-     * @return Returns the code.
+     * @return Returns the failure code.
      */
     public FailureCode getCode() {
         return _code;
@@ -129,22 +130,32 @@ public class Action extends Entity {
     /**
      * Accessor.
      *
-     * @return Returns the params.
+     * @return Returns the failure param's.
      */
     public Map<String, String> getParams() {
         return _params;
     }
 
     /**
+     * Accessor.
+     *
+     * @return Returns the failure Id.
+     */
+    public String getFailureId() {
+        return _fId;
+    }
+
+    /**
      * Mark the action as failed.
      *
-     * @param e The exception that caused the action to fail.
+     * @param f Details of the failure.
      */
-    public void fail(final CommandFailedException e) {
+    public void fail(final Failure f) {
         checkStillScheduled();
         _status = ActionStatus.Failed;
-        _code = e.getCode();
-        _params = e.getFailure().getParams();
+        _code = f.getCode();
+        _params = f.getParams();
+        _fId = f.getExceptionId();
     }
 
 

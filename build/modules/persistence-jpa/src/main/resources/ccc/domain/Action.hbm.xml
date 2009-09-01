@@ -82,11 +82,18 @@
         <property
             name="_code"
             column="failure_code"
-            type="FailureCode" />
-            
-        <map name="_params" table="action_fparams">
+            type="FailureCode"
+            not-null="false"
+            length="255" />
+        <property
+            name="_fId"
+            column="failure_id"
+            type="string"
+            not-null="false"
+            length="36" />
+        <map name="_params" table="action_fail_params">
             <cache usage="transactional"/>
-            <key column="failure_id" not-null="true" foreign-key="FK_ACTION_FPARAM_ACTION_ID"/>
+            <key column="action_id" not-null="true" foreign-key="FK_ACTION_FPARAM_ACTION_ID"/>
             <map-key type="string" column="param_key" length="255"/>
             <element type="string" column="param_value" length="1024"  not-null="true"/>
         </map>
