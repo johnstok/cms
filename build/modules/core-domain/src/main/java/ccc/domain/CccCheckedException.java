@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import ccc.rest.CommandFailedException;
+
 
 
 /**

@@ -34,9 +34,8 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.domain.CommandFailedException;
-import ccc.domain.Failure;
 import ccc.rest.AliasNew;
+import ccc.rest.CommandFailedException;
 import ccc.rest.FolderNew;
 import ccc.rest.Queries;
 import ccc.rest.ResourceSummary;
@@ -60,6 +59,7 @@ import ccc.rest.providers.StringCollectionWriter;
 import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
 import ccc.serialization.JsonImpl;
+import ccc.types.Failure;
 import ccc.types.MimeType;
 
 

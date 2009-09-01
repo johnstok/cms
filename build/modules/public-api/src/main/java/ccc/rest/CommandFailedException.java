@@ -9,8 +9,9 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
+import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 

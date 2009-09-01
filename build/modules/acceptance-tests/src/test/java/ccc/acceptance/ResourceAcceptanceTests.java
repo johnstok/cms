@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.CommandFailedException;
+import ccc.rest.CommandFailedException;
 import ccc.rest.ResourceCacheDurationPU;
 import ccc.rest.ResourceSummary;
 import ccc.rest.ResourceTemplatePU;

@@ -30,6 +30,7 @@ import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
+import ccc.persistence.UserManagerImpl;
 import ccc.rest.UserSummary;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;

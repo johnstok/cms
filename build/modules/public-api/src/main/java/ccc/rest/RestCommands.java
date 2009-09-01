@@ -22,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import ccc.domain.CommandFailedException;
 import ccc.serialization.Json;
 import ccc.types.ID;
 

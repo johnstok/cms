@@ -28,6 +28,7 @@ import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
+import ccc.persistence.ResourceDaoImpl;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.DefaultRenderer;
 import ccc.rendering.NotFoundException;
@@ -37,7 +38,6 @@ import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.velocity.VelocityProcessor;
 import ccc.search.SearchEngine;
-import ccc.services.impl.ResourceDaoImpl;
 import ccc.types.ResourcePath;
 
 

@@ -14,7 +14,7 @@ package ccc.persistence;
 import java.util.Collection;
 import java.util.Date;
 
-import ccc.domain.CommandFailedException;
+import ccc.rest.CommandFailedException;
 import ccc.rest.ResourceSummary;
 import ccc.types.ID;
 

@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.types;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,7 +19,6 @@ import java.util.UUID;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.FailureCode;
 
 
 /**

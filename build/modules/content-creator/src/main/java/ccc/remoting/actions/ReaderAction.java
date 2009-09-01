@@ -19,15 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.persistence.AuditLog;
+import ccc.persistence.AuditLogImpl;
+import ccc.persistence.DataManagerImpl;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
+import ccc.persistence.ResourceDaoImpl;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.StatefulReaderImpl;
-import ccc.services.impl.AuditLogImpl;
-import ccc.services.impl.DataManagerImpl;
-import ccc.services.impl.ResourceDaoImpl;
 
 
 /**

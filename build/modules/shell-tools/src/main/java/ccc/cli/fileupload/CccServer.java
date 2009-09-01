@@ -17,9 +17,9 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.cli.FileUpload;
-import ccc.domain.CommandFailedException;
 import ccc.migration.FileUploader;
 import ccc.persistence.FolderCommands;
+import ccc.rest.CommandFailedException;
 import ccc.rest.Queries;
 import ccc.rest.ResourceSummary;
 import ccc.types.FailureCode;

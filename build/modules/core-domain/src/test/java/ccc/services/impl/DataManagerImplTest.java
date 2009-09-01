@@ -18,6 +18,7 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 import ccc.domain.Data;
+import ccc.persistence.DataManagerImpl;
 import ccc.persistence.Repository;
 import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;

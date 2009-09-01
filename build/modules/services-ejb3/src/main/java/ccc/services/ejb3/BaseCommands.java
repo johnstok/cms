@@ -16,10 +16,10 @@ import javax.ejb.EJBContext;
 import org.apache.log4j.Logger;
 
 import ccc.domain.CccCheckedException;
-import ccc.domain.CommandFailedException;
 import ccc.domain.User;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.CommandFailedException;
 import ccc.types.ID;
 
 

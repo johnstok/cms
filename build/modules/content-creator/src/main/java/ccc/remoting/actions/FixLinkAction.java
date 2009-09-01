@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.domain.Resource;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceDao;
-import ccc.services.impl.ResourceDaoImpl;
+import ccc.persistence.ResourceDaoImpl;
 import ccc.types.ResourceName;
 
 

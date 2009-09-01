@@ -43,6 +43,7 @@ import ccc.domain.User;
 import ccc.persistence.AuditLog;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
+import ccc.persistence.ResourceDaoImpl;
 import ccc.types.CommandType;
 import ccc.types.CreatorRoles;
 import ccc.types.Duration;
