@@ -24,6 +24,9 @@
     <typedef class="ccc.persistence.jpa.EnumUserType" name="StatusType">
         <param name="type">ccc.types.ActionStatus</param>
     </typedef>
+    <typedef class="ccc.persistence.jpa.EnumUserType" name="FailureCode">
+        <param name="type">ccc.types.FailureCode</param>
+    </typedef>
     
     <class name="ccc.domain.Action" table="actions">
         
@@ -69,16 +72,21 @@
             not-null="true"
             foreign-key="FK_ACTION_RESOURCE_SUBJECT_ID" />
         
-        <many-to-one
-            name="_failure"
-            column="failure_id"
-            not-null="false"
-            cascade="persist"
-            foreign-key="FK_ACTION_FAILURE_ID"/>
-        
         <map name="_parameters" table="action_params">
             <cache usage="transactional"/>
             <key column="action_id" not-null="true" foreign-key="FK_ACTION_PARAM_ACTION_ID"/>
+            <map-key type="string" column="param_key" length="255"/>
+            <element type="string" column="param_value" length="1024"  not-null="true"/>
+        </map>
+        
+        <property
+            name="_code"
+            column="failure_code"
+            type="FailureCode" />
+            
+        <map name="_params" table="action_fparams">
+            <cache usage="transactional"/>
+            <key column="failure_id" not-null="true" foreign-key="FK_ACTION_FPARAM_ACTION_ID"/>
             <map-key type="string" column="param_key" length="255"/>
             <element type="string" column="param_value" length="1024"  not-null="true"/>
         </map>

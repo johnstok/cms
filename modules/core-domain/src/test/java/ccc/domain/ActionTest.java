@@ -56,8 +56,7 @@ public class ActionTest
 
         // ASSERT
         assertEquals(ActionStatus.Failed, a.status());
-        assertEquals(FailureCode.UNLOCKED, a.failure().getCode());
-        assertEquals(e.getFailure().getExceptionId(), a.failure().getExceptionId());
+        assertEquals(FailureCode.UNLOCKED, a.getCode());
     }
 
     /**
