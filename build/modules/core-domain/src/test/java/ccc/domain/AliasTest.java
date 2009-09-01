@@ -105,7 +105,6 @@ public class AliasTest extends TestCase {
         final AliasDelta o = alias.createSnapshot();
 
         // ASSERT
-        assertEquals("foo", o.getTargetName());
         assertEquals(new ID(p.id().toString()), o.getTargetId());
     }
 

@@ -61,6 +61,6 @@ public class AliasNewReader
         return new AliasNew(
             json.getId(JsonKeys.PARENT_ID),
             json.getString(JsonKeys.NAME),
-            json.getId(JsonKeys.TARGET));
+            json.getId(JsonKeys.TARGET_ID));
     }
 }

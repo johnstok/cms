@@ -25,7 +25,6 @@ import ccc.types.ID;
  * @author Civic Computing Ltd.
  */
 public final class AliasDelta implements Serializable, Jsonable {
-    private String _targetName;
     private ID _targetId;
 
     @SuppressWarnings("unused") private AliasDelta() { super(); }
@@ -33,12 +32,9 @@ public final class AliasDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param targetName The alias' target's name.
      * @param targetId The alias' target's id.
      */
-    public AliasDelta(final String targetName,
-                      final ID targetId) {
-        _targetName = targetName;
+    public AliasDelta(final ID targetId) {
         _targetId = targetId;
     }
 
@@ -50,20 +46,9 @@ public final class AliasDelta implements Serializable, Jsonable {
      */
     public AliasDelta(final Json json) {
         this(
-            json.getString("target-name"), // TODO: Use JsonKeys
-            json.getId(JsonKeys.TARGET)
+            json.getId(JsonKeys.TARGET_ID)
         );
     }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the targetName.
-     */
-    public String getTargetName() {
-        return _targetName;
-    }
-
 
     /**
      * Accessor.
@@ -87,7 +72,6 @@ public final class AliasDelta implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set("target-name", getTargetName()); // TODO: Use JsonKeys
-        json.set(JsonKeys.TARGET, getTargetId());
+        json.set(JsonKeys.TARGET_ID, getTargetId());
     }
 }

@@ -44,7 +44,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
         new TriggerField<String>();
 
     private final ID _aliasId;
-    private final AliasDelta _alias;
+    private ID _targetId;
     private final ResourceSummary _targetRoot;
 
     /**
@@ -52,18 +52,17 @@ public class UpdateAliasDialog extends AbstractEditDialog {
      *
      * @param aliasId The id of the alias to edit.
      * @param aliasName The name of the alias being edited.
-     * @param delta The changes to make.
+     * @param targetName The target name.
      * @param targetRoot The root of the target resource
      */
     public UpdateAliasDialog(final ID aliasId,
-                             final AliasDelta delta,
+                             final String targetName,
                              final String aliasName,
                              final ResourceSummary targetRoot) {
         super(new IGlobalsImpl().uiConstants().updateAlias(),
               new IGlobalsImpl());
 
         _aliasId = aliasId;
-        _alias = delta;
         _targetRoot = targetRoot;
         setLayout(new FitLayout());
 
@@ -78,7 +77,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
         _targetName.setFieldLabel(constants().target());
         _targetName.setValue("");
-        _targetName.setValue(_alias.getTargetName());
+        _targetName.setValue(targetName);
         _targetName.setId("target");
         _targetName.setReadOnly(true);
         _targetName.addListener(
@@ -93,7 +92,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                             final ResourceSummaryModelData target =
                                 resourceSelect.selectedResource();
                             if (target != null) {
-                                _alias.setTargetId(target.getId());
+                                _targetId = target.getId();
                                 _targetName.setValue(target.getName());
                             }
                         }});
@@ -120,7 +119,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                new UpdateAliasAction(_aliasId, _alias){
+                new UpdateAliasAction(_aliasId, new AliasDelta(_targetId)){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
                         hide();

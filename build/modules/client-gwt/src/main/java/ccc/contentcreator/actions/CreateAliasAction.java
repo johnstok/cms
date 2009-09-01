@@ -2,9 +2,9 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 1744 $
+ * Modified by   $Author: petteri $
+ * Modified on   $Date: 2009-08-28 16:17:04 +0100 (Fri, 28 Aug 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ public class CreateAliasAction
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.PARENT_ID, _parentId);
         json.set(JsonKeys.NAME, _aliasName);
-        json.set(JsonKeys.TARGET, _targetId);
+        json.set(JsonKeys.TARGET_ID, _targetId);
         return json.toString();
     }
 }

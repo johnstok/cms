@@ -195,8 +195,8 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public AliasDelta aliasDelta(final ID aliasId) {
-        return getQueries().aliasDelta(aliasId);
+    public String aliasTargetName(final ID aliasId) {
+        return getQueries().aliasTargetName(aliasId);
     }
 
 
