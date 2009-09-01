@@ -19,7 +19,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -33,7 +33,7 @@ import ccc.types.CommandType;
 public class IncludeInMainMenuCommand {
 
     private final Repository      _repository;
-    private final AuditLog _audit;
+    private final LogEntryRepository _audit;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class IncludeInMainMenuCommand {
      * @param audit The audit logger, for logging business actions.
      */
     public IncludeInMainMenuCommand(final Repository repository,
-                                    final AuditLog audit) {
+                                    final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

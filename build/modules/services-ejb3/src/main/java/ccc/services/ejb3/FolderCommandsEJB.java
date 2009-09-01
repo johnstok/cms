@@ -36,12 +36,12 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
-import ccc.persistence.AuditLogImpl;
-import ccc.persistence.FolderCommands;
+import ccc.persistence.LogEntryRepository;
+import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
+import ccc.rest.FolderCommands;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
 import ccc.types.ResourceOrder;
@@ -63,7 +63,7 @@ FolderCommands {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
-    private AuditLog           _audit;
+    private LogEntryRepository           _audit;
 
     /** {@inheritDoc} */
     @Override
@@ -170,7 +170,7 @@ FolderCommands {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
-        _audit = new AuditLogImpl(_bdao);
+        _audit = new LogEntryRepositoryImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }
 

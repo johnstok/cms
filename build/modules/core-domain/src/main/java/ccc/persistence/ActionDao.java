@@ -18,6 +18,7 @@ import ccc.domain.Action;
 
 /**
  * API for managing actions.
+ * TODO: Does the class describe a remote API or a local repository?
  *
  * @author Civic Computing Ltd.
  */

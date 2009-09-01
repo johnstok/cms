@@ -16,7 +16,7 @@ import java.util.Date;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -31,7 +31,7 @@ class UpdateResourceCommand {
 
 
     private final Repository      _repository;
-    private final AuditLog _audit;
+    private final LogEntryRepository _audit;
 
 
     /**
@@ -40,7 +40,7 @@ class UpdateResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateResourceCommand(final Repository repository, final AuditLog audit) {
+    public UpdateResourceCommand(final Repository repository, final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
@@ -117,7 +117,7 @@ class UpdateResourceCommand {
      *
      * @return Returns the audit logger.
      */
-    protected AuditLog getAudit() {
+    protected LogEntryRepository getAudit() {
         return _audit;
     }
 

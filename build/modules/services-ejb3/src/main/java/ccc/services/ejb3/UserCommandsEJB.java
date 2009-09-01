@@ -29,12 +29,12 @@ import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
-import ccc.persistence.AuditLog;
-import ccc.persistence.AuditLogImpl;
-import ccc.persistence.UserCommands;
+import ccc.persistence.LogEntryRepository;
+import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
+import ccc.rest.UserCommands;
 import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 
@@ -56,7 +56,7 @@ UserCommands {
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
-    private AuditLog           _audit;
+    private LogEntryRepository           _audit;
 
 
 
@@ -108,7 +108,7 @@ UserCommands {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
-        _audit = new AuditLogImpl(_bdao);
+        _audit = new LogEntryRepositoryImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }
 }

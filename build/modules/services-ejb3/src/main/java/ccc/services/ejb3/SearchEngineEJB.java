@@ -35,11 +35,11 @@ import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Scheduler;
 import ccc.domain.Setting;
-import ccc.persistence.DataManagerImpl;
+import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
-import ccc.persistence.ResourceDao;
-import ccc.persistence.ResourceDaoImpl;
+import ccc.persistence.ResourceRepository;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.SettingsRepository;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
@@ -70,7 +70,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
 
-    private ResourceDao _resources;
+    private ResourceRepository _resources;
     private Repository _repo;
 
     /** Constructor. */
@@ -82,7 +82,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
      *
      * @param rdao The ResourceDao.
      */
-    public SearchEngineEJB(final ResourceDao rdao) {
+    public SearchEngineEJB(final ResourceRepository rdao) {
         _resources = rdao;
     }
 
@@ -188,7 +188,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _repo = new JpaRepository(_em);
-        _resources = new ResourceDaoImpl(_repo);
+        _resources = new ResourceRepositoryImpl(_repo);
     }
 
 
@@ -196,6 +196,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
         final SettingsRepository settings = new SettingsRepository(_repo);
         final Setting indexPath = settings.find(Setting.Name.LUCENE_INDEX_PATH);
         return new SimpleLuceneFS(
-            new DataManagerImpl(new FsCoreData(), _repo), indexPath.value());
+            new FileRepositoryImpl(new FsCoreData(), _repo), indexPath.value());
     }
 }

@@ -22,11 +22,11 @@ import ccc.types.ResourcePath;
 
 
 /**
- * DAO API for the {@link Resource} class.
+ * API for resource repositories.
  *
  * @author Civic Computing Ltd.
  */
-public interface ResourceDao {
+public interface ResourceRepository {
 
     /**
      * Find 0 or more objects using a query.

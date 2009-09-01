@@ -22,8 +22,8 @@ import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
-import ccc.persistence.FolderCommands;
 import ccc.rest.CommandFailedException;
+import ccc.rest.FolderCommands;
 import ccc.rest.Queries;
 import ccc.types.ResourcePath;
 

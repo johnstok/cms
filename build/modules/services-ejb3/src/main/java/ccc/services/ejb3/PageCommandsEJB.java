@@ -32,12 +32,12 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
-import ccc.persistence.AuditLogImpl;
-import ccc.persistence.PageCommands;
+import ccc.persistence.LogEntryRepository;
+import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.UserLookup;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
+import ccc.rest.PageCommands;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
@@ -61,7 +61,7 @@ implements
     @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
 
-    private AuditLog           _audit;
+    private LogEntryRepository           _audit;
 
     /** {@inheritDoc} */
     @Override
@@ -206,7 +206,7 @@ implements
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
-        _audit = new AuditLogImpl(_bdao);
+        _audit = new LogEntryRepositoryImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
     }
 

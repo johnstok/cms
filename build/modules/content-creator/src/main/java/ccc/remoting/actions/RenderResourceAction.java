@@ -27,8 +27,8 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.persistence.Repository;
-import ccc.persistence.ResourceDao;
-import ccc.persistence.ResourceDaoImpl;
+import ccc.persistence.ResourceRepository;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.DefaultRenderer;
 import ccc.rendering.NotFoundException;
@@ -85,7 +85,7 @@ public class RenderResourceAction
         try {
             final FileRepository data = getDataManager(request);
             final StatefulReader reader = getStatefulReader(request);
-            final ResourceDao rdao = getResourceDao(request);
+            final ResourceRepository rdao = getResourceDao(request);
             final User currentUser = getCurrentUser(request);
 
             final ResourcePath contentPath = determineResourcePath(request);
@@ -134,7 +134,7 @@ public class RenderResourceAction
      * @return The corresponding resource.
      */
     public Resource lookupResource(final ResourcePath contentPath,
-                                   final ResourceDao rdao) {
+                                   final ResourceRepository rdao) {
         final Resource rs = rdao.lookup(_rootName, contentPath);
         if (null==rs) {
             throw new NotFoundException();
@@ -194,8 +194,8 @@ public class RenderResourceAction
     }
 
 
-    private ResourceDao getResourceDao(final HttpServletRequest req) {
-        return new ResourceDaoImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
+    private ResourceRepository getResourceDao(final HttpServletRequest req) {
+        return new ResourceRepositoryImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 

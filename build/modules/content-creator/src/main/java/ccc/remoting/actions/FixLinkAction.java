@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.domain.Resource;
 import ccc.persistence.Repository;
-import ccc.persistence.ResourceDao;
-import ccc.persistence.ResourceDaoImpl;
+import ccc.persistence.ResourceRepository;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.types.ResourceName;
 
 
@@ -43,7 +43,7 @@ public class FixLinkAction
                                                                IOException {
 
         final String path = req.getPathInfo();
-        final ResourceDao rdao = getResourceDao(req);
+        final ResourceRepository rdao = getResourceDao(req);
 
         final Matcher pageMatcher = PAGE_PATTERN.matcher(path);
         final Matcher fileMatcher = FILE_PATTERN.matcher(path);
@@ -83,7 +83,7 @@ public class FixLinkAction
 
     private void redirectToPage(final HttpServletRequest req,
                                 final HttpServletResponse resp,
-                                final ResourceDao rdao,
+                                final ResourceRepository rdao,
                                 final Matcher pageMatcher)
                                           throws ServletException, IOException {
         final String legacyId = pageMatcher.group(1);
@@ -100,8 +100,8 @@ public class FixLinkAction
     }
 
 
-    private ResourceDao getResourceDao(final HttpServletRequest req) {
-        return new ResourceDaoImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
+    private ResourceRepository getResourceDao(final HttpServletRequest req) {
+        return new ResourceRepositoryImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 

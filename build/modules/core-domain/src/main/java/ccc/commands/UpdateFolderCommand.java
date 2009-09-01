@@ -23,7 +23,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.AuditLog;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -43,7 +43,7 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateFolderCommand(final Repository repository, final AuditLog audit) {
+    public UpdateFolderCommand(final Repository repository, final LogEntryRepository audit) {
         super(repository, audit);
     }
 

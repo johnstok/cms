@@ -37,11 +37,11 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ActionDao;
 import ccc.persistence.QueryNames;
-import ccc.persistence.ResourceDao;
-import ccc.persistence.ResourceDaoImpl;
+import ccc.persistence.ResourceRepository;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserLookup;
-import ccc.persistence.UserManager;
-import ccc.persistence.UserManagerImpl;
+import ccc.persistence.UserRepository;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Queries;
 import ccc.rest.dto.ActionSummary;
@@ -81,8 +81,8 @@ public final class QueriesEJB
     @PersistenceContext            private EntityManager   _em;
     @javax.annotation.Resource     private EJBContext      _context;
 
-    private UserManager _users;
-    private ResourceDao _resources;
+    private UserRepository _users;
+    private ResourceRepository _resources;
     private UserLookup  _userLookup;
     private JpaRepository     _bdao;
 
@@ -316,9 +316,9 @@ public final class QueriesEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
-        _resources = new ResourceDaoImpl(_bdao);
+        _resources = new ResourceRepositoryImpl(_bdao);
         _userLookup = new UserLookup(_bdao);
-        _users = new UserManagerImpl(_bdao);
+        _users = new UserRepositoryImpl(_bdao);
     }
 
     /** {@inheritDoc} */
