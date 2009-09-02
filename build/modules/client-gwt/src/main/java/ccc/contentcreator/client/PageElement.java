@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.ListField;
+import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 
 
@@ -43,6 +44,7 @@ public class PageElement {
     private ComboBox<BaseModelData> _combobox;
     private ListField<BaseModelData> _list;
     private ImageTriggerField _image;
+    private NumberField _number;
 
 
     /**
@@ -66,7 +68,9 @@ public class PageElement {
         /** LIST : FieldType. */
         LIST,
         /** IMAGE : FieldType. */
-        IMAGE;
+        IMAGE,
+        /** NUMBER : FieldType. */
+        NUMBER;
     }
 
     /**
@@ -282,6 +286,24 @@ public class PageElement {
      */
     public ImageTriggerField image() {
         return _image;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the number.
+     */
+    public final NumberField number() {
+        return _number;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param number The number to set.
+     */
+    public final void number(final NumberField number) {
+        _number = number;
     }
 
 }

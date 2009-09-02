@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.client;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,7 +20,6 @@ import java.util.Map;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.Decimal;
 import ccc.types.ID;
 
 import com.google.gwt.json.client.JSONArray;
@@ -119,14 +119,14 @@ public class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public Decimal getDecimal(final String key) {
+    public BigDecimal getBigDecimal(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
             throw new RuntimeException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
-        return new Decimal(value.isString().stringValue());
+        return new BigDecimal(value.isString().stringValue());
     }
 
     /** {@inheritDoc} */
@@ -237,7 +237,7 @@ public class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public void set(final String key, final Decimal value) {
+    public void set(final String key, final BigDecimal value) {
         _delegate.put(
             key,
             (null==value)
