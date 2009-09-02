@@ -26,7 +26,7 @@ import javax.ws.rs.QueryParam;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface SecurityAPI {
+public interface Security {
 
     @POST @Path("/sessions")
     public Boolean login(

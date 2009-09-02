@@ -17,7 +17,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.UserCommands;
+import ccc.rest.Users;
 import ccc.rest.dto.UserSummary;
 
 
@@ -31,7 +31,7 @@ public class UserMigration {
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _legacyQueries;
-    private final UserCommands _userCommands;
+    private final Users _userCommands;
     private final Map<Integer, UserSummary> _users =
         new HashMap<Integer, UserSummary>();
 
@@ -44,7 +44,7 @@ public class UserMigration {
      * @param commands The command API for the new system.
      */
     public UserMigration(final LegacyDBQueries legacyQueries,
-                         final UserCommands userCommands) {
+                         final Users userCommands) {
         _legacyQueries = legacyQueries;
         _userCommands = userCommands;
     }

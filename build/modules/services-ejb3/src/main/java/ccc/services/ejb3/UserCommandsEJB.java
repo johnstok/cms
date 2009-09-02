@@ -35,26 +35,26 @@ import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.UserCommands;
+import ccc.rest.Users;
 import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 import ccc.types.Username;
 
 
 /**
- * EJB implementation of the {@link UserCommands} interface.
+ * EJB implementation of the {@link Users} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=UserCommands.NAME)
+@Stateless(name=Users.NAME)
 @TransactionAttribute(REQUIRES_NEW)
-@Remote(UserCommands.class)
+@Remote(Users.class)
 @RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
 public class UserCommandsEJB
     extends
         BaseCommands
     implements
-        UserCommands {
+        Users {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;

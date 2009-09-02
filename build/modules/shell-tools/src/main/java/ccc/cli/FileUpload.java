@@ -23,7 +23,7 @@ import ccc.cli.fileupload.Server;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
 import ccc.rest.CommandFailedException;
-import ccc.rest.FolderCommands;
+import ccc.rest.Folders;
 import ccc.rest.Queries;
 import ccc.types.ResourcePath;
 
@@ -83,7 +83,7 @@ public class FileUpload extends CccApp {
             new ServiceLookup(o._appName, o._providerURL);
 
         final Queries queries = services.lookupQueries();
-        final FolderCommands folderCommands = services.lookupFolderCommands();
+        final Folders folders = services.lookupFolderCommands();
 
         login(o.getUsername(), o.getPassword());
 
@@ -93,7 +93,7 @@ public class FileUpload extends CccApp {
                 o._uploadUrl,
                 o.getUsername(),
                 o.getPassword()),
-            folderCommands,
+            folders,
             queries);
 
         recurse(

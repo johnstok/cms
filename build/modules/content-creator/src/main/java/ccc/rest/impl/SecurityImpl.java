@@ -21,7 +21,7 @@ import javax.ws.rs.core.Context;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
-import ccc.rest.SecurityAPI;
+import ccc.rest.Security;
 import ccc.serialization.JsonImpl;
 
 
@@ -33,8 +33,8 @@ import ccc.serialization.JsonImpl;
 @Path("/public")
 @Consumes("application/json")
 @Produces("application/json")
-public class Security
-    implements SecurityAPI {
+public class SecurityImpl
+    implements Security {
 
     @Context private HttpServletRequest _request;
 

@@ -37,7 +37,7 @@ import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.PageCommands;
+import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
@@ -45,18 +45,18 @@ import ccc.types.ResourceName;
 
 
 /**
- * EJB implementation of the {@link PageCommands} interface.
+ * EJB implementation of the {@link Pages} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=PageCommands.NAME)
+@Stateless(name=Pages.NAME)
 @TransactionAttribute(REQUIRES_NEW)
-@Remote(PageCommands.class)
+@Remote(Pages.class)
 @RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
 public class PageCommandsEJB extends
 BaseCommands
 implements
-    PageCommands {
+    Pages {
 
     @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;

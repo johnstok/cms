@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import ccc.cli.FileUpload;
 import ccc.migration.FileUploader;
 import ccc.rest.CommandFailedException;
-import ccc.rest.FolderCommands;
+import ccc.rest.Folders;
 import ccc.rest.Queries;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;
@@ -37,7 +37,7 @@ public class CccServer implements Server {
 
     private ResourcePath _rootPath;
     private FileUploader _uploader;
-    private FolderCommands _folderCommands;
+    private Folders _folders;
     private Queries _queries;
 
 
@@ -53,11 +53,11 @@ public class CccServer implements Server {
      */
     public CccServer(final ResourcePath rootPath,
                      final FileUploader uploader,
-                     final FolderCommands folderCommands,
+                     final Folders folders,
                      final Queries queries) {
         _rootPath = rootPath;
         _uploader = uploader;
-        _folderCommands = folderCommands;
+        _folders = folders;
         _queries = queries;
     }
 
@@ -80,7 +80,7 @@ public class CccServer implements Server {
                                                  throws CommandFailedException {
 
         try {
-            final ResourceSummary rs = _folderCommands.createFolder(
+            final ResourceSummary rs = _folders.createFolder(
                 new ID(parentFolder.toString()), name, name, publish);
             return UUID.fromString(rs.getId().toString());
         } catch (final CommandFailedException e) {

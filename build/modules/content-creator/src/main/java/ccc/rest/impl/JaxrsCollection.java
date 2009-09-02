@@ -16,10 +16,10 @@ import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.Commands;
-import ccc.rest.FolderCommands;
-import ccc.rest.PageCommands;
+import ccc.rest.Folders;
+import ccc.rest.Pages;
 import ccc.rest.Queries;
-import ccc.rest.UserCommands;
+import ccc.rest.Users;
 
 
 /**
@@ -27,16 +27,16 @@ import ccc.rest.UserCommands;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class JaxrsCollection {
+abstract class JaxrsCollection {
 
     private final Registry _reg = new JNDI();
     private final String _appName = CCCProperties.get("application.name");
 
     private Queries _queries;
     private Commands _commands;
-    private PageCommands _pageCommands;
-    private FolderCommands _folderCommands;
-    private UserCommands _userCommands;
+    private Pages _pages;
+    private Folders _folders;
+    private Users _userCommands;
 
     /**
      * Accessor.
@@ -76,11 +76,11 @@ public abstract class JaxrsCollection {
      *
      * @return Returns the commands.
      */
-    public final PageCommands getPageCommands() {
+    public final Pages getPageCommands() {
         return
-        (null==_pageCommands)
-        ? (PageCommands) _reg.get(_appName+"/"+PageCommands.NAME+"/remote")
-            : _pageCommands;
+        (null==_pages)
+        ? (Pages) _reg.get(_appName+"/"+Pages.NAME+"/remote")
+            : _pages;
     }
 
     /**
@@ -88,11 +88,11 @@ public abstract class JaxrsCollection {
      *
      * @return Returns the commands.
      */
-    public final FolderCommands getFolderCommands() {
+    public final Folders getFolderCommands() {
         return
-        (null==_folderCommands)
-        ? (FolderCommands) _reg.get(_appName+"/"+FolderCommands.NAME+"/remote")
-            : _folderCommands;
+        (null==_folders)
+        ? (Folders) _reg.get(_appName+"/"+Folders.NAME+"/remote")
+            : _folders;
     }
 
     /**
@@ -100,10 +100,10 @@ public abstract class JaxrsCollection {
      *
      * @return Returns the commands.
      */
-    public final UserCommands getUserCommands() {
+    public final Users getUserCommands() {
         return
         (null==_userCommands)
-        ? (UserCommands) _reg.get(_appName+"/"+UserCommands.NAME+"/remote")
+        ? (Users) _reg.get(_appName+"/"+Users.NAME+"/remote")
             : _userCommands;
     }
 
@@ -119,19 +119,19 @@ public abstract class JaxrsCollection {
     /**
      * Mutator.
      *
-     * @param pageCommands The commands to set.
+     * @param pages The commands to set.
      */
-    public final void setPageCommands(final PageCommands pageCommands) {
-        _pageCommands = pageCommands;
+    public final void setPageCommands(final Pages pages) {
+        _pages = pages;
     }
 
     /**
      * Mutator.
      *
-     * @param folderCommands The commands to set.
+     * @param folders The commands to set.
      */
-    public final void setFolderCommands(final FolderCommands folderCommands) {
-        _folderCommands = folderCommands;
+    public final void setFolderCommands(final Folders folders) {
+        _folders = folders;
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class JaxrsCollection {
      *
      * @param userCommands The commands to set.
      */
-    public final void setUserCommands(final UserCommands userCommands) {
+    public final void setUserCommands(final Users userCommands) {
         _userCommands = userCommands;
     }
 

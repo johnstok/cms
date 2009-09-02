@@ -18,14 +18,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.UserCommands;
+import ccc.rest.Users;
 import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
 import ccc.types.Username;
 
 
 /**
- * Implementation of the {@link UserCommands} interface.
+ * Implementation of the {@link Users} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -36,7 +36,7 @@ public class UsersImpl
     extends
         JaxrsCollection
     implements
-        UserCommands {
+        Users {
 
 
     /** {@inheritDoc} */
