@@ -10,7 +10,7 @@ import org.kohsuke.args4j.Option;
 import ccc.migration.ServiceLookup;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.FolderCommands;
+import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
 
 /**
@@ -50,17 +50,17 @@ public final class Create extends CccApp {
     private static void createSchemaStructure() {
         try {
             final Commands commands = services.lookupCommands();
-            final FolderCommands folderCommands = services.lookupFolderCommands();
+            final Folders folders = services.lookupFolderCommands();
 
-            final ResourceSummary assets = folderCommands.createRoot(ASSETS);
-            final ResourceSummary content = folderCommands.createRoot(CONTENT);
+            final ResourceSummary assets = folders.createRoot(ASSETS);
+            final ResourceSummary content = folders.createRoot(CONTENT);
 
-            folderCommands.createFolder(assets.getId(), TEMPLATES);
-            folderCommands.createFolder(assets.getId(), CSS);
-            folderCommands.createFolder(assets.getId(), IMAGES);
+            folders.createFolder(assets.getId(), TEMPLATES);
+            folders.createFolder(assets.getId(), CSS);
+            folders.createFolder(assets.getId(), IMAGES);
 
-            folderCommands.createFolder(content.getId(), FILES);
-            folderCommands.createFolder(content.getId(), IMAGES);
+            folders.createFolder(content.getId(), FILES);
+            folders.createFolder(content.getId(), IMAGES);
             commands.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI

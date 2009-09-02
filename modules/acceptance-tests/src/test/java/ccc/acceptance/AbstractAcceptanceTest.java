@@ -37,8 +37,8 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Queries;
 import ccc.rest.RestCommands;
-import ccc.rest.SecurityAPI;
-import ccc.rest.UserCommands;
+import ccc.rest.Security;
+import ccc.rest.Users;
 import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.ResourceSummary;
@@ -111,8 +111,8 @@ public abstract class AbstractAcceptanceTest
     protected HttpClient _http;
     protected Queries _queries;
     protected RestCommands _commands;
-    protected UserCommands _users;
-    protected SecurityAPI _security;
+    protected Users _users;
+    protected Security _security;
 
 
     /**
@@ -253,8 +253,8 @@ public abstract class AbstractAcceptanceTest
     private HttpClient login() {
         final HttpClient client = new HttpClient();
 
-        final SecurityAPI security =
-            ProxyFactory.create(SecurityAPI.class, _public, client);
+        final Security security =
+            ProxyFactory.create(Security.class, _public, client);
         security.login("super", "sup3r2008");
 
         return client;
@@ -268,8 +268,8 @@ public abstract class AbstractAcceptanceTest
         _http     = login();
         _queries  = ProxyFactory.create(Queries.class, _secure, _http);
         _commands = ProxyFactory.create(RestCommands.class, _secure, _http);
-        _users =    ProxyFactory.create(UserCommands.class, _secure, _http);
-        _security = ProxyFactory.create(SecurityAPI.class, _public, _http);
+        _users =    ProxyFactory.create(Users.class, _secure, _http);
+        _security = ProxyFactory.create(Security.class, _public, _http);
     }
 
 

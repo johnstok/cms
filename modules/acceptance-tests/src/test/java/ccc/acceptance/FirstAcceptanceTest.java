@@ -18,7 +18,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.SecurityAPI;
+import ccc.rest.Security;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
@@ -94,8 +94,8 @@ public class FirstAcceptanceTest
     public void testRestLogin() {
 
         // ARRANGE
-        final SecurityAPI security =
-            ProxyFactory.create(SecurityAPI.class, _public, new HttpClient());
+        final Security security =
+            ProxyFactory.create(Security.class, _public, new HttpClient());
 
         // ACT
         security.login("super", "sup3r2008");

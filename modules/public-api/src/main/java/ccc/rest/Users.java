@@ -34,7 +34,7 @@ import ccc.types.Username;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface UserCommands {
+public interface Users {
 
     /** NAME : String. */
     String NAME = "PublicUserCommands";

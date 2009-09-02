@@ -23,7 +23,7 @@ import ccc.types.ID;
  *
  * @author Civic Computing Ltd.
  */
-public interface PageCommands {
+public interface Pages {
 
     /** NAME : String. */
     String NAME = "PublicPageCommands";

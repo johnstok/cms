@@ -23,7 +23,7 @@ import ccc.types.ID;
  *
  * @author Civic Computing Ltd.
  */
-public interface FolderCommands {
+public interface Folders {
 
     /** NAME : String. */
     String NAME = "PublicFolderCommands";

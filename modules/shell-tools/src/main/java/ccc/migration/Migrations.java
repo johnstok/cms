@@ -28,10 +28,10 @@ import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.FolderCommands;
-import ccc.rest.PageCommands;
+import ccc.rest.Folders;
+import ccc.rest.Pages;
 import ccc.rest.Queries;
-import ccc.rest.UserCommands;
+import ccc.rest.Users;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserSummary;
@@ -60,9 +60,9 @@ public class Migrations {
 
     private final LegacyDBQueries _legacyQueries;
     private final Commands _commands;
-    private final PageCommands _pageCommands;
-    private final FolderCommands _folderCommands;
-    private final UserCommands _userCommands;
+    private final Pages _pages;
+    private final Folders _folders;
+    private final Users _userCommands;
     private final Queries _queries;
     private final String _linkPrefix;
 
@@ -93,9 +93,9 @@ public class Migrations {
     public Migrations(final LegacyDBQueries legacyQueries,
                       final String linkPrefix,
                       final Commands commands,
-                      final PageCommands pageCommands,
-                      final FolderCommands folderCommands,
-                      final UserCommands userCommands,
+                      final Pages pages,
+                      final Folders folders,
+                      final Users userCommands,
                       final Queries queries,
                       final FileUploader fu,
                       final boolean migrateHomepage,
@@ -104,8 +104,8 @@ public class Migrations {
         _legacyQueries = legacyQueries;
         _queries = queries;
         _commands = commands;
-        _pageCommands = pageCommands;
-        _folderCommands = folderCommands;
+        _pages = pages;
+        _folders = folders;
         _userCommands = userCommands;
         _linkPrefix = linkPrefix;
         _migrateHomepage = migrateHomepage;
@@ -158,7 +158,7 @@ public class Migrations {
                 _queries.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
                 _commands.lock(f.getId());
-                _folderCommands.updateFolder(f.getId(),
+                _folders.updateFolder(f.getId(),
                     f.getSortOrder(),
                     hp.getId(),
                     null);
@@ -220,7 +220,7 @@ public class Migrations {
             final LogEntryBean le = logEntryForVersion(
                 r.contentId(), r.legacyVersion(), "CREATED FOLDER");
 
-            final ResourceSummary rs = _folderCommands.createFolder(
+            final ResourceSummary rs = _folders.createFolder(
                     parentFolderId,
                     r.name(),
                     r.title(),
@@ -377,7 +377,7 @@ public class Migrations {
             isMajorEdit =
                 _legacyQueries.selectIsMajorEdit(r.contentId(), version);
         }
-        _pageCommands.updatePage(
+        _pages.updatePage(
             rs.getId(),
             d,
             userComment,
@@ -401,7 +401,7 @@ public class Migrations {
 
         ResourceSummary rs;
         try {
-            rs = _pageCommands.createPage(
+            rs = _pages.createPage(
                 parentFolderId,
                 delta,
                 r.name(),
@@ -414,7 +414,7 @@ public class Migrations {
                 true);
         } catch (final CommandFailedException e) {
             if (FailureCode.EXISTS ==e.getCode()) {
-                rs = _pageCommands.createPage(
+                rs = _pages.createPage(
                     parentFolderId,
                     delta,
                     r.name()+"1",

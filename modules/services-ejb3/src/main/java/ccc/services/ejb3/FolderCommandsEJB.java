@@ -41,25 +41,25 @@ import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.FolderCommands;
+import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ID;
 import ccc.types.ResourceOrder;
 
 
 /**
- * EJB implementation of the {@link FolderCommands} interface.
+ * EJB implementation of the {@link Folders} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=FolderCommands.NAME)
+@Stateless(name=Folders.NAME)
 @TransactionAttribute(REQUIRES_NEW)
-@Remote(FolderCommands.class)
+@Remote(Folders.class)
 @RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
 public class FolderCommandsEJB  extends
 BaseCommands
 implements
-FolderCommands {
+Folders {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
