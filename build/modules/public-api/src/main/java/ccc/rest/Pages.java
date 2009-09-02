@@ -23,7 +23,7 @@ import ccc.types.ID;
  *
  * @author Civic Computing Ltd.
  */
-public interface Pages {
+public interface Pages extends PagesBasic {
 
     /** NAME : String. */
     String NAME = "PublicPageCommands";
@@ -37,21 +37,6 @@ public interface Pages {
      * @throws CommandFailedException If the method fails.
      */
     void clearWorkingCopy(ID pageId) throws CommandFailedException;
-
-    /**
-     * Update the specified page on the server.
-     *
-     * @param pageId The id of the page to update.
-     * @param delta The changes to apply.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updatePage(ID pageId,
-                    PageDelta delta,
-                    String comment,
-                    boolean isMajorEdit) throws CommandFailedException;
 
 
     /**
@@ -73,16 +58,6 @@ public interface Pages {
                     ID actorId,
                     Date happenedOn) throws CommandFailedException;
 
-    /**
-     * Update the working copy of the specified page.
-     *
-     * @param pageId The id of the page to update.
-     * @param delta The changes to apply.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateWorkingCopy(ID pageId, PageDelta delta)
-    throws CommandFailedException;
 
     /**
      * Creates a new page.
@@ -112,32 +87,4 @@ public interface Pages {
                                Date happenedOn,
                                String comment,
                                boolean majorChange) throws CommandFailedException;
-
-
-    /**
-     * Creates a new page.
-     *
-     * @param parentId The folder in which the page will be created.
-     * @param delta The page's details.
-     * @param name The page's name.
-     * @param publish True if the folder should be published, false otherwise.
-     * @param templateId The page's template.
-     * @param title The page's title.
-     * @param comment The comment of the page creation.
-     * @param majorChange The boolean for major change.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new page.
-     */
-    ResourceSummary createPage(ID parentId,
-                               PageDelta delta,
-                               String name,
-                               final boolean publish,
-                               ID templateId,
-                               String title,
-                               String comment,
-                               boolean majorChange) throws CommandFailedException;
-
-
 }

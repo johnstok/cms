@@ -16,9 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -56,7 +54,6 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.File;
-import ccc.domain.PageHelper;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepositoryImpl;
@@ -75,7 +72,6 @@ import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ID;
-import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 
 
@@ -396,14 +392,6 @@ public class CommandsEJB
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
-    public List<String> validateFields(final Set<Paragraph> delta,
-                                       final String definition) {
-        return new PageHelper().validateFields(delta, definition);
     }
 
     /** {@inheritDoc} */

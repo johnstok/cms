@@ -30,7 +30,7 @@ import ccc.types.ID;
 
 
 /**
- * TODO: Add a description for this type.
+ * Basic API for manipulating folders.
  *
  * @author Civic Computing Ltd.
  */

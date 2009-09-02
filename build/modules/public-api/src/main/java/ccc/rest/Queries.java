@@ -24,7 +24,6 @@ import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.LogEntrySummary;
-import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
@@ -181,15 +180,6 @@ public interface Queries {
      */
     @GET @Path("/aliases/{id}/targetname") @NoCache
     String aliasTargetName(@PathParam("id") ID aliasId);
-
-    /**
-     * Retrieve the delta for a page.
-     *
-     * @param pageId The page's id.
-     * @return The corresponding delta.
-     */
-    @GET @Path("/pages/{id}/delta") @NoCache
-    PageDelta pageDelta(@PathParam("id") ID pageId);
 
     /**
      * Retrieve the delta for a file.

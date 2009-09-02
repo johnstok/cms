@@ -13,9 +13,7 @@ package ccc.rest;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -23,7 +21,6 @@ import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ID;
-import ccc.types.Paragraph;
 
 
 /**
@@ -268,16 +265,6 @@ public interface Commands {
                         Map<String, String> metadata)
     throws CommandFailedException;
 
-
-    /**
-     * Validate a set of paragraphs against a given definition.
-     *
-     * @param delta The paragraphs.
-     * @param definition The xml definition, as a string.
-     * @return A list of errors, as strings.
-     */
-    List<String> validateFields(final Set<Paragraph> delta,
-                                final String definition);
 
     /**
      * Create a new alias in CCC.

@@ -14,10 +14,7 @@ package ccc.rest.impl;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -33,8 +30,6 @@ import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.LogEntrySummary;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageNew;
 import ccc.rest.dto.ResourceCacheDurationPU;
 import ccc.rest.dto.ResourceRevisionPU;
 import ccc.rest.dto.ResourceSummary;
@@ -43,12 +38,10 @@ import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
 import ccc.rest.dto.TemplateSummary;
 import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 import ccc.types.ID;
-import ccc.types.Paragraph;
 
 
 /**
@@ -152,13 +145,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta pageDelta(final ID pageId) {
-        return getQueries().pageDelta(pageId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public ResourceSummary resource(final ID resourceId) {
         return getQueries().resource(resourceId);
     }
@@ -230,21 +216,6 @@ public class RestApi
             template.getTitle(),
             template.getDescription(),
             template.getName());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary createPage(final PageNew page) throws CommandFailedException {
-        return getPageCommands().createPage(
-            page.getParentId(),
-            page.getDelta(),
-            page.getName(),
-            false,
-            page.getTemplateId(),
-            page.getTitle(),
-            page.getComment(),
-            page.getMajorChange());
     }
 
 
@@ -343,25 +314,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public List<String> validateFields(final Json json) {
-        final String def = json.getString("definition");
-        final Set<Paragraph> p = new HashSet<Paragraph>();
-        for (final Json j : json.getCollection("paragraphs")) {
-            p.add(new Paragraph(j));
-        }
-        return getCommands().validateFields(p, def);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateWorkingCopy(final ID pageId, final PageDelta delta) throws CommandFailedException {
-        getPageCommands().updateWorkingCopy(pageId, delta);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void clearWorkingCopy(final ID pageId) throws CommandFailedException {
         getPageCommands().clearWorkingCopy(pageId);
     }
@@ -400,16 +352,6 @@ public class RestApi
     @Override
     public void updateAlias(final ID aliasId, final AliasDelta delta) throws CommandFailedException {
         getCommands().updateAlias(aliasId, delta);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updatePage(final ID pageId, final Json json) throws CommandFailedException {
-        final boolean majorEdit = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
-        final String comment = json.getString(JsonKeys.COMMENT);
-        final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
-        getPageCommands().updatePage(pageId, delta, comment, majorEdit);
     }
 
 

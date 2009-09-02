@@ -30,7 +30,6 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
 import ccc.domain.File;
-import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -46,7 +45,6 @@ import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.LogEntrySummary;
-import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
@@ -150,13 +148,6 @@ public final class QueriesEJB
             return alias.target().name().toString();
         }
         return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PageDelta pageDelta(final ID pageId) {
-        return
-            deltaPage(_resources.find(Page.class, toUUID(pageId)));
     }
 
     /** {@inheritDoc} */

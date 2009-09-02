@@ -18,7 +18,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.Folders;
 import ccc.rest.FoldersBasic;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderNew;
@@ -27,7 +26,7 @@ import ccc.types.ID;
 
 
 /**
- * Implementation of the {@link Folders} interface.
+ * Implementation of the {@link FoldersBasic} interface.
  *
  * @author Civic Computing Ltd.
  */
