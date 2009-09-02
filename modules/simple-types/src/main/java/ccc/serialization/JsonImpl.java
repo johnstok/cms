@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -29,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.types.DBC;
-import ccc.types.Decimal;
 import ccc.types.ID;
 
 
@@ -213,7 +213,7 @@ public class JsonImpl implements Serializable, Json {
 
 
     /** {@inheritDoc} */
-    public void set(final String key, final Decimal value) {
+    public void set(final String key, final BigDecimal value) {
         try {
             // Javascript doesn't support decimals - store as a string.
             _detail.put(key, (null==value) ? NULL : value.toString());
@@ -322,12 +322,12 @@ public class JsonImpl implements Serializable, Json {
     }
 
     /** {@inheritDoc} */
-    public Decimal getDecimal(final String key) {
+    public BigDecimal getBigDecimal(final String key) {
         final String s = getString(key);
         if (null==s) {
             return null;
         }
-        return new Decimal(s);
+        return new BigDecimal(s);
     }
 
     /** {@inheritDoc} */

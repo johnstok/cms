@@ -13,16 +13,13 @@ package ccc.types;
 
 import static org.easymock.EasyMock.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ccc.serialization.Json;
-import ccc.types.Decimal;
-import ccc.types.Paragraph;
-import ccc.types.ParagraphType;
-
 import junit.framework.TestCase;
+import ccc.serialization.Json;
 
 
 /**
@@ -67,7 +64,7 @@ public final class ParagraphTest extends TestCase {
         _json.set("text", "bar");
         _json.set("bool", (Boolean) null);
         _json.set("date", (Date) null);
-        _json.set("number", (Decimal) null);
+        _json.set("number", (BigDecimal) null);
         replay(_json);
 
         // ACT
@@ -84,14 +81,14 @@ public final class ParagraphTest extends TestCase {
 
         // ARRANGE
         final Paragraph p =
-            Paragraph.fromNumber("foo", new Decimal("123.456"));
+            Paragraph.fromNumber("foo", new BigDecimal("123.456"));
 
         _json.set("name", "foo");
         _json.set("type", "NUMBER");
         _json.set("text", (String) null);
         _json.set("bool", (Boolean) null);
         _json.set("date", (Date) null);
-        _json.set(eq("number"), isA(Decimal.class));
+        _json.set(eq("number"), isA(BigDecimal.class));
         replay(_json);
 
         // ACT
@@ -133,7 +130,7 @@ public final class ParagraphTest extends TestCase {
         // ARRANGE
         expect(_json.getString("name")).andReturn("bar");
         expect(_json.getString("type")).andReturn("NUMBER");
-        expect(_json.getDecimal("number")).andReturn(new Decimal("123.456"));
+        expect(_json.getBigDecimal("number")).andReturn(new BigDecimal("123.456"));
         replay(_json);
 
         // ACT
@@ -238,7 +235,7 @@ public final class ParagraphTest extends TestCase {
     public void testBigDecimalConstructor() {
 
         // ACT
-        final Decimal bd = new Decimal("-1234.54");
+        final BigDecimal bd = new BigDecimal("-1234.54");
         final Paragraph p = Paragraph.fromNumber("foo", bd);
 
         // ASSERT

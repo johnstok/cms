@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.client;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +40,7 @@ import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.ListField;
+import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -121,6 +123,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         populateList(c, para);
                     } else if (FieldType.IMAGE == c.fieldType()) {
                         populateImage(c, para);
+                    } else if (FieldType.NUMBER == c.fieldType()) {
+                        final NumberField f = c.number();
+                        f.setValue(para.number());
                     }
                 }
             }
@@ -259,6 +264,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 p = extractList(c);
             } else if (FieldType.IMAGE == c.fieldType()) {
                 p = extractImage(c);
+            } else if (FieldType.NUMBER == c.fieldType()) {
+                p = extractNumber(c);
             }
             if (p != null) {
                 paragraphs.add(p);
@@ -266,6 +273,15 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         }
     }
 
+    private Paragraph extractNumber(final PageElement c) {
+        final NumberField f = c.number();
+        if (null==f.getValue()) {
+            return null;
+        }
+        final Paragraph p =
+            Paragraph.fromNumber(c.id(), (BigDecimal) f.getValue());
+        return p;
+    }
 
     private Paragraph extractImage(final PageElement c) {
         final ImageTriggerField image = c.image();
@@ -426,8 +442,24 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 addElementForList(name, field);
             } else if ("image".equals(type)) {
                 addElementForImage(name);
+            } else if ("number".equals(type)) {
+                addElementForNumber(name);
             }
         }
+    }
+
+    private void addElementForNumber(final String name) {
+        final NumberField nf = new NumberField();
+        nf.setPropertyEditor(new BigDecimalPropertyEditor(BigDecimal.class));
+        nf.setFieldLabel(createLabel(name));
+        nf.setData("type", FieldType.NUMBER);
+        nf.setId(name);
+
+        final PageElement pe = new PageElement(name);
+        pe.fieldType(FieldType.NUMBER);
+        pe.number(nf);
+        add(nf, new FormData("95%"));
+        _pageElements.add(pe);
     }
 
     /**

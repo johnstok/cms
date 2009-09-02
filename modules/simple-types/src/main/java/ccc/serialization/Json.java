@@ -12,11 +12,11 @@
 
 package ccc.serialization;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.types.Decimal;
 import ccc.types.ID;
 
 
@@ -89,7 +89,7 @@ public interface Json {
      * @param key The key.
      * @param value The value, as a decimal.
      */
-    void set(final String key, final Decimal value);
+    void set(final String key, final BigDecimal value);
 
     /**
      * Mutator.
@@ -161,7 +161,7 @@ public interface Json {
      * @param key The key for the value.
      * @return The value, as a decimal.
      */
-    Decimal getDecimal(final String key);
+    BigDecimal getBigDecimal(final String key);
 
     /**
      * Accessor.

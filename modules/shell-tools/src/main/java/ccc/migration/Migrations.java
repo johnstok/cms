@@ -11,6 +11,7 @@
  */
 package ccc.migration;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,7 +37,6 @@ import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserSummary;
-import ccc.types.Decimal;
 import ccc.types.FailureCode;
 import ccc.types.ID;
 import ccc.types.Paragraph;
@@ -520,7 +520,7 @@ public class Migrations {
 
                 case NUMBER:
                     paragraphDeltas.add(
-                        Paragraph.fromNumber(name, new Decimal(value)));
+                        Paragraph.fromNumber(name, new BigDecimal(value)));
                     break;
 
                 default:

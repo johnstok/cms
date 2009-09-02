@@ -14,6 +14,7 @@ package ccc.types;
 import static ccc.types.DBC.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public final class Paragraph implements Serializable, Jsonable {
     private Boolean       _boolean;
     private Date          _date;
     private String        _name;
-    private Decimal       _number;
+    private BigDecimal    _number;
 
     private Paragraph() { super(); }
 
@@ -66,7 +67,7 @@ public final class Paragraph implements Serializable, Jsonable {
                 break;
 
             case NUMBER:
-                _number = json.getDecimal("number");
+                _number = json.getBigDecimal("number");
                 break;
 
             default:
@@ -106,7 +107,7 @@ public final class Paragraph implements Serializable, Jsonable {
         _type = ParagraphType.DATE;
     }
 
-    private void number(final Decimal number) {
+    private void number(final BigDecimal number) {
         require().notNull(number);
         _number = number;
         _type = ParagraphType.NUMBER;
@@ -170,7 +171,7 @@ public final class Paragraph implements Serializable, Jsonable {
         final Paragraph p = new Paragraph();
 
         p.name(name);
-        p.number(new Decimal(String.valueOf(number)));
+        p.number(new BigDecimal(number));
 
         return p;
     }
@@ -186,7 +187,7 @@ public final class Paragraph implements Serializable, Jsonable {
         final Paragraph p = new Paragraph();
 
         p.name(name);
-        p.number(new Decimal(String.valueOf(number)));
+        p.number(new BigDecimal(String.valueOf(number)));
 
         return p;
     }
@@ -199,7 +200,7 @@ public final class Paragraph implements Serializable, Jsonable {
      * @return A paragraph with numerical content.
      */
     public static Paragraph fromNumber(final String name,
-                                       final Decimal number) {
+                                       final BigDecimal number) {
         final Paragraph p = new Paragraph();
 
         p.name(name);
@@ -230,7 +231,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The numerical representation of this paragraph.
      */
-    public Decimal number() {
+    public BigDecimal number() {
         return _number;
     }
 
@@ -341,7 +342,7 @@ public final class Paragraph implements Serializable, Jsonable {
         json.set("bool", bool());
         json.set("date", date());
         json.set("number",
-            (null==_number) ? null : new Decimal(_number.toString()));
+            (null==_number) ? null : _number);
 
     }
 

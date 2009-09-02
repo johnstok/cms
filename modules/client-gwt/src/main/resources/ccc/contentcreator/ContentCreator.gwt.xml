@@ -4,6 +4,7 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name="com.googlecode.gwt.math.Math" />
 	<inherits name='com.extjs.gxt.ui.GXT' />
 	<inherits name="ccc.API" />
 	<inherits name="ccc.Types" />

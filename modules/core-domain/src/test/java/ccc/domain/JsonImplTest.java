@@ -13,6 +13,7 @@ package ccc.domain;
 
 import static ccc.commons.Exceptions.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,7 +23,6 @@ import ccc.serialization.InvalidSnapshotException;
 import ccc.serialization.Json;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.Jsonable;
-import ccc.types.Decimal;
 
 
 /**
@@ -112,7 +112,7 @@ public class JsonImplTest
         assertNull(s.getInt("null"));
         assertNull(s.getBool("null"));
         assertNull(s.getDate("null"));
-        assertNull(s.getDecimal("null"));
+        assertNull(s.getBigDecimal("null"));
         assertNull(s.getId("null"));
         assertNull(s.getJson("null"));
     }
@@ -173,7 +173,7 @@ public class JsonImplTest
 
         // ACT
         try {
-            s.getDecimal("missing");
+            s.getBigDecimal("missing");
             fail();
 
         // ASSERT
@@ -257,7 +257,7 @@ public class JsonImplTest
         final JsonImpl s = new JsonImpl();
 
         // ACT
-        s.set("key", new Decimal("10"));
+        s.set("key", new BigDecimal("10"));
 
         // ASSERT
         assertEquals("{\"key\":\"10\"}", s.getDetail());
