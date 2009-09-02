@@ -12,7 +12,6 @@
 package ccc.rest;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -25,8 +24,6 @@ import javax.ws.rs.Produces;
 import ccc.rest.dto.ActionNew;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasNew;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageNew;
 import ccc.rest.dto.ResourceCacheDurationPU;
 import ccc.rest.dto.ResourceRevisionPU;
 import ccc.rest.dto.ResourceSummary;
@@ -57,9 +54,6 @@ public interface RestCommands {
 
     @POST @Path("/templates")
     ResourceSummary createTemplate(TemplateNew template) throws CommandFailedException;
-
-    @POST @Path("/pages")
-    ResourceSummary createPage(PageNew page) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -97,9 +91,6 @@ public interface RestCommands {
         @PathParam("id") ID resourceId,
         Collection<String> roles) throws CommandFailedException;
 
-    @POST @Path("/page-validator")
-    List<String> validateFields(Json json);
-
     @POST @Path("/resources/{id}/exclude-mm")
     void excludeFromMainMenu(
         @PathParam("id") ID resourceId) throws CommandFailedException;
@@ -115,11 +106,6 @@ public interface RestCommands {
     void updateMetadata(
         @PathParam("id") ID resourceId,
         Json json) throws CommandFailedException;
-
-    @POST @Path("/pages/{id}/wc")
-    void updateWorkingCopy(
-        @PathParam("id") ID pageId,
-        PageDelta delta) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-clear")
     void clearWorkingCopy(
@@ -146,11 +132,6 @@ public interface RestCommands {
     void updateAlias(
         @PathParam("id") ID aliasId,
         AliasDelta delta) throws CommandFailedException;
-
-    @POST @Path("/pages/{id}")
-    void updatePage(
-        @PathParam("id") ID pageId,
-        Json json) throws CommandFailedException;
 
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(

@@ -1,0 +1,107 @@
+/*-----------------------------------------------------------------------------
+ * Copyright © 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: see the subversion log.
+ *-----------------------------------------------------------------------------
+ */
+
+package ccc.rest;
+
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+
+import org.jboss.resteasy.annotations.cache.NoCache;
+
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.PageNew;
+import ccc.rest.dto.ResourceSummary;
+import ccc.serialization.Json;
+import ccc.types.ID;
+
+
+/**
+ * Basic API for manipulating pages.
+ *
+ * @author Civic Computing Ltd.
+ */
+@Consumes("application/json")
+@Produces("application/json")
+public interface PagesBasic {
+
+    /**
+     * Validate a set of paragraphs against a given definition.
+     *
+     * @param json The paragraphs to validate.
+     *
+     * @return A list of errors, as strings.
+     */
+    @POST
+    @Path("/page-validator")
+    List<String> validateFields(Json json);
+
+
+    /**
+     * Retrieve the delta for a page.
+     *
+     * @param pageId The page's id.
+     * @return The corresponding delta.
+     */
+    @GET
+    @Path("/pages/{id}/delta")
+    @NoCache
+    PageDelta pageDelta(@PathParam("id") ID pageId);
+
+
+    /**
+     * Update the specified page on the server.
+     *
+     * @param pageId The id of the page to update.
+     * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    @POST
+    @Path("/pages/{id}")
+    void updatePage(@PathParam("id") ID pageId, Json delta)
+    throws CommandFailedException;
+
+
+    /**
+     * Update the working copy of the specified page.
+     *
+     * @param pageId The id of the page to update.
+     * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    @POST
+    @Path("/pages/{id}/wc")
+    void updateWorkingCopy(@PathParam("id") ID pageId, PageDelta delta)
+    throws CommandFailedException;
+
+
+    /**
+     * Creates a new page.
+     *
+     * @param page Details of the new page to create.
+     *
+     * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new page.
+     */
+    @POST
+    @Path("/pages")
+    ResourceSummary createPage(PageNew page) throws CommandFailedException;
+
+}
