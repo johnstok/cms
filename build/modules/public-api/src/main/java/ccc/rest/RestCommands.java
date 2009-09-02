@@ -25,8 +25,6 @@ import javax.ws.rs.Produces;
 import ccc.rest.dto.ActionNew;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasNew;
-import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageNew;
 import ccc.rest.dto.ResourceCacheDurationPU;
@@ -62,9 +60,6 @@ public interface RestCommands {
 
     @POST @Path("/pages")
     ResourceSummary createPage(PageNew page) throws CommandFailedException;
-
-    @POST @Path("/folders")
-    ResourceSummary createFolder(FolderNew folder) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -156,11 +151,6 @@ public interface RestCommands {
     void updatePage(
         @PathParam("id") ID pageId,
         Json json) throws CommandFailedException;
-
-    @POST @Path("/folders/{id}")
-    void updateFolder(
-        @PathParam("id") ID folderId,
-        FolderDelta delta) throws CommandFailedException;
 
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(

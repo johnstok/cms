@@ -11,6 +11,7 @@ import ccc.migration.ServiceLookup;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
 import ccc.rest.Folders;
+import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.ResourceSummary;
 
 /**
@@ -55,12 +56,12 @@ public final class Create extends CccApp {
             final ResourceSummary assets = folders.createRoot(ASSETS);
             final ResourceSummary content = folders.createRoot(CONTENT);
 
-            folders.createFolder(assets.getId(), TEMPLATES);
-            folders.createFolder(assets.getId(), CSS);
-            folders.createFolder(assets.getId(), IMAGES);
+            folders.createFolder(new FolderNew(assets.getId(), TEMPLATES));
+            folders.createFolder(new FolderNew(assets.getId(), CSS));
+            folders.createFolder(new FolderNew(assets.getId(), IMAGES));
 
-            folders.createFolder(content.getId(), FILES);
-            folders.createFolder(content.getId(), IMAGES);
+            folders.createFolder(new FolderNew(content.getId(), FILES));
+            folders.createFolder(new FolderNew(content.getId(), IMAGES));
             commands.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI

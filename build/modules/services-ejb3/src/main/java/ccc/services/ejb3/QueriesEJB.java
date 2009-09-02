@@ -30,7 +30,6 @@ import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
 import ccc.domain.File;
-import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Template;
@@ -55,7 +54,6 @@ import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
-import ccc.types.ResourceOrder;
 import ccc.types.ResourcePath;
 
 
@@ -98,34 +96,6 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final ID folderId) {
-        final Folder f =
-            _resources.find(Folder.class, toUUID(folderId));
-        return mapResources(f != null ? f.entries() : new ArrayList<Resource>());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> getChildrenManualOrder(final ID folderId) {
-        final Folder f =
-            _resources.find(Folder.class, toUUID(folderId));
-        if (f != null) {
-            f.sortOrder(ResourceOrder.MANUAL);
-            return mapResources(f.entries());
-        }
-        return mapResources(new ArrayList<Resource>());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
-        final Folder f =
-            _resources.find(Folder.class, toUUID(folderId));
-        return mapResources(f != null ? f.folders() : new ArrayList<Folder>());
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<LogEntrySummary> history(final ID resourceId) {
         return mapLogEntries(_resources.history(toUUID(resourceId)));
     }
@@ -144,24 +114,9 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public boolean nameExistsInFolder(final ID folderId, final String name) {
-        // TODO handle null folderId? (for root folders)
-        return
-        _resources.find(Folder.class, toUUID(folderId))
-                  .hasEntryWithName(new ResourceName(name));
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ResourceSummary resource(final ID resourceId) {
         return
             mapResource(_resources.find(Resource.class, toUUID(resourceId)));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> roots() {
-        return mapResources(_resources.list(QueryNames.ROOTS, Folder.class));
     }
 
     /** {@inheritDoc} */

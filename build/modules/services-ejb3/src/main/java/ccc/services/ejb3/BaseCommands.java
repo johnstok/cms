@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.CccCheckedException;
 import ccc.domain.User;
+import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
@@ -28,12 +29,15 @@ import ccc.types.ID;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class BaseCommands extends ModelTranslation{
+public abstract class BaseCommands
+    extends
+        ModelTranslation {
 
-
-    UserRepository           _users;
-    JpaRepository            _bdao;
     static Logger LOG = Logger.getLogger(BaseCommands.class);
+
+    UserRepository     _users;
+    JpaRepository      _bdao;
+    ResourceRepository _resources;
 
     protected User userForId(final ID userId) {
         final User u = _bdao.find(User.class, toUUID(userId));

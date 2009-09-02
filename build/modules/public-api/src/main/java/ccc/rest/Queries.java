@@ -42,13 +42,6 @@ public interface Queries {
     /** NAME : String. */
     String NAME = "PublicQueries";
 
-    /**
-     * List the root folders available.
-     *
-     * @return A collection of resource summaries - one for each root folder.
-     */
-    @GET @Path("/roots") @NoCache
-    Collection<ResourceSummary> roots();
 
     /**
      * Get the resource located at the specified path.
@@ -68,33 +61,6 @@ public interface Queries {
     Collection<TemplateSummary> templates();
 
     /**
-     * List all of the folders that are children of the specified parent folder.
-     *
-     * @param folderId The id of the folder.
-     * @return The list of child folders.
-     */
-    @GET @Path("/folders/{id}/folder-children") @NoCache
-    Collection<ResourceSummary> getFolderChildren(@PathParam("id") ID folderId);
-
-    /**
-     * List all of the children of the specified folder.
-     *
-     * @param folderId The folder.
-     * @return The folder's of children.
-     */
-    @GET @Path("/folders/{id}/children") @NoCache
-    Collection<ResourceSummary> getChildren(@PathParam("id") ID folderId);
-
-    /**
-     * List all of the children of the specified folder in manual order.
-     *
-     * @param folderId The folder.
-     * @return The folder's of children.
-     */
-    @GET @Path("/folders/{id}/children-manual-order") @NoCache
-    Collection<ResourceSummary> getChildrenManualOrder(@PathParam("id") ID folderId);
-
-    /**
      * List all content images.
      *
      * @return The list of images.
@@ -110,18 +76,6 @@ public interface Queries {
      */
     @GET @Path("/resources/{id}/path") @NoCache
     String getAbsolutePath(@PathParam("id") ID resourceId);
-
-    /**
-     * Query whether given folder has a resource with given name.
-     *
-     * @param folderId The id of the folder to check.
-     * @param name The name of the resource.
-     * @return Returns true in case folder has a resource with given name,
-     *  false otherwise.
-     */
-    @GET @Path("/folders/{id}/{name}/exists") @NoCache
-    boolean nameExistsInFolder(@PathParam("id") final ID folderId,
-                               @PathParam("name") final String name);
 
     /**
      * Returns true if template name exists in the template folder.

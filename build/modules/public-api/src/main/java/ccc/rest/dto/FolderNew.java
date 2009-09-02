@@ -11,6 +11,8 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
+
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
@@ -22,7 +24,7 @@ import ccc.types.ID;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderNew implements Jsonable {
+public class FolderNew implements Jsonable, Serializable {
 
     private final ID     _parentId;
     private final String _name;

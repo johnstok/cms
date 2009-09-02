@@ -17,35 +17,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import ccc.rest.Queries;
+import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.impl.RestApi;
 
 
 /**
- * Tests for the {@link RestApi} class.
+ * Tests for the {@link FoldersImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class RestApiTest
+public class FoldersImplTest
     extends
         TestCase {
 
     /**
      * Test.
      */
-    public void testRootsMethodCallsQueriesService() {
+    public void testRootsMethodCallsFoldersService() {
 
         // ARRANGE
-        expect(_queries.roots()).andReturn(_rs);
-        replay(_queries);
+        expect(_folders.roots()).andReturn(_rs);
+        replay(_folders);
 
         // ACT
         final Collection<ResourceSummary> actual = _unit.roots();
 
         // ASSERT
         assertEquals(_rs, actual);
-        verify(_queries);
+        verify(_folders);
     }
 
 
@@ -53,19 +52,19 @@ public class RestApiTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _queries = createStrictMock(Queries.class);
-        _unit = new RestApi();
-        _unit.setQueries(_queries);
+        _folders = createStrictMock(Folders.class);
+        _unit = new FoldersImpl();
+        _unit.setFolderCommands(_folders);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _queries = null;
+        _folders = null;
         _unit = null;
     }
 
-    private Queries _queries;
-    private RestApi _unit;
+    private Folders _folders;
+    private FoldersImpl _unit;
     private Collection<ResourceSummary> _rs = new ArrayList<ResourceSummary>();
 }

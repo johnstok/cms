@@ -32,8 +32,6 @@ import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
-import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.LogEntrySummary;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageNew;
@@ -112,26 +110,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final ID folderId) {
-        return getQueries().getChildren(folderId);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> getChildrenManualOrder(final ID folderId) {
-        return getQueries().getChildrenManualOrder(folderId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
-        return getQueries().getFolderChildren(folderId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<LogEntrySummary> history(final ID resourceId) {
         return getQueries().history(resourceId);
     }
@@ -174,13 +152,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public boolean nameExistsInFolder(final ID folderId, final String name) {
-        return getQueries().nameExistsInFolder(folderId, name);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public PageDelta pageDelta(final ID pageId) {
         return getQueries().pageDelta(pageId);
     }
@@ -211,13 +182,6 @@ public class RestApi
     @Override
     public Collection<String> roles(final ID resourceId) {
         return getQueries().roles(resourceId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> roots() {
-        return getQueries().roots();
     }
 
 
@@ -281,13 +245,6 @@ public class RestApi
             page.getTitle(),
             page.getComment(),
             page.getMajorChange());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary createFolder(final FolderNew folder) throws CommandFailedException {
-        return getFolderCommands().createFolder(folder.getParentId(), folder.getName());
     }
 
 
@@ -453,17 +410,6 @@ public class RestApi
         final String comment = json.getString(JsonKeys.COMMENT);
         final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
         getPageCommands().updatePage(pageId, delta, comment, majorEdit);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateFolder(final ID folderId,
-                             final FolderDelta delta) throws CommandFailedException {
-        getFolderCommands().updateFolder(folderId,
-                                   delta.getSortOrder(),
-                                   delta.getIndexPage(),
-                                   delta.getSortList());
     }
 
 
