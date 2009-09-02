@@ -51,14 +51,12 @@ import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserSummary;
 import ccc.types.Duration;
 import ccc.types.ID;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 import ccc.types.ResourcePath;
-import ccc.types.Username;
 
 
 /**
@@ -183,59 +181,10 @@ public final class QueriesEJB
             QueryNames.ALL_TEMPLATES, Template.class));
     }
 
-
-
-    /*
-     * USER METHODS
-     */
-    /** {@inheritDoc} */
-    @Override
-    public boolean usernameExists(final Username username) {
-        return _users.usernameExists(username.toString());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserSummary loggedInUser() {
-        return mapUser(currentUser());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsers() {
-        return mapUsers(_users.listUsers());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithEmail(final String email) {
-        return mapUsers(_users.listUsersWithEmail(email));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithRole(final String role) {
-        return mapUsers(_users.listUsersWithRole(role));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithUsername(
-                                                    final String username) {
-        return mapUsers(_users.listUsersWithUsername(username));
-    }
-
     /** {@inheritDoc} */
     @Override public TemplateDelta templateDelta(final ID templateId) {
         return
             deltaTemplate(_resources.find(Template.class, toUUID(templateId)));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserSummary userDelta(final ID userId) {
-        return
-            deltaUser(_users.find(toUUID(userId)));
     }
 
     /** {@inheritDoc} */

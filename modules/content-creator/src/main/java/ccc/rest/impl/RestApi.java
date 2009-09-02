@@ -23,16 +23,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.commons.CCCProperties;
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Commands;
-import ccc.rest.FolderCommands;
-import ccc.rest.PageCommands;
 import ccc.rest.Queries;
 import ccc.rest.RestCommands;
-import ccc.rest.UserCommands;
 import ccc.rest.dto.ActionNew;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
@@ -51,7 +44,6 @@ import ccc.rest.dto.ResourceTemplatePU;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserSummary;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
@@ -59,7 +51,6 @@ import ccc.types.Failure;
 import ccc.types.FailureCode;
 import ccc.types.ID;
 import ccc.types.Paragraph;
-import ccc.types.Username;
 
 
 /**
@@ -71,127 +62,11 @@ import ccc.types.Username;
 @Consumes("application/json")
 @Produces("application/json")
 public class RestApi
+    extends
+        JaxrsCollection
     implements
-        Queries, RestCommands {
-
-    private final Registry _reg = new JNDI();
-    private final String _appName = CCCProperties.get("application.name"); // TODO: Refactor constant
-
-    private Queries _queries;
-    private Commands _commands;
-    private PageCommands _pageCommands;
-    private FolderCommands _folderCommands;
-    private UserCommands _userCommands;
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the queries.
-     */
-    public final Queries getQueries() {
-        return
-            (null==_queries)
-                ? (Queries) _reg.get(_appName+"/"+Queries.NAME+"/remote")
-                : _queries;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param queries The queries to set.
-     */
-    public final void setQueries(final Queries queries) {
-        _queries = queries;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final Commands getCommands() {
-        return
-            (null==_commands)
-                ? (Commands) _reg.get(_appName+"/"+Commands.NAME+"/remote")
-                : _commands;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final PageCommands getPageCommands() {
-        return
-        (null==_pageCommands)
-        ? (PageCommands) _reg.get(_appName+"/"+PageCommands.NAME+"/remote")
-            : _pageCommands;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final FolderCommands getFolderCommands() {
-        return
-        (null==_folderCommands)
-        ? (FolderCommands) _reg.get(_appName+"/"+FolderCommands.NAME+"/remote")
-            : _folderCommands;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final UserCommands getUserCommands() {
-        return
-        (null==_userCommands)
-        ? (UserCommands) _reg.get(_appName+"/"+UserCommands.NAME+"/remote")
-            : _userCommands;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param commands The commands to set.
-     */
-    public final void setCommands(final Commands commands) {
-        _commands = commands;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param commands The commands to set.
-     */
-    public final void setPageCommands(final PageCommands pageCommands) {
-        _pageCommands = pageCommands;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param commands The commands to set.
-     */
-    public final void setFolderCommands(final FolderCommands folderCommands) {
-        _folderCommands = folderCommands;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param commands The commands to set.
-     */
-    public final void setUserCommands(final UserCommands userCommands) {
-        _userCommands = userCommands;
-    }
-
+        Queries,
+        RestCommands {
 
     /** {@inheritDoc} */
     @Override
@@ -278,34 +153,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserSummary> listUsers() {
-        return getQueries().listUsers();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithEmail(final String email) {
-        return getQueries().listUsersWithEmail(email);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithRole(final String role) {
-        return getQueries().listUsersWithRole(role);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserSummary> listUsersWithUsername(final String username) {
-        return getQueries().listUsersWithUsername(username);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<ResourceSummary> locked() {
         return getQueries().locked();
     }
@@ -315,13 +162,6 @@ public class RestApi
     @Override
     public Collection<ResourceSummary> lockedByCurrentUser() {
         return getQueries().lockedByCurrentUser();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public UserSummary loggedInUser() {
-        return getQueries().loggedInUser();
     }
 
 
@@ -404,20 +244,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary userDelta(final ID userId) {
-        return getQueries().userDelta(userId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean usernameExists(final Username username) {
-        return getQueries().usernameExists(username);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void updateCacheDuration(final ID resourceId,
                                     final ResourceCacheDurationPU pu) throws CommandFailedException {
         getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
@@ -428,13 +254,6 @@ public class RestApi
     @Override
     public void lock(final ID resourceId) throws CommandFailedException {
         getCommands().lock(resourceId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public UserSummary createUser(final UserSummary user) throws CommandFailedException {
-        return getUserCommands().createUser(user);
     }
 
 
@@ -469,14 +288,6 @@ public class RestApi
     @Override
     public ResourceSummary createFolder(final FolderNew folder) throws CommandFailedException {
         return getFolderCommands().createFolder(folder.getParentId(), folder.getName());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateUserPassword(final ID userId,
-                                   final UserSummary pu) throws CommandFailedException {
-        getUserCommands().updateUserPassword(userId, pu.getPassword());
     }
 
 
@@ -658,13 +469,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final ID userId, final UserSummary delta) throws CommandFailedException {
-        getUserCommands().updateUser(userId, delta);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void deleteCacheDuration(final ID id) throws CommandFailedException {
         getCommands().updateCacheDuration(id, null);
     }
@@ -674,11 +478,5 @@ public class RestApi
     @Override
     public void fail() throws CommandFailedException {
         throw new CommandFailedException(new Failure(FailureCode.PRIVILEGES));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateYourUser(final ID userId, final UserSummary user) throws CommandFailedException {
-        getUserCommands().updateYourUser(userId, user.getEmail(), user.getPassword());
     }
 }

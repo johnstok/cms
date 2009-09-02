@@ -13,6 +13,7 @@ package ccc.services.ejb3;
 
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +38,7 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.UserCommands;
 import ccc.rest.dto.UserSummary;
 import ccc.types.ID;
+import ccc.types.Username;
 
 
 /**
@@ -48,10 +50,11 @@ import ccc.types.ID;
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(UserCommands.class)
 @RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
-public class UserCommandsEJB  extends
-BaseCommands
-implements
-UserCommands {
+public class UserCommandsEJB
+    extends
+        BaseCommands
+    implements
+        UserCommands {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
@@ -82,26 +85,81 @@ UserCommands {
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
-    public void updateUserPassword(final ID userId, final String password) {
+    public void updateUserPassword(final ID userId, final UserSummary user) {
         new UpdatePasswordAction(_bdao, _audit).execute(
-            loggedInUser(_context), new Date(), toUUID(userId), password);
+            loggedInUser(_context),
+            new Date(),
+            toUUID(userId),
+            user.getPassword());
     }
 
 
-    /** {@inheritDoc}
-     * @throws CommandFailedException */
+    /** {@inheritDoc} */
     @Override
     @RolesAllowed({"CONTENT_CREATOR"})
     public void updateYourUser(final ID userId,
-                               final String email,
-                               final String password)
+                               final UserSummary user)
                                                  throws CommandFailedException {
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
-        loggedInUser(_context), new Date(), toUUID(userId), email, password);
+            loggedInUser(_context),
+            new Date(),
+            toUUID(userId),
+            user.getEmail(),
+            user.getPassword());
         } catch (final CccCheckedException e) {
             throw fail(_context, e);
         }
+    }
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public boolean usernameExists(final Username username) {
+        return _users.usernameExists(username.toString());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public UserSummary loggedInUser() {
+        return mapUser(loggedInUser(_context));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public Collection<UserSummary> listUsers() {
+        return mapUsers(_users.listUsers());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public Collection<UserSummary> listUsersWithEmail(final String email) {
+        return mapUsers(_users.listUsersWithEmail(email));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public Collection<UserSummary> listUsersWithRole(final String role) {
+        return mapUsers(_users.listUsersWithRole(role));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public Collection<UserSummary> listUsersWithUsername(
+                                                    final String username) {
+        return mapUsers(_users.listUsersWithUsername(username));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    public UserSummary userDelta(final ID userId) {
+        return
+        deltaUser(_users.find(toUUID(userId)));
     }
 
 
