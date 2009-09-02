@@ -35,6 +35,7 @@ import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.rest.CommandFailedException;
+import ccc.rest.FoldersBasic;
 import ccc.rest.Queries;
 import ccc.rest.RestCommands;
 import ccc.rest.Security;
@@ -112,6 +113,7 @@ public abstract class AbstractAcceptanceTest
     protected Queries _queries;
     protected RestCommands _commands;
     protected Users _users;
+    protected FoldersBasic _folders;
     protected Security _security;
 
 
@@ -145,7 +147,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempFolder() throws CommandFailedException {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = _queries.resourceForPath("/content");
-        return _commands.createFolder(new FolderNew(content.getId(), fName));
+        return _folders.createFolder(new FolderNew(content.getId(), fName));
     }
 
 
@@ -269,6 +271,7 @@ public abstract class AbstractAcceptanceTest
         _queries  = ProxyFactory.create(Queries.class, _secure, _http);
         _commands = ProxyFactory.create(RestCommands.class, _secure, _http);
         _users =    ProxyFactory.create(Users.class, _secure, _http);
+        _folders =  ProxyFactory.create(FoldersBasic.class, _secure, _http);
         _security = ProxyFactory.create(Security.class, _public, _http);
     }
 
@@ -288,6 +291,7 @@ public abstract class AbstractAcceptanceTest
     }
 
 
+    @SuppressWarnings("unused")
     private void post(final String url) throws IOException {
             final PostMethod postMethod = new PostMethod(url);
 
@@ -304,6 +308,7 @@ public abstract class AbstractAcceptanceTest
             LOG.debug("POST "+url+"  ->  "+status+"\n\n");
         }
 
+    @SuppressWarnings("unused")
     private void get(final String url) throws IOException {
         final GetMethod getMethod = new GetMethod(url);
         final int status = _http.executeMethod(getMethod);

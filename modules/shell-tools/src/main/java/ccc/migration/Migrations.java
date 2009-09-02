@@ -32,6 +32,7 @@ import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Queries;
 import ccc.rest.Users;
+import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserSummary;
@@ -158,10 +159,9 @@ public class Migrations {
                 _queries.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
                 _commands.lock(f.getId());
-                _folders.updateFolder(f.getId(),
-                    f.getSortOrder(),
-                    hp.getId(),
-                    null);
+                _folders.updateFolder(
+                    f.getId(),
+                    new FolderDelta(f.getSortOrder(), hp.getId(), null));
                 _commands.unlock(f.getId());
             }
         }
@@ -176,7 +176,7 @@ public class Migrations {
         _commands.publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
             final Collection<ResourceSummary> children =
-                _queries.getChildren(resource.getId());
+                _folders.getChildren(resource.getId());
             for (final ResourceSummary child : children) {
                 publishRecursive(child);
             }
