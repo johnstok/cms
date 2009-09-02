@@ -38,6 +38,7 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.Queries;
 import ccc.rest.RestCommands;
 import ccc.rest.SecurityAPI;
+import ccc.rest.UserCommands;
 import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.ResourceSummary;
@@ -110,6 +111,7 @@ public abstract class AbstractAcceptanceTest
     protected HttpClient _http;
     protected Queries _queries;
     protected RestCommands _commands;
+    protected UserCommands _users;
     protected SecurityAPI _security;
 
 
@@ -266,6 +268,7 @@ public abstract class AbstractAcceptanceTest
         _http     = login();
         _queries  = ProxyFactory.create(Queries.class, _secure, _http);
         _commands = ProxyFactory.create(RestCommands.class, _secure, _http);
+        _users =    ProxyFactory.create(UserCommands.class, _secure, _http);
         _security = ProxyFactory.create(SecurityAPI.class, _public, _http);
     }
 

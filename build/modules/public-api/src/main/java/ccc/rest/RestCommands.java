@@ -35,14 +35,12 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.ResourceTemplatePU;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
-import ccc.rest.dto.UserSummary;
 import ccc.serialization.Json;
 import ccc.types.ID;
 
 
 /**
  * TODO: Add a description for this type.
- * FIXME: Move to api-rest module.
  *
  * @author Civic Computing Ltd.
  */
@@ -59,9 +57,6 @@ public interface RestCommands {
     void lock(
         @PathParam("id") ID resourceId) throws CommandFailedException;
 
-    @POST @Path("/users")
-    UserSummary createUser(UserSummary user) throws CommandFailedException;
-
     @POST @Path("/templates")
     ResourceSummary createTemplate(TemplateNew template) throws CommandFailedException;
 
@@ -70,11 +65,6 @@ public interface RestCommands {
 
     @POST @Path("/folders")
     ResourceSummary createFolder(FolderNew folder) throws CommandFailedException;
-
-    @POST @Path("/users/{id}/password")
-    void updateUserPassword(
-        @PathParam("id") ID userId,
-        UserSummary pu) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -172,21 +162,10 @@ public interface RestCommands {
         @PathParam("id") ID folderId,
         FolderDelta delta) throws CommandFailedException;
 
-    @POST @Path("/users/{id}")
-    void updateUser(
-        @PathParam("id") ID userId,
-        UserSummary delta) throws CommandFailedException;
-
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(
         @PathParam("id") ID id) throws CommandFailedException;
 
     @GET @Path("/fail")
     void fail() throws CommandFailedException;
-
-
-    @POST @Path("/users/{id}/currentuser")
-    void updateYourUser(
-        @PathParam("id") ID userId,
-        UserSummary user) throws CommandFailedException;
 }

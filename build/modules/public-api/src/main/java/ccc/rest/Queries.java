@@ -28,10 +28,8 @@ import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserSummary;
 import ccc.types.Duration;
 import ccc.types.ID;
-import ccc.types.Username;
 
 
 /**
@@ -126,50 +124,6 @@ public interface Queries {
                                @PathParam("name") final String name);
 
     /**
-     * Query all users.
-     *
-     * @return Returns list of users.
-     */
-    @GET @Path("/users") @NoCache
-    Collection<UserSummary> listUsers();
-
-    /**
-     * Query users with specified role.
-     *
-     * @param role The role as a string.
-     * @return Returns list of users.
-     */
-    @GET @Path("/users/role/{role}") @NoCache
-    Collection<UserSummary> listUsersWithRole(@PathParam("role") String role);
-
-    /**
-     * Query users with specified username.
-     *
-     * @param username The username as a string.
-     * @return Returns list of users.
-     */
-    @GET @Path("/users/username/{uname}") @NoCache
-    Collection<UserSummary> listUsersWithUsername(@PathParam("uname") String username);
-
-    /**
-     * Query whether the specified username is in use.
-     *
-     * @param username The username to check
-     * @return True if the username is in use, false otherwise.
-     */
-    @GET @Path("/users/{uname}/exists") @NoCache
-    boolean usernameExists(@PathParam("uname") Username username);
-
-    /**
-     * Query users with specified email.
-     *
-     * @param email The email as a string.
-     * @return Returns list of users.
-     */
-    @GET @Path("/users/email/{email}") @NoCache
-    Collection<UserSummary> listUsersWithEmail(@PathParam("email") String email);
-
-    /**
      * Returns true if template name exists in the template folder.
      *
      * @param templateName The name to look up.
@@ -177,14 +131,6 @@ public interface Queries {
      */
     @GET @Path("/templates/{name}/exists") @NoCache
     boolean templateNameExists(@PathParam("name") final String templateName);
-
-    /**
-     * Returns currently logged in user.
-     *
-     * @return UserDTO
-     */
-    @GET @Path("/users/me") @NoCache
-    UserSummary loggedInUser();
 
     /**
      * List the resources locked by the currently logged in user.
@@ -272,15 +218,6 @@ public interface Queries {
      */
     @GET @Path("/templates/{id}/delta") @NoCache
     TemplateDelta templateDelta(@PathParam("id") ID templateId);
-
-    /**
-     * Retrieve the delta for a user.
-     *
-     * @param userId The user's id.
-     * @return The corresponding delta.
-     */
-    @GET @Path("/users/{id}/delta") @NoCache
-    UserSummary userDelta(@PathParam("id") ID userId);
 
     /**
      * Retrieve the target name for a alias.

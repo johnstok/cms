@@ -51,7 +51,7 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final UserSummary us = _queries.loggedInUser();
+        final UserSummary us = _users.loggedInUser();
 
         // ACT
         _commands.lock(folder.getId());
@@ -187,7 +187,7 @@ public class ResourceAcceptanceTests
         _commands.lock(contentRoot.getId());
 
         // ASSERT
-        final UserSummary currentUser = _queries.loggedInUser();
+        final UserSummary currentUser = _users.loggedInUser();
         final ResourceSummary updatedRoot =
             _queries.resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());

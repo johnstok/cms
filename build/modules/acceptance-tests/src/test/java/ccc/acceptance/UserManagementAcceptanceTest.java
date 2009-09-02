@@ -41,7 +41,7 @@ public class UserManagementAcceptanceTest
         final UserSummary us = tempUser();
 
         // ACT
-        _commands.updateUserPassword(
+        _users.updateUserPassword(
             us.getId(), new UserSummary("Another00-"));
 
         // ASSERT
@@ -64,7 +64,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         final Collection<UserSummary> ul =
-            _queries.listUsersWithUsername(us.getUsername().toString());
+            _users.listUsersWithUsername(us.getUsername().toString());
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -89,7 +89,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         final Collection<UserSummary> ul =
-            _queries.listUsersWithEmail(us.getEmail());
+            _users.listUsersWithEmail(us.getEmail());
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -116,7 +116,7 @@ public class UserManagementAcceptanceTest
         final UserSummary us = tempUser();
 
         // ACT
-        _commands.updateUser(
+        _users.updateUser(
             us.getId(),
             new UserSummary(
                 email,
@@ -125,7 +125,7 @@ public class UserManagementAcceptanceTest
                 Collections.singletonMap("key2", "value2")));
 
         // ASSERT
-        final UserSummary ud = _queries.userDelta(us.getId());
+        final UserSummary ud = _users.userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(1, ud.getRoles().size());
@@ -154,7 +154,7 @@ public class UserManagementAcceptanceTest
                 "Testtest00-");
 
 
-        final UserSummary us = _commands.createUser(u);
+        final UserSummary us = _users.createUser(u);
         assertEquals(username, us.getUsername());
         assertEquals(email, us.getEmail());
         assertEquals(1, us.getRoles().size());
@@ -174,12 +174,12 @@ public class UserManagementAcceptanceTest
         final String email = username+"@abc.def";
         final String password = "test Test00-"+username;
 
-        UserSummary user = _queries.loggedInUser();
+        UserSummary user = _users.loggedInUser();
         final UserSummary uo =new UserSummary(email, "test Test00-"+username);
 
         // ACT
-        _commands.updateYourUser(user.getId(), uo);
-        user = _queries.loggedInUser();
+        _users.updateYourUser(user.getId(), uo);
+        user = _users.loggedInUser();
 
         // ASSERT
         assertEquals(user.getEmail(), uo.getEmail());
@@ -204,6 +204,6 @@ public class UserManagementAcceptanceTest
                 Collections.singletonMap("key", "value"),
                 "Testtest00-");
 
-        return _commands.createUser(u);
+        return _users.createUser(u);
     }
 }
