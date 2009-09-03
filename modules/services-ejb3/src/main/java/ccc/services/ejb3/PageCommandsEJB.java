@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
@@ -61,7 +62,7 @@ import ccc.types.ResourceName;
 @Stateless(name=Pages.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Pages.class)
-@RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
+@RolesAllowed({})
 public class PageCommandsEJB extends
 BaseCommands
 implements
@@ -74,7 +75,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public ResourceSummary createPage(final ID parentId,
                                       final PageDelta delta,
                                       final String name,
@@ -116,7 +117,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createPage(final PageNew page)
                                                  throws CommandFailedException {
         return createPage(
@@ -135,7 +136,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updatePage(final ID pageId, final Json json)
                                                  throws CommandFailedException {
         final boolean majorEdit =
@@ -155,7 +156,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void updatePage(final ID pageId,
                            final PageDelta delta,
                            final String comment,
@@ -180,7 +181,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateWorkingCopy(final ID pageId,
                                   final PageDelta delta)
                                                  throws CommandFailedException {
@@ -199,7 +200,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void clearWorkingCopy(final ID resourceId)
                                                  throws CommandFailedException {
         try {
@@ -214,7 +215,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public List<String> validateFields(final Json json) {
         final String def = json.getString("definition");
         final Set<Paragraph> p = new HashSet<Paragraph>();
@@ -227,7 +228,7 @@ implements
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public PageDelta pageDelta(final ID pageId) {
         return
             deltaPage(_resources.find(Page.class, toUUID(pageId)));

@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
@@ -58,7 +59,7 @@ import ccc.search.lucene.SimpleLuceneFS;
 @TransactionAttribute(REQUIRED)
 @Remote(Scheduler.class)
 @Local(SearchEngine.class)
-@RolesAllowed({"ADMINISTRATOR"})
+@RolesAllowed({ADMINISTRATOR})
 public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;

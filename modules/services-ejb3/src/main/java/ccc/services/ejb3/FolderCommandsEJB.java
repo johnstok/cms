@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ import ccc.types.ResourceOrder;
 @Stateless(name=Folders.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Folders.class)
-@RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
+@RolesAllowed({})
 public class FolderCommandsEJB
     extends
         BaseCommands
@@ -74,7 +75,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createFolder(final FolderNew folder)
     throws CommandFailedException {
         return createFolder(
@@ -84,7 +85,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title,
@@ -102,7 +103,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public ResourceSummary createFolder(final ID parentId,
                                         final String name,
                                         final String title,
@@ -133,7 +134,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public ResourceSummary createRoot(final String name)
                                                  throws CommandFailedException {
         try {
@@ -149,7 +150,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateFolder(final ID folderId,
                              final FolderDelta delta)
                                                  throws CommandFailedException {
@@ -175,7 +176,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getChildren(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
@@ -185,7 +186,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                             final ID folderId) {
         final Folder f =
@@ -199,7 +200,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
         final Folder f =
             _resources.find(Folder.class, toUUID(folderId));
@@ -208,7 +209,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public boolean nameExistsInFolder(final ID folderId, final String name) {
         // TODO handle null folderId? (for root folders)
         return
@@ -218,7 +219,7 @@ public class FolderCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> roots() {
         return mapResources(_resources.list(QueryNames.ROOTS, Folder.class));
     }

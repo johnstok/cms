@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
@@ -55,8 +56,8 @@ import ccc.rest.LocalCommands;
 @TransactionAttribute(REQUIRED)
 @Local(ActionDao.class)
 @Remote(Scheduler.class)
-@RolesAllowed({"ADMINISTRATOR"})
-@RunAs("CONTENT_CREATOR")
+@RolesAllowed({ADMINISTRATOR})
+@RunAs(CONTENT_CREATOR)
 public class SchedulerEJB implements Scheduler, ActionDao {
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
