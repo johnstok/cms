@@ -59,11 +59,11 @@ public final class PageTest extends TestCase {
                 null,
                 _rm,
                 Paragraph.fromText("header", "Header"));
-        page.workingCopy(
+        page.setOrUpdateWorkingCopy(
             new PageDelta(
                 Collections.singleton(
                     Paragraph.fromBoolean("meh", Boolean.TRUE))));
-        page.applySnapshot(
+        page.applyWorkingCopy(
             new RevisionMetadata(
                 new Date(), User.SYSTEM_USER, true, "Updated."));
 
@@ -124,8 +124,8 @@ public final class PageTest extends TestCase {
         }};
 
         s.setParagraphs(paras);
-        page.workingCopy(s);
-        page.applySnapshot(
+        page.setOrUpdateWorkingCopy(s);
+        page.applyWorkingCopy(
             new RevisionMetadata(
                 new Date(), User.SYSTEM_USER, true, "Updated."));
 
@@ -149,7 +149,7 @@ public final class PageTest extends TestCase {
         final Page page = new Page("foo", _rm);
 
         // ACT
-        page.workingCopy(new PageDelta(new HashSet<Paragraph>()));
+        page.setOrUpdateWorkingCopy(new PageDelta(new HashSet<Paragraph>()));
 
         // ASSERT
         assertEquals("foo", page.title()); // The page hasn't changed.
@@ -163,7 +163,7 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Page page = new Page("foo", _rm);
-        page.workingCopy(page.createSnapshot());
+        page.setOrUpdateWorkingCopy(page.createSnapshot());
 
         // ACT
         page.clearWorkingCopy();

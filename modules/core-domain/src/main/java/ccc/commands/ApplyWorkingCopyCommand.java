@@ -72,7 +72,7 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
             final WCAware<?> wcAware = (WCAware<?>) r;
             final RevisionMetadata rm =
                 new RevisionMetadata(happenedOn, actor, isMajorEdit, comment);
-            wcAware.applySnapshot(rm);
+            wcAware.applyWorkingCopy(rm);
         } else {
             throw new WorkingCopyNotSupportedException(r);
         }

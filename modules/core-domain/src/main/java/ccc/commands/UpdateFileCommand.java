@@ -22,8 +22,8 @@ import ccc.domain.LockMismatchException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
 import ccc.persistence.FileRepository;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.FileDelta;
 import ccc.types.ID;
@@ -93,8 +93,8 @@ public class UpdateFileCommand extends UpdateResourceCommand {
             isMajorEdit,
             comment == null || comment.isEmpty() ? "Updated." : comment);
 
-        f.workingCopy(fileDelta);
-        f.applySnapshot(rm);
+        f.setOrUpdateWorkingCopy(fileDelta);
+        f.applyWorkingCopy(rm);
 
         update(f, null, false, actor, happenedOn);
     }

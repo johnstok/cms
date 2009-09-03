@@ -69,7 +69,7 @@ public class UpdateWorkingCopyCommand {
         final Page r = _repository.find(Page.class, resourceId);
         r.confirmLock(actor);
 
-        r.workingCopy(delta);
+        r.setOrUpdateWorkingCopy(delta);
 
         _audit.record(
             new LogEntry(

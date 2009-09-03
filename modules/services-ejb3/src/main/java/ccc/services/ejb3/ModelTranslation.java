@@ -289,7 +289,7 @@ public class ModelTranslation {
      * @return A corresponding delta.
      */
     protected FileDelta deltaFile(final File file) {
-        return file.workingCopy();
+        return file.getOrCreateWorkingCopy();
     }
 
 
@@ -300,7 +300,7 @@ public class ModelTranslation {
      * @return The corresponding delta.
      */
     protected PageDelta deltaPage(final Page page) {
-        return page.workingCopy();
+        return page.getOrCreateWorkingCopy();
     }
 
 

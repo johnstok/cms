@@ -32,7 +32,7 @@ public interface WCAware<T> {
      *
      * @param snapshot The new working copy for this page.
      */
-    void workingCopy(final T snapshot);
+    void setOrUpdateWorkingCopy(final T snapshot);
 
     /**
      * Query method.
@@ -42,9 +42,11 @@ public interface WCAware<T> {
     boolean hasWorkingCopy();
 
     /**
-     * Apply a snapshot to this resource.
+     * Apply the current working copy.
+     *
+     * @param metadata The metadata describing the revision.
      */
-    void applySnapshot(final RevisionMetadata metadata); // Should be applyWorkingCopy()
+    void applyWorkingCopy(final RevisionMetadata metadata);
 
     /**
      * Accessor.
@@ -52,5 +54,5 @@ public interface WCAware<T> {
      * @return The current working copy for this page, or a new working copy if
      *  none exists.
      */
-    T workingCopy();
+    T getOrCreateWorkingCopy();
 }

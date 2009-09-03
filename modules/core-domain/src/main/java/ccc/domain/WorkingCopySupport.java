@@ -23,6 +23,10 @@ import ccc.types.ResourceName;
 /**
  * Abstract helper class that provides working copy support for resources.
  *
+ * @param <T> The type of revision this class requires.
+ * @param <U> The type of jsonable this class requires.
+ * @param <V> The type of working copy this class requires.
+ *
  * @author Civic Computing Ltd.
  */
 public abstract class WorkingCopySupport<T extends Revision<U>,
@@ -43,7 +47,7 @@ public abstract class WorkingCopySupport<T extends Revision<U>,
     /**
      * Constructor.
      *
-     * @param title
+     * @param title The resource's title.
      */
     WorkingCopySupport(final String title) {
         super(title);
@@ -53,8 +57,8 @@ public abstract class WorkingCopySupport<T extends Revision<U>,
     /**
      * Constructor.
      *
-     * @param name
-     * @param title
+     * @param name The resource's name.
+     * @param title The resource's title.
      */
     WorkingCopySupport(final ResourceName name, final String title) {
         super(name, title);
@@ -74,7 +78,12 @@ public abstract class WorkingCopySupport<T extends Revision<U>,
     }
 
 
-    protected V wc() {
+    /**
+     * Accessor.
+     *
+     * @return The current working copy or NULL if no working copy exists.
+     */
+    protected V getWorkingCopy() {
         if (0==_wc.size()) {
             return null;
         }
@@ -82,28 +91,33 @@ public abstract class WorkingCopySupport<T extends Revision<U>,
     }
 
 
-    private void wc(final V pageWorkingCopy) {
+    /**
+     * Mutator.
+     *
+     * @param wc The working copy to set.
+     */
+    protected void setWorkingCopy(final V wc) {
         DBC.require().toBeFalse(hasWorkingCopy());
-        _wc.add(0, pageWorkingCopy);
+        _wc.add(0, wc);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void applySnapshot(final RevisionMetadata metadata) {
-        DBC.require().notNull(wc());
-        update(wc().delta(), metadata);
+    public void applyWorkingCopy(final RevisionMetadata metadata) {
+        DBC.require().notNull(getWorkingCopy());
+        update(getWorkingCopy().delta(), metadata);
         clearWorkingCopy();
     }
 
 
     /** {@inheritDoc} */
-    public void workingCopy(final U snapshot) {
+    public void setOrUpdateWorkingCopy(final U snapshot) {
         DBC.require().notNull(snapshot);
         if (hasWorkingCopy()) {
-            wc().delta(snapshot);
+            getWorkingCopy().delta(snapshot);
         } else {
-            wc(createWorkingCopy(snapshot));
+            setWorkingCopy(createWorkingCopy(snapshot));
         }
     }
 
@@ -114,14 +128,14 @@ public abstract class WorkingCopySupport<T extends Revision<U>,
      *  working copy.
      */
     public void setWorkingCopyFromRevision(final int revisionNumber) {
-        workingCopy(revision(revisionNumber).delta());
+        setOrUpdateWorkingCopy(revision(revisionNumber).delta());
     }
 
     /** {@inheritDoc} */
     @Override
-    public U workingCopy() {
-        if (null!=wc()) {
-            return wc().delta();
+    public U getOrCreateWorkingCopy() {
+        if (null!=getWorkingCopy()) {
+            return getWorkingCopy().delta();
         }
         return currentRevision().delta();
     }
