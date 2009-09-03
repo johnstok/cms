@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
@@ -23,7 +24,6 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.rest.dto.LogEntrySummary;
 import ccc.types.CommandType;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
@@ -45,18 +45,18 @@ public class HistoryDialog
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
-    private final ID _id;
+    private final UUID _id;
 
     /**
      * Constructor.
      *
      * @param data The history to display, as a collection of
      *  {@link LogEntrySummary}.
-     * @param resourceId The ID.
+     * @param resourceId The UUID.
      * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<LogEntrySummary> data,
-                         final ID resourceId,
+                         final UUID resourceId,
                          final SingleSelectionModel ssm) {
         super(new IGlobalsImpl().uiConstants().resourceHistory(),
               new IGlobalsImpl(),
@@ -173,7 +173,7 @@ public class HistoryDialog
      *
      * @return The id for the resource.
      */
-    public ID getResourceId() {
+    public UUID getResourceId() {
         return _id;
     }
 }

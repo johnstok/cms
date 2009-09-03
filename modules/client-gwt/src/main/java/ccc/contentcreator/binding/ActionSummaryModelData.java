@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
@@ -24,7 +25,6 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -214,7 +214,7 @@ public class ActionSummaryModelData
      *
      * @return The ID.
      */
-    public ID getId() {
+    public UUID getId() {
         return _as.getId();
     }
 

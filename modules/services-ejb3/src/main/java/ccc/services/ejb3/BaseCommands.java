@@ -11,6 +11,8 @@
  */
 package ccc.services.ejb3;
 
+import java.util.UUID;
+
 import javax.ejb.EJBContext;
 
 import org.apache.log4j.Logger;
@@ -21,7 +23,6 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.types.ID;
 
 
 /**
@@ -39,8 +40,8 @@ public abstract class BaseCommands
     JpaRepository      _bdao;
     ResourceRepository _resources;
 
-    protected User userForId(final ID userId) {
-        final User u = _bdao.find(User.class, toUUID(userId));
+    protected User userForId(final UUID userId) {
+        final User u = _bdao.find(User.class, userId);
         return u;
     }
 
@@ -48,8 +49,8 @@ public abstract class BaseCommands
         return _users.loggedInUser(context.getCallerPrincipal());
     }
 
-    protected ID loggedInUserId(final EJBContext context) {
-        return new ID(loggedInUser(context).id().toString());
+    protected UUID loggedInUserId(final EJBContext context) {
+        return loggedInUser(context).id();
     }
 
     protected CommandFailedException fail(final EJBContext context,

@@ -11,11 +11,12 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -30,10 +31,10 @@ public abstract class CreatePageAction
     extends
         RemotingAction {
 
-    private final ID _parentFolder;
+    private final UUID _parentFolder;
     private final PageDelta _page;
     private final String _name;
-    private final ID _template;
+    private final UUID _template;
     private final String _title;
     private final String _comment;
     private final boolean _majorChange;
@@ -51,10 +52,10 @@ public abstract class CreatePageAction
      * @param majorChange Is this update a major change.
      *
      */
-    public CreatePageAction(final ID parentFolder,
+    public CreatePageAction(final UUID parentFolder,
                              final PageDelta page,
                              final String name,
-                             final ID template,
+                             final UUID template,
                              final String title,
                              final String comment,
                              final boolean majorChange) {

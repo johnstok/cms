@@ -16,7 +16,6 @@ import java.util.UUID;
 
 import ccc.entities.IFile;
 import ccc.rest.dto.FileDelta;
-import ccc.types.ID;
 import ccc.types.MimeType;
 
 
@@ -60,7 +59,7 @@ public class FileWorkingCopy
     public FileDelta delta() {
         return new FileDelta(
             _mimeType,
-            new ID(_data.id().toString()),
+            _data.id(),
             _size,
             _properties);
     }

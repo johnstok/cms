@@ -14,7 +14,6 @@ package ccc.domain;
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
 import ccc.rest.dto.AliasDelta;
-import ccc.types.ID;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
@@ -105,7 +104,7 @@ public class AliasTest extends TestCase {
         final AliasDelta o = alias.createSnapshot();
 
         // ASSERT
-        assertEquals(new ID(p.id().toString()), o.getTargetId());
+        assertEquals(p.id(), o.getTargetId());
     }
 
     /**

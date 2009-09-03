@@ -16,7 +16,6 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.rest.dto.FileDelta;
-import ccc.types.ID;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
 
@@ -122,7 +121,7 @@ public class FileTest extends TestCase {
         // ASSERT
         assertEquals(new MimeType("foo", "bar"), o.getMimeType());
         assertEquals(1, o.getSize());
-        assertEquals(new ID(data.id().toString()), o.getData());
+        assertEquals(data.id(), o.getData());
     }
 
     /**

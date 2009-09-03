@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.SingleSelectionModel;
 
@@ -43,9 +45,10 @@ public class ApplyWorkingCopyAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        final UUID id = _selectionModel.tableSelection().getId();
         return
             "/resources/"
-            +_selectionModel.tableSelection().getId()
+            +id
             +"/wc-apply";
     }
 

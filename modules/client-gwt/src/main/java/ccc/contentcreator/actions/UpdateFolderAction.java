@@ -12,11 +12,11 @@
 package ccc.contentcreator.actions;
 
 import java.util.List;
+import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -30,9 +30,9 @@ public class UpdateFolderAction
     extends
         RemotingAction {
 
-    private final ID _id;
+    private final UUID _id;
     private final String _sortOrder;
-    private final ID _indexPageId;
+    private final UUID _indexPageId;
     private final List<String> _sortList;
 
 
@@ -43,9 +43,9 @@ public class UpdateFolderAction
      * @param sortOrder The sort order for the folder.
      * @param id The folder's id.
      */
-    public UpdateFolderAction(final ID id,
+    public UpdateFolderAction(final UUID id,
                                final String sortOrder,
-                               final ID indexPageId,
+                               final UUID indexPageId,
                                final List<String> sortList) {
         super(UI_CONSTANTS.folderSortOrder(), RequestBuilder.POST);
         _id = id;

@@ -24,13 +24,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ccc.types.DBC;
-import ccc.types.ID;
 
 
 /**
@@ -193,7 +193,7 @@ public class JsonImpl implements Serializable, Json {
     }
 
     /** {@inheritDoc} */
-    public void set(final String key, final ID value) {
+    public void set(final String key, final UUID value) {
         try {
             _detail.put(
                 key, (null==value) ? NULL : value.toString());
@@ -304,12 +304,12 @@ public class JsonImpl implements Serializable, Json {
     }
 
     /** {@inheritDoc} */
-    public ID getId(final String key) {
+    public UUID getId(final String key) {
         final String s = getString(key);
         if (null==s) {
             return null;
         }
-        return new ID(s);
+        return UUID.fromString(s);
     }
 
     /** {@inheritDoc} */

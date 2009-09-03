@@ -12,9 +12,9 @@
 package ccc.rest;
 
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 
 /**
@@ -40,7 +40,7 @@ public interface Folders extends FoldersBasic {
      *
      * @return A resource summary describing the new folder.
      */
-    ResourceSummary createFolder(ID parentId,
+    ResourceSummary createFolder(UUID parentId,
                                  String name,
                                  String title,
                                  boolean publish) throws CommandFailedException;
@@ -59,11 +59,11 @@ public interface Folders extends FoldersBasic {
      *
      * @return A resource summary describing the new folder.
      */
-    ResourceSummary createFolder(ID parentId,
+    ResourceSummary createFolder(UUID parentId,
                                  String name,
                                  String title,
                                  boolean publish,
-                                 ID actorId,
+                                 UUID actorId,
                                  Date happenedOn)
     throws CommandFailedException;
 

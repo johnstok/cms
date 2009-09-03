@@ -18,7 +18,6 @@ import java.util.Map;
 import ccc.entities.IFile;
 import ccc.rest.dto.FileDelta;
 import ccc.types.DBC;
-import ccc.types.ID;
 import ccc.types.MimeType;
 
 
@@ -101,7 +100,7 @@ public class FileRevision
     public FileDelta delta() {
         return new FileDelta(
             _mimeType,
-            new ID(_data.id().toString()),
+            _data.id(),
             _size,
             _properties);
     }

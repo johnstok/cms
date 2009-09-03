@@ -12,10 +12,10 @@
 package ccc.rest;
 
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 
 /**
@@ -36,7 +36,7 @@ public interface Pages extends PagesBasic {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void clearWorkingCopy(ID pageId) throws CommandFailedException;
+    void clearWorkingCopy(UUID pageId) throws CommandFailedException;
 
 
     /**
@@ -51,11 +51,11 @@ public interface Pages extends PagesBasic {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updatePage(ID pageId,
+    void updatePage(UUID pageId,
                     PageDelta delta,
                     String comment,
                     boolean isMajorEdit,
-                    ID actorId,
+                    UUID actorId,
                     Date happenedOn) throws CommandFailedException;
 
 
@@ -77,13 +77,13 @@ public interface Pages extends PagesBasic {
      *
      * @return A resource summary describing the new page.
      */
-    ResourceSummary createPage(ID parentId,
+    ResourceSummary createPage(UUID parentId,
                                PageDelta delta,
                                String name,
                                boolean publish,
-                               ID templateId,
+                               UUID templateId,
                                String title,
-                               ID actorId,
+                               UUID actorId,
                                Date happenedOn,
                                String comment,
                                boolean majorChange) throws CommandFailedException;

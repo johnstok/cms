@@ -28,7 +28,6 @@ import ccc.rest.Commands;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
-import ccc.types.ID;
 import ccc.types.ResourceName;
 
 
@@ -63,8 +62,8 @@ public class ActionExecutorImplTest
                 }});
 
         _commands.publish(
-            eq(new ID(p.id().toString())),
-            eq(new ID(u.id().toString())),
+            eq(p.id()),
+            eq(u.id()),
             isA(Date.class));
         expectLastCall().andThrow(new UnlockedException(p).toRemoteException());
         replay(_commands);

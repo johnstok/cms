@@ -19,7 +19,6 @@ import ccc.domain.Action;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
 import ccc.types.DBC;
-import ccc.types.ID;
 
 
 /**
@@ -88,8 +87,8 @@ public class ActionExecutorImpl implements ActionExecutor {
     private void executeUpdate(final Action action)
                                                  throws CommandFailedException {
         _commands.applyWorkingCopy(
-            new ID(action.subject().id().toString()),
-            new ID(action.actor().id().toString()),
+            action.subject().id(),
+            action.actor().id(),
             new Date(),
             Boolean.valueOf(action.parameters().get("MAJOR")).booleanValue(),
             action.parameters().get("COMMENT"));
@@ -99,8 +98,8 @@ public class ActionExecutorImpl implements ActionExecutor {
     private void executePublish(final Action action)
                                                  throws CommandFailedException {
         _commands.publish(
-            new ID(action.subject().id().toString()),
-            new ID(action.actor().id().toString()),
+            action.subject().id(),
+            action.actor().id(),
             new Date());
     }
 
@@ -108,8 +107,8 @@ public class ActionExecutorImpl implements ActionExecutor {
     private void executeUnpublish(final Action action)
                                                  throws CommandFailedException {
         _commands.unpublish(
-            new ID(action.subject().id().toString()),
-            new ID(action.actor().id().toString()),
+            action.subject().id(),
+            action.actor().id(),
             new Date());
     }
 }

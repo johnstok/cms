@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.PageDelta;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -23,11 +24,11 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateWorkingCopyAction_
+public class UpdateWorkingCopyAction
     extends
         RemotingAction {
 
-    private final ID _pageId;
+    private final UUID _pageId;
     private final PageDelta _workingCopy;
 
 
@@ -37,7 +38,7 @@ public class UpdateWorkingCopyAction_
      * @param workingCopy The new working copy.
      * @param pageId The new page.
      */
-    public UpdateWorkingCopyAction_(final ID pageId,
+    public UpdateWorkingCopyAction(final UUID pageId,
                                     final PageDelta workingCopy) {
         super(UI_CONSTANTS.saveDraft(), RequestBuilder.POST);
         _pageId = pageId;

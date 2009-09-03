@@ -12,12 +12,12 @@
 package ccc.contentcreator.dialogs;
 
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.CreateActionAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -42,14 +42,14 @@ public class CreateActionDialog
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
 
-    private final ID _resourceId;
+    private final UUID _resourceId;
 
     /**
      * Constructor.
      *
-     * @param resourceId The ID of the resource.
+     * @param resourceId The UUID of the resource.
      */
-    public CreateActionDialog(final ID resourceId) {
+    public CreateActionDialog(final UUID resourceId) {
         super(new IGlobalsImpl().uiConstants().createAction(),
               new IGlobalsImpl());
 

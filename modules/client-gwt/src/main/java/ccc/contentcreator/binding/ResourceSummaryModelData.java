@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
@@ -63,9 +63,9 @@ public class ResourceSummaryModelData
         final JSONObject summaryObject = jsonObject.isObject();
 
         return new ResourceSummaryModelData(new ResourceSummary(
-            new ID(summaryObject.get(JsonKeys.ID).isString().stringValue()),
+            UUID.fromString(summaryObject.get(JsonKeys.ID).isString().stringValue()),
 
-            new ID(summaryObject.get(
+            UUID.fromString(summaryObject.get(
                 JsonKeys.PARENT_ID).isString().stringValue()),
 
             summaryObject.get(JsonKeys.NAME).isString().stringValue(),
@@ -110,7 +110,7 @@ public class ResourceSummaryModelData
 
             (null!=summaryObject.get(JsonKeys.TEMPLATE_ID).isNull())
                 ? null
-                : new ID(summaryObject.get(
+                : UUID.fromString(summaryObject.get(
                     JsonKeys.TEMPLATE_ID).isString().stringValue()),
 
             summaryObject.get(JsonKeys.TAGS).isString().stringValue(),
@@ -119,7 +119,7 @@ public class ResourceSummaryModelData
 
             (null!=summaryObject.get(JsonKeys.INDEX_PAGE_ID).isNull())
             ? null
-            : new ID(summaryObject.get(
+            :UUID.fromString(summaryObject.get(
                 JsonKeys.INDEX_PAGE_ID).isString().stringValue()),
 
             summaryObject.get(JsonKeys.DESCRIPTION).isString().stringValue()
@@ -147,7 +147,7 @@ public class ResourceSummaryModelData
             case FOLDER_COUNT:
                 return (X) Integer.valueOf(_rs.getFolderCount());
 
-            case ID:
+            case UUID:
                 return (X) _rs.getId();
 
             case LOCKED:
@@ -230,8 +230,8 @@ public class ResourceSummaryModelData
      * @author Civic Computing Ltd.
      */
     public enum Property {
-        /** ID : Property. */
-        ID,
+        /** UUID : Property. */
+        UUID,
         /** PARENT_ID : Property. */
         PARENT_ID,
         /** NAME : Property. */
@@ -278,9 +278,9 @@ public class ResourceSummaryModelData
     /**
      * Accessor.
      *
-     * @return The  ID of the resource.
+     * @return The  UUID of the resource.
      */
-    public ID getId() {
+    public UUID getId() {
         return _rs.getId();
     }
 
@@ -359,9 +359,9 @@ public class ResourceSummaryModelData
     /**
      * Accessor.
      *
-     * @return The ID of the parent.
+     * @return The UUID of the parent.
      */
-    public ID getParent() {
+    public UUID getParent() {
         return _rs.getParentId();
     }
 
@@ -449,9 +449,9 @@ public class ResourceSummaryModelData
     /**
      * Accessor.
      *
-     * @return Template ID.
+     * @return Template UUID.
      */
-    public ID getTemplateId() {
+    public UUID getTemplateId() {
         return _rs.getTemplateId();
     }
 
@@ -487,7 +487,7 @@ public class ResourceSummaryModelData
      *
      * @param id The id to set.
      */
-    public void setTemplateId(final ID id) {
+    public void setTemplateId(final UUID id) {
         _rs.setTemplateId(id);
     }
 
@@ -505,7 +505,7 @@ public class ResourceSummaryModelData
      *
      * @param id The id to set.
      */
-    public void setIndexPageId(final ID id) {
+    public void setIndexPageId(final UUID id) {
         _rs.setIndexPageId(id);
     }
 
@@ -514,7 +514,7 @@ public class ResourceSummaryModelData
      *
      * @return The index page.
      */
-    public ID getIndexPageId() {
+    public UUID getIndexPageId() {
         return _rs.getIndexPageId();
     }
 

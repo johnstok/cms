@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -49,7 +50,6 @@ import ccc.rest.dto.PageNew;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 
@@ -76,13 +76,13 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public ResourceSummary createPage(final ID parentId,
+    public ResourceSummary createPage(final UUID parentId,
                                       final PageDelta delta,
                                       final String name,
                                       final boolean publish,
-                                      final ID templateId,
+                                      final UUID templateId,
                                       final String title,
-                                      final ID actorId,
+                                      final UUID actorId,
                                       final Date happenedOn,
                                       final String comment,
                                       final boolean majorChange)
@@ -93,11 +93,11 @@ implements
             final Page p = new CreatePageCommand(_bdao, _audit).execute(
                 u,
                 happenedOn,
-                toUUID(parentId),
+                parentId,
                 delta,
                 ResourceName.escape(name),
                 title,
-                toUUID(templateId),
+                templateId,
                 comment,
                 majorChange);
 
@@ -137,7 +137,7 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updatePage(final ID pageId, final Json json)
+    public void updatePage(final UUID pageId, final Json json)
                                                  throws CommandFailedException {
         final boolean majorEdit =
             json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
@@ -157,18 +157,18 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updatePage(final ID pageId,
+    public void updatePage(final UUID pageId,
                            final PageDelta delta,
                            final String comment,
                            final boolean isMajorEdit,
-                           final ID actorId,
+                           final UUID actorId,
                            final Date happenedOn)
                                                  throws CommandFailedException {
         try {
             new UpdatePageCommand(_bdao, _audit).execute(
                 userForId(actorId),
                 happenedOn,
-                toUUID(pageId),
+                pageId,
                 delta,
                 comment,
                 isMajorEdit);
@@ -182,14 +182,14 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateWorkingCopy(final ID pageId,
+    public void updateWorkingCopy(final UUID pageId,
                                   final PageDelta delta)
                                                  throws CommandFailedException {
         try {
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(_context),
                 new Date(),
-                toUUID(pageId),
+                pageId,
                 delta);
 
         } catch (final CccCheckedException e) {
@@ -201,11 +201,11 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void clearWorkingCopy(final ID resourceId)
+    public void clearWorkingCopy(final UUID resourceId)
                                                  throws CommandFailedException {
         try {
             new ClearWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(_context), new Date(), toUUID(resourceId));
+                loggedInUser(_context), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(_context, e);
@@ -229,9 +229,9 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public PageDelta pageDelta(final ID pageId) {
+    public PageDelta pageDelta(final UUID pageId) {
         return
-            deltaPage(_resources.find(Page.class, toUUID(pageId)));
+            deltaPage(_resources.find(Page.class, pageId));
     }
 
 

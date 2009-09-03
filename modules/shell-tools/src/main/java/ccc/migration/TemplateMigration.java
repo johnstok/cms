@@ -14,6 +14,7 @@ package ccc.migration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -21,7 +22,6 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.types.ID;
 import ccc.types.MimeType;
 
 
@@ -95,7 +95,7 @@ public class TemplateMigration {
      * @param templateFolder The folder in which templates should be created.
      * @return The corresponding template, or null;
      */
-    public ID getTemplate(final String templateName,
+    public UUID getTemplate(final String templateName,
                           final String templateDescription,
                           final ResourceSummary templateFolder) {
         if (!_templates.containsKey(templateName)) { // Not yet migrated

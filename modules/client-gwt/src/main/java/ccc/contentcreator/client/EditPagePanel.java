@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.GetAbsolutePathAction;
 import ccc.contentcreator.binding.FileSummaryModelData;
@@ -22,7 +23,6 @@ import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.PageDelta;
-import ccc.types.ID;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -219,7 +219,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final ImageTriggerField image = c.image();
         final String id = para.text();
         if (id != null && !id.trim().equals("")) {
-            final ID resourceId = new ID(id);
+            final UUID resourceId = UUID.fromString(id);
 
             new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
                                       resourceId) {

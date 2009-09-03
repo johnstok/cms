@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,6 @@ import org.apache.log4j.Logger;
 import ccc.domain.File;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.FileDelta;
-import ccc.types.ID;
 
 
 /**
@@ -52,7 +52,7 @@ public class UpdateFileServlet extends MultipartServlet {
         response.setContentType("text/html");
 
         final MultipartForm form = new MultipartForm(request);
-        final ID fileId = new ID(form.getFormItem("id").getString());
+        final UUID fileId = UUID.fromString(form.getFormItem("id").getString());
 
         final FileItem cItem = form.getFormItem("comment");
         final String comment = cItem==null ? null : cItem.getString();

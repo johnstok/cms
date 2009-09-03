@@ -1,5 +1,5 @@
 <module>
-
+    <super-source path="jre" />
 	<!-- Inherit the core Web Toolkit stuff. -->
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.json.JSON" />

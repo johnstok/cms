@@ -14,10 +14,10 @@ package ccc.rest.dto;
 import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -29,7 +29,7 @@ public final class FileSummary implements Serializable, Jsonable {
 
     private String _mimeType;
     private String _path;
-    private ID     _id;
+    private UUID     _id;
     private String _name;
     private String _title;
 
@@ -46,7 +46,7 @@ public final class FileSummary implements Serializable, Jsonable {
      */
     public FileSummary(final String type,
                        final String path,
-                       final ID id,
+                       final UUID id,
                        final String name,
                        final String title) {
         _mimeType = type;
@@ -97,7 +97,7 @@ public final class FileSummary implements Serializable, Jsonable {
      *
      * @return Returns the id.
      */
-    public ID getId() {
+    public UUID getId() {
         return _id;
     }
 

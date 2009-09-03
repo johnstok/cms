@@ -12,6 +12,7 @@
 package ccc.rest;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,7 +24,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 import ccc.types.Username;
 
 
@@ -47,7 +47,7 @@ public interface Users {
      * @return The corresponding delta.
      */
     @GET @Path("/users/{id}/delta") @NoCache
-    UserSummary userDelta(@PathParam("id") ID userId);
+    UserSummary userDelta(@PathParam("id") UUID userId);
 
     /**
      * Returns currently logged in user.
@@ -128,7 +128,7 @@ public interface Users {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/users/{id}")
-    void updateUser(@PathParam("id") ID userId, UserSummary delta) throws CommandFailedException;
+    void updateUser(@PathParam("id") UUID userId, UserSummary delta) throws CommandFailedException;
 
 
     /**
@@ -140,7 +140,7 @@ public interface Users {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/users/{id}/password")
-    void updateUserPassword(@PathParam("id") ID userId, UserSummary user)
+    void updateUserPassword(@PathParam("id") UUID userId, UserSummary user)
     throws CommandFailedException;
 
     /**
@@ -152,6 +152,6 @@ public interface Users {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/users/{id}/currentuser")
-    void updateYourUser(@PathParam("id") ID userId, UserSummary user)
+    void updateYourUser(@PathParam("id") UUID userId, UserSummary user)
     throws CommandFailedException;
 }

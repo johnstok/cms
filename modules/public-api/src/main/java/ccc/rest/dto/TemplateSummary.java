@@ -14,10 +14,10 @@ package ccc.rest.dto;
 import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -26,7 +26,7 @@ import ccc.types.ID;
  * @author Civic Computing Ltd.
  */
 public final class TemplateSummary implements Serializable, Jsonable {
-    private ID     _id;
+    private UUID     _id;
     private String _name;
     private String _title;
     private String _description;
@@ -38,20 +38,20 @@ public final class TemplateSummary implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param id The template's id.
+     * @param UUID The template's UUID.
      * @param name The template's name.
      * @param title The template's title.
      * @param description The template's description.
      * @param body The template's body.
      * @param definition The template's definition.
      */
-    public TemplateSummary(final ID   id,
+    public TemplateSummary(final UUID   UUID,
                          final String name,
                          final String title,
                          final String description,
                          final String body,
                          final String definition) {
-        _id = id;
+        _id = UUID;
         _name = name;
         _title = title;
         _description = description;
@@ -79,9 +79,9 @@ public final class TemplateSummary implements Serializable, Jsonable {
     /**
      * Accessor.
      *
-     * @return Returns the id.
+     * @return Returns the UUID.
      */
-    public ID getId() {
+    public UUID getId() {
         return _id;
     }
 

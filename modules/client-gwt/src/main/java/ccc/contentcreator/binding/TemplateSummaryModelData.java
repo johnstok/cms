@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.rest.dto.TemplateSummary;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -116,7 +116,7 @@ public class TemplateSummaryModelData
      *
      * @return The ID.
      */
-    public ID getId() {
+    public UUID getId() {
         return _ts.getId();
     }
 

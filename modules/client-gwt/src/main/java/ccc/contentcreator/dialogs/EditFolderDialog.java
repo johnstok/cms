@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.actions.UpdateFolderAction;
@@ -25,7 +26,6 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ResourceTypeRendererFactory;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
@@ -84,7 +84,7 @@ AbstractEditDialog {
     private GridDropTarget _target;
     private ModelData _none = new BaseModelData();
 
-    private final ID _currentIndexPage;
+    private final UUID _currentIndexPage;
 
 
     /**
@@ -96,7 +96,7 @@ AbstractEditDialog {
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
                                        final String currentSortOrder,
-                                       final ID currentIndexPage) {
+                                       final UUID currentIndexPage) {
         super(new IGlobalsImpl().uiConstants().edit(), new IGlobalsImpl());
 
         _currentIndexPage = currentIndexPage;
@@ -163,7 +163,7 @@ AbstractEditDialog {
         _indexPageStore.add(pagesOnly);
     }
 
-    private void loadDetailStore(final ID currentIndexPage) {
+    private void loadDetailStore(final UUID currentIndexPage) {
         _detailsStore =  new ListStore<ResourceSummaryModelData>();
         final ResourceSummaryModelData selection =
             _selectionModel.tableSelection();
@@ -209,7 +209,7 @@ AbstractEditDialog {
         throw new RuntimeException("Invalid sort order: "+currentValue);
     }
 
-    private void setCurrentIndexPage(final ID currentValue) {
+    private void setCurrentIndexPage(final UUID currentValue) {
         for (final ModelData md : _indexPageStore.getModels()) {
             if(currentValue != null && currentValue.equals(md.get("value"))) {
                 _indexPage.setValue(md);
@@ -281,7 +281,8 @@ AbstractEditDialog {
                 final ResourceSummaryModelData md =
                     _selectionModel.tableSelection();
                 final String order = _sortOrder.getValue().<String>get("value");
-                final ID indexPageId = _indexPage.getValue().<ID>get("value");
+                final UUID indexPageId =
+                    _indexPage.getValue().<UUID>get("value");
                 final List<String> orderList = new ArrayList<String>();
 
                 if (order.equals(MANUAL)) {

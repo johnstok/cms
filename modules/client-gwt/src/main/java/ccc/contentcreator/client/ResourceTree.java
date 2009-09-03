@@ -14,12 +14,12 @@ package ccc.contentcreator.client;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.binder.TreeBinder;
@@ -66,7 +66,7 @@ public class ResourceTree extends Tree {
             protected void load(final Object loadConfig,
                                 final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
-                final ID parentId =
+                final UUID parentId =
                     (null==loadConfig || !(loadConfig instanceof ResourceSummaryModelData))
                     ? _root.getId() : ((ResourceSummaryModelData)loadConfig).getId();
 

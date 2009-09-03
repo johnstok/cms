@@ -11,10 +11,11 @@
  */
 package ccc.rest.dto;
 
+import java.util.UUID;
+
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -24,9 +25,9 @@ import ccc.types.ID;
  */
 public class AliasNew implements Jsonable {
 
-    private final ID _parentId;
+    private final UUID _parentId;
     private final String _name;
-    private final ID _targetId;
+    private final UUID _targetId;
 
 
     /**
@@ -36,7 +37,7 @@ public class AliasNew implements Jsonable {
      * @param name The alias' name.
      * @param targetId The alias' target.
      */
-    public AliasNew(final ID parentId, final String name, final ID targetId) {
+    public AliasNew(final UUID parentId, final String name, final UUID targetId) {
         _parentId = parentId;
         _name = name;
         _targetId = targetId;
@@ -48,7 +49,7 @@ public class AliasNew implements Jsonable {
      *
      * @return Returns the parentId.
      */
-    public final ID getParentId() {
+    public final UUID getParentId() {
         return _parentId;
     }
 
@@ -68,7 +69,7 @@ public class AliasNew implements Jsonable {
      *
      * @return Returns the targetId.
      */
-    public final ID getTargetId() {
+    public final UUID getTargetId() {
         return _targetId;
     }
 

@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -27,9 +28,9 @@ public class CreateAliasAction
     extends
         RemotingAction {
 
-    private final ID _parentId;
+    private final UUID _parentId;
     private final String _aliasName;
-    private final ID _targetId;
+    private final UUID _targetId;
 
     /**
      * Constructor.
@@ -38,9 +39,9 @@ public class CreateAliasAction
      * @param aliasName The name of the alias.
      * @param parentId The id of the alias' parent folder.
      */
-    public CreateAliasAction(final ID parentId,
+    public CreateAliasAction(final UUID parentId,
                               final String aliasName,
-                              final ID targetId) {
+                              final UUID targetId) {
         super(UI_CONSTANTS.createAlias(), RequestBuilder.POST);
         _parentId = parentId;
         _aliasName = aliasName;

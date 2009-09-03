@@ -2,9 +2,9 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 1744 $
+ * Modified by   $Author: petteri $
+ * Modified on   $Date: 2009-08-28 16:17:04 +0100 (Fri, 28 Aug 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
@@ -12,8 +12,7 @@
 package ccc.contentcreator.actions;
 
 import java.util.List;
-
-import ccc.types.ID;
+import java.util.UUID;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONArray;
@@ -29,7 +28,7 @@ public class UpdateResourceRolesAction
     extends
         RemotingAction {
 
-    private final ID _resource;
+    private final UUID _resource;
     private final List<String> _roles;
 
 
@@ -39,7 +38,7 @@ public class UpdateResourceRolesAction
      * @param roles The roles for the resource.
      * @param resource The resource to update.
      */
-    public UpdateResourceRolesAction(final ID resource,
+    public UpdateResourceRolesAction(final UUID resource,
                                       final List<String> roles) {
         super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
         _resource = resource;

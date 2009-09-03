@@ -13,6 +13,7 @@ package ccc.contentcreator.validation;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.ResourceNameExistsAction;
 import ccc.contentcreator.actions.ValidateFieldAction;
@@ -22,7 +23,6 @@ import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.types.ID;
 import ccc.types.Paragraph;
 import ccc.types.Password;
 
@@ -221,7 +221,7 @@ public class Validations {
      * @param name name Resource name
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final ID id,
+    public static Validator uniqueResourceName(final UUID id,
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {

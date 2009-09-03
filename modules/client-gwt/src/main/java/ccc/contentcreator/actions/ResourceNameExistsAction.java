@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.types.ID;
+import java.util.UUID;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
@@ -26,7 +26,7 @@ public abstract class ResourceNameExistsAction
     extends
         RemotingAction {
 
-    private ID _folderId;
+    private UUID _folderId;
     private String _resourceName;
 
     /**
@@ -34,7 +34,7 @@ public abstract class ResourceNameExistsAction
      * @param resourceName The resource name to check.
      * @param folderId The id of the folder to check.
      */
-    public ResourceNameExistsAction(final ID folderId,
+    public ResourceNameExistsAction(final UUID folderId,
                                     final String resourceName) {
         super(USER_ACTIONS.checkUniqueResourceName());
         _folderId = folderId;

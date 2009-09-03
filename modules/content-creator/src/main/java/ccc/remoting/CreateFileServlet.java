@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +29,6 @@ import ccc.domain.File;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 
 /**
@@ -71,7 +71,7 @@ public class CreateFileServlet
         final FileItem bItem = form.getFormItem("majorEdit");
         final boolean isMajorEdit = bItem == null ? false : true;
 
-        final ID parentId = new ID(path.getString());
+        final UUID parentId = UUID.fromString(path.getString());
         final boolean p =
             (null==publish)
                 ? false

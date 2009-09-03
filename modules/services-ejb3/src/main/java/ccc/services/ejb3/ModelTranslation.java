@@ -37,7 +37,6 @@ import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.UserSummary;
 import ccc.types.CommandType;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
@@ -159,14 +158,14 @@ public class ModelTranslation {
         int childCount = 0;
         int folderCount = 0;
         String sortOrder = null;
-        ID indexPage = null;
+        UUID indexPage = null;
         boolean hasWorkingCopy = false;
         if (r.type() == ResourceType.FOLDER) {
             childCount = r.as(Folder.class).entries().size();
             folderCount = r.as(Folder.class).folders().size();
             sortOrder = r.as(Folder.class).sortOrder().name();
             indexPage = (null==r.as(Folder.class).indexPage())
-                ? null : toID(r.as(Folder.class).indexPage().id());
+                ? null : r.as(Folder.class).indexPage().id();
         } else if (r.type() == ResourceType.PAGE) {
             hasWorkingCopy = (r.as(Page.class).hasWorkingCopy());
         } else if (r.type() == ResourceType.FILE) {
@@ -175,8 +174,8 @@ public class ModelTranslation {
 
         final ResourceSummary rs =
             new ResourceSummary(
-                toID(r.id()),
-                (null==r.parent()) ? null : toID(r.parent().id()),
+                r.id(),
+                (null==r.parent()) ? null : r.parent().id(),
                 r.name().toString(),
                 (r.isPublished())
                     ? new Username(r.publishedBy().username()) : null,
@@ -190,7 +189,7 @@ public class ModelTranslation {
                 hasWorkingCopy,
                 r.dateCreated(),
                 r.dateChanged(),
-                (null==r.template()) ? null : toID(r.template().id()),
+                (null==r.template()) ? null : r.template().id(),
                 r.tagString(),
                 r.absolutePath().toString(),
                 indexPage,
@@ -210,7 +209,7 @@ public class ModelTranslation {
         return
             new UserSummary(
                 user.email().getText(),
-                toID(user.id()),
+                user.id(),
                 new Username(user.username()),
                 user.roles());
     }
@@ -227,7 +226,7 @@ public class ModelTranslation {
             new FileSummary(
                 file.mimeType().toString(),
                 file.absolutePath().toString(),
-                toID(file.id()),
+                file.id(),
                 file.name().toString(),
                 file.title());
         return fs;
@@ -346,7 +345,7 @@ public class ModelTranslation {
     protected ActionSummary mapAction(final Action a) {
         final ActionSummary summary =
             new ActionSummary(
-                toID(a.id()),
+                a.id(),
                 a.type(),
                 new Username(a.actor().username()),
                 a.executeAfter(),
@@ -369,36 +368,11 @@ public class ModelTranslation {
         }
         return
             new TemplateSummary(
-                toID(t.id()),
+                t.id(),
                 t.name().toString(),
                 t.title(),
                 t.description(),
                 t.body(),
                 t.definition());
-    }
-
-
-    /**
-     * Convert a {@link UUID} to a CCC id..
-     *
-     * @param uuid The java UUID.
-     * @return The corresponding CCC id.
-     */
-    protected final ID toID(final UUID uuid) {
-        return new ID(uuid.toString());
-    }
-
-
-    /**
-     * Convert a CCC id to a {@link UUID}.
-     *
-     * @param id The CCC id.
-     * @return The corresponding UUID.
-     */
-    protected final UUID toUUID(final ID id) {
-        if (null==id) {
-            return null;
-        }
-        return UUID.fromString(id.toString());
     }
 }

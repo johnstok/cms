@@ -16,13 +16,13 @@ import static ccc.contentcreator.validation.Validations.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.UpdateUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -42,7 +42,7 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _email = new TextField<String>();
     private final TextArea          _roles = new TextArea();
 
-    private final ID          _userId;
+    private final UUID          _userId;
     private final UserSummary _userDTO;
     private final UserTable   _userTable;
 
@@ -52,11 +52,11 @@ public class EditUserDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param userId The ID of the selected user.
+     * @param userId The UUID of the selected user.
      * @param userDTO The userDTO of the selected user.
      * @param userTable The user table.
      */
-    public EditUserDialog(final ID userId,
+    public EditUserDialog(final UUID userId,
                           final UserSummary userDTO,
                           final UserTable userTable) {
         super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());

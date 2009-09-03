@@ -11,11 +11,12 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.dialogs.EditUserDialog;
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
@@ -31,7 +32,7 @@ public class OpenEditUserDialogAction
     extends
         RemotingAction {
 
-    private final ID _userId;
+    private final UUID _userId;
     private final UserTable _userTable;
 
     /**
@@ -39,7 +40,7 @@ public class OpenEditUserDialogAction
      * @param userTable The table displaying the users.
      * @param userId The id of the user to be edited.
      */
-    public OpenEditUserDialogAction(final ID userId,
+    public OpenEditUserDialogAction(final UUID userId,
                                     final UserTable userTable) {
         super(UI_CONSTANTS.editUser());
         _userId = userId;

@@ -14,11 +14,11 @@ package ccc.rest.dto;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 import ccc.types.MimeType;
 
 
@@ -30,7 +30,7 @@ import ccc.types.MimeType;
 public final class FileDelta implements Serializable, Jsonable {
     private MimeType _mimeType;
     private int _size;
-    private ID _data;
+    private UUID _data;
     private Map<String, String> _properties;
 
     @SuppressWarnings("unused") private FileDelta() { super(); }
@@ -44,7 +44,7 @@ public final class FileDelta implements Serializable, Jsonable {
      * @param properties The file's properties.
      */
     public FileDelta(final MimeType mimeType,
-                     final ID data,
+                     final UUID data,
                      final int size,
                      final Map<String, String> properties) {
         _mimeType = mimeType;
@@ -93,7 +93,7 @@ public final class FileDelta implements Serializable, Jsonable {
      *
      * @return Returns the data.
      */
-    public ID getData() {
+    public UUID getData() {
         return _data;
     }
 
@@ -103,7 +103,7 @@ public final class FileDelta implements Serializable, Jsonable {
      *
      * @param data The data to set.
      */
-    public void setData(final ID data) {
+    public void setData(final UUID data) {
         _data = data;
     }
 

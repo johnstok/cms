@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -50,7 +51,6 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.Duration;
-import ccc.types.ID;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
@@ -86,17 +86,17 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public String getAbsolutePath(final ID resourceId) {
+    public String getAbsolutePath(final UUID resourceId) {
         return
-            _resources.find(Resource.class, toUUID(resourceId))
+            _resources.find(Resource.class, resourceId)
                       .absolutePath()
                       .toString();
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<LogEntrySummary> history(final ID resourceId) {
-        return mapLogEntries(_resources.history(toUUID(resourceId)));
+    public Collection<LogEntrySummary> history(final UUID resourceId) {
+        return mapLogEntries(_resources.history(resourceId));
     }
 
     /** {@inheritDoc} */
@@ -113,9 +113,9 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resource(final ID resourceId) {
+    public ResourceSummary resource(final UUID resourceId) {
         return
-            mapResource(_resources.find(Resource.class, toUUID(resourceId)));
+            mapResource(_resources.find(Resource.class, resourceId));
     }
 
     /** {@inheritDoc} */
@@ -136,15 +136,15 @@ public final class QueriesEJB
     }
 
     /** {@inheritDoc} */
-    @Override public TemplateDelta templateDelta(final ID templateId) {
+    @Override public TemplateDelta templateDelta(final UUID templateId) {
         return
-            deltaTemplate(_resources.find(Template.class, toUUID(templateId)));
+            deltaTemplate(_resources.find(Template.class, templateId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public String aliasTargetName(final ID aliasId) {
-        final Alias alias = _resources.find(Alias.class, toUUID(aliasId));
+    public String aliasTargetName(final UUID aliasId) {
+        final Alias alias = _resources.find(Alias.class, aliasId);
         if (alias != null) {
             return alias.target().name().toString();
         }
@@ -153,9 +153,9 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta fileDelta(final ID fileId) {
+    public FileDelta fileDelta(final UUID fileId) {
         return
-            deltaFile(_resources.find(File.class, toUUID(fileId)));
+            deltaFile(_resources.find(File.class, fileId));
     }
 
     /** {@inheritDoc} */
@@ -173,9 +173,9 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> metadata(final ID resourceId) {
+    public Map<String, String> metadata(final UUID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, toUUID(resourceId));
+            _resources.find(Resource.class, resourceId);
         return r.metadata();
     }
 
@@ -193,17 +193,17 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<String> roles(final ID resourceId) {
+    public Collection<String> roles(final UUID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, toUUID(resourceId));
+            _resources.find(Resource.class, resourceId);
         return r.roles();
     }
 
     /** {@inheritDoc} */
     @Override
-    public Duration cacheDuration(final ID resourceId) {
+    public Duration cacheDuration(final UUID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, toUUID(resourceId));
+            _resources.find(Resource.class, resourceId);
         return r.cache();
     }
 
@@ -216,9 +216,9 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary computeTemplate(final ID resourceId) {
+    public TemplateSummary computeTemplate(final UUID resourceId) {
         final Resource r =
-            _resources.find(Resource.class, toUUID(resourceId));
+            _resources.find(Resource.class, resourceId);
         return mapTemplate(r.computeTemplate(null));
     }
 

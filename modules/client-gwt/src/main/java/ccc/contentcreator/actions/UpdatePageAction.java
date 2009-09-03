@@ -11,10 +11,11 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.PageDelta;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -28,7 +29,7 @@ public class UpdatePageAction
     extends
         RemotingAction {
 
-    private final ID _pageId;
+    private final UUID _pageId;
     private final PageDelta _details;
     private final String _comment;
     private final boolean _majorChange;
@@ -41,7 +42,7 @@ public class UpdatePageAction
      * @param details Details of the update.
      * @param pageId The id of the page to update.
      */
-    public UpdatePageAction(final ID pageId,
+    public UpdatePageAction(final UUID pageId,
                              final PageDelta details,
                              final String comment,
                              final boolean majorChange) {
