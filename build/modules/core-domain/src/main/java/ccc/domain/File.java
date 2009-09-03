@@ -238,7 +238,7 @@ public class File
     /** {@inheritDoc} */
     @Override
     public final FileSnapshot forWorkingCopy() {
-        return new FileSnapshot(this, wc());
+        return new FileSnapshot(this, getWorkingCopy());
     }
 
     /** {@inheritDoc} */

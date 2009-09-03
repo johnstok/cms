@@ -164,7 +164,7 @@ public class Page
     /** {@inheritDoc} */
     @Override
     public final PageSnapshot forWorkingCopy() {
-        return new PageSnapshot(this, wc());
+        return new PageSnapshot(this, getWorkingCopy());
     }
 
     /** {@inheritDoc} */

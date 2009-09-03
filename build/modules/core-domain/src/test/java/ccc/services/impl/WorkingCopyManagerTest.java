@@ -50,7 +50,7 @@ public class WorkingCopyManagerTest
         // ARRANGE
         final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
         p.lock(_user);
-        p.workingCopy(p.createSnapshot());
+        p.setOrUpdateWorkingCopy(p.createSnapshot());
 
         expect(_repository.find(Resource.class, p.id())).andReturn(p);
         _audit.record(isA(LogEntry.class));
@@ -93,7 +93,7 @@ public class WorkingCopyManagerTest
 
         // ASSERT
         verifyAll();
-        assertNotNull("Page must have a working copy", page.workingCopy());
+        assertNotNull("Page must have a working copy", page.getOrCreateWorkingCopy());
     }
 
 

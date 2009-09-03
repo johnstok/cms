@@ -68,10 +68,10 @@ public class DefaultRendererTest
                 _rm,
                 Paragraph.fromText("bar", "baz"));
         p.publish(new User("aaaa", "password"));
-        final PageDelta delta = p.workingCopy();
+        final PageDelta delta = p.getOrCreateWorkingCopy();
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));
-        p.workingCopy(delta);
+        p.setOrUpdateWorkingCopy(delta);
 
         // ACT
         rr.renderWorkingCopy(p, _noParams);
@@ -94,10 +94,10 @@ public class DefaultRendererTest
                 null,
                 _rm,
                 Paragraph.fromText("bar", "baz"));
-        final PageDelta delta = p.workingCopy();
+        final PageDelta delta = p.getOrCreateWorkingCopy();
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));
-        p.workingCopy(delta);
+        p.setOrUpdateWorkingCopy(delta);
 
         // ACT
         final Response r = _renderer.renderWorkingCopy(p, _noParams);

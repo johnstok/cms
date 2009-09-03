@@ -69,8 +69,8 @@ public class UpdatePageCommand extends UpdateResourceCommand{
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, isMajorEdit, comment);
 
-        page.workingCopy(delta);
-        page.applySnapshot(rm);
+        page.setOrUpdateWorkingCopy(delta);
+        page.applyWorkingCopy(rm);
 
         update(page, comment, isMajorEdit, actor, happenedOn);
     }
