@@ -31,7 +31,7 @@ public abstract class AbstractCommandTest
     extends
         TestCase {
 
-    protected final User _user = new User("currentUser");
+    protected final User _user = new User("currentUser", "password");
     protected final Date _now = new Date();
 
     protected Repository _repository;

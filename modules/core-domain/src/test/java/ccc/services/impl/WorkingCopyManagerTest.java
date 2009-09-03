@@ -18,9 +18,9 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -121,7 +121,7 @@ public class WorkingCopyManagerTest
 
     private Repository _repository;
     private LogEntryRepository _audit;
-    private final User _user = new User("currentUser");
+    private final User _user = new User("currentUser", "password");
     private final Date _now = new Date();
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

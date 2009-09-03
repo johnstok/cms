@@ -18,9 +18,9 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.commands.UpdatePageCommand;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -111,7 +111,7 @@ public class PageDaoImplTest
     private LogEntryRepository _al;
     private UpdatePageCommand _updatePage;
     private final Date _now = new Date();
-    private final User _u = new User("user");
+    private final User _u = new User("user", "password");
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

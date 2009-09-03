@@ -50,7 +50,7 @@ public class ActionExecutorImplTest
 
         // ARRANGE
         final Page p =  new Page(new ResourceName("foo"), "foo", null, _rm);
-        final User u = new User("user");
+        final User u = new User("user", "password");
         final Action a =
             new Action(
                 CommandType.RESOURCE_PUBLISH,

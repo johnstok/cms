@@ -11,14 +11,11 @@
  */
 package ccc.commands;
 
-import static ccc.persistence.QueryNames.*;
-
 import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
-import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -43,7 +40,8 @@ public class UpdateCurrentUserCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateCurrentUserCommand(final Repository repository, final LogEntryRepository audit) {
+    public UpdateCurrentUserCommand(final Repository repository,
+                                    final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
@@ -63,18 +61,20 @@ public class UpdateCurrentUserCommand {
                         final Date happenedOn,
                         final UUID userId,
                         final String email,
-                        final String password) throws InsufficientPrivilegesException {
-        if (!actor.id().equals(userId)) {
-            throw new InsufficientPrivilegesException(CommandType.USER_UPDATE, actor);
-        }
+                        final String password)
+    throws InsufficientPrivilegesException {
 
-        if (password != null) {
-            final Password p =
-                _repository.find(PASSWORD_FOR_USER, Password.class, userId);
-            p.password(password);
+        if (!actor.id().equals(userId)) {
+            throw new InsufficientPrivilegesException(
+                CommandType.USER_UPDATE, actor);
         }
 
         final User current = _repository.find(User.class, userId);
+
+        if (password != null) {
+            current.password(password);
+        }
+
         current.email(new EmailAddress(email));
 
         _audit.record(

@@ -24,6 +24,7 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.types.ID;
 import ccc.types.Paragraph;
+import ccc.types.Password;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;
@@ -61,9 +62,6 @@ public class Validations {
         "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
-
-    private static final String  STRONG_PW =
-        "^(?=.{10,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$";
 
     /**
      * TODO: Add a description of this method.
@@ -353,7 +351,7 @@ public class Validations {
             public void validate(final Validate validate) {
                 if (pw != null && pw.length() < 10) {
                     validate.addMessage(UI_CONSTANTS.passwordTooShort());
-                } else if (!pw.matches(STRONG_PW)) {
+                } else if (!Password.isStrong(pw)) {
                     validate.addMessage(UI_CONSTANTS.passwordTooWeak());
                 }
                 validate.next();

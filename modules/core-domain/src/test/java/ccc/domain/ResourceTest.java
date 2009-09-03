@@ -32,8 +32,8 @@ import ccc.types.ResourcePath;
 public final class ResourceTest extends TestCase {
 
     private final Template _default = new Template();
-    private User _jill = new User("jill");
-    private User _jack = new User("jack");
+    private User _jill = new User("jill", "password");
+    private User _jack = new User("jack", "password");
 
 
     /**
@@ -50,7 +50,7 @@ public final class ResourceTest extends TestCase {
         r.roles(Arrays.asList("foo"));
         f.add(r);
 
-        final User tom = new User("paul");
+        final User tom = new User("paul", "password");
         tom.addRole("foo");
 
         // ACT
@@ -68,7 +68,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final Resource r = new Page();
         r.roles(Arrays.asList("foo"));
-        final User tom = new User("paul");
+        final User tom = new User("paul", "password");
         tom.addRole("foo");
 
         // ACT
@@ -608,7 +608,7 @@ public final class ResourceTest extends TestCase {
     public void testLockResource() throws LockMismatchException {
 
         //ARRANGE
-        final User u = new User("blat");
+        final User u = new User("blat", "password");
         final Resource r = new DummyResource("foo");
 
         // ACT
@@ -664,7 +664,7 @@ public final class ResourceTest extends TestCase {
     public void testQueryForLockedByUser() throws LockMismatchException {
 
         //ARRANGE
-        final User u = new User("blat");
+        final User u = new User("blat", "password");
         final Resource r = new DummyResource("foo");
 
         // ACT
@@ -982,7 +982,7 @@ public final class ResourceTest extends TestCase {
     public void testPublish() {
 
         //ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
         final Resource p = new DummyResource("foo");
 
         // ACT
@@ -1016,7 +1016,7 @@ public final class ResourceTest extends TestCase {
     public void testIsVisibleTrue() throws CccCheckedException {
 
         //ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
 
         final Folder f1 = new Folder("parent1");
         f1.publish(u);
@@ -1045,7 +1045,7 @@ public final class ResourceTest extends TestCase {
     public void testIsVisibleFalse() throws CccCheckedException {
 
         //ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
 
         final Folder f1 = new Folder("parent1");
 

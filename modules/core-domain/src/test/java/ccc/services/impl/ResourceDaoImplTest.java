@@ -30,12 +30,12 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
@@ -596,9 +596,9 @@ public class ResourceDaoImplTest
     private Resource _r;
     private Folder _parent;
 
-    private final User _regularUser = new User("regular");
-    private final User _anotherUser = new User("another");
-    private final User _adminUser = new User("admin"){{
+    private final User _regularUser = new User("regular", "password");
+    private final User _anotherUser = new User("another", "password");
+    private final User _adminUser = new User("admin", "password"){{
        addRole(CreatorRoles.ADMINISTRATOR);
     }};
     private final RevisionMetadata _rm =

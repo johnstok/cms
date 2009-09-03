@@ -3,7 +3,7 @@
         <authentication>
             <login-module code="ccc.security.CCCLoginModule" flag="required">
                 <module-option name="dsJndiName">java:/${application.prefix}</module-option>
-                <module-option name="principalsQuery">SELECT users.id, passwords.hash, passwords.id  FROM passwords, users WHERE passwords.user_id=users.id AND users.username=?</module-option>
+                <module-option name="principalsQuery">SELECT users.id, users.hash, users.id  FROM users WHERE users.username=?</module-option>
                 <module-option name="rolesQuery">SELECT role FROM user_roles where user_id=?</module-option>
             </login-module>
         </authentication>

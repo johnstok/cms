@@ -13,7 +13,11 @@ package ccc.domain;
 
 import static ccc.types.DBC.*;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,12 +39,13 @@ import ccc.types.EmailAddress;
 public class User extends Entity {
 
     /** SYSTEM_USER : User. */
-    public static final User SYSTEM_USER = new User("SYSTEM");
+    public static final User SYSTEM_USER = new User("SYSTEM", "SYSTEM");
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
     private String _username; // FIXME: Use the Username class.
     private EmailAddress _email;
+    private byte[] _hash;
     private Set<String> _roles = new HashSet<String>(); // FIXME: Use the Role class.
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -54,10 +59,12 @@ public class User extends Entity {
      * Constructor.
      *
      * @param username The user's unique name within CCC.
+     * @param passwordString The unhashed password as a string.
      */
-    public User(final String username) {
+    public User(final String username, final String passwordString) {
         DBC.require().notEmpty(username);
         _username = username;
+        _hash = hash(passwordString, id().toString());
     }
 
     /**
@@ -196,6 +203,80 @@ public class User extends Entity {
      */
     public void addMetadata(final Map<String, String> metadata) {
         _metadata.putAll(metadata);
+    }
+
+
+    /**
+     * Mutator for the password.
+     *
+     * @param passwordString The new password.
+     */
+    public void password(final String passwordString) {
+        _hash = hash(passwordString, id().toString());
+    }
+
+
+    /**
+     * Compares hash of the passwordString to the field hash.
+     *
+     * @param passwordString The unhashed password as a string.
+     * @return True if passwordString's hash matches.
+     */
+    public boolean matches(final String passwordString) {
+        return Arrays.equals(hash(passwordString, id().toString()), _hash);
+    }
+
+
+    /**
+     * Hash a password.
+     *
+     * @param passwordString A string representing the password to hash.
+     * @param saltString A string representing the salt to use for hashing.
+     * @return The hashed password as a byte array.
+     */
+    public static byte[] hash(final String passwordString,
+                              final String saltString) {
+
+        try {
+            // Prepare
+            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final Charset utf8 = Charset.forName("UTF-8");
+            final byte[] salt = saltString.getBytes(utf8);
+            final byte[] password = passwordString.getBytes(utf8);
+
+            // Compute initial hash
+            digest.reset();
+            digest.update(salt);
+            digest.update(password);
+            byte[] hash = digest.digest();
+
+            // Perform 1000 repetitions
+            for (int i = 0; i < 1000; i++) {
+                digest.reset();
+                hash = digest.digest(hash);
+            }
+
+            return hash;
+
+        } catch (final NoSuchAlgorithmException e) {
+            throw new CCCException("Failed to compute password digest.", e);
+        }
+    }
+
+
+    /**
+     * Test whether a hash matches the specified password.
+     *
+     * @param expected The expected hash.
+     * @param password The password to test.
+     * @param salt The salt to use.
+     * @return True if the hashed password matches the expected hash; false
+     *      otherwise.
+     */
+    public static boolean matches(final byte[] expected,
+                                  final String password,
+                                  final String salt) {
+        return Arrays.equals(expected, hash(password, salt));
     }
 
 

@@ -14,7 +14,6 @@ package ccc.commands;
 import java.util.Date;
 
 import ccc.domain.LogEntry;
-import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -40,7 +39,8 @@ public class CreateUserCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public CreateUserCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateUserCommand(final Repository repository,
+                             final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
@@ -49,7 +49,6 @@ public class CreateUserCommand {
      * Create new user.
      *
      * @param delta The properties for the new user.
-     * @param password The password to be used for the user.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
@@ -58,15 +57,12 @@ public class CreateUserCommand {
     public User execute(final User actor,
                         final Date happenedOn,
                         final UserSummary delta) {
-        final User user = new User(delta.getUsername().toString());
+        final User user =
+            new User(delta.getUsername().toString(), delta.getPassword());
         user.email(new EmailAddress(delta.getEmail()));
         user.roles(delta.getRoles());
         user.addMetadata(delta.getMetadata());
         _repository.create(user);
-
-        final Password defaultPassword =
-            new Password(user, delta.getPassword());
-        _repository.create(defaultPassword);
 
         _audit.record(
             new LogEntry(

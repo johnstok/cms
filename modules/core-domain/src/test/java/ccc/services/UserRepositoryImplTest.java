@@ -59,7 +59,7 @@ public class UserRepositoryImplTest
     public void testLoggedInUser() {
 
         // ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
         final Principal p = new Principal() {
             @Override public String getName() { return "user"; }};
         expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "user"))

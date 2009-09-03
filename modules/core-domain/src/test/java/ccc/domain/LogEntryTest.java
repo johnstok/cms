@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link LogEntry} class.
  * TODO: Test that summary cannot be longer than 1024 chars.
+ * FIXME: Commented out tests.
  *
  * @author Civic Computing Ltd.
  */
@@ -278,7 +279,7 @@ public class LogEntryTest
 //        assertEquals("{\"roles\":[\"sup\",\"zep\"]}", le.detail());
 //    }
 
-    private final User _actor = new User("actor");
+    private final User _actor = new User("actor", "password");
     private final Date _happenedOn = new Date();
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
