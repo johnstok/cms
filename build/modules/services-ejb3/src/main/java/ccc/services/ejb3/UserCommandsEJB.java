@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
@@ -49,7 +50,7 @@ import ccc.types.Username;
 @Stateless(name=Users.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Users.class)
-@RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
+@RolesAllowed({})
 public class UserCommandsEJB
     extends
         BaseCommands
@@ -59,13 +60,13 @@ public class UserCommandsEJB
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
-    private LogEntryRepository           _audit;
+    private LogEntryRepository _audit;
 
 
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public UserSummary createUser(final UserSummary delta) {
         return mapUser(
             new CreateUserCommand(_bdao, _audit).execute(
@@ -75,7 +76,7 @@ public class UserCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void updateUser(final ID userId, final UserSummary delta) {
         new UpdateUserCommand(_bdao, _audit).execute(
             loggedInUser(_context), new Date(), toUUID(userId), delta);
@@ -84,7 +85,7 @@ public class UserCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void updateUserPassword(final ID userId, final UserSummary user) {
         new UpdatePasswordAction(_bdao, _audit).execute(
             loggedInUser(_context),
@@ -96,7 +97,7 @@ public class UserCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateYourUser(final ID userId,
                                final UserSummary user)
                                                  throws CommandFailedException {
@@ -113,42 +114,42 @@ public class UserCommandsEJB
     }
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public boolean usernameExists(final Username username) {
         return _users.usernameExists(username.toString());
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public UserSummary loggedInUser() {
         return mapUser(loggedInUser(_context));
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserSummary> listUsers() {
         return mapUsers(_users.listUsers());
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserSummary> listUsersWithEmail(final String email) {
         return mapUsers(_users.listUsersWithEmail(email));
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserSummary> listUsersWithRole(final String role) {
         return mapUsers(_users.listUsersWithRole(role));
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserSummary> listUsersWithUsername(
                                                     final String username) {
         return mapUsers(_users.listUsersWithUsername(username));
@@ -156,7 +157,7 @@ public class UserCommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public UserSummary userDelta(final ID userId) {
         return
         deltaUser(_users.find(toUUID(userId)));

@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ import ccc.types.ResourcePath;
 @Stateless(name=Queries.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Queries.class)
-@RolesAllowed({"ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"})
+@RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
 public final class QueriesEJB
     extends
         ModelTranslation

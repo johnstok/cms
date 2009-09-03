@@ -11,6 +11,7 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.InputStream;
@@ -84,10 +85,10 @@ import ccc.types.ResourceName;
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Commands.class)
 @Local(LocalCommands.class)
-@RolesAllowed({}) // "ADMINISTRATOR", "CONTENT_CREATOR", "SITE_BUILDER"
+@RolesAllowed({})
 public class CommandsEJB
     extends
-   		BaseCommands
+        BaseCommands
     implements
         Commands, LocalCommands {
 
@@ -99,7 +100,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createAlias(final ID parentId,
                                        final String name,
                                        final ID targetId)
@@ -121,7 +122,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createTemplate(final ID parentId,
                                           final TemplateDelta delta,
                                           final String title,
@@ -147,14 +148,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void lock(final ID resourceId) throws CommandFailedException {
         lock(resourceId, loggedInUserId(), new Date());
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void lock(final ID resourceId,
                      final ID actorId,
                      final Date happenedOn) throws CommandFailedException {
@@ -169,7 +170,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void move(final ID resourceId,
                      final ID newParentId) throws CommandFailedException {
         try {
@@ -186,7 +187,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void publish(final ID resourceId) throws CommandFailedException {
         try {
             new PublishCommand(_audit).execute(
@@ -201,7 +202,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void publish(final ID resourceId,
                         final ID userId,
                         final Date date) throws CommandFailedException {
@@ -218,7 +219,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void rename(final ID resourceId,
                        final String name) throws CommandFailedException {
             try {
@@ -232,14 +233,14 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void unlock(final ID resourceId) throws CommandFailedException {
         unlock(resourceId, loggedInUserId(), new Date());
     }
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void unlock(final ID resourceId,
                        final ID actorId,
                        final Date happenedOn) throws CommandFailedException {
@@ -254,7 +255,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void unpublish(final ID resourceId) throws CommandFailedException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
@@ -267,7 +268,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void unpublish(final ID resourceId,
                           final ID userId,
                           final Date publishDate)
@@ -285,7 +286,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateAlias(final ID aliasId,
                             final AliasDelta delta)
                                                  throws CommandFailedException {
@@ -305,7 +306,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void createWorkingCopy(final ID resourceId, final long index)
                                                  throws CommandFailedException {
         try {
@@ -324,7 +325,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId)
                                                  throws CommandFailedException {
@@ -334,7 +335,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void updateResourceTemplate(final ID resourceId,
                                        final ID templateId,
                                        final ID actorId,
@@ -355,7 +356,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateTemplate(final ID templateId,
                                final TemplateDelta delta)
                                                  throws CommandFailedException {
@@ -370,7 +371,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include)
                                                  throws CommandFailedException {
@@ -379,7 +380,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void includeInMainMenu(final ID resourceId,
                                   final boolean include,
                                   final ID actorId,
@@ -396,7 +397,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateMetadata(final ID resourceId,
                                    final String title,
                                    final String description,
@@ -417,7 +418,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void updateMetadata(final ID resourceId,
                                final String title,
                                final String description,
@@ -445,7 +446,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public ResourceSummary createSearch(final ID parentId,
                                         final String title)
                                                  throws CommandFailedException {
@@ -462,7 +463,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void cancelAction(final ID actionId) {
         new CancelActionCommand(_bdao, _audit).execute(
             loggedInUser(), new Date(), toUUID(actionId));
@@ -470,7 +471,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void createAction(final ID resourceId,
                              final CommandType action,
                              final Date executeAfter,
@@ -491,7 +492,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles)
                                                  throws CommandFailedException {
@@ -501,7 +502,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed({ADMINISTRATOR})
     public void changeRoles(final ID resourceId,
                             final Collection<String> roles,
                             final ID actorId,
@@ -518,7 +519,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void applyWorkingCopy(final ID resourceId)
                                                  throws CommandFailedException {
         try {
@@ -532,7 +533,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void applyWorkingCopy(final ID resourceId,
                                  final ID userId,
                                  final Date happenedOn,
@@ -554,7 +555,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"SITE_BUILDER"})
+    @RolesAllowed({SITE_BUILDER})
     public void updateCacheDuration(final ID resourceId,
                                     final Duration duration)
                                                  throws CommandFailedException {
@@ -569,7 +570,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createFile(final ID parentFolder,
                                       final FileDelta file,
                                       final String resourceName,
@@ -611,7 +612,7 @@ public class CommandsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"CONTENT_CREATOR"})
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateFile(final ID fileId,
                            final FileDelta fileDelta,
                            final String comment,
