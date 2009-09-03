@@ -24,30 +24,16 @@ import java.util.Map;
 import junit.framework.TestCase;
 import ccc.commons.Testing;
 import ccc.domain.Alias;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
-import ccc.rendering.CharEncodingHeader;
-import ccc.rendering.ContentTypeHeader;
-import ccc.rendering.DateHeader;
-import ccc.rendering.DefaultRenderer;
-import ccc.rendering.FileBody;
-import ccc.rendering.Header;
-import ccc.rendering.IntHeader;
-import ccc.rendering.NotFoundException;
-import ccc.rendering.PageBody;
-import ccc.rendering.RedirectRequiredException;
-import ccc.rendering.Renderer;
-import ccc.rendering.Response;
-import ccc.rendering.StatefulReader;
-import ccc.rendering.StringHeader;
 import ccc.rest.dto.PageDelta;
 import ccc.search.SearchEngine;
 import ccc.types.MimeType;
@@ -81,7 +67,7 @@ public class DefaultRendererTest
                 null,
                 _rm,
                 Paragraph.fromText("bar", "baz"));
-        p.publish(new User("aaaa"));
+        p.publish(new User("aaaa", "password"));
         final PageDelta delta = p.workingCopy();
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));
@@ -473,7 +459,7 @@ public class DefaultRendererTest
     private final FileRepository _dm = Testing.dummy(FileRepository.class);
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
     private final StatefulReader _sr = Testing.stub(StatefulReader.class);
-    private final User _user = new User("fooo");
+    private final User _user = new User("fooo", "password");
     private final Map<String, String[]> _noParams =
         new HashMap<String, String[]>();
     private final RevisionMetadata _rm =

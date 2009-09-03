@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.SimplePrincipal;
 
-import ccc.domain.Password;
+import ccc.domain.User;
 
 
 
@@ -128,7 +128,7 @@ public class CCCLoginModule implements LoginModule {
             _roleGroup = createRoles(_roles);
 
             final boolean passwordOk =
-                Password.matches(
+                User.matches(
                     (byte[]) _user[1],
                     new String(pc.getPassword()),
                     (String) _user[2]);

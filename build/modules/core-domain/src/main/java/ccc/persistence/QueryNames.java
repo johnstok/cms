@@ -60,9 +60,6 @@ public final class QueryNames {
     /** USERS_WITH_ROLE : String. */
     public static final String USERS_WITH_ROLE = "usersWithRole";
 
-    /** PASSWORD_FOR_USER : String. */
-    public static final String PASSWORD_FOR_USER = "passwordForUser";
-
     /** RESOURCES_LOCKED_BY_USER : String. */
     public static final String RESOURCES_LOCKED_BY_USER =
         "resourcesLockedByUser";

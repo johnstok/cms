@@ -65,7 +65,7 @@ public class JdbcDatabaseTest
     public void testLookupUserSucceeds() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
@@ -102,7 +102,7 @@ public class JdbcDatabaseTest
     public void testLookupUserFailsForMissingUser() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
@@ -131,7 +131,7 @@ public class JdbcDatabaseTest
     public void testLookupUserFailsForDuplicateUsers() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
@@ -171,7 +171,7 @@ public class JdbcDatabaseTest
     public void testLookupRoles() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user");
+        final User u = new User("user", "password");
         u.addRole(CreatorRoles.ADMINISTRATOR);
         u.addRole(CreatorRoles.CONTENT_CREATOR);
 

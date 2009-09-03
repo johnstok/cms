@@ -11,6 +11,10 @@
  */
 package ccc.domain;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +25,8 @@ import ccc.types.EmailAddress;
 
 /**
  * Tests for the {@link User} class.
+ * TODO: Disallow NULL or empty password.
+ * TODO: Validate password characters, min length, max length(?)
  *
  * @author Civic Computing Ltd.
  */
@@ -31,10 +37,64 @@ public class UserTest
     /**
      * Test.
      */
+    public void testPasswordSetFromConstructor() {
+
+        // ARRANGE
+
+        // ACT
+        final User u = new User("dummy", "password");
+
+        // ASSERT
+        assertTrue("Password should match.", u.matches("password"));
+    }
+
+    /**
+     * Test.
+     */
+    public void testHash() {
+
+        // ARRANGE
+        final String password = "password";
+        final User u = new User("dummy", password);
+
+        // ACT
+        final byte[] hash = User.hash(password, u.id().toString());
+
+        // ASSERT
+        assertEquals(SHA_HASH_LENGTH, hash.length);
+        assertTrue(
+            "Hashes should be equal.",
+            Arrays.equals(hash(u, "password"), hash));
+    }
+
+    /**
+     * Test.
+     */
+    public void testChangePassword() {
+        // ARRANGE
+        final String password = "newPass";
+        final User u = new User("dummy", "password");
+
+        // ACT
+        u.password("newPass");
+        final byte[] hash = User.hash(password, u.id().toString());
+
+        // ASSERT
+        assertEquals(SHA_HASH_LENGTH, hash.length);
+        assertTrue(
+            "Hashes should be equal.",
+            Arrays.equals(hash(u, password), hash));
+    }
+
+    private static final int SHA_HASH_LENGTH = 32;
+
+    /**
+     * Test.
+     */
     public void testRolesAccessorHandlesNoRoles() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
 
         // ACT
         final Set<String> roles = u.roles();
@@ -49,8 +109,8 @@ public class UserTest
     public void testEqualityIsIdBased() {
 
         // ARRANGE
-        final User u1 = new User("dummy");
-        final User u2 = new User("dummy");
+        final User u1 = new User("dummy", "password");
+        final User u2 = new User("dummy", "password");
 
         // ASSERT
         assertEquals(u1, u1);
@@ -66,7 +126,7 @@ public class UserTest
     public void testAccessorForUsername() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
 
         // ACT
         final String username = u.username();
@@ -82,7 +142,7 @@ public class UserTest
 
         // ACT
         try {
-            new User("");
+            new User("", "password");
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -100,7 +160,7 @@ public class UserTest
 
         // ACT
         try {
-            new User(null);
+            new User(null, "password");
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -115,7 +175,7 @@ public class UserTest
     public void testAccessorForEmail() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -131,7 +191,7 @@ public class UserTest
     public void testCreatorRoles() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         final Set<String> expected =
             new HashSet<String>() {{
                 add(CreatorRoles.CONTENT_CREATOR);
@@ -160,7 +220,7 @@ public class UserTest
     public void testRejectsEmptyEmail() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
 
         // ACT
         try {
@@ -175,7 +235,7 @@ public class UserTest
 
     /**
      * Test.
-     * Disabled for now, to allow migration of old data.
+     * TODO: Disabled for now, to allow migration of old data.
      */
     public void testRejectsInvalidEmail() {
 //
@@ -200,7 +260,7 @@ public class UserTest
     public void testUsernameMutatorRejectsNullUsername() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -218,7 +278,7 @@ public class UserTest
     public void testUsernameMutatorRejectsEmptyUsername() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -238,7 +298,7 @@ public class UserTest
     public void testUsernameMutatorRejectsInvalidUsername() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -259,7 +319,7 @@ public class UserTest
     public void testUsernameMutator() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -275,7 +335,7 @@ public class UserTest
     public void testReplaceRoles() {
 
         // ARRANGE
-        final User u = new User("dummy");
+        final User u = new User("dummy", "password");
         u.addRole(CreatorRoles.CONTENT_CREATOR);
         u.addRole(CreatorRoles.SITE_BUILDER);
         u.addRole(CreatorRoles.SITE_BUILDER);
@@ -303,4 +363,29 @@ public class UserTest
             u.hasRole(CreatorRoles.ADMINISTRATOR));
     }
 
+    private byte[] hash(final User u, final String passwordString) {
+        try {
+            // Prepare
+            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final Charset utf8 = Charset.forName("UTF-8");
+            final byte[] salt = u.id().toString().getBytes(utf8);
+            final byte[] password = passwordString.getBytes(utf8);
+
+            // Compute
+            digest.reset();
+            digest.update(salt);
+            digest.update(password);
+            byte[] hash = digest.digest();
+
+            for (int i = 0; i < 1000; i++) {
+                digest.reset();
+                hash = digest.digest(hash);
+            }
+
+            return hash;
+
+        } catch (final NoSuchAlgorithmException e) {
+            throw new CCCException("Failed to compute password digest.", e);
+        }
+    }
 }

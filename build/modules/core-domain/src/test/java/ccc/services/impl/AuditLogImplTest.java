@@ -24,6 +24,7 @@ import ccc.persistence.Repository;
 
 /**
  * Tests for the {@link LogEntryRepository} class.
+ * FIXME: Commented out tests.
  *
  * @author Civic Computing Ltd.
  */
@@ -218,7 +219,7 @@ public class AuditLogImplTest
     }
 
 
-    private final User _actor = new User("actor");
+    private final User _actor = new User("actor", "password");
     private final Date _happenedOn = new Date();
     private Repository _em;
     private final RevisionMetadata _rm =

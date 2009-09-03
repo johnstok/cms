@@ -118,7 +118,7 @@ public class RenderResourceAction
 
 
     private void checkSecurity(final Resource r, final User user) {
-        final User u = (null==user) ? new User("anonymous") : user;
+        final User u = (null==user) ? new User("anonymous", "password") : user;
         if (!r.isAccessibleTo(u)) {
             throw new AuthenticationRequiredException(r);
         }

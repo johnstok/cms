@@ -14,7 +14,6 @@ package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +24,6 @@ import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.LogEntry;
-import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.QueryNames;
@@ -90,7 +88,6 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         final Date now = new Date();
         _repository.create(isA(User.class));
-        _repository.create(isA(Password.class));
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
@@ -210,34 +207,32 @@ public class UserManagerImplTest extends TestCase {
 
         // ARRANGE
         final Date now = new Date();
-        final Password pw = new Password(_u, "foo");
 
-        expect(_repository.find(QueryNames.PASSWORD_FOR_USER, Password.class, _u.id()))
-            .andReturn(pw);
+        expect(_repository.find(User.class, _u.id())).andReturn(_u);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdatePasswordAction up = new UpdatePasswordAction(_repository, _audit);
+        final UpdatePasswordAction up =
+            new UpdatePasswordAction(_repository, _audit);
 
         // ACT
         up.execute(_u, now, _u.id(), "newPass");
 
         // ASSERT
         verifyAll();
-        assertTrue(pw.matches("newPass"));
+        assertTrue(_u.matches("newPass"));
     }
 
     private User _u;
     private LogEntryRepository _audit;
     private UserSummary _uDelta;
     private Repository _repository;
-    private Principal _p;
     private UserRepositoryImpl _um;
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
-        _u = new User("testUser");
+    protected void setUp() {
+        _u = new User("testUser", "password");
         _uDelta =
             new UserSummary(
                 "new.email@civicuk.com",
@@ -246,11 +241,6 @@ public class UserManagerImplTest extends TestCase {
                 new HashMap<String, String>(),
                 "foopass");
         _u.email(new EmailAddress("test@civicuk.com"));
-        _p = new Principal(){
-            @Override public String getName() {
-                return _u.id().toString();
-            }
-        };
         _repository = createStrictMock(Repository.class);
         _audit = createStrictMock(LogEntryRepository.class);
         _um = new UserRepositoryImpl(_repository);
@@ -258,11 +248,10 @@ public class UserManagerImplTest extends TestCase {
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         _audit = null;
         _u = null;
         _uDelta = null;
-        _p = null;
         _repository = null;
         _um = null;
     }

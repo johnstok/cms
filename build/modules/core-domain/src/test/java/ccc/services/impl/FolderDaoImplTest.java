@@ -20,11 +20,11 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.commands.UpdateFolderCommand;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
@@ -145,7 +145,7 @@ public class FolderDaoImplTest
     private void verifyAll() {
         verify(_rdao, _al, _repository);
     }
-    private final User _regularUser = new User("regular");
+    private final User _regularUser = new User("regular", "password");
 
     private Folder _f;
 

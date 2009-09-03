@@ -31,7 +31,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 
 import junit.framework.TestCase;
-import ccc.domain.Password;
+import ccc.domain.User;
 
 
 /**
@@ -58,7 +58,7 @@ public class CCCLoginModuleTest
         expect(_db.lookupUser("foo")).andReturn(
             new Object[]{
                 u.toString(),
-                Password.hash("a", pw.toString()),
+                User.hash("a", pw.toString()),
                 pw.toString()
             });
         expect(_db.lookupRoles(u.toString())).andReturn(new HashSet<String>());

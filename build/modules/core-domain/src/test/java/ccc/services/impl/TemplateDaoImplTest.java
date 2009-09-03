@@ -17,8 +17,8 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.commands.UpdateTemplateCommand;
-import ccc.domain.LogEntry;
 import ccc.domain.CccCheckedException;
+import ccc.domain.LogEntry;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -95,5 +95,5 @@ public class TemplateDaoImplTest
     private Repository _repository;
     private LogEntryRepository _al;
     private final Date _now = new Date();
-    private final User _user = new User("user");
+    private final User _user = new User("user", "password");
 }

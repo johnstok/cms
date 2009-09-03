@@ -11,16 +11,14 @@
  */
 package ccc.commands;
 
-import static ccc.persistence.QueryNames.*;
-
 import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.LogEntry;
-import ccc.domain.Password;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
+import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
 
@@ -40,7 +38,8 @@ public class UpdatePasswordAction {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdatePasswordAction(final Repository repository, final LogEntryRepository audit) {
+    public UpdatePasswordAction(final Repository repository,
+                                final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
@@ -58,16 +57,16 @@ public class UpdatePasswordAction {
                         final Date happenedOn,
                         final UUID userId,
                         final String password) {
-        final Password p =
-                _repository.find(PASSWORD_FOR_USER, Password.class, userId);
-        p.password(password);
+        final User u =
+                _repository.find(User.class, userId);
+        u.password(password);
 
         final LogEntry le = new LogEntry(
             actor,
             CommandType.USER_CHANGE_PASSWORD,
             happenedOn,
-            p.id(),
-            "{}");
+            u.id(),
+            new JsonImpl(u).getDetail());
         _audit.record(le);
     }
 }
