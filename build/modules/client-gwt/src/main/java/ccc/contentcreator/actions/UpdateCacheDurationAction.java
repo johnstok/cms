@@ -11,10 +11,11 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -28,7 +29,7 @@ public abstract class UpdateCacheDurationAction
     extends
         RemotingAction {
 
-    private final ID _resourceId;
+    private final UUID _resourceId;
     private final Duration _duration;
 
 
@@ -37,7 +38,7 @@ public abstract class UpdateCacheDurationAction
      * @param duration The new cache duration.
      * @param resourceId The resource to update.
      */
-    public UpdateCacheDurationAction(final ID resourceId,
+    public UpdateCacheDurationAction(final UUID resourceId,
                                       final Duration duration) {
         super(GLOBALS.uiConstants().editCacheDuration(), RequestBuilder.POST);
         _resourceId = resourceId;

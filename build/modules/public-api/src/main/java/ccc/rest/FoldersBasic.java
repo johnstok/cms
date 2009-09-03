@@ -13,6 +13,7 @@
 package ccc.rest;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,7 +27,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 
 /**
@@ -47,7 +47,7 @@ public interface FoldersBasic {
     @GET
     @Path("/folders/{id}/folder-children")
     @NoCache
-    Collection<ResourceSummary> getFolderChildren(@PathParam("id") ID folderId);
+    Collection<ResourceSummary> getFolderChildren(@PathParam("id") UUID folderId);
 
     /**
      * List all of the children of the specified folder.
@@ -58,7 +58,7 @@ public interface FoldersBasic {
     @GET
     @Path("/folders/{id}/children")
     @NoCache
-    Collection<ResourceSummary> getChildren(@PathParam("id") ID folderId);
+    Collection<ResourceSummary> getChildren(@PathParam("id") UUID folderId);
 
     /**
      * List all of the children of the specified folder in manual order.
@@ -69,7 +69,7 @@ public interface FoldersBasic {
     @GET
     @Path("/folders/{id}/children-manual-order")
     @NoCache
-    Collection<ResourceSummary> getChildrenManualOrder(@PathParam("id") ID folderId);
+    Collection<ResourceSummary> getChildrenManualOrder(@PathParam("id") UUID folderId);
 
     /**
      * Query whether given folder has a resource with given name.
@@ -82,7 +82,7 @@ public interface FoldersBasic {
     @GET
     @Path("/folders/{id}/{name}/exists")
     @NoCache
-    boolean nameExistsInFolder(@PathParam("id") final ID folderId,
+    boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
                                @PathParam("name") final String name);
 
     /**
@@ -118,6 +118,6 @@ public interface FoldersBasic {
      */
     @POST
     @Path("/folders/{id}")
-    void updateFolder(@PathParam("id") ID folderId, FolderDelta delta) throws CommandFailedException;
+    void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta) throws CommandFailedException;
 
 }

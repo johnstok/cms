@@ -13,10 +13,10 @@ package ccc.rest;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 
 /**
@@ -44,7 +44,7 @@ public interface LocalCommands extends Commands {
      *
      * @throws CommandFailedException If an error occurs creating the file.
      */
-    ResourceSummary createFile(ID parentFolder,
+    ResourceSummary createFile(UUID parentFolder,
                                FileDelta file,
                                String resourceName,
                                InputStream dataStream,
@@ -66,7 +66,7 @@ public interface LocalCommands extends Commands {
      *
      * @throws CommandFailedException If an error occurs updating the file.
      */
-    void updateFile(ID fileId,
+    void updateFile(UUID fileId,
                     FileDelta fileDelta,
                     String comment,
                     boolean isMajorEdit,

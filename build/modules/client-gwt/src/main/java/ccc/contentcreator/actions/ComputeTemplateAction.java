@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.types.ID;
+import java.util.UUID;
 
 
 /**
@@ -23,7 +23,7 @@ public abstract class ComputeTemplateAction
     extends
         RemotingAction {
 
-    private final ID _id;
+    private final UUID _id;
 
     /**
      * Constructor.
@@ -31,7 +31,7 @@ public abstract class ComputeTemplateAction
      * @param actionName The name of this action.
      * @param id The id of the resource.
      */
-    public ComputeTemplateAction(final String actionName, final ID id) {
+    public ComputeTemplateAction(final String actionName, final UUID id) {
         super(actionName);
         _id = id;
     }

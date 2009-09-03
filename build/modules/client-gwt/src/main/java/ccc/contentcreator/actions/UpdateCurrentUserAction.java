@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -29,7 +30,7 @@ public abstract class UpdateCurrentUserAction
 
     private final String _newEmail;
     private final String _newPassword;
-    private final ID _userId;
+    private final UUID _userId;
 
 
     /**
@@ -38,7 +39,7 @@ public abstract class UpdateCurrentUserAction
      * @param newEmail The new email.
      * @param newPassword The user's new password.
      */
-    public UpdateCurrentUserAction(final ID userId,
+    public UpdateCurrentUserAction(final UUID userId,
                                 final String newEmail,
                                 final String newPassword) {
         super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);

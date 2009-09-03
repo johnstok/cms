@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -28,7 +29,7 @@ public abstract class UpdateUserPasswordAction
         RemotingAction {
 
     private final UserSummary _newPassword;
-    private final ID _userId;
+    private final UUID _userId;
 
 
     /**
@@ -36,7 +37,8 @@ public abstract class UpdateUserPasswordAction
      * @param newPassword The user's new password.
      * @param userId The user's id.
      */
-    public UpdateUserPasswordAction(final ID userId, final UserSummary newPassword) {
+    public UpdateUserPasswordAction(final UUID userId,
+                                    final UserSummary newPassword) {
         super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);
         _userId = userId;
         _newPassword = newPassword;

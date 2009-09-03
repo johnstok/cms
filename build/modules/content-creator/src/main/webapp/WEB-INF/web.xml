@@ -29,7 +29,7 @@
             ccc.rest.providers.CommandFailedExceptionMapper,
             ccc.rest.providers.DurationReader,
             ccc.rest.providers.FailureWriter,
-            ccc.rest.providers.IdReader,
+            ccc.rest.providers.UUIDProvider,
             ccc.rest.providers.AliasDeltaReader,
             ccc.rest.providers.JsonReader,
             ccc.rest.providers.TemplateDeltaReader,

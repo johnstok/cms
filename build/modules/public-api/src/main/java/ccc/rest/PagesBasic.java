@@ -13,6 +13,7 @@
 package ccc.rest;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,7 +28,6 @@ import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageNew;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
-import ccc.types.ID;
 
 
 /**
@@ -60,7 +60,7 @@ public interface PagesBasic {
     @GET
     @Path("/pages/{id}/delta")
     @NoCache
-    PageDelta pageDelta(@PathParam("id") ID pageId);
+    PageDelta pageDelta(@PathParam("id") UUID pageId);
 
 
     /**
@@ -73,7 +73,7 @@ public interface PagesBasic {
      */
     @POST
     @Path("/pages/{id}")
-    void updatePage(@PathParam("id") ID pageId, Json delta)
+    void updatePage(@PathParam("id") UUID pageId, Json delta)
     throws CommandFailedException;
 
 
@@ -87,7 +87,7 @@ public interface PagesBasic {
      */
     @POST
     @Path("/pages/{id}/wc")
-    void updateWorkingCopy(@PathParam("id") ID pageId, PageDelta delta)
+    void updateWorkingCopy(@PathParam("id") UUID pageId, PageDelta delta)
     throws CommandFailedException;
 
 

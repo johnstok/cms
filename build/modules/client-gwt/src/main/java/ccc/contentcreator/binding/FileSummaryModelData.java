@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileSummary;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -136,7 +136,7 @@ public class FileSummaryModelData
      *
      * @return The ID.
      */
-    public ID getId() {
+    public UUID getId() {
         return _fs.getId();
     }
 }

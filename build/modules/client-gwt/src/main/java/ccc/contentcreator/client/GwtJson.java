@@ -17,10 +17,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
@@ -131,14 +131,14 @@ public class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public ID getId(final String key) {
+    public UUID getId(final String key) {
         final JSONValue value = _delegate.get(key);
         if (null==value) {
             throw new RuntimeException("Missing key: "+key);
         } else if (null!=value.isNull()) {
             return null;
         }
-        return new ID(value.isString().stringValue());
+        return UUID.fromString(value.isString().stringValue());
     }
 
     /** {@inheritDoc} */
@@ -217,7 +217,7 @@ public class GwtJson
 
     /** {@inheritDoc} */
     @Override
-    public void set(final String key, final ID value) {
+    public void set(final String key, final UUID value) {
         _delegate.put(
             key,
             (null==value)

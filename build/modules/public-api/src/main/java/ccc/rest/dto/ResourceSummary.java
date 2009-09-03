@@ -15,10 +15,10 @@ import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
@@ -31,8 +31,8 @@ import ccc.types.Username;
  */
 public final class ResourceSummary implements Serializable, Jsonable {
 
-    private ID _id;
-    private ID _parentId;
+    private UUID _id;
+    private UUID _parentId;
     private String _name;
     private Username _publishedBy;
     private String _title;
@@ -45,10 +45,10 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private boolean _hasWorkingCopy;
     private Date _dateCreated;
     private Date _dateChanged;
-    private ID _templateId;
+    private UUID _templateId;
     private String _tags;
     private String _absolutePath;
-    private ID _indexPageId;
+    private UUID _indexPageId;
     private String _description;
 
     @SuppressWarnings("unused") private ResourceSummary() { super(); }
@@ -76,8 +76,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * @param indexPageId The id of the index page.
      * @param description The description of the resource.
      */
-    public ResourceSummary(final ID id,
-                           final ID parentId,
+    public ResourceSummary(final UUID id,
+                           final UUID parentId,
                            final String name,
                            final Username publishedBy,
                            final String title,
@@ -90,10 +90,10 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final boolean hasWorkingCopy,
                            final Date dateCreated,
                            final Date dateChanged,
-                           final ID templateId,
+                           final UUID templateId,
                            final String tags,
                            final String absolutePath,
-                           final ID indexPageId,
+                           final UUID indexPageId,
                            final String description) {
         _id = id;
         _parentId = parentId;
@@ -155,7 +155,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      *
      * @return Returns the id.
      */
-    public ID getId() {
+    public UUID getId() {
         return _id;
     }
 
@@ -165,7 +165,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      *
      * @return Returns the parentId.
      */
-    public ID getParentId() {
+    public UUID getParentId() {
         return _parentId;
     }
 
@@ -345,7 +345,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      *
      * @return Returns the dateChanged.
      */
-    public ID getTemplateId() {
+    public UUID getTemplateId() {
         return _templateId;
     }
 
@@ -385,7 +385,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      *
      * @param templateId The templateId to set.
      */
-    public void setTemplateId(final ID templateId) {
+    public void setTemplateId(final UUID templateId) {
         _templateId = templateId;
     }
 
@@ -446,7 +446,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      *
      * @return Returns the indexPageId.
      */
-    public ID getIndexPageId() {
+    public UUID getIndexPageId() {
 
         return _indexPageId;
     }
@@ -457,7 +457,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      *
      * @param indexPageId The indexPageId to set.
      */
-    public void setIndexPageId(final ID indexPageId) {
+    public void setIndexPageId(final UUID indexPageId) {
 
         _indexPageId = indexPageId;
     }

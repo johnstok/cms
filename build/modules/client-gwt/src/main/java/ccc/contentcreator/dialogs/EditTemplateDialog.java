@@ -12,7 +12,9 @@
 
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.actions.CreateTemplateAction_;
+import java.util.UUID;
+
+import ccc.contentcreator.actions.CreateTemplateAction;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -24,7 +26,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.types.ID;
 import ccc.types.MimeType;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
@@ -64,8 +65,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextArea _body = new TextArea();
     private final TextArea _definition = new TextArea();
 
-    private ID _id;
-    private final ID _parentFolderId;
+    private UUID _id;
+    private final UUID _parentFolderId;
     private DialogMode _mode;
     private final SingleSelectionModel _ssm;
     private TemplateDelta _model;
@@ -77,7 +78,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
      * @param parentFolderId The id of the parent folder.
      * @param ssm The selection model.
      */
-    public EditTemplateDialog(final ID parentFolderId,
+    public EditTemplateDialog(final UUID parentFolderId,
                               final SingleSelectionModel ssm) {
         super(new IGlobalsImpl().uiConstants().editTemplate(),
               new IGlobalsImpl());
@@ -252,7 +253,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 final TemplateDelta delta = model();
                 switch (_mode) {
                     case CREATE:
-                        new CreateTemplateAction_(
+                        new CreateTemplateAction(
                             _parentFolderId,
                             _name.getValue(),
                             delta){

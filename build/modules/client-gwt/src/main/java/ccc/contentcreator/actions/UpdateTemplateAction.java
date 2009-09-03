@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.TemplateDelta;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -27,7 +28,7 @@ public class UpdateTemplateAction
     extends
         RemotingAction {
 
-    private final ID _template;
+    private final UUID _template;
     private final TemplateDelta _details;
 
 
@@ -37,7 +38,7 @@ public class UpdateTemplateAction
      * @param details The new details for the template.
      * @param template The template to update.
      */
-    public UpdateTemplateAction(final ID template,
+    public UpdateTemplateAction(final UUID template,
                                  final TemplateDelta details) {
         super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
         _template = template;

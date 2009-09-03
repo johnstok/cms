@@ -11,10 +11,11 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -30,7 +31,7 @@ public abstract class CreateFolderAction
         RemotingAction {
 
     private final String _name;
-    private final ID _parentFolder;
+    private final UUID _parentFolder;
 
     /**
      * Constructor.
@@ -38,7 +39,7 @@ public abstract class CreateFolderAction
      * @param name The folder's name.
      * @param parentFolder The folder's parent folder.
      */
-    public CreateFolderAction(final ID parentFolder, final String name) {
+    public CreateFolderAction(final UUID parentFolder, final String name) {
         super(GLOBALS.uiConstants().createFolder(), RequestBuilder.POST);
         _parentFolder = parentFolder;
         _name = name;

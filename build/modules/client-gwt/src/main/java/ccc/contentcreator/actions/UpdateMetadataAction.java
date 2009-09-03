@@ -2,9 +2,9 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 1744 $
+ * Modified by   $Author: petteri $
+ * Modified on   $Date: 2009-08-28 16:17:04 +0100 (Fri, 28 Aug 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
@@ -12,9 +12,9 @@
 package ccc.contentcreator.actions;
 
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -29,7 +29,7 @@ public class UpdateMetadataAction
     extends
         RemotingAction {
 
-    private final ID _resourceId;
+    private final UUID _resourceId;
     private final String _title;
     private final String _description;
     private final String _tags;
@@ -45,7 +45,7 @@ public class UpdateMetadataAction
      * @param title The resource's title.
      * @param resourceId The resource's id.
      */
-    public UpdateMetadataAction(final ID resourceId,
+    public UpdateMetadataAction(final UUID resourceId,
                                  final String title,
                                  final String description,
                                  final String tags,

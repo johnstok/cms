@@ -49,7 +49,6 @@ import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 
@@ -86,7 +85,7 @@ public class FolderCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createFolder(final ID parentId,
+    public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
                                         final boolean publish)
@@ -104,11 +103,11 @@ public class FolderCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public ResourceSummary createFolder(final ID parentId,
+    public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
                                         final boolean publish,
-                                        final ID actorId,
+                                        final UUID actorId,
                                         final Date happenedOn)
     throws CommandFailedException {
         try {
@@ -116,7 +115,7 @@ public class FolderCommandsEJB
 
             final Folder f =
                 new CreateFolderCommand(_bdao, _audit).execute(
-                    u, happenedOn, toUUID(parentId), name, title);
+                    u, happenedOn, parentId, name, title);
 
             if (publish) {
                 f.lock(u);
@@ -151,7 +150,7 @@ public class FolderCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateFolder(final ID folderId,
+    public void updateFolder(final UUID folderId,
                              final FolderDelta delta)
                                                  throws CommandFailedException {
         try {
@@ -164,9 +163,9 @@ public class FolderCommandsEJB
             new UpdateFolderCommand(_bdao, _audit).execute(
                 loggedInUser(_context),
                  new Date(),
-                 toUUID(folderId),
+                 folderId,
                  ResourceOrder.valueOf(delta.getSortOrder()),
-                 toUUID(delta.getIndexPage()),
+                 delta.getIndexPage(),
                  list);
 
         } catch (final CccCheckedException e) {
@@ -177,9 +176,9 @@ public class FolderCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> getChildren(final ID folderId) {
+    public Collection<ResourceSummary> getChildren(final UUID folderId) {
         final Folder f =
-            _resources.find(Folder.class, toUUID(folderId));
+            _resources.find(Folder.class, folderId);
         return mapResources(
             f != null ? f.entries() : new ArrayList<Resource>());
     }
@@ -188,9 +187,9 @@ public class FolderCommandsEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                            final ID folderId) {
+                                                            final UUID folderId) {
         final Folder f =
-            _resources.find(Folder.class, toUUID(folderId));
+            _resources.find(Folder.class, folderId);
         if (f != null) {
             f.sortOrder(ResourceOrder.MANUAL);
             return mapResources(f.entries());
@@ -201,19 +200,19 @@ public class FolderCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
         final Folder f =
-            _resources.find(Folder.class, toUUID(folderId));
+            _resources.find(Folder.class, folderId);
         return mapResources(f != null ? f.folders() : new ArrayList<Folder>());
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public boolean nameExistsInFolder(final ID folderId, final String name) {
+    public boolean nameExistsInFolder(final UUID folderId, final String name) {
         // TODO handle null folderId? (for root folders)
         return
-        _resources.find(Folder.class, toUUID(folderId))
+        _resources.find(Folder.class, folderId)
                   .hasEntryWithName(new ResourceName(name));
     }
 

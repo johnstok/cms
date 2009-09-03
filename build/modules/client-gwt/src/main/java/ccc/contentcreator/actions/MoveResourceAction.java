@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.types.ID;
+import java.util.UUID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -25,8 +25,8 @@ public class MoveResourceAction
     extends
         RemotingAction {
 
-    private final ID _resource;
-    private final ID _parent;
+    private final UUID _resource;
+    private final UUID _parent;
 
 
     /**
@@ -35,7 +35,7 @@ public class MoveResourceAction
      * @param newParent The new parent folder the resource.
      * @param resource The resource to move.
      */
-    public MoveResourceAction(final ID resource, final ID newParent) {
+    public MoveResourceAction(final UUID resource, final UUID newParent) {
         super(UI_CONSTANTS.move(), RequestBuilder.POST);
         _resource = resource;
         _parent = newParent;

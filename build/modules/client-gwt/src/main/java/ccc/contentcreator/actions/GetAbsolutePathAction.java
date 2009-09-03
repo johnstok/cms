@@ -11,7 +11,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.types.ID;
+import java.util.UUID;
 
 import com.google.gwt.http.client.Response;
 
@@ -25,15 +25,16 @@ public abstract class GetAbsolutePathAction
     extends
         RemotingAction {
 
-    private final ID _resourceId;
+    private final UUID _resourceId;
 
     /**
      * Constructor.
      *
-     * @param actionName
+     * @param actionName The name of the action.
      * @param resourceId The resource's id.
      */
-    public GetAbsolutePathAction(final String actionName, final ID resourceId) {
+    public GetAbsolutePathAction(final String actionName,
+                                 final UUID resourceId) {
         super(actionName);
         _resourceId = resourceId;
     }

@@ -13,10 +13,10 @@ package ccc.contentcreator.actions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -32,7 +32,7 @@ public abstract class GetChildrenAction
     extends
         RemotingAction {
 
-    private final ID _parentId;
+    private final UUID _parentId;
 
     /**
      * Constructor.
@@ -40,7 +40,7 @@ public abstract class GetChildrenAction
      * @param actionName The name of the action.
      * @param parentId The id of the parent folder.
      */
-    public GetChildrenAction(final String actionName, final ID parentId) {
+    public GetChildrenAction(final String actionName, final UUID parentId) {
         super(actionName);
         _parentId = parentId;
     }

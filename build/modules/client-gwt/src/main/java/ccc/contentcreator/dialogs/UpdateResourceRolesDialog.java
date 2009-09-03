@@ -14,10 +14,10 @@ package ccc.contentcreator.dialogs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -34,7 +34,7 @@ public class UpdateResourceRolesDialog
     extends
         AbstractEditDialog {
 
-    private final ID _resourceId;
+    private final UUID _resourceId;
     private final TextArea _roles = new TextArea();
 
     private static final int DIALOG_WIDTH = 400;
@@ -47,7 +47,7 @@ public class UpdateResourceRolesDialog
      * @param resourceId The resource whose roles will be updated.
      * @param currentRoles The roles the resource currently has.
      */
-    public UpdateResourceRolesDialog(final ID resourceId,
+    public UpdateResourceRolesDialog(final UUID resourceId,
                                      final Collection<String> currentRoles) {
         super(new IGlobalsImpl().uiConstants().updateRoles(),
               new IGlobalsImpl());

@@ -11,10 +11,11 @@
  */
 package ccc.rest.dto;
 
+import java.util.UUID;
+
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 
@@ -25,7 +26,7 @@ import ccc.types.ID;
  */
 public class ResourceTemplatePU implements Jsonable {
 
-    private final ID _templateId;
+    private final UUID _templateId;
 
 
     /**
@@ -33,7 +34,7 @@ public class ResourceTemplatePU implements Jsonable {
      *
      * @param templateId The template to set (may be NULL).
      */
-    public ResourceTemplatePU(final ID templateId) {
+    public ResourceTemplatePU(final UUID templateId) {
         _templateId = templateId;
     }
 
@@ -43,7 +44,7 @@ public class ResourceTemplatePU implements Jsonable {
      *
      * @return Returns the templateId.
      */
-    public final ID getTemplateId() {
+    public final UUID getTemplateId() {
         return _templateId;
     }
 

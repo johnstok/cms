@@ -26,7 +26,6 @@ import ccc.persistence.FileRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.FileDelta;
-import ccc.types.ID;
 
 
 /**
@@ -80,7 +79,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
         f.confirmLock(actor);
 
         final Data d = _data.create(dataStream, fileDelta.getSize());
-        fileDelta.setData(new ID(d.id().toString()));
+        fileDelta.setData(d.id());
 
         if ("image".equals(fileDelta.getMimeType().getPrimaryType())) {
             new FileHelper().extractImageMetadata(

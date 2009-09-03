@@ -11,12 +11,13 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -27,11 +28,11 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CreateTemplateAction_
+public abstract class CreateTemplateAction
     extends
         RemotingAction {
 
-    private final ID _parentFolder;
+    private final UUID _parentFolder;
     private final String _resourceName;
     private final TemplateDelta _delta;
 
@@ -42,7 +43,7 @@ public abstract class CreateTemplateAction_
      * @param value
      * @param delta
      */
-    public CreateTemplateAction_(final ID parentFolder,
+    public CreateTemplateAction(final UUID parentFolder,
                                  final String resourceName,
                                  final TemplateDelta delta) {
         super(GLOBALS.uiConstants().createTemplate(), RequestBuilder.POST);

@@ -14,13 +14,13 @@ package ccc.rest;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 import ccc.types.Duration;
-import ccc.types.ID;
 
 
 /**
@@ -41,7 +41,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateAlias(ID aliasId, AliasDelta delta)
+    void updateAlias(UUID aliasId, AliasDelta delta)
     throws CommandFailedException;
 
     /**
@@ -52,7 +52,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateTemplate(ID templateId, TemplateDelta delta)
+    void updateTemplate(UUID templateId, TemplateDelta delta)
     throws CommandFailedException;
 
     /**
@@ -63,7 +63,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void rename(final ID resourceId, final String name)
+    void rename(final UUID resourceId, final String name)
     throws CommandFailedException;
 
     /**
@@ -75,7 +75,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void move(ID resourceId, ID newParentId)
+    void move(UUID resourceId, UUID newParentId)
     throws CommandFailedException;
 
     /**
@@ -86,7 +86,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateResourceTemplate(ID resourceId, ID templateId)
+    void updateResourceTemplate(UUID resourceId, UUID templateId)
     throws CommandFailedException;
 
     /**
@@ -99,9 +99,9 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateResourceTemplate(ID resourceId,
-                                ID templateId,
-                                ID actorId,
+    void updateResourceTemplate(UUID resourceId,
+                                UUID templateId,
+                                UUID actorId,
                                 Date happenedOn)
     throws CommandFailedException;
 
@@ -114,7 +114,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void lock(ID resourceId) throws CommandFailedException;
+    void lock(UUID resourceId) throws CommandFailedException;
 
     /**
      * Lock the specified resource.
@@ -127,7 +127,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void lock(ID resourceId, ID actorId, Date happenedOn)
+    void lock(UUID resourceId, UUID actorId, Date happenedOn)
     throws CommandFailedException;
 
     /**
@@ -140,7 +140,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void unlock(ID resourceId) throws CommandFailedException;
+    void unlock(UUID resourceId) throws CommandFailedException;
 
     /**
      * Unlock the specified Resource.
@@ -154,7 +154,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void unlock(ID resourceId, ID actorId, Date happenedOn)
+    void unlock(UUID resourceId, UUID actorId, Date happenedOn)
     throws CommandFailedException;
 
     /**
@@ -164,7 +164,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void publish(ID resourceId) throws CommandFailedException;
+    void publish(UUID resourceId) throws CommandFailedException;
 
     /**
      * Publish the specified resource.
@@ -175,7 +175,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void publish(ID resourceId, ID userId, Date publishDate)
+    void publish(UUID resourceId, UUID userId, Date publishDate)
     throws CommandFailedException;
 
     /**
@@ -185,7 +185,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void unpublish(ID resourceId) throws CommandFailedException;
+    void unpublish(UUID resourceId) throws CommandFailedException;
 
     /**
      * Unpublish the specified resource.
@@ -196,7 +196,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void unpublish(ID resourceId, ID userId, Date publishDate)
+    void unpublish(UUID resourceId, UUID userId, Date publishDate)
                                                   throws CommandFailedException;
 
     /**
@@ -207,7 +207,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void includeInMainMenu(ID resourceId, boolean include)
+    void includeInMainMenu(UUID resourceId, boolean include)
     throws CommandFailedException;
 
     /**
@@ -220,9 +220,9 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void includeInMainMenu(ID resourceId,
+    void includeInMainMenu(UUID resourceId,
                            boolean include,
-                           ID actorId,
+                           UUID actorId,
                            Date happenedOn)
     throws CommandFailedException;
 
@@ -239,12 +239,12 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateMetadata(ID resourceId,
+    void updateMetadata(UUID resourceId,
                         String title,
                         String description,
                         String tags,
                         Map<String, String> metadata,
-                        ID actorId,
+                        UUID actorId,
                         Date happenedOn)
     throws CommandFailedException;
 
@@ -258,7 +258,7 @@ public interface Commands {
      * @param metadata The metadata to update.
      * @throws  CommandFailedException If the method fails.
      */
-    void updateMetadata(ID resourceId,
+    void updateMetadata(UUID resourceId,
                         String title,
                         String description,
                         String tags,
@@ -277,7 +277,7 @@ public interface Commands {
      *
      * @return A resource summary describing the new alias.
      */
-    ResourceSummary createAlias(ID parentId, String name, ID targetId)
+    ResourceSummary createAlias(UUID parentId, String name, UUID targetId)
     throws CommandFailedException;
 
 
@@ -294,7 +294,7 @@ public interface Commands {
      *
      * @return A resource summary describing the new template.
      */
-    ResourceSummary createTemplate(ID parentId,
+    ResourceSummary createTemplate(UUID parentId,
                                    TemplateDelta delta,
                                    String title,
                                    String description,
@@ -310,7 +310,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    ResourceSummary createSearch(ID parentId, String title)
+    ResourceSummary createSearch(UUID parentId, String title)
     throws CommandFailedException;
 
     /**
@@ -322,7 +322,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void createWorkingCopy(ID resourceId, long index)
+    void createWorkingCopy(UUID resourceId, long index)
     throws CommandFailedException;
 
     /**
@@ -332,7 +332,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void cancelAction(ID actionId) throws CommandFailedException;
+    void cancelAction(UUID actionId) throws CommandFailedException;
 
     /**
      * Create a new scheduled action.
@@ -345,7 +345,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void createAction(ID resourceId,
+    void createAction(UUID resourceId,
                       CommandType action,
                       Date executeAfter,
                       Map<String, String> parameters)
@@ -359,7 +359,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void changeRoles(ID resourceId, Collection<String> roles)
+    void changeRoles(UUID resourceId, Collection<String> roles)
     throws CommandFailedException;
 
     /**
@@ -372,9 +372,9 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void changeRoles(ID resourceId,
+    void changeRoles(UUID resourceId,
                      Collection<String> roles,
-                     ID actorId,
+                     UUID actorId,
                      Date happenedOn)
     throws CommandFailedException;
 
@@ -385,7 +385,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void applyWorkingCopy(ID resourceId) throws CommandFailedException;
+    void applyWorkingCopy(UUID resourceId) throws CommandFailedException;
 
     /**
      * Apply a resource's working copy.
@@ -398,8 +398,8 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void applyWorkingCopy(ID resourceId,
-                          ID userId,
+    void applyWorkingCopy(UUID resourceId,
+                          UUID userId,
                           Date happenedOn,
                           boolean isMajorEdit,
                           String comment) throws CommandFailedException;
@@ -412,7 +412,7 @@ public interface Commands {
      *
      * @throws CommandFailedException If the method fails.
      */
-    void updateCacheDuration(ID resourceId, Duration duration)
+    void updateCacheDuration(UUID resourceId, Duration duration)
     throws CommandFailedException;
 
 }

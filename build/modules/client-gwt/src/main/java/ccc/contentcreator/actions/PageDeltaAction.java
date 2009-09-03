@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.PageDelta;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
@@ -29,15 +30,15 @@ public abstract class PageDeltaAction
     extends
         RemotingAction {
 
-    private final ID _id;
+    private final UUID _id;
 
     /**
      * Constructor.
      *
      * @param actionName Name of the action.
-     * @param id The ID.
+     * @param id The UUID.
      */
-    public PageDeltaAction(final String actionName, final ID id) {
+    public PageDeltaAction(final String actionName, final UUID id) {
         super(actionName);
         _id = id;
     }

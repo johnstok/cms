@@ -12,6 +12,7 @@
 package ccc.rest.impl;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -22,7 +23,6 @@ import ccc.rest.FoldersBasic;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderNew;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 
 /**
@@ -42,28 +42,28 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final ID folderId) {
+    public Collection<ResourceSummary> getChildren(final UUID folderId) {
         return getFolderCommands().getChildren(folderId);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                            final ID folderId) {
+                                                            final UUID folderId) {
         return getFolderCommands().getChildrenManualOrder(folderId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getFolderChildren(final ID folderId) {
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
         return getFolderCommands().getFolderChildren(folderId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public boolean nameExistsInFolder(final ID folderId, final String name) {
+    public boolean nameExistsInFolder(final UUID folderId, final String name) {
         return getFolderCommands().nameExistsInFolder(folderId, name);
     }
 
@@ -85,7 +85,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolder(final ID folderId, final FolderDelta delta)
+    public void updateFolder(final UUID folderId, final FolderDelta delta)
     throws CommandFailedException {
         getFolderCommands().updateFolder(folderId, delta);
     }

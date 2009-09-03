@@ -11,10 +11,11 @@
  */
 package ccc.rest.dto;
 
+import java.util.UUID;
+
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -24,7 +25,7 @@ import ccc.types.ID;
  */
 public class TemplateNew implements Jsonable {
 
-    private final ID            _parentId;
+    private final UUID            _parentId;
     private final TemplateDelta _delta;
     private final String        _title;
     private final String        _description;
@@ -40,7 +41,7 @@ public class TemplateNew implements Jsonable {
      * @param description The template's description.
      * @param name        The template's name.
      */
-    public TemplateNew(final ID parentId,
+    public TemplateNew(final UUID parentId,
                        final TemplateDelta delta,
                        final String title,
                        final String description,
@@ -58,7 +59,7 @@ public class TemplateNew implements Jsonable {
      *
      * @return Returns the parentId.
      */
-    public final ID getParentId() {
+    public final UUID getParentId() {
         return _parentId;
     }
 

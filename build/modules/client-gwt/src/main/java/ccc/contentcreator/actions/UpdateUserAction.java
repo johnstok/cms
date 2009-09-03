@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -27,7 +28,7 @@ public class UpdateUserAction
     extends
         RemotingAction {
 
-    private final ID _userId;
+    private final UUID _userId;
     private final UserSummary _userDetails;
 
 
@@ -36,7 +37,7 @@ public class UpdateUserAction
      * @param userDetails The updated user details.
      * @param userId The user's id.
      */
-    public UpdateUserAction(final ID userId, final UserSummary userDetails) {
+    public UpdateUserAction(final UUID userId, final UserSummary userDetails) {
         super(UI_CONSTANTS.editUser(), RequestBuilder.POST);
         _userId = userId;
         _userDetails = userDetails;

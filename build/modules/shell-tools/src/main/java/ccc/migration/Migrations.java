@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -38,7 +39,6 @@ import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserSummary;
 import ccc.types.FailureCode;
-import ccc.types.ID;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 
@@ -158,7 +158,7 @@ public class Migrations {
             final ResourceSummary hp =
                 _queries.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
-                _commands.lock(f.getId());
+                _commands.lock(UUID.fromString(f.getId().toString()));
                 _folders.updateFolder(
                     f.getId(),
                     new FolderDelta(f.getSortOrder(), hp.getId(), null));
@@ -172,7 +172,7 @@ public class Migrations {
     // TODO: Move under command-resourceDao?
     private void publishRecursive(final ResourceSummary resource)
                                                  throws CommandFailedException {
-        _commands.lock(resource.getId());
+        _commands.lock(UUID.fromString(resource.getId().toString()));
         _commands.publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
             final Collection<ResourceSummary> children =
@@ -190,7 +190,7 @@ public class Migrations {
     }
 
 
-    private void migrateResources(final ID parentFolderId,
+    private void migrateResources(final UUID parentFolderId,
                                   final int parent) {
 
         final List<ResourceBean> resources =
@@ -213,7 +213,7 @@ public class Migrations {
         }
     }
 
-    private void migrateFolder(final ID parentFolderId,
+    private void migrateFolder(final UUID parentFolderId,
                                final ResourceBean r) {
 
         try {
@@ -230,7 +230,7 @@ public class Migrations {
             log.debug("Created folder: "+r.contentId());
 
             _commands.lock(
-                rs.getId(), le.getUser().getId(), le.getHappenedOn());
+                UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
@@ -248,7 +248,7 @@ public class Migrations {
         }
     }
 
-    private void migratePage(final ID parentFolderId,
+    private void migratePage(final UUID parentFolderId,
                              final ResourceBean r) {
 
         try {
@@ -289,7 +289,7 @@ public class Migrations {
             }
 
             _commands.lock(
-                rs.getId(), le.getUser().getId(), le.getHappenedOn());
+                UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
@@ -367,7 +367,7 @@ public class Migrations {
                             final PageDelta d)
                                                  throws CommandFailedException {
 
-        _commands.lock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
+        _commands.lock(UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
 
         final String userComment =
             _legacyQueries.selectUserComment(r.contentId(), version);
@@ -390,7 +390,7 @@ public class Migrations {
     }
 
 
-    private ResourceSummary createPage(final ID parentFolderId,
+    private ResourceSummary createPage(final UUID parentFolderId,
                                        final ResourceBean r,
                                        final Integer version,
                                        final LogEntryBean le,
@@ -551,7 +551,7 @@ public class Migrations {
             return;
         }
 
-        final ID templateId = _tm.getTemplate(
+        final UUID templateId = _tm.getTemplate(
             templateName,
             templateDescription,
             _templateFolder);

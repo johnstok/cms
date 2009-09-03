@@ -13,6 +13,8 @@ package ccc.contentcreator.dialogs;
 
 
 
+import java.util.UUID;
+
 import ccc.contentcreator.actions.UpdateAliasAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -20,7 +22,6 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -43,8 +44,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _targetName =
         new TriggerField<String>();
 
-    private final ID _aliasId;
-    private ID _targetId;
+    private final UUID _aliasId;
+    private UUID _targetId;
     private final ResourceSummary _targetRoot;
 
     /**
@@ -55,7 +56,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
      * @param targetName The target name.
      * @param targetRoot The root of the target resource
      */
-    public UpdateAliasDialog(final ID aliasId,
+    public UpdateAliasDialog(final UUID aliasId,
                              final String targetName,
                              final String aliasName,
                              final ResourceSummary targetRoot) {

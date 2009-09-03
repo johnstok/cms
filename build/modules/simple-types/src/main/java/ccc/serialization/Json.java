@@ -16,8 +16,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-
-import ccc.types.ID;
+import java.util.UUID;
 
 
 /**
@@ -73,7 +72,7 @@ public interface Json {
      * @param key The key.
      * @param value The value, as an ID.
      */
-    void set(final String key, final ID value);
+    void set(final String key, final UUID value);
 
     /**
      * Mutator.
@@ -145,7 +144,7 @@ public interface Json {
      * @param key The key for the value.
      * @return The value, as an ID.
      */
-    ID getId(final String key);
+    UUID getId(final String key);
 
     /**
      * Accessor.

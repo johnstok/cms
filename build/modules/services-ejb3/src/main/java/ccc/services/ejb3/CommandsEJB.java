@@ -72,7 +72,6 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 import ccc.types.Duration;
-import ccc.types.ID;
 import ccc.types.ResourceName;
 
 
@@ -101,17 +100,17 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createAlias(final ID parentId,
+    public ResourceSummary createAlias(final UUID parentId,
                                        final String name,
-                                       final ID targetId)
+                                       final UUID targetId)
                                                  throws CommandFailedException {
         try {
             return mapResource(
                 new CreateAliasCommand(_bdao, _audit).execute(
                     loggedInUser(),
                     new Date(),
-                    toUUID(parentId),
-                    toUUID(targetId),
+                    parentId,
+                    targetId,
                     name));
 
         } catch (final CccCheckedException e) {
@@ -123,7 +122,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createTemplate(final ID parentId,
+    public ResourceSummary createTemplate(final UUID parentId,
                                           final TemplateDelta delta,
                                           final String title,
                                           final String description,
@@ -134,7 +133,7 @@ public class CommandsEJB
                 new CreateTemplateCommand(_bdao, _audit).execute(
                     loggedInUser(),
                     new Date(),
-                    toUUID(parentId),
+                    parentId,
                     delta,
                     title,
                     description,
@@ -149,19 +148,19 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void lock(final ID resourceId) throws CommandFailedException {
+    public void lock(final UUID resourceId) throws CommandFailedException {
         lock(resourceId, loggedInUserId(), new Date());
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void lock(final ID resourceId,
-                     final ID actorId,
+    public void lock(final UUID resourceId,
+                     final UUID actorId,
                      final Date happenedOn) throws CommandFailedException {
         try {
             new LockResourceCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, toUUID(resourceId));
+                userForId(actorId), happenedOn, resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -171,14 +170,14 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void move(final ID resourceId,
-                     final ID newParentId) throws CommandFailedException {
+    public void move(final UUID resourceId,
+                     final UUID newParentId) throws CommandFailedException {
         try {
             new MoveResourceCommand(_bdao, _audit).execute(
                 loggedInUser(),
                 new Date(),
-                toUUID(resourceId),
-                toUUID(newParentId));
+                resourceId,
+                newParentId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -188,12 +187,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void publish(final ID resourceId) throws CommandFailedException {
+    public void publish(final UUID resourceId) throws CommandFailedException {
         try {
             new PublishCommand(_audit).execute(
                 new Date(),
                 loggedInUser(),
-                _bdao.find(Resource.class, toUUID(resourceId)));
+                _bdao.find(Resource.class, resourceId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -203,14 +202,14 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void publish(final ID resourceId,
-                        final ID userId,
+    public void publish(final UUID resourceId,
+                        final UUID userId,
                         final Date date) throws CommandFailedException {
         try {
             new PublishCommand(_audit).execute(
                 date,
                 userForId(userId),
-                _bdao.find(Resource.class, toUUID(resourceId)));
+                _bdao.find(Resource.class, resourceId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -220,11 +219,11 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void rename(final ID resourceId,
+    public void rename(final UUID resourceId,
                        final String name) throws CommandFailedException {
             try {
                 new RenameResourceCommand(_bdao, _audit).rename(
-                    loggedInUser(), new Date(), toUUID(resourceId), name);
+                    loggedInUser(), new Date(), resourceId, name);
 
             } catch (final CccCheckedException e) {
                 throw fail(e);
@@ -234,19 +233,19 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void unlock(final ID resourceId) throws CommandFailedException {
+    public void unlock(final UUID resourceId) throws CommandFailedException {
         unlock(resourceId, loggedInUserId(), new Date());
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void unlock(final ID resourceId,
-                       final ID actorId,
+    public void unlock(final UUID resourceId,
+                       final UUID actorId,
                        final Date happenedOn) throws CommandFailedException {
         try {
             new UnlockResourceCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, toUUID(resourceId));
+                userForId(actorId), happenedOn, resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -256,10 +255,10 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void unpublish(final ID resourceId) throws CommandFailedException {
+    public void unpublish(final UUID resourceId) throws CommandFailedException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId));
+                loggedInUser(), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -269,15 +268,15 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void unpublish(final ID resourceId,
-                          final ID userId,
+    public void unpublish(final UUID resourceId,
+                          final UUID userId,
                           final Date publishDate)
                                                  throws CommandFailedException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
-                _bdao.find(User.class, toUUID(userId)),
+                _bdao.find(User.class, userId),
                 publishDate,
-                toUUID(resourceId));
+                resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -287,15 +286,15 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateAlias(final ID aliasId,
+    public void updateAlias(final UUID aliasId,
                             final AliasDelta delta)
                                                  throws CommandFailedException {
         try {
             new UpdateAliasCommand(_bdao, _audit).execute(
                 loggedInUser(),
                 new Date(),
-                toUUID(delta.getTargetId()),
-                toUUID(aliasId));
+                delta.getTargetId(),
+                aliasId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -307,15 +306,14 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void createWorkingCopy(final ID resourceId, final long index)
+    public void createWorkingCopy(final UUID resourceId, final long index)
                                                  throws CommandFailedException {
         try {
-            final UUID resourceUuid = toUUID(resourceId);
 
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
                 loggedInUser(),
                 new Date(),
-                resourceUuid,
+                resourceId,
                 index);
 
         } catch (final CccCheckedException e) {
@@ -326,8 +324,8 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateResourceTemplate(final ID resourceId,
-                                       final ID templateId)
+    public void updateResourceTemplate(final UUID resourceId,
+                                       final UUID templateId)
                                                  throws CommandFailedException {
         updateResourceTemplate(
             resourceId, templateId, loggedInUserId(), new Date());
@@ -336,9 +334,9 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateResourceTemplate(final ID resourceId,
-                                       final ID templateId,
-                                       final ID actorId,
+    public void updateResourceTemplate(final UUID resourceId,
+                                       final UUID templateId,
+                                       final UUID actorId,
                                        final Date happenedOn)
                                                  throws CommandFailedException {
 
@@ -346,8 +344,8 @@ public class CommandsEJB
             new ChangeTemplateForResourceCommand(_bdao, _audit).execute(
                 userForId(actorId),
                 happenedOn,
-                toUUID(resourceId),
-                toUUID(templateId));
+                resourceId,
+                templateId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -357,12 +355,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateTemplate(final ID templateId,
+    public void updateTemplate(final UUID templateId,
                                final TemplateDelta delta)
                                                  throws CommandFailedException {
         try {
             new UpdateTemplateCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(templateId), delta);
+                loggedInUser(), new Date(), templateId, delta);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -372,7 +370,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void includeInMainMenu(final ID resourceId,
+    public void includeInMainMenu(final UUID resourceId,
                                   final boolean include)
                                                  throws CommandFailedException {
         includeInMainMenu(resourceId, include, loggedInUserId(), new Date());
@@ -381,14 +379,14 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void includeInMainMenu(final ID resourceId,
+    public void includeInMainMenu(final UUID resourceId,
                                   final boolean include,
-                                  final ID actorId,
+                                  final UUID actorId,
                                   final Date happenedOn)
                                                  throws CommandFailedException {
         try {
             new IncludeInMainMenuCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, toUUID(resourceId), include);
+                userForId(actorId), happenedOn, resourceId, include);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -398,7 +396,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateMetadata(final ID resourceId,
+    public void updateMetadata(final UUID resourceId,
                                    final String title,
                                    final String description,
                                    final String tags,
@@ -407,10 +405,10 @@ public class CommandsEJB
 
         try {
             final Date happenedOn = new Date();
-            final ID actorId = loggedInUserId();
+            final UUID actorId = loggedInUserId();
 
             new UpdateResourceMetadataCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, toUUID(resourceId), title, description, tags, metadata);
+                userForId(actorId), happenedOn, resourceId, title, description, tags, metadata);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
@@ -419,19 +417,19 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateMetadata(final ID resourceId,
+    public void updateMetadata(final UUID resourceId,
                                final String title,
                                final String description,
                                final String tags,
                                final Map<String, String> metadata,
-                               final ID actorId,
+                               final UUID actorId,
                                final Date happenedOn)
                                                  throws CommandFailedException {
         try {
             new UpdateResourceMetadataCommand(_bdao, _audit).execute(
                 userForId(actorId),
                 happenedOn,
-                toUUID(resourceId),
+                resourceId,
                 title,
                 description,
                 tags,
@@ -447,13 +445,13 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public ResourceSummary createSearch(final ID parentId,
+    public ResourceSummary createSearch(final UUID parentId,
                                         final String title)
                                                  throws CommandFailedException {
         try {
             return mapResource(
                 new CreateSearchCommand(_bdao, _audit).execute(
-                    loggedInUser(), new Date(), toUUID(parentId), title)
+                    loggedInUser(), new Date(), parentId, title)
             );
 
         } catch (final CccCheckedException e) {
@@ -464,15 +462,15 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void cancelAction(final ID actionId) {
+    public void cancelAction(final UUID actionId) {
         new CancelActionCommand(_bdao, _audit).execute(
-            loggedInUser(), new Date(), toUUID(actionId));
+            loggedInUser(), new Date(), actionId);
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void createAction(final ID resourceId,
+    public void createAction(final UUID resourceId,
                              final CommandType action,
                              final Date executeAfter,
                              final Map<String, String> parameters) {
@@ -483,7 +481,7 @@ public class CommandsEJB
               action,
               executeAfter,
               loggedInUser(),
-              _bdao.find(Resource.class, toUUID(resourceId)),
+              _bdao.find(Resource.class, resourceId),
               parameters);
 
       new ScheduleActionCommand(_bdao, _audit).execute(
@@ -493,7 +491,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void changeRoles(final ID resourceId,
+    public void changeRoles(final UUID resourceId,
                             final Collection<String> roles)
                                                  throws CommandFailedException {
         changeRoles(resourceId, roles, loggedInUserId(), new Date());
@@ -503,14 +501,14 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void changeRoles(final ID resourceId,
+    public void changeRoles(final UUID resourceId,
                             final Collection<String> roles,
-                            final ID actorId,
+                            final UUID actorId,
                             final Date happenedOn)
                                                  throws CommandFailedException {
         try {
             new UpdateResourceRolesCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, toUUID(resourceId), roles);
+                userForId(actorId), happenedOn, resourceId, roles);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -520,11 +518,11 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void applyWorkingCopy(final ID resourceId)
+    public void applyWorkingCopy(final UUID resourceId)
                                                  throws CommandFailedException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId), null, false);
+                loggedInUser(), new Date(), resourceId, null, false);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -534,17 +532,17 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void applyWorkingCopy(final ID resourceId,
-                                 final ID userId,
+    public void applyWorkingCopy(final UUID resourceId,
+                                 final UUID userId,
                                  final Date happenedOn,
                                  final boolean isMajorEdit,
                                  final String comment)
                                                  throws CommandFailedException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
-                _bdao.find(User.class, toUUID(userId)),
+                _bdao.find(User.class, userId),
                 happenedOn,
-                toUUID(resourceId),
+                resourceId,
                 comment,
                 isMajorEdit);
 
@@ -556,12 +554,12 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({SITE_BUILDER})
-    public void updateCacheDuration(final ID resourceId,
+    public void updateCacheDuration(final UUID resourceId,
                                     final Duration duration)
                                                  throws CommandFailedException {
         try {
             new UpdateCachingCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), toUUID(resourceId), duration);
+                loggedInUser(), new Date(), resourceId, duration);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -571,7 +569,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createFile(final ID parentFolder,
+    public ResourceSummary createFile(final UUID parentFolder,
                                       final FileDelta file,
                                       final String resourceName,
                                       final InputStream dataStream,
@@ -589,7 +587,7 @@ public class CommandsEJB
                 new CreateFileCommand(_bdao, _audit, _dm).execute(
                     u,
                     lastUpdated,
-                    toUUID(parentFolder),
+                    parentFolder,
                     file,
                     title,
                     description,
@@ -613,7 +611,7 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateFile(final ID fileId,
+    public void updateFile(final UUID fileId,
                            final FileDelta fileDelta,
                            final String comment,
                            final boolean isMajorEdit,
@@ -672,7 +670,7 @@ public class CommandsEJB
      *
      * @return
      */
-    private ID loggedInUserId() {
+    private UUID loggedInUserId() {
         return loggedInUserId(_context);
     }
 }

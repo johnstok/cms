@@ -12,6 +12,7 @@
 package ccc.rest.impl;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -20,7 +21,6 @@ import javax.ws.rs.Produces;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 import ccc.types.Username;
 
 
@@ -77,7 +77,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary userDelta(final ID userId) {
+    public UserSummary userDelta(final UUID userId) {
         return getUserCommands().userDelta(userId);
     }
 
@@ -99,7 +99,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateUserPassword(final ID userId,
+    public void updateUserPassword(final UUID userId,
                                    final UserSummary pu)
     throws CommandFailedException {
         getUserCommands().updateUserPassword(userId, pu);
@@ -108,7 +108,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final ID userId, final UserSummary user)
+    public void updateYourUser(final UUID userId, final UserSummary user)
     throws CommandFailedException {
         getUserCommands().updateYourUser(userId, user);
     }
@@ -116,7 +116,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final ID userId, final UserSummary delta)
+    public void updateUser(final UUID userId, final UserSummary delta)
     throws CommandFailedException {
         getUserCommands().updateUser(userId, delta);
     }

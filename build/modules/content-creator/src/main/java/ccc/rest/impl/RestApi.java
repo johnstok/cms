@@ -15,6 +15,7 @@ package ccc.rest.impl;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -41,7 +42,6 @@ import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
-import ccc.types.ID;
 
 
 /**
@@ -61,35 +61,35 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public String aliasTargetName(final ID aliasId) {
+    public String aliasTargetName(final UUID aliasId) {
         return getQueries().aliasTargetName(aliasId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Duration cacheDuration(final ID resourceId) {
+    public Duration cacheDuration(final UUID resourceId) {
         return getQueries().cacheDuration(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary computeTemplate(final ID resourceId) {
+    public TemplateSummary computeTemplate(final UUID resourceId) {
         return getQueries().computeTemplate(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta fileDelta(final ID fileId) {
+    public FileDelta fileDelta(final UUID fileId) {
         return getQueries().fileDelta(fileId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public String getAbsolutePath(final ID resourceId) {
+    public String getAbsolutePath(final UUID resourceId) {
         return getQueries().getAbsolutePath(resourceId);
     }
 
@@ -103,7 +103,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public Collection<LogEntrySummary> history(final ID resourceId) {
+    public Collection<LogEntrySummary> history(final UUID resourceId) {
         return getQueries().history(resourceId);
     }
 
@@ -138,14 +138,14 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> metadata(final ID resourceId) {
+    public Map<String, String> metadata(final UUID resourceId) {
         return getQueries().metadata(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resource(final ID resourceId) {
+    public ResourceSummary resource(final UUID resourceId) {
         return getQueries().resource(resourceId);
     }
 
@@ -166,14 +166,14 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public Collection<String> roles(final ID resourceId) {
+    public Collection<String> roles(final UUID resourceId) {
         return getQueries().roles(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta templateDelta(final ID templateId) {
+    public TemplateDelta templateDelta(final UUID templateId) {
         return getQueries().templateDelta(templateId);
     }
 
@@ -194,7 +194,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void updateCacheDuration(final ID resourceId,
+    public void updateCacheDuration(final UUID resourceId,
                                     final ResourceCacheDurationPU pu) throws CommandFailedException {
         getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
     }
@@ -202,7 +202,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void lock(final ID resourceId) throws CommandFailedException {
+    public void lock(final UUID resourceId) throws CommandFailedException {
         getCommands().lock(resourceId);
     }
 
@@ -221,14 +221,14 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopy(final ID resourceId) throws CommandFailedException {
+    public void applyWorkingCopy(final UUID resourceId) throws CommandFailedException {
         getCommands().applyWorkingCopy(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateResourceTemplate(final ID resourceId,
+    public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceTemplatePU pu) throws CommandFailedException {
         getCommands().updateResourceTemplate(resourceId, pu.getTemplateId());
     }
@@ -236,42 +236,42 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final ID resourceId, final Collection<String> roles) throws CommandFailedException {
+    public void changeRoles(final UUID resourceId, final Collection<String> roles) throws CommandFailedException {
         getCommands().changeRoles(resourceId, roles);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void move(final ID resourceId, final ID newParentId) throws CommandFailedException {
+    public void move(final UUID resourceId, final UUID newParentId) throws CommandFailedException {
         getCommands().move(resourceId, newParentId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final ID resourceId) throws CommandFailedException {
+    public void publish(final UUID resourceId) throws CommandFailedException {
         getCommands().publish(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final ID resourceId, final String name) throws CommandFailedException {
+    public void rename(final UUID resourceId, final String name) throws CommandFailedException {
         getCommands().rename(resourceId, name);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unlock(final ID resourceId) throws CommandFailedException {
+    public void unlock(final UUID resourceId) throws CommandFailedException {
         getCommands().unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unpublish(final ID resourceId) throws CommandFailedException {
+    public void unpublish(final UUID resourceId) throws CommandFailedException {
         getCommands().unpublish(resourceId);
     }
 
@@ -289,21 +289,21 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void excludeFromMainMenu(final ID resourceId) throws CommandFailedException {
+    public void excludeFromMainMenu(final UUID resourceId) throws CommandFailedException {
         getCommands().includeInMainMenu(resourceId, false);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void includeInMainMenu(final ID resourceId) throws CommandFailedException {
+    public void includeInMainMenu(final UUID resourceId) throws CommandFailedException {
         getCommands().includeInMainMenu(resourceId, true);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final ID resourceId, final Json json) throws CommandFailedException {
+    public void updateMetadata(final UUID resourceId, final Json json) throws CommandFailedException {
         final String title = json.getString("title");
         final String description = json.getString("description");
         final String tags = json.getString("tags");
@@ -314,14 +314,14 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final ID pageId) throws CommandFailedException {
+    public void clearWorkingCopy(final UUID pageId) throws CommandFailedException {
         getPageCommands().clearWorkingCopy(pageId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final ID actionId) throws CommandFailedException {
+    public void cancelAction(final UUID actionId) throws CommandFailedException {
         getCommands().cancelAction(actionId);
     }
 
@@ -336,28 +336,28 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy(final ID resourceId, final ResourceRevisionPU pu) throws CommandFailedException {
+    public void createWorkingCopy(final UUID resourceId, final ResourceRevisionPU pu) throws CommandFailedException {
         getCommands().createWorkingCopy(resourceId, pu.getRevision());
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateTemplate(final ID templateId, final TemplateDelta delta) throws CommandFailedException {
+    public void updateTemplate(final UUID templateId, final TemplateDelta delta) throws CommandFailedException {
         getCommands().updateTemplate(templateId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final ID aliasId, final AliasDelta delta) throws CommandFailedException {
+    public void updateAlias(final UUID aliasId, final AliasDelta delta) throws CommandFailedException {
         getCommands().updateAlias(aliasId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void deleteCacheDuration(final ID id) throws CommandFailedException {
+    public void deleteCacheDuration(final UUID id) throws CommandFailedException {
         getCommands().updateCacheDuration(id, null);
     }
 

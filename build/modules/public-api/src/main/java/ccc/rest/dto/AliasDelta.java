@@ -12,11 +12,11 @@
 package ccc.rest.dto;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -25,7 +25,7 @@ import ccc.types.ID;
  * @author Civic Computing Ltd.
  */
 public final class AliasDelta implements Serializable, Jsonable {
-    private ID _targetId;
+    private UUID _targetId;
 
     @SuppressWarnings("unused") private AliasDelta() { super(); }
 
@@ -34,7 +34,7 @@ public final class AliasDelta implements Serializable, Jsonable {
      *
      * @param targetId The alias' target's id.
      */
-    public AliasDelta(final ID targetId) {
+    public AliasDelta(final UUID targetId) {
         _targetId = targetId;
     }
 
@@ -55,7 +55,7 @@ public final class AliasDelta implements Serializable, Jsonable {
      *
      * @return Returns the targetId.
      */
-    public ID getTargetId() {
+    public UUID getTargetId() {
         return _targetId;
     }
 
@@ -65,7 +65,7 @@ public final class AliasDelta implements Serializable, Jsonable {
      *
      * @param targetId The targetId to set.
      */
-    public void setTargetId(final ID targetId) {
+    public void setTargetId(final UUID targetId) {
         _targetId = targetId;
     }
 

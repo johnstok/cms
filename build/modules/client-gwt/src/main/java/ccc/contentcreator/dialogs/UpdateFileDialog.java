@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.dialogs;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.RemoteException;
@@ -18,7 +20,6 @@ import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -52,9 +53,9 @@ public class UpdateFileDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param fileId The {@link ID} of the file.
+     * @param fileId The {@link UUID} of the file.
      */
-    public UpdateFileDialog(final ID fileId) {
+    public UpdateFileDialog(final UUID fileId) {
         super(new IGlobalsImpl().uiConstants().updateFile(),
               new IGlobalsImpl());
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);

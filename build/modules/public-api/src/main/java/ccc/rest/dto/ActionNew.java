@@ -12,12 +12,12 @@
 package ccc.rest.dto;
 
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.CommandType;
-import ccc.types.ID;
 
 
 /**
@@ -27,7 +27,7 @@ import ccc.types.ID;
  */
 public class ActionNew implements Jsonable {
 
-    private final ID _resourceId;
+    private final UUID _resourceId;
     private final CommandType _action;
     private final long _executeAfter;
     private final Map<String, String> _parameters;
@@ -41,7 +41,7 @@ public class ActionNew implements Jsonable {
      * @param executeAfter The earliest time the action may be performed.
      * @param parameters Additional parameters for the action.
      */
-    public ActionNew(final ID resourceId,
+    public ActionNew(final UUID resourceId,
                      final CommandType action,
                      final long executeAfter,
                      final Map<String, String> parameters) {
@@ -57,7 +57,7 @@ public class ActionNew implements Jsonable {
      *
      * @return Returns the resourceId.
      */
-    public final ID getResourceId() {
+    public final UUID getResourceId() {
         return _resourceId;
     }
 

@@ -11,9 +11,10 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.UUID;
+
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.AliasDelta;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -28,7 +29,7 @@ public class UpdateAliasAction
     extends
         RemotingAction {
 
-    private final ID _alias;
+    private final UUID _alias;
     private final AliasDelta _details;
 
 
@@ -37,7 +38,7 @@ public class UpdateAliasAction
      * @param details The new alias details.
      * @param alias The alias to update.
      */
-    public UpdateAliasAction(final ID alias, final AliasDelta details) {
+    public UpdateAliasAction(final UUID alias, final AliasDelta details) {
         super(UI_CONSTANTS.updateAlias(), RequestBuilder.POST);
         _alias = alias;
         _details = details;

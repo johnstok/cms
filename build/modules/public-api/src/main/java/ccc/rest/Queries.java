@@ -13,6 +13,7 @@ package ccc.rest;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -28,7 +29,6 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.Duration;
-import ccc.types.ID;
 
 
 /**
@@ -49,7 +49,7 @@ public interface Queries {
      * @return A summary of the resource.
      */
     @GET @Path("/resources/{id}") @NoCache
-    ResourceSummary resource(@PathParam("id") ID resourceId);
+    ResourceSummary resource(@PathParam("id") UUID resourceId);
 
     /**
      * List all the templates currently available in CCC.
@@ -74,7 +74,7 @@ public interface Queries {
      * @return The absolute path as a string.
      */
     @GET @Path("/resources/{id}/path") @NoCache
-    String getAbsolutePath(@PathParam("id") ID resourceId);
+    String getAbsolutePath(@PathParam("id") UUID resourceId);
 
     /**
      * Returns true if template name exists in the template folder.
@@ -108,7 +108,7 @@ public interface Queries {
      * @return The list of resources.
      */
     @GET @Path("/resources/{id}/revisions") @NoCache
-    Collection<LogEntrySummary> history(@PathParam("id") ID resourceId);
+    Collection<LogEntrySummary> history(@PathParam("id") UUID resourceId);
 
     /**
      * Retrieve the metadata for a resource.
@@ -117,7 +117,7 @@ public interface Queries {
      * @return The metadata in a hashmap.
      */
     @GET @Path("/resources/{id}/metadata") @NoCache
-    Map<String, String> metadata(@PathParam("id") ID resourceId);
+    Map<String, String> metadata(@PathParam("id") UUID resourceId);
 
     /**
      * List all CCC actions that haven't yet been executed.
@@ -143,7 +143,7 @@ public interface Queries {
      * @return The roles, as a collection of strings.
      */
     @GET @Path("/resources/{id}/roles") @NoCache
-    Collection<String> roles(@PathParam("id") ID resourceId);
+    Collection<String> roles(@PathParam("id") UUID resourceId);
 
     /**
      * Retrieve resource's cache duration.
@@ -152,7 +152,7 @@ public interface Queries {
      * @return Duration.
      */
     @GET @Path("/resources/{id}/duration") @NoCache
-    Duration cacheDuration(@PathParam("id") ID resourceId);
+    Duration cacheDuration(@PathParam("id") UUID resourceId);
 
     /**
      * Returns summary of the template assigned for a resource.
@@ -161,7 +161,7 @@ public interface Queries {
      * @return TemplateSummary.
      */
     @GET @Path("/resources/{id}/template") @NoCache
-    TemplateSummary computeTemplate(@PathParam("id") ID resourceId);
+    TemplateSummary computeTemplate(@PathParam("id") UUID resourceId);
 
     /**
      * Retrieve the delta for a template.
@@ -170,7 +170,7 @@ public interface Queries {
      * @return The corresponding delta.
      */
     @GET @Path("/templates/{id}/delta") @NoCache
-    TemplateDelta templateDelta(@PathParam("id") ID templateId);
+    TemplateDelta templateDelta(@PathParam("id") UUID templateId);
 
     /**
      * Retrieve the target name for a alias.
@@ -179,7 +179,7 @@ public interface Queries {
      * @return The corresponding target name.
      */
     @GET @Path("/aliases/{id}/targetname") @NoCache
-    String aliasTargetName(@PathParam("id") ID aliasId);
+    String aliasTargetName(@PathParam("id") UUID aliasId);
 
     /**
      * Retrieve the delta for a file.
@@ -188,7 +188,7 @@ public interface Queries {
      * @return The corresponding delta.
      */
     @GET @Path("/files/{id}/delta") @NoCache
-    FileDelta fileDelta(@PathParam("id") ID fileId);
+    FileDelta fileDelta(@PathParam("id") UUID fileId);
 
     /**
      * Look up the resource for a specified path.

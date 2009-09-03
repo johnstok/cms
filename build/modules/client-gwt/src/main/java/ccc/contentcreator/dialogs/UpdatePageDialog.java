@@ -15,8 +15,9 @@ package ccc.contentcreator.dialogs;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
-import ccc.contentcreator.actions.UpdateWorkingCopyAction_;
+import ccc.contentcreator.actions.UpdateWorkingCopyAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -26,7 +27,6 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.types.ID;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.Style;
@@ -46,7 +46,7 @@ public class UpdatePageDialog
     extends
         AbstractBaseDialog {
 
-    private final ID _pageId;
+    private final UUID _pageId;
     private final PageDelta _page;
     private final TemplateSummary _template;
     private final ResourceTable _rt;
@@ -60,13 +60,13 @@ public class UpdatePageDialog
     /**
      * Constructor.
      *
-     * @param pageId ID of the page to be updated.
+     * @param pageId UUID of the page to be updated.
      * @param page PageDelta of the page to be updated.
      * @param pageName Name of the page to be updated.
      * @param template TemplateDelta of the template assigned to the page.
      * @param rt ResourceTable required in order to refresh the contents.
      */
-    public UpdatePageDialog(final ID pageId,
+    public UpdatePageDialog(final UUID pageId,
                             final PageDelta page,
                             final String pageName,
                             final TemplateSummary template,
@@ -177,7 +177,7 @@ public class UpdatePageDialog
     private Runnable saveDraft() {
         return new Runnable() {
             public void run() {
-                new UpdateWorkingCopyAction_(_pageId, _page) {
+                new UpdateWorkingCopyAction(_pageId, _page) {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
                         final ResourceSummaryModelData md = rt().tableSelection();

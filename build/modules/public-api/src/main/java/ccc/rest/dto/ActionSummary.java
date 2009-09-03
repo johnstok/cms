@@ -15,13 +15,13 @@ import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
@@ -33,7 +33,7 @@ import ccc.types.Username;
  */
 public final class ActionSummary implements Serializable, Jsonable {
 
-    private ID _id;
+    private UUID _id;
     private CommandType _type;
     private Username _actor;
     private Date   _executeAfter;
@@ -56,7 +56,7 @@ public final class ActionSummary implements Serializable, Jsonable {
      * @param status The action's status.
      * @param fCode The action's failure code.
      */
-    public ActionSummary(final ID     id,
+    public ActionSummary(final UUID     id,
                          final CommandType type,
                          final Username actor,
                          final Date   after,
@@ -99,7 +99,7 @@ public final class ActionSummary implements Serializable, Jsonable {
      *
      * @return Returns the id.
      */
-    public ID getId() {
+    public UUID getId() {
         return _id;
     }
 

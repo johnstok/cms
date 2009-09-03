@@ -12,11 +12,11 @@
 package ccc.rest.dto;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -26,10 +26,10 @@ import ccc.types.ID;
  */
 public class PageNew implements Jsonable, Serializable {
 
-    private final ID        _parentId;
+    private final UUID        _parentId;
     private final PageDelta _delta;
     private final String    _name;
-    private final ID        _templateId;
+    private final UUID        _templateId;
     private final String    _title;
     private final String    _comment;
     private final boolean   _majorChange;
@@ -46,10 +46,10 @@ public class PageNew implements Jsonable, Serializable {
      * @param comment
      * @param majorChange
      */
-    public PageNew(final ID parentId,
+    public PageNew(final UUID parentId,
                    final PageDelta delta,
                    final String name,
-                   final ID templateId,
+                   final UUID templateId,
                    final String title,
                    final String comment,
                    final boolean majorChange) {
@@ -68,7 +68,7 @@ public class PageNew implements Jsonable, Serializable {
      *
      * @return Returns the parentId.
      */
-    public final ID getParentId() {
+    public final UUID getParentId() {
         return _parentId;
     }
 
@@ -98,7 +98,7 @@ public class PageNew implements Jsonable, Serializable {
      *
      * @return Returns the templateId.
      */
-    public final ID getTemplateId() {
+    public final UUID getTemplateId() {
         return _templateId;
     }
 

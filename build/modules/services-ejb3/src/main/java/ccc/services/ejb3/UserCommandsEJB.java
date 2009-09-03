@@ -16,6 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
@@ -38,7 +39,6 @@ import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserSummary;
-import ccc.types.ID;
 import ccc.types.Username;
 
 
@@ -77,20 +77,20 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateUser(final ID userId, final UserSummary delta) {
+    public void updateUser(final UUID userId, final UserSummary delta) {
         new UpdateUserCommand(_bdao, _audit).execute(
-            loggedInUser(_context), new Date(), toUUID(userId), delta);
+            loggedInUser(_context), new Date(), userId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateUserPassword(final ID userId, final UserSummary user) {
+    public void updateUserPassword(final UUID userId, final UserSummary user) {
         new UpdatePasswordAction(_bdao, _audit).execute(
             loggedInUser(_context),
             new Date(),
-            toUUID(userId),
+            userId,
             user.getPassword());
     }
 
@@ -98,14 +98,14 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateYourUser(final ID userId,
+    public void updateYourUser(final UUID userId,
                                final UserSummary user)
                                                  throws CommandFailedException {
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
             loggedInUser(_context),
             new Date(),
-            toUUID(userId),
+            userId,
             user.getEmail(),
             user.getPassword());
         } catch (final CccCheckedException e) {
@@ -158,9 +158,9 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public UserSummary userDelta(final ID userId) {
+    public UserSummary userDelta(final UUID userId) {
         return
-        deltaUser(_users.find(toUUID(userId)));
+        deltaUser(_users.find(userId));
     }
 
 

@@ -23,7 +23,6 @@ import ccc.rest.Folders;
 import ccc.rest.Queries;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;
-import ccc.types.ID;
 import ccc.types.ResourcePath;
 
 
@@ -81,7 +80,7 @@ public class CccServer implements Server {
 
         try {
             final ResourceSummary rs = _folders.createFolder(
-                new ID(parentFolder.toString()), name, name, publish);
+                UUID.fromString(parentFolder.toString()), name, name, publish);
             return UUID.fromString(rs.getId().toString());
         } catch (final CommandFailedException e) {
             if (FailureCode.EXISTS==e.getCode()) {

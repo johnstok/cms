@@ -12,11 +12,11 @@
 package ccc.rest.dto;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 
 
 /**
@@ -26,7 +26,7 @@ import ccc.types.ID;
  */
 public class FolderNew implements Jsonable, Serializable {
 
-    private final ID     _parentId;
+    private final UUID     _parentId;
     private final String _name;
 
 
@@ -36,7 +36,7 @@ public class FolderNew implements Jsonable, Serializable {
      * @param parentId The folder's parent.
      * @param name     The folder's name.
      */
-    public FolderNew(final ID parentId, final String name) {
+    public FolderNew(final UUID parentId, final String name) {
         _parentId = parentId;
         _name = name;
     }
@@ -47,7 +47,7 @@ public class FolderNew implements Jsonable, Serializable {
      *
      * @return Returns the parentId.
      */
-    public final ID getParentId() {
+    public final UUID getParentId() {
         return _parentId;
     }
 

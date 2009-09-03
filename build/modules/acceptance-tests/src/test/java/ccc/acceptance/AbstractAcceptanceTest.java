@@ -50,7 +50,6 @@ import ccc.rest.providers.AliasDeltaReader;
 import ccc.rest.providers.BooleanProvider;
 import ccc.rest.providers.DurationReader;
 import ccc.rest.providers.FailureWriter;
-import ccc.rest.providers.IdReader;
 import ccc.rest.providers.JsonReader;
 import ccc.rest.providers.JsonableWriter;
 import ccc.rest.providers.MetadataWriter;
@@ -58,6 +57,7 @@ import ccc.rest.providers.ResSummaryReader;
 import ccc.rest.providers.ResourceSummaryCollectionReader;
 import ccc.rest.providers.RevisionSummaryCollectionReader;
 import ccc.rest.providers.StringCollectionWriter;
+import ccc.rest.providers.UUIDProvider;
 import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
 import ccc.serialization.JsonImpl;
@@ -86,7 +86,6 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyWriter(StringCollectionWriter.class);
         pFactory.addMessageBodyWriter(MetadataWriter.class);
         pFactory.addMessageBodyWriter(JsonReader.class);
-        pFactory.addMessageBodyWriter(IdReader.class);
 
         // Readers
         pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
@@ -101,6 +100,9 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(AliasDeltaReader.class);
         pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
+
+        // String Converters
+        pFactory.addStringConverter(UUIDProvider.class);
     }
 
     private final String _hostUrl =         "http://localhost:81";

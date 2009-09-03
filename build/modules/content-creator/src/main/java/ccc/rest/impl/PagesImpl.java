@@ -12,6 +12,7 @@
 package ccc.rest.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -23,7 +24,6 @@ import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageNew;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
-import ccc.types.ID;
 
 
 /**
@@ -43,7 +43,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta pageDelta(final ID pageId) {
+    public PageDelta pageDelta(final UUID pageId) {
         return getPageCommands().pageDelta(pageId);
     }
 
@@ -65,7 +65,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final ID pageId, final PageDelta delta)
+    public void updateWorkingCopy(final UUID pageId, final PageDelta delta)
     throws CommandFailedException {
         getPageCommands().updateWorkingCopy(pageId, delta);
     }
@@ -73,7 +73,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final ID pageId, final Json json)
+    public void updatePage(final UUID pageId, final Json json)
     throws CommandFailedException {
         getPageCommands().updatePage(pageId, json);
     }

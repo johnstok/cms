@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
-import ccc.types.ID;
 import ccc.types.Username;
 
 
@@ -34,7 +34,7 @@ import ccc.types.Username;
  */
 public final class UserSummary implements Serializable, Jsonable {
     private String _email;
-    private ID _id;
+    private UUID _id;
     private Username _username;
     private HashSet<String> _roles;
     private Map<String, String> _metadata;
@@ -51,7 +51,7 @@ public final class UserSummary implements Serializable, Jsonable {
      * @param roles The user's roles.
      */
     public UserSummary(final String email,
-                       final ID id,
+                       final UUID id,
                        final Username username,
                        final Set<String> roles) {
         _email = email;
@@ -154,7 +154,7 @@ public final class UserSummary implements Serializable, Jsonable {
      *
      * @return Returns the id.
      */
-    public ID getId() {
+    public UUID getId() {
         return _id;
     }
 
@@ -214,7 +214,7 @@ public final class UserSummary implements Serializable, Jsonable {
      *
      * @param id The id to set.
      */
-    public void setId(final ID id) {
+    public void setId(final UUID id) {
         _id = id;
     }
 

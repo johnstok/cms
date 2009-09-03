@@ -2,9 +2,9 @@
  * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 1744 $
+ * Modified by   $Author: petteri $
+ * Modified on   $Date: 2009-08-28 16:17:04 +0100 (Fri, 28 Aug 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
@@ -13,11 +13,11 @@ package ccc.contentcreator.actions;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommandType;
-import ccc.types.ID;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -31,7 +31,7 @@ public class CreateActionAction
     extends
         RemotingAction {
 
-    private ID _resourceId;
+    private UUID _resourceId;
     private CommandType _command;
     private Date _executeAfter;
     private Map<String, String> _actionParameters;
@@ -44,7 +44,7 @@ public class CreateActionAction
      * @param command The command the action will invoke.
      * @param resourceId The resource the action will operate on.
      */
-    public CreateActionAction(final ID resourceId,
+    public CreateActionAction(final UUID resourceId,
                                final CommandType command,
                                final Date executeAfter,
                                final Map<String, String> actionParameters) {

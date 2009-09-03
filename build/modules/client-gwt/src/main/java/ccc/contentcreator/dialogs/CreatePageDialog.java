@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.contentcreator.actions.ComputeTemplateAction;
 import ccc.contentcreator.actions.CreatePageAction;
@@ -32,7 +33,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateSummary;
-import ccc.types.ID;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.Style;
@@ -287,7 +287,7 @@ public class CreatePageDialog
         return new Runnable() {
             public void run() {
                 final PageDelta page = new PageDelta(paragraphs);
-                final ID template =
+                final UUID template =
                     (null==_grid.getSelectionModel().getSelectedItem())
                     ? null
                     : _grid.getSelectionModel()
@@ -316,7 +316,7 @@ public class CreatePageDialog
 
 
     /**
-     * Renderer for adding resource IDs to the grid.
+     * Renderer for adding resource UUIDs to the grid.
      *
      * @author Civic Computing Ltd.
      */

@@ -12,6 +12,7 @@
 package ccc.rest;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -31,7 +32,6 @@ import ccc.rest.dto.ResourceTemplatePU;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
 import ccc.serialization.Json;
-import ccc.types.ID;
 
 
 /**
@@ -45,79 +45,79 @@ public interface RestCommands {
 
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(
-        @PathParam("id") ID resourceId,
+        @PathParam("id") UUID resourceId,
         ResourceCacheDurationPU duration) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/lock")
     void lock(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/templates")
     ResourceSummary createTemplate(TemplateNew template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/template")
     void updateResourceTemplate(
-        @PathParam("id") ID resourceId,
+        @PathParam("id") UUID resourceId,
         ResourceTemplatePU template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/unlock")
     void unlock(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/unpublish")
     void unpublish(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/publish")
     void publish(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/parent")
     void move(
-        @PathParam("id") ID resourceId,
-        ID newParentId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId,
+        UUID newParentId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/name")
     void rename(
-        @PathParam("id") final ID resourceId,
+        @PathParam("id") final UUID resourceId,
         final String name) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/roles")
     void changeRoles(
-        @PathParam("id") ID resourceId,
+        @PathParam("id") UUID resourceId,
         Collection<String> roles) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/exclude-mm")
     void excludeFromMainMenu(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/include-mm")
     void includeInMainMenu(
-        @PathParam("id") ID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/actions")
     void createAction(ActionNew action) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/metadata")
     void updateMetadata(
-        @PathParam("id") ID resourceId,
+        @PathParam("id") UUID resourceId,
         Json json) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-clear")
     void clearWorkingCopy(
-        @PathParam("id") ID pageId) throws CommandFailedException;
+        @PathParam("id") UUID pageId) throws CommandFailedException;
 
     @POST @Path("/actions/{id}/cancel")
     void cancelAction(
-        @PathParam("id") ID actionId) throws CommandFailedException;
+        @PathParam("id") UUID actionId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(
-        @PathParam("id") ID resourceId,
+        @PathParam("id") UUID resourceId,
         ResourceRevisionPU pu) throws CommandFailedException;
 
     @POST @Path("/aliases")
@@ -125,17 +125,17 @@ public interface RestCommands {
 
     @POST @Path("/templates/{id}")
     void updateTemplate(
-        @PathParam("id") ID templateId,
+        @PathParam("id") UUID templateId,
         TemplateDelta delta) throws CommandFailedException;
 
     @POST @Path("/aliases/{id}")
     void updateAlias(
-        @PathParam("id") ID aliasId,
+        @PathParam("id") UUID aliasId,
         AliasDelta delta) throws CommandFailedException;
 
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(
-        @PathParam("id") ID id) throws CommandFailedException;
+        @PathParam("id") UUID id) throws CommandFailedException;
 
     @GET @Path("/fail")
     void fail() throws CommandFailedException;

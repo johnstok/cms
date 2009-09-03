@@ -12,12 +12,12 @@
 package ccc.rest.dto;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.DBC;
-import ccc.types.ID;
 
 
 /**
@@ -28,7 +28,7 @@ import ccc.types.ID;
 public class FolderDelta implements Jsonable {
 
     private final String _sortOrder;
-    private final ID     _indexPage;
+    private final UUID     _indexPage;
     private final Collection<String> _sortList;
 
 
@@ -39,7 +39,7 @@ public class FolderDelta implements Jsonable {
      * @param indexPage The folder index page (may be NULL).
      */
     public FolderDelta(final String sortOrder,
-                       final ID indexPage,
+                       final UUID indexPage,
                        final Collection<String> sortList) {
         DBC.require().notNull(sortOrder);
         _sortOrder = sortOrder;
@@ -63,7 +63,7 @@ public class FolderDelta implements Jsonable {
      *
      * @return Returns the indexPage.
      */
-    public final ID getIndexPage() {
+    public final UUID getIndexPage() {
         return _indexPage;
     }
 

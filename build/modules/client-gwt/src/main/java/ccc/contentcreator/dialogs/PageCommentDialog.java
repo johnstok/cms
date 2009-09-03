@@ -11,13 +11,14 @@
  */
 package ccc.contentcreator.dialogs;
 
+import java.util.UUID;
+
 import ccc.contentcreator.actions.UpdatePageAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.rest.dto.PageDelta;
-import ccc.types.ID;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -36,7 +37,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     private static final int DIALOG_HEIGHT = 300;
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
-    private final ID _pageId;
+    private final UUID _pageId;
     private final PageDelta _page;
     private final UpdatePageDialog _updatePageDialog;
     private final CheckBox _majorEdit = new CheckBox();
@@ -51,7 +52,7 @@ public class PageCommentDialog extends AbstractEditDialog {
      * @param updatePageDialog The parent dialog.
      *
      */
-    public PageCommentDialog(final ID pageId,
+    public PageCommentDialog(final UUID pageId,
                              final PageDelta page,
                              final UpdatePageDialog updatePageDialog) {
         super(new IGlobalsImpl().uiConstants().pageEditComment(),

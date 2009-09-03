@@ -18,7 +18,6 @@ import java.util.UUID;
 import ccc.rest.dto.FileDelta;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
-import ccc.types.ID;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
@@ -97,7 +96,7 @@ public class File
         DBC.require().notNull(data);
         description(description);
         update(
-            new FileDelta(mimeType, new ID(data.id().toString()), size, properties),
+            new FileDelta(mimeType, data.id(), size, properties),
             metadata);
     }
 
@@ -215,7 +214,7 @@ public class File
         final FileDelta delta =
             new FileDelta(
                 mimeType(),
-                new ID(data().id().toString()),
+                data().id(),
                 size(),
                 properties());
         return delta;

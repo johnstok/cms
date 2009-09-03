@@ -16,7 +16,6 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.snapshots.AliasSnapshot;
 import ccc.types.DBC;
-import ccc.types.ID;
 import ccc.types.ResourceType;
 
 
@@ -91,7 +90,7 @@ public class Alias extends Resource {
     @Override
     public AliasDelta createSnapshot() {
         final AliasDelta delta =
-            new AliasDelta(new ID(target().id().toString()));
+            new AliasDelta(target().id());
         return delta;
     }
 
