@@ -186,7 +186,7 @@ public class Action extends Entity {
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.ACTOR, actor().id().toString());
+        json.set(JsonKeys.ACTOR_ID, actor().id());
         json.set(JsonKeys.TYPE, type().name());
         json.set(JsonKeys.PARAMETERS, parameters());
         json.set(JsonKeys.SUBJECT_ID, subject().id().toString());

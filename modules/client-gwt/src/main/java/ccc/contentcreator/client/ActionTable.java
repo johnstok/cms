@@ -84,7 +84,7 @@ public class ActionTable extends TablePanel {
             TYPE_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.ACTOR.name(),
+            ActionSummaryModelData.Property.USERNAME.name(),
             UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(

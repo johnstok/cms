@@ -28,7 +28,7 @@ import ccc.types.Username;
  */
 public final class LogEntrySummary implements Serializable, Jsonable {
     private CommandType _action;
-    private Username _actor;
+    private Username _actorUsername;
     private Date _happenedOn;
     private long _index;
     private String _comment;
@@ -39,20 +39,21 @@ public final class LogEntrySummary implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param subject
-     * @param action
-     * @param actor
-     * @param on
-     * @param index
+     * @param action The action.
+     * @param actorUsername The action's actor.
+     * @param on The date of the action.
+     * @param index The index of the action.
+     * @param comment The comment of the action.
+     * @param isMajorEdit Is the action a major edit.
      */
     public LogEntrySummary(final CommandType  action,
-                           final Username  actor,
+                           final Username  actorUsername,
                            final Date    on,
                            final long    index,
                            final String comment,
                            final boolean isMajorEdit) {
         _action = action;
-        _actor = actor;
+        _actorUsername = actorUsername;
         _happenedOn = new Date(on.getTime());
         _index = index;
         _comment = comment;
@@ -68,7 +69,7 @@ public final class LogEntrySummary implements Serializable, Jsonable {
     public LogEntrySummary(final Json json) {
         this(
             CommandType.valueOf(json.getString(JsonKeys.ACTION)),
-            new Username(json.getString(JsonKeys.ACTOR)),
+            new Username(json.getString(JsonKeys.USERNAME)),
             json.getDate(JsonKeys.HAPPENED_ON),
             json.getLong(JsonKeys.INDEX).longValue(),
             json.getString(JsonKeys.COMMENT),
@@ -91,8 +92,8 @@ public final class LogEntrySummary implements Serializable, Jsonable {
      *
      * @return Returns the actor.
      */
-    public Username getActor() {
-        return _actor;
+    public Username getActorUsername() {
+        return _actorUsername;
     }
 
 
@@ -139,7 +140,7 @@ public final class LogEntrySummary implements Serializable, Jsonable {
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.ACTION, getAction().name());
-        json.set(JsonKeys.ACTOR, getActor().toString());
+        json.set(JsonKeys.USERNAME, getActorUsername().toString());
         json.set(JsonKeys.HAPPENED_ON, getHappenedOn());
         json.set(JsonKeys.MAJOR_CHANGE, isMajor());
         json.set(JsonKeys.INDEX, getIndex());

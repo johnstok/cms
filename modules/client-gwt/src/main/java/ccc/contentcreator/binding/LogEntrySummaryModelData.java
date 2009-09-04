@@ -43,6 +43,7 @@ public class LogEntrySummaryModelData
      * Constructor.
      *
      * @param les The log entry summary to wrap.
+     * @param globals The globals.
      */
     public LogEntrySummaryModelData(final LogEntrySummary les,
                                     final IGlobals globals) {
@@ -58,8 +59,8 @@ public class LogEntrySummaryModelData
 
         switch (p) {
 
-            case ACTOR:
-                return (X) _les.getActor();
+            case USERNAME:
+                return (X) _les.getActorUsername();
 
             case ACTION:
                 return (X) _les.getAction();
@@ -117,8 +118,26 @@ public class LogEntrySummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * Property names.
+     *
+     * @author Civic Computing Ltd.
+     */
     public enum Property {
-        ACTION, LOCALISED_ACTION, ACTOR, HAPPENED_ON, COMMENT, IS_MAJOR_EDIT, INDEX;
+        /** ACTION : Property. */
+        ACTION,
+        /** LOCALISED_ACTION : Property. */
+        LOCALISED_ACTION,
+        /** USERNAME : Property. */
+        USERNAME,
+        /** HAPPENED_ON : Property. */
+        HAPPENED_ON,
+        /** COMMENT : Property. */
+        COMMENT,
+        /** IS_MAJOR_EDIT : Property. */
+        IS_MAJOR_EDIT,
+        /** INDEX : Property. */
+        INDEX;
     }
 
     /**

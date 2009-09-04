@@ -46,6 +46,7 @@ public class ActionSummaryModelData
      * Constructor.
      *
      * @param as The action summary.
+     * @param globals The globals.
      */
     public ActionSummaryModelData(final ActionSummary as,
                                   final IGlobals globals) {
@@ -61,8 +62,8 @@ public class ActionSummaryModelData
 
         switch (p) {
 
-            case ACTOR:
-                return (X) _as.getActor();
+            case USERNAME:
+                return (X) _as.getActorUsername();
 
             case EXECUTE_AFTER:
                 return (X) _as.getExecuteAfter();
@@ -141,8 +142,8 @@ public class ActionSummaryModelData
         TYPE,
         /** LOCALISED_TYPE : Property. */
         LOCALISED_TYPE,
-        /** ACTOR : Property. */
-        ACTOR,
+        /** USERNAME : Property. */
+        USERNAME,
         /** EXECUTE_AFTER : Property. */
         EXECUTE_AFTER,
         /** PATH : Property. */

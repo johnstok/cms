@@ -103,7 +103,7 @@ public class HistoryDialog
 
         final ColumnConfig userColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.ACTOR.name(),
+                LogEntrySummaryModelData.Property.USERNAME.name(),
                 _constants.user(),
                 100);
         configs.add(userColumn);
