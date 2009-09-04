@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.LogEntrySummary;
-import ccc.rest.dto.ResourceRevisionPU;
+import ccc.rest.dto.ResourceCacheDurationPU;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;
 
@@ -45,7 +45,8 @@ public class FileUploadAcceptanceTest
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         _commands.lock(file.getId());
-        _commands.createWorkingCopy(file.getId(), new ResourceRevisionPU(0));
+        _commands.createWorkingCopy(
+            file.getId(), new ResourceCacheDurationPU(0L));
 
         // ACT
         _commands.clearWorkingCopy(file.getId());
@@ -87,7 +88,8 @@ public class FileUploadAcceptanceTest
         assertEquals("Update!", previewContent(file, false));
 
         // Create working copy from rev 0.
-        _commands.createWorkingCopy(file.getId(), new ResourceRevisionPU(0));
+        _commands.createWorkingCopy(
+            file.getId(), new ResourceCacheDurationPU(0L));
         ResourceSummary fWC = _queries.resource(file.getId());
         assertEquals("Update!", previewContent(file, false));
         assertEquals("Hello!", previewContent(file, true));

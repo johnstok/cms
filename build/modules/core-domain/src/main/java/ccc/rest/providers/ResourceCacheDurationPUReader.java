@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +25,6 @@ import javax.ws.rs.ext.Provider;
 
 import ccc.rest.dto.ResourceCacheDurationPU;
 import ccc.serialization.Json;
-import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
 
@@ -60,9 +60,11 @@ public class ResourceCacheDurationPUReader
                              final MediaType arg3,
                              final MultivaluedMap<String, String> arg4,
                              final InputStream arg5) throws IOException {
-        final String s = readString(arg3, arg5);
-        final Json json = new JsonImpl(s).getJson(JsonKeys.CACHE_DURATION);
+        final Json json = readJson(arg3, arg5);
+        final Json duration = json.getJson(JsonKeys.CACHE_DURATION);
+        final Long revNo = json.getLong(JsonKeys.REVISION);
+        final UUID templateId = json.getId(JsonKeys.TEMPLATE_ID);
         return new ResourceCacheDurationPU(
-            (null==json) ? null : new Duration(json));
+            (null==duration) ? null : new Duration(json), revNo, templateId);
     }
 }

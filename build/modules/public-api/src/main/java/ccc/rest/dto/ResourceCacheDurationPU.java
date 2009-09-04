@@ -11,6 +11,8 @@
  */
 package ccc.rest.dto;
 
+import java.util.UUID;
+
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
@@ -26,6 +28,8 @@ import ccc.types.Duration;
 public class ResourceCacheDurationPU implements Jsonable {
 
     private final Duration _cacheDuration;
+    private final Long     _revision;
+    private final UUID     _templateId;
 
 
     /**
@@ -35,8 +39,47 @@ public class ResourceCacheDurationPU implements Jsonable {
      */
     public ResourceCacheDurationPU(final Duration cacheDuration) {
         _cacheDuration = cacheDuration;
+        _revision = null;
+        _templateId = null;
     }
 
+    /**
+     * Constructor.
+     *
+     * @param revision The revision used to create the working copy.
+     */
+    public ResourceCacheDurationPU(final Long revision) {
+        _revision = revision;
+        _cacheDuration = null;
+        _templateId = null;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param cacheDuration The duration to set (may be NULL).
+     * @param revision The revision used to create the working copy.
+     * @param templateId The template id.
+     */
+    public ResourceCacheDurationPU(final Duration cacheDuration,
+                                   final Long revision,
+                                   final UUID templateId) {
+        _revision = revision;
+        _cacheDuration = cacheDuration;
+        _templateId = templateId;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param templateId The template id.
+     */
+    public ResourceCacheDurationPU(final UUID templateId) {
+        _templateId = templateId;
+        _cacheDuration = null;
+        _revision = null;
+    }
 
     /**
      * Accessor.
@@ -48,8 +91,30 @@ public class ResourceCacheDurationPU implements Jsonable {
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the revision.
+     */
+    public final long getRevision() {
+        return _revision;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the templateId.
+     */
+    public final UUID getTemplateId() {
+        return _templateId;
+    }
+
+
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
         json.set(JsonKeys.CACHE_DURATION, _cacheDuration);
+        json.set(JsonKeys.REVISION, Long.valueOf(_revision));
+        json.set(JsonKeys.TEMPLATE_ID, _templateId);
     }
 }

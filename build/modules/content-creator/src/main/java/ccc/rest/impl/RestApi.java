@@ -29,9 +29,7 @@ import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.LogEntrySummary;
 import ccc.rest.dto.ResourceCacheDurationPU;
-import ccc.rest.dto.ResourceRevisionPU;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.ResourceTemplatePU;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
 import ccc.rest.dto.TemplateSummary;
@@ -212,7 +210,8 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceTemplatePU pu) throws CommandFailedException {
+                                       final ResourceCacheDurationPU pu)
+    throws CommandFailedException {
         getCommands().updateResourceTemplate(resourceId, pu.getTemplateId());
     }
 
@@ -301,7 +300,9 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void createWorkingCopy(final UUID resourceId, final ResourceRevisionPU pu) throws CommandFailedException {
+    public void createWorkingCopy(final UUID resourceId,
+                                  final ResourceCacheDurationPU pu)
+    throws CommandFailedException {
         getCommands().createWorkingCopy(resourceId, pu.getRevision());
     }
 

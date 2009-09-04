@@ -387,6 +387,9 @@ public class JsonImpl implements Serializable, Json {
     public Long getLong(final String key) {
         try {
             final Number n = (Number) fixNull(_detail.get(key));
+            if (null==n) {
+                return null;
+            }
             return Long.valueOf(n.longValue());
         } catch (final JSONException e) {
             throw new InvalidSnapshotException(e);
