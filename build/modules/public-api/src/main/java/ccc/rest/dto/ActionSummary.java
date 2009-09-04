@@ -35,7 +35,7 @@ public final class ActionSummary implements Serializable, Jsonable {
 
     private UUID _id;
     private CommandType _type;
-    private Username _actor;
+    private Username _actorUsername;
     private Date   _executeAfter;
     private ResourceType _subjectType;
     private String _subjectPath;
@@ -58,7 +58,7 @@ public final class ActionSummary implements Serializable, Jsonable {
      */
     public ActionSummary(final UUID     id,
                          final CommandType type,
-                         final Username actor,
+                         final Username actorUsername,
                          final Date   after,
                          final ResourceType subjectType,
                          final String path,
@@ -66,7 +66,7 @@ public final class ActionSummary implements Serializable, Jsonable {
                          final FailureCode fCode) {
         _id = id;
         _type = type;
-        _actor = actor;
+        _actorUsername = actorUsername;
         _executeAfter = new Date(after.getTime());
         _subjectType = subjectType;
         _subjectPath = path;
@@ -84,7 +84,7 @@ public final class ActionSummary implements Serializable, Jsonable {
         this(
             json.getId(ID),
             CommandType.valueOf(json.getString(TYPE)),
-            new Username(json.getString(ACTOR)),
+            new Username(json.getString(USERNAME)),
             json.getDate(EXECUTE_AFTER),
             ResourceType.valueOf(json.getString(SUBJECT_TYPE)),
             json.getString(SUBJECT_PATH),
@@ -119,8 +119,8 @@ public final class ActionSummary implements Serializable, Jsonable {
      *
      * @return Returns the actor.
      */
-    public Username getActor() {
-        return _actor;
+    public Username getActorUsername() {
+        return _actorUsername;
     }
 
 
@@ -189,7 +189,7 @@ public final class ActionSummary implements Serializable, Jsonable {
     public void toJson(final Json json) {
         json.set(ID, getId());
         json.set(TYPE, getType().name());
-        json.set(ACTOR, getActor().toString());
+        json.set(USERNAME, getActorUsername().toString());
         json.set(EXECUTE_AFTER, getExecuteAfter());
         json.set(SUBJECT_TYPE, getSubjectType().name());
         json.set(SUBJECT_PATH, getSubjectPath());
