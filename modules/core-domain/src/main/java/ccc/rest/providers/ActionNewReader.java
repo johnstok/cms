@@ -62,7 +62,7 @@ public class ActionNewReader
         return new ActionNew(
             json.getId(JsonKeys.SUBJECT_ID),
             CommandType.valueOf(json.getString(JsonKeys.ACTION)),
-            json.getLong(JsonKeys.EXECUTE_AFTER),
+            json.getDate(JsonKeys.EXECUTE_AFTER),
             json.getStringMap(JsonKeys.PARAMETERS));
     }
 }

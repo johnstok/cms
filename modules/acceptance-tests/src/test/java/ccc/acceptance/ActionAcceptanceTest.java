@@ -12,6 +12,7 @@
 package ccc.acceptance;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import ccc.rest.CommandFailedException;
@@ -45,7 +46,7 @@ public class ActionAcceptanceTest
             new ActionNew(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
-                Long.MAX_VALUE,
+                new Date(Long.MAX_VALUE),
                 new HashMap<String, String>()));
         final Collection<ActionSummary> pending = _queries.listPendingActions();
 
@@ -67,7 +68,7 @@ public class ActionAcceptanceTest
             new ActionNew(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
-                Long.MAX_VALUE,
+                new Date(Long.MAX_VALUE),
                 new HashMap<String, String>()));
 
         // ACT
