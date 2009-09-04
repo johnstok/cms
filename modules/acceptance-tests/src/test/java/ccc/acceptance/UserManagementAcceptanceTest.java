@@ -170,12 +170,16 @@ public class UserManagementAcceptanceTest
     public void testUpdateYourUser() throws CommandFailedException {
 
         // ARRANGE
-        final Username username = new Username(UUID.randomUUID().toString());
-        final String email = username+"@abc.def";
-        final String password = "test Test00-"+username;
+        UserSummary user = tempUser();
 
-        UserSummary user = _users.loggedInUser();
-        final UserSummary uo =new UserSummary(email, "test Test00-"+username);
+        final String email = "username@abc.def";
+        final String password = "test Test00-";
+
+        _security.logout();
+        _security.login(user.getUsername().toString(), "Testtest00-");
+        user = _users.loggedInUser();
+
+        final UserSummary uo = new UserSummary(email, password);
 
         // ACT
         _users.updateYourUser(user.getId(), uo);
@@ -183,10 +187,10 @@ public class UserManagementAcceptanceTest
 
         // ASSERT
         assertEquals(user.getEmail(), uo.getEmail());
-        assertFalse(
-            _security.login(user.getUsername().toString(), "Testtest00-"));
         assertTrue(
             _security.login(user.getUsername().toString(), password));
+        assertFalse(
+            _security.login(user.getUsername().toString(), "Testtest00-"));
     }
 
 
