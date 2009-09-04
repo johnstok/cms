@@ -25,9 +25,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.ResourceCacheDurationPU;
-import ccc.rest.dto.ResourceRevisionPU;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.ResourceTemplatePU;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateNew;
 import ccc.serialization.Json;
@@ -61,7 +59,7 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
-        ResourceTemplatePU template) throws CommandFailedException;
+        ResourceCacheDurationPU template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/unlock")
     void unlock(
@@ -110,7 +108,7 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(
         @PathParam("id") UUID resourceId,
-        ResourceRevisionPU pu) throws CommandFailedException;
+        ResourceCacheDurationPU pu) throws CommandFailedException;
 
     @POST @Path("/aliases")
     ResourceSummary createAlias(AliasNew alias) throws CommandFailedException;

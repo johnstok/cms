@@ -57,6 +57,8 @@ public class UpdateResourceTemplateAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
+        json.set(JsonKeys.REVISION, (String) null);
+        json.set(JsonKeys.CACHE_DURATION, (String) null);
         json.set(JsonKeys.TEMPLATE_ID, _templateId);
         return json.toString();
     }

@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.ResourceCacheDurationPU;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.ResourceTemplatePU;
 import ccc.rest.dto.UserSummary;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
@@ -211,7 +210,7 @@ public class ResourceAcceptanceTests
         // ACT
         try {
             _commands.updateResourceTemplate(
-                folder.getId(), new ResourceTemplatePU(ts.getId()));
+                folder.getId(), new ResourceCacheDurationPU(ts.getId()));
         } finally {
             try {
                 _commands.unlock(folder.getId());
@@ -246,7 +245,7 @@ public class ResourceAcceptanceTests
         final Duration withDuration = _queries.cacheDuration(folder.getId());
 
         _commands.updateCacheDuration(
-            folder.getId(), new ResourceCacheDurationPU(null));
+            folder.getId(), new ResourceCacheDurationPU((Duration) null));
         final Duration noDuration = _queries.cacheDuration(folder.getId());
 
         // ASSERT
