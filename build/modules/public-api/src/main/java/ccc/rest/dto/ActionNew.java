@@ -11,6 +11,7 @@
  */
 package ccc.rest.dto;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public class ActionNew implements Jsonable {
 
     private final UUID _resourceId;
     private final CommandType _action;
-    private final long _executeAfter;
+    private final Date _executeAfter;
     private final Map<String, String> _parameters;
 
 
@@ -43,7 +44,7 @@ public class ActionNew implements Jsonable {
      */
     public ActionNew(final UUID resourceId,
                      final CommandType action,
-                     final long executeAfter,
+                     final Date executeAfter,
                      final Map<String, String> parameters) {
         _resourceId = resourceId;
         _action = action;
@@ -77,7 +78,7 @@ public class ActionNew implements Jsonable {
      *
      * @return Returns the executeAfter.
      */
-    public final long getExecuteAfter() {
+    public final Date getExecuteAfter() {
         return _executeAfter;
     }
 
@@ -97,7 +98,7 @@ public class ActionNew implements Jsonable {
     public void toJson(final Json json) {
         json.set(JsonKeys.SUBJECT_ID, _resourceId);
         json.set(JsonKeys.ACTION, _action.name());
-        json.set(JsonKeys.EXECUTE_AFTER, _executeAfter); // FIXME: Should be a date!!!
+        json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
         json.set(JsonKeys.PARAMETERS, _parameters);
     }
 }

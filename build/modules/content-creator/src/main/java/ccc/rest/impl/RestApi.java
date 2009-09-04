@@ -13,7 +13,6 @@
 package ccc.rest.impl;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -282,7 +281,7 @@ public class RestApi
         getCommands().createAction(
             action.getResourceId(),
             action.getAction(),
-            new Date(action.getExecuteAfter()),
+            action.getExecuteAfter(),
             action.getParameters());
     }
 
