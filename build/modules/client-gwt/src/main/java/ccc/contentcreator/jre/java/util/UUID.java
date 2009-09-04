@@ -56,13 +56,26 @@ implements java.io.Serializable {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return _uuid.hashCode();
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_uuid == null) ? 0 : _uuid.hashCode());
+        return result;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
-        return _uuid.equals(obj);
+
+        if (this == obj) { return true; }
+        if (obj == null) { return false; }
+        if (getClass() != obj.getClass()) { return false; }
+        final UUID other = (UUID) obj;
+        if (_uuid == null) {
+            if (other._uuid != null) { return false; }
+        } else if (!_uuid.equals(other._uuid)) { return false; }
+        return true;
     }
+
 
 }
