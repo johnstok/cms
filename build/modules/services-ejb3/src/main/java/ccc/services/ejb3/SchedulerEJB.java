@@ -136,7 +136,7 @@ public class SchedulerEJB
     public void createAction(final ActionDto action) {
       final Action a =
           new Action(
-              action.getAction(),
+              action.getCommand(),
               action.getExecuteAfter(),
               loggedInUser(_context),
               _bdao.find(

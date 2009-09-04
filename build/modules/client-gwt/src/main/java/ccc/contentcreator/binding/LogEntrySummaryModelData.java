@@ -62,8 +62,8 @@ public class LogEntrySummaryModelData
             case USERNAME:
                 return (X) _les.getActorUsername();
 
-            case ACTION:
-                return (X) _les.getAction();
+            case COMMAND:
+                return (X) _les.getCommand();
 
             case LOCALISED_ACTION:
                 return (X) getLocalisedAction();
@@ -124,8 +124,8 @@ public class LogEntrySummaryModelData
      * @author Civic Computing Ltd.
      */
     public enum Property {
-        /** ACTION : Property. */
-        ACTION,
+        /** COMMAND : Property. */
+        COMMAND,
         /** LOCALISED_ACTION : Property. */
         LOCALISED_ACTION,
         /** USERNAME : Property. */
@@ -146,7 +146,7 @@ public class LogEntrySummaryModelData
      * @return The action.
      */
     public CommandType getAction() {
-        return _les.getAction();
+        return _les.getCommand();
     }
 
     /**
@@ -159,9 +159,9 @@ public class LogEntrySummaryModelData
 
         String local = null;
         try {
-            local = types.getString(_les.getAction().name());
+            local = types.getString(_les.getCommand().name());
         } catch (final MissingResourceException e) {
-            local = _les.getAction().name();
+            local = _les.getCommand().name();
         }
         return local;
     }

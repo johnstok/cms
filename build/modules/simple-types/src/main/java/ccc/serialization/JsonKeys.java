@@ -102,9 +102,9 @@ public final class JsonKeys {
     public static final String CACHE_DURATION = "cache-duration";
     /** SECONDS : String. */
     public static final String SECONDS = "seconds";
-    /** ACTION : String. */
-    public static final String ACTION = "action"; // FIXME: Should be 'command'.
-    /** ACTOR : String. */
+    /** COMMAND : String. */
+    public static final String COMMAND = "command";
+    /** ACTOR_ID : String. */
     public static final String ACTOR_ID = "actor_id";
     /** HAPPENED_ON : String. */
     public static final String HAPPENED_ON = "happened-on";

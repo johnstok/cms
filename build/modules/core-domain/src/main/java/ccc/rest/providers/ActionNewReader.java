@@ -61,7 +61,7 @@ public class ActionNewReader
         final Json json = readJson(mimetype, is);
         return new ActionDto(
             json.getId(JsonKeys.SUBJECT_ID),
-            CommandType.valueOf(json.getString(JsonKeys.ACTION)),
+            CommandType.valueOf(json.getString(JsonKeys.COMMAND)),
             json.getDate(JsonKeys.EXECUTE_AFTER),
             json.getStringMap(JsonKeys.PARAMETERS));
     }
