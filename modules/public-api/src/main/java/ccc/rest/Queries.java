@@ -21,7 +21,6 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.LogEntrySummary;
@@ -118,22 +117,6 @@ public interface Queries {
      */
     @GET @Path("/resources/{id}/metadata") @NoCache
     Map<String, String> metadata(@PathParam("id") UUID resourceId);
-
-    /**
-     * List all CCC actions that haven't yet been executed.
-     *
-     * @return A collection of action summaries, one per outstanding action.
-     */
-    @GET @Path("/actions/pending") @NoCache
-    Collection<ActionSummary> listPendingActions();
-
-    /**
-     * List all CCC actions that have been executed.
-     *
-     * @return A collection of action summaries, one per completed action.
-     */
-    @GET @Path("/actions/completed") @NoCache
-    Collection<ActionSummary> listCompletedActions();
 
     /**
      * List the roles for a resource.

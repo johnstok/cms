@@ -49,7 +49,7 @@ public class FoldersImpl
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                            final UUID folderId) {
+                                                        final UUID folderId) {
         return getFolderCommands().getChildrenManualOrder(folderId);
     }
 

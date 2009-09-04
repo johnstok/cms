@@ -23,8 +23,6 @@ import javax.ws.rs.Produces;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Queries;
 import ccc.rest.RestCommands;
-import ccc.rest.dto.ActionNew;
-import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.FileDelta;
@@ -104,20 +102,6 @@ public class RestApi
     @Override
     public Collection<LogEntrySummary> history(final UUID resourceId) {
         return getQueries().history(resourceId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ActionSummary> listCompletedActions() {
-        return getQueries().listCompletedActions();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ActionSummary> listPendingActions() {
-        return getQueries().listPendingActions();
     }
 
 
@@ -277,17 +261,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void createAction(final ActionNew action) throws CommandFailedException {
-        getCommands().createAction(
-            action.getResourceId(),
-            action.getAction(),
-            action.getExecuteAfter(),
-            action.getParameters());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void excludeFromMainMenu(final UUID resourceId) throws CommandFailedException {
         getCommands().includeInMainMenu(resourceId, false);
     }
@@ -315,13 +288,6 @@ public class RestApi
     @Override
     public void clearWorkingCopy(final UUID pageId) throws CommandFailedException {
         getPageCommands().clearWorkingCopy(pageId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void cancelAction(final UUID actionId) throws CommandFailedException {
-        getCommands().cancelAction(actionId);
     }
 
 

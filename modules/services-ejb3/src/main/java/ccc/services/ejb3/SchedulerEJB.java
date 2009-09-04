@@ -17,6 +17,7 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -37,14 +38,20 @@ import org.apache.log4j.Logger;
 
 import ccc.action.ActionExecutor;
 import ccc.action.ActionExecutorImpl;
+import ccc.commands.CancelActionCommand;
+import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.Scheduler;
-import ccc.persistence.ActionDao;
+import ccc.persistence.LogEntryRepository;
+import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
+import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
+import ccc.rest.ActionDao;
 import ccc.rest.Commands;
 import ccc.rest.LocalCommands;
+import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.ActionSummary;
 
 
 /**
@@ -58,7 +65,13 @@ import ccc.rest.LocalCommands;
 @Remote(Scheduler.class)
 @RolesAllowed({ADMINISTRATOR})
 @RunAs(CONTENT_CREATOR)
-public class SchedulerEJB implements Scheduler, ActionDao {
+public class SchedulerEJB
+    extends
+        BaseCommands
+    implements
+        Scheduler,
+        ActionDao {
+
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
     private static final String TIMER_NAME = "action_scheduler";
@@ -70,21 +83,10 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     @EJB(name=Commands.NAME) private LocalCommands _commands;
 
     private ActionExecutor _executor;
-    private Repository _repository;
+    private LogEntryRepository _audit;
 
     /** Constructor. */
     public SchedulerEJB() { super(); }
-
-
-    /**
-     * Run the scheduled action.
-     *
-     * @param timer The timer that called this method.
-     */
-    @Timeout
-    public void run(@SuppressWarnings("unused") final Timer timer) {
-        executeAction();
-    }
 
 
     /** {@inheritDoc} */
@@ -92,7 +94,8 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     public void executeAction() {
         LOG.debug("Executing scheduled actions.");
         final List<Action> actions =
-            _repository.list(QueryNames.LATEST_ACTION, Action.class, new Date());
+            _bdao.list(
+                QueryNames.LATEST_ACTION, Action.class, new Date());
         LOG.debug("Actions to execute: "+actions.size());
         try {
             if (actions.size() > 0) {
@@ -103,6 +106,52 @@ public class SchedulerEJB implements Scheduler, ActionDao {
             throw e;
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ActionSummary> listPendingActions() {
+        return mapActions(_bdao.list(QueryNames.PENDING, Action.class));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ActionSummary> listCompletedActions() {
+        return mapActions(_bdao.list(QueryNames.EXECUTED, Action.class));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void cancelAction(final UUID actionId) {
+        new CancelActionCommand(_bdao, _audit).execute(
+            loggedInUser(_context), new Date(), actionId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void createAction(final ActionNew action) {
+      final Action a =
+          new Action(
+              action.getAction(),
+              action.getExecuteAfter(),
+              loggedInUser(_context),
+              _bdao.find(
+                  ccc.domain.Resource.class, action.getResourceId()),
+              action.getParameters());
+
+      new ScheduleActionCommand(_bdao, _audit).execute(
+          loggedInUser(_context), new Date(), a);
+    }
+
+
+
+    /* ====================================================================
+     * Scheduling implementation.
+     * ================================================================== */
 
 
     /** {@inheritDoc} */
@@ -132,20 +181,6 @@ public class SchedulerEJB implements Scheduler, ActionDao {
 
     /** {@inheritDoc} */
     @Override
-    public Collection<Action> pending() {
-        return _repository.list(QueryNames.PENDING, Action.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<Action> executed() {
-        return _repository.list(QueryNames.EXECUTED, Action.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @SuppressWarnings("unchecked")
     public boolean isRunning() {
         final Collection<Timer> c = _context.getTimerService().getTimers();
@@ -158,9 +193,22 @@ public class SchedulerEJB implements Scheduler, ActionDao {
     }
 
 
+    /**
+     * Run the scheduled action.
+     *
+     * @param timer The timer that called this method.
+     */
+    @Timeout
+    public void run(@SuppressWarnings("unused") final Timer timer) {
+        executeAction();
+    }
+
+
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _repository = new JpaRepository(_em);
+        _bdao = new JpaRepository(_em);
         _executor = new ActionExecutorImpl(_commands);
+        _audit = new LogEntryRepositoryImpl(_bdao);
+        _users = new UserRepositoryImpl(_bdao);
     }
 }

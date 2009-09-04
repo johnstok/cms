@@ -22,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import ccc.rest.dto.ActionNew;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasNew;
 import ccc.rest.dto.ResourceCacheDurationPU;
@@ -99,9 +98,6 @@ public interface RestCommands {
     void includeInMainMenu(
         @PathParam("id") UUID resourceId) throws CommandFailedException;
 
-    @POST @Path("/actions")
-    void createAction(ActionNew action) throws CommandFailedException;
-
     @POST @Path("/resources/{id}/metadata")
     void updateMetadata(
         @PathParam("id") UUID resourceId,
@@ -110,10 +106,6 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/wc-clear")
     void clearWorkingCopy(
         @PathParam("id") UUID pageId) throws CommandFailedException;
-
-    @POST @Path("/actions/{id}/cancel")
-    void cancelAction(
-        @PathParam("id") UUID actionId) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(

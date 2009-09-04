@@ -15,6 +15,7 @@ package ccc.rest.impl;
 import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.rest.ActionDao;
 import ccc.rest.Commands;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -37,6 +38,7 @@ abstract class JaxrsCollection {
     private Pages _pages;
     private Folders _folders;
     private Users _userCommands;
+    private ActionDao _actions;
 
     /**
      * Accessor.
@@ -69,6 +71,18 @@ abstract class JaxrsCollection {
             (null==_commands)
                 ? (Commands) _reg.get(_appName+"/"+Commands.NAME+"/remote")
                 : _commands;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the actions.
+     */
+    public final ActionDao getActions() {
+        return
+        (null==_actions)
+        ? (ActionDao) _reg.get(_appName+"/"+ActionDao.NAME+"/local")
+            : _actions;
     }
 
     /**
