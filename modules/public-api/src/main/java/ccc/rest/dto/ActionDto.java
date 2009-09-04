@@ -29,7 +29,7 @@ import ccc.types.CommandType;
 public class ActionDto implements Jsonable {
 
     private final UUID _resourceId;
-    private final CommandType _action;
+    private final CommandType _command;
     private final Date _executeAfter;
     private final Map<String, String> _parameters;
 
@@ -38,16 +38,16 @@ public class ActionDto implements Jsonable {
      * Constructor.
      *
      * @param resourceId The subject of the action.
-     * @param action The command to perform.
+     * @param command The command to perform.
      * @param executeAfter The earliest time the action may be performed.
      * @param parameters Additional parameters for the action.
      */
     public ActionDto(final UUID resourceId,
-                     final CommandType action,
+                     final CommandType command,
                      final Date executeAfter,
                      final Map<String, String> parameters) {
         _resourceId = resourceId;
-        _action = action;
+        _command = command;
         _executeAfter = executeAfter;
         _parameters = parameters;
     }
@@ -68,8 +68,8 @@ public class ActionDto implements Jsonable {
      *
      * @return Returns the action.
      */
-    public final CommandType getAction() {
-        return _action;
+    public final CommandType getCommand() {
+        return _command;
     }
 
 
@@ -97,7 +97,7 @@ public class ActionDto implements Jsonable {
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.SUBJECT_ID, _resourceId);
-        json.set(JsonKeys.ACTION, _action.name());
+        json.set(JsonKeys.COMMAND, _command.name());
         json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
         json.set(JsonKeys.PARAMETERS, _parameters);
     }

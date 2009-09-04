@@ -68,7 +68,7 @@ public class CreateActionAction
     protected String getBody() {
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.SUBJECT_ID, _resourceId);
-        json.set(JsonKeys.ACTION, _command.name());
+        json.set(JsonKeys.COMMAND, _command.name());
         json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
         json.set(JsonKeys.PARAMETERS, _actionParameters);
         return json.toString();

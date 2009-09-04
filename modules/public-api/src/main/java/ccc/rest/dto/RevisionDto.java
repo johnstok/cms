@@ -27,7 +27,7 @@ import ccc.types.Username;
  * @author Civic Computing Ltd.
  */
 public final class RevisionDto implements Serializable, Jsonable {
-    private CommandType _action;
+    private CommandType _command;
     private Username _actorUsername;
     private Date _happenedOn;
     private long _index;
@@ -39,20 +39,20 @@ public final class RevisionDto implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param action The action.
+     * @param command The action.
      * @param actorUsername The action's actor.
      * @param on The date of the action.
      * @param index The index of the action.
      * @param comment The comment of the action.
      * @param isMajorEdit Is the action a major edit.
      */
-    public RevisionDto(final CommandType  action,
+    public RevisionDto(final CommandType  command,
                            final Username  actorUsername,
                            final Date    on,
                            final long    index,
                            final String comment,
                            final boolean isMajorEdit) {
-        _action = action;
+        _command = command;
         _actorUsername = actorUsername;
         _happenedOn = new Date(on.getTime());
         _index = index;
@@ -68,7 +68,7 @@ public final class RevisionDto implements Serializable, Jsonable {
      */
     public RevisionDto(final Json json) {
         this(
-            CommandType.valueOf(json.getString(JsonKeys.ACTION)),
+            CommandType.valueOf(json.getString(JsonKeys.COMMAND)),
             new Username(json.getString(JsonKeys.USERNAME)),
             json.getDate(JsonKeys.HAPPENED_ON),
             json.getLong(JsonKeys.INDEX).longValue(),
@@ -82,8 +82,8 @@ public final class RevisionDto implements Serializable, Jsonable {
      *
      * @return Returns the action.
      */
-    public CommandType getAction() {
-        return _action;
+    public CommandType getCommand() {
+        return _command;
     }
 
 
@@ -139,7 +139,7 @@ public final class RevisionDto implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.ACTION, getAction().name());
+        json.set(JsonKeys.COMMAND, getCommand().name());
         json.set(JsonKeys.USERNAME, getActorUsername().toString());
         json.set(JsonKeys.HAPPENED_ON, getHappenedOn());
         json.set(JsonKeys.MAJOR_CHANGE, isMajor());
