@@ -14,7 +14,7 @@ package ccc.migration;
 
 import java.util.Date;
 
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 
 /**
@@ -25,7 +25,7 @@ import ccc.rest.dto.UserSummary;
 public class LogEntryBean {
     private int  _actor;
     private Date _happenedOn;
-    private UserSummary _user;
+    private UserDto _user;
 
 
 
@@ -64,7 +64,7 @@ public class LogEntryBean {
      *
      * @return Returns the user.
      */
-    UserSummary getUser() {
+    UserDto getUser() {
         return _user;
     }
 
@@ -74,7 +74,7 @@ public class LogEntryBean {
      *
      * @param user The user to set.
      */
-    void setUser(final UserSummary user) {
+    void setUser(final UserDto user) {
         _user = user;
     }
 }

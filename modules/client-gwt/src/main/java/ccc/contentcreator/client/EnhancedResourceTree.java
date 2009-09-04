@@ -16,7 +16,7 @@ import java.util.List;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -49,7 +49,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
      */
     EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view,
-                         final UserSummary user,
+                         final UserDto user,
                          final IGlobals globals) {
 
         super(root, globals);

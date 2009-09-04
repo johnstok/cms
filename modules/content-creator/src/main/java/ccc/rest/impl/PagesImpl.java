@@ -21,7 +21,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.CommandFailedException;
 import ccc.rest.PagesBasic;
 import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageNew;
+import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 
@@ -50,7 +50,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createPage(final PageNew page)
+    public ResourceSummary createPage(final PageDto page)
     throws CommandFailedException {
         return getPageCommands().createPage(page);
     }

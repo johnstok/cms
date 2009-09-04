@@ -25,7 +25,7 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceCacheDurationPU implements Jsonable {
+public class ResourceDto implements Jsonable {
 
     private final Duration _cacheDuration;
     private final Long     _revision;
@@ -37,7 +37,7 @@ public class ResourceCacheDurationPU implements Jsonable {
      *
      * @param cacheDuration The duration to set (may be NULL).
      */
-    public ResourceCacheDurationPU(final Duration cacheDuration) {
+    public ResourceDto(final Duration cacheDuration) {
         _cacheDuration = cacheDuration;
         _revision = null;
         _templateId = null;
@@ -48,7 +48,7 @@ public class ResourceCacheDurationPU implements Jsonable {
      *
      * @param revision The revision used to create the working copy.
      */
-    public ResourceCacheDurationPU(final Long revision) {
+    public ResourceDto(final Long revision) {
         _revision = revision;
         _cacheDuration = null;
         _templateId = null;
@@ -62,7 +62,7 @@ public class ResourceCacheDurationPU implements Jsonable {
      * @param revision The revision used to create the working copy.
      * @param templateId The template id.
      */
-    public ResourceCacheDurationPU(final Duration cacheDuration,
+    public ResourceDto(final Duration cacheDuration,
                                    final Long revision,
                                    final UUID templateId) {
         _revision = revision;
@@ -75,7 +75,7 @@ public class ResourceCacheDurationPU implements Jsonable {
      *
      * @param templateId The template id.
      */
-    public ResourceCacheDurationPU(final UUID templateId) {
+    public ResourceDto(final UUID templateId) {
         _templateId = templateId;
         _cacheDuration = null;
         _revision = null;

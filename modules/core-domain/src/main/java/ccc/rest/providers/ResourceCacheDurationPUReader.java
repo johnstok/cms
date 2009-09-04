@@ -23,7 +23,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.dto.ResourceCacheDurationPU;
+import ccc.rest.dto.ResourceDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
@@ -40,7 +40,7 @@ public class ResourceCacheDurationPUReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<ResourceCacheDurationPU> {
+        MessageBodyReader<ResourceDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -48,13 +48,13 @@ public class ResourceCacheDurationPUReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return ResourceCacheDurationPU.class.equals(clazz);
+        return ResourceDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceCacheDurationPU readFrom(
-                             final Class<ResourceCacheDurationPU> arg0,
+    public ResourceDto readFrom(
+                             final Class<ResourceDto> arg0,
                              final Type arg1,
                              final Annotation[] arg2,
                              final MediaType arg3,
@@ -64,7 +64,7 @@ public class ResourceCacheDurationPUReader
         final Json duration = json.getJson(JsonKeys.CACHE_DURATION);
         final Long revNo = json.getLong(JsonKeys.REVISION);
         final UUID templateId = json.getId(JsonKeys.TEMPLATE_ID);
-        return new ResourceCacheDurationPU(
+        return new ResourceDto(
             (null==duration) ? null : new Duration(json), revNo, templateId);
     }
 }

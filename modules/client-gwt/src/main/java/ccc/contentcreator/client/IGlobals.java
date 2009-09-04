@@ -18,7 +18,7 @@ import ccc.contentcreator.api.ErrorDescriptions;
 import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 
 /**
@@ -114,14 +114,14 @@ public interface IGlobals {
      *
      * @return The current logged in user.
      */
-    UserSummary currentUser();
+    UserDto currentUser();
 
     /**
      * Mutator.
      *
      * @param user The current logged in user.
      */
-    void currentUser(final UserSummary user);
+    void currentUser(final UserDto user);
 
     /**
      * Factory for {@link ActionNameConstants} objects.

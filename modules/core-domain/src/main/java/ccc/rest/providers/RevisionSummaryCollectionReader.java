@@ -29,7 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.serialization.JsonImpl;
 
 
@@ -45,7 +45,7 @@ public class RevisionSummaryCollectionReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<Collection<LogEntrySummary>> {
+        MessageBodyReader<Collection<RevisionDto>> {
 
     /** {@inheritDoc} */
     @Override
@@ -53,13 +53,13 @@ public class RevisionSummaryCollectionReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return isCollectionOfType(LogEntrySummary.class, type);
+        return isCollectionOfType(RevisionDto.class, type);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<LogEntrySummary> readFrom(
-                                final Class<Collection<LogEntrySummary>> arg0,
+    public Collection<RevisionDto> readFrom(
+                                final Class<Collection<RevisionDto>> arg0,
                                 final Type arg1,
                                 final Annotation[] arg2,
                                 final MediaType arg3,
@@ -68,11 +68,11 @@ public class RevisionSummaryCollectionReader
         try {
             final String s = readString(arg3, arg5);
             final JSONArray result = new JSONArray(s);
-            final Collection<LogEntrySummary> rs =
-                new ArrayList<LogEntrySummary>();
+            final Collection<RevisionDto> rs =
+                new ArrayList<RevisionDto>();
             for (int i=0; i<result.length(); i++) {
                 final JSONObject o = result.getJSONObject(i);
-                rs.add(new LogEntrySummary(new JsonImpl(o)));
+                rs.add(new RevisionDto(new JsonImpl(o)));
             }
             return rs;
         } catch (final JSONException e) {

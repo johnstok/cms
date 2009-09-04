@@ -22,8 +22,8 @@ import javax.ws.rs.PathParam;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileSummary;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.FileDto;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
@@ -64,7 +64,7 @@ public interface Queries {
      * @return The list of images.
      */
     @GET @Path("/images") @NoCache
-    Collection<FileSummary> getAllContentImages();
+    Collection<FileDto> getAllContentImages();
 
     /**
      * Determine the absolute path to a resource.
@@ -107,7 +107,7 @@ public interface Queries {
      * @return The list of resources.
      */
     @GET @Path("/resources/{id}/revisions") @NoCache
-    Collection<LogEntrySummary> history(@PathParam("id") UUID resourceId);
+    Collection<RevisionDto> history(@PathParam("id") UUID resourceId);
 
     /**
      * Retrieve the metadata for a resource.

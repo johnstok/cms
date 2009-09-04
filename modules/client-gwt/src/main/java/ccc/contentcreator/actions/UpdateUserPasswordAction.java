@@ -14,7 +14,7 @@ package ccc.contentcreator.actions;
 import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -28,7 +28,7 @@ public abstract class UpdateUserPasswordAction
     extends
         RemotingAction {
 
-    private final UserSummary _newPassword;
+    private final UserDto _newPassword;
     private final UUID _userId;
 
 
@@ -38,7 +38,7 @@ public abstract class UpdateUserPasswordAction
      * @param userId The user's id.
      */
     public UpdateUserPasswordAction(final UUID userId,
-                                    final UserSummary newPassword) {
+                                    final UserDto newPassword) {
         super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);
         _userId = userId;
         _newPassword = newPassword;

@@ -17,7 +17,7 @@ import ccc.contentcreator.actions.UpdateUserPasswordAction;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -92,7 +92,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
             public void run() {
                 new UpdateUserPasswordAction(
                     _userDTO.getId(),
-                    new UserSummary(_password1.getValue())
+                    new UserDto(_password1.getValue())
                 ) {
                     @Override protected void onNoContent(final Response r) {
                         hide();

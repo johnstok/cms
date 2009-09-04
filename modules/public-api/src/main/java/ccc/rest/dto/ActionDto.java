@@ -26,7 +26,7 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionNew implements Jsonable {
+public class ActionDto implements Jsonable {
 
     private final UUID _resourceId;
     private final CommandType _action;
@@ -42,7 +42,7 @@ public class ActionNew implements Jsonable {
      * @param executeAfter The earliest time the action may be performed.
      * @param parameters Additional parameters for the action.
      */
-    public ActionNew(final UUID resourceId,
+    public ActionDto(final UUID resourceId,
                      final CommandType action,
                      final Date executeAfter,
                      final Map<String, String> parameters) {

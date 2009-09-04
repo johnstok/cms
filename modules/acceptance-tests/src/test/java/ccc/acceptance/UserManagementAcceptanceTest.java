@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 
@@ -38,11 +38,11 @@ public class UserManagementAcceptanceTest
     public void testUpdatePassword() throws CommandFailedException {
 
         // ARRANGE
-        final UserSummary us = tempUser();
+        final UserDto us = tempUser();
 
         // ACT
         _users.updateUserPassword(
-            us.getId(), new UserSummary("Another00-"));
+            us.getId(), new UserDto("Another00-"));
 
         // ASSERT
         assertFalse(
@@ -60,15 +60,15 @@ public class UserManagementAcceptanceTest
     public void testSearchForUsersWithUsername() throws CommandFailedException {
 
         // ARRANGE
-        final UserSummary us = tempUser();
+        final UserDto us = tempUser();
 
         // ACT
-        final Collection<UserSummary> ul =
+        final Collection<UserDto> ul =
             _users.listUsersWithUsername(us.getUsername().toString());
 
         // ASSERT
         assertEquals(1, ul.size());
-        final UserSummary uq = ul.iterator().next();
+        final UserDto uq = ul.iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());
@@ -85,15 +85,15 @@ public class UserManagementAcceptanceTest
     public void testSearchForUsersWithEmail() throws CommandFailedException {
 
         // ARRANGE
-        final UserSummary us = tempUser();
+        final UserDto us = tempUser();
 
         // ACT
-        final Collection<UserSummary> ul =
+        final Collection<UserDto> ul =
             _users.listUsersWithEmail(us.getEmail());
 
         // ASSERT
         assertEquals(1, ul.size());
-        final UserSummary uq = ul.iterator().next();
+        final UserDto uq = ul.iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());
@@ -113,19 +113,19 @@ public class UserManagementAcceptanceTest
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
 
-        final UserSummary us = tempUser();
+        final UserDto us = tempUser();
 
         // ACT
         _users.updateUser(
             us.getId(),
-            new UserSummary(
+            new UserDto(
                 email,
                 username,
                 Collections.singleton("a2"),
                 Collections.singletonMap("key2", "value2")));
 
         // ASSERT
-        final UserSummary ud = _users.userDelta(us.getId());
+        final UserDto ud = _users.userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(1, ud.getRoles().size());
@@ -145,8 +145,8 @@ public class UserManagementAcceptanceTest
         final String email = username+"@abc.def";
 
         // Create the user
-        final UserSummary u =
-            new UserSummary(
+        final UserDto u =
+            new UserDto(
                 email,
                 username,
                 Collections.singleton("a"),
@@ -154,7 +154,7 @@ public class UserManagementAcceptanceTest
                 "Testtest00-");
 
 
-        final UserSummary us = _users.createUser(u);
+        final UserDto us = _users.createUser(u);
         assertEquals(username, us.getUsername());
         assertEquals(email, us.getEmail());
         assertEquals(1, us.getRoles().size());
@@ -170,7 +170,7 @@ public class UserManagementAcceptanceTest
     public void testUpdateYourUser() throws CommandFailedException {
 
         // ARRANGE
-        UserSummary user = tempUser();
+        UserDto user = tempUser();
 
         final String email = "username@abc.def";
         final String password = "test Test00-";
@@ -179,7 +179,7 @@ public class UserManagementAcceptanceTest
         _security.login(user.getUsername().toString(), "Testtest00-");
         user = _users.loggedInUser();
 
-        final UserSummary uo = new UserSummary(email, password);
+        final UserDto uo = new UserDto(email, password);
 
         // ACT
         _users.updateYourUser(user.getId(), uo);
@@ -194,14 +194,14 @@ public class UserManagementAcceptanceTest
     }
 
 
-    private UserSummary tempUser() throws CommandFailedException {
+    private UserDto tempUser() throws CommandFailedException {
 
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
 
         // Create the user
-        final UserSummary u =
-            new UserSummary(
+        final UserDto u =
+            new UserDto(
                 email,
                 username,
                 Collections.singleton("CONTENT_CREATOR"),

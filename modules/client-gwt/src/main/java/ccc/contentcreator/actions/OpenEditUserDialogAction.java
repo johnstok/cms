@@ -16,7 +16,7 @@ import java.util.UUID;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.dialogs.EditUserDialog;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
@@ -58,7 +58,7 @@ public class OpenEditUserDialogAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final UserSummary delta = new UserSummary(new GwtJson(result));
+        final UserDto delta = new UserDto(new GwtJson(result));
         new EditUserDialog(_userId, delta, _userTable).show();
     }
 }

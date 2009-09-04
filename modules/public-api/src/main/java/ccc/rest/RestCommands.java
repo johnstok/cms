@@ -23,11 +23,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasNew;
-import ccc.rest.dto.ResourceCacheDurationPU;
+import ccc.rest.dto.AliasDto;
+import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateNew;
+import ccc.rest.dto.TemplateDto;
 import ccc.serialization.Json;
 
 
@@ -43,14 +43,14 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
-        ResourceCacheDurationPU duration) throws CommandFailedException;
+        ResourceDto duration) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/lock")
     void lock(
         @PathParam("id") UUID resourceId) throws CommandFailedException;
 
     @POST @Path("/templates")
-    ResourceSummary createTemplate(TemplateNew template) throws CommandFailedException;
+    ResourceSummary createTemplate(TemplateDto template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -59,7 +59,7 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
-        ResourceCacheDurationPU template) throws CommandFailedException;
+        ResourceDto template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/unlock")
     void unlock(
@@ -108,10 +108,10 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(
         @PathParam("id") UUID resourceId,
-        ResourceCacheDurationPU pu) throws CommandFailedException;
+        ResourceDto pu) throws CommandFailedException;
 
     @POST @Path("/aliases")
-    ResourceSummary createAlias(AliasNew alias) throws CommandFailedException;
+    ResourceSummary createAlias(AliasDto alias) throws CommandFailedException;
 
     @POST @Path("/templates/{id}")
     void updateTemplate(

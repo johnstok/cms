@@ -46,7 +46,7 @@ import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageNew;
+import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
@@ -118,7 +118,7 @@ implements
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createPage(final PageNew page)
+    public ResourceSummary createPage(final PageDto page)
                                                  throws CommandFailedException {
         return createPage(
             page.getParentId(),

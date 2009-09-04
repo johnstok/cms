@@ -40,7 +40,7 @@ import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.event.Events;
@@ -92,7 +92,7 @@ public class ResourceContextMenu
      * @param tbl The table this menu will work for.
      * @param user The UserSummary of the currently logged in user.
      */
-    ResourceContextMenu(final ResourceTable tbl, final UserSummary user) {
+    ResourceContextMenu(final ResourceTable tbl, final UserDto user) {
         _table = tbl;
 
         _publishAction = new PublishAction(_table);
@@ -129,7 +129,7 @@ public class ResourceContextMenu
     }
 
 
-    private void refreshMenuItems(final UserSummary user,
+    private void refreshMenuItems(final UserDto user,
                                   final MenuEvent be) {
         removeAll();
         final ResourceSummaryModelData item = _table.tableSelection();

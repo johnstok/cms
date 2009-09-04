@@ -18,7 +18,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
@@ -59,7 +59,7 @@ public class UpdateUserCommand {
     public User execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
-                        final UserSummary delta) {
+                        final UserDto delta) {
         final User current = _repository.find(User.class, userId);
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));

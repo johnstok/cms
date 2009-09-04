@@ -32,7 +32,7 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -56,14 +56,14 @@ public class MainMenu
 
     private final IGlobals _globals = new IGlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
-    private final UserSummary _user;
+    private final UserDto _user;
 
     /**
      * Constructor.
      *
      * @param user UserSummary of the currently logged in user.
      */
-    public MainMenu(final UserSummary user) {
+    public MainMenu(final UserDto user) {
         _user = user;
         if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
             addMenu(

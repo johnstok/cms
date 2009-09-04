@@ -16,7 +16,7 @@ import ccc.contentcreator.actions.OpenCreateFolderAction;
 import ccc.contentcreator.actions.OpenCreatePageAction;
 import ccc.contentcreator.actions.OpenCreateTemplateAction;
 import ccc.contentcreator.api.UIConstants;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 
 /**
@@ -36,7 +36,7 @@ public class FolderToolBar
      * @param ssm The selection model to use.
      * @param user UserSummary currently logged in user.
      */
-    FolderToolBar(final SingleSelectionModel ssm, final UserSummary user) {
+    FolderToolBar(final SingleSelectionModel ssm, final UserDto user) {
         addSeparator();
         addButton(
             "uploadFile",

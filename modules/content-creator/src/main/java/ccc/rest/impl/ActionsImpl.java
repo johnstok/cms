@@ -20,7 +20,7 @@ import javax.ws.rs.Produces;
 
 import ccc.rest.Actions;
 import ccc.rest.CommandFailedException;
-import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
 
@@ -55,7 +55,7 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void createAction(final ActionNew action)
+    public void createAction(final ActionDto action)
     throws CommandFailedException {
         getActions().createAction(action);
     }

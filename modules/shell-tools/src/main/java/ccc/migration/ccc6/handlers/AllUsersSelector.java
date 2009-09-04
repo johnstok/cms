@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 /**
@@ -20,7 +20,7 @@ import ccc.types.Username;
  */
 public final class AllUsersSelector
     implements
-        SqlQuery<Map<Integer, UserSummary>> {
+        SqlQuery<Map<Integer, UserDto>> {
 
     private static Logger log = Logger.getLogger(AllUsersSelector.class);
 
@@ -36,10 +36,10 @@ public final class AllUsersSelector
     }
 
     /** {@inheritDoc} */
-    @Override public Map<Integer, UserSummary> handle(final ResultSet rs)
+    @Override public Map<Integer, UserDto> handle(final ResultSet rs)
                                                            throws SQLException {
-        final Map<Integer, UserSummary> resultList =
-            new HashMap<Integer, UserSummary>();
+        final Map<Integer, UserDto> resultList =
+            new HashMap<Integer, UserDto>();
         while (rs.next()) {
             final String userName = rs.getString("user_name");
             final String password = rs.getString("user_passwd");
@@ -52,8 +52,8 @@ public final class AllUsersSelector
                     (metamap.get("Email") == null) ? "" : metamap.get("Email");
                 final Set<String> roles =
                     _legacyDBQueries.selectRolesForUser(userId);
-                final UserSummary user =
-                    new UserSummary(
+                final UserDto user =
+                    new UserDto(
                         email,
                         new Username(userName),
                         roles,

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasNew;
+import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -58,8 +58,8 @@ public class AliasAcceptanceTest
 
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = tempFolder();
-        final AliasNew alias =
-            new AliasNew(folder.getId(), name, folder.getId());
+        final AliasDto alias =
+            new AliasDto(folder.getId(), name, folder.getId());
 
         // ACT
         final ResourceSummary rs = _commands.createAlias(alias);

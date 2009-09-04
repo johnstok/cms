@@ -24,7 +24,7 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderNew implements Jsonable, Serializable {
+public class FolderDto implements Jsonable, Serializable {
 
     private final UUID     _parentId;
     private final String _name;
@@ -36,7 +36,7 @@ public class FolderNew implements Jsonable, Serializable {
      * @param parentId The folder's parent.
      * @param name     The folder's name.
      */
-    public FolderNew(final UUID parentId, final String name) {
+    public FolderDto(final UUID parentId, final String name) {
         _parentId = parentId;
         _name = name;
     }

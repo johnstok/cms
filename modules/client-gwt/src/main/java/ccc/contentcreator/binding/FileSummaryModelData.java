@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.FileDto;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -33,14 +33,14 @@ public class FileSummaryModelData
     implements
         ModelData {
 
-    private FileSummary _fs;
+    private FileDto _fs;
 
     /**
      * Constructor.
      *
      * @param fs The file summary.
      */
-    public FileSummaryModelData(final FileSummary fs) {
+    public FileSummaryModelData(final FileDto fs) {
         _fs = fs;
     }
 

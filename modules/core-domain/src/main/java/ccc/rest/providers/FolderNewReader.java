@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.dto.FolderNew;
+import ccc.rest.dto.FolderDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 
@@ -38,7 +38,7 @@ public class FolderNewReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<FolderNew> {
+        MessageBodyReader<FolderDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -46,19 +46,19 @@ public class FolderNewReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return FolderNew.class.equals(clazz);
+        return FolderDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public FolderNew readFrom(final Class<FolderNew> clazz,
+    public FolderDto readFrom(final Class<FolderDto> clazz,
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mimetype,
                               final MultivaluedMap<String, String> httpHeaders,
                               final InputStream is) throws IOException {
         final Json json = readJson(mimetype, is);
-        return new FolderNew(
+        return new FolderDto(
             json.getId(JsonKeys.PARENT_ID),
             json.getString(JsonKeys.NAME));
     }

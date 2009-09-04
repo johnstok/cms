@@ -22,7 +22,7 @@ import ccc.contentcreator.actions.UpdateUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -43,7 +43,7 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextArea          _roles = new TextArea();
 
     private final UUID          _userId;
-    private final UserSummary _userDTO;
+    private final UserDto _userDTO;
     private final UserTable   _userTable;
 
     /** ROLE_HEIGHT : int. */
@@ -57,7 +57,7 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param userTable The user table.
      */
     public EditUserDialog(final UUID userId,
-                          final UserSummary userDTO,
+                          final UserDto userDTO,
                           final UserTable userTable) {
         super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());
 

@@ -20,11 +20,11 @@ import java.util.Map.Entry;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.FileSummary;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.FileDto;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -55,10 +55,10 @@ public final class DataBinding {
      * @return The model data.
      */
     public static List<LogEntrySummaryModelData> bindLogEntrySummary(
-                                       final Collection<LogEntrySummary> arg0) {
+                                       final Collection<RevisionDto> arg0) {
         final List<LogEntrySummaryModelData> boundData =
             new ArrayList<LogEntrySummaryModelData>();
-        for (final LogEntrySummary les : arg0) {
+        for (final RevisionDto les : arg0) {
             boundData.add(new LogEntrySummaryModelData(les, _globals));
         }
         return boundData;
@@ -83,10 +83,10 @@ public final class DataBinding {
 
 
     public static List<UserSummaryModelData> bindUserSummary(
-                                         final Collection<UserSummary> result) {
+                                         final Collection<UserDto> result) {
         final List<UserSummaryModelData> boundData =
             new ArrayList<UserSummaryModelData>();
-        for (final UserSummary us : result) {
+        for (final UserDto us : result) {
             boundData.add(new UserSummaryModelData(us));
         }
         return boundData;
@@ -105,10 +105,10 @@ public final class DataBinding {
 
 
     public static List<FileSummaryModelData> bindFileSummary(
-                                           final Collection<FileSummary> arg0) {
+                                           final Collection<FileDto> arg0) {
         final List<FileSummaryModelData> boundData =
             new ArrayList<FileSummaryModelData>();
-        for (final FileSummary fs : arg0) {
+        for (final FileDto fs : arg0) {
             boundData.add(new FileSummaryModelData(fs));
         }
         return boundData;

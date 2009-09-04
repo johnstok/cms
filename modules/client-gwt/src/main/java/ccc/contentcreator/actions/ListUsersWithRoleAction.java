@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -55,13 +55,13 @@ public abstract class ListUsersWithRoleAction
     @Override
     protected void onOK(final Response response) {
         final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<UserSummary> users = new ArrayList<UserSummary>();
+        final Collection<UserDto> users = new ArrayList<UserDto>();
         for (int i=0; i<result.size(); i++) {
-            users.add(new UserSummary(new GwtJson(result.get(i).isObject())));
+            users.add(new UserDto(new GwtJson(result.get(i).isObject())));
         }
 
         execute(users);
     }
 
-    protected abstract void execute(final Collection<UserSummary> users);
+    protected abstract void execute(final Collection<UserDto> users);
 }

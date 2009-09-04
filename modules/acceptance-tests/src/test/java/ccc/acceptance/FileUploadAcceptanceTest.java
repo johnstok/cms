@@ -17,8 +17,8 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.dto.LogEntrySummary;
-import ccc.rest.dto.ResourceCacheDurationPU;
+import ccc.rest.dto.RevisionDto;
+import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.FailureCode;
 
@@ -46,7 +46,7 @@ public class FileUploadAcceptanceTest
 
         _commands.lock(file.getId());
         _commands.createWorkingCopy(
-            file.getId(), new ResourceCacheDurationPU(0L));
+            file.getId(), new ResourceDto(0L));
 
         // ACT
         _commands.clearWorkingCopy(file.getId());
@@ -70,9 +70,9 @@ public class FileUploadAcceptanceTest
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         // History for first revision
-        Collection<LogEntrySummary> revs = _queries.history(file.getId());
+        Collection<RevisionDto> revs = _queries.history(file.getId());
         assertEquals(1, revs.size());
-        final LogEntrySummary rev1 = revs.iterator().next();
+        final RevisionDto rev1 = revs.iterator().next();
         assertEquals(0, rev1.getIndex());
         assertEquals("Hello!", previewContent(file, false));
 
@@ -81,15 +81,15 @@ public class FileUploadAcceptanceTest
         updateTextFile("Update!", file);
         revs = _queries.history(file.getId());
         assertEquals(2, revs.size());
-        Iterator<LogEntrySummary> i = revs.iterator();
+        Iterator<RevisionDto> i = revs.iterator();
         i.next();
-        final LogEntrySummary rev2 = i.next();
+        final RevisionDto rev2 = i.next();
         assertEquals(1, rev2.getIndex());
         assertEquals("Update!", previewContent(file, false));
 
         // Create working copy from rev 0.
         _commands.createWorkingCopy(
-            file.getId(), new ResourceCacheDurationPU(0L));
+            file.getId(), new ResourceDto(0L));
         ResourceSummary fWC = _queries.resource(file.getId());
         assertEquals("Update!", previewContent(file, false));
         assertEquals("Hello!", previewContent(file, true));
@@ -102,7 +102,7 @@ public class FileUploadAcceptanceTest
         i = revs.iterator();
         i.next();
         i.next();
-        final LogEntrySummary rev3 = i.next();
+        final RevisionDto rev3 = i.next();
         assertEquals(2, rev3.getIndex());
         assertEquals("Hello!", previewContent(file, false));
         fWC = _queries.resource(file.getId());

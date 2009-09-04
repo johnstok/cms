@@ -21,7 +21,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.CommandFailedException;
 import ccc.rest.FoldersBasic;
 import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderNew;
+import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -77,7 +77,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final FolderNew folder)
+    public ResourceSummary createFolder(final FolderDto folder)
     throws CommandFailedException {
         return getFolderCommands().createFolder(folder);
     }

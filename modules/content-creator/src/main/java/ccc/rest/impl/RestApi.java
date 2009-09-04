@@ -24,14 +24,14 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.Queries;
 import ccc.rest.RestCommands;
 import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasNew;
+import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileSummary;
-import ccc.rest.dto.LogEntrySummary;
-import ccc.rest.dto.ResourceCacheDurationPU;
+import ccc.rest.dto.FileDto;
+import ccc.rest.dto.RevisionDto;
+import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateNew;
+import ccc.rest.dto.TemplateDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.serialization.Json;
 import ccc.types.Duration;
@@ -91,14 +91,14 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FileSummary> getAllContentImages() {
+    public Collection<FileDto> getAllContentImages() {
         return getQueries().getAllContentImages();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<LogEntrySummary> history(final UUID resourceId) {
+    public Collection<RevisionDto> history(final UUID resourceId) {
         return getQueries().history(resourceId);
     }
 
@@ -176,7 +176,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceCacheDurationPU pu) throws CommandFailedException {
+                                    final ResourceDto pu) throws CommandFailedException {
         getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
@@ -190,7 +190,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final TemplateNew template) throws CommandFailedException {
+    public ResourceSummary createTemplate(final TemplateDto template) throws CommandFailedException {
         return getCommands().createTemplate(
             template.getParentId(),
             template.getDelta(),
@@ -210,7 +210,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceCacheDurationPU pu)
+                                       final ResourceDto pu)
     throws CommandFailedException {
         getCommands().updateResourceTemplate(resourceId, pu.getTemplateId());
     }
@@ -292,7 +292,7 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final AliasNew alias) throws CommandFailedException {
+    public ResourceSummary createAlias(final AliasDto alias) throws CommandFailedException {
         return getCommands().createAlias(
             alias.getParentId(), alias.getName(), alias.getTargetId());
     }
@@ -301,7 +301,7 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceCacheDurationPU pu)
+                                  final ResourceDto pu)
     throws CommandFailedException {
         getCommands().createWorkingCopy(resourceId, pu.getRevision());
     }

@@ -37,7 +37,7 @@ import ccc.rest.Users;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -606,7 +606,7 @@ public class Migrations {
 
         log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
 
-        final UserSummary user =_um.getUser(le.getActor());
+        final UserDto user =_um.getUser(le.getActor());
         le.setUser(user);
 
         if (null==user) {

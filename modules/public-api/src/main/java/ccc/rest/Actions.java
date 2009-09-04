@@ -23,7 +23,7 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
 
@@ -59,7 +59,7 @@ public interface Actions {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/actions")
-    void createAction(ActionNew action) throws CommandFailedException;
+    void createAction(ActionDto action) throws CommandFailedException;
 
 
     /**

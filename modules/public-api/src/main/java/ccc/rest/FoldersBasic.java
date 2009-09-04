@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderNew;
+import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -106,7 +106,7 @@ public interface FoldersBasic {
      */
     @POST
     @Path("/folders")
-    ResourceSummary createFolder(FolderNew folder) throws CommandFailedException;
+    ResourceSummary createFolder(FolderDto folder) throws CommandFailedException;
 
     /**
      * Update the specified folder.
