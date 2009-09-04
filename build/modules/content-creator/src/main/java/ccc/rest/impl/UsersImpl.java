@@ -20,7 +20,7 @@ import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
 import ccc.rest.Users;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 
@@ -41,35 +41,35 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary loggedInUser() {
+    public UserDto loggedInUser() {
         return getUserCommands().loggedInUser();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserSummary> listUsers() {
+    public Collection<UserDto> listUsers() {
         return getUserCommands().listUsers();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserSummary> listUsersWithEmail(final String email) {
+    public Collection<UserDto> listUsersWithEmail(final String email) {
         return getUserCommands().listUsersWithEmail(email);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserSummary> listUsersWithRole(final String role) {
+    public Collection<UserDto> listUsersWithRole(final String role) {
         return getUserCommands().listUsersWithRole(role);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserSummary> listUsersWithUsername(
+    public Collection<UserDto> listUsersWithUsername(
                                                         final String username) {
         return getUserCommands().listUsersWithUsername(username);
     }
@@ -77,7 +77,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary userDelta(final UUID userId) {
+    public UserDto userDelta(final UUID userId) {
         return getUserCommands().userDelta(userId);
     }
 
@@ -91,7 +91,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary createUser(final UserSummary user)
+    public UserDto createUser(final UserDto user)
     throws CommandFailedException {
         return getUserCommands().createUser(user);
     }
@@ -100,7 +100,7 @@ public class UsersImpl
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final UUID userId,
-                                   final UserSummary pu)
+                                   final UserDto pu)
     throws CommandFailedException {
         getUserCommands().updateUserPassword(userId, pu);
     }
@@ -108,7 +108,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final UUID userId, final UserSummary user)
+    public void updateYourUser(final UUID userId, final UserDto user)
     throws CommandFailedException {
         getUserCommands().updateYourUser(userId, user);
     }
@@ -116,7 +116,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final UUID userId, final UserSummary delta)
+    public void updateUser(final UUID userId, final UserDto delta)
     throws CommandFailedException {
         getUserCommands().updateUser(userId, delta);
     }

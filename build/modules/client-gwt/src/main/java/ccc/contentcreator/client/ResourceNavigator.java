@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -49,7 +49,7 @@ public class ResourceNavigator extends ContentPanel {
      */
     public ResourceNavigator(final LeftRightPane view,
                       final Collection<ResourceSummary> roots,
-                      final UserSummary user) {
+                      final UserDto user) {
         setId("resource-navigator");
 
         _view = view;

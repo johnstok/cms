@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
@@ -40,7 +40,7 @@ public class GetCurrentUserAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final UserSummary user = new UserSummary(new GwtJson(result));
+        final UserDto user = new UserDto(new GwtJson(result));
         GLOBALS.currentUser(user);
         new DrawMainWindowAction(user).execute();
     }

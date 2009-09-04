@@ -23,7 +23,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateNew;
+import ccc.rest.dto.TemplateDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 
@@ -39,7 +39,7 @@ public class TemplateNewReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<TemplateNew> {
+        MessageBodyReader<TemplateDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -47,12 +47,12 @@ public class TemplateNewReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return TemplateNew.class.equals(clazz);
+        return TemplateDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateNew readFrom(final Class<TemplateNew> clazz,
+    public TemplateDto readFrom(final Class<TemplateDto> clazz,
                             final Type type,
                             final Annotation[] annotations,
                             final MediaType mimetype,
@@ -60,7 +60,7 @@ public class TemplateNewReader
                             final InputStream is) throws IOException {
         final Json json = readJson(mimetype, is);
         final TemplateDelta d = new TemplateDelta(json.getJson(JsonKeys.DELTA));
-        return new TemplateNew(
+        return new TemplateDto(
             json.getId(JsonKeys.PARENT_ID),
             d,
             json.getString(JsonKeys.TITLE),

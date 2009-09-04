@@ -16,7 +16,7 @@ import static ccc.contentcreator.validation.Validations.*;
 import ccc.contentcreator.actions.UpdateCurrentUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -36,7 +36,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private final UserSummary _user;
+    private final UserDto _user;
 
     /**
      * Constructor.
@@ -113,7 +113,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                 ){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {
-                        final UserSummary user = new UserSummary(
+                        final UserDto user = new UserDto(
                             _email.getValue(),
                             _user.getId(),
                             _user.getUsername(),

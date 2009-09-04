@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 
 /**
@@ -36,7 +36,7 @@ public class UserSummaryReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<UserSummary> {
+        MessageBodyReader<UserDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -44,17 +44,17 @@ public class UserSummaryReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return UserSummary.class.equals(clazz);
+        return UserDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary readFrom(final Class<UserSummary> arg0,
+    public UserDto readFrom(final Class<UserDto> arg0,
                               final Type arg1,
                               final Annotation[] arg2,
                               final MediaType arg3,
                               final MultivaluedMap<String, String> arg4,
                               final InputStream arg5) throws IOException {
-        return new UserSummary(readJson(arg3, arg5));
+        return new UserDto(readJson(arg3, arg5));
     }
 }

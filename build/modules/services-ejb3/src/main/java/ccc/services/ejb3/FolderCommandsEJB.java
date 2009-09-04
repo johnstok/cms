@@ -47,7 +47,7 @@ import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderNew;
+import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
@@ -75,7 +75,7 @@ public class FolderCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createFolder(final FolderNew folder)
+    public ResourceSummary createFolder(final FolderDto folder)
     throws CommandFailedException {
         return createFolder(
             folder.getParentId(), folder.getName(), null, false);

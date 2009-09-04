@@ -25,7 +25,7 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public final class FileSummary implements Serializable, Jsonable {
+public final class FileDto implements Serializable, Jsonable {
 
     private String _mimeType;
     private String _path;
@@ -33,7 +33,7 @@ public final class FileSummary implements Serializable, Jsonable {
     private String _name;
     private String _title;
 
-    @SuppressWarnings("unused") private FileSummary() { super(); }
+    @SuppressWarnings("unused") private FileDto() { super(); }
 
     /**
      * Constructor.
@@ -44,7 +44,7 @@ public final class FileSummary implements Serializable, Jsonable {
      * @param name The file's name.
      * @param title The file's title.
      */
-    public FileSummary(final String type,
+    public FileDto(final String type,
                        final String path,
                        final UUID id,
                        final String name,
@@ -62,7 +62,7 @@ public final class FileSummary implements Serializable, Jsonable {
      *
      * @param json
      */
-    public FileSummary(final Json json) {
+    public FileDto(final Json json) {
         this(
             json.getString(MIME_TYPE),
             json.getString(PATH),

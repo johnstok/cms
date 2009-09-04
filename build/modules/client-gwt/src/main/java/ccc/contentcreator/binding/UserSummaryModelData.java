@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -34,14 +34,14 @@ public class UserSummaryModelData
     implements
         ModelData {
 
-    private UserSummary _us;
+    private UserDto _us;
 
     /**
      * Constructor.
      *
      * @param us The User summary.
      */
-    public UserSummaryModelData(final UserSummary us) {
+    public UserSummaryModelData(final UserDto us) {
         _us = us;
     }
 

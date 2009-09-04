@@ -38,7 +38,7 @@ import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Users;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 
@@ -67,7 +67,7 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public UserSummary createUser(final UserSummary delta) {
+    public UserDto createUser(final UserDto delta) {
         return mapUser(
             new CreateUserCommand(_bdao, _audit).execute(
                 loggedInUser(_context), new Date(), delta));
@@ -77,7 +77,7 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateUser(final UUID userId, final UserSummary delta) {
+    public void updateUser(final UUID userId, final UserDto delta) {
         new UpdateUserCommand(_bdao, _audit).execute(
             loggedInUser(_context), new Date(), userId, delta);
     }
@@ -86,7 +86,7 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateUserPassword(final UUID userId, final UserSummary user) {
+    public void updateUserPassword(final UUID userId, final UserDto user) {
         new UpdatePasswordAction(_bdao, _audit).execute(
             loggedInUser(_context),
             new Date(),
@@ -99,7 +99,7 @@ public class UserCommandsEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void updateYourUser(final UUID userId,
-                               final UserSummary user)
+                               final UserDto user)
                                                  throws CommandFailedException {
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
@@ -122,35 +122,35 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public UserSummary loggedInUser() {
+    public UserDto loggedInUser() {
         return mapUser(loggedInUser(_context));
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<UserSummary> listUsers() {
+    public Collection<UserDto> listUsers() {
         return mapUsers(_users.listUsers());
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<UserSummary> listUsersWithEmail(final String email) {
+    public Collection<UserDto> listUsersWithEmail(final String email) {
         return mapUsers(_users.listUsersWithEmail(email));
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<UserSummary> listUsersWithRole(final String role) {
+    public Collection<UserDto> listUsersWithRole(final String role) {
         return mapUsers(_users.listUsersWithRole(role));
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<UserSummary> listUsersWithUsername(
+    public Collection<UserDto> listUsersWithUsername(
                                                     final String username) {
         return mapUsers(_users.listUsersWithUsername(username));
     }
@@ -158,7 +158,7 @@ public class UserCommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public UserSummary userDelta(final UUID userId) {
+    public UserDto userDelta(final UUID userId) {
         return
         deltaUser(_users.find(userId));
     }

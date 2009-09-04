@@ -22,7 +22,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.event.Events;
@@ -41,7 +41,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class HistoryDialog
     extends
-        AbstractTableDialog<LogEntrySummary, LogEntrySummaryModelData> {
+        AbstractTableDialog<RevisionDto, LogEntrySummaryModelData> {
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
@@ -51,11 +51,11 @@ public class HistoryDialog
      * Constructor.
      *
      * @param data The history to display, as a collection of
-     *  {@link LogEntrySummary}.
+     *  {@link RevisionDto}.
      * @param resourceId The UUID.
      * @param ssm The selection model.
      */
-    public HistoryDialog(final Collection<LogEntrySummary> data,
+    public HistoryDialog(final Collection<RevisionDto> data,
                          final UUID resourceId,
                          final SingleSelectionModel ssm) {
         super(new IGlobalsImpl().uiConstants().resourceHistory(),

@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageNew;
+import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 
@@ -102,6 +102,6 @@ public interface PagesBasic {
      */
     @POST
     @Path("/pages")
-    ResourceSummary createPage(PageNew page) throws CommandFailedException;
+    ResourceSummary createPage(PageDto page) throws CommandFailedException;
 
 }

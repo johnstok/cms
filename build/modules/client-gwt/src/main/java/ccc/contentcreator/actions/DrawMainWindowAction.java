@@ -6,7 +6,7 @@ import ccc.contentcreator.client.LeftRightPane;
 import ccc.contentcreator.client.MainMenu;
 import ccc.contentcreator.client.ResourceNavigator;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
@@ -27,14 +27,14 @@ public final class DrawMainWindowAction
         GetRootsAction {
 
     /** _user : UserSummary. */
-    private final UserSummary _user;
+    private final UserDto _user;
 
     /**
      * Constructor.
      *
      * @param user
      */
-    public DrawMainWindowAction(final UserSummary user) {
+    public DrawMainWindowAction(final UserDto user) {
         _user = user;
     }
 

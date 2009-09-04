@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.CommandType;
@@ -43,7 +43,7 @@ public class ActionAcceptanceTest
 
         // ACT
         _actions.createAction(
-            new ActionNew(
+            new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 new Date(Long.MAX_VALUE),
@@ -65,7 +65,7 @@ public class ActionAcceptanceTest
         // ARRANGE
         final ResourceSummary rs = tempFolder();
         _actions.createAction(
-            new ActionNew(
+            new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 new Date(Long.MAX_VALUE),

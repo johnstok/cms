@@ -23,7 +23,7 @@ import ccc.contentcreator.actions.OpenEditUserDialogAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -210,30 +210,30 @@ public class UserTable extends TablePanel {
 
         if (UserTree.ALL.equals(selectedItem.get("id"))) {
             new ListUsers(){
-                @Override protected void execute(final Collection<UserSummary> users) {
+                @Override protected void execute(final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
             new ListUsersWithRoleAction("CONTENT_CREATOR"){
-                @Override protected void execute(final Collection<UserSummary> users) {
+                @Override protected void execute(final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
             new ListUsersWithRoleAction("SITE_BUILDER"){
-                @Override protected void execute(final Collection<UserSummary> users) {
+                @Override protected void execute(final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
             new ListUsersWithRoleAction("ADMINISTRATOR"){
-                @Override protected void execute(final Collection<UserSummary> users) {
+                @Override protected void execute(final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else {
-            updatePager(new ArrayList<UserSummary>());
+            updatePager(new ArrayList<UserDto>());
         }
 
     }
@@ -263,14 +263,14 @@ public class UserTable extends TablePanel {
             if (_radioGroup.getValue() == _usernameRadio) {
                 new ListUsersWithUsernameAction(
                     _searchString.getValue().replace('*', '%')){
-                        @Override protected void execute(final Collection<UserSummary> users) {
+                        @Override protected void execute(final Collection<UserDto> users) {
                             updatePager(users);
                         }
                 }.execute();
             } else if (_radioGroup.getValue() == _emailRadio) {
                 new ListUsersWithEmailAction(
                     _searchString.getValue().replace('*', '%')) {
-                        @Override protected void execute(final Collection<UserSummary> users) {
+                        @Override protected void execute(final Collection<UserDto> users) {
                             updatePager(users);
                         }
                 }.execute();
@@ -279,7 +279,7 @@ public class UserTable extends TablePanel {
     }
 
     @SuppressWarnings("unchecked")
-    private void updatePager(final Collection<UserSummary> data){
+    private void updatePager(final Collection<UserDto> data){
         final PagingModelMemoryProxy proxy =
             new PagingModelMemoryProxy(DataBinding.bindUserSummary(data));
         final PagingLoader loader = new BasePagingLoader(proxy);

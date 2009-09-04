@@ -23,7 +23,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageNew;
+import ccc.rest.dto.PageDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 
@@ -39,7 +39,7 @@ public class PageNewReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<PageNew> {
+        MessageBodyReader<PageDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -47,12 +47,12 @@ public class PageNewReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return PageNew.class.equals(clazz);
+        return PageDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public PageNew readFrom(final Class<PageNew> clazz,
+    public PageDto readFrom(final Class<PageDto> clazz,
                             final Type type,
                             final Annotation[] annotations,
                             final MediaType mimetype,
@@ -60,7 +60,7 @@ public class PageNewReader
                             final InputStream is) throws IOException {
         final Json json = readJson(mimetype, is);
         final PageDelta d = new PageDelta(json.getJson(JsonKeys.DELTA));
-        return new PageNew(
+        return new PageDto(
             json.getId(JsonKeys.PARENT_ID),
             d,
             json.getString(JsonKeys.NAME),

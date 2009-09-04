@@ -19,7 +19,7 @@ import ccc.contentcreator.api.ErrorResolutions;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.dialogs.ErrorDialog;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -81,13 +81,13 @@ public class IGlobalsImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserSummary currentUser() {
+    public UserDto currentUser() {
         return UserStore.currentUser();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void currentUser(final UserSummary user) {
+    public void currentUser(final UserDto user) {
         UserStore.currentUser(user);
     }
 
@@ -194,17 +194,17 @@ public class IGlobalsImpl
      * @author Civic Computing Ltd.
      */
     private static final class UserStore {
-        private static UserSummary _user;
+        private static UserDto _user;
 
         private UserStore() {
             // no-op
         }
 
-        public static UserSummary currentUser() {
+        public static UserDto currentUser() {
             return _user;
         }
 
-        public static void currentUser(final UserSummary user) {
+        public static void currentUser(final UserDto user) {
             _user = user;
         }
     }

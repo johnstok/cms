@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
 import ccc.rest.Users;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 
 /**
@@ -32,8 +32,8 @@ public class UserMigration {
 
     private final LegacyDBQueries _legacyQueries;
     private final Users _userCommands;
-    private final Map<Integer, UserSummary> _users =
-        new HashMap<Integer, UserSummary>();
+    private final Map<Integer, UserDto> _users =
+        new HashMap<Integer, UserDto>();
 
 
 
@@ -57,11 +57,11 @@ public class UserMigration {
      * @throws CommandFailedException If an error occurs during migration.
      */
     void migrateUsers() throws CommandFailedException {
-        final Map<Integer, UserSummary> mus = _legacyQueries.selectUsers();
-        for (final Map.Entry<Integer, UserSummary> mu : mus.entrySet()) {
+        final Map<Integer, UserDto> mus = _legacyQueries.selectUsers();
+        for (final Map.Entry<Integer, UserDto> mu : mus.entrySet()) {
             try {
                 // TODO: improve reporting
-                final UserSummary ud = mu.getValue();
+                final UserDto ud = mu.getValue();
 
                 if (null == ud.getPassword()) {
                     log.warn(
@@ -75,7 +75,7 @@ public class UserMigration {
                         +" has password with less than 6 characters.");
                 }
 
-                final UserSummary u =
+                final UserDto u =
                     _userCommands.createUser(ud);
                 _users.put(mu.getKey(), u);
             } catch (final RuntimeException e) {
@@ -95,7 +95,7 @@ public class UserMigration {
      *
      * @return The corresponding user in the new system.
      */
-    UserSummary getUser(final int actor) {
+    UserDto getUser(final int actor) {
         return _users.get(Integer.valueOf(actor));
     }
 }

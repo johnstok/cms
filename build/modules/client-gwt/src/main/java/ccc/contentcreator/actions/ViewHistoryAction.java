@@ -6,7 +6,7 @@ import java.util.Collection;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.HistoryDialog;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.RevisionDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -42,11 +42,11 @@ public final class ViewHistoryAction
     /** {@inheritDoc} */
     @Override protected void onOK(final Response response) {
         final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<LogEntrySummary> history =
-            new ArrayList<LogEntrySummary>();
+        final Collection<RevisionDto> history =
+            new ArrayList<RevisionDto>();
         for (int i=0; i<result.size(); i++) {
             history.add(
-                new LogEntrySummary(new GwtJson(result.get(i).isObject())));
+                new RevisionDto(new GwtJson(result.get(i).isObject())));
         }
 
         new HistoryDialog(

@@ -23,7 +23,7 @@ import ccc.migration.ccc6.handlers.TemplateFieldsSelector;
 import ccc.migration.ccc6.handlers.UserCommentSelector;
 import ccc.migration.ccc6.handlers.UserMetadataSelector;
 import ccc.migration.ccc6.handlers.UserRolesSelector;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 /**
  * Queries for data migration.
@@ -88,7 +88,7 @@ public class LegacyDBQueries {
      *
      * @return The list of users.
      */
-    public Map<Integer, UserSummary> selectUsers() {
+    public Map<Integer, UserDto> selectUsers() {
         final AllUsersSelector rsh = new AllUsersSelector(this);
         return _db.select(rsh);
     }

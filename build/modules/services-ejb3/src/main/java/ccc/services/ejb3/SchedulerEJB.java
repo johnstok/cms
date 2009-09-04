@@ -50,7 +50,7 @@ import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
 import ccc.rest.Commands;
 import ccc.rest.LocalCommands;
-import ccc.rest.dto.ActionNew;
+import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
 
@@ -133,7 +133,7 @@ public class SchedulerEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void createAction(final ActionNew action) {
+    public void createAction(final ActionDto action) {
       final Action a =
           new Action(
               action.getAction(),

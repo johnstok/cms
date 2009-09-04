@@ -21,9 +21,9 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.dto.ResourceCacheDurationPU;
+import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
@@ -50,7 +50,7 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final UserSummary us = _users.loggedInUser();
+        final UserDto us = _users.loggedInUser();
 
         // ACT
         _commands.lock(folder.getId());
@@ -186,7 +186,7 @@ public class ResourceAcceptanceTests
         _commands.lock(contentRoot.getId());
 
         // ASSERT
-        final UserSummary currentUser = _users.loggedInUser();
+        final UserDto currentUser = _users.loggedInUser();
         final ResourceSummary updatedRoot =
             _queries.resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
@@ -210,7 +210,7 @@ public class ResourceAcceptanceTests
         // ACT
         try {
             _commands.updateResourceTemplate(
-                folder.getId(), new ResourceCacheDurationPU(ts.getId()));
+                folder.getId(), new ResourceDto(ts.getId()));
         } finally {
             try {
                 _commands.unlock(folder.getId());
@@ -235,8 +235,8 @@ public class ResourceAcceptanceTests
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final Duration origDuration = _queries.cacheDuration(folder.getId());
-        final ResourceCacheDurationPU duration =
-            new ResourceCacheDurationPU(new Duration(9));
+        final ResourceDto duration =
+            new ResourceDto(new Duration(9));
 
         // ACT
         _commands.lock(folder.getId());
@@ -245,7 +245,7 @@ public class ResourceAcceptanceTests
         final Duration withDuration = _queries.cacheDuration(folder.getId());
 
         _commands.updateCacheDuration(
-            folder.getId(), new ResourceCacheDurationPU((Duration) null));
+            folder.getId(), new ResourceDto((Duration) null));
         final Duration noDuration = _queries.cacheDuration(folder.getId());
 
         // ASSERT

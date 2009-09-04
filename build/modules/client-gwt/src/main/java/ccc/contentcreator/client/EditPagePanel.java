@@ -21,7 +21,7 @@ import ccc.contentcreator.actions.GetAbsolutePathAction;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
-import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.FileDto;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 
@@ -224,8 +224,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
                                       resourceId) {
                 @Override protected void execute(final String path) {
-                    final FileSummary fs =
-                        new FileSummary("image", path, resourceId, "", "");
+                    final FileDto fs =
+                        new FileDto("image", path, resourceId, "", "");
                     final FileSummaryModelData model =
                         new FileSummaryModelData(fs);
                     image.setValue(path);

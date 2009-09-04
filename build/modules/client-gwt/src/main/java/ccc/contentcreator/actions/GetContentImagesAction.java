@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.FileDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
@@ -47,12 +47,12 @@ public abstract class GetContentImagesAction
     @Override
     protected void onOK(final Response response) {
         final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<FileSummary> files = new ArrayList<FileSummary>();
+        final Collection<FileDto> files = new ArrayList<FileDto>();
         for (int i=0; i<result.size(); i++) {
-            files.add(new FileSummary(new GwtJson(result.get(i).isObject())));
+            files.add(new FileDto(new GwtJson(result.get(i).isObject())));
         }
         execute(files);
     }
 
-    protected abstract void execute(Collection<FileSummary> images);
+    protected abstract void execute(Collection<FileDto> images);
 }

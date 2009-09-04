@@ -16,7 +16,7 @@ import java.util.List;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -66,7 +66,7 @@ public class ResourceTable
      */
     ResourceTable(final ResourceSummary root,
         final FolderResourceTree tree,
-        final UserSummary user) {
+        final UserDto user) {
 
         _root = root;
         _tree = tree;

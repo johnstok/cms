@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.dto.AliasNew;
+import ccc.rest.dto.AliasDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 
@@ -38,7 +38,7 @@ public class AliasNewReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<AliasNew> {
+        MessageBodyReader<AliasDto> {
 
     /** {@inheritDoc} */
     @Override
@@ -46,19 +46,19 @@ public class AliasNewReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return AliasNew.class.equals(clazz);
+        return AliasDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public AliasNew readFrom(final Class<AliasNew> clazz,
+    public AliasDto readFrom(final Class<AliasDto> clazz,
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mimetype,
                               final MultivaluedMap<String, String> httpHeaders,
                               final InputStream is) throws IOException {
         final Json json = readJson(mimetype, is);
-        return new AliasNew(
+        return new AliasDto(
             json.getId(JsonKeys.PARENT_ID),
             json.getString(JsonKeys.NAME),
             json.getId(JsonKeys.TARGET_ID));

@@ -29,13 +29,13 @@ import ccc.domain.User;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileSummary;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.FileDto;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.CommandType;
 import ccc.types.ResourceType;
 import ccc.types.Username;
@@ -73,8 +73,8 @@ public class ModelTranslation {
      * @param users The users.
      * @return The corresponding summaries.
      */
-    protected Collection<UserSummary> mapUsers(final Collection<User> users) {
-        final Collection<UserSummary> mapped = new ArrayList<UserSummary>();
+    protected Collection<UserDto> mapUsers(final Collection<User> users) {
+        final Collection<UserDto> mapped = new ArrayList<UserDto>();
         for (final User u : users) {
             mapped.add(mapUser(u));
         }
@@ -88,8 +88,8 @@ public class ModelTranslation {
      * @param files The files.
      * @return The corresponding summaries.
      */
-    protected Collection<FileSummary> mapFiles(final Collection<File> files) {
-        final Collection<FileSummary> mapped = new ArrayList<FileSummary>();
+    protected Collection<FileDto> mapFiles(final Collection<File> files) {
+        final Collection<FileDto> mapped = new ArrayList<FileDto>();
         for (final File f : files) {
             mapped.add(mapFile(f));
         }
@@ -103,10 +103,10 @@ public class ModelTranslation {
      * @param revisions The revisions.
      * @return The corresponding summaries.
      */
-    protected Collection<LogEntrySummary> mapLogEntries(
+    protected Collection<RevisionDto> mapLogEntries(
                              final Map<Integer, ? extends Revision> revisions) {
-        final Collection<LogEntrySummary> mapped =
-            new ArrayList<LogEntrySummary>();
+        final Collection<RevisionDto> mapped =
+            new ArrayList<RevisionDto>();
         for (final Map.Entry<Integer, ? extends Revision> rev : revisions.entrySet()) {
             mapped.add(mapLogEntry(rev));
         }
@@ -135,10 +135,10 @@ public class ModelTranslation {
      * @param rev The revision.
      * @return A corresponding summary.
      */
-    protected LogEntrySummary mapLogEntry(
+    protected RevisionDto mapLogEntry(
                              final Map.Entry<Integer, ? extends Revision> rev) {
         return
-            new LogEntrySummary(
+            new RevisionDto(
                 CommandType.PAGE_UPDATE,
                 new Username(rev.getValue().getActor().username()),
                 rev.getValue().getTimestamp(),
@@ -205,9 +205,9 @@ public class ModelTranslation {
      * @param user The user.
      * @return A corresponding summary.
      */
-    protected UserSummary mapUser(final User user) {
+    protected UserDto mapUser(final User user) {
         return
-            new UserSummary(
+            new UserDto(
                 user.email().getText(),
                 user.id(),
                 new Username(user.username()),
@@ -221,9 +221,9 @@ public class ModelTranslation {
      * @param file The file to map.
      * @return The summary of the file.
      */
-    protected FileSummary mapFile(final File file) {
-        final FileSummary fs =
-            new FileSummary(
+    protected FileDto mapFile(final File file) {
+        final FileDto fs =
+            new FileDto(
                 file.mimeType().toString(),
                 file.absolutePath().toString(),
                 file.id(),
@@ -259,9 +259,9 @@ public class ModelTranslation {
      * @param user The user.
      * @return A corresponding summary.
      */
-    protected UserSummary deltaUser(final User user) {
-        final UserSummary delta =
-            new UserSummary(
+    protected UserDto deltaUser(final User user) {
+        final UserDto delta =
+            new UserDto(
                 user.email().getText(),
                 new Username(user.username()),
                 user.roles(),

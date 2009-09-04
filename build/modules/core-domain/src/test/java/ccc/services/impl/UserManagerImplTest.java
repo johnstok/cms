@@ -29,7 +29,7 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.UserRepositoryImpl;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
@@ -225,7 +225,7 @@ public class UserManagerImplTest extends TestCase {
 
     private User _u;
     private LogEntryRepository _audit;
-    private UserSummary _uDelta;
+    private UserDto _uDelta;
     private Repository _repository;
     private UserRepositoryImpl _um;
 
@@ -234,7 +234,7 @@ public class UserManagerImplTest extends TestCase {
     protected void setUp() {
         _u = new User("testUser", "password");
         _uDelta =
-            new UserSummary(
+            new UserDto(
                 "new.email@civicuk.com",
                 new Username("newNameUser"),
                 new HashSet<String>(),

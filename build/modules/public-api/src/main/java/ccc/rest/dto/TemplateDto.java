@@ -23,7 +23,7 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateNew implements Jsonable {
+public class TemplateDto implements Jsonable {
 
     private final UUID            _parentId;
     private final TemplateDelta _delta;
@@ -41,7 +41,7 @@ public class TemplateNew implements Jsonable {
      * @param description The template's description.
      * @param name        The template's name.
      */
-    public TemplateNew(final UUID parentId,
+    public TemplateDto(final UUID parentId,
                        final TemplateDelta delta,
                        final String title,
                        final String description,

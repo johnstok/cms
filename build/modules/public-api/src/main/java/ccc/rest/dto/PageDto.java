@@ -24,7 +24,7 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class PageNew implements Jsonable, Serializable {
+public class PageDto implements Jsonable, Serializable {
 
     private final UUID        _parentId;
     private final PageDelta _delta;
@@ -46,7 +46,7 @@ public class PageNew implements Jsonable, Serializable {
      * @param comment
      * @param majorChange
      */
-    public PageNew(final UUID parentId,
+    public PageDto(final UUID parentId,
                    final PageDelta delta,
                    final String name,
                    final UUID templateId,

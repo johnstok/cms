@@ -32,7 +32,7 @@ import ccc.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserSummary implements Serializable, Jsonable {
+public final class UserDto implements Serializable, Jsonable {
     private String _email;
     private UUID _id;
     private Username _username;
@@ -40,7 +40,7 @@ public final class UserSummary implements Serializable, Jsonable {
     private Map<String, String> _metadata;
     private String _password;
 
-    @SuppressWarnings("unused") private UserSummary() { super(); }
+    @SuppressWarnings("unused") private UserDto() { super(); }
 
     /**
      * Constructor.
@@ -50,7 +50,7 @@ public final class UserSummary implements Serializable, Jsonable {
      * @param username The user's username.
      * @param roles The user's roles.
      */
-    public UserSummary(final String email,
+    public UserDto(final String email,
                        final UUID id,
                        final Username username,
                        final Set<String> roles) {
@@ -66,7 +66,7 @@ public final class UserSummary implements Serializable, Jsonable {
      *
      * @param json The JSON representation of a user.
      */
-    public UserSummary(final Json json) {
+    public UserDto(final Json json) {
         _id = json.getId(ID);
         _email = json.getString(EMAIL);
         _password = json.getString(PASSWORD);
@@ -93,7 +93,7 @@ public final class UserSummary implements Serializable, Jsonable {
      * @param roles The user's roles.
      * @param metadata The user's metadata.
      */
-    public UserSummary(final String email,
+    public UserDto(final String email,
                        final Username username,
                        final Set<String> roles,
                        final Map<String, String> metadata) {
@@ -109,7 +109,7 @@ public final class UserSummary implements Serializable, Jsonable {
      *
      * @param password The user's password.
      */
-    public UserSummary(final String password) {
+    public UserDto(final String password) {
         _password = password;
     }
 
@@ -117,7 +117,7 @@ public final class UserSummary implements Serializable, Jsonable {
     /**
      * Constructor.
      */
-    public UserSummary(final String email,
+    public UserDto(final String email,
                        final Username username,
                        final Set<String> roles,
                        final Map<String, String> metadata,
@@ -133,7 +133,7 @@ public final class UserSummary implements Serializable, Jsonable {
     /**
      * Constructor.
      */
-    public UserSummary(final String email, final String password) {
+    public UserDto(final String email, final String password) {
         _email = email;
         _password = password;
     }

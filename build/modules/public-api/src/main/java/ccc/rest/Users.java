@@ -23,7 +23,7 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 
@@ -47,7 +47,7 @@ public interface Users {
      * @return The corresponding delta.
      */
     @GET @Path("/users/{id}/delta") @NoCache
-    UserSummary userDelta(@PathParam("id") UUID userId);
+    UserDto userDelta(@PathParam("id") UUID userId);
 
     /**
      * Returns currently logged in user.
@@ -55,7 +55,7 @@ public interface Users {
      * @return UserDTO
      */
     @GET @Path("/users/me") @NoCache
-    UserSummary loggedInUser();
+    UserDto loggedInUser();
 
     /**
      * Query all users.
@@ -63,7 +63,7 @@ public interface Users {
      * @return Returns list of users.
      */
     @GET @Path("/users") @NoCache
-    Collection<UserSummary> listUsers();
+    Collection<UserDto> listUsers();
 
     /**
      * Query users with specified role.
@@ -72,7 +72,7 @@ public interface Users {
      * @return Returns list of users.
      */
     @GET @Path("/users/role/{role}") @NoCache
-    Collection<UserSummary> listUsersWithRole(
+    Collection<UserDto> listUsersWithRole(
         @PathParam("role") String role);
 
     /**
@@ -82,7 +82,7 @@ public interface Users {
      * @return Returns list of users.
      */
     @GET @Path("/users/username/{uname}") @NoCache
-    Collection<UserSummary> listUsersWithUsername(
+    Collection<UserDto> listUsersWithUsername(
         @PathParam("uname") String username);
 
     /**
@@ -101,7 +101,7 @@ public interface Users {
      * @return Returns list of users.
      */
     @GET @Path("/users/email/{email}") @NoCache
-    Collection<UserSummary> listUsersWithEmail(
+    Collection<UserDto> listUsersWithEmail(
         @PathParam("email") String email);
 
 
@@ -115,7 +115,7 @@ public interface Users {
      * @return A user summary describing the new user.
      */
     @POST @Path("/users")
-    UserSummary createUser(UserSummary delta)
+    UserDto createUser(UserDto delta)
     throws CommandFailedException;
 
 
@@ -128,7 +128,7 @@ public interface Users {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/users/{id}")
-    void updateUser(@PathParam("id") UUID userId, UserSummary delta) throws CommandFailedException;
+    void updateUser(@PathParam("id") UUID userId, UserDto delta) throws CommandFailedException;
 
 
     /**
@@ -140,7 +140,7 @@ public interface Users {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/users/{id}/password")
-    void updateUserPassword(@PathParam("id") UUID userId, UserSummary user)
+    void updateUserPassword(@PathParam("id") UUID userId, UserDto user)
     throws CommandFailedException;
 
     /**
@@ -152,6 +152,6 @@ public interface Users {
      * @throws CommandFailedException If the method fails.
      */
     @POST @Path("/users/{id}/currentuser")
-    void updateYourUser(@PathParam("id") UUID userId, UserSummary user)
+    void updateYourUser(@PathParam("id") UUID userId, UserDto user)
     throws CommandFailedException;
 }

@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -26,14 +26,14 @@ public abstract class CreateUserAction
     extends
         RemotingAction {
 
-    private final UserSummary _userDelta;
+    private final UserDto _userDelta;
 
     /**
      * Constructor.
      *
      * @param userDelta The user's details.
      */
-    public CreateUserAction(final UserSummary userDelta) {
+    public CreateUserAction(final UserDto userDelta) {
         super(GLOBALS.uiConstants().createUser(), RequestBuilder.POST);
         _userDelta = userDelta;
     }

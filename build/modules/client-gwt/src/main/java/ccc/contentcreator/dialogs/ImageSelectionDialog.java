@@ -18,7 +18,7 @@ import ccc.contentcreator.actions.GetContentImagesAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.FileSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.rest.dto.FileSummary;
+import ccc.rest.dto.FileDto;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -59,7 +59,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
 
         new GetContentImagesAction(_constants.selectImage()){
             @Override
-            protected void execute(final Collection<FileSummary> images) {
+            protected void execute(final Collection<FileDto> images) {
                 loadModel(store, images);
             }
         }.execute();
@@ -137,7 +137,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      }-*/;
 
     private void loadModel(final ListStore<FileSummaryModelData> store,
-                           final Collection<FileSummary> arg0) {
+                           final Collection<FileDto> arg0) {
 
         _models = DataBinding.bindFileSummary(arg0);
         if (_models != null && _models.size() > 0) {

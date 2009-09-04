@@ -26,7 +26,7 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.views.ICreateUserDialog;
-import ccc.rest.dto.UserSummary;
+import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 import com.google.gwt.http.client.Response;
@@ -113,7 +113,7 @@ public class CreateUserController implements EditController {
         return new Runnable() {
             public void run() {
                 final String p = _dialog.getPassword1().getValue();
-                final UserSummary d = new UserSummary(
+                final UserDto d = new UserDto(
                     _dialog.getEmail().getValue(),
                     new Username(_dialog.getUsername().getValue()),
                     new HashSet<String>(),

@@ -20,14 +20,14 @@ import java.util.Set;
 
 import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * {@link ModelData} implementation for the {@link LogEntrySummary} class.
+ * {@link ModelData} implementation for the {@link RevisionDto} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -36,7 +36,7 @@ public class LogEntrySummaryModelData
         ModelData {
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
-    private final LogEntrySummary _les;
+    private final RevisionDto _les;
     private IGlobals _globals;
 
     /**
@@ -45,7 +45,7 @@ public class LogEntrySummaryModelData
      * @param les The log entry summary to wrap.
      * @param globals The globals.
      */
-    public LogEntrySummaryModelData(final LogEntrySummary les,
+    public LogEntrySummaryModelData(final RevisionDto les,
                                     final IGlobals globals) {
         _les = les;
         _globals = globals;

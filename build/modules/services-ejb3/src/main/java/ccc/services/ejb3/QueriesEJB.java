@@ -42,8 +42,8 @@ import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Queries;
 import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileSummary;
-import ccc.rest.dto.LogEntrySummary;
+import ccc.rest.dto.FileDto;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
@@ -91,7 +91,7 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<LogEntrySummary> history(final UUID resourceId) {
+    public Collection<RevisionDto> history(final UUID resourceId) {
         return mapLogEntries(_resources.history(resourceId));
     }
 
@@ -156,7 +156,7 @@ public final class QueriesEJB
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FileSummary> getAllContentImages() {
+    public Collection<FileDto> getAllContentImages() {
         final List<File> list = new ArrayList<File>();
         for (final File file : _bdao.list(QueryNames.ALL_IMAGES, File.class)) {
             if (PredefinedResourceNames.CONTENT.equals(

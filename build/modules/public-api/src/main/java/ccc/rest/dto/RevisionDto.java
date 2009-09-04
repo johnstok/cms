@@ -26,7 +26,7 @@ import ccc.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public final class LogEntrySummary implements Serializable, Jsonable {
+public final class RevisionDto implements Serializable, Jsonable {
     private CommandType _action;
     private Username _actorUsername;
     private Date _happenedOn;
@@ -34,7 +34,7 @@ public final class LogEntrySummary implements Serializable, Jsonable {
     private String _comment;
     private boolean _isMajor;
 
-    @SuppressWarnings("unused") private LogEntrySummary() { super(); }
+    @SuppressWarnings("unused") private RevisionDto() { super(); }
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public final class LogEntrySummary implements Serializable, Jsonable {
      * @param comment The comment of the action.
      * @param isMajorEdit Is the action a major edit.
      */
-    public LogEntrySummary(final CommandType  action,
+    public RevisionDto(final CommandType  action,
                            final Username  actorUsername,
                            final Date    on,
                            final long    index,
@@ -66,7 +66,7 @@ public final class LogEntrySummary implements Serializable, Jsonable {
      *
      * @param json
      */
-    public LogEntrySummary(final Json json) {
+    public RevisionDto(final Json json) {
         this(
             CommandType.valueOf(json.getString(JsonKeys.ACTION)),
             new Username(json.getString(JsonKeys.USERNAME)),

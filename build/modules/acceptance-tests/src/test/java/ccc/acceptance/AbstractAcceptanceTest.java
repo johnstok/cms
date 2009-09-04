@@ -41,11 +41,11 @@ import ccc.rest.Queries;
 import ccc.rest.RestCommands;
 import ccc.rest.Security;
 import ccc.rest.Users;
-import ccc.rest.dto.AliasNew;
-import ccc.rest.dto.FolderNew;
+import ccc.rest.dto.AliasDto;
+import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateNew;
+import ccc.rest.dto.TemplateDto;
 import ccc.rest.providers.ActionSummaryCollectionReader;
 import ccc.rest.providers.AliasDeltaReader;
 import ccc.rest.providers.BooleanProvider;
@@ -137,7 +137,7 @@ public abstract class AbstractAcceptanceTest
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
         final ResourceSummary ts =
             _commands.createTemplate(
-                new TemplateNew(
+                new TemplateDto(
                     parent.getId(),
                     newTemplate,
                     templateName,
@@ -151,15 +151,15 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempFolder() throws CommandFailedException {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = _queries.resourceForPath("/content");
-        return _folders.createFolder(new FolderNew(content.getId(), fName));
+        return _folders.createFolder(new FolderDto(content.getId(), fName));
     }
 
 
     protected ResourceSummary tempAlias() throws CommandFailedException {
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = _queries.resourceForPath("/content");
-        final AliasNew alias =
-            new AliasNew(folder.getId(), name, folder.getId());
+        final AliasDto alias =
+            new AliasDto(folder.getId(), name, folder.getId());
         return _commands.createAlias(alias);
     }
 

@@ -21,7 +21,7 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.Security;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateNew;
+import ccc.rest.dto.TemplateDto;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 import ccc.types.MimeType;
@@ -52,7 +52,7 @@ public class FirstAcceptanceTest
         // ACT
         final ResourceSummary ts =
             _commands.createTemplate(
-                new TemplateNew(
+                new TemplateDto(
                     templateFolder.getId(),
                     newTemplate,
                     "t-title",
