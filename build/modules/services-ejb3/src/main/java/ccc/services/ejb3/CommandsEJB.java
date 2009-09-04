@@ -31,7 +31,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ccc.commands.ApplyWorkingCopyCommand;
-import ccc.commands.CancelActionCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.CreateAliasCommand;
 import ccc.commands.CreateFileCommand;
@@ -42,7 +41,6 @@ import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
 import ccc.commands.PublishCommand;
 import ccc.commands.RenameResourceCommand;
-import ccc.commands.ScheduleActionCommand;
 import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateAliasCommand;
@@ -52,7 +50,6 @@ import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.File;
 import ccc.domain.Resource;
@@ -70,7 +67,6 @@ import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
 
@@ -94,7 +90,7 @@ public class CommandsEJB
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
-    private LogEntryRepository           _audit;
+    private LogEntryRepository _audit;
     private FileRepositoryImpl _dm;
 
     /** {@inheritDoc} */
@@ -459,34 +455,6 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public void cancelAction(final UUID actionId) {
-        new CancelActionCommand(_bdao, _audit).execute(
-            loggedInUser(), new Date(), actionId);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public void createAction(final UUID resourceId,
-                             final CommandType action,
-                             final Date executeAfter,
-                             final Map<String, String> parameters) {
-      // TODO: Use ActionDelta.
-
-      final Action a =
-          new Action(
-              action,
-              executeAfter,
-              loggedInUser(),
-              _bdao.find(Resource.class, resourceId),
-              parameters);
-
-      new ScheduleActionCommand(_bdao, _audit).execute(
-          loggedInUser(), new Date(), a);
-    }
 
     /** {@inheritDoc} */
     @Override

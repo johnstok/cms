@@ -19,7 +19,6 @@ import java.util.UUID;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.types.CommandType;
 import ccc.types.Duration;
 
 
@@ -323,32 +322,6 @@ public interface Commands {
      * @throws CommandFailedException If the method fails.
      */
     void createWorkingCopy(UUID resourceId, long index)
-    throws CommandFailedException;
-
-    /**
-     * Cancel a scheduled action.
-     *
-     * @param actionId The id of the action to cancel.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void cancelAction(UUID actionId) throws CommandFailedException;
-
-    /**
-     * Create a new scheduled action.
-     *
-     * @param resourceId The id of the resource the action will operate on.
-     * @param action The type of the action to be performed.
-     * @param executeAfter The earliest date at which the action may be
-     *  executed.
-     * @param parameters Additional parameters for the action.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void createAction(UUID resourceId,
-                      CommandType action,
-                      Date executeAfter,
-                      Map<String, String> parameters)
     throws CommandFailedException;
 
     /**

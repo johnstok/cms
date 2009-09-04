@@ -14,7 +14,7 @@ package ccc.migration;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Scheduler;
-import ccc.persistence.ActionDao;
+import ccc.rest.ActionDao;
 import ccc.rest.Commands;
 import ccc.rest.Folders;
 import ccc.rest.Pages;

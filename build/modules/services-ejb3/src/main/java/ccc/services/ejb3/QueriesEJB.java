@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -35,7 +34,6 @@ import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.ActionDao;
 import ccc.persistence.QueryNames;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
@@ -43,7 +41,6 @@ import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Queries;
-import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileSummary;
 import ccc.rest.dto.LogEntrySummary;
@@ -71,7 +68,6 @@ public final class QueriesEJB
     implements
         Queries {
 
-    @EJB(name=ActionDao.NAME)      private ActionDao       _actions;
     @PersistenceContext            private EntityManager   _em;
     @javax.annotation.Resource     private EJBContext      _context;
 
@@ -177,18 +173,6 @@ public final class QueriesEJB
         final Resource r =
             _resources.find(Resource.class, resourceId);
         return r.metadata();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ActionSummary> listPendingActions() {
-        return mapActions(_actions.pending());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ActionSummary> listCompletedActions() {
-        return mapActions(_actions.executed());
     }
 
     /** {@inheritDoc} */

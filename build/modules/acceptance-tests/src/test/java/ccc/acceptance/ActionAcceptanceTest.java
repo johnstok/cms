@@ -42,13 +42,13 @@ public class ActionAcceptanceTest
         final ResourceSummary rs = tempFolder();
 
         // ACT
-        _commands.createAction(
+        _actions.createAction(
             new ActionNew(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 new Date(Long.MAX_VALUE),
                 new HashMap<String, String>()));
-        final Collection<ActionSummary> pending = _queries.listPendingActions();
+        final Collection<ActionSummary> pending = _actions.listPendingActions();
 
         // ASSERT
         assertEquals(1, pending.size());
@@ -64,7 +64,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
-        _commands.createAction(
+        _actions.createAction(
             new ActionNew(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -72,11 +72,11 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        for (final ActionSummary as : _queries.listPendingActions()) {
-            _commands.cancelAction(as.getId());
+        for (final ActionSummary as : _actions.listPendingActions()) {
+            _actions.cancelAction(as.getId());
         }
 
         // ASSERT
-        assertEquals(0, _queries.listPendingActions().size());
+        assertEquals(0, _actions.listPendingActions().size());
     }
 }
