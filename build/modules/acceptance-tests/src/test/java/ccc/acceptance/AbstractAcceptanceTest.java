@@ -34,7 +34,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.rest.ActionDao;
+import ccc.rest.Actions;
 import ccc.rest.CommandFailedException;
 import ccc.rest.FoldersBasic;
 import ccc.rest.Queries;
@@ -116,7 +116,7 @@ public abstract class AbstractAcceptanceTest
     protected Queries _queries;
     protected RestCommands _commands;
     protected Users _users;
-    protected ActionDao _actions;
+    protected Actions _actions;
     protected FoldersBasic _folders;
     protected Security _security;
 
@@ -275,7 +275,7 @@ public abstract class AbstractAcceptanceTest
         _queries  = ProxyFactory.create(Queries.class, _secure, _http);
         _commands = ProxyFactory.create(RestCommands.class, _secure, _http);
         _users =    ProxyFactory.create(Users.class, _secure, _http);
-        _actions =  ProxyFactory.create(ActionDao.class, _secure, _http);
+        _actions =  ProxyFactory.create(Actions.class, _secure, _http);
         _folders =  ProxyFactory.create(FoldersBasic.class, _secure, _http);
         _security = ProxyFactory.create(Security.class, _public, _http);
     }

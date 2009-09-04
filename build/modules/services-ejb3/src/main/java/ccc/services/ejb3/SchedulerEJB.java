@@ -47,7 +47,7 @@ import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.QueryNames;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.rest.ActionDao;
+import ccc.rest.Actions;
 import ccc.rest.Commands;
 import ccc.rest.LocalCommands;
 import ccc.rest.dto.ActionNew;
@@ -59,9 +59,9 @@ import ccc.rest.dto.ActionSummary;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=ActionDao.NAME)
+@Stateless(name=Actions.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(ActionDao.class)
+@Local(Actions.class)
 @Remote(Scheduler.class)
 @RolesAllowed({ADMINISTRATOR})
 @RunAs(CONTENT_CREATOR)
@@ -70,7 +70,7 @@ public class SchedulerEJB
         BaseCommands
     implements
         Scheduler,
-        ActionDao {
+        Actions {
 
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
