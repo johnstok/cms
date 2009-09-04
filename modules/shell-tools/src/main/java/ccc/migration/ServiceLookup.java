@@ -14,7 +14,7 @@ package ccc.migration;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Scheduler;
-import ccc.rest.ActionDao;
+import ccc.rest.Actions;
 import ccc.rest.Commands;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -115,7 +115,7 @@ public class ServiceLookup {
      * @return An action scheduler.
      */
     public Scheduler lookupActionScheduler() {
-        return _registry.<Scheduler>get(jndiPath(ActionDao.NAME));
+        return _registry.<Scheduler>get(jndiPath(Actions.NAME));
     }
 
     /**

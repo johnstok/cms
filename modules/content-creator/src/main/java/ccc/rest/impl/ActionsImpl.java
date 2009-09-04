@@ -18,14 +18,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.ActionDao;
+import ccc.rest.Actions;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.ActionNew;
 import ccc.rest.dto.ActionSummary;
 
 
 /**
- * Implementation of the {@link ActionDao} interface.
+ * Implementation of the {@link Actions} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -36,7 +36,7 @@ public class ActionsImpl
     extends
         JaxrsCollection
     implements
-        ActionDao {
+        Actions {
 
 
     /** {@inheritDoc} */

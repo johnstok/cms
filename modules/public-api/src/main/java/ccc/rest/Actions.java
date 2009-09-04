@@ -34,7 +34,7 @@ import ccc.rest.dto.ActionSummary;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface ActionDao {
+public interface Actions {
 
     /** NAME : String. */
     String NAME = "ActionDao";
