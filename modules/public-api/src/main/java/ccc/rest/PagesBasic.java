@@ -39,6 +39,9 @@ import ccc.serialization.Json;
 @Produces("application/json")
 public interface PagesBasic {
 
+    /** NAME : String. */
+    String NAME = "PublicPageCommands";
+
     /**
      * Validate a set of paragraphs against a given definition.
      *

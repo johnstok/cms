@@ -26,10 +26,6 @@ import ccc.rest.dto.ResourceSummary;
  */
 public interface Folders extends FoldersBasic {
 
-    /** NAME : String. */
-    String NAME = "PublicFolderCommands";
-
-
     /**
      * Create a folder with the specified name and title.
      *

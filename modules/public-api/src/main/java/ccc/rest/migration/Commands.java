@@ -9,13 +9,15 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.migration;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.rest.CommandFailedException;
+import ccc.rest.ResourcesBasic;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;

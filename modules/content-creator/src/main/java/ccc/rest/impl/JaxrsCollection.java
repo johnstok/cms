@@ -16,10 +16,10 @@ import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.Actions;
-import ccc.rest.Commands;
 import ccc.rest.Files;
 import ccc.rest.Queries;
 import ccc.rest.Users;
+import ccc.rest.migration.Commands;
 import ccc.rest.migration.Folders;
 import ccc.rest.migration.Pages;
 

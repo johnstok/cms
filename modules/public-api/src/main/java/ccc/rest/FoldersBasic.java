@@ -38,6 +38,9 @@ import ccc.rest.dto.ResourceSummary;
 @Produces("application/json")
 public interface FoldersBasic {
 
+    /** NAME : String. */
+    String NAME = "PublicFolderCommands";
+
     /**
      * List all of the folders that are children of the specified parent folder.
      *
