@@ -33,5 +33,4 @@ public interface Queries {
     Collection<TemplateSummary> templates();
     boolean templateNameExists(@PathParam("name") final String templateName);
     TemplateDelta templateDelta(@PathParam("id") UUID templateId);
-    String aliasTargetName(@PathParam("id") UUID aliasId);
 }

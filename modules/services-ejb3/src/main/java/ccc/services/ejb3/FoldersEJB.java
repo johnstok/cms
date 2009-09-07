@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBContext;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -70,7 +69,6 @@ public class FoldersEJB
         FoldersExt {
 
     @PersistenceContext private EntityManager _em;
-    @javax.annotation.Resource private EJBContext _context;
     private LogEntryRepository           _audit;
 
     /** {@inheritDoc} */

@@ -42,7 +42,7 @@ public class AliasesImpl
     /** {@inheritDoc} */
     @Override
     public String aliasTargetName(final UUID aliasId) {
-        return getQueries().aliasTargetName(aliasId);
+        return getAliases().aliasTargetName(aliasId);
     }
 
 
@@ -50,7 +50,7 @@ public class AliasesImpl
     @Override
     public void updateAlias(final UUID aliasId, final AliasDelta delta)
     throws CommandFailedException {
-        getCommands().updateAlias(aliasId, delta);
+        getAliases().updateAlias(aliasId, delta);
     }
 
 
@@ -58,7 +58,6 @@ public class AliasesImpl
     @Override
     public ResourceSummary createAlias(final AliasDto alias)
     throws CommandFailedException {
-        return getCommands().createAlias(
-            alias.getParentId(), alias.getName(), alias.getTargetId());
+        return getAliases().createAlias(alias);
     }
 }

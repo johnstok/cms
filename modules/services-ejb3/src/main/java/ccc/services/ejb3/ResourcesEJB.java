@@ -21,7 +21,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBContext;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -31,7 +30,6 @@ import javax.persistence.PersistenceContext;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
-import ccc.commands.CreateAliasCommand;
 import ccc.commands.CreateSearchCommand;
 import ccc.commands.CreateTemplateCommand;
 import ccc.commands.IncludeInMainMenuCommand;
@@ -41,7 +39,6 @@ import ccc.commands.PublishCommand;
 import ccc.commands.RenameResourceCommand;
 import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
-import ccc.commands.UpdateAliasCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
@@ -57,7 +54,6 @@ import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Resources;
-import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -86,30 +82,8 @@ public class ResourcesEJB
         ResourcesExt {
 
     @PersistenceContext private EntityManager _em;
-    @javax.annotation.Resource private EJBContext _context;
 
     private LogEntryRepository _audit;
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createAlias(final UUID parentId,
-                                       final String name,
-                                       final UUID targetId)
-                                                 throws CommandFailedException {
-        try {
-            return mapResource(
-                new CreateAliasCommand(_bdao, _audit).execute(
-                    loggedInUser(),
-                    new Date(),
-                    parentId,
-                    targetId,
-                    name));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
 
 
     /** {@inheritDoc} */
@@ -124,7 +98,7 @@ public class ResourcesEJB
         try {
             return mapResource(
                 new CreateTemplateCommand(_bdao, _audit).execute(
-                    loggedInUser(),
+                    currentUser(),
                     new Date(),
                     parentId,
                     delta,
@@ -167,7 +141,7 @@ public class ResourcesEJB
                      final UUID newParentId) throws CommandFailedException {
         try {
             new MoveResourceCommand(_bdao, _audit).execute(
-                loggedInUser(),
+                currentUser(),
                 new Date(),
                 resourceId,
                 newParentId);
@@ -184,7 +158,7 @@ public class ResourcesEJB
         try {
             new PublishCommand(_audit).execute(
                 new Date(),
-                loggedInUser(),
+                currentUser(),
                 _bdao.find(Resource.class, resourceId));
 
         } catch (final CccCheckedException e) {
@@ -216,7 +190,7 @@ public class ResourcesEJB
                        final String name) throws CommandFailedException {
             try {
                 new RenameResourceCommand(_bdao, _audit).rename(
-                    loggedInUser(), new Date(), resourceId, name);
+                    currentUser(), new Date(), resourceId, name);
 
             } catch (final CccCheckedException e) {
                 throw fail(e);
@@ -251,7 +225,7 @@ public class ResourcesEJB
     public void unpublish(final UUID resourceId) throws CommandFailedException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), resourceId);
+                currentUser(), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -279,32 +253,12 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void updateAlias(final UUID aliasId,
-                            final AliasDelta delta)
-                                                 throws CommandFailedException {
-        try {
-            new UpdateAliasCommand(_bdao, _audit).execute(
-                loggedInUser(),
-                new Date(),
-                delta.getTargetId(),
-                aliasId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
     public void createWorkingCopy(final UUID resourceId, final long index)
                                                  throws CommandFailedException {
         try {
 
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(),
+                currentUser(),
                 new Date(),
                 resourceId,
                 index);
@@ -372,7 +326,7 @@ public class ResourcesEJB
                                                  throws CommandFailedException {
         try {
             new UpdateTemplateCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), templateId, delta);
+                currentUser(), new Date(), templateId, delta);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -503,7 +457,7 @@ public class ResourcesEJB
         try {
             return mapResource(
                 new CreateSearchCommand(_bdao, _audit).execute(
-                    loggedInUser(), new Date(), parentId, title)
+                    currentUser(), new Date(), parentId, title)
             );
 
         } catch (final CccCheckedException e) {
@@ -546,7 +500,7 @@ public class ResourcesEJB
                                                  throws CommandFailedException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), resourceId, null, false);
+                currentUser(), new Date(), resourceId, null, false);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -582,7 +536,7 @@ public class ResourcesEJB
                                                  throws CommandFailedException {
         try {
             new UpdateCachingCommand(_bdao, _audit).execute(
-                loggedInUser(), new Date(), resourceId, duration);
+                currentUser(), new Date(), resourceId, duration);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -736,21 +690,5 @@ public class ResourcesEJB
         _audit = new LogEntryRepositoryImpl(_bdao);
         _users = new UserRepositoryImpl(_bdao);
         _resources = new ResourceRepositoryImpl(_bdao);
-    }
-
-    private User currentUser() {
-        return _users.loggedInUser(_context.getCallerPrincipal());
-    }
-
-    private CommandFailedException fail(final CccCheckedException e) {
-        return fail(_context, e);
-    }
-
-    private User loggedInUser() {
-        return loggedInUser(_context);
-    }
-
-    private UUID loggedInUserId() {
-        return loggedInUserId(_context);
     }
 }

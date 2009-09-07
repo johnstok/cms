@@ -13,6 +13,7 @@ package ccc.services.ejb3;
 
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 
 import org.apache.log4j.Logger;
@@ -39,6 +40,8 @@ public abstract class BaseCommands
     UserRepository     _users;
     Repository         _bdao;
     ResourceRepository _resources;
+    @Resource protected EJBContext _context;
+
 
     protected User userForId(final UUID userId) {
         final User u = _bdao.find(User.class, userId);
@@ -62,4 +65,15 @@ public abstract class BaseCommands
         return cfe;
     }
 
+    protected User currentUser() {
+        return _users.loggedInUser(_context.getCallerPrincipal());
+    }
+
+    protected CommandFailedException fail(final CccCheckedException e) {
+        return fail(_context, e);
+    }
+
+    protected UUID loggedInUserId() {
+        return loggedInUserId(_context);
+    }
 }

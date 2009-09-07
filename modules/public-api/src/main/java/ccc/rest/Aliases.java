@@ -36,6 +36,9 @@ import ccc.rest.dto.ResourceSummary;
 @Produces("application/json")
 public interface Aliases {
 
+    /** NAME : String. */
+    String NAME = "Aliases";
+
 
     /**
      * Retrieve the target name for a alias.
@@ -49,10 +52,27 @@ public interface Aliases {
     String aliasTargetName(@PathParam("id") UUID aliasId);
 
 
+    /**
+     * Create a new alias in CCC.
+     *
+     * @param alias The alias to create.
+     *
+     * @throws CommandFailedException If the method fails.
+     *
+     * @return A resource summary describing the new alias.
+     */
     @POST @Path("")
     ResourceSummary createAlias(AliasDto alias) throws CommandFailedException;
 
 
+    /**
+     * Update an alias.
+     *
+     * @param aliasId The id of the alias to update.
+     * @param delta The changes to apply.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
     @POST @Path("/{id}")
     void updateAlias(
         @PathParam("id") UUID aliasId,

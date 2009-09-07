@@ -20,11 +20,9 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
-import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -48,6 +46,7 @@ import ccc.persistence.QueryNames;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
+import ccc.rest.Resources;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.extensions.ResourcesExt;
@@ -77,9 +76,8 @@ public class ActionsEJB
     private static final Logger LOG =
         Logger.getLogger(ActionsEJB.class.getName());
 
-    @Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
-    @EJB(name=ResourcesExt.NAME) private ResourcesExt _resourcesExt;
+    @EJB(name=Resources.NAME) private ResourcesExt _resourcesExt;
 
     private ActionExecutor _executor;
     private LogEntryRepository _audit;

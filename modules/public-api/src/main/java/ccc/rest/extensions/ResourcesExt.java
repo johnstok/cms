@@ -18,7 +18,6 @@ import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
 import ccc.rest.Resources;
-import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.Duration;
@@ -31,16 +30,6 @@ import ccc.types.Duration;
  */
 public interface ResourcesExt extends Resources {
 
-    /**
-     * Update an alias.
-     *
-     * @param aliasId The id of the alias to update.
-     * @param delta The changes to apply.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void updateAlias(UUID aliasId, AliasDelta delta)
-    throws CommandFailedException;
 
     void updateTemplate(UUID templateId, TemplateDelta delta)
     throws CommandFailedException;
@@ -254,22 +243,6 @@ public interface ResourcesExt extends Resources {
                         String tags,
                         Map<String, String> metadata)
     throws CommandFailedException;
-
-
-    /**
-     * Create a new alias in CCC.
-     *
-     * @param parentId The folder in which the alias should be created.
-     * @param name The name of the alias.
-     * @param targetId The target resource to which the alias should link.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new alias.
-     */
-    ResourceSummary createAlias(UUID parentId, String name, UUID targetId)
-    throws CommandFailedException;
-
 
     ResourceSummary createTemplate(UUID parentId,
                                    TemplateDelta delta,

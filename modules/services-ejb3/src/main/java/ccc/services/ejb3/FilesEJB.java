@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -69,7 +68,6 @@ public class FilesEJB
         Files {
 
     @PersistenceContext private EntityManager _em;
-    @javax.annotation.Resource private EJBContext _context;
 
     private LogEntryRepository _audit;
     private FileRepositoryImpl _dm;
@@ -114,7 +112,7 @@ public class FilesEJB
                                       final boolean isMajorEdit)
                                                  throws CommandFailedException {
         try {
-            final User u = loggedInUser();
+            final User u = currentUser();
 
             final File f =
                 new CreateFileCommand(_bdao, _audit, _dm).execute(
@@ -154,7 +152,7 @@ public class FilesEJB
 
         try {
             new UpdateFileCommand(_bdao, _audit, _dm).execute(
-                loggedInUser(),
+                currentUser(),
                 new Date(),
                 UUID.fromString(fileId.toString()),
                 fileDelta,
@@ -177,13 +175,5 @@ public class FilesEJB
         _audit = new LogEntryRepositoryImpl(_bdao);
         _users = new UserRepositoryImpl(_bdao);
         _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
-    }
-
-    private CommandFailedException fail(final CccCheckedException e) {
-        return fail(_context, e);
-    }
-
-    private User loggedInUser() {
-        return loggedInUser(_context);
     }
 }
