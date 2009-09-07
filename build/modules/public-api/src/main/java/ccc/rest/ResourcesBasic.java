@@ -26,8 +26,6 @@ import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateDto;
 import ccc.serialization.Json;
 
 
@@ -38,7 +36,7 @@ import ccc.serialization.Json;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface RestCommands {
+public interface ResourcesBasic {
 
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(
@@ -48,9 +46,6 @@ public interface RestCommands {
     @POST @Path("/resources/{id}/lock")
     void lock(
         @PathParam("id") UUID resourceId) throws CommandFailedException;
-
-    @POST @Path("/templates")
-    ResourceSummary createTemplate(TemplateDto template) throws CommandFailedException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
@@ -112,11 +107,6 @@ public interface RestCommands {
 
     @POST @Path("/aliases")
     ResourceSummary createAlias(AliasDto alias) throws CommandFailedException;
-
-    @POST @Path("/templates/{id}")
-    void updateTemplate(
-        @PathParam("id") UUID templateId,
-        TemplateDelta delta) throws CommandFailedException;
 
     @POST @Path("/aliases/{id}")
     void updateAlias(

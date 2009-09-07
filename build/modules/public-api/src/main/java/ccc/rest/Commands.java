@@ -43,14 +43,6 @@ public interface Commands {
     void updateAlias(UUID aliasId, AliasDelta delta)
     throws CommandFailedException;
 
-    /**
-     * Update the specified template on the server.
-     *
-     * @param templateId The id of the template to update.
-     * @param delta The changes to apply.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
     void updateTemplate(UUID templateId, TemplateDelta delta)
     throws CommandFailedException;
 
@@ -280,19 +272,6 @@ public interface Commands {
     throws CommandFailedException;
 
 
-    /**
-     * Create a new template in CCC.
-     *
-     * @param parentId The folder in which the template should be created.
-     * @param delta The template's details.
-     * @param title The template's title.
-     * @param description The template's description.
-     * @param name The template's name.
-     *
-     * @throws CommandFailedException If the method fails.
-     *
-     * @return A resource summary describing the new template.
-     */
     ResourceSummary createTemplate(UUID parentId,
                                    TemplateDelta delta,
                                    String title,

@@ -37,9 +37,10 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import ccc.rest.Actions;
 import ccc.rest.CommandFailedException;
 import ccc.rest.FoldersBasic;
-import ccc.rest.Queries;
-import ccc.rest.RestCommands;
+import ccc.rest.QueriesBasic;
+import ccc.rest.ResourcesBasic;
 import ccc.rest.Security;
+import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FolderDto;
@@ -113,12 +114,13 @@ public abstract class AbstractAcceptanceTest
     protected final String _updateFileUrl = _hostUrl+"/update_file";
 
     protected HttpClient _http;
-    protected Queries _queries;
-    protected RestCommands _commands;
+    protected QueriesBasic _queries;
+    protected ResourcesBasic _commands;
     protected Users _users;
     protected Actions _actions;
     protected FoldersBasic _folders;
     protected Security _security;
+    protected Templates _templates;
 
 
     /**
@@ -136,7 +138,7 @@ public abstract class AbstractAcceptanceTest
         final TemplateDelta newTemplate =
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
         final ResourceSummary ts =
-            _commands.createTemplate(
+            _templates.createTemplate(
                 new TemplateDto(
                     parent.getId(),
                     newTemplate,
@@ -272,12 +274,13 @@ public abstract class AbstractAcceptanceTest
     @Override
     protected void setUp() {
         _http     = login();
-        _queries  = ProxyFactory.create(Queries.class, _secure, _http);
-        _commands = ProxyFactory.create(RestCommands.class, _secure, _http);
+        _queries  = ProxyFactory.create(QueriesBasic.class, _secure, _http);
+        _commands = ProxyFactory.create(ResourcesBasic.class, _secure, _http);
         _users =    ProxyFactory.create(Users.class, _secure, _http);
         _actions =  ProxyFactory.create(Actions.class, _secure, _http);
         _folders =  ProxyFactory.create(FoldersBasic.class, _secure, _http);
         _security = ProxyFactory.create(Security.class, _public, _http);
+        _templates = ProxyFactory.create(Templates.class, _secure, _http);
     }
 
 
@@ -296,6 +299,7 @@ public abstract class AbstractAcceptanceTest
         _users    = null;
         _actions  = null;
         _folders  = null;
+        _templates  = null;
     }
 
 

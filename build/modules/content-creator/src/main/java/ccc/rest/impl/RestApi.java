@@ -21,17 +21,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.Queries;
-import ccc.rest.RestCommands;
+import ccc.rest.QueriesBasic;
+import ccc.rest.ResourcesBasic;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateDto;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.serialization.Json;
 import ccc.types.Duration;
@@ -51,8 +49,8 @@ public class RestApi
     extends
         JaxrsCollection
     implements
-        Queries,
-        RestCommands {
+        QueriesBasic,
+        ResourcesBasic {
 
     /** {@inheritDoc} */
     @Override
@@ -154,27 +152,6 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta templateDelta(final UUID templateId) {
-        return getQueries().templateDelta(templateId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean templateNameExists(final String templateName) {
-        return getQueries().templateNameExists(templateName);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<TemplateSummary> templates() {
-        return getQueries().templates();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu) throws CommandFailedException {
         getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
@@ -185,18 +162,6 @@ public class RestApi
     @Override
     public void lock(final UUID resourceId) throws CommandFailedException {
         getCommands().lock(resourceId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary createTemplate(final TemplateDto template) throws CommandFailedException {
-        return getCommands().createTemplate(
-            template.getParentId(),
-            template.getDelta(),
-            template.getTitle(),
-            template.getDescription(),
-            template.getName());
     }
 
 
@@ -304,13 +269,6 @@ public class RestApi
                                   final ResourceDto pu)
     throws CommandFailedException {
         getCommands().createWorkingCopy(resourceId, pu.getRevision());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateTemplate(final UUID templateId, final TemplateDelta delta) throws CommandFailedException {
-        getCommands().updateTemplate(templateId, delta);
     }
 
 

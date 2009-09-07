@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.LocalCommands;
+import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
@@ -39,7 +39,7 @@ public abstract class MultipartServlet
         HttpServlet {
     private static final Logger LOG = Logger.getLogger(MultipartServlet.class);
 
-    @EJB(name = Commands.NAME) private LocalCommands _commands;
+    @EJB(name = Commands.NAME) private Resources _commands;
 
 
     /**
@@ -116,7 +116,7 @@ public abstract class MultipartServlet
      *
      * @return Returns the commands.
      */
-    public final LocalCommands getCommands() {
+    public final Resources getCommands() {
         return _commands;
     }
 }
