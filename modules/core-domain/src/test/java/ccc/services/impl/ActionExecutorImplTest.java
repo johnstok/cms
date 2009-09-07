@@ -29,6 +29,7 @@ import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
 import ccc.types.ResourceName;
+import ccc.types.Username;
 
 
 /**
@@ -49,7 +50,7 @@ public class ActionExecutorImplTest
 
         // ARRANGE
         final Page p =  new Page(new ResourceName("foo"), "foo", null, _rm);
-        final User u = new User("user", "password");
+        final User u = new User(new Username("user"), "password");
         final Action a =
             new Action(
                 CommandType.RESOURCE_PUBLISH,

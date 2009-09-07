@@ -39,6 +39,7 @@ import ccc.rendering.StatefulReader;
 import ccc.rendering.velocity.VelocityProcessor;
 import ccc.search.SearchEngine;
 import ccc.types.ResourcePath;
+import ccc.types.Username;
 
 
 /**
@@ -118,7 +119,9 @@ public class RenderResourceAction
 
 
     private void checkSecurity(final Resource r, final User user) {
-        final User u = (null==user) ? new User("anonymous", "password") : user;
+        final User u = (null==user) ?
+            new User(new Username("anonymous"), "password") :
+            user;
         if (!r.isAccessibleTo(u)) {
             throw new AuthenticationRequiredException(r);
         }

@@ -21,6 +21,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
+import ccc.types.Username;
 
 
 /**
@@ -42,7 +43,7 @@ public class UserTest
         // ARRANGE
 
         // ACT
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
 
         // ASSERT
         assertTrue("Password should match.", u.matches("password"));
@@ -55,7 +56,7 @@ public class UserTest
 
         // ARRANGE
         final String password = "password";
-        final User u = new User("dummy", password);
+        final User u = new User(new Username("dummy"), password);
 
         // ACT
         final byte[] hash = User.hash(password, u.id().toString());
@@ -73,7 +74,7 @@ public class UserTest
     public void testChangePassword() {
         // ARRANGE
         final String password = "newPass";
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
 
         // ACT
         u.password("newPass");
@@ -94,7 +95,7 @@ public class UserTest
     public void testRolesAccessorHandlesNoRoles() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
 
         // ACT
         final Set<String> roles = u.roles();
@@ -109,8 +110,8 @@ public class UserTest
     public void testEqualityIsIdBased() {
 
         // ARRANGE
-        final User u1 = new User("dummy", "password");
-        final User u2 = new User("dummy", "password");
+        final User u1 = new User(new Username("dummy"), "password");
+        final User u2 = new User(new Username("dummy"), "password");
 
         // ASSERT
         assertEquals(u1, u1);
@@ -126,13 +127,13 @@ public class UserTest
     public void testAccessorForUsername() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
 
         // ACT
-        final String username = u.username();
+        final Username username = u.username();
 
         // ASSERT
-        assertEquals("dummy", username);
+        assertEquals(new Username("dummy"), username);
     }
 
     /**
@@ -142,7 +143,7 @@ public class UserTest
 
         // ACT
         try {
-            new User("", "password");
+            new User(new Username(""), "password");
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -175,7 +176,7 @@ public class UserTest
     public void testAccessorForEmail() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -191,7 +192,7 @@ public class UserTest
     public void testCreatorRoles() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         final Set<String> expected =
             new HashSet<String>() {{
                 add(CreatorRoles.CONTENT_CREATOR);
@@ -220,7 +221,7 @@ public class UserTest
     public void testRejectsEmptyEmail() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
 
         // ACT
         try {
@@ -240,7 +241,7 @@ public class UserTest
     public void testRejectsInvalidEmail() {
 //
 //        // ARRANGE
-//        final User u = new User("dummy");
+//        final User u = new User(new Username("dummy"));
 //
 //        // ACT
 //        try {
@@ -260,7 +261,7 @@ public class UserTest
     public void testUsernameMutatorRejectsNullUsername() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -278,12 +279,12 @@ public class UserTest
     public void testUsernameMutatorRejectsEmptyUsername() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
-            u.username("");
+            u.username(new Username(""));
             // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
@@ -298,12 +299,12 @@ public class UserTest
     public void testUsernameMutatorRejectsInvalidUsername() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
-            u.username("blaa blaa");
+            u.username(new Username("blaa blaa"));
             // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
@@ -319,14 +320,14 @@ public class UserTest
     public void testUsernameMutator() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         u.email(new EmailAddress("fooEmail@test.com"));
 
         // ACT
-        u.username("newDummy");
+        u.username(new Username("newDummy"));
 
         // ASSERT
-        assertEquals("newDummy", u.username());
+        assertEquals("newDummy", u.username().toString());
     }
 
     /**
@@ -335,7 +336,7 @@ public class UserTest
     public void testReplaceRoles() {
 
         // ARRANGE
-        final User u = new User("dummy", "password");
+        final User u = new User(new Username("dummy"), "password");
         u.addRole(CreatorRoles.CONTENT_CREATOR);
         u.addRole(CreatorRoles.SITE_BUILDER);
         u.addRole(CreatorRoles.SITE_BUILDER);

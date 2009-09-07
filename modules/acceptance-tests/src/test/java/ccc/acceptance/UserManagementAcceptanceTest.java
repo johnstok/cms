@@ -64,7 +64,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         final Collection<UserDto> ul =
-            _users.listUsersWithUsername(us.getUsername().toString());
+            _users.listUsersWithUsername(us.getUsername());
 
         // ASSERT
         assertEquals(1, ul.size());

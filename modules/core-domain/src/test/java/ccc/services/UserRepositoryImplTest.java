@@ -20,6 +20,7 @@ import ccc.domain.User;
 import ccc.persistence.QueryNames;
 import ccc.persistence.Repository;
 import ccc.persistence.UserRepositoryImpl;
+import ccc.types.Username;
 
 
 /**
@@ -59,7 +60,7 @@ public class UserRepositoryImplTest
     public void testLoggedInUser() {
 
         // ARRANGE
-        final User u = new User("user", "password");
+        final User u = new User(new Username("user"), "password");
         final Principal p = new Principal() {
             @Override public String getName() { return "user"; }};
         expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "user"))

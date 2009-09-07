@@ -11,6 +11,7 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderDelta implements Jsonable {
+public class FolderDelta implements Serializable, Jsonable {
 
     private final String _sortOrder;
     private final UUID     _indexPage;

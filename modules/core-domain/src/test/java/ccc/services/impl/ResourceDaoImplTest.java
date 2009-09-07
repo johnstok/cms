@@ -53,6 +53,7 @@ import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
+import ccc.types.Username;
 
 
 /**
@@ -596,9 +597,12 @@ public class ResourceDaoImplTest
     private Resource _r;
     private Folder _parent;
 
-    private final User _regularUser = new User("regular", "password");
-    private final User _anotherUser = new User("another", "password");
-    private final User _adminUser = new User("admin", "password"){{
+    private final User _regularUser =
+        new User(new Username("regular"), "password");
+    private final User _anotherUser =
+        new User(new Username("another"), "password");
+    private final User _adminUser =
+        new User(new Username("admin"), "password"){{
        addRole(CreatorRoles.ADMINISTRATOR);
     }};
     private final RevisionMetadata _rm =

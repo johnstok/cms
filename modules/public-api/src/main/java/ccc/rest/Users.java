@@ -78,12 +78,12 @@ public interface Users {
     /**
      * Query users with specified username.
      *
-     * @param username The username as a string.
+     * @param username The username.
      * @return Returns list of users.
      */
     @GET @Path("/users/username/{uname}") @NoCache
     Collection<UserDto> listUsersWithUsername(
-        @PathParam("uname") String username);
+        @PathParam("uname") Username username);
 
     /**
      * Query whether the specified username is in use.

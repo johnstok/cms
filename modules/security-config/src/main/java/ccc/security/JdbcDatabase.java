@@ -26,6 +26,7 @@ import javax.sql.DataSource;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.CCCException;
+import ccc.types.Username;
 
 
 /**
@@ -61,7 +62,7 @@ public class JdbcDatabase
 
     /** {@inheritDoc} */
     @Override
-    public Object[] lookupUser(final String username) throws SQLException {
+    public Object[] lookupUser(final Username username) throws SQLException {
 
         if (null==username) {
             return null;
@@ -74,7 +75,7 @@ public class JdbcDatabase
             final PreparedStatement s = c.prepareStatement(_principalQuery);
 
             try { // Work with the Statement, close on error.
-                s.setString(1, username);
+                s.setString(1, username.toString());
                 final ResultSet rs = s.executeQuery();
 
                 try { // Work with the ResultSet, close on error.

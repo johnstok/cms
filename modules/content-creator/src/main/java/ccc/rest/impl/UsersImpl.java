@@ -69,8 +69,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserDto> listUsersWithUsername(
-                                                        final String username) {
+    public Collection<UserDto> listUsersWithUsername(final Username username) {
         return getUserCommands().listUsersWithUsername(username);
     }
 

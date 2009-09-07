@@ -34,6 +34,7 @@ import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepository;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
+import ccc.types.Username;
 
 
 /**
@@ -145,7 +146,8 @@ public class FolderDaoImplTest
     private void verifyAll() {
         verify(_rdao, _al, _repository);
     }
-    private final User _regularUser = new User("regular", "password");
+    private final User _regularUser =
+        new User(new Username("regular"), "password");
 
     private Folder _f;
 

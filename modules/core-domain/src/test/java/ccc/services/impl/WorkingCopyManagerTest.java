@@ -29,6 +29,7 @@ import ccc.persistence.Repository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
+import ccc.types.Username;
 
 
 /**
@@ -121,7 +122,8 @@ public class WorkingCopyManagerTest
 
     private Repository _repository;
     private LogEntryRepository _audit;
-    private final User _user = new User("currentUser", "password");
+    private final User _user =
+        new User(new Username("currentUser"), "password");
     private final Date _now = new Date();
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

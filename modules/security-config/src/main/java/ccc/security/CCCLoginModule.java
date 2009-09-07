@@ -30,6 +30,7 @@ import org.jboss.security.SimpleGroup;
 import org.jboss.security.SimplePrincipal;
 
 import ccc.domain.User;
+import ccc.types.Username;
 
 
 
@@ -113,7 +114,7 @@ public class CCCLoginModule implements LoginModule {
             final Callback[] callbacks = {nc, pc};
             _cbHandler.handle(callbacks);
 
-            _user = _db.lookupUser(nc.getName());
+            _user = _db.lookupUser(new Username(nc.getName()));
 
             if (null==_user) { // Anonymous logins disallowed
                 LOG.debug("No user in db with username: "+nc.getName());

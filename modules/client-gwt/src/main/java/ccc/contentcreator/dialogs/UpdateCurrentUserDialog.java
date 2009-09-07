@@ -105,11 +105,12 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
+                _user.setPassword(_password1.getValue());
+                _user.setEmail(_email.getValue());
 
                 new UpdateCurrentUserAction(
                     _user.getId(),
-                    _email.getValue(),
-                    _password1.getValue()
+                    _user
                 ){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response response) {

@@ -14,7 +14,7 @@ package ccc.contentcreator.actions;
 import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.serialization.JsonKeys;
+import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -28,24 +28,20 @@ public abstract class UpdateCurrentUserAction
     extends
         RemotingAction {
 
-    private final String _newEmail;
-    private final String _newPassword;
+    private final UserDto _userDetails;
     private final UUID _userId;
 
 
     /**
      * Constructor.
      * @param userId The user's id.
-     * @param newEmail The new email.
-     * @param newPassword The user's new password.
+     * @param userDetails The updated user details.
      */
     public UpdateCurrentUserAction(final UUID userId,
-                                final String newEmail,
-                                final String newPassword) {
+                                   final UserDto userDetails) {
         super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);
         _userId = userId;
-        _newEmail = newEmail;
-        _newPassword = newPassword;
+        _userDetails = userDetails;
     }
 
 
@@ -58,8 +54,7 @@ public abstract class UpdateCurrentUserAction
     /** {@inheritDoc} */
     @Override protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.EMAIL, _newEmail);
-        json.set(JsonKeys.PASSWORD, _newPassword);
+        _userDetails.toJson(json);
         return json.toString();
     }
 }

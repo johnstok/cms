@@ -31,6 +31,7 @@ import ccc.commons.MapRegistry;
 import ccc.commons.Registry;
 import ccc.domain.User;
 import ccc.types.CreatorRoles;
+import ccc.types.Username;
 
 
 /**
@@ -65,12 +66,12 @@ public class JdbcDatabaseTest
     public void testLookupUserSucceeds() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user", "password");
+        final User u = new User(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
             .andReturn(_s);
-        _s.setString(1, u.username());
+        _s.setString(1, u.username().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(u.id().toString());
@@ -102,12 +103,12 @@ public class JdbcDatabaseTest
     public void testLookupUserFailsForMissingUser() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user", "password");
+        final User u = new User(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
         .andReturn(_s);
-        _s.setString(1, u.username());
+        _s.setString(1, u.username().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
         _rs.close();
@@ -131,12 +132,12 @@ public class JdbcDatabaseTest
     public void testLookupUserFailsForDuplicateUsers() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user", "password");
+        final User u = new User(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
         .andReturn(_s);
-        _s.setString(1, u.username());
+        _s.setString(1, u.username().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(u.id().toString());
@@ -171,7 +172,7 @@ public class JdbcDatabaseTest
     public void testLookupRoles() throws SQLException {
 
         // ARRANGE
-        final User u = new User("user", "password");
+        final User u = new User(new Username("user"), "password");
         u.addRole(CreatorRoles.ADMINISTRATOR);
         u.addRole(CreatorRoles.CONTENT_CREATOR);
 
