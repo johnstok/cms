@@ -62,7 +62,7 @@ import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.LocalCommands;
+import ccc.rest.Resources;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -79,13 +79,13 @@ import ccc.types.ResourceName;
 @Stateless(name=Commands.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Commands.class)
-@Local(LocalCommands.class)
+@Local(Resources.class)
 @RolesAllowed({})
 public class CommandsEJB
     extends
         BaseCommands
     implements
-        Commands, LocalCommands {
+        Commands, Resources {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;

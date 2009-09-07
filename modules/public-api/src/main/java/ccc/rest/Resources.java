@@ -24,7 +24,7 @@ import ccc.rest.dto.ResourceSummary;
  *
  * @author Civic Computing Ltd.
  */
-public interface LocalCommands extends Commands {
+public interface Resources extends Commands {
 
     /**
      * Create a new CCC file.

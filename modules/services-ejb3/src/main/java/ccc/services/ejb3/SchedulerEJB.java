@@ -49,7 +49,7 @@ import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
 import ccc.rest.Commands;
-import ccc.rest.LocalCommands;
+import ccc.rest.Resources;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
@@ -80,7 +80,7 @@ public class SchedulerEJB
 
     @Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
-    @EJB(name=Commands.NAME) private LocalCommands _commands;
+    @EJB(name=Commands.NAME) private Resources _commands;
 
     private ActionExecutor _executor;
     private LogEntryRepository _audit;

@@ -51,7 +51,7 @@ public class FirstAcceptanceTest
 
         // ACT
         final ResourceSummary ts =
-            _commands.createTemplate(
+            _templates.createTemplate(
                 new TemplateDto(
                     templateFolder.getId(),
                     newTemplate,
