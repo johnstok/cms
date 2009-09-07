@@ -11,6 +11,7 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.serialization.Json;
@@ -23,7 +24,7 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class AliasDto implements Jsonable {
+public class AliasDto implements Jsonable, Serializable {
 
     private final UUID _parentId;
     private final String _name;
@@ -37,7 +38,9 @@ public class AliasDto implements Jsonable {
      * @param name The alias' name.
      * @param targetId The alias' target.
      */
-    public AliasDto(final UUID parentId, final String name, final UUID targetId) {
+    public AliasDto(final UUID parentId,
+                    final String name,
+                    final UUID targetId) {
         _parentId = parentId;
         _name = name;
         _targetId = targetId;

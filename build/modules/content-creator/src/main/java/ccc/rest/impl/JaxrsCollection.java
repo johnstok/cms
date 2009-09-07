@@ -16,6 +16,7 @@ import ccc.commons.CCCProperties;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.Actions;
+import ccc.rest.Aliases;
 import ccc.rest.Files;
 import ccc.rest.Queries;
 import ccc.rest.Users;
@@ -41,6 +42,7 @@ abstract class JaxrsCollection {
     private Users _userCommands;
     private Actions _actions;
     private Files _files;
+    private Aliases _aliases;
 
     /**
      * Accessor.
@@ -136,6 +138,18 @@ abstract class JaxrsCollection {
     }
 
     /**
+     * Accessor.
+     *
+     * @return Returns the aliases.
+     */
+    public final Aliases getAliases() {
+        return
+        (null==_aliases)
+        ? (Aliases) _reg.get(_appName+"/"+Aliases.NAME+"/remote")
+            : _aliases;
+    }
+
+    /**
      * Mutator.
      *
      * @param resourcesExt The commands to set.
@@ -178,5 +192,14 @@ abstract class JaxrsCollection {
      */
     public final void setFiles(final Files files) {
         _files = files;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param aliases The aliases to set.
+     */
+    public final void setAliases(final Aliases aliases) {
+        _aliases = aliases;
     }
 }

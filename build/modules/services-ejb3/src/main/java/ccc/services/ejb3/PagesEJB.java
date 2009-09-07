@@ -22,7 +22,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBContext;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -43,6 +42,7 @@ import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
+import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -58,16 +58,16 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=PagesExt.NAME)
+@Stateless(name=Pages.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(PagesExt.class)
 @RolesAllowed({})
-public class PagesEJB extends
-BaseCommands
-implements
-    PagesExt {
+public class PagesEJB
+    extends
+        BaseCommands
+    implements
+        PagesExt {
 
-    @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
     private LogEntryRepository           _audit;
 
