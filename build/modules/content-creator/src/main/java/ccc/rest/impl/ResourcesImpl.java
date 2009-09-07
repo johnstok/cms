@@ -21,7 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.ResourcesBasic;
+import ccc.rest.Resources;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -40,11 +40,11 @@ import ccc.types.FailureCode;
 @Path("/secure")
 @Consumes("application/json")
 @Produces("application/json")
-public class RestApi
+public class ResourcesImpl
     extends
         JaxrsCollection
     implements
-        ResourcesBasic {
+        Resources {
 
 
     /** {@inheritDoc} */

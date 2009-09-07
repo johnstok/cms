@@ -39,9 +39,9 @@ import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Files;
-import ccc.rest.FoldersBasic;
-import ccc.rest.PagesBasic;
-import ccc.rest.ResourcesBasic;
+import ccc.rest.Folders;
+import ccc.rest.Resources;
+import ccc.rest.Pages;
 import ccc.rest.Security;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -120,11 +120,11 @@ public abstract class AbstractAcceptanceTest
     protected final String _updateFileUrl = _hostUrl+"/update_file";
 
     protected HttpClient _http;
-    protected ResourcesBasic _commands;
+    protected Resources _commands;
     protected Users _users;
     protected Actions _actions;
-    protected FoldersBasic _folders;
-    protected PagesBasic _pages;
+    protected Folders _folders;
+    protected Pages _pages;
     protected Security _security;
     protected Templates _templates;
     protected Files _files;
@@ -293,11 +293,11 @@ public abstract class AbstractAcceptanceTest
     @Override
     protected void setUp() {
         _http     = login();
-        _commands = ProxyFactory.create(ResourcesBasic.class, _secure, _http);
+        _commands = ProxyFactory.create(Resources.class, _secure, _http);
         _users =    ProxyFactory.create(Users.class, _secure, _http);
         _actions =  ProxyFactory.create(Actions.class, _secure, _http);
-        _folders =  ProxyFactory.create(FoldersBasic.class, _secure, _http);
-        _pages =    ProxyFactory.create(PagesBasic.class, _secure, _http);
+        _folders =  ProxyFactory.create(Folders.class, _secure, _http);
+        _pages =    ProxyFactory.create(Pages.class, _secure, _http);
         _security = ProxyFactory.create(Security.class, _public, _http);
         _templates = ProxyFactory.create(Templates.class, _secure, _http);
         _files = ProxyFactory.create(Files.class, _secure+"/files", _http);

@@ -20,8 +20,8 @@ import ccc.cli.FileUpload;
 import ccc.migration.FileUploader;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.Commands;
-import ccc.rest.migration.Folders;
+import ccc.rest.migration.ResourcesExt;
+import ccc.rest.migration.FoldersExt;
 import ccc.types.FailureCode;
 import ccc.types.ResourcePath;
 
@@ -36,8 +36,8 @@ public class CccServer implements Server {
 
     private ResourcePath _rootPath;
     private FileUploader _uploader;
-    private Folders _folders;
-    private Commands _resources;
+    private FoldersExt _foldersExt;
+    private ResourcesExt _resources;
 
 
 
@@ -47,16 +47,16 @@ public class CccServer implements Server {
      * @param rootPath The absolute path to the folder where files will be
      *  uploaded.
      * @param uploader The file up-loader to use.
-     * @param folders The folders API.
+     * @param foldersExt The folders API.
      * @param resources The resources API.
      */
     public CccServer(final ResourcePath rootPath,
                      final FileUploader uploader,
-                     final Folders folders,
-                     final Commands resources) {
+                     final FoldersExt foldersExt,
+                     final ResourcesExt resources) {
         _rootPath = rootPath;
         _uploader = uploader;
-        _folders = folders;
+        _foldersExt = foldersExt;
         _resources = resources;
     }
 
@@ -79,7 +79,7 @@ public class CccServer implements Server {
                                                  throws CommandFailedException {
 
         try {
-            final ResourceSummary rs = _folders.createFolder(
+            final ResourceSummary rs = _foldersExt.createFolder(
                 UUID.fromString(parentFolder.toString()), name, name, publish);
             return UUID.fromString(rs.getId().toString());
         } catch (final CommandFailedException e) {

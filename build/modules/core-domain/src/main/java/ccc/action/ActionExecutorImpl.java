@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.Action;
 import ccc.rest.CommandFailedException;
-import ccc.rest.migration.Commands;
+import ccc.rest.migration.ResourcesExt;
 import ccc.types.DBC;
 
 
@@ -30,16 +30,16 @@ public class ActionExecutorImpl implements ActionExecutor {
     private static final Logger LOG =
         Logger.getLogger(ActionExecutorImpl.class.getName());
 
-    private final Commands _commands;
+    private final ResourcesExt _resourcesExt;
 
     /**
      * Constructor.
      *
-     * @param commands The commands implementation.
+     * @param resourcesExt The commands implementation.
      */
-    public ActionExecutorImpl(final Commands commands) {
-        DBC.require().notNull(commands);
-        _commands = commands;
+    public ActionExecutorImpl(final ResourcesExt resourcesExt) {
+        DBC.require().notNull(resourcesExt);
+        _resourcesExt = resourcesExt;
     }
 
 
@@ -86,7 +86,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
     private void executeUpdate(final Action action)
                                                  throws CommandFailedException {
-        _commands.applyWorkingCopy(
+        _resourcesExt.applyWorkingCopy(
             action.subject().id(),
             action.actor().id(),
             new Date(),
@@ -97,7 +97,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
     private void executePublish(final Action action)
                                                  throws CommandFailedException {
-        _commands.publish(
+        _resourcesExt.publish(
             action.subject().id(),
             action.actor().id(),
             new Date());
@@ -106,7 +106,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
     private void executeUnpublish(final Action action)
                                                  throws CommandFailedException {
-        _commands.unpublish(
+        _resourcesExt.unpublish(
             action.subject().id(),
             action.actor().id(),
             new Date());

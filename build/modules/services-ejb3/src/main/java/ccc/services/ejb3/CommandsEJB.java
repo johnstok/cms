@@ -62,7 +62,7 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.migration.Commands;
+import ccc.rest.migration.ResourcesExt;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
@@ -70,19 +70,19 @@ import ccc.types.ResourcePath;
 
 
 /**
- * EJB implementation of the {@link Commands} interface.
+ * EJB implementation of the {@link ResourcesExt} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=Commands.NAME)
+@Stateless(name=ResourcesExt.NAME)
 @TransactionAttribute(REQUIRES_NEW)
-@Remote(Commands.class)
+@Remote(ResourcesExt.class)
 @RolesAllowed({})
 public class CommandsEJB
     extends
         BaseCommands
     implements
-        Commands {
+        ResourcesExt {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;

@@ -46,7 +46,7 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.Pages;
+import ccc.rest.migration.PagesExt;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Paragraph;
@@ -54,18 +54,18 @@ import ccc.types.ResourceName;
 
 
 /**
- * EJB implementation of the {@link Pages} interface.
+ * EJB implementation of the {@link PagesExt} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=Pages.NAME)
+@Stateless(name=PagesExt.NAME)
 @TransactionAttribute(REQUIRES_NEW)
-@Remote(Pages.class)
+@Remote(PagesExt.class)
 @RolesAllowed({})
 public class PageCommandsEJB extends
 BaseCommands
 implements
-    Pages {
+    PagesExt {
 
     @javax.annotation.Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.ResourcesBasic;
+import ccc.rest.Resources;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -29,7 +29,7 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-public interface Commands extends ResourcesBasic {
+public interface ResourcesExt extends Resources {
 
     /**
      * Update an alias.

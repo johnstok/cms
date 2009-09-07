@@ -48,25 +48,25 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.Folders;
+import ccc.rest.migration.FoldersExt;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 
 
 /**
- * EJB implementation of the {@link Folders} interface.
+ * EJB implementation of the {@link FoldersExt} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=Folders.NAME)
+@Stateless(name=FoldersExt.NAME)
 @TransactionAttribute(REQUIRES_NEW)
-@Remote(Folders.class)
+@Remote(FoldersExt.class)
 @RolesAllowed({})
 public class FolderCommandsEJB
     extends
         BaseCommands
     implements
-        Folders {
+        FoldersExt {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;

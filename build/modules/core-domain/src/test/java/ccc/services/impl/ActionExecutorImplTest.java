@@ -24,7 +24,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.rest.CommandFailedException;
-import ccc.rest.migration.Commands;
+import ccc.rest.migration.ResourcesExt;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
@@ -62,18 +62,18 @@ public class ActionExecutorImplTest
                     put("COMMENT", "");
                 }});
 
-        _commands.publish(
+        _resourcesExt.publish(
             eq(p.id()),
             eq(u.id()),
             isA(Date.class));
         expectLastCall().andThrow(new UnlockedException(p).toRemoteException());
-        replay(_commands);
+        replay(_resourcesExt);
 
         // ACT
         _ea.executeAction(a);
 
         // ASSERT
-        verify(_commands);
+        verify(_resourcesExt);
         assertEquals(ActionStatus.Failed, a.status());
         assertEquals(
             FailureCode.UNLOCKED,
@@ -84,18 +84,18 @@ public class ActionExecutorImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _commands = createStrictMock(Commands.class);
-        _ea = new ActionExecutorImpl(_commands);
+        _resourcesExt = createStrictMock(ResourcesExt.class);
+        _ea = new ActionExecutorImpl(_resourcesExt);
     }
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
         _ea = null;
-        _commands = null;
+        _resourcesExt = null;
     }
 
     private ActionExecutorImpl _ea;
-    private Commands _commands;
+    private ResourcesExt _resourcesExt;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

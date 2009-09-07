@@ -40,7 +40,7 @@ import ccc.types.Duration;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface ResourcesBasic {
+public interface Resources {
 
     /** NAME : String. */
     String NAME = "PublicCommands";

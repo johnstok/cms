@@ -50,7 +50,7 @@ import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
-import ccc.rest.migration.Commands;
+import ccc.rest.migration.ResourcesExt;
 
 
 /**
@@ -79,7 +79,7 @@ public class SchedulerEJB
 
     @Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
-    @EJB(name=Commands.NAME) private Commands _commands;
+    @EJB(name=ResourcesExt.NAME) private ResourcesExt _resourcesExt;
 
     private ActionExecutor _executor;
     private LogEntryRepository _audit;
@@ -206,7 +206,7 @@ public class SchedulerEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
-        _executor = new ActionExecutorImpl(_commands);
+        _executor = new ActionExecutorImpl(_resourcesExt);
         _audit = new LogEntryRepositoryImpl(_bdao);
         _users = new UserRepositoryImpl(_bdao);
     }
