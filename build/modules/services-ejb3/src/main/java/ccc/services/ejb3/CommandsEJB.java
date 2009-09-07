@@ -22,7 +22,6 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
-import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -31,6 +30,7 @@ import javax.persistence.PersistenceContext;
 
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
+import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreateAliasCommand;
 import ccc.commands.CreateSearchCommand;
 import ccc.commands.CreateTemplateCommand;
@@ -50,20 +50,23 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
+import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.Resources;
 import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateSummary;
+import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 
 /**
@@ -74,19 +77,17 @@ import ccc.types.ResourceName;
 @Stateless(name=Commands.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Commands.class)
-@Local(Resources.class)
 @RolesAllowed({})
 public class CommandsEJB
     extends
         BaseCommands
     implements
-        Commands, Resources {
+        Commands {
 
     @PersistenceContext private EntityManager _em;
     @javax.annotation.Resource private EJBContext _context;
 
     private LogEntryRepository _audit;
-    private FileRepositoryImpl _dm;
 
     /** {@inheritDoc} */
     @Override
@@ -315,11 +316,30 @@ public class CommandsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
+    public void createWorkingCopy(final UUID resourceId,
+                                  final ResourceDto pu)
+    throws CommandFailedException {
+        createWorkingCopy(resourceId, pu.getRevision());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId)
                                                  throws CommandFailedException {
         updateResourceTemplate(
             resourceId, templateId, loggedInUserId(), new Date());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void updateResourceTemplate(final UUID resourceId,
+                                       final ResourceDto pu)
+    throws CommandFailedException {
+        updateResourceTemplate(resourceId, pu.getTemplateId());
     }
 
     /** {@inheritDoc} */
@@ -367,6 +387,25 @@ public class CommandsEJB
         includeInMainMenu(resourceId, include, loggedInUserId(), new Date());
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void includeInMainMenu(final UUID resourceId)
+    throws CommandFailedException {
+        includeInMainMenu(resourceId, true);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void excludeFromMainMenu(final UUID resourceId)
+    throws CommandFailedException {
+        includeInMainMenu(resourceId, false);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
@@ -388,6 +427,20 @@ public class CommandsEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void updateMetadata(final UUID resourceId,
+                               final Json json) throws CommandFailedException {
+
+        final String title = json.getString("title");
+        final String description = json.getString("description");
+        final String tags = json.getString("tags");
+        final Map<String, String> metadata = json.getStringMap("metadata");
+
+        updateMetadata(resourceId, title, description, tags, metadata);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void updateMetadata(final UUID resourceId,
                                    final String title,
                                    final String description,
                                    final String tags,
@@ -399,7 +452,14 @@ public class CommandsEJB
             final UUID actorId = loggedInUserId();
 
             new UpdateResourceMetadataCommand(_bdao, _audit).execute(
-                userForId(actorId), happenedOn, resourceId, title, description, tags, metadata);
+                userForId(actorId),
+                happenedOn,
+                resourceId,
+                title,
+                description,
+                tags,
+                metadata);
+
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
@@ -513,7 +573,6 @@ public class CommandsEJB
             throw fail(e);
         }
     }
-
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({SITE_BUILDER})
@@ -530,6 +589,142 @@ public class CommandsEJB
     }
 
 
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({SITE_BUILDER})
+    public void updateCacheDuration(final UUID resourceId,
+                                    final ResourceDto pu)
+    throws CommandFailedException {
+        updateCacheDuration(resourceId, pu.getCacheDuration());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public void clearWorkingCopy(final UUID resourceId)
+                                                 throws CommandFailedException {
+        try {
+            new ClearWorkingCopyCommand(_bdao, _audit).execute(
+                loggedInUser(_context), new Date(), resourceId);
+
+        } catch (final CccCheckedException e) {
+            throw fail(_context, e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({SITE_BUILDER})
+    public void deleteCacheDuration(final UUID id)
+    throws CommandFailedException {
+        updateCacheDuration(id, (Duration) null);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fail() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+
+    /* ====================================================================
+     * Queries API.
+     * ================================================================== */
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public String getAbsolutePath(final UUID resourceId) {
+        return
+            _resources.find(Resource.class, resourceId)
+                      .absolutePath()
+                      .toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Collection<RevisionDto> history(final UUID resourceId) {
+        return mapLogEntries(_resources.history(resourceId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Collection<ResourceSummary> locked() {
+        return mapResources(_resources.locked());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Collection<ResourceSummary> lockedByCurrentUser() {
+        return mapResources(_resources.lockedByUser(currentUser()));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public ResourceSummary resource(final UUID resourceId) {
+        return
+            mapResource(_resources.find(Resource.class, resourceId));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Map<String, String> metadata(final UUID resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, resourceId);
+        return r.metadata();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Collection<String> roles(final UUID resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, resourceId);
+        return r.roles();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Duration cacheDuration(final UUID resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, resourceId);
+        return r.cache();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public TemplateSummary computeTemplate(final UUID resourceId) {
+        final Resource r =
+            _resources.find(Resource.class, resourceId);
+        return mapTemplate(r.computeTemplate(null));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public ResourceSummary resourceForPath(final String rootPath) {
+        final ResourcePath rp = new ResourcePath(rootPath);
+        return mapResource(
+            _resources.lookup(rp.top().toString(), rp.removeTop()));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public ResourceSummary resourceForLegacyId(final String legacyId) {
+        return mapResource(_resources.lookupWithLegacyId(legacyId));
+    }
+
 
     /* ==============
      * Helper methods
@@ -539,34 +734,21 @@ public class CommandsEJB
         _bdao = new JpaRepository(_em);
         _audit = new LogEntryRepositoryImpl(_bdao);
         _users = new UserRepositoryImpl(_bdao);
-        _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
+        _resources = new ResourceRepositoryImpl(_bdao);
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param e
-     * @return
-     */
+    private User currentUser() {
+        return _users.loggedInUser(_context.getCallerPrincipal());
+    }
+
     private CommandFailedException fail(final CccCheckedException e) {
         return fail(_context, e);
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
     private User loggedInUser() {
         return loggedInUser(_context);
     }
 
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
     private UUID loggedInUserId() {
         return loggedInUserId(_context);
     }

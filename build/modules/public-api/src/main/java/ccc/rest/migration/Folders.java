@@ -9,11 +9,13 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.migration;
 
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.rest.CommandFailedException;
+import ccc.rest.FoldersBasic;
 import ccc.rest.dto.ResourceSummary;
 
 

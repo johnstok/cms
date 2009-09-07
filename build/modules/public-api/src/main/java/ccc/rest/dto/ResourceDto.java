@@ -11,6 +11,7 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.serialization.Json;
@@ -25,7 +26,7 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceDto implements Jsonable {
+public class ResourceDto implements Jsonable, Serializable {
 
     private final Duration _cacheDuration;
     private final Long     _revision;

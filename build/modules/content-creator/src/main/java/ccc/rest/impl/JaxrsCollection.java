@@ -18,10 +18,10 @@ import ccc.commons.Registry;
 import ccc.rest.Actions;
 import ccc.rest.Commands;
 import ccc.rest.Files;
-import ccc.rest.Folders;
-import ccc.rest.Pages;
 import ccc.rest.Queries;
 import ccc.rest.Users;
+import ccc.rest.migration.Folders;
+import ccc.rest.migration.Pages;
 
 
 /**

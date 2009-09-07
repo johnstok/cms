@@ -17,9 +17,9 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.types.FailureCode;
 
 
@@ -41,7 +41,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = _queries.resourceForPath("/content");
+        final ResourceSummary content = _commands.resourceForPath("/content");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         _commands.lock(file.getId());
@@ -52,7 +52,7 @@ public class FileUploadAcceptanceTest
         _commands.clearWorkingCopy(file.getId());
 
         // ASSERT
-        final ResourceSummary fWC = _queries.resource(file.getId());
+        final ResourceSummary fWC = _commands.resource(file.getId());
         assertEquals("Hello!", previewContent(file, false));
         assertFalse(fWC.isHasWorkingCopy());
     }
@@ -66,11 +66,11 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = _queries.resourceForPath("/content");
+        final ResourceSummary content = _commands.resourceForPath("/content");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         // History for first revision
-        Collection<RevisionDto> revs = _queries.history(file.getId());
+        Collection<RevisionDto> revs = _commands.history(file.getId());
         assertEquals(1, revs.size());
         final RevisionDto rev1 = revs.iterator().next();
         assertEquals(0, rev1.getIndex());
@@ -79,7 +79,7 @@ public class FileUploadAcceptanceTest
         // Add a second revision
         _commands.lock(file.getId());
         updateTextFile("Update!", file);
-        revs = _queries.history(file.getId());
+        revs = _commands.history(file.getId());
         assertEquals(2, revs.size());
         Iterator<RevisionDto> i = revs.iterator();
         i.next();
@@ -90,14 +90,14 @@ public class FileUploadAcceptanceTest
         // Create working copy from rev 0.
         _commands.createWorkingCopy(
             file.getId(), new ResourceDto(0L));
-        ResourceSummary fWC = _queries.resource(file.getId());
+        ResourceSummary fWC = _commands.resource(file.getId());
         assertEquals("Update!", previewContent(file, false));
         assertEquals("Hello!", previewContent(file, true));
         assertTrue(fWC.isHasWorkingCopy());
 
         // Apply working copy
         _commands.applyWorkingCopy(file.getId());
-        revs = _queries.history(file.getId());
+        revs = _commands.history(file.getId());
         assertEquals(3, revs.size());
         i = revs.iterator();
         i.next();
@@ -105,7 +105,7 @@ public class FileUploadAcceptanceTest
         final RevisionDto rev3 = i.next();
         assertEquals(2, rev3.getIndex());
         assertEquals("Hello!", previewContent(file, false));
-        fWC = _queries.resource(file.getId());
+        fWC = _commands.resource(file.getId());
         assertFalse(fWC.isHasWorkingCopy());
     }
 
@@ -120,7 +120,7 @@ public class FileUploadAcceptanceTest
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
-            _queries.resourceForPath("/content/files");
+            _commands.resourceForPath("/content/files");
 
         // ACT
         final ResourceSummary rs =
@@ -145,7 +145,7 @@ public class FileUploadAcceptanceTest
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
-            _queries.resourceForPath("/content/files");
+            _commands.resourceForPath("/content/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
 
@@ -175,7 +175,7 @@ public class FileUploadAcceptanceTest
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
-            _queries.resourceForPath("/content/files");
+            _commands.resourceForPath("/content/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
         _commands.lock(rs.getId());
@@ -201,7 +201,7 @@ public class FileUploadAcceptanceTest
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
-            _queries.resourceForPath("/content/files");
+            _commands.resourceForPath("/content/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
 

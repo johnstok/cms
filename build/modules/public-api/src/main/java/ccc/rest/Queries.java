@@ -25,7 +25,11 @@ import ccc.rest.dto.TemplateSummary;
  *
  * @author Civic Computing Ltd.
  */
-public interface Queries extends QueriesBasic {
+public interface Queries {
+
+    /** NAME : String. */
+    String NAME = "PublicQueries";
+
     Collection<TemplateSummary> templates();
     boolean templateNameExists(@PathParam("name") final String templateName);
     TemplateDelta templateDelta(@PathParam("id") UUID templateId);

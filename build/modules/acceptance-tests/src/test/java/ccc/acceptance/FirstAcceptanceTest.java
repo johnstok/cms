@@ -45,7 +45,7 @@ public class FirstAcceptanceTest
 
         // ARRANGE
         final ResourceSummary templateFolder =
-            _queries.resourceForPath("/assets/templates");
+            _commands.resourceForPath("/assets/templates");
         final TemplateDelta newTemplate =
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
 

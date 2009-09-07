@@ -54,10 +54,10 @@ public class ResourceAcceptanceTests
 
         // ACT
         _commands.lock(folder.getId());
-        final ResourceSummary locked = _queries.resource(folder.getId());
+        final ResourceSummary locked = _commands.resource(folder.getId());
 
         _commands.unlock(folder.getId());
-        final ResourceSummary unlocked = _queries.resource(folder.getId());
+        final ResourceSummary unlocked = _commands.resource(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
@@ -74,12 +74,12 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final ResourceSummary assets = _queries.resourceForPath("/assets");
+        final ResourceSummary assets = _commands.resourceForPath("/assets");
 
         // ACT
         _commands.lock(folder.getId());
         _commands.move(folder.getId(), assets.getId());
-        final ResourceSummary moved = _queries.resource(folder.getId());
+        final ResourceSummary moved = _commands.resource(folder.getId());
 
         // ASSERT
         assertEquals("/content/"+folder.getName(), folder.getAbsolutePath());
@@ -95,7 +95,7 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final Map<String, String> origData = _queries.metadata(folder.getId());
+        final Map<String, String> origData = _commands.metadata(folder.getId());
 
         final String newTitle = UUID.randomUUID().toString();
         final JsonImpl md = new JsonImpl();
@@ -107,8 +107,8 @@ public class ResourceAcceptanceTests
         // ACT
         _commands.lock(folder.getId());
         _commands.updateMetadata(folder.getId(), md);
-        final ResourceSummary updated = _queries.resource(folder.getId());
-        final Map<String, String> newData = _queries.metadata(folder.getId());
+        final ResourceSummary updated = _commands.resource(folder.getId());
+        final Map<String, String> newData = _commands.metadata(folder.getId());
 
 
         // ASSERT
@@ -134,16 +134,16 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final Collection<String> origRoles = _queries.roles(folder.getId());
+        final Collection<String> origRoles = _commands.roles(folder.getId());
         final Set<String> roles = Collections.singleton("foo");
 
         // ACT
         _commands.lock(folder.getId());
         _commands.changeRoles(folder.getId(), roles);
-        final Collection<String> withRoles = _queries.roles(folder.getId());
+        final Collection<String> withRoles = _commands.roles(folder.getId());
 
         _commands.changeRoles(folder.getId(), new HashSet<String>());
-        final Collection<String> noRoles = _queries.roles(folder.getId());
+        final Collection<String> noRoles = _commands.roles(folder.getId());
 
         // ASSERT
         assertEquals(0, origRoles.size());
@@ -162,7 +162,7 @@ public class ResourceAcceptanceTests
 
         // ACT
         final ResourceSummary contentRoot =
-            _queries.resourceForPath("/content");
+            _commands.resourceForPath("/content");
 
         // ASSERT
         assertEquals("content", contentRoot.getName());
@@ -180,7 +180,7 @@ public class ResourceAcceptanceTests
         // ARRANGE
 
         final ResourceSummary contentRoot =
-            _queries.resourceForPath("/content");
+            _commands.resourceForPath("/content");
 
         // ACT
         _commands.lock(contentRoot.getId());
@@ -188,7 +188,7 @@ public class ResourceAcceptanceTests
         // ASSERT
         final UserDto currentUser = _users.loggedInUser();
         final ResourceSummary updatedRoot =
-            _queries.resource(contentRoot.getId());
+            _commands.resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
         _commands.unlock(contentRoot.getId());
     }
@@ -203,7 +203,7 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
 
-        final ResourceSummary folder = _queries.resourceForPath("/content");
+        final ResourceSummary folder = _commands.resourceForPath("/content");
         final ResourceSummary ts = dummyTemplate(folder);
         _commands.lock(folder.getId());
 
@@ -220,7 +220,7 @@ public class ResourceAcceptanceTests
         }
 
         // ASSERT
-        final ResourceSummary updatedFolder = _queries.resource(folder.getId());
+        final ResourceSummary updatedFolder = _commands.resource(folder.getId());
         assertEquals(ts.getId(), updatedFolder.getTemplateId());
     }
 
@@ -234,7 +234,7 @@ public class ResourceAcceptanceTests
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final Duration origDuration = _queries.cacheDuration(folder.getId());
+        final Duration origDuration = _commands.cacheDuration(folder.getId());
         final ResourceDto duration =
             new ResourceDto(new Duration(9));
 
@@ -242,11 +242,11 @@ public class ResourceAcceptanceTests
         _commands.lock(folder.getId());
 
         _commands.updateCacheDuration(folder.getId(), duration);
-        final Duration withDuration = _queries.cacheDuration(folder.getId());
+        final Duration withDuration = _commands.cacheDuration(folder.getId());
 
         _commands.updateCacheDuration(
             folder.getId(), new ResourceDto((Duration) null));
-        final Duration noDuration = _queries.cacheDuration(folder.getId());
+        final Duration noDuration = _commands.cacheDuration(folder.getId());
 
         // ASSERT
         assertNull(origDuration);
@@ -270,7 +270,7 @@ public class ResourceAcceptanceTests
         _commands.lock(folder.getId());
 
         _commands.rename(folder.getId(), newName);
-        final ResourceSummary renamed = _queries.resource(folder.getId());
+        final ResourceSummary renamed = _commands.resource(folder.getId());
 
         // ASSERT
         assertFalse(newName.equals(folder.getName()));
@@ -293,10 +293,10 @@ public class ResourceAcceptanceTests
         _commands.lock(folder.getId());
 
         _commands.includeInMainMenu(folder.getId());
-        final ResourceSummary included = _queries.resource(folder.getId());
+        final ResourceSummary included = _commands.resource(folder.getId());
 
         _commands.excludeFromMainMenu(folder.getId());
-        final ResourceSummary excluded = _queries.resource(folder.getId());
+        final ResourceSummary excluded = _commands.resource(folder.getId());
 
         // ASSERT
         assertFalse(folder.isIncludeInMainMenu());
@@ -322,10 +322,10 @@ public class ResourceAcceptanceTests
         _commands.lock(folder.getId());
 
         _commands.publish(folder.getId());
-        final ResourceSummary published = _queries.resource(folder.getId());
+        final ResourceSummary published = _commands.resource(folder.getId());
 
         _commands.unpublish(folder.getId());
-        final ResourceSummary unpublished = _queries.resource(folder.getId());
+        final ResourceSummary unpublished = _commands.resource(folder.getId());
 
         // ASSERT
         assertNull(folder.getPublishedBy());

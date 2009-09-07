@@ -29,7 +29,6 @@ import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreatePageCommand;
 import ccc.commands.PublishCommand;
 import ccc.commands.UpdatePageCommand;
@@ -44,10 +43,10 @@ import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.migration.Pages;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Paragraph;
@@ -191,21 +190,6 @@ implements
                 new Date(),
                 pageId,
                 delta);
-
-        } catch (final CccCheckedException e) {
-            throw fail(_context, e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public void clearWorkingCopy(final UUID resourceId)
-                                                 throws CommandFailedException {
-        try {
-            new ClearWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(_context), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(_context, e);
