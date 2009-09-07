@@ -16,6 +16,7 @@ import static ccc.types.HttpStatusCode.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashSet;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -39,12 +40,15 @@ import ccc.rest.Aliases;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Files;
 import ccc.rest.FoldersBasic;
+import ccc.rest.PagesBasic;
 import ccc.rest.ResourcesBasic;
 import ccc.rest.Security;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FolderDto;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
@@ -66,6 +70,7 @@ import ccc.rest.providers.UserSummaryReader;
 import ccc.serialization.JsonImpl;
 import ccc.types.Failure;
 import ccc.types.MimeType;
+import ccc.types.Paragraph;
 
 
 /**
@@ -119,6 +124,7 @@ public abstract class AbstractAcceptanceTest
     protected Users _users;
     protected Actions _actions;
     protected FoldersBasic _folders;
+    protected PagesBasic _pages;
     protected Security _security;
     protected Templates _templates;
     protected Files _files;
@@ -150,7 +156,18 @@ public abstract class AbstractAcceptanceTest
         return ts;
     }
 
-
+    protected ResourceSummary tempPage(final UUID parentFolder, final UUID template) throws CommandFailedException {
+        final String name = UUID.randomUUID().toString();
+        final PageDelta delta = new PageDelta(new HashSet<Paragraph>());
+        final PageDto page = new PageDto(parentFolder,
+                                        delta,
+                                        name,
+                                        template,
+                                        "title",
+                                        "",
+                                        true);
+        return _pages.createPage(page);
+    }
 
     protected ResourceSummary tempFolder() throws CommandFailedException {
         final String fName = UUID.randomUUID().toString();
@@ -280,6 +297,7 @@ public abstract class AbstractAcceptanceTest
         _users =    ProxyFactory.create(Users.class, _secure, _http);
         _actions =  ProxyFactory.create(Actions.class, _secure, _http);
         _folders =  ProxyFactory.create(FoldersBasic.class, _secure, _http);
+        _pages =    ProxyFactory.create(PagesBasic.class, _secure, _http);
         _security = ProxyFactory.create(Security.class, _public, _http);
         _templates = ProxyFactory.create(Templates.class, _secure, _http);
         _files = ProxyFactory.create(Files.class, _secure+"/files", _http);
@@ -302,6 +320,7 @@ public abstract class AbstractAcceptanceTest
         _users    = null;
         _actions  = null;
         _folders  = null;
+        _pages  = null;
         _templates  = null;
         _files  = null;
         _aliases  = null;
