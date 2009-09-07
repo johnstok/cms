@@ -22,10 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceDto;
-import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 
 
@@ -104,14 +101,6 @@ public interface ResourcesBasic {
     void createWorkingCopy(
         @PathParam("id") UUID resourceId,
         ResourceDto pu) throws CommandFailedException;
-
-    @POST @Path("/aliases")
-    ResourceSummary createAlias(AliasDto alias) throws CommandFailedException;
-
-    @POST @Path("/aliases/{id}")
-    void updateAlias(
-        @PathParam("id") UUID aliasId,
-        AliasDelta delta) throws CommandFailedException;
 
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(

@@ -16,6 +16,8 @@ import java.util.UUID;
 
 import javax.ws.rs.PathParam;
 
+import ccc.rest.dto.FileDelta;
+import ccc.rest.dto.FileDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 
@@ -29,4 +31,7 @@ public interface Queries extends QueriesBasic {
     Collection<TemplateSummary> templates();
     boolean templateNameExists(@PathParam("name") final String templateName);
     TemplateDelta templateDelta(@PathParam("id") UUID templateId);
+    Collection<FileDto> getAllContentImages();
+    String aliasTargetName(@PathParam("id") UUID aliasId);
+    FileDelta fileDelta(@PathParam("id") UUID fileId);
 }

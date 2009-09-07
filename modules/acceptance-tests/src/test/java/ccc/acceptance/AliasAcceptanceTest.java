@@ -41,10 +41,10 @@ public class AliasAcceptanceTest
 
         // ACT
         _commands.lock(rs.getId());
-        _commands.updateAlias(rs.getId(), new AliasDelta(folder.getId()));
+        _aliases.updateAlias(rs.getId(), new AliasDelta(folder.getId()));
 
         // ASSERT
-        final String targetName = _queries.aliasTargetName(rs.getId());
+        final String targetName = _aliases.aliasTargetName(rs.getId());
         assertEquals(targetName, folder.getName());
     }
 
@@ -62,10 +62,10 @@ public class AliasAcceptanceTest
             new AliasDto(folder.getId(), name, folder.getId());
 
         // ACT
-        final ResourceSummary rs = _commands.createAlias(alias);
+        final ResourceSummary rs = _aliases.createAlias(alias);
 
         // ASSERT
-        final String targetName = _queries.aliasTargetName(rs.getId());
+        final String targetName = _aliases.aliasTargetName(rs.getId());
         assertEquals(name, rs.getName());
         assertEquals(folder.getId(), rs.getParentId());
         assertEquals(targetName, folder.getName());
