@@ -14,6 +14,7 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.types.Username;
 
 
 /**
@@ -279,7 +280,7 @@ public class LogEntryTest
 //        assertEquals("{\"roles\":[\"sup\",\"zep\"]}", le.detail());
 //    }
 
-    private final User _actor = new User("actor", "password");
+    private final User _actor = new User(new Username("actor"), "password");
     private final Date _happenedOn = new Date();
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

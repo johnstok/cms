@@ -28,6 +28,7 @@ import ccc.persistence.Repository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
+import ccc.types.Username;
 
 
 /**
@@ -111,7 +112,7 @@ public class PageDaoImplTest
     private LogEntryRepository _al;
     private UpdatePageCommand _updatePage;
     private final Date _now = new Date();
-    private final User _u = new User("user", "password");
+    private final User _u = new User(new Username("user"), "password");
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

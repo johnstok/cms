@@ -33,13 +33,15 @@
             type="long"
             unsaved-value="negative" />
         
-        <property
-            name="_username"
-            column="username"
-            not-null="true"
-            unique="true"
-            type="string"
-            length="255" />
+        <component name="_username" class="ccc.types.Username">
+            <property name="_value" 
+                column="username" 
+                unique="true" 
+                not-null="true" 
+                type="string" 
+                length="255" />
+        </component>
+
         <property
             name="_hash"
             column="hash"
@@ -70,6 +72,6 @@
     
     <query name="users">from ccc.domain.User u left join fetch u._roles</query>
     <query name="usersWithRole">from ccc.domain.User u left join fetch u._roles where ? in elements(u._roles)</query>
-    <query name="usersWithUsername">from ccc.domain.User u where lower(u._username) like ?</query>
+    <query name="usersWithUsername">from ccc.domain.User u where lower(u._username._value) like ?</query>
     <query name="usersWithEmail">from ccc.domain.User u where lower(u._email._text) like ?</query>
 </hibernate-mapping>

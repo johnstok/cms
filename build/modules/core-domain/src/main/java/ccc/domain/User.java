@@ -27,23 +27,23 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;
+import ccc.types.Username;
 
 
 /**
  * A user of the CCC system.
- * <p>
- * TODO: Introduce the Username class.
  *
  * @author Civic Computing Ltd.
  */
 public class User extends Entity {
 
     /** SYSTEM_USER : User. */
-    public static final User SYSTEM_USER = new User("SYSTEM", "SYSTEM");
+    public static final User SYSTEM_USER =
+        new User(new Username("SYSTEM"), "SYSTEM");
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
-    private String _username; // FIXME: Use the Username class.
+    private Username _username;
     private EmailAddress _email;
     private byte[] _hash;
     private Set<String> _roles = new HashSet<String>(); // FIXME: Use the Role class.
@@ -61,8 +61,9 @@ public class User extends Entity {
      * @param username The user's unique name within CCC.
      * @param passwordString The unhashed password as a string.
      */
-    public User(final String username, final String passwordString) {
-        DBC.require().notEmpty(username);
+    public User(final Username username, final String passwordString) {
+        DBC.require().notNull(username);
+        DBC.require().notEmpty(username.toString());
         _username = username;
         _hash = hash(passwordString, id().toString());
     }
@@ -70,9 +71,9 @@ public class User extends Entity {
     /**
      * Accessor for the username property.
      *
-     * @return The username as a string.
+     * @return The username.
      */
-    public String username() {
+    public Username username() {
         return _username;
     }
 
@@ -81,7 +82,7 @@ public class User extends Entity {
      *
      * @param username The username.
      */
-    public void username(final String username) {
+    public void username(final Username username) {
         _username = username;
     }
 
@@ -284,7 +285,7 @@ public class User extends Entity {
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.USERNAME, username());
+        json.set(JsonKeys.USERNAME, username().toString());
         json.set(JsonKeys.EMAIL, (null==email()) ? null : email().toString());
         json.setStrings(JsonKeys.ROLES, new ArrayList<String>(roles()));
         json.set(JsonKeys.METADATA, metadata());

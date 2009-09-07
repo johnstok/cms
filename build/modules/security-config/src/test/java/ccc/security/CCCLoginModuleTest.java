@@ -32,6 +32,7 @@ import javax.security.auth.login.LoginException;
 
 import junit.framework.TestCase;
 import ccc.domain.User;
+import ccc.types.Username;
 
 
 /**
@@ -55,7 +56,7 @@ public class CCCLoginModuleTest
         final UUID pw = UUID.randomUUID();
         final UUID u = UUID.randomUUID();
         _db.setOptions(isA(Map.class));
-        expect(_db.lookupUser("foo")).andReturn(
+        expect(_db.lookupUser(new Username("foo"))).andReturn(
             new Object[]{
                 u.toString(),
                 User.hash("a", pw.toString()),
@@ -136,7 +137,7 @@ public class CCCLoginModuleTest
 
         // ARRANGE
         _db.setOptions(isA(Map.class));
-        expect(_db.lookupUser("foo")).andReturn(null);
+        expect(_db.lookupUser(new Username("foo"))).andReturn(null);
         replay(_db);
 
         _lm.initialize(

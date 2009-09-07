@@ -40,6 +40,7 @@ import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
+import ccc.types.Username;
 
 
 /**
@@ -67,7 +68,7 @@ public class DefaultRendererTest
                 null,
                 _rm,
                 Paragraph.fromText("bar", "baz"));
-        p.publish(new User("aaaa", "password"));
+        p.publish(new User(new Username("aaaa"), "password"));
         final PageDelta delta = p.getOrCreateWorkingCopy();
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));
@@ -459,7 +460,7 @@ public class DefaultRendererTest
     private final FileRepository _dm = Testing.dummy(FileRepository.class);
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
     private final StatefulReader _sr = Testing.stub(StatefulReader.class);
-    private final User _user = new User("fooo", "password");
+    private final User _user = new User(new Username("fooo"), "password");
     private final Map<String, String[]> _noParams =
         new HashMap<String, String[]>();
     private final RevisionMetadata _rm =

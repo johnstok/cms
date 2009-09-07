@@ -20,6 +20,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
+import ccc.types.Username;
 
 
 /**
@@ -219,7 +220,7 @@ public class AuditLogImplTest
     }
 
 
-    private final User _actor = new User("actor", "password");
+    private final User _actor = new User(new Username("actor"), "password");
     private final Date _happenedOn = new Date();
     private Repository _em;
     private final RevisionMetadata _rm =

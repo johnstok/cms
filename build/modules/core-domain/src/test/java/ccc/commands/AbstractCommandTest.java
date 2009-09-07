@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
+import ccc.types.Username;
 
 
 /**
@@ -31,7 +32,8 @@ public abstract class AbstractCommandTest
     extends
         TestCase {
 
-    protected final User _user = new User("currentUser", "password");
+    protected final User _user =
+        new User(new Username("currentUser"), "password");
     protected final Date _now = new Date();
 
     protected Repository _repository;

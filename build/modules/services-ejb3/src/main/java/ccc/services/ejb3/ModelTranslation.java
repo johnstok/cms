@@ -30,15 +30,14 @@ import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.UserDto;
 import ccc.types.CommandType;
 import ccc.types.ResourceType;
-import ccc.types.Username;
 
 
 /**
@@ -140,7 +139,7 @@ public class ModelTranslation {
         return
             new RevisionDto(
                 CommandType.PAGE_UPDATE,
-                new Username(rev.getValue().getActor().username()),
+                rev.getValue().getActor().username(),
                 rev.getValue().getTimestamp(),
                 rev.getKey(),
                 rev.getValue().getComment(),
@@ -178,9 +177,9 @@ public class ModelTranslation {
                 (null==r.parent()) ? null : r.parent().id(),
                 r.name().toString(),
                 (r.isPublished())
-                    ? new Username(r.publishedBy().username()) : null,
+                    ? r.publishedBy().username() : null,
                 r.title(),
-                (r.isLocked()) ? new Username(r.lockedBy().username()) : null,
+                (r.isLocked()) ? r.lockedBy().username() : null,
                 r.type(),
                 childCount,
                 folderCount,
@@ -210,7 +209,7 @@ public class ModelTranslation {
             new UserDto(
                 user.email().getText(),
                 user.id(),
-                new Username(user.username()),
+                user.username(),
                 user.roles());
     }
 
@@ -263,7 +262,7 @@ public class ModelTranslation {
         final UserDto delta =
             new UserDto(
                 user.email().getText(),
-                new Username(user.username()),
+                user.username(),
                 user.roles(),
                 user.metadata());
         return delta;
@@ -347,7 +346,7 @@ public class ModelTranslation {
             new ActionSummary(
                 a.id(),
                 a.type(),
-                new Username(a.actor().username()),
+                a.actor().username(),
                 a.executeAfter(),
                 a.subject().type(),
                 a.subject().absolutePath().toString(),

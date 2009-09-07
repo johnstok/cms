@@ -151,8 +151,8 @@ public class UserCommandsEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithUsername(
-                                                    final String username) {
-        return mapUsers(_users.listUsersWithUsername(username));
+                                                    final Username username) {
+        return mapUsers(_users.listUsersWithUsername(username.toString()));
     }
 
     /** {@inheritDoc} */

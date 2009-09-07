@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.types.Username;
+
 
 /**
  * Database API used for authentication.
@@ -34,7 +36,7 @@ public interface Database {
      * @return The user data as an object array; NULL if no valid user is found.
      * @throws SQLException If an error occurs while communicating with the DB.
      */
-    Object[] lookupUser(String username) throws SQLException;
+    Object[] lookupUser(Username username) throws SQLException;
 
     /**
      * Look up a user's roles from the DB..

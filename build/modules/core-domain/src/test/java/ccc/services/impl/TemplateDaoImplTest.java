@@ -26,6 +26,7 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.MimeType;
+import ccc.types.Username;
 
 
 /**
@@ -95,5 +96,5 @@ public class TemplateDaoImplTest
     private Repository _repository;
     private LogEntryRepository _al;
     private final Date _now = new Date();
-    private final User _user = new User("user", "password");
+    private final User _user = new User(new Username("user"), "password");
 }

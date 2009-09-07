@@ -98,7 +98,7 @@ public class UserManagerImplTest extends TestCase {
 
         // ASSERT
         verifyAll();
-        assertEquals("newNameUser", u.username());
+        assertEquals("newNameUser", u.username().toString());
     }
 
     /**
@@ -232,7 +232,7 @@ public class UserManagerImplTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _u = new User("testUser", "password");
+        _u = new User(new Username("testUser"), "password");
         _uDelta =
             new UserDto(
                 "new.email@civicuk.com",
