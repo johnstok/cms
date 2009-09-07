@@ -11,9 +11,11 @@
  */
 package ccc.acceptance;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -21,12 +23,14 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
+import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
+import ccc.types.ResourceOrder;
 
 
 /**
@@ -334,5 +338,59 @@ public class ResourceAcceptanceTests
         assertNotNull(published.getLockedBy());
         assertNull(unpublished.getPublishedBy());
         assertNotNull(unpublished.getLockedBy());
+    }
+
+    /**
+     * Test.
+     *
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testChangeFolderSortOrder() throws CommandFailedException {
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final List<String> sortList  = new ArrayList<String>();
+        // ACT
+        _commands.lock(folder.getId());
+        final FolderDelta fd =
+            new FolderDelta(ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
+
+        _folders.updateFolder(folder.getId(), fd);
+        final ResourceSummary updated = _commands.resource(folder.getId());
+
+        // ASSERT
+        assertNull(folder.getLockedBy());
+        assertNotNull(updated.getLockedBy());
+        assertEquals(ResourceOrder.DATE_CHANGED_ASC.name(), updated.getSortOrder());
+    }
+
+    /**
+     * Test.
+     *
+     * @throws CommandFailedException If the test fails.
+     */
+    public void testChangeFolderIndexPage() throws CommandFailedException {
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final ResourceSummary template =
+            dummyTemplate(_commands.resourceForPath("/content"));
+        final ResourceSummary page = tempPage(folder.getId(), template.getId());
+
+        // ACT
+        _commands.lock(folder.getId());
+        final List<String> sortList  = new ArrayList<String>();
+        sortList.add(page.getId().toString());
+
+        final FolderDelta fd =
+            new FolderDelta(tempFolder().getSortOrder(), page.getId(), sortList);
+        _folders.updateFolder(folder.getId(), fd);
+        final ResourceSummary updated = _commands.resource(folder.getId());
+
+        // ASSERT
+        assertNull(folder.getLockedBy());
+        assertNotNull(updated.getLockedBy());
+        assertEquals(ResourceOrder.MANUAL.name(), updated.getSortOrder());
+        assertEquals(page.getId(), updated.getIndexPageId());
+        assertEquals(1, updated.getChildCount());
+
     }
 }
