@@ -48,7 +48,7 @@ import ccc.rest.Files;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.ResourcesExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 

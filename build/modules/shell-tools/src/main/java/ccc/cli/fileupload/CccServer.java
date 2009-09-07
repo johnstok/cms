@@ -20,8 +20,8 @@ import ccc.cli.FileUpload;
 import ccc.migration.FileUploader;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.ResourcesExt;
-import ccc.rest.migration.FoldersExt;
+import ccc.rest.extensions.FoldersExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.types.FailureCode;
 import ccc.types.ResourcePath;
 

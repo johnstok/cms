@@ -45,10 +45,11 @@ import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
+import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.FoldersExt;
+import ccc.rest.extensions.FoldersExt;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 
@@ -58,11 +59,11 @@ import ccc.types.ResourceOrder;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=FoldersExt.NAME)
+@Stateless(name=Folders.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(FoldersExt.class)
 @RolesAllowed({})
-public class FolderCommandsEJB
+public class FoldersEJB
     extends
         BaseCommands
     implements

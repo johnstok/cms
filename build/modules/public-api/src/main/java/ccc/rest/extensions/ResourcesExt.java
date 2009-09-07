@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.migration;
+package ccc.rest.extensions;
 
 import java.util.Collection;
 import java.util.Date;

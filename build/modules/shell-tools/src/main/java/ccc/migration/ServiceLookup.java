@@ -17,9 +17,9 @@ import ccc.domain.Scheduler;
 import ccc.rest.Actions;
 import ccc.rest.Queries;
 import ccc.rest.Users;
-import ccc.rest.migration.ResourcesExt;
-import ccc.rest.migration.FoldersExt;
-import ccc.rest.migration.PagesExt;
+import ccc.rest.extensions.FoldersExt;
+import ccc.rest.extensions.PagesExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.search.SearchEngine;
 
 
