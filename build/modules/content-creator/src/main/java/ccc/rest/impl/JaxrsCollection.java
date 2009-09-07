@@ -17,6 +17,7 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.Actions;
 import ccc.rest.Commands;
+import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Queries;
@@ -39,6 +40,7 @@ abstract class JaxrsCollection {
     private Folders _folders;
     private Users _userCommands;
     private Actions _actions;
+    private Files _files;
 
     /**
      * Accessor.
@@ -122,6 +124,18 @@ abstract class JaxrsCollection {
     }
 
     /**
+     * Accessor.
+     *
+     * @return Returns the files.
+     */
+    public final Files getFiles() {
+        return
+        (null==_files)
+        ? (Files) _reg.get(_appName+"/"+Files.NAME+"/local")
+            : _files;
+    }
+
+    /**
      * Mutator.
      *
      * @param commands The commands to set.
@@ -157,4 +171,12 @@ abstract class JaxrsCollection {
         _userCommands = userCommands;
     }
 
+    /**
+     * Mutator.
+     *
+     * @param files The files to set.
+     */
+    public final void setFiles(final Files files) {
+        _files = files;
+    }
 }

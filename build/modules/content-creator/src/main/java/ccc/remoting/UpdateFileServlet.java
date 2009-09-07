@@ -79,7 +79,7 @@ public class UpdateFileServlet extends MultipartServlet {
         final InputStream dataStream = file.getInputStream();
 
         try {
-            getCommands().updateFile(
+            getFiles().updateFile(
                                     fileId,
                                     delta,
                                     comment,

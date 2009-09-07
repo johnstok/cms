@@ -14,7 +14,6 @@ package ccc.services.ejb3;
 import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -33,7 +32,6 @@ import javax.persistence.PersistenceContext;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.CreateAliasCommand;
-import ccc.commands.CreateFileCommand;
 import ccc.commands.CreateSearchCommand;
 import ccc.commands.CreateTemplateCommand;
 import ccc.commands.IncludeInMainMenuCommand;
@@ -45,13 +43,11 @@ import ccc.commands.UnlockResourceCommand;
 import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateAliasCommand;
 import ccc.commands.UpdateCachingCommand;
-import ccc.commands.UpdateFileCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
-import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepositoryImpl;
@@ -64,7 +60,6 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
 import ccc.rest.Resources;
 import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.Duration;
@@ -534,72 +529,6 @@ public class CommandsEJB
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createFile(final UUID parentFolder,
-                                      final FileDelta file,
-                                      final String resourceName,
-                                      final InputStream dataStream,
-                                      final String title,
-                                      final String description,
-                                      final Date lastUpdated,
-                                      final boolean publish,
-                                      final String comment,
-                                      final boolean isMajorEdit)
-                                                 throws CommandFailedException {
-        try {
-            final User u = loggedInUser();
-
-            final File f =
-                new CreateFileCommand(_bdao, _audit, _dm).execute(
-                    u,
-                    lastUpdated,
-                    parentFolder,
-                    file,
-                    title,
-                    description,
-                    new ResourceName(resourceName),
-                    comment,
-                    isMajorEdit,
-                    dataStream);
-
-            if (publish) {
-                f.lock(u);
-                new PublishCommand(_audit).execute(lastUpdated, u, f);
-                f.unlock(u);
-            }
-
-            return mapResource(f);
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public void updateFile(final UUID fileId,
-                           final FileDelta fileDelta,
-                           final String comment,
-                           final boolean isMajorEdit,
-                           final InputStream dataStream)
-                                                 throws CommandFailedException {
-
-        try {
-            new UpdateFileCommand(_bdao, _audit, _dm).execute(
-                loggedInUser(),
-                new Date(),
-                UUID.fromString(fileId.toString()),
-                fileDelta,
-                comment,
-                isMajorEdit,
-                dataStream);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
 
 
     /* ==============

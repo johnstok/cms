@@ -47,7 +47,7 @@ import ccc.types.ResourceType;
  *
  * @author Civic Computing Ltd.
  */
-public class ModelTranslation {
+class ModelTranslation {
 
     /**
      * Map a collection of Resource to a collection of ResourceSummary.
