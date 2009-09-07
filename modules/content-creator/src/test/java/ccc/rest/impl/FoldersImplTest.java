@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.migration.Folders;
 
 
 /**

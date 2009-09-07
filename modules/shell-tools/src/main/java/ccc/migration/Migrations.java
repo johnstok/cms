@@ -30,14 +30,14 @@ import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.Folders;
-import ccc.rest.Pages;
 import ccc.rest.Queries;
 import ccc.rest.Users;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
+import ccc.rest.migration.Folders;
+import ccc.rest.migration.Pages;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -113,13 +113,13 @@ public class Migrations {
         _migrateIsMajorEdit = migrateIsMajorEdit;
         _migrateVersions = migrateVersions;
 
-        _contentRoot = _queries.resourceForPath("/content");
-        _filesFolder = _queries.resourceForPath("/content/files");
-        _contentImagesFolder = _queries.resourceForPath("/content/images");
+        _contentRoot = _commands.resourceForPath("/content");
+        _filesFolder = _commands.resourceForPath("/content/files");
+        _contentImagesFolder = _commands.resourceForPath("/content/images");
 
-        _templateFolder = _queries.resourceForPath("/assets/templates");
-        _assetsImagesFolder = _queries.resourceForPath("/assets/images");
-        _cssFolder = _queries.resourceForPath("/assets/css");
+        _templateFolder = _commands.resourceForPath("/assets/templates");
+        _assetsImagesFolder = _commands.resourceForPath("/assets/images");
+        _cssFolder = _commands.resourceForPath("/assets/css");
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _userCommands);
@@ -154,9 +154,9 @@ public class Migrations {
     private void migrateHomepages() throws CommandFailedException {
         final Map<Integer, Integer> map = _legacyQueries.homepages();
         for (final Entry<Integer, Integer> e : map.entrySet()) {
-            final ResourceSummary f = _queries.resourceForLegacyId(""+e.getKey());
+            final ResourceSummary f = _commands.resourceForLegacyId(""+e.getKey());
             final ResourceSummary hp =
-                _queries.resourceForLegacyId(""+map.get(e.getKey()));
+                _commands.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
                 _commands.lock(UUID.fromString(f.getId().toString()));
                 _folders.updateFolder(

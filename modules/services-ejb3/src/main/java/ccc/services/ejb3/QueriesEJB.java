@@ -15,7 +15,6 @@ import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -28,7 +27,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
-import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
@@ -38,13 +36,9 @@ import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Queries;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.types.Duration;
 import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
 
 
 /**
@@ -74,39 +68,6 @@ public final class QueriesEJB
      */
     public QueriesEJB() { super(); }
 
-    /** {@inheritDoc} */
-    @Override
-    public String getAbsolutePath(final UUID resourceId) {
-        return
-            _resources.find(Resource.class, resourceId)
-                      .absolutePath()
-                      .toString();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<RevisionDto> history(final UUID resourceId) {
-        return mapLogEntries(_resources.history(resourceId));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> locked() {
-        return mapResources(_resources.locked());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> lockedByCurrentUser() {
-        return mapResources(_resources.lockedByUser(currentUser()));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary resource(final UUID resourceId) {
-        return
-            mapResource(_resources.find(Resource.class, resourceId));
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -141,30 +102,6 @@ public final class QueriesEJB
         return null;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, String> metadata(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return r.metadata();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<String> roles(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return r.roles();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Duration cacheDuration(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return r.cache();
-    }
-
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _bdao = new JpaRepository(_em);
@@ -172,29 +109,7 @@ public final class QueriesEJB
         _users = new UserRepositoryImpl(_bdao);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public TemplateSummary computeTemplate(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return mapTemplate(r.computeTemplate(null));
-    }
-
     private User currentUser() {
         return _users.loggedInUser(_context.getCallerPrincipal());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary resourceForPath(final String rootPath) {
-        final ResourcePath rp = new ResourcePath(rootPath);
-        return mapResource(
-            _resources.lookup(rp.top().toString(), rp.removeTop()));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary resourceForLegacyId(final String legacyId) {
-        return mapResource(_resources.lookupWithLegacyId(legacyId));
     }
 }

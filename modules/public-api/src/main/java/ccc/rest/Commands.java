@@ -27,10 +27,7 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-public interface Commands {
-
-    /** NAME : String. */
-    String NAME = "PublicCommands";
+public interface Commands extends ResourcesBasic {
 
     /**
      * Update an alias.
@@ -367,4 +364,13 @@ public interface Commands {
     void updateCacheDuration(UUID resourceId, Duration duration)
     throws CommandFailedException;
 
+
+    /**
+     * Delete the working copy for a page.
+     *
+     * @param pageId The id of the page with a working copy.
+     *
+     * @throws CommandFailedException If the method fails.
+     */
+    void clearWorkingCopy(UUID pageId) throws CommandFailedException;
 }

@@ -19,9 +19,9 @@ import org.apache.log4j.Logger;
 import ccc.cli.FileUpload;
 import ccc.migration.FileUploader;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Folders;
-import ccc.rest.Queries;
+import ccc.rest.Commands;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.migration.Folders;
 import ccc.types.FailureCode;
 import ccc.types.ResourcePath;
 
@@ -37,7 +37,7 @@ public class CccServer implements Server {
     private ResourcePath _rootPath;
     private FileUploader _uploader;
     private Folders _folders;
-    private Queries _queries;
+    private Commands _resources;
 
 
 
@@ -47,17 +47,17 @@ public class CccServer implements Server {
      * @param rootPath The absolute path to the folder where files will be
      *  uploaded.
      * @param uploader The file up-loader to use.
-     * @param commands The command API.
-     * @param queries The query API.
+     * @param folders The folders API.
+     * @param resources The resources API.
      */
     public CccServer(final ResourcePath rootPath,
                      final FileUploader uploader,
                      final Folders folders,
-                     final Queries queries) {
+                     final Commands resources) {
         _rootPath = rootPath;
         _uploader = uploader;
         _folders = folders;
-        _queries = queries;
+        _resources = resources;
     }
 
 
@@ -97,7 +97,7 @@ public class CccServer implements Server {
     @Override
     public UUID getRoot() {
         final ResourceSummary rs =
-            _queries.resourceForPath(_rootPath.toString());
+            _resources.resourceForPath(_rootPath.toString());
         return UUID.fromString(rs.getId().toString());
     }
 }

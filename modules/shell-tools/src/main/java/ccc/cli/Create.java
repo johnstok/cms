@@ -10,9 +10,9 @@ import org.kohsuke.args4j.Option;
 import ccc.migration.ServiceLookup;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Commands;
-import ccc.rest.Folders;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.migration.Folders;
 
 /**
  * Entry class for the 'create' application.

@@ -39,7 +39,6 @@ import ccc.rest.Aliases;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Files;
 import ccc.rest.FoldersBasic;
-import ccc.rest.QueriesBasic;
 import ccc.rest.ResourcesBasic;
 import ccc.rest.Security;
 import ccc.rest.Templates;
@@ -116,7 +115,6 @@ public abstract class AbstractAcceptanceTest
     protected final String _updateFileUrl = _hostUrl+"/update_file";
 
     protected HttpClient _http;
-    protected QueriesBasic _queries;
     protected ResourcesBasic _commands;
     protected Users _users;
     protected Actions _actions;
@@ -156,14 +154,14 @@ public abstract class AbstractAcceptanceTest
 
     protected ResourceSummary tempFolder() throws CommandFailedException {
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = _queries.resourceForPath("/content");
+        final ResourceSummary content = _commands.resourceForPath("/content");
         return _folders.createFolder(new FolderDto(content.getId(), fName));
     }
 
 
     protected ResourceSummary tempAlias() throws CommandFailedException {
         final String name = UUID.randomUUID().toString();
-        final ResourceSummary folder = _queries.resourceForPath("/content");
+        final ResourceSummary folder = _commands.resourceForPath("/content");
         final AliasDto alias =
             new AliasDto(folder.getId(), name, folder.getId());
         return _aliases.createAlias(alias);
@@ -278,7 +276,6 @@ public abstract class AbstractAcceptanceTest
     @Override
     protected void setUp() {
         _http     = login();
-        _queries  = ProxyFactory.create(QueriesBasic.class, _secure, _http);
         _commands = ProxyFactory.create(ResourcesBasic.class, _secure, _http);
         _users =    ProxyFactory.create(Users.class, _secure, _http);
         _actions =  ProxyFactory.create(Actions.class, _secure, _http);
@@ -300,7 +297,6 @@ public abstract class AbstractAcceptanceTest
             LOG.warn("Logout failed.", e);
         }
         _http     = null;
-        _queries  = null;
         _commands = null;
         _security = null;
         _users    = null;

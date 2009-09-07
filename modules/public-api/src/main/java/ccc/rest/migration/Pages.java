@@ -9,11 +9,13 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.migration;
 
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.rest.CommandFailedException;
+import ccc.rest.PagesBasic;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 
@@ -27,16 +29,6 @@ public interface Pages extends PagesBasic {
 
     /** NAME : String. */
     String NAME = "PublicPageCommands";
-
-
-    /**
-     * Delete the working copy for a page.
-     *
-     * @param pageId The id of the page with a working copy.
-     *
-     * @throws CommandFailedException If the method fails.
-     */
-    void clearWorkingCopy(UUID pageId) throws CommandFailedException;
 
 
     /**

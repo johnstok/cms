@@ -45,10 +45,10 @@ import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.migration.Folders;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 

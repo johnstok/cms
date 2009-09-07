@@ -21,7 +21,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.QueriesBasic;
 import ccc.rest.ResourcesBasic;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
@@ -45,84 +44,83 @@ public class RestApi
     extends
         JaxrsCollection
     implements
-        QueriesBasic,
         ResourcesBasic {
 
 
     /** {@inheritDoc} */
     @Override
     public Duration cacheDuration(final UUID resourceId) {
-        return getQueries().cacheDuration(resourceId);
+        return getCommands().cacheDuration(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary computeTemplate(final UUID resourceId) {
-        return getQueries().computeTemplate(resourceId);
+        return getCommands().computeTemplate(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String getAbsolutePath(final UUID resourceId) {
-        return getQueries().getAbsolutePath(resourceId);
+        return getCommands().getAbsolutePath(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<RevisionDto> history(final UUID resourceId) {
-        return getQueries().history(resourceId);
+        return getCommands().history(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> locked() {
-        return getQueries().locked();
+        return getCommands().locked();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> lockedByCurrentUser() {
-        return getQueries().lockedByCurrentUser();
+        return getCommands().lockedByCurrentUser();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Map<String, String> metadata(final UUID resourceId) {
-        return getQueries().metadata(resourceId);
+        return getCommands().metadata(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resource(final UUID resourceId) {
-        return getQueries().resource(resourceId);
+        return getCommands().resource(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForLegacyId(final String legacyId) {
-        return getQueries().resourceForLegacyId(legacyId);
+        return getCommands().resourceForLegacyId(legacyId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForPath(final String path) {
-        return getQueries().resourceForPath(path);
+        return getCommands().resourceForPath(path);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<String> roles(final UUID resourceId) {
-        return getQueries().roles(resourceId);
+        return getCommands().roles(resourceId);
     }
 
 
@@ -131,7 +129,7 @@ public class RestApi
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu)
     throws CommandFailedException {
-        getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
+        getCommands().updateCacheDuration(resourceId, pu);
     }
 
 
@@ -155,7 +153,7 @@ public class RestApi
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu)
     throws CommandFailedException {
-        getCommands().updateResourceTemplate(resourceId, pu.getTemplateId());
+        getCommands().updateResourceTemplate(resourceId, pu);
     }
 
 
@@ -209,7 +207,7 @@ public class RestApi
     @Override
     public void excludeFromMainMenu(final UUID resourceId)
     throws CommandFailedException {
-        getCommands().includeInMainMenu(resourceId, false);
+        getCommands().excludeFromMainMenu(resourceId);
     }
 
 
@@ -217,7 +215,7 @@ public class RestApi
     @Override
     public void includeInMainMenu(final UUID resourceId)
     throws CommandFailedException {
-        getCommands().includeInMainMenu(resourceId, true);
+        getCommands().includeInMainMenu(resourceId);
     }
 
 
@@ -225,12 +223,7 @@ public class RestApi
     @Override
     public void updateMetadata(final UUID resourceId, final Json json)
     throws CommandFailedException {
-        final String title = json.getString("title");
-        final String description = json.getString("description");
-        final String tags = json.getString("tags");
-        final Map<String, String> metadata = json.getStringMap("metadata");
-        getCommands().updateMetadata(
-            resourceId, title, description, tags, metadata);
+        getCommands().updateMetadata(resourceId, json);
     }
 
 
@@ -238,7 +231,7 @@ public class RestApi
     @Override
     public void clearWorkingCopy(final UUID pageId)
     throws CommandFailedException {
-        getPageCommands().clearWorkingCopy(pageId);
+        getCommands().clearWorkingCopy(pageId);
     }
 
 
@@ -247,7 +240,7 @@ public class RestApi
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu)
     throws CommandFailedException {
-        getCommands().createWorkingCopy(resourceId, pu.getRevision());
+        getCommands().createWorkingCopy(resourceId, pu);
     }
 
 
@@ -255,7 +248,7 @@ public class RestApi
     @Override
     public void deleteCacheDuration(final UUID id)
     throws CommandFailedException {
-        getCommands().updateCacheDuration(id, null);
+        getCommands().updateCacheDuration(id, (Duration) null);
     }
 
 
