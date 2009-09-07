@@ -46,7 +46,7 @@ import ccc.rest.CommandFailedException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.PagesExt;
+import ccc.rest.extensions.PagesExt;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Paragraph;
@@ -62,7 +62,7 @@ import ccc.types.ResourceName;
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(PagesExt.class)
 @RolesAllowed({})
-public class PageCommandsEJB extends
+public class PagesEJB extends
 BaseCommands
 implements
     PagesExt {

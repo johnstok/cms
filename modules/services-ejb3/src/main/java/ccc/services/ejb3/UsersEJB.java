@@ -51,7 +51,7 @@ import ccc.types.Username;
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(Users.class)
 @RolesAllowed({})
-public class UserCommandsEJB
+public class UsersEJB
     extends
         BaseCommands
     implements

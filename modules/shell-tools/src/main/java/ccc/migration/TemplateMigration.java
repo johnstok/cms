@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.migration.ResourcesExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.types.MimeType;
 
 

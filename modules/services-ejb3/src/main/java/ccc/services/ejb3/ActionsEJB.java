@@ -50,7 +50,7 @@ import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
-import ccc.rest.migration.ResourcesExt;
+import ccc.rest.extensions.ResourcesExt;
 
 
 /**
@@ -64,7 +64,7 @@ import ccc.rest.migration.ResourcesExt;
 @Remote(Scheduler.class)
 @RolesAllowed({ADMINISTRATOR})
 @RunAs(CONTENT_CREATOR)
-public class SchedulerEJB
+public class ActionsEJB
     extends
         BaseCommands
     implements
@@ -75,7 +75,7 @@ public class SchedulerEJB
     private static final int INITIAL_DELAY_SECS = 30*1000;
     private static final String TIMER_NAME = "action_scheduler";
     private static final Logger LOG =
-        Logger.getLogger(SchedulerEJB.class.getName());
+        Logger.getLogger(ActionsEJB.class.getName());
 
     @Resource private EJBContext _context;
     @PersistenceContext private EntityManager _em;
@@ -85,7 +85,7 @@ public class SchedulerEJB
     private LogEntryRepository _audit;
 
     /** Constructor. */
-    public SchedulerEJB() { super(); }
+    public ActionsEJB() { super(); }
 
 
     /** {@inheritDoc} */

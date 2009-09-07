@@ -56,13 +56,14 @@ import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
+import ccc.rest.Resources;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
-import ccc.rest.migration.ResourcesExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
@@ -74,11 +75,11 @@ import ccc.types.ResourcePath;
  *
  * @author Civic Computing Ltd.
  */
-@Stateless(name=ResourcesExt.NAME)
+@Stateless(name=Resources.NAME)
 @TransactionAttribute(REQUIRES_NEW)
 @Remote(ResourcesExt.class)
 @RolesAllowed({})
-public class CommandsEJB
+public class ResourcesEJB
     extends
         BaseCommands
     implements
