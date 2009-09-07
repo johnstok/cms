@@ -48,13 +48,13 @@ import ccc.rest.Files;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.Commands;
+import ccc.rest.migration.ResourcesExt;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 
 
 /**
- * EJB implementation of the {@link Commands} interface.
+ * EJB implementation of the {@link ResourcesExt} interface.
  *
  * @author Civic Computing Ltd.
  */

@@ -19,14 +19,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.FoldersBasic;
+import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 
 
 /**
- * Implementation of the {@link FoldersBasic} interface.
+ * Implementation of the {@link Folders} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -37,7 +37,7 @@ public class FoldersImpl
     extends
         JaxrsCollection
     implements
-        FoldersBasic {
+        Folders {
 
 
     /** {@inheritDoc} */

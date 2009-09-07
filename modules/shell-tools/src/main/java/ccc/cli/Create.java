@@ -11,8 +11,8 @@ import ccc.migration.ServiceLookup;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.Commands;
-import ccc.rest.migration.Folders;
+import ccc.rest.migration.ResourcesExt;
+import ccc.rest.migration.FoldersExt;
 
 /**
  * Entry class for the 'create' application.
@@ -50,27 +50,27 @@ public final class Create extends CccApp {
 
     private static void createSchemaStructure() {
         try {
-            final Commands commands = services.lookupCommands();
-            final Folders folders = services.lookupFolderCommands();
+            final ResourcesExt resourcesExt = services.lookupCommands();
+            final FoldersExt foldersExt = services.lookupFolderCommands();
 
-            final ResourceSummary assets = folders.createRoot(ASSETS);
-            final ResourceSummary content = folders.createRoot(CONTENT);
+            final ResourceSummary assets = foldersExt.createRoot(ASSETS);
+            final ResourceSummary content = foldersExt.createRoot(CONTENT);
 
-            folders.createFolder(new FolderDto(assets.getId(), TEMPLATES));
-            folders.createFolder(new FolderDto(assets.getId(), CSS));
-            folders.createFolder(new FolderDto(assets.getId(), IMAGES));
+            foldersExt.createFolder(new FolderDto(assets.getId(), TEMPLATES));
+            foldersExt.createFolder(new FolderDto(assets.getId(), CSS));
+            foldersExt.createFolder(new FolderDto(assets.getId(), IMAGES));
 
-            folders.createFolder(new FolderDto(content.getId(), FILES));
-            folders.createFolder(new FolderDto(content.getId(), IMAGES));
-            commands.createSearch(content.getId(), "search");
+            foldersExt.createFolder(new FolderDto(content.getId(), FILES));
+            foldersExt.createFolder(new FolderDto(content.getId(), IMAGES));
+            resourcesExt.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI
-            commands.lock(content.getId());
-            commands.publish(content.getId());
-            commands.unlock(content.getId());
-            commands.lock(assets.getId());
-            commands.publish(assets.getId());
-            commands.unlock(assets.getId());
+            resourcesExt.lock(content.getId());
+            resourcesExt.publish(content.getId());
+            resourcesExt.unlock(content.getId());
+            resourcesExt.lock(assets.getId());
+            resourcesExt.publish(assets.getId());
+            resourcesExt.unlock(assets.getId());
 
             LOG.info("Created default folder structure.");
         } catch (final CommandFailedException e) {

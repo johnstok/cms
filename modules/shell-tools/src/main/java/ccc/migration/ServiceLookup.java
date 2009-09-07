@@ -17,9 +17,9 @@ import ccc.domain.Scheduler;
 import ccc.rest.Actions;
 import ccc.rest.Queries;
 import ccc.rest.Users;
-import ccc.rest.migration.Commands;
-import ccc.rest.migration.Folders;
-import ccc.rest.migration.Pages;
+import ccc.rest.migration.ResourcesExt;
+import ccc.rest.migration.FoldersExt;
+import ccc.rest.migration.PagesExt;
 import ccc.search.SearchEngine;
 
 
@@ -69,8 +69,8 @@ public class ServiceLookup {
      *
      * @return A commands instance.
      */
-    public Commands lookupCommands() {
-        return _registry.<Commands>get(jndiPath(Commands.NAME));
+    public ResourcesExt lookupCommands() {
+        return _registry.<ResourcesExt>get(jndiPath(ResourcesExt.NAME));
     }
 
     /**
@@ -78,8 +78,8 @@ public class ServiceLookup {
      *
      * @return A page commands instance.
      */
-    public Pages lookupPageCommands() {
-        return _registry.<Pages>get(jndiPath(Pages.NAME));
+    public PagesExt lookupPageCommands() {
+        return _registry.<PagesExt>get(jndiPath(PagesExt.NAME));
     }
 
     /**
@@ -87,8 +87,8 @@ public class ServiceLookup {
      *
      * @return A folder commands instance.
      */
-    public Folders lookupFolderCommands() {
-        return _registry.<Folders>get(jndiPath(Folders.NAME));
+    public FoldersExt lookupFolderCommands() {
+        return _registry.<FoldersExt>get(jndiPath(FoldersExt.NAME));
     }
 
     /**

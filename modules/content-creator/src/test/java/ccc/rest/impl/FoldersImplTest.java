@@ -18,7 +18,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.migration.Folders;
+import ccc.rest.migration.FoldersExt;
 
 
 /**
@@ -36,15 +36,15 @@ public class FoldersImplTest
     public void testRootsMethodCallsFoldersService() {
 
         // ARRANGE
-        expect(_folders.roots()).andReturn(_rs);
-        replay(_folders);
+        expect(_foldersExt.roots()).andReturn(_rs);
+        replay(_foldersExt);
 
         // ACT
         final Collection<ResourceSummary> actual = _unit.roots();
 
         // ASSERT
         assertEquals(_rs, actual);
-        verify(_folders);
+        verify(_foldersExt);
     }
 
 
@@ -52,19 +52,19 @@ public class FoldersImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _folders = createStrictMock(Folders.class);
+        _foldersExt = createStrictMock(FoldersExt.class);
         _unit = new FoldersImpl();
-        _unit.setFolderCommands(_folders);
+        _unit.setFolderCommands(_foldersExt);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _folders = null;
+        _foldersExt = null;
         _unit = null;
     }
 
-    private Folders _folders;
+    private FoldersExt _foldersExt;
     private FoldersImpl _unit;
     private Collection<ResourceSummary> _rs = new ArrayList<ResourceSummary>();
 }

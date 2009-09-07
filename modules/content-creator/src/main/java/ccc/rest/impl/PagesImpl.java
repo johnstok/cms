@@ -19,7 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.PagesBasic;
+import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -27,7 +27,7 @@ import ccc.serialization.Json;
 
 
 /**
- * Implementation of the {@link PagesBasic} interface.
+ * Implementation of the {@link Pages} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -38,7 +38,7 @@ public class PagesImpl
     extends
         JaxrsCollection
     implements
-        PagesBasic {
+        Pages {
 
 
     /** {@inheritDoc} */

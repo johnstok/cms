@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.PagesBasic;
+import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 
@@ -25,7 +25,7 @@ import ccc.rest.dto.ResourceSummary;
  *
  * @author Civic Computing Ltd.
  */
-public interface Pages extends PagesBasic {
+public interface PagesExt extends Pages {
 
     /**
      * Update the specified page on the server.

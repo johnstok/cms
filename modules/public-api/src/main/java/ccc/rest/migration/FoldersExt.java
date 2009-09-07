@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.FoldersBasic;
+import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -24,7 +24,7 @@ import ccc.rest.dto.ResourceSummary;
  *
  * @author Civic Computing Ltd.
  */
-public interface Folders extends FoldersBasic {
+public interface FoldersExt extends Folders {
 
     /**
      * Create a folder with the specified name and title.

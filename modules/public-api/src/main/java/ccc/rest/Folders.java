@@ -36,7 +36,7 @@ import ccc.rest.dto.ResourceSummary;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface FoldersBasic {
+public interface Folders {
 
     /** NAME : String. */
     String NAME = "PublicFolderCommands";

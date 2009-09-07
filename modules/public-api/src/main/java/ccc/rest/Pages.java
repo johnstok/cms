@@ -37,7 +37,7 @@ import ccc.serialization.Json;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface PagesBasic {
+public interface Pages {
 
     /** NAME : String. */
     String NAME = "PublicPageCommands";

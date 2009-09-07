@@ -19,9 +19,9 @@ import ccc.rest.Actions;
 import ccc.rest.Files;
 import ccc.rest.Queries;
 import ccc.rest.Users;
-import ccc.rest.migration.Commands;
-import ccc.rest.migration.Folders;
-import ccc.rest.migration.Pages;
+import ccc.rest.migration.ResourcesExt;
+import ccc.rest.migration.FoldersExt;
+import ccc.rest.migration.PagesExt;
 
 
 /**
@@ -35,9 +35,9 @@ abstract class JaxrsCollection {
     private final String _appName = CCCProperties.get("application.name");
 
     private Queries _queries;
-    private Commands _commands;
-    private Pages _pages;
-    private Folders _folders;
+    private ResourcesExt _resourcesExt;
+    private PagesExt _pagesExt;
+    private FoldersExt _foldersExt;
     private Users _userCommands;
     private Actions _actions;
     private Files _files;
@@ -68,11 +68,11 @@ abstract class JaxrsCollection {
      *
      * @return Returns the commands.
      */
-    public final Commands getCommands() {
+    public final ResourcesExt getCommands() {
         return
-            (null==_commands)
-                ? (Commands) _reg.get(_appName+"/"+Commands.NAME+"/remote")
-                : _commands;
+            (null==_resourcesExt)
+                ? (ResourcesExt) _reg.get(_appName+"/"+ResourcesExt.NAME+"/remote")
+                : _resourcesExt;
     }
 
     /**
@@ -92,11 +92,11 @@ abstract class JaxrsCollection {
      *
      * @return Returns the commands.
      */
-    public final Pages getPageCommands() {
+    public final PagesExt getPageCommands() {
         return
-        (null==_pages)
-        ? (Pages) _reg.get(_appName+"/"+Pages.NAME+"/remote")
-            : _pages;
+        (null==_pagesExt)
+        ? (PagesExt) _reg.get(_appName+"/"+PagesExt.NAME+"/remote")
+            : _pagesExt;
     }
 
     /**
@@ -104,11 +104,11 @@ abstract class JaxrsCollection {
      *
      * @return Returns the commands.
      */
-    public final Folders getFolderCommands() {
+    public final FoldersExt getFolderCommands() {
         return
-        (null==_folders)
-        ? (Folders) _reg.get(_appName+"/"+Folders.NAME+"/remote")
-            : _folders;
+        (null==_foldersExt)
+        ? (FoldersExt) _reg.get(_appName+"/"+FoldersExt.NAME+"/remote")
+            : _foldersExt;
     }
 
     /**
@@ -138,28 +138,28 @@ abstract class JaxrsCollection {
     /**
      * Mutator.
      *
-     * @param commands The commands to set.
+     * @param resourcesExt The commands to set.
      */
-    public final void setCommands(final Commands commands) {
-        _commands = commands;
+    public final void setCommands(final ResourcesExt resourcesExt) {
+        _resourcesExt = resourcesExt;
     }
 
     /**
      * Mutator.
      *
-     * @param pages The commands to set.
+     * @param pagesExt The commands to set.
      */
-    public final void setPageCommands(final Pages pages) {
-        _pages = pages;
+    public final void setPageCommands(final PagesExt pagesExt) {
+        _pagesExt = pagesExt;
     }
 
     /**
      * Mutator.
      *
-     * @param folders The commands to set.
+     * @param foldersExt The commands to set.
      */
-    public final void setFolderCommands(final Folders folders) {
-        _folders = folders;
+    public final void setFolderCommands(final FoldersExt foldersExt) {
+        _foldersExt = foldersExt;
     }
 
     /**

@@ -35,9 +35,9 @@ import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
-import ccc.rest.migration.Commands;
-import ccc.rest.migration.Folders;
-import ccc.rest.migration.Pages;
+import ccc.rest.migration.ResourcesExt;
+import ccc.rest.migration.FoldersExt;
+import ccc.rest.migration.PagesExt;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -60,9 +60,9 @@ public class Migrations {
     private Set<Integer>    _menuItems;
 
     private final LegacyDBQueries _legacyQueries;
-    private final Commands _commands;
-    private final Pages _pages;
-    private final Folders _folders;
+    private final ResourcesExt _resourcesExt;
+    private final PagesExt _pagesExt;
+    private final FoldersExt _foldersExt;
     private final Users _userCommands;
     private final Queries _queries;
     private final String _linkPrefix;
@@ -84,7 +84,7 @@ public class Migrations {
      *
      * @param legacyQueries Queries
      * @param linkPrefix The prefix to attach to legacy URLs.
-     * @param commands The available commands for CCC7.
+     * @param resourcesExt The available commands for CCC7.
      * @param queries The available queries for CCC7.
      * @param fu The file up-loader to use.
      * @param migrateHomepage The boolean for home page migration.
@@ -93,9 +93,9 @@ public class Migrations {
      */
     public Migrations(final LegacyDBQueries legacyQueries,
                       final String linkPrefix,
-                      final Commands commands,
-                      final Pages pages,
-                      final Folders folders,
+                      final ResourcesExt resourcesExt,
+                      final PagesExt pagesExt,
+                      final FoldersExt foldersExt,
                       final Users userCommands,
                       final Queries queries,
                       final FileUploader fu,
@@ -104,26 +104,26 @@ public class Migrations {
                       final boolean migrateVersions) {
         _legacyQueries = legacyQueries;
         _queries = queries;
-        _commands = commands;
-        _pages = pages;
-        _folders = folders;
+        _resourcesExt = resourcesExt;
+        _pagesExt = pagesExt;
+        _foldersExt = foldersExt;
         _userCommands = userCommands;
         _linkPrefix = linkPrefix;
         _migrateHomepage = migrateHomepage;
         _migrateIsMajorEdit = migrateIsMajorEdit;
         _migrateVersions = migrateVersions;
 
-        _contentRoot = _commands.resourceForPath("/content");
-        _filesFolder = _commands.resourceForPath("/content/files");
-        _contentImagesFolder = _commands.resourceForPath("/content/images");
+        _contentRoot = _resourcesExt.resourceForPath("/content");
+        _filesFolder = _resourcesExt.resourceForPath("/content/files");
+        _contentImagesFolder = _resourcesExt.resourceForPath("/content/images");
 
-        _templateFolder = _commands.resourceForPath("/assets/templates");
-        _assetsImagesFolder = _commands.resourceForPath("/assets/images");
-        _cssFolder = _commands.resourceForPath("/assets/css");
+        _templateFolder = _resourcesExt.resourceForPath("/assets/templates");
+        _assetsImagesFolder = _resourcesExt.resourceForPath("/assets/images");
+        _cssFolder = _resourcesExt.resourceForPath("/assets/css");
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _userCommands);
-        _tm = new TemplateMigration(_legacyQueries, _commands);
+        _tm = new TemplateMigration(_legacyQueries, _resourcesExt);
     }
 
 
@@ -154,15 +154,15 @@ public class Migrations {
     private void migrateHomepages() throws CommandFailedException {
         final Map<Integer, Integer> map = _legacyQueries.homepages();
         for (final Entry<Integer, Integer> e : map.entrySet()) {
-            final ResourceSummary f = _commands.resourceForLegacyId(""+e.getKey());
+            final ResourceSummary f = _resourcesExt.resourceForLegacyId(""+e.getKey());
             final ResourceSummary hp =
-                _commands.resourceForLegacyId(""+map.get(e.getKey()));
+                _resourcesExt.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
-                _commands.lock(UUID.fromString(f.getId().toString()));
-                _folders.updateFolder(
+                _resourcesExt.lock(UUID.fromString(f.getId().toString()));
+                _foldersExt.updateFolder(
                     f.getId(),
                     new FolderDelta(f.getSortOrder(), hp.getId(), null));
-                _commands.unlock(f.getId());
+                _resourcesExt.unlock(f.getId());
             }
         }
         log.info("Migrated home page information of the folders.");
@@ -172,16 +172,16 @@ public class Migrations {
     // TODO: Move under command-resourceDao?
     private void publishRecursive(final ResourceSummary resource)
                                                  throws CommandFailedException {
-        _commands.lock(UUID.fromString(resource.getId().toString()));
-        _commands.publish(resource.getId());
+        _resourcesExt.lock(UUID.fromString(resource.getId().toString()));
+        _resourcesExt.publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
             final Collection<ResourceSummary> children =
-                _folders.getChildren(resource.getId());
+                _foldersExt.getChildren(resource.getId());
             for (final ResourceSummary child : children) {
                 publishRecursive(child);
             }
         }
-        _commands.unlock(resource.getId());
+        _resourcesExt.unlock(resource.getId());
     }
 
 
@@ -220,7 +220,7 @@ public class Migrations {
             final LogEntryBean le = logEntryForVersion(
                 r.contentId(), r.legacyVersion(), "CREATED FOLDER");
 
-            final ResourceSummary rs = _folders.createFolder(
+            final ResourceSummary rs = _foldersExt.createFolder(
                     parentFolderId,
                     r.name(),
                     r.title(),
@@ -229,14 +229,14 @@ public class Migrations {
                     le.getHappenedOn());
             log.debug("Created folder: "+r.contentId());
 
-            _commands.lock(
+            _resourcesExt.lock(
                 UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
             setMetadata(r, rs, le);
             setResourceRoles(r, rs, le);
-            _commands.unlock(
+            _resourcesExt.unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             migrateResources(rs.getId(), r.contentId());
@@ -288,7 +288,7 @@ public class Migrations {
                 }
             }
 
-            _commands.lock(
+            _resourcesExt.lock(
                 UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
@@ -304,7 +304,7 @@ public class Migrations {
             }
             setMetadata(r, rs, le);
             setResourceRoles(r, rs, le);
-            _commands.unlock(
+            _resourcesExt.unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             log.debug("Migrated page "+r.contentId());
@@ -322,7 +322,7 @@ public class Migrations {
                                 final LogEntryBean le)
                                                  throws CommandFailedException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
-            _commands.includeInMainMenu(
+            _resourcesExt.includeInMainMenu(
                 rs.getId(), true, le.getUser().getId(), le.getHappenedOn());
         }
     }
@@ -367,7 +367,7 @@ public class Migrations {
                             final PageDelta d)
                                                  throws CommandFailedException {
 
-        _commands.lock(UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
+        _resourcesExt.lock(UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
 
         final String userComment =
             _legacyQueries.selectUserComment(r.contentId(), version);
@@ -377,14 +377,14 @@ public class Migrations {
             isMajorEdit =
                 _legacyQueries.selectIsMajorEdit(r.contentId(), version);
         }
-        _pages.updatePage(
+        _pagesExt.updatePage(
             rs.getId(),
             d,
             userComment,
             isMajorEdit.booleanValue(),
             le.getUser().getId(),
             le.getHappenedOn());
-        _commands.unlock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
+        _resourcesExt.unlock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
         log.debug("Updated page: "+r.contentId()+" v."+version);
     }
@@ -401,7 +401,7 @@ public class Migrations {
 
         ResourceSummary rs;
         try {
-            rs = _pages.createPage(
+            rs = _pagesExt.createPage(
                 parentFolderId,
                 delta,
                 r.name(),
@@ -414,7 +414,7 @@ public class Migrations {
                 true);
         } catch (final CommandFailedException e) {
             if (FailureCode.EXISTS ==e.getCode()) {
-                rs = _pages.createPage(
+                rs = _pagesExt.createPage(
                     parentFolderId,
                     delta,
                     r.name()+"1",
@@ -439,7 +439,7 @@ public class Migrations {
                          final ResourceSummary rs,
                          final LogEntryBean le) throws CommandFailedException {
         if (r.isPublished()) {
-            _commands.publish(
+            _resourcesExt.publish(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
         }
     }
@@ -458,7 +458,7 @@ public class Migrations {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
-        _commands.updateMetadata(
+        _resourcesExt.updateMetadata(
             rs.getId(),
             rs.getTitle(),
             rs.getDescription(),
@@ -474,7 +474,7 @@ public class Migrations {
                                                  throws CommandFailedException {
         if (r.isSecure()) {
             log.info("Resource "+r.contentId()+" has security constraints");
-            _commands.changeRoles(
+            _resourcesExt.changeRoles(
                 rs.getId(),
                 _legacyQueries.selectRolesForResource(r.contentId()),
                 le.getUser().getId(),
@@ -555,7 +555,7 @@ public class Migrations {
             templateName,
             templateDescription,
             _templateFolder);
-        _commands.updateResourceTemplate(
+        _resourcesExt.updateResourceTemplate(
             rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
     }
 

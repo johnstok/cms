@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
-import ccc.rest.migration.Commands;
+import ccc.rest.migration.ResourcesExt;
 import ccc.types.MimeType;
 
 
@@ -34,7 +34,7 @@ public class TemplateMigration {
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _legacyQueries;
-    private final Commands _commands;
+    private final ResourcesExt _resourcesExt;
 
     private final Map<String, ResourceSummary> _templates =
         new HashMap<String, ResourceSummary>();
@@ -43,11 +43,11 @@ public class TemplateMigration {
      * Constructor.
      *
      * @param legacyQueries The query API for CCC6.
-     * @param commands The command API for the new system.
+     * @param resourcesExt The command API for the new system.
      */
     public TemplateMigration(final LegacyDBQueries legacyQueries,
-                             final Commands commands) {
-        _commands = commands;
+                             final ResourcesExt resourcesExt) {
+        _resourcesExt = resourcesExt;
         _legacyQueries = legacyQueries;
     }
 
@@ -73,7 +73,7 @@ public class TemplateMigration {
 
         try {
             final ResourceSummary ts =
-                _commands.createTemplate(
+                _resourcesExt.createTemplate(
                     templateFolder.getId(),
                     t,
                     templateName,
