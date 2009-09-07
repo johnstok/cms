@@ -24,7 +24,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Commands;
+import ccc.rest.migration.Commands;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;

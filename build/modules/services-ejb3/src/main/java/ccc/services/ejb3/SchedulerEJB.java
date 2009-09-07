@@ -48,9 +48,9 @@ import ccc.persistence.QueryNames;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
-import ccc.rest.Commands;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
+import ccc.rest.migration.Commands;
 
 
 /**

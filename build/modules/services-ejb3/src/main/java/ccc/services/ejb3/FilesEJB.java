@@ -44,11 +44,11 @@ import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Commands;
 import ccc.rest.Files;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.migration.Commands;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 

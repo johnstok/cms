@@ -27,10 +27,6 @@ import ccc.rest.dto.ResourceSummary;
  */
 public interface Pages extends PagesBasic {
 
-    /** NAME : String. */
-    String NAME = "PublicPageCommands";
-
-
     /**
      * Update the specified page on the server.
      *

@@ -19,9 +19,9 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.Commands;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
+import ccc.rest.migration.Commands;
 import ccc.types.MimeType;
 
 

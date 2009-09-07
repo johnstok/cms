@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.Action;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Commands;
+import ccc.rest.migration.Commands;
 import ccc.types.DBC;
 
 
