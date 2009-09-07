@@ -22,8 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
-import ccc.rest.Commands;
-import ccc.rest.Resources;
+import ccc.rest.Files;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
@@ -39,7 +38,7 @@ public abstract class MultipartServlet
         HttpServlet {
     private static final Logger LOG = Logger.getLogger(MultipartServlet.class);
 
-    @EJB(name = Commands.NAME) private Resources _commands;
+    @EJB(name = Files.NAME) private Files _files;
 
 
     /**
@@ -114,9 +113,9 @@ public abstract class MultipartServlet
     /**
      * Accessor.
      *
-     * @return Returns the commands.
+     * @return Returns the files implementation.
      */
-    public final Resources getCommands() {
-        return _commands;
+    public final Files getFiles() {
+        return _files;
     }
 }

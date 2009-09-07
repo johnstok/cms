@@ -107,7 +107,7 @@ public class CreateFileServlet
 
         try {
             final ResourceSummary rs =
-                getCommands().createFile(
+                getFiles().createFile(
                     parentId,
                     delta,
                     name.getString(),

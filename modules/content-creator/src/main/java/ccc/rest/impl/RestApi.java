@@ -129,7 +129,8 @@ public class RestApi
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceDto pu) throws CommandFailedException {
+                                    final ResourceDto pu)
+    throws CommandFailedException {
         getCommands().updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
@@ -143,7 +144,8 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopy(final UUID resourceId) throws CommandFailedException {
+    public void applyWorkingCopy(final UUID resourceId)
+    throws CommandFailedException {
         getCommands().applyWorkingCopy(resourceId);
     }
 
@@ -159,14 +161,17 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final UUID resourceId, final Collection<String> roles) throws CommandFailedException {
+    public void changeRoles(final UUID resourceId,
+                            final Collection<String> roles)
+    throws CommandFailedException {
         getCommands().changeRoles(resourceId, roles);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void move(final UUID resourceId, final UUID newParentId) throws CommandFailedException {
+    public void move(final UUID resourceId, final UUID newParentId)
+    throws CommandFailedException {
         getCommands().move(resourceId, newParentId);
     }
 
@@ -180,7 +185,8 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final UUID resourceId, final String name) throws CommandFailedException {
+    public void rename(final UUID resourceId, final String name)
+    throws CommandFailedException {
         getCommands().rename(resourceId, name);
     }
 
@@ -201,32 +207,37 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void excludeFromMainMenu(final UUID resourceId) throws CommandFailedException {
+    public void excludeFromMainMenu(final UUID resourceId)
+    throws CommandFailedException {
         getCommands().includeInMainMenu(resourceId, false);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void includeInMainMenu(final UUID resourceId) throws CommandFailedException {
+    public void includeInMainMenu(final UUID resourceId)
+    throws CommandFailedException {
         getCommands().includeInMainMenu(resourceId, true);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final UUID resourceId, final Json json) throws CommandFailedException {
+    public void updateMetadata(final UUID resourceId, final Json json)
+    throws CommandFailedException {
         final String title = json.getString("title");
         final String description = json.getString("description");
         final String tags = json.getString("tags");
         final Map<String, String> metadata = json.getStringMap("metadata");
-        getCommands().updateMetadata(resourceId, title, description, tags, metadata);
+        getCommands().updateMetadata(
+            resourceId, title, description, tags, metadata);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final UUID pageId) throws CommandFailedException {
+    public void clearWorkingCopy(final UUID pageId)
+    throws CommandFailedException {
         getPageCommands().clearWorkingCopy(pageId);
     }
 
@@ -242,7 +253,8 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public void deleteCacheDuration(final UUID id) throws CommandFailedException {
+    public void deleteCacheDuration(final UUID id)
+    throws CommandFailedException {
         getCommands().updateCacheDuration(id, null);
     }
 

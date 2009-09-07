@@ -14,9 +14,7 @@ package ccc.services.ejb3;
 import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,7 +28,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import ccc.domain.Alias;
-import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -41,14 +38,11 @@ import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Queries;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.Duration;
-import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 
@@ -145,26 +139,6 @@ public final class QueriesEJB
             return alias.target().name().toString();
         }
         return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public FileDelta fileDelta(final UUID fileId) {
-        return
-            deltaFile(_resources.find(File.class, fileId));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<FileDto> getAllContentImages() {
-        final List<File> list = new ArrayList<File>();
-        for (final File file : _bdao.list(QueryNames.ALL_IMAGES, File.class)) {
-            if (PredefinedResourceNames.CONTENT.equals(
-                file.root().name().toString())) {
-                list.add(file);
-            }
-        }
-        return mapFiles(list);
     }
 
     /** {@inheritDoc} */

@@ -11,7 +11,9 @@
  */
 package ccc.rest.impl;
 
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -21,6 +23,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.Files;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
+import ccc.rest.dto.ResourceSummary;
 
 
 /**
@@ -41,13 +44,40 @@ public class FilesImpl
     /** {@inheritDoc} */
     @Override
     public FileDelta fileDelta(final UUID fileId) {
-        return getQueries().fileDelta(fileId);
+        return getFiles().fileDelta(fileId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<FileDto> getAllContentImages() {
-        return getQueries().getAllContentImages();
+        return getFiles().getAllContentImages();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFile(final UUID parentFolder,
+                                      final FileDelta file,
+                                      final String resourceName,
+                                      final InputStream dataStream,
+                                      final String title,
+                                      final String description,
+                                      final Date lastUpdated,
+                                      final boolean publish,
+                                      final String comment,
+                                      final boolean isMajorEdit) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateFile(final UUID fileId,
+                           final FileDelta fileDelta,
+                           final String comment,
+                           final boolean isMajorEdit,
+                           final InputStream dataStream) {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 }
