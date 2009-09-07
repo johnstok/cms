@@ -22,8 +22,6 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
@@ -50,16 +48,6 @@ public interface QueriesBasic {
     @Path("/resources/{id}")
     @NoCache
     ResourceSummary resource(@PathParam("id") UUID resourceId);
-
-    /**
-     * List all content images.
-     *
-     * @return The list of images.
-     */
-    @GET
-    @Path("/images")
-    @NoCache
-    Collection<FileDto> getAllContentImages();
 
     /**
      * Determine the absolute path to a resource.
@@ -147,28 +135,6 @@ public interface QueriesBasic {
     @Path("/resources/{id}/template")
     @NoCache
     TemplateSummary computeTemplate(@PathParam("id") UUID resourceId);
-
-    /**
-     * Retrieve the target name for a alias.
-     *
-     * @param aliasId The alias' id.
-     * @return The corresponding target name.
-     */
-    @GET
-    @Path("/aliases/{id}/targetname")
-    @NoCache
-    String aliasTargetName(@PathParam("id") UUID aliasId);
-
-    /**
-     * Retrieve the delta for a file.
-     *
-     * @param fileId The file's id.
-     * @return The corresponding delta.
-     */
-    @GET
-    @Path("/files/{id}/delta")
-    @NoCache
-    FileDelta fileDelta(@PathParam("id") UUID fileId);
 
     /**
      * Look up the resource for a specified path.

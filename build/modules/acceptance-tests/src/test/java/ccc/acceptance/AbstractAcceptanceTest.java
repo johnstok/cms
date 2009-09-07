@@ -35,7 +35,9 @@ import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.rest.Actions;
+import ccc.rest.Aliases;
 import ccc.rest.CommandFailedException;
+import ccc.rest.Files;
 import ccc.rest.FoldersBasic;
 import ccc.rest.QueriesBasic;
 import ccc.rest.ResourcesBasic;
@@ -121,6 +123,8 @@ public abstract class AbstractAcceptanceTest
     protected FoldersBasic _folders;
     protected Security _security;
     protected Templates _templates;
+    protected Files _files;
+    protected Aliases _aliases;
 
 
     /**
@@ -162,7 +166,7 @@ public abstract class AbstractAcceptanceTest
         final ResourceSummary folder = _queries.resourceForPath("/content");
         final AliasDto alias =
             new AliasDto(folder.getId(), name, folder.getId());
-        return _commands.createAlias(alias);
+        return _aliases.createAlias(alias);
     }
 
 
@@ -281,6 +285,9 @@ public abstract class AbstractAcceptanceTest
         _folders =  ProxyFactory.create(FoldersBasic.class, _secure, _http);
         _security = ProxyFactory.create(Security.class, _public, _http);
         _templates = ProxyFactory.create(Templates.class, _secure, _http);
+        _files = ProxyFactory.create(Files.class, _secure+"/files", _http);
+        _aliases =
+            ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
     }
 
 
@@ -300,6 +307,8 @@ public abstract class AbstractAcceptanceTest
         _actions  = null;
         _folders  = null;
         _templates  = null;
+        _files  = null;
+        _aliases  = null;
     }
 
 

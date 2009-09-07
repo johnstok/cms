@@ -23,10 +23,6 @@ import javax.ws.rs.Produces;
 import ccc.rest.CommandFailedException;
 import ccc.rest.QueriesBasic;
 import ccc.rest.ResourcesBasic;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasDto;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -52,12 +48,6 @@ public class RestApi
         QueriesBasic,
         ResourcesBasic {
 
-    /** {@inheritDoc} */
-    @Override
-    public String aliasTargetName(final UUID aliasId) {
-        return getQueries().aliasTargetName(aliasId);
-    }
-
 
     /** {@inheritDoc} */
     @Override
@@ -75,22 +65,8 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta fileDelta(final UUID fileId) {
-        return getQueries().fileDelta(fileId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public String getAbsolutePath(final UUID resourceId) {
         return getQueries().getAbsolutePath(resourceId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<FileDto> getAllContentImages() {
-        return getQueries().getAllContentImages();
     }
 
 
@@ -257,25 +233,10 @@ public class RestApi
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final AliasDto alias) throws CommandFailedException {
-        return getCommands().createAlias(
-            alias.getParentId(), alias.getName(), alias.getTargetId());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu)
     throws CommandFailedException {
         getCommands().createWorkingCopy(resourceId, pu.getRevision());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateAlias(final UUID aliasId, final AliasDelta delta) throws CommandFailedException {
-        getCommands().updateAlias(aliasId, delta);
     }
 
 
