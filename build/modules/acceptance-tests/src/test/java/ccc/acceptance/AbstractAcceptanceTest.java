@@ -31,17 +31,19 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
-import ccc.rest.RestException;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.RestException;
 import ccc.rest.Security;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -69,6 +71,7 @@ import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
 import ccc.serialization.JsonImpl;
 import ccc.types.Failure;
+import ccc.types.HttpStatusCode;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 
@@ -115,9 +118,9 @@ public abstract class AbstractAcceptanceTest
         pFactory.addStringConverter(UUIDProvider.class);
     }
 
-    private final String _hostUrl =         "http://localhost:81";
-    protected final String _secure =        _hostUrl+"/api/secure";
-    protected final String _public =        _hostUrl+"/api/public";
+    private final   String _hostUrl       = "http://localhost:81";
+    protected final String _secure        = _hostUrl+"/api/secure";
+    protected final String _public        = _hostUrl+"/api/public";
     protected final String _createFileUrl = _hostUrl+"/upload";
     protected final String _updateFileUrl = _hostUrl+"/update_file";
 
@@ -173,14 +176,14 @@ public abstract class AbstractAcceptanceTest
 
     protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = _commands.resourceForPath("/content");
+        final ResourceSummary content = resourceForPath("/content");
         return _folders.createFolder(new FolderDto(content.getId(), fName));
     }
 
 
     protected ResourceSummary tempAlias() throws RestException {
         final String name = UUID.randomUUID().toString();
-        final ResourceSummary folder = _commands.resourceForPath("/content");
+        final ResourceSummary folder = resourceForPath("/content");
         final AliasDto alias =
             new AliasDto(folder.getId(), name, folder.getId());
         return _aliases.createAlias(alias);
@@ -278,6 +281,34 @@ public abstract class AbstractAcceptanceTest
             postMethod.releaseConnection();
         }
     }
+
+
+    /**
+     * Look up the resource for a path.
+     * <p><i>This method works around an encoding issue in REST-EASY 1.1</i>.
+     *
+     * @param path The resource's fully qualified path.
+     *
+     * @return The corresponding resource summary.
+     */
+    protected ResourceSummary resourceForPath(final String path) {
+
+        final ClientRequest request =
+            new ClientRequest(_secure+"/resources-by-path"+path, _http);
+
+        try {
+            final ClientResponse<ResourceSummary> response =
+                request.get(ResourceSummary.class);
+            if (response.getStatus() == HttpStatusCode.OK) {
+                return response.getEntity();
+            }
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        throw new RuntimeException("Request failed.");
+    }
+
 
     private HttpClient login() {
         final HttpClient client = new HttpClient();

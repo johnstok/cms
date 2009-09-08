@@ -78,7 +78,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final ResourceSummary assets = _commands.resourceForPath("/assets");
+        final ResourceSummary assets = resourceForPath("/assets");
 
         // ACT
         _commands.lock(folder.getId());
@@ -165,8 +165,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
 
         // ACT
-        final ResourceSummary contentRoot =
-            _commands.resourceForPath("/content");
+        final ResourceSummary contentRoot = resourceForPath("/content");
 
         // ASSERT
         assertEquals("content", contentRoot.getName());
@@ -183,8 +182,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
 
-        final ResourceSummary contentRoot =
-            _commands.resourceForPath("/content");
+        final ResourceSummary contentRoot = resourceForPath("/content");
 
         // ACT
         _commands.lock(contentRoot.getId());
@@ -207,7 +205,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
 
-        final ResourceSummary folder = _commands.resourceForPath("/content");
+        final ResourceSummary folder = resourceForPath("/content");
         final ResourceSummary ts = dummyTemplate(folder);
         _commands.lock(folder.getId());
 
@@ -372,7 +370,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(_commands.resourceForPath("/content"));
+            dummyTemplate(resourceForPath("/content"));
         final ResourceSummary page = tempPage(folder.getId(), template.getId());
 
         // ACT
