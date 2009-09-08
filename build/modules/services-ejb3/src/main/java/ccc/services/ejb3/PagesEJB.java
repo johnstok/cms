@@ -56,7 +56,7 @@ import ccc.types.ResourceName;
 @RolesAllowed({})
 public class PagesEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         PagesExt {
 

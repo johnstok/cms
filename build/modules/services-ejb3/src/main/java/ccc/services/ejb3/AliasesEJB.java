@@ -45,7 +45,7 @@ import ccc.rest.extensions.PagesExt;
 @RolesAllowed({})
 public class AliasesEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         Aliases {
 

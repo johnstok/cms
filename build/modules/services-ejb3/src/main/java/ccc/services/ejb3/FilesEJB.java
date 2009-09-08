@@ -54,7 +54,7 @@ import ccc.types.ResourceName;
 @RolesAllowed({})
 public class FilesEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         Files {
 

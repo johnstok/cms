@@ -45,7 +45,7 @@ import ccc.types.Username;
 @RolesAllowed({})
 public class UsersEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         Users {
 

@@ -56,7 +56,7 @@ import ccc.types.ResourceOrder;
 @RolesAllowed({})
 public class FoldersEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         FoldersExt {
 
