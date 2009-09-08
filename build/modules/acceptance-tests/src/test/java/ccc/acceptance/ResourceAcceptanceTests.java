@@ -22,7 +22,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
@@ -48,9 +48,9 @@ public class ResourceAcceptanceTests
 
     /**
      * Test.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUnlockResource() throws CommandFailedException {
+    public void testUnlockResource() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -72,9 +72,9 @@ public class ResourceAcceptanceTests
 
     /**
      * Test.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testMoveResource() throws CommandFailedException {
+    public void testMoveResource() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -93,9 +93,9 @@ public class ResourceAcceptanceTests
 
     /**
      * Test.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateResourceMetadata() throws CommandFailedException {
+    public void testUpdateResourceMetadata() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -132,9 +132,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateResourceRoles() throws CommandFailedException {
+    public void testUpdateResourceRoles() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -177,9 +177,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testLockResource() throws CommandFailedException {
+    public void testLockResource() throws RestException {
 
         // ARRANGE
 
@@ -201,9 +201,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testChangeResourceTemplate() throws CommandFailedException {
+    public void testChangeResourceTemplate() throws RestException {
 
         // ARRANGE
 
@@ -232,9 +232,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateCacheDuration() throws CommandFailedException {
+    public void testUpdateCacheDuration() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -262,9 +262,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testRename() throws CommandFailedException {
+    public void testRename() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -286,9 +286,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testIncludeInMainMenu() throws CommandFailedException {
+    public void testIncludeInMainMenu() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -315,9 +315,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testPublish() throws CommandFailedException {
+    public void testPublish() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -343,9 +343,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testChangeFolderSortOrder() throws CommandFailedException {
+    public void testChangeFolderSortOrder() throws RestException {
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final List<String> sortList  = new ArrayList<String>();
@@ -366,9 +366,9 @@ public class ResourceAcceptanceTests
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testChangeFolderIndexPage() throws CommandFailedException {
+    public void testChangeFolderIndexPage() throws RestException {
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final ResourceSummary template =

@@ -37,7 +37,7 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Resources;
@@ -138,10 +138,10 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The template's summary.
      *
-     * @throws CommandFailedException If the call fails on the server.
+     * @throws RestException If the call fails on the server.
      */
     protected ResourceSummary dummyTemplate(final ResourceSummary parent)
-    throws CommandFailedException {
+    throws RestException {
         final String templateName = UUID.randomUUID().toString();
         final TemplateDelta newTemplate =
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
@@ -156,7 +156,7 @@ public abstract class AbstractAcceptanceTest
         return ts;
     }
 
-    protected ResourceSummary tempPage(final UUID parentFolder, final UUID template) throws CommandFailedException {
+    protected ResourceSummary tempPage(final UUID parentFolder, final UUID template) throws RestException {
         final String name = UUID.randomUUID().toString();
         final PageDelta delta = new PageDelta(new HashSet<Paragraph>());
         final PageDto page = new PageDto(parentFolder,
@@ -169,14 +169,14 @@ public abstract class AbstractAcceptanceTest
         return _pages.createPage(page);
     }
 
-    protected ResourceSummary tempFolder() throws CommandFailedException {
+    protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = _commands.resourceForPath("/content");
         return _folders.createFolder(new FolderDto(content.getId(), fName));
     }
 
 
-    protected ResourceSummary tempAlias() throws CommandFailedException {
+    protected ResourceSummary tempAlias() throws RestException {
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = _commands.resourceForPath("/content");
         final AliasDto alias =
@@ -190,7 +190,7 @@ public abstract class AbstractAcceptanceTest
      */
     protected String updateTextFile(final String fText,
                                     final ResourceSummary rs)
-    throws IOException, CommandFailedException {
+    throws IOException, RestException {
         final PostMethod postMethod = new PostMethod(_updateFileUrl);
         final Part[] parts = {
             new StringPart("id", rs.getId().toString()),
@@ -211,7 +211,7 @@ public abstract class AbstractAcceptanceTest
         if (OK==postMethod.getStatusCode()) {
             return body;
         }
-        throw new CommandFailedException(new Failure(new JsonImpl(body)));
+        throw new RestException(new Failure(new JsonImpl(body)));
     }
 
 
@@ -245,7 +245,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary createFile(final String fName,
                                          final String fText,
                                          final ResourceSummary filesFolder)
-    throws IOException, CommandFailedException {
+    throws IOException, RestException {
 
         final PostMethod postMethod = new PostMethod(_createFileUrl);
 
@@ -270,7 +270,7 @@ public abstract class AbstractAcceptanceTest
             if (OK==status) {
                 return new ResourceSummary(new JsonImpl(body));
             }
-            throw new CommandFailedException(new Failure(new JsonImpl(body)));
+            throw new RestException(new Failure(new JsonImpl(body)));
 
         } finally {
             postMethod.releaseConnection();

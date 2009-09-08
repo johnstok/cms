@@ -110,13 +110,13 @@ public interface Users {
      *
      * @param delta The new user details.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      *
      * @return A user summary describing the new user.
      */
     @POST @Path("/users")
     UserDto createUser(UserDto delta)
-    throws CommandFailedException;
+    throws RestException;
 
 
     /**
@@ -125,10 +125,10 @@ public interface Users {
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST @Path("/users/{id}")
-    void updateUser(@PathParam("id") UUID userId, UserDto delta) throws CommandFailedException;
+    void updateUser(@PathParam("id") UUID userId, UserDto delta) throws RestException;
 
 
     /**
@@ -137,11 +137,11 @@ public interface Users {
      * @param userId The user's id.
      * @param user New details for the user.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST @Path("/users/{id}/password")
     void updateUserPassword(@PathParam("id") UUID userId, UserDto user)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Update the email and/or password for the current user.
@@ -149,9 +149,9 @@ public interface Users {
      * @param userId The user's id.
      * @param user New details for the user.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST @Path("/users/{id}/currentuser")
     void updateYourUser(@PathParam("id") UUID userId, UserDto user)
-    throws CommandFailedException;
+    throws RestException;
 }

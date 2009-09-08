@@ -14,7 +14,7 @@ package ccc.rest.extensions;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -37,14 +37,14 @@ public interface PagesExt extends Pages {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void updatePage(UUID pageId,
                     PageDelta delta,
                     String comment,
                     boolean isMajorEdit,
                     UUID actorId,
-                    Date happenedOn) throws CommandFailedException;
+                    Date happenedOn) throws RestException;
 
 
     /**
@@ -61,7 +61,7 @@ public interface PagesExt extends Pages {
      * @param comment The comment of the page creation.
      * @param majorChange The boolean for major change.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      *
      * @return A resource summary describing the new page.
      */
@@ -74,5 +74,5 @@ public interface PagesExt extends Pages {
                                UUID actorId,
                                Date happenedOn,
                                String comment,
-                               boolean majorChange) throws CommandFailedException;
+                               boolean majorChange) throws RestException;
 }

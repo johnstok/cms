@@ -18,7 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.Aliases;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
@@ -49,7 +49,7 @@ public class AliasesImpl
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final UUID aliasId, final AliasDelta delta)
-    throws CommandFailedException {
+    throws RestException {
         getAliases().updateAlias(aliasId, delta);
     }
 
@@ -57,7 +57,7 @@ public class AliasesImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createAlias(final AliasDto alias)
-    throws CommandFailedException {
+    throws RestException {
         return getAliases().createAlias(alias);
     }
 }

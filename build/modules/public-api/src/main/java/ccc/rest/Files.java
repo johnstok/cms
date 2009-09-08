@@ -82,7 +82,7 @@ public interface Files {
      *
      * @return A summary of the newly created file.
      *
-     * @throws CommandFailedException If an error occurs creating the file.
+     * @throws RestException If an error occurs creating the file.
      */
     @POST @Path("")
     ResourceSummary createFile(UUID parentFolder,
@@ -94,7 +94,7 @@ public interface Files {
                                Date lastUpdated,
                                boolean publish,
                                String comment,
-                               boolean isMajorEdit) throws CommandFailedException;
+                               boolean isMajorEdit) throws RestException;
 
 
     /**
@@ -106,12 +106,12 @@ public interface Files {
      * @param isMajorEdit Is this a major change.
      * @param dataStream The new content for the file.
      *
-     * @throws CommandFailedException If an error occurs updating the file.
+     * @throws RestException If an error occurs updating the file.
      */
     @POST @Path("/{id}")
     void updateFile(UUID fileId,
                     FileDelta fileDelta,
                     String comment,
                     boolean isMajorEdit,
-                    InputStream dataStream) throws CommandFailedException;
+                    InputStream dataStream) throws RestException;
 }

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Files;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonImpl;
@@ -89,7 +89,7 @@ public abstract class MultipartServlet
      * @throws IOException If writing to the response fails.
      */
     protected void handleException(final HttpServletResponse response,
-                                   final CommandFailedException e)
+                                   final RestException e)
     throws IOException {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.getWriter().write(new JsonImpl(e.getFailure()).getDetail());

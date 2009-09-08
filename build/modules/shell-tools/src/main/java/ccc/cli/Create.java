@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.migration.ServiceLookup;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
@@ -73,7 +73,7 @@ public final class Create extends CccApp {
             resourcesExt.unlock(assets.getId());
 
             LOG.info("Created default folder structure.");
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             LOG.error("Failed to create app.", e);
         }
     }

@@ -33,7 +33,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.File;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Files;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
@@ -96,7 +96,7 @@ public class FilesEJB
                                       final boolean publish,
                                       final String comment,
                                       final boolean isMajorEdit)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             final User u = currentUser();
 
@@ -134,7 +134,7 @@ public class FilesEJB
                            final String comment,
                            final boolean isMajorEdit,
                            final InputStream dataStream)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         try {
             new UpdateFileCommand(_bdao, _audit, _dm).execute(

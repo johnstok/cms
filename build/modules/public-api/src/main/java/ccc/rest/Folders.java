@@ -103,13 +103,13 @@ public interface Folders {
      *
      * @param folder Details of the new folder.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      *
      * @return A resource summary describing the new folder.
      */
     @POST
     @Path("/folders")
-    ResourceSummary createFolder(FolderDto folder) throws CommandFailedException;
+    ResourceSummary createFolder(FolderDto folder) throws RestException;
 
     /**
      * Update the specified folder.
@@ -117,10 +117,10 @@ public interface Folders {
      * @param folderId The id of the folder to update.
      * @param delta The updated details of the folder.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST
     @Path("/folders/{id}")
-    void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta) throws CommandFailedException;
+    void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta) throws RestException;
 
 }

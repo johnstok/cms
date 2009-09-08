@@ -26,7 +26,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import ccc.domain.File;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
 
@@ -120,7 +120,7 @@ public class CreateFileServlet
                     isMajorEdit);
             response.getWriter().write(toJSON(rs));
 
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             handleException(response, e);
 
         } finally {

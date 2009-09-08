@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -88,7 +88,7 @@ public class TemplateMigration {
                         templateName));
 
             _templates.put(templateName, ts);
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             log.error("Failed to create template: "+templateName, e);
         }
     }

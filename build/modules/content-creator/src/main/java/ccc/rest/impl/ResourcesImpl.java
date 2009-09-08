@@ -20,7 +20,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
@@ -128,14 +128,14 @@ public class ResourcesImpl
     @Override
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().updateCacheDuration(resourceId, pu);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void lock(final UUID resourceId) throws CommandFailedException {
+    public void lock(final UUID resourceId) throws RestException {
         getCommands().lock(resourceId);
     }
 
@@ -143,7 +143,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopy(final UUID resourceId)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().applyWorkingCopy(resourceId);
     }
 
@@ -152,7 +152,7 @@ public class ResourcesImpl
     @Override
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().updateResourceTemplate(resourceId, pu);
     }
 
@@ -161,7 +161,7 @@ public class ResourcesImpl
     @Override
     public void changeRoles(final UUID resourceId,
                             final Collection<String> roles)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().changeRoles(resourceId, roles);
     }
 
@@ -169,14 +169,14 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void move(final UUID resourceId, final UUID newParentId)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().move(resourceId, newParentId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final UUID resourceId) throws CommandFailedException {
+    public void publish(final UUID resourceId) throws RestException {
         getCommands().publish(resourceId);
     }
 
@@ -184,21 +184,21 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void rename(final UUID resourceId, final String name)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().rename(resourceId, name);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unlock(final UUID resourceId) throws CommandFailedException {
+    public void unlock(final UUID resourceId) throws RestException {
         getCommands().unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unpublish(final UUID resourceId) throws CommandFailedException {
+    public void unpublish(final UUID resourceId) throws RestException {
         getCommands().unpublish(resourceId);
     }
 
@@ -206,7 +206,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void excludeFromMainMenu(final UUID resourceId)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().excludeFromMainMenu(resourceId);
     }
 
@@ -214,7 +214,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void includeInMainMenu(final UUID resourceId)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().includeInMainMenu(resourceId);
     }
 
@@ -222,7 +222,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final UUID resourceId, final Json json)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().updateMetadata(resourceId, json);
     }
 
@@ -230,7 +230,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final UUID pageId)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().clearWorkingCopy(pageId);
     }
 
@@ -239,7 +239,7 @@ public class ResourcesImpl
     @Override
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().createWorkingCopy(resourceId, pu);
     }
 
@@ -247,14 +247,14 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void deleteCacheDuration(final UUID id)
-    throws CommandFailedException {
+    throws RestException {
         getCommands().updateCacheDuration(id, (Duration) null);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void fail() throws CommandFailedException {
-        throw new CommandFailedException(new Failure(FailureCode.PRIVILEGES));
+    public void fail() throws RestException {
+        throw new RestException(new Failure(FailureCode.PRIVILEGES));
     }
 }

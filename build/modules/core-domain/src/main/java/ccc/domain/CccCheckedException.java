@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 
 
 
@@ -62,5 +62,5 @@ public abstract class CccCheckedException extends Exception {
      *
      * @return The corresponding remote exception.
      */
-    public abstract CommandFailedException toRemoteException();
+    public abstract RestException toRemoteException();
 }

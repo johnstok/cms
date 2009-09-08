@@ -28,7 +28,7 @@ import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Template;
 import ccc.persistence.QueryNames;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -84,7 +84,7 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createTemplate(final TemplateDto template)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             return mapResource(
                 new CreateTemplateCommand(_bdao, _audit).execute(
@@ -108,7 +108,7 @@ public final class TemplatesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateTemplate(final UUID templateId,
                                final TemplateDelta delta)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdateTemplateCommand(_bdao, _audit).execute(
                 currentUser(), new Date(), templateId, delta);

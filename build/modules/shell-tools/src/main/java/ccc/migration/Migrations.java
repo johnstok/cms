@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.FolderDelta;
@@ -144,12 +144,12 @@ public class Migrations {
             if (_migrateHomepage) {
                 migrateHomepages();
             }
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             log.error("Catastrophic failure.", e);
         }
     }
 
-    private void migrateHomepages() throws CommandFailedException {
+    private void migrateHomepages() throws RestException {
         final Map<Integer, Integer> map = _legacyQueries.homepages();
         for (final Entry<Integer, Integer> e : map.entrySet()) {
             final ResourceSummary f = _resourcesExt.resourceForLegacyId(""+e.getKey());
@@ -169,7 +169,7 @@ public class Migrations {
 
     // TODO: Move under command-resourceDao?
     private void publishRecursive(final ResourceSummary resource)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         _resourcesExt.lock(UUID.fromString(resource.getId().toString()));
         _resourcesExt.publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
@@ -318,7 +318,7 @@ public class Migrations {
     private void showInMainMenu(final ResourceBean r,
                                 final ResourceSummary rs,
                                 final LogEntryBean le)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
             _resourcesExt.includeInMainMenu(
                 rs.getId(), true, le.getUser().getId(), le.getHappenedOn());
@@ -363,7 +363,7 @@ public class Migrations {
                             final int version,
                             final LogEntryBean le,
                             final PageDelta d)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         _resourcesExt.lock(UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
 
@@ -393,7 +393,7 @@ public class Migrations {
                                        final Integer version,
                                        final LogEntryBean le,
                                        final PageDelta delta)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         final String pageTitle = r.cleanTitle();
 
@@ -410,7 +410,7 @@ public class Migrations {
                 le.getHappenedOn(),
                 null,
                 true);
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             if (FailureCode.EXISTS ==e.getCode()) {
                 rs = _pagesExt.createPage(
                     parentFolderId,
@@ -435,7 +435,7 @@ public class Migrations {
 
     private void publish(final ResourceBean r,
                          final ResourceSummary rs,
-                         final LogEntryBean le) throws CommandFailedException {
+                         final LogEntryBean le) throws RestException {
         if (r.isPublished()) {
             _resourcesExt.publish(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
@@ -445,7 +445,7 @@ public class Migrations {
     private void setMetadata(final ResourceBean r,
                              final ResourceSummary rs,
                              final LogEntryBean le)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
@@ -469,7 +469,7 @@ public class Migrations {
     private void setResourceRoles(final ResourceBean r,
                                   final ResourceSummary rs,
                                   final LogEntryBean le)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         if (r.isSecure()) {
             log.info("Resource "+r.contentId()+" has security constraints");
             _resourcesExt.changeRoles(
@@ -541,7 +541,7 @@ public class Migrations {
     private void setTemplateForResource(final ResourceBean r,
                                         final ResourceSummary rs,
                                         final LogEntryBean le)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         final String templateName = r.displayTemplate();
         final String templateDescription = r.templateDescription();
 

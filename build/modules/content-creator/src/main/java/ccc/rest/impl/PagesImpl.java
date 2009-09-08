@@ -18,7 +18,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
@@ -51,7 +51,7 @@ public class PagesImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final PageDto page)
-    throws CommandFailedException {
+    throws RestException {
         return getPageCommands().createPage(page);
     }
 
@@ -66,7 +66,7 @@ public class PagesImpl
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final UUID pageId, final PageDelta delta)
-    throws CommandFailedException {
+    throws RestException {
         getPageCommands().updateWorkingCopy(pageId, delta);
     }
 
@@ -74,7 +74,7 @@ public class PagesImpl
     /** {@inheritDoc} */
     @Override
     public void updatePage(final UUID pageId, final Json json)
-    throws CommandFailedException {
+    throws RestException {
         getPageCommands().updatePage(pageId, json);
     }
 }

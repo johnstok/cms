@@ -44,7 +44,7 @@ import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
 import ccc.persistence.jpa.JpaRepository;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
@@ -95,9 +95,9 @@ abstract class AbstractEJB {
      *
      * @return The corresponding application exception.
      */
-    protected CommandFailedException fail(final CccCheckedException e) {
+    protected RestException fail(final CccCheckedException e) {
         _context.setRollbackOnly();  // CRITICAL
-        final CommandFailedException cfe = e.toRemoteException();
+        final RestException cfe = e.toRemoteException();
         log.info(
             "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
         return cfe;

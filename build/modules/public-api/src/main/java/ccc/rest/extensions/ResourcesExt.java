@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.Duration;
@@ -35,10 +35,10 @@ public interface ResourcesExt extends Resources {
      * @param resourceId The id of the resource to rename.
      * @param name The new name.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void rename(final UUID resourceId, final String name)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Changes a resource's parent.
@@ -47,10 +47,10 @@ public interface ResourcesExt extends Resources {
      * @param newParentId The id of the folder to which the resource should be
      *  moved.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void move(UUID resourceId, UUID newParentId)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Update the specified resource's template on the server.
@@ -58,10 +58,10 @@ public interface ResourcesExt extends Resources {
      * @param resourceId The id of the resource to update.
      * @param templateId The new template to set for the resource.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void updateResourceTemplate(UUID resourceId, UUID templateId)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Update the specified resource's template on the server.
@@ -71,13 +71,13 @@ public interface ResourcesExt extends Resources {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void updateResourceTemplate(UUID resourceId,
                                 UUID templateId,
                                 UUID actorId,
                                 Date happenedOn)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Lock the specified resource.
@@ -86,9 +86,9 @@ public interface ResourcesExt extends Resources {
      *
      * @param resourceId The uuid of the resource to lock.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
-    void lock(UUID resourceId) throws CommandFailedException;
+    void lock(UUID resourceId) throws RestException;
 
     /**
      * Lock the specified resource.
@@ -99,10 +99,10 @@ public interface ResourcesExt extends Resources {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void lock(UUID resourceId, UUID actorId, Date happenedOn)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Unlock the specified Resource.
@@ -112,9 +112,9 @@ public interface ResourcesExt extends Resources {
      *
      * @param resourceId The resource to unlock.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
-    void unlock(UUID resourceId) throws CommandFailedException;
+    void unlock(UUID resourceId) throws RestException;
 
     /**
      * Unlock the specified Resource.
@@ -126,19 +126,19 @@ public interface ResourcesExt extends Resources {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void unlock(UUID resourceId, UUID actorId, Date happenedOn)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Publish the specified resource.
      *
      * @param resourceId The id of the resource to update.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
-    void publish(UUID resourceId) throws CommandFailedException;
+    void publish(UUID resourceId) throws RestException;
 
     /**
      * Publish the specified resource.
@@ -147,19 +147,19 @@ public interface ResourcesExt extends Resources {
      * @param userId The id of the publishing user.
      * @param publishDate The date the resource was published.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void publish(UUID resourceId, UUID userId, Date publishDate)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Unpublish the specified resource.
      *
      * @param resourceId The id of the resource to update.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
-    void unpublish(UUID resourceId) throws CommandFailedException;
+    void unpublish(UUID resourceId) throws RestException;
 
     /**
      * Unpublish the specified resource.
@@ -168,10 +168,10 @@ public interface ResourcesExt extends Resources {
      * @param userId The id of the un-publishing user.
      * @param publishDate The date the resource was un-published.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void unpublish(UUID resourceId, UUID userId, Date publishDate)
-                                                  throws CommandFailedException;
+                                                  throws RestException;
 
     /**
      * Specify whether a resource should be included in a site's main menu.
@@ -179,10 +179,10 @@ public interface ResourcesExt extends Resources {
      * @param resourceId The id of the resource to update.
      * @param include True if the resource should be included, false otherwise.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void includeInMainMenu(UUID resourceId, boolean include)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Specify whether a resource should be included in a site's main menu.
@@ -192,13 +192,13 @@ public interface ResourcesExt extends Resources {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void includeInMainMenu(UUID resourceId,
                            boolean include,
                            UUID actorId,
                            Date happenedOn)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Update metadata of the resource.
@@ -211,7 +211,7 @@ public interface ResourcesExt extends Resources {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void updateMetadata(UUID resourceId,
                         String title,
@@ -220,7 +220,7 @@ public interface ResourcesExt extends Resources {
                         Map<String, String> metadata,
                         UUID actorId,
                         Date happenedOn)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Update metadata of the resource.
@@ -230,14 +230,14 @@ public interface ResourcesExt extends Resources {
      * @param description The new description to set.
      * @param tags The new tags to set.
      * @param metadata The metadata to update.
-     * @throws  CommandFailedException If the method fails.
+     * @throws  RestException If the method fails.
      */
     void updateMetadata(UUID resourceId,
                         String title,
                         String description,
                         String tags,
                         Map<String, String> metadata)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Creates a new search.
@@ -247,10 +247,10 @@ public interface ResourcesExt extends Resources {
      *
      * @return A summary of the newly created search.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     ResourceSummary createSearch(UUID parentId, String title)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Create a working copy for the specified resource, using the specified log
@@ -259,10 +259,10 @@ public interface ResourcesExt extends Resources {
      * @param resourceId The id of the resource.
      * @param index The index number of the log entry.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void createWorkingCopy(UUID resourceId, long index)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Change the security roles for a resource.
@@ -270,10 +270,10 @@ public interface ResourcesExt extends Resources {
      * @param resourceId The resource to update.
      * @param roles The new set of roles.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void changeRoles(UUID resourceId, Collection<String> roles)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Change the security roles for a resource.
@@ -283,22 +283,22 @@ public interface ResourcesExt extends Resources {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void changeRoles(UUID resourceId,
                      Collection<String> roles,
                      UUID actorId,
                      Date happenedOn)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Apply a resource's working copy.
      *
      * @param resourceId The id of the resource.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
-    void applyWorkingCopy(UUID resourceId) throws CommandFailedException;
+    void applyWorkingCopy(UUID resourceId) throws RestException;
 
     /**
      * Apply a resource's working copy.
@@ -309,13 +309,13 @@ public interface ResourcesExt extends Resources {
      * @param isMajorEdit Was this a major change.
      * @param comment A comment describing the change.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void applyWorkingCopy(UUID resourceId,
                           UUID userId,
                           Date happenedOn,
                           boolean isMajorEdit,
-                          String comment) throws CommandFailedException;
+                          String comment) throws RestException;
 
     /**
      * Update the period that a resource should be cached for.
@@ -323,10 +323,10 @@ public interface ResourcesExt extends Resources {
      * @param resourceId The resource to update.
      * @param duration The cache duration.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     void updateCacheDuration(UUID resourceId, Duration duration)
-    throws CommandFailedException;
+    throws RestException;
 
 
     /**
@@ -334,7 +334,7 @@ public interface ResourcesExt extends Resources {
      *
      * @param pageId The id of the page with a working copy.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
-    void clearWorkingCopy(UUID pageId) throws CommandFailedException;
+    void clearWorkingCopy(UUID pageId) throws RestException;
 }

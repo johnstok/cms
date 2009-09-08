@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import ccc.cli.FileUpload;
 import ccc.migration.FileUploader;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
@@ -76,13 +76,13 @@ public class CccServer implements Server {
     public UUID createFolder(final UUID parentFolder,
                              final String name,
                              final boolean publish)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         try {
             final ResourceSummary rs = _foldersExt.createFolder(
                 UUID.fromString(parentFolder.toString()), name, name, publish);
             return UUID.fromString(rs.getId().toString());
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             if (FailureCode.EXISTS==e.getCode()) {
                 LOG.warn("Folder already exists: "+name);
                 return UUID.fromString(

@@ -23,7 +23,7 @@ import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UnlockedException;
 import ccc.domain.User;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
@@ -43,10 +43,10 @@ public class ActionExecutorImplTest
 
     /**
      * Test.
-     * @throws CommandFailedException From the Commands API.
+     * @throws RestException From the Commands API.
      */
     public void testActionIsFailedIfMethodThrowsException()
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         // ARRANGE
         final Page p =  new Page(new ResourceName("foo"), "foo", null, _rm);

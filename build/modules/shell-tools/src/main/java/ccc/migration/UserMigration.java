@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
 
@@ -54,9 +54,9 @@ public class UserMigration {
     /**
      * Migrate all users.
      *
-     * @throws CommandFailedException If an error occurs during migration.
+     * @throws RestException If an error occurs during migration.
      */
-    void migrateUsers() throws CommandFailedException {
+    void migrateUsers() throws RestException {
         final Map<Integer, UserDto> mus = _legacyQueries.selectUsers();
         for (final Map.Entry<Integer, UserDto> mu : mus.entrySet()) {
             try {

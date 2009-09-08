@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -33,9 +33,9 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdatePassword() throws CommandFailedException {
+    public void testUpdatePassword() throws RestException {
 
         // ARRANGE
         final UserDto us = tempUser();
@@ -55,9 +55,9 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testSearchForUsersWithUsername() throws CommandFailedException {
+    public void testSearchForUsersWithUsername() throws RestException {
 
         // ARRANGE
         final UserDto us = tempUser();
@@ -80,9 +80,9 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testSearchForUsersWithEmail() throws CommandFailedException {
+    public void testSearchForUsersWithEmail() throws RestException {
 
         // ARRANGE
         final UserDto us = tempUser();
@@ -105,9 +105,9 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateUser() throws CommandFailedException {
+    public void testUpdateUser() throws RestException {
 
         // ARRANGE
         final Username username = new Username(UUID.randomUUID().toString());
@@ -137,9 +137,9 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testCreateUser() throws CommandFailedException {
+    public void testCreateUser() throws RestException {
 
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
@@ -165,9 +165,9 @@ public class UserManagementAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateYourUser() throws CommandFailedException {
+    public void testUpdateYourUser() throws RestException {
 
         // ARRANGE
         UserDto user = tempUser();
@@ -194,7 +194,7 @@ public class UserManagementAcceptanceTest
     }
 
 
-    private UserDto tempUser() throws CommandFailedException {
+    private UserDto tempUser() throws RestException {
 
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";

@@ -168,74 +168,74 @@ public interface Resources {
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
-        ResourceDto duration) throws CommandFailedException;
+        ResourceDto duration) throws RestException;
 
     @POST @Path("/resources/{id}/lock")
     void lock(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
-        ResourceDto template) throws CommandFailedException;
+        ResourceDto template) throws RestException;
 
     @POST @Path("/resources/{id}/unlock")
     void unlock(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/unpublish")
     void unpublish(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/publish")
     void publish(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/parent")
     void move(
         @PathParam("id") UUID resourceId,
-        UUID newParentId) throws CommandFailedException;
+        UUID newParentId) throws RestException;
 
     @POST @Path("/resources/{id}/name")
     void rename(
         @PathParam("id") final UUID resourceId,
-        final String name) throws CommandFailedException;
+        final String name) throws RestException;
 
     @POST @Path("/resources/{id}/roles")
     void changeRoles(
         @PathParam("id") UUID resourceId,
-        Collection<String> roles) throws CommandFailedException;
+        Collection<String> roles) throws RestException;
 
     @POST @Path("/resources/{id}/exclude-mm")
     void excludeFromMainMenu(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/include-mm")
     void includeInMainMenu(
-        @PathParam("id") UUID resourceId) throws CommandFailedException;
+        @PathParam("id") UUID resourceId) throws RestException;
 
     @POST @Path("/resources/{id}/metadata")
     void updateMetadata(
         @PathParam("id") UUID resourceId,
-        Json json) throws CommandFailedException;
+        Json json) throws RestException;
 
     @POST @Path("/resources/{id}/wc-clear")
     void clearWorkingCopy(
-        @PathParam("id") UUID pageId) throws CommandFailedException;
+        @PathParam("id") UUID pageId) throws RestException;
 
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(
         @PathParam("id") UUID resourceId,
-        ResourceDto pu) throws CommandFailedException;
+        ResourceDto pu) throws RestException;
 
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(
-        @PathParam("id") UUID id) throws CommandFailedException;
+        @PathParam("id") UUID id) throws RestException;
 
     @GET @Path("/fail")
-    void fail() throws CommandFailedException;
+    void fail() throws RestException;
 }

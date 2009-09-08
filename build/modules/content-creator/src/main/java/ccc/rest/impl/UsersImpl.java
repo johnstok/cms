@@ -18,7 +18,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
@@ -91,7 +91,7 @@ public class UsersImpl
     /** {@inheritDoc} */
     @Override
     public UserDto createUser(final UserDto user)
-    throws CommandFailedException {
+    throws RestException {
         return getUserCommands().createUser(user);
     }
 
@@ -100,7 +100,7 @@ public class UsersImpl
     @Override
     public void updateUserPassword(final UUID userId,
                                    final UserDto pu)
-    throws CommandFailedException {
+    throws RestException {
         getUserCommands().updateUserPassword(userId, pu);
     }
 
@@ -108,7 +108,7 @@ public class UsersImpl
     /** {@inheritDoc} */
     @Override
     public void updateYourUser(final UUID userId, final UserDto user)
-    throws CommandFailedException {
+    throws RestException {
         getUserCommands().updateYourUser(userId, user);
     }
 
@@ -116,7 +116,7 @@ public class UsersImpl
     /** {@inheritDoc} */
     @Override
     public void updateUser(final UUID userId, final UserDto delta)
-    throws CommandFailedException {
+    throws RestException {
         getUserCommands().updateUser(userId, delta);
     }
 }

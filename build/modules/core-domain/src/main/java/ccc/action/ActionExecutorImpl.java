@@ -16,7 +16,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import ccc.domain.Action;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.DBC;
 
@@ -69,13 +69,13 @@ public class ActionExecutorImpl implements ActionExecutor {
             action.complete();
             LOG.info("Completed action: "+action.id());
 
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             fail(action, e);
         }
     }
 
 
-    private void fail(final Action action, final CommandFailedException e) {
+    private void fail(final Action action, final RestException e) {
         action.fail(e.getFailure());
         LOG.info(
             "Failed action: "+action.id()
@@ -85,7 +85,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
 
     private void executeUpdate(final Action action)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         _resourcesExt.applyWorkingCopy(
             action.subject().id(),
             action.actor().id(),
@@ -96,7 +96,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
 
     private void executePublish(final Action action)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         _resourcesExt.publish(
             action.subject().id(),
             action.actor().id(),
@@ -105,7 +105,7 @@ public class ActionExecutorImpl implements ActionExecutor {
 
 
     private void executeUnpublish(final Action action)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         _resourcesExt.unpublish(
             action.subject().id(),
             action.actor().id(),

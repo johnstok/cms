@@ -22,13 +22,13 @@ import ccc.types.FailureCode;
  *
  * @author Civic Computing Ltd.
  */
-public class CommandFailedException
+public class RestException
     extends
         Exception {
 
     private Failure _failure;
 
-    @SuppressWarnings("unused") private CommandFailedException() { super(); }
+    @SuppressWarnings("unused") private RestException() { super(); }
 
 
     /**
@@ -36,7 +36,7 @@ public class CommandFailedException
      *
      * @param failure The failure.
      */
-    public CommandFailedException(final Failure failure) {
+    public RestException(final Failure failure) {
         super("CCC Error: "+failure.getExceptionId());
         _failure = failure;
     }
