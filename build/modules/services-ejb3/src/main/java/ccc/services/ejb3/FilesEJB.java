@@ -21,13 +21,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.CreateFileCommand;
 import ccc.commands.PublishCommand;
@@ -35,13 +32,7 @@ import ccc.commands.UpdateFileCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.File;
 import ccc.domain.User;
-import ccc.persistence.FileRepositoryImpl;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.QueryNames;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.FsCoreData;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Files;
 import ccc.rest.dto.FileDelta;
@@ -66,11 +57,6 @@ public class FilesEJB
         BaseCommands
     implements
         Files {
-
-    @PersistenceContext private EntityManager _em;
-
-    private LogEntryRepository _audit;
-    private FileRepositoryImpl _dm;
 
 
     /** {@inheritDoc} */
@@ -163,17 +149,5 @@ public class FilesEJB
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
-    }
-
-
-    /* ==============
-     * Helper methods
-     * ============== */
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
     }
 }

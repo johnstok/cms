@@ -29,8 +29,6 @@ import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
@@ -40,11 +38,7 @@ import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.Scheduler;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.QueryNames;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Actions;
 import ccc.rest.Resources;
 import ccc.rest.dto.ActionDto;
@@ -76,11 +70,9 @@ public class ActionsEJB
     private static final Logger LOG =
         Logger.getLogger(ActionsEJB.class.getName());
 
-    @PersistenceContext private EntityManager _em;
     @EJB(name=Resources.NAME) private ResourcesExt _resourcesExt;
 
     private ActionExecutor _executor;
-    private LogEntryRepository _audit;
 
     /** Constructor. */
     public ActionsEJB() { super(); }
@@ -124,7 +116,7 @@ public class ActionsEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void cancelAction(final UUID actionId) {
         new CancelActionCommand(_bdao, _audit).execute(
-            loggedInUser(_context), new Date(), actionId);
+            currentUser(), new Date(), actionId);
     }
 
     /** {@inheritDoc} */
@@ -135,13 +127,13 @@ public class ActionsEJB
           new Action(
               action.getCommand(),
               action.getExecuteAfter(),
-              loggedInUser(_context),
+              currentUser(),
               _bdao.find(
                   ccc.domain.Resource.class, action.getResourceId()),
               action.getParameters());
 
       new ScheduleActionCommand(_bdao, _audit).execute(
-          loggedInUser(_context), new Date(), a);
+          currentUser(), new Date(), a);
     }
 
 
@@ -202,10 +194,7 @@ public class ActionsEJB
 
 
     @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
+    private void configureExecutor() {
         _executor = new ActionExecutorImpl(_resourcesExt);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
     }
 }

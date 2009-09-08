@@ -20,13 +20,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.CreatePageCommand;
 import ccc.commands.PublishCommand;
@@ -36,11 +33,6 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
@@ -67,9 +59,6 @@ public class PagesEJB
         BaseCommands
     implements
         PagesExt {
-
-    @PersistenceContext private EntityManager _em;
-    private LogEntryRepository           _audit;
 
 
     /** {@inheritDoc} */
@@ -109,7 +98,7 @@ public class PagesEJB
             return mapResource(p);
 
         } catch (final CccCheckedException e) {
-            throw fail(_context ,e);
+            throw fail(e);
         }
     }
 
@@ -126,7 +115,7 @@ public class PagesEJB
             false,
             page.getTemplateId(),
             page.getTitle(),
-            loggedInUserId(_context),
+            currentUserId(),
             new Date(),
             page.getComment(),
             page.getMajorChange());
@@ -148,7 +137,7 @@ public class PagesEJB
             delta,
             comment,
             majorEdit,
-            loggedInUserId(_context),
+            currentUserId(),
             new Date());
     }
 
@@ -173,7 +162,7 @@ public class PagesEJB
                 isMajorEdit);
 
         } catch (final CccCheckedException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
 
@@ -186,13 +175,13 @@ public class PagesEJB
                                                  throws CommandFailedException {
         try {
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(_context),
+                currentUser(),
                 new Date(),
                 pageId,
                 delta);
 
         } catch (final CccCheckedException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
 
@@ -217,19 +206,4 @@ public class PagesEJB
         return
             deltaPage(_resources.find(Page.class, pageId));
     }
-
-
-
-    /* ==============
-     * Helper methods
-     * ============== */
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _resources = new ResourceRepositoryImpl(_bdao);
-    }
-
 }

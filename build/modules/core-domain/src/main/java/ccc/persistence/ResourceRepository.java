@@ -71,7 +71,7 @@ public interface ResourceRepository {
      * @param resourceId The id of the resource whose history we will look up.
      * @return The revisions for the resource.
      */
-    Map<Integer, ? extends Revision> history(UUID resourceId);
+    Map<Integer, ? extends Revision<?>> history(UUID resourceId);
 
     /**
      * Find a resource using its unique id.
