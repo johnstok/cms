@@ -65,6 +65,6 @@ public class ResourceCacheDurationPUReader
         final Long revNo = json.getLong(JsonKeys.REVISION);
         final UUID templateId = json.getId(JsonKeys.TEMPLATE_ID);
         return new ResourceDto(
-            (null==duration) ? null : new Duration(json), revNo, templateId);
+            (null==duration) ? null : new Duration(duration), revNo, templateId);
     }
 }

@@ -57,6 +57,8 @@ public abstract class UpdateCacheDurationAction
     protected String getBody() {
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.CACHE_DURATION, _duration);
+        json.set(JsonKeys.REVISION, (String) null);
+        json.set(JsonKeys.TEMPLATE_ID, (String) null);
         return json.toString();
     }
 }
