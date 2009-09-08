@@ -391,4 +391,86 @@ public class ResourceAcceptanceTest
         assertEquals(1, updated.getChildCount());
 
     }
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testGetChildrenManualOrder() throws RestException {
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final ResourceSummary template =
+            dummyTemplate(_commands.resourceForPath("/content"));
+        final ResourceSummary page1 = tempPage(folder.getId(), template.getId());
+        final ResourceSummary page2 = tempPage(folder.getId(), template.getId());
+        final ResourceSummary page3 = tempPage(folder.getId(), template.getId());
+
+        // ACT
+        _commands.lock(folder.getId());
+        final List<String> sl  = new ArrayList<String>();
+        sl.add(page2.getId().toString());
+        sl.add(page1.getId().toString());
+        sl.add(page3.getId().toString());
+
+        final FolderDelta fd =
+            new FolderDelta(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
+
+        _folders.updateFolder(folder.getId(), fd);
+        final ResourceSummary updated = _commands.resource(folder.getId());
+
+        final Collection<ResourceSummary> children =
+            _folders.getChildrenManualOrder(folder.getId());
+        final List<ResourceSummary> list =
+            new ArrayList<ResourceSummary>(children);
+
+        // ASSERT
+        assertNull(folder.getLockedBy());
+        assertNotNull(updated.getLockedBy());
+        assertEquals(ResourceOrder.DATE_CHANGED_ASC.name(),
+                     updated.getSortOrder());
+        assertEquals(page2.getId(), list.get(0).getId());
+        assertEquals(page1.getId(), list.get(1).getId());
+        assertEquals(page3.getId(), list.get(2).getId());
+    }
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testGetChildren() throws RestException {
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+        final ResourceSummary template =
+            dummyTemplate(_commands.resourceForPath("/content"));
+        final ResourceSummary page1 = tempPage(f.getId(), template.getId());
+        final ResourceSummary page2 = tempPage(f.getId(), template.getId());
+        final ResourceSummary page3 = tempPage(f.getId(), template.getId());
+
+        // ACT
+        _commands.lock(f.getId());
+        final List<String> sl  = new ArrayList<String>();
+        sl.add(page2.getId().toString());
+        sl.add(page1.getId().toString());
+        sl.add(page3.getId().toString());
+
+        final FolderDelta fd =
+            new FolderDelta(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
+
+        _folders.updateFolder(f.getId(), fd);
+        final ResourceSummary updated = _commands.resource(f.getId());
+
+        final List<ResourceSummary> list =
+            new ArrayList<ResourceSummary>(_folders.getChildren(f.getId()));
+
+        // ASSERT
+        assertNull(f.getLockedBy());
+        assertNotNull(updated.getLockedBy());
+        assertEquals(ResourceOrder.DATE_CREATED_ASC.name(),
+            updated.getSortOrder());
+        assertEquals(page1.getId(), list.get(0).getId());
+        assertEquals(page2.getId(), list.get(1).getId());
+        assertEquals(page3.getId(), list.get(2).getId());
+    }
 }
