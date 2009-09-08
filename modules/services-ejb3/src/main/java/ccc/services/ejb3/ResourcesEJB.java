@@ -65,7 +65,7 @@ import ccc.types.ResourcePath;
 @RolesAllowed({})
 public class ResourcesEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         ResourcesExt {
 

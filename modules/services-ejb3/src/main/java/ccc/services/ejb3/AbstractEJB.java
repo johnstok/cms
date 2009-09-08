@@ -64,9 +64,9 @@ import ccc.types.ResourceType;
  *
  * @author Civic Computing Ltd.
  */
-abstract class BaseCommands {
+abstract class AbstractEJB {
 
-    private static Logger log = Logger.getLogger(BaseCommands.class);
+    private static Logger log = Logger.getLogger(AbstractEJB.class);
 
     @javax.annotation.Resource protected EJBContext    _context;
     @PersistenceContext        private EntityManager   _em;

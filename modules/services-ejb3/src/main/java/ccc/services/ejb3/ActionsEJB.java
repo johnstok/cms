@@ -59,7 +59,7 @@ import ccc.rest.extensions.ResourcesExt;
 @RunAs(CONTENT_CREATOR)
 public class ActionsEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         Scheduler,
         Actions {

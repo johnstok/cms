@@ -48,7 +48,7 @@ import ccc.types.ResourceName;
 @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
 public final class TemplatesEJB
     extends
-        BaseCommands
+        AbstractEJB
     implements
         Templates {
 
