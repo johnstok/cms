@@ -150,7 +150,7 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET
-    @Path("/resources-by-path/{path:.*}")
+    @Path("/resources-by-path{path:.*}")
     @NoCache
     ResourceSummary resourceForPath(@PathParam("path") String path);
 
