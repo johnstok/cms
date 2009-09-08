@@ -62,7 +62,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public boolean templateNameExists(final String templateName) {
+    public Boolean templateNameExists(final String templateName) {
         return null!=_resources.find(
             QueryNames.TEMPLATE_BY_NAME,
             Template.class, new ResourceName(templateName));

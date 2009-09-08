@@ -62,7 +62,7 @@ public interface Templates {
     @GET
     @Path("/templates/{name}/exists")
     @NoCache
-    boolean templateNameExists(@PathParam("name") final String templateName);
+    Boolean templateNameExists(@PathParam("name") final String templateName);
 
 
     /**

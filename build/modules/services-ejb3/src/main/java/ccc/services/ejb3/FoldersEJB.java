@@ -35,8 +35,8 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
-import ccc.rest.RestException;
 import ccc.rest.Folders;
+import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -203,7 +203,7 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public boolean nameExistsInFolder(final UUID folderId, final String name) {
+    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
         // TODO handle null folderId? (for root folders)
         return
         _resources.find(Folder.class, folderId)

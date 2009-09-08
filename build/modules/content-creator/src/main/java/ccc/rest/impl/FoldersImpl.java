@@ -18,8 +18,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.RestException;
 import ccc.rest.Folders;
+import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -63,7 +63,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public boolean nameExistsInFolder(final UUID folderId, final String name) {
+    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
         return getFolderCommands().nameExistsInFolder(folderId, name);
     }
 

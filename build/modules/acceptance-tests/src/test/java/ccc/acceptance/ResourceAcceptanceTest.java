@@ -473,4 +473,28 @@ public class ResourceAcceptanceTest
         assertEquals(page2.getId(), list.get(1).getId());
         assertEquals(page3.getId(), list.get(2).getId());
     }
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testNameExistsInFolder() throws RestException {
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+        final ResourceSummary template =
+            dummyTemplate(_commands.resourceForPath("/content"));
+        final ResourceSummary page = tempPage(f.getId(), template.getId());
+
+        // ACT
+        _commands.lock(f.getId());
+
+        final Boolean exists =
+            _folders.nameExistsInFolder(f.getId(), page.getName());
+
+        // ASSERT
+        assertTrue("Name should exists in the folder", exists.booleanValue());
+        assertFalse("Name should not exists in the folder",
+            _folders.nameExistsInFolder(f.getId(), "foo").booleanValue());
+    }
 }

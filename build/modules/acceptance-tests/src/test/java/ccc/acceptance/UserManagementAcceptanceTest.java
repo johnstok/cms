@@ -193,6 +193,30 @@ public class UserManagementAcceptanceTest
             _security.login(user.getUsername().toString(), "Testtest00-"));
     }
 
+    public void testUsernameExists() throws RestException {
+        // ARRANGE
+        final Username username = new Username(UUID.randomUUID().toString());
+        final String email = username+"@abc.def";
+
+        // Create the user
+        final UserDto u =
+            new UserDto(
+                email,
+                username,
+                Collections.singleton("a"),
+                Collections.singletonMap("key", "value"),
+                "Testtest00-");
+
+
+        _users.createUser(u);
+
+        // ACT
+        final Boolean exists = _users.usernameExists(username);
+
+        // ASSERT
+        assertTrue("Username should exists", exists.booleanValue());
+
+    }
 
     private UserDto tempUser() throws RestException {
 

@@ -19,12 +19,8 @@ import org.jboss.resteasy.client.ProxyFactory;
 
 import ccc.rest.RestException;
 import ccc.rest.Security;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateDto;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
-import ccc.types.MimeType;
 
 
 /**
@@ -35,37 +31,6 @@ import ccc.types.MimeType;
 public class FirstAcceptanceTest
     extends
         AbstractAcceptanceTest {
-
-
-    /**
-     * Test.
-     * @throws RestException If the test fails.
-     */
-    public void testCreateTemplate() throws RestException {
-
-        // ARRANGE
-        final ResourceSummary templateFolder =
-            resourceForPath("/assets/templates");
-
-        final TemplateDelta newTemplate =
-            new TemplateDelta("body", "<fields/>", MimeType.HTML);
-
-        // ACT
-        final ResourceSummary ts =
-            _templates.createTemplate(
-                new TemplateDto(
-                    templateFolder.getId(),
-                    newTemplate,
-                    "t-title",
-                    "t-desc",
-                    "t-name"));
-
-        // ASSERT
-        assertEquals("/assets/templates/t-name", ts.getAbsolutePath());
-        assertEquals("t-desc", ts.getDescription());
-        assertEquals("t-name", ts.getName());
-        assertEquals("t-title", ts.getTitle());
-    }
 
 
     /**

@@ -83,7 +83,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public boolean usernameExists(final Username username) {
+    public Boolean usernameExists(final Username username) {
         return getUserCommands().usernameExists(username);
     }
 
