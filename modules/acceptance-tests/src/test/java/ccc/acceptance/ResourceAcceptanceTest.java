@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -250,10 +251,14 @@ public class ResourceAcceptanceTest
             folder.getId(), new ResourceDto((Duration) null));
         final Duration noDuration = _commands.cacheDuration(folder.getId());
 
+        _commands.deleteCacheDuration(folder.getId());
+        final Duration noDuration2 = _commands.cacheDuration(folder.getId());
+
         // ASSERT
         assertNull(origDuration);
         assertEquals(9, withDuration.time());
         assertNull(noDuration);
+        assertNull(noDuration2);
     }
 
 
@@ -497,4 +502,41 @@ public class ResourceAcceptanceTest
         assertFalse("Name should not exists in the folder",
             _folders.nameExistsInFolder(f.getId(), "foo").booleanValue());
     }
+
+    /**
+     * Test.
+     * @throws RestException
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testResourceForLegacyId() throws RestException {
+
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+
+        final String id = ""+new Random().nextInt(1000);
+
+        final JsonImpl md = new JsonImpl();
+        md.set(JsonKeys.TITLE, f.getTitle());
+        md.set(JsonKeys.DESCRIPTION, f.getDescription());
+        md.set(JsonKeys.TAGS, f.getTags());
+        md.set(JsonKeys.METADATA, Collections.singletonMap("legacyId", id));
+
+        // ACT
+        _commands.lock(f.getId());
+        _commands.updateMetadata(f.getId(), md);
+
+
+        // ACT
+        final ResourceSummary legacy = _commands.resourceForLegacyId(id);
+
+        // ASSERT
+        assertEquals(f.getName(), legacy.getName());
+        assertEquals(f.getId(), legacy.getId());
+    }
+
+
+    // TODO: testLockedByCurrentUser
+    // TODO: testComputeTemplate
+    // TODO: Add working copy method tests.
 }
