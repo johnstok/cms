@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.CCCException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -42,7 +42,8 @@ public abstract class CreateResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateResourceCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateResourceCommand(final Repository repository,
+                                 final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
@@ -76,6 +77,13 @@ public abstract class CreateResourceCommand {
     }
 
 
+    /**
+     * Audit the creation of a resource.
+     *
+     * @param resource The newly created resource.
+     * @param actor The actor performing the command.
+     * @param happenedOn When the command was performed.
+     */
     protected void audit(final Resource resource,
                          final User actor,
                          final Date happenedOn) {

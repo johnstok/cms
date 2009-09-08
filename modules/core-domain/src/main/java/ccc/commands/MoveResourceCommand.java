@@ -14,9 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -41,7 +41,8 @@ public class MoveResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public MoveResourceCommand(final Repository repository, final LogEntryRepository audit) {
+    public MoveResourceCommand(final Repository repository,
+                               final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

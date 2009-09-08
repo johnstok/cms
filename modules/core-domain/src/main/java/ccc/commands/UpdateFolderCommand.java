@@ -43,7 +43,8 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateFolderCommand(final Repository repository, final LogEntryRepository audit) {
+    public UpdateFolderCommand(final Repository repository,
+                               final LogEntryRepository audit) {
         super(repository, audit);
     }
 
@@ -56,6 +57,8 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      * @param indexPageId The index page.
+     * @param orderList The manual order of the resources in the specified
+     *  folder.
      *
      * @throws LockMismatchException If the resource is locked by another user.
      * @throws UnlockedException If the resource is unlocked.

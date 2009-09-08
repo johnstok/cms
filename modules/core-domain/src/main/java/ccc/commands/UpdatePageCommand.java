@@ -37,7 +37,8 @@ public class UpdatePageCommand extends UpdateResourceCommand{
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdatePageCommand(final Repository repository, final LogEntryRepository audit) {
+    public UpdatePageCommand(final Repository repository,
+                             final LogEntryRepository audit) {
         super(repository, audit);
     }
 

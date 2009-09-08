@@ -14,11 +14,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -43,7 +42,8 @@ public class RenameResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public RenameResourceCommand(final Repository repository, final LogEntryRepository audit) {
+    public RenameResourceCommand(final Repository repository,
+                                 final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
@@ -55,16 +55,12 @@ public class RenameResourceCommand {
      * @param happenedOn The date rename took place.
      * @param resourceId The resource to rename.
      * @param name The new name for the resource.
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws ResourceExistsException If a resource already exists in the
-     *  parent folder with the specified name.
+     * @throws CccCheckedException If the command fails.
      */
     public void rename(final User actor,
                        final Date happenedOn,
                        final UUID resourceId,
-                       final String name)
-      throws UnlockedException, LockMismatchException, ResourceExistsException {
+                       final String name) throws CccCheckedException {
         final Resource resource = _repository.find(Resource.class, resourceId);
         resource.confirmLock(actor);
 

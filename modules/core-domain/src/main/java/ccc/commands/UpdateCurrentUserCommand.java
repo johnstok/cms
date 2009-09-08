@@ -55,7 +55,9 @@ public class UpdateCurrentUserCommand {
      * @param password The new password.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
-     * @throws InsufficientPrivilegesException
+     *
+     * @throws InsufficientPrivilegesException If the user being updated is not
+     *  the actor.
      */
     public void execute(final User actor,
                         final Date happenedOn,

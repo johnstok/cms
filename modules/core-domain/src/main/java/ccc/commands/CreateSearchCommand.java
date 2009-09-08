@@ -36,7 +36,8 @@ public class CreateSearchCommand
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateSearchCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateSearchCommand(final Repository repository,
+                               final LogEntryRepository audit) {
         super(repository, audit);
     }
 

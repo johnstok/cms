@@ -45,7 +45,8 @@ public class UpdateWorkingCopyCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateWorkingCopyCommand(final Repository repository, final LogEntryRepository audit) {
+    public UpdateWorkingCopyCommand(final Repository repository,
+                                    final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
