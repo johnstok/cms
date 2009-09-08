@@ -19,8 +19,10 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.rest.CommandFailedException;
+import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateDto;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.MimeType;
 
@@ -34,10 +36,12 @@ public class TemplateMigration {
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _legacyQueries;
-    private final ResourcesExt _resourcesExt;
+    private final ResourcesExt    _resourcesExt;
+    private final Templates       _templateApi;
 
     private final Map<String, ResourceSummary> _templates =
         new HashMap<String, ResourceSummary>();
+
 
     /**
      * Constructor.
@@ -46,9 +50,11 @@ public class TemplateMigration {
      * @param resourcesExt The command API for the new system.
      */
     public TemplateMigration(final LegacyDBQueries legacyQueries,
-                             final ResourcesExt resourcesExt) {
+                             final ResourcesExt resourcesExt,
+                             final Templates templates) {
         _resourcesExt = resourcesExt;
         _legacyQueries = legacyQueries;
+        _templateApi = templates;
     }
 
 
@@ -73,12 +79,13 @@ public class TemplateMigration {
 
         try {
             final ResourceSummary ts =
-                _resourcesExt.createTemplate(
-                    templateFolder.getId(),
-                    t,
-                    templateName,
-                    templateDescription,
-                    templateName);
+                _templateApi.createTemplate(
+                    new TemplateDto(
+                        templateFolder.getId(),
+                        t,
+                        templateName,
+                        templateDescription,
+                        templateName));
 
             _templates.put(templateName, ts);
         } catch (final CommandFailedException e) {

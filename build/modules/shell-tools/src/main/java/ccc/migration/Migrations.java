@@ -29,7 +29,7 @@ import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
 import ccc.rest.CommandFailedException;
-import ccc.rest.Queries;
+import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
@@ -64,7 +64,6 @@ public class Migrations {
     private final PagesExt _pagesExt;
     private final FoldersExt _foldersExt;
     private final Users _userCommands;
-    private final Queries _queries;
     private final String _linkPrefix;
 
     private final boolean _migrateHomepage;
@@ -97,13 +96,12 @@ public class Migrations {
                       final PagesExt pagesExt,
                       final FoldersExt foldersExt,
                       final Users userCommands,
-                      final Queries queries,
                       final FileUploader fu,
+                      final Templates templates,
                       final boolean migrateHomepage,
                       final boolean migrateIsMajorEdit,
                       final boolean migrateVersions) {
         _legacyQueries = legacyQueries;
-        _queries = queries;
         _resourcesExt = resourcesExt;
         _pagesExt = pagesExt;
         _foldersExt = foldersExt;
@@ -123,7 +121,7 @@ public class Migrations {
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _userCommands);
-        _tm = new TemplateMigration(_legacyQueries, _resourcesExt);
+        _tm = new TemplateMigration(_legacyQueries, _resourcesExt, templates);
     }
 
 

@@ -15,7 +15,7 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Scheduler;
 import ccc.rest.Actions;
-import ccc.rest.Queries;
+import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
@@ -101,15 +101,6 @@ public class ServiceLookup {
     }
 
     /**
-     * Look up the query API.
-     *
-     * @return A query instance.
-     */
-    public Queries lookupQueries() {
-        return _registry.<Queries>get(jndiPath(Queries.NAME));
-    }
-
-    /**
      * Look up the action scheduler.
      *
      * @return An action scheduler.
@@ -125,6 +116,15 @@ public class ServiceLookup {
      */
     public Scheduler lookupSearchScheduler() {
         return _registry.<Scheduler>get(jndiPath(SearchEngine.NAME));
+    }
+
+    /**
+     * Look up an implementation of the templates API.
+     *
+     * @return A templates implementation.
+     */
+    public Templates lookupTemplates() {
+        return _registry.<Templates>get(jndiPath(Templates.NAME));
     }
 
     private String jndiPath(final String serviceName) {

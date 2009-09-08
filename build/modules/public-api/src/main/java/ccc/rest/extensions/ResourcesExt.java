@@ -19,7 +19,6 @@ import java.util.UUID;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
 import ccc.types.Duration;
 
 
@@ -29,10 +28,6 @@ import ccc.types.Duration;
  * @author Civic Computing Ltd.
  */
 public interface ResourcesExt extends Resources {
-
-
-    void updateTemplate(UUID templateId, TemplateDelta delta)
-    throws CommandFailedException;
 
     /**
      * Rename resource.
@@ -243,12 +238,6 @@ public interface ResourcesExt extends Resources {
                         String tags,
                         Map<String, String> metadata)
     throws CommandFailedException;
-
-    ResourceSummary createTemplate(UUID parentId,
-                                   TemplateDelta delta,
-                                   String title,
-                                   String description,
-                                   String name) throws CommandFailedException;
 
     /**
      * Creates a new search.

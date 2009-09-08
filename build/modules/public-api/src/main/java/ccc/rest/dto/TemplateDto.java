@@ -11,6 +11,7 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.serialization.Json;
@@ -23,7 +24,7 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateDto implements Jsonable {
+public class TemplateDto implements Jsonable, Serializable {
 
     private final UUID            _parentId;
     private final TemplateDelta _delta;
