@@ -38,12 +38,12 @@ import ccc.types.ResourceOrder;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceAcceptanceTests
+public class ResourceAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
     private static final Logger LOG =
-        Logger.getLogger(ResourceAcceptanceTests.class);
+        Logger.getLogger(ResourceAcceptanceTest.class);
 
 
     /**

@@ -40,8 +40,8 @@ import ccc.rest.Aliases;
 import ccc.rest.RestException;
 import ccc.rest.Files;
 import ccc.rest.Folders;
-import ccc.rest.Resources;
 import ccc.rest.Pages;
+import ccc.rest.Resources;
 import ccc.rest.Security;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -94,6 +94,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyWriter(StringCollectionWriter.class);
         pFactory.addMessageBodyWriter(MetadataWriter.class);
         pFactory.addMessageBodyWriter(JsonReader.class);
+        pFactory.addMessageBodyWriter(UUIDProvider.class);
 
         // Readers
         pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
@@ -108,6 +109,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(AliasDeltaReader.class);
         pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
+        pFactory.addMessageBodyReader(UUIDProvider.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);

@@ -97,7 +97,7 @@ public class ResourceDto implements Jsonable, Serializable {
      *
      * @return Returns the revision.
      */
-    public final long getRevision() {
+    public final Long getRevision() {
         return _revision;
     }
 
@@ -115,7 +115,11 @@ public class ResourceDto implements Jsonable, Serializable {
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
         json.set(JsonKeys.CACHE_DURATION, _cacheDuration);
-        json.set(JsonKeys.REVISION, Long.valueOf(_revision));
+        if (_revision == null) {
+            json.set(JsonKeys.REVISION, (String) null);
+        } else {
+            json.set(JsonKeys.REVISION, _revision);
+        }
         json.set(JsonKeys.TEMPLATE_ID, _templateId);
     }
 }

@@ -11,10 +11,20 @@
  */
 package ccc.rest.providers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.spi.StringConverter;
@@ -32,7 +42,9 @@ public class UUIDProvider
     extends
         AbstractProvider
     implements
-        StringConverter<UUID>{
+        StringConverter<UUID>,
+        MessageBodyReader<UUID>,
+        MessageBodyWriter<UUID>{
 
     /** {@inheritDoc} */
     @Override
@@ -44,5 +56,62 @@ public class UUIDProvider
     @Override
     public String toString(final UUID arg0) {
         return arg0.toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isReadable(final Class<?> clazz,
+                              final Type arg1,
+                              final Annotation[] arg2,
+                              final MediaType arg3) {
+
+        return UUID.class.equals(clazz);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UUID readFrom(final Class<UUID> arg0,
+                         final Type arg1,
+                         final Annotation[] arg2,
+                         final MediaType arg3,
+                         final MultivaluedMap<String, String> arg4,
+                         final InputStream arg5) throws IOException {
+        final String s = readString(arg3, arg5);
+        return UUID.fromString(s);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSize(final UUID arg0,
+                        final Class<?> arg1,
+                        final Type arg2,
+                        final Annotation[] arg3,
+                        final MediaType arg4) {
+
+        return -1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isWriteable(final Class<?> arg0,
+                               final Type arg1,
+                               final Annotation[] arg2,
+                               final MediaType arg3) {
+
+        return UUID.class.equals(arg0);    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(final UUID arg0,
+                        final Class<?> arg1,
+                        final Type arg2,
+                        final Annotation[] arg3,
+                        final MediaType arg4,
+                        final MultivaluedMap<String, Object> arg5,
+                        final OutputStream outputStream) {
+
+        final PrintWriter pw = new PrintWriter(outputStream);
+        pw.print(arg0);
+        pw.flush();
     }
 }
