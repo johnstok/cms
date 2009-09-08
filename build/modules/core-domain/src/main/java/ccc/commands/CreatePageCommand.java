@@ -14,8 +14,8 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.Page;
 import ccc.domain.CccCheckedException;
+import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -39,7 +39,8 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreatePageCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreatePageCommand(final Repository repository,
+                             final LogEntryRepository audit) {
         super(repository, audit);
     }
 
@@ -54,7 +55,8 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      * @param comment Comment describing the change.
-     * @param isMajorEdit Is this a major change.
+     * @param majorChange Is this a major change.
+     * @param title The page's title.
      *
      * @throws CccCheckedException If the command fails.
      *

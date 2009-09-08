@@ -38,7 +38,8 @@ public class CreateAliasCommand
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateAliasCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateAliasCommand(final Repository repository,
+                              final LogEntryRepository audit) {
         super(repository, audit);
     }
 

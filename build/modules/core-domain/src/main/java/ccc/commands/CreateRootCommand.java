@@ -35,7 +35,8 @@ public class CreateRootCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateRootCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateRootCommand(final Repository repository,
+                             final LogEntryRepository audit) {
         super(repository, audit);
     }
 

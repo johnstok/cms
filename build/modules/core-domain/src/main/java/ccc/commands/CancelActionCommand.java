@@ -39,7 +39,8 @@ public class CancelActionCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public CancelActionCommand(final Repository repository, final LogEntryRepository audit) {
+    public CancelActionCommand(final Repository repository,
+                               final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

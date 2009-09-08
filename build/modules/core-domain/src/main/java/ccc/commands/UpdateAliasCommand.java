@@ -35,7 +35,8 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateAliasCommand(final Repository repository, final LogEntryRepository audit) {
+    public UpdateAliasCommand(final Repository repository,
+                              final LogEntryRepository audit) {
         super(repository, audit);
     }
 

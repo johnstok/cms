@@ -41,7 +41,8 @@ public class UnlockResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UnlockResourceCommand(final Repository repository, final LogEntryRepository audit) {
+    public UnlockResourceCommand(final Repository repository,
+                                 final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

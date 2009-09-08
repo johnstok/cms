@@ -39,7 +39,8 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public ApplyWorkingCopyCommand(final Repository repository, final LogEntryRepository audit) {
+    public ApplyWorkingCopyCommand(final Repository repository,
+                                   final LogEntryRepository audit) {
         super(repository, audit);
     }
 

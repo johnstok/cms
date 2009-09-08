@@ -14,8 +14,8 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.Folder;
 import ccc.domain.CccCheckedException;
+import ccc.domain.Folder;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -34,7 +34,8 @@ public class CreateFolderCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateFolderCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateFolderCommand(final Repository repository,
+                               final LogEntryRepository audit) {
         super(repository, audit);
     }
 

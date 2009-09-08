@@ -43,7 +43,7 @@ public class UpdateResourceMetadataCommand {
      * @param audit The audit logger, for logging business actions.
      */
     public UpdateResourceMetadataCommand(final Repository repository,
-                                              final LogEntryRepository audit) {
+                                         final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

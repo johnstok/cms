@@ -40,7 +40,8 @@ class UpdateResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public UpdateResourceCommand(final Repository repository, final LogEntryRepository audit) {
+    public UpdateResourceCommand(final Repository repository,
+                                 final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

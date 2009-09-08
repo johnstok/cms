@@ -38,7 +38,8 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateTemplateCommand(final Repository repository, final LogEntryRepository audit) {
+    public CreateTemplateCommand(final Repository repository,
+                                 final LogEntryRepository audit) {
         super(repository, audit);
     }
 
@@ -50,6 +51,8 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      * @param name The name of the template.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     * @param title The template's title.
+     * @param description The template's description.
      *
      * @throws CccCheckedException If the command fails.
      *
