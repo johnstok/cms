@@ -193,7 +193,13 @@ public class UserManagementAcceptanceTest
             _security.login(user.getUsername().toString(), "Testtest00-"));
     }
 
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
     public void testUsernameExists() throws RestException {
+
         // ARRANGE
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
@@ -215,8 +221,22 @@ public class UserManagementAcceptanceTest
 
         // ASSERT
         assertTrue("Username should exists", exists.booleanValue());
-
     }
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testLoggedInUser() {
+
+        // ACT
+        final UserDto user = _users.loggedInUser();
+
+        // ASSERT
+        assertEquals(new Username("super"), user.getUsername());
+    }
+
 
     private UserDto tempUser() throws RestException {
 
