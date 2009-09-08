@@ -582,14 +582,6 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> lockedByCurrentUser() {
-        return mapResources(_resources.lockedByUser(currentUser()));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public ResourceSummary resource(final UUID resourceId) {
         return
             mapResource(_resources.find(Resource.class, resourceId));
