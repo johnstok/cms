@@ -31,7 +31,6 @@ import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreateSearchCommand;
-import ccc.commands.CreateTemplateCommand;
 import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
@@ -42,7 +41,6 @@ import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
-import ccc.commands.UpdateTemplateCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
@@ -57,12 +55,10 @@ import ccc.rest.Resources;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.serialization.Json;
 import ccc.types.Duration;
-import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 
 
@@ -85,32 +81,6 @@ public class ResourcesEJB
 
     private LogEntryRepository _audit;
 
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public ResourceSummary createTemplate(final UUID parentId,
-                                          final TemplateDelta delta,
-                                          final String title,
-                                          final String description,
-                                          final String name)
-                                                 throws CommandFailedException {
-        try {
-            return mapResource(
-                new CreateTemplateCommand(_bdao, _audit).execute(
-                    currentUser(),
-                    new Date(),
-                    parentId,
-                    delta,
-                    title,
-                    description,
-                    new ResourceName(name)));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -312,21 +282,6 @@ public class ResourcesEJB
                 happenedOn,
                 resourceId,
                 templateId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
-    public void updateTemplate(final UUID templateId,
-                               final TemplateDelta delta)
-                                                 throws CommandFailedException {
-        try {
-            new UpdateTemplateCommand(_bdao, _audit).execute(
-                currentUser(), new Date(), templateId, delta);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

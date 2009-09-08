@@ -67,14 +67,14 @@ public final class Migrate extends CccApp {
                 services.lookupPageCommands(),
                 services.lookupFolderCommands(),
                 services.lookupUserCommands(),
-                services.lookupQueries(),
                 new FileUploader(
                     options.getCcURL(),
                     options.getUsername(),
                     options.getPassword()),
-            options.isMigrateHomepage(),
-            options.isMigrateIsMajorEdit(),
-            options.isMigrateVersions());
+                services.lookupTemplates(),
+                options.isMigrateHomepage(),
+                options.isMigrateIsMajorEdit(),
+                options.isMigrateVersions());
         migrations.migrate();
     }
 

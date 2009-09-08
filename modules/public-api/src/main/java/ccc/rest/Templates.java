@@ -38,6 +38,9 @@ import ccc.rest.dto.TemplateSummary;
 @Produces("application/json")
 public interface Templates {
 
+    /** NAME : String. */
+    String NAME = "Templates";
+
 
     /**
      * List all the templates currently available in CCC.

@@ -66,7 +66,7 @@ public class TemplatesImpl
     @Override
     public void updateTemplate(final UUID templateId, final TemplateDelta delta)
     throws CommandFailedException {
-        getCommands().updateTemplate(templateId, delta);
+        getQueries().updateTemplate(templateId, delta);
     }
 
 
@@ -74,11 +74,6 @@ public class TemplatesImpl
     @Override
     public ResourceSummary createTemplate(final TemplateDto template)
     throws CommandFailedException {
-        return getCommands().createTemplate(
-            template.getParentId(),
-            template.getDelta(),
-            template.getTitle(),
-            template.getDescription(),
-            template.getName());
+        return getQueries().createTemplate(template);
     }
 }

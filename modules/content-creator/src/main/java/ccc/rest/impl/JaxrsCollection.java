@@ -18,7 +18,7 @@ import ccc.commons.Registry;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Files;
-import ccc.rest.Queries;
+import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
@@ -35,7 +35,7 @@ abstract class JaxrsCollection {
     private final Registry _reg = new JNDI();
     private final String _appName = CCCProperties.get("application.name");
 
-    private Queries _queries;
+    private Templates _templates;
     private ResourcesExt _resourcesExt;
     private PagesExt _pagesExt;
     private FoldersExt _foldersExt;
@@ -47,22 +47,22 @@ abstract class JaxrsCollection {
     /**
      * Accessor.
      *
-     * @return Returns the queries.
+     * @return Returns the templates.
      */
-    public final Queries getQueries() {
+    public final Templates getQueries() {
         return
-            (null==_queries)
-                ? (Queries) _reg.get(_appName+"/"+Queries.NAME+"/remote")
-                : _queries;
+            (null==_templates)
+                ? (Templates) _reg.get(_appName+"/"+Templates.NAME+"/remote")
+                : _templates;
     }
 
     /**
      * Mutator.
      *
-     * @param queries The queries to set.
+     * @param queries The templates to set.
      */
-    public final void setQueries(final Queries queries) {
-        _queries = queries;
+    public final void setQueries(final Templates queries) {
+        _templates = queries;
     }
 
     /**
