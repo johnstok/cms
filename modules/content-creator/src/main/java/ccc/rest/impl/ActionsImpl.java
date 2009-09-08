@@ -19,7 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.Actions;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
@@ -56,7 +56,7 @@ public class ActionsImpl
     /** {@inheritDoc} */
     @Override
     public void createAction(final ActionDto action)
-    throws CommandFailedException {
+    throws RestException {
         getActions().createAction(action);
     }
 
@@ -64,7 +64,7 @@ public class ActionsImpl
     /** {@inheritDoc} */
     @Override
     public void cancelAction(final UUID actionId)
-    throws CommandFailedException {
+    throws RestException {
         getActions().cancelAction(actionId);
     }
 

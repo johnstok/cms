@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
@@ -30,7 +30,7 @@ public class CycleDetectedException
 
     /** {@inheritDoc} */
     @Override
-    public CommandFailedException toRemoteException() {
-        return new CommandFailedException(new Failure(FailureCode.CYCLE));
+    public RestException toRemoteException() {
+        return new RestException(new Failure(FailureCode.CYCLE));
     }
 }

@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
@@ -34,9 +34,9 @@ public class ActionAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testCreateAction() throws CommandFailedException {
+    public void testCreateAction() throws RestException {
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
@@ -58,9 +58,9 @@ public class ActionAcceptanceTest
 
     /**
      * Test.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testCancelAction() throws CommandFailedException {
+    public void testCancelAction() throws RestException {
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();

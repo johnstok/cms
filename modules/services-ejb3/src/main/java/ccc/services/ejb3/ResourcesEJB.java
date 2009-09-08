@@ -42,7 +42,7 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
@@ -73,7 +73,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void lock(final UUID resourceId) throws CommandFailedException {
+    public void lock(final UUID resourceId) throws RestException {
         lock(resourceId, currentUserId(), new Date());
     }
 
@@ -83,7 +83,7 @@ public class ResourcesEJB
     @RolesAllowed({ADMINISTRATOR})
     public void lock(final UUID resourceId,
                      final UUID actorId,
-                     final Date happenedOn) throws CommandFailedException {
+                     final Date happenedOn) throws RestException {
         try {
             new LockResourceCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, resourceId);
@@ -98,7 +98,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void move(final UUID resourceId,
-                     final UUID newParentId) throws CommandFailedException {
+                     final UUID newParentId) throws RestException {
         try {
             new MoveResourceCommand(_bdao, _audit).execute(
                 currentUser(),
@@ -115,7 +115,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void publish(final UUID resourceId) throws CommandFailedException {
+    public void publish(final UUID resourceId) throws RestException {
         try {
             new PublishCommand(_audit).execute(
                 new Date(),
@@ -133,7 +133,7 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void publish(final UUID resourceId,
                         final UUID userId,
-                        final Date date) throws CommandFailedException {
+                        final Date date) throws RestException {
         try {
             new PublishCommand(_audit).execute(
                 date,
@@ -150,7 +150,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void rename(final UUID resourceId,
-                       final String name) throws CommandFailedException {
+                       final String name) throws RestException {
             try {
                 new RenameResourceCommand(_bdao, _audit).rename(
                     currentUser(), new Date(), resourceId, name);
@@ -164,7 +164,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void unlock(final UUID resourceId) throws CommandFailedException {
+    public void unlock(final UUID resourceId) throws RestException {
         unlock(resourceId, currentUserId(), new Date());
     }
 
@@ -174,7 +174,7 @@ public class ResourcesEJB
     @RolesAllowed({ADMINISTRATOR})
     public void unlock(final UUID resourceId,
                        final UUID actorId,
-                       final Date happenedOn) throws CommandFailedException {
+                       final Date happenedOn) throws RestException {
         try {
             new UnlockResourceCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, resourceId);
@@ -188,7 +188,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void unpublish(final UUID resourceId) throws CommandFailedException {
+    public void unpublish(final UUID resourceId) throws RestException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
                 currentUser(), new Date(), resourceId);
@@ -205,7 +205,7 @@ public class ResourcesEJB
     public void unpublish(final UUID resourceId,
                           final UUID userId,
                           final Date publishDate)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UnpublishResourceCommand(_bdao, _audit).execute(
                 _bdao.find(User.class, userId),
@@ -222,7 +222,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void createWorkingCopy(final UUID resourceId, final long index)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
 
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
@@ -242,7 +242,7 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu)
-    throws CommandFailedException {
+    throws RestException {
         createWorkingCopy(resourceId, pu.getRevision());
     }
 
@@ -252,7 +252,7 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         updateResourceTemplate(
             resourceId, templateId, currentUserId(), new Date());
     }
@@ -263,7 +263,7 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu)
-    throws CommandFailedException {
+    throws RestException {
         updateResourceTemplate(resourceId, pu.getTemplateId());
     }
 
@@ -275,7 +275,7 @@ public class ResourcesEJB
                                        final UUID templateId,
                                        final UUID actorId,
                                        final Date happenedOn)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
 
         try {
             new ChangeTemplateForResourceCommand(_bdao, _audit).execute(
@@ -295,7 +295,7 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         includeInMainMenu(resourceId, include, currentUserId(), new Date());
     }
 
@@ -304,7 +304,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void includeInMainMenu(final UUID resourceId)
-    throws CommandFailedException {
+    throws RestException {
         includeInMainMenu(resourceId, true);
     }
 
@@ -313,7 +313,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void excludeFromMainMenu(final UUID resourceId)
-    throws CommandFailedException {
+    throws RestException {
         includeInMainMenu(resourceId, false);
     }
 
@@ -325,7 +325,7 @@ public class ResourcesEJB
                                   final boolean include,
                                   final UUID actorId,
                                   final Date happenedOn)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new IncludeInMainMenuCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, resourceId, include);
@@ -340,7 +340,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void updateMetadata(final UUID resourceId,
-                               final Json json) throws CommandFailedException {
+                               final Json json) throws RestException {
 
         final String title = json.getString("title");
         final String description = json.getString("description");
@@ -359,7 +359,7 @@ public class ResourcesEJB
                                    final String description,
                                    final String tags,
                                    final Map<String, String> metadata)
-    throws CommandFailedException {
+    throws RestException {
 
         try {
             final Date happenedOn = new Date();
@@ -390,7 +390,7 @@ public class ResourcesEJB
                                final Map<String, String> metadata,
                                final UUID actorId,
                                final Date happenedOn)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdateResourceMetadataCommand(_bdao, _audit).execute(
                 userForId(actorId),
@@ -412,7 +412,7 @@ public class ResourcesEJB
     @RolesAllowed({ADMINISTRATOR})
     public ResourceSummary createSearch(final UUID parentId,
                                         final String title)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             return mapResource(
                 new CreateSearchCommand(_bdao, _audit).execute(
@@ -430,7 +430,7 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void changeRoles(final UUID resourceId,
                             final Collection<String> roles)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         changeRoles(resourceId, roles, currentUserId(), new Date());
     }
 
@@ -442,7 +442,7 @@ public class ResourcesEJB
                             final Collection<String> roles,
                             final UUID actorId,
                             final Date happenedOn)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdateResourceRolesCommand(_bdao, _audit).execute(
                 userForId(actorId), happenedOn, resourceId, roles);
@@ -457,7 +457,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void applyWorkingCopy(final UUID resourceId)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
                 currentUser(), new Date(), resourceId, null, false);
@@ -476,7 +476,7 @@ public class ResourcesEJB
                                  final Date happenedOn,
                                  final boolean isMajorEdit,
                                  final String comment)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new ApplyWorkingCopyCommand(_bdao, _audit).execute(
                 _bdao.find(User.class, userId),
@@ -496,7 +496,7 @@ public class ResourcesEJB
     @RolesAllowed({SITE_BUILDER})
     public void updateCacheDuration(final UUID resourceId,
                                     final Duration duration)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdateCachingCommand(_bdao, _audit).execute(
                 currentUser(), new Date(), resourceId, duration);
@@ -512,7 +512,7 @@ public class ResourcesEJB
     @RolesAllowed({SITE_BUILDER})
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu)
-    throws CommandFailedException {
+    throws RestException {
         updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
@@ -521,7 +521,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void clearWorkingCopy(final UUID resourceId)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new ClearWorkingCopyCommand(_bdao, _audit).execute(
                 currentUser(), new Date(), resourceId);
@@ -536,7 +536,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({SITE_BUILDER})
     public void deleteCacheDuration(final UUID id)
-    throws CommandFailedException {
+    throws RestException {
         updateCacheDuration(id, (Duration) null);
     }
 

@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -113,9 +113,9 @@ public class FileUploadAcceptanceTest
      * Test.
      *
      * @throws IOException If the test fails.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testCreateFile() throws IOException, CommandFailedException {
+    public void testCreateFile() throws IOException, RestException {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -137,10 +137,10 @@ public class FileUploadAcceptanceTest
      * Test.
      *
      * @throws IOException If the test fails.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
     public void testCreateFileRejectsDuplicateNames()
-    throws IOException, CommandFailedException {
+    throws IOException, RestException {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -152,7 +152,7 @@ public class FileUploadAcceptanceTest
         // ACT
         try {
             createFile(fName, "Hello!", filesFolder);
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             assertEquals(FailureCode.EXISTS, e.getCode());
         }
 
@@ -168,9 +168,9 @@ public class FileUploadAcceptanceTest
      * Test.
      *
      * @throws IOException If the test fails.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateFile() throws IOException, CommandFailedException {
+    public void testUpdateFile() throws IOException, RestException {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -193,10 +193,10 @@ public class FileUploadAcceptanceTest
      * Test.
      *
      * @throws IOException If the test fails.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
     public void testUpdateFileRequiresLock() throws IOException,
-                                                    CommandFailedException {
+                                                    RestException {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -210,7 +210,7 @@ public class FileUploadAcceptanceTest
             updateTextFile("Update!", rs);
 
         // ASSERT
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             assertEquals(FailureCode.UNLOCKED, e.getCode());
         }
         assertEquals("Hello!", previewContent(rs, false));

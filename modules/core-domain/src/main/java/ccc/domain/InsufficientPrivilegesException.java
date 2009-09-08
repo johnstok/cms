@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.types.CommandType;
 import ccc.types.DBC;
 import ccc.types.Failure;
@@ -59,7 +59,7 @@ public class InsufficientPrivilegesException
 
     /** {@inheritDoc} */
     @Override
-    public CommandFailedException toRemoteException() {
-        return new CommandFailedException(new Failure(FailureCode.PRIVILEGES));
+    public RestException toRemoteException() {
+        return new RestException(new Failure(FailureCode.PRIVILEGES));
     }
 }

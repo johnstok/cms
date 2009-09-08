@@ -45,21 +45,21 @@ public interface Actions {
      *
      * @param actionId The id of the action to cancel.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST @Path("/actions/{id}/cancel")
     void cancelAction(
-        @PathParam("id") UUID actionId) throws CommandFailedException;
+        @PathParam("id") UUID actionId) throws RestException;
 
     /**
      * Create a new scheduled action.
      *
      * @param action The action to create
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST @Path("/actions")
-    void createAction(ActionDto action) throws CommandFailedException;
+    void createAction(ActionDto action) throws RestException;
 
 
     /**

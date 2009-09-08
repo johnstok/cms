@@ -22,7 +22,7 @@ import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
 import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourcePath;
@@ -58,7 +58,7 @@ public class FileUpload extends CccApp {
                         final UUID childFolder = server.createFolder(
                             parentId, child.getName(), publish);
                         recurse(childFolder, child, includeHidden, publish);
-                    } catch (final CommandFailedException e) {
+                    } catch (final RestException e) {
                         LOG.warn(
                             "Failed to create folder '"+child.getName()
                             + "' [error code: "+e.getCode()+"].");

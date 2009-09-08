@@ -25,7 +25,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import ccc.domain.File;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 
 
@@ -87,7 +87,7 @@ public class UpdateFileServlet extends MultipartServlet {
                                     dataStream);
             response.getWriter().write("NULL");
 
-        } catch (final CommandFailedException e) {
+        } catch (final RestException e) {
             handleException(response, e);
 
         } finally {

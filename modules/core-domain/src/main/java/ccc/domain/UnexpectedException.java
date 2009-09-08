@@ -11,7 +11,7 @@
  */
 package ccc.domain;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
@@ -37,8 +37,8 @@ public class UnexpectedException
 
     /** {@inheritDoc} */
     @Override
-    public CommandFailedException toRemoteException() {
-        return new CommandFailedException(
+    public RestException toRemoteException() {
+        return new RestException(
             new Failure(FailureCode.UNEXPECTED));
     }
 }

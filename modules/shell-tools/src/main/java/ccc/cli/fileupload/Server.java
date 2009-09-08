@@ -14,7 +14,7 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.util.UUID;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 
 
 
@@ -42,11 +42,11 @@ public interface Server {
      * @param name The name of the folder.
      * @param publish Should the folder be published.
      * @return The id of the newly created folder.
-     * @throws CommandFailedException If it wasn't possible to create the
+     * @throws RestException If it wasn't possible to create the
      *  folder.
      */
     UUID createFolder(final UUID parentFolder, String name, boolean publish)
-    throws CommandFailedException;
+    throws RestException;
 
     /**
      * Get the id of the root folder in the new system.

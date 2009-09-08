@@ -28,7 +28,7 @@ import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
@@ -86,7 +86,7 @@ public class UsersEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateYourUser(final UUID userId,
                                final UserDto user)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
             currentUser(),

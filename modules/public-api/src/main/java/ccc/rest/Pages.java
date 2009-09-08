@@ -72,12 +72,12 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST
     @Path("/pages/{id}")
     void updatePage(@PathParam("id") UUID pageId, Json delta)
-    throws CommandFailedException;
+    throws RestException;
 
 
     /**
@@ -86,12 +86,12 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST
     @Path("/pages/{id}/wc")
     void updateWorkingCopy(@PathParam("id") UUID pageId, PageDelta delta)
-    throws CommandFailedException;
+    throws RestException;
 
 
     /**
@@ -99,12 +99,12 @@ public interface Pages {
      *
      * @param page Details of the new page to create.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      *
      * @return A resource summary describing the new page.
      */
     @POST
     @Path("/pages")
-    ResourceSummary createPage(PageDto page) throws CommandFailedException;
+    ResourceSummary createPage(PageDto page) throws RestException;
 
 }

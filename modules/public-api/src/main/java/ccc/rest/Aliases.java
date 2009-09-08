@@ -57,12 +57,12 @@ public interface Aliases {
      *
      * @param alias The alias to create.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      *
      * @return A resource summary describing the new alias.
      */
     @POST @Path("")
-    ResourceSummary createAlias(AliasDto alias) throws CommandFailedException;
+    ResourceSummary createAlias(AliasDto alias) throws RestException;
 
 
     /**
@@ -71,10 +71,10 @@ public interface Aliases {
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}")
     void updateAlias(
         @PathParam("id") UUID aliasId,
-        AliasDelta delta) throws CommandFailedException;
+        AliasDelta delta) throws RestException;
 }

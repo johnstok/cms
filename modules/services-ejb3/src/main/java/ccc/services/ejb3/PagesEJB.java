@@ -33,7 +33,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.User;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
@@ -74,7 +74,7 @@ public class PagesEJB
                                       final Date happenedOn,
                                       final String comment,
                                       final boolean majorChange)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             final User u = userForId(actorId);
 
@@ -107,7 +107,7 @@ public class PagesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createPage(final PageDto page)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         return createPage(
             page.getParentId(),
             page.getDelta(),
@@ -126,7 +126,7 @@ public class PagesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void updatePage(final UUID pageId, final Json json)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         final boolean majorEdit =
             json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
         final String comment = json.getString(JsonKeys.COMMENT);
@@ -151,7 +151,7 @@ public class PagesEJB
                            final boolean isMajorEdit,
                            final UUID actorId,
                            final Date happenedOn)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdatePageCommand(_bdao, _audit).execute(
                 userForId(actorId),
@@ -172,7 +172,7 @@ public class PagesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateWorkingCopy(final UUID pageId,
                                   final PageDelta delta)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdateWorkingCopyCommand(_bdao, _audit).execute(
                 currentUser(),

@@ -12,7 +12,7 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.types.ActionStatus;
 import ccc.types.FailureCode;
 
@@ -49,7 +49,7 @@ public class ActionTest
         // ARRANGE
         final DummyResource p = new DummyResource("page");
         final Action a = new Action();
-        final CommandFailedException e =
+        final RestException e =
             new UnlockedException(p).toRemoteException();
 
         // ACT

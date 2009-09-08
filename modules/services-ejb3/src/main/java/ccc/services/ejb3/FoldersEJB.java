@@ -35,7 +35,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
@@ -65,7 +65,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createFolder(final FolderDto folder)
-    throws CommandFailedException {
+    throws RestException {
         return createFolder(
             folder.getParentId(), folder.getName(), null, false);
 
@@ -79,7 +79,7 @@ public class FoldersEJB
                                         final String name,
                                         final String title,
                                         final boolean publish)
-    throws CommandFailedException {
+    throws RestException {
         return createFolder(
             parentId,
             name,
@@ -99,7 +99,7 @@ public class FoldersEJB
                                         final boolean publish,
                                         final UUID actorId,
                                         final Date happenedOn)
-    throws CommandFailedException {
+    throws RestException {
         try {
             final User u = userForId(actorId);
 
@@ -125,7 +125,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR})
     public ResourceSummary createRoot(final String name)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             final Folder f = new Folder(name);
             new CreateRootCommand(_bdao, _audit).execute(
@@ -142,7 +142,7 @@ public class FoldersEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateFolder(final UUID folderId,
                              final FolderDelta delta)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             final List<UUID> list = new ArrayList<UUID>();
 

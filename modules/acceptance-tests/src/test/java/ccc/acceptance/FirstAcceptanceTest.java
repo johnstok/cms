@@ -17,7 +17,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Security;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -39,9 +39,9 @@ public class FirstAcceptanceTest
 
     /**
      * Test.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testCreateTemplate() throws CommandFailedException {
+    public void testCreateTemplate() throws RestException {
 
         // ARRANGE
         final ResourceSummary templateFolder =
@@ -69,9 +69,9 @@ public class FirstAcceptanceTest
 
     /**
      * Test.
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testFail() throws CommandFailedException {
+    public void testFail() throws RestException {
 
         // ARRANGE
 

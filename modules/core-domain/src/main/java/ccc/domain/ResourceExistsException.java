@@ -13,7 +13,7 @@ package ccc.domain;
 
 import java.util.Collections;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
@@ -55,9 +55,9 @@ public class ResourceExistsException
 
     /** {@inheritDoc} */
     @Override
-    public CommandFailedException toRemoteException() {
+    public RestException toRemoteException() {
         return
-            new CommandFailedException(
+            new RestException(
                 new Failure(
                     FailureCode.EXISTS,
                     Collections.singletonMap(

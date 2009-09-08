@@ -27,7 +27,7 @@ import ccc.commands.UpdateAliasCommand;
 import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
 import ccc.rest.Aliases;
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
@@ -55,7 +55,7 @@ public class AliasesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updateAlias(final UUID aliasId,
                             final AliasDelta delta)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             new UpdateAliasCommand(_bdao, _audit).execute(
                 currentUser(),
@@ -73,7 +73,7 @@ public class AliasesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createAlias(final AliasDto alias)
-                                                 throws CommandFailedException {
+                                                 throws RestException {
         try {
             return mapResource(
                 new CreateAliasCommand(_bdao, _audit).execute(

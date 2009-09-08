@@ -82,25 +82,25 @@ public interface Templates {
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      */
     @POST
     @Path("/templates/{id}")
     void updateTemplate(
         @PathParam("id") UUID templateId,
-        TemplateDelta delta) throws CommandFailedException;
+        TemplateDelta delta) throws RestException;
 
     /**
      * Create a new template in CCC.
      *
      * @param template The template's details.
      *
-     * @throws CommandFailedException If the method fails.
+     * @throws RestException If the method fails.
      *
      * @return A resource summary describing the new template.
      */
     @POST
     @Path("/templates")
     ResourceSummary createTemplate(TemplateDto template)
-    throws CommandFailedException;
+    throws RestException;
 }

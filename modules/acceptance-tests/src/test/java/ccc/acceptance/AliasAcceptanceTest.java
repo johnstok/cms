@@ -13,7 +13,7 @@ package ccc.acceptance;
 
 import java.util.UUID;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
@@ -31,9 +31,9 @@ public class AliasAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testUpdateAlias() throws CommandFailedException {
+    public void testUpdateAlias() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -52,9 +52,9 @@ public class AliasAcceptanceTest
     /**
      * Test.
      *
-     * @throws CommandFailedException If the test fails.
+     * @throws RestException If the test fails.
      */
-    public void testCreateAlias() throws CommandFailedException {
+    public void testCreateAlias() throws RestException {
 
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = tempFolder();

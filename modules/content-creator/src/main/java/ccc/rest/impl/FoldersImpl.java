@@ -18,7 +18,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
@@ -78,7 +78,7 @@ public class FoldersImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final FolderDto folder)
-    throws CommandFailedException {
+    throws RestException {
         return getFolderCommands().createFolder(folder);
     }
 
@@ -86,7 +86,7 @@ public class FoldersImpl
     /** {@inheritDoc} */
     @Override
     public void updateFolder(final UUID folderId, final FolderDelta delta)
-    throws CommandFailedException {
+    throws RestException {
         getFolderCommands().updateFolder(folderId, delta);
     }
 }

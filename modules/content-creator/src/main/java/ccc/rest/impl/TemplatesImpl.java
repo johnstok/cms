@@ -18,7 +18,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -65,7 +65,7 @@ public class TemplatesImpl
     /** {@inheritDoc} */
     @Override
     public void updateTemplate(final UUID templateId, final TemplateDelta delta)
-    throws CommandFailedException {
+    throws RestException {
         getQueries().updateTemplate(templateId, delta);
     }
 
@@ -73,7 +73,7 @@ public class TemplatesImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final TemplateDto template)
-    throws CommandFailedException {
+    throws RestException {
         return getQueries().createTemplate(template);
     }
 }

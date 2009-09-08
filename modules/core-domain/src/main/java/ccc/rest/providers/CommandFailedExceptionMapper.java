@@ -14,7 +14,7 @@ package ccc.rest.providers;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import ccc.rest.CommandFailedException;
+import ccc.rest.RestException;
 import ccc.types.HttpStatusCode;
 
 
@@ -25,11 +25,11 @@ import ccc.types.HttpStatusCode;
  */
 public class CommandFailedExceptionMapper
     implements
-        ExceptionMapper<CommandFailedException> {
+        ExceptionMapper<RestException> {
 
     /** {@inheritDoc} */
     @Override
-    public Response toResponse(final CommandFailedException e) {
+    public Response toResponse(final RestException e) {
         return
             Response.status(HttpStatusCode.IM_A_TEAPOT)
                     .type("application/json")
