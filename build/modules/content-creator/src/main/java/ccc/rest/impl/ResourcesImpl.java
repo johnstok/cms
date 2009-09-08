@@ -20,8 +20,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.RestException;
 import ccc.rest.Resources;
+import ccc.rest.RestException;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -79,13 +79,6 @@ public class ResourcesImpl
     @Override
     public Collection<ResourceSummary> locked() {
         return getCommands().locked();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<ResourceSummary> lockedByCurrentUser() {
-        return getCommands().lockedByCurrentUser();
     }
 
 

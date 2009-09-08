@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import ccc.domain.Resource;
 import ccc.domain.Revision;
-import ccc.domain.User;
 import ccc.types.ResourcePath;
 
 
@@ -49,14 +48,6 @@ public interface ResourceRepository {
      * @return The result.
      */
     <T> T find(String queryName, Class<T> resultType, Object... params);
-
-    /**
-     * List the resources locked by a specific user.
-     *
-     * @param actor The user to search with.
-     * @return The list of resources.
-     */
-    List<Resource> lockedByUser(final User actor);
 
     /**
      * List all locked resources.

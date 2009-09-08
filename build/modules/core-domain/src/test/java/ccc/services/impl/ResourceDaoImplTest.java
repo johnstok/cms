@@ -337,24 +337,6 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     */
-    public void testQueryResourcesLockedByUser() {
-
-        // ARRANGE
-        expect(_repository.list("resourcesLockedByUser", Resource.class, _regularUser))
-            .andReturn(Collections.singletonList(_r));
-        replayAll();
-
-        // ACT
-        final List<Resource> locked = _rdao.lockedByUser(_regularUser);
-
-        // ASSERT
-        verifyAll();
-        assertNotNull("Shouldn't be null.", locked);
-    }
-
-    /**
-     * Test.
      * @throws CccCheckedException If the command fails.
      */
     public void testSetDefaultTemplate()

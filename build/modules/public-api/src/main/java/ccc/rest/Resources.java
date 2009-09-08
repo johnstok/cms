@@ -67,15 +67,6 @@ public interface Resources {
     @NoCache
     String getAbsolutePath(@PathParam("id") UUID resourceId);
 
-    /**
-     * List the resources locked by the currently logged in user.
-     *
-     * @return The list of resources.
-     */
-    @GET
-    @Path("/resources/locked/me")
-    @NoCache
-    Collection<ResourceSummary> lockedByCurrentUser();
 
     /**
      * List all locked resources.

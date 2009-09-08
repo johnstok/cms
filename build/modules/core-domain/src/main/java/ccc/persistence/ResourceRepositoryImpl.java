@@ -21,7 +21,6 @@ import ccc.domain.Folder;
 import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
-import ccc.domain.User;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 
@@ -42,16 +41,6 @@ public class ResourceRepositoryImpl implements ResourceRepository {
      */
     public ResourceRepositoryImpl(final Repository repository) {
         _repository = repository;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public List<Resource> lockedByUser(final User actor) {
-        return
-            _repository.list(QueryNames.RESOURCES_LOCKED_BY_USER,
-                      Resource.class,
-                      actor);
     }
 
 
