@@ -54,7 +54,7 @@ import ccc.types.ResourceName;
 @TransactionAttribute(REQUIRED)
 @Remote(Templates.class)
 @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-public final class QueriesEJB
+public final class TemplatesEJB
     extends
         BaseCommands
     implements
@@ -68,7 +68,7 @@ public final class QueriesEJB
     /**
      * Constructor.
      */
-    public QueriesEJB() { super(); }
+    public TemplatesEJB() { super(); }
 
 
     /** {@inheritDoc} */
