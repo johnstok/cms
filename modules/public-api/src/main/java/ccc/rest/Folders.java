@@ -85,7 +85,7 @@ public interface Folders {
     @GET
     @Path("/folders/{id}/{name}/exists")
     @NoCache
-    boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
+    Boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
                                @PathParam("name") final String name);
 
     /**

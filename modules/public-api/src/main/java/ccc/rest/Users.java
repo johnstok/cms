@@ -92,7 +92,7 @@ public interface Users {
      * @return True if the username is in use, false otherwise.
      */
     @GET @Path("/users/{uname}/exists") @NoCache
-    boolean usernameExists(@PathParam("uname") Username username);
+    Boolean usernameExists(@PathParam("uname") Username username);
 
     /**
      * Query users with specified email.

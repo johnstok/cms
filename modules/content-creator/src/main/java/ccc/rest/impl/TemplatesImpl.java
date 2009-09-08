@@ -50,7 +50,7 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public boolean templateNameExists(final String templateName) {
+    public Boolean templateNameExists(final String templateName) {
         return getQueries().templateNameExists(templateName);
     }
 

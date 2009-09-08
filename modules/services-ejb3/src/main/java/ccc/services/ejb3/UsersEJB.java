@@ -103,7 +103,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public boolean usernameExists(final Username username) {
+    public Boolean usernameExists(final Username username) {
         return _users.usernameExists(username.toString());
     }
 
