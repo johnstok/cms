@@ -18,23 +18,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
@@ -56,11 +49,6 @@ public class UsersEJB
     implements
         Users {
 
-    @PersistenceContext private EntityManager _em;
-
-    private LogEntryRepository _audit;
-
-
 
     /** {@inheritDoc} */
     @Override
@@ -68,7 +56,7 @@ public class UsersEJB
     public UserDto createUser(final UserDto delta) {
         return mapUser(
             new CreateUserCommand(_bdao, _audit).execute(
-                loggedInUser(_context), new Date(), delta));
+                currentUser(), new Date(), delta));
     }
 
 
@@ -77,7 +65,7 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR})
     public void updateUser(final UUID userId, final UserDto delta) {
         new UpdateUserCommand(_bdao, _audit).execute(
-            loggedInUser(_context), new Date(), userId, delta);
+            currentUser(), new Date(), userId, delta);
     }
 
 
@@ -86,7 +74,7 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR})
     public void updateUserPassword(final UUID userId, final UserDto user) {
         new UpdatePasswordAction(_bdao, _audit).execute(
-            loggedInUser(_context),
+            currentUser(),
             new Date(),
             userId,
             user.getPassword());
@@ -101,15 +89,17 @@ public class UsersEJB
                                                  throws CommandFailedException {
         try {
         new UpdateCurrentUserCommand(_bdao, _audit).execute(
-            loggedInUser(_context),
+            currentUser(),
             new Date(),
             userId,
             user.getEmail(),
             user.getPassword());
         } catch (final CccCheckedException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
+
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
@@ -117,12 +107,14 @@ public class UsersEJB
         return _users.usernameExists(username.toString());
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public UserDto loggedInUser() {
-        return mapUser(loggedInUser(_context));
+        return mapUser(currentUser());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -131,6 +123,7 @@ public class UsersEJB
         return mapUsers(_users.listUsers());
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
@@ -138,12 +131,14 @@ public class UsersEJB
         return mapUsers(_users.listUsersWithEmail(email));
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithRole(final String role) {
         return mapUsers(_users.listUsersWithRole(role));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -153,22 +148,12 @@ public class UsersEJB
         return mapUsers(_users.listUsersWithUsername(username.toString()));
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public UserDto userDelta(final UUID userId) {
         return
         deltaUser(_users.find(userId));
-    }
-
-
-    /* ==============
-     * Helper methods
-     * ============== */
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
     }
 }

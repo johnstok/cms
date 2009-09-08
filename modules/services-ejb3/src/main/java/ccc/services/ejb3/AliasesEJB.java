@@ -17,23 +17,15 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.CreateAliasCommand;
 import ccc.commands.UpdateAliasCommand;
 import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.Aliases;
 import ccc.rest.CommandFailedException;
 import ccc.rest.dto.AliasDelta;
@@ -57,10 +49,6 @@ public class AliasesEJB
     implements
         Aliases {
 
-    @PersistenceContext private EntityManager _em;
-    private LogEntryRepository           _audit;
-
-
 
     /** {@inheritDoc} */
     @Override
@@ -79,6 +67,7 @@ public class AliasesEJB
             throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -110,18 +99,4 @@ public class AliasesEJB
         }
         return null;
     }
-
-
-    /* ==============
-     * Helper methods
-     * ============== */
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _resources = new ResourceRepositoryImpl(_bdao);
-    }
-
 }

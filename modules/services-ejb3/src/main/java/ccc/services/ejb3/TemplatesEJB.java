@@ -18,24 +18,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.CreateTemplateCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Template;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.QueryNames;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
@@ -59,10 +51,6 @@ public final class TemplatesEJB
         BaseCommands
     implements
         Templates {
-
-    @PersistenceContext private EntityManager _em;
-
-    private LogEntryRepository _audit;
 
 
     /**
@@ -137,14 +125,5 @@ public final class TemplatesEJB
     public TemplateDelta templateDelta(final UUID templateId) {
         return
             deltaTemplate(_resources.find(Template.class, templateId));
-    }
-
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _resources = new ResourceRepositoryImpl(_bdao);
     }
 }

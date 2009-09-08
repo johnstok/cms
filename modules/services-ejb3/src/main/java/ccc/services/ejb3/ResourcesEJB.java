@@ -19,13 +19,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
@@ -45,11 +42,6 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceDto;
@@ -77,17 +69,14 @@ public class ResourcesEJB
     implements
         ResourcesExt {
 
-    @PersistenceContext private EntityManager _em;
-
-    private LogEntryRepository _audit;
-
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void lock(final UUID resourceId) throws CommandFailedException {
-        lock(resourceId, loggedInUserId(), new Date());
+        lock(resourceId, currentUserId(), new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -103,6 +92,7 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -121,6 +111,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -135,6 +126,7 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -153,6 +145,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -167,12 +160,14 @@ public class ResourcesEJB
             }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void unlock(final UUID resourceId) throws CommandFailedException {
-        unlock(resourceId, loggedInUserId(), new Date());
+        unlock(resourceId, currentUserId(), new Date());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -189,6 +184,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -201,6 +197,7 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -220,6 +217,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -238,6 +236,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -247,6 +246,7 @@ public class ResourcesEJB
         createWorkingCopy(resourceId, pu.getRevision());
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -254,7 +254,7 @@ public class ResourcesEJB
                                        final UUID templateId)
                                                  throws CommandFailedException {
         updateResourceTemplate(
-            resourceId, templateId, loggedInUserId(), new Date());
+            resourceId, templateId, currentUserId(), new Date());
     }
 
 
@@ -266,6 +266,7 @@ public class ResourcesEJB
     throws CommandFailedException {
         updateResourceTemplate(resourceId, pu.getTemplateId());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -288,13 +289,14 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include)
                                                  throws CommandFailedException {
-        includeInMainMenu(resourceId, include, loggedInUserId(), new Date());
+        includeInMainMenu(resourceId, include, currentUserId(), new Date());
     }
 
 
@@ -333,6 +335,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -347,6 +350,7 @@ public class ResourcesEJB
         updateMetadata(resourceId, title, description, tags, metadata);
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -359,7 +363,7 @@ public class ResourcesEJB
 
         try {
             final Date happenedOn = new Date();
-            final UUID actorId = loggedInUserId();
+            final UUID actorId = currentUserId();
 
             new UpdateResourceMetadataCommand(_bdao, _audit).execute(
                 userForId(actorId),
@@ -374,6 +378,7 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -402,7 +407,6 @@ public class ResourcesEJB
     }
 
 
-
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
@@ -427,7 +431,7 @@ public class ResourcesEJB
     public void changeRoles(final UUID resourceId,
                             final Collection<String> roles)
                                                  throws CommandFailedException {
-        changeRoles(resourceId, roles, loggedInUserId(), new Date());
+        changeRoles(resourceId, roles, currentUserId(), new Date());
     }
 
 
@@ -448,6 +452,7 @@ public class ResourcesEJB
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
@@ -461,6 +466,7 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -483,6 +489,8 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({SITE_BUILDER})
@@ -516,10 +524,10 @@ public class ResourcesEJB
                                                  throws CommandFailedException {
         try {
             new ClearWorkingCopyCommand(_bdao, _audit).execute(
-                loggedInUser(_context), new Date(), resourceId);
+                currentUser(), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
 
@@ -554,12 +562,14 @@ public class ResourcesEJB
                       .toString();
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<RevisionDto> history(final UUID resourceId) {
         return mapLogEntries(_resources.history(resourceId));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -568,12 +578,14 @@ public class ResourcesEJB
         return mapResources(_resources.locked());
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> lockedByCurrentUser() {
         return mapResources(_resources.lockedByUser(currentUser()));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -582,6 +594,7 @@ public class ResourcesEJB
         return
             mapResource(_resources.find(Resource.class, resourceId));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -592,6 +605,7 @@ public class ResourcesEJB
         return r.metadata();
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
@@ -600,6 +614,7 @@ public class ResourcesEJB
             _resources.find(Resource.class, resourceId);
         return r.roles();
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -610,6 +625,7 @@ public class ResourcesEJB
         return r.cache();
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
@@ -618,6 +634,7 @@ public class ResourcesEJB
             _resources.find(Resource.class, resourceId);
         return mapTemplate(r.computeTemplate(null));
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -628,22 +645,11 @@ public class ResourcesEJB
             _resources.lookup(rp.top().toString(), rp.removeTop()));
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public ResourceSummary resourceForLegacyId(final String legacyId) {
         return mapResource(_resources.lookupWithLegacyId(legacyId));
-    }
-
-
-    /* ==============
-     * Helper methods
-     * ============== */
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _resources = new ResourceRepositoryImpl(_bdao);
     }
 }

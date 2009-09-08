@@ -20,13 +20,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import ccc.commands.CreateFolderCommand;
 import ccc.commands.CreateRootCommand;
@@ -37,12 +34,7 @@ import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.QueryNames;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.CommandFailedException;
 import ccc.rest.Folders;
 import ccc.rest.dto.FolderDelta;
@@ -68,8 +60,6 @@ public class FoldersEJB
     implements
         FoldersExt {
 
-    @PersistenceContext private EntityManager _em;
-    private LogEntryRepository           _audit;
 
     /** {@inheritDoc} */
     @Override
@@ -80,6 +70,7 @@ public class FoldersEJB
             folder.getParentId(), folder.getName(), null, false);
 
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -94,7 +85,7 @@ public class FoldersEJB
             name,
             title,
             publish,
-            loggedInUserId(_context),
+            currentUserId(),
             new Date());
     }
 
@@ -125,7 +116,7 @@ public class FoldersEJB
             return mapResource(f);
 
         } catch (final CccCheckedException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
 
@@ -138,10 +129,10 @@ public class FoldersEJB
         try {
             final Folder f = new Folder(name);
             new CreateRootCommand(_bdao, _audit).execute(
-                loggedInUser(_context), new Date(), f);
+                currentUser(), new Date(), f);
             return mapResource(f);
         } catch (final ResourceExistsException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
 
@@ -160,7 +151,7 @@ public class FoldersEJB
             }
 
             new UpdateFolderCommand(_bdao, _audit).execute(
-                loggedInUser(_context),
+                currentUser(),
                  new Date(),
                  folderId,
                  ResourceOrder.valueOf(delta.getSortOrder()),
@@ -168,9 +159,10 @@ public class FoldersEJB
                  list);
 
         } catch (final CccCheckedException e) {
-            throw fail(_context, e);
+            throw fail(e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -182,11 +174,12 @@ public class FoldersEJB
             f != null ? f.entries() : new ArrayList<Resource>());
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                            final UUID folderId) {
+                                                        final UUID folderId) {
         final Folder f =
             _resources.find(Folder.class, folderId);
         if (f != null) {
@@ -196,6 +189,7 @@ public class FoldersEJB
         return mapResources(new ArrayList<Resource>());
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
@@ -204,6 +198,7 @@ public class FoldersEJB
             _resources.find(Folder.class, folderId);
         return mapResources(f != null ? f.folders() : new ArrayList<Folder>());
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -215,23 +210,11 @@ public class FoldersEJB
                   .hasEntryWithName(new ResourceName(name));
     }
 
+
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> roots() {
         return mapResources(_resources.list(QueryNames.ROOTS, Folder.class));
     }
-
-
-    /* ==============
-     * Helper methods
-     * ============== */
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _resources = new ResourceRepositoryImpl(_bdao);
-    }
-
 }
