@@ -11,12 +11,11 @@
  */
 package ccc.types;
 
-import ccc.types.Duration;
 import junit.framework.TestCase;
 
 
 /**
- * TODO: Add Description for this type.
+ * Tests for the {@link Duration} class.
  *
  * @author Civic Computing Ltd.
  */
