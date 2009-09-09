@@ -37,10 +37,9 @@ public class EmailAddress implements Serializable {
      * This constant states that domain literals are allowed in the email
      * address, e.g.:
      *
-     * <p><tt>someone@[192.168.1.100]</tt> or <br/>
-
-     * <tt>john.doe@[23:33:A2:22:16:1F]</tt> or <br/>
-     * <tt>me@[my computer]</tt></p>
+     * <p><tt>someone@[192.168.1.100]</tt> or
+     * <br><tt>john.doe@[23:33:A2:22:16:1F]</tt> or
+     * <br><tt>me@[my computer]</tt></p>
      *
      * <p>The RFC says these are valid email addresses, but most people don't
      * like allowing them. If you don't want to allow them, and only want to
@@ -166,7 +165,7 @@ public class EmailAddress implements Serializable {
     /**
      * Constructor.
      */
-    public EmailAddress() {
+    protected EmailAddress() {
         super();
     }
 
@@ -179,7 +178,7 @@ public class EmailAddress implements Serializable {
     public EmailAddress(final String newText) {
         super();
         setText(newText);
-//      DBC.require().toBeTrue(this.isValid());
+//      DBC.require().toBeTrue(isValid());
     }
 
 

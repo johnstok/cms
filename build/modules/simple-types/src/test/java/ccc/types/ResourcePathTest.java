@@ -14,9 +14,6 @@ package ccc.types;
 
 import java.util.List;
 
-import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
-
 import junit.framework.TestCase;
 
 
@@ -26,6 +23,73 @@ import junit.framework.TestCase;
  * @author Civic Computing Ltd
  */
 public final class ResourcePathTest extends TestCase {
+
+    /**
+     * Test.
+     */
+    public void testConstructorRejectsInvalidStrings() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            new ResourcePath("\\hello\\world");
+            fail();
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "\\hello\\world does not match the regular expression:"
+                    + " (/[\\.\\-\\w]+)*",
+                e.getMessage());
+        }
+
+
+    }
+
+    /**
+     * Test.
+     */
+    public void testTopReturnsNullForAnEmptyPath() {
+
+        // ARRANGE
+        final ResourcePath path = new ResourcePath("");
+
+        // ACT
+
+        // ASSERT
+        assertNull(path.top());
+    }
+
+    /**
+     * Test.
+     */
+    public void testRemoveTop() {
+
+        // ARRANGE
+        final ResourcePath path = new ResourcePath("/foo/bar/baz");
+
+        // ACT
+        final ResourcePath noTop = path.removeTop();
+
+        // ASSERT
+        assertEquals(new ResourcePath("/bar/baz"), noTop);
+    }
+
+    /**
+     * Test.
+     */
+    public void testGetTopOfTheResourcePath() {
+
+        // ARRANGE
+        final ResourcePath path = new ResourcePath("/foo/bar/baz");
+
+        // ACT
+        final ResourceName name = path.top();
+
+        // ASSERT
+        assertEquals(new ResourceName("foo"), name);
+    }
 
     /**
      * Test.
@@ -156,5 +220,9 @@ public final class ResourcePathTest extends TestCase {
 
         // ASSERT
         assertTrue("Should be true.", areEqual);
+        assertTrue(p1.equals(p1));
+        assertFalse(p1.equals(new ResourcePath("/q")));
+        assertFalse(p1.equals(new Object()));
+        assertFalse(p1.equals(null));
     }
 }
