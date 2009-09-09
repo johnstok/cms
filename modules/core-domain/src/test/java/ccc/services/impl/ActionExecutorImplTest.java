@@ -74,7 +74,7 @@ public class ActionExecutorImplTest
 
         // ASSERT
         verify(_resourcesExt);
-        assertEquals(ActionStatus.Failed, a.status());
+        assertEquals(ActionStatus.FAILED, a.status());
         assertEquals(
             FailureCode.UNLOCKED,
             a.getCode());

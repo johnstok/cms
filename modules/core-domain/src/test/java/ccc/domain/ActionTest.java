@@ -38,7 +38,7 @@ public class ActionTest
         a.cancel();
 
         // ASSERT
-        assertEquals(ActionStatus.Cancelled, a.status());
+        assertEquals(ActionStatus.CANCELLED, a.status());
     }
 
     /**
@@ -56,7 +56,7 @@ public class ActionTest
         a.fail(e.getFailure());
 
         // ASSERT
-        assertEquals(ActionStatus.Failed, a.status());
+        assertEquals(ActionStatus.FAILED, a.status());
         assertEquals(FailureCode.UNLOCKED, a.getCode());
     }
 
@@ -71,7 +71,7 @@ public class ActionTest
         final Action a = new Action();
 
         // ASSERT
-        assertEquals(ActionStatus.Scheduled, a.status());
+        assertEquals(ActionStatus.SCHEDULED, a.status());
     }
 
     /**
@@ -86,6 +86,6 @@ public class ActionTest
         a.complete();
 
         // ASSERT
-        assertEquals(ActionStatus.Complete, a.status());
+        assertEquals(ActionStatus.COMPLETE, a.status());
     }
 }

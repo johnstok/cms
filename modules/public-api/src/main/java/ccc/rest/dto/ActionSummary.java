@@ -50,7 +50,7 @@ public final class ActionSummary implements Serializable, Jsonable {
      * @param id The action's id.
      * @param type The type of command the action will perform.
      * @param subjectType The subject's type.
-     * @param actor The action's actor.
+     * @param actorUsername The action's actor.
      * @param after The date after which the action should be executed.
      * @param path The absolute path of the action's subject.
      * @param status The action's status.

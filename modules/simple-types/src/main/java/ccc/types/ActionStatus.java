@@ -16,13 +16,13 @@ package ccc.types;
  *
  * @author Civic Computing Ltd.
  */
-public enum ActionStatus { // FIXME: Capitalise these enums?
-    /** Scheduled : ActionStatus. */
-    Scheduled,
-    /** Complete : ActionStatus. */
-    Complete,
-    /** Failed : ActionStatus. */
-    Failed,
-    /** Cancelled : ActionStatus. */
-    Cancelled;
+public enum ActionStatus {
+    /** SCHEDULED : ActionStatus. */
+    SCHEDULED,
+    /** COMPLETE : ActionStatus. */
+    COMPLETE,
+    /** FAILED : ActionStatus. */
+    FAILED,
+    /** CANCELLED : ActionStatus. */
+    CANCELLED;
 }

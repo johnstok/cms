@@ -36,7 +36,7 @@ public class Action extends Entity {
     private Resource            _subject;
     private Date                _executeAfter;
     private FailureCode         _code;
-    private ActionStatus        _status = ActionStatus.Scheduled;
+    private ActionStatus        _status = ActionStatus.SCHEDULED;
     private Map<String, String> _params = new HashMap<String, String>();
     private String              _fId;
 
@@ -106,7 +106,7 @@ public class Action extends Entity {
      */
     public void complete() {
         checkStillScheduled();
-        _status = ActionStatus.Complete;
+        _status = ActionStatus.COMPLETE;
     }
 
     /**
@@ -152,7 +152,7 @@ public class Action extends Entity {
      */
     public void fail(final Failure f) {
         checkStillScheduled();
-        _status = ActionStatus.Failed;
+        _status = ActionStatus.FAILED;
         _code = f.getCode();
         _params = f.getParams();
         _fId = f.getExceptionId();
@@ -164,7 +164,7 @@ public class Action extends Entity {
      */
     public void cancel() {
         checkStillScheduled();
-        _status = ActionStatus.Cancelled;
+        _status = ActionStatus.CANCELLED;
     }
 
     /**
@@ -177,7 +177,7 @@ public class Action extends Entity {
     }
 
     private void checkStillScheduled() {
-        if (ActionStatus.Scheduled!=_status) {
+        if (ActionStatus.SCHEDULED!=_status) {
             throw new IllegalStateException("Status is "+_status);
         }
     }
