@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import static ccc.types.FilePropertyNames.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +24,6 @@ import ccc.types.MimeType;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
-
 /**
  * A file resource. This class encapsulates all file metadata. The raw file data
  * is stored separately and can be accessed using the token stored in this
@@ -33,13 +34,6 @@ import ccc.types.ResourceType;
 public class File
     extends
         WorkingCopySupport<FileRevision, FileDelta, FileWorkingCopy>  {
-
-
-    // FIXME: Move these constants into public-api - they cannot change!
-    public static final String CHARSET = "text.charset";
-    public static final String WIDTH = "image.width";
-    public static final String HEIGHT = "image.height";
-
 
     /** Constructor: for persistence only. */
     protected File() { super(); }
@@ -82,6 +76,7 @@ public class File
      * @param data A token representing the binary content of the file.
      * @param size The size of the file in bytes.
      * @param mimeType The mime type for the file.
+     * @param properties The properties of the file..
      * @param metadata The metadata for the revision.
      */
     public File(final ResourceName name,
@@ -151,16 +146,31 @@ public class File
     }
 
 
+    /**
+     * Accessor for text charset.
+     *
+     * @return Property value for charset.
+     */
     public String charset() {
         return properties().get(CHARSET);
     }
 
 
+    /**
+     * Accessor for image width.
+     *
+     * @return Property value for width.
+     */
     public String width() {
         return properties().get(WIDTH);
     }
 
 
+    /**
+     * Accessor for image height.
+     *
+     * @return Property value for height.
+     */
     public String height() {
         return properties().get(HEIGHT);
     }

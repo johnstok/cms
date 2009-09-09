@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.domain.File;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.types.FilePropertyNames;
 
 
 /**
@@ -78,7 +78,7 @@ public class CreateFileServlet
                 : Boolean.parseBoolean(publish.getString());
 
         final Map<String, String> props = new HashMap<String, String>();
-        props.put(File.CHARSET, toCharset(file.getContentType()));
+        props.put(FilePropertyNames.CHARSET, toCharset(file.getContentType()));
 
         final FileDelta delta =
             new FileDelta(
