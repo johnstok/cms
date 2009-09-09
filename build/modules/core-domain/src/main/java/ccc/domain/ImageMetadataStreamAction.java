@@ -11,6 +11,8 @@
  */
 package ccc.domain;
 
+import static ccc.types.FilePropertyNames.*;
+
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -41,8 +43,8 @@ final class ImageMetadataStreamAction
         }
 
         _metadata.clear();
-        _metadata.put(File.HEIGHT, String.valueOf(image.getHeight()));
-        _metadata.put(File.WIDTH, String.valueOf(image.getWidth()));
+        _metadata.put(HEIGHT, String.valueOf(image.getHeight()));
+        _metadata.put(WIDTH, String.valueOf(image.getWidth()));
     }
 
 

@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 import ccc.rest.dto.FileDelta;
+import ccc.types.FilePropertyNames;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
 
@@ -41,7 +42,7 @@ public class FileTest extends TestCase {
             0,
             MimeType.HTML,
             new HashMap<String, String>(){{
-                put(File.CHARSET, "UTF-8");
+                put(FilePropertyNames.CHARSET, "UTF-8");
             }},
             _rm);
 
