@@ -92,11 +92,16 @@ public class AliasesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public String aliasTargetName(final UUID aliasId) {
-        final Alias alias = _resources.find(Alias.class, aliasId);
-        if (alias != null) {
-            return alias.target().name().toString();
+    public String aliasTargetName(final UUID aliasId) throws RestException {
+        try {
+            final Alias alias = _resources.find(Alias.class, aliasId);
+            if (alias != null) {
+                return alias.target().name().toString();
+            }
+            return null;
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
         }
-        return null;
     }
 }

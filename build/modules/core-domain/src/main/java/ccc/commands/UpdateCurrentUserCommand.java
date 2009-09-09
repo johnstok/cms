@@ -14,6 +14,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
@@ -56,15 +57,13 @@ public class UpdateCurrentUserCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws InsufficientPrivilegesException If the user being updated is not
-     *  the actor.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
                         final String email,
-                        final String password)
-    throws InsufficientPrivilegesException {
+                        final String password) throws CccCheckedException {
 
         if (!actor.id().equals(userId)) {
             throw new InsufficientPrivilegesException(

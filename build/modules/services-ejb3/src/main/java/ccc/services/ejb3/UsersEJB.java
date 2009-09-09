@@ -53,31 +53,48 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public UserDto createUser(final UserDto delta) {
-        return mapUser(
-            new CreateUserCommand(_bdao, _audit).execute(
-                currentUser(), new Date(), delta));
+    public UserDto createUser(final UserDto delta) throws RestException {
+        try {
+            return mapUser(
+                new CreateUserCommand(_bdao, _audit).execute(
+                    currentUser(), new Date(), delta));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateUser(final UUID userId, final UserDto delta) {
-        new UpdateUserCommand(_bdao, _audit).execute(
-            currentUser(), new Date(), userId, delta);
+    public void updateUser(final UUID userId, final UserDto delta)
+    throws RestException {
+        try {
+            new UpdateUserCommand(_bdao, _audit).execute(
+                currentUser(), new Date(), userId, delta);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR})
-    public void updateUserPassword(final UUID userId, final UserDto user) {
-        new UpdatePasswordAction(_bdao, _audit).execute(
-            currentUser(),
-            new Date(),
-            userId,
-            user.getPassword());
+    public void updateUserPassword(final UUID userId, final UserDto user)
+    throws RestException {
+        try {
+            new UpdatePasswordAction(_bdao, _audit).execute(
+                currentUser(),
+                new Date(),
+                userId,
+                user.getPassword());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -111,8 +128,13 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public UserDto loggedInUser() {
-        return mapUser(currentUser());
+    public UserDto loggedInUser() throws RestException {
+        try {
+            return mapUser(currentUser());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -152,8 +174,13 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public UserDto userDelta(final UUID userId) {
-        return
-        deltaUser(_users.find(userId));
+    public UserDto userDelta(final UUID userId) throws RestException {
+        try {
+            return
+            deltaUser(_users.find(userId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }

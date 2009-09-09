@@ -63,7 +63,7 @@ public interface Files {
     @GET
     @Path("/{id}/delta")
     @NoCache
-    FileDelta fileDelta(@PathParam("id") UUID fileId);
+    FileDelta fileDelta(@PathParam("id") UUID fileId) throws RestException;
 
 
     /**

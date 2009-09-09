@@ -54,7 +54,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}")
     @NoCache
-    ResourceSummary resource(@PathParam("id") UUID resourceId);
+    ResourceSummary resource(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * Determine the absolute path to a resource.
@@ -65,8 +66,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}/path")
     @NoCache
-    String getAbsolutePath(@PathParam("id") UUID resourceId);
-
+    String getAbsolutePath(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * List all locked resources.
@@ -87,7 +88,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}/revisions")
     @NoCache
-    Collection<RevisionDto> history(@PathParam("id") UUID resourceId);
+    Collection<RevisionDto> history(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * Retrieve the metadata for a resource.
@@ -98,7 +100,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}/metadata")
     @NoCache
-    Map<String, String> metadata(@PathParam("id") UUID resourceId);
+    Map<String, String> metadata(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * List the roles for a resource.
@@ -110,7 +113,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}/roles")
     @NoCache
-    Collection<String> roles(@PathParam("id") UUID resourceId);
+    Collection<String> roles(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * Retrieve resource's cache duration.
@@ -121,7 +125,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}/duration")
     @NoCache
-    Duration cacheDuration(@PathParam("id") UUID resourceId);
+    Duration cacheDuration(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * Returns summary of the template assigned for a resource.
@@ -132,7 +137,8 @@ public interface Resources {
     @GET
     @Path("/resources/{id}/template")
     @NoCache
-    TemplateSummary computeTemplate(@PathParam("id") UUID resourceId);
+    TemplateSummary computeTemplate(@PathParam("id") UUID resourceId)
+    throws RestException;
 
     /**
      * Look up the resource for a specified path.
@@ -143,7 +149,8 @@ public interface Resources {
     @GET
     @Path("/resources-by-path{path:.*}")
     @NoCache
-    ResourceSummary resourceForPath(@PathParam("path") String path);
+    ResourceSummary resourceForPath(@PathParam("path") String path)
+    throws RestException;
 
     /**
      * Look up the resource for a specified legacy id.
@@ -154,7 +161,8 @@ public interface Resources {
     @GET
     @Path("/resources-by-legacy-id/{id}")
     @NoCache
-    ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
+    ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId)
+    throws RestException;
 
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(

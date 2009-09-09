@@ -47,7 +47,7 @@ public interface Users {
      * @return The corresponding delta.
      */
     @GET @Path("/users/{id}/delta") @NoCache
-    UserDto userDelta(@PathParam("id") UUID userId);
+    UserDto userDelta(@PathParam("id") UUID userId) throws RestException;
 
     /**
      * Returns currently logged in user.
@@ -55,7 +55,7 @@ public interface Users {
      * @return UserDTO
      */
     @GET @Path("/users/me") @NoCache
-    UserDto loggedInUser();
+    UserDto loggedInUser() throws RestException;
 
     /**
      * Query all users.
@@ -128,7 +128,8 @@ public interface Users {
      * @throws RestException If the method fails.
      */
     @POST @Path("/users/{id}")
-    void updateUser(@PathParam("id") UUID userId, UserDto delta) throws RestException;
+    void updateUser(@PathParam("id") UUID userId, UserDto delta)
+    throws RestException;
 
 
     /**

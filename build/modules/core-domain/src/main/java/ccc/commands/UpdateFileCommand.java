@@ -15,12 +15,11 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
-import ccc.domain.LockMismatchException;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.persistence.LogEntryRepository;
@@ -64,8 +63,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      * @param comment Comment describing the change.
      * @param isMajorEdit Is this a major change.
      *
-     * @throws LockMismatchException If the file is locked by another user.
-     * @throws UnlockedException If the file is unlocked.
+     * @throws CccCheckedException If the command failed.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -74,7 +72,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
                         final String comment,
                         final boolean isMajorEdit,
                         final InputStream dataStream)
-       throws UnlockedException, LockMismatchException {
+                                                    throws CccCheckedException {
         final File f = getDao().find(File.class, fileId);
         f.confirmLock(actor);
 

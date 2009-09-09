@@ -111,13 +111,18 @@ public class Migrations {
         _migrateIsMajorEdit = migrateIsMajorEdit;
         _migrateVersions = migrateVersions;
 
-        _contentRoot = _resourcesExt.resourceForPath("/content");
-        _filesFolder = _resourcesExt.resourceForPath("/content/files");
-        _contentImagesFolder = _resourcesExt.resourceForPath("/content/images");
+        try {
+            _contentRoot = _resourcesExt.resourceForPath("/content");
+            _filesFolder = _resourcesExt.resourceForPath("/content/files");
+            _contentImagesFolder = _resourcesExt.resourceForPath("/content/images");
 
-        _templateFolder = _resourcesExt.resourceForPath("/assets/templates");
-        _assetsImagesFolder = _resourcesExt.resourceForPath("/assets/images");
-        _cssFolder = _resourcesExt.resourceForPath("/assets/css");
+            _templateFolder = _resourcesExt.resourceForPath("/assets/templates");
+            _assetsImagesFolder = _resourcesExt.resourceForPath("/assets/images");
+            _cssFolder = _resourcesExt.resourceForPath("/assets/css");
+        } catch (final RestException e) {
+            throw new MigrationException(
+                "Failed to retrieve default folder structure.", e);
+        }
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _userCommands);

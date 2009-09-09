@@ -14,6 +14,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -55,12 +56,14 @@ public class UpdateUserCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
+     * @throws CccCheckedException If the command fails.
+     *
      * @return The updated user.
      */
     public User execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
-                        final UserDto delta) {
+                        final UserDto delta) throws CccCheckedException {
         final User current = _repository.find(User.class, userId);
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));

@@ -21,7 +21,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import ccc.domain.Entity;
+import ccc.domain.EntityNotFoundException;
 import ccc.persistence.Repository;
+import ccc.types.DBC;
 
 
 /**
@@ -44,8 +46,14 @@ public class JpaRepository implements Repository {
 
 
     /** {@inheritDoc} */
-    public <T extends Entity> T find(final Class<T> type, final UUID id) {
-        return _em.find(type, id);
+    public <T extends Entity> T find(final Class<T> type, final UUID id)
+    throws EntityNotFoundException {
+        DBC.require().notNull(id);
+        final T entity = _em.find(type, id);
+        if (null==entity) {
+            throw new EntityNotFoundException(id);
+        }
+        return entity;
     }
 
     /** {@inheritDoc} */
@@ -73,17 +81,17 @@ public class JpaRepository implements Repository {
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
     public <T> T find(final String queryName,
                       final Class<T> resultType,
-                      final Object... params) {
+                      final Object... params) throws EntityNotFoundException {
 
         final Query q = _em.createNamedQuery(queryName);
         for (int i=0; i<params.length; i++) {
             q.setParameter((i+1), params[i]);
         }
 
-        try {
+        try { // FIXME: We don't handle the possibility of multiple results.
             return (T) q.getSingleResult();
         } catch (final NoResultException e) {
-            return null;
+            throw new EntityNotFoundException(null);
         }
     }
 
@@ -91,7 +99,12 @@ public class JpaRepository implements Repository {
     public <T> boolean exists(final String queryName,
                               final Class<T> resultType,
                               final Object... params) {
-        return null!=find(queryName, resultType, params);
+        try {
+            find(queryName, resultType, params);
+            return true;
+        } catch (final EntityNotFoundException e) {
+            return false;
+        }
     }
 
     /** {@inheritDoc} */

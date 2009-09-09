@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.persistence.ResourceRepository;
-import ccc.remoting.actions.RenderResourceAction;
 import ccc.rendering.Body;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Renderer;
@@ -160,8 +159,10 @@ public final class RenderResourceActionTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testDoGetHandlesNotFound() {
+    public void testDoGetHandlesNotFound() throws Exception {
 
         // ARRANGE
         final RenderResourceAction rr =

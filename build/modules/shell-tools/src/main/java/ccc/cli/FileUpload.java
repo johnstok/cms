@@ -96,11 +96,15 @@ public class FileUpload extends CccApp {
             foldersExt,
             resources);
 
-        recurse(
-            server.getRoot(),
-            new File(o.getLocalPath()).getCanonicalFile(),
-            o.isIncludeHidden(),
-            o.isPublish());
+        try {
+            recurse(
+                server.getRoot(),
+                new File(o.getLocalPath()).getCanonicalFile(),
+                o.isIncludeHidden(),
+                o.isPublish());
+        } catch (final RestException e) {
+            System.err.print("Root folder does not exist.");
+        }
 
         logout();
 

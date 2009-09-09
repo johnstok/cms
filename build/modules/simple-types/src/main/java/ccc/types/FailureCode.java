@@ -24,5 +24,6 @@ public enum  FailureCode {
     EXISTS,
     PRIVILEGES,
     WC_UNSUPPORTED,
-    CYCLE;
+    CYCLE,
+    NOT_FOUND;
 }

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.domain.CCCException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
@@ -138,11 +139,11 @@ public class RenderResourceAction
      */
     public Resource lookupResource(final ResourcePath contentPath,
                                    final ResourceRepository rdao) {
-        final Resource rs = rdao.lookup(_rootName, contentPath);
-        if (null==rs) {
+        try {
+            return rdao.lookup(_rootName, contentPath);
+        } catch (final EntityNotFoundException e) {
             throw new NotFoundException();
         }
-        return rs;
     }
 
 

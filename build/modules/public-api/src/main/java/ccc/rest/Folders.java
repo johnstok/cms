@@ -50,7 +50,8 @@ public interface Folders {
     @GET
     @Path("/folders/{id}/folder-children")
     @NoCache
-    Collection<ResourceSummary> getFolderChildren(@PathParam("id") UUID folderId);
+    Collection<ResourceSummary> getFolderChildren(
+        @PathParam("id") UUID folderId) throws RestException;
 
     /**
      * List all of the children of the specified folder.
@@ -61,7 +62,8 @@ public interface Folders {
     @GET
     @Path("/folders/{id}/children")
     @NoCache
-    Collection<ResourceSummary> getChildren(@PathParam("id") UUID folderId);
+    Collection<ResourceSummary> getChildren(
+        @PathParam("id") UUID folderId) throws RestException;
 
     /**
      * List all of the children of the specified folder in manual order.
@@ -72,7 +74,9 @@ public interface Folders {
     @GET
     @Path("/folders/{id}/children-manual-order")
     @NoCache
-    Collection<ResourceSummary> getChildrenManualOrder(@PathParam("id") UUID folderId);
+    Collection<ResourceSummary> getChildrenManualOrder(
+        @PathParam("id") UUID folderId)
+    throws RestException;
 
     /**
      * Query whether given folder has a resource with given name.
@@ -86,7 +90,8 @@ public interface Folders {
     @Path("/folders/{id}/{name}/exists")
     @NoCache
     Boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
-                               @PathParam("name") final String name);
+                               @PathParam("name") final String name)
+    throws RestException;
 
     /**
      * List the root folders available.

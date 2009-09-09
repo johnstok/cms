@@ -33,8 +33,8 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.domain.User;
-import ccc.rest.RestException;
 import ccc.rest.Pages;
+import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -108,17 +108,22 @@ public class PagesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public ResourceSummary createPage(final PageDto page)
                                                  throws RestException {
-        return createPage(
-            page.getParentId(),
-            page.getDelta(),
-            page.getName(),
-            false,
-            page.getTemplateId(),
-            page.getTitle(),
-            currentUserId(),
-            new Date(),
-            page.getComment(),
-            page.getMajorChange());
+        try {
+            return createPage(
+                page.getParentId(),
+                page.getDelta(),
+                page.getName(),
+                false,
+                page.getTemplateId(),
+                page.getTitle(),
+                currentUserId(),
+                new Date(),
+                page.getComment(),
+                page.getMajorChange());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -127,18 +132,23 @@ public class PagesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void updatePage(final UUID pageId, final Json json)
                                                  throws RestException {
-        final boolean majorEdit =
-            json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
-        final String comment = json.getString(JsonKeys.COMMENT);
-        final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
+        try {
+            final boolean majorEdit =
+                json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
+            final String comment = json.getString(JsonKeys.COMMENT);
+            final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
 
-        updatePage(
-            pageId,
-            delta,
-            comment,
-            majorEdit,
-            currentUserId(),
-            new Date());
+            updatePage(
+                pageId,
+                delta,
+                comment,
+                majorEdit,
+                currentUserId(),
+                new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -202,8 +212,13 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public PageDelta pageDelta(final UUID pageId) {
-        return
-            deltaPage(_resources.find(Page.class, pageId));
+    public PageDelta pageDelta(final UUID pageId) throws RestException {
+        try {
+            return
+                deltaPage(_resources.find(Page.class, pageId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }

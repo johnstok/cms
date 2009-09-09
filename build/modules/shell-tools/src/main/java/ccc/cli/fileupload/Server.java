@@ -50,8 +50,11 @@ public interface Server {
 
     /**
      * Get the id of the root folder in the new system.
+     * FIXME: Throw a more appropriate exception.
+     *
+     * @throws RestException If the root folder doesn't exist.
      *
      * @return The id of the root folder.
      */
-    UUID getRoot();
+    UUID getRoot() throws RestException;
 }

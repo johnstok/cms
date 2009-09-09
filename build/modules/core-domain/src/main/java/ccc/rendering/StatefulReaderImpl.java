@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.entities.IResource;
@@ -103,8 +104,12 @@ public final class StatefulReaderImpl
      */
     @Override
     public IResource resourceFromId(final String id) {
-        return _resources.find(
-            Resource.class, UUID.fromString(id)).forCurrentRevision();
+        try {
+            return _resources.find(
+                Resource.class, UUID.fromString(id)).forCurrentRevision();
+        } catch (final EntityNotFoundException e) {
+            throw new NotFoundException();
+        }
     }
 
 
@@ -129,6 +134,10 @@ public final class StatefulReaderImpl
 
     private Resource continuityForPath(final String absolutePath) {
         final ResourcePath rp = new ResourcePath(absolutePath);
-        return _resources.lookup(rp.top().toString(), rp.removeTop());
+        try {
+            return _resources.lookup(rp.top().toString(), rp.removeTop());
+        } catch (final EntityNotFoundException e) {
+            return null;
+        }
     }
 }

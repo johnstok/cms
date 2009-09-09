@@ -42,28 +42,32 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final UUID folderId) {
+    public Collection<ResourceSummary> getChildren(final UUID folderId)
+    throws RestException {
         return getFolderCommands().getChildren(folderId);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                        final UUID folderId) {
+                                                        final UUID folderId)
+    throws RestException {
         return getFolderCommands().getChildrenManualOrder(folderId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
+    throws RestException {
         return getFolderCommands().getFolderChildren(folderId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
+    public Boolean nameExistsInFolder(final UUID folderId, final String name)
+    throws RestException {
         return getFolderCommands().nameExistsInFolder(folderId, name);
     }
 

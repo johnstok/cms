@@ -14,10 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
@@ -53,19 +52,13 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws WorkingCopyNotSupportedException If the resource is not working
-     *  copy aware.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID id,
                         final String comment,
-                        final boolean isMajorEdit)
-                                       throws UnlockedException,
-                                              LockMismatchException,
-                                              WorkingCopyNotSupportedException {
+                        final boolean isMajorEdit) throws CccCheckedException {
         final Resource r = getDao().find(Resource.class, id);
         r.confirmLock(actor);
 

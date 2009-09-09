@@ -406,7 +406,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(_commands.resourceForPath("/content"));
+            dummyTemplate(resourceForPath("/content"));
         final ResourceSummary page1 = tempPage(folder.getId(), template.getId());
         final ResourceSummary page2 = tempPage(folder.getId(), template.getId());
         final ResourceSummary page3 = tempPage(folder.getId(), template.getId());
@@ -448,7 +448,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(_commands.resourceForPath("/content"));
+            dummyTemplate(resourceForPath("/content"));
         final ResourceSummary page1 = tempPage(f.getId(), template.getId());
         final ResourceSummary page2 = tempPage(f.getId(), template.getId());
         final ResourceSummary page3 = tempPage(f.getId(), template.getId());
@@ -488,7 +488,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(_commands.resourceForPath("/content"));
+            dummyTemplate(resourceForPath("/content"));
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT

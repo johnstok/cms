@@ -32,7 +32,6 @@ import ccc.commands.UpdateFolderCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
 import ccc.rest.Folders;
@@ -80,13 +79,18 @@ public class FoldersEJB
                                         final String title,
                                         final boolean publish)
     throws RestException {
-        return createFolder(
-            parentId,
-            name,
-            title,
-            publish,
-            currentUserId(),
-            new Date());
+        try {
+            return createFolder(
+                parentId,
+                name,
+                title,
+                publish,
+                currentUserId(),
+                new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -131,7 +135,8 @@ public class FoldersEJB
             new CreateRootCommand(_bdao, _audit).execute(
                 currentUser(), new Date(), f);
             return mapResource(f);
-        } catch (final ResourceExistsException e) {
+
+        } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
@@ -167,11 +172,17 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> getChildren(final UUID folderId) {
-        final Folder f =
-            _resources.find(Folder.class, folderId);
-        return mapResources(
-            f != null ? f.entries() : new ArrayList<Resource>());
+    public Collection<ResourceSummary> getChildren(final UUID folderId)
+    throws RestException {
+        try {
+            final Folder f =
+                _resources.find(Folder.class, folderId);
+            return mapResources(
+                f != null ? f.entries() : new ArrayList<Resource>());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -179,35 +190,54 @@ public class FoldersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                        final UUID folderId) {
-        final Folder f =
-            _resources.find(Folder.class, folderId);
-        if (f != null) {
-            f.sortOrder(ResourceOrder.MANUAL);
-            return mapResources(f.entries());
+                                                        final UUID folderId)
+    throws RestException {
+        try {
+            final Folder f =
+                _resources.find(Folder.class, folderId);
+            if (f != null) {
+                f.sortOrder(ResourceOrder.MANUAL);
+                return mapResources(f.entries());
+            }
+            return mapResources(new ArrayList<Resource>());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
         }
-        return mapResources(new ArrayList<Resource>());
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
-        final Folder f =
-            _resources.find(Folder.class, folderId);
-        return mapResources(f != null ? f.folders() : new ArrayList<Folder>());
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
+    throws RestException {
+        try {
+            final Folder f =
+                _resources.find(Folder.class, folderId);
+            return mapResources(
+                f != null ? f.folders() : new ArrayList<Folder>());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
-        // TODO handle null folderId? (for root folders)
-        return
-        _resources.find(Folder.class, folderId)
-                  .hasEntryWithName(new ResourceName(name));
+    public Boolean nameExistsInFolder(final UUID folderId, final String name)
+    throws RestException {
+        try {
+            // TODO handle null folderId? (for root folders)
+            return
+            	_resources.find(Folder.class, folderId)
+                      .hasEntryWithName(new ResourceName(name));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 

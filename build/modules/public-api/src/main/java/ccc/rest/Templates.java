@@ -74,7 +74,8 @@ public interface Templates {
     @GET
     @Path("/templates/{id}/delta")
     @NoCache
-    TemplateDelta templateDelta(@PathParam("id") UUID templateId);
+    TemplateDelta templateDelta(@PathParam("id") UUID templateId)
+    throws RestException;
 
     /**
      * Update the specified template on the server.

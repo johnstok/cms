@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
 
 
@@ -77,13 +78,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     /** {@inheritDoc} */
     @Override
-    public User find(final UUID userId) {
+    public User find(final UUID userId) throws EntityNotFoundException {
         return _repository.find(User.class, userId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public User loggedInUser(final Principal p) {
+    public User loggedInUser(final Principal p) throws EntityNotFoundException {
         if (null==p) {
             return null;
         }

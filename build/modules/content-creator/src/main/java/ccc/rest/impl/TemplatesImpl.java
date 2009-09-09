@@ -43,7 +43,8 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta templateDelta(final UUID templateId) {
+    public TemplateDelta templateDelta(final UUID templateId)
+    throws RestException {
         return getQueries().templateDelta(templateId);
     }
 

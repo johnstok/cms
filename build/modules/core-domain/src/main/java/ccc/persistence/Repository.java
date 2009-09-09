@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Entity;
+import ccc.domain.EntityNotFoundException;
 
 
 /**
@@ -34,7 +35,8 @@ public interface Repository {
      * @param id The id of the object.
      * @return The object with the specified id.
      */
-    <T extends Entity> T find(Class<T> type, UUID id);
+    <T extends Entity> T find(Class<T> type, UUID id)
+    throws EntityNotFoundException;
 
     /**
      * List zero or more matches for a query - duplicates may be possible.
@@ -70,7 +72,8 @@ public interface Repository {
      * @return The resource that matches the query, or NULL if no match is
      *  found.
      */
-    <T> T find(String queryName, Class<T> resultType, Object... params);
+    <T> T find(String queryName, Class<T> resultType, Object... params)
+    throws EntityNotFoundException;
 
     /**
      * Determine whether a resource exists.

@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.CCCException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
@@ -53,7 +54,8 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public Map<Integer, ? extends Revision<?>> history(final UUID resourceId) {
+    public Map<Integer, ? extends Revision<?>> history(final UUID resourceId)
+    throws EntityNotFoundException {
         final Resource r = _repository.find(Resource.class, resourceId);
         return (r instanceof HistoricalResource<?, ?>)
             ? ((HistoricalResource<?, ?>) r).revisions()
@@ -63,7 +65,8 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public <T extends Resource> T find(final Class<T> type, final UUID id) {
+    public <T extends Resource> T find(final Class<T> type, final UUID id)
+    throws EntityNotFoundException {
         return _repository.find(type, id);
     }
 
@@ -81,7 +84,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public <T> T find(final String queryName,
                       final Class<T> resultType,
-                      final Object... params) {
+                      final Object... params) throws EntityNotFoundException {
         return _repository.find(queryName, resultType, params);
     }
 
@@ -89,7 +92,8 @@ public class ResourceRepositoryImpl implements ResourceRepository {
      * {@inheritDoc}
      */
     @Override
-    public Resource lookup(final String rootName, final ResourcePath path) {
+    public Resource lookup(final String rootName, final ResourcePath path)
+    throws EntityNotFoundException {
         final Folder root =
             _repository.find(
                 QueryNames.ROOT_BY_NAME,
@@ -109,7 +113,8 @@ public class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public Resource lookupWithLegacyId(final String legacyId) {
+    public Resource lookupWithLegacyId(final String legacyId)
+    throws EntityNotFoundException {
         return _repository.find(
             QueryNames.RESOURCE_BY_LEGACY_ID, Resource.class, legacyId);
     }

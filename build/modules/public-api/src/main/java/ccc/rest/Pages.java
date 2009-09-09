@@ -63,7 +63,7 @@ public interface Pages {
     @GET
     @Path("/pages/{id}/delta")
     @NoCache
-    PageDelta pageDelta(@PathParam("id") UUID pageId);
+    PageDelta pageDelta(@PathParam("id") UUID pageId) throws RestException;
 
 
     /**

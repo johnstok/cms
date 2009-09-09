@@ -48,7 +48,8 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_repository.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
+        expect(_repository.exists(
+            QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
             .andReturn(Boolean.TRUE);
         replayAll();
 
@@ -66,7 +67,8 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_repository.exists(QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
+        expect(_repository.exists(
+            QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
             .andReturn(Boolean.FALSE);
         replayAll();
 
@@ -181,8 +183,10 @@ public class UserManagerImplTest extends TestCase {
     /**
      * Test.
      * TODO: Test the actual values of the created user.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testUpdateUser() {
+    public void testUpdateUser() throws Exception {
 
         // ARRANGE
         final Date now = new Date();
@@ -202,8 +206,10 @@ public class UserManagerImplTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testUpdateUserPassword() {
+    public void testUpdateUserPassword() throws Exception {
 
         // ARRANGE
         final Date now = new Date();

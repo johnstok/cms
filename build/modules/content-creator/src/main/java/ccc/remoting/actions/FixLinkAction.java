@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepository;
@@ -87,21 +88,22 @@ public class FixLinkAction
                                 final Matcher pageMatcher)
                                           throws ServletException, IOException {
         final String legacyId = pageMatcher.group(1);
-        final Resource r = rdao.lookupWithLegacyId(legacyId);
-        final String resourcePath =
-            (null==r) ? null : r.absolutePath().toString();
 
-        if (null==resourcePath) {
-            dispatchNotFound(req, resp);
-        } else {
+        try {
+            final Resource r = rdao.lookupWithLegacyId(legacyId);
+            final String resourcePath = r.absolutePath().toString();
             // TODO: Should be sending a permanent redirect here.
             dispatchRedirect(req, resp, resourcePath);
+
+        } catch (final EntityNotFoundException e) {
+            dispatchNotFound(req, resp);
         }
     }
 
 
     private ResourceRepository getResourceDao(final HttpServletRequest req) {
-        return new ResourceRepositoryImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
+        return new ResourceRepositoryImpl(
+            (Repository) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 

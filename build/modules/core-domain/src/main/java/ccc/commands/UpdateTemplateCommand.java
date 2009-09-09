@@ -14,10 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -50,14 +49,12 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID templateId,
-                        final TemplateDelta delta)
-                               throws UnlockedException, LockMismatchException {
+                        final TemplateDelta delta) throws CccCheckedException {
 
         final Template template = getDao().find(Template.class, templateId);
         template.confirmLock(actor);
