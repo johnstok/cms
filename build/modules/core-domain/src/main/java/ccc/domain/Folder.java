@@ -402,7 +402,9 @@ public final class Folder extends Resource implements IFolder {
     public void toJson(final Json json) {
         super.toJson(json);
         json.set(JsonKeys.SORT_ORDER, sortOrder().name());
-        json.set(JsonKeys.INDEX_PAGE_ID, (null==indexPage()) ? null : indexPage().id().toString());
+        json.set(
+            JsonKeys.INDEX_PAGE_ID,
+            (null==indexPage()) ? null : indexPage().id().toString());
         // Index folder entries?
     }
 
@@ -415,19 +417,19 @@ public final class Folder extends Resource implements IFolder {
 
     /** {@inheritDoc} */
     @Override
-    public final FolderSnapshot forWorkingCopy() {
+    public FolderSnapshot forWorkingCopy() {
         return new FolderSnapshot(this);
     }
 
     /** {@inheritDoc} */
     @Override
-    public final FolderSnapshot forCurrentRevision() {
+    public FolderSnapshot forCurrentRevision() {
         return new FolderSnapshot(this);
     }
 
     /** {@inheritDoc} */
     @Override
-    public final FolderSnapshot forSpecificRevision(final int revNo) {
+    public FolderSnapshot forSpecificRevision(final int revNo) {
         return new FolderSnapshot(this);
     }
 }

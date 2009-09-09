@@ -13,8 +13,8 @@ package ccc.commands;
 
 import static org.easymock.EasyMock.*;
 import ccc.domain.Alias;
-import ccc.domain.LogEntry;
 import ccc.domain.CccCheckedException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Search;
 
@@ -45,7 +45,8 @@ public class UpdateAliasCommandTest
         _audit.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateAliasCommand c =  new UpdateAliasCommand(_repository, _audit);
+        final UpdateAliasCommand c =
+            new UpdateAliasCommand(_repository, _audit);
 
         // ACT
         c.execute(_user, _now, bar.id(), alias.id());

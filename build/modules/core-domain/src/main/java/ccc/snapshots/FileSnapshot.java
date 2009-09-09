@@ -77,7 +77,8 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
         final Response r = new Response(new FileBody(this, dm));
         r.setDescription(description());
         r.setDisposition("inline; filename=\""+name()+"\"");
-        r.setMimeType(getMimeType().getPrimaryType(), getMimeType().getSubType());
+        r.setMimeType(
+            getMimeType().getPrimaryType(), getMimeType().getSubType());
         r.setLength(getSize());
         r.setExpiry(computeCache());
 

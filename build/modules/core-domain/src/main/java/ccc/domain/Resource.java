@@ -628,13 +628,23 @@ public abstract class Resource
         super.toJson(json);
         json.set(JsonKeys.TITLE, title());
         json.set(JsonKeys.NAME, name().toString());
-        json.set(JsonKeys.TEMPLATE_ID, (null==template()) ? null : template().id().toString());
-        json.set(JsonKeys.PARENT_ID, (null==parent()) ? null : parent().id().toString());
-        json.set(JsonKeys.LOCKED_BY, (null==lockedBy()) ? null : lockedBy().id().toString());
+        json.set(
+            JsonKeys.TEMPLATE_ID,
+            (null==template()) ? null : template().id().toString());
+        json.set(
+            JsonKeys.PARENT_ID,
+            (null==parent()) ? null : parent().id().toString());
+        json.set(
+            JsonKeys.LOCKED_BY,
+            (null==lockedBy()) ? null : lockedBy().id().toString());
         json.setStrings(JsonKeys.TAGS, new ArrayList<String>(tags()));
         json.setStrings(JsonKeys.ROLES, new ArrayList<String>(tags()));
-        json.set(JsonKeys.PUBLISHED_BY, (null==publishedBy()) ? null : publishedBy().id().toString());
-        json.set(JsonKeys.INCLUDE_IN_MAIN_MENU, Boolean.valueOf(includeInMainMenu()));
+        json.set(
+            JsonKeys.PUBLISHED_BY,
+            (null==publishedBy()) ? null : publishedBy().id().toString());
+        json.set(
+            JsonKeys.INCLUDE_IN_MAIN_MENU,
+            Boolean.valueOf(includeInMainMenu()));
         json.set(JsonKeys.DATE_CREATED, dateCreated());
         json.set(JsonKeys.DATE_CHANGED, dateChanged());
         json.set(JsonKeys.CACHE_DURATION, cache());

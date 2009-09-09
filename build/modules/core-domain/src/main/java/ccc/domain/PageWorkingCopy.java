@@ -73,7 +73,8 @@ public class PageWorkingCopy
 
     /** {@inheritDoc} */
     @Override
-    public Paragraph paragraph(final String name) { // TODO: Duplicated in PageRevision
+    // TODO: Duplicated in PageRevision
+    public Paragraph paragraph(final String name) {
         for (final Paragraph p : _wcContent) {
             if (p.name().equals(name)) {
                 return p;

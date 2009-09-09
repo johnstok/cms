@@ -61,7 +61,8 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     public List<? extends IResource> entries(final int count,
                                              final int page,
                                              final String sortOrder) {
-        return _delegate.entries(count, page, sortOrder); // FIXME: wrap entries in snapshots.
+        return _delegate.entries(
+            count, page, sortOrder); // FIXME: wrap entries in snapshots.
     }
 
     /** {@inheritDoc} */

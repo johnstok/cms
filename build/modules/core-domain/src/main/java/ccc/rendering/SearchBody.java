@@ -83,7 +83,7 @@ public class SearchBody
             try {
                 pageNumber = Integer.parseInt(pParams[0]);
             } catch (final NumberFormatException e) {
-//                LOG.debug("Not a number");
+                // Continue.
             }
         }
 

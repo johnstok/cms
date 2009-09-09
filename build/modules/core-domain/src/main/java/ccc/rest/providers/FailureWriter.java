@@ -25,7 +25,6 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.providers.AbstractProvider;
 import ccc.serialization.JsonImpl;
 import ccc.types.Failure;
 
