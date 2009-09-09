@@ -11,6 +11,7 @@
  */
 package ccc.persistence;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Setting;
 
 
@@ -37,9 +38,12 @@ public class SettingsRepository {
      *
      * @param settingName The setting's name.
      *
+     * @throws EntityNotFoundException If no setting exists.
+     *
      * @return The corresponding setting.
      */
-    public Setting find(final Setting.Name settingName) {
+    public Setting find(final Setting.Name settingName)
+    throws EntityNotFoundException {
         return
             _repo.find(
                 QueryNames.SETTINGS_WITH_NAME, Setting.class, settingName);

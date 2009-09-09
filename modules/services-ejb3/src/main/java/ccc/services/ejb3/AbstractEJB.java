@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -110,8 +111,10 @@ abstract class AbstractEJB {
      * @param userId The user's ID.
      *
      * @return The corresponding user.
+     *
+     * @throws EntityNotFoundException If a corresponding user doesn't exist.
      */
-    protected User userForId(final UUID userId) {
+    protected User userForId(final UUID userId) throws EntityNotFoundException {
         final User u = _bdao.find(User.class, userId);
         return u;
     }
@@ -119,10 +122,14 @@ abstract class AbstractEJB {
 
     /**
      * Accessor.
+     * FIXME: Throw 'invalid session exception instead.
+     *
+     * @throws EntityNotFoundException If no user corresponds to the current
+     *  principal.
      *
      * @return The currently logged in user.
      */
-    protected User currentUser() {
+    protected User currentUser() throws EntityNotFoundException {
         return _users.loggedInUser(_context.getCallerPrincipal());
     }
 
@@ -130,9 +137,12 @@ abstract class AbstractEJB {
     /**
      * Accessor.
      *
+     * @throws EntityNotFoundException If no user corresponds to the current
+     *  principal.
+     *
      * @return The currently logged in user's ID.
      */
-    protected UUID currentUserId() {
+    protected UUID currentUserId() throws EntityNotFoundException {
         return currentUser().id();
     }
 

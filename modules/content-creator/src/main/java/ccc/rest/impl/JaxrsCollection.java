@@ -18,6 +18,9 @@ import ccc.commons.Registry;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Files;
+import ccc.rest.Folders;
+import ccc.rest.Pages;
+import ccc.rest.Resources;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
@@ -73,7 +76,8 @@ abstract class JaxrsCollection {
     public final ResourcesExt getCommands() {
         return
             (null==_resourcesExt)
-                ? (ResourcesExt) _reg.get(_appName+"/"+ResourcesExt.NAME+"/remote")
+                ? (ResourcesExt) _reg.get(
+                    _appName+"/"+Resources.NAME+"/remote")
                 : _resourcesExt;
     }
 
@@ -97,7 +101,7 @@ abstract class JaxrsCollection {
     public final PagesExt getPageCommands() {
         return
         (null==_pagesExt)
-        ? (PagesExt) _reg.get(_appName+"/"+PagesExt.NAME+"/remote")
+        ? (PagesExt) _reg.get(_appName+"/"+Pages.NAME+"/remote")
             : _pagesExt;
     }
 
@@ -109,7 +113,7 @@ abstract class JaxrsCollection {
     public final FoldersExt getFolderCommands() {
         return
         (null==_foldersExt)
-        ? (FoldersExt) _reg.get(_appName+"/"+FoldersExt.NAME+"/remote")
+        ? (FoldersExt) _reg.get(_appName+"/"+Folders.NAME+"/remote")
             : _foldersExt;
     }
 

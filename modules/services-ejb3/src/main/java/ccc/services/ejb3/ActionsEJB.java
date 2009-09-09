@@ -37,10 +37,12 @@ import ccc.action.ActionExecutorImpl;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
+import ccc.domain.CccCheckedException;
 import ccc.domain.Scheduler;
 import ccc.persistence.QueryNames;
 import ccc.rest.Actions;
 import ccc.rest.Resources;
+import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.extensions.ResourcesExt;
@@ -114,26 +116,36 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void cancelAction(final UUID actionId) {
-        new CancelActionCommand(_bdao, _audit).execute(
-            currentUser(), new Date(), actionId);
+    public void cancelAction(final UUID actionId) throws RestException {
+        try {
+            new CancelActionCommand(_bdao, _audit).execute(
+                currentUser(), new Date(), actionId);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void createAction(final ActionDto action) {
-      final Action a =
-          new Action(
-              action.getCommand(),
-              action.getExecuteAfter(),
-              currentUser(),
-              _bdao.find(
-                  ccc.domain.Resource.class, action.getResourceId()),
-              action.getParameters());
+    public void createAction(final ActionDto action) throws RestException {
+        try {
+            final Action a =
+                new Action(
+                    action.getCommand(),
+                    action.getExecuteAfter(),
+                    currentUser(),
+                    _bdao.find(
+                        ccc.domain.Resource.class, action.getResourceId()),
+                    action.getParameters());
 
-      new ScheduleActionCommand(_bdao, _audit).execute(
-          currentUser(), new Date(), a);
+            new ScheduleActionCommand(_bdao, _audit).execute(
+                currentUser(), new Date(), a);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 

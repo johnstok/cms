@@ -41,7 +41,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto loggedInUser() {
+    public UserDto loggedInUser() throws RestException {
         return getUserCommands().loggedInUser();
     }
 
@@ -76,7 +76,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto userDelta(final UUID userId) {
+    public UserDto userDelta(final UUID userId) throws RestException {
         return getUserCommands().userDelta(userId);
     }
 

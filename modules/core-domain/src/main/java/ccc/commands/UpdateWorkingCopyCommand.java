@@ -14,11 +14,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
@@ -59,14 +58,13 @@ public class UpdateWorkingCopyCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
                         final PageDelta delta)
-                               throws UnlockedException, LockMismatchException {
+                               throws CccCheckedException {
         final Page r = _repository.find(Page.class, resourceId);
         r.confirmLock(actor);
 
@@ -88,18 +86,12 @@ public class UpdateWorkingCopyCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws WorkingCopyNotSupportedException If the resource is not working
-     *  copy aware.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final long revisionNo)
-                                       throws UnlockedException,
-                                              LockMismatchException,
-                                              WorkingCopyNotSupportedException {
+                        final long revisionNo) throws CccCheckedException {
         final Resource r =
             _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);

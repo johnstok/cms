@@ -95,7 +95,7 @@ public class CccServer implements Server {
 
     /** {@inheritDoc} */
     @Override
-    public UUID getRoot() {
+    public UUID getRoot() throws RestException {
         final ResourceSummary rs =
             _resources.resourceForPath(_rootPath.toString());
         return UUID.fromString(rs.getId().toString());

@@ -16,12 +16,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -60,16 +59,14 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
      * @param orderList The manual order of the resources in the specified
      *  folder.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID folderId,
                         final ResourceOrder order,
                         final UUID indexPageId,
-                        final List<UUID> orderList)
-                               throws UnlockedException, LockMismatchException {
+                        final List<UUID> orderList) throws CccCheckedException {
 
         final Folder f = getDao().find(Folder.class, folderId);
         Page p = null;

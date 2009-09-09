@@ -15,10 +15,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -56,8 +55,7 @@ public class UpdateResourceMetadataCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
@@ -66,7 +64,7 @@ public class UpdateResourceMetadataCommand {
                         final String description,
                         final String tags,
                         final Map<String, String> metadata)
-                               throws UnlockedException, LockMismatchException {
+                               throws CccCheckedException {
         final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);
 

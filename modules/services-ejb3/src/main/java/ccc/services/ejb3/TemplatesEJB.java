@@ -26,6 +26,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.commands.CreateTemplateCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Template;
 import ccc.persistence.QueryNames;
 import ccc.rest.RestException;
@@ -63,11 +64,15 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Boolean templateNameExists(final String templateName) {
-        return null!=_resources.find(
-            QueryNames.TEMPLATE_BY_NAME,
-            Template.class, new ResourceName(templateName));
-
-
+        try {
+            _resources.find(
+                QueryNames.TEMPLATE_BY_NAME,
+                Template.class,
+                new ResourceName(templateName));
+            return true;
+        } catch (final EntityNotFoundException e) {
+            return false;
+        }
     }
 
 
@@ -122,8 +127,14 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public TemplateDelta templateDelta(final UUID templateId) {
-        return
-            deltaTemplate(_resources.find(Template.class, templateId));
+    public TemplateDelta templateDelta(final UUID templateId)
+    throws RestException {
+        try {
+            return
+                deltaTemplate(_resources.find(Template.class, templateId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }

@@ -49,28 +49,30 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Duration cacheDuration(final UUID resourceId) {
+    public Duration cacheDuration(final UUID resourceId) throws RestException {
         return getCommands().cacheDuration(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary computeTemplate(final UUID resourceId) {
+    public TemplateSummary computeTemplate(final UUID resourceId)
+    throws RestException {
         return getCommands().computeTemplate(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public String getAbsolutePath(final UUID resourceId) {
+    public String getAbsolutePath(final UUID resourceId) throws RestException {
         return getCommands().getAbsolutePath(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<RevisionDto> history(final UUID resourceId) {
+    public Collection<RevisionDto> history(final UUID resourceId)
+    throws RestException {
         return getCommands().history(resourceId);
     }
 
@@ -84,35 +86,40 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> metadata(final UUID resourceId) {
+    public Map<String, String> metadata(final UUID resourceId)
+    throws RestException {
         return getCommands().metadata(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resource(final UUID resourceId) {
+    public ResourceSummary resource(final UUID resourceId)
+    throws RestException {
         return getCommands().resource(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resourceForLegacyId(final String legacyId) {
+    public ResourceSummary resourceForLegacyId(final String legacyId)
+    throws RestException {
         return getCommands().resourceForLegacyId(legacyId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resourceForPath(final String path) {
+    public ResourceSummary resourceForPath(final String path)
+    throws RestException {
         return getCommands().resourceForPath(path);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<String> roles(final UUID resourceId) {
+    public Collection<String> roles(final UUID resourceId)
+    throws RestException {
         return getCommands().roles(resourceId);
     }
 

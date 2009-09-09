@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Action;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -52,10 +53,12 @@ public class CancelActionCommand {
      * @param actionId The id of the action to cancel.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     *
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID actionId) {
+                        final UUID actionId) throws CccCheckedException {
         final Action a = _repository.find(Action.class, actionId);
         a.cancel();
 

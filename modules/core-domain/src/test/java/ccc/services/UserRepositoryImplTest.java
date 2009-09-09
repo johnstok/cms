@@ -35,13 +35,16 @@ public class UserRepositoryImplTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testLoggedInUserHandlesAnonymousUsers() {
+    public void testLoggedInUserHandlesAnonymousUsers() throws Exception {
 
         // ARRANGE
         final Principal p = new Principal() {
             @Override public String getName() { return "foo"; }};
-        expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "foo"))
+        expect(_repository.find(
+            QueryNames.USERS_WITH_USERNAME, User.class, "foo"))
             .andReturn(null);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
@@ -56,14 +59,17 @@ public class UserRepositoryImplTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testLoggedInUser() {
+    public void testLoggedInUser() throws Exception {
 
         // ARRANGE
         final User u = new User(new Username("user"), "password");
         final Principal p = new Principal() {
             @Override public String getName() { return "user"; }};
-        expect(_repository.find(QueryNames.USERS_WITH_USERNAME, User.class, "user"))
+        expect(_repository.find(
+            QueryNames.USERS_WITH_USERNAME, User.class, "user"))
             .andReturn(u);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);

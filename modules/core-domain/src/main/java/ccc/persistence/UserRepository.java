@@ -15,6 +15,7 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.UUID;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
 
 /**
@@ -72,15 +73,22 @@ public interface UserRepository {
      * Look up a user from their Id.
      *
      * @param userId The UUID for the user.
+     *
+     * @throws EntityNotFoundException If no user exists for the specified ID.
+     *
      * @return The user corresponding to 'userId'.
      */
-    User find(UUID userId);
+    User find(UUID userId) throws EntityNotFoundException;
 
     /**
      * Look up a user from a JAAS principal.
      *
      * @param p The principal.
+     *
+     * @throws EntityNotFoundException If no user exists for the corresponding
+     *  principal.
+     *
      * @return The corresponding CCC user.
      */
-    User loggedInUser(final Principal p);
+    User loggedInUser(final Principal p) throws EntityNotFoundException;
 }

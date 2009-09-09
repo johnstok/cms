@@ -49,7 +49,7 @@ public interface Aliases {
     @GET
     @Path("/{id}/targetname")
     @NoCache
-    String aliasTargetName(@PathParam("id") UUID aliasId);
+    String aliasTargetName(@PathParam("id") UUID aliasId) throws RestException;
 
 
     /**

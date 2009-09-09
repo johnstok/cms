@@ -74,7 +74,12 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void lock(final UUID resourceId) throws RestException {
-        lock(resourceId, currentUserId(), new Date());
+        try {
+            lock(resourceId, currentUserId(), new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -165,7 +170,12 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void unlock(final UUID resourceId) throws RestException {
-        unlock(resourceId, currentUserId(), new Date());
+        try {
+            unlock(resourceId, currentUserId(), new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -253,8 +263,13 @@ public class ResourcesEJB
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId)
                                                  throws RestException {
-        updateResourceTemplate(
-            resourceId, templateId, currentUserId(), new Date());
+        try {
+            updateResourceTemplate(
+                resourceId, templateId, currentUserId(), new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -296,7 +311,12 @@ public class ResourcesEJB
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include)
                                                  throws RestException {
-        includeInMainMenu(resourceId, include, currentUserId(), new Date());
+        try {
+            includeInMainMenu(resourceId, include, currentUserId(), new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -431,7 +451,12 @@ public class ResourcesEJB
     public void changeRoles(final UUID resourceId,
                             final Collection<String> roles)
                                                  throws RestException {
-        changeRoles(resourceId, roles, currentUserId(), new Date());
+        try {
+            changeRoles(resourceId, roles, currentUserId(), new Date());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -555,19 +580,30 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public String getAbsolutePath(final UUID resourceId) {
-        return
-            _resources.find(Resource.class, resourceId)
-                      .absolutePath()
-                      .toString();
+    public String getAbsolutePath(final UUID resourceId) throws RestException {
+        try {
+            return
+                _resources.find(Resource.class, resourceId)
+                          .absolutePath()
+                          .toString();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<RevisionDto> history(final UUID resourceId) {
-        return mapLogEntries(_resources.history(resourceId));
+    public Collection<RevisionDto> history(final UUID resourceId)
+    throws RestException {
+        try {
+            return mapLogEntries(_resources.history(resourceId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -582,66 +618,107 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public ResourceSummary resource(final UUID resourceId) {
-        return
-            mapResource(_resources.find(Resource.class, resourceId));
+    public ResourceSummary resource(final UUID resourceId)
+    throws RestException {
+        try {
+            return
+                mapResource(_resources.find(Resource.class, resourceId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Map<String, String> metadata(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return r.metadata();
+    public Map<String, String> metadata(final UUID resourceId)
+    throws RestException {
+        try {
+            final Resource r =
+                _resources.find(Resource.class, resourceId);
+            return r.metadata();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<String> roles(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return r.roles();
+    public Collection<String> roles(final UUID resourceId)
+    throws RestException {
+        try {
+            final Resource r =
+                _resources.find(Resource.class, resourceId);
+            return r.roles();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Duration cacheDuration(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return r.cache();
+    public Duration cacheDuration(final UUID resourceId) throws RestException {
+        try {
+            final Resource r =
+                _resources.find(Resource.class, resourceId);
+            return r.cache();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public TemplateSummary computeTemplate(final UUID resourceId) {
-        final Resource r =
-            _resources.find(Resource.class, resourceId);
-        return mapTemplate(r.computeTemplate(null));
+    public TemplateSummary computeTemplate(final UUID resourceId)
+    throws RestException {
+        try {
+            final Resource r =
+                _resources.find(Resource.class, resourceId);
+            return mapTemplate(r.computeTemplate(null));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public ResourceSummary resourceForPath(final String rootPath) {
-        final ResourcePath rp = new ResourcePath(rootPath);
-        return mapResource(
-            _resources.lookup(rp.top().toString(), rp.removeTop()));
+    public ResourceSummary resourceForPath(final String rootPath)
+    throws RestException {
+        try {
+            final ResourcePath rp = new ResourcePath(rootPath);
+            return mapResource(
+                _resources.lookup(rp.top().toString(), rp.removeTop()));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public ResourceSummary resourceForLegacyId(final String legacyId) {
-        return mapResource(_resources.lookupWithLegacyId(legacyId));
+    public ResourceSummary resourceForLegacyId(final String legacyId)
+    throws RestException {
+        try {
+            return mapResource(_resources.lookupWithLegacyId(legacyId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }

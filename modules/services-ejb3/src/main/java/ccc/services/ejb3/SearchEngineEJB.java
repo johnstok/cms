@@ -32,6 +32,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Scheduler;
@@ -195,7 +196,13 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     private SimpleLucene createLucene() {
         final SettingsRepository settings = new SettingsRepository(_repo);
-        final Setting indexPath = settings.find(Setting.Name.LUCENE_INDEX_PATH);
+        Setting indexPath;
+        try {
+            indexPath = settings.find(Setting.Name.LUCENE_INDEX_PATH);
+        } catch (final EntityNotFoundException e) {
+            throw new RuntimeException(
+                "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
+        }
         return new SimpleLuceneFS(
             new FileRepositoryImpl(new FsCoreData(), _repo), indexPath.value());
     }

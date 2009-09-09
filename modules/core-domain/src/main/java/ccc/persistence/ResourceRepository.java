@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.types.ResourcePath;
@@ -47,7 +48,8 @@ public interface ResourceRepository {
      * @param params The query parameters.
      * @return The result.
      */
-    <T> T find(String queryName, Class<T> resultType, Object... params);
+    <T> T find(String queryName, Class<T> resultType, Object... params)
+    throws EntityNotFoundException;
 
     /**
      * List all locked resources.
@@ -62,7 +64,8 @@ public interface ResourceRepository {
      * @param resourceId The id of the resource whose history we will look up.
      * @return The revisions for the resource.
      */
-    Map<Integer, ? extends Revision<?>> history(UUID resourceId);
+    Map<Integer, ? extends Revision<?>> history(UUID resourceId)
+    throws EntityNotFoundException;
 
     /**
      * Find a resource using its unique id.
@@ -72,7 +75,8 @@ public interface ResourceRepository {
      * @param id The id of the resource to find.
      * @return The resource for the specified id.
      */
-    <T extends Resource> T find(final Class<T> type, final UUID id);
+    <T extends Resource> T find(final Class<T> type, final UUID id)
+    throws EntityNotFoundException;
 
     /**
      * Look up a resource.
@@ -82,7 +86,8 @@ public interface ResourceRepository {
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    Resource lookup(String rootName, ResourcePath contentPath);
+    Resource lookup(String rootName, ResourcePath contentPath)
+    throws EntityNotFoundException;
 
     /**
      * Look up a resource, given its CCC6 id.
@@ -90,5 +95,5 @@ public interface ResourceRepository {
      * @param legacyId The CCC6 id.
      * @return The corresponding resource in CCC7.
      */
-    Resource lookupWithLegacyId(String legacyId);
+    Resource lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
 }

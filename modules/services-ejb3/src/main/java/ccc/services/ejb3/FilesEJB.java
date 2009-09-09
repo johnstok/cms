@@ -33,8 +33,8 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.File;
 import ccc.domain.User;
 import ccc.persistence.QueryNames;
-import ccc.rest.RestException;
 import ccc.rest.Files;
+import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
@@ -62,9 +62,14 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public FileDelta fileDelta(final UUID fileId) {
-        return
-            deltaFile(_resources.find(File.class, fileId));
+    public FileDelta fileDelta(final UUID fileId) throws RestException {
+        try {
+            return
+                deltaFile(_resources.find(File.class, fileId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 

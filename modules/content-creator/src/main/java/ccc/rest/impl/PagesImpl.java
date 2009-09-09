@@ -18,8 +18,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import ccc.rest.RestException;
 import ccc.rest.Pages;
+import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -43,7 +43,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta pageDelta(final UUID pageId) {
+    public PageDelta pageDelta(final UUID pageId) throws RestException {
         return getPageCommands().pageDelta(pageId);
     }
 

@@ -18,6 +18,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import ccc.domain.EntityNotFoundException;
 import ccc.persistence.FileRepository;
 import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
@@ -38,6 +41,8 @@ import ccc.rendering.StatefulReaderImpl;
 public class ReaderAction
     implements
         ServletAction {
+
+    private static final Logger LOG = Logger.getLogger(ReaderAction.class);
 
     private final ServletAction _delegate;
 
@@ -60,12 +65,18 @@ public class ReaderAction
 
         final UserRepositoryImpl ul = new UserRepositoryImpl(repository);
         final Principal p = req.getUserPrincipal();
-        req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
+        try {
+            req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
+        } catch (final EntityNotFoundException e) {
+            LOG.warn("No user found for principal: "+p);
+        }
 
-        final LogEntryRepository al = new LogEntryRepositoryImpl(repository); // TODO: Remove - not used.
+        final LogEntryRepository al =
+            new LogEntryRepositoryImpl(repository); // TODO: Remove - not used.
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
-        final FileRepository dm = new FileRepositoryImpl(new FsCoreData(), repository);
+        final FileRepository dm =
+            new FileRepositoryImpl(new FsCoreData(), repository);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =

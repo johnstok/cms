@@ -14,6 +14,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -52,11 +53,13 @@ public class UpdatePasswordAction {
      * @param password The new password.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     *
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
-                        final String password) {
+                        final String password) throws CccCheckedException {
         final User u =
                 _repository.find(User.class, userId);
         u.password(password);

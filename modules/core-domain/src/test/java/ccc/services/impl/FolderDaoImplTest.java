@@ -22,12 +22,10 @@ import junit.framework.TestCase;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -48,11 +46,9 @@ public class FolderDaoImplTest
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource isn't locked.
+     * @throws Exception If the test fails.
      */
-    public void testUpdateSortOrder()
-    throws LockMismatchException, UnlockedException {
+    public void testUpdateSortOrder() throws Exception {
 
         // ARRANGE
         _f.lock(_regularUser);
@@ -61,7 +57,8 @@ public class FolderDaoImplTest
         _al.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateFolderCommand uf = new UpdateFolderCommand(_repository, _al);
+        final UpdateFolderCommand uf =
+            new UpdateFolderCommand(_repository, _al);
 
         // ACT
         uf.execute(_regularUser,
@@ -96,7 +93,8 @@ public class FolderDaoImplTest
         _al.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateFolderCommand uf = new UpdateFolderCommand(_repository, _al);
+        final UpdateFolderCommand uf =
+            new UpdateFolderCommand(_repository, _al);
 
         // ACT
         final List<UUID> order = new ArrayList<UUID>();

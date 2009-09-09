@@ -14,10 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.InsufficientPrivilegesException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -57,14 +56,11 @@ public class UnlockResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws InsufficientPrivilegesException If the user does not have enough
-     *  privileges to perform this command.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID resourceId)
-      throws UnlockedException, InsufficientPrivilegesException {
+                        final UUID resourceId) throws CccCheckedException {
         final Resource r = _repository.find(Resource.class, resourceId);
         r.unlock(actor);
 

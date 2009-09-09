@@ -15,10 +15,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
@@ -56,14 +55,13 @@ public class UpdateResourceRolesCommand {
      * @param actor The actor that made the change.
      * @param happenedOn When the update took place.
      *
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws LockMismatchException If the resource is locked by another user.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID id,
                         final Collection<String> roles)
-                               throws UnlockedException, LockMismatchException {
+                                                   throws CccCheckedException {
         final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);
 

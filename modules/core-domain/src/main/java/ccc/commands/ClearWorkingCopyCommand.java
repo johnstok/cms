@@ -14,10 +14,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.LockMismatchException;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
@@ -56,17 +55,11 @@ public class ClearWorkingCopyCommand {
      * @param actor The user that executed the command.
      * @param happenedOn The date the command was executed.
      *
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws WorkingCopyNotSupportedException If the resource is not working
-     *  copy aware.
+     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID resourceId)
-                                       throws UnlockedException,
-                                              LockMismatchException,
-                                              WorkingCopyNotSupportedException {
+                        final UUID resourceId) throws CccCheckedException {
         final Resource r = _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
 

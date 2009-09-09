@@ -68,8 +68,10 @@ public class JpaRepositoryTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFindByUuid() {
+    public void testFindByUuid() throws Exception {
 
         // ARRANGE
         final Query q = createStrictMock(Query.class);

@@ -74,8 +74,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testLookupReturnsNullIFRootIsMissing() {
+    public void testLookupReturnsNullIFRootIsMissing() throws Exception {
 
         // ARRANGE
         expect(
@@ -386,8 +388,10 @@ public class ResourceDaoImplTest
         oldParent.add(_r);
         _r.lock(_regularUser);
 
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        expect(_repository.find(Folder.class, newParent.id())).andReturn(newParent);
+        expect(_repository.find(Resource.class, _r.id()))
+            .andReturn(_r);
+        expect(_repository.find(Folder.class, newParent.id()))
+            .andReturn(newParent);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -424,8 +428,10 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testFind() {
+    public void testFind() throws Exception {
 
         // ARRANGE
         final Page bar =

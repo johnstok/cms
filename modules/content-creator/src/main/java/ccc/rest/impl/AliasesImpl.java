@@ -41,7 +41,7 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public String aliasTargetName(final UUID aliasId) {
+    public String aliasTargetName(final UUID aliasId) throws RestException {
         return getAliases().aliasTargetName(aliasId);
     }
 
