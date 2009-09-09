@@ -48,7 +48,7 @@ public class CancelActionAction
         if (null==action) {
             GLOBALS.alert(UI_CONSTANTS.pleaseChooseAnAction());
             return;
-        } else if (ActionStatus.Scheduled!=action.getStatus()) {
+        } else if (ActionStatus.SCHEDULED!=action.getStatus()) {
             GLOBALS.alert(UI_CONSTANTS.thisActionHasAlreadyCompleted());
             return;
         } else {
@@ -68,7 +68,7 @@ public class CancelActionAction
     @Override
     protected void onNoContent(final Response response) {
         final ActionSummaryModelData action = _table.getSelectedItem();
-        action.setStatus(ActionStatus.Cancelled);
+        action.setStatus(ActionStatus.CANCELLED);
         _table.update(action);
     }
 }
