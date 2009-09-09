@@ -64,7 +64,8 @@ public class TemplateDaoImplTest
         _al.record(isA(LogEntry.class));
         replay(_repository, _al);
 
-        final UpdateTemplateCommand ut = new UpdateTemplateCommand(_repository, _al);
+        final UpdateTemplateCommand ut =
+            new UpdateTemplateCommand(_repository, _al);
 
 
         // ACT

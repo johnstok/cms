@@ -39,7 +39,8 @@ import java.util.Comparator;
  *   Use the static "sort" method from the java.util.Collections class:
  *   Collections.sort(your list, new AlphanumComparator());
  *
- * @version http://www.davekoelle.com/files/AlphanumComparator.java on 08th August 2008.
+ * @version http://www.davekoelle.com/files/AlphanumComparator.java
+ *  on 08th August 2008.
  *
  * @author Daniel Migowski, Andre Bogus, David Koelle, Civic Computing Ltd.
  */

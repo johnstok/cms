@@ -15,7 +15,9 @@ package ccc.domain;
 
 
 /**
- * TODO: Add a description for this type.
+ * API implemented by resources that support snapshot creation.
+ *
+ * @param <T> The type of snapshot returned.
  *
  * @author Civic Computing Ltd.
  */

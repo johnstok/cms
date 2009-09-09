@@ -43,11 +43,11 @@ public class PageRevision
     /**
      * Constructor.
      *
-     * @param timestamp
-     * @param actor
-     * @param majorChange
-     * @param comment
-     * @param content
+     * @param timestamp The date the revision was created.
+     * @param actor The actor that created the revision.
+     * @param majorChange Was the revision a major change.
+     * @param comment Comment describing the change.
+     * @param content The new content for the page.
      */
     PageRevision(final Date timestamp,
                  final User actor,

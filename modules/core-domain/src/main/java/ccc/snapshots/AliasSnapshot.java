@@ -33,7 +33,7 @@ public class AliasSnapshot extends ResourceSnapshot {
     /**
      * Constructor.
      *
-     * @param page
+     * @param a The alias to wrap.
      */
     public AliasSnapshot(final Alias a) {
         super(a);
@@ -41,9 +41,9 @@ public class AliasSnapshot extends ResourceSnapshot {
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The alias' target resource.
      */
     public Resource target() {
         return _delegate.target();

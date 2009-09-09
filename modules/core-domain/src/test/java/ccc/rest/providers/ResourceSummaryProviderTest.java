@@ -15,8 +15,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import ccc.rest.providers.JsonableCollectionWriter;
-
 import junit.framework.TestCase;
 
 

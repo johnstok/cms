@@ -40,6 +40,7 @@ public class User extends Entity {
     /** SYSTEM_USER : User. */
     public static final User SYSTEM_USER =
         new User(new Username("SYSTEM"), "SYSTEM");
+    private static final int HASH_REPETITIONS = 1000;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
@@ -252,7 +253,7 @@ public class User extends Entity {
             byte[] hash = digest.digest();
 
             // Perform 1000 repetitions
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < HASH_REPETITIONS; i++) {
                 digest.reset();
                 hash = digest.digest(hash);
             }

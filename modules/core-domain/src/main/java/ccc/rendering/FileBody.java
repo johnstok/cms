@@ -14,7 +14,6 @@ package ccc.rendering;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import ccc.domain.File;
 import ccc.persistence.FileRepository;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
@@ -36,8 +35,8 @@ public class FileBody
      * Constructor.
      *
      * @param f The file this body represents.
-     * @param fileRepository The data manager used to retrieve the file's contents
-     *      from the data store.
+     * @param fileRepository The data manager used to retrieve the file's
+     *      contents from the data store.
      */
     public FileBody(final FileSnapshot f, final FileRepository fileRepository) {
         DBC.require().notNull(f);
