@@ -44,6 +44,7 @@ public interface Users {
      * Retrieve the delta for a user.
      *
      * @param userId The user's id.
+     * @throws RestException If the method fails
      * @return The corresponding delta.
      */
     @GET @Path("/users/{id}/delta") @NoCache
@@ -52,6 +53,7 @@ public interface Users {
     /**
      * Returns currently logged in user.
      *
+     * @throws RestException If the method fails
      * @return UserDTO
      */
     @GET @Path("/users/me") @NoCache

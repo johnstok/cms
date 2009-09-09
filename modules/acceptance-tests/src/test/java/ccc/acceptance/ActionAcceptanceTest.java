@@ -79,4 +79,33 @@ public class ActionAcceptanceTest
         // ASSERT
         assertEquals(0, _actions.listPendingActions().size());
     }
+
+    /**
+     * Test.
+     * @throws RestException If the test fails.
+     */
+    public void testExecuteAction() throws RestException {
+        // ARRANGE
+        final Date time =  new Date(new Date().getTime()-1000);
+        final ResourceSummary rs = tempFolder();
+        _actions.createAction(
+            new ActionDto(
+                rs.getId(),
+                CommandType.RESOURCE_PUBLISH,
+                time,
+                new HashMap<String, String>()));
+
+        // ACT
+        _actions.executeAction();
+
+        // ASSERT
+        ActionSummary testAction = null;
+        for (final ActionSummary as : _actions.listCompletedActions()) {
+            if (as.getExecuteAfter().equals(time)) {
+                testAction = as;
+            }
+        }
+        assertNotNull("Test action should be completed", testAction);
+
+    }
 }

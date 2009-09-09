@@ -34,7 +34,7 @@ import ccc.types.Duration;
 
 
 /**
- * TODO: Add a description for this type.
+ * Basic API for manipulating resources.
  *
  * @author Civic Computing Ltd.
  */
@@ -49,6 +49,7 @@ public interface Resources {
      * Get the resource located at the specified path.
      *
      * @param resourceId The id of the existing resource.
+     * @throws RestException If the method fails
      * @return A summary of the resource.
      */
     @GET
@@ -61,6 +62,7 @@ public interface Resources {
      * Determine the absolute path to a resource.
      *
      * @param resourceId The id of the resource.
+     * @throws RestException If the method fails
      * @return The absolute path as a string.
      */
     @GET
@@ -83,6 +85,7 @@ public interface Resources {
      * Retrieve the history of a resource.
      *
      * @param resourceId The id of the resource whose history we will look up.
+     * @throws RestException If the method fails
      * @return The list of resources.
      */
     @GET
@@ -95,6 +98,7 @@ public interface Resources {
      * Retrieve the metadata for a resource.
      *
      * @param resourceId The id of the resource.
+     * @throws RestException If the method fails
      * @return The metadata in a hashmap.
      */
     @GET
@@ -107,7 +111,7 @@ public interface Resources {
      * List the roles for a resource.
      *
      * @param resourceId The resource's id.
-     *
+     * @throws RestException If the method fails
      * @return The roles, as a collection of strings.
      */
     @GET
@@ -120,6 +124,7 @@ public interface Resources {
      * Retrieve resource's cache duration.
      *
      * @param resourceId The id of the resource.
+     * @throws RestException If the method fails
      * @return Duration.
      */
     @GET
@@ -132,6 +137,7 @@ public interface Resources {
      * Returns summary of the template assigned for a resource.
      *
      * @param resourceId Id of the resource.
+     * @throws RestException If the method fails
      * @return TemplateSummary.
      */
     @GET
@@ -144,6 +150,7 @@ public interface Resources {
      * Look up the resource for a specified path.
      *
      * @param path The absolute path.
+     * @throws RestException If the method fails
      * @return A summary of the corresponding resource.
      */
     @GET
@@ -156,6 +163,7 @@ public interface Resources {
      * Look up the resource for a specified legacy id.
      *
      * @param legacyId The legacy id of the resource.
+     * @throws RestException If the method fails
      * @return A summary of the corresponding resource.
      */
     @GET

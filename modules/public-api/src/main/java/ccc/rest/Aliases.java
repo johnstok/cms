@@ -44,6 +44,9 @@ public interface Aliases {
      * Retrieve the target name for a alias.
      *
      * @param aliasId The alias' id.
+     *
+     * @throws RestException If the method fails.
+     *
      * @return The corresponding target name.
      */
     @GET
