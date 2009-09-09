@@ -58,6 +58,7 @@ public interface Files {
      * Retrieve the delta for a file.
      *
      * @param fileId The file's id.
+     * @throws RestException If the method fails.
      * @return The corresponding delta.
      */
     @GET

@@ -58,6 +58,7 @@ public interface Pages {
      * Retrieve the delta for a page.
      *
      * @param pageId The page's id.
+     * @throws RestException If the method fails
      * @return The corresponding delta.
      */
     @GET

@@ -45,6 +45,7 @@ public interface Folders {
      * List all of the folders that are children of the specified parent folder.
      *
      * @param folderId The id of the folder.
+     * @throws RestException If the method fails
      * @return The list of child folders.
      */
     @GET
@@ -57,6 +58,7 @@ public interface Folders {
      * List all of the children of the specified folder.
      *
      * @param folderId The folder.
+     * @throws RestException If the method fails
      * @return The folder's of children.
      */
     @GET
@@ -69,6 +71,7 @@ public interface Folders {
      * List all of the children of the specified folder in manual order.
      *
      * @param folderId The folder.
+     * @throws RestException If the method fails
      * @return The folder's of children.
      */
     @GET
@@ -83,6 +86,7 @@ public interface Folders {
      *
      * @param folderId The id of the folder to check.
      * @param name The name of the resource.
+     * @throws RestException If the method fails
      * @return Returns true in case folder has a resource with given name,
      *  false otherwise.
      */
@@ -126,6 +130,6 @@ public interface Folders {
      */
     @POST
     @Path("/folders/{id}")
-    void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta) throws RestException;
-
+    void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta)
+        throws RestException;
 }

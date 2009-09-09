@@ -69,6 +69,7 @@ public interface Templates {
      * Retrieve the delta for a template.
      *
      * @param templateId The template's id.
+     * @throws RestException If the method fails
      * @return The corresponding delta.
      */
     @GET
