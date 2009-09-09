@@ -136,4 +136,8 @@ public final class JsonKeys {
     public static final String PARAMETERS = "parameters";
     /** FAILURE : String. */
     public static final String FAILURE = "failure";
+    /** PRIMARY_TYPE : String. */
+    public static final String PRIMARY_TYPE = "primary-type";
+    /** SUB_TYPE : String. */
+    public static final String SUB_TYPE = "sub-type";
 }

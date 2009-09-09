@@ -23,6 +23,54 @@ public class UsernameTest
     extends
         TestCase {
 
+    /**
+     * Test.
+     */
+    public void testUsernameHascode() {
+
+        // ARRANGE
+        final Username u1 = new Username("jack");
+        final Username u2 = new Username("jack");
+
+        // ACT
+
+        // ASSERT
+        assertEquals(u1.hashCode(), u2.hashCode());
+    }
+
+    /**
+     * Test.
+     */
+    public void testUsernameToString() {
+
+        // ARRANGE
+        final Username uname = new Username("jack");
+
+        // ACT
+        final String unString = uname.toString();
+
+        // ASSERT
+        assertEquals("jack", unString);
+    }
+
+    /**
+     * Test.
+     */
+    public void testUsernameEquality() {
+
+        // ARRANGE
+        final Username uname = new Username("jack");
+
+        // ACT
+
+        // ASSERT
+        assertTrue(uname.equals(uname));
+        assertTrue(uname.equals(new Username("jack")));
+        assertFalse(uname.equals(new Username("jill")));
+        assertFalse(uname.equals(null));
+        assertFalse(uname.equals(new Object()));
+    }
+
 
     /**
      * Test.

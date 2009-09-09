@@ -14,6 +14,7 @@ package ccc.types;
 import java.io.Serializable;
 
 import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 
 
@@ -38,6 +39,8 @@ public class MimeType implements Serializable, Jsonable {
      * @param subType The sub-type.
      */
     public MimeType(final String primaryType, final String subType) {
+        DBC.require().notEmpty(primaryType);
+        DBC.require().notEmpty(subType);
         _primaryType = primaryType;
         _subType = subType;
     }
@@ -49,8 +52,8 @@ public class MimeType implements Serializable, Jsonable {
      * @param json The JSON representation of this mime type.
      */
     public MimeType(final Json json) {
-        _primaryType = json.getString("primary-type");
-        _subType = json.getString("sub-type");
+        _primaryType = json.getString(JsonKeys.PRIMARY_TYPE);
+        _subType = json.getString(JsonKeys.SUB_TYPE);
     }
 
     /**
@@ -69,6 +72,7 @@ public class MimeType implements Serializable, Jsonable {
      * @param primaryType The primaryType to set.
      */
     public void setPrimaryType(final String primaryType) {
+        DBC.require().notEmpty(primaryType);
         _primaryType = primaryType;
     }
 
@@ -89,6 +93,7 @@ public class MimeType implements Serializable, Jsonable {
      * @param subType The sub-type to set.
      */
     public void setSubType(final String subType) {
+        DBC.require().notEmpty(subType);
         _subType = subType;
     }
 
@@ -143,7 +148,7 @@ public class MimeType implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set("primary-type", _primaryType);
-        json.set("sub-type", _subType);
+        json.set(JsonKeys.PRIMARY_TYPE, _primaryType);
+        json.set(JsonKeys.SUB_TYPE, _subType);
     }
 }

@@ -169,7 +169,6 @@ public final class ResourcePath {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-
         final int prime = 31;
         int result = 1;
         result =

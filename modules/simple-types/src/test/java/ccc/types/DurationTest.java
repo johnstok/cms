@@ -21,6 +21,24 @@ import junit.framework.TestCase;
  */
 public class DurationTest extends TestCase {
 
+    /**
+     * Test.
+     */
+    public void testDurationEquality() {
+
+        // ARRANGE
+        final Duration d = new Duration(1000);
+
+        // ACT
+
+        // ASSERT
+        assertTrue(d.equals(d));
+        assertTrue(d.equals(new Duration(1000)));
+        assertFalse(d.equals(new Duration(1001)));
+        assertFalse(d.equals(new Object()));
+        assertFalse(d.equals(null));
+    }
+
 
     /**
      * Test.
