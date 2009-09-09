@@ -62,6 +62,7 @@ import ccc.rest.providers.FailureWriter;
 import ccc.rest.providers.JsonReader;
 import ccc.rest.providers.JsonableWriter;
 import ccc.rest.providers.MetadataWriter;
+import ccc.rest.providers.PageDeltaReader;
 import ccc.rest.providers.ResSummaryReader;
 import ccc.rest.providers.ResourceSummaryCollectionReader;
 import ccc.rest.providers.RevisionSummaryCollectionReader;
@@ -115,6 +116,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(UUIDProvider.class);
         pFactory.addMessageBodyReader(TemplateDeltaReader.class);
+        pFactory.addMessageBodyReader(PageDeltaReader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);
