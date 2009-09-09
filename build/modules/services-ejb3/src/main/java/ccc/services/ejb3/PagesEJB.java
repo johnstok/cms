@@ -78,20 +78,21 @@ public class PagesEJB
         try {
             final User u = userForId(actorId);
 
-            final Page p = new CreatePageCommand(_bdao, _audit).execute(
-                u,
-                happenedOn,
-                parentId,
-                delta,
-                ResourceName.escape(name),
-                title,
-                templateId,
-                comment,
-                majorChange);
+            final Page p =
+                new CreatePageCommand(getRepository(), getAuditLog()).execute(
+                    u,
+                    happenedOn,
+                    parentId,
+                    delta,
+                    ResourceName.escape(name),
+                    title,
+                    templateId,
+                    comment,
+                    majorChange);
 
             if (publish) {
                 p.lock(u);
-                new PublishCommand(_audit).execute(happenedOn, u, p);
+                new PublishCommand(getAuditLog()).execute(happenedOn, u, p);
                 p.unlock(u);
             }
 
@@ -163,7 +164,7 @@ public class PagesEJB
                            final Date happenedOn)
                                                  throws RestException {
         try {
-            new UpdatePageCommand(_bdao, _audit).execute(
+            new UpdatePageCommand(getRepository(), getAuditLog()).execute(
                 userForId(actorId),
                 happenedOn,
                 pageId,
@@ -184,11 +185,12 @@ public class PagesEJB
                                   final PageDelta delta)
                                                  throws RestException {
         try {
-            new UpdateWorkingCopyCommand(_bdao, _audit).execute(
-                currentUser(),
-                new Date(),
-                pageId,
-                delta);
+            new UpdateWorkingCopyCommand(
+                getRepository(), getAuditLog()).execute(
+                    currentUser(),
+                    new Date(),
+                    pageId,
+                    delta);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -215,7 +217,7 @@ public class PagesEJB
     public PageDelta pageDelta(final UUID pageId) throws RestException {
         try {
             return
-                deltaPage(_resources.find(Page.class, pageId));
+                deltaPage(getResources().find(Page.class, pageId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

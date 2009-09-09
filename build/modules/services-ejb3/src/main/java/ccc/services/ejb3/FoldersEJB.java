@@ -108,12 +108,12 @@ public class FoldersEJB
             final User u = userForId(actorId);
 
             final Folder f =
-                new CreateFolderCommand(_bdao, _audit).execute(
+                new CreateFolderCommand(getRepository(), getAuditLog()).execute(
                     u, happenedOn, parentId, name, title);
 
             if (publish) {
                 f.lock(u);
-                new PublishCommand(_audit).execute(happenedOn, u, f);
+                new PublishCommand(getAuditLog()).execute(happenedOn, u, f);
                 f.unlock(u);
             }
 
@@ -132,7 +132,7 @@ public class FoldersEJB
                                                  throws RestException {
         try {
             final Folder f = new Folder(name);
-            new CreateRootCommand(_bdao, _audit).execute(
+            new CreateRootCommand(getRepository(), getAuditLog()).execute(
                 currentUser(), new Date(), f);
             return mapResource(f);
 
@@ -155,7 +155,7 @@ public class FoldersEJB
                 list.add(UUID.fromString(item));
             }
 
-            new UpdateFolderCommand(_bdao, _audit).execute(
+            new UpdateFolderCommand(getRepository(), getAuditLog()).execute(
                 currentUser(),
                  new Date(),
                  folderId,
@@ -176,7 +176,7 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f =
-                _resources.find(Folder.class, folderId);
+                getResources().find(Folder.class, folderId);
             return mapResources(
                 f != null ? f.entries() : new ArrayList<Resource>());
 
@@ -194,7 +194,7 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f =
-                _resources.find(Folder.class, folderId);
+                getResources().find(Folder.class, folderId);
             if (f != null) {
                 f.sortOrder(ResourceOrder.MANUAL);
                 return mapResources(f.entries());
@@ -214,7 +214,7 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f =
-                _resources.find(Folder.class, folderId);
+                getResources().find(Folder.class, folderId);
             return mapResources(
                 f != null ? f.folders() : new ArrayList<Folder>());
 
@@ -232,8 +232,10 @@ public class FoldersEJB
         try {
             // TODO handle null folderId? (for root folders)
             return
-            	_resources.find(Folder.class, folderId)
-                      .hasEntryWithName(new ResourceName(name));
+                Boolean.valueOf(
+                    getResources()
+                        .find(Folder.class, folderId)
+                        .hasEntryWithName(new ResourceName(name)));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -245,6 +247,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> roots() {
-        return mapResources(_resources.list(QueryNames.ROOTS, Folder.class));
+        return mapResources(
+            getResources().list(QueryNames.ROOTS, Folder.class));
     }
 }
