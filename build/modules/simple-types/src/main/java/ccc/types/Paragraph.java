@@ -71,8 +71,8 @@ public final class Paragraph implements Serializable, Jsonable {
                 break;
 
             default:
-                // TODO: Throw a better exception.
-                throw new RuntimeException("Paragraph type unsupported.");
+                throw new IllegalArgumentException(
+                    "Paragraph type unsupported: "+_type);
         }
     }
 

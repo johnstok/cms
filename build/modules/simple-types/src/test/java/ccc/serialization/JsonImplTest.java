@@ -9,9 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
-
-import static ccc.commons.Exceptions.*;
+package ccc.serialization;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,10 +17,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.serialization.InvalidSnapshotException;
-import ccc.serialization.Json;
-import ccc.serialization.JsonImpl;
-import ccc.serialization.Jsonable;
 
 
 /**
@@ -307,5 +301,9 @@ public class JsonImplTest
 
         // ASSERT
         assertEquals("{}", s.getDetail());
+    }
+
+    private void swallow(@SuppressWarnings("unused") final Throwable t) {
+        /* NO-OP */
     }
 }

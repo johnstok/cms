@@ -398,6 +398,7 @@ public class JsonImpl implements Serializable, Json {
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("unchecked")
     public Map<String, String> getStringMap(final String key) {
         try {
             final JSONObject o =

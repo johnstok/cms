@@ -54,9 +54,9 @@ public final class DBC {
 
     /**
      * Assert that the specified string is not empty. A string is considered
-     * empty if either 1. It is NULL or 2. It has a length of 0.
-     *
-     * TODO: Rename to minLength and remove notNull test?
+     * empty if either:
+     * <br>1. It is NULL, or
+     * <br>2. It has a length of 0.
      *
      * @param string The string that may not be empty.
      */

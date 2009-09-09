@@ -151,6 +151,6 @@ public final class Duration implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.SECONDS, _time);
+        json.set(JsonKeys.SECONDS, Long.valueOf(_time));
     }
 }
