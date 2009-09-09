@@ -20,7 +20,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
@@ -52,19 +51,6 @@ public interface Files {
     @Path("/images")
     @NoCache
     Collection<FileDto> getAllContentImages();
-
-
-    /**
-     * Retrieve the delta for a file.
-     *
-     * @param fileId The file's id.
-     * @throws RestException If the method fails.
-     * @return The corresponding delta.
-     */
-    @GET
-    @Path("/{id}/delta")
-    @NoCache
-    FileDelta fileDelta(@PathParam("id") UUID fileId) throws RestException;
 
 
     /**

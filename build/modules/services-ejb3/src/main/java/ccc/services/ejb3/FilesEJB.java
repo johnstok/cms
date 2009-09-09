@@ -62,20 +62,6 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public FileDelta fileDelta(final UUID fileId) throws RestException {
-        try {
-            return
-                deltaFile(_resources.find(File.class, fileId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<FileDto> getAllContentImages() {
         final List<File> list = new ArrayList<File>();
         for (final File file : _bdao.list(QueryNames.ALL_IMAGES, File.class)) {

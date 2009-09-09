@@ -113,7 +113,7 @@ public final class FileDelta implements Serializable, Jsonable {
      *
      * @return Returns the properties.
      */
-    public final Map<String, String> getProperties() {
+    public Map<String, String> getProperties() {
         return _properties;
     }
 
