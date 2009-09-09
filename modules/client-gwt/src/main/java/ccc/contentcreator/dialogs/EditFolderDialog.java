@@ -11,6 +11,8 @@
  */
 package ccc.contentcreator.dialogs;
 
+import static ccc.types.ResourceOrder.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,12 +63,6 @@ AbstractEditDialog {
 
     private static final int GRID_WIDTH = 610;
     private static final int GRID_HEIGHT = 320;
-    private static final String MANUAL = "MANUAL";
-    private static final String DATE_CREATED_DESC = "DATE_CREATED_DESC";
-    private static final String DATE_CREATED_ASC = "DATE_CREATED_ASC";
-    private static final String DATE_CHANGED_DESC = "DATE_CHANGED_DESC";
-    private static final String DATE_CHANGED_ASC = "DATE_CHANGED_ASC";
-    private static final String NAME_ALPHANUM_ASC = "NAME_ALPHANUM_ASC";
 
     private final ComboBox<ModelData> _sortOrder = new ComboBox<ModelData>();
     private final ComboBox<ModelData> _indexPage = new ComboBox<ModelData>();
@@ -223,7 +219,7 @@ AbstractEditDialog {
     private void populateSortOptions() {
         final ModelData manual = new BaseModelData();
         manual.set("name", _constants.manual());
-        manual.set("value", MANUAL);
+        manual.set("value", MANUAL.name());
         _sortStore.add(manual);
         final ModelData nameAlphanumAsc = new BaseModelData();
         nameAlphanumAsc.set("name",
@@ -232,29 +228,29 @@ AbstractEditDialog {
             +_constants.alphanumeric()
             +", "
             +_constants.ascending());
-        nameAlphanumAsc.set("value", NAME_ALPHANUM_ASC);
+        nameAlphanumAsc.set("value", NAME_ALPHANUM_ASC.name());
         _sortStore.add(nameAlphanumAsc);
 
         final ModelData dateChangedAsc = new BaseModelData();
         dateChangedAsc.set(
             "name", _constants.dateChanged()+", "+_constants.ascending());
-        dateChangedAsc.set("value", DATE_CHANGED_ASC);
+        dateChangedAsc.set("value", DATE_CHANGED_ASC.name());
         _sortStore.add(dateChangedAsc);
         final ModelData dateChangedDesc = new BaseModelData();
         dateChangedDesc.set(
             "name", _constants.dateChanged()+", "+_constants.descending());
-        dateChangedDesc.set("value", DATE_CHANGED_DESC);
+        dateChangedDesc.set("value", DATE_CHANGED_DESC.name());
         _sortStore.add(dateChangedDesc);
 
         final ModelData dateCreatedAsc = new BaseModelData();
         dateCreatedAsc.set(
             "name", _constants.dateCreated()+", "+_constants.ascending());
-        dateCreatedAsc.set("value", DATE_CREATED_ASC);
+        dateCreatedAsc.set("value", DATE_CREATED_ASC.name());
         _sortStore.add(dateCreatedAsc);
         final ModelData dateCreatedDesc = new BaseModelData();
         dateCreatedDesc.set(
             "name", _constants.dateCreated()+", "+_constants.descending());
-        dateCreatedDesc.set("value", DATE_CREATED_DESC);
+        dateCreatedDesc.set("value", DATE_CREATED_DESC.name());
         _sortStore.add(dateCreatedDesc);
     }
 
@@ -285,7 +281,7 @@ AbstractEditDialog {
                     _indexPage.getValue().<UUID>get("value");
                 final List<String> orderList = new ArrayList<String>();
 
-                if (order.equals(MANUAL)) {
+                if (order.equals(MANUAL.name())) {
                     final List<ResourceSummaryModelData> models =
                         _grid.getStore().getModels();
                     for(final ResourceSummaryModelData m : models) {
@@ -374,7 +370,7 @@ AbstractEditDialog {
             final ModelData md = se.getSelectedItem();
             if (md != null) {
                 final String order = md.<String>get("value");
-                if (MANUAL.equals(order)) {
+                if (MANUAL.name().equals(order)) {
                     _grid.enable();
                     // reload original manual order - otherwise DnD fails.
                     loadDetailStore(_currentIndexPage);
@@ -383,16 +379,16 @@ AbstractEditDialog {
                     if (NAME_ALPHANUM_ASC.equals(order)) {
                         _detailsStore.sort(
                             Property.NAME.name(), SortDir.ASC);
-                    } else if (DATE_CHANGED_ASC.equals(order)) {
+                    } else if (DATE_CHANGED_ASC.name().equals(order)) {
                         _detailsStore.sort(
                             Property.DATE_CHANGED.name(), SortDir.ASC);
-                    } else if (DATE_CHANGED_DESC.equals(order)) {
+                    } else if (DATE_CHANGED_DESC.name().equals(order)) {
                         _detailsStore.sort(
                             Property.DATE_CHANGED.name(), SortDir.DESC);
-                    } else if (DATE_CREATED_ASC.equals(order)) {
+                    } else if (DATE_CREATED_ASC.name().equals(order)) {
                         _detailsStore.sort(
                             Property.DATE_CREATED.name(), SortDir.ASC);
-                    } else if (DATE_CREATED_DESC.equals(order)) {
+                    } else if (DATE_CREATED_DESC.name().equals(order)) {
                         _detailsStore.sort(
                             Property.DATE_CREATED.name(), SortDir.DESC);
                     }
