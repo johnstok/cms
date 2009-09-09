@@ -56,7 +56,7 @@ public class UsersEJB
     public UserDto createUser(final UserDto delta) throws RestException {
         try {
             return mapUser(
-                new CreateUserCommand(_bdao, _audit).execute(
+                new CreateUserCommand(getRepository(), getAuditLog()).execute(
                     currentUser(), new Date(), delta));
 
         } catch (final CccCheckedException e) {
@@ -71,7 +71,7 @@ public class UsersEJB
     public void updateUser(final UUID userId, final UserDto delta)
     throws RestException {
         try {
-            new UpdateUserCommand(_bdao, _audit).execute(
+            new UpdateUserCommand(getRepository(), getAuditLog()).execute(
                 currentUser(), new Date(), userId, delta);
 
         } catch (final CccCheckedException e) {
@@ -86,7 +86,7 @@ public class UsersEJB
     public void updateUserPassword(final UUID userId, final UserDto user)
     throws RestException {
         try {
-            new UpdatePasswordAction(_bdao, _audit).execute(
+            new UpdatePasswordAction(getRepository(), getAuditLog()).execute(
                 currentUser(),
                 new Date(),
                 userId,
@@ -105,7 +105,7 @@ public class UsersEJB
                                final UserDto user)
                                                  throws RestException {
         try {
-        new UpdateCurrentUserCommand(_bdao, _audit).execute(
+        new UpdateCurrentUserCommand(getRepository(), getAuditLog()).execute(
             currentUser(),
             new Date(),
             userId,
@@ -121,7 +121,8 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Boolean usernameExists(final Username username) {
-        return _users.usernameExists(username.toString());
+        return
+            Boolean.valueOf(getUsers().usernameExists(username.toString()));
     }
 
 
@@ -142,7 +143,7 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsers() {
-        return mapUsers(_users.listUsers());
+        return mapUsers(getUsers().listUsers());
     }
 
 
@@ -150,7 +151,7 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithEmail(final String email) {
-        return mapUsers(_users.listUsersWithEmail(email));
+        return mapUsers(getUsers().listUsersWithEmail(email));
     }
 
 
@@ -158,7 +159,7 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithRole(final String role) {
-        return mapUsers(_users.listUsersWithRole(role));
+        return mapUsers(getUsers().listUsersWithRole(role));
     }
 
 
@@ -167,7 +168,7 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithUsername(
                                                     final Username username) {
-        return mapUsers(_users.listUsersWithUsername(username.toString()));
+        return mapUsers(getUsers().listUsersWithUsername(username.toString()));
     }
 
 
@@ -177,7 +178,7 @@ public class UsersEJB
     public UserDto userDelta(final UUID userId) throws RestException {
         try {
             return
-            deltaUser(_users.find(userId));
+            deltaUser(getUsers().find(userId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

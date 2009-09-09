@@ -38,13 +38,12 @@ import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 
 
 /**
- * EJB implementation of the {@link ResourcesExt} interface.
+ * EJB implementation of the {@link Files} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -64,7 +63,8 @@ public class FilesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<FileDto> getAllContentImages() {
         final List<File> list = new ArrayList<File>();
-        for (final File file : _bdao.list(QueryNames.ALL_IMAGES, File.class)) {
+        for (final File file
+                : getRepository().list(QueryNames.ALL_IMAGES, File.class)) {
             if (PredefinedResourceNames.CONTENT.equals(
                 file.root().name().toString())) {
                 list.add(file);
@@ -92,21 +92,22 @@ public class FilesEJB
             final User u = currentUser();
 
             final File f =
-                new CreateFileCommand(_bdao, _audit, _dm).execute(
-                    u,
-                    lastUpdated,
-                    parentFolder,
-                    file,
-                    title,
-                    description,
-                    new ResourceName(resourceName),
-                    comment,
-                    isMajorEdit,
-                    dataStream);
+                new CreateFileCommand(
+                    getRepository(), getAuditLog(), getFiles()).execute(
+                        u,
+                        lastUpdated,
+                        parentFolder,
+                        file,
+                        title,
+                        description,
+                        new ResourceName(resourceName),
+                        comment,
+                        isMajorEdit,
+                        dataStream);
 
             if (publish) {
                 f.lock(u);
-                new PublishCommand(_audit).execute(lastUpdated, u, f);
+                new PublishCommand(getAuditLog()).execute(lastUpdated, u, f);
                 f.unlock(u);
             }
 
@@ -128,14 +129,15 @@ public class FilesEJB
                                                  throws RestException {
 
         try {
-            new UpdateFileCommand(_bdao, _audit, _dm).execute(
-                currentUser(),
-                new Date(),
-                UUID.fromString(fileId.toString()),
-                fileDelta,
-                comment,
-                isMajorEdit,
-                dataStream);
+            new UpdateFileCommand(
+                getRepository(), getAuditLog(), getFiles()).execute(
+                    currentUser(),
+                    new Date(),
+                    UUID.fromString(fileId.toString()),
+                    fileDelta,
+                    comment,
+                    isMajorEdit,
+                    dataStream);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

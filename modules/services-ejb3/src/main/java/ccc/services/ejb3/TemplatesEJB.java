@@ -65,13 +65,13 @@ public final class TemplatesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Boolean templateNameExists(final String templateName) {
         try {
-            _resources.find(
+            getResources().find(
                 QueryNames.TEMPLATE_BY_NAME,
                 Template.class,
                 new ResourceName(templateName));
-            return true;
+            return Boolean.TRUE;
         } catch (final EntityNotFoundException e) {
-            return false;
+            return Boolean.FALSE;
         }
     }
 
@@ -80,7 +80,7 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<TemplateSummary> templates() {
-        return mapTemplates(_resources.list(
+        return mapTemplates(getResources().list(
             QueryNames.ALL_TEMPLATES, Template.class));
     }
 
@@ -92,14 +92,15 @@ public final class TemplatesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateTemplateCommand(_bdao, _audit).execute(
-                    currentUser(),
-                    new Date(),
-                    template.getParentId(),
-                    template.getDelta(),
-                    template.getTitle(),
-                    template.getDescription(),
-                    new ResourceName(template.getName())));
+                new CreateTemplateCommand(
+                    getRepository(), getAuditLog()).execute(
+                        currentUser(),
+                        new Date(),
+                        template.getParentId(),
+                        template.getDelta(),
+                        template.getTitle(),
+                        template.getDescription(),
+                        new ResourceName(template.getName())));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -115,7 +116,7 @@ public final class TemplatesEJB
                                final TemplateDelta delta)
                                                  throws RestException {
         try {
-            new UpdateTemplateCommand(_bdao, _audit).execute(
+            new UpdateTemplateCommand(getRepository(), getAuditLog()).execute(
                 currentUser(), new Date(), templateId, delta);
 
         } catch (final CccCheckedException e) {
@@ -131,7 +132,7 @@ public final class TemplatesEJB
     throws RestException {
         try {
             return
-                deltaTemplate(_resources.find(Template.class, templateId));
+                deltaTemplate(getResources().find(Template.class, templateId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

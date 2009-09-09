@@ -31,11 +31,10 @@ import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.PagesExt;
 
 
 /**
- * EJB implementation of the {@link PagesExt} interface.
+ * EJB implementation of the {@link Aliases} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -57,7 +56,7 @@ public class AliasesEJB
                             final AliasDelta delta)
                                                  throws RestException {
         try {
-            new UpdateAliasCommand(_bdao, _audit).execute(
+            new UpdateAliasCommand(getRepository(), getAuditLog()).execute(
                 currentUser(),
                 new Date(),
                 delta.getTargetId(),
@@ -76,7 +75,7 @@ public class AliasesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateAliasCommand(_bdao, _audit).execute(
+                new CreateAliasCommand(getRepository(), getAuditLog()).execute(
                     currentUser(),
                     new Date(),
                     alias.getParentId(),
@@ -94,7 +93,7 @@ public class AliasesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public String aliasTargetName(final UUID aliasId) throws RestException {
         try {
-            final Alias alias = _resources.find(Alias.class, aliasId);
+            final Alias alias = getResources().find(Alias.class, aliasId);
             if (alias != null) {
                 return alias.target().name().toString();
             }

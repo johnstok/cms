@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBContext;
+import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -69,14 +70,14 @@ abstract class AbstractEJB {
 
     private static Logger log = Logger.getLogger(AbstractEJB.class);
 
-    @javax.annotation.Resource protected EJBContext    _context;
+    @javax.annotation.Resource private EJBContext    _context;
     @PersistenceContext        private EntityManager   _em;
 
-    Repository         _bdao;
-    UserRepository     _users;
-    ResourceRepository _resources;
-    LogEntryRepository _audit;
-    FileRepositoryImpl _dm;
+    private Repository         _bdao;
+    private UserRepository     _users;
+    private ResourceRepository _resources;
+    private LogEntryRepository _audit;
+    private FileRepositoryImpl _dm;
 
 
     @PostConstruct @SuppressWarnings("unused")
@@ -86,6 +87,66 @@ abstract class AbstractEJB {
         _users = new UserRepositoryImpl(_bdao);
         _resources = new ResourceRepositoryImpl(_bdao);
         _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The timer service for this EJB.
+     */
+    protected final TimerService getTimerService() {
+        return _context.getTimerService();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the repository.
+     */
+    protected final Repository getRepository() {
+        return _bdao;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user repository.
+     */
+    protected final UserRepository getUsers() {
+        return _users;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the resource repository.
+     */
+    protected final ResourceRepository getResources() {
+        return _resources;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the log entry repository.
+     */
+    protected final LogEntryRepository getAuditLog() {
+        return _audit;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the file repository.
+     */
+    protected final FileRepositoryImpl getFiles() {
+        return _dm;
     }
 
 

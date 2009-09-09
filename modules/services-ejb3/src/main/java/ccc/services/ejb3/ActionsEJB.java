@@ -85,7 +85,7 @@ public class ActionsEJB
     public void executeAction() {
         LOG.debug("Executing scheduled actions.");
         final List<Action> actions =
-            _bdao.list(
+            getRepository().list(
                 QueryNames.LATEST_ACTION, Action.class, new Date());
         LOG.debug("Actions to execute: "+actions.size());
         try {
@@ -102,14 +102,16 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listPendingActions() {
-        return mapActions(_bdao.list(QueryNames.PENDING, Action.class));
+        return mapActions(
+            getRepository().list(QueryNames.PENDING, Action.class));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listCompletedActions() {
-        return mapActions(_bdao.list(QueryNames.EXECUTED, Action.class));
+        return mapActions(
+            getRepository().list(QueryNames.EXECUTED, Action.class));
     }
 
 
@@ -118,7 +120,7 @@ public class ActionsEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void cancelAction(final UUID actionId) throws RestException {
         try {
-            new CancelActionCommand(_bdao, _audit).execute(
+            new CancelActionCommand(getRepository(), getAuditLog()).execute(
                 currentUser(), new Date(), actionId);
 
         } catch (final CccCheckedException e) {
@@ -136,11 +138,11 @@ public class ActionsEJB
                     action.getCommand(),
                     action.getExecuteAfter(),
                     currentUser(),
-                    _bdao.find(
+                    getRepository().find(
                         ccc.domain.Resource.class, action.getResourceId()),
                     action.getParameters());
 
-            new ScheduleActionCommand(_bdao, _audit).execute(
+            new ScheduleActionCommand(getRepository(), getAuditLog()).execute(
                 currentUser(), new Date(), a);
 
         } catch (final CccCheckedException e) {
@@ -159,7 +161,7 @@ public class ActionsEJB
     @Override
     public void start() {
         LOG.debug("Starting scheduler.");
-        _context.getTimerService().createTimer(
+        getTimerService().createTimer(
             INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
         LOG.debug("Started scheduler.");
     }
@@ -170,7 +172,7 @@ public class ActionsEJB
     @SuppressWarnings("unchecked")
     public void stop() {
         LOG.debug("Stopping scheduler.");
-        final Collection<Timer> c = _context.getTimerService().getTimers();
+        final Collection<Timer> c = getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 t.cancel();
@@ -184,7 +186,7 @@ public class ActionsEJB
     @Override
     @SuppressWarnings("unchecked")
     public boolean isRunning() {
-        final Collection<Timer> c = _context.getTimerService().getTimers();
+        final Collection<Timer> c = getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 return true;
