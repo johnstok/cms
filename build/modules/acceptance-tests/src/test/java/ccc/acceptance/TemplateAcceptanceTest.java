@@ -23,7 +23,7 @@ import ccc.types.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * Acceptance tests for Templates REST methods.
  *
  * @author Civic Computing Ltd.
  */
