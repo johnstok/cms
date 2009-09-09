@@ -369,6 +369,7 @@ AbstractEditDialog {
                                  final SelectionChangedEvent<ModelData> se) {
             final ModelData md = se.getSelectedItem();
             if (md != null) {
+                // FIXME: We should be using a switch statement here.
                 final String order = md.<String>get("value");
                 if (MANUAL.name().equals(order)) {
                     _grid.enable();
@@ -376,7 +377,7 @@ AbstractEditDialog {
                     loadDetailStore(_currentIndexPage);
                 } else  {
                     _grid.disable();
-                    if (NAME_ALPHANUM_ASC.equals(order)) {
+                    if (NAME_ALPHANUM_ASC.name().equals(order)) {
                         _detailsStore.sort(
                             Property.NAME.name(), SortDir.ASC);
                     } else if (DATE_CHANGED_ASC.name().equals(order)) {
