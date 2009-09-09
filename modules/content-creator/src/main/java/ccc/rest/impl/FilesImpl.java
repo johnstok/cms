@@ -21,7 +21,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import ccc.rest.Files;
-import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
@@ -40,13 +39,6 @@ public class FilesImpl
         JaxrsCollection
     implements
         Files {
-
-
-    /** {@inheritDoc} */
-    @Override
-    public FileDelta fileDelta(final UUID fileId) throws RestException {
-        return getFiles().fileDelta(fileId);
-    }
 
 
     /** {@inheritDoc} */
