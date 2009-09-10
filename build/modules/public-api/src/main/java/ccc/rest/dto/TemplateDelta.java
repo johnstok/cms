@@ -50,7 +50,7 @@ public final class TemplateDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param gwtJson
+     * @param json The JSON representation for this class.
      */
     public TemplateDelta(final Json json) {
         this(

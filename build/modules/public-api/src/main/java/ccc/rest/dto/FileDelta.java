@@ -121,7 +121,7 @@ public final class FileDelta implements Serializable, Jsonable {
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.MIME_TYPE, getMimeType());
-        json.set(JsonKeys.SIZE, (long) getSize());
+        json.set(JsonKeys.SIZE, Long.valueOf(getSize()));
         json.set(JsonKeys.DATA, getData());
         json.set("properties", getProperties());
     }

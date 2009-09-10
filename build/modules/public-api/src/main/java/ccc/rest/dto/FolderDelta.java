@@ -38,6 +38,7 @@ public class FolderDelta implements Serializable, Jsonable {
      *
      * @param sortOrder The sort order for the folder's children.
      * @param indexPage The folder index page (may be NULL).
+     * @param sortList The list of children for this folder, in sorted order.
      */
     public FolderDelta(final String sortOrder,
                        final UUID indexPage,

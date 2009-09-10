@@ -42,7 +42,7 @@ public final class AliasDelta implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param json
+     * @param json The JSON representation for this class.
      */
     public AliasDelta(final Json json) {
         this(

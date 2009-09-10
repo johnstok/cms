@@ -20,7 +20,7 @@ import javax.ws.rs.QueryParam;
 
 
 /**
- * TODO: Add a description for this type.
+ * Security API for CCC.
  *
  * @author Civic Computing Ltd.
  */
@@ -28,17 +28,42 @@ import javax.ws.rs.QueryParam;
 @Produces("application/json")
 public interface Security {
 
+    /**
+     * Log in to CCC.
+     *
+     * @param username The user's username.
+     * @param password The user's password.
+     *
+     * @return True if the login fails, false otherwise.
+     */
     @POST @Path("/sessions")
-    public Boolean login(
+    Boolean login(
           @QueryParam("u") final String username,
           @QueryParam("p") final String password);
 
+
+    /**
+     * Determine if a user is associated with the current session.
+     *
+     * @return True if a user is associated, false otherwise.
+     */
     @GET @Path("/sessions/current")
-    public Boolean isLoggedIn();
+    Boolean isLoggedIn();
 
+
+    /**
+     * Log out from the current session.
+     *
+     */
     @POST @Path("/sessions/current")
-    public void logout();
+    void logout();
 
+
+    /**
+     * Read the properties for the session.
+     *
+     * @return The properties as a string.
+     */
     @GET @Path("/sessions/allproperties")
-    public String readAllProperties();
+    String readAllProperties();
 }
