@@ -12,7 +12,6 @@
 
 package ccc.rest;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -51,7 +50,7 @@ public interface Pages {
      */
     @POST
     @Path("/page-validator")
-    List<String> validateFields(Json json);
+    String validateFields(Json json);
 
 
     /**

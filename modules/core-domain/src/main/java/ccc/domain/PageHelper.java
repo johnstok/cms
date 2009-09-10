@@ -14,9 +14,7 @@ package ccc.domain;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -50,14 +48,9 @@ public class PageHelper {
      */
     public void validateFieldsForPage(final Set<Paragraph> delta,
                                       final String t) {
-        final List<String> errors = validateFields(delta, t);
+        final String errors = validateFields(delta, t);
         if (!errors.isEmpty()) {
-            final StringBuffer sb = new StringBuffer();
-            for (final String error : errors) {
-                sb.append(error);
-                sb.append(" ");
-            }
-            throw new CCCException("Field validation failed: " + sb.toString());
+            throw new CCCException("Field validation failed: " + errors);
         }
     }
 
@@ -69,10 +62,10 @@ public class PageHelper {
      *
      * @return The errors, as a list of strings.
      */
-    public List<String> validateFields(final Collection<Paragraph> delta,
+    public String validateFields(final Collection<Paragraph> delta,
                                        final String t) {
         Document document;
-        final List<String> errors = new ArrayList<String>();
+        final StringBuffer errors = new StringBuffer();
 
         final DocumentBuilderFactory factory =
             DocumentBuilderFactory.newInstance();
@@ -90,7 +83,10 @@ public class PageHelper {
                         if (name.getNodeValue().equals(para.name())
                             && !para.text().matches(regexp.getNodeValue())
                             && (para.type() == ParagraphType.TEXT)) {
-                            errors.add("\n"+para.name()
+                            if (errors.length() > 0) {
+                                errors.append("\n");
+                            }
+                            errors.append(para.name()
                                 +", regexp: "+regexp.getNodeValue());
                         }
                     }
@@ -103,6 +99,6 @@ public class PageHelper {
         } catch (final IOException e) {
             throw new CCCException("Error with XML parsing ", e);
         }
-        return errors;
+        return errors.toString();
     }
 }

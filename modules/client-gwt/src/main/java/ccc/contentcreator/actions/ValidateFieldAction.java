@@ -14,6 +14,7 @@ package ccc.contentcreator.actions;
 import java.util.Set;
 
 import ccc.contentcreator.client.GwtJson;
+import ccc.serialization.JsonKeys;
 import ccc.types.Paragraph;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -56,8 +57,8 @@ public class ValidateFieldAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set("definition", _definition);
-        json.set("paragraphs", _paragraphs);
+        json.set(JsonKeys.DEFINITION, _definition);
+        json.set(JsonKeys.PARAGRAPHS, _paragraphs);
         return json.toString();
     }
 }

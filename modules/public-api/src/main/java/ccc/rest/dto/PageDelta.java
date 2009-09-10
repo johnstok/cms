@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.Paragraph;
 
@@ -48,7 +49,7 @@ public final class PageDelta implements Serializable, Jsonable {
      * @param json The JSON representation of a page delta.
      */
     public PageDelta(final Json json) {
-        for (final Json jsonPara : json.getCollection("paragraphs")) {
+        for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
             _paragraphs.add(new Paragraph(jsonPara));
         }
     }
@@ -75,7 +76,7 @@ public final class PageDelta implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) { // TODO: Use JsonKeys
-        json.set("paragraphs", getParagraphs());
+    public void toJson(final Json json) {
+        json.set(JsonKeys.PARAGRAPHS, getParagraphs());
     }
 }
