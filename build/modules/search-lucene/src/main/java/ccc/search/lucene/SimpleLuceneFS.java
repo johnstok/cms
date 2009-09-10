@@ -25,6 +25,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
 
+import ccc.commons.Exceptions;
 import ccc.persistence.FileRepository;
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
@@ -51,6 +52,9 @@ public class SimpleLuceneFS
 
     /**
      * Constructor.
+     *
+     * @param dm The file repository used to read file resources.
+     * @param indexPath The path to the index file on disk.
      */
     public SimpleLuceneFS(final FileRepository dm,
                           final String indexPath)  {
@@ -116,7 +120,7 @@ public class SimpleLuceneFS
                 try {
                     searcher.close();
                 } catch (final IOException e) {
-                    // nothing we can do.
+                    Exceptions.swallow(e);
                 }
             }
         }
