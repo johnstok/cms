@@ -123,7 +123,8 @@ public class MainMenu
             new Listener<MenuEvent>() {
                 public void handleEvent(final MenuEvent be) {
                     rootMenu.removeAll();
-                    new GetRootsAction() { // TODO: Do we really have to go to the server for this?!
+                    new GetRootsAction() {
+                        // TODO: Do we really have to go to the server for this?
                         @Override protected void onSuccess(
                                       final Collection<ResourceSummary> roots) {
                             for (final ResourceSummary root : roots) {

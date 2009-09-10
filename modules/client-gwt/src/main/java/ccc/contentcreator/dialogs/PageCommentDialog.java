@@ -100,7 +100,8 @@ public class PageCommentDialog extends AbstractEditDialog {
                     _comment.getValue(),
                     _majorEdit.getValue().booleanValue()) {
                         /** {@inheritDoc} */
-                        @Override protected void onNoContent(final Response response) {
+                        @Override protected void onNoContent(
+                                                     final Response response) {
                             final ResourceSummaryModelData md =
                                 _updatePageDialog.rt().tableSelection();
                             md.setWorkingCopy(false);

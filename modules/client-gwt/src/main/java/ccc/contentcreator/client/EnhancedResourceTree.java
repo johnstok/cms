@@ -63,7 +63,8 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
                 /** {@inheritDoc} */
                 @Override
-                public void storeDataChanged(final StoreEvent<ResourceSummaryModelData> se) {
+                public void storeDataChanged(
+                             final StoreEvent<ResourceSummaryModelData> se) {
                     super.storeDataChanged(se);
                     final TreeStoreEvent<ResourceSummaryModelData> te =
                         (TreeStoreEvent<ResourceSummaryModelData>) se;

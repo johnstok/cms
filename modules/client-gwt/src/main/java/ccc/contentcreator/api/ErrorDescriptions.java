@@ -70,6 +70,7 @@ public interface ErrorDescriptions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Creating this relationship would cause a circular dependency.")
+    @DefaultMessage(
+        "Creating this relationship would cause a circular dependency.")
     String cycle();
 }

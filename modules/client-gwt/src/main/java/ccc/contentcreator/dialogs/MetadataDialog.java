@@ -292,7 +292,8 @@ public class MetadataDialog extends AbstractEditDialog {
                     tags,
                     metadata) {
                         /** {@inheritDoc} */
-                        @Override protected void onNoContent(final Response response) {
+                        @Override protected void onNoContent(
+                                                     final Response response) {
                             _resource.setTags(tags);
                             _resource.setTitle(title);
                             _resource.setDescription(description);

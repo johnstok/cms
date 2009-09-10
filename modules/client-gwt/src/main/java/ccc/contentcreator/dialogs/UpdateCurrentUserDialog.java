@@ -113,7 +113,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                     _user
                 ){
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(
+                                                     final Response response) {
                         final UserDto user = new UserDto(
                             _email.getValue(),
                             _user.getId(),

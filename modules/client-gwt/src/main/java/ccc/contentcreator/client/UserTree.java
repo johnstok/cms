@@ -33,6 +33,8 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
  */
 public class UserTree {
 
+    /** USER_TREE_HEIGHT : int. */
+    private static final int USER_TREE_HEIGHT = 300;
     private final UserTable _ut = new UserTable();
     private final UIConstants _constants = new IGlobalsImpl().uiConstants();
     private final LeftRightPane _view;
@@ -57,11 +59,14 @@ public class UserTree {
      *
      * @author Civic Computing Ltd.
      */
-    public class UserSelectedListener extends SelectionChangedListener<ModelData> {
+    public class UserSelectedListener
+        extends
+            SelectionChangedListener<ModelData> {
 
         /** {@inheritDoc} */
         @Override
-        public void selectionChanged(final SelectionChangedEvent<ModelData> se) {
+        public void selectionChanged(
+                                 final SelectionChangedEvent<ModelData> se) {
             final ModelData objItem = se.getSelectedItem();
             _ut.displayUsersFor(objItem);
         }
@@ -101,7 +106,7 @@ public class UserTree {
             }
         });
 
-        _tree.setHeight(300);
+        _tree.setHeight(USER_TREE_HEIGHT);
 
         final ModelData users = getNewItem(_constants.users(), USERS);
         _store.add(users, true);

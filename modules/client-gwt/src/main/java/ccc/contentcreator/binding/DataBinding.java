@@ -94,7 +94,7 @@ public final class DataBinding {
 
 
     public static List<TemplateSummaryModelData> bindTemplateDelta(
-                                         final Collection<TemplateSummary> list) {
+                                     final Collection<TemplateSummary> list) {
         final List<TemplateSummaryModelData> boundData =
             new ArrayList<TemplateSummaryModelData>();
         for (final TemplateSummary ts : list) {

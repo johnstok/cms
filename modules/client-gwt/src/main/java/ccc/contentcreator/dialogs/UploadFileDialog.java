@@ -107,7 +107,8 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (SessionTimeoutException.isTimeoutMessage(be.getResultHtml())) {
+                    if (SessionTimeoutException.isTimeoutMessage(
+                            be.getResultHtml())) {
                         _globals.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             _constants.uploadFile());
@@ -119,13 +120,15 @@ public class UploadFileDialog extends AbstractEditDialog {
                         if (o.containsKey(JsonKeys.CODE)) { // CommandFailedEx
                             _globals.unexpectedError(
                                 new RemoteException(
-                                    FailureOverlay.fromJson(be.getResultHtml())),
+                                    FailureOverlay.fromJson(
+                                        be.getResultHtml())),
                                 _constants.uploadFile());
                         } else {
                             hide();
                             ssm.create(
                                 ResourceSummaryModelData.create(
-                                    JSONParser.parse(be.getResultHtml())), _parent);
+                                    JSONParser.parse(
+                                        be.getResultHtml())), _parent);
                         }
                     }
                 }

@@ -116,7 +116,8 @@ public class MoveDialog extends AbstractEditDialog {
             public void run() {
                 new MoveResourceAction(_target.getId(), _parent.getId()){
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(
+                                                     final Response response) {
                         _ssm.move(_target, _parent, _ssm.treeSelection());
                         hide();
                     }

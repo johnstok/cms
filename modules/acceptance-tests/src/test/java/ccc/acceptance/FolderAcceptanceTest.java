@@ -96,9 +96,12 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary folder = tempFolder();
         final ResourceSummary template =
             dummyTemplate(resourceForPath("/content"));
-        final ResourceSummary page1 = tempPage(folder.getId(), template.getId());
-        final ResourceSummary page2 = tempPage(folder.getId(), template.getId());
-        final ResourceSummary page3 = tempPage(folder.getId(), template.getId());
+        final ResourceSummary page1 =
+            tempPage(folder.getId(), template.getId());
+        final ResourceSummary page2 =
+            tempPage(folder.getId(), template.getId());
+        final ResourceSummary page3 =
+            tempPage(folder.getId(), template.getId());
 
         // ACT
         _commands.lock(folder.getId());
@@ -190,7 +193,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         sortList.add(page.getId().toString());
 
         final FolderDelta fd =
-            new FolderDelta(tempFolder().getSortOrder(), page.getId(), sortList);
+            new FolderDelta(
+                tempFolder().getSortOrder(), page.getId(), sortList);
         _folders.updateFolder(folder.getId(), fd);
         final ResourceSummary updated = _commands.resource(folder.getId());
 
@@ -217,7 +221,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ACT
         _commands.lock(folder.getId());
         final FolderDelta fd =
-            new FolderDelta(ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
+            new FolderDelta(
+                ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
 
         _folders.updateFolder(folder.getId(), fd);
         final ResourceSummary updated = _commands.resource(folder.getId());
@@ -225,7 +230,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         assertNull(folder.getLockedBy());
         assertNotNull(updated.getLockedBy());
-        assertEquals(ResourceOrder.DATE_CHANGED_ASC.name(), updated.getSortOrder());
+        assertEquals(
+            ResourceOrder.DATE_CHANGED_ASC.name(), updated.getSortOrder());
     }
 
 

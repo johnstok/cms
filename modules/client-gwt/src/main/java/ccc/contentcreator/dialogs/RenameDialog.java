@@ -93,7 +93,8 @@ public class RenameDialog extends AbstractEditDialog {
                     _newName.getValue()
                 ){
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(
+                                                     final Response response) {
                         _item.setName(_newName.getValue());
                         _ssm.update(_item);
                         hide();

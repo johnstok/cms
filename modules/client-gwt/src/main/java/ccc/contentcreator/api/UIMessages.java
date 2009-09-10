@@ -38,8 +38,9 @@ public interface UIMessages extends Messages {
      * @param name The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage("A resource with name ''{0}'' already exists in the parent folder.")
-    String resourceWithNameAlreadyExistsInTheParentFolder(String name);
+    @DefaultMessage(
+        "A resource with name ''{0}'' already exists in the parent folder.")
+    String nameExistsInParentFolder(String name);
 
     /**
      * "A resource with name ''{0}'' already exists in this folder.".
@@ -47,8 +48,9 @@ public interface UIMessages extends Messages {
      * @param name The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage("A resource with name ''{0}'' already exists in this folder.")
-    String resourceWithNameAlreadyExistsInThisFolder(String name);
+    @DefaultMessage(
+        "A resource with name ''{0}'' already exists in this folder.")
+    String nameExistsInFolder(String name);
 
     /**
      * "A template with name ''{0}'' already exists in this folder.".
@@ -56,6 +58,7 @@ public interface UIMessages extends Messages {
      * @param name The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage("A template with name ''{0}'' already exists in this folder.")
+    @DefaultMessage(
+        "A template with name ''{0}'' already exists in this folder.")
     String templateWithNameAlreadyExistsInThisFolder(String name);
 }

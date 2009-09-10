@@ -42,6 +42,12 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  */
 public final class Validations {
 
+    /**
+     * MIN_PASSWORD_LENGTH : int.
+     * TODO: Move to the password class.
+     */
+    private static final int MIN_PASSWORD_LENGTH = 10;
+
     private static final IGlobals GLOBALS = new IGlobalsImpl();
 
     private static final UIConstants UI_CONSTANTS =
@@ -185,7 +191,7 @@ public final class Validations {
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {
                             validate.addMessage(
-                                UI_MESSAGES.resourceWithNameAlreadyExistsInThisFolder(name.getValue())
+                                UI_MESSAGES.nameExistsInFolder(name.getValue())
                             );
                         }
                         validate.next();
@@ -231,7 +237,8 @@ public final class Validations {
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {
                            validate.addMessage(
-                               UI_MESSAGES.resourceWithNameAlreadyExistsInTheParentFolder(name.getValue())
+                               UI_MESSAGES.nameExistsInParentFolder(
+                                   name.getValue())
                            );
                         }
                         validate.next();
@@ -345,7 +352,7 @@ public final class Validations {
     public static Validator passwordStrength(final String pw) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if (pw != null && pw.length() < 10) {
+                if (pw != null && pw.length() < MIN_PASSWORD_LENGTH) {
                     validate.addMessage(UI_CONSTANTS.passwordTooShort());
                 } else if (!Password.isStrong(pw)) {
                     validate.addMessage(UI_CONSTANTS.passwordTooWeak());

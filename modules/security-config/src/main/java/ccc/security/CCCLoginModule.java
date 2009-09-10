@@ -40,6 +40,9 @@ import ccc.types.Username;
  * @author Civic Computing Ltd.
  */
 public class CCCLoginModule implements LoginModule {
+    /** LOGIN_DELAY : int. */
+    private static final int LOGIN_DELAY = 50;
+
     private static final Logger LOG = Logger.getLogger(CCCLoginModule.class);
 
     private CallbackHandler _cbHandler;
@@ -102,8 +105,8 @@ public class CCCLoginModule implements LoginModule {
     /** {@inheritDoc} */
     @Override
     public boolean login() throws LoginException {
-        try { // 50ms wait impedes brute force password attacks.
-            Thread.sleep(50);
+        try { // Wait impedes brute force password attacks.
+            Thread.sleep(LOGIN_DELAY);
         } catch (final InterruptedException e) {
             return false;
         }

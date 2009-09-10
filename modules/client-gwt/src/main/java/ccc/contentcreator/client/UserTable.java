@@ -210,25 +210,29 @@ public class UserTable extends TablePanel {
 
         if (UserTree.ALL.equals(selectedItem.get("id"))) {
             new ListUsers(){
-                @Override protected void execute(final Collection<UserDto> users) {
+                @Override protected void execute(
+                                             final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
             new ListUsersWithRoleAction("CONTENT_CREATOR"){
-                @Override protected void execute(final Collection<UserDto> users) {
+                @Override protected void execute(
+                                             final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
             new ListUsersWithRoleAction("SITE_BUILDER"){
-                @Override protected void execute(final Collection<UserDto> users) {
+                @Override protected void execute(
+                                             final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
         } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
             new ListUsersWithRoleAction("ADMINISTRATOR"){
-                @Override protected void execute(final Collection<UserDto> users) {
+                @Override protected void execute(
+                                             final Collection<UserDto> users) {
                     updatePager(users);
                 }
             }.execute();
@@ -263,14 +267,16 @@ public class UserTable extends TablePanel {
             if (_radioGroup.getValue() == _usernameRadio) {
                 new ListUsersWithUsernameAction(
                     _searchString.getValue().replace('*', '%')){
-                        @Override protected void execute(final Collection<UserDto> users) {
+                        @Override protected void execute(
+                                             final Collection<UserDto> users) {
                             updatePager(users);
                         }
                 }.execute();
             } else if (_radioGroup.getValue() == _emailRadio) {
                 new ListUsersWithEmailAction(
                     _searchString.getValue().replace('*', '%')) {
-                        @Override protected void execute(final Collection<UserDto> users) {
+                        @Override protected void execute(
+                                             final Collection<UserDto> users) {
                             updatePager(users);
                         }
                 }.execute();

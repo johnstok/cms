@@ -184,6 +184,8 @@ public class CreateActionPanel
 
     private static class UpdatePanel implements ParameterPanel {
 
+        /** COMMENT_FIELD_HEIGHT : int. */
+        private static final int COMMENT_FIELD_HEIGHT = 250;
         private final Html _title = new Html();
         private final CheckBox _majorEdit = new CheckBox();
         private final TextArea _comment = new TextArea();
@@ -220,7 +222,7 @@ public class CreateActionPanel
             form.add(_majorEdit);
 
             _comment.setFieldLabel(uiConstants.comment());
-            _comment.setHeight(250);
+            _comment.setHeight(COMMENT_FIELD_HEIGHT);
             form.add(_comment, new FormData("95%"));
         }
 
