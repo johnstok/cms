@@ -38,20 +38,20 @@ public final class TemplateSummary implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param UUID The template's UUID.
+     * @param id The template's UUID.
      * @param name The template's name.
      * @param title The template's title.
      * @param description The template's description.
      * @param body The template's body.
      * @param definition The template's definition.
      */
-    public TemplateSummary(final UUID   UUID,
+    public TemplateSummary(final UUID id,
                          final String name,
                          final String title,
                          final String description,
                          final String body,
                          final String definition) {
-        _id = UUID;
+        _id = id;
         _name = name;
         _title = title;
         _description = description;
@@ -63,7 +63,7 @@ public final class TemplateSummary implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param json
+     * @param json The JSON representation for this class.
      */
     public TemplateSummary(final Json json) {
         this(

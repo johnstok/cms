@@ -26,10 +26,10 @@ import ccc.serialization.Jsonable;
  */
 public class PageDto implements Jsonable, Serializable {
 
-    private final UUID        _parentId;
+    private final UUID      _parentId;
     private final PageDelta _delta;
     private final String    _name;
-    private final UUID        _templateId;
+    private final UUID      _templateId;
     private final String    _title;
     private final String    _comment;
     private final boolean   _majorChange;
@@ -38,13 +38,13 @@ public class PageDto implements Jsonable, Serializable {
     /**
      * Constructor.
      *
-     * @param parentId
-     * @param delta
-     * @param name
-     * @param templateId
-     * @param title
-     * @param comment
-     * @param majorChange
+     * @param parentId The page's parent folder id.
+     * @param delta The page delta.
+     * @param name The page's name.
+     * @param templateId The page's template id.
+     * @param title The page's title.
+     * @param comment The comment for a page update.
+     * @param majorChange Is the update a major change.
      */
     public PageDto(final UUID parentId,
                    final PageDelta delta,
@@ -139,6 +139,6 @@ public class PageDto implements Jsonable, Serializable {
         json.set(JsonKeys.TEMPLATE_ID, _templateId);
         json.set(JsonKeys.TITLE, _title);
         json.set(JsonKeys.COMMENT, _comment);
-        json.set(JsonKeys.MAJOR_CHANGE, _majorChange);
+        json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(_majorChange));
     }
 }

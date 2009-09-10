@@ -45,6 +45,7 @@ public interface Resources {
     /** NAME : String. */
     String NAME = "PublicCommands";
 
+
     /**
      * Get the resource located at the specified path.
      *
@@ -57,6 +58,7 @@ public interface Resources {
     @NoCache
     ResourceSummary resource(@PathParam("id") UUID resourceId)
     throws RestException;
+
 
     /**
      * Determine the absolute path to a resource.
@@ -71,6 +73,7 @@ public interface Resources {
     String getAbsolutePath(@PathParam("id") UUID resourceId)
     throws RestException;
 
+
     /**
      * List all locked resources.
      *
@@ -80,6 +83,7 @@ public interface Resources {
     @Path("/resources/locked")
     @NoCache
     Collection<ResourceSummary> locked();
+
 
     /**
      * Retrieve the history of a resource.
@@ -94,6 +98,7 @@ public interface Resources {
     Collection<RevisionDto> history(@PathParam("id") UUID resourceId)
     throws RestException;
 
+
     /**
      * Retrieve the metadata for a resource.
      *
@@ -106,6 +111,7 @@ public interface Resources {
     @NoCache
     Map<String, String> metadata(@PathParam("id") UUID resourceId)
     throws RestException;
+
 
     /**
      * List the roles for a resource.
@@ -120,6 +126,7 @@ public interface Resources {
     Collection<String> roles(@PathParam("id") UUID resourceId)
     throws RestException;
 
+
     /**
      * Retrieve resource's cache duration.
      *
@@ -132,6 +139,7 @@ public interface Resources {
     @NoCache
     Duration cacheDuration(@PathParam("id") UUID resourceId)
     throws RestException;
+
 
     /**
      * Returns summary of the template assigned for a resource.
@@ -146,6 +154,7 @@ public interface Resources {
     TemplateSummary computeTemplate(@PathParam("id") UUID resourceId)
     throws RestException;
 
+
     /**
      * Look up the resource for a specified path.
      *
@@ -158,6 +167,7 @@ public interface Resources {
     @NoCache
     ResourceSummary resourceForPath(@PathParam("path") String path)
     throws RestException;
+
 
     /**
      * Look up the resource for a specified legacy id.
@@ -172,77 +182,223 @@ public interface Resources {
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId)
     throws RestException;
 
+
+    /**
+     * Update the period that a resource should be cached for.
+     *
+     * @param resourceId The resource to update.
+     * @param duration DTO specifying the cache duration.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
         ResourceDto duration) throws RestException;
 
+
+    /**
+     * Lock the specified resource.
+     * The resource will be locked by the currently logged in user.
+     * If the resource is already locked a CCCException will be thrown.
+     *
+     * @param resourceId The uuid of the resource to lock.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/lock")
     void lock(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Apply a resource's working copy.
+     *
+     * @param resourceId The id of the resource.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/wc-apply")
     void applyWorkingCopy(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Update the specified resource's template on the server.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param template DTO specifying the new template to set for the resource.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
         ResourceDto template) throws RestException;
 
+
+    /**
+     * Unlock the specified Resource.
+     * Unlocking an unlocked resource has no effect.
+     *
+     * @param resourceId The resource to unlock.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/unlock")
     void unlock(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Unpublish the specified resource.
+     *
+     * @param resourceId The id of the resource to update.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/unpublish")
     void unpublish(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Publish the specified resource.
+     *
+     * @param resourceId The id of the resource to update.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/publish")
     void publish(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Changes a resource's parent.
+     *
+     * @param resourceId The id of the resource to move.
+     * @param newParentId The id of the folder to which the resource should be
+     *  moved.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/parent")
     void move(
         @PathParam("id") UUID resourceId,
         UUID newParentId) throws RestException;
 
+
+    /**
+     * Rename resource.
+     *
+     * @param resourceId The id of the resource to rename.
+     * @param name The new name.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/name")
     void rename(
         @PathParam("id") final UUID resourceId,
         final String name) throws RestException;
 
+
+    /**
+     * Change the security roles for a resource.
+     *
+     * @param resourceId The resource to update.
+     * @param roles The new set of roles.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/roles")
     void changeRoles(
         @PathParam("id") UUID resourceId,
         Collection<String> roles) throws RestException;
 
+
+    /**
+     * Specify whether a resource should not be included in a site's main menu.
+     *
+     * @param resourceId The id of the resource to update.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/exclude-mm")
     void excludeFromMainMenu(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Specify that a resource should be included in a site's main menu.
+     *
+     * @param resourceId The id of the resource to update.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/include-mm")
     void includeInMainMenu(
         @PathParam("id") UUID resourceId) throws RestException;
 
+
+    /**
+     * Update metadata of the resource.
+     *
+     * @param resourceId The id of the resource to update.
+     * @param json JSON representation of the metadata.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/metadata")
     void updateMetadata(
         @PathParam("id") UUID resourceId,
         Json json) throws RestException;
 
+
+    /**
+     * Delete the working copy for a page.
+     *
+     * @param pageId The id of the page with a working copy.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/wc-clear")
     void clearWorkingCopy(
         @PathParam("id") UUID pageId) throws RestException;
 
+
+    /**
+     * Create a working copy for the specified resource, using the specified
+     * revision.
+     *
+     * @param resourceId The id of the resource.
+     * @param dto The DTO specifying the number of the revision to use.
+     *
+     * @throws RestException If the method fails.
+     */
     @POST @Path("/resources/{id}/wc-create")
     void createWorkingCopy(
         @PathParam("id") UUID resourceId,
-        ResourceDto pu) throws RestException;
+        ResourceDto dto) throws RestException;
 
+
+    /**
+     * Clear the cache duration for the specified resource.
+     *
+     * @param id The id of the resource to update.
+     *
+     * @throws RestException If the update fails.
+     */
     @DELETE  @Path("/resources/{id}/duration")
     void deleteCacheDuration(
         @PathParam("id") UUID id) throws RestException;
 
+
+    /**
+     * For testing: always throws a {@link RestException}.
+     *
+     * @throws RestException Always.
+     */
     @GET @Path("/fail")
     void fail() throws RestException;
 }

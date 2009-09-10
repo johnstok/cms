@@ -60,7 +60,7 @@ public final class FileDto implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param json
+     * @param json The JSON representation for this class.
      */
     public FileDto(final Json json) {
         this(

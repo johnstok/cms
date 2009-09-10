@@ -116,6 +116,12 @@ public final class UserDto implements Serializable, Jsonable {
 
     /**
      * Constructor.
+     *
+     * @param email The user's email address.
+     * @param username The user's username.
+     * @param roles The user's roles.
+     * @param metadata Metadata associated with the user.
+     * @param password The user's password.
      */
     public UserDto(final String email,
                        final Username username,
@@ -132,6 +138,9 @@ public final class UserDto implements Serializable, Jsonable {
 
     /**
      * Constructor.
+     *
+     * @param email The user's email address.
+     * @param password The user's password.
      */
     public UserDto(final String email, final String password) {
         _email = email;

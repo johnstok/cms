@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.rest.RestException;
 import ccc.rest.Resources;
+import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.Duration;
 
@@ -28,29 +28,6 @@ import ccc.types.Duration;
  * @author Civic Computing Ltd.
  */
 public interface ResourcesExt extends Resources {
-
-    /**
-     * Rename resource.
-     *
-     * @param resourceId The id of the resource to rename.
-     * @param name The new name.
-     *
-     * @throws RestException If the method fails.
-     */
-    void rename(final UUID resourceId, final String name)
-    throws RestException;
-
-    /**
-     * Changes a resource's parent.
-     *
-     * @param resourceId The id of the resource to move.
-     * @param newParentId The id of the folder to which the resource should be
-     *  moved.
-     *
-     * @throws RestException If the method fails.
-     */
-    void move(UUID resourceId, UUID newParentId)
-    throws RestException;
 
     /**
      * Update the specified resource's template on the server.
@@ -85,17 +62,6 @@ public interface ResourcesExt extends Resources {
      * If the resource is already locked a CCCException will be thrown.
      *
      * @param resourceId The uuid of the resource to lock.
-     *
-     * @throws RestException If the method fails.
-     */
-    void lock(UUID resourceId) throws RestException;
-
-    /**
-     * Lock the specified resource.
-     * The resource will be locked by the currently logged in user.
-     * If the resource is already locked a CCCException will be thrown.
-     *
-     * @param resourceId The uuid of the resource to lock.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
@@ -103,18 +69,6 @@ public interface ResourcesExt extends Resources {
      */
     void lock(UUID resourceId, UUID actorId, Date happenedOn)
     throws RestException;
-
-    /**
-     * Unlock the specified Resource.
-     * If the logged in user does not have privileges to unlock this resource a
-     * CCCException will be thrown.
-     * Unlocking an unlocked resource has no effect.
-     *
-     * @param resourceId The resource to unlock.
-     *
-     * @throws RestException If the method fails.
-     */
-    void unlock(UUID resourceId) throws RestException;
 
     /**
      * Unlock the specified Resource.
@@ -135,15 +89,6 @@ public interface ResourcesExt extends Resources {
      * Publish the specified resource.
      *
      * @param resourceId The id of the resource to update.
-     *
-     * @throws RestException If the method fails.
-     */
-    void publish(UUID resourceId) throws RestException;
-
-    /**
-     * Publish the specified resource.
-     *
-     * @param resourceId The id of the resource to update.
      * @param userId The id of the publishing user.
      * @param publishDate The date the resource was published.
      *
@@ -151,15 +96,6 @@ public interface ResourcesExt extends Resources {
      */
     void publish(UUID resourceId, UUID userId, Date publishDate)
     throws RestException;
-
-    /**
-     * Unpublish the specified resource.
-     *
-     * @param resourceId The id of the resource to update.
-     *
-     * @throws RestException If the method fails.
-     */
-    void unpublish(UUID resourceId) throws RestException;
 
     /**
      * Unpublish the specified resource.
@@ -269,17 +205,6 @@ public interface ResourcesExt extends Resources {
      *
      * @param resourceId The resource to update.
      * @param roles The new set of roles.
-     *
-     * @throws RestException If the method fails.
-     */
-    void changeRoles(UUID resourceId, Collection<String> roles)
-    throws RestException;
-
-    /**
-     * Change the security roles for a resource.
-     *
-     * @param resourceId The resource to update.
-     * @param roles The new set of roles.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
@@ -290,15 +215,6 @@ public interface ResourcesExt extends Resources {
                      UUID actorId,
                      Date happenedOn)
     throws RestException;
-
-    /**
-     * Apply a resource's working copy.
-     *
-     * @param resourceId The id of the resource.
-     *
-     * @throws RestException If the method fails.
-     */
-    void applyWorkingCopy(UUID resourceId) throws RestException;
 
     /**
      * Apply a resource's working copy.
@@ -327,14 +243,4 @@ public interface ResourcesExt extends Resources {
      */
     void updateCacheDuration(UUID resourceId, Duration duration)
     throws RestException;
-
-
-    /**
-     * Delete the working copy for a page.
-     *
-     * @param pageId The id of the page with a working copy.
-     *
-     * @throws RestException If the method fails.
-     */
-    void clearWorkingCopy(UUID pageId) throws RestException;
 }

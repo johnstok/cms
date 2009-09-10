@@ -64,7 +64,7 @@ public final class RevisionDto implements Serializable, Jsonable {
     /**
      * Constructor.
      *
-     * @param json
+     * @param json The JSON representation for this class.
      */
     public RevisionDto(final Json json) {
         this(
@@ -122,7 +122,7 @@ public final class RevisionDto implements Serializable, Jsonable {
      *
      * @return Returns the comment.
      */
-    public final String getComment() {
+    public String getComment() {
         return _comment;
     }
 
@@ -132,7 +132,7 @@ public final class RevisionDto implements Serializable, Jsonable {
      *
      * @return Returns the isMajor.
      */
-    public final boolean isMajor() {
+    public boolean isMajor() {
         return _isMajor;
     }
 
@@ -142,8 +142,8 @@ public final class RevisionDto implements Serializable, Jsonable {
         json.set(JsonKeys.COMMAND, getCommand().name());
         json.set(JsonKeys.USERNAME, getActorUsername().toString());
         json.set(JsonKeys.HAPPENED_ON, getHappenedOn());
-        json.set(JsonKeys.MAJOR_CHANGE, isMajor());
-        json.set(JsonKeys.INDEX, getIndex());
+        json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(isMajor()));
+        json.set(JsonKeys.INDEX, Long.valueOf(getIndex()));
         json.set(JsonKeys.COMMENT, getComment());
     }
 }

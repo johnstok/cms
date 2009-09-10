@@ -48,7 +48,7 @@ public class ActionDto implements Jsonable {
                      final Map<String, String> parameters) {
         _resourceId = resourceId;
         _command = command;
-        _executeAfter = executeAfter;
+        _executeAfter = new Date(executeAfter.getTime());
         _parameters = parameters;
     }
 
@@ -79,7 +79,7 @@ public class ActionDto implements Jsonable {
      * @return Returns the executeAfter.
      */
     public final Date getExecuteAfter() {
-        return _executeAfter;
+        return new Date(_executeAfter.getTime());
     }
 
 
