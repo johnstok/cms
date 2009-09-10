@@ -21,15 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.RestException;
 import ccc.rest.Files;
+import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * Abstract servlet class that provides helper methods when handling multipart
+ * mime requests.
  *
  * @author Civic Computing Ltd.
  */

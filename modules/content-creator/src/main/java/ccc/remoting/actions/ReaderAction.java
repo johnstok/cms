@@ -72,7 +72,7 @@ public class ReaderAction
         }
 
         final LogEntryRepository al =
-            new LogEntryRepositoryImpl(repository); // TODO: Remove - not used.
+            new LogEntryRepositoryImpl(repository);
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
         final FileRepository dm =

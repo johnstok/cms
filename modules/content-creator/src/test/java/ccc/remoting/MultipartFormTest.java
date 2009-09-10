@@ -23,8 +23,6 @@ import junit.framework.TestCase;
 
 import org.apache.commons.fileupload.FileItem;
 
-import ccc.remoting.MultipartForm;
-
 
 /**
  * Test for {@link MultipartForm}.
