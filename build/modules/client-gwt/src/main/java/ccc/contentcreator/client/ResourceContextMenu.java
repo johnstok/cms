@@ -355,17 +355,22 @@ public class ResourceContextMenu
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ResourceSummaryModelData item = _table.tableSelection();
-                // TODO Change to switch statement.
-                if (ResourceType.TEMPLATE==item.getType()) {
-                    updateTemplate(item);
-                } else if (ResourceType.PAGE==item.getType()) {
-                    updatePage(item);
-                } else if (ResourceType.ALIAS==item.getType()) {
-                    updateAlias(item);
-                } else if (ResourceType.FILE==item.getType()) {
-                    updateFile(item);
-                } else {
-                    _globals.alert(_constants.noEditorForResource());
+
+                switch (item.getType()) {
+                    case TEMPLATE:
+                        updateTemplate(item);
+                        break;
+                    case PAGE:
+                        updatePage(item);
+                        break;
+                    case ALIAS:
+                        updateAlias(item);
+                        break;
+                    case FILE:
+                        updateFile(item);
+                        break;
+                    default:
+                        _globals.alert(_constants.noEditorForResource());
                 }
             }
         });
