@@ -52,7 +52,7 @@
             <property name="_text" column="email" not-null="true" type="string" length="512" />
         </component>
             
-        <set name="_roles" lazy="false" table="user_roles"> <!-- TODO: set lazy to true -->
+        <set name="_roles" lazy="false" table="user_roles">
             <key not-null="true" column="user_id" foreign-key="FK_USERROLES_USER_ID"/>
             <element
                 column="role"

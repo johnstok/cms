@@ -22,7 +22,7 @@ import org.hibernate.usertype.UserType;
 
 
 /**
- * TODO Add Description for this type.
+ * A hibernate {@link UserType} used to persist {@link UUID} objects.
  *
  * @author Civic Computing Ltd.
  */

@@ -88,7 +88,7 @@ public class JpaRepository implements Repository {
             q.setParameter((i+1), params[i]);
         }
 
-        try { // FIXME: We don't handle the possibility of multiple results.
+        try { // Should we handle the possibility of multiple results?
             return (T) q.getSingleResult();
         } catch (final NoResultException e) {
             throw new EntityNotFoundException(null);
