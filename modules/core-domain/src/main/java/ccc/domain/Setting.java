@@ -77,6 +77,8 @@ public class Setting extends Entity {
 
         /** DATABASE_VERSION : Name. */
         DATABASE_VERSION,
+        /** FILE_STORE_PATH : Name. */
+        FILE_STORE_PATH,
         /** LUCENE_INDEX_PATH : Name. */
         LUCENE_INDEX_PATH;
     }
