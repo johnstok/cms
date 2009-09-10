@@ -197,6 +197,13 @@ public class VelocityProcessorTest extends TestCase {
         _vp = null;
     }
 
+    /**
+     * Method that always fails.
+     */
+    public void failingMethod() {
+        throw new RuntimeException("Fail.");
+    }
+
     private TextProcessor _vp;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
