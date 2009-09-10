@@ -15,13 +15,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
+import ccc.types.MimeType;
 import ccc.types.Paragraph;
 
 
@@ -89,6 +93,11 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals(testPara, results.get(0));
     }
 
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
     public void testValidateFields() {
 
         // ARRANGE
@@ -119,6 +128,62 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
     }
 
-    //updateWorkingCopy
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testUpdateWorkingCopy() throws Exception {
+
+        // ARRANGE
+        final ResourceSummary templateFolder =
+            resourceForPath("/assets/templates");
+        final String name = UUID.randomUUID().toString();
+
+        final TemplateDelta newTemplate =
+            new TemplateDelta("$resource.paragraph(\"foo\").text()",
+                "<fields><field name=\"foo\" type=\"html\"/></fields>",
+                MimeType.HTML);
+
+        final ResourceSummary ts =
+            _templates.createTemplate(
+                new TemplateDto(
+                    templateFolder.getId(),
+                    newTemplate,
+                    "t-title",
+                    "t-desc",
+                    name));
+
+        final ResourceSummary f = tempFolder();
+        final ResourceSummary page = tempPage(f.getId(), ts.getId());
+
+
+        final Set<Paragraph> paras = new HashSet<Paragraph>();
+        final Paragraph testPara = Paragraph.fromText("foo", "original");
+        paras.add(testPara);
+        final PageDelta orignal = new PageDelta(paras);
+
+        final Json json = new JsonImpl();
+        json.set(JsonKeys.MAJOR_CHANGE, true);
+        json.set(JsonKeys.COMMENT, "");
+        json.set(JsonKeys.DELTA, orignal);
+
+        // ACT
+        _commands.lock(page.getId());
+        _pages.updatePage(page.getId(), json);
+
+        final Set<Paragraph> modparas = new HashSet<Paragraph>();
+        final Paragraph modPara = Paragraph.fromText("foo", "working copy");
+        modparas.add(modPara);
+        final PageDelta modified = new PageDelta(modparas);
+
+        _pages.updateWorkingCopy(page.getId(), modified);
+
+        // ASSERT
+        final String original = previewContent(page, false);
+        final String wc = previewContent(page, true);
+        assertEquals("original", original);
+        assertEquals("working copy", wc);
+    }
 
 }
