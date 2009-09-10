@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import ccc.commons.CCCProperties;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
+import ccc.domain.Setting;
 import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
 import ccc.serialization.IO;
@@ -46,7 +47,8 @@ public class FsCoreData
      * Constructor.
      */
     public FsCoreData() {
-        _root = new File(CCCProperties.get("filestore.path")); // TODO use constant.
+        _root = new File(
+            CCCProperties.get(Setting.Name.FILE_STORE_PATH.toString()));
     }
 
     /** {@inheritDoc} */

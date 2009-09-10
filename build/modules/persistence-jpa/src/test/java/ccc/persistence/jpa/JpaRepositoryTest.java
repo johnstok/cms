@@ -30,8 +30,6 @@ import ccc.types.ResourceName;
 /**
  * Tests for the {@link JpaRepository} class.
  *
- * TODO: Missing tests.
- *
  * @author Civic Computing Ltd.
  */
 public class JpaRepositoryTest
