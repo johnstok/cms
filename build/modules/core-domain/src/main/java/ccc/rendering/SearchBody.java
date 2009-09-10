@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Map;
 
+import ccc.commons.Exceptions;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -83,7 +84,7 @@ public class SearchBody
             try {
                 pageNumber = Integer.parseInt(pParams[0]);
             } catch (final NumberFormatException e) {
-                // Continue.
+                Exceptions.swallow(e);
             }
         }
 

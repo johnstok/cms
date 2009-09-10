@@ -49,7 +49,7 @@ public class FailureOverlay
     }
 
 
-    private final native String getCodeString() /*-{ return this.code; }-*/;
+    private native String getCodeString() /*-{ return this.code; }-*/;
 
 
     /**

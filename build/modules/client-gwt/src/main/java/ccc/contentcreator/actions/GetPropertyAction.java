@@ -11,16 +11,13 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.dialogs.AboutDialog;
-import ccc.contentcreator.dialogs.LoginDialog;
-
 import com.google.gwt.http.client.RequestBuilder;
 
 
 
 /**
  * Abstract action for property loading. Implement onOK method for accessing
- * map values. See {@link LoginDialog} or {@link AboutDialog}.
+ * map values. See LoginDialog or AboutDialog.
  *
  * @author Civic Computing Ltd.
  */
@@ -31,9 +28,6 @@ public abstract class GetPropertyAction
 
     /**
      * Constructor.
-     *
-     * @param key The name of the property to look up.
-     * @param dialog The dialog to act on.
      */
     public GetPropertyAction() {
         super(USER_ACTIONS.readProperties(), RequestBuilder.GET, false);

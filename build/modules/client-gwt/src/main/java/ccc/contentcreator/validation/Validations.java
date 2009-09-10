@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import ccc.contentcreator.actions.ResourceNameExistsAction;
 import ccc.contentcreator.actions.ValidateFieldAction;
-import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -37,20 +36,18 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 
 
 /**
- * TODO: Add Description for this type.
+ * Client side validations library.
  *
  * @author Civic Computing Ltd.
  */
-public class Validations {
+public final class Validations {
 
-    private static IGlobals GLOBALS = new IGlobalsImpl();
+    private static final IGlobals GLOBALS = new IGlobalsImpl();
 
     private static final UIConstants UI_CONSTANTS =
         GLOBALS.uiConstants();
     private static final UIMessages UI_MESSAGES =
         GLOBALS.uiMessages();
-    private static final ActionNameConstants USER_ACTIONS =
-        GLOBALS.userActions();
 
     private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
@@ -63,15 +60,19 @@ public class Validations {
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
 
+    private Validations() {
+        super();
+    }
+
     /**
-     * TODO: Add a description of this method.
+     * Create a new error reporter.
      *
-     * @return
+     * @return The error reporter for
      */
     public static ErrorReporter reportErrors() {
         return new ErrorReporter() {
             public void report(final List<String> errors) {
-                new IGlobalsImpl().alert(errors.toString());
+                GLOBALS.alert(errors.toString());
             }
         };
     }
@@ -109,13 +110,13 @@ public class Validations {
                 try {
                     final Document d = XMLParser.parse(definition.getValue());
                     final NodeList l = d.getElementsByTagName("option");
-                    for (int n=0 ; n<l.getLength() ; n++) {
+                    for (int n=0; n<l.getLength(); n++) {
                         final NamedNodeMap al = l.item(n).getAttributes();
                         final Node value = al.getNamedItem("value");
                         if (value != null
                             && value.getNodeValue().indexOf(',') != -1) {
-                            validate.addMessage("XML option value "+
-                                UI_CONSTANTS.mustNotContainComma());
+                            validate.addMessage("XML option value "
+                                + UI_CONSTANTS.mustNotContainComma());
                         }
                     }
                 } catch (final DOMParseException e) {

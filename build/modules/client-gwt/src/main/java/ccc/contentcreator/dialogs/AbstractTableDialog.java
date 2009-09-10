@@ -27,9 +27,12 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 /**
  * Generic dialog for displaying read-only, tabular data.
  *
+ * @param <T> The type of data this table will render.
+ * @param <S> The model data implementation used by the data store.
+ *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractTableDialog<T,S extends ModelData>
+public abstract class AbstractTableDialog<T, S extends ModelData>
     extends
         AbstractBaseDialog {
 
@@ -70,5 +73,10 @@ public abstract class AbstractTableDialog<T,S extends ModelData>
         add(_grid);
     }
 
+    /**
+     * Create the column model for the GXT grid.
+     *
+     * @return A fully initialised column model.
+     */
     protected abstract ColumnModel defineColumnModel();
 }

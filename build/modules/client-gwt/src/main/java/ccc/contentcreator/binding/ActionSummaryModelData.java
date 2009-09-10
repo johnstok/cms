@@ -24,7 +24,6 @@ import ccc.contentcreator.api.CommandTypeConstants;
 import ccc.contentcreator.client.IGlobals;
 import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
-import ccc.types.CommandType;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -194,7 +193,7 @@ public class ActionSummaryModelData
     }
 
     /**
-     * Looks up for localised string for the {@link CommandType}.
+     * Looks up for localised string for the command type.
      *
      * @return The localised string or name of the enum if nothing found.
      */
