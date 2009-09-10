@@ -43,8 +43,6 @@ public class VelocityProcessor implements TextProcessor {
     private static final Logger LOG = Logger.getLogger(VelocityProcessor.class);
 
     /*
-     * TODO: investigate all relevant properties
-     * TODO: handling missing expressions...
      * resource.manager.logwhenfound = true
      * input.encoding = UTF-8
      * velocimacro.arguments.strict = true
