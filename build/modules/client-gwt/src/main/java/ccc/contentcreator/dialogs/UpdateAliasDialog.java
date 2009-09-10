@@ -122,7 +122,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
             public void run() {
                 new UpdateAliasAction(_aliasId, new AliasDelta(_targetId)){
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(
+                                                     final Response response) {
                         hide();
                     }
                 }.execute();

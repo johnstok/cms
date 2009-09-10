@@ -36,7 +36,8 @@ public final class OpenCreatePageAction
             return;
         }
         new GetTemplatesAction(UI_CONSTANTS.createPage()){
-            @Override protected void execute(final Collection<TemplateSummary> templates) {
+            @Override protected void execute(
+                                 final Collection<TemplateSummary> templates) {
                 new CreatePageDialog(templates, item, _selectionModel).show();
             }
 

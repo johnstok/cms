@@ -63,11 +63,13 @@ public class ResourceTree extends Tree {
             new RpcProxy<List<ResourceSummaryModelData>>() {
 
             @Override
-            protected void load(final Object loadConfig,
-                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+            protected void load(
+                final Object loadConfig,
+                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
                 final UUID parentId =
-                    (null==loadConfig || !(loadConfig instanceof ResourceSummaryModelData))
+                    (null==loadConfig
+                        || !(loadConfig instanceof ResourceSummaryModelData))
                     ? _root.getId()
                     : ((ResourceSummaryModelData) loadConfig).getId();
 

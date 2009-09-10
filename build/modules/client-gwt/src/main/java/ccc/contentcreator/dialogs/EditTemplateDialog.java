@@ -257,7 +257,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                             _parentFolderId,
                             _name.getValue(),
                             delta){
-                                @Override protected void execute(final ResourceSummary template) {
+                                @Override protected void execute(
+                                             final ResourceSummary template) {
                                     _ssm.create(
                                         new ResourceSummaryModelData(template),
                                         _ssm.treeSelection());
@@ -268,7 +269,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                     case UPDATE:
                         new UpdateTemplateAction(_id, delta) {
                             /** {@inheritDoc} */
-                            @Override protected void onNoContent(final Response response) {
+                            @Override protected void onNoContent(
+                                                     final Response response) {
                                 _ssm.update(_proxy);
                                 hide();
                             }

@@ -72,6 +72,9 @@ public class CreatePageDialog
         AbstractWizardDialog {
 
 
+    /** TEMPLATE_GRID_HEIGHT : int. */
+    private static final int TEMPLATE_GRID_HEIGHT = 280;
+
     /** NAME_COLUMN_WIDTH : int. */
     private static final int NAME_COLUMN_WIDTH = 200;
 
@@ -121,13 +124,12 @@ public class CreatePageDialog
         final ColumnModel cm = new ColumnModel(configs);
 
         _grid = new Grid<TemplateSummaryModelData>(_templatesStore, cm);
-//      _grid.setLoadMask(true);
         _grid.setId("TemplateGrid");
-        _grid.setHeight(280);
+        _grid.setHeight(TEMPLATE_GRID_HEIGHT);
 
-        final Listener<GridEvent> listener =
-            new Listener<GridEvent>() {
-            public void handleEvent(final GridEvent ge) {
+        final Listener<GridEvent<?>> listener =
+            new Listener<GridEvent<?>>() {
+            public void handleEvent(final GridEvent<?> ge) {
                 final TemplateSummaryModelData template =
                     (TemplateSummaryModelData)
                         ge.getGrid().getSelectionModel().getSelectedItem();

@@ -39,6 +39,8 @@ public class ResourceAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
+    /** MAX_RANDOM_VALUE : int. */
+    private static final int MAX_RANDOM_VALUE = 1000;
     private static final Logger LOG =
         Logger.getLogger(ResourceAcceptanceTest.class);
 
@@ -219,7 +221,8 @@ public class ResourceAcceptanceTest
         }
 
         // ASSERT
-        final ResourceSummary updatedFolder = _commands.resource(folder.getId());
+        final ResourceSummary updatedFolder =
+            _commands.resource(folder.getId());
         assertEquals(ts.getId(), updatedFolder.getTemplateId());
     }
 
@@ -350,7 +353,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
         final ResourceSummary f = tempFolder();
 
-        final String id = ""+new Random().nextInt(1000);
+        final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
 
         final JsonImpl md = new JsonImpl();
         md.set(JsonKeys.TITLE, f.getTitle());

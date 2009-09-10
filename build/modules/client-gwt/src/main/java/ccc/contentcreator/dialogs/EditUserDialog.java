@@ -135,7 +135,8 @@ public class EditUserDialog extends AbstractEditDialog {
                     _userDTO
                 ){
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
+                    @Override protected void onNoContent(
+                                                     final Response response) {
                         // TODO: Just update the edited row model data.
                         _userTable.refreshUsers();
                         hide();

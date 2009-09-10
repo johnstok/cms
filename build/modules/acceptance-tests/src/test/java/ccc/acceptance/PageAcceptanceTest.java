@@ -70,7 +70,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         final Set<Paragraph> paras = new HashSet<Paragraph>();
-        final Paragraph testPara = Paragraph.fromText("foo", "long story short");
+        final Paragraph testPara =
+            Paragraph.fromText("foo", "long story short");
         paras.add(testPara);
         final PageDelta modified = new PageDelta(paras);
 
@@ -78,7 +79,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         _commands.lock(page.getId());
 
         final Json json = new JsonImpl();
-        json.set(JsonKeys.MAJOR_CHANGE, true);
+        json.set(JsonKeys.MAJOR_CHANGE, Boolean.TRUE);
         json.set(JsonKeys.COMMENT, "");
         json.set(JsonKeys.DELTA, modified);
 
@@ -95,14 +96,12 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
     public void testValidateFields() {
 
         // ARRANGE
         final String definition = "<fields><field name=\"test\" "
-        		+ "type=\"text_field\" regexp=\"\\d{1,3}\"/></fields>";
+            + "type=\"text_field\" regexp=\"\\d{1,3}\"/></fields>";
         final Paragraph invalidPara = Paragraph.fromText("test", "fail");
         final Paragraph validPara = Paragraph.fromText("test", "12");
 

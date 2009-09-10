@@ -63,7 +63,8 @@ public class ResourceSummaryModelData
         final JSONObject summaryObject = jsonObject.isObject();
 
         return new ResourceSummaryModelData(new ResourceSummary(
-            UUID.fromString(summaryObject.get(JsonKeys.ID).isString().stringValue()),
+            UUID.fromString(
+                summaryObject.get(JsonKeys.ID).isString().stringValue()),
 
             UUID.fromString(summaryObject.get(
                 JsonKeys.PARENT_ID).isString().stringValue()),

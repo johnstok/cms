@@ -179,8 +179,10 @@ public class UpdatePageDialog
             public void run() {
                 new UpdateWorkingCopyAction(_pageId, _page) {
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(final Response response) {
-                        final ResourceSummaryModelData md = rt().tableSelection();
+                    @Override protected void onNoContent(
+                                                     final Response response) {
+                        final ResourceSummaryModelData md =
+                            rt().tableSelection();
                         md.setWorkingCopy(true);
                         rt().update(md);
                         hide();

@@ -67,10 +67,12 @@ public class FolderResourceTree extends Tree {
             new RpcProxy<List<ResourceSummaryModelData>>() {
 
             @Override
-            protected void load(final Object loadConfig,
-                                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+            protected void load(
+                final Object loadConfig,
+                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
-                if (null==loadConfig || !(loadConfig instanceof ResourceSummaryModelData)) {
+                if (null==loadConfig
+                    || !(loadConfig instanceof ResourceSummaryModelData)) {
                     callback.onSuccess(
                         DataBinding.bindResourceSummary(
                             Collections.singletonList(_root)));
@@ -166,7 +168,8 @@ public class FolderResourceTree extends Tree {
 
         /** {@inheritDoc} */
         @Override
-        protected void onRenderChildren(final TreeStoreEvent<ResourceSummaryModelData> te) {
+        protected void onRenderChildren(
+                            final TreeStoreEvent<ResourceSummaryModelData> te) {
             if (loader.hasChildren(te.getParent())) {
                 super.onRenderChildren(te);
             }

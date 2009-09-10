@@ -43,7 +43,8 @@ public final class ChooseTemplateAction
             || ResourceType.FOLDER==item.getType()
             || ResourceType.SEARCH==item.getType()) {
             new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()){
-                @Override protected void execute(final Collection<TemplateSummary> templates) {
+                @Override protected void execute(
+                                 final Collection<TemplateSummary> templates) {
                     new ChooseTemplateDialog(
                         item,
                         templates,

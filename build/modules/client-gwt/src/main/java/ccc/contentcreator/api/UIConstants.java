@@ -929,7 +929,8 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Use * for wild card searches, for example Joh* finds John")
+    @DefaultStringValue(
+        "Use * for wild card searches, for example Joh* finds John")
     String searchToolTip();
 
     /**
@@ -1001,7 +1002,10 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Password is too weak - it should be at least 10 characters and contain both upper and lower case alphabets, number and non-alphanumeric character.")
+    @DefaultStringValue(
+        "Password is too weak - "
+        + "it should be at least 10 characters and contain both upper and "
+        + "lower case alphabets, number and non-alphanumeric character.")
     String passwordTooWeak();
 
     /**
@@ -1009,7 +1013,8 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Password is too short - the minimum length is 10 characters.")
+    @DefaultStringValue(
+        "Password is too short - the minimum length is 10 characters.")
     String passwordTooShort();
 
     /**
@@ -1225,7 +1230,9 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("This action will exit the application - any unsaved work will be lost!")
+    @DefaultStringValue(
+        "This action will exit the application - "
+        + "any unsaved work will be lost!")
     String exitWarning();
 
     /**
@@ -1241,7 +1248,8 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Your session timed out - please restart the application.")
+    @DefaultStringValue(
+        "Your session timed out - please restart the application.")
     String sessionTimeOutPleaseRestart();
 
 
@@ -1350,11 +1358,14 @@ public interface UIConstants extends Constants {
     String useDefaultSetting();
 
     /**
-     * "is not valid resource name - it should contain only alphanumeric characters".
+     * "is not valid resource name -
+     * it should contain only alphanumeric characters".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("is not valid resource name - it should contain only alphanumeric or -_ characters")
+    @DefaultStringValue(
+        "is not valid resource name - "
+        + "it should contain only alphanumeric or -_ characters")
     String isNotValidResourceName();
 
     /**
@@ -1366,11 +1377,14 @@ public interface UIConstants extends Constants {
     String all();
 
     /**
-     * "is not valid user name - it should contain only alphanumeric characters".
+     * "is not valid user name -
+     * it should contain only alphanumeric characters".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("is not valid user name - it should contain only alphanumeric characters")
+    @DefaultStringValue(
+        "is not valid user name - "
+        + "it should contain only alphanumeric characters")
     String isNotValidUserName();
 
     /**

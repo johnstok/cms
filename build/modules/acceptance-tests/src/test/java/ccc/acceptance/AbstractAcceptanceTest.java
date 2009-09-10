@@ -165,7 +165,19 @@ public abstract class AbstractAcceptanceTest
         return ts;
     }
 
-    protected ResourceSummary tempPage(final UUID parentFolder, final UUID template) throws RestException {
+    /**
+     * Create a page for testing.
+     *
+     * @param parentFolder The parent folder for the page.
+     * @param template The page's template.
+     *
+     * @return The summary for the page.
+     *
+     * @throws RestException If creation of the page fails.
+     */
+    protected ResourceSummary tempPage(final UUID parentFolder,
+                                       final UUID template)
+    throws RestException {
         final String name = UUID.randomUUID().toString();
         final PageDelta delta = new PageDelta(new HashSet<Paragraph>());
         final PageDto page = new PageDto(parentFolder,
@@ -194,8 +206,17 @@ public abstract class AbstractAcceptanceTest
     }
 
 
-    /*
+    /**
+     * Update an existing file to be a text file with the specified text.
      * TODO: Merge into ccc.migration.FileUploader class.
+     *
+     * @param fText The text for the file.
+     * @param rs The summary for the file to update.
+     *
+     * @throws RestException If the operation fails on the server.
+     * @throws IOException If the operation fails sending the data.
+     *
+     * @return The response from the server, as a string.
      */
     protected String updateTextFile(final String fText,
                                     final ResourceSummary rs)

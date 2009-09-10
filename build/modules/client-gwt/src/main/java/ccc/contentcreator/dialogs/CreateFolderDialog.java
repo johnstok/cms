@@ -84,7 +84,8 @@ public class CreateFolderDialog extends AbstractEditDialog {
                     _parent.getId(),
                     _text.getValue()
                 ){
-                    @Override protected void execute(final ResourceSummary folder) {
+                    @Override protected void execute(
+                                                 final ResourceSummary folder) {
                         final ResourceSummaryModelData newFolder =
                             new ResourceSummaryModelData(folder);
                         _ssm.create(newFolder, _parent);

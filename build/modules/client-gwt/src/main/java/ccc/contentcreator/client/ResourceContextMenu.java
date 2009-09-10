@@ -398,7 +398,8 @@ public class ResourceContextMenu
             }
 
             /** {@inheritDoc} */
-            @Override protected void onOK(final Response response) { // Get a delta to edit.
+            // Get a delta to edit.
+            @Override protected void onOK(final Response response) {
             final TemplateSummary ts =
                 new TemplateSummary(
                   new GwtJson(

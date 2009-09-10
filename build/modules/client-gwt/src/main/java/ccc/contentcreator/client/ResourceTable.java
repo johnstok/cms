@@ -241,8 +241,9 @@ public class ResourceTable
     public void create(final ResourceSummaryModelData model,
                        final ResourceSummaryModelData newParent) {
         final ResourceSummaryModelData np =
-            _tree._store.findModel(ResourceSummaryModelData.Property.UUID.name(),
-                                   newParent.getId());
+            _tree._store.findModel(
+                ResourceSummaryModelData.Property.UUID.name(),
+                newParent.getId());
         if (null!=np) { // May not exist in the store
             _tree._store.add(np, model, false); // Add to the left-hand tree
 
@@ -261,8 +262,9 @@ public class ResourceTable
         _tree._store.remove(oldParent, model);
 
         final ResourceSummaryModelData np =
-            _tree._store.findModel(ResourceSummaryModelData.Property.UUID.name(),
-                                   newParent.getId());
+            _tree._store.findModel(
+                ResourceSummaryModelData.Property.UUID.name(),
+                newParent.getId());
         if (null!=np) { // May not exist in other store
             _tree._store.add(np, model, false);
         }
