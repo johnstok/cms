@@ -18,14 +18,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileDto;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * {@link ModelData} implementation for the {@link ActionSummary} class.
+ * {@link ModelData} implementation for the {@link FileDto} class.
  *
  * @author Civic Computing Ltd.
  */

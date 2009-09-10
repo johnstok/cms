@@ -68,7 +68,8 @@ public class ResourceTree extends Tree {
 
                 final UUID parentId =
                     (null==loadConfig || !(loadConfig instanceof ResourceSummaryModelData))
-                    ? _root.getId() : ((ResourceSummaryModelData)loadConfig).getId();
+                    ? _root.getId()
+                    : ((ResourceSummaryModelData) loadConfig).getId();
 
                     new GetChildrenAction(_globals.userActions().loadData(),
                         parentId) {

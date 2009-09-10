@@ -21,8 +21,8 @@ import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.UserDto;
 
@@ -42,7 +42,7 @@ public final class DataBinding {
     /** KEY : String. */
     public static final String KEY = "key";
 
-    private static IGlobals _globals = new IGlobalsImpl();
+    private static final IGlobals GLOBALS = new IGlobalsImpl();
 
 
     private DataBinding() { super(); }
@@ -59,7 +59,7 @@ public final class DataBinding {
         final List<LogEntrySummaryModelData> boundData =
             new ArrayList<LogEntrySummaryModelData>();
         for (final RevisionDto les : arg0) {
-            boundData.add(new LogEntrySummaryModelData(les, _globals));
+            boundData.add(new LogEntrySummaryModelData(les, GLOBALS));
         }
         return boundData;
     }
@@ -134,7 +134,7 @@ public final class DataBinding {
         final List<ActionSummaryModelData> boundData =
             new ArrayList<ActionSummaryModelData>();
         for (final ActionSummary as : result) {
-            boundData.add(new ActionSummaryModelData(as, _globals));
+            boundData.add(new ActionSummaryModelData(as, GLOBALS));
         }
         return boundData;
     }

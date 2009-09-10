@@ -88,7 +88,7 @@ public class StringCollectionWriter
             try {
                 rs = URLEncoder.encode(rs, "UTF-8");
             } catch (final UnsupportedEncodingException e) {
-                // FIXME
+                throw new WebApplicationException(e);
             }
 
             a++;

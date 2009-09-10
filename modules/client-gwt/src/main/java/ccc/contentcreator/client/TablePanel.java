@@ -27,7 +27,8 @@ public abstract class TablePanel extends ContentPanel {
     private static final IGlobals GLOBALS = new IGlobalsImpl();
 
     /** USER_ACTIONS : ActionNameConstants. */
-    protected final ActionNameConstants USER_ACTIONS = GLOBALS.userActions();
+    protected static final ActionNameConstants USER_ACTIONS =
+        GLOBALS.userActions();
     /** UI_CONSTANTS : UIConstants. */
     protected static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
     /** PAGING_ROW_COUNT : int. */

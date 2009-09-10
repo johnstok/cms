@@ -50,7 +50,7 @@ public abstract class AbstractBaseDialog
     protected final UIConstants _constants;
     protected final UIMessages  _messages;
     protected final UIConstants _uiConstants;
-    protected final ActionNameConstants USER_ACTIONS;
+    protected final ActionNameConstants _userActions;
 
     protected final Button _cancel;
 
@@ -67,7 +67,7 @@ public abstract class AbstractBaseDialog
         _constants = _globals.uiConstants();
         _messages  = _globals.uiMessages();
         _uiConstants = _globals.uiConstants();
-        USER_ACTIONS = _globals.userActions();
+        _userActions = _globals.userActions();
 
         _cancel = cancelButton();
 

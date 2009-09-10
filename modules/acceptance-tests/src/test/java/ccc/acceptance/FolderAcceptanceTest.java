@@ -231,8 +231,6 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
     public void testRoots() {
 
