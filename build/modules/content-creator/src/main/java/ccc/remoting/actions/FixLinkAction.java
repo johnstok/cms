@@ -92,7 +92,6 @@ public class FixLinkAction
         try {
             final Resource r = rdao.lookupWithLegacyId(legacyId);
             final String resourcePath = r.absolutePath().toString();
-            // TODO: Should be sending a permanent redirect here.
             dispatchRedirect(req, resp, resourcePath);
 
         } catch (final EntityNotFoundException e) {

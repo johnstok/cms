@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * TODO: Add a description for this type.
+ * Filter providing support for the X-HTTP-Method-Override HTTP request header.
  *
  * @author Civic Computing Ltd.
  */

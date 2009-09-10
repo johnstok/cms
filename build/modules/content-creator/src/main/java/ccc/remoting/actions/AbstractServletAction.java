@@ -22,7 +22,7 @@ import ccc.domain.CCCException;
 
 
 /**
- * TODO: Add Description for this type.
+ * Abstract servlet action providing helper methods.
  *
  * @author Civic Computing Ltd.
  */

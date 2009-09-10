@@ -32,7 +32,7 @@ public class LoginServlet
     extends
      HttpServlet {
 
-    // TODO: move to web.xml
+    // Move to web.xml?
     private final String _siteRoot = "/content";
     private final String _loginPage = "/content/login";
 

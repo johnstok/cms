@@ -13,8 +13,6 @@ package ccc.remoting.actions;
 
 import java.util.regex.Matcher;
 
-import ccc.remoting.actions.FixLinkAction;
-
 import junit.framework.TestCase;
 
 

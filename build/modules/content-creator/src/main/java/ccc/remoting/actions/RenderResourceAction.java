@@ -120,9 +120,9 @@ public class RenderResourceAction
 
 
     private void checkSecurity(final Resource r, final User user) {
-        final User u = (null==user) ?
-            new User(new Username("anonymous"), "password") :
-            user;
+        final User u = (null==user)
+            ? new User(new Username("anonymous"), "password")
+            : user;
         if (!r.isAccessibleTo(u)) {
             throw new AuthenticationRequiredException(r);
         }
@@ -149,7 +149,6 @@ public class RenderResourceAction
 
     /**
      * Determine the ResourcePath from a request's pathInfo.
-     * TODO: Change param to type String.
      *
      * @param request The HTTP request.
      * @return The corresponding resource path.
@@ -199,7 +198,8 @@ public class RenderResourceAction
 
 
     private ResourceRepository getResourceDao(final HttpServletRequest req) {
-        return new ResourceRepositoryImpl((Repository) req.getAttribute(SessionKeys.DAO_KEY));
+        return new ResourceRepositoryImpl(
+            (Repository) req.getAttribute(SessionKeys.DAO_KEY));
     }
 
 
