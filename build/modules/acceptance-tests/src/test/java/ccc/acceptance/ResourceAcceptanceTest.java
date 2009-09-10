@@ -372,9 +372,6 @@ public class ResourceAcceptanceTest
     }
 
 
-
-
-    // TODO: testLockedByCurrentUser
     // TODO: testComputeTemplate
     // TODO: Add working copy method tests.
 }

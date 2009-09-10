@@ -279,18 +279,13 @@ public class Validations {
                     /** {@inheritDoc} */
                     @Override
                     protected void onOK(final Response response) {
-                        final List<String> errors = parseListString(response);
+                        final String errors = response.getText();
 
                         if (!errors.isEmpty()) {
-                            final StringBuffer sb = new StringBuffer();
-                            for (final String error : errors) {
-                                sb.append(error);
-                                sb.append(" ");
-                            }
 
                             validate.addMessage(
                                 UI_CONSTANTS.regexpValidationFailed()
-                                +sb.toString()
+                                +errors
                             );
                         }
                         validate.next();

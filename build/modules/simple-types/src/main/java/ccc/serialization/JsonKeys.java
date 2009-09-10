@@ -140,4 +140,6 @@ public final class JsonKeys {
     public static final String PRIMARY_TYPE = "primary-type";
     /** SUB_TYPE : String. */
     public static final String SUB_TYPE = "sub-type";
+     /** PARAGRAPHS : String. */
+    public static final String PARAGRAPHS = "paragraphs";
 }

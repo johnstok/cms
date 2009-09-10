@@ -84,10 +84,41 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
         assertEquals(1, pd.getParagraphs().size());
-        final List<Paragraph> results = new ArrayList<Paragraph>(pd.getParagraphs());
+        final List<Paragraph> results =
+            new ArrayList<Paragraph>(pd.getParagraphs());
         assertEquals(testPara, results.get(0));
     }
 
+    public void testValidateFields() {
 
+        // ARRANGE
+        final String definition = "<fields><field name=\"test\" "
+        		+ "type=\"text_field\" regexp=\"\\d{1,3}\"/></fields>";
+        final Paragraph invalidPara = Paragraph.fromText("test", "fail");
+        final Paragraph validPara = Paragraph.fromText("test", "12");
+
+        final Set<Paragraph> invalidParas = new HashSet<Paragraph>();
+        invalidParas.add(invalidPara);
+        final Set<Paragraph> validParas = new HashSet<Paragraph>();
+        validParas.add(validPara);
+
+        // ACT
+        final Json okjson = new JsonImpl();
+        okjson.set(JsonKeys.DEFINITION, definition);
+        okjson.set(JsonKeys.PARAGRAPHS, validParas);
+        final String okResult = _pages.validateFields(okjson);
+
+        final Json nokjson = new JsonImpl();
+        nokjson.set(JsonKeys.DEFINITION, definition);
+        nokjson.set(JsonKeys.PARAGRAPHS, invalidParas);
+        final String nokResult =  _pages.validateFields(nokjson);
+
+        // ASSERT
+        assertTrue("Errors should be empty", okResult.isEmpty());
+        assertEquals("test, regexp: \\d{1,3}", nokResult);
+
+    }
+
+    //updateWorkingCopy
 
 }

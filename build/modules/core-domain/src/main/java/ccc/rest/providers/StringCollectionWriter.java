@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -82,9 +84,14 @@ public class StringCollectionWriter
         final PrintWriter pw = new PrintWriter(outputStream);
         pw.println("[");
         int a = 0;
-        for (final String rs : object) {
+        for (String rs : object) {
+            try {
+                rs = URLEncoder.encode(rs, "UTF-8");
+            } catch (final UnsupportedEncodingException e) {
+                // FIXME
+            }
+
             a++;
-            // FIXME: Escaping
             if (a == object.size()) {
                 pw.println("\n\""+rs+"\"");
             } else {

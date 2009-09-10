@@ -16,7 +16,6 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -201,10 +200,10 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public List<String> validateFields(final Json json) {
-        final String def = json.getString("definition");
+    public String validateFields(final Json json) {
+        final String def = json.getString(JsonKeys.DEFINITION);
         final Set<Paragraph> p = new HashSet<Paragraph>();
-        for (final Json j : json.getCollection("paragraphs")) {
+        for (final Json j : json.getCollection(JsonKeys.PARAGRAPHS)) {
             p.add(new Paragraph(j));
         }
         return new PageHelper().validateFields(p, def);

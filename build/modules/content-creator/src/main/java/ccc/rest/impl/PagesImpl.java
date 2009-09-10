@@ -11,7 +11,6 @@
  */
 package ccc.rest.impl;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -58,7 +57,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<String> validateFields(final Json json) {
+    public String validateFields(final Json json) {
         return getPageCommands().validateFields(json);
     }
 
