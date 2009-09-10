@@ -365,8 +365,6 @@ public class ResourceAcceptanceTest
         _commands.lock(f.getId());
         _commands.updateMetadata(f.getId(), md);
 
-
-        // ACT
         final ResourceSummary legacy = _commands.resourceForLegacyId(id);
 
         // ASSERT
@@ -375,6 +373,34 @@ public class ResourceAcceptanceTest
     }
 
 
-    // TODO: testComputeTemplate
-    // TODO: Add working copy method tests.
+//    /**
+//     * Test.
+//     *
+//     * @throws RestException If the test fails.
+//     */
+//    public void testComputeTemplate() throws RestException {
+//
+//        // ARRANGE
+//        final ResourceSummary f = tempFolder();
+//        final ResourceSummary ts = dummyTemplate(f);
+//        final TemplateSummary original = _templates.templateDelta(ts.getId());
+//
+//        _commands.lock(f.getId());
+//        _commands.updateResourceTemplate(
+//            f.getId(), new ResourceDto(ts.getId()));
+//
+//        final String fName = UUID.randomUUID().toString();
+//        final ResourceSummary cf =
+//            _folders.createFolder(new FolderDto(f.getId(), fName));
+//
+//        // ACT
+//        final TemplateSummary computed = _commands.computeTemplate(cf.getId());
+//
+//        // ASSERT
+//        assertEquals(original.getDefinition(), computed.getDefinition());
+//        assertEquals(original.getBody(), computed.getBody());
+//    }
+
+    // clearWorkingCopy, applyWorkingCopy, history and createWorkingCopy tested
+    // in FileUploadAcceptanceTest
 }
