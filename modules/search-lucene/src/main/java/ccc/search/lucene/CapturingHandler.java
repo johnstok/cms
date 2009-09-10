@@ -10,7 +10,7 @@ import org.apache.lucene.search.TopDocs;
 
 
 /**
- * TODO: Add Description for this type.
+ * Captures the results of a Lucene search into memory.
  *
  * @author Civic Computing Ltd.
  */
