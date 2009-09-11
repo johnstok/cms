@@ -46,6 +46,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
      * @param root The root of the tree.
      * @param view LeftRightPane of the surrounding view.
      * @param user UserSummary of currently logged in user.
+     * @param globals An instance of the globals interface.
      */
     EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view,

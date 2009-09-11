@@ -43,10 +43,10 @@ public abstract class CreatePageAction
     /**
      * Constructor.
      *
-     * @param parentFolder
-     * @param page
-     * @param name
-     * @param template
+     * @param parentFolder The folder where the page will be created.
+     * @param page The page's content.
+     * @param name The page's name.
+     * @param template The page's template.
      * @param title The page's title.
      * @param comment A comment describing the update.
      * @param majorChange Is this update a major change.
@@ -100,5 +100,10 @@ public abstract class CreatePageAction
     }
 
 
+    /**
+     * Handle the summary returned when a page is successfully created.
+     *
+     * @param rs The page summary.
+     */
     protected abstract void execute(ResourceSummary rs);
 }

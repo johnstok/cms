@@ -46,7 +46,7 @@ public abstract class AbstractBaseDialog
     /** PERCENT_70 : float. */
     public static final float PERCENT_70 = .7f;
 
-    protected final IGlobals _globals;
+    private final IGlobals _globals;
     protected final UIConstants _constants;
     protected final UIMessages  _messages;
     protected final UIConstants _uiConstants;
@@ -78,6 +78,16 @@ public abstract class AbstractBaseDialog
         setLayout(new FitLayout());
         setBodyStyle("backgroundColor: white;");
         setMaximizable(true);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the globals.
+     */
+    public IGlobals getGlobals() {
+        return _globals;
     }
 
 

@@ -27,9 +27,29 @@ public class AbstractContextMenu
     extends
         Menu {
 
-    protected IGlobals _globals = new IGlobalsImpl();
-    /** _constants : UIConstants. */
-    protected final UIConstants _constants = _globals.uiConstants();
+    private final IGlobals _globals = new IGlobalsImpl();
+    private final UIConstants _constants = _globals.uiConstants();
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the globals.
+     */
+    public IGlobals getGlobals() {
+        return _globals;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the constants.
+     */
+    public UIConstants getConstants() {
+        return _constants;
+    }
+
 
     /**
      * Creates a new menu item.
@@ -48,6 +68,7 @@ public class AbstractContextMenu
         item.addSelectionListener(new MenuSelectionListenerAction(action));
         return item;
     }
+
 
     /**
      * Creates and adds a menu item to the context menu.

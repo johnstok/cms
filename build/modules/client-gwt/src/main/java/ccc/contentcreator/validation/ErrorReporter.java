@@ -15,10 +15,16 @@ import java.util.List;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for reporting validation errors.
  *
  * @author Civic Computing Ltd.
  */
 public interface ErrorReporter {
+
+    /**
+     * Report the specified errors.
+     *
+     * @param errors The errors, as a list of strings.
+     */
     void report(List<String> errors);
 }

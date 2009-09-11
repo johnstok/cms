@@ -64,6 +64,13 @@ public final class DataBinding {
         return boundData;
     }
 
+
+    /**
+     * Create model data objects for a collection of resource summaries.
+     *
+     * @param arg0 The resource summaries.
+     * @return The corresponding model data objects.
+     */
     public static List<ResourceSummaryModelData> bindResourceSummary(
                                        final Collection<ResourceSummary> arg0) {
         final List<ResourceSummaryModelData> boundData =
@@ -75,6 +82,13 @@ public final class DataBinding {
         return boundData;
     }
 
+
+    /**
+     * Create a model data object from a resource summary.
+     *
+     * @param rs The resource summary.
+     * @return The corresponding model data object.
+     */
     public static ResourceSummaryModelData bindResourceSummary(
                                                      final ResourceSummary rs) {
         final ResourceSummaryModelData md = new ResourceSummaryModelData(rs);
@@ -82,6 +96,12 @@ public final class DataBinding {
     }
 
 
+    /**
+     * Create model data objects for a collection of user summaries.
+     *
+     * @param result The user summaries.
+     * @return The corresponding model data objects.
+     */
     public static List<UserSummaryModelData> bindUserSummary(
                                          final Collection<UserDto> result) {
         final List<UserSummaryModelData> boundData =
@@ -93,6 +113,12 @@ public final class DataBinding {
     }
 
 
+    /**
+     * Create model data objects for a collection of template summaries.
+     *
+     * @param list The template summaries.
+     * @return The corresponding model data objects.
+     */
     public static List<TemplateSummaryModelData> bindTemplateDelta(
                                      final Collection<TemplateSummary> list) {
         final List<TemplateSummaryModelData> boundData =
@@ -104,6 +130,12 @@ public final class DataBinding {
     }
 
 
+    /**
+     * Create model data objects for a collection of file DTOs.
+     *
+     * @param arg0 The file DTOs.
+     * @return The corresponding model data objects.
+     */
     public static List<FileSummaryModelData> bindFileSummary(
                                            final Collection<FileDto> arg0) {
         final List<FileSummaryModelData> boundData =
@@ -115,6 +147,12 @@ public final class DataBinding {
     }
 
 
+    /**
+     * Create model data objects for a collection of metadata.
+     *
+     * @param data The metadata.
+     * @return The corresponding model data objects.
+     */
     public static List<ModelData> bindMetadata(
         final Collection<Entry<String, String>> data) {
 
@@ -129,6 +167,12 @@ public final class DataBinding {
     }
 
 
+    /**
+     * Create model data objects for a collection of action summaries.
+     *
+     * @param result The action summaries.
+     * @return The corresponding model data objects.
+     */
     public static List<ActionSummaryModelData> bindActionSummary(
                                       final Collection<ActionSummary> result) {
         final List<ActionSummaryModelData> boundData =

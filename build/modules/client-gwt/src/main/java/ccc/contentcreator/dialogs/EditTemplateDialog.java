@@ -277,7 +277,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                         }.execute();
                         break;
                     default:
-                        _globals.alert(constants().error());
+                        getGlobals().alert(constants().error());
                     break;
                 }
             }

@@ -23,7 +23,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Get a list of templates from the server.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,7 +34,7 @@ public abstract class GetTemplatesAction
     /**
      * Constructor.
      *
-     * @param actionName
+     * @param actionName Local-specific name for the action.
      */
     public GetTemplatesAction(final String actionName) {
         super(actionName);
@@ -58,5 +58,10 @@ public abstract class GetTemplatesAction
         execute(templates);
     }
 
+    /**
+     * Handle the data returned from the server.
+     *
+     * @param templates The available templates.
+     */
     protected abstract void execute(Collection<TemplateSummary> templates);
 }

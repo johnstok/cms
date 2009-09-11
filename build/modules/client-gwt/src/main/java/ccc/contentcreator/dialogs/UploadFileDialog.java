@@ -109,7 +109,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                 public void handleEvent(final FormEvent be) {
                     if (SessionTimeoutException.isTimeoutMessage(
                             be.getResultHtml())) {
-                        _globals.unexpectedError(
+                        getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             _constants.uploadFile());
                     } else {
@@ -118,7 +118,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             JSONParser.parse(be.getResultHtml()).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // CommandFailedEx
-                            _globals.unexpectedError(
+                            getGlobals().unexpectedError(
                                 new RemoteException(
                                     FailureOverlay.fromJson(
                                         be.getResultHtml())),

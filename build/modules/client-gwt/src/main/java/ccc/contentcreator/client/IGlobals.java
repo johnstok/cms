@@ -65,6 +65,9 @@ public interface IGlobals {
     /**
      * Determine the URL for the REST API.
      *
+     * @param secure If true the secure URL will be returned, otherwise the
+     *  public URL will be returned.
+     *
      * @return The host url as a string.
      */
     String apiURL(boolean secure);
@@ -155,30 +158,30 @@ public interface IGlobals {
     String CONTENT_CREATOR = "CONTENT_CREATOR";
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve an instance of the action status constants.
      *
-     * @return
+     * @return An ActionStatusConstants object.
      */
     ActionStatusConstants actionStatusConstants();
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve an instance of the command type constants.
      *
-     * @return
+     * @return An CommandTypeConstants object.
      */
     CommandTypeConstants commandTypeConstants();
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve an instance of the error description constants.
      *
-     * @return
+     * @return An ErrorDescriptions object.
      */
     ErrorDescriptions errorDescriptions();
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve an instance of the error resolution constants.
      *
-     * @return
+     * @return An ErrorResolutions object.
      */
     ErrorResolutions errorResolutions();
 }

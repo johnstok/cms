@@ -35,19 +35,19 @@ public class FolderContextMenu
     public FolderContextMenu(final SingleSelectionModel ssm) {
         addMenuItem(
             "upload-file",
-            _constants.uploadFile(),
+            getConstants().uploadFile(),
             new OpenCreateFileAction(ssm));
         addMenuItem(
             "create-folder",
-            _constants.createFolder(),
+            getConstants().createFolder(),
             new OpenCreateFolderAction(ssm));
         addMenuItem(
             "create-page",
-            _constants.createPage(),
+            getConstants().createPage(),
             new OpenCreatePageAction(ssm));
         addMenuItem(
             "create-template",
-            _constants.createTemplate(),
+            getConstants().createTemplate(),
             new OpenCreateTemplateAction(ssm));
     }
 }
