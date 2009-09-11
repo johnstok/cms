@@ -139,8 +139,8 @@ public class FolderResourceTree extends Tree {
         /**
          * Constructor.
          *
-         * @param tree
-         * @param store
+         * @param tree The UI tree used for rendering.
+         * @param store The underlying data store for the tree.
          */
         FolderBinder(final Tree tree,
                      final TreeStore<ResourceSummaryModelData> store) {
@@ -162,6 +162,11 @@ public class FolderResourceTree extends Tree {
             return item;
         }
 
+        /**
+         * Load the children for a specified tree node.
+         *
+         * @param item The node whose children should be loaded.
+         */
         protected void loadChildren(final TreeItem item) {
             loader.loadChildren((ResourceSummaryModelData) item.getModel());
         }

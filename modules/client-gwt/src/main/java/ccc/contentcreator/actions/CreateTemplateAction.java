@@ -39,9 +39,9 @@ public abstract class CreateTemplateAction
     /**
      * Constructor.
      *
-     * @param parentFolderId
-     * @param value
-     * @param delta
+     * @param parentFolder The folder in which the template will be created.
+     * @param resourceName The name of the template.
+     * @param delta The template's details.
      */
     public CreateTemplateAction(final UUID parentFolder,
                                  final String resourceName,

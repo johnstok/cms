@@ -211,147 +211,147 @@ public class ResourceContextMenu
     private void addApplyWorkingCopy() {
         addMenuItem(
             "apply-working-copy",
-            _constants.applyWorkingCopy(),
+            getConstants().applyWorkingCopy(),
             _applyWorkingCopyAction);
     }
 
     private void addUpdateRolesAction() {
         addMenuItem(
             "update-resource-roles",
-            _constants.updateRoles(),
+            getConstants().updateRoles(),
             _updateRolesAction);
     }
 
     private void addCreateAction() {
         addMenuItem(
             "create-action",
-            _constants.createAction(),
+            getConstants().createAction(),
             _createActionAction);
     }
 
     private void addEditFolder() {
         addMenuItem(
             "edit-folder",
-            _constants.edit(),
+            getConstants().edit(),
             _editFolderAction);
     }
 
     private void addPublishResource() {
         addMenuItem(
             "publish-resource",
-            _constants.publish(),
+            getConstants().publish(),
             _publishAction);
     }
 
     private void addIncludeInMainMenu() {
         addMenuItem(
             "mmInclude-resource",
-            _constants.addToMainMenu(),
+            getConstants().addToMainMenu(),
             _includeMainMenu);
     }
 
     private void addRemoveFromMainMenu() {
         addMenuItem(
             "mmRemove-resource",
-            _constants.removeFromMainMenu(),
+            getConstants().removeFromMainMenu(),
             _removeMainMenu);
     }
 
     private void addUnpublishResource() {
         addMenuItem(
             "unpublish-resource",
-            _constants.unpublish(),
+            getConstants().unpublish(),
             _unpublishAction);
     }
 
     private void addChooseTemplate() {
         addMenuItem(
             "chooseTemplate-resource",
-            _constants.chooseTemplate(),
+            getConstants().chooseTemplate(),
             _chooseTemplateAction);
     }
 
     private void addCreateAlias() {
         addMenuItem(
             "create-alias",
-            _constants.createAlias(),
+            getConstants().createAlias(),
             _createAliasAction);
     }
 
     private void addPreview() {
         addMenuItem(
             "preview-resource",
-            _constants.preview(),
+            getConstants().preview(),
             _previewAction);
     }
 
     private void addLockResource() {
         addMenuItem(
             "lock-resource",
-            _constants.lock(),
+            getConstants().lock(),
             _lockAction);
     }
 
     private void addUnlockResource() {
         addMenuItem(
             "unlock-resource",
-            _constants.unlock(),
+            getConstants().unlock(),
             _unlockAction);
     }
 
     private void addMove() {
         addMenuItem(
             "move",
-            _constants.move(),
+            getConstants().move(),
             _moveAction);
     }
 
     private void addRename() {
         addMenuItem(
             "rename",
-            _constants.rename(),
+            getConstants().rename(),
             _renameAction);
     }
 
     private void addViewHistory() {
         addMenuItem(
             "view-history",
-            _constants.viewHistory(),
+            getConstants().viewHistory(),
             _viewHistory);
     }
 
     private void addUpdateMetadata() {
         addMenuItem(
             "update-metadata",
-            _constants.updateMetadata(),
+            getConstants().updateMetadata(),
             _updateMetadataAction);
     }
 
     private void addDeleteWorkingCopy() {
         addMenuItem(
             "delete-workingCopy",
-            _constants.deleteWorkingCopy(),
+            getConstants().deleteWorkingCopy(),
             _clearWorkingCopyAction);
     }
 
     private void addPreviewWorkingCopy() {
         addMenuItem(
             "preview-workingCopy",
-            _constants.previewWorkingCopy(),
+            getConstants().previewWorkingCopy(),
             _previewWorkingCopyAction);
     }
 
     private void addEditCache() {
         addMenuItem(
             "edit-cache",
-            _constants.editCacheDuration(),
+            getConstants().editCacheDuration(),
             _editCacheAction);
     }
 
     private void addEditResource() {
         final MenuItem update = new MenuItem();
         update.setId("edit-resource");
-        update.setText(_constants.edit());
+        update.setText(getConstants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
             @Override public void componentSelected(final MenuEvent ce) {
                 final ResourceSummaryModelData item = _table.tableSelection();
@@ -370,7 +370,8 @@ public class ResourceContextMenu
                         updateFile(item);
                         break;
                     default:
-                        _globals.alert(_constants.noEditorForResource());
+                        getGlobals().alert(
+                            getConstants().noEditorForResource());
                 }
             }
         });
@@ -389,12 +390,13 @@ public class ResourceContextMenu
 
     private void updatePage(final ResourceSummaryModelData item) {
         // Get the template for the page.
-        new ComputeTemplateAction(_constants.updateContent(), item.getId()) {
+        new ComputeTemplateAction(
+            getConstants().updateContent(), item.getId()) {
 
             /** {@inheritDoc} */
             @Override
             protected void onNoContent(final Response response) {
-                _globals.alert(_constants.noTemplateFound());
+                getGlobals().alert(getConstants().noTemplateFound());
             }
 
             /** {@inheritDoc} */
@@ -406,7 +408,8 @@ public class ResourceContextMenu
                       JSONParser.parse(
                           response.getText()).isObject()));
 
-                new PageDeltaAction(_constants.updateContent(), item.getId()){
+                new PageDeltaAction(
+                    getConstants().updateContent(), item.getId()){
                     @Override
                     protected void execute(final PageDelta delta) {
                         new UpdatePageDialog(

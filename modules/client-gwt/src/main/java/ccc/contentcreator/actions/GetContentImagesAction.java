@@ -23,7 +23,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Get a list of all images from the CCC server.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,7 +34,7 @@ public abstract class GetContentImagesAction
     /**
      * Constructor.
      *
-     * @param actionName
+     * @param actionName Local-specific name for the action.
      */
     public GetContentImagesAction(final String actionName) {
         super(actionName);
@@ -54,5 +54,10 @@ public abstract class GetContentImagesAction
         execute(files);
     }
 
+    /**
+     * Handle the data returned from the server.
+     *
+     * @param images The available images.
+     */
     protected abstract void execute(Collection<FileDto> images);
 }

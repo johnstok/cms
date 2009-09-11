@@ -13,16 +13,16 @@ package ccc.contentcreator.validation;
 
 
 /**
- * TODO: Add Description for this type.
+ * API for a client side validator.
  *
  * @author Civic Computing Ltd.
  */
 public interface Validator {
 
     /**
-     * TODO: Add a description of this method.
+     * Perform validation.
      *
-     * @param validate
+     * @param validate The validation object used by the validator.
      */
     void validate(Validate validate);
 

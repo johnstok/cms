@@ -177,6 +177,10 @@ public class FCKEditor extends LayoutContainer {
 
     /**
      * Displays the FCKEditor specific link selection dialog.
+     *
+     * @param elementID The element id for the FCK editor instance.
+     * @param url The link's URL.
+     * @param title The title of the link.
      */
     public void openLinkSelector(final String elementID,
                                  final String url,

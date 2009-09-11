@@ -108,7 +108,10 @@ public class FileSummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
-    public enum Property {
+    /**
+     * Property names for a file summary.
+     */
+    private enum Property {
         ID, NAME, TITLE, MIME_TYPE, PATH, SHORT_NAME;
     }
 

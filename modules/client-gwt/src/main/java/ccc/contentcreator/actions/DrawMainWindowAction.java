@@ -32,12 +32,13 @@ public final class DrawMainWindowAction
     /**
      * Constructor.
      *
-     * @param user
+     * @param user The currently logged in user.
      */
     public DrawMainWindowAction(final UserDto user) {
         _user = user;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected void onSuccess(final Collection<ResourceSummary> arg0) {
         final LeftRightPane contentPane = new LeftRightPane();

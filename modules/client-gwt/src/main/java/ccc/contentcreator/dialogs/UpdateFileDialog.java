@@ -96,11 +96,11 @@ public class UpdateFileDialog extends AbstractEditDialog {
                     } else if (
                         SessionTimeoutException.isTimeoutMessage(
                             be.getResultHtml())) {
-                        _globals.unexpectedError(
+                        getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             _constants.updateFile());
                     } else {
-                        _globals.unexpectedError(
+                        getGlobals().unexpectedError(
                             new RemoteException(
                                 FailureOverlay.fromJson(be.getResultHtml())),
                             _constants.updateFile());

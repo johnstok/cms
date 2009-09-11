@@ -61,13 +61,14 @@ public final class Validate {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Factory method for creating validation objects.
      *
-     * @param createAlias
-     * @return
+     * @param runnable The behaviour we are validating.
+     *
+     * @return A validator for the action.
      */
-    public static Validate callTo(final Runnable createAlias) {
-        return new Validate(createAlias);
+    public static Validate callTo(final Runnable runnable) {
+        return new Validate(runnable);
     }
 
     /**
@@ -92,9 +93,10 @@ public final class Validate {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Check whether any errors have been reported.
+     * <p>If errors are reported the specified reporter will be notified.
      *
-     * @param reporter
+     * @param reporter The reporter to notify.
      */
     public void callMethodOr(final ErrorReporter reporter) {
         _reporter = reporter;
@@ -102,9 +104,9 @@ public final class Validate {
     }
 
     /**
-     * TODO: Add a description of this method.
+     * Add a message to the list of error messages.
      *
-     * @param message
+     * @param message The error message to add.
      */
     public void addMessage(final String message) {
         _errors.add(message);
@@ -112,8 +114,7 @@ public final class Validate {
 
 
     /**
-     * TODO: Add a description of this method.
-     *
+     * Perform the next validation.
      */
     public void next() {
         // More validations & no explicit stop

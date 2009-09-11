@@ -539,9 +539,9 @@ public class ResourceSummaryModelData
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve the relative path to a resource's revision data.
      *
-     * @return
+     * @return The path as a string.
      */
     public String revisionsPath() {
         return "/resources/"+getId()+"/revisions";

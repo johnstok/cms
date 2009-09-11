@@ -42,6 +42,7 @@ public class UpdateFolderAction
      * @param indexPageId The id of the fodler's index page.
      * @param sortOrder The sort order for the folder.
      * @param id The folder's id.
+     * @param sortList The manual order of the resources in the folder.
      */
     public UpdateFolderAction(final UUID id,
                                final String sortOrder,
