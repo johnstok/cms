@@ -22,7 +22,7 @@ import ccc.types.Paragraph;
 
 
 /**
- * TODO: Add a description for this type.
+ * A working copy for a page.
  *
  * @author Civic Computing Ltd.
  */
@@ -32,7 +32,7 @@ public class PageWorkingCopy
     implements
         IPage {
 
-    private Set<Paragraph>     _wcContent;
+    private Set<Paragraph> _wcContent;
 
     /** Constructor: for persistence only. */
     protected PageWorkingCopy() { super(); }
@@ -40,10 +40,10 @@ public class PageWorkingCopy
     /**
      * Constructor.
      *
-     * @param snapshot
+     * @param content The contents of this working copy.
      */
-    public PageWorkingCopy(final PageDelta snapshot) {
-        delta(snapshot);
+    public PageWorkingCopy(final PageDelta content) {
+        delta(content);
     }
 
     /** {@inheritDoc} */

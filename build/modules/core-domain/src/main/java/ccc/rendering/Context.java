@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * TODO: Add a description for this type.
+ * The context in which a response will be rendered to text.
  *
  * @author Civic Computing Ltd.
  */
@@ -32,9 +32,9 @@ public class Context {
     /**
      * Constructor.
      *
-     * @param reader
-     * @param resource
-     * @param params
+     * @param reader The stateful reader for this context.
+     * @param resource The resource for the context.
+     * @param params Additional param's to be added to the context.
      */
     public Context(final StatefulReader reader,
                    final Object resource,

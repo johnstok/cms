@@ -96,9 +96,9 @@ public class PageBody
                 "Created."));
 
     /**
-     * TODO: Add a description for this method.
+     * Get the snapshot this body will render.
      *
-     * @return
+     * @return The page snapshot.
      */
     public PageSnapshot getPage() {
         return _page;

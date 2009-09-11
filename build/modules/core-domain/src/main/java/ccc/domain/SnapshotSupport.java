@@ -23,10 +23,30 @@ package ccc.domain;
  */
 public interface SnapshotSupport<T> {
 
+
+    /**
+     * Create a snapshot for the working copy.
+     *
+     * @return A read-only snapshot of the resource.
+     */
     T forWorkingCopy();
 
+
+    /**
+     * Create a snapshot for the current revision.
+     *
+     * @return A read-only snapshot of the resource.
+     */
     T forCurrentRevision();
 
+
+    /**
+     * Create a snapshot for the specified revision.
+     *
+     * @param revNo The revision to create a snapshot for.
+     *
+     * @return A read-only snapshot of the resource.
+     */
     T forSpecificRevision(final int revNo);
 
 }

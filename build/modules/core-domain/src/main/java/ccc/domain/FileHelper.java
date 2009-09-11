@@ -28,10 +28,11 @@ public class FileHelper {
      *
      * @param props The file properties.
      * @param dm The data manager for reading the data.
+     * @param data The data to extract image metadata from.
      */
     public void extractImageMetadata(final Data data,
-                                        final Map<String, String> props,
-                                        final FileRepository dm) {
+                                     final Map<String, String> props,
+                                     final FileRepository dm) {
         final ImageMetadataStreamAction img = new ImageMetadataStreamAction();
         dm.retrieve(data, img);
         props.putAll(img.getMetadata());

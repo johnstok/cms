@@ -38,18 +38,18 @@ public class UpdateAliasCommandTest
         final Search foo = new Search("foo");
         final Search bar = new Search("bar");
         final Alias alias = new Alias("alias", foo);
-        alias.lock(_user);
+        alias.lock(getUser());
 
-        expect(_repository.find(Alias.class, alias.id())).andReturn(alias);
-        expect(_repository.find(Resource.class, bar.id())).andReturn(bar);
-        _audit.record(isA(LogEntry.class));
+        expect(getRepository().find(Alias.class, alias.id())).andReturn(alias);
+        expect(getRepository().find(Resource.class, bar.id())).andReturn(bar);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         final UpdateAliasCommand c =
-            new UpdateAliasCommand(_repository, _audit);
+            new UpdateAliasCommand(getRepository(), getAudit());
 
         // ACT
-        c.execute(_user, _now, bar.id(), alias.id());
+        c.execute(getUser(), getNow(), bar.id(), alias.id());
 
         // ASSERT
         verifyAll();

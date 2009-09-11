@@ -38,6 +38,7 @@ public class Template
      * @param body A valid velocity template for rendering a page.
      * @param definiton An xml definition of the fields that the body requires.
      * @param mimeType The mime type this template will produce.
+     * @param metadata The metatdata describing the initial revision.
      */
     public Template(final String title,
                     final String description,
@@ -130,10 +131,10 @@ public class Template
 
 
     /**
-     * TODO: Add a description for this method.
-     * TODO: Pull version incrementing up to HistoricalResource.
+     * Update the contents of this template.
      *
-     * @param delta
+     * @param delta The new content for the template.
+     * @param metadata The metadata describing this revision.
      */
     public void update(final TemplateDelta delta,
                        final RevisionMetadata metadata) {

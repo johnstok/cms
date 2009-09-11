@@ -54,6 +54,9 @@ public class UpdateResourceMetadataCommand {
      * @param metadata The new metadata to set.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     * @param title The new title for the resource.
+     * @param description The new description for the resource.
+     * @param tags The new tags for the resource.
      *
      * @throws CccCheckedException If the command fails.
      */

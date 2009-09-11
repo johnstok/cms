@@ -312,7 +312,11 @@ public class Migrations {
 
             log.debug("Migrated page "+r.contentId());
 
-        } catch (final Exception e) {
+        } catch (final RestException e) {
+//            log.warn("Error migrating page "+r.contentId(),  e);
+            log.warn(
+                "Error migrating page " +r.contentId()+": "+e.getMessage());
+        } catch (final RuntimeException e) {
 //            log.warn("Error migrating page "+r.contentId(),  e);
             log.warn(
                 "Error migrating page " +r.contentId()+": "+e.getMessage());

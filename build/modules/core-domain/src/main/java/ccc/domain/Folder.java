@@ -72,8 +72,11 @@ public final class Folder extends Resource implements IFolder {
      * Add a resource to this folder.
      *
      * @param resource The resource to add.
+     *
      * @throws ResourceExistsException If a resource already exists in this
      *  folder with the same name.
+     * @throws CycleDetectedException If the specified resource is a parent of
+     *  this resource.
      */
     public void add(final Resource resource) throws ResourceExistsException,
                                                     CycleDetectedException {
@@ -227,6 +230,13 @@ public final class Folder extends Resource implements IFolder {
         return false;
     }
 
+    /**
+     * Retrieve an entry from this folder.
+     *
+     * @param resourceName The name of the resource to retrieve.
+     *
+     * @return The corresponding resource of NULL if no such resource exists.
+     */
     public Resource entryWithName(final ResourceName resourceName) {
         for (final Resource entry : _entries) {
             if (entry.name().equals(resourceName)) {

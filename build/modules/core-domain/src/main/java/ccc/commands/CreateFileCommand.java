@@ -15,14 +15,14 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
-import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
 import ccc.persistence.FileRepository;
+import ccc.persistence.LogEntryRepository;
 import ccc.persistence.Repository;
 import ccc.rest.dto.FileDelta;
 import ccc.types.ResourceName;
@@ -63,6 +63,10 @@ public class CreateFileCommand extends CreateResourceCommand {
      * @param dataStream The input stream from which the bytes for the new file
      *  should be read.
      * @param name The name of the file to create.
+     * @param title The file's title.
+     * @param description The description of the file.
+     * @param comment Comment describing the revision.
+     * @param isMajorEdit Is this revision a major change.
      *
      * @throws CccCheckedException If the command fails.
      *

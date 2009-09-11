@@ -13,7 +13,7 @@ package ccc.snapshots;
 
 import java.util.Map;
 
-import ccc.domain.Resource;
+import ccc.domain.Search;
 import ccc.domain.Template;
 import ccc.persistence.FileRepository;
 import ccc.rendering.Response;
@@ -23,7 +23,7 @@ import ccc.search.SearchEngine;
 
 
 /**
- * TODO: Add a description for this type.
+ * A read-only snapshot of a search resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,9 +34,9 @@ public class SearchSnapshot
     /**
      * Constructor.
      *
-     * @param delegate
+     * @param delegate The file this snapshot wraps.
      */
-    public SearchSnapshot(final Resource delegate) {
+    public SearchSnapshot(final Search delegate) {
         super(delegate);
     }
 

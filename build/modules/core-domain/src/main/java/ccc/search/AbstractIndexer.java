@@ -40,7 +40,7 @@ public abstract class AbstractIndexer
     private static final Logger LOG =
         Logger.getLogger(AbstractIndexer.class.getName());
 
-    protected final FileRepository _data;
+    private final FileRepository _data;
 
     /**
      * Constructor.

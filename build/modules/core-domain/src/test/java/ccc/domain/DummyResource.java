@@ -21,7 +21,7 @@ import ccc.types.ResourceType;
  *
  * @author Civic Computing Ltd
  */
-final class DummyResource extends Resource implements Jsonable {
+final class DummyResource extends Resource {
 
     /**
      * Constructor.
@@ -35,8 +35,8 @@ final class DummyResource extends Resource implements Jsonable {
     /**
      * Constructor.
      *
-     * @param name
-     * @param title
+     * @param name The resource's name.
+     * @param title The resource's title.
      */
     DummyResource(final ResourceName name, final String title) {
         super(name, title);
