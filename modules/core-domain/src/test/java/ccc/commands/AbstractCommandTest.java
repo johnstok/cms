@@ -32,16 +32,56 @@ public abstract class AbstractCommandTest
     extends
         TestCase {
 
-    protected final User _user =
+    private final User _user =
         new User(new Username("currentUser"), "password");
-    protected final Date _now = new Date();
+    private final Date _now = new Date();
 
-    protected Repository _repository;
-    protected LogEntryRepository _audit;
+    private Repository _repository;
+    private LogEntryRepository _audit;
 
 
     /** Constructor. */
     public AbstractCommandTest() { super(); }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user.
+     */
+    public User getUser() {
+        return _user;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the now.
+     */
+    public Date getNow() {
+        return _now;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the repository.
+     */
+    public Repository getRepository() {
+        return _repository;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the audit.
+     */
+    public LogEntryRepository getAudit() {
+        return _audit;
+    }
 
 
     /** {@inheritDoc} */

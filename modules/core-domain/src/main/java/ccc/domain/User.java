@@ -47,7 +47,8 @@ public class User extends Entity {
     private Username _username;
     private EmailAddress _email;
     private byte[] _hash;
-    private Set<String> _roles = new HashSet<String>(); // FIXME: Use the Role class.
+    // FIXME: Use the Role class.
+    private Set<String> _roles = new HashSet<String>();
     private Map<String, String> _metadata = new HashMap<String, String>();
 
     /**

@@ -46,6 +46,10 @@ public interface ResourceRepository {
      * @param queryName The name of the query to run.
      * @param resultType A class representing the type of the result.
      * @param params The query parameters.
+     *
+     * @throws EntityNotFoundException If no entity is found for the specified
+     *  query.
+     *
      * @return The result.
      */
     <T> T find(String queryName, Class<T> resultType, Object... params)
@@ -62,6 +66,10 @@ public interface ResourceRepository {
      * Retrieve the history of a resource.
      *
      * @param resourceId The id of the resource whose history we will look up.
+     *
+     * @throws EntityNotFoundException If no entity exists with the specified
+     *  uuid.
+     *
      * @return The revisions for the resource.
      */
     Map<Integer, ? extends Revision<?>> history(UUID resourceId)
@@ -73,6 +81,10 @@ public interface ResourceRepository {
      * @param <T> The type of the resource to return.
      * @param type A class representing the type of the resource to return.
      * @param id The id of the resource to find.
+     *
+     * @throws EntityNotFoundException If no entity exists with the specified
+     *  uuid.
+     *
      * @return The resource for the specified id.
      */
     <T extends Resource> T find(final Class<T> type, final UUID id)
@@ -83,6 +95,10 @@ public interface ResourceRepository {
      *
      * @param contentPath ResourcePath The path to the resource.
      * @param rootName The name of the root folder in which the resource exists.
+     *
+     * @throws EntityNotFoundException If no entity exists with the specified
+     *  path.
+     *
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
@@ -93,6 +109,10 @@ public interface ResourceRepository {
      * Look up a resource, given its CCC6 id.
      *
      * @param legacyId The CCC6 id.
+     *
+     * @throws EntityNotFoundException If no entity exists with the specified
+     *  id.
+     *
      * @return The corresponding resource in CCC7.
      */
     Resource lookupWithLegacyId(String legacyId) throws EntityNotFoundException;

@@ -81,6 +81,16 @@ public class AbstractProvider {
     }
 
 
+    /**
+     * Read the request body into a string.
+     *
+     * @param mediaType The content type of the request.
+     * @param entityStream The request input stream.
+     *
+     * @return The body, as a string.
+     *
+     * @throws IOException If reading from the input stream fails.
+     */
     protected String readString(final MediaType mediaType,
                                 final InputStream entityStream)
     throws IOException {
@@ -95,6 +105,16 @@ public class AbstractProvider {
     }
 
 
+    /**
+     * Read the request body into a JSON object.
+     *
+     * @param mediaType The content type of the request.
+     * @param entityStream The request input stream.
+     *
+     * @return The request body, as a JSON object.
+     *
+     * @throws IOException If reading from the input stream fails.
+     */
     protected Json readJson(final MediaType mediaType,
                             final InputStream entityStream) throws IOException {
         final String body = readString(mediaType, entityStream);

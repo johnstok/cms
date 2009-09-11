@@ -55,7 +55,7 @@ public abstract class Revision<T> extends Entity {
      * @return Returns the timestamp.
      */
     public final Date getTimestamp() {
-        return _timestamp;
+        return new Date(_timestamp.getTime());
     }
 
 

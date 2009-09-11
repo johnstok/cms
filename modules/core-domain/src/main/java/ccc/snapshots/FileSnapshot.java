@@ -25,7 +25,7 @@ import ccc.types.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * A read-only snapshot of a file resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,8 +34,10 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
 
     /**
      * Constructor.
+     * FIXME: We shouldn't need two parameters here.
      *
-     * @param delegate
+     * @param f The file this snapshot wraps.
+     * @param delegate The revision this snapshot wraps.
      */
     public FileSnapshot(final File f, final IFile delegate) {
         super(f);
@@ -49,8 +51,9 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
     }
 
     /**
-     * @return
-     * @see ccc.domain.File#isImage()
+     * Query.
+     *
+     * @return True if the file is an image, false otherwise.
      */
     public boolean isImage() {
         return _delegate.isImage();

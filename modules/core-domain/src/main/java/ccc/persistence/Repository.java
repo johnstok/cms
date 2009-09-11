@@ -33,6 +33,9 @@ public interface Repository {
      * @param <T> The type of the object.
      * @param type A class instance representing the object's type.
      * @param id The id of the object.
+     *
+     * @throws EntityNotFoundException If no entity exists with the specified
+     *  uuid.
      * @return The object with the specified id.
      */
     <T extends Entity> T find(Class<T> type, UUID id)
@@ -69,6 +72,10 @@ public interface Repository {
      * @param queryName The name of the query used to perform the search.
      * @param resultType The class representing the type of the resource.
      * @param params The query parameters.
+     *
+     * @throws EntityNotFoundException If no entity is found for the specified
+     *  query.
+     *
      * @return The resource that matches the query, or NULL if no match is
      *  found.
      */

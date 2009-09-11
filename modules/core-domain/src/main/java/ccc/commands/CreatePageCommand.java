@@ -12,6 +12,7 @@
 package ccc.commands;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
@@ -83,13 +84,14 @@ public class CreatePageCommand extends CreateResourceCommand {
                 majorChange,
                 comment == null || comment.isEmpty() ? "Created." : comment);
 
+        final Set<Paragraph> paras = delta.getParagraphs();
         final Page page =
             new Page(
                 name,
                 title,
                 template,
                 rm,
-                delta.getParagraphs().toArray(new Paragraph[0]));
+                paras.toArray(new Paragraph[paras.size()]));
 
         create(actor, happenedOn, parentFolder, page);
 

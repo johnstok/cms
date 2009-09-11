@@ -34,10 +34,10 @@ public class SearchResult {
     /**
      * Constructor.
      *
-     * @param hits
-     * @param totalResults
-     * @param terms
-     * @param pageNo
+     * @param hits The search hits.
+     * @param totalResults The total number of results for this search.
+     * @param terms The search terms used.
+     * @param pageNo The current page of results returned.
      */
     public SearchResult(final Set<UUID> hits,
                         final int totalResults,

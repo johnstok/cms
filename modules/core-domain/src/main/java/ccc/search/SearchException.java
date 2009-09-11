@@ -24,7 +24,6 @@ public class SearchException
 
     /**
      * Constructor.
-     *
      */
     public SearchException() {
         super();
@@ -34,8 +33,8 @@ public class SearchException
     /**
      * Constructor.
      *
-     * @param message
-     * @param cause
+     * @param message The message describing this exception.
+     * @param cause The root cause of the exception.
      */
     public SearchException(final String message, final Throwable cause) {
         super(message, cause);
@@ -45,7 +44,7 @@ public class SearchException
     /**
      * Constructor.
      *
-     * @param message
+     * @param message The message describing this exception.
      */
     public SearchException(final String message) {
         super(message);
@@ -55,7 +54,7 @@ public class SearchException
     /**
      * Constructor.
      *
-     * @param cause
+     * @param cause The root cause of the exception.
      */
     public SearchException(final Throwable cause) {
         super(cause);

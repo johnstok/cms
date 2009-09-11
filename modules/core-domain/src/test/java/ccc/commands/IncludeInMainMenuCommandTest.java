@@ -12,8 +12,8 @@
 package ccc.commands;
 
 import static org.easymock.EasyMock.*;
-import ccc.domain.LogEntry;
 import ccc.domain.CccCheckedException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Search;
 
@@ -36,18 +36,18 @@ public class IncludeInMainMenuCommandTest
 
         // ARRANGE
         final Search s = new Search("foo");
-        s.lock(_user);
+        s.lock(getUser());
 
-        expect(_repository.find(Resource.class, s.id())).andReturn(s);
-        _audit.record(isA(LogEntry.class));
+        expect(getRepository().find(Resource.class, s.id())).andReturn(s);
+        getAudit().record(isA(LogEntry.class));
 
         replayAll();
 
         final IncludeInMainMenuCommand c =
-            new IncludeInMainMenuCommand(_repository, _audit);
+            new IncludeInMainMenuCommand(getRepository(), getAudit());
 
         // ACT
-        c.execute(_user, _now, s.id(), true);
+        c.execute(getUser(), getNow(), s.id(), true);
 
         // ASSERT
         verifyAll();
@@ -62,18 +62,18 @@ public class IncludeInMainMenuCommandTest
 
         // ARRANGE
         final Search s = new Search("foo");
-        s.lock(_user);
+        s.lock(getUser());
 
-        expect(_repository.find(Resource.class, s.id())).andReturn(s);
-        _audit.record(isA(LogEntry.class));
+        expect(getRepository().find(Resource.class, s.id())).andReturn(s);
+        getAudit().record(isA(LogEntry.class));
 
         replayAll();
 
         final IncludeInMainMenuCommand c =
-            new IncludeInMainMenuCommand(_repository, _audit);
+            new IncludeInMainMenuCommand(getRepository(), getAudit());
 
         // ACT
-        c.execute(_user, _now, s.id(), false);
+        c.execute(getUser(), getNow(), s.id(), false);
 
         // ASSERT
         verifyAll();

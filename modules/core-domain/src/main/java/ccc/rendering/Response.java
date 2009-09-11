@@ -159,6 +159,8 @@ public class Response {
      * Write the response using the servlet API.
      *
      * @param httpResponse The servlet response.
+     * @param processor The text processor used to render the body.
+     *
      * @throws IOException Thrown if writing fails.
      */
     public void write(final HttpServletResponse httpResponse,
@@ -176,6 +178,7 @@ public class Response {
      *
      * @param os The output stream.
      * @param charsetName The character set to use.
+     * @param processor The text processor used to render the body.
      *
      * @throws IOException If the output stream encounters an error.
      */

@@ -43,12 +43,14 @@ public class FileRevision
     /**
      * Constructor.
      *
-     * @param majorChange
-     * @param comment
-     * @param data
-     * @param size
-     * @param mimeType
-     * @param properties
+     * @param majorChange Is this revision a major change.
+     * @param comment Comment describing the revision.
+     * @param data The contents of the file.
+     * @param size The size of the file in bytes.
+     * @param mimeType The file's mime type.
+     * @param properties Additional properties for the file.
+     * @param timestamp The date the revision was created.
+     * @param actor The actor that created this revision.
      */
     FileRevision(final Date timestamp,
                  final User actor,
@@ -105,6 +107,11 @@ public class FileRevision
             _properties);
     }
 
+    /**
+     * Retrieve the properties for a file.
+     *
+     * @return The properties as a map.
+     */
     public Map<String, String> getProperties() {
         return new HashMap<String, String>(_properties);
     }

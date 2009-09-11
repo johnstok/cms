@@ -85,6 +85,8 @@ public class UpdateWorkingCopyCommand {
      * @param resourceId The page's id.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
+     * @param revisionNo The revision that the working copy will be created
+     *  from.
      *
      * @throws CccCheckedException If the command fails.
      */
