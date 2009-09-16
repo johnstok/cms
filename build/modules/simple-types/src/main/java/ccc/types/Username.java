@@ -21,7 +21,9 @@ import java.io.Serializable;
  */
 public final class Username implements Serializable {
 
+    /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";
+    /** MIN_LENGTH : int. */
     public static final int     MIN_LENGTH = 4;
 
     private String _value;

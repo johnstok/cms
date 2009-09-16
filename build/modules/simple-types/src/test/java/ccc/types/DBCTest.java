@@ -200,29 +200,46 @@ public final class DBCTest extends TestCase {
 
     }
 
-    public void testMaxValue() throws Exception {
 
-        long valueToTest = 10;
-        long maximum = 5;
+    /**
+     * Test.
+     */
+    public void testMaxValue() {
+
+        // ARRANGE
+        final long valueToTest = 9;
+        final long maximum = 5;
+
+        // ACT
         try {
             require().maxValue(valueToTest, maximum);
             fail("Value should not be longer than maxValue");
-        } catch (IllegalArgumentException e) {
-            assertEquals( "Specified value must be under "
+
+        // ASSSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value must be under "
                 +maximum+".", e.getMessage());
         }
     }
-    
-    public void testGreaterThan() throws Exception {
 
-        int value = 0;
-        int criteria = 5;
+
+    /**
+     * Test.
+     */
+    public void testGreaterThan() {
+
+        // ARRANGE
+        final int value = 0;
+        final int criteria = 5;
+
+        // ACT
         try {
             require().greaterThan(criteria, value);
-        } catch (Exception e) {
-            assertEquals( "Specified value must be greater than "
+
+        // ASSERT
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Specified value must be greater than "
                 +criteria+".", e.getMessage());
         }
-
     }
 }

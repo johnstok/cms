@@ -12,7 +12,6 @@
 
 package ccc.types;
 
-import ccc.types.ResourceName;
 import junit.framework.TestCase;
 
 /**
