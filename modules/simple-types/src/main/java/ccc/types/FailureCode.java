@@ -18,12 +18,21 @@ package ccc.types;
  * @author Civic Computing Ltd.
  */
 public enum  FailureCode {
+
+    /** UNEXPECTED : FailureCode. */
     UNEXPECTED,
+    /** UNLOCKED : FailureCode. */
     UNLOCKED,
+    /** LOCK_MISMATCH : FailureCode. */
     LOCK_MISMATCH,
+    /** EXISTS : FailureCode. */
     EXISTS,
+    /** PRIVILEGES : FailureCode. */
     PRIVILEGES,
+    /** WC_UNSUPPORTED : FailureCode. */
     WC_UNSUPPORTED,
+    /** CYCLE : FailureCode. */
     CYCLE,
+    /** NOT_FOUND : FailureCode. */
     NOT_FOUND;
 }

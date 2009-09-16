@@ -130,7 +130,8 @@ public final class ParagraphTest extends TestCase {
         // ARRANGE
         expect(_json.getString("name")).andReturn("bar");
         expect(_json.getString("type")).andReturn("NUMBER");
-        expect(_json.getBigDecimal("number")).andReturn(new BigDecimal("123.456"));
+        expect(_json.getBigDecimal("number"))
+            .andReturn(new BigDecimal("123.456"));
         replay(_json);
 
         // ACT

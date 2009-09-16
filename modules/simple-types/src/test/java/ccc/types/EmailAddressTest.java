@@ -67,7 +67,8 @@ public class EmailAddressTest
 
         // ARRANGE
         final EmailAddress simpleEmail = new EmailAddress("abc@def.com");
-        final EmailAddress domainEmail = new EmailAddress("someone@[192.168.1.100]");
+        final EmailAddress domainEmail =
+            new EmailAddress("someone@[192.168.1.100]");
         final EmailAddress quotedEmail =
             new EmailAddress("\"John Smith\" <john.smith@somewhere.com>");
 
@@ -77,7 +78,8 @@ public class EmailAddressTest
         assertEquals("abc@def.com", simpleEmail.toString());
         assertEquals("someone@[192.168.1.100]", domainEmail.toString());
         assertEquals(
-            "\"John Smith\" <john.smith@somewhere.com>", quotedEmail.toString());
+            "\"John Smith\" <john.smith@somewhere.com>",
+            quotedEmail.toString());
     }
 
     /**
