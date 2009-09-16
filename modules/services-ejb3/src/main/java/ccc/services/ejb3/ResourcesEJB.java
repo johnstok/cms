@@ -257,7 +257,7 @@ public class ResourcesEJB
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu)
     throws RestException {
-        createWorkingCopy(resourceId, pu.getRevision());
+        createWorkingCopy(resourceId, pu.getRevision().longValue());
     }
 
 

@@ -64,6 +64,6 @@ public class UpdateTemplateCommand extends UpdateResourceCommand {
 
         template.update(delta, rm);
 
-        update(template, null, false, actor, happenedOn);
+        update(template, actor, happenedOn);
     }
 }

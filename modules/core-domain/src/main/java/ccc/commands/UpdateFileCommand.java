@@ -93,6 +93,6 @@ public class UpdateFileCommand extends UpdateResourceCommand {
         f.setOrUpdateWorkingCopy(fileDelta);
         f.applyWorkingCopy(rm);
 
-        update(f, null, false, actor, happenedOn);
+        update(f, actor, happenedOn);
     }
 }

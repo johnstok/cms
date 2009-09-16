@@ -31,6 +31,9 @@ public class ActionAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
+    /** ONE_SECOND : int. */
+    private static final int ONE_SECOND = 1000;
+
     /**
      * Test.
      *
@@ -42,13 +45,14 @@ public class ActionAcceptanceTest
         final ResourceSummary rs = tempFolder();
 
         // ACT
-        _actions.createAction(
+        getActions().createAction(
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 new Date(Long.MAX_VALUE),
                 new HashMap<String, String>()));
-        final Collection<ActionSummary> pending = _actions.listPendingActions();
+        final Collection<ActionSummary> pending =
+            getActions().listPendingActions();
 
         // ASSERT
         assertEquals(1, pending.size());
@@ -64,7 +68,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
-        _actions.createAction(
+        getActions().createAction(
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -72,12 +76,12 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        for (final ActionSummary as : _actions.listPendingActions()) {
-            _actions.cancelAction(as.getId());
+        for (final ActionSummary as : getActions().listPendingActions()) {
+            getActions().cancelAction(as.getId());
         }
 
         // ASSERT
-        assertEquals(0, _actions.listPendingActions().size());
+        assertEquals(0, getActions().listPendingActions().size());
     }
 
     /**
@@ -86,9 +90,9 @@ public class ActionAcceptanceTest
      */
     public void testExecuteAction() throws RestException {
         // ARRANGE
-        final Date time =  new Date(new Date().getTime()-1000);
+        final Date time =  new Date(new Date().getTime()-ONE_SECOND);
         final ResourceSummary rs = tempFolder();
-        _actions.createAction(
+        getActions().createAction(
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -96,11 +100,11 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        _actions.executeAction();
+        getActions().executeAction();
 
         // ASSERT
         ActionSummary testAction = null;
-        for (final ActionSummary as : _actions.listCompletedActions()) {
+        for (final ActionSummary as : getActions().listCompletedActions()) {
             if (as.getExecuteAfter().equals(time)) {
                 testAction = as;
             }

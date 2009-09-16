@@ -61,6 +61,6 @@ public class UpdateAliasCommand extends UpdateResourceCommand {
         final Resource target = getDao().find(Resource.class, targetId);
         alias.target(target);
 
-        update(alias, null, false, actor, happenedOn);
+        update(alias, actor, happenedOn);
     }
 }

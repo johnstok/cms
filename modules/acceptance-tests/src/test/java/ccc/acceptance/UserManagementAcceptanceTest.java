@@ -41,14 +41,16 @@ public class UserManagementAcceptanceTest
         final UserDto us = tempUser();
 
         // ACT
-        _users.updateUserPassword(
+        getUsers().updateUserPassword(
             us.getId(), new UserDto("Another00-"));
 
         // ASSERT
         assertFalse(
-            _security.login(us.getUsername().toString(), "Testtest00-"));
+            getSecurity().login(us.getUsername().toString(), "Testtest00-")
+            .booleanValue());
         assertTrue(
-            _security.login(us.getUsername().toString(), "Another00-"));
+            getSecurity().login(us.getUsername().toString(), "Another00-")
+            .booleanValue());
     }
 
 
@@ -64,7 +66,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         final Collection<UserDto> ul =
-            _users.listUsersWithUsername(us.getUsername());
+            getUsers().listUsersWithUsername(us.getUsername());
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -89,7 +91,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         final Collection<UserDto> ul =
-            _users.listUsersWithEmail(us.getEmail());
+            getUsers().listUsersWithEmail(us.getEmail());
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -116,7 +118,7 @@ public class UserManagementAcceptanceTest
         final UserDto us = tempUser();
 
         // ACT
-        _users.updateUser(
+        getUsers().updateUser(
             us.getId(),
             new UserDto(
                 email,
@@ -125,7 +127,7 @@ public class UserManagementAcceptanceTest
                 Collections.singletonMap("key2", "value2")));
 
         // ASSERT
-        final UserDto ud = _users.userDelta(us.getId());
+        final UserDto ud = getUsers().userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(1, ud.getRoles().size());
@@ -154,7 +156,7 @@ public class UserManagementAcceptanceTest
                 "Testtest00-");
 
 
-        final UserDto us = _users.createUser(u);
+        final UserDto us = getUsers().createUser(u);
         assertEquals(username, us.getUsername());
         assertEquals(email, us.getEmail());
         assertEquals(1, us.getRoles().size());
@@ -175,22 +177,24 @@ public class UserManagementAcceptanceTest
         final String email = "username@abc.def";
         final String password = "test Test00-";
 
-        _security.logout();
-        _security.login(user.getUsername().toString(), "Testtest00-");
-        user = _users.loggedInUser();
+        getSecurity().logout();
+        getSecurity().login(user.getUsername().toString(), "Testtest00-");
+        user = getUsers().loggedInUser();
 
         final UserDto uo = new UserDto(email, password);
 
         // ACT
-        _users.updateYourUser(user.getId(), uo);
-        user = _users.loggedInUser();
+        getUsers().updateYourUser(user.getId(), uo);
+        user = getUsers().loggedInUser();
 
         // ASSERT
         assertEquals(user.getEmail(), uo.getEmail());
         assertTrue(
-            _security.login(user.getUsername().toString(), password));
+            getSecurity().login(user.getUsername().toString(), password)
+            .booleanValue());
         assertFalse(
-            _security.login(user.getUsername().toString(), "Testtest00-"));
+            getSecurity().login(user.getUsername().toString(), "Testtest00-")
+            .booleanValue());
     }
 
     /**
@@ -214,10 +218,10 @@ public class UserManagementAcceptanceTest
                 "Testtest00-");
 
 
-        _users.createUser(u);
+        getUsers().createUser(u);
 
         // ACT
-        final Boolean exists = _users.usernameExists(username);
+        final Boolean exists = getUsers().usernameExists(username);
 
         // ASSERT
         assertTrue("Username should exists", exists.booleanValue());
@@ -231,7 +235,7 @@ public class UserManagementAcceptanceTest
     public void testLoggedInUser() throws Exception {
 
         // ACT
-        final UserDto user = _users.loggedInUser();
+        final UserDto user = getUsers().loggedInUser();
 
         // ASSERT
         assertEquals(new Username("super"), user.getUsername());
@@ -252,6 +256,6 @@ public class UserManagementAcceptanceTest
                 Collections.singletonMap("key", "value"),
                 "Testtest00-");
 
-        return _users.createUser(u);
+        return getUsers().createUser(u);
     }
 }

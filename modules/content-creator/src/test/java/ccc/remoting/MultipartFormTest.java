@@ -12,10 +12,8 @@
 package ccc.remoting;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,7 +84,7 @@ public class MultipartFormTest extends TestCase {
             return _fieldName;
         }
 
-        public InputStream getInputStream() throws IOException {
+        public InputStream getInputStream() {
 
             throw new UnsupportedOperationException("Method not implemented.");
         }
@@ -96,7 +94,7 @@ public class MultipartFormTest extends TestCase {
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
-        public OutputStream getOutputStream() throws IOException {
+        public OutputStream getOutputStream() {
 
             throw new UnsupportedOperationException("Method not implemented.");
         }
@@ -111,8 +109,7 @@ public class MultipartFormTest extends TestCase {
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
-        public String getString(final String arg0)
-            throws UnsupportedEncodingException {
+        public String getString(final String arg0) {
 
             throw new UnsupportedOperationException("Method not implemented.");
         }

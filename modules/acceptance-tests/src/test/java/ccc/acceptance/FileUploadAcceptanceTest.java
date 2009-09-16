@@ -44,15 +44,15 @@ public class FileUploadAcceptanceTest
         final ResourceSummary content = resourceForPath("/content");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
-        _commands.lock(file.getId());
-        _commands.createWorkingCopy(
-            file.getId(), new ResourceDto(0L));
+        getCommands().lock(file.getId());
+        getCommands().createWorkingCopy(
+            file.getId(), new ResourceDto(Long.valueOf(0)));
 
         // ACT
-        _commands.clearWorkingCopy(file.getId());
+        getCommands().clearWorkingCopy(file.getId());
 
         // ASSERT
-        final ResourceSummary fWC = _commands.resource(file.getId());
+        final ResourceSummary fWC = getCommands().resource(file.getId());
         assertEquals("Hello!", previewContent(file, false));
         assertFalse(fWC.isHasWorkingCopy());
     }
@@ -70,16 +70,16 @@ public class FileUploadAcceptanceTest
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         // History for first revision
-        Collection<RevisionDto> revs = _commands.history(file.getId());
+        Collection<RevisionDto> revs = getCommands().history(file.getId());
         assertEquals(1, revs.size());
         final RevisionDto rev1 = revs.iterator().next();
         assertEquals(0, rev1.getIndex());
         assertEquals("Hello!", previewContent(file, false));
 
         // Add a second revision
-        _commands.lock(file.getId());
+        getCommands().lock(file.getId());
         updateTextFile("Update!", file);
-        revs = _commands.history(file.getId());
+        revs = getCommands().history(file.getId());
         assertEquals(2, revs.size());
         Iterator<RevisionDto> i = revs.iterator();
         i.next();
@@ -88,16 +88,16 @@ public class FileUploadAcceptanceTest
         assertEquals("Update!", previewContent(file, false));
 
         // Create working copy from rev 0.
-        _commands.createWorkingCopy(
-            file.getId(), new ResourceDto(0L));
-        ResourceSummary fWC = _commands.resource(file.getId());
+        getCommands().createWorkingCopy(
+            file.getId(), new ResourceDto(Long.valueOf(0)));
+        ResourceSummary fWC = getCommands().resource(file.getId());
         assertEquals("Update!", previewContent(file, false));
         assertEquals("Hello!", previewContent(file, true));
         assertTrue(fWC.isHasWorkingCopy());
 
         // Apply working copy
-        _commands.applyWorkingCopy(file.getId());
-        revs = _commands.history(file.getId());
+        getCommands().applyWorkingCopy(file.getId());
+        revs = getCommands().history(file.getId());
         assertEquals(3, revs.size());
         i = revs.iterator();
         i.next();
@@ -105,7 +105,7 @@ public class FileUploadAcceptanceTest
         final RevisionDto rev3 = i.next();
         assertEquals(2, rev3.getIndex());
         assertEquals("Hello!", previewContent(file, false));
-        fWC = _commands.resource(file.getId());
+        fWC = getCommands().resource(file.getId());
         assertFalse(fWC.isHasWorkingCopy());
     }
 
@@ -175,7 +175,7 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder = resourceForPath("/content/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
-        _commands.lock(rs.getId());
+        getCommands().lock(rs.getId());
 
         // ACT
         final String body = updateTextFile("Update!", rs);

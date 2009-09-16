@@ -43,7 +43,7 @@ public class FirstAcceptanceTest
 
         // ACT
         try {
-            _commands.fail();
+            getCommands().fail();
             fail();
 
         // ASSERT
@@ -61,7 +61,8 @@ public class FirstAcceptanceTest
 
         // ARRANGE
         final Security security =
-            ProxyFactory.create(Security.class, _public, new HttpClient());
+            ProxyFactory.create(
+                Security.class, getPublicApiURL(), new HttpClient());
 
         // ACT
         security.login("super", "sup3r2008");

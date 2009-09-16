@@ -44,15 +44,15 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final String cn2 = UUID.randomUUID().toString();
         final ResourceSummary content = resourceForPath("/content");
         final ResourceSummary testFolder =
-            _folders.createFolder(new FolderDto(content.getId(), fName));
+            getFolders().createFolder(new FolderDto(content.getId(), fName));
         final ResourceSummary child1 =
-            _folders.createFolder(new FolderDto(testFolder.getId(), cn1));
+            getFolders().createFolder(new FolderDto(testFolder.getId(), cn1));
         final ResourceSummary child2 =
-            _folders.createFolder(new FolderDto(testFolder.getId(), cn2));
+            getFolders().createFolder(new FolderDto(testFolder.getId(), cn2));
 
         // ACT
         final List<ResourceSummary> folders = new ArrayList<ResourceSummary>(
-            _folders.getFolderChildren(testFolder.getId()));
+            getFolders().getFolderChildren(testFolder.getId()));
 
         // ASSERT
         assertEquals(2, folders.size());
@@ -76,12 +76,12 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
         // ACT
         final Boolean exists =
-            _folders.nameExistsInFolder(f.getId(), page.getName());
+            getFolders().nameExistsInFolder(f.getId(), page.getName());
 
         // ASSERT
         assertTrue("Name should exists in the folder", exists.booleanValue());
         assertFalse("Name should not exists in the folder",
-            _folders.nameExistsInFolder(f.getId(), "foo").booleanValue());
+            getFolders().nameExistsInFolder(f.getId(), "foo").booleanValue());
     }
 
 
@@ -104,7 +104,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             tempPage(folder.getId(), template.getId());
 
         // ACT
-        _commands.lock(folder.getId());
+        getCommands().lock(folder.getId());
         final List<String> sl  = new ArrayList<String>();
         sl.add(page2.getId().toString());
         sl.add(page1.getId().toString());
@@ -113,11 +113,11 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final FolderDelta fd =
             new FolderDelta(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
 
-        _folders.updateFolder(folder.getId(), fd);
-        final ResourceSummary updated = _commands.resource(folder.getId());
+        getFolders().updateFolder(folder.getId(), fd);
+        final ResourceSummary updated = getCommands().resource(folder.getId());
 
         final Collection<ResourceSummary> children =
-            _folders.getChildrenManualOrder(folder.getId());
+            getFolders().getChildrenManualOrder(folder.getId());
         final List<ResourceSummary> list =
             new ArrayList<ResourceSummary>(children);
 
@@ -148,7 +148,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page3 = tempPage(f.getId(), template.getId());
 
         // ACT
-        _commands.lock(f.getId());
+        getCommands().lock(f.getId());
         final List<String> sl  = new ArrayList<String>();
         sl.add(page2.getId().toString());
         sl.add(page1.getId().toString());
@@ -157,11 +157,11 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final FolderDelta fd =
             new FolderDelta(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
 
-        _folders.updateFolder(f.getId(), fd);
-        final ResourceSummary updated = _commands.resource(f.getId());
+        getFolders().updateFolder(f.getId(), fd);
+        final ResourceSummary updated = getCommands().resource(f.getId());
 
         final List<ResourceSummary> list =
-            new ArrayList<ResourceSummary>(_folders.getChildren(f.getId()));
+            new ArrayList<ResourceSummary>(getFolders().getChildren(f.getId()));
 
         // ASSERT
         assertNull(f.getLockedBy());
@@ -188,15 +188,15 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page = tempPage(folder.getId(), template.getId());
 
         // ACT
-        _commands.lock(folder.getId());
+        getCommands().lock(folder.getId());
         final List<String> sortList  = new ArrayList<String>();
         sortList.add(page.getId().toString());
 
         final FolderDelta fd =
             new FolderDelta(
                 tempFolder().getSortOrder(), page.getId(), sortList);
-        _folders.updateFolder(folder.getId(), fd);
-        final ResourceSummary updated = _commands.resource(folder.getId());
+        getFolders().updateFolder(folder.getId(), fd);
+        final ResourceSummary updated = getCommands().resource(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
@@ -219,13 +219,13 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary folder = tempFolder();
         final List<String> sortList  = new ArrayList<String>();
         // ACT
-        _commands.lock(folder.getId());
+        getCommands().lock(folder.getId());
         final FolderDelta fd =
             new FolderDelta(
                 ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
 
-        _folders.updateFolder(folder.getId(), fd);
-        final ResourceSummary updated = _commands.resource(folder.getId());
+        getFolders().updateFolder(folder.getId(), fd);
+        final ResourceSummary updated = getCommands().resource(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
@@ -242,7 +242,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
         // ACT
         final List<ResourceSummary> roots =
-            new ArrayList<ResourceSummary>(_folders.roots());
+            new ArrayList<ResourceSummary>(getFolders().roots());
 
         // ASSERT
         assertEquals(2, roots.size());

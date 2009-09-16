@@ -70,6 +70,6 @@ public class UpdatePageCommand extends UpdateResourceCommand{
         page.setOrUpdateWorkingCopy(delta);
         page.applyWorkingCopy(rm);
 
-        update(page, comment, isMajorEdit, actor, happenedOn);
+        update(page, actor, happenedOn);
     }
 }

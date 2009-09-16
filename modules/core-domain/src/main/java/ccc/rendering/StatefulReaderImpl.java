@@ -55,8 +55,8 @@ public final class StatefulReaderImpl
          * @param sb The string builder to read into.
          * @param charset The character set to use.
          */
-        private ReadContentToStringAction(final StringBuilder sb,
-                                          final String charset) {
+        ReadContentToStringAction(final StringBuilder sb,
+                                  final String charset) {
             _sb = sb;
             _charset = charset;
         }

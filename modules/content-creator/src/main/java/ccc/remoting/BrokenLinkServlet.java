@@ -43,8 +43,9 @@ public final class BrokenLinkServlet
     extends
         HttpServlet {
 
-    @Resource private UserTransaction _utx;
-    @PersistenceUnit private EntityManagerFactory _emf;
+    // TODO: How do we re-establish these fields following serialisation?
+    @Resource        private transient UserTransaction      _utx;
+    @PersistenceUnit private transient EntityManagerFactory _emf;
 
 
     /** {@inheritDoc} */

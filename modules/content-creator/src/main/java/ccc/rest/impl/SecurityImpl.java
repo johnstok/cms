@@ -42,7 +42,7 @@ public class SecurityImpl
     /** {@inheritDoc} */
     @Override
     public Boolean isLoggedIn() {
-        return null!=_request.getUserPrincipal();
+        return Boolean.valueOf(null!=_request.getUserPrincipal());
     }
 
 
@@ -55,19 +55,19 @@ public class SecurityImpl
 
         // Credentials are bad.
         if (!authenticated) {
-            return false;
+            return Boolean.FALSE;
         }
 
         // Has necessary roles.
         if (_request.isUserInRole("ADMINISTRATOR")
             || _request.isUserInRole("CONTENT_CREATOR")
             || _request.isUserInRole("SITE_BUILDER")) {
-            return true;
+            return Boolean.TRUE;
         }
 
         // Missing necessary roles.
         _request.getSession().invalidate();
-        return false;
+        return Boolean.FALSE;
     }
 
 
