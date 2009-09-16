@@ -199,4 +199,16 @@ public final class DBCTest extends TestCase {
         }
 
     }
+
+    public void testMaxValue() throws Exception {
+
+        long valueToTest = 10;
+        long maximum = 5;
+        try {
+            require().maxValue(valueToTest, maximum);
+            fail("Value should not be lonegr than maxValue");
+        } catch (IllegalArgumentException e) {
+            // TODO: handle exception
+        }
+    }
 }
