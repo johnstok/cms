@@ -34,6 +34,8 @@ import com.extjs.gxt.ui.client.data.ModelData;
 public class LogEntrySummaryModelData
     implements
         ModelData {
+
+    /** EXPAND_PROPERTY : String. */
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
     private final RevisionDto _les;
@@ -159,7 +161,7 @@ public class LogEntrySummaryModelData
 
         String local = null;
         try {
-            local = types.getString(_les.getCommand().name());
+            local = types.getString(_les.getCommand().camelCaseName());
         } catch (final MissingResourceException e) {
             local = _les.getCommand().name();
         }

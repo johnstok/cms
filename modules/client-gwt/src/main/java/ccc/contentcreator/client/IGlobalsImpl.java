@@ -194,18 +194,18 @@ public class IGlobalsImpl
      * @author Civic Computing Ltd.
      */
     private static final class UserStore {
-        private static UserDto _user;
+        private static UserDto usr;
 
         private UserStore() {
             // no-op
         }
 
         public static UserDto currentUser() {
-            return _user;
+            return usr;
         }
 
         public static void currentUser(final UserDto user) {
-            _user = user;
+            usr = user;
         }
     }
 

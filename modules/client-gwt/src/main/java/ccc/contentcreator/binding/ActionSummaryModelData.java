@@ -185,7 +185,7 @@ public class ActionSummaryModelData
 
         String local = null;
         try {
-            local = types.getString(_as.getStatus().name());
+            local = types.getString(_as.getStatus().camelCaseName());
         } catch (final MissingResourceException e) {
             local = _as.getStatus().name();
         }
@@ -202,7 +202,7 @@ public class ActionSummaryModelData
 
         String local = null;
         try {
-            local = types.getString(_as.getType().name());
+            local = types.getString(_as.getType().camelCaseName());
         } catch (final MissingResourceException e) {
             local = _as.getType().name();
         }

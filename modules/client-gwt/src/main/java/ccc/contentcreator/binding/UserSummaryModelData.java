@@ -99,8 +99,18 @@ public class UserSummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * Property names for a user summary.
+     *
+     * @author Civic Computing Ltd.
+     */
     public enum Property {
-        ID, EMAIL, USERNAME;
+        /** ID : Property. */
+        ID,
+        /** EMAIL : Property. */
+        EMAIL,
+        /** USERNAME : Property. */
+        USERNAME;
     }
 
     /**

@@ -28,8 +28,25 @@ public interface ChangeResourceTemplate
     extends
         View<Editable> {
 
+    /**
+     * Mutator.
+     *
+     * @param templates The list of available templates to choose from.
+     */
     void setTemplates(Collection<TemplateSummary> templates);
+
+    /**
+     * Mutator.
+     *
+     * @param templateId The currently selected template.
+     */
     void setSelectedTemplate(UUID templateId);
+
+    /**
+     * Accessor.
+     *
+     * @return The currently selected template.
+     */
     UUID getSelectedTemplate();
 
 }

@@ -25,6 +25,19 @@ public interface CreateFolder
     extends
         View<Editable>,
         Validatable {
+
+    /**
+     * Accessor.
+     *
+     * @return The folder name.
+     */
     String getName();
+
+
+    /**
+     * Mutator.
+     *
+     * @param name The new folder name to set.
+     */
     void setName(String name);
 }

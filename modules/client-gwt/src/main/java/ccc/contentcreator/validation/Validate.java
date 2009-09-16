@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * TODO: Add Description for this type.
+ * Validation engine.
  *
  * @author Civic Computing Ltd.
  */
@@ -25,7 +25,8 @@ public final class Validate {
 
 
     /**
-     * TODO: Add Description for this type.
+     * Validator implementation that prevents further validations from
+     * executing.
      *
      * @author Civic Computing Ltd.
      */
@@ -36,8 +37,8 @@ public final class Validate {
 
         /** {@inheritDoc} */
         public void validate(final Validate validate) {
-            if (_errors.size() > 0) {
-                _continue = false;
+            if (getErrors().size() > 0) {
+                setContinue(false);
             }
             next();
         }
@@ -60,6 +61,27 @@ public final class Validate {
         _action = createAlias;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the errors.
+     */
+    List<String> getErrors() {
+        return _errors;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param continue1 The continue to set.
+     */
+    void setContinue(final boolean continue1) {
+        _continue = continue1;
+    }
+
+
     /**
      * Factory method for creating validation objects.
      *
@@ -70,6 +92,7 @@ public final class Validate {
     public static Validate callTo(final Runnable runnable) {
         return new Validate(runnable);
     }
+
 
     /**
      * TODO: Add a description of this method.
@@ -82,6 +105,7 @@ public final class Validate {
         return this;
     }
 
+
     /**
      * TODO: Add a description of this method.
      *
@@ -91,6 +115,7 @@ public final class Validate {
         _validators.add(new Stopper());
         return this;
     }
+
 
     /**
      * Check whether any errors have been reported.
@@ -102,6 +127,7 @@ public final class Validate {
         _reporter = reporter;
         next();
     }
+
 
     /**
      * Add a message to the list of error messages.

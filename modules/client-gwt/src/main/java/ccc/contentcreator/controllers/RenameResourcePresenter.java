@@ -65,7 +65,7 @@ public class RenameResourcePresenter
     public void save() {
         if (getView().isValid()) {
             new RenameAction(getModel().getId(),
-                             getView().getName().toString(),
+                             getView().getName(),
                              this).execute();
         } else {
             // FIXME: I18n.

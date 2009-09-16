@@ -64,10 +64,7 @@ public class FileSummaryModelData
                 return (X) _fs.getName();
 
             case TITLE:
-                return (X) _fs.getTitle();
-
             case SHORT_NAME:
-//                return (X) Util.ellipse(_fs.getTitle(), 15);
                 return (X) _fs.getTitle();
 
             default:
