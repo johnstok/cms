@@ -2,8 +2,10 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.SelectionModelEventBus;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.RenameDialog;
+import ccc.contentcreator.controllers.RenameResourcePresenter;
+import ccc.contentcreator.views.gxt.RenameDialog;
 
 /**
  * Rename a resource.
@@ -28,6 +30,10 @@ public final class OpenRenameAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        new RenameDialog(item, _selectionModel).show();
+        new RenameResourcePresenter(
+            GLOBALS,
+            new SelectionModelEventBus(_selectionModel),
+            new RenameDialog(),
+            item);
     }
 }

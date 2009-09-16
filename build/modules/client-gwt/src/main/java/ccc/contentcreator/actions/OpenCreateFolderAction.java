@@ -2,8 +2,10 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.SelectionModelEventBus;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.CreateFolderDialog;
+import ccc.contentcreator.controllers.CreateFolderPresenter;
+import ccc.contentcreator.views.gxt.CreateFolderDialog;
 
 /**
  * Create a folder.
@@ -31,7 +33,11 @@ public final class OpenCreateFolderAction
         if (item == null) {
             GLOBALS.alert(GLOBALS.uiConstants().noFolderSelected());
         } else {
-            new CreateFolderDialog(item, _selectionModel).show();
+            new CreateFolderPresenter(
+                GLOBALS,
+                new SelectionModelEventBus(_selectionModel),
+                new CreateFolderDialog(),
+                item);
         }
     }
 }

@@ -18,14 +18,12 @@ import java.util.HashSet;
 
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.UniqueUsernameAction;
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.client.EditController;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
-import ccc.contentcreator.views.ICreateUserDialog;
+import ccc.contentcreator.views.CreateUser;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -36,13 +34,11 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateUserController implements EditController {
+public class CreateUserPresenter implements EditController {
 
-    private final UIConstants         _constants;
-    private final UIMessages          _messages;
-    private final ActionNameConstants _userActions;
-    private final ICreateUserDialog   _dialog;
-    private final IGlobals            _globals;
+    private final UIMessages _messages;
+    private final CreateUser _dialog;
+    private final IGlobals   _globals;
 
     /**
      * Constructor.
@@ -50,13 +46,11 @@ public class CreateUserController implements EditController {
      * @param dialog The create user dialog this controller will manage.
      * @param globals The globals factory for this controller.
      */
-    public CreateUserController(final ICreateUserDialog dialog,
+    public CreateUserPresenter(final CreateUser dialog,
                                 final IGlobals globals) {
         _dialog      = dialog;
         _globals     = globals;
-        _constants   = _globals.uiConstants();
         _messages    = _globals.uiMessages();
-        _userActions = _globals.userActions();
     }
 
 

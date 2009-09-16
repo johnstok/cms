@@ -9,14 +9,15 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.views.gxt;
 
 
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SubmitControllerSelectionListener;
-import ccc.contentcreator.controllers.CreateUserController;
-import ccc.contentcreator.views.ICreateUserDialog;
+import ccc.contentcreator.controllers.CreateUserPresenter;
+import ccc.contentcreator.dialogs.AbstractEditDialog;
+import ccc.contentcreator.views.CreateUser;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -32,7 +33,7 @@ public class CreateUserDialog
     extends
         AbstractEditDialog
     implements
-        ICreateUserDialog {
+        CreateUser {
 
     private static final int LABEL_WIDTH = 150;
     private final TextField<String> _username = new TextField<String>();
@@ -80,7 +81,7 @@ public class CreateUserDialog
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SubmitControllerSelectionListener(
-            new CreateUserController(this, new IGlobalsImpl()));
+            new CreateUserPresenter(this, new IGlobalsImpl()));
     }
 
 
