@@ -84,11 +84,14 @@ public class Migrations {
      * @param legacyQueries Queries
      * @param linkPrefix The prefix to attach to legacy URLs.
      * @param resourcesExt The available commands for CCC7.
-     * @param queries The available queries for CCC7.
      * @param fu The file up-loader to use.
      * @param migrateHomepage The boolean for home page migration.
      * @param migrateIsMajorEdit The boolean for is_major_edit migration.
      * @param migrateVersions The boolean for page versions migration.
+     * @param pagesExt Pages API implementation.
+     * @param foldersExt Folders API implementation.
+     * @param userCommands Templates API implementation.
+     * @param templates Templates API implementation.
      */
     public Migrations(final LegacyDBQueries legacyQueries,
                       final String linkPrefix,
@@ -114,10 +117,13 @@ public class Migrations {
         try {
             _contentRoot = _resourcesExt.resourceForPath("/content");
             _filesFolder = _resourcesExt.resourceForPath("/content/files");
-            _contentImagesFolder = _resourcesExt.resourceForPath("/content/images");
+            _contentImagesFolder =
+                _resourcesExt.resourceForPath("/content/images");
 
-            _templateFolder = _resourcesExt.resourceForPath("/assets/templates");
-            _assetsImagesFolder = _resourcesExt.resourceForPath("/assets/images");
+            _templateFolder =
+                _resourcesExt.resourceForPath("/assets/templates");
+            _assetsImagesFolder =
+                _resourcesExt.resourceForPath("/assets/images");
             _cssFolder = _resourcesExt.resourceForPath("/assets/css");
         } catch (final RestException e) {
             throw new MigrationException(
@@ -126,7 +132,7 @@ public class Migrations {
 
         _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
         _um = new UserMigration(_legacyQueries, _userCommands);
-        _tm = new TemplateMigration(_legacyQueries, _resourcesExt, templates);
+        _tm = new TemplateMigration(_legacyQueries, templates);
     }
 
 
@@ -157,7 +163,8 @@ public class Migrations {
     private void migrateHomepages() throws RestException {
         final Map<Integer, Integer> map = _legacyQueries.homepages();
         for (final Entry<Integer, Integer> e : map.entrySet()) {
-            final ResourceSummary f = _resourcesExt.resourceForLegacyId(""+e.getKey());
+            final ResourceSummary f =
+                _resourcesExt.resourceForLegacyId(""+e.getKey());
             final ResourceSummary hp =
                 _resourcesExt.resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
@@ -233,7 +240,10 @@ public class Migrations {
             log.debug("Created folder: "+r.contentId());
 
             _resourcesExt.lock(
-                UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
+                UUID.fromString(
+                    rs.getId().toString()),
+                    le.getUser().getId(),
+                    le.getHappenedOn());
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
@@ -292,7 +302,10 @@ public class Migrations {
             }
 
             _resourcesExt.lock(
-                UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
+                UUID.fromString(
+                    rs.getId().toString()),
+                    le.getUser().getId(),
+                    le.getHappenedOn());
             setTemplateForResource(r, rs, le);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
@@ -371,10 +384,13 @@ public class Migrations {
                             final ResourceSummary rs,
                             final int version,
                             final LogEntryBean le,
-                            final PageDelta d)
-                                                 throws RestException {
+                            final PageDelta d) throws RestException {
 
-        _resourcesExt.lock(UUID.fromString(rs.getId().toString()), le.getUser().getId(), le.getHappenedOn());
+        _resourcesExt.lock(
+            UUID.fromString(
+                rs.getId().toString()),
+                le.getUser().getId(),
+                le.getHappenedOn());
 
         final String userComment =
             _legacyQueries.selectUserComment(r.contentId(), version);
@@ -391,7 +407,8 @@ public class Migrations {
             isMajorEdit.booleanValue(),
             le.getUser().getId(),
             le.getHappenedOn());
-        _resourcesExt.unlock(rs.getId(), le.getUser().getId(), le.getHappenedOn());
+        _resourcesExt.unlock(
+            rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
         log.debug("Updated page: "+r.contentId()+" v."+version);
     }

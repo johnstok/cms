@@ -42,6 +42,7 @@ public class LinkFixer {
     /** HREF_PATTERN : Pattern. */
     static final Pattern HREF_PATTERN =
         Pattern.compile("href\\s*=\\s*\"(.*?)\"");
+    /** SRC_PATTERN : Pattern. */
     static final Pattern SRC_PATTERN =
         Pattern.compile("src\\s*=\\s*\"(.*?)\"");
     private final String _prefix;
@@ -72,7 +73,8 @@ public class LinkFixer {
         }
     }
 
-    private StringBuffer correct(final Matcher hrefMatcher, final String attName) {
+    private StringBuffer correct(final Matcher hrefMatcher,
+                                 final String attName) {
 
         final StringBuffer correctedPara = new StringBuffer();
         while (hrefMatcher.find()) { // search for href attributes

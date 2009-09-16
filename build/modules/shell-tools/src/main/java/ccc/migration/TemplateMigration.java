@@ -23,7 +23,6 @@ import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.MimeType;
 
 
@@ -36,7 +35,6 @@ public class TemplateMigration {
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final LegacyDBQueries _legacyQueries;
-    private final ResourcesExt    _resourcesExt;
     private final Templates       _templateApi;
 
     private final Map<String, ResourceSummary> _templates =
@@ -47,12 +45,10 @@ public class TemplateMigration {
      * Constructor.
      *
      * @param legacyQueries The query API for CCC6.
-     * @param resourcesExt The command API for the new system.
+     * @param templates Templates API implementation.
      */
     public TemplateMigration(final LegacyDBQueries legacyQueries,
-                             final ResourcesExt resourcesExt,
                              final Templates templates) {
-        _resourcesExt = resourcesExt;
         _legacyQueries = legacyQueries;
         _templateApi = templates;
     }
