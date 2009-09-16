@@ -13,8 +13,6 @@ package ccc.acceptance;
 
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -29,9 +27,6 @@ import ccc.types.MimeType;
  */
 public class TemplateAcceptanceTest extends
         AbstractAcceptanceTest {
-
-    private static final Logger LOG =
-        Logger.getLogger(TemplateAcceptanceTest.class);
 
     /**
      * Test.
@@ -49,7 +44,7 @@ public class TemplateAcceptanceTest extends
 
         // ACT
         final ResourceSummary ts =
-            _templates.createTemplate(
+            getTemplates().createTemplate(
                 new TemplateDto(
                     templateFolder.getId(),
                     newTemplate,
@@ -79,7 +74,7 @@ public class TemplateAcceptanceTest extends
 
         // ACT
         final ResourceSummary ts =
-            _templates.createTemplate(
+            getTemplates().createTemplate(
                 new TemplateDto(
                     folder.getId(),
                     newTemplate,
@@ -89,7 +84,7 @@ public class TemplateAcceptanceTest extends
 
 
         // ACT
-        final TemplateDelta fetched = _templates.templateDelta(ts.getId());
+        final TemplateDelta fetched = getTemplates().templateDelta(ts.getId());
 
         // ASSERT
         assertEquals("body", fetched.getBody());
@@ -108,12 +103,12 @@ public class TemplateAcceptanceTest extends
         final ResourceSummary t = dummyTemplate(folder);
 
         // ACT
-        final Boolean exists = _templates.templateNameExists(t.getName());
+        final Boolean exists = getTemplates().templateNameExists(t.getName());
 
         //ASSERT
         assertTrue("Template should exists", exists.booleanValue());
         assertFalse("Template should not exists",
-                    _templates.templateNameExists("foo").booleanValue());
+            getTemplates().templateNameExists("foo").booleanValue());
     }
 
     /**
@@ -130,9 +125,9 @@ public class TemplateAcceptanceTest extends
         final TemplateDelta delta = new TemplateDelta("newBody",
             "<fields><field name=\"test\" type=\"html\"/></fields>",
             MimeType.BINARY_DATA);
-        _commands.lock(t.getId());
-        _templates.updateTemplate(t.getId(), delta);
-        final TemplateDelta updated = _templates.templateDelta(t.getId());
+        getCommands().lock(t.getId());
+        getTemplates().updateTemplate(t.getId(), delta);
+        final TemplateDelta updated = getTemplates().templateDelta(t.getId());
 
         // ASSERT
         assertEquals(delta.getBody(), updated.getBody());

@@ -13,10 +13,10 @@
 package ccc.entities;
 
 /**
- * TODO: Add a description for this type.
+ * API for data objects.
  *
  * @author Civic Computing Ltd.
  */
 public interface IData {
-
+    // No methods available.
 }

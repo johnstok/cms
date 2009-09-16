@@ -234,6 +234,7 @@ public class ResourceSnapshot implements IResource {
      * @param dm A file repository implementation.
      * @return A response representing the resource.
      */
+    @SuppressWarnings("unused")
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,

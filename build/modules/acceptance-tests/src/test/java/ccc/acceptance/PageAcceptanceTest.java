@@ -50,7 +50,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
-        final PageDelta pd = _pages.pageDelta(page.getId());
+        final PageDelta pd = getPages().pageDelta(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -76,15 +76,15 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final PageDelta modified = new PageDelta(paras);
 
         // ACT
-        _commands.lock(page.getId());
+        getCommands().lock(page.getId());
 
         final Json json = new JsonImpl();
         json.set(JsonKeys.MAJOR_CHANGE, Boolean.TRUE);
         json.set(JsonKeys.COMMENT, "");
         json.set(JsonKeys.DELTA, modified);
 
-        _pages.updatePage(page.getId(), json);
-        final PageDelta pd = _pages.pageDelta(page.getId());
+        getPages().updatePage(page.getId(), json);
+        final PageDelta pd = getPages().pageDelta(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -114,12 +114,12 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final Json okjson = new JsonImpl();
         okjson.set(JsonKeys.DEFINITION, definition);
         okjson.set(JsonKeys.PARAGRAPHS, validParas);
-        final String okResult = _pages.validateFields(okjson);
+        final String okResult = getPages().validateFields(okjson);
 
         final Json nokjson = new JsonImpl();
         nokjson.set(JsonKeys.DEFINITION, definition);
         nokjson.set(JsonKeys.PARAGRAPHS, invalidParas);
-        final String nokResult =  _pages.validateFields(nokjson);
+        final String nokResult =  getPages().validateFields(nokjson);
 
         // ASSERT
         assertTrue("Errors should be empty", okResult.isEmpty());
@@ -145,7 +145,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
                 MimeType.HTML);
 
         final ResourceSummary ts =
-            _templates.createTemplate(
+            getTemplates().createTemplate(
                 new TemplateDto(
                     templateFolder.getId(),
                     newTemplate,
@@ -163,20 +163,20 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final PageDelta orignal = new PageDelta(paras);
 
         final Json json = new JsonImpl();
-        json.set(JsonKeys.MAJOR_CHANGE, true);
+        json.set(JsonKeys.MAJOR_CHANGE, Boolean.TRUE);
         json.set(JsonKeys.COMMENT, "");
         json.set(JsonKeys.DELTA, orignal);
 
         // ACT
-        _commands.lock(page.getId());
-        _pages.updatePage(page.getId(), json);
+        getCommands().lock(page.getId());
+        getPages().updatePage(page.getId(), json);
 
         final Set<Paragraph> modparas = new HashSet<Paragraph>();
         final Paragraph modPara = Paragraph.fromText("foo", "working copy");
         modparas.add(modPara);
         final PageDelta modified = new PageDelta(modparas);
 
-        _pages.updateWorkingCopy(page.getId(), modified);
+        getPages().updateWorkingCopy(page.getId(), modified);
 
         // ASSERT
         final String original = previewContent(page, false);

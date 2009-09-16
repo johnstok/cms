@@ -122,22 +122,132 @@ public abstract class AbstractAcceptanceTest
         pFactory.addStringConverter(UUIDProvider.class);
     }
 
-    private final   String _hostUrl       = "http://localhost:81";
-    protected final String _secure        = _hostUrl+"/api/secure";
-    protected final String _public        = _hostUrl+"/api/public";
-    protected final String _createFileUrl = _hostUrl+"/upload";
-    protected final String _updateFileUrl = _hostUrl+"/update_file";
+    private final String _hostUrl       = "http://localhost:81";
+    private final String _secure        = _hostUrl+"/api/secure";
+    private final String _public        = _hostUrl+"/api/public";
+    private final String _createFileUrl = _hostUrl+"/upload";
+    private final String _updateFileUrl = _hostUrl+"/update_file";
 
-    protected HttpClient _http;
-    protected Resources _commands;
-    protected Users _users;
-    protected Actions _actions;
-    protected Folders _folders;
-    protected Pages _pages;
-    protected Security _security;
-    protected Templates _templates;
-    protected Files _files;
-    protected Aliases _aliases;
+    private HttpClient _http;
+    private Resources _commands;
+    private Users _users;
+    private Actions _actions;
+    private Folders _folders;
+    private Pages _pages;
+    private Security _security;
+    private Templates _templates;
+    private Files _files;
+    private Aliases _aliases;
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the URL to the public API.
+     */
+    protected String getPublicApiURL() {
+        return _public;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the HTTP client.
+     */
+    protected HttpClient getHttpClient() {
+        return _http;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the commands.
+     */
+    protected Resources getCommands() {
+        return _commands;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the users.
+     */
+    protected Users getUsers() {
+        return _users;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the actions.
+     */
+    protected Actions getActions() {
+        return _actions;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the folders.
+     */
+    protected Folders getFolders() {
+        return _folders;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the pages.
+     */
+    protected Pages getPages() {
+        return _pages;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the security.
+     */
+    protected Security getSecurity() {
+        return _security;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the templates.
+     */
+    protected Templates getTemplates() {
+        return _templates;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the files.
+     */
+    protected Files getFiles() {
+        return _files;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the aliases.
+     */
+    protected Aliases getAliases() {
+        return _aliases;
+    }
 
 
     /**
@@ -190,6 +300,13 @@ public abstract class AbstractAcceptanceTest
         return _pages.createPage(page);
     }
 
+    /**
+     * Create a folder for testing.
+     *
+     * @return The folder's summary.
+     *
+     * @throws RestException If creation fails on the server.
+     */
     protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = resourceForPath("/content");
@@ -197,6 +314,13 @@ public abstract class AbstractAcceptanceTest
     }
 
 
+    /**
+     * Create an alias for testing.
+     *
+     * @return The alias' summary.
+     *
+     * @throws RestException If creation fails on the server.
+     */
     protected ResourceSummary tempAlias() throws RestException {
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = resourceForPath("/content");
@@ -245,8 +369,16 @@ public abstract class AbstractAcceptanceTest
     }
 
 
-    /*
+    /**
+     * Get the contents of the specified resource.
      * TODO: Merge into client library.
+     *
+     * @param rs The resource to read.
+     * @param wc Should the working copy be read?
+     *
+     * @return The contents of the resource as a string.
+     *
+     * @throws IOException  If reading from the server fails.
      */
     protected String previewContent(final ResourceSummary rs, final boolean wc)
     throws IOException {
@@ -269,8 +401,18 @@ public abstract class AbstractAcceptanceTest
     }
 
 
-    /*
+    /**
+     * Create a file for testing.
      * TODO: Merge into ccc.migration.FileUploader class.
+     *
+     * @param fName The file's name.
+     * @param fText The file's contents.
+     * @param filesFolder The parent folder for the file.
+     *
+     * @return The summary of the newly created file.
+     *
+     * @throws IOException If creation fails on the client.
+     * @throws RestException If creation fails on the server.
      */
     protected ResourceSummary createFile(final String fName,
                                          final String fText,

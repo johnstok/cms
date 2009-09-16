@@ -96,6 +96,7 @@ public class MetadataWriter
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
     public Map<String, String> readFrom(
                                     final Class<Map<String, String>> arg0,

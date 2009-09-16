@@ -71,6 +71,6 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
             throw new WorkingCopyNotSupportedException(r);
         }
 
-        update(r, comment, isMajorEdit, actor, happenedOn);
+        update(r, actor, happenedOn);
     }
 }

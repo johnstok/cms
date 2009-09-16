@@ -51,14 +51,10 @@ class UpdateResourceCommand {
      * Record that a resource has been updated (generates a log entry).
      *
      * @param resource The resource that was updated.
-     * @param comment The comment for the edit.
-     * @param isMajorEdit The major edit boolean.
      * @param actor The actor who performed the update.
      * @param happenedOn The date the update took place.
      */
     protected void update(final Resource resource,
-                          final String comment,
-                          final boolean isMajorEdit,
                           final User actor,
                           final Date happenedOn) {
         resource.dateChanged(happenedOn);

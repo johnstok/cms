@@ -48,8 +48,9 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnTrue() {
 
         // ARRANGE
-        expect(_repository.exists(
-            QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
+        expect(Boolean.valueOf(
+            _repository.exists(
+            QueryNames.USERS_WITH_USERNAME, User.class, "blat")))
             .andReturn(Boolean.TRUE);
         replayAll();
 
@@ -67,8 +68,9 @@ public class UserManagerImplTest extends TestCase {
     public void testUsernameExistsCanReturnFalse() {
 
         // ARRANGE
-        expect(_repository.exists(
-            QueryNames.USERS_WITH_USERNAME, User.class, "blat"))
+        expect(Boolean.valueOf(
+            _repository.exists(
+                QueryNames.USERS_WITH_USERNAME, User.class, "blat")))
             .andReturn(Boolean.FALSE);
         replayAll();
 
