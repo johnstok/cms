@@ -107,8 +107,24 @@ public class TemplateSummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+    /**
+     * Property names for a template summary.
+     *
+     * @author Civic Computing Ltd.
+     */
     public enum Property {
-        ID, NAME, TITLE, DESCRIPTION, BODY, DEFINITION;
+        /** ID : Property. */
+        ID,
+        /** NAME : Property. */
+        NAME,
+        /** TITLE : Property. */
+        TITLE,
+        /** DESCRIPTION : Property. */
+        DESCRIPTION,
+        /** BODY : Property. */
+        BODY,
+        /** DEFINITION : Property. */
+        DEFINITION;
     }
 
     /**

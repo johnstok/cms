@@ -54,6 +54,26 @@ public class CreateUserPresenter implements EditController {
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the dialog.
+     */
+    CreateUser getDialog() {
+        return _dialog;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the messages.
+     */
+    UIMessages getMessages() {
+        return _messages;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void submit() {
@@ -91,7 +111,7 @@ public class CreateUserPresenter implements EditController {
                     protected void execute(final boolean usernameExists) {
                         if (usernameExists) {
                             validate.addMessage(
-                                _messages.userWithUsernameAlreadyExists(
+                                getMessages().userWithUsernameAlreadyExists(
                                     username)
                             );
                         }
@@ -106,10 +126,10 @@ public class CreateUserPresenter implements EditController {
     private Runnable createUser() {
         return new Runnable() {
             public void run() {
-                final String p = _dialog.getPassword1().getValue();
+                final String p = getDialog().getPassword1().getValue();
                 final UserDto d = new UserDto(
-                    _dialog.getEmail().getValue(),
-                    new Username(_dialog.getUsername().getValue()),
+                    getDialog().getEmail().getValue(),
+                    new Username(getDialog().getUsername().getValue()),
                     new HashSet<String>(),
                     new HashMap<String, String>(),
                     p);
@@ -117,7 +137,7 @@ public class CreateUserPresenter implements EditController {
                 new CreateUserAction(d){
                     @Override protected void onOK(final Response response) {
                         // TODO: Refresh the main window.
-                        _dialog.close();
+                        getDialog().close();
                     }
                 }.execute();
             }

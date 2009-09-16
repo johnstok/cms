@@ -42,22 +42,32 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  */
 public final class Validations {
 
+    /** MIN_PASSWORD_LENGTH : int. */
     static final int MIN_PASSWORD_LENGTH = 10;
 
+    /** VALID_CHARACTERS : String. */
     static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
+    /** VALID_USERNAME_CHARACTERS : String. */
     static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
 
+    /** NO_BRACKETS : String. */
     static final String  NO_BRACKETS = "[^<^>]*";
 
+    /** VALID_EMAIL : String. */
     static final String VALID_EMAIL =
         "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
 
-    private static final IGlobals GLOBALS = new IGlobalsImpl();
-    private static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
-    private static final UIMessages UI_MESSAGES = GLOBALS.uiMessages();
+    /** GLOBALS : IGlobals. */
+    static final IGlobals GLOBALS = new IGlobalsImpl();
+
+    /** UI_CONSTANTS : UIConstants. */
+    static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
+
+    /** UI_MESSAGES : UIMessages. */
+    static final UIMessages UI_MESSAGES = GLOBALS.uiMessages();
 
     private Validations() {
         super();

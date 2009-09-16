@@ -15,7 +15,7 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 
 
 /**
- * TODO: Add Description for this type.
+ * UI constants describing action statuses.
  *
  * @author Civic Computing Ltd.
  */
@@ -27,7 +27,7 @@ public interface ActionStatusConstants extends ConstantsWithLookup {
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Scheduled")
-    String Scheduled();
+    String scheduled();
 
     /**
      * "Complete".
@@ -35,7 +35,7 @@ public interface ActionStatusConstants extends ConstantsWithLookup {
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Complete")
-    String Complete();
+    String complete();
 
     /**
      * "Failed".
@@ -43,7 +43,7 @@ public interface ActionStatusConstants extends ConstantsWithLookup {
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Failed")
-    String Failed();
+    String failed();
 
     /**
      * "Cancelled".
@@ -51,6 +51,6 @@ public interface ActionStatusConstants extends ConstantsWithLookup {
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Cancelled")
-    String Cancelled();
+    String cancelled();
 
 }
