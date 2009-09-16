@@ -42,29 +42,22 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  */
 public final class Validations {
 
-    /**
-     * MIN_PASSWORD_LENGTH : int.
-     * TODO: Move to the password class.
-     */
-    private static final int MIN_PASSWORD_LENGTH = 10;
+    static final int MIN_PASSWORD_LENGTH = 10;
 
-    private static final IGlobals GLOBALS = new IGlobalsImpl();
+    static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
-    private static final UIConstants UI_CONSTANTS =
-        GLOBALS.uiConstants();
-    private static final UIMessages UI_MESSAGES =
-        GLOBALS.uiMessages();
+    static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
 
-    private static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
+    static final String  NO_BRACKETS = "[^<^>]*";
 
-    private static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
-
-    private static final String  NO_BRACKETS = "[^<^>]*";
-
-    private static final String VALID_EMAIL =
+    static final String VALID_EMAIL =
         "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
+
+    private static final IGlobals GLOBALS = new IGlobalsImpl();
+    private static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
+    private static final UIMessages UI_MESSAGES = GLOBALS.uiMessages();
 
     private Validations() {
         super();

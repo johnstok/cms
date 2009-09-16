@@ -22,7 +22,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  *
  * @author Civic Computing Ltd.
  */
-public interface ICreateUserDialog extends Closeable {
+public interface CreateUser extends Closeable {
 
     /**
      * Accessor.

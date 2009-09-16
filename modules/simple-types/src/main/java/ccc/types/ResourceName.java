@@ -117,4 +117,15 @@ public final class ResourceName implements Serializable {
         return invalidCharacters.replaceAll(INVALID_CHARACTERS,
                                             ESCAPE_CHARACTER);
     }
+
+    /**
+     * Confirm the specified string is a valid resource name.
+     *
+     * @param value The potential resource name.
+     *
+     * @return True if the string is valid, false otherwise.
+     */
+    public static boolean isValid(final String value) {
+        return value.matches(VALID_CHARACTERS);
+    }
 }
