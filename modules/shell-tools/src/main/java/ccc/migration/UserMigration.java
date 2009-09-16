@@ -41,7 +41,7 @@ public class UserMigration {
      * Constructor.
      *
      * @param legacyQueries The query API for CCC6.
-     * @param commands The command API for the new system.
+     * @param userCommands User API implementation.
      */
     public UserMigration(final LegacyDBQueries legacyQueries,
                          final Users userCommands) {

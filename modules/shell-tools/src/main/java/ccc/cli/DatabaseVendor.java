@@ -20,31 +20,59 @@ import ccc.migration.MigrationException;
  * @author Civic Computing Ltd.
  */
 public enum DatabaseVendor {
+
+
+    /**
+     * Oracle DB vendor.
+     */
     ORACLE {
+        /** {@inheritDoc} */
         @Override public String driverClassName() {
             return "oracle.jdbc.driver.OracleDriver";
         }
     },
 
+
+    /**
+     * H2 DB vendor.
+     */
     H2 {
+        /** {@inheritDoc} */
         @Override public String driverClassName() {
             return "org.h2.Driver";
         }
     },
 
+
+    /**
+     * MySQL DB vendor.
+     */
     MYSQL {
+        /** {@inheritDoc} */
         @Override public String driverClassName() {
             return "com.mysql.jdbc.Driver";
         }
     },
 
+
+    /**
+     * SqlServer DB vendor.
+     */
     SQLSERVER {
+        /** {@inheritDoc} */
         @Override public String driverClassName() {
             return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         }
     };
 
+
+    /**
+     * Accessor.
+     *
+     * @return The DB vendor's driver class name.
+     */
     public abstract String driverClassName();
+
 
     /**
      * Determine the driver class based on connection string.
