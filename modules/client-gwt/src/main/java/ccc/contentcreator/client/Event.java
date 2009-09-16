@@ -19,10 +19,20 @@ package ccc.contentcreator.client;
  */
 public interface Event {
 
+    /**
+     * Accessor.
+     *
+     * @return The type of the event.
+     */
     Type getType();
 
+    /**
+     * Enumeration of event types.
+     */
     public static enum Type {
+        /** RESOURCE_UPDATED : Type. */
         RESOURCE_UPDATED,
+        /** RESOURCE_CREATED : Type. */
         RESOURCE_CREATED;
     }
 }

@@ -146,17 +146,28 @@ public class CreateActionPanel
         return item.<CommandType>getData("action-id");
     }
 
+    /**
+     * Accessor.
+     *
+     * @return A map of string parameters.
+     */
     public Map<String, String> getParameters() {
         return (null==_pPanel)
             ? new HashMap<String, String>()
             : _pPanel.getParameters();
     }
 
+    /**
+     * API for parameter panels.
+     */
     private static interface ParameterPanel {
         Map<String, String> getParameters();
         void populateForm(final LayoutContainer form);
     }
 
+    /**
+     * Parameter panel with no fields.
+     */
     private static class EmptyPanel implements ParameterPanel {
 
         private final Html _title = new Html();
@@ -182,6 +193,9 @@ public class CreateActionPanel
 
     }
 
+    /**
+     * Parameter panel for revisions.
+     */
     private static class UpdatePanel implements ParameterPanel {
 
         /** COMMENT_FIELD_HEIGHT : int. */

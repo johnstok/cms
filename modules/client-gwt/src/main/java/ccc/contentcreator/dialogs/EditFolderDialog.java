@@ -144,7 +144,7 @@ AbstractEditDialog {
         _indexPageStore.removeAll();
         final List<ModelData> pagesOnly = new ArrayList<ModelData>();
 
-        _none.set("name", _constants.none());
+        _none.set("name", getUiConstants().none());
         _none.set("value", null);
         _indexPageStore.add(_none);
 
@@ -164,7 +164,7 @@ AbstractEditDialog {
         final ResourceSummaryModelData selection =
             _selectionModel.tableSelection();
 
-        new GetChildrenAction(_uiConstants.edit(), selection.getId()) {
+        new GetChildrenAction(getUiConstants().edit(), selection.getId()) {
 
             @Override
             protected String getPath() {
@@ -218,38 +218,42 @@ AbstractEditDialog {
 
     private void populateSortOptions() {
         final ModelData manual = new BaseModelData();
-        manual.set("name", _constants.manual());
+        manual.set("name", getUiConstants().manual());
         manual.set("value", MANUAL.name());
         _sortStore.add(manual);
         final ModelData nameAlphanumAsc = new BaseModelData();
         nameAlphanumAsc.set("name",
-            _constants.name()
+            getUiConstants().name()
             +" - "
-            +_constants.alphanumeric()
+            +getUiConstants().alphanumeric()
             +", "
-            +_constants.ascending());
+            +getUiConstants().ascending());
         nameAlphanumAsc.set("value", NAME_ALPHANUM_ASC.name());
         _sortStore.add(nameAlphanumAsc);
 
         final ModelData dateChangedAsc = new BaseModelData();
         dateChangedAsc.set(
-            "name", _constants.dateChanged()+", "+_constants.ascending());
+            "name",
+            getUiConstants().dateChanged()+", "+getUiConstants().ascending());
         dateChangedAsc.set("value", DATE_CHANGED_ASC.name());
         _sortStore.add(dateChangedAsc);
         final ModelData dateChangedDesc = new BaseModelData();
         dateChangedDesc.set(
-            "name", _constants.dateChanged()+", "+_constants.descending());
+            "name",
+            getUiConstants().dateChanged()+", "+getUiConstants().descending());
         dateChangedDesc.set("value", DATE_CHANGED_DESC.name());
         _sortStore.add(dateChangedDesc);
 
         final ModelData dateCreatedAsc = new BaseModelData();
         dateCreatedAsc.set(
-            "name", _constants.dateCreated()+", "+_constants.ascending());
+            "name",
+            getUiConstants().dateCreated()+", "+getUiConstants().ascending());
         dateCreatedAsc.set("value", DATE_CREATED_ASC.name());
         _sortStore.add(dateCreatedAsc);
         final ModelData dateCreatedDesc = new BaseModelData();
         dateCreatedDesc.set(
-            "name", _constants.dateCreated()+", "+_constants.descending());
+            "name",
+            getUiConstants().dateCreated()+", "+getUiConstants().descending());
         dateCreatedDesc.set("value", DATE_CREATED_DESC.name());
         _sortStore.add(dateCreatedDesc);
     }
@@ -312,7 +316,7 @@ AbstractEditDialog {
 
         final ColumnConfig typeColumn = new ColumnConfig(
             Property.TYPE.name(),
-            _constants.type(),
+            getUiConstants().type(),
             40);
         typeColumn.setSortable(false);
         typeColumn.setMenuDisabled(true);
@@ -322,7 +326,7 @@ AbstractEditDialog {
 
         final ColumnConfig nameColumn = new ColumnConfig(
             Property.NAME.name(),
-            _constants.name(),
+            getUiConstants().name(),
             180);
         nameColumn.setSortable(false);
         nameColumn.setMenuDisabled(true);
@@ -330,7 +334,7 @@ AbstractEditDialog {
 
         final ColumnConfig titleColumn = new ColumnConfig(
             Property.TITLE.name(),
-            _constants.title(),
+            getUiConstants().title(),
             180);
         titleColumn.setSortable(false);
         titleColumn.setMenuDisabled(true);
@@ -338,7 +342,7 @@ AbstractEditDialog {
 
         final ColumnConfig createdColumn = new ColumnConfig(
             Property.DATE_CREATED.name(),
-            _constants.created(),
+            getUiConstants().created(),
             75);
         createdColumn.setSortable(false);
         createdColumn.setMenuDisabled(true);
@@ -347,7 +351,7 @@ AbstractEditDialog {
 
         final ColumnConfig changedColumn = new ColumnConfig(
             Property.DATE_CHANGED.name(),
-            _constants.changed(),
+            getUiConstants().changed(),
             75);
         changedColumn.setSortable(false);
         changedColumn.setMenuDisabled(true);

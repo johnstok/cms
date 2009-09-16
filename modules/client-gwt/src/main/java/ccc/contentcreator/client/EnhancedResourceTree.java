@@ -59,7 +59,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 
-        _store.addStoreListener(
+        store().addStoreListener(
             new StoreListener<ResourceSummaryModelData>(){
 
                 /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                         (ResourceSummaryModelData) ti.getModel();
 
                     final List<ResourceSummaryModelData> children =
-                        _store.getChildren(selectedModel);
+                        store().getChildren(selectedModel);
                     _rt.displayResourcesFor(children);
 
 
@@ -105,7 +105,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                         ti.setExpanded(true);
                     } else if (childCount > 0
                         && children.size() == 0) { // Children not loaded.
-                        _binder.loadChildren(ti);
+                        getBinder().loadChildren(ti);
                     }
                 }
             };

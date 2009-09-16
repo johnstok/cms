@@ -114,7 +114,7 @@ public class UpdatePageDialog
 
         add(_panel);
 
-        addButton(_cancel);
+        addButton(getCancel());
         addButton(createSaveDraftButton());
         addButton(createApplyNowButton());
     }
@@ -122,7 +122,7 @@ public class UpdatePageDialog
     private Button createApplyNowButton() {
 
         _applyNowButton = new Button(
-            _constants.applyNow(),
+            getUiConstants().applyNow(),
             applyNowAction());
         _applyNowButton.setId("applyNow");
         return _applyNowButton;
@@ -131,7 +131,7 @@ public class UpdatePageDialog
     private Button createSaveDraftButton() {
 
         _saveDraftButton = new Button(
-            _constants.saveDraft(),
+            getUiConstants().saveDraft(),
             saveDraftAction());
         _saveDraftButton.setId("saveDraft");
         return _saveDraftButton;

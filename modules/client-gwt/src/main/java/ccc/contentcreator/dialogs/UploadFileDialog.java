@@ -71,18 +71,18 @@ public class UploadFileDialog extends AbstractEditDialog {
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
-        _panel.setAction("upload");
-        _panel.setEncoding(FormPanel.Encoding.MULTIPART);
-        _panel.setMethod(FormPanel.Method.POST);
+        getPanel().setAction("upload");
+        getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
+        getPanel().setMethod(FormPanel.Method.POST);
 
         _fileName.setName("fileName");
-        _fileName.setFieldLabel(_constants.fileName());
+        _fileName.setFieldLabel(getUiConstants().fileName());
         _fileName.setAllowBlank(false);
         addField(_fileName);
 
         _file.setName("file");
         _file.setWidth("100%");
-        _file.setFieldLabel(_constants.localFile());
+        _file.setFieldLabel(getUiConstants().localFile());
         _file.setAllowBlank(false);
         addField(_file);
 
@@ -92,18 +92,18 @@ public class UploadFileDialog extends AbstractEditDialog {
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
-        _majorEdit.setBoxLabel(_constants.yes());
-        _majorEdit.setFieldLabel(_constants.majorEdit());
+        _majorEdit.setBoxLabel(getUiConstants().yes());
+        _majorEdit.setFieldLabel(getUiConstants().majorEdit());
         addField(_majorEdit);
 
-        _comment.setFieldLabel(_constants.comment());
+        _comment.setFieldLabel(getUiConstants().comment());
         _comment.setName("comment");
         addField(_comment);
 
         _image.setVisible(false);
-        _panel.add(_image);
+        getPanel().add(_image);
 
-        _panel.addListener(
+        getPanel().addListener(
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
@@ -111,7 +111,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             be.getResultHtml())) {
                         getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
-                            _constants.uploadFile());
+                            getUiConstants().uploadFile());
                     } else {
 
                         final JSONObject o =
@@ -122,7 +122,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                                 new RemoteException(
                                     FailureOverlay.fromJson(
                                         be.getResultHtml())),
-                                _constants.uploadFile());
+                                        getUiConstants().uploadFile());
                         } else {
                             hide();
                             ssm.create(
@@ -142,7 +142,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                if (!_panel.isValid()) {
+                if (!getPanel().isValid()) {
                     return;
                 }
                 Validate.callTo(submit())
@@ -160,7 +160,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 _image.setVisible(true);
-                _panel.submit();
+                getPanel().submit();
             }
         };
     }

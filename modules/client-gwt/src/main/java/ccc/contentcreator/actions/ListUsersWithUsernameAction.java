@@ -63,5 +63,10 @@ public abstract class ListUsersWithUsernameAction
         execute(users);
     }
 
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param users The collection of users returned from the server.
+     */
     protected abstract void execute(final Collection<UserDto> users);
 }

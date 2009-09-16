@@ -62,17 +62,17 @@ public class PageCommentDialog extends AbstractEditDialog {
         _updatePageDialog = updatePageDialog;
         setModal(true);
         setBodyStyle("backgroundColor: white;");
-        setHeading(_constants.editComment());
+        setHeading(getUiConstants().editComment());
         setWidth(DIALOG_WIDTH);
         setHeight(DIALOG_HEIGHT);
 
         _majorEdit.setId("majorEdit");
         _majorEdit.setValue(Boolean.FALSE);
-        _majorEdit.setBoxLabel(_constants.yes());
-        _majorEdit.setFieldLabel(_constants.majorEdit());
+        _majorEdit.setBoxLabel(getUiConstants().yes());
+        _majorEdit.setFieldLabel(getUiConstants().majorEdit());
         addField(_majorEdit);
 
-        _comment.setFieldLabel(_constants.comment());
+        _comment.setFieldLabel(getUiConstants().comment());
         _comment.setId("comment");
         addField(_comment);
     }

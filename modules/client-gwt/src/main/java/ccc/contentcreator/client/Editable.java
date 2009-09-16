@@ -13,11 +13,20 @@ package ccc.contentcreator.client;
 
 
 /**
- * TODO: Add a description for this type.
+ * Simple API for editable objects.
  *
  * @author Civic Computing Ltd.
  */
 public interface Editable {
+
+    /**
+     * Confirm the edits.
+     */
     void save();
+
+
+    /**
+     * Discard the edits.
+     */
     void cancel();
 }

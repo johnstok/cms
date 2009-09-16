@@ -68,14 +68,14 @@ public class HistoryDialog
         _toolBar = new HistoryToolBar(this);
         _toolBar.disable();
         setTopComponent(_toolBar);
-        _dataStore.add(DataBinding.bindLogEntrySummary(_data));
-        _grid.setAutoExpandColumn(LogEntrySummaryModelData.EXPAND_PROPERTY);
-        _grid.addListener(
+        getDataStore().add(DataBinding.bindLogEntrySummary(getData()));
+        getGrid().setAutoExpandColumn(LogEntrySummaryModelData.EXPAND_PROPERTY);
+        getGrid().addListener(
             Events.RowClick,
-            new Listener<GridEvent>(){
-                public void handleEvent(final GridEvent be) {
+            new Listener<GridEvent<?>>(){
+                public void handleEvent(final GridEvent<?> be) {
                     final LogEntrySummaryModelData md =
-                        _grid.getSelectionModel().getSelectedItem();
+                        getGrid().getSelectionModel().getSelectedItem();
                     if (null==md) {
                         _toolBar.disable();
                     } else {
@@ -104,14 +104,14 @@ public class HistoryDialog
         final ColumnConfig userColumn =
             new ColumnConfig(
                 LogEntrySummaryModelData.Property.USERNAME.name(),
-                _constants.user(),
+                getUiConstants().user(),
                 100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
             new ColumnConfig(
                 LogEntrySummaryModelData.Property.HAPPENED_ON.name(),
-                _constants.time(),
+                getUiConstants().time(),
                 150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
         configs.add(timeColumn);
@@ -119,14 +119,14 @@ public class HistoryDialog
         final ColumnConfig majorEditColumn =
             new ColumnConfig(
                 LogEntrySummaryModelData.Property.IS_MAJOR_EDIT.name(),
-                _constants.majorEdit(),
+                getUiConstants().majorEdit(),
                 70);
         configs.add(majorEditColumn);
 
         final ColumnConfig commentColumn = new ColumnConfig();
         commentColumn.setId(
             LogEntrySummaryModelData.Property.COMMENT.name());
-        commentColumn.setHeader(_constants.comment());
+        commentColumn.setHeader(getUiConstants().comment());
         configs.add(commentColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
@@ -141,7 +141,7 @@ public class HistoryDialog
      */
     public LogEntrySummaryModelData selectedItem() {
         final LogEntrySummaryModelData selected =
-            _grid.getSelectionModel().getSelectedItem();
+            getGrid().getSelectionModel().getSelectedItem();
         return selected;
     }
 

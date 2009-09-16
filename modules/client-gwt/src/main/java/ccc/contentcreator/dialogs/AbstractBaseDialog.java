@@ -47,12 +47,12 @@ public abstract class AbstractBaseDialog
     public static final float PERCENT_70 = .7f;
 
     private final IGlobals _globals;
-    protected final UIConstants _constants;
-    protected final UIMessages  _messages;
-    protected final UIConstants _uiConstants;
-    protected final ActionNameConstants _userActions;
+    private final UIConstants _constants;
+    private final UIMessages  _messages;
+    private final UIConstants _uiConstants;
+    private final ActionNameConstants _userActions;
 
-    protected final Button _cancel;
+    private final Button _cancel;
 
     /**
      * Constructor.
@@ -127,5 +127,55 @@ public abstract class AbstractBaseDialog
         });
         cancel.setId("cancel");
         return cancel;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the cancel button.
+     */
+    protected Button getCancel() {
+        return _cancel;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the constants.
+     */
+    protected UIConstants getConstants() {
+        return _constants;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the messages.
+     */
+    protected UIMessages getMessages() {
+        return _messages;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the uiConstants.
+     */
+    protected UIConstants getUiConstants() {
+        return _uiConstants;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the userActions.
+     */
+    protected ActionNameConstants getUserActions() {
+        return _userActions;
     }
 }

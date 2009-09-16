@@ -69,11 +69,11 @@ public class CreateActionDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 if (null==_createAction.commandType()) {
-                    _uiConstants.pleaseChooseAnAction();
+                    getUiConstants().pleaseChooseAnAction();
                     return;
                 }
                 if (null==_dtPicker.getDate()) {
-                    _uiConstants.pleaseSpecifyDateAndTime();
+                    getUiConstants().pleaseSpecifyDateAndTime();
                     return;
                 }
 

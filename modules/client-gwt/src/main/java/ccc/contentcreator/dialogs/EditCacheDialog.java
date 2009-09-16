@@ -61,20 +61,20 @@ public class EditCacheDialog extends AbstractEditDialog {
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
 
-        _useDefault.setBoxLabel(_constants.yes());
+        _useDefault.setBoxLabel(getUiConstants().yes());
         _useDefault.addListener(Events.Change, checkBoxListener());
 
-        _cbg.setFieldLabel(_constants.useDefaultSetting());
+        _cbg.setFieldLabel(getUiConstants().useDefaultSetting());
         _cbg.add(_useDefault);
-        _panel.add(_cbg);
+        getPanel().add(_cbg);
 
-        _days.setFieldLabel(_constants.days());
+        _days.setFieldLabel(getUiConstants().days());
         _days.setId("cacheDurationDays");
-        _hours.setFieldLabel(_constants.hours());
+        _hours.setFieldLabel(getUiConstants().hours());
         _hours.setId("cacheDurationHours");
-        _minutes.setFieldLabel(_constants.minutes());
+        _minutes.setFieldLabel(getUiConstants().minutes());
         _minutes.setId("cacheDurationMinutes");
-        _seconds.setFieldLabel(_constants.seconds());
+        _seconds.setFieldLabel(getUiConstants().seconds());
         _seconds.setId("cacheDurationSeconds");
 
         if (ds != null) {
@@ -88,10 +88,10 @@ public class EditCacheDialog extends AbstractEditDialog {
         }
         changeFieldVisibility();
 
-        _panel.add(_days);
-        _panel.add(_hours);
-        _panel.add(_minutes);
-        _panel.add(_seconds);
+        getPanel().add(_days);
+        getPanel().add(_hours);
+        getPanel().add(_minutes);
+        getPanel().add(_seconds);
     }
 
     private Listener<FieldEvent> checkBoxListener() {

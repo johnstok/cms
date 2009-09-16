@@ -67,5 +67,10 @@ public abstract class CreateFolderAction
         execute(rs);
     }
 
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param folder The folder returned.
+     */
     protected abstract void execute(ResourceSummary folder);
 }

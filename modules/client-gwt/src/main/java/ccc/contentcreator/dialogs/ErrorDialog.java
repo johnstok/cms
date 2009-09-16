@@ -47,7 +47,7 @@ public class ErrorDialog extends AbstractEditDialog {
         super(globals.uiConstants().error(), globals);
         setPanelId("error-panel");
 
-        _panel.add(_message);
+        getPanel().add(_message);
         _message.setHTML(
             globals
                 .errorDescriptions()
@@ -71,7 +71,7 @@ public class ErrorDialog extends AbstractEditDialog {
         _resolution.setValue(resolution);
         addField(_resolution);
 
-        getButtonBar().remove(_save);
+        getButtonBar().remove(getSave());
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
 

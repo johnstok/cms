@@ -73,7 +73,7 @@ public abstract class AbstractWizardDialog
         _prev.setId("previous");
         _save.setId("save");
 
-        addButton(_cancel);
+        addButton(getCancel());
         addButton(_prev);
         addButton(_save);
         addButton(_next);

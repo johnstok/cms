@@ -77,5 +77,10 @@ public abstract class CreateTemplateAction
         return json.toString();
     }
 
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param template The newly created template.
+     */
     protected abstract void execute(ResourceSummary template);
 }

@@ -116,7 +116,7 @@ public class CreatePageDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ColumnConfig nameColumn = new ColumnConfig();
         nameColumn.setId(TemplateSummaryModelData.Property.NAME.name());
-        nameColumn.setHeader(_uiConstants.name());
+        nameColumn.setHeader(getUiConstants().name());
         nameColumn.setWidth(NAME_COLUMN_WIDTH);
         nameColumn.setRenderer(new IdRenderer());
         configs.add(nameColumn);
@@ -151,13 +151,13 @@ public class CreatePageDialog
 
         _first.setLayout(new BorderLayout());
         _rightPanel.setHeaderVisible(true);
-        _rightPanel.setHeading(_uiConstants.template());
+        _rightPanel.setHeading(getUiConstants().template());
         _rightPanel.add(createCheckbox());
         _rightPanel.add(_grid);
         _first.add(_rightPanel, westData);
 
         _descriptionPanel.setHeaderVisible(true);
-        _descriptionPanel.setHeading(_uiConstants.description());
+        _descriptionPanel.setHeading(getUiConstants().description());
         _descriptionPanel.add(_description);
         _first.add(_descriptionPanel, centerData);
 
@@ -176,11 +176,11 @@ public class CreatePageDialog
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
-        _majorEdit.setBoxLabel(_constants.yes());
-        _majorEdit.setFieldLabel(_constants.majorEdit());
+        _majorEdit.setBoxLabel(getUiConstants().yes());
+        _majorEdit.setFieldLabel(getUiConstants().majorEdit());
         _third.add(_majorEdit);
 
-        _comment.setFieldLabel(_constants.comment());
+        _comment.setFieldLabel(getUiConstants().comment());
         _comment.setName("comment");
         _third.add(_comment);
         addCard(_third);
@@ -191,9 +191,10 @@ public class CreatePageDialog
     private CheckBox createCheckbox() {
 
         final CheckBox cb = new CheckBox();
-        cb.setBoxLabel(_uiConstants.useDefaultTemplate());
-        cb.setId(_uiConstants.useDefaultTemplate());
-        new ComputeTemplateAction(_constants.createPage(), _parent.getId()) {
+        cb.setBoxLabel(getUiConstants().useDefaultTemplate());
+        cb.setId(getUiConstants().useDefaultTemplate());
+        new ComputeTemplateAction(
+            getUiConstants().createPage(), _parent.getId()) {
 
             /** {@inheritDoc} */
             @Override
@@ -223,7 +224,7 @@ public class CreatePageDialog
         cb.addListener(Events.Change, new Listener<FieldEvent>() {
             public void handleEvent(final FieldEvent be) {
                 if (cb.getValue().booleanValue()) {
-                    new ComputeTemplateAction(_constants.createPage(),
+                    new ComputeTemplateAction(getUiConstants().createPage(),
                                               _parent.getId()) {
 
                         /** {@inheritDoc} */

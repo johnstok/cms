@@ -152,16 +152,16 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _first.setBodyBorder(false);
         _first.setHeaderVisible(false);
 
-        _name.setFieldLabel(_constants.name());
+        _name.setFieldLabel(getUiConstants().name());
         _name.setAllowBlank(false);
         _name.setId("name");
         _first.add(_name, new FormData("95%"));
 
-        _mimePrimary.setFieldLabel(_constants.mimePrimaryType());
+        _mimePrimary.setFieldLabel(getUiConstants().mimePrimaryType());
         _mimePrimary.setAllowBlank(false);
         _first.add(_mimePrimary, new FormData("95%"));
 
-        _mimeSub.setFieldLabel(_constants.mimeSubType());
+        _mimeSub.setFieldLabel(getUiConstants().mimeSubType());
         _mimeSub.setAllowBlank(false);
         _first.add(_mimeSub, new FormData("95%"));
     }
@@ -186,7 +186,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _third.setBodyBorder(false);
         _third.setHeaderVisible(false);
 
-        _body.setFieldLabel(_constants.body());
+        _body.setFieldLabel(getUiConstants().body());
         _body.setAllowBlank(false);
         _body.setId("body");
         _body.setHeight(TEXT_AREA_HEIGHT);
@@ -236,7 +236,7 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                         protected void execute(final boolean nameExists) {
                             if (nameExists) {
                                 validate.addMessage(
-        _messages.templateWithNameAlreadyExistsInThisFolder(name.getValue())
+        getMessages().templateWithNameAlreadyExistsInThisFolder(name.getValue())
                                 );
                             }
                             validate.next();

@@ -77,7 +77,7 @@ public class EditUserDialog extends AbstractEditDialog {
         _email.setValue(_userDTO.getEmail());
         addField(_email);
 
-        _roles.setFieldLabel(_constants.roles());
+        _roles.setFieldLabel(getUiConstants().roles());
         _roles.setId("resource-roles");
         _roles.setHeight(ROLE_HEIGHT);
         final StringBuilder rolesString = new StringBuilder();

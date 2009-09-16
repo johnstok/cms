@@ -13,10 +13,16 @@ package ccc.contentcreator.client;
 
 
 /**
- * TODO: Add a description for this type.
+ * Simple object validation API.
  *
  * @author Civic Computing Ltd.
  */
 public interface Validatable {
+
+    /**
+     * Confirm whether the object is valid.
+     *
+     * @return True if the object is valid, false otherwise.
+     */
     boolean isValid();
 }
