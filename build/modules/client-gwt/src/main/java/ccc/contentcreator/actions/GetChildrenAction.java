@@ -65,5 +65,10 @@ public abstract class GetChildrenAction
         execute(children);
     }
 
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param children The collection of folder children.
+     */
     protected abstract void execute(Collection<ResourceSummary> children);
 }

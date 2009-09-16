@@ -54,5 +54,10 @@ public abstract class UniqueUsernameAction
         execute(exists);
     }
 
+    /**
+     * Handle a successful execution.
+     *
+     * @param usernameExists True if the username exists, false otherwise.
+     */
     protected abstract void execute(boolean usernameExists);
 }

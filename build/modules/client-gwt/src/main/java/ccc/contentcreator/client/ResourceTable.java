@@ -233,7 +233,7 @@ public class ResourceTable
     /** {@inheritDoc} */
     public void update(final ResourceSummaryModelData model) {
         _detailsStore.update(model);
-        _tree._store.update(model);
+        _tree.store().update(model);
     }
 
 
@@ -241,11 +241,11 @@ public class ResourceTable
     public void create(final ResourceSummaryModelData model,
                        final ResourceSummaryModelData newParent) {
         final ResourceSummaryModelData np =
-            _tree._store.findModel(
+            _tree.store().findModel(
                 ResourceSummaryModelData.Property.UUID.name(),
                 newParent.getId());
         if (null!=np) { // May not exist in the store
-            _tree._store.add(np, model, false); // Add to the left-hand tree
+            _tree.store().add(np, model, false); // Add to the left-hand tree
 
             if (np.equals(treeSelection())) {   // Add to the right-hand table
                 _detailsStore.add(model);
@@ -259,14 +259,14 @@ public class ResourceTable
                      final ResourceSummaryModelData newParent,
                      final ResourceSummaryModelData oldParent) {
         _detailsStore.remove(model);
-        _tree._store.remove(oldParent, model);
+        _tree.store().remove(oldParent, model);
 
         final ResourceSummaryModelData np =
-            _tree._store.findModel(
+            _tree.store().findModel(
                 ResourceSummaryModelData.Property.UUID.name(),
                 newParent.getId());
         if (null!=np) { // May not exist in other store
-            _tree._store.add(np, model, false);
+            _tree.store().add(np, model, false);
         }
     }
 }

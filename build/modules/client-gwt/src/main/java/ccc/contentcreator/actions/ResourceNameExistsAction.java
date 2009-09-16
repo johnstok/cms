@@ -60,5 +60,10 @@ public abstract class ResourceNameExistsAction
         execute(nameExists);
     }
 
+    /**
+     * Handle a successful execution.
+     *
+     * @param nameExists True if the resource name exists, false otherwise.
+     */
     protected abstract void execute(boolean nameExists);
 }

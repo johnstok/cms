@@ -56,7 +56,7 @@ public class UpdateResourceRolesDialog
         setWidth(DIALOG_WIDTH);
         setHeight(DIALOG_HEIGHT);
 
-        _roles.setFieldLabel(_constants.roles());
+        _roles.setFieldLabel(getUiConstants().roles());
         _roles.setId("resource-roles");
         _roles.setHeight(ROLES_HEIGHT);
         final StringBuilder rolesString = new StringBuilder();

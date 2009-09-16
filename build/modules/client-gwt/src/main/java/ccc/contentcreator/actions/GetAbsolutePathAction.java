@@ -52,5 +52,10 @@ public abstract class GetAbsolutePathAction
         execute(path);
     }
 
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param path The path returned.
+     */
     protected abstract void execute(String path);
 }

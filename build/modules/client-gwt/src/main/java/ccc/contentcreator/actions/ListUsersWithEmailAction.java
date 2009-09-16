@@ -63,5 +63,10 @@ public abstract class ListUsersWithEmailAction
         execute(users);
     }
 
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param users The collection of users returned.
+     */
     protected abstract void execute(Collection<UserDto> users);
 }

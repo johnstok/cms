@@ -44,8 +44,8 @@ public class FolderResourceTree extends Tree {
     private final ResourceSummary _root;
     private final IGlobals _globals;
 
-    protected final TreeStore<ResourceSummaryModelData> _store;
-    protected final FolderBinder _binder;
+    private final TreeStore<ResourceSummaryModelData> _store;
+    private final FolderBinder _binder;
 
     /**
      * Constructor.
@@ -118,6 +118,17 @@ public class FolderResourceTree extends Tree {
         loader.load(null);
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the binder.
+     */
+    protected FolderBinder getBinder() {
+        return _binder;
+    }
+
+
     /**
      * Accessor for this tree's data store.
      *
@@ -126,6 +137,7 @@ public class FolderResourceTree extends Tree {
     public TreeStore<ResourceSummaryModelData> store() {
         return _store;
     }
+
 
     /**
      * Tree binder for folder trees.

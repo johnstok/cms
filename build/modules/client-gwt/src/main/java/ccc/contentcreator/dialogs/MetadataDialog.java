@@ -254,17 +254,19 @@ public class MetadataDialog extends AbstractEditDialog {
                 for (final Map.Entry<String, String> datum : data.entrySet()) {
                     if (null==datum.getKey()
                         || datum.getKey().trim().length() < 1) {
-                        sb.append(_constants.noEmptyKeysAllowed());
+                        sb.append(getUiConstants().noEmptyKeysAllowed());
                     }
                     if (null==datum.getValue()
                         || datum.getValue().trim().length() < 1) {
-                        sb.append(_constants.noEmptyValuesAllowed());
+                        sb.append(getUiConstants().noEmptyValuesAllowed());
                     }
                     if (!datum.getKey().matches("[^<^>]*")) {
-                        sb.append(_constants.keysMustNotContainBrackets());
+                        sb.append(
+                            getUiConstants().keysMustNotContainBrackets());
                     }
                     if (!datum.getValue().matches("[^<^>]*")) {
-                        sb.append(_constants.valuesMustNotContainBrackets());
+                        sb.append(
+                            getUiConstants().valuesMustNotContainBrackets());
                     }
                 }
                 if (sb.length() > 0) {

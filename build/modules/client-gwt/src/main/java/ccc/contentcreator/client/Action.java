@@ -21,8 +21,14 @@ import ccc.contentcreator.api.UIConstants;
  * @author Civic Computing Ltd.
  */
 public interface Action {
+
+    /** GLOBALS : IGlobals. */
     IGlobals GLOBALS = new IGlobalsImpl();
+
+    /** USER_ACTIONS : ActionNameConstants. */
     ActionNameConstants USER_ACTIONS = GLOBALS.userActions();
+
+    /** UI_CONSTANTS : UIConstants. */
     UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
 
     /**

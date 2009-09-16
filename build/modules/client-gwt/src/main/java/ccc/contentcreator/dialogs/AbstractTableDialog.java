@@ -36,9 +36,9 @@ public abstract class AbstractTableDialog<T, S extends ModelData>
     extends
         AbstractBaseDialog {
 
-    protected final Collection<T> _data;
-    protected final ListStore<S> _dataStore = new ListStore<S>();
-    protected final Grid<S> _grid;
+    private final Collection<T> _data;
+    private final ListStore<S> _dataStore = new ListStore<S>();
+    private final Grid<S> _grid;
 
     /**
      * Constructor.
@@ -72,6 +72,37 @@ public abstract class AbstractTableDialog<T, S extends ModelData>
 
         add(_grid);
     }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the data.
+     */
+    protected Collection<T> getData() {
+        return _data;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the dataStore.
+     */
+    protected ListStore<S> getDataStore() {
+        return _dataStore;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the grid.
+     */
+    protected Grid<S> getGrid() {
+        return _grid;
+    }
+
 
     /**
      * Create the column model for the GXT grid.

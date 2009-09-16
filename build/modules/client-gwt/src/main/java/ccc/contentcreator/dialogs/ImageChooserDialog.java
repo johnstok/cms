@@ -60,7 +60,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         final ListStore<FileSummaryModelData> store =
             new ListStore<FileSummaryModelData>();
 
-        new GetContentImagesAction(_constants.selectImage()){
+        new GetContentImagesAction(getUiConstants().selectImage()){
             @Override
             protected void execute(final Collection<FileDto> images) {
                 loadModel(image, store, images);
@@ -87,7 +87,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
         panel.add(_view);
         add(panel);
 
-        addButton(_cancel);
+        addButton(getCancel());
         final Button save = new Button(constants().save(), saveAction());
         addButton(save);
 

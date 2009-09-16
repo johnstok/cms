@@ -32,11 +32,8 @@ public abstract class AbstractEditDialog
     extends
         AbstractBaseDialog {
 
-    /** _panel : FormPanel. */
-    protected final FormPanel _panel = new FormPanel();
-
-    /** _save : Button. */
-    protected final Button _save = new Button(
+    private final FormPanel _panel = new FormPanel();
+    private final Button _save = new Button(
             constants().save(),
             saveAction());
 
@@ -57,7 +54,7 @@ public abstract class AbstractEditDialog
         _panel.setHeaderVisible(false);
         add(_panel);
 
-        addButton(_cancel);
+        addButton(getCancel());
         addButton(_save);
     }
 
@@ -89,6 +86,26 @@ public abstract class AbstractEditDialog
      */
     protected void setLabelWidth(final int width) {
         _panel.setLabelWidth(width);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the panel.
+     */
+    protected FormPanel getPanel() {
+        return _panel;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the save.
+     */
+    protected Button getSave() {
+        return _save;
     }
 
 

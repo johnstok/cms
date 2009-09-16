@@ -58,5 +58,10 @@ public abstract class PageDeltaAction
         execute(delta);
     }
 
+    /**
+     * Handle a successful execution.
+     *
+     * @param delta The delta returned by the server.
+     */
     protected abstract void execute(PageDelta delta);
 }

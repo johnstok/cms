@@ -60,13 +60,13 @@ public class UpdateFileDialog extends AbstractEditDialog {
               new IGlobalsImpl());
         setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
-        _panel.setAction("update_file");
-        _panel.setEncoding(FormPanel.Encoding.MULTIPART);
-        _panel.setMethod(FormPanel.Method.POST);
+        getPanel().setAction("update_file");
+        getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
+        getPanel().setMethod(FormPanel.Method.POST);
 
         _file.setName("file");
         _file.setWidth("100%");
-        _file.setFieldLabel(_constants.localFile());
+        _file.setFieldLabel(getUiConstants().localFile());
         _file.setAllowBlank(false);
         addField(_file);
 
@@ -76,18 +76,18 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.FALSE);
-        _majorEdit.setBoxLabel(_constants.yes());
-        _majorEdit.setFieldLabel(_constants.majorEdit());
+        _majorEdit.setBoxLabel(getUiConstants().yes());
+        _majorEdit.setFieldLabel(getUiConstants().majorEdit());
         addField(_majorEdit);
 
-        _comment.setFieldLabel(_constants.comment());
+        _comment.setFieldLabel(getUiConstants().comment());
         _comment.setName("comment");
         addField(_comment);
 
         _image.setVisible(false);
-        _panel.add(_image);
+        getPanel().add(_image);
 
-        _panel.addListener(
+        getPanel().addListener(
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
@@ -98,12 +98,12 @@ public class UpdateFileDialog extends AbstractEditDialog {
                             be.getResultHtml())) {
                         getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
-                            _constants.updateFile());
+                            getUiConstants().updateFile());
                     } else {
                         getGlobals().unexpectedError(
                             new RemoteException(
                                 FailureOverlay.fromJson(be.getResultHtml())),
-                            _constants.updateFile());
+                                getUiConstants().updateFile());
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                if (!_panel.isValid()) {
+                if (!getPanel().isValid()) {
                     return;
                 }
                 Validate.callTo(submit())
@@ -129,7 +129,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 _image.setVisible(true);
-                _panel.submit();
+                getPanel().submit();
             }
         };
     }

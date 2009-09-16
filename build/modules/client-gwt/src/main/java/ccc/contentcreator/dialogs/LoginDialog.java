@@ -68,10 +68,10 @@ public class LoginDialog extends AbstractEditDialog {
         _password.setAllowBlank(false);
         addField(_password);
 
-        _panel.add(_message);
+        getPanel().add(_message);
 
-        _save.setText(constants().login());
-        getButtonBar().remove(_cancel);
+        getSave().setText(constants().login());
+        getButtonBar().remove(getCancel());
         setClosable(false);
         setMaximizable(false);
         setHeight(DIALOG_HEIGHT);
@@ -85,14 +85,27 @@ public class LoginDialog extends AbstractEditDialog {
             new LoginAction(LoginDialog.this));
     }
 
+    /**
+     * Indicate to the user that the login failed.
+     */
     public void loginFailed() {
-        _message.setText(_constants.loginFailed());
+        _message.setText(getUiConstants().loginFailed());
     }
 
+    /**
+     * Accessor.
+     *
+     * @return The username as a string.
+     */
     public String getUsername() {
         return _username.getValue();
     }
 
+    /**
+     * Accessor.
+     *
+     * @return The password as a string.
+     */
     public String getPassword() {
         return _password.getValue();
     }

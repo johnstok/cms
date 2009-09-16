@@ -53,5 +53,10 @@ public abstract class TemplateNameExistsAction
         execute(nameExists);
     }
 
+    /**
+     * Handle a successful execution.
+     *
+     * @param nameExists True if the template name exists, false otherwise.
+     */
     protected abstract void execute(boolean nameExists);
 }
