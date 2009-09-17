@@ -49,6 +49,21 @@ public final class ParagraphTest extends TestCase {
         assertEquals(strings, p.list());
         assertEquals(ParagraphType.LIST, p.type());
     }
+    
+    public void testListCondtructorWithComma() throws Exception {
+        // ARRANGE
+        final List<String> strings = new ArrayList<String>();
+        strings.add("one");
+        strings.add(",");
+        
+        try {
+            Paragraph.fromList("foo", strings);
+            fail("List cannot contain a comma");
+            
+        } catch (Exception e) {
+            assertEquals("The ',' char is not allowed.", e.getMessage());
+        }
+    }
 
 
     /**
@@ -288,7 +303,53 @@ public final class ParagraphTest extends TestCase {
         assertEquals("foo", p.name());
         assertEquals("", p.text());
     }
+    
+    public void testParagraphConstructorBooleanTypeJSON() throws Exception {
 
+        final Paragraph p = Paragraph.fromText("foo", "bar");
+        
+        _json.set("name", "foo");
+        _json.set("type", "TEXT");
+        _json.set("text", "bar");
+        _json.set("bool", (Boolean) null);
+        _json.set("date", (Date) null);
+        _json.set("number", (BigDecimal) null);
+        expect(_json.getString("name")).andReturn("bar");
+        expect(_json.getString("type")).andReturn("BOOLEAN");
+        expect(_json.getBool("bool")).andReturn(true);
+        replay(_json);
+        p.toJson(_json);
+
+        
+        final Paragraph p2 = new Paragraph(_json);
+        assertNull(p.bool());
+        assertEquals(p2.bool(), new Boolean(true));
+        
+    }
+
+    public void testParagraphConstructorDateTypeJSON() throws Exception {
+
+        Date testDate = new Date(System.currentTimeMillis());
+        
+        final Paragraph p = Paragraph.fromDate("foo", testDate);
+        _json.set("name", "foo");
+        _json.set("type", "DATE");
+        _json.set("text", (String)null);
+        _json.set("bool", (Boolean) null);
+        _json.set("date", testDate);
+        _json.set("number", (BigDecimal) null);
+        expect(_json.getString("name")).andReturn("bar");
+        expect(_json.getString("type")).andReturn("DATE");
+        expect(_json.getDate("date")).andReturn(testDate);
+        replay(_json);
+        p.toJson(_json);
+
+        final Paragraph p2 = new Paragraph(_json);
+        assertEquals(p2.date(), testDate);
+        
+    }
+
+    
     /**
      * Test.
      */
@@ -334,6 +395,31 @@ public final class ParagraphTest extends TestCase {
         assertEquals(t, b);
         assertEquals(b, t);
 
+    }
+    
+    public void testEqualsHandleNull() throws Exception {
+
+        final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
+        final Paragraph paragraph2 = null;
+        assertFalse(paragraph1.equals(paragraph2));
+    }
+    
+    public void testEqualsHandlesDifferentClass() throws Exception {
+
+        final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
+        Object paragraph2 = new Object();
+        assertFalse(paragraph1.equals(paragraph2));
+    }
+    
+    public void testEqulasHandlesIdenticalObjects() throws Exception {
+        Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
+        assertTrue(paragraph1.equals(paragraph1));
+    }
+    
+    public void testEqualsHandlesDiffesrentNames() throws Exception {
+        final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
+        final Paragraph paragraph2 = Paragraph.fromText("bar", "Hello world");
+        assertFalse(paragraph1.equals(paragraph2));
     }
 
     /** {@inheritDoc} */
