@@ -16,7 +16,7 @@ import java.util.Date;
 
 
 /**
- * TODO: Add a description for this type.
+ * Abstract implementation of a resource revision.
  *
  * @author Civic Computing Ltd.
  * @param <T>

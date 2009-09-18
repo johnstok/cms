@@ -73,7 +73,7 @@ public class FileRepositoryImpl implements FileRepository {
     @Override
     public void retrieve(final IData data, final OutputStream dataStream) {
         retrieve(
-            (Data) data, // FIXME!!!!
+            (Data) data, // TODO: Shouldn't need to cast here.
             new CopyAction(dataStream)
         );
     }

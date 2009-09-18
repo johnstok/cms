@@ -183,7 +183,7 @@ abstract class AbstractEJB {
 
     /**
      * Accessor.
-     * FIXME: Throw 'invalid session exception instead.
+     * TODO: Throw 'invalid session exception instead.
      *
      * @throws EntityNotFoundException If no user corresponds to the current
      *  principal.

@@ -16,7 +16,7 @@ import java.util.List;
 
 
 /**
- * TODO: Add a description for this type.
+ * API for a folder.
  *
  * @author Civic Computing Ltd.
  */

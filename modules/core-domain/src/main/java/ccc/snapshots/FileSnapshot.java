@@ -34,7 +34,7 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
 
     /**
      * Constructor.
-     * FIXME: We shouldn't need two parameters here.
+     * TODO: We shouldn't need two parameters here.
      *
      * @param f The file this snapshot wraps.
      * @param delegate The revision this snapshot wraps.

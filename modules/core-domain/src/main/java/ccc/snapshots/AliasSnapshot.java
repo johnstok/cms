@@ -23,7 +23,7 @@ import ccc.search.SearchEngine;
 
 
 /**
- * TODO: Add a description for this type.
+ * A read-only snapshot of an Alias.
  *
  * @author Civic Computing Ltd.
  */

@@ -19,7 +19,7 @@ import ccc.types.ResourceName;
 
 
 /**
- * TODO: Add a description for this type.
+ * API for a resource.
  *
  * @author Civic Computing Ltd.
  */

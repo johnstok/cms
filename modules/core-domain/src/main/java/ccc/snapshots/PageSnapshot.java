@@ -26,7 +26,7 @@ import ccc.types.Paragraph;
 
 
 /**
- * TODO: Add a description for this type.
+ * A read-only view of a page.
  *
  * @author Civic Computing Ltd.
  */

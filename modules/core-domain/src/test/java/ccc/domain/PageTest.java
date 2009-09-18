@@ -143,7 +143,7 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testUpdateWorkingCopy() { // TODO
+    public void testUpdateWorkingCopy() { // TODO: Enable assertions.
 
         // ARRANGE
         final Page page = new Page("foo", _rm);
@@ -159,7 +159,7 @@ public final class PageTest extends TestCase {
     /**
      * Test.
      */
-    public void testClearWorkingCopy() { // TODO
+    public void testClearWorkingCopy() { // TODO: Enable assertions.
 
         // ARRANGE
         final Page page = new Page("foo", _rm);
