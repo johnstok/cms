@@ -16,7 +16,7 @@ import ccc.types.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * API for a file.
  *
  * @author Civic Computing Ltd.
  */

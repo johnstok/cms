@@ -22,7 +22,7 @@ import ccc.types.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * The contents of a file resource at a specified point in time.
  *
  * @author Civic Computing Ltd.
  */

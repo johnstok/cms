@@ -230,7 +230,7 @@ public class FoldersEJB
     public Boolean nameExistsInFolder(final UUID folderId, final String name)
     throws RestException {
         try {
-            // TODO handle null folderId? (for root folders)
+            // TODO: handle null folderId? (for root folders)
             return
                 Boolean.valueOf(
                     getResources()

@@ -15,7 +15,7 @@ import java.util.Date;
 
 
 /**
- * TODO: Add a description for this type.
+ * Metadata describing a revision.
  *
  * @author Civic Computing Ltd.
  */

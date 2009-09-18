@@ -35,7 +35,6 @@ import ccc.serialization.JsonImpl;
 
 /**
  * A {@link MessageBodyReader} a collection of resource summaries.
- * TODO: Remove this class - it is a duplicate.
  *
  * @author Civic Computing Ltd.
  */

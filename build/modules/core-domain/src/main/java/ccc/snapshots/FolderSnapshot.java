@@ -52,7 +52,7 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     /** {@inheritDoc} */
     @Override
     public List<Resource> entries() {
-        return _delegate.entries(); // FIXME: wrap entries in snapshots.
+        return _delegate.entries(); // TODO: wrap entries in snapshots.
     }
 
 
@@ -62,7 +62,7 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
                                              final int page,
                                              final String sortOrder) {
         return _delegate.entries(
-            count, page, sortOrder); // FIXME: wrap entries in snapshots.
+            count, page, sortOrder); // TODO: wrap entries in snapshots.
     }
 
     /** {@inheritDoc} */

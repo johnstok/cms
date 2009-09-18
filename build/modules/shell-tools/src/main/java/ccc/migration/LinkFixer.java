@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import ccc.types.DBC;
+
 
 /**
  * Corrects relative URLs stored in href attributes.
@@ -53,8 +55,8 @@ public class LinkFixer {
      * @param prefix The prefix used when correcting links.
      */
     public LinkFixer(final String prefix) {
+        DBC.require().notNull(prefix);
         _prefix = prefix;
-        // TODO: Warn if prefix is NULL or ZLS?
     }
 
     /**

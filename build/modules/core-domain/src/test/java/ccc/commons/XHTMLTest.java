@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 /**
  * Tests for the {@link XHTML} class.
  *
- * TODO Add tests for printErrors().
+ * TODO: Add tests for printErrors().
  *
  * @author Civic Computing Ltd
  */

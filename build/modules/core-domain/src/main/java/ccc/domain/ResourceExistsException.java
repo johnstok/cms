@@ -19,7 +19,8 @@ import ccc.types.FailureCode;
 
 
 /**
- * TODO: Add Description for this type.
+ * Exception thrown when a resource cannot be created because an existing
+ * resource already has the same absolute path.
  *
  * @author Civic Computing Ltd.
  */

@@ -18,7 +18,7 @@ import ccc.types.Paragraph;
 
 
 /**
- * TODO: Add a description for this type.
+ * API for a page.
  *
  * @author Civic Computing Ltd.
  */

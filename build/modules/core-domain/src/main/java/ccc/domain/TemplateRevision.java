@@ -19,7 +19,7 @@ import ccc.types.MimeType;
 
 
 /**
- * TODO: Add a description for this type.
+ * The content of a template at a specific point in time.
  *
  * @author Civic Computing Ltd.
  */

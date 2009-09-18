@@ -23,7 +23,7 @@ import ccc.types.Paragraph;
 
 
 /**
- * TODO: Add a description for this type.
+ * The contents of a page at a specific point in time.
  *
  * @author Civic Computing Ltd.
  */
