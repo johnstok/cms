@@ -125,7 +125,7 @@ public class LegacyDBQueries {
      */
     public Collection<String> selectRolesForResource(final int resourceId) {
         final ResourceRolesSelector rsh = new ResourceRolesSelector();
-        return _db.select(rsh, resourceId);
+        return _db.select(rsh, resourceId, resourceId);
     }
 
     /**
