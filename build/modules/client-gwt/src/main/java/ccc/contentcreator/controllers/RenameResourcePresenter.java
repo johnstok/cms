@@ -68,8 +68,8 @@ public class RenameResourcePresenter
                              getView().getName(),
                              this).execute();
         } else {
-            // FIXME: I18n.
-            getGlobals().alert("The specified resource name is invalid");
+            getGlobals().alert(
+                getGlobals().uiConstants().resourceNameIsInvalid());
         }
     }
 

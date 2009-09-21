@@ -73,8 +73,8 @@ public class CreateFolderPresenter
                 }
             }.execute();
         } else {
-            // FIXME: I18n.
-            getGlobals().alert("The specified resource name is invalid");
+            getGlobals().alert(
+                getGlobals().uiConstants().resourceNameIsInvalid());
         }
     }
 
