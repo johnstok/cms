@@ -31,6 +31,7 @@ import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LockMismatchException;
@@ -77,7 +78,7 @@ public class ResourceDaoImplTest
      *
      * @throws Exception If the test fails.
      */
-    public void testLookupReturnsNullIFRootIsMissing() throws Exception {
+    public void testLookupThrowsExceptionIfRootIsMissing() throws Exception {
 
         // ARRANGE
         expect(
@@ -89,14 +90,16 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        final Resource resource =
+        try {
             _rdao.lookup(
                 PredefinedResourceNames.CONTENT,
                 new ResourcePath("/foo/bar"));
+            fail();
 
         // ASSERT
-        verifyAll();
-        assertNull("Should be null.", resource);
+        } catch (final EntityNotFoundException e) {
+            verifyAll();
+        }
     }
 
     /**
