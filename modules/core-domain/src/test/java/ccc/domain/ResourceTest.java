@@ -41,7 +41,7 @@ public final class ResourceTest extends TestCase {
      * Test.
      * @throws CccCheckedException If the test fails.
      */
-    public void testResourceResourceAccessibilityRespectsParentalRoles()
+    public void testResourceAccessibilityRespectsParentalRoles()
     throws CccCheckedException {
 
         // ARRANGE
@@ -64,6 +64,23 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
+    public void testResourcesWithNoRolesAreAccessible() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        r.roles(Arrays.asList(new String[]{}));
+        final User tom = new User(new Username("paul"), "password");
+
+        // ACT
+        final boolean isAccessible = r.isAccessibleTo(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+    /**
+     * Test.
+     */
     public void testResourceIsAccessibleToUser() {
 
         // ARRANGE
@@ -71,6 +88,48 @@ public final class ResourceTest extends TestCase {
         r.roles(Arrays.asList("foo"));
         final User tom = new User(new Username("paul"), "password");
         tom.addRole("foo");
+
+        // ACT
+        final boolean isAccessible = r.isAccessibleTo(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+    /**
+     * Test.
+     */
+    public void testRolesOnResourceUseOrLogic() {
+
+        // ARRANGE
+        final Resource r = new Page();
+        r.roles(Arrays.asList("foo", "bar"));
+        final User tom = new User(new Username("paul"), "password");
+        tom.addRole("foo");
+
+        // ACT
+        final boolean isAccessible = r.isAccessibleTo(tom);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+    /**
+     * Test.
+     * @throws CccCheckedException If the test fails.
+     */
+    public void testRolesOnParentUseAndLogic() throws CccCheckedException {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.roles(Arrays.asList("bar", "baz"));
+        final Resource r = new Page();
+        r.roles(Arrays.asList("foo", "foz"));
+        f.add(r);
+
+        final User tom = new User(new Username("paul"), "password");
+        tom.addRole("foo");
+        tom.addRole("bar");
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);

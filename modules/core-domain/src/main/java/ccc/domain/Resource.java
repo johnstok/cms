@@ -553,12 +553,20 @@ public abstract class Resource
      * @return True if the user may access the resource, false otherwise.
      */
     public boolean isAccessibleTo(final User user) {
-        for (final String role : computeRoles()) {
-            if (!user.hasRole(role)) {
-                return false;
+        final boolean parentIsAccessible =
+            (null==_parent) ? true : parent().isAccessibleTo(user);
+
+        if (0==roles().size()) {
+            return parentIsAccessible;
+        }
+
+        for (final String role : roles()) {
+            if (user.hasRole(role)) {
+                return parentIsAccessible;
             }
         }
-        return true;
+
+        return false;
     }
 
     /**
