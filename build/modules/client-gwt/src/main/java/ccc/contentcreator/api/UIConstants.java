@@ -1458,4 +1458,22 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Your details")
     String yourDetails();
+
+    /**
+     * "disclaimer text".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("<p>This host is private property. It is not a "
+        + "public access server. If you are not in legal possession "
+        + "of an account, disconnect immediately.</p><br/><p>Your session is "
+        + "being recorded. If you disagree with this, disconnect immediately."
+        + "</p><br/><p>Detailed information available on you may be gathered "
+        + "if you proceed past this point, including (but not limited to) "
+        + "cross-reference information available online, port scanning "
+        + "results, and various system audit trails.</p><br/><p>These will be "
+        + "used to track any attempted break-in and notify the relevant "
+        + "authorities. If you disagree to any of this, disconnect "
+        + "immediately.</p><br/>")
+    String disclaimer();
 }

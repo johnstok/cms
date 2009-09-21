@@ -19,6 +19,7 @@ import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;
@@ -31,7 +32,7 @@ import com.google.gwt.http.client.Response;
  */
 public class LoginDialog extends AbstractEditDialog {
     private static final int DIALOG_WIDTH = 375;
-    private static final int DIALOG_HEIGHT = 150;
+    private static final int DIALOG_HEIGHT = 380;
 
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _password = new TextField<String>();
@@ -56,6 +57,9 @@ public class LoginDialog extends AbstractEditDialog {
         action.execute();
 
         setPanelId("LoginPanel");
+
+        final Html disclaimer = new Html(constants().disclaimer());
+        getPanel().add(disclaimer);
 
         _username.setFieldLabel(constants().username());
         _username.setId("username");
