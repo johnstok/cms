@@ -48,10 +48,17 @@ public final class AllUsersSelector
                 final Map<String, String> metamap =
                     _legacyDBQueries.selectMetadataForUser(userId);
 
-                final String email =
-                    (metamap.get("Email") == null) ? "" : metamap.get("Email");
+
+                String email = "";
+                if (metamap.containsKey("Email address")) {
+                    email = metamap.get("Email address");
+                } else if (metamap.containsKey("Email")) {
+                    email = metamap.get("Email");
+                }
+
                 final Set<String> roles =
                     _legacyDBQueries.selectRolesForUser(userId);
+                roles.add("USER_"+userName);
                 final UserDto user =
                     new UserDto(
                         email,
