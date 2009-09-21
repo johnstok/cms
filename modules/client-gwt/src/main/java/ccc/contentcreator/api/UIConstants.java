@@ -1476,4 +1476,13 @@ public interface UIConstants extends Constants {
         + "authorities. If you disagree to any of this, disconnect "
         + "immediately.</p><br/>")
     String disclaimer();
+
+    /**
+     * "The specified resource name is invalid".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("The specified resource name is invalid")
+    String resourceNameIsInvalid();
+
 }
