@@ -101,13 +101,13 @@ public class ResourceRepositoryImpl implements ResourceRepository {
                 new ResourceName(rootName));
 
         if (null==root) {
-            return null;
+            throw new EntityNotFoundException(null);
         }
 
         try {
             return root.navigateTo(path);
         } catch (final CCCException e) {
-            return null;
+            throw new EntityNotFoundException(null);
         }
     }
 
