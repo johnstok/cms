@@ -64,6 +64,7 @@ public final class CCCProperties {
         final Map<String, String> map = new HashMap<String, String>();
         for (final String key : PROPS.stringPropertyNames()) {
             if (key.equals("ccc-version")
+                || key.equals("application.base-href")
                 || key.equals("buildNumber")
                 || key.equals("application.name")) {
                 map.put(key, PROPS.getProperty(key));
