@@ -262,17 +262,22 @@ public class Migrations {
 
         } catch (final Exception e) {
 //          log.warn("Error migrating folder "+r.contentId(),  e);
-            log.warn("Error migrating folder "
-                +r.contentId()+": "+e.getMessage());
+            log.warn(logMigrationError("Error migrating folder ", r, e));
         }
     }
 
+
+    private String logMigrationError(String errorText, final ResourceBean r, final Exception e) {
+
+        return errorText + r.contentId()+ ", " + r.cleanTitle() + ": "+e.getMessage();
+    }
+
     private void migratePage(final UUID parentFolderId,
-                             final ResourceBean r) {
+                             final ResourceBean resource) {
 
         try {
             // Query the versions of a page
-            final List<Integer> paragraphVersions = determinePageVersions(r);
+            final List<Integer> paragraphVersions = determinePageVersions(resource);
 
             // Create the page
             LogEntryBean le = null;
@@ -280,10 +285,10 @@ public class Migrations {
             while (le == null) {
                 try {
                     le = logEntryForVersion(
-                        r.contentId(), createVersion, "CREATED PAGE");
+                        resource.contentId(), createVersion, "CREATED PAGE");
                 } catch (final MigrationException e) {
                     log.warn("Skipped version "+createVersion+" of page "
-                        +r.contentId());
+                        +resource.contentId());
                     if (paragraphVersions.size() == 0) {
                         throw e;
                     }
@@ -291,19 +296,19 @@ public class Migrations {
                 }
             }
 
-            PageDelta delta = assemblePage(r, createVersion.intValue());
+            PageDelta delta = assemblePage(resource, createVersion.intValue());
             final ResourceSummary rs =
-                createPage(parentFolderId, r, createVersion, le, delta);
+                createPage(parentFolderId, resource, createVersion, le, delta);
 
             // Apply all updates
             for (final Integer version : paragraphVersions) {
                 try {
-                    le = logEntryForVersion(r.contentId(), version, "UPDATE");
-                    delta = assemblePage(r, version);
-                    updatePage(r, rs, version, le, delta);
+                    le = logEntryForVersion(resource.contentId(), version, "UPDATE");
+                    delta = assemblePage(resource, version);
+                    updatePage(resource, rs, version, le, delta);
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
-                        +" of page "+r.contentId());
+                        +" of page "+resource.contentId());
                 }
             }
 
@@ -312,9 +317,9 @@ public class Migrations {
                     rs.getId().toString()),
                     le.getUser().getId(),
                     le.getHappenedOn());
-            setTemplateForResource(r, rs, le);
-            publish(r, rs, le);
-            showInMainMenu(r, rs, le);
+            setTemplateForResource(resource, rs, le);
+            publish(resource, rs, le);
+            showInMainMenu(resource, rs, le);
 
             for (final Paragraph paragraph : delta.getParagraphs()) {
                 if ("Description_Custom".equals(paragraph.name())) {
@@ -322,23 +327,19 @@ public class Migrations {
                 } else if ("Keywords_Custom".equals(paragraph.name())) {
                     rs.setTags(paragraph.text());
                 }
-
             }
-            setMetadata(r, rs, le);
-            setResourceRoles(r, rs, le);
+            
+            setMetadata(resource, rs, le);
+            setResourceRoles(resource, rs, le);
             _resourcesExt.unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
-            log.debug("Migrated page "+r.contentId());
+            log.debug("Migrated page "+resource.contentId());
 
-        } catch (final RestException e) {
-//            log.warn("Error migrating page "+r.contentId(),  e);
-            log.warn(
-                "Error migrating page " +r.contentId()+": "+e.getMessage());
-        } catch (final RuntimeException e) {
-//            log.warn("Error migrating page "+r.contentId(),  e);
-            log.warn(
-                "Error migrating page " +r.contentId()+": "+e.getMessage());
+        } catch (final RestException exception) {
+            log.warn(logMigrationError("Error migrating page ", resource, exception));
+        } catch (final RuntimeException exception) {
+            log.warn(logMigrationError("Error migrating page ", resource, exception));
         }
     }
 
@@ -481,7 +482,7 @@ public class Migrations {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
-        setStyleSheet(r, metadata);
+//        setStyleSheet(r, metadata);
         setFlagged(r, metadata);
         metadata.put("legacyId", ""+r.contentId());
         if (r.useInIndex() != null) {
@@ -503,7 +504,7 @@ public class Migrations {
                                   final LogEntryBean le)
                                                  throws RestException {
         if (r.isSecure()) {
-            log.info("Resource "+r.contentId()+" has security constraints");
+            log.info("Resource has security constraints " +r.contentId() + ", " + r.cleanTitle());
             _resourcesExt.changeRoles(
                 rs.getId(),
                 _legacyQueries.selectRolesForResource(r.contentId()),
