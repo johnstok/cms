@@ -189,13 +189,18 @@ public final class DBCTest extends TestCase {
             require().containsNoBrackets("no good < string >");
             fail("String containing brackets should be rejected.");
         } catch (final IllegalArgumentException e) {
-            assertEquals("String must not contain brackets.", e.getMessage());
+            assertEquals(
+                "String must not contain brackets: no good < string >",
+                e.getMessage());
         }
+
         try {
             require().containsNoBrackets("< Bad string");
             fail("String containing brackets should be rejected.");
         } catch (final IllegalArgumentException e) {
-            assertEquals("String must not contain brackets.", e.getMessage());
+            assertEquals(
+                "String must not contain brackets: < Bad string",
+                e.getMessage());
         }
 
     }

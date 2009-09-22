@@ -153,7 +153,7 @@ public final class DBC {
     public void containsNoBrackets(final String stringToTest) {
         if (stringToTest != null && !stringToTest.matches("[^<^>]*")) {
             throw new IllegalArgumentException(
-            "String must not contain brackets.");
+            "String must not contain brackets: "+stringToTest);
         }
     }
 
