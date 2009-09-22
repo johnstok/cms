@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
+import ccc.rest.impl.SecurityImpl;
+
 
 
 /**
@@ -64,6 +66,7 @@ public class LoginAction
         req.getSession(true);
         final WebAuthentication pwl = new WebAuthentication();
         if(pwl.login(username, password)) {
+            SecurityImpl.logSuccesfulLogin(username, req.getRemoteAddr());
             dispatchRedirect(req, resp, target);
         } else {
             dispatchRedirect(req, resp, _loginPage+"?tg="+target);
