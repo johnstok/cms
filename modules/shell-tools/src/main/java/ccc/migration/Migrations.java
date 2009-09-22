@@ -14,6 +14,7 @@ package ccc.migration;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,7 @@ import ccc.rest.extensions.ResourcesExt;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
+import ccc.types.Username;
 
 /**
  * Data migration from CCC6 to CCC7.
@@ -69,6 +71,8 @@ public class Migrations {
     private final boolean _migrateHomepage;
     private final boolean _migrateIsMajorEdit;
     private final boolean _migrateVersions;
+
+    private final String _userName;
 
     private final FileMigrator _fm;
     private final UserMigration _um;
@@ -103,7 +107,8 @@ public class Migrations {
                       final Templates templates,
                       final boolean migrateHomepage,
                       final boolean migrateIsMajorEdit,
-                      final boolean migrateVersions) {
+                      final boolean migrateVersions,
+                      final String userName) {
         _legacyQueries = legacyQueries;
         _resourcesExt = resourcesExt;
         _pagesExt = pagesExt;
@@ -113,6 +118,7 @@ public class Migrations {
         _migrateHomepage = migrateHomepage;
         _migrateIsMajorEdit = migrateIsMajorEdit;
         _migrateVersions = migrateVersions;
+        _userName = userName;
 
         try {
             _contentRoot = _resourcesExt.resourceForPath("/content");
@@ -617,13 +623,20 @@ public class Migrations {
     }
 
 
+    @SuppressWarnings("unchecked")
     private LogEntryBean logEntryForVersion(final int id,
                                             final int version,
                                             final String action) {
         final LogEntryBean le =
             _legacyQueries.selectUserFromLog(id, version, action);
 
-        if (null==le) {
+        if (null==le && version == 0) {
+            final LogEntryBean fe = new LogEntryBean(0, new Date());
+            final List<UserDto> users = new ArrayList(
+                _userCommands.listUsersWithUsername(new Username(_userName)));
+            fe.setUser(users.get(0));
+            return fe;
+        } else if (null == le) {
             throw new MigrationException(
                 "Log entry missing: "+id+" v."+version+", action: "+action);
         }

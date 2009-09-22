@@ -59,6 +59,7 @@ public final class Migrate extends CccApp {
     }
 
     private static void performMigration() {
+        // FIXME: pass options instead of 8 parameters?
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,
@@ -74,7 +75,8 @@ public final class Migrate extends CccApp {
                 services.lookupTemplates(),
                 options.isMigrateHomepage(),
                 options.isMigrateIsMajorEdit(),
-                options.isMigrateVersions());
+                options.isMigrateVersions(),
+                options.getUsername());
         migrations.migrate();
     }
 
