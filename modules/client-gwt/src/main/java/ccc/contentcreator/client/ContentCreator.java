@@ -2,9 +2,11 @@
 package ccc.contentcreator.client;
 
 
+import ccc.contentcreator.actions.GetPropertyAction;
 import ccc.contentcreator.actions.IsLoggedInAction;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -12,7 +14,7 @@ import com.google.gwt.core.client.EntryPoint;
  */
 public final class ContentCreator implements EntryPoint {
 
-    private IGlobals _globals = new IGlobalsImpl();
+    private IGlobalsImpl _globals = new IGlobalsImpl();
 
 
     /**
@@ -20,6 +22,17 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
         _globals.installUnexpectedExceptionHandler();
+        loadSettings();
         new IsLoggedInAction().execute();
+    }
+
+
+    private void loadSettings() {
+        new GetPropertyAction() {
+            /** {@inheritDoc} */
+            @Override protected void onOK(final Response response) {
+                _globals.setSettings(parseMapString(response));
+            }
+        }.execute();
     }
 }
