@@ -18,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import org.apache.log4j.Logger;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
@@ -35,6 +36,8 @@ import ccc.serialization.JsonImpl;
 @Produces("application/json")
 public class SecurityImpl
     implements Security {
+
+    private static final Logger LOG = Logger.getLogger(SecurityImpl.class);
 
     @Context private HttpServletRequest _request;
 
@@ -62,6 +65,7 @@ public class SecurityImpl
         if (_request.isUserInRole("ADMINISTRATOR")
             || _request.isUserInRole("CONTENT_CREATOR")
             || _request.isUserInRole("SITE_BUILDER")) {
+            logSuccesfulLogin(username, _request.getRemoteAddr());
             return Boolean.TRUE;
         }
 
@@ -86,4 +90,14 @@ public class SecurityImpl
     }
 
 
+    /**
+     * Log a successful login attempt..
+     *
+     * @param username The username used to log in.
+     * @param ip The IP address the user logged in from.
+     */
+    public static void logSuccesfulLogin(final String username,
+                                         final String ip) {
+        LOG.info("Login OK for ip "+ip+" with username "+username);
+    }
 }
