@@ -11,6 +11,9 @@
  */
 package ccc.contentcreator.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.api.ActionStatusConstants;
 import ccc.contentcreator.api.CommandTypeConstants;
@@ -37,6 +40,9 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 public class IGlobalsImpl
     implements
         IGlobals {
+
+    private static final Map<String, String> SETTINGS =
+        new HashMap<String, String>();
 
     private static final UIConstants UI_CONSTANTS =
         GWT.create(UIConstants.class);
@@ -233,4 +239,18 @@ public class IGlobalsImpl
         return ERROR_RESOLUTIONS;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public String getSetting(final String settingName) {
+        return SETTINGS.get(settingName);
+    }
+
+    /**
+     * Provide additional settings for this global object.
+     *
+     * @param settings The settings to add.
+     */
+    public void setSettings(final Map<String, String> settings) {
+        SETTINGS.putAll(settings);
+    }
 }

@@ -184,4 +184,14 @@ public interface IGlobals {
      * @return An ErrorResolutions object.
      */
     ErrorResolutions errorResolutions();
+
+    /**
+     * Retrieve a setting value.
+     *
+     * @param settingName The name of the setting to retrieve.
+     *
+     * @return The value of the setting as a string or NULL, if the setting
+     *  doesn't exist.
+     */
+    String getSetting(String settingName);
 }

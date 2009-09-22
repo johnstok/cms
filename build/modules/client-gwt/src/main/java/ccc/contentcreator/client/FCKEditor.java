@@ -90,6 +90,8 @@ public class FCKEditor extends LayoutContainer {
 
         _userActions = globals.userActions();
 
+        final String baseHref = globals.getSetting("application.base-href");
+
 
         //Create the hidden input box
         final HiddenField<String> inputBox = new HiddenField<String>();
@@ -101,7 +103,7 @@ public class FCKEditor extends LayoutContainer {
         final HiddenField<String>  configBox = new HiddenField<String>();
         configBox.setId(_elementID + "___Config");
         configBox.setVisible(false);
-        configBox.setValue("");
+        configBox.setValue("BaseHref=" + ((null==baseHref) ? "" : baseHref));
 
         //Create the IFRAME
         final Frame editorFrame = new Frame();
