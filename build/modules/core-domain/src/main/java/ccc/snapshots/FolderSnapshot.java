@@ -11,6 +11,7 @@
  */
 package ccc.snapshots;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,8 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     /** {@inheritDoc} */
     @Override
     public List<Resource> entries() {
-        return _delegate.entries(); // TODO: wrap entries in snapshots.
+        // TODO: wrap entries in snapshots.
+       return _delegate.entries();
     }
 
 
@@ -88,4 +90,36 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     private Page indexPage() {
         return _delegate.indexPage();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<FolderSnapshot> foldersAsSnapshots() {
+        return onlyPublished(_delegate.foldersAsSnapshots());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<PageSnapshot> pagesAsSnapshots() {
+        return onlyPublished(_delegate.pagesAsSnapshots());
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param folders
+     * @return
+     * @return
+     */
+    private <T extends ResourceSnapshot> List<T> onlyPublished(final List<T> c) {
+        final List<T> cleaned = new ArrayList<T>();
+        for (final T item : c) {
+            if (item.isPublished()) {
+                cleaned.add(item);
+            }
+        }
+        return cleaned;
+    }
+
+
+
 }

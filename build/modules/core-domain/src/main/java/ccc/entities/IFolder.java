@@ -43,4 +43,17 @@ public interface IFolder {
      */
     List<? extends IResource> entries(int count, int page, String sortOrder);
 
+    /**
+     * Retrieve a list of all the folders in this folder.
+     *
+     * @return A list of folders.
+     */
+    List<? extends IFolder> foldersAsSnapshots();
+
+    /**
+     * Retrieve a list of all the pages in this folder with sort order applied.
+     *
+     * @return A list of pages.
+     */
+    List<? extends IPage> pagesAsSnapshots();
 }

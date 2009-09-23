@@ -21,6 +21,7 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.snapshots.FolderSnapshot;
+import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
@@ -301,10 +302,12 @@ public final class Folder extends Resource implements IFolder {
         resource.parent(null);
     }
 
+
+
     /**
-     * Retrieve a list of all the pages in this folder with sort order applied.
+     * TODO: Add a description for this method.
      *
-     * @return A list of pages.
+     * @return
      */
     public List<Page> pages() {
         final List<Page> entries = new ArrayList<Page>();
@@ -316,10 +319,34 @@ public final class Folder extends Resource implements IFolder {
         return entries;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public List<PageSnapshot> pagesAsSnapshots() {
+        final List<PageSnapshot> entries = new ArrayList<PageSnapshot>();
+        for (final Resource entry : entries()) {
+            if (entry.type()==ResourceType.PAGE) {
+                entries.add(entry.as(Page.class).forCurrentRevision());
+            }
+        }
+        return entries;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<FolderSnapshot> foldersAsSnapshots() {
+        final List<FolderSnapshot> entries = new ArrayList<FolderSnapshot>();
+        for (final Resource entry : _entries) {
+            if (entry.type()==ResourceType.FOLDER) {
+                entries.add(entry.as(Folder.class).forCurrentRevision());
+            }
+        }
+        return entries;
+    }
+
     /**
-     * Retrieve a list of all the folders in this folder.
+     * TODO: Add a description for this method.
      *
-     * @return A list of folders.
+     * @return
      */
     public List<Folder> folders() {
         final List<Folder> entries = new ArrayList<Folder>();
