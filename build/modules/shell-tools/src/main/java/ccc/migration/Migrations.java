@@ -482,7 +482,7 @@ public class Migrations {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
-//        setStyleSheet(r, metadata);
+        setStyleSheet(r, metadata);
         setFlagged(r, metadata);
         metadata.put("legacyId", ""+r.contentId());
         if (r.useInIndex() != null) {
