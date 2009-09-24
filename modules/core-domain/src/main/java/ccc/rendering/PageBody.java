@@ -69,10 +69,12 @@ public class PageBody
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
+                      final User user,
                       final TextProcessor processor) {
         final String t = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
         final Context context = new Context(_reader, _page, _params);
+        context.add("user", user);
 
         processor.render(t, w, context);
     }

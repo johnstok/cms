@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import ccc.domain.User;
+
 
 
 /**
@@ -42,6 +44,7 @@ public class ByteArrayBody
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
+                      final User user,
                       final TextProcessor processor) throws IOException {
         os.write(_bytes);
     }

@@ -14,6 +14,7 @@ package ccc.rendering;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
@@ -50,6 +51,7 @@ public class FileBody
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
+                      final User user,
                       final TextProcessor processor) {
         _fileRepository.retrieve(_file.getData(), os);
     }
