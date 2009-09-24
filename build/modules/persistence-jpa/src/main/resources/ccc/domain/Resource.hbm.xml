@@ -42,6 +42,10 @@
             name="_includeInMainMenu"
             column="in_main_menu"
             not-null="true" />
+		<property
+            name="_deleted"
+            column="deleted"
+            not-null="true" />
         <property
             name="_dateCreated"
             column="date_created"

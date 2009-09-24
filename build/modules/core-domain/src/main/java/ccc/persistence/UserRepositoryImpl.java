@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
+
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
 
@@ -39,6 +41,16 @@ public class UserRepositoryImpl implements UserRepository {
      */
     public UserRepositoryImpl(final Repository repository) {
         _repository = repository;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param em The JPA entity manager for this repository.
+     */
+    public UserRepositoryImpl(final EntityManager em) {
+        this(new JpaRepository(em));
     }
 
 
@@ -96,5 +108,12 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (final IllegalStateException e) {
             return null;
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void create(final User user) {
+        _repository.create(user);
     }
 }

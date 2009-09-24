@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.types.ResourcePath;
@@ -37,7 +38,9 @@ public interface ResourceRepository {
      * @param params The query parameters.
      * @return A collection of results.
      */
-    <T> List<T> list(String queryName, Class<T> resultType, Object... params);
+    <T extends Resource> List<T> list(String queryName,
+                                      Class<T> resultType,
+                                      Object... params);
 
     /**
      * Find a single object using a query.
@@ -52,7 +55,9 @@ public interface ResourceRepository {
      *
      * @return The result.
      */
-    <T> T find(String queryName, Class<T> resultType, Object... params)
+    <T extends Resource> T find(String queryName,
+                                Class<T> resultType,
+                                Object... params)
     throws EntityNotFoundException;
 
     /**
@@ -116,4 +121,22 @@ public interface ResourceRepository {
      * @return The corresponding resource in CCC7.
      */
     Resource lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
+
+    /**
+     * Lookup a root folder by name.
+     *
+     * @param name The name of the root folder.
+     *
+     * @throws EntityNotFoundException If no root exists with the specified id.
+     *
+     * @return The corresponding folder
+     */
+    Folder root(String name) throws EntityNotFoundException;
+
+    /**
+     * Create a new resource.
+     *
+     * @param newResource The new resource to add.
+     */
+    void create(Resource newResource);
 }

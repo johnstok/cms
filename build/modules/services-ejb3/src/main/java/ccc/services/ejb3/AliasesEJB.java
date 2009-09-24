@@ -56,7 +56,7 @@ public class AliasesEJB
                             final AliasDelta delta)
                                                  throws RestException {
         try {
-            new UpdateAliasCommand(getRepository(), getAuditLog()).execute(
+            new UpdateAliasCommand(getResources(), getAuditLog()).execute(
                 currentUser(),
                 new Date(),
                 delta.getTargetId(),
@@ -75,7 +75,7 @@ public class AliasesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateAliasCommand(getRepository(), getAuditLog()).execute(
+                new CreateAliasCommand(getResources(), getAuditLog()).execute(
                     currentUser(),
                     new Date(),
                     alias.getParentId(),

@@ -64,7 +64,7 @@ public class FilesEJB
     public Collection<FileDto> getAllContentImages() {
         final List<File> list = new ArrayList<File>();
         for (final File file
-                : getRepository().list(QueryNames.ALL_IMAGES, File.class)) {
+                : getResources().list(QueryNames.ALL_IMAGES, File.class)) {
             if (PredefinedResourceNames.CONTENT.equals(
                 file.root().name().toString())) {
                 list.add(file);
@@ -93,7 +93,7 @@ public class FilesEJB
 
             final File f =
                 new CreateFileCommand(
-                    getRepository(), getAuditLog(), getFiles()).execute(
+                    getResources(), getAuditLog(), getFiles()).execute(
                         u,
                         lastUpdated,
                         parentFolder,
@@ -130,7 +130,7 @@ public class FilesEJB
 
         try {
             new UpdateFileCommand(
-                getRepository(), getAuditLog(), getFiles()).execute(
+                getResources(), getAuditLog(), getFiles()).execute(
                     currentUser(),
                     new Date(),
                     UUID.fromString(fileId.toString()),

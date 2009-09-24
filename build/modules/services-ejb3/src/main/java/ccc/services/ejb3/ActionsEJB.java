@@ -39,7 +39,6 @@ import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Scheduler;
-import ccc.persistence.QueryNames;
 import ccc.rest.Actions;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -84,9 +83,7 @@ public class ActionsEJB
     @Override
     public void executeAction() {
         LOG.debug("Executing scheduled actions.");
-        final List<Action> actions =
-            getRepository().list(
-                QueryNames.LATEST_ACTION, Action.class, new Date());
+        final List<Action> actions = getActions().latest(new Date());
         LOG.debug("Actions to execute: "+actions.size());
         try {
             if (actions.size() > 0) {
@@ -102,16 +99,14 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listPendingActions() {
-        return mapActions(
-            getRepository().list(QueryNames.PENDING, Action.class));
+        return mapActions(getActions().pending());
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ActionSummary> listCompletedActions() {
-        return mapActions(
-            getRepository().list(QueryNames.EXECUTED, Action.class));
+        return mapActions(getActions().completed());
     }
 
 
@@ -120,7 +115,7 @@ public class ActionsEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void cancelAction(final UUID actionId) throws RestException {
         try {
-            new CancelActionCommand(getRepository(), getAuditLog()).execute(
+            new CancelActionCommand(getActions(), getAuditLog()).execute(
                 currentUser(), new Date(), actionId);
 
         } catch (final CccCheckedException e) {
@@ -138,11 +133,11 @@ public class ActionsEJB
                     action.getCommand(),
                     action.getExecuteAfter(),
                     currentUser(),
-                    getRepository().find(
+                    getResources().find(
                         ccc.domain.Resource.class, action.getResourceId()),
                     action.getParameters());
 
-            new ScheduleActionCommand(getRepository(), getAuditLog()).execute(
+            new ScheduleActionCommand(getActions(), getAuditLog()).execute(
                 currentUser(), new Date(), a);
 
         } catch (final CccCheckedException e) {

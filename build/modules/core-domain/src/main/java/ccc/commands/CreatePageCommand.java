@@ -21,7 +21,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
@@ -40,7 +40,7 @@ public class CreatePageCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreatePageCommand(final Repository repository,
+    public CreatePageCommand(final ResourceRepository repository,
                              final LogEntryRepository audit) {
         super(repository, audit);
     }

@@ -21,7 +21,7 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 
 
 /**
@@ -37,7 +37,7 @@ public class CreateRootCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateRootCommand(final Repository repository,
+    public CreateRootCommand(final ResourceRepository repository,
                              final LogEntryRepository audit) {
         super(repository, audit);
     }

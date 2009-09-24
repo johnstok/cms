@@ -91,4 +91,12 @@ public interface UserRepository {
      * @return The corresponding CCC user.
      */
     User loggedInUser(final Principal p) throws EntityNotFoundException;
+
+
+    /**
+     * Create a new user.
+     *
+     * @param user The new user to add.
+     */
+    void create(User user);
 }

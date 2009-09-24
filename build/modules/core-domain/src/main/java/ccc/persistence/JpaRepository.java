@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.persistence;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,7 +22,6 @@ import javax.persistence.Query;
 
 import ccc.domain.Entity;
 import ccc.domain.EntityNotFoundException;
-import ccc.persistence.Repository;
 import ccc.types.DBC;
 
 
@@ -31,7 +30,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class JpaRepository implements Repository {
+class JpaRepository implements Repository {
 
     private final EntityManager _em;
 
@@ -40,7 +39,7 @@ public class JpaRepository implements Repository {
      *
      * @param em The JPA entity manager for this DAO.
      */
-    public JpaRepository(final EntityManager em) {
+    JpaRepository(final EntityManager em) {
         _em = em;
     }
 

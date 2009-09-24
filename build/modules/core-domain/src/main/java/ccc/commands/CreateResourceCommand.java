@@ -21,7 +21,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -33,7 +33,7 @@ import ccc.types.CommandType;
  */
 public abstract class CreateResourceCommand {
 
-    private final Repository      _repository;
+    private final ResourceRepository      _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -42,7 +42,7 @@ public abstract class CreateResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateResourceCommand(final Repository repository,
+    public CreateResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
@@ -131,7 +131,7 @@ public abstract class CreateResourceCommand {
      *
      * @return Returns the DAO.
      */
-    protected Repository getDao() {
+    protected ResourceRepository getDao() {
         return _repository;
     }
 

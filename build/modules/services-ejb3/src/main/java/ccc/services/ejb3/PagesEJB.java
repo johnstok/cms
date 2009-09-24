@@ -78,7 +78,7 @@ public class PagesEJB
             final User u = userForId(actorId);
 
             final Page p =
-                new CreatePageCommand(getRepository(), getAuditLog()).execute(
+                new CreatePageCommand(getResources(), getAuditLog()).execute(
                     u,
                     happenedOn,
                     parentId,
@@ -163,7 +163,7 @@ public class PagesEJB
                            final Date happenedOn)
                                                  throws RestException {
         try {
-            new UpdatePageCommand(getRepository(), getAuditLog()).execute(
+            new UpdatePageCommand(getResources(), getAuditLog()).execute(
                 userForId(actorId),
                 happenedOn,
                 pageId,
@@ -185,7 +185,7 @@ public class PagesEJB
                                                  throws RestException {
         try {
             new UpdateWorkingCopyCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     currentUser(),
                     new Date(),
                     pageId,

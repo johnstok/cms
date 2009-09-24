@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.entities.IData;
@@ -45,6 +47,17 @@ public class FileRepositoryImpl implements FileRepository {
         DBC.require().notNull(repository);
         _cd = cd;
         _repository = repository;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param cd The JDBC datasource used to manage data.
+     * @param em The JPA entity manager for this repository.
+     */
+    public FileRepositoryImpl(final CoreData cd, final EntityManager em) {
+        this(cd, new JpaRepository(em));
     }
 
 

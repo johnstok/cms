@@ -86,7 +86,7 @@ public class ResourceDaoImplTest
                 QueryNames.ROOT_BY_NAME,
                 Folder.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
-            .andReturn(null);
+            .andThrow(new EntityNotFoundException(null));
         replayAll();
 
         // ACT
@@ -157,7 +157,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new IncludeInMainMenuCommand(_repository, _al).execute(
+        new IncludeInMainMenuCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id(), true);
 
         // ASSERT
@@ -182,7 +182,7 @@ public class ResourceDaoImplTest
         // ACT
         final Map<String, String> props = new HashMap<String, String>();
         props.put("bodyId", "example");
-        new UpdateResourceMetadataCommand(_repository, _al).execute(
+        new UpdateResourceMetadataCommand(_rdao, _al).execute(
             _regularUser,
             new Date(),
             _r.id(),
@@ -215,7 +215,7 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         // ACT
-        new UnlockResourceCommand(_repository, _al).execute(
+        new UnlockResourceCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id());
 
         // ASSERT
@@ -238,7 +238,7 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            new UnlockResourceCommand(_repository, _al).execute(
+            new UnlockResourceCommand(_rdao, _al).execute(
                 _regularUser, new Date(), _r.id());
             fail("Should fail.");
 
@@ -268,7 +268,7 @@ public class ResourceDaoImplTest
         _r.lock(_regularUser);
 
         // ACT
-        new UnlockResourceCommand(_repository, _al).execute(
+        new UnlockResourceCommand(_rdao, _al).execute(
             _adminUser, new Date(), _r.id());
 
         // ASSERT
@@ -289,7 +289,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new LockResourceCommand(_repository, _al).execute(
+        new LockResourceCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id());
 
         // ASSERT
@@ -311,7 +311,7 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            new LockResourceCommand(_repository, _al).execute(
+            new LockResourceCommand(_rdao, _al).execute(
                 _regularUser, new Date(), _r.id());
             fail("Lock should fail.");
 
@@ -370,7 +370,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new ChangeTemplateForResourceCommand(_repository, _al).execute(
+        new ChangeTemplateForResourceCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id(), defaultTemplate.id());
 
         // ASSERT
@@ -399,7 +399,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new MoveResourceCommand(_repository, _al).execute(
+        new MoveResourceCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id(), newParent.id());
 
         // ASSERT
@@ -421,7 +421,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new RenameResourceCommand(_repository, _al).rename(
+        new RenameResourceCommand(_rdao, _al).rename(
             _regularUser, new Date(), _r.id(), "baz");
 
         // ASSERT
@@ -520,7 +520,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new UnpublishResourceCommand(_repository, _al).execute(
+        new UnpublishResourceCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id());
 
         // ASSERT
@@ -543,7 +543,7 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new UpdateCachingCommand(_repository, _al).execute(
+        new UpdateCachingCommand(_rdao, _al).execute(
             _regularUser, new Date(), _r.id(), new Duration(0, 1, 2, 7));
 
         // ASSERT

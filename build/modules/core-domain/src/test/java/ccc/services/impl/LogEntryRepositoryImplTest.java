@@ -47,7 +47,7 @@ public class LogEntryRepositoryImplTest
 
         // ACT
         try {
-            new LogEntryRepositoryImpl(null);
+            new LogEntryRepositoryImpl((Repository) null);
             fail("NULL should be rejected.");
 
         // ASSERT

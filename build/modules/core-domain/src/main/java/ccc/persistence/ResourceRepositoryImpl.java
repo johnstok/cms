@@ -11,10 +11,13 @@
  */
 package ccc.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.persistence.EntityManager;
 
 import ccc.domain.CCCException;
 import ccc.domain.EntityNotFoundException;
@@ -33,7 +36,7 @@ import ccc.types.ResourcePath;
  */
 public class ResourceRepositoryImpl implements ResourceRepository {
 
-    private final Repository            _repository;
+    private final Repository _repository;
 
     /**
      * Constructor.
@@ -45,10 +48,20 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
+    /**
+     * Constructor.
+     *
+     * @param em The JPA entity manager for this repository.
+     */
+    public ResourceRepositoryImpl(final EntityManager em) {
+        this(new JpaRepository(em));
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public List<Resource> locked() {
-        return _repository.list(QueryNames.LOCKED_RESOURCES, Resource.class);
+        return list(QueryNames.LOCKED_RESOURCES, Resource.class);
     }
 
 
@@ -56,7 +69,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public Map<Integer, ? extends Revision<?>> history(final UUID resourceId)
     throws EntityNotFoundException {
-        final Resource r = _repository.find(Resource.class, resourceId);
+        final Resource r = find(Resource.class, resourceId);
         return (r instanceof HistoricalResource<?, ?>)
             ? ((HistoricalResource<?, ?>) r).revisions()
             : new HashMap<Integer, Revision<?>>();
@@ -67,25 +80,28 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public <T extends Resource> T find(final Class<T> type, final UUID id)
     throws EntityNotFoundException {
-        return _repository.find(type, id);
+        return discardDeleted(_repository.find(type, id));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public <T> List<T> list(final String queryName,
-                            final Class<T> resultType,
-                            final Object... params) {
-        return _repository.list(queryName, resultType, params);
+    public <T extends Resource> List<T> list(final String queryName,
+                                             final Class<T> resultType,
+                                             final Object... params) {
+        return
+            discardDeleted(_repository.list(queryName, resultType, params));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public <T> T find(final String queryName,
-                      final Class<T> resultType,
-                      final Object... params) throws EntityNotFoundException {
-        return _repository.find(queryName, resultType, params);
+    public <T extends Resource> T find(final String queryName,
+                                       final Class<T> resultType,
+                                       final Object... params)
+    throws EntityNotFoundException {
+        return discardDeleted(
+            _repository.find(queryName, resultType, params));
     }
 
     /**
@@ -94,19 +110,10 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public Resource lookup(final String rootName, final ResourcePath path)
     throws EntityNotFoundException {
-        final Folder root =
-            _repository.find(
-                QueryNames.ROOT_BY_NAME,
-                Folder.class,
-                new ResourceName(rootName));
-
-        if (null==root) {
-            throw new EntityNotFoundException(null);
-        }
-
+        final Folder root = root(rootName);
         try {
             return root.navigateTo(path);
-        } catch (final CCCException e) {
+        } catch (final CCCException e) { // TODO: Dodgy?
             throw new EntityNotFoundException(null);
         }
     }
@@ -115,7 +122,45 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public Resource lookupWithLegacyId(final String legacyId)
     throws EntityNotFoundException {
-        return _repository.find(
-            QueryNames.RESOURCE_BY_LEGACY_ID, Resource.class, legacyId);
+        return
+            discardDeleted(
+                _repository.find(
+                    QueryNames.RESOURCE_BY_LEGACY_ID,
+                    Resource.class,
+                    legacyId));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Folder root(final String name) throws EntityNotFoundException {
+        return
+            find(
+                QueryNames.ROOT_BY_NAME,
+                Folder.class,
+                new ResourceName(name));
+    }
+
+    private <T extends Resource> T discardDeleted(final T resource)
+    throws EntityNotFoundException {
+        if (resource.isDeleted()) {
+            throw new EntityNotFoundException(resource.id());
+        }
+        return resource;
+    }
+
+    private <T extends Resource> List<T> discardDeleted(final List<T> all) {
+        final List<T> nondeleted = new ArrayList<T>();
+        for (final T r : all) {
+            if (!r.isDeleted()) { nondeleted.add(r); }
+        }
+        return nondeleted;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void create(final Resource newResource) {
+        _repository.create(newResource);
     }
 }

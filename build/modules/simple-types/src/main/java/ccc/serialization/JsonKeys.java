@@ -142,4 +142,6 @@ public final class JsonKeys {
     public static final String SUB_TYPE = "sub-type";
      /** PARAGRAPHS : String. */
     public static final String PARAGRAPHS = "paragraphs";
+    /** DELETED : String. */
+    public static final String DELETED = "deleted";
 }

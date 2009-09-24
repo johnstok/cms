@@ -434,6 +434,26 @@ public final class Folder extends Resource implements IFolder {
         _indexPage = indexPage;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public void delete() {
+        super.delete();
+        for (final Resource r : entries()) {  // Recursive deletion.
+            r.delete();
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void undelete() {
+        super.undelete();
+        for (final Resource r : entries()) {  // Recursive un-deletion.
+            r.undelete();
+        }
+    }
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {

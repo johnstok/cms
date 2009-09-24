@@ -18,7 +18,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Search;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 
 
 /**
@@ -36,7 +36,7 @@ public class CreateSearchCommand
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateSearchCommand(final Repository repository,
+    public CreateSearchCommand(final ResourceRepository repository,
                                final LogEntryRepository audit) {
         super(repository, audit);
     }

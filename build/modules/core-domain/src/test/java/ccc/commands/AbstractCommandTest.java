@@ -19,7 +19,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.types.Username;
 
 
@@ -36,7 +36,7 @@ public abstract class AbstractCommandTest
         new User(new Username("currentUser"), "password");
     private final Date _now = new Date();
 
-    private Repository _repository;
+    private ResourceRepository _repository;
     private LogEntryRepository _audit;
 
 
@@ -69,7 +69,7 @@ public abstract class AbstractCommandTest
      *
      * @return Returns the repository.
      */
-    public Repository getRepository() {
+    public ResourceRepository getRepository() {
         return _repository;
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractCommandTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _repository = createStrictMock(Repository.class);
+        _repository = createStrictMock(ResourceRepository.class);
         _audit = createStrictMock(LogEntryRepository.class);
     }
 

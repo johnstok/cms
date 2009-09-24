@@ -56,7 +56,7 @@ public class UsersEJB
     public UserDto createUser(final UserDto delta) throws RestException {
         try {
             return mapUser(
-                new CreateUserCommand(getRepository(), getAuditLog()).execute(
+                new CreateUserCommand(getUsers(), getAuditLog()).execute(
                     currentUser(), new Date(), delta));
 
         } catch (final CccCheckedException e) {
@@ -71,7 +71,7 @@ public class UsersEJB
     public void updateUser(final UUID userId, final UserDto delta)
     throws RestException {
         try {
-            new UpdateUserCommand(getRepository(), getAuditLog()).execute(
+            new UpdateUserCommand(getUsers(), getAuditLog()).execute(
                 currentUser(), new Date(), userId, delta);
 
         } catch (final CccCheckedException e) {
@@ -86,7 +86,7 @@ public class UsersEJB
     public void updateUserPassword(final UUID userId, final UserDto user)
     throws RestException {
         try {
-            new UpdatePasswordAction(getRepository(), getAuditLog()).execute(
+            new UpdatePasswordAction(getUsers(), getAuditLog()).execute(
                 currentUser(),
                 new Date(),
                 userId,
@@ -105,7 +105,7 @@ public class UsersEJB
                                final UserDto user)
                                                  throws RestException {
         try {
-        new UpdateCurrentUserCommand(getRepository(), getAuditLog()).execute(
+        new UpdateCurrentUserCommand(getUsers(), getAuditLog()).execute(
             currentUser(),
             new Date(),
             userId,

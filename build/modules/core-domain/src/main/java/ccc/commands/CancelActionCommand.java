@@ -18,8 +18,8 @@ import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
+import ccc.persistence.ActionRepository;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -31,7 +31,7 @@ import ccc.types.CommandType;
  */
 public class CancelActionCommand {
 
-    private final Repository _repository;
+    private final ActionRepository _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -40,7 +40,7 @@ public class CancelActionCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public CancelActionCommand(final Repository repository,
+    public CancelActionCommand(final ActionRepository repository,
                                final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
@@ -59,7 +59,7 @@ public class CancelActionCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID actionId) throws CccCheckedException {
-        final Action a = _repository.find(Action.class, actionId);
+        final Action a = _repository.find(actionId);
         a.cancel();
 
         _audit.record(

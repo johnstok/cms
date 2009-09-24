@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.persistence;
 
 import static org.easymock.EasyMock.*;
 
@@ -24,6 +24,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.persistence.JpaRepository;
 import ccc.types.ResourceName;
 
 

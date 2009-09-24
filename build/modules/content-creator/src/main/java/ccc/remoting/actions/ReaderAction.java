@@ -14,6 +14,7 @@ package ccc.remoting.actions;
 import java.io.IOException;
 import java.security.Principal;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,6 @@ import ccc.persistence.FileRepository;
 import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
@@ -60,10 +60,10 @@ public class ReaderAction
     public void execute(final HttpServletRequest req,
                         final HttpServletResponse resp) throws ServletException,
                                                                IOException {
-        final Repository repository =
-            (Repository) req.getAttribute(SessionKeys.DAO_KEY);
+        final EntityManager em =
+            (EntityManager) req.getAttribute(SessionKeys.EM_KEY);
 
-        final UserRepositoryImpl ul = new UserRepositoryImpl(repository);
+        final UserRepositoryImpl ul = new UserRepositoryImpl(em);
         final Principal p = req.getUserPrincipal();
         try {
             req.setAttribute(SessionKeys.CURRENT_USER, ul.loggedInUser(p));
@@ -72,15 +72,15 @@ public class ReaderAction
         }
 
         final LogEntryRepository al =
-            new LogEntryRepositoryImpl(repository);
+            new LogEntryRepositoryImpl(em);
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
         final FileRepository dm =
-            new FileRepositoryImpl(new FsCoreData(), repository);
+            new FileRepositoryImpl(new FsCoreData(), em);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
-            new StatefulReaderImpl(new ResourceRepositoryImpl(repository), dm);
+            new StatefulReaderImpl(new ResourceRepositoryImpl(em), dm);
         req.setAttribute(RenderingKeys.READER_KEY, sr);
 
         _delegate.execute(req, resp);

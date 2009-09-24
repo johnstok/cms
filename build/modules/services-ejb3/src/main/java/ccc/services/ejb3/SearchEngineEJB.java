@@ -39,12 +39,10 @@ import ccc.domain.Scheduler;
 import ccc.domain.Setting;
 import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.SettingsRepository;
 import ccc.persistence.jpa.FsCoreData;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
 import ccc.search.lucene.SimpleLucene;
@@ -73,7 +71,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     @PersistenceContext private EntityManager _em;
 
     private ResourceRepository _resources;
-    private Repository _repo;
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
@@ -189,13 +186,12 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _repo = new JpaRepository(_em);
-        _resources = new ResourceRepositoryImpl(_repo);
+        _resources = new ResourceRepositoryImpl(_em);
     }
 
 
     private SimpleLucene createLucene() {
-        final SettingsRepository settings = new SettingsRepository(_repo);
+        final SettingsRepository settings = new SettingsRepository(_em);
         Setting indexPath;
         try {
             indexPath = settings.find(Setting.Name.LUCENE_INDEX_PATH);
@@ -204,6 +200,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
         return new SimpleLuceneFS(
-            new FileRepositoryImpl(new FsCoreData(), _repo), indexPath.value());
+            new FileRepositoryImpl(new FsCoreData(), _em), indexPath.value());
     }
 }

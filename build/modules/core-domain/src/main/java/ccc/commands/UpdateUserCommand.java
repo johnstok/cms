@@ -18,7 +18,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.UserRepository;
 import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -33,7 +33,7 @@ import ccc.types.EmailAddress;
 public class UpdateUserCommand {
 
 
-    private final Repository      _repository;
+    private final UserRepository     _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -42,7 +42,7 @@ public class UpdateUserCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateUserCommand(final Repository repository,
+    public UpdateUserCommand(final UserRepository repository,
                              final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
@@ -64,7 +64,7 @@ public class UpdateUserCommand {
                         final Date happenedOn,
                         final UUID userId,
                         final UserDto delta) throws CccCheckedException {
-        final User current = _repository.find(User.class, userId);
+        final User current = _repository.find(userId);
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());

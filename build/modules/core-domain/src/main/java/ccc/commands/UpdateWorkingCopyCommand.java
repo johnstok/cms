@@ -22,7 +22,7 @@ import ccc.domain.User;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -35,7 +35,7 @@ import ccc.types.CommandType;
  */
 public class UpdateWorkingCopyCommand {
 
-    private final Repository      _repository;
+    private final ResourceRepository      _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -44,7 +44,7 @@ public class UpdateWorkingCopyCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdateWorkingCopyCommand(final Repository repository,
+    public UpdateWorkingCopyCommand(final ResourceRepository repository,
                                     final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;

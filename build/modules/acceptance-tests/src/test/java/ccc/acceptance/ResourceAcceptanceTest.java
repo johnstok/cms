@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceDto;
@@ -28,6 +29,9 @@ import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
+import ccc.types.Failure;
+import ccc.types.FailureCode;
+import ccc.types.HttpStatusCode;
 
 
 /**
@@ -379,6 +383,35 @@ public class ResourceAcceptanceTest
         // ASSERT
         assertEquals(f.getName(), legacy.getName());
         assertEquals(f.getId(), legacy.getId());
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testSimpleDelete() throws RestException {
+
+        // ARRANGE
+        final ResourceSummary f = tempFolder();
+
+        // ACT
+        getCommands().lock(f.getId());
+        getCommands().delete(f.getId());
+
+        // ASSERT
+        try {
+            getCommands().resource(f.getId());
+            fail();
+        } catch (final ClientResponseFailure e) {
+            assertEquals(
+                HttpStatusCode.IM_A_TEAPOT,
+                e.getResponse().getStatus());
+            assertEquals(
+                FailureCode.NOT_FOUND,
+                e.getResponse().getEntity(Failure.class).getCode());
+        }
     }
 
 

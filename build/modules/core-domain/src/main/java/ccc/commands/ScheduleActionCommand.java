@@ -16,8 +16,8 @@ import java.util.Date;
 import ccc.domain.Action;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
+import ccc.persistence.ActionRepository;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -29,7 +29,7 @@ import ccc.types.CommandType;
  */
 public class ScheduleActionCommand {
 
-    private final Repository _repository;
+    private final ActionRepository _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -38,7 +38,7 @@ public class ScheduleActionCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public ScheduleActionCommand(final Repository repository,
+    public ScheduleActionCommand(final ActionRepository repository,
                                  final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;

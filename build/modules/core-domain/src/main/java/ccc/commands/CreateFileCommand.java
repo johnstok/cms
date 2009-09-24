@@ -23,7 +23,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.FileDelta;
 import ccc.types.ResourceName;
 
@@ -44,7 +44,7 @@ public class CreateFileCommand extends CreateResourceCommand {
      * @param audit The audit log to record business actions.
      * @param data The data manager to use for reading / writing the file data.
      */
-    public CreateFileCommand(final Repository repository,
+    public CreateFileCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
                              final FileRepository data) {
         super(repository, audit);

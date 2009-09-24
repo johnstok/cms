@@ -93,7 +93,7 @@ public final class TemplatesEJB
         try {
             return mapResource(
                 new CreateTemplateCommand(
-                    getRepository(), getAuditLog()).execute(
+                    getResources(), getAuditLog()).execute(
                         currentUser(),
                         new Date(),
                         template.getParentId(),
@@ -116,7 +116,7 @@ public final class TemplatesEJB
                                final TemplateDelta delta)
                                                  throws RestException {
         try {
-            new UpdateTemplateCommand(getRepository(), getAuditLog()).execute(
+            new UpdateTemplateCommand(getResources(), getAuditLog()).execute(
                 currentUser(), new Date(), templateId, delta);
 
         } catch (final CccCheckedException e) {

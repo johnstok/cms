@@ -61,6 +61,18 @@ public interface Resources {
 
 
     /**
+     * Delete the resource located at the specified path.
+     *
+     * @param resourceId The id of the existing resource.
+     * @throws RestException If the method fails.
+     */
+    @POST // Should be DELETE but hard to support from the browser.
+    @Path("/resources/{id}/delete")
+    @NoCache
+    void delete(@PathParam("id") UUID resourceId) throws RestException;
+
+
+    /**
      * Determine the absolute path to a resource.
      *
      * @param resourceId The id of the resource.
