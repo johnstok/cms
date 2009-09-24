@@ -70,6 +70,7 @@ public class SearchBody
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
+                      final User user,
                       final TextProcessor processor) {
 
         String searchQuery = "";
@@ -95,6 +96,7 @@ public class SearchBody
         final Writer w = new OutputStreamWriter(os, charset);
         final Context context = new Context(_reader, this, _parameters);
         context.add("result", result);
+        context.add("user", user);
 
         processor.render(templateString, w, context);
     }

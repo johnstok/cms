@@ -83,11 +83,11 @@ public final class RenderResourceActionTest extends TestCase {
 
         expect(_response.getOutputStream()).andReturn(os);
         expect(_response.getCharacterEncoding()).andReturn("UTF-8");
-        b.write(os, null, tp);
+        b.write(os, null, null, tp);
         replayAll();
 
         // ACT
-        r.write(_response, tp);
+        r.write(_response, null, tp);
 
         // ASSERT
         verifyAll();

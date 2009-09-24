@@ -104,7 +104,7 @@ public class RenderResourceAction
                 r.setExpiry(null);
             }
 
-            r.write(response, new VelocityProcessor());
+            r.write(response, currentUser, new VelocityProcessor());
 
         } catch (final NotFoundException e) {
             dispatchNotFound(request, response);
