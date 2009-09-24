@@ -55,9 +55,9 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void createAction(final ActionDto action)
+    public ActionSummary createAction(final ActionDto action)
     throws RestException {
-        getActions().createAction(action);
+        return getActions().createAction(action);
     }
 
 
@@ -73,5 +73,12 @@ public class ActionsImpl
     @Override
     public void executeAction() {
         getActions().executeAction();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionSummary findAction(final UUID actionId) throws RestException {
+        return getActions().findAction(actionId);
     }
 }

@@ -30,6 +30,19 @@ import ccc.types.Duration;
 public interface ResourcesExt extends Resources {
 
     /**
+     * Delete a resource.
+     *
+     * @param resourceId The id of the existing resource.
+     * @param actorId The user id of the actor.
+     * @param happenedOn When the command happened.
+     *
+     * @throws RestException If the method fails.
+     */
+    void delete(UUID resourceId,
+                UUID actorId,
+                Date happenedOn) throws RestException;
+
+    /**
      * Update the specified resource's template on the server.
      *
      * @param resourceId The id of the resource to update.

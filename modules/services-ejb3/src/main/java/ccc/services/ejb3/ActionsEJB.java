@@ -126,7 +126,8 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void createAction(final ActionDto action) throws RestException {
+    public ActionSummary createAction(final ActionDto action)
+    throws RestException {
         try {
             final Action a =
                 new Action(
@@ -139,6 +140,8 @@ public class ActionsEJB
 
             new ScheduleActionCommand(getActions(), getAuditLog()).execute(
                 currentUser(), new Date(), a);
+
+            return mapAction(a);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -205,5 +208,17 @@ public class ActionsEJB
     @PostConstruct @SuppressWarnings("unused")
     private void configureExecutor() {
         _executor = new ActionExecutorImpl(_resourcesExt);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionSummary findAction(final UUID actionId) throws RestException {
+        try {
+            return mapAction(getActions().find(actionId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }

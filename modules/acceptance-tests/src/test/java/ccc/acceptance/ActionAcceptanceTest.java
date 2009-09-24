@@ -19,6 +19,7 @@ import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
+import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 
 
@@ -68,7 +69,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
-        getActions().createAction(
+        final ActionSummary a = getActions().createAction(
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -76,12 +77,11 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        for (final ActionSummary as : getActions().listPendingActions()) {
-            getActions().cancelAction(as.getId());
-        }
+        getActions().cancelAction(a.getId());
 
         // ASSERT
-        assertEquals(0, getActions().listPendingActions().size());
+        final ActionSummary cancelled = getActions().findAction(a.getId());
+        assertEquals(ActionStatus.CANCELLED, cancelled.getStatus());
     }
 
     /**
@@ -92,7 +92,8 @@ public class ActionAcceptanceTest
         // ARRANGE
         final Date time =  new Date(new Date().getTime()-ONE_SECOND);
         final ResourceSummary rs = tempFolder();
-        getActions().createAction(
+        getCommands().lock(rs.getId());
+        final ActionSummary a = getActions().createAction(
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -103,13 +104,32 @@ public class ActionAcceptanceTest
         getActions().executeAction();
 
         // ASSERT
-        ActionSummary testAction = null;
-        for (final ActionSummary as : getActions().listCompletedActions()) {
-            if (as.getExecuteAfter().equals(time)) {
-                testAction = as;
-            }
-        }
-        assertNotNull("Test action should be completed", testAction);
+        final ActionSummary completed = getActions().findAction(a.getId());
+        assertEquals(ActionStatus.COMPLETE, completed.getStatus());
+    }
 
+    /**
+     * Test.
+     * @throws RestException If the test fails.
+     */
+    public void testExecuteDeleteAction() throws RestException {
+
+        // ARRANGE
+        final Date time =  new Date(0);
+        final ResourceSummary rs = tempFolder();
+        getCommands().lock(rs.getId());
+        final ActionSummary a = getActions().createAction(
+            new ActionDto(
+                rs.getId(),
+                CommandType.RESOURCE_DELETE,
+                time,
+                new HashMap<String, String>()));
+
+        // ACT
+        getActions().executeAction();
+
+        // ASSERT
+        final ActionSummary completed = getActions().findAction(a.getId());
+        assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 }

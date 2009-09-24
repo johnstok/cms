@@ -61,6 +61,10 @@ public class ActionExecutorImpl implements ActionExecutor {
                     executeUpdate(action);
                     break;
 
+                case RESOURCE_DELETE:
+                    executeDelete(action);
+                    break;
+
                 default:
                     throw new UnsupportedOperationException(
                         "Unsupported action type: "+action.type());
@@ -81,6 +85,13 @@ public class ActionExecutorImpl implements ActionExecutor {
             "Failed action: "+action.id()
             +" [CommandFailedException was "
             +e.getFailure().getExceptionId()+"]");
+    }
+
+
+    private void executeDelete(final Action action) throws RestException {
+        _resourcesExt.delete(action.subject().id(),
+                             action.actor().id(),
+                             new Date());
     }
 
 

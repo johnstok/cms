@@ -744,4 +744,20 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public void delete(final UUID resourceId,
+                       final UUID actorId,
+                       final Date happenedOn) throws RestException {
+        try {
+            new DeleteResourceCommand(getResources(), getAuditLog()).execute(
+                getUsers().find(actorId), happenedOn, resourceId);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
 }
