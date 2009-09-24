@@ -262,4 +262,12 @@ public class ResourceSnapshot implements IResource {
             Collections.reverse(elements);
             return elements;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isAccessibleTo(final User user) {
+        return _delegate.isAccessibleTo(user);
+    }
+
+
 }
