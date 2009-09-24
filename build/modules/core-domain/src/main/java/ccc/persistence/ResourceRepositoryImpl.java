@@ -25,6 +25,7 @@ import ccc.domain.Folder;
 import ccc.domain.HistoricalResource;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
+import ccc.types.DBC;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 
@@ -44,6 +45,7 @@ public class ResourceRepositoryImpl implements ResourceRepository {
      * @param repository The DAO used for persistence.
      */
     public ResourceRepositoryImpl(final Repository repository) {
+        DBC.require().notNull(repository);
         _repository = repository;
     }
 

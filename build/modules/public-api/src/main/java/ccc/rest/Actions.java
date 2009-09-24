@@ -54,12 +54,14 @@ public interface Actions {
     /**
      * Create a new scheduled action.
      *
-     * @param action The action to create
+     * @param action The action to create.
      *
      * @throws RestException If the method fails.
+     *
+     * @return A summary of the new action.
      */
     @POST @Path("/actions")
-    void createAction(ActionDto action) throws RestException;
+    ActionSummary createAction(ActionDto action) throws RestException;
 
 
     /**
@@ -85,4 +87,18 @@ public interface Actions {
      */
     @POST @Path("/actions/next")
     void executeAction();
+
+
+    /**
+     * Find the action with the specified ID.
+     *
+     * @param actionId The action's ID.
+     *
+     * @throws RestException If the method fails.
+     *
+     * @return A summary of the action.
+     */
+    @GET @Path("/actions/{id}")
+    ActionSummary findAction(
+         @PathParam("id") UUID actionId) throws RestException;
 }

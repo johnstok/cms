@@ -16,6 +16,7 @@ import static ccc.commons.Strings.*;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,6 @@ import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
-import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.rendering.AuthenticationRequiredException;
@@ -199,7 +199,7 @@ public class RenderResourceAction
 
     private ResourceRepository getResourceDao(final HttpServletRequest req) {
         return new ResourceRepositoryImpl(
-            (Repository) req.getAttribute(SessionKeys.DAO_KEY));
+            (EntityManager) req.getAttribute(SessionKeys.EM_KEY));
     }
 
 

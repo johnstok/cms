@@ -55,6 +55,7 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
 import ccc.rest.providers.ActionSummaryCollectionReader;
+import ccc.rest.providers.ActionSummaryReader;
 import ccc.rest.providers.AliasDeltaReader;
 import ccc.rest.providers.BooleanProvider;
 import ccc.rest.providers.DurationReader;
@@ -117,6 +118,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addMessageBodyReader(UUIDProvider.class);
         pFactory.addMessageBodyReader(TemplateDeltaReader.class);
         pFactory.addMessageBodyReader(PageDeltaReader.class);
+        pFactory.addMessageBodyReader(ActionSummaryReader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);

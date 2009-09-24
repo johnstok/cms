@@ -25,9 +25,6 @@ public final class SessionKeys {
     /** EXCEPTION_KEY : String. */
     public static final String EXCEPTION_KEY = "ccc.exception";
 
-    /** DAO_KEY : String. */
-    public static final String DAO_KEY = "ccc.dao";
-
     /** CURRENT_USER : String. */
     public static final String CURRENT_USER = "ccc.current_user";
 
