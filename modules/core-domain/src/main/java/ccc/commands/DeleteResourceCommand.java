@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.commands;
@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
+import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -22,14 +23,16 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
+import ccc.types.PredefinedResourceNames;
+import ccc.types.ResourceName;
 
 
 /**
- * Command: include/exclude a resource in the main menu.
+ * Command: delete a resource.
  *
  * @author Civic Computing Ltd.
  */
-public class IncludeInMainMenuCommand {
+public class DeleteResourceCommand {
 
     private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
@@ -40,17 +43,16 @@ public class IncludeInMainMenuCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public IncludeInMainMenuCommand(final ResourceRepository repository,
-                                    final LogEntryRepository audit) {
+    public DeleteResourceCommand(final ResourceRepository repository,
+                                 final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }
 
     /**
-     * Specify whether this resource should be included in the main menu.
+     * Delete a resource.
      *
-     * @param id The id of the resource to change.
-     * @param b True if the resource should be included; false otherwise.
+     * @param resourceId The id of the resource to delete.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
@@ -58,20 +60,29 @@ public class IncludeInMainMenuCommand {
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID id,
-                        final boolean b) throws CccCheckedException {
-        final Resource r = _repository.find(Resource.class, id);
-        r.confirmLock(actor);
+                        final UUID resourceId) throws CccCheckedException {
+        final Resource resource = _repository.find(Resource.class, resourceId);
+        resource.confirmLock(actor);
 
-        r.includeInMainMenu(b);
+        if (resource.isDeleted()) {
+            throw new RuntimeException("Can't delete a deleted resource.");
+        }
 
-        final CommandType command =
-            (b) ? CommandType.RESOURCE_INCLUDE_IN_MM
-                : CommandType.RESOURCE_REMOVE_FROM_MM;
+        final Folder trash = _repository.root(PredefinedResourceNames.TRASH);
+
+        resource.delete();
+        resource.name(new ResourceName(resource.id().toString()));
+        resource.parent().remove(resource);
+        trash.add(resource);
+        resource.unlock(actor);
 
         final LogEntry le =
             new LogEntry(
-                actor, command, happenedOn, id, new JsonImpl(r).getDetail());
+                actor,
+                CommandType.RESOURCE_DELETE,
+                happenedOn,
+                resourceId,
+                new JsonImpl(resource).getDetail());
         _audit.record(le);
     }
 }

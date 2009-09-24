@@ -27,6 +27,9 @@ public final class PredefinedResourceNames {
     /** ASSETS : String. */
     public static final String ASSETS  = "assets";
 
+    /** TRASH : String. */
+    public static final String TRASH  = "trash";
+
     /** TEMPLATES : String. */
     public static final String TEMPLATES  = "templates";
 

@@ -257,4 +257,11 @@ public class ResourcesImpl
     public void fail() throws RestException {
         throw new RestException(new Failure(FailureCode.PRIVILEGES));
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void delete(final UUID resourceId) throws RestException {
+        getCommands().delete(resourceId);
+    }
 }

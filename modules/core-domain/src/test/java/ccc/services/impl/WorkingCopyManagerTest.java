@@ -25,7 +25,7 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
@@ -110,7 +110,7 @@ public class WorkingCopyManagerTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _repository = createStrictMock(Repository.class);
+        _repository = createStrictMock(ResourceRepository.class);
         _audit = createStrictMock(LogEntryRepository.class);
     }
 
@@ -121,7 +121,7 @@ public class WorkingCopyManagerTest
         _audit = null;
     }
 
-    private Repository _repository;
+    private ResourceRepository _repository;
     private LogEntryRepository _audit;
     private final User _user =
         new User(new Username("currentUser"), "password");

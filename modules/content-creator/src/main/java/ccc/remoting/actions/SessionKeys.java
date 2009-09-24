@@ -37,4 +37,7 @@ public final class SessionKeys {
     /** DATA_KEY : String. */
     public static final String DATA_KEY = "ccc.data";
 
+    /** EM_KEY : String. */
+    public static final String EM_KEY = "ccc.em";
+
 }

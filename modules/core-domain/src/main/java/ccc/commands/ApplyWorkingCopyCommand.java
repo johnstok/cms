@@ -21,7 +21,7 @@ import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 
 
 /**
@@ -38,7 +38,7 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public ApplyWorkingCopyCommand(final Repository repository,
+    public ApplyWorkingCopyCommand(final ResourceRepository repository,
                                    final LogEntryRepository audit) {
         super(repository, audit);
     }

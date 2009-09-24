@@ -108,7 +108,7 @@ public class FoldersEJB
             final User u = userForId(actorId);
 
             final Folder f =
-                new CreateFolderCommand(getRepository(), getAuditLog()).execute(
+                new CreateFolderCommand(getResources(), getAuditLog()).execute(
                     u, happenedOn, parentId, name, title);
 
             if (publish) {
@@ -132,7 +132,7 @@ public class FoldersEJB
                                                  throws RestException {
         try {
             final Folder f = new Folder(name);
-            new CreateRootCommand(getRepository(), getAuditLog()).execute(
+            new CreateRootCommand(getResources(), getAuditLog()).execute(
                 currentUser(), new Date(), f);
             return mapResource(f);
 
@@ -155,7 +155,7 @@ public class FoldersEJB
                 list.add(UUID.fromString(item));
             }
 
-            new UpdateFolderCommand(getRepository(), getAuditLog()).execute(
+            new UpdateFolderCommand(getResources(), getAuditLog()).execute(
                 currentUser(),
                  new Date(),
                  folderId,

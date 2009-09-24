@@ -66,6 +66,7 @@ public abstract class Resource
     private Date           _dateChanged       = _dateCreated;
     private Duration       _cache             = null;
     private String         _description       = "";
+    private boolean        _deleted           = false;
 
     private Map<String, String> _metadata = new HashMap<String, String>();
 
@@ -376,7 +377,7 @@ public abstract class Resource
     public boolean isVisible() {
         final boolean parentVisible =
             (null==_parent) ? true : _parent.isVisible();
-        return parentVisible && isPublished();
+        return parentVisible && isPublished() && !isDeleted();
     }
 
     /**
@@ -623,6 +624,18 @@ public abstract class Resource
         _metadata.putAll(metadata);
     }
 
+    public boolean isDeleted() {
+        return _deleted;
+    }
+
+    public void delete() {
+        _deleted = true;
+    }
+
+    public void undelete() {
+        _deleted = false;
+    }
+
     /**
      * Create a snapshot of this resource that can be serialized to JSON.
      *
@@ -658,6 +671,7 @@ public abstract class Resource
         json.set(JsonKeys.CACHE_DURATION, cache());
         json.set(JsonKeys.DESCRIPTION, description());
         json.set(JsonKeys.TYPE, type().name());
+        json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));
     }
 
 

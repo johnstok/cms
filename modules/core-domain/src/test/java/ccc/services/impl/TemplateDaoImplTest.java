@@ -23,7 +23,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.MimeType;
 import ccc.types.Username;
@@ -83,7 +83,7 @@ public class TemplateDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _repository = createStrictMock(Repository.class);
+        _repository = createStrictMock(ResourceRepository.class);
         _al = createStrictMock(LogEntryRepository.class);
     }
 
@@ -94,7 +94,7 @@ public class TemplateDaoImplTest
         _repository = null;
     }
 
-    private Repository _repository;
+    private ResourceRepository _repository;
     private LogEntryRepository _al;
     private final Date _now = new Date();
     private final User _user = new User(new Username("user"), "password");

@@ -18,7 +18,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.UserRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -30,7 +30,7 @@ import ccc.types.CommandType;
  */
 public class UpdatePasswordAction {
 
-    private final Repository      _repository;
+    private final UserRepository     _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -39,7 +39,7 @@ public class UpdatePasswordAction {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UpdatePasswordAction(final Repository repository,
+    public UpdatePasswordAction(final UserRepository repository,
                                 final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
@@ -61,7 +61,7 @@ public class UpdatePasswordAction {
                         final UUID userId,
                         final String password) throws CccCheckedException {
         final User u =
-                _repository.find(User.class, userId);
+                _repository.find(userId);
         u.password(password);
 
         final LogEntry le = new LogEntry(

@@ -19,7 +19,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.ResourceName;
 
@@ -38,7 +38,7 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateTemplateCommand(final Repository repository,
+    public CreateTemplateCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit) {
         super(repository, audit);
     }

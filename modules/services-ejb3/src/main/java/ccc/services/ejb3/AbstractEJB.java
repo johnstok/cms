@@ -36,16 +36,17 @@ import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.persistence.ActionRepositoryImpl;
+import ccc.persistence.ActionRepository;
+import ccc.persistence.FileRepository;
 import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
-import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
-import ccc.persistence.jpa.JpaRepository;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
@@ -73,20 +74,20 @@ abstract class AbstractEJB {
     @javax.annotation.Resource private EJBContext    _context;
     @PersistenceContext        private EntityManager   _em;
 
-    private Repository         _bdao;
     private UserRepository     _users;
     private ResourceRepository _resources;
     private LogEntryRepository _audit;
-    private FileRepositoryImpl _dm;
+    private FileRepository     _dm;
+    private ActionRepository  _actions;
 
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _bdao = new JpaRepository(_em);
-        _audit = new LogEntryRepositoryImpl(_bdao);
-        _users = new UserRepositoryImpl(_bdao);
-        _resources = new ResourceRepositoryImpl(_bdao);
-        _dm = new FileRepositoryImpl(new FsCoreData(), _bdao);
+        _audit = new LogEntryRepositoryImpl(_em);
+        _users = new UserRepositoryImpl(_em);
+        _resources = new ResourceRepositoryImpl(_em);
+        _dm = new FileRepositoryImpl(new FsCoreData(), _em);
+        _actions = new ActionRepositoryImpl(_em);
     }
 
 
@@ -97,16 +98,6 @@ abstract class AbstractEJB {
      */
     protected final TimerService getTimerService() {
         return _context.getTimerService();
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the repository.
-     */
-    protected final Repository getRepository() {
-        return _bdao;
     }
 
 
@@ -145,8 +136,18 @@ abstract class AbstractEJB {
      *
      * @return Returns the file repository.
      */
-    protected final FileRepositoryImpl getFiles() {
+    protected final FileRepository getFiles() {
         return _dm;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the action repository.
+     */
+    protected final ActionRepository getActions() {
+        return _actions;
     }
 
 
@@ -176,7 +177,7 @@ abstract class AbstractEJB {
      * @throws EntityNotFoundException If a corresponding user doesn't exist.
      */
     protected User userForId(final UUID userId) throws EntityNotFoundException {
-        final User u = _bdao.find(User.class, userId);
+        final User u = _users.find(userId);
         return u;
     }
 

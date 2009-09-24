@@ -28,6 +28,7 @@ import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.CreateSearchCommand;
+import ccc.commands.DeleteResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
@@ -41,7 +42,6 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
-import ccc.domain.User;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceDto;
@@ -90,7 +90,7 @@ public class ResourcesEJB
                      final UUID actorId,
                      final Date happenedOn) throws RestException {
         try {
-            new LockResourceCommand(getRepository(), getAuditLog()).execute(
+            new LockResourceCommand(getResources(), getAuditLog()).execute(
                 userForId(actorId), happenedOn, resourceId);
 
         } catch (final CccCheckedException e) {
@@ -105,7 +105,7 @@ public class ResourcesEJB
     public void move(final UUID resourceId,
                      final UUID newParentId) throws RestException {
         try {
-            new MoveResourceCommand(getRepository(), getAuditLog()).execute(
+            new MoveResourceCommand(getResources(), getAuditLog()).execute(
                 currentUser(),
                 new Date(),
                 resourceId,
@@ -125,7 +125,7 @@ public class ResourcesEJB
             new PublishCommand(getAuditLog()).execute(
                 new Date(),
                 currentUser(),
-                getRepository().find(Resource.class, resourceId));
+                getResources().find(Resource.class, resourceId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -143,7 +143,7 @@ public class ResourcesEJB
             new PublishCommand(getAuditLog()).execute(
                 date,
                 userForId(userId),
-                getRepository().find(Resource.class, resourceId));
+                getResources().find(Resource.class, resourceId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -158,7 +158,7 @@ public class ResourcesEJB
                        final String name) throws RestException {
             try {
                 new RenameResourceCommand(
-                    getRepository(), getAuditLog()).rename(
+                    getResources(), getAuditLog()).rename(
                         currentUser(), new Date(), resourceId, name);
 
             } catch (final CccCheckedException e) {
@@ -187,7 +187,7 @@ public class ResourcesEJB
                        final UUID actorId,
                        final Date happenedOn) throws RestException {
         try {
-            new UnlockResourceCommand(getRepository(), getAuditLog()).execute(
+            new UnlockResourceCommand(getResources(), getAuditLog()).execute(
                 userForId(actorId), happenedOn, resourceId);
 
         } catch (final CccCheckedException e) {
@@ -202,7 +202,7 @@ public class ResourcesEJB
     public void unpublish(final UUID resourceId) throws RestException {
         try {
             new UnpublishResourceCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     currentUser(), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
@@ -220,8 +220,8 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             new UnpublishResourceCommand(
-                getRepository(), getAuditLog()).execute(
-                    getRepository().find(User.class, userId),
+                getResources(), getAuditLog()).execute(
+                    getUsers().find(userId),
                     publishDate,
                     resourceId);
 
@@ -239,7 +239,7 @@ public class ResourcesEJB
         try {
 
             new UpdateWorkingCopyCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     currentUser(),
                     new Date(),
                     resourceId,
@@ -298,7 +298,7 @@ public class ResourcesEJB
 
         try {
             new ChangeTemplateForResourceCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     userForId(actorId),
                     happenedOn,
                     resourceId,
@@ -353,7 +353,7 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             new IncludeInMainMenuCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     userForId(actorId), happenedOn, resourceId, include);
 
         } catch (final CccCheckedException e) {
@@ -392,7 +392,7 @@ public class ResourcesEJB
             final UUID actorId = currentUserId();
 
             new UpdateResourceMetadataCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     userForId(actorId),
                     happenedOn,
                     resourceId,
@@ -420,7 +420,7 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             new UpdateResourceMetadataCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     userForId(actorId),
                     happenedOn,
                     resourceId,
@@ -443,7 +443,7 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateSearchCommand(getRepository(), getAuditLog()).execute(
+                new CreateSearchCommand(getResources(), getAuditLog()).execute(
                     currentUser(), new Date(), parentId, title)
             );
 
@@ -478,7 +478,7 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             new UpdateResourceRolesCommand(
-                getRepository(), getAuditLog()).execute(
+                getResources(), getAuditLog()).execute(
                     userForId(actorId), happenedOn, resourceId, roles);
 
         } catch (final CccCheckedException e) {
@@ -493,7 +493,7 @@ public class ResourcesEJB
     public void applyWorkingCopy(final UUID resourceId)
                                                  throws RestException {
         try {
-            new ApplyWorkingCopyCommand(getRepository(), getAuditLog()).execute(
+            new ApplyWorkingCopyCommand(getResources(), getAuditLog()).execute(
                 currentUser(), new Date(), resourceId, null, false);
 
         } catch (final CccCheckedException e) {
@@ -512,8 +512,8 @@ public class ResourcesEJB
                                  final String comment)
                                                  throws RestException {
         try {
-            new ApplyWorkingCopyCommand(getRepository(), getAuditLog()).execute(
-                getRepository().find(User.class, userId),
+            new ApplyWorkingCopyCommand(getResources(), getAuditLog()).execute(
+                getUsers().find(userId),
                 happenedOn,
                 resourceId,
                 comment,
@@ -532,7 +532,7 @@ public class ResourcesEJB
                                     final Duration duration)
                                                  throws RestException {
         try {
-            new UpdateCachingCommand(getRepository(), getAuditLog()).execute(
+            new UpdateCachingCommand(getResources(), getAuditLog()).execute(
                 currentUser(), new Date(), resourceId, duration);
 
         } catch (final CccCheckedException e) {
@@ -557,7 +557,7 @@ public class ResourcesEJB
     public void clearWorkingCopy(final UUID resourceId)
                                                  throws RestException {
         try {
-            new ClearWorkingCopyCommand(getRepository(), getAuditLog()).execute(
+            new ClearWorkingCopyCommand(getResources(), getAuditLog()).execute(
                 currentUser(), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
@@ -725,6 +725,20 @@ public class ResourcesEJB
     throws RestException {
         try {
             return mapResource(getResources().lookupWithLegacyId(legacyId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public void delete(final UUID resourceId) throws RestException {
+        try {
+            new DeleteResourceCommand(getResources(), getAuditLog()).execute(
+                currentUser(), new Date(), resourceId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

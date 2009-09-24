@@ -19,9 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.persistence.Repository;
-import ccc.persistence.jpa.JpaRepository;
-
 
 
 /**
@@ -57,10 +54,9 @@ public class PersistenceAction
         final EntityManager em = _emf.createEntityManager();
 
         try {
-            final Repository repository = new JpaRepository(em);
             req.setAttribute(
-                SessionKeys.DAO_KEY,
-                repository);
+                SessionKeys.EM_KEY,
+                em);
 
             _delegate.execute(req, resp);
 

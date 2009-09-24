@@ -55,6 +55,7 @@ public final class Create extends CccApp {
 
             final ResourceSummary assets = foldersExt.createRoot(ASSETS);
             final ResourceSummary content = foldersExt.createRoot(CONTENT);
+            foldersExt.createRoot(TRASH);
 
             foldersExt.createFolder(new FolderDto(assets.getId(), TEMPLATES));
             foldersExt.createFolder(new FolderDto(assets.getId(), CSS));

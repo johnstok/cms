@@ -20,7 +20,7 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.ResourceName;
@@ -33,7 +33,7 @@ import ccc.types.ResourceName;
  */
 public class RenameResourceCommand {
 
-    private final Repository      _repository;
+    private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -42,7 +42,7 @@ public class RenameResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public RenameResourceCommand(final Repository repository,
+    public RenameResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;

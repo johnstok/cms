@@ -11,6 +11,8 @@
  */
 package ccc.persistence;
 
+import javax.persistence.EntityManager;
+
 import org.apache.log4j.Logger;
 
 import ccc.domain.LogEntry;
@@ -30,6 +32,7 @@ public class LogEntryRepositoryImpl
 
     private Repository _em;
 
+
     /**
      * Constructor.
      * @param em The entity manager used to perform queries.
@@ -39,12 +42,24 @@ public class LogEntryRepositoryImpl
         _em = em;
     }
 
+
+    /**
+     * Constructor.
+     *
+     * @param em The JPA entity manager for this repository.
+     */
+    public LogEntryRepositoryImpl(final EntityManager em) {
+        this(new JpaRepository(em));
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void record(final LogEntry le) {
         _em.create(le);
         log(le);
     }
+
 
     private void log(final LogEntry le) {
         LOG.info(

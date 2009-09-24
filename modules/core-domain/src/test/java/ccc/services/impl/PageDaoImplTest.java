@@ -24,7 +24,7 @@ import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
@@ -95,7 +95,7 @@ public class PageDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _repository = createStrictMock(Repository.class);
+        _repository = createStrictMock(ResourceRepository.class);
         _al = createStrictMock(LogEntryRepository.class);
         _updatePage = new UpdatePageCommand(_repository, _al);
     }
@@ -108,7 +108,7 @@ public class PageDaoImplTest
         _repository = null;
     }
 
-    private Repository _repository;
+    private ResourceRepository _repository;
     private LogEntryRepository _al;
     private UpdatePageCommand _updatePage;
     private final Date _now = new Date();

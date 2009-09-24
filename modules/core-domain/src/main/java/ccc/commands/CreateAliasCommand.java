@@ -20,7 +20,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 
 
 /**
@@ -38,7 +38,7 @@ public class CreateAliasCommand
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      */
-    public CreateAliasCommand(final Repository repository,
+    public CreateAliasCommand(final ResourceRepository repository,
                               final LogEntryRepository audit) {
         super(repository, audit);
     }

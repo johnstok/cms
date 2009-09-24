@@ -19,7 +19,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
+import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -31,7 +31,7 @@ import ccc.types.CommandType;
  */
 public class UnpublishResourceCommand {
 
-    private final Repository      _repository;
+    private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
 
     /**
@@ -40,7 +40,7 @@ public class UnpublishResourceCommand {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      */
-    public UnpublishResourceCommand(final Repository repository,
+    public UnpublishResourceCommand(final ResourceRepository repository,
                                     final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;

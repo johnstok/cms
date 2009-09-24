@@ -95,7 +95,7 @@ public class UserManagerImplTest extends TestCase {
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
-        final CreateUserCommand cu = new CreateUserCommand(_repository, _audit);
+        final CreateUserCommand cu = new CreateUserCommand(_um, _audit);
 
         // ACT
         final User u = cu.execute(_u, now, _uDelta);
@@ -196,7 +196,7 @@ public class UserManagerImplTest extends TestCase {
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
-        final UpdateUserCommand uu = new UpdateUserCommand(_repository, _audit);
+        final UpdateUserCommand uu = new UpdateUserCommand(_um, _audit);
 
         // ACT
         uu.execute(_u, now, _u.id(), _uDelta);
@@ -221,7 +221,7 @@ public class UserManagerImplTest extends TestCase {
         replayAll();
 
         final UpdatePasswordAction up =
-            new UpdatePasswordAction(_repository, _audit);
+            new UpdatePasswordAction(_um, _audit);
 
         // ACT
         up.execute(_u, now, _u.id(), "newPass");

@@ -28,7 +28,6 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
 import ccc.persistence.ResourceRepository;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
@@ -52,13 +51,13 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        expect(_repository.find(Folder.class, _f.id()))
+        expect(_rdao.find(Folder.class, _f.id()))
             .andReturn(_f);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         final UpdateFolderCommand uf =
-            new UpdateFolderCommand(_repository, _al);
+            new UpdateFolderCommand(_rdao, _al);
 
         // ACT
         uf.execute(_regularUser,
@@ -88,13 +87,13 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_repository.find(Folder.class, _f.id()))
+        expect(_rdao.find(Folder.class, _f.id()))
             .andReturn(_f);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         final UpdateFolderCommand uf =
-            new UpdateFolderCommand(_repository, _al);
+            new UpdateFolderCommand(_rdao, _al);
 
         // ACT
         final List<UUID> order = new ArrayList<UUID>();
@@ -124,7 +123,6 @@ public class FolderDaoImplTest
     protected void setUp() {
         _al = createStrictMock(LogEntryRepository.class);
         _rdao = createStrictMock(ResourceRepository.class);
-        _repository = createStrictMock(Repository.class);
 
         _f = new Folder("foo");
     }
@@ -132,17 +130,16 @@ public class FolderDaoImplTest
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _repository = null;
         _rdao = null;
         _al = null;
     }
 
     private void replayAll() {
-        replay(_rdao, _al, _repository);
+        replay(_rdao, _al);
     }
 
     private void verifyAll() {
-        verify(_rdao, _al, _repository);
+        verify(_rdao, _al);
     }
     private final User _regularUser =
         new User(new Username("regular"), "password");
@@ -151,7 +148,6 @@ public class FolderDaoImplTest
 
     private LogEntryRepository _al;
     private ResourceRepository _rdao;
-    private Repository _repository;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }
