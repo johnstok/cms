@@ -545,14 +545,7 @@ public abstract class Resource
         return roles;
     }
 
-    /**
-     * Determine if this resource is accessible by the specified user.
-     * A user must have all of a resource's roles for the resource to be
-     * accessible.
-     *
-     * @param user The user trying to access the resource.
-     * @return True if the user may access the resource, false otherwise.
-     */
+    /** {@inheritDoc} */
     public boolean isAccessibleTo(final User user) {
         final boolean parentIsAccessible =
             (null==_parent) ? true : parent().isAccessibleTo(user);

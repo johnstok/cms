@@ -15,6 +15,7 @@ package ccc.entities;
 import java.util.Date;
 import java.util.Set;
 
+import ccc.domain.User;
 import ccc.types.ResourceName;
 
 
@@ -83,5 +84,15 @@ public interface IResource {
      * @return The description as a string.
      */
     String description();
+
+    /**
+     * Determine if this resource is accessible by the specified user.
+     * A user must have all of a resource's roles for the resource to be
+     * accessible.
+     *
+     * @param user The user trying to access the resource.
+     * @return True if the user may access the resource, false otherwise.
+     */
+    boolean isAccessibleTo(final User user);
 
 }
