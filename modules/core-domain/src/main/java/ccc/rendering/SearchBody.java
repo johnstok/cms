@@ -24,6 +24,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
+import ccc.snapshots.SearchSnapshot;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 
@@ -42,17 +43,20 @@ public class SearchBody
     private final SearchEngine _searchEngine;
     private final Template _template;
     private final Map<String, String[]> _parameters;
+    private final SearchSnapshot _searchResource;
 
     /**
      * Constructor.
      *
      * @param reader A stateful reader to access other resources.
      * @param searchEngine The engine used to perform the search.
+     * @param searchResource The search this body will render.
      * @param parameters The request parameters.
      * @param t The template to use for this body.
      */
     public SearchBody(final StatefulReader reader,
                       final SearchEngine searchEngine,
+                      SearchSnapshot searchResource, 
                       final Template t,
                       final Map<String, String[]> parameters) {
         DBC.require().notNull(reader);
@@ -64,6 +68,7 @@ public class SearchBody
         _searchEngine = searchEngine;
         _parameters = parameters;
         _template = t;
+        _searchResource = searchResource;
     }
 
     /** {@inheritDoc} */
@@ -94,7 +99,7 @@ public class SearchBody
 
         final String templateString = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
-        final Context context = new Context(_reader, this, _parameters);
+        final Context context = new Context(_reader, _searchResource, _parameters);
         context.add("result", result);
         context.add("user", user);
 
