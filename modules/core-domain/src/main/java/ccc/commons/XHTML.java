@@ -310,4 +310,19 @@ public final class XHTML {
                      .replace("\u003c", "&lt;")         // <
                      .replace("\u003e", "&gt;");        // >
     }
+
+    /**
+     * Clean up invalid characters and HTML tags.
+     *
+     * @param content The content to clean up.
+     * @return Cleaned up content.
+     */
+    public static String cleanUpContent(final String content) {
+        String result = content;
+        if (result != null) {
+            result = result.replaceAll("[\\x00-\\x1f]", " ");
+            result = result.replaceAll("\\<.*?>", ""); // Scrub HTML
+        }
+        return result;
+    }
 }
