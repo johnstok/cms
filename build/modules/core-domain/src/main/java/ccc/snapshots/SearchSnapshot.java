@@ -53,6 +53,7 @@ public class SearchSnapshot
                 new SearchBody(
                     reader,
                     search,
+                    this,
                     t,
                     parameters));
         r.setCharSet("UTF-8");
