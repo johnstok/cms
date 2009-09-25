@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
 
+import ccc.commons.XHTML;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.persistence.FileRepository;
@@ -94,7 +95,7 @@ public abstract class AbstractIndexer
         for (final Paragraph p : page.currentRevision().paragraphs()) {
             if (ParagraphType.TEXT == p.type() && p.text() != null) {
                 sb.append(" ");
-                sb.append(cleanUpContent(p.text()));
+                sb.append(XHTML.cleanUpContent(p.text()));
             }
         }
         createDocument(page.id(), sb.toString());
@@ -127,7 +128,7 @@ public abstract class AbstractIndexer
             final StringBuilder sb = new StringBuilder(file.title());
             sb.append(" ");
             final String content = stripper.getText(doc);
-            sb.append(cleanUpContent(content));
+            sb.append(XHTML.cleanUpContent(content));
             return sb.toString();
 
         } catch (final Exception e) {
@@ -154,7 +155,7 @@ public abstract class AbstractIndexer
             final StringBuilder sb = new StringBuilder(file.title());
             sb.append(" ");
             final String content = we.getExtractor().getText();
-            sb.append(cleanUpContent(content));
+            sb.append(XHTML.cleanUpContent(content));
             return sb.toString();
 
         } catch (final Exception e) {
@@ -170,18 +171,8 @@ public abstract class AbstractIndexer
         final StringBuilder sb = new StringBuilder(file.title());
         sb.append(" ");
         final String content = te.getContent();
-        sb.append(cleanUpContent(content));
+        sb.append(XHTML.cleanUpContent(content));
         return sb.toString();
-    }
-
-
-    private String cleanUpContent(final String content) {
-        String result = content;
-        if (result != null) {
-            result = result.replaceAll("[\\x00-\\x1f]", " ");
-            result = result.replaceAll("\\<.*?>", ""); // Scrub HTML
-        }
-        return result;
     }
 
 }
