@@ -1485,4 +1485,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("The specified resource name is invalid")
     String resourceNameIsInvalid();
 
+    /**
+     * "Delete".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Delete")
+    String delete();
+
 }

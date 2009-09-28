@@ -244,6 +244,9 @@ public class MainMenu
                                        final ResourceSummaryModelData parent) {
                         /* No-op */
                     }
+                    public void delete(final ResourceSummaryModelData model) {
+                        /* No-op */
+                    }
                     public void move(final ResourceSummaryModelData model,
                                      final ResourceSummaryModelData newParent,
                                      final ResourceSummaryModelData oldParent) {
