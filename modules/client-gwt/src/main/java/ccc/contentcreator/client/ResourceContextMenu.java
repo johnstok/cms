@@ -35,6 +35,7 @@ import ccc.contentcreator.actions.RemoveFromMainMenuAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
+import ccc.contentcreator.actions.remote.DeleteResourceAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
@@ -85,6 +86,7 @@ public class ResourceContextMenu
     private final Action _updateRolesAction;
     private final Action _applyWorkingCopyAction;
     private final Action _editCacheAction;
+    private final Action _deleteResourceAction;
 
     /**
      * Constructor.
@@ -115,6 +117,7 @@ public class ResourceContextMenu
         _updateRolesAction = new OpenUpdateResourceRolesAction(_table);
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
         _editCacheAction = new OpenEditCacheAction(_table);
+        _deleteResourceAction = new DeleteResourceAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -159,19 +162,24 @@ public class ResourceContextMenu
                     case FOLDER:
                         addEditFolder();
                         addChooseTemplate();
+                        addDeleteResource();
                         break;
                     case PAGE:
                         addEditResource();
                         addChooseTemplate();
+                        addDeleteResource();
                         break;
                     case TEMPLATE:
                         addEditResource();
+                        addDeleteResource();
                         break;
                     case ALIAS:
                         addEditResource();
+                        addDeleteResource();
                         break;
                     case FILE:
                         addEditResource();
+                        addDeleteResource();
                         break;
                     case SEARCH:
                         addChooseTemplate();
@@ -213,6 +221,14 @@ public class ResourceContextMenu
             "apply-working-copy",
             getConstants().applyWorkingCopy(),
             _applyWorkingCopyAction);
+    }
+
+
+    private void addDeleteResource() {
+        addMenuItem(
+            "delete-resource",
+            getConstants().delete(),
+            _deleteResourceAction);
     }
 
     private void addUpdateRolesAction() {

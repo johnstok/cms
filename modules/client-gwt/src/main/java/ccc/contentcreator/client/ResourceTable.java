@@ -238,6 +238,14 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
+    @Override
+    public void delete(final ResourceSummaryModelData item) {
+        _detailsStore.remove(item);
+        _tree.store().remove(item);
+    }
+
+
+    /** {@inheritDoc} */
     public void create(final ResourceSummaryModelData model,
                        final ResourceSummaryModelData newParent) {
         final ResourceSummaryModelData np =

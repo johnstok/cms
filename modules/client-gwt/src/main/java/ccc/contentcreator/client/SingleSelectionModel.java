@@ -65,4 +65,12 @@ public interface SingleSelectionModel {
      */
     void create(ResourceSummaryModelData model,
                 ResourceSummaryModelData newParent);
+
+
+    /**
+     * Remove a model resource.
+     *
+     * @param item The model to remove.
+     */
+    void delete(ResourceSummaryModelData item);
 }
