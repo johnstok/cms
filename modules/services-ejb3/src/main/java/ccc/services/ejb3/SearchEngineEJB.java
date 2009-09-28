@@ -38,7 +38,6 @@ import ccc.domain.Page;
 import ccc.domain.Scheduler;
 import ccc.domain.Setting;
 import ccc.persistence.FileRepositoryImpl;
-import ccc.persistence.QueryNames;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.SettingsRepository;
@@ -163,8 +162,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
 
     private void indexFiles(final SimpleLucene lucene) {
-        final List<File> files =
-            _resources.list(QueryNames.ALL_FILES, File.class);
+        final List<File> files = _resources.files();
         for (final File f : files) {
             if (f.isVisible() && f.roles().isEmpty()) {
                 lucene.indexFile(f);
@@ -174,8 +172,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
 
     private void indexPages(final SimpleLucene lucene) {
-        final List<Page> pages =
-            _resources.list(QueryNames.ALL_PAGES, Page.class);
+        final List<Page> pages = _resources.pages();
         for (final Page p : pages) {
             if (p.isVisible() && p.roles().isEmpty()) {
                 lucene.indexPage(p);

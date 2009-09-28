@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.persistence;
 
 import static org.easymock.EasyMock.*;
 

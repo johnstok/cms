@@ -83,6 +83,11 @@ public class Alias extends Resource {
      * @return The current target for this alias.
      */
     public Resource target() {
+        if (null==_target) {
+            return null;
+        } else if (_target.isDeleted()) {
+            return null;
+        }
         return _target;
     }
 

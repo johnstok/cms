@@ -33,7 +33,6 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.QueryNames;
 import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
@@ -247,7 +246,6 @@ public class FoldersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> roots() {
-        return mapResources(
-            getResources().list(QueryNames.ROOTS, Folder.class));
+        return mapResources(getResources().roots());
     }
 }

@@ -129,7 +129,7 @@ public abstract class Resource
      */
     public final Template computeTemplate(final Template def) {
         return
-        (null!=_template)
+        (null!=template())
             ? template()
             : (null!=_parent)
                 ? _parent.computeTemplate(def)
@@ -187,6 +187,11 @@ public abstract class Resource
      * @return The {@link Template}.
      */
     public Template template() {
+        if (null==_template) {
+            return null;
+        } else if (_template.isDeleted()) {
+            return null;
+        }
         return _template;
     }
 

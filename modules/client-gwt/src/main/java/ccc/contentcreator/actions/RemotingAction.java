@@ -98,6 +98,8 @@ public abstract class RemotingAction
     /** {@inheritDoc} */
     @Override
     public void execute() {
+        if (!beforeExecute()) { return; }
+
         final String url = GLOBALS.apiURL(_isSecure) + getPath();
         final RequestBuilder builder = new RequestBuilder(_method, url);
         builder.setHeader("Accept", "application/json");
@@ -142,6 +144,19 @@ public abstract class RemotingAction
         } catch (final RequestException e) {
             GLOBALS.unexpectedError(e, getActionName());
         }
+    }
+
+
+    /**
+     * Handler method called immediately before an action is executed.
+     * <p>You can override this method to present confirmation dialogs, etc. to
+     * users, when an action is invoked. If this method returns true the action
+     * will continue; if false is returned the action will not be executed.
+     *
+     * @return True if the action should continue false otherwise.
+     */
+    protected boolean beforeExecute() {
+        return true;
     }
 
 
