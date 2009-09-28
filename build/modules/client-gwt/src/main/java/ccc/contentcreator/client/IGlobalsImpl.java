@@ -70,6 +70,13 @@ public class IGlobalsImpl
         Window.alert(string);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean confirm(final String string) {
+        return Window.confirm(string);
+    }
+
     /** {@inheritDoc} */
     @Override
     public String apiURL(final boolean secure) {

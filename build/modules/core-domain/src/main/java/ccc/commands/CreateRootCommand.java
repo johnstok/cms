@@ -20,7 +20,6 @@ import ccc.domain.Resource;
 import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.QueryNames;
 import ccc.persistence.ResourceRepository;
 
 
@@ -58,8 +57,8 @@ public class CreateRootCommand extends CreateResourceCommand {
                         final Date happenedOn,
                         final Folder folder) throws CccCheckedException {
         try {
-            final Resource possibleRoot = getDao().find(
-                QueryNames.ROOT_BY_NAME, Resource.class, folder.name());
+            final Resource possibleRoot =
+                getDao().root(folder.name().toString());
             throw new ResourceExistsException(null, possibleRoot);
 
         } catch (final EntityNotFoundException e) {

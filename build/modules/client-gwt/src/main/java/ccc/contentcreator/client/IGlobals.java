@@ -56,6 +56,15 @@ public interface IGlobals {
     void alert(final String string);
 
     /**
+     * Factory for confirm dialogs.
+     *
+     * @param string The message for the dialog.
+     *
+     * @return True if the user confirmed the action, false otherwise.
+     */
+    boolean confirm(final String string);
+
+    /**
      * Determine the URL for the application's host.
      *
      * @return The host url as a string.

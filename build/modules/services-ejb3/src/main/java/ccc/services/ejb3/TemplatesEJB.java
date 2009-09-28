@@ -28,7 +28,6 @@ import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Template;
-import ccc.persistence.QueryNames;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
@@ -65,10 +64,7 @@ public final class TemplatesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Boolean templateNameExists(final String templateName) {
         try {
-            getResources().find(
-                QueryNames.TEMPLATE_BY_NAME,
-                Template.class,
-                new ResourceName(templateName));
+            getResources().template(templateName);
             return Boolean.TRUE;
         } catch (final EntityNotFoundException e) {
             return Boolean.FALSE;
@@ -80,8 +76,7 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<TemplateSummary> templates() {
-        return mapTemplates(getResources().list(
-            QueryNames.ALL_TEMPLATES, Template.class));
+        return mapTemplates(getResources().templates());
     }
 
 

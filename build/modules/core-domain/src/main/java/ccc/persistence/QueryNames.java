@@ -17,7 +17,7 @@ package ccc.persistence;
  *
  * @author Civic Computing Ltd.
  */
-public final class QueryNames {
+final class QueryNames {
 
     private QueryNames() { super(); }
 

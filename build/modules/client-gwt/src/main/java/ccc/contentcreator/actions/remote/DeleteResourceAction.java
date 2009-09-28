@@ -44,4 +44,11 @@ public class DeleteResourceAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         _selectionModel.delete(item);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean beforeExecute() {
+        return GLOBALS.confirm("Are sure you want to delete the selected resource?");
+    }
 }

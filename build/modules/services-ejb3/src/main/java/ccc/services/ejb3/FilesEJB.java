@@ -32,7 +32,6 @@ import ccc.commands.UpdateFileCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.File;
 import ccc.domain.User;
-import ccc.persistence.QueryNames;
 import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
@@ -63,8 +62,7 @@ public class FilesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<FileDto> getAllContentImages() {
         final List<File> list = new ArrayList<File>();
-        for (final File file
-                : getResources().list(QueryNames.ALL_IMAGES, File.class)) {
+        for (final File file : getResources().images()) {
             if (PredefinedResourceNames.CONTENT.equals(
                 file.root().name().toString())) {
                 list.add(file);

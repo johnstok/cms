@@ -16,9 +16,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.File;
 import ccc.domain.Folder;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
+import ccc.domain.Template;
 import ccc.types.ResourcePath;
 
 
@@ -28,37 +31,6 @@ import ccc.types.ResourcePath;
  * @author Civic Computing Ltd.
  */
 public interface ResourceRepository {
-
-    /**
-     * Find 0 or more objects using a query.
-     *
-     * @param <T> The type of the results.
-     * @param queryName The name of the query to run.
-     * @param resultType A class representing the type of the results.
-     * @param params The query parameters.
-     * @return A collection of results.
-     */
-    <T extends Resource> List<T> list(String queryName,
-                                      Class<T> resultType,
-                                      Object... params);
-
-    /**
-     * Find a single object using a query.
-     *
-     * @param <T> The type of the result.
-     * @param queryName The name of the query to run.
-     * @param resultType A class representing the type of the result.
-     * @param params The query parameters.
-     *
-     * @throws EntityNotFoundException If no entity is found for the specified
-     *  query.
-     *
-     * @return The result.
-     */
-    <T extends Resource> T find(String queryName,
-                                Class<T> resultType,
-                                Object... params)
-    throws EntityNotFoundException;
 
     /**
      * List all locked resources.
@@ -139,4 +111,51 @@ public interface ResourceRepository {
      * @param newResource The new resource to add.
      */
     void create(Resource newResource);
+
+    /**
+     * List all image files.
+     *
+     * @return A list of files.
+     */
+    List<File> images();
+
+    /**
+     * List all root folders.
+     *
+     * @return A list of folders.
+     */
+    List<Folder> roots();
+
+    /**
+     * List all templates.
+     *
+     * @return A list of templates
+     */
+    List<Template> templates();
+
+    /**
+     * List all files.
+     *
+     * @return A list of files.
+     */
+    List<File> files();
+
+    /**
+     * List all pages.
+     *
+     * @return a list of pages.
+     */
+    List<Page> pages();
+
+    /**
+     * Find a template, given its name.
+     *
+     * @param name The name of the template.
+     * 
+     * @throws EntityNotFoundException If no template exists with the specified
+     *  name.
+     * 
+     * @return The template with the specified name.
+     */
+    Template template(String name) throws EntityNotFoundException;
 }

@@ -21,11 +21,15 @@ import javax.persistence.EntityManager;
 
 import ccc.domain.CCCException;
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.HistoricalResource;
+import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
+import ccc.domain.Template;
 import ccc.types.DBC;
+import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 
@@ -86,26 +90,6 @@ public class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public <T extends Resource> List<T> list(final String queryName,
-                                             final Class<T> resultType,
-                                             final Object... params) {
-        return
-            discardDeleted(_repository.list(queryName, resultType, params));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public <T extends Resource> T find(final String queryName,
-                                       final Class<T> resultType,
-                                       final Object... params)
-    throws EntityNotFoundException {
-        return discardDeleted(
-            _repository.find(queryName, resultType, params));
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -143,6 +127,83 @@ public class ResourceRepositoryImpl implements ResourceRepository {
                 new ResourceName(name));
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public void create(final Resource newResource) {
+        _repository.create(newResource);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<File> images() {
+        return list(QueryNames.ALL_IMAGES, File.class);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Folder> roots() {
+        final List<Folder> roots = new ArrayList<Folder>();
+
+        // Exclude the trash root.
+        for (final Folder root : list(QueryNames.ROOTS, Folder.class)) {
+            if (!PredefinedResourceNames.TRASH.equals(root.name().toString())) {
+                roots.add(root);
+            }
+        }
+
+        return roots;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Template> templates() {
+        return list(QueryNames.ALL_TEMPLATES, Template.class);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<File> files() {
+        return list(QueryNames.ALL_FILES, File.class);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Page> pages() {
+        return list(QueryNames.ALL_PAGES, Page.class);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Template template(final String name) throws EntityNotFoundException {
+        return find(
+            QueryNames.TEMPLATE_BY_NAME,
+            Template.class,
+            new ResourceName(name));
+    }
+
+
+    private <T extends Resource> List<T> list(final String queryName,
+                                              final Class<T> resultType,
+                                              final Object... params) {
+        return discardDeleted(_repository.list(queryName, resultType, params));
+    }
+
+
+    private <T extends Resource> T find(final String queryName,
+                                        final Class<T> resultType,
+                                        final Object... params)
+    throws EntityNotFoundException {
+        return discardDeleted(_repository.find(queryName, resultType, params));
+    }
+
+
     private <T extends Resource> T discardDeleted(final T resource)
     throws EntityNotFoundException {
         if (resource.isDeleted()) {
@@ -151,18 +212,12 @@ public class ResourceRepositoryImpl implements ResourceRepository {
         return resource;
     }
 
+
     private <T extends Resource> List<T> discardDeleted(final List<T> all) {
         final List<T> nondeleted = new ArrayList<T>();
         for (final T r : all) {
             if (!r.isDeleted()) { nondeleted.add(r); }
         }
         return nondeleted;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void create(final Resource newResource) {
-        _repository.create(newResource);
     }
 }

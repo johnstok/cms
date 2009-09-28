@@ -16,6 +16,7 @@ import java.util.Map;
 import ccc.domain.Alias;
 import ccc.domain.Resource;
 import ccc.persistence.FileRepository;
+import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
@@ -55,6 +56,9 @@ public class AliasSnapshot extends ResourceSnapshot {
                            final SearchEngine search,
                            final StatefulReader reader,
                            final FileRepository dm) {
+        if (null==target()) {
+            throw new NotFoundException();
+        }
         throw new RedirectRequiredException(target());
     }
 
