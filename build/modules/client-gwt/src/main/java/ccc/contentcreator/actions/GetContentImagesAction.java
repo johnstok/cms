@@ -41,7 +41,7 @@ public abstract class GetContentImagesAction
     }
 
     /** {@inheritDoc} */
-    @Override protected String getPath() { return "/images"; }
+    @Override protected String getPath() { return "/files/images"; }
 
     /** {@inheritDoc} */
     @Override
