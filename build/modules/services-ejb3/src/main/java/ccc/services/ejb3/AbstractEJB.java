@@ -53,7 +53,7 @@ import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -406,10 +406,10 @@ abstract class AbstractEJB {
      * @param file The file to map.
      * @return The summary of the file.
      */
-    protected FileDto2 mapFile2(final File file) {
+    protected TextFileDelta mapFile2(final File file) {
 
-        final FileDto2 fs =
-            new FileDto2(
+        final TextFileDelta fs =
+            new TextFileDelta(
                 file.id(),
                 (!file.isText())
                     ? null : ReadContentToStringAction.read(_dm, file),

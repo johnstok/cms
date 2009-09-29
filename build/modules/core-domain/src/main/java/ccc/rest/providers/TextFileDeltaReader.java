@@ -22,7 +22,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.MimeType;
@@ -35,11 +35,11 @@ import ccc.types.MimeType;
  */
 @Provider
 @Consumes("application/json")
-public class FileDto2Reader
+public class TextFileDeltaReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<FileDto2> {
+        MessageBodyReader<TextFileDelta> {
 
     /** {@inheritDoc} */
     @Override
@@ -47,20 +47,20 @@ public class FileDto2Reader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return FileDto2.class.equals(clazz);
+        return TextFileDelta.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public FileDto2 readFrom(final Class<FileDto2> arg0,
+    public TextFileDelta readFrom(final Class<TextFileDelta> arg0,
                              final Type arg1,
                              final Annotation[] arg2,
                              final MediaType arg3,
                              final MultivaluedMap<String, String> arg4,
                              final InputStream arg5) throws IOException {
         final Json json = readJson(arg3, arg5);
-        final FileDto2 d =
-            new FileDto2(
+        final TextFileDelta d =
+            new TextFileDelta(
                 json.getId(JsonKeys.ID),
                 json.getString(JsonKeys.DATA),
                 new MimeType(json.getJson(JsonKeys.MIME_TYPE)),

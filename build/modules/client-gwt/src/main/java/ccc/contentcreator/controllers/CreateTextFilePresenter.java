@@ -11,28 +11,25 @@
  */
 package ccc.contentcreator.controllers;
 
-import ccc.contentcreator.actions.EditTextFileAction;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.AbstractPresenter;
 import ccc.contentcreator.client.CommandResponseHandler;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.views.EditTextFile;
-import ccc.rest.dto.TextFileDelta;
-
-import com.google.gwt.http.client.Response;
+import ccc.contentcreator.views.CreateTextFile;
 
 
 /**
- * MVP presenter for renaming resources.
+ * MVP presenter for creating text file.
  *
  * @author Civic Computing Ltd.
  */
-public class EditTextFilePresenter extends
-AbstractPresenter<EditTextFile, TextFileDelta>
+public class CreateTextFilePresenter extends
+AbstractPresenter<CreateTextFile, ResourceSummaryModelData>
 implements
 Editable,
-CommandResponseHandler<Void> {
+CommandResponseHandler<ResourceSummaryModelData> {
 
     /**
      * Constructor.
@@ -42,23 +39,24 @@ CommandResponseHandler<Void> {
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public EditTextFilePresenter(final IGlobals globals,
+    public CreateTextFilePresenter(final IGlobals globals,
                                  final EventBus bus,
-                                 final EditTextFile view,
-                                 final TextFileDelta model) {
+                                 final CreateTextFile view,
+                                 final ResourceSummaryModelData model) {
 
         super(globals, bus, view, model);
         getView().setPresenter(this);
-        getView().setText(model.getContent());
+//        getView().setText(model.getContent());
         getView().show();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Void result) {
+    public void onSuccess(final ResourceSummaryModelData newFolder) {
+        getBus().put(
+            new ResourceCreatedEvent(newFolder, getModel()));
         getView().hide();
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -72,19 +70,7 @@ CommandResponseHandler<Void> {
     @Override
     public void save() {
         if (getView().isValid()) {
-            final TextFileDelta dto = new TextFileDelta(getModel().getId(),
-                getView().getText(),
-                getModel().getMimeType(),
-                true,
-                getModel().getRevisionComment());
-            new EditTextFileAction(dto) {
-                /** {@inheritDoc} */
-                @Override
-                protected void onNoContent(final Response response) {
-                    getView().hide();
-                }
-
-            }.execute();
+            // SAVE
         } else {
             getGlobals().alert(
                 getGlobals().uiConstants().isNotValid());

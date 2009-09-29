@@ -24,7 +24,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 
 
 /**
@@ -60,7 +60,7 @@ public interface Files {
      * @throws RestException If an error occurs updating the file.
      */
     @POST @Path("/{id}")
-    void update(@PathParam("id") UUID id, FileDto2 file) throws RestException;
+    void update(@PathParam("id") UUID id, TextFileDelta file) throws RestException;
 
 
     /**
@@ -73,5 +73,5 @@ public interface Files {
      * @return The file for the specified ID.
      */
     @GET @Path("/{id}")
-    FileDto2 get(@PathParam("id") UUID fileId) throws RestException;
+    TextFileDelta get(@PathParam("id") UUID fileId) throws RestException;
 }

@@ -40,7 +40,7 @@ import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FilesExt;
 import ccc.types.FilePropertyNames;
@@ -158,7 +158,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public FileDto2 get(final UUID fileId) throws RestException {
+    public TextFileDelta get(final UUID fileId) throws RestException {
         try {
             return mapFile2(getResources().find(File.class, fileId));
 
@@ -171,7 +171,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void update(final UUID id, final FileDto2 file)
+    public void update(final UUID id, final TextFileDelta file)
     throws RestException {
         byte[] bytes;
         try {

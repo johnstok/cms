@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.rest.RestException;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -204,7 +204,7 @@ public class FileUploadAcceptanceTest
         getCommands().lock(rs.getId());
 
         // ACT
-        getFiles().update(rs.getId(), new FileDto2(
+        getFiles().update(rs.getId(), new TextFileDelta(
             rs.getId(),
             "Update!",
             new MimeType("text", "plain"),

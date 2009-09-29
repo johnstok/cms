@@ -26,7 +26,7 @@ import ccc.types.MimeType;
  *
  * @author Civic Computing Ltd.
  */
-public class FileDto2
+public class TextFileDelta
     implements
         Jsonable {
 
@@ -46,7 +46,7 @@ public class FileDto2
      * @param isMajorRevision Is this a major revision.
      * @param revisionComment Comment describing the revision.
      */
-    public FileDto2(final UUID id,
+    public TextFileDelta(final UUID id,
                     final String content,
                     final MimeType mimeType,
                     final boolean isMajorRevision,
@@ -63,7 +63,7 @@ public class FileDto2
      *
      * @param json The JSON representation for this class.
      */
-    public FileDto2(final Json json) {
+    public TextFileDelta(final Json json) {
         this(
             json.getId(ID),
             json.getString(DATA),

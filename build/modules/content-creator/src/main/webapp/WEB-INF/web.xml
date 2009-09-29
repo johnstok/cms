@@ -47,7 +47,7 @@
             ccc.rest.providers.ActionNewReader,
             ccc.rest.providers.AliasNewReader,
             ccc.rest.providers.FolderNewReader,
-            ccc.rest.providers.FileDto2Reader,
+            ccc.rest.providers.TextFileDeltaReader,
             ccc.rest.providers.TemplateNewReader
         </param-value>
     </context-param>

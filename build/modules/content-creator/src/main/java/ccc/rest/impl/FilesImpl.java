@@ -21,7 +21,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 
 
 /**
@@ -47,13 +47,13 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public FileDto2 get(final UUID fileId) throws RestException {
+    public TextFileDelta get(final UUID fileId) throws RestException {
         return getFiles().get(fileId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID id, final FileDto2 file)
+    public void update(final UUID id, final TextFileDelta file)
     throws RestException {
         getFiles().update(id, file);
     }
