@@ -49,7 +49,7 @@ import ccc.types.ResourceOrder;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Folders.NAME)
-@TransactionAttribute(REQUIRES_NEW)
+@TransactionAttribute(REQUIRED)
 @Remote(FoldersExt.class)
 @RolesAllowed({})
 public class FoldersEJB

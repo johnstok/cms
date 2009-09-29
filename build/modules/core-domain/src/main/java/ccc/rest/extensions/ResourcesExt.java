@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.action.ActionExecutor;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
@@ -27,7 +28,10 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-public interface ResourcesExt extends Resources {
+public interface ResourcesExt
+    extends
+        Resources,
+        ActionExecutor {
 
     /**
      * Delete a resource.

@@ -39,7 +39,7 @@ import ccc.rest.dto.ResourceSummary;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Aliases.NAME)
-@TransactionAttribute(REQUIRES_NEW)
+@TransactionAttribute(REQUIRED)
 @Remote(Aliases.class)
 @RolesAllowed({})
 public class AliasesEJB

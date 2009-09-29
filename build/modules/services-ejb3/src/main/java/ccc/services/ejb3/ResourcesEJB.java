@@ -24,6 +24,8 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.action.ActionExecutor;
+import ccc.action.ActionExecutorImpl;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
@@ -50,6 +52,7 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.serialization.Json;
+import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ResourcePath;
 
@@ -60,7 +63,7 @@ import ccc.types.ResourcePath;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Resources.NAME)
-@TransactionAttribute(REQUIRES_NEW)
+@TransactionAttribute(REQUIRED)
 @Remote(ResourcesExt.class)
 @RolesAllowed({})
 public class ResourcesEJB
@@ -68,6 +71,21 @@ public class ResourcesEJB
         AbstractEJB
     implements
         ResourcesExt {
+
+    private final ActionExecutor _executor = new ActionExecutorImpl(this);
+
+
+    /** {@inheritDoc} */
+    @Override
+    @TransactionAttribute(REQUIRES_NEW)
+    @RolesAllowed({CONTENT_CREATOR})
+    public void executeAction(final UUID subjectId,
+                              final UUID actorId,
+                              final CommandType command,
+                              final Map<String, String> params)
+    throws RestException {
+        _executor.executeAction(subjectId, actorId, command, params);
+    }
 
 
     /** {@inheritDoc} */

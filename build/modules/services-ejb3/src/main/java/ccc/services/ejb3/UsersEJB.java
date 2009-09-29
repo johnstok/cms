@@ -40,7 +40,7 @@ import ccc.types.Username;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Users.NAME)
-@TransactionAttribute(REQUIRES_NEW)
+@TransactionAttribute(REQUIRED)
 @Remote(Users.class)
 @RolesAllowed({})
 public class UsersEJB

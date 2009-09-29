@@ -50,7 +50,7 @@ import ccc.types.ResourceName;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Pages.NAME)
-@TransactionAttribute(REQUIRES_NEW)
+@TransactionAttribute(REQUIRED)
 @Remote(PagesExt.class)
 @RolesAllowed({})
 public class PagesEJB
