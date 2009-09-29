@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.extensions.FilesExt;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
 
@@ -39,7 +40,7 @@ public abstract class MultipartServlet
         HttpServlet {
     private static final Logger LOG = Logger.getLogger(MultipartServlet.class);
 
-    @EJB(name = Files.NAME) private Files _files;
+    @EJB(name = Files.NAME) private FilesExt _files;
 
 
     /**
@@ -116,7 +117,7 @@ public abstract class MultipartServlet
      *
      * @return Returns the files implementation.
      */
-    public final Files getFiles() {
+    public final FilesExt getFiles() {
         return _files;
     }
 }

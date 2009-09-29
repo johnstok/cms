@@ -11,22 +11,20 @@
  */
 package ccc.rest;
 
-import java.io.InputStream;
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.FileDto2;
 
 
 /**
@@ -54,51 +52,26 @@ public interface Files {
 
 
     /**
-     * Create a new CCC file.
-     *
-     * @param parentFolder The folder in which the file should be created.
-     * @param file The details of the file.
-     * @param resourceName The name of the file.
-     * @param dataStream The content of the file.
-     * @param title The title of the file.
-     * @param description The description of the file.
-     * @param lastUpdated The last updated date of the file.
-     * @param publish Should the file be published.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
-     *
-     * @return A summary of the newly created file.
-     *
-     * @throws RestException If an error occurs creating the file.
-     */
-    @POST @Path("")
-    ResourceSummary createFile(UUID parentFolder,
-                               FileDelta file,
-                               String resourceName,
-                               InputStream dataStream,
-                               String title,
-                               String description,
-                               Date lastUpdated,
-                               boolean publish,
-                               String comment,
-                               boolean isMajorEdit) throws RestException;
-
-
-    /**
      * Update an existing CCC file.
      *
-     * @param fileId The id of the file to update.
-     * @param fileDelta The changes to apply.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
-     * @param dataStream The new content for the file.
+     * @param id The ID of the file to update.
+     * @param file The new file representation.
      *
      * @throws RestException If an error occurs updating the file.
      */
     @POST @Path("/{id}")
-    void updateFile(UUID fileId,
-                    FileDelta fileDelta,
-                    String comment,
-                    boolean isMajorEdit,
-                    InputStream dataStream) throws RestException;
+    void update(@PathParam("id") UUID id, FileDto2 file) throws RestException;
+
+
+    /**
+     * Get the representation of an existing CCC file.
+     *
+     * @param fileId The ID of the file to get.
+     *
+     * @throws RestException If an error occurs getting the file.
+     *
+     * @return The file for the specified ID.
+     */
+    @GET @Path("/{id}")
+    FileDto2 get(@PathParam("id") UUID fileId) throws RestException;
 }

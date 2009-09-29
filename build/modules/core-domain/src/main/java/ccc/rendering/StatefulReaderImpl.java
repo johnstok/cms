@@ -12,9 +12,6 @@
 
 package ccc.rendering;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 import ccc.domain.EntityNotFoundException;
@@ -23,8 +20,6 @@ import ccc.domain.Resource;
 import ccc.entities.IResource;
 import ccc.persistence.FileRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.StreamAction;
-import ccc.serialization.IO;
 import ccc.types.ResourcePath;
 
 
@@ -36,43 +31,6 @@ import ccc.types.ResourcePath;
 public final class StatefulReaderImpl
     implements
         StatefulReader {
-
-    /**
-     * A stream action that can read a raw bytes into a string.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private static final class ReadContentToStringAction
-        implements
-            StreamAction {
-
-        private final StringBuilder _sb;
-        private final String        _charset;
-
-        /**
-         * Constructor.
-         *
-         * @param sb The string builder to read into.
-         * @param charset The character set to use.
-         */
-        ReadContentToStringAction(final StringBuilder sb,
-                                  final String charset) {
-            _sb = sb;
-            _charset = charset;
-        }
-
-        @Override public void execute(final InputStream is)
-                                              throws Exception {
-            final ByteArrayOutputStream os =
-                new ByteArrayOutputStream();
-            IO.copy(is, os);
-            _sb.append(
-                new String(
-                    os.toByteArray(),
-                    Charset.forName(_charset)));
-        }
-    }
-
 
     private final ResourceRepository  _resources;
     private final FileRepository _data;
