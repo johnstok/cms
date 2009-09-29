@@ -169,7 +169,7 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Upload File")
+    @DefaultStringValue("Upload file")
     String uploadFile();
 
     /**
@@ -385,7 +385,7 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create Page")
+    @DefaultStringValue("Create page")
     String createPage();
 
     /**
@@ -1508,5 +1508,13 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Edit inline")
     String editInline();
+
+    /**
+     * "Create text file".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create text file")
+    String createTextFile();
 
 }

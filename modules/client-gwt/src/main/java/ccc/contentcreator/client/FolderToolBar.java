@@ -15,6 +15,7 @@ import ccc.contentcreator.actions.OpenCreateFileAction;
 import ccc.contentcreator.actions.OpenCreateFolderAction;
 import ccc.contentcreator.actions.OpenCreatePageAction;
 import ccc.contentcreator.actions.OpenCreateTemplateAction;
+import ccc.contentcreator.actions.OpenCreateTextFileAction;
 import ccc.contentcreator.api.UIConstants;
 import ccc.rest.dto.UserDto;
 
@@ -44,21 +45,26 @@ public class FolderToolBar
             new OpenCreateFileAction(ssm));
         addSeparator();
         addButton(
-            "Create Folder",
+            "Create folder",
             _constants.createFolder(),
             new OpenCreateFolderAction(ssm));
         addSeparator();
         addButton(
-            "Create Page",
+            "Create page",
             _constants.createPage(),
             new OpenCreatePageAction(ssm));
         addSeparator();
         if (user.getRoles().contains(IGlobals.ADMINISTRATOR)
                 || user.getRoles().contains(IGlobals.SITE_BUILDER)) {
             addButton(
-                "Create Template",
+                "Create template",
                 _constants.createTemplate(),
                 new OpenCreateTemplateAction(ssm));
+            addSeparator();
+            addButton(
+                "Create text file",
+                _constants.createTextFile(),
+                new OpenCreateTextFileAction(ssm));
             addSeparator();
         }
     }

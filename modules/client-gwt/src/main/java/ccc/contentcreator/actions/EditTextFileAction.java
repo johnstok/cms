@@ -12,7 +12,7 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -26,14 +26,14 @@ public class EditTextFileAction
     extends
         RemotingAction {
 
-    private final FileDto2 _dto;
+    private final TextFileDelta _dto;
 
     /**
      * Constructor.
      *
      * @param dto The dto of the file.
      */
-    public EditTextFileAction(final FileDto2 dto) {
+    public EditTextFileAction(final TextFileDelta dto) {
         super(UI_CONSTANTS.updateTextFile(), RequestBuilder.POST);
         _dto = dto;
     }

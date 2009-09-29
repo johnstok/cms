@@ -7,7 +7,7 @@ import ccc.contentcreator.client.SelectionModelEventBus;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.controllers.EditTextFilePresenter;
 import ccc.contentcreator.views.gxt.EditTextFileDialog;
-import ccc.rest.dto.FileDto2;
+import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
@@ -50,7 +50,7 @@ extends
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final FileDto2 dto = new FileDto2(new GwtJson(result));
+        final TextFileDelta dto = new TextFileDelta(new GwtJson(result));
         if ("text".equalsIgnoreCase(dto.getMimeType().getPrimaryType())) {
             new EditTextFilePresenter(
                 GLOBALS,
