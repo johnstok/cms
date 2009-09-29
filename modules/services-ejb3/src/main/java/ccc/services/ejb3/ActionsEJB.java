@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
@@ -32,8 +31,6 @@ import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
-import ccc.action.ActionExecutor;
-import ccc.action.ActionExecutorImpl;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
@@ -73,7 +70,6 @@ public class ActionsEJB
 
     @EJB(name=Resources.NAME) private ResourcesExt _resourcesExt;
 
-    private ActionExecutor _executor;
 
     /** Constructor. */
     public ActionsEJB() { super(); }
@@ -83,16 +79,39 @@ public class ActionsEJB
     @Override
     public void executeAction() {
         LOG.debug("Executing scheduled actions.");
+
         final List<Action> actions = getActions().latest(new Date());
         LOG.debug("Actions to execute: "+actions.size());
-        try {
-            if (actions.size() > 0) {
-                _executor.executeAction(actions.get(0));
+
+        if (actions.size() > 0) {
+            final Action action = actions.get(0);
+            try {
+                _resourcesExt.executeAction(// Executes in nested txn.
+                    action.subject().id(),
+                    action.actor().id(),
+                    action.type(),
+                    action.parameters());
+                action.complete();
+                LOG.info("Completed action: "+action.id());
+
+            } catch (final RestException e) {
+                fail(action, e);
+
+            } catch (final RuntimeException e) {
+                LOG.warn("Error executing action.", e);
+                throw e;
+
             }
-        } catch (final RuntimeException e) {
-            LOG.warn("Error executing action.", e);
-            throw e;
         }
+    }
+
+
+    private void fail(final Action action, final RestException e) {
+        action.fail(e.getFailure());
+        LOG.info(
+            "Failed action: "+action.id()
+            +" [CommandFailedException was "
+            +e.getFailure().getExceptionId()+"]");
     }
 
 
@@ -202,12 +221,6 @@ public class ActionsEJB
     @Timeout
     public void run(@SuppressWarnings("unused") final Timer timer) {
         executeAction();
-    }
-
-
-    @PostConstruct @SuppressWarnings("unused")
-    private void configureExecutor() {
-        _executor = new ActionExecutorImpl(_resourcesExt);
     }
 
 

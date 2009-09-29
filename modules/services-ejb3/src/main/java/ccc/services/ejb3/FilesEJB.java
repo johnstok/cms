@@ -54,7 +54,7 @@ import ccc.types.ResourceName;
  * @author Civic Computing Ltd.
  */
 @Stateless(name=Files.NAME)
-@TransactionAttribute(REQUIRES_NEW)
+@TransactionAttribute(REQUIRED)
 @Local(FilesExt.class)
 @RolesAllowed({})
 public class FilesEJB

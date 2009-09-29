@@ -12,12 +12,12 @@
 package ccc.action;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
-import org.apache.log4j.Logger;
-
-import ccc.domain.Action;
 import ccc.rest.RestException;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.types.CommandType;
 import ccc.types.DBC;
 
 
@@ -27,8 +27,6 @@ import ccc.types.DBC;
  * @author Civic Computing Ltd.
  */
 public class ActionExecutorImpl implements ActionExecutor {
-    private static final Logger LOG =
-        Logger.getLogger(ActionExecutorImpl.class.getName());
 
     private final ResourcesExt _resourcesExt;
 
@@ -45,81 +43,70 @@ public class ActionExecutorImpl implements ActionExecutor {
 
     /** {@inheritDoc} */
     @Override
-    public void executeAction(final Action action) {
-        try{
-            switch (action.type()) {
+    public void executeAction(final UUID subjectId,
+                              final UUID actorId,
+                              final CommandType command,
+                              final Map<String, String> params)
+                                                        throws RestException {
+        switch (command) {
 
-                case RESOURCE_UNPUBLISH:
-                    executeUnpublish(action);
-                    break;
+            case RESOURCE_UNPUBLISH:
+                executeUnpublish(subjectId, actorId, params);
+                break;
 
-                case RESOURCE_PUBLISH:
-                    executePublish(action);
-                    break;
+            case RESOURCE_PUBLISH:
+                executePublish(subjectId, actorId, params);
+                break;
 
-                case PAGE_UPDATE:
-                    executeUpdate(action);
-                    break;
+            case PAGE_UPDATE:
+                executeUpdate(subjectId, actorId, params);
+                break;
 
-                case RESOURCE_DELETE:
-                    executeDelete(action);
-                    break;
+            case RESOURCE_DELETE:
+                executeDelete(subjectId, actorId, params);
+                break;
 
-                default:
-                    throw new UnsupportedOperationException(
-                        "Unsupported action type: "+action.type());
+            default:
+                throw new UnsupportedOperationException(
+                    "Unsupported action type: "+command);
 
-            }
-            action.complete();
-            LOG.info("Completed action: "+action.id());
-
-        } catch (final RestException e) {
-            fail(action, e);
         }
     }
 
 
-    private void fail(final Action action, final RestException e) {
-        action.fail(e.getFailure());
-        LOG.info(
-            "Failed action: "+action.id()
-            +" [CommandFailedException was "
-            +e.getFailure().getExceptionId()+"]");
+    private void executeDelete(final UUID subjectId,
+                               final UUID actorId,
+                               final Map<String, String> params)
+                                                        throws RestException {
+        _resourcesExt.delete(subjectId, actorId, new Date());
     }
 
 
-    private void executeDelete(final Action action) throws RestException {
-        _resourcesExt.delete(action.subject().id(),
-                             action.actor().id(),
-                             new Date());
-    }
-
-
-    private void executeUpdate(final Action action)
-                                                 throws RestException {
+    private void executeUpdate(final UUID subjectId,
+                               final UUID actorId,
+                               final Map<String, String> params)
+                                                         throws RestException {
         _resourcesExt.applyWorkingCopy(
-            action.subject().id(),
-            action.actor().id(),
+            subjectId,
+            actorId,
             new Date(),
-            Boolean.valueOf(action.parameters().get("MAJOR")).booleanValue(),
-            action.parameters().get("COMMENT"));
+            Boolean.valueOf(params.get("MAJOR")).booleanValue(),
+            params.get("COMMENT"));
     }
 
 
-    private void executePublish(final Action action)
-                                                 throws RestException {
-        _resourcesExt.publish(
-            action.subject().id(),
-            action.actor().id(),
-            new Date());
+    private void executePublish(final UUID subjectId,
+                                final UUID actorId,
+                                final Map<String, String> params)
+                                                         throws RestException {
+        _resourcesExt.publish(subjectId, actorId, new Date());
     }
 
 
-    private void executeUnpublish(final Action action)
-                                                 throws RestException {
-        _resourcesExt.unpublish(
-            action.subject().id(),
-            action.actor().id(),
-            new Date());
+    private void executeUnpublish(final UUID subjectId,
+                                  final UUID actorId,
+                                  final Map<String, String> params)
+                                                         throws RestException {
+        _resourcesExt.unpublish(subjectId, actorId, new Date());
     }
 }

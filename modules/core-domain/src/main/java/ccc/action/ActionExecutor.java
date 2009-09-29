@@ -11,7 +11,11 @@
  */
 package ccc.action;
 
-import ccc.domain.Action;
+import java.util.Map;
+import java.util.UUID;
+
+import ccc.rest.RestException;
+import ccc.types.CommandType;
 
 
 /**
@@ -21,14 +25,18 @@ import ccc.domain.Action;
  */
 public interface ActionExecutor {
 
-    /** NAME : String. */
-    String NAME = "ActionExecutor";
-
-
     /**
      * Execute the specified action.
      *
-     * @param action The action to execute.
+     * @param subjectId The resource the action will operate on.
+     * @param actorId The actor to perform the action.
+     * @param command The command to perform.
+     * @param params Parameters for the action.
+     *
+     * @throws RestException If the action fails.
      */
-    void executeAction(final Action action);
+    void executeAction(UUID subjectId,
+                       UUID actorId,
+                       CommandType command,
+                       Map<String, String> params) throws RestException;
 }
