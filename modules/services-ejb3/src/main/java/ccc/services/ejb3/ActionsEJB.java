@@ -83,8 +83,7 @@ public class ActionsEJB
         final List<Action> actions = getActions().latest(new Date());
         LOG.debug("Actions to execute: "+actions.size());
 
-        if (actions.size() > 0) {
-            final Action action = actions.get(0);
+        for (final Action action : actions) {
             try {
                 _resourcesExt.executeAction(// Executes in nested txn.
                     action.subject().id(),

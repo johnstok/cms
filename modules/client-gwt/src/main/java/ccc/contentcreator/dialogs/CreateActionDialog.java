@@ -83,7 +83,7 @@ public class CreateActionDialog
                     _dtPicker.getDate(),
                     _createAction.getParameters()) {
                         /** {@inheritDoc} */
-                        @Override protected void onNoContent(final Response r) {
+                        @Override protected void onOK(final Response r) {
                             hide();
                         }
                 }.execute();
