@@ -1493,4 +1493,20 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Delete")
     String delete();
 
+    /**
+     * "Update text file".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update text file")
+    String updateTextFile();
+
+    /**
+     * "Edit inline".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Edit inline")
+    String editInline();
+
 }

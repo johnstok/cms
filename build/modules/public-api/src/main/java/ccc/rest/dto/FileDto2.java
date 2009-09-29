@@ -16,6 +16,7 @@ import static ccc.serialization.JsonKeys.*;
 import java.util.UUID;
 
 import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.MimeType;
 
@@ -55,6 +56,21 @@ public class FileDto2
         _mimeType = mimeType;
         _isMajorRevision = isMajorRevision;
         _revisionComment = revisionComment;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation for this class.
+     */
+    public FileDto2(final Json json) {
+        this(
+            json.getId(ID),
+            json.getString(DATA),
+            new MimeType(json.getJson(JsonKeys.MIME_TYPE)),
+            json.getBool(MAJOR_CHANGE),
+            json.getString(COMMENT)
+        );
     }
 
 
