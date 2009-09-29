@@ -245,10 +245,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             new ArrayList<ResourceSummary>(getFolders().roots());
 
         // ASSERT
-        assertEquals(3, roots.size());
+        assertEquals(2, roots.size());
         assertEquals(PredefinedResourceNames.ASSETS, roots.get(0).getName());
         assertEquals(PredefinedResourceNames.CONTENT, roots.get(1).getName());
-        assertEquals(PredefinedResourceNames.TRASH, roots.get(2).getName());
 
     }
 }

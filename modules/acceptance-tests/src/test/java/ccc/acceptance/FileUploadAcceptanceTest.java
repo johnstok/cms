@@ -17,10 +17,12 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.rest.RestException;
+import ccc.rest.dto.FileDto2;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.types.FailureCode;
+import ccc.types.MimeType;
 
 
 /**
@@ -182,6 +184,35 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         assertEquals("NULL", body);
+        assertEquals("Update!", previewContent(rs, false));
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws IOException If the test fails.
+     * @throws RestException If the test fails.
+     */
+    public void testUpdateFileViaApi() throws IOException, RestException {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary filesFolder = resourceForPath("/content/files");
+        final ResourceSummary rs =
+            createFile(fName, "Hello!", filesFolder);
+        getCommands().lock(rs.getId());
+
+        // ACT
+        getFiles().update(rs.getId(), new FileDto2(
+            rs.getId(),
+            "Update!",
+            new MimeType("text", "plain"),
+            true,
+            "Meh."
+        ));
+
+        // ASSERT
         assertEquals("Update!", previewContent(rs, false));
     }
 

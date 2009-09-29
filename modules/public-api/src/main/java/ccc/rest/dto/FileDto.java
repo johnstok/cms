@@ -29,7 +29,7 @@ public final class FileDto implements Serializable, Jsonable {
 
     private String _mimeType;
     private String _path;
-    private UUID     _id;
+    private UUID   _id;
     private String _name;
     private String _title;
 
@@ -45,10 +45,10 @@ public final class FileDto implements Serializable, Jsonable {
      * @param title The file's title.
      */
     public FileDto(final String type,
-                       final String path,
-                       final UUID id,
-                       final String name,
-                       final String title) {
+                   final String path,
+                   final UUID id,
+                   final String name,
+                   final String title) {
         _mimeType = type;
         _path = path;
         _id = id;

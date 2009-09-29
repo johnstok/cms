@@ -36,8 +36,8 @@ import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.ActionRepositoryImpl;
 import ccc.persistence.ActionRepository;
+import ccc.persistence.ActionRepositoryImpl;
 import ccc.persistence.FileRepository;
 import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
@@ -47,11 +47,13 @@ import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.jpa.FsCoreData;
+import ccc.rendering.ReadContentToStringAction;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
+import ccc.rest.dto.FileDto2;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -394,6 +396,26 @@ abstract class AbstractEJB {
                 file.id(),
                 file.name().toString(),
                 file.title());
+        return fs;
+    }
+
+
+    /**
+     * Create a summary of a file.
+     *
+     * @param file The file to map.
+     * @return The summary of the file.
+     */
+    protected FileDto2 mapFile2(final File file) {
+
+        final FileDto2 fs =
+            new FileDto2(
+                file.id(),
+                (!file.isText())
+                    ? null : ReadContentToStringAction.read(_dm, file),
+                file.mimeType(),
+                file.currentRevision().isMajorChange(),
+                file.currentRevision().getComment());
         return fs;
     }
 

@@ -12,7 +12,6 @@
 package ccc.commands;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
@@ -20,7 +19,6 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -55,8 +53,6 @@ public class CreateFileCommand extends CreateResourceCommand {
     /**
      * Create the file.
      *
-     * @param actor The user creating the file.
-     * @param happenedOn The date that the file was created.
      * @param file The File to persist.
      * @param parentFolder The unique id of the folder acting as a parent for
      *  file.
@@ -65,22 +61,18 @@ public class CreateFileCommand extends CreateResourceCommand {
      * @param name The name of the file to create.
      * @param title The file's title.
      * @param description The description of the file.
-     * @param comment Comment describing the revision.
-     * @param isMajorEdit Is this revision a major change.
+     * @param rm Metadata describing the revision.
      *
      * @throws CccCheckedException If the command fails.
      *
      * @return The file that was created.
      */
-    public File execute(final User actor,
-                        final Date happenedOn,
-                        final UUID parentFolder,
+    public File execute(final UUID parentFolder,
                         final FileDelta file,
                         final String title,
                         final String description,
                         final ResourceName name,
-                        final String comment,
-                        final boolean isMajorEdit,
+                        final RevisionMetadata rm,
                         final InputStream dataStream)
                                                 throws CccCheckedException {
         final Data data = _data.create(dataStream, file.getSize());
@@ -89,13 +81,6 @@ public class CreateFileCommand extends CreateResourceCommand {
             new FileHelper().extractImageMetadata(
                 data, file.getProperties(), _data);
         }
-
-        final RevisionMetadata rm =
-            new RevisionMetadata(
-                happenedOn,
-                actor,
-                isMajorEdit,
-                comment == null || comment.isEmpty() ? "Created." : comment);
 
         final File f =
             new File(
@@ -108,7 +93,7 @@ public class CreateFileCommand extends CreateResourceCommand {
                 file.getProperties(),
                 rm);
 
-        create(actor, happenedOn, parentFolder, f);
+        create(rm.getActor(), rm.getTimestamp(), parentFolder, f);
 
         return f;
     }
