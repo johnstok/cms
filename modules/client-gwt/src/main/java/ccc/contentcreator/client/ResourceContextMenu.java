@@ -21,6 +21,7 @@ import ccc.contentcreator.actions.LockAction;
 import ccc.contentcreator.actions.OpenCreateActionAction;
 import ccc.contentcreator.actions.OpenCreateAliasAction;
 import ccc.contentcreator.actions.OpenEditCacheAction;
+import ccc.contentcreator.actions.OpenEditTextFileAction;
 import ccc.contentcreator.actions.OpenMoveAction;
 import ccc.contentcreator.actions.OpenRenameAction;
 import ccc.contentcreator.actions.OpenUpdateAliasAction;
@@ -87,6 +88,7 @@ public class ResourceContextMenu
     private final Action _applyWorkingCopyAction;
     private final Action _editCacheAction;
     private final Action _deleteResourceAction;
+    private final Action _editTextFileAction;
 
     /**
      * Constructor.
@@ -118,6 +120,7 @@ public class ResourceContextMenu
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
         _editCacheAction = new OpenEditCacheAction(_table);
         _deleteResourceAction = new DeleteResourceAction(_table);
+        _editTextFileAction = new OpenEditTextFileAction(_table);
 
         setWidth(CONTEXT_MENU_WIDTH);
 
@@ -179,6 +182,7 @@ public class ResourceContextMenu
                         break;
                     case FILE:
                         addEditResource();
+                        addEditTextFile();
                         addDeleteResource();
                         break;
                     case SEARCH:
@@ -393,6 +397,15 @@ public class ResourceContextMenu
         });
         add(update);
     }
+
+
+    private void addEditTextFile() {
+        addMenuItem(
+            "editTextFile",
+            getConstants().editInline(),
+            _editTextFileAction);
+    }
+
 
 
     private void updateFile(final ResourceSummaryModelData item) {
