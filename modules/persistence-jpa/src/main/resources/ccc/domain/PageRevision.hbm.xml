@@ -51,13 +51,6 @@
                 <property name="_text" column="value_text" not-null="false" type="text" length="2147483647" />
                 <property name="_boolean" column="value_boolean" not-null="false" type="boolean" />
                 <property name="_date" column="value_date" not-null="false" type="timestamp" />
-                <property 
-                    name="_number" 
-                    column="value_number" 
-                    not-null="false"
-                    scale="4"
-                    precision="14" 
-                    type="big_decimal" />
             </composite-element>
         </set>
         
