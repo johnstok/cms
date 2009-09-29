@@ -37,7 +37,6 @@ public final class Paragraph implements Serializable, Jsonable {
     private Boolean       _boolean;
     private Date          _date;
     private String        _name;
-    private BigDecimal    _number;
 
     private Paragraph() { super(); }
 
@@ -67,7 +66,7 @@ public final class Paragraph implements Serializable, Jsonable {
                 break;
 
             case NUMBER:
-                _number = json.getBigDecimal("number");
+                _text = json.getBigDecimal("number").toString();
                 break;
 
             default:
@@ -109,7 +108,7 @@ public final class Paragraph implements Serializable, Jsonable {
 
     private void number(final BigDecimal number) {
         require().notNull(number);
-        _number = number;
+        _text = number.toString();
         _type = ParagraphType.NUMBER;
     }
 
@@ -232,7 +231,7 @@ public final class Paragraph implements Serializable, Jsonable {
      * @return The numerical representation of this paragraph.
      */
     public BigDecimal number() {
-        return _number;
+        return new BigDecimal(_text);
     }
 
     /**
@@ -292,7 +291,6 @@ public final class Paragraph implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-
         final int prime = 31;
         int result = 1;
         result = prime * result + ((_name == null) ? 0 : _name.hashCode());
@@ -302,7 +300,6 @@ public final class Paragraph implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
-
         if (this == obj) {
             return true;
         }
@@ -335,15 +332,12 @@ public final class Paragraph implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) {
+    public void toJson(final Json json) { // FIXME: Use JsonKeys
         json.set("name", name());
         json.set("type", _type.name());
         json.set("text", text());
         json.set("bool", bool());
         json.set("date", date());
-        json.set("number",
-            (null==_number) ? null : _number);
-
     }
 
 
