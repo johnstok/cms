@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.persistence;
 
 import static ccc.commons.Exceptions.*;
 
@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
 import ccc.types.DBC;
 
@@ -33,7 +32,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class JdbcCoreData implements CoreData {
+class JdbcCoreData implements CoreData {
 
     private final DataSource _datasource;
 

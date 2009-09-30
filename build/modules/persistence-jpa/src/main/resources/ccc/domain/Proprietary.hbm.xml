@@ -126,4 +126,11 @@
         </create>
         <drop/>
     </database-object>
+    <database-object>
+        <create>
+        INSERT INTO SETTINGS (id, vn, value, name)
+        VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c05', 0, '/tmp/CCC7/filestore', 'FILE_STORE_PATH')
+        </create>
+        <drop/>
+    </database-object>
 </hibernate-mapping>

@@ -64,6 +64,6 @@ public class CCCPropertiesTest
         final Map<String, String> map = CCCProperties.getAll();
 
         // ASSERT
-        assertEquals(6, map.size());
+        assertEquals(5, map.size());
     }
 }

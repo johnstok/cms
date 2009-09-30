@@ -46,7 +46,6 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.ReadContentToStringAction;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
@@ -80,7 +79,7 @@ abstract class AbstractEJB {
     private ResourceRepository _resources;
     private LogEntryRepository _audit;
     private FileRepository     _dm;
-    private ActionRepository  _actions;
+    private ActionRepository   _actions;
 
 
     @PostConstruct @SuppressWarnings("unused")
@@ -88,7 +87,7 @@ abstract class AbstractEJB {
         _audit = new LogEntryRepositoryImpl(_em);
         _users = new UserRepositoryImpl(_em);
         _resources = new ResourceRepositoryImpl(_em);
-        _dm = new FileRepositoryImpl(new FsCoreData(), _em);
+        _dm = FileRepositoryImpl.onFileSystem(_em);
         _actions = new ActionRepositoryImpl(_em);
     }
 
