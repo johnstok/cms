@@ -84,18 +84,11 @@ public class SearchBody
             searchQuery = qParams[0];
         }
 
-        int pageNumber = 0;
-        final String[] pParams = _parameters.get("p");
-        if (pParams != null && pParams.length != 0) {
-            try {
-                pageNumber = Integer.parseInt(pParams[0]);
-            } catch (final NumberFormatException e) {
-                Exceptions.swallow(e);
-            }
-        }
+        int pageNumber = getScalarInt("p", 0);
+        int resultsPerPage = getScalarInt("r", 10);
 
         final SearchResult result =
-            _searchEngine.find(searchQuery, 10, pageNumber);
+            _searchEngine.find(searchQuery, resultsPerPage, pageNumber);
 
         final String templateString = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
@@ -105,6 +98,20 @@ public class SearchBody
 
         processor.render(templateString, w, context);
     }
+
+    
+	private int getScalarInt(String paramName, int defaultValue) {
+		int scalarInt = defaultValue;
+        final String[] pParams = _parameters.get(paramName);
+        if (pParams != null && pParams.length != 0) {
+            try {
+                scalarInt = Integer.parseInt(pParams[0]);
+            } catch (final NumberFormatException e) {
+                Exceptions.swallow(e);
+            }
+        }
+		return scalarInt;
+	}
 
 
     /** BUILT_IN_SEARCH_TEMPLATE : Template. */
