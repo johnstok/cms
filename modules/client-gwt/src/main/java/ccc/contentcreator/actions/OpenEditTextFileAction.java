@@ -51,7 +51,7 @@ extends
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final TextFileDelta dto = new TextFileDelta(new GwtJson(result));
-        if ("text".equalsIgnoreCase(dto.getMimeType().getPrimaryType())) {
+        if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 GLOBALS,
                 new SelectionModelEventBus(_selectionModel),
