@@ -49,8 +49,8 @@ CommandResponseHandler<Void> {
 
         super(globals, bus, view, model);
         getView().setPresenter(this);
-        getView().setText(model.getContent());
         getView().show();
+        getView().setText(model.getContent());
     }
 
     /** {@inheritDoc} */

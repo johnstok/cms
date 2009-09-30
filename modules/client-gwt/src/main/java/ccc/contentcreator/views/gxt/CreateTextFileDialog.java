@@ -23,6 +23,8 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.weborient.codemirror.client.CodeMirrorConfiguration;
+import com.weborient.codemirror.client.CodeMirrorEditorWidget;
 
 
 /**
@@ -40,10 +42,12 @@ public class CreateTextFileDialog
     private final TextField<String>   _mimeSubType = new TextField<String>();
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
-    private final TextArea _text = new TextArea();
+//    private final TextArea _text = new TextArea();
+    private CodeMirrorEditorWidget _text = new CodeMirrorEditorWidget();
 
     private Editable _presenter;
-    private static final int TEXT_AREA_HEIGHT = 230;
+    private static final int DIALOG_HEIGHT = 610;
+//    private static final int TEXT_AREA_HEIGHT = 230;
 
     /**
      * Constructor.
@@ -53,6 +57,8 @@ public class CreateTextFileDialog
 
         super(new IGlobalsImpl().uiConstants().createTextFile(),
             new IGlobalsImpl());
+
+        setHeight(DIALOG_HEIGHT);
 
         _fileName.setName("fileName");
         _fileName.setFieldLabel(getUiConstants().fileName());
@@ -74,15 +80,21 @@ public class CreateTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-        _text.setFieldLabel(getUiConstants().content());
-        _text.setHeight(TEXT_AREA_HEIGHT);
+        final CodeMirrorConfiguration configuration =
+            new CodeMirrorConfiguration();
+
+        _text = new CodeMirrorEditorWidget(configuration);
+        _text.getToolBar().removeFromParent(); // remove toolbar
+
+//        _text.setFieldLabel(getUiConstants().content());
+//        _text.setHeight(TEXT_AREA_HEIGHT);
         addField(_text);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getText() {
-        return _text.getValue();
+        return _text.getText();
     }
 
     /** {@inheritDoc} */
@@ -125,9 +137,9 @@ public class CreateTextFileDialog
             result.addError(
                 _mimeSubType.getFieldLabel()+getUiConstants().cannotBeEmpty());
         }
-        if (!Validations2.notEmpty(_text.getValue())) {
+        if (!Validations2.notEmpty(_text.getText())) {
             result.addError(
-                _text.getFieldLabel()+getUiConstants().cannotBeEmpty());
+                getUiConstants().content()+getUiConstants().cannotBeEmpty());
         }
         return result;
     }
