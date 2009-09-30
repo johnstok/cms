@@ -22,6 +22,8 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.weborient.codemirror.client.CodeMirrorConfiguration;
+import com.weborient.codemirror.client.CodeMirrorEditorWidget;
 
 
 /**
@@ -36,10 +38,9 @@ public class EditTextFileDialog
         EditTextFile{
 
     private Editable _presenter;
-    private static final int TEXT_AREA_HEIGHT = 400;
     private static final int DIALOG_HEIGHT = 580;
-
-    private final TextArea _text = new TextArea();
+    private CodeMirrorEditorWidget _text = new CodeMirrorEditorWidget();
+//    private final TextArea _text = new TextArea();
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
@@ -50,7 +51,14 @@ public class EditTextFileDialog
     public EditTextFileDialog() {
 
         super(new IGlobalsImpl().uiConstants().edit(), new IGlobalsImpl());
+        final CodeMirrorConfiguration configuration =
+            new CodeMirrorConfiguration();
+
         setHeight(DIALOG_HEIGHT);
+
+        _text = new CodeMirrorEditorWidget(configuration);
+        _text.getToolBar().removeFromParent(); // remove toolbar
+
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
         _majorEdit.setBoxLabel(getUiConstants().yes());
@@ -61,21 +69,22 @@ public class EditTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-        _text.setFieldLabel(getUiConstants().content());
-        _text.setHeight(TEXT_AREA_HEIGHT);
+//        _text.setFieldLabel(getUiConstants().content());
+//        _text.setHeight(TEXT_AREA_HEIGHT);
         addField(_text);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getText() {
-        return _text.getValue();
+        return _text.getText();
+//        return "";
     }
 
     /** {@inheritDoc} */
     @Override
     public void setText(final String text) {
-        _text.setValue(text);
+        _text.setText(text);
     }
 
     /** {@inheritDoc} */
@@ -107,9 +116,9 @@ public class EditTextFileDialog
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(_text.getValue())) {
+        if (!Validations2.notEmpty(_text.getText())) {
             result.addError(
-                _text.getFieldLabel()+getUiConstants().cannotBeEmpty());
+                getUiConstants().content()+getUiConstants().cannotBeEmpty());
         }
         return result;
     }
