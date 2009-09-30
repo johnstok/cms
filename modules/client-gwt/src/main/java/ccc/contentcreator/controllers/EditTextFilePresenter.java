@@ -71,12 +71,12 @@ CommandResponseHandler<Void> {
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().isValid()) {
+        if (getView().getValidationResult().isValid()) {
             final TextFileDelta dto = new TextFileDelta(getModel().getId(),
                 getView().getText(),
                 getModel().getMimeType(),
-                true,
-                getModel().getRevisionComment());
+                getView().isMajorEdit(),
+                getView().getComment());
             new EditTextFileAction(dto) {
                 /** {@inheritDoc} */
                 @Override
@@ -87,7 +87,7 @@ CommandResponseHandler<Void> {
             }.execute();
         } else {
             getGlobals().alert(
-                getGlobals().uiConstants().isNotValid());
+                getView().getValidationResult().getErrorText());
         }
     }
 }

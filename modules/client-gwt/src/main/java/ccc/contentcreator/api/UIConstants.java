@@ -629,11 +629,11 @@ public interface UIConstants extends Constants {
     String regexpValidationFailed();
 
     /**
-     * "cannot be empty".
+     * " cannot be empty".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("cannot be empty")
+    @DefaultStringValue(" cannot be empty")
     String cannotBeEmpty();
 
     /**
@@ -1516,5 +1516,13 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Create text file")
     String createTextFile();
+
+    /**
+     * "Content".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Content")
+    String content();
 
 }

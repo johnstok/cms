@@ -38,5 +38,20 @@ public interface EditTextFile extends View<Editable>, Validatable {
      * @return The current text of the file.
      */
     String getText();
+
+    /**
+     * Accessor.
+     *
+     * @return The comment.
+     */
+    String getComment();
+
+    /**
+     * Accessor.
+     *
+     * @return The boolean value for major edit.
+     */
+    boolean isMajorEdit();
+
 }
 

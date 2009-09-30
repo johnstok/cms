@@ -62,7 +62,7 @@ public class CreateFolderPresenter
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().isValid()) {
+        if (getView().getValidationResult().isValid()) {
             new CreateFolderAction(
                 getModel().getId(),
                 getView().getName()){
