@@ -94,7 +94,19 @@ public class FileRevision
 
     /** {@inheritDoc} */
     public boolean isText() {
-        return "text".equalsIgnoreCase(getMimeType().getPrimaryType());
+        final String primary = getMimeType().getPrimaryType();
+        final String sub = getMimeType().getSubType();
+        if ("text".equalsIgnoreCase(primary)) {
+            return true;
+        } else if ("application".equalsIgnoreCase(primary)) {
+            if ("xml".equalsIgnoreCase(sub)
+                || "plain".equalsIgnoreCase(sub)
+                || "javascript".equalsIgnoreCase(sub)
+                || "x-javascript".equalsIgnoreCase(sub)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** {@inheritDoc} */
