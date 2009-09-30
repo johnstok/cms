@@ -28,7 +28,6 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.jpa.FsCoreData;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.StatefulReaderImpl;
 
@@ -76,7 +75,7 @@ public class ReaderAction
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
         final FileRepository dm =
-            new FileRepositoryImpl(new FsCoreData(), em);
+            FileRepositoryImpl.onFileSystem(em);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =
