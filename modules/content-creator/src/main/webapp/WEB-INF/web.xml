@@ -48,7 +48,8 @@
             ccc.rest.providers.AliasNewReader,
             ccc.rest.providers.FolderNewReader,
             ccc.rest.providers.TextFileDeltaReader,
-            ccc.rest.providers.TemplateNewReader
+            ccc.rest.providers.TemplateNewReader,
+            ccc.rest.providers.TextFileDtoReader
         </param-value>
     </context-param>
     <context-param>

@@ -40,8 +40,9 @@ import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TextFileDelta;
+import ccc.rest.dto.TextFileDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.types.FilePropertyNames;
 import ccc.types.PredefinedResourceNames;
@@ -160,7 +161,7 @@ public class FilesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public TextFileDelta get(final UUID fileId) throws RestException {
         try {
-            return mapFile2(getResources().find(File.class, fileId));
+            return mapTextFile(getResources().find(File.class, fileId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -193,5 +194,38 @@ public class FilesEJB
             file.getRevisionComment(),
             file.isMajorRevision(),
             new ByteArrayInputStream(bytes));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({CONTENT_CREATOR})
+    public ResourceSummary createTextFile(final TextFileDto file)
+    throws RestException {
+        byte[] bytes;
+        try {
+            bytes = file.getContent().getBytes("UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        final FileDelta delta =
+            new FileDelta(
+                file.getMimeType(),
+                null, // The command will create the data object
+                bytes.length,
+                Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8"));
+
+        return createFile(
+            file.getParentId(),
+            delta,
+            file.getName(),
+            new ByteArrayInputStream(bytes),
+            file.getName(),
+            "",
+            new Date(),
+            false,
+            file.getRevisionComment(),
+            file.isMajorRevision()
+            );
     }
 }

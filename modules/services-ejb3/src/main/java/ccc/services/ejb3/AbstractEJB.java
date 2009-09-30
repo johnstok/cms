@@ -53,12 +53,12 @@ import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
-import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
+import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.UserDto;
 import ccc.types.CommandType;
 import ccc.types.ResourceType;
@@ -401,12 +401,12 @@ abstract class AbstractEJB {
 
 
     /**
-     * Create a summary of a file.
+     * Create a summary of a text file.
      *
      * @param file The file to map.
      * @return The summary of the file.
      */
-    protected TextFileDelta mapFile2(final File file) {
+    protected TextFileDelta mapTextFile(final File file) {
 
         final TextFileDelta fs =
             new TextFileDelta(
