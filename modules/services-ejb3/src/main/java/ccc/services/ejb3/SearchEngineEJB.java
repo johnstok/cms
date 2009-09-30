@@ -41,7 +41,6 @@ import ccc.persistence.FileRepositoryImpl;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.SettingsRepository;
-import ccc.persistence.jpa.FsCoreData;
 import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
 import ccc.search.lucene.SimpleLucene;
@@ -197,6 +196,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
         return new SimpleLuceneFS(
-            new FileRepositoryImpl(new FsCoreData(), _em), indexPath.value());
+            FileRepositoryImpl.onFileSystem(_em), indexPath.value());
     }
 }

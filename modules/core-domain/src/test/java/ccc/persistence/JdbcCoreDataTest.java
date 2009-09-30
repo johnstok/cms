@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.persistence;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -28,6 +28,7 @@ import org.h2.jdbcx.JdbcDataSource;
 
 import ccc.domain.CCCException;
 import ccc.domain.Data;
+import ccc.persistence.JdbcCoreData;
 import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
 

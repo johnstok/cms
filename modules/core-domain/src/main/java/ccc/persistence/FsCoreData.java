@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.persistence;
 
 import java.io.Closeable;
 import java.io.File;
@@ -21,13 +21,11 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.CCCProperties;
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.domain.Setting;
-import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
 import ccc.serialization.IO;
+import ccc.types.DBC;
 
 
 /**
@@ -36,7 +34,7 @@ import ccc.serialization.IO;
  *
  * @author Civic Computing Ltd.
  */
-public class FsCoreData
+class FsCoreData
     implements
         CoreData {
     private static final Logger LOG = Logger.getLogger(FsCoreData.class);
@@ -45,10 +43,13 @@ public class FsCoreData
 
     /**
      * Constructor.
+     *
+     * @param filestorePath The absolute path to the folder where files will be
+     *  stored.
      */
-    public FsCoreData() {
-        _root = new File(
-            CCCProperties.get(Setting.Name.FILE_STORE_PATH.toString()));
+    public FsCoreData(final String filestorePath) {
+        DBC.require().notEmpty(filestorePath);
+        _root = new File(filestorePath);
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import ccc.domain.Data;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
+import ccc.domain.Setting;
 import ccc.entities.IData;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.CoreData;
@@ -58,6 +60,27 @@ public class FileRepositoryImpl implements FileRepository {
      */
     public FileRepositoryImpl(final CoreData cd, final EntityManager em) {
         this(cd, new JpaRepository(em));
+    }
+
+    /**
+     * Create a file repository that reads / writes to the file system.
+     *
+     * @param em The entity manager to use.
+     *
+     * @return The file repository.
+     */
+    public static FileRepository onFileSystem(final EntityManager em) {
+        try {
+            final SettingsRepository settings = new SettingsRepository(em);
+            final Setting filestorePath =
+                settings.find(Setting.Name.FILE_STORE_PATH);
+            return new FileRepositoryImpl(
+                new FsCoreData(filestorePath.value()),
+                em);
+        } catch (final EntityNotFoundException e) {
+            throw new RuntimeException(
+                "Setting missing: "+Setting.Name.FILE_STORE_PATH);
+        }
     }
 
 
