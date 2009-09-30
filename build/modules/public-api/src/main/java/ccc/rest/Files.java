@@ -24,7 +24,9 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.FileDto;
+import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDelta;
+import ccc.rest.dto.TextFileDto;
 
 
 /**
@@ -74,4 +76,18 @@ public interface Files {
      */
     @GET @Path("/{id}")
     TextFileDelta get(@PathParam("id") UUID fileId) throws RestException;
+
+    /**
+     * Create a new text file in CCC.
+     *
+     * @param textFile The textFile details.
+     *
+     * @throws RestException If the method fails.
+     *
+     * @return A resource summary describing the new text file.
+     */
+    @POST
+    @Path("")
+    ResourceSummary createTextFile(TextFileDto textFile)
+    throws RestException;
 }

@@ -11,6 +11,7 @@
  */
 package ccc.contentcreator.controllers;
 
+import ccc.contentcreator.actions.CreateTextFileAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.AbstractPresenter;
 import ccc.contentcreator.client.CommandResponseHandler;
@@ -18,6 +19,9 @@ import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.views.CreateTextFile;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.TextFileDto;
+import ccc.types.MimeType;
 
 
 /**
@@ -65,15 +69,28 @@ CommandResponseHandler<ResourceSummaryModelData> {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
-
     /** {@inheritDoc} */
     @Override
     public void save() {
         if (getView().isValid()) {
-            // SAVE
+            final TextFileDto dto = new TextFileDto(
+                getModel().getId(),
+                getView().getName(),
+                new MimeType("text", getView().getMime()),
+                getView().majorEdit(),
+                getView().getComment(),
+                getView().getText());
+
+            new CreateTextFileAction(dto){
+                @Override protected void execute(final ResourceSummary folder) {
+                    final ResourceSummaryModelData newFolder =
+                        new ResourceSummaryModelData(folder);
+                    onSuccess(newFolder);
+                }
+            }.execute();
         } else {
             getGlobals().alert(
-                getGlobals().uiConstants().isNotValid());
+                getGlobals().uiConstants().resourceNameIsInvalid());
         }
     }
 }

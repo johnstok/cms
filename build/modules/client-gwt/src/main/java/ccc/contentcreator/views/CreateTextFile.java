@@ -25,14 +25,6 @@ public interface CreateTextFile extends View<Editable>, Validatable {
 
 
     /**
-     * Mutator.
-     *
-     * @param text The new text to set.
-     */
-    void setText(final String text);
-
-
-    /**
      * Accessor.
      *
      * @return The current text of the file.
@@ -46,12 +38,10 @@ public interface CreateTextFile extends View<Editable>, Validatable {
      */
     String getName();
 
+    String getMime();
 
-    /**
-     * Mutator.
-     *
-     * @param name The new folder name to set.
-     */
-    void setName(String name);
+    String getComment();
+
+    boolean majorEdit();
 }
 
