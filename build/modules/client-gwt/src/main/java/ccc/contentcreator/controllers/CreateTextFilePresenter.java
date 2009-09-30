@@ -50,7 +50,6 @@ CommandResponseHandler<ResourceSummaryModelData> {
 
         super(globals, bus, view, model);
         getView().setPresenter(this);
-//        getView().setText(model.getContent());
         getView().show();
     }
 
@@ -72,12 +71,12 @@ CommandResponseHandler<ResourceSummaryModelData> {
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().isValid()) {
+        if (getView().getValidationResult().isValid()) {
             final TextFileDto dto = new TextFileDto(
                 getModel().getId(),
                 getView().getName(),
-                new MimeType("text", getView().getMime()),
-                getView().majorEdit(),
+                new MimeType("text", getView().getSubMime()),
+                getView().isMajorEdit(),
                 getView().getComment(),
                 getView().getText());
 
@@ -90,7 +89,7 @@ CommandResponseHandler<ResourceSummaryModelData> {
             }.execute();
         } else {
             getGlobals().alert(
-                getGlobals().uiConstants().resourceNameIsInvalid());
+                getView().getValidationResult().getErrorText());
         }
     }
 }

@@ -22,7 +22,7 @@ public interface Validatable {
     /**
      * Confirm whether the object is valid.
      *
-     * @return True if the object is valid, false otherwise.
+     * @return Validation result object.
      */
-    boolean isValid();
+    ValidationResult getValidationResult();
 }

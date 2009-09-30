@@ -13,7 +13,9 @@ package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.ValidationResult;
 import ccc.contentcreator.dialogs.AbstractEditDialog;
+import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.CreateTextFile;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -35,7 +37,7 @@ public class CreateTextFileDialog
         CreateTextFile{
 
     private final TextField<String>   _fileName = new TextField<String>();
-    private final TextField<String>   _mimeExt = new TextField<String>();
+    private final TextField<String>   _mimeSubType = new TextField<String>();
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
     private final TextArea _text = new TextArea();
@@ -57,10 +59,10 @@ public class CreateTextFileDialog
         _fileName.setAllowBlank(false);
         addField(_fileName);
 
-        _mimeExt.setName("fileMimeSubType");
-        _mimeExt.setFieldLabel(getUiConstants().mimeSubType());
-        _mimeExt.setAllowBlank(false);
-        addField(_mimeExt);
+        _mimeSubType.setName("fileMimeSubType");
+        _mimeSubType.setFieldLabel(getUiConstants().mimeSubType());
+        _mimeSubType.setAllowBlank(false);
+        addField(_mimeSubType);
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
@@ -72,8 +74,8 @@ public class CreateTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
+        _text.setFieldLabel(getUiConstants().content());
         _text.setHeight(TEXT_AREA_HEIGHT);
-        _text.setHideLabel(true);
         addField(_text);
     }
 
@@ -110,8 +112,24 @@ public class CreateTextFileDialog
 
     /** {@inheritDoc} */
     @Override
-    public boolean isValid() {
-        return true;
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
+
+        if (!Validations2.notEmpty(_fileName.getValue())) {
+            result.addError(
+                _fileName.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        } else if (!Validations2.notValidResourceName(_fileName.getValue())) {
+            result.addError(getUiConstants().resourceNameIsInvalid());
+        }
+        if (!Validations2.notEmpty(_mimeSubType.getValue())) {
+            result.addError(
+                _mimeSubType.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        }
+        if (!Validations2.notEmpty(_text.getValue())) {
+            result.addError(
+                _text.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        }
+        return result;
     }
 
     /** {@inheritDoc} */
@@ -128,14 +146,14 @@ public class CreateTextFileDialog
 
     /** {@inheritDoc} */
     @Override
-    public String getMime() {
-        return _mimeExt.getValue();
+    public String getSubMime() {
+        return _mimeSubType.getValue();
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean majorEdit() {
-        return _majorEdit.getValue();
+    public boolean isMajorEdit() {
+        return _majorEdit.getValue().booleanValue();
     }
 
 }

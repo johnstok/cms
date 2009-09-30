@@ -99,7 +99,7 @@ public final class Validations {
                    || name.getValue().trim().equals("")) {
                     validate.addMessage(
                         name.getFieldLabel()
-                        + " "+UI_CONSTANTS.cannotBeEmpty()
+                        + UI_CONSTANTS.cannotBeEmpty()
                     );
                 }
                 validate.next();

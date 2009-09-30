@@ -63,7 +63,7 @@ public class RenameResourcePresenter
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().isValid()) {
+        if (getView().getValidationResult().isValid()) {
             new RenameAction(getModel().getId(),
                              getView().getName(),
                              this).execute();

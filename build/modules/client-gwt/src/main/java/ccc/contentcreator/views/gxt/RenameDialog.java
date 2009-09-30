@@ -14,6 +14,7 @@ package ccc.contentcreator.views.gxt;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.ValidationResult;
 import ccc.contentcreator.dialogs.AbstractEditDialog;
 import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.RenameResource;
@@ -101,13 +102,18 @@ public class RenameDialog
 
     /** {@inheritDoc} */
     @Override
-    public boolean isValid() {
-        return
-            Validations2.notEmpty(_newName.getValue())
-            && Validations2.notValidResourceName(_newName.getValue());
-//          && Validations2.uniqueResourceName(_item.getParent(), _newName))
-    }
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
 
+        if (!Validations2.notEmpty(_newName.getValue())) {
+            result.addError(
+                _newName.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        } else if (!Validations2.notValidResourceName(_newName.getValue())) {
+            result.addError(getUiConstants().resourceNameIsInvalid());
+        }
+//          && Validations2.uniqueResourceName(_item.getParent(), _newName))
+        return result;
+    }
 
     /** {@inheritDoc} */
     @Override

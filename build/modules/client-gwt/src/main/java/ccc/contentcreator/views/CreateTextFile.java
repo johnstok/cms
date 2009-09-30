@@ -27,21 +27,36 @@ public interface CreateTextFile extends View<Editable>, Validatable {
     /**
      * Accessor.
      *
-     * @return The current text of the file.
+     * @return The text of the file.
      */
     String getText();
 
     /**
      * Accessor.
      *
-     * @return The folder name.
+     * @return The text file name.
      */
     String getName();
 
-    String getMime();
+    /**
+     * Accessor.
+     *
+     * @return The mime sub type of the text file.
+     */
+    String getSubMime();
 
+    /**
+     * Accessor.
+     *
+     * @return The comment.
+     */
     String getComment();
 
-    boolean majorEdit();
+    /**
+     * Accessor.
+     *
+     * @return The boolean value for major edit.
+     */
+    boolean isMajorEdit();
 }
 

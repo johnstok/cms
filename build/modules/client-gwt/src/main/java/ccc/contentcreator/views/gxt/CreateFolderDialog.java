@@ -14,6 +14,7 @@ package ccc.contentcreator.views.gxt;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.ValidationResult;
 import ccc.contentcreator.dialogs.AbstractEditDialog;
 import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.CreateFolder;
@@ -101,10 +102,16 @@ public class CreateFolderDialog
 
     /** {@inheritDoc} */
     @Override
-    public boolean isValid() {
-        return
-            Validations2.notEmpty(_text.getValue())
-            && Validations2.notValidResourceName(_text.getValue());
-//          && Validations2.uniqueResourceName(_item.getParent(), _newName))
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
+
+        if (!Validations2.notEmpty(_text.getValue())) {
+            result.addError(
+                _text.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        } else if (!Validations2.notValidResourceName(_text.getValue())) {
+            result.addError(getUiConstants().resourceNameIsInvalid());
+        }
+        return result;
     }
 }
+
