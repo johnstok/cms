@@ -79,7 +79,7 @@ public class ValidationResult {
         final StringBuilder sb = new StringBuilder();
         for (final String error : _errors) {
             if (sb.length() > 0) {
-                sb.append(":");
+                sb.append("\n");
             }
             sb.append(error);
         }

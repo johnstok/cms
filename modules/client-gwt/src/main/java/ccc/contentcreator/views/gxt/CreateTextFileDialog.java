@@ -43,7 +43,7 @@ public class CreateTextFileDialog
     private final TextArea _text = new TextArea();
 
     private Editable _presenter;
-    private static final int TEXT_AREA_HEIGHT = 400;
+    private static final int TEXT_AREA_HEIGHT = 230;
 
     /**
      * Constructor.
