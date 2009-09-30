@@ -34,7 +34,7 @@ public final class CCCProperties {
     static {
         try {
             final InputStream in =
-                CCCProperties.class.getResourceAsStream("/ccc.properties");
+                CCCProperties.class.getResourceAsStream("/build.properties");
             try {
                 PROPS.load(in);
             } finally {
@@ -63,12 +63,7 @@ public final class CCCProperties {
     public static Map<String, String> getAll() {
         final Map<String, String> map = new HashMap<String, String>();
         for (final String key : PROPS.stringPropertyNames()) {
-            if (key.equals("ccc-version")
-                || key.equals("application.base-href")
-                || key.equals("buildNumber")
-                || key.equals("application.name")) {
-                map.put(key, PROPS.getProperty(key));
-            }
+            map.put(key, PROPS.getProperty(key));
         }
         return map;
     }
