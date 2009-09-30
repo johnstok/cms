@@ -33,10 +33,10 @@ public class CCCPropertiesTest
         // ARRANGE
 
         // ACT
-        final String value = CCCProperties.get("test.prop");
+        final String value = CCCProperties.get("application.name");
 
         // ASSERT
-        assertEquals("hello world!", value);
+        assertEquals("ash", value);
     }
 
     /**
@@ -64,7 +64,6 @@ public class CCCPropertiesTest
         final Map<String, String> map = CCCProperties.getAll();
 
         // ASSERT
-        assertNull("Should contain only client side properties",
-            map.get("test.prop"));
+        assertEquals(6, map.size());
     }
 }
