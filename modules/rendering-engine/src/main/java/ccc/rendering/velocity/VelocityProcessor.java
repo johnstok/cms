@@ -88,7 +88,8 @@ public class VelocityProcessor implements TextProcessor {
         velocityProperties.setProperty(
             "runtime.log.logsystem.log4j.logger",
             getClass().getName());
-
+        velocityProperties.setProperty("runtime.introspector.uberspect",
+            "org.apache.velocity.util.introspection.SecureUberspector");
         try {
             final VelocityContext context = new VelocityContext();
 
