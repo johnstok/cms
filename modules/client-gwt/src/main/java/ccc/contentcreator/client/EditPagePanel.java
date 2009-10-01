@@ -474,7 +474,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         image.setToolTip(name);
         image.setData("type", FieldType.IMAGE);
         image.setId(name);
-        image.setReadOnly(true);
+        image.setEditable(false);
 
         image.addListener(
             Events.TriggerClick,

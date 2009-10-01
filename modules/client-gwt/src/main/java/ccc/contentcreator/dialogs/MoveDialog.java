@@ -77,7 +77,7 @@ public class MoveDialog extends AbstractEditDialog {
         _parentFolder.setFieldLabel(constants().folder());
         _parentFolder.setId("parent-folder");
         _parentFolder.setValue("");
-        _parentFolder.setReadOnly(true);
+        _parentFolder.setEditable(false);
         _parentFolder.addListener(
             Events.TriggerClick,
             new Listener<ComponentEvent>(){

@@ -80,7 +80,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
         _targetName.setValue("");
         _targetName.setValue(targetName);
         _targetName.setId("target");
-        _targetName.setReadOnly(true);
+        _targetName.setEditable(false);
         _targetName.addListener(
             Events.TriggerClick,
             new Listener<ComponentEvent>(){
