@@ -39,7 +39,9 @@ public class SearchBody
     implements
         Body {
 
-    private final StatefulReader _reader;
+    private static final int DEFAULT_FIRST_PAGE = 0;
+	private static final int DEFAULT_MINIMUM_SEARCH_RESULTS = 10;
+	private final StatefulReader _reader;
     private final SearchEngine _searchEngine;
     private final Template _template;
     private final Map<String, String[]> _parameters;
@@ -84,11 +86,11 @@ public class SearchBody
             searchQuery = qParams[0];
         }
 
-        int pageNumber = getScalarInt("p", 0);
-        int resultsPerPage = getScalarInt("r", 10);
+        int pageNumber = getScalarInt("p", DEFAULT_FIRST_PAGE);
+        int noOfResultsPerPage = getScalarInt("r", DEFAULT_MINIMUM_SEARCH_RESULTS);
 
         final SearchResult result =
-            _searchEngine.find(searchQuery, resultsPerPage, pageNumber);
+            _searchEngine.find(searchQuery, noOfResultsPerPage, pageNumber);
 
         final String templateString = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);

@@ -27,6 +27,7 @@ public class SearchResult {
     private int _totalResults = 0;
     private String _terms = "";
     private int _pageNo;
+	private int _noOfResultsPerPage;
 
 
 
@@ -36,15 +37,18 @@ public class SearchResult {
      *
      * @param hits The search hits.
      * @param totalResults The total number of results for this search.
+     * @param noOfResultsPerPage The number of results displayed on each page
      * @param terms The search terms used.
      * @param pageNo The current page of results returned.
      */
     public SearchResult(final Set<UUID> hits,
                         final int totalResults,
+                        final int noOfResultsPerPage,
                         final String terms,
                         final int pageNo) {
         _hits = hits;
         _totalResults = totalResults;
+        _noOfResultsPerPage = noOfResultsPerPage;
         _terms = terms;
         _pageNo = pageNo;
     }
@@ -106,4 +110,22 @@ public class SearchResult {
     public final int getPageNo() {
         return _pageNo;
     }
+
+    /**
+     * Mutator.
+     * 
+     * @param _noOfResultsPerPage
+     */
+	public void noOfResultsPerPage(int _noOfResultsPerPage) {
+		this._noOfResultsPerPage = _noOfResultsPerPage;
+	}
+
+	/**
+     * Accessor.
+     * 
+	 * @return _noOfResultsPerPage
+	 */
+	public int noOfResultsPerPage() {
+		return _noOfResultsPerPage;
+	}
 }
