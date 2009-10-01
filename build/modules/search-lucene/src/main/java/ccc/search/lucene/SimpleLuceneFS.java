@@ -77,20 +77,20 @@ public class SimpleLuceneFS
     /** {@inheritDoc} */
     @Override
     public SearchResult find(final String searchTerms,
-                             final int resultCount,
-                             final int page) {
+                             final int nofOfResultsPerPage,
+                             final int pageNo) {
         if (searchTerms == null || searchTerms.trim().equals("")) {
-            return new SearchResult(new HashSet<UUID>(), 0, searchTerms, page);
+            return new SearchResult(new HashSet<UUID>(), 0, nofOfResultsPerPage, searchTerms, pageNo);
         }
 
         final String field = "content";
-        final int maxHits = (page+1)*resultCount;
-        final CapturingHandler sh = new CapturingHandler(resultCount, page);
+        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+        final CapturingHandler capturingHandler = new CapturingHandler(nofOfResultsPerPage, pageNo);
 
-        find(searchTerms, field, maxHits, sh);
+        find(searchTerms, field, maxHits, capturingHandler);
 
         return new SearchResult(
-            sh.getHits(), sh.getResultCount(), searchTerms, page);
+            capturingHandler.getHits(), capturingHandler.getTotalResultsCount(), nofOfResultsPerPage, searchTerms, pageNo);
     }
 
 

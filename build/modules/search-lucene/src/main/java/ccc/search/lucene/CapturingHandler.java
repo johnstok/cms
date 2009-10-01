@@ -17,19 +17,19 @@ import org.apache.lucene.search.TopDocs;
 public class CapturingHandler {
 
     private final Set<UUID> _hits = new HashSet<UUID>();
-    private final int       _resultsPerPage;
-    private final int       _page;
+    private final int       _noOfResultsPerPage;
+    private final int       _pageNo;
     private int             _searchResultCount = 0;
 
     /**
      * Constructor.
      *
-     * @param resultsPerPage The number of results on a page.
-     * @param page The page of results to capture.
+     * @param noOfResultsPerPage The number of results on a page.
+     * @param pageNo The page of results to capture.
      */
-    public CapturingHandler(final int resultsPerPage, final int page) {
-        _resultsPerPage = resultsPerPage;
-        _page = page;
+    public CapturingHandler(final int noOfResultsPerPage, final int pageNo) {
+        _noOfResultsPerPage = noOfResultsPerPage;
+        _pageNo = pageNo;
     }
 
     /**
@@ -41,8 +41,8 @@ public class CapturingHandler {
      */
     public void handle(final IndexSearcher searcher,
                        final TopDocs docs) throws IOException {
-        final int firstResultIndex = _page*_resultsPerPage;
-        final int lastResultIndex = (_page+1)*_resultsPerPage;
+        final int firstResultIndex = _pageNo*_noOfResultsPerPage;
+        final int lastResultIndex = (_pageNo+1)*_noOfResultsPerPage;
         _searchResultCount = docs.totalHits;
 
         for (int i=firstResultIndex;
@@ -84,7 +84,7 @@ public class CapturingHandler {
      *
      * @return The current number of results found by this capturing handler.
      */
-    public int getResultCount() {
+    public int getTotalResultsCount() {
         return _searchResultCount;
     }
 }
