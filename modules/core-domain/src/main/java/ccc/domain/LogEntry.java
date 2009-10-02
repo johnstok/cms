@@ -31,10 +31,11 @@ public class LogEntry extends Entity {
     private Date         _recordedOn;  // Only available once persisted
 
     private User         _actor;
-    private CommandType  _action;
+    private String       _action;
     private Date         _happenedOn;
     private UUID         _subjectId;
     private String       _detail;
+    private boolean 	 _isSystem;
 
     /** Constructor: for persistence only. */
     protected LogEntry() { super(); }
@@ -59,12 +60,41 @@ public class LogEntry extends Entity {
         require().notNull(action);
 
         _actor = actor;
+        _action = action.name();
+        _happenedOn = new Date(happenedOn.getTime());
+        _subjectId = subjectId;
+        _detail = detail;
+        _isSystem = true;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param actor The actor that performed the action.
+     * @param action The action performed.
+     * @param happenedOn When the action took place.
+     * @param subjectId The subject of the action.
+     * @param detail Details of the action.
+     */
+    public LogEntry(final User actor,
+                    final String action,
+                    final Date happenedOn,
+                    final UUID subjectId,
+                    final String detail) {
+        require().notNull(subjectId);
+        require().notNull(actor);
+        require().notNull(happenedOn);
+        require().notNull(action);
+
+        _actor = actor;
         _action = action;
         _happenedOn = new Date(happenedOn.getTime());
         _subjectId = subjectId;
         _detail = detail;
+        _isSystem = true;
     }
 
+    
 
     /**
      * Accessor.
@@ -91,7 +121,7 @@ public class LogEntry extends Entity {
      *
      * @return The action that was performed.
      */
-    public CommandType action() {
+    public String action() {
         return _action;
     }
 

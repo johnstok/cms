@@ -77,7 +77,7 @@ public class LogEntryRepositoryImplTest
 
         // ASSERT
         verify(_em);
-        assertEquals(CommandType.RESOURCE_RENAME, le.action());
+        assertEquals(CommandType.RESOURCE_RENAME.toString(), le.action());
         assertEquals(p.id(), le.subjectId());
         assertEquals(_actor, le.actor());
     }
