@@ -47,8 +47,28 @@ public class LogEntryTest
         assertNull("Should be null", le.recordedOn());
         assertEquals(-1, le.index());
         assertEquals(_actor, le.actor());
-        assertEquals(CommandType.RESOURCE_RENAME, le.action());
+        assertEquals(CommandType.RESOURCE_RENAME.name(), le.action());
     }
+    
+    public void testCreatorActionAsString() {
+
+        // ARRANGE
+    	final String actionAsString = "TEST_ACTION_NAME";
+        final Page p = new Page("foo", _rm);
+
+		// ACT
+        final LogEntry le = new LogEntry(_actor, actionAsString,
+            _happenedOn, p.id(), new JsonImpl(p).getDetail());
+
+        // ASSERT
+        assertEquals(p.id(), le.subjectId());
+        assertEquals(_happenedOn, le.happenedOn());
+        assertNull("Should be null", le.recordedOn());
+        assertEquals(-1, le.index());
+        assertEquals(_actor, le.actor());
+        assertEquals(actionAsString, le.action());
+    }
+
 
 
     private final User _actor = new User(new Username("actor"), "password");
