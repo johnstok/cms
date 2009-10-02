@@ -18,6 +18,7 @@ import java.util.Map;
 import ccc.entities.IFile;
 import ccc.rest.dto.FileDelta;
 import ccc.types.DBC;
+import ccc.types.FilePropertyNames;
 import ccc.types.MimeType;
 
 
@@ -126,5 +127,11 @@ public class FileRevision
      */
     public Map<String, String> getProperties() {
         return new HashMap<String, String>(_properties);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getCharset() {
+        return getProperties().get(FilePropertyNames.CHARSET);
     }
 }

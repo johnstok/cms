@@ -21,6 +21,7 @@ import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
@@ -33,7 +34,9 @@ import ccc.rest.extensions.ResourcesExt;
  *
  * @author Civic Computing Ltd.
  */
-abstract class JaxrsCollection {
+abstract class JaxrsCollection
+    implements
+        ServiceLocator {
 
     private final Registry _reg = new JNDI();
     private final String _appName = CCCProperties.get("application.name");
@@ -47,12 +50,8 @@ abstract class JaxrsCollection {
     private Files _files;
     private Aliases _aliases;
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the templates.
-     */
-    public final Templates getQueries() {
+    /** {@inheritDoc} */
+    public final Templates getTemplates() {
         return
             (null==_templates)
                 ? (Templates) _reg.get(_appName+"/"+Templates.NAME+"/remote")
@@ -68,12 +67,8 @@ abstract class JaxrsCollection {
         _templates = queries;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final ResourcesExt getCommands() {
+    /** {@inheritDoc} */
+    public final ResourcesExt getResources() {
         return
             (null==_resourcesExt)
                 ? (ResourcesExt) _reg.get(
@@ -81,11 +76,7 @@ abstract class JaxrsCollection {
                 : _resourcesExt;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the actions.
-     */
+    /** {@inheritDoc} */
     public final Actions getActions() {
         return
         (null==_actions)
@@ -93,47 +84,31 @@ abstract class JaxrsCollection {
             : _actions;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final PagesExt getPageCommands() {
+    /** {@inheritDoc} */
+    public final PagesExt getPages() {
         return
         (null==_pagesExt)
         ? (PagesExt) _reg.get(_appName+"/"+Pages.NAME+"/remote")
             : _pagesExt;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final FoldersExt getFolderCommands() {
+    /** {@inheritDoc} */
+    public final FoldersExt getFolders() {
         return
         (null==_foldersExt)
         ? (FoldersExt) _reg.get(_appName+"/"+Folders.NAME+"/remote")
             : _foldersExt;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the commands.
-     */
-    public final Users getUserCommands() {
+    /** {@inheritDoc} */
+    public final Users getUsers() {
         return
         (null==_userCommands)
         ? (Users) _reg.get(_appName+"/"+Users.NAME+"/remote")
             : _userCommands;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the files.
-     */
+    /** {@inheritDoc} */
     public final Files getFiles() {
         return
         (null==_files)

@@ -16,10 +16,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.persistence.FileRepository;
 import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
+import ccc.snapshots.FileSnapshot;
 
 /**
  * A stream action that can read a raw bytes into a string.
@@ -69,6 +71,24 @@ public final class ReadContentToStringAction
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
             file.data(), new ReadContentToStringAction(sb, file.charset()));
+        return sb.toString();
+    }
+
+    /**
+     * Helper method that reads a file's contents into a string.
+     * TODO: Move to the File class?
+     *
+     * @param dm The file repository.
+     * @param file The file to read.
+     *
+     * @return The file's contents as a string.
+     */
+    public static String read(final FileRepository dm,
+                              final FileSnapshot file) {
+        final StringBuilder sb = new StringBuilder();
+        dm.retrieve(
+            (Data) file.getData(),
+            new ReadContentToStringAction(sb, file.getCharset()));
         return sb.toString();
     }
 }

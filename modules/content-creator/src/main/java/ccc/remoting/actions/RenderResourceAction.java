@@ -16,8 +16,6 @@ import static ccc.commons.Strings.*;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,11 +27,9 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.ResourceRepositoryImpl;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.DefaultRenderer;
 import ccc.rendering.NotFoundException;
-import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
@@ -56,7 +52,6 @@ public class RenderResourceAction
 
     private final boolean _respectVisiblity;
     private final String _rootName;
-    private final String _loginUri;
     private final SearchEngine _search;
 
     /**
@@ -65,16 +60,13 @@ public class RenderResourceAction
      * @param respectVisiblity Should we respect the visibility of resources,
      *  as specified by their published status.
      * @param rootName The name of content root to serve from.
-     * @param loginUri The url of the login page for secure resources.
      * @param search The search engine to use.
      */
     public RenderResourceAction(final boolean respectVisiblity,
                                 final String rootName,
-                                final String loginUri,
                                 final SearchEngine search) {
         _respectVisiblity = respectVisiblity;
         _rootName = rootName;
-        _loginUri = loginUri;
         _search = search;
     }
 
@@ -82,40 +74,27 @@ public class RenderResourceAction
     /** {@inheritDoc} */
     @Override
     public void execute(final HttpServletRequest request,
-                        final HttpServletResponse response)
-                                          throws ServletException, IOException {
-        try {
-            final FileRepository data = getDataManager(request);
-            final StatefulReader reader = getStatefulReader(request);
-            final ResourceRepository rdao = getResourceDao(request);
-            final User currentUser = getCurrentUser(request);
+                        final HttpServletResponse response) throws IOException {
+        final FileRepository data = getDataManager(request);
+        final StatefulReader reader = getStatefulReader(request);
+        final ResourceRepository rdao = getResourceDao(request);
+        final User currentUser = getCurrentUser(request);
 
-            final ResourcePath contentPath = determineResourcePath(request);
+        final ResourcePath contentPath = determineResourcePath(request);
 
 
-            final Resource rs = lookupResource(contentPath, rdao);
+        final Resource rs = lookupResource(contentPath, rdao);
 
-            checkSecurity(rs, currentUser);
+        checkSecurity(rs, currentUser);
 
-            final Response r =
-                prepareResponse(request, reader, data, _search, rs);
+        final Response r =
+            prepareResponse(request, reader, data, _search, rs);
 
-            if (rs.roles().size()>0) { // Dont'cache secure pages.
-                r.setExpiry(null);
-            }
-
-            r.write(response, currentUser, new VelocityProcessor());
-
-        } catch (final NotFoundException e) {
-            dispatchNotFound(request, response);
-        } catch (final RedirectRequiredException e) {
-            final String relUri = e.getResource().absolutePath().toString();
-            dispatchRedirect(request, response, relUri);
-        } catch (final AuthenticationRequiredException e) {
-            final String relUri =
-                _loginUri+e.getResource().absolutePath().toString();
-            dispatchRedirect(request, response, relUri);
+        if (rs.roles().size()>0) { // Dont'cache secure pages.
+            r.setExpiry(null);
         }
+
+        r.write(response, currentUser, new VelocityProcessor());
     }
 
 
@@ -194,26 +173,5 @@ public class RenderResourceAction
             r = renderer.render(rs, parameters);
         }
         return r;
-    }
-
-
-    private ResourceRepository getResourceDao(final HttpServletRequest req) {
-        return new ResourceRepositoryImpl(
-            (EntityManager) req.getAttribute(SessionKeys.EM_KEY));
-    }
-
-
-    private User getCurrentUser(final HttpServletRequest request) {
-        return (User) request.getAttribute(SessionKeys.CURRENT_USER);
-    }
-
-
-    private FileRepository getDataManager(final HttpServletRequest request) {
-        return (FileRepository) request.getAttribute(SessionKeys.DATA_KEY);
-    }
-
-
-    private StatefulReader getStatefulReader(final HttpServletRequest request) {
-        return (StatefulReader) request.getAttribute(RenderingKeys.READER_KEY);
     }
 }

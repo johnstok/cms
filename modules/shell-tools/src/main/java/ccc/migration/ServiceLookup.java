@@ -15,6 +15,11 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Scheduler;
 import ccc.rest.Actions;
+import ccc.rest.Files;
+import ccc.rest.Folders;
+import ccc.rest.Pages;
+import ccc.rest.Resources;
+import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
@@ -28,9 +33,11 @@ import ccc.search.SearchEngine;
  *
  * @author Civic Computing Ltd.
  */
-public class ServiceLookup {
+public class ServiceLookup implements ServiceLocator {
+
     private final Registry _registry;
     private final String _appName;
+
 
     /**
      * Constructor.
@@ -43,6 +50,7 @@ public class ServiceLookup {
         _registry = registry;
     }
 
+
     /**
      * Constructor.
      *
@@ -51,6 +59,7 @@ public class ServiceLookup {
     public ServiceLookup(final String appName) {
         this(appName, new JNDI());
     }
+
 
     /**
      * Constructor.
@@ -64,41 +73,34 @@ public class ServiceLookup {
         _registry = registry;
     }
 
-    /**
-     * Look up the commands API.
-     *
-     * @return A commands instance.
-     */
-    public ResourcesExt lookupCommands() {
-        return _registry.<ResourcesExt>get(jndiPath(ResourcesExt.NAME));
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourcesExt getResources() {
+        return _registry.<ResourcesExt>get(jndiPath(Resources.NAME));
     }
 
-    /**
-     * Look up the page commands API.
-     *
-     * @return A page commands instance.
-     */
-    public PagesExt lookupPageCommands() {
-        return _registry.<PagesExt>get(jndiPath(PagesExt.NAME));
+
+    /** {@inheritDoc} */
+    @Override
+    public PagesExt getPages() {
+        return _registry.<PagesExt>get(jndiPath(Pages.NAME));
     }
 
-    /**
-     * Look up the folder commands API.
-     *
-     * @return A folder commands instance.
-     */
-    public FoldersExt lookupFolderCommands() {
-        return _registry.<FoldersExt>get(jndiPath(FoldersExt.NAME));
+
+    /** {@inheritDoc} */
+    @Override
+    public FoldersExt getFolders() {
+        return _registry.<FoldersExt>get(jndiPath(Folders.NAME));
     }
 
-    /**
-     * Look up the user commands API.
-     *
-     * @return A user commands instance.
-     */
-    public Users lookupUserCommands() {
+
+    /** {@inheritDoc} */
+    @Override
+    public Users getUsers() {
         return _registry.<Users>get(jndiPath(Users.NAME));
     }
+
 
     /**
      * Look up the action scheduler.
@@ -109,6 +111,7 @@ public class ServiceLookup {
         return _registry.<Scheduler>get(jndiPath(Actions.NAME));
     }
 
+
     /**
      * Look up the search scheduler.
      *
@@ -118,14 +121,27 @@ public class ServiceLookup {
         return _registry.<Scheduler>get(jndiPath(SearchEngine.NAME));
     }
 
-    /**
-     * Look up an implementation of the templates API.
-     *
-     * @return A templates implementation.
-     */
-    public Templates lookupTemplates() {
+
+    /** {@inheritDoc} */
+    @Override
+    public Templates getTemplates() {
         return _registry.<Templates>get(jndiPath(Templates.NAME));
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Actions getActions() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Files getFiles() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
 
     private String jndiPath(final String serviceName) {
         return _appName+"/"+serviceName+"/remote";

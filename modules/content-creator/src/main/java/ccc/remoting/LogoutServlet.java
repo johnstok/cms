@@ -38,7 +38,10 @@ public class LogoutServlet
                          final HttpServletResponse resp)
                                           throws ServletException, IOException {
         final ServletAction action =
-            new ErrorHandlingAction(new LogoutAction(), getServletContext());
+            new ErrorHandlingAction(
+                new LogoutAction(),
+                getServletContext(),
+                "/content/login?tg=");
         action.execute(req, resp);
     }
 }

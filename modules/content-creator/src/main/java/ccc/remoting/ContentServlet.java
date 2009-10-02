@@ -26,11 +26,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
 import ccc.remoting.actions.ErrorHandlingAction;
+import ccc.remoting.actions.LookupResourceAction;
 import ccc.remoting.actions.PersistenceAction;
 import ccc.remoting.actions.ReadOnlyTxAction;
+import ccc.remoting.actions.ReadWriteTxAction;
 import ccc.remoting.actions.ReaderAction;
 import ccc.remoting.actions.RenderResourceAction;
+import ccc.remoting.actions.ScriptedAction;
 import ccc.remoting.actions.ServletAction;
+import ccc.remoting.actions.SessionKeys;
+import ccc.rest.Users;
 import ccc.search.SearchEngine;
 
 
@@ -46,7 +51,9 @@ public class ContentServlet
 
     @Resource                    private transient UserTransaction      _utx;
     @PersistenceUnit             private transient EntityManagerFactory _emf;
+
     @EJB(name=SearchEngine.NAME) private transient SearchEngine         _search;
+    @EJB(name=Users.NAME)        private transient Users                _users;
 
 
     private String _rootName           = null;
@@ -77,6 +84,9 @@ public class ContentServlet
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp)
                                           throws IOException, ServletException {
+
+        bindServices(req);
+
         final ServletAction action =
             new ErrorHandlingAction(
                 new ReadOnlyTxAction(
@@ -85,14 +95,46 @@ public class ContentServlet
                             new RenderResourceAction(
                                 _respectVisibility,
                                 _rootName,
-                                "/content/login?tg=",
                                 _search)
                             ),
                         _emf),
                     _utx),
-                getServletContext()
+                getServletContext(),
+                "/content/login?tg="
             );
 
         action.execute(req, resp);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void doPost(final HttpServletRequest req,
+                          final HttpServletResponse resp)
+                                          throws ServletException, IOException {
+
+        bindServices(req);
+
+        final ServletAction action =
+            new ErrorHandlingAction(
+                new ReadWriteTxAction(
+                    new PersistenceAction(
+                        new ReaderAction(
+                            new LookupResourceAction(
+                                new ScriptedAction(),
+                                _rootName)
+                            ),
+                        _emf),
+                    _utx),
+                getServletContext(),
+                "/content/login?tg="
+            );
+
+        action.execute(req, resp);
+    }
+
+
+    private void bindServices(final HttpServletRequest req) {
+        req.setAttribute(SessionKeys.USERS_KEY, _users);
     }
 }

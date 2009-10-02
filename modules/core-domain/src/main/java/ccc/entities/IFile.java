@@ -50,4 +50,10 @@ public interface IFile {
      */
     boolean isImage();
 
+    /**
+     * Accessor.
+     *
+     * @return The character set for the file or NULL if charset is available.
+     */
+    String getCharset();
 }

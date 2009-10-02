@@ -45,21 +45,21 @@ public class TemplatesImpl
     @Override
     public TemplateDelta templateDelta(final UUID templateId)
     throws RestException {
-        return getQueries().templateDelta(templateId);
+        return getTemplates().templateDelta(templateId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean templateNameExists(final String templateName) {
-        return getQueries().templateNameExists(templateName);
+        return getTemplates().templateNameExists(templateName);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateSummary> templates() {
-        return getQueries().templates();
+        return getTemplates().templates();
     }
 
 
@@ -67,7 +67,7 @@ public class TemplatesImpl
     @Override
     public void updateTemplate(final UUID templateId, final TemplateDelta delta)
     throws RestException {
-        getQueries().updateTemplate(templateId, delta);
+        getTemplates().updateTemplate(templateId, delta);
     }
 
 
@@ -75,6 +75,6 @@ public class TemplatesImpl
     @Override
     public ResourceSummary createTemplate(final TemplateDto template)
     throws RestException {
-        return getQueries().createTemplate(template);
+        return getTemplates().createTemplate(template);
     }
 }
