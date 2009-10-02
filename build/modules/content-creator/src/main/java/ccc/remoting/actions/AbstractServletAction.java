@@ -13,11 +13,18 @@ package ccc.remoting.actions;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.domain.CCCException;
+import ccc.domain.Resource;
+import ccc.domain.User;
+import ccc.persistence.FileRepository;
+import ccc.persistence.ResourceRepository;
+import ccc.persistence.ResourceRepositoryImpl;
+import ccc.rendering.StatefulReader;
 
 
 
@@ -103,5 +110,32 @@ public abstract class AbstractServletAction
         } else {
             return Exception.class.cast(o);
         }
+    }
+
+
+
+    protected final ResourceRepository getResourceDao(final HttpServletRequest req) {
+        return new ResourceRepositoryImpl(
+            (EntityManager) req.getAttribute(SessionKeys.EM_KEY));
+    }
+
+
+    protected final User getCurrentUser(final HttpServletRequest request) {
+        return (User) request.getAttribute(SessionKeys.CURRENT_USER);
+    }
+
+
+    protected final FileRepository getDataManager(final HttpServletRequest request) {
+        return (FileRepository) request.getAttribute(SessionKeys.DATA_KEY);
+    }
+
+
+    protected final StatefulReader getStatefulReader(final HttpServletRequest request) {
+        return (StatefulReader) request.getAttribute(RenderingKeys.READER_KEY);
+    }
+
+
+    protected final Resource getResource(final HttpServletRequest req) {
+        return (Resource) req.getAttribute(SessionKeys.RESOURCE_KEY);
     }
 }

@@ -50,8 +50,8 @@ public final class Create extends CccApp {
 
     private static void createSchemaStructure() {
         try {
-            final ResourcesExt resourcesExt = services.lookupCommands();
-            final FoldersExt foldersExt = services.lookupFolderCommands();
+            final ResourcesExt resourcesExt = services.getResources();
+            final FoldersExt foldersExt = services.getFolders();
 
             final ResourceSummary assets = foldersExt.createRoot(ASSETS);
             final ResourceSummary content = foldersExt.createRoot(CONTENT);

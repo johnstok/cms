@@ -61,7 +61,8 @@ public final class BrokenLinkServlet
                             new FixLinkAction()),
                         _emf),
                     _utx),
-                getServletContext()
+                getServletContext(),
+                "/content/login?tg="
             );
 
         action.execute(req, resp);

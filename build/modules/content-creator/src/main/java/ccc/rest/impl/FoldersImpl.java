@@ -44,7 +44,7 @@ public class FoldersImpl
     @Override
     public Collection<ResourceSummary> getChildren(final UUID folderId)
     throws RestException {
-        return getFolderCommands().getChildren(folderId);
+        return getFolders().getChildren(folderId);
     }
 
     /** {@inheritDoc} */
@@ -52,7 +52,7 @@ public class FoldersImpl
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                         final UUID folderId)
     throws RestException {
-        return getFolderCommands().getChildrenManualOrder(folderId);
+        return getFolders().getChildrenManualOrder(folderId);
     }
 
 
@@ -60,7 +60,7 @@ public class FoldersImpl
     @Override
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
     throws RestException {
-        return getFolderCommands().getFolderChildren(folderId);
+        return getFolders().getFolderChildren(folderId);
     }
 
 
@@ -68,14 +68,14 @@ public class FoldersImpl
     @Override
     public Boolean nameExistsInFolder(final UUID folderId, final String name)
     throws RestException {
-        return getFolderCommands().nameExistsInFolder(folderId, name);
+        return getFolders().nameExistsInFolder(folderId, name);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return getFolderCommands().roots();
+        return getFolders().roots();
     }
 
 
@@ -83,7 +83,7 @@ public class FoldersImpl
     @Override
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
-        return getFolderCommands().createFolder(folder);
+        return getFolders().createFolder(folder);
     }
 
 
@@ -91,6 +91,6 @@ public class FoldersImpl
     @Override
     public void updateFolder(final UUID folderId, final FolderDelta delta)
     throws RestException {
-        getFolderCommands().updateFolder(folderId, delta);
+        getFolders().updateFolder(folderId, delta);
     }
 }

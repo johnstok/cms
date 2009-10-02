@@ -42,49 +42,49 @@ public class UsersImpl
     /** {@inheritDoc} */
     @Override
     public UserDto loggedInUser() throws RestException {
-        return getUserCommands().loggedInUser();
+        return getUsers().loggedInUser();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<UserDto> listUsers() {
-        return getUserCommands().listUsers();
+        return getUsers().listUsers();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<UserDto> listUsersWithEmail(final String email) {
-        return getUserCommands().listUsersWithEmail(email);
+        return getUsers().listUsersWithEmail(email);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<UserDto> listUsersWithRole(final String role) {
-        return getUserCommands().listUsersWithRole(role);
+        return getUsers().listUsersWithRole(role);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<UserDto> listUsersWithUsername(final Username username) {
-        return getUserCommands().listUsersWithUsername(username);
+        return getUsers().listUsersWithUsername(username);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto userDelta(final UUID userId) throws RestException {
-        return getUserCommands().userDelta(userId);
+        return getUsers().userDelta(userId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean usernameExists(final Username username) {
-        return getUserCommands().usernameExists(username);
+        return getUsers().usernameExists(username);
     }
 
 
@@ -92,7 +92,7 @@ public class UsersImpl
     @Override
     public UserDto createUser(final UserDto user)
     throws RestException {
-        return getUserCommands().createUser(user);
+        return getUsers().createUser(user);
     }
 
 
@@ -101,7 +101,7 @@ public class UsersImpl
     public void updateUserPassword(final UUID userId,
                                    final UserDto pu)
     throws RestException {
-        getUserCommands().updateUserPassword(userId, pu);
+        getUsers().updateUserPassword(userId, pu);
     }
 
 
@@ -109,7 +109,7 @@ public class UsersImpl
     @Override
     public void updateYourUser(final UUID userId, final UserDto user)
     throws RestException {
-        getUserCommands().updateYourUser(userId, user);
+        getUsers().updateYourUser(userId, user);
     }
 
 
@@ -117,6 +117,6 @@ public class UsersImpl
     @Override
     public void updateUser(final UUID userId, final UserDto delta)
     throws RestException {
-        getUserCommands().updateUser(userId, delta);
+        getUsers().updateUser(userId, delta);
     }
 }

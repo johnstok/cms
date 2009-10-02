@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.ResourceRepositoryImpl;
 import ccc.types.ResourceName;
 
 
@@ -97,12 +95,6 @@ public class FixLinkAction
         } catch (final EntityNotFoundException e) {
             dispatchNotFound(req, resp);
         }
-    }
-
-
-    private ResourceRepository getResourceDao(final HttpServletRequest req) {
-        return new ResourceRepositoryImpl(
-            (EntityManager) req.getAttribute(SessionKeys.EM_KEY));
     }
 
 

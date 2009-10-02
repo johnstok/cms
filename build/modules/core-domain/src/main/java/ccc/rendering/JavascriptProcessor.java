@@ -52,6 +52,7 @@ public class JavascriptProcessor
         try {
             final ScriptEngineManager factory = new ScriptEngineManager();
             final ScriptEngine engine = factory.getEngineByName("JavaScript");
+            engine.getContext().setWriter(output);
 
             for (final Map.Entry<String, Object> extra
                 : context.getExtras().entrySet()) {

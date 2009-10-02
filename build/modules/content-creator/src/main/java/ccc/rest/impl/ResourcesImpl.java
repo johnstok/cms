@@ -50,7 +50,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public Duration cacheDuration(final UUID resourceId) throws RestException {
-        return getCommands().cacheDuration(resourceId);
+        return getResources().cacheDuration(resourceId);
     }
 
 
@@ -58,14 +58,14 @@ public class ResourcesImpl
     @Override
     public TemplateSummary computeTemplate(final UUID resourceId)
     throws RestException {
-        return getCommands().computeTemplate(resourceId);
+        return getResources().computeTemplate(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String getAbsolutePath(final UUID resourceId) throws RestException {
-        return getCommands().getAbsolutePath(resourceId);
+        return getResources().getAbsolutePath(resourceId);
     }
 
 
@@ -73,14 +73,14 @@ public class ResourcesImpl
     @Override
     public Collection<RevisionDto> history(final UUID resourceId)
     throws RestException {
-        return getCommands().history(resourceId);
+        return getResources().history(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> locked() {
-        return getCommands().locked();
+        return getResources().locked();
     }
 
 
@@ -88,7 +88,7 @@ public class ResourcesImpl
     @Override
     public Map<String, String> metadata(final UUID resourceId)
     throws RestException {
-        return getCommands().metadata(resourceId);
+        return getResources().metadata(resourceId);
     }
 
 
@@ -96,7 +96,7 @@ public class ResourcesImpl
     @Override
     public ResourceSummary resource(final UUID resourceId)
     throws RestException {
-        return getCommands().resource(resourceId);
+        return getResources().resource(resourceId);
     }
 
 
@@ -104,7 +104,7 @@ public class ResourcesImpl
     @Override
     public ResourceSummary resourceForLegacyId(final String legacyId)
     throws RestException {
-        return getCommands().resourceForLegacyId(legacyId);
+        return getResources().resourceForLegacyId(legacyId);
     }
 
 
@@ -112,7 +112,7 @@ public class ResourcesImpl
     @Override
     public ResourceSummary resourceForPath(final String path)
     throws RestException {
-        return getCommands().resourceForPath(path);
+        return getResources().resourceForPath(path);
     }
 
 
@@ -120,7 +120,7 @@ public class ResourcesImpl
     @Override
     public Collection<String> roles(final UUID resourceId)
     throws RestException {
-        return getCommands().roles(resourceId);
+        return getResources().roles(resourceId);
     }
 
 
@@ -129,14 +129,14 @@ public class ResourcesImpl
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu)
     throws RestException {
-        getCommands().updateCacheDuration(resourceId, pu);
+        getResources().updateCacheDuration(resourceId, pu);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void lock(final UUID resourceId) throws RestException {
-        getCommands().lock(resourceId);
+        getResources().lock(resourceId);
     }
 
 
@@ -144,7 +144,7 @@ public class ResourcesImpl
     @Override
     public void applyWorkingCopy(final UUID resourceId)
     throws RestException {
-        getCommands().applyWorkingCopy(resourceId);
+        getResources().applyWorkingCopy(resourceId);
     }
 
 
@@ -153,7 +153,7 @@ public class ResourcesImpl
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu)
     throws RestException {
-        getCommands().updateResourceTemplate(resourceId, pu);
+        getResources().updateResourceTemplate(resourceId, pu);
     }
 
 
@@ -162,7 +162,7 @@ public class ResourcesImpl
     public void changeRoles(final UUID resourceId,
                             final Collection<String> roles)
     throws RestException {
-        getCommands().changeRoles(resourceId, roles);
+        getResources().changeRoles(resourceId, roles);
     }
 
 
@@ -170,14 +170,14 @@ public class ResourcesImpl
     @Override
     public void move(final UUID resourceId, final UUID newParentId)
     throws RestException {
-        getCommands().move(resourceId, newParentId);
+        getResources().move(resourceId, newParentId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void publish(final UUID resourceId) throws RestException {
-        getCommands().publish(resourceId);
+        getResources().publish(resourceId);
     }
 
 
@@ -185,21 +185,21 @@ public class ResourcesImpl
     @Override
     public void rename(final UUID resourceId, final String name)
     throws RestException {
-        getCommands().rename(resourceId, name);
+        getResources().rename(resourceId, name);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unlock(final UUID resourceId) throws RestException {
-        getCommands().unlock(resourceId);
+        getResources().unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unpublish(final UUID resourceId) throws RestException {
-        getCommands().unpublish(resourceId);
+        getResources().unpublish(resourceId);
     }
 
 
@@ -207,7 +207,7 @@ public class ResourcesImpl
     @Override
     public void excludeFromMainMenu(final UUID resourceId)
     throws RestException {
-        getCommands().excludeFromMainMenu(resourceId);
+        getResources().excludeFromMainMenu(resourceId);
     }
 
 
@@ -215,7 +215,7 @@ public class ResourcesImpl
     @Override
     public void includeInMainMenu(final UUID resourceId)
     throws RestException {
-        getCommands().includeInMainMenu(resourceId);
+        getResources().includeInMainMenu(resourceId);
     }
 
 
@@ -223,7 +223,7 @@ public class ResourcesImpl
     @Override
     public void updateMetadata(final UUID resourceId, final Json json)
     throws RestException {
-        getCommands().updateMetadata(resourceId, json);
+        getResources().updateMetadata(resourceId, json);
     }
 
 
@@ -231,7 +231,7 @@ public class ResourcesImpl
     @Override
     public void clearWorkingCopy(final UUID pageId)
     throws RestException {
-        getCommands().clearWorkingCopy(pageId);
+        getResources().clearWorkingCopy(pageId);
     }
 
 
@@ -240,7 +240,7 @@ public class ResourcesImpl
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu)
     throws RestException {
-        getCommands().createWorkingCopy(resourceId, pu);
+        getResources().createWorkingCopy(resourceId, pu);
     }
 
 
@@ -248,7 +248,7 @@ public class ResourcesImpl
     @Override
     public void deleteCacheDuration(final UUID id)
     throws RestException {
-        getCommands().updateCacheDuration(id, (Duration) null);
+        getResources().updateCacheDuration(id, (Duration) null);
     }
 
 
@@ -262,6 +262,6 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void delete(final UUID resourceId) throws RestException {
-        getCommands().delete(resourceId);
+        getResources().delete(resourceId);
     }
 }

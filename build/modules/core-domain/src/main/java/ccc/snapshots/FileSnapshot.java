@@ -87,4 +87,9 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
 
         return r;
     }
+
+    /** {@inheritDoc} */
+    @Override public String getCharset() {
+        return _delegate.getCharset();
+    }
 }

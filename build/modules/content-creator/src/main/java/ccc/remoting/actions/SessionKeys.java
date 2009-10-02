@@ -37,4 +37,9 @@ public final class SessionKeys {
     /** EM_KEY : String. */
     public static final String EM_KEY = "ccc.em";
 
+    /** RESOURCE_KEY : String. */
+    public static final String RESOURCE_KEY = "ccc.resource";
+
+    /** USERS_KEY : String. */
+    public static final String USERS_KEY = "ccc.users";
 }

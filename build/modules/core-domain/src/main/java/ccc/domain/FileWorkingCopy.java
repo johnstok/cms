@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import ccc.entities.IFile;
 import ccc.rest.dto.FileDelta;
+import ccc.types.FilePropertyNames;
 import ccc.types.MimeType;
 
 
@@ -87,5 +88,11 @@ public class FileWorkingCopy
     public boolean isImage() {
         // TODO: Factor into superclass?
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getCharset() {
+        return _properties.get(FilePropertyNames.CHARSET);
     }
 }

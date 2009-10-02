@@ -47,7 +47,7 @@ public final class RenderResourceActionTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null);
+            new RenderResourceAction(true, "root", null);
         final String invalidPath = "$%^$%/^%$^";
         expect(_request.getPathInfo()).andReturn(invalidPath);
         expect(_request.getContextPath()).andReturn("");
@@ -101,7 +101,7 @@ public final class RenderResourceActionTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null);
+            new RenderResourceAction(true, "root", null);
         expect(_request.getPathInfo()).andReturn("/foo/");
         expect(_request.getContextPath()).andReturn("");
         replayAll();
@@ -122,7 +122,7 @@ public final class RenderResourceActionTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null);
+            new RenderResourceAction(true, "root", null);
         expect(_request.getPathInfo()).andReturn("/");
         expect(_request.getContextPath()).andReturn("");
         replayAll();
@@ -143,7 +143,7 @@ public final class RenderResourceActionTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null);
+            new RenderResourceAction(true, "root", null);
         expect(_request.getPathInfo()).andReturn(null);
         expect(_request.getContextPath()).andReturn("");
         replayAll();
@@ -166,7 +166,7 @@ public final class RenderResourceActionTest extends TestCase {
 
         // ARRANGE
         final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", "/login", null);
+            new RenderResourceAction(true, "root", null);
 
         expect(_rdao.lookup("root", new ResourcePath("/foo")))
             .andThrow(new NotFoundException());

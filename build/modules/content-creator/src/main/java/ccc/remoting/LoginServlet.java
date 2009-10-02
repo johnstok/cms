@@ -44,7 +44,8 @@ public class LoginServlet
         final ServletAction action =
             new ErrorHandlingAction(
                 new LoginAction(_siteRoot, _loginPage),
-                getServletContext()
+                getServletContext(),
+                "/content/login?tg="
             );
 
         action.execute(req, resp);

@@ -43,7 +43,7 @@ public class PagesImpl
     /** {@inheritDoc} */
     @Override
     public PageDelta pageDelta(final UUID pageId) throws RestException {
-        return getPageCommands().pageDelta(pageId);
+        return getPages().pageDelta(pageId);
     }
 
 
@@ -51,14 +51,14 @@ public class PagesImpl
     @Override
     public ResourceSummary createPage(final PageDto page)
     throws RestException {
-        return getPageCommands().createPage(page);
+        return getPages().createPage(page);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String validateFields(final Json json) {
-        return getPageCommands().validateFields(json);
+        return getPages().validateFields(json);
     }
 
 
@@ -66,7 +66,7 @@ public class PagesImpl
     @Override
     public void updateWorkingCopy(final UUID pageId, final PageDelta delta)
     throws RestException {
-        getPageCommands().updateWorkingCopy(pageId, delta);
+        getPages().updateWorkingCopy(pageId, delta);
     }
 
 
@@ -74,6 +74,6 @@ public class PagesImpl
     @Override
     public void updatePage(final UUID pageId, final Json json)
     throws RestException {
-        getPageCommands().updatePage(pageId, json);
+        getPages().updatePage(pageId, json);
     }
 }

@@ -82,8 +82,8 @@ public class FileUpload extends CccApp {
         services =
             new ServiceLookup(o._appName, o._providerURL);
 
-        final ResourcesExt resources = services.lookupCommands();
-        final FoldersExt foldersExt = services.lookupFolderCommands();
+        final ResourcesExt resources = services.getResources();
+        final FoldersExt foldersExt = services.getFolders();
 
         login(o.getUsername(), o.getPassword());
 
