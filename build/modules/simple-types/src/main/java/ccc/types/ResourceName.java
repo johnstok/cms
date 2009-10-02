@@ -54,7 +54,6 @@ public final class ResourceName implements Serializable {
      *  The representation of this name - as a string.
      */
     public ResourceName(final String stringRepresentation) {
-
         DBC.require().notEmpty(stringRepresentation);
         DBC.require().toMatch(VALID_CHARACTERS, stringRepresentation);
         _representation = stringRepresentation;

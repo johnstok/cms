@@ -11,32 +11,21 @@
  */
 package ccc.remoting.actions;
 
-import static ccc.commons.Strings.*;
-
 import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
-import ccc.domain.CCCException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.FileRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.DefaultRenderer;
-import ccc.rendering.NotFoundException;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
 import ccc.rendering.velocity.VelocityProcessor;
 import ccc.search.SearchEngine;
-import ccc.types.ResourcePath;
-import ccc.types.Username;
 
 
 /**
@@ -47,11 +36,8 @@ import ccc.types.Username;
 public class RenderResourceAction
     extends
         AbstractServletAction {
-    private static final Logger LOG =
-        Logger.getLogger(RenderResourceAction.class);
 
     private final boolean _respectVisiblity;
-    private final String _rootName;
     private final SearchEngine _search;
 
     /**
@@ -59,14 +45,11 @@ public class RenderResourceAction
      *
      * @param respectVisiblity Should we respect the visibility of resources,
      *  as specified by their published status.
-     * @param rootName The name of content root to serve from.
      * @param search The search engine to use.
      */
     public RenderResourceAction(final boolean respectVisiblity,
-                                final String rootName,
                                 final SearchEngine search) {
         _respectVisiblity = respectVisiblity;
-        _rootName = rootName;
         _search = search;
     }
 
@@ -77,15 +60,9 @@ public class RenderResourceAction
                         final HttpServletResponse response) throws IOException {
         final FileRepository data = getDataManager(request);
         final StatefulReader reader = getStatefulReader(request);
-        final ResourceRepository rdao = getResourceDao(request);
         final User currentUser = getCurrentUser(request);
 
-        final ResourcePath contentPath = determineResourcePath(request);
-
-
-        final Resource rs = lookupResource(contentPath, rdao);
-
-        checkSecurity(rs, currentUser);
+        final Resource rs = getResource(request);
 
         final Response r =
             prepareResponse(request, reader, data, _search, rs);
@@ -95,57 +72,6 @@ public class RenderResourceAction
         }
 
         r.write(response, currentUser, new VelocityProcessor());
-    }
-
-
-    private void checkSecurity(final Resource r, final User user) {
-        final User u = (null==user)
-            ? new User(new Username("anonymous"), "password")
-            : user;
-        if (!r.isAccessibleTo(u)) {
-            throw new AuthenticationRequiredException(r);
-        }
-    }
-
-
-    /**
-     * Look up a resource given its path.
-     *
-     * @param contentPath The resource path.
-     * @param rdao The resource DAO.
-     *
-     * @return The corresponding resource.
-     */
-    public Resource lookupResource(final ResourcePath contentPath,
-                                   final ResourceRepository rdao) {
-        try {
-            return rdao.lookup(_rootName, contentPath);
-        } catch (final EntityNotFoundException e) {
-            throw new NotFoundException();
-        }
-    }
-
-
-    /**
-     * Determine the ResourcePath from a request's pathInfo.
-     *
-     * @param request The HTTP request.
-     * @return The corresponding resource path.
-     */
-    public ResourcePath determineResourcePath(
-                                             final HttpServletRequest request) {
-        String pathString = request.getPathInfo();
-        pathString = nvl(pathString, "/");
-        pathString = removeTrailing('/', pathString);
-        LOG.info(
-            "Request for "+request.getContextPath()+"/"+_rootName+pathString);
-
-        try {
-            final ResourcePath contentPath = new ResourcePath(pathString);
-            return contentPath;
-        } catch (final CCCException e) {
-            throw new NotFoundException();
-        }
     }
 
 
