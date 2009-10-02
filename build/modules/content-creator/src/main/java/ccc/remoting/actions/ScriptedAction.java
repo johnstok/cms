@@ -12,6 +12,7 @@
 package ccc.remoting.actions;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -24,6 +25,7 @@ import ccc.domain.Resource;
 import ccc.persistence.FileRepository;
 import ccc.remoting.RequestScopeServiceLocator;
 import ccc.rendering.ReadContentToStringAction;
+import ccc.rendering.UnsupportMethodException;
 
 
 /**
@@ -35,13 +37,13 @@ public class ScriptedAction
     extends
         AbstractServletAction {
 
+
     /** {@inheritDoc} */
     @Override
     public void execute(final HttpServletRequest req,
                         final HttpServletResponse resp) {
 
-        // FIXME: Don't cache executing resources.
-        // r.setExpiry(null);
+        disableCaching(resp);
 
         final FileRepository data = getDataManager(req);
         final Resource rs = getResource(req);
@@ -49,13 +51,21 @@ public class ScriptedAction
         if (rs instanceof File) {
             final File f = (File) rs;
 
-            if (f.isText() /*&& f.isExecutable()*/) {
+            if (f.isText() && f.isExecutable()) {
                 final String fileContent =
                     ReadContentToStringAction.read(data, f);
 
                 invokeScript(req, resp, fileContent);
-            } // } else { throw new UnsupportedHttpMethod(); }
-        } // } else { throw new UnsupportedHttpMethod(); }
+            } else { throw new UnsupportMethodException("POST"); }
+        } else { throw new UnsupportMethodException("POST"); }
+    }
+
+
+
+    private void disableCaching(final HttpServletResponse resp) {
+        resp.setHeader("Pragma", "no-cache");
+        resp.setHeader("Cache-Control", "no-store, must-revalidate, max-age=0");
+        resp.setDateHeader("Expires", new Date(0).getTime());
     }
 
 
@@ -71,7 +81,6 @@ public class ScriptedAction
             engine.put("response", resp);
             engine.put("services", new RequestScopeServiceLocator(req));
             engine.put("user", getCurrentUser(req));
-            // What else to add?
 
             engine.eval(script);
 

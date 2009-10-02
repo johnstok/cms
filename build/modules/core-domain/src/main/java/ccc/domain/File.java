@@ -196,6 +196,18 @@ public class File
     }
 
 
+    /**
+     * Determine if a file can be executed.
+     *
+     * @return True if the file can be executed, false otherwise.
+     */
+    public boolean isExecutable() {
+        final boolean hasExeFlag =
+            Boolean.valueOf(getMetadatum("executable")).booleanValue();
+        return hasExeFlag && !isDeleted();
+    }
+
+
 
 
     /* ====================================================================
