@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
+import ccc.rendering.UnsupportMethodException;
 
 
 /**
@@ -71,6 +72,9 @@ public class ErrorHandlingAction
                 _loginUri+e.getResource().absolutePath().toString();
             dispatchRedirect(req, resp, relUri);
 
+        } catch (final UnsupportMethodException e) {
+            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+
         } catch (final RuntimeException e) {
             if(resp.isCommitted()) {
                 /*
@@ -81,6 +85,7 @@ public class ErrorHandlingAction
                 _context.log(
                     "Error caught after response was committed.",
                     e);
+                resp.getWriter().write("\n\nAN INTERNAL ERROR OCCURED.");
 
             } else {
                 _context.log(
