@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.CCCException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -122,11 +121,10 @@ public class LookupResourceAction
         LOG.info(
             "Request for "+request.getContextPath()+"/"+_rootName+pathString);
 
-        try {
-            final ResourcePath contentPath = new ResourcePath(pathString);
-            return contentPath;
-        } catch (final CCCException e) {
-            throw new NotFoundException();
+        if (ResourcePath.isValid(pathString)) {
+            return new ResourcePath(pathString);
         }
+
+        throw new NotFoundException();
     }
 }

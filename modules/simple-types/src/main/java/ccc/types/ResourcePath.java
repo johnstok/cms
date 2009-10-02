@@ -46,9 +46,7 @@ public final class ResourcePath {
     public ResourcePath(final String pathString) {
         DBC.require().notNull(pathString);
 
-        Matcher m = PATH_PATTERN.matcher(pathString);
-
-        if (!m.matches()) {
+        if (!isValid(pathString)) {
             throw new IllegalArgumentException(
                 pathString
                 +" does not match the regular expression: "
@@ -57,7 +55,7 @@ public final class ResourcePath {
 
         final List<ResourceName> parts = new ArrayList<ResourceName>();
 
-        m = Pattern.compile(TOKEN_PATTERN).matcher(pathString);
+        final Matcher m = Pattern.compile(TOKEN_PATTERN).matcher(pathString);
         while (m.find()) {
             parts.add(
                 new ResourceName(pathString.substring(m.start()+1, m.end())));
@@ -109,6 +107,17 @@ public final class ResourcePath {
     public ResourcePath(final List<ResourceName> elements) {
         DBC.require().notNull(elements);
         _elements = unmodifiableList(new ArrayList<ResourceName>(elements));
+    }
+
+    /**
+     * Tests whether the specified string is a valid path.
+     *
+     * @param pathString The string to test.
+     * @return True if the string is valid, false otherwise.
+     */
+    public static boolean isValid(final String pathString) {
+        final Matcher m = PATH_PATTERN.matcher(pathString);
+        return m.matches();
     }
 
     /**

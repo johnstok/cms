@@ -12,7 +12,6 @@
 
 package ccc.remoting.actions;
 
-import static ccc.commons.Exceptions.*;
 import static org.easymock.EasyMock.*;
 
 import java.io.ByteArrayOutputStream;
@@ -24,14 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.persistence.ResourceRepository;
 import ccc.rendering.Body;
-import ccc.rendering.NotFoundException;
-import ccc.rendering.Renderer;
 import ccc.rendering.Response;
 import ccc.rendering.TextProcessor;
 import ccc.rendering.velocity.VelocityProcessor;
-import ccc.types.ResourcePath;
 
 /**
  * Tests for the {@link RenderResourceAction} class.
@@ -39,31 +34,6 @@ import ccc.types.ResourcePath;
  * @author Civic Computing Ltd.
  */
 public final class RenderResourceActionTest extends TestCase {
-
-    /**
-     * Test.
-     */
-    public void testDetermineResourcePathHandlesInvalidPath() {
-
-        // ARRANGE
-        final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", null);
-        final String invalidPath = "$%^$%/^%$^";
-        expect(_request.getPathInfo()).andReturn(invalidPath);
-        expect(_request.getContextPath()).andReturn("");
-        replayAll();
-
-        // ACT
-        try {
-            rr.determineResourcePath(_request);
-            fail("Should throw exception.");
-
-        // ASSERT
-        } catch (final IllegalArgumentException e) {
-            swallow(e);
-        }
-        verifyAll();
-    }
 
 
     /**
@@ -95,98 +65,6 @@ public final class RenderResourceActionTest extends TestCase {
 
 
     /**
-     * Test.
-     */
-    public void testDetermineResourcePathRemovesTrailingSlash() {
-
-        // ARRANGE
-        final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", null);
-        expect(_request.getPathInfo()).andReturn("/foo/");
-        expect(_request.getContextPath()).andReturn("");
-        replayAll();
-
-        // ACT
-        final ResourcePath path = rr.determineResourcePath(_request);
-
-        // VERIFY
-        verifyAll();
-        assertEquals(new ResourcePath("/foo"), path);
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testDetermineResourcePathHandlesSingleForwardSlash() {
-
-        // ARRANGE
-        final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", null);
-        expect(_request.getPathInfo()).andReturn("/");
-        expect(_request.getContextPath()).andReturn("");
-        replayAll();
-
-        // ACT
-        final ResourcePath path = rr.determineResourcePath(_request);
-
-        // VERIFY
-        verifyAll();
-        assertEquals(new ResourcePath(""), path);
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testDetermineResourcePathHandlesNull() {
-
-        // ARRANGE
-        final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", null);
-        expect(_request.getPathInfo()).andReturn(null);
-        expect(_request.getContextPath()).andReturn("");
-        replayAll();
-
-        // ACT
-        final ResourcePath path = rr.determineResourcePath(_request);
-
-        // VERIFY
-        verifyAll();
-        assertEquals(new ResourcePath(""), path);
-    }
-
-
-    /**
-     * Test.
-     *
-     * @throws Exception If the test fails.
-     */
-    public void testDoGetHandlesNotFound() throws Exception {
-
-        // ARRANGE
-        final RenderResourceAction rr =
-            new RenderResourceAction(true, "root", null);
-
-        expect(_rdao.lookup("root", new ResourcePath("/foo")))
-            .andThrow(new NotFoundException());
-        replayAll();
-
-        // ACT
-        try {
-            rr.lookupResource(new ResourcePath("/foo"), _rdao);
-            fail();
-
-        } catch (final NotFoundException e) {
-            swallow(e);
-        }
-
-        // ASSERT
-        verifyAll();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -194,9 +72,8 @@ public final class RenderResourceActionTest extends TestCase {
         super.setUp();
         _response = createStrictMock(HttpServletResponse.class);
         _request = createStrictMock(HttpServletRequest.class);
-        _renderer = createStrictMock(Renderer.class);
-        _rdao = createStrictMock(ResourceRepository.class);
     }
+
 
     /**
      * {@inheritDoc}
@@ -206,17 +83,18 @@ public final class RenderResourceActionTest extends TestCase {
         super.tearDown();
         _response = null;
         _request = null;
-        _renderer = null;
-        _rdao = null;
     }
+
 
     private void verifyAll() {
-        verify(_response, _request, _renderer, _rdao);
+        verify(_response, _request);
     }
 
+
     private void replayAll() {
-        replay(_response, _request, _renderer, _rdao);
+        replay(_response, _request);
     }
+
 
     /**
      * Helper class for testing.
@@ -241,8 +119,7 @@ public final class RenderResourceActionTest extends TestCase {
         }
     }
 
+
     private HttpServletResponse _response;
     private HttpServletRequest  _request;
-    private Renderer _renderer;
-    private ResourceRepository _rdao;
 }

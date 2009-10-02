@@ -92,13 +92,18 @@ public class ContentServlet
                 new ReadOnlyTxAction(
                     new PersistenceAction(
                         new ReaderAction(
-                            new RenderResourceAction(
-                                _respectVisibility,
-                                _rootName,
-                                _search)
-                            ),
-                        _emf),
-                    _utx),
+                            new LookupResourceAction(
+                                new RenderResourceAction(
+                                    _respectVisibility,
+                                    _search
+                                ),
+                                _rootName
+                            )
+                        ),
+                        _emf
+                    ),
+                    _utx
+                ),
                 getServletContext(),
                 "/content/login?tg="
             );
@@ -122,10 +127,13 @@ public class ContentServlet
                         new ReaderAction(
                             new LookupResourceAction(
                                 new ScriptedAction(),
-                                _rootName)
-                            ),
-                        _emf),
-                    _utx),
+                                _rootName
+                            )
+                        ),
+                        _emf
+                    ),
+                    _utx
+                ),
                 getServletContext(),
                 "/content/login?tg="
             );
