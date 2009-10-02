@@ -67,6 +67,37 @@ public class ActionExecutorImplTest
         // ASSERT
         verify(_resourcesExt);
     }
+    
+    /**
+     * Test.
+     * @throws RestException From the Commands API.
+     */
+    public void testResourceUnpublishIsSupported()
+                                                 throws RestException {
+
+        // ARRANGE
+        final Page p =  new Page(new ResourceName("foo"), "foo", null, _rm);
+        final User u = new User(new Username("user"), "password");
+
+        _resourcesExt.unpublish(
+            eq(p.id()),
+            eq(u.id()),
+            isA(Date.class));
+        replay(_resourcesExt);
+
+        // ACT
+        _ea.executeAction(
+            p.id(),
+            u.id(),
+            CommandType.RESOURCE_UNPUBLISH ,
+            new HashMap<String, String>(){{
+                put("MAJOR", Boolean.FALSE.toString());
+                put("COMMENT", "");
+            }});
+
+        // ASSERT
+        verify(_resourcesExt);
+    }
 
 
     /** {@inheritDoc} */
