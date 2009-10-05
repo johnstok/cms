@@ -47,7 +47,7 @@ public final class AllUsersSelector
             try {
                 final Map<String, String> metamap =
                     _legacyDBQueries.selectMetadataForUser(userId);
-
+                metamap.put("legacyId", ""+userId);
 
                 String email = "";
                 if (metamap.containsKey("Email address")) {

@@ -99,4 +99,15 @@ public interface UserRepository {
      * @param user The new user to add.
      */
     void create(User user);
+
+    /**
+     * Look up a user using the legacy id.
+     *
+     * @param legacyId
+     *
+     * @throws EntityNotFoundException If no user exists for the specified ID.
+     *
+     * @return The user corresponding to 'legacyId'.
+     */
+    User userByLegacyId(String legacyId) throws EntityNotFoundException;
 }

@@ -119,7 +119,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                             _email.getValue(),
                             _user.getId(),
                             _user.getUsername(),
-                            _user.getRoles());
+                            _user.getRoles(),
+                            _user.getMetadata());
                         GLOBALS.currentUser(user);
                         hide();
                     }

@@ -13,6 +13,7 @@ package ccc.acceptance;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Random;
 import java.util.UUID;
 
 import ccc.rest.RestException;
@@ -241,6 +242,38 @@ public class UserManagementAcceptanceTest
         assertEquals(new Username("super"), user.getUsername());
     }
 
+
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testSearchForUsersWithLegacyId() throws RestException {
+
+        // ARRANGE
+        final UserDto us = tempUser();
+
+        final int legacyId = new Random().nextInt(100000);
+
+        getUsers().updateUser(
+            us.getId(),
+            new UserDto(
+                us.getEmail(),
+                us.getUsername(),
+                Collections.singleton("a2"),
+                Collections.singletonMap("legacyId", ""+legacyId)));
+
+        // ACT
+        final UserDto ul = getUsers().userByLegacyId(""+legacyId);
+
+        // ASSERT
+        assertNotNull(ul);
+        assertEquals(us.getUsername(), ul.getUsername());
+        assertEquals(us.getEmail(), ul.getEmail());
+        assertEquals(1, ul.getRoles().size());
+        assertTrue(ul.getRoles().contains("a2"));
+    }
 
     private UserDto tempUser() throws RestException {
 

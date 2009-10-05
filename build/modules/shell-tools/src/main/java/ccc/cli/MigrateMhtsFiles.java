@@ -9,19 +9,19 @@ import org.kohsuke.args4j.Option;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
-import ccc.migration.Migrations;
+import ccc.migration.MhtsFileMigration;
 import ccc.migration.ServiceLookup;
 
 /**
  * Entry class for the migration application.
  */
-public final class Migrate extends CccApp {
-    private static final Logger LOG = Logger.getLogger(Migrate.class);
+public final class MigrateMhtsFiles extends CccApp {
+    private static final Logger LOG = Logger.getLogger(MigrateMhtsFiles.class);
     private static LegacyDBQueries legacyDBQueries;
     private static ServiceLookup services;
     private static Options options;
 
-    private Migrate() { /* NO-OP */ }
+    private MigrateMhtsFiles() { /* NO-OP */ }
 
 
     /**
@@ -59,22 +59,21 @@ public final class Migrate extends CccApp {
     }
 
     private static void performMigration() {
-        // FIXME: pass options instead of 8 parameters?
-        final Migrations migrations =
-            new Migrations(
-                legacyDBQueries,
-                services.getResources(),
-                services.getPages(),
-                services.getFolders(),
-                services.getUsers(),
-                new FileUploader(
-                    options.getCcURL(),
-                    options.getUsername(),
-                    options.getPassword()),
-                services.getTemplates(),
-                options
-                );
-        migrations.migrate();
+
+        final MhtsFileMigration migration = new MhtsFileMigration(
+            legacyDBQueries,
+            services.getResources(),
+            services.getPages(),
+            services.getFolders(),
+            services.getUsers(),
+            new FileUploader(
+                options.getCcURL(),
+                options.getUsername(),
+                options.getPassword()),
+                options);
+
+
+        migration.migrate(282, "/content/Members_Area"); // FIXME
     }
 
     /**
@@ -112,34 +111,20 @@ public final class Migrate extends CccApp {
         private String _legConString;
 
         @Option(
+            name="-l", required=true, usage="Local folder path.")
+            private String _localPath;
+
+        @Option(
+            name="-o", required=true, usage="The URL for file upload.")
+            private String _uploadUrl;
+
+        @Option(
             name="-jn",
             required=false,
             usage="Optional JNDI provider URL, defaults to localhost")
             private String _providerURL;
 
-        @Option(
-            name="-hp",
-            required=false,
-            usage="Optional homepage migration (post CCC 6.4).")
-        private boolean _migrateHomepage;
 
-        @Option(
-            name="-mj",
-            required=false,
-            usage="Optional migration c3_content.is_major_edit. Requires -v.")
-            private boolean _migrateIsMajorEdit;
-
-        @Option(
-            name="-v",
-            required=false,
-            usage="Optional migration of paragraph versions.")
-            private boolean _migrateVersions;
-
-        @Option(
-            name="-ignore",
-            required=false,
-            usage="Optional path to ignore in the migration")
-            private String _ignorePaths;
 
         /**
          * Accessor.
@@ -223,38 +208,23 @@ public final class Migrate extends CccApp {
         /**
          * Accessor.
          *
-         * @return Returns the migrateHomepage.
+         * @return Returns the uploadUrl.
          */
-        public boolean isMigrateHomepage() {
-            return _migrateHomepage;
+        public final String getUploadUrl() {
+            return _uploadUrl;
         }
+
 
         /**
          * Accessor.
          *
-         * @return Returns the migrateIsMajorEdit.
+         * @return Returns the localPath.
          */
-        public boolean isMigrateIsMajorEdit() {
-            return _migrateIsMajorEdit;
+        String getLocalPath() {
+            return _localPath;
         }
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the migrateVersions.
-         */
-        public boolean isMigrateVersions() {
-            return _migrateVersions;
-        }
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the JNDI provider URL.
-         */
-        public String getIgnorePaths() {
-            return _ignorePaths;
-        }
     }
 }
 

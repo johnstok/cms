@@ -74,4 +74,5 @@
     <query name="usersWithRole">from ccc.domain.User u left join fetch u._roles where ? in elements(u._roles)</query>
     <query name="usersWithUsername">from ccc.domain.User u where lower(u._username._value) like ?</query>
     <query name="usersWithEmail">from ccc.domain.User u where lower(u._email._text) like ?</query>
+    <query name="usersWithLegacyId">from ccc.domain.User u where u._metadata['legacyId'] = ?</query>
 </hibernate-mapping>
