@@ -16,7 +16,7 @@ import java.util.Map;
 import ccc.domain.File;
 import ccc.entities.IData;
 import ccc.entities.IFile;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.rendering.FileBody;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
@@ -76,7 +76,7 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,
-                           final FileRepository dm) {
+                           final DataRepository dm) {
         final Response r = new Response(new FileBody(this, dm));
         r.setDescription(description());
         r.setDisposition("inline; filename=\""+name()+"\"");

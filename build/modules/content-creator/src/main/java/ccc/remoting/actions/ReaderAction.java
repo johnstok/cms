@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.domain.EntityNotFoundException;
-import ccc.persistence.FileRepository;
-import ccc.persistence.FileRepositoryImpl;
+import ccc.persistence.DataRepository;
+import ccc.persistence.DataRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.ResourceRepositoryImpl;
@@ -74,8 +74,8 @@ public class ReaderAction
             new LogEntryRepositoryImpl(em);
         req.setAttribute(SessionKeys.AUDIT_KEY, al);
 
-        final FileRepository dm =
-            FileRepositoryImpl.onFileSystem(em);
+        final DataRepository dm =
+            DataRepositoryImpl.onFileSystem(em);
         req.setAttribute(SessionKeys.DATA_KEY, dm);
 
         final StatefulReader sr =

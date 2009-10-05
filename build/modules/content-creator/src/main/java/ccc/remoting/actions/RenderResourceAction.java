@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.rendering.DefaultRenderer;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
@@ -58,7 +58,7 @@ public class RenderResourceAction
     @Override
     public void execute(final HttpServletRequest request,
                         final HttpServletResponse response) throws IOException {
-        final FileRepository data = getDataManager(request);
+        final DataRepository data = getDataManager(request);
         final StatefulReader reader = getStatefulReader(request);
         final User currentUser = getCurrentUser(request);
 
@@ -78,7 +78,7 @@ public class RenderResourceAction
     @SuppressWarnings("unchecked")
     private Response prepareResponse(final HttpServletRequest request,
                                      final StatefulReader reader,
-                                     final FileRepository dataMgr,
+                                     final DataRepository dataMgr,
                                      final SearchEngine searchEngine,
                                      final Resource rs) {
 

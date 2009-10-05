@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 
 import ccc.domain.Data;
 import ccc.domain.File;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
 import ccc.snapshots.FileSnapshot;
@@ -67,7 +67,7 @@ public final class ReadContentToStringAction
      *
      * @return The file's contents as a string.
      */
-    public static String read(final FileRepository dm, final File file) {
+    public static String read(final DataRepository dm, final File file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
             file.data(), new ReadContentToStringAction(sb, file.charset()));
@@ -83,7 +83,7 @@ public final class ReadContentToStringAction
      *
      * @return The file's contents as a string.
      */
-    public static String read(final FileRepository dm,
+    public static String read(final DataRepository dm,
                               final FileSnapshot file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(

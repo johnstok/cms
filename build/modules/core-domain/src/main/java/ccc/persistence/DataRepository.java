@@ -24,7 +24,7 @@ import ccc.entities.IData;
  *
  * @author Civic Computing Ltd.
  */
-public interface FileRepository {
+public interface DataRepository {
 
     /**
      * Create a new item of binary data.

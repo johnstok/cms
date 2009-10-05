@@ -21,7 +21,7 @@ import ccc.domain.File;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.FileDelta;
@@ -34,7 +34,7 @@ import ccc.rest.dto.FileDelta;
  */
 public class UpdateFileCommand extends UpdateResourceCommand {
 
-    private final FileRepository _data;
+    private final DataRepository _data;
 
     /**
      * Constructor.
@@ -45,7 +45,7 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      */
     public UpdateFileCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
-                             final FileRepository data) {
+                             final DataRepository data) {
         super(repository, audit);
         _data = data;
     }

@@ -26,7 +26,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
 
 import ccc.commons.Exceptions;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
 import ccc.search.SearchResult;
@@ -56,7 +56,7 @@ public class SimpleLuceneFS
      * @param dm The file repository used to read file resources.
      * @param indexPath The path to the index file on disk.
      */
-    public SimpleLuceneFS(final FileRepository dm,
+    public SimpleLuceneFS(final DataRepository dm,
                           final String indexPath)  {
         super(dm);
         _indexPath = indexPath;
