@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.persistence.DataRepository;
+import ccc.persistence.streams.ReadContentToStringAction;
 import ccc.remoting.RequestScopeServiceLocator;
-import ccc.rendering.ReadContentToStringAction;
 import ccc.rendering.UnsupportMethodException;
 
 

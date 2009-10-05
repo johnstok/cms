@@ -46,7 +46,7 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
-import ccc.rendering.ReadContentToStringAction;
+import ccc.persistence.streams.ReadContentToStringAction;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
