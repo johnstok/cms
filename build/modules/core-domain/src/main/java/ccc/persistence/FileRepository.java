@@ -14,10 +14,8 @@ package ccc.persistence;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import ccc.domain.Data;
-import ccc.domain.File;
 import ccc.entities.IData;
 
 
@@ -56,11 +54,4 @@ public interface FileRepository {
      * @param action An action to perform with the retrieved data.
      */
     void retrieve(Data data, StreamAction action);
-
-    /**
-     * Returns a list of all images.
-     *
-     * @return The list of resources.
-     */
-    List<File> findImages();
 }

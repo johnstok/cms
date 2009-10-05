@@ -19,7 +19,6 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 import ccc.domain.Data;
 import ccc.persistence.FileRepositoryImpl;
-import ccc.persistence.Repository;
 import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
 import ccc.search.SearchEngine;
@@ -35,7 +34,6 @@ public class DataManagerImplTest extends TestCase {
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
-    private Repository _repository;
     private FileRepositoryImpl _dm;
     private SearchEngine _se;
     private CoreData _cd;
@@ -44,26 +42,24 @@ public class DataManagerImplTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-         _repository = createStrictMock(Repository.class);
          _se = createStrictMock(SearchEngine.class);
          _cd = createStrictMock(CoreData.class);
-         _dm = new FileRepositoryImpl(_cd, _repository);
+         _dm = new FileRepositoryImpl(_cd);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _repository = null;
         _dm = null;
         _cd = null;
     }
 
     private void replayAll() {
-        replay(_repository, _se, _cd);
+        replay(_se, _cd);
     }
 
     private void verifyAll() {
-        verify(_repository, _se, _cd);
+        verify(_se, _cd);
     }
 
 //    /**
