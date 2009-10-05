@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.rendering.StatefulReader;
@@ -125,8 +125,8 @@ public abstract class AbstractServletAction
     }
 
 
-    protected final FileRepository getDataManager(final HttpServletRequest request) {
-        return (FileRepository) request.getAttribute(SessionKeys.DATA_KEY);
+    protected final DataRepository getDataManager(final HttpServletRequest request) {
+        return (DataRepository) request.getAttribute(SessionKeys.DATA_KEY);
     }
 
 

@@ -33,7 +33,7 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.search.SearchEngine;
 import ccc.types.MimeType;
@@ -457,7 +457,7 @@ public class DefaultRendererTest
 
 
     private DefaultRenderer _renderer;
-    private final FileRepository _dm = Testing.dummy(FileRepository.class);
+    private final DataRepository _dm = Testing.dummy(DataRepository.class);
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
     private final StatefulReader _sr = Testing.stub(StatefulReader.class);
     private final User _user = new User(new Username("fooo"), "password");

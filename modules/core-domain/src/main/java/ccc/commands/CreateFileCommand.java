@@ -19,7 +19,7 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.FileDelta;
@@ -33,7 +33,7 @@ import ccc.types.ResourceName;
  */
 public class CreateFileCommand extends CreateResourceCommand {
 
-    private final FileRepository _data;
+    private final DataRepository _data;
 
     /**
      * Constructor.
@@ -44,7 +44,7 @@ public class CreateFileCommand extends CreateResourceCommand {
      */
     public CreateFileCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
-                             final FileRepository data) {
+                             final DataRepository data) {
         super(repository, audit);
         _data = data;
     }

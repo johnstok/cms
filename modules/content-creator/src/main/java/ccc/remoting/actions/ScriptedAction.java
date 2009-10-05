@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.domain.File;
 import ccc.domain.Resource;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.remoting.RequestScopeServiceLocator;
 import ccc.rendering.ReadContentToStringAction;
 import ccc.rendering.UnsupportMethodException;
@@ -45,7 +45,7 @@ public class ScriptedAction
 
         disableCaching(resp);
 
-        final FileRepository data = getDataManager(req);
+        final DataRepository data = getDataManager(req);
         final Resource rs = getResource(req);
 
         if (rs instanceof File) {

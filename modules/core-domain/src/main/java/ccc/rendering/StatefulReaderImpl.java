@@ -18,7 +18,7 @@ import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.entities.IResource;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.types.ResourcePath;
 
@@ -33,7 +33,7 @@ public final class StatefulReaderImpl
         StatefulReader {
 
     private final ResourceRepository  _resources;
-    private final FileRepository _data;
+    private final DataRepository _data;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public final class StatefulReaderImpl
      * @param data The data manager to use.
      */
     public StatefulReaderImpl(final ResourceRepository resources,
-                              final FileRepository data) {
+                              final DataRepository data) {
         _resources = resources;
         _data = data;
     }

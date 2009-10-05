@@ -27,11 +27,11 @@ import ccc.types.DBC;
 
 
 /**
- * EJB implementation of the {@link FileRepository} interface.
+ * EJB implementation of the {@link DataRepository} interface.
  *
  * @author Civic Computing Ltd.
  */
-public class FileRepositoryImpl implements FileRepository {
+public class DataRepositoryImpl implements DataRepository {
 
     private CoreData _cd;
 
@@ -40,7 +40,7 @@ public class FileRepositoryImpl implements FileRepository {
      *
      * @param cd The JDBC datasource used to manage data.
      */
-    public FileRepositoryImpl(final CoreData cd) {
+    public DataRepositoryImpl(final CoreData cd) {
         DBC.require().notNull(cd);
         _cd = cd;
     }
@@ -53,13 +53,13 @@ public class FileRepositoryImpl implements FileRepository {
      *
      * @return The file repository.
      */
-    public static FileRepository onFileSystem(final EntityManager em) {
+    public static DataRepository onFileSystem(final EntityManager em) {
         try {
             final SettingsRepository settings = new SettingsRepository(em);
             final Setting filestorePath =
                 settings.find(Setting.Name.FILE_STORE_PATH);
             return
-                new FileRepositoryImpl(new FsCoreData(filestorePath.value()));
+                new DataRepositoryImpl(new FsCoreData(filestorePath.value()));
 
         } catch (final EntityNotFoundException e) {
             throw new RuntimeException(

@@ -15,7 +15,7 @@ package ccc.rendering;
 import java.util.Map;
 
 import ccc.domain.Resource;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.search.SearchEngine;
 import ccc.snapshots.ResourceSnapshot;
 import ccc.types.DBC;
@@ -29,7 +29,7 @@ public class DefaultRenderer
     implements
         Renderer {
 
-    private final FileRepository _dm;
+    private final DataRepository _dm;
     private final SearchEngine _search;
     private final boolean _respectVisibility;
     private final StatefulReader _reader;
@@ -42,7 +42,7 @@ public class DefaultRenderer
      * @param searchEngine The search engine to use.
      * @param reader The resource reader to use.
      */
-    public DefaultRenderer(final FileRepository dm,
+    public DefaultRenderer(final DataRepository dm,
                            final SearchEngine searchEngine,
                            final StatefulReader reader,
                            final boolean respectVisiblity) {

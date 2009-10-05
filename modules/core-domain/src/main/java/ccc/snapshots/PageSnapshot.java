@@ -17,7 +17,7 @@ import java.util.Set;
 import ccc.domain.Page;
 import ccc.domain.Template;
 import ccc.entities.IPage;
-import ccc.persistence.FileRepository;
+import ccc.persistence.DataRepository;
 import ccc.rendering.PageBody;
 import ccc.rendering.Response;
 import ccc.rendering.StatefulReader;
@@ -67,7 +67,7 @@ public class PageSnapshot extends ResourceSnapshot implements IPage {
     public Response render(final Map<String, String[]> parameters,
                            final SearchEngine search,
                            final StatefulReader reader,
-                           final FileRepository dm) {
+                           final DataRepository dm) {
         final Template t =
             computeTemplate(PageBody.BUILT_IN_PAGE_TEMPLATE);
         final Response r =

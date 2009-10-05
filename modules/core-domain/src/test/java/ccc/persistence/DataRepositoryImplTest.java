@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.persistence;
 
 import static org.easymock.EasyMock.*;
 
@@ -18,23 +18,23 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 import ccc.domain.Data;
-import ccc.persistence.FileRepositoryImpl;
+import ccc.persistence.DataRepositoryImpl;
 import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
 import ccc.search.SearchEngine;
 
 
 /**
- * Tests for the {@link FileRepositoryImpl} class.
+ * Tests for the {@link DataRepositoryImpl} class.
  *
  * @author Civic Computing Ltd.
  */
-public class DataManagerImplTest extends TestCase {
+public class DataRepositoryImplTest extends TestCase {
 
     private final InputStream _dummyStream =
         new ByteArrayInputStream(new byte[]{1});
 
-    private FileRepositoryImpl _dm;
+    private DataRepositoryImpl _dm;
     private SearchEngine _se;
     private CoreData _cd;
 
@@ -44,7 +44,7 @@ public class DataManagerImplTest extends TestCase {
     protected void setUp() {
          _se = createStrictMock(SearchEngine.class);
          _cd = createStrictMock(CoreData.class);
-         _dm = new FileRepositoryImpl(_cd);
+         _dm = new DataRepositoryImpl(_cd);
     }
 
     /** {@inheritDoc} */

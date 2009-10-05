@@ -38,8 +38,8 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ActionRepository;
 import ccc.persistence.ActionRepositoryImpl;
-import ccc.persistence.FileRepository;
-import ccc.persistence.FileRepositoryImpl;
+import ccc.persistence.DataRepository;
+import ccc.persistence.DataRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.LogEntryRepositoryImpl;
 import ccc.persistence.ResourceRepository;
@@ -78,7 +78,7 @@ abstract class AbstractEJB {
     private UserRepository     _users;
     private ResourceRepository _resources;
     private LogEntryRepository _audit;
-    private FileRepository     _dm;
+    private DataRepository     _dm;
     private ActionRepository   _actions;
 
 
@@ -87,7 +87,7 @@ abstract class AbstractEJB {
         _audit = new LogEntryRepositoryImpl(_em);
         _users = new UserRepositoryImpl(_em);
         _resources = new ResourceRepositoryImpl(_em);
-        _dm = FileRepositoryImpl.onFileSystem(_em);
+        _dm = DataRepositoryImpl.onFileSystem(_em);
         _actions = new ActionRepositoryImpl(_em);
     }
 
@@ -137,7 +137,7 @@ abstract class AbstractEJB {
      *
      * @return Returns the file repository.
      */
-    protected final FileRepository getFiles() {
+    protected final DataRepository getFiles() {
         return _dm;
     }
 

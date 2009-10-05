@@ -37,7 +37,7 @@ import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Scheduler;
 import ccc.domain.Setting;
-import ccc.persistence.FileRepositoryImpl;
+import ccc.persistence.DataRepositoryImpl;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.SettingsRepository;
@@ -196,6 +196,6 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
         return new SimpleLuceneFS(
-            FileRepositoryImpl.onFileSystem(_em), indexPath.value());
+            DataRepositoryImpl.onFileSystem(_em), indexPath.value());
     }
 }
