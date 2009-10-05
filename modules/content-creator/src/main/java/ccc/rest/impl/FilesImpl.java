@@ -62,7 +62,8 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTextFile(final TextFileDto textFile) throws RestException {
+    public ResourceSummary createTextFile(final TextFileDto textFile)
+    throws RestException {
         return getFiles().createTextFile(textFile);
     }
 }
