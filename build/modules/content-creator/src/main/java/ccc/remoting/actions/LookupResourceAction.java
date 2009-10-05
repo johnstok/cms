@@ -13,9 +13,6 @@ package ccc.remoting.actions;
 
 import static ccc.commons.Strings.*;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,18 +20,13 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
-import ccc.domain.User;
 import ccc.persistence.ResourceRepository;
-import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.NotFoundException;
 import ccc.types.ResourcePath;
-import ccc.types.Username;
 
 
 /**
  * A servlet action that looks up the CCC resource for a URL.
- * <p>Security privileges are checked before handing control to the delegate
- * action.
  *
  * @author Civic Computing Ltd.
  */
@@ -45,19 +37,15 @@ public class LookupResourceAction
     private static final Logger LOG =
         Logger.getLogger(LookupResourceAction.class);
 
-    private final ServletAction _delegate;
     private final String        _rootName;
 
 
     /**
      * Constructor.
      *
-     * @param delegate The action to call next in the chain.
      * @param rootName The name of content root to serve from.
      */
-    public LookupResourceAction(final ServletAction delegate,
-                                final String rootName) {
-        _delegate = delegate;
+    public LookupResourceAction(final String rootName) {
         _rootName = rootName;
     }
 
@@ -65,27 +53,12 @@ public class LookupResourceAction
     /** {@inheritDoc} */
     @Override
     public void execute(final HttpServletRequest request,
-                        final HttpServletResponse response)
-    throws ServletException, IOException {
+                        final HttpServletResponse response) {
             final ResourceRepository rdao = getResourceDao(request);
-            final User currentUser = getCurrentUser(request);
 
             final ResourcePath contentPath = determineResourcePath(request);
             final Resource rs = lookupResource(contentPath, rdao);
-            checkSecurity(rs, currentUser);
             request.setAttribute(SessionKeys.RESOURCE_KEY, rs);
-
-            _delegate.execute(request, response);
-    }
-
-
-    private void checkSecurity(final Resource r, final User user) {
-        final User u = (null==user)
-            ? new User(new Username("anonymous"), "password")
-            : user;
-        if (!r.isAccessibleTo(u)) {
-            throw new AuthenticationRequiredException(r);
-        }
     }
 
 

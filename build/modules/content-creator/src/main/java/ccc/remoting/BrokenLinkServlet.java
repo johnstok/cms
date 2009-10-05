@@ -57,13 +57,12 @@ public final class BrokenLinkServlet
             new ErrorHandlingAction(
                 new ReadOnlyTxAction(
                     new PersistenceAction(
-                        new ReaderAction(
-                            new FixLinkAction()),
-                        _emf),
+                        _emf,
+                        new ReaderAction(),
+                        new FixLinkAction()),
                     _utx),
                 getServletContext(),
-                "/content/login?tg="
-            );
+                "/content/login?tg=");
 
         action.execute(req, resp);
     }

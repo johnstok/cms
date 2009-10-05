@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
+import ccc.remoting.actions.CheckSecurityAction;
 import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.LookupResourceAction;
 import ccc.remoting.actions.PersistenceAction;
@@ -91,19 +92,12 @@ public class ContentServlet
             new ErrorHandlingAction(
                 new ReadOnlyTxAction(
                     new PersistenceAction(
-                        new ReaderAction(
-                            new LookupResourceAction(
-                                new RenderResourceAction(
-                                    _respectVisibility,
-                                    _search
-                                ),
-                                _rootName
-                            )
-                        ),
-                        _emf
-                    ),
-                    _utx
-                ),
+                        _emf,
+                        new ReaderAction(),
+                        new LookupResourceAction(_rootName),
+                        new CheckSecurityAction(_respectVisibility),
+                        new RenderResourceAction(_respectVisibility, _search)),
+                    _utx),
                 getServletContext(),
                 "/content/login?tg="
             );
@@ -124,16 +118,12 @@ public class ContentServlet
             new ErrorHandlingAction(
                 new ReadWriteTxAction(
                     new PersistenceAction(
-                        new ReaderAction(
-                            new LookupResourceAction(
-                                new ScriptedAction(),
-                                _rootName
-                            )
-                        ),
-                        _emf
-                    ),
-                    _utx
-                ),
+                        _emf,
+                        new ReaderAction(),
+                        new LookupResourceAction(_rootName),
+                        new CheckSecurityAction(true),
+                        new ScriptedAction()),
+                    _utx),
                 getServletContext(),
                 "/content/login?tg="
             );

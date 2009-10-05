@@ -11,11 +11,9 @@
  */
 package ccc.remoting.actions;
 
-import java.io.IOException;
 import java.security.Principal;
 
 import javax.persistence.EntityManager;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,22 +41,11 @@ public class ReaderAction
 
     private static final Logger LOG = Logger.getLogger(ReaderAction.class);
 
-    private final ServletAction _delegate;
-
-    /**
-     * Constructor.
-     *
-     * @param delegate The action that will be called next in the chain.
-     */
-    public ReaderAction(final ServletAction delegate) {
-        _delegate = delegate;
-    }
 
     /** {@inheritDoc} */
     @Override
     public void execute(final HttpServletRequest req,
-                        final HttpServletResponse resp) throws ServletException,
-                                                               IOException {
+                        final HttpServletResponse resp) {
         final EntityManager em =
             (EntityManager) req.getAttribute(SessionKeys.EM_KEY);
 
@@ -81,7 +68,5 @@ public class ReaderAction
         final StatefulReader sr =
             new StatefulReaderImpl(new ResourceRepositoryImpl(em), dm);
         req.setAttribute(RenderingKeys.READER_KEY, sr);
-
-        _delegate.execute(req, resp);
     }
 }
