@@ -33,6 +33,7 @@ import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.PagesExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -49,6 +50,8 @@ public abstract class BaseMigrations {
     protected Users _userCommands;
     protected UserMigration _um;
     protected PagesExt _pagesExt;
+    protected ResourcesExt _resourcesExt;
+    protected TemplateMigration _tm;
 
     protected String _linkPrefix;
 
@@ -212,5 +215,92 @@ public abstract class BaseMigrations {
         return rs;
     }
 
+    protected void setResourceRoles(final ResourceBean r,
+                                  final ResourceSummary rs,
+                                  final LogEntryBean le,
+                                  final Logger log)
+                                                 throws RestException {
+        if (r.isSecure()) {
+            log.info("Resource has security constraints " +r.contentId() + ", " + r.cleanTitle());
+            _resourcesExt.changeRoles(
+                rs.getId(),
+                _legacyQueries.selectRolesForResource(r.contentId()),
+                le.getUser().getId(),
+                le.getHappenedOn());
+        }
+    }
+
+
+
+    protected void setTemplateForResource(final ResourceBean r,
+                                        final ResourceSummary rs,
+                                        final LogEntryBean le,
+                                        final ResourceSummary templateFolder)
+                                                 throws RestException {
+        final String templateName = r.displayTemplate();
+        final String templateDescription = r.templateDescription();
+
+        if (null == templateName) { // Resource has no template
+            return;
+        }
+
+        final UUID templateId = _tm.getTemplate(
+            templateName,
+            templateDescription,
+            templateFolder);
+        _resourcesExt.updateResourceTemplate(
+            rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
+    }
+
+    protected void publish(final ResourceBean r,
+                         final ResourceSummary rs,
+                         final LogEntryBean le) throws RestException {
+        if (r.isPublished()) {
+            _resourcesExt.publish(
+                rs.getId(), le.getUser().getId(), le.getHappenedOn());
+        }
+    }
+
+    protected void setMetadata(final ResourceBean r,
+                             final ResourceSummary rs,
+                             final LogEntryBean le)
+                                                 throws RestException {
+
+        final Map<String, String> metadata =
+            new HashMap<String, String>();
+        setStyleSheet(r, metadata);
+        setFlagged(r, metadata);
+        metadata.put("legacyId", ""+r.contentId());
+        if (r.useInIndex() != null) {
+            metadata.put("useInIndex", ""+r.useInIndex());
+        }
+
+        _resourcesExt.updateMetadata(
+            rs.getId(),
+            rs.getTitle(),
+            rs.getDescription(),
+            rs.getTags(),
+            metadata,
+            le.getUser().getId(),
+            le.getHappenedOn());
+    }
+
+
+    private void setStyleSheet(final ResourceBean r,
+                               final Map<String, String> properties) {
+        final String styleSheet =
+            _legacyQueries.selectStyleSheet(r.contentId());
+        if (styleSheet != null) {
+            properties.put("bodyId", styleSheet);
+        }
+    }
+
+    private void setFlagged(final ResourceBean r,
+                            final Map<String, String> properties) {
+        final String flagged = _legacyQueries.selectFlagged(r.contentId());
+        if (flagged != null && flagged.equals("Y")) {
+            properties.put("flagged", Boolean.TRUE.toString());
+        }
+    }
 
 }

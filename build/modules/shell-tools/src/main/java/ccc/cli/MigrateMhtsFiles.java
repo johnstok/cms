@@ -220,7 +220,7 @@ public final class MigrateMhtsFiles extends CccApp {
          *
          * @return Returns the localPath.
          */
-        String getLocalPath() {
+        public String getLocalPath() {
             return _localPath;
         }
 
