@@ -116,4 +116,12 @@ public class UserRepositoryImpl implements UserRepository {
     public void create(final User user) {
         _repository.create(user);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public User userByLegacyId(final String legacyId)
+    throws EntityNotFoundException {
+        return _repository.find(USERS_WITH_LEGACY_ID, User.class, legacyId);
+    }
 }

@@ -157,4 +157,18 @@ public interface Users {
     @POST @Path("/users/{id}/currentuser")
     void updateYourUser(@PathParam("id") UUID userId, UserDto user)
     throws RestException;
+
+
+    /**
+     * Look up the user for a specified legacy id.
+     *
+     * @param legacyId The legacy id of the user.
+     * @throws RestException If the method fails
+     * @return A summary of the corresponding user.
+     */
+    @GET
+    @Path("/user-by-legacy-id/{id}")
+    @NoCache
+    UserDto userByLegacyId(@PathParam("id") String legacyId)
+    throws RestException;
 }

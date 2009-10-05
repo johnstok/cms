@@ -119,4 +119,11 @@ public class UsersImpl
     throws RestException {
         getUsers().updateUser(userId, delta);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public UserDto userByLegacyId(final String legacyId) throws RestException {
+        return getUsers().userByLegacyId(legacyId);
+    }
 }

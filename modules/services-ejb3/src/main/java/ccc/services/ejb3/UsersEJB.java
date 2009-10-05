@@ -184,4 +184,17 @@ public class UsersEJB
             throw fail(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public UserDto userByLegacyId(final String legacyId) throws RestException {
+        try {
+            return mapUser(getUsers().userByLegacyId(legacyId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
 }

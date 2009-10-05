@@ -18,6 +18,7 @@ import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceRolesSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
+import ccc.migration.ccc6.handlers.SingleResourceSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
 import ccc.migration.ccc6.handlers.TemplateFieldsSelector;
 import ccc.migration.ccc6.handlers.UserCommentSelector;
@@ -54,6 +55,17 @@ public class LegacyDBQueries {
     public List<ResourceBean> selectResources(final int i) {
         final ResourceSelector rsh = new ResourceSelector();
         return _db.select(rsh, i);
+    }
+
+    /**
+     * Returns a resource with legacy ID.
+     *
+     * @param i The legacy ID.
+     * @return Resource found with query.
+     */
+    public ResourceBean selectSingleResource(final int i) {
+        final SingleResourceSelector selector = new SingleResourceSelector();
+        return _db.select(selector, i);
     }
 
     /**

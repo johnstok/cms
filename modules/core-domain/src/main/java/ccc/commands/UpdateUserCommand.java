@@ -12,6 +12,7 @@
 package ccc.commands;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
@@ -68,6 +69,12 @@ public class UpdateUserCommand {
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(delta.getEmail()));
         current.roles(delta.getRoles());
+        current.clearMetadata();
+
+        final Map<String, String> metamap = delta.getMetadata();
+        for (final Map.Entry<String, String> metadatum: metamap.entrySet()) {
+            current.addMetadatum(metadatum.getKey(), metadatum.getValue());
+        }
 
         _audit.record(
             new LogEntry(

@@ -49,15 +49,18 @@ public final class UserDto implements Serializable, Jsonable {
      * @param id The user's id.
      * @param username The user's username.
      * @param roles The user's roles.
+     * @param metadata The user's metadata.
      */
     public UserDto(final String email,
                        final UUID id,
                        final Username username,
-                       final Set<String> roles) {
+                       final Set<String> roles,
+                       final Map<String, String> metadata) {
         _email = email;
         _id = id;
         _username = username;
         _roles = new HashSet<String>(roles);
+        _metadata = metadata;
     }
 
 

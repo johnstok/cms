@@ -17,9 +17,6 @@ import java.security.Principal;
 
 import junit.framework.TestCase;
 import ccc.domain.User;
-import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
-import ccc.persistence.UserRepositoryImpl;
 import ccc.types.Username;
 
 
@@ -76,6 +73,32 @@ public class UserRepositoryImplTest
 
         // ACT
         final User actual = ul.loggedInUser(p);
+
+        // ASSERT
+        verify(_repository);
+        assertNotNull("Shouldn't be null.", actual);
+        assertEquals(u, actual);
+    }
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testUserWithLegacyId() throws Exception {
+
+        // ARRANGE
+        final User u = new User(new Username("user"), "password");
+        u.addMetadatum("legacyId", "8");
+
+        expect(_repository.find(
+            QueryNames.USERS_WITH_LEGACY_ID, User.class, "8"))
+            .andReturn(u);
+        replay(_repository);
+        final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
+
+        // ACT
+        final User actual = ul.userByLegacyId("8");
 
         // ASSERT
         verify(_repository);

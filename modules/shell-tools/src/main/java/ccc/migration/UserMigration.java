@@ -11,7 +11,6 @@
  */
 package ccc.migration;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -32,10 +31,6 @@ public class UserMigration {
 
     private final LegacyDBQueries _legacyQueries;
     private final Users _userCommands;
-    private final Map<Integer, UserDto> _users =
-        new HashMap<Integer, UserDto>();
-
-
 
     /**
      * Constructor.
@@ -75,9 +70,7 @@ public class UserMigration {
                         +" has password with less than 6 characters.");
                 }
 
-                final UserDto u =
-                    _userCommands.createUser(ud);
-                _users.put(mu.getKey(), u);
+                _userCommands.createUser(ud);
             } catch (final RuntimeException e) {
                 log.warn(
                     "Failed to create user "+mu.getKey()+": "+e.getMessage());
@@ -86,16 +79,4 @@ public class UserMigration {
         log.info("Migrated users.");
     }
 
-
-
-    /**
-     * Lookup the new user for a CCC6 user id.
-     *
-     * @param actor The CCC6 user id.
-     *
-     * @return The corresponding user in the new system.
-     */
-    UserDto getUser(final int actor) {
-        return _users.get(Integer.valueOf(actor));
-    }
 }

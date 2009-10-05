@@ -11,45 +11,35 @@
  */
 package ccc.migration;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.Resources;
-import ccc.commons.WordCharFixer;
-import ccc.domain.CCCException;
+import ccc.cli.Migrate.Options;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
-import ccc.types.FailureCode;
 import ccc.types.Paragraph;
-import ccc.types.ParagraphType;
-import ccc.types.Username;
 
 /**
  * Data migration from CCC6 to CCC7.
  *
  * @author Civic Computing Ltd
  */
-public class Migrations {
+public class Migrations extends BaseMigrations {
     private static Logger log = Logger.getLogger(Migrations.class);
 
     private final ResourceSummary _contentRoot;
@@ -61,12 +51,9 @@ public class Migrations {
 
     private Set<Integer>    _menuItems;
 
-    private final LegacyDBQueries _legacyQueries;
+
     private final ResourcesExt _resourcesExt;
-    private final PagesExt _pagesExt;
     private final FoldersExt _foldersExt;
-    private final Users _userCommands;
-    private final String _linkPrefix;
 
     private final boolean _migrateHomepage;
     private final boolean _migrateIsMajorEdit;
@@ -74,12 +61,12 @@ public class Migrations {
 
     private final String _userName;
 
+    private final List<String> _ignoreList;
+
     private final FileMigrator _fm;
-    private final UserMigration _um;
     private final TemplateMigration _tm;
 
-    private final Properties _paragraphTypes =
-        Resources.readIntoProps("paragraph-types.properties");
+
 
 
     /**
@@ -98,27 +85,32 @@ public class Migrations {
      * @param templates Templates API implementation.
      */
     public Migrations(final LegacyDBQueries legacyQueries,
-                      final String linkPrefix,
                       final ResourcesExt resourcesExt,
                       final PagesExt pagesExt,
                       final FoldersExt foldersExt,
                       final Users userCommands,
                       final FileUploader fu,
                       final Templates templates,
-                      final boolean migrateHomepage,
-                      final boolean migrateIsMajorEdit,
-                      final boolean migrateVersions,
-                      final String userName) {
+                      final Options options
+                      ) {
         _legacyQueries = legacyQueries;
         _resourcesExt = resourcesExt;
         _pagesExt = pagesExt;
         _foldersExt = foldersExt;
         _userCommands = userCommands;
-        _linkPrefix = linkPrefix;
-        _migrateHomepage = migrateHomepage;
-        _migrateIsMajorEdit = migrateIsMajorEdit;
-        _migrateVersions = migrateVersions;
-        _userName = userName;
+        _linkPrefix = options.getApp()+"/";
+        _migrateHomepage = options.isMigrateHomepage();
+        _migrateIsMajorEdit = options.isMigrateIsMajorEdit();
+        _migrateVersions = options.isMigrateVersions();
+        _userName = options.getUsername();
+        _ignoreList = new ArrayList<String>();
+
+        final String ignore = options.getIgnorePaths();
+        if (ignore != null && !ignore.trim().isEmpty()) {
+            for (final String item : ignore.split(";")) {
+                _ignoreList.add(item);
+            }
+        }
 
         try {
             _contentRoot = _resourcesExt.resourceForPath("/content");
@@ -217,6 +209,11 @@ public class Migrations {
                 log.warn("Ignoring resource with missing name: "+r.contentId());
                 continue;
             }
+            if (_ignoreList.contains(""+r.contentId())) {
+                log.warn("Ignoring resource as requested: "+r.contentId()
+                    + " "+r.name());
+                continue;
+            }
 
             if (r.type().equals("FOLDER")) {
                 migrateFolder(parentFolderId, r);
@@ -234,7 +231,11 @@ public class Migrations {
 
         try {
             final LogEntryBean le = logEntryForVersion(
-                r.contentId(), r.legacyVersion(), "CREATED FOLDER");
+                r.contentId(),
+                r.legacyVersion(),
+                "CREATED FOLDER",
+                _userName,
+                log);
 
             final ResourceSummary rs = _foldersExt.createFolder(
                     parentFolderId,
@@ -267,7 +268,7 @@ public class Migrations {
     }
 
 
-    private String logMigrationError(String errorText, final ResourceBean r, final Exception e) {
+    private String logMigrationError(final String errorText, final ResourceBean r, final Exception e) {
 
         return errorText + r.contentId()+ ", " + r.cleanTitle() + ": "+e.getMessage();
     }
@@ -285,7 +286,10 @@ public class Migrations {
             while (le == null) {
                 try {
                     le = logEntryForVersion(
-                        resource.contentId(), createVersion, "CREATED PAGE");
+                        resource.contentId(),
+                        createVersion, "CREATED PAGE",
+                        _userName,
+                        log);
                 } catch (final MigrationException e) {
                     log.warn("Skipped version "+createVersion+" of page "
                         +resource.contentId());
@@ -296,15 +300,20 @@ public class Migrations {
                 }
             }
 
-            PageDelta delta = assemblePage(resource, createVersion.intValue());
+            PageDelta delta = assemblePage(resource, createVersion.intValue(), log);
             final ResourceSummary rs =
-                createPage(parentFolderId, resource, createVersion, le, delta);
+                createPage(parentFolderId, resource, createVersion, le, delta, log);
 
             // Apply all updates
             for (final Integer version : paragraphVersions) {
                 try {
-                    le = logEntryForVersion(resource.contentId(), version, "UPDATE");
-                    delta = assemblePage(resource, version);
+                    le = logEntryForVersion(
+                        resource.contentId(),
+                        version,
+                        "UPDATE",
+                        _userName,
+                        log);
+                    delta = assemblePage(resource, version, log);
                     updatePage(resource, rs, version, le, delta);
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
@@ -328,7 +337,7 @@ public class Migrations {
                     rs.setTags(paragraph.text());
                 }
             }
-            
+
             setMetadata(resource, rs, le);
             setResourceRoles(resource, rs, le);
             _resourcesExt.unlock(
@@ -421,51 +430,6 @@ public class Migrations {
     }
 
 
-    private ResourceSummary createPage(final UUID parentFolderId,
-                                       final ResourceBean r,
-                                       final Integer version,
-                                       final LogEntryBean le,
-                                       final PageDelta delta)
-                                                 throws RestException {
-
-        final String pageTitle = r.cleanTitle();
-
-        ResourceSummary rs;
-        try {
-            rs = _pagesExt.createPage(
-                parentFolderId,
-                delta,
-                r.name(),
-                false,
-                null,
-                pageTitle,
-                le.getUser().getId(),
-                le.getHappenedOn(),
-                null,
-                true);
-        } catch (final RestException e) {
-            if (FailureCode.EXISTS ==e.getCode()) {
-                rs = _pagesExt.createPage(
-                    parentFolderId,
-                    delta,
-                    r.name()+"1",
-                    false,
-                    null,
-                    pageTitle,
-                    le.getUser().getId(),
-                    le.getHappenedOn(),
-                    null,
-                    true);
-                log.warn("Renamed page '"+r.name()+"' to '"+r.name()+"1'.");
-            } else {
-                throw e;
-            }
-        }
-        log.debug("Created page: "+r.contentId()+" v."+version);
-        return rs;
-    }
-
-
     private void publish(final ResourceBean r,
                          final ResourceSummary rs,
                          final LogEntryBean le) throws RestException {
@@ -482,7 +446,7 @@ public class Migrations {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
-        setStyleSheet(r, metadata);
+//        setStyleSheet(r, metadata);
         setFlagged(r, metadata);
         metadata.put("legacyId", ""+r.contentId());
         if (r.useInIndex() != null) {
@@ -530,45 +494,9 @@ public class Migrations {
         }
     }
 
-    private PageDelta assemblePage(final ResourceBean r,
-                                   final int version) {
-        final Set<Paragraph> paragraphDeltas =
-            new HashSet<Paragraph>();
-        final Map<String, StringBuffer> paragraphs =
-            assembleParagraphs(r.contentId(), version);
-        for (final Map.Entry<String, StringBuffer> para
-                : paragraphs.entrySet()) {
-
-            final String name = para.getKey();
-            final ParagraphType type = getParagraphType(name);
-            final String value = para.getValue().toString();
-
-            switch (type) {
-                case TEXT:
-                    paragraphDeltas.add(
-                        Paragraph.fromText(name, value));
-                    break;
-
-                case NUMBER:
-                    paragraphDeltas.add(
-                        Paragraph.fromNumber(name, new BigDecimal(value)));
-                    break;
-
-                default:
-                    throw new CCCException("Unsupported paragraph type: "+type);
-            }
-        }
-
-        final PageDelta delta = new PageDelta(paragraphDeltas);
-
-        return delta;
-    }
 
 
-    private ParagraphType getParagraphType(final String paragraphName) {
-        final String pType = _paragraphTypes.getProperty(paragraphName, "TEXT");
-        return ParagraphType.valueOf(pType);
-    }
+
 
 
     private void setTemplateForResource(final ResourceBean r,
@@ -592,65 +520,7 @@ public class Migrations {
 
 
 
-    private Map<String, StringBuffer> assembleParagraphs(final int pageId,
-                                                         final int version) {
-        log.debug("Assembling paragraphs for "+pageId+" v."+version);
-
-        final Map<String, StringBuffer> map =
-            new HashMap<String, StringBuffer>();
-        final List<ParagraphBean> paragraphs =
-            _legacyQueries.selectParagraphs(pageId, version);
-
-        for (final ParagraphBean p : paragraphs) {
-            if (p.text() == null) { // ignore empty/null texts
-                log.debug("Ignoring empty part for paragraph "+p.key());
-
-            } else if (map.containsKey(p.key())) { // merge
-                final StringBuffer sb = map.get(p.key());
-                map.put(p.key(), sb.append(p.text()));
-                log.debug("Appended to paragraph "+p.key());
-
-            } else { // new item
-                map.put(p.key(), new StringBuffer(p.text()));
-                log.debug("Created paragraph "+p.key());
-            }
-        }
-        log.debug("Assembly done.");
-
-        new LinkFixer(_linkPrefix).extractURLs(map);
-        new WordCharFixer().warn(map);
-
-        return map;
-    }
 
 
-    @SuppressWarnings("unchecked")
-    private LogEntryBean logEntryForVersion(final int id,
-                                            final int version,
-                                            final String action) {
-        final LogEntryBean le =
-            _legacyQueries.selectUserFromLog(id, version, action);
 
-        if (null==le && version == 0) {
-            final LogEntryBean fe = new LogEntryBean(0, new Date());
-            final List<UserDto> users = new ArrayList(
-                _userCommands.listUsersWithUsername(new Username(_userName)));
-            fe.setUser(users.get(0));
-            return fe;
-        } else if (null == le) {
-            throw new MigrationException(
-                "Log entry missing: "+id+" v."+version+", action: "+action);
-        }
-
-        log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
-
-        final UserDto user =_um.getUser(le.getActor());
-        le.setUser(user);
-
-        if (null==user) {
-            throw new MigrationException("User missing: "+le.getActor());
-        }
-
-        return le;
-    }
 }

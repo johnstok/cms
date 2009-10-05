@@ -377,7 +377,8 @@ abstract class AbstractEJB {
                 user.email().getText(),
                 user.id(),
                 user.username(),
-                user.roles());
+                user.roles(),
+                user.metadata());
     }
 
 
