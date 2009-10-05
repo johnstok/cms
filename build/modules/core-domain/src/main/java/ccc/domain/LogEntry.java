@@ -35,7 +35,7 @@ public class LogEntry extends Entity {
     private Date         _happenedOn;
     private UUID         _subjectId;
     private String       _detail;
-    private boolean 	 _isSystem;
+    private boolean      _isSystem;
 
     /** Constructor: for persistence only. */
     protected LogEntry() { super(); }
@@ -91,10 +91,10 @@ public class LogEntry extends Entity {
         _happenedOn = new Date(happenedOn.getTime());
         _subjectId = subjectId;
         _detail = detail;
-        _isSystem = true;
+        _isSystem = false;
     }
 
-    
+
 
     /**
      * Accessor.
@@ -163,5 +163,15 @@ public class LogEntry extends Entity {
      */
     public String detail() {
         return _detail;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns true if this is a system log entry, false otherwise.
+     */
+    public boolean isSystem() {
+        return _isSystem;
     }
 }
