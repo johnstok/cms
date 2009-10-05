@@ -47,6 +47,8 @@ public class CreateWorkingCopyFromHistoricalVersionAction
         final GwtJson json = new GwtJson();
         json.set(
             JsonKeys.REVISION, Long.valueOf(_dialog.selectedItem().getIndex()));
+        json.set(JsonKeys.CACHE_DURATION, (String) null);
+        json.set(JsonKeys.TEMPLATE_ID, (String) null);
         return json.toString();
     }
 
