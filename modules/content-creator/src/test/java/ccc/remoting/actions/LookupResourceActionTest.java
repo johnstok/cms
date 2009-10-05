@@ -40,7 +40,7 @@ public class LookupResourceActionTest
 
         // ARRANGE
         final LookupResourceAction rr =
-            new LookupResourceAction(null, "root");
+            new LookupResourceAction("root");
         final String invalidPath = "$%^$%/^%$^";
         expect(_request.getPathInfo()).andReturn(invalidPath);
         expect(_request.getContextPath()).andReturn("");
@@ -66,7 +66,7 @@ public class LookupResourceActionTest
 
         // ARRANGE
         final LookupResourceAction rr =
-            new LookupResourceAction(null, "root");
+            new LookupResourceAction("root");
         expect(_request.getPathInfo()).andReturn("/foo/");
         expect(_request.getContextPath()).andReturn("");
         replayAll();
@@ -87,7 +87,7 @@ public class LookupResourceActionTest
 
         // ARRANGE
         final LookupResourceAction rr =
-            new LookupResourceAction(null, "root");
+            new LookupResourceAction("root");
         expect(_request.getPathInfo()).andReturn("/");
         expect(_request.getContextPath()).andReturn("");
         replayAll();
@@ -108,7 +108,7 @@ public class LookupResourceActionTest
 
         // ARRANGE
         final LookupResourceAction rr =
-            new LookupResourceAction(null, "root");
+            new LookupResourceAction("root");
         expect(_request.getPathInfo()).andReturn(null);
         expect(_request.getContextPath()).andReturn("");
         replayAll();
@@ -131,7 +131,7 @@ public class LookupResourceActionTest
 
         // ARRANGE
         final LookupResourceAction rr =
-            new LookupResourceAction(null, "root");
+            new LookupResourceAction("root");
 
         expect(_rdao.lookup("root", new ResourcePath("/foo")))
             .andThrow(new NotFoundException());

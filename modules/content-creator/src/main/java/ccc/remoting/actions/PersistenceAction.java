@@ -27,21 +27,20 @@ import javax.servlet.http.HttpServletResponse;
  * @author Civic Computing Ltd.
  */
 public class PersistenceAction
-    implements
-        ServletAction {
+    extends
+        SerialAction {
 
     private final EntityManagerFactory _emf;
-    private final ServletAction _delegate;
 
     /**
      * Constructor.
      *
-     * @param delegate The next action in the chain.
      * @param emf The entity manager factory used to create entity mangers.
+     * @param actions The actions to perform.
      */
-    public PersistenceAction(final ServletAction delegate,
-                             final EntityManagerFactory emf) {
-        _delegate = delegate;
+    public PersistenceAction(final EntityManagerFactory emf,
+                             final ServletAction... actions) {
+        super(actions);
         _emf = emf;
     }
 
@@ -58,7 +57,7 @@ public class PersistenceAction
                 SessionKeys.EM_KEY,
                 em);
 
-            _delegate.execute(req, resp);
+            super.execute(req, resp);
 
         } finally {
             em.close();
