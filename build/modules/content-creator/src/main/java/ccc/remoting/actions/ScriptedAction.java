@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.persistence.DataRepository;
-import ccc.persistence.streams.ReadContentToStringAction;
+import ccc.persistence.streams.ReadToStringAction;
 import ccc.remoting.RequestScopeServiceLocator;
 import ccc.rendering.UnsupportMethodException;
 
@@ -53,7 +53,7 @@ public class ScriptedAction
 
             if (f.isText() && f.isExecutable()) {
                 final String fileContent =
-                    ReadContentToStringAction.read(data, f);
+                    ReadToStringAction.read(data, f);
 
                 invokeScript(req, resp, fileContent);
             } else { throw new UnsupportMethodException("POST"); }

@@ -46,7 +46,7 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepository;
 import ccc.persistence.UserRepositoryImpl;
-import ccc.persistence.streams.ReadContentToStringAction;
+import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
@@ -412,7 +412,7 @@ abstract class AbstractEJB {
             new TextFileDelta(
                 file.id(),
                 (!file.isText())
-                    ? null : ReadContentToStringAction.read(_dm, file),
+                    ? null : ReadToStringAction.read(_dm, file),
                 file.mimeType(),
                 file.currentRevision().isMajorChange(),
                 file.currentRevision().getComment());

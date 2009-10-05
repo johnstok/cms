@@ -20,7 +20,7 @@ import ccc.domain.Resource;
 import ccc.entities.IResource;
 import ccc.persistence.DataRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.streams.ReadContentToStringAction;
+import ccc.persistence.streams.ReadToStringAction;
 import ccc.types.ResourcePath;
 
 
@@ -83,7 +83,7 @@ public final class StatefulReaderImpl
             if (f.isText()) {
                 _data.retrieve(
                     f.data(),
-                    new ReadContentToStringAction(sb, charset)
+                    new ReadToStringAction(sb, charset)
                 );
             }
         }
