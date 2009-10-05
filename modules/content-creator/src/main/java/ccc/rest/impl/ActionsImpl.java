@@ -71,8 +71,8 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void executeAction() {
-        getActions().executeAction();
+    public void executeAll() {
+        getActions().executeAll();
     }
 
 
