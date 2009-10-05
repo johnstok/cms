@@ -20,6 +20,7 @@ import ccc.domain.Resource;
 import ccc.entities.IResource;
 import ccc.persistence.DataRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.persistence.streams.ReadContentToStringAction;
 import ccc.types.ResourcePath;
 
 

@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.rendering;
+package ccc.persistence.streams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
