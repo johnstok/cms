@@ -13,7 +13,6 @@ package ccc.migration;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +51,6 @@ public class Migrations extends BaseMigrations {
     private Set<Integer>    _menuItems;
 
 
-    private final ResourcesExt _resourcesExt;
     private final FoldersExt _foldersExt;
 
     private final boolean _migrateHomepage;
@@ -64,9 +62,6 @@ public class Migrations extends BaseMigrations {
     private final List<String> _ignoreList;
 
     private final FileMigrator _fm;
-    private final TemplateMigration _tm;
-
-
 
 
     /**
@@ -251,11 +246,11 @@ public class Migrations extends BaseMigrations {
                     rs.getId().toString()),
                     le.getUser().getId(),
                     le.getHappenedOn());
-            setTemplateForResource(r, rs, le);
+            setTemplateForResource(r, rs, le, _templateFolder);
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
             setMetadata(r, rs, le);
-            setResourceRoles(r, rs, le);
+            setResourceRoles(r, rs, le, log);
             _resourcesExt.unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
@@ -326,7 +321,7 @@ public class Migrations extends BaseMigrations {
                     rs.getId().toString()),
                     le.getUser().getId(),
                     le.getHappenedOn());
-            setTemplateForResource(resource, rs, le);
+            setTemplateForResource(resource, rs, le, _templateFolder);
             publish(resource, rs, le);
             showInMainMenu(resource, rs, le);
 
@@ -339,7 +334,7 @@ public class Migrations extends BaseMigrations {
             }
 
             setMetadata(resource, rs, le);
-            setResourceRoles(resource, rs, le);
+            setResourceRoles(resource, rs, le, log);
             _resourcesExt.unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
@@ -428,99 +423,5 @@ public class Migrations extends BaseMigrations {
 
         log.debug("Updated page: "+r.contentId()+" v."+version);
     }
-
-
-    private void publish(final ResourceBean r,
-                         final ResourceSummary rs,
-                         final LogEntryBean le) throws RestException {
-        if (r.isPublished()) {
-            _resourcesExt.publish(
-                rs.getId(), le.getUser().getId(), le.getHappenedOn());
-        }
-    }
-
-    private void setMetadata(final ResourceBean r,
-                             final ResourceSummary rs,
-                             final LogEntryBean le)
-                                                 throws RestException {
-
-        final Map<String, String> metadata =
-            new HashMap<String, String>();
-//        setStyleSheet(r, metadata);
-        setFlagged(r, metadata);
-        metadata.put("legacyId", ""+r.contentId());
-        if (r.useInIndex() != null) {
-            metadata.put("useInIndex", ""+r.useInIndex());
-        }
-
-        _resourcesExt.updateMetadata(
-            rs.getId(),
-            rs.getTitle(),
-            rs.getDescription(),
-            rs.getTags(),
-            metadata,
-            le.getUser().getId(),
-            le.getHappenedOn());
-    }
-
-    private void setResourceRoles(final ResourceBean r,
-                                  final ResourceSummary rs,
-                                  final LogEntryBean le)
-                                                 throws RestException {
-        if (r.isSecure()) {
-            log.info("Resource has security constraints " +r.contentId() + ", " + r.cleanTitle());
-            _resourcesExt.changeRoles(
-                rs.getId(),
-                _legacyQueries.selectRolesForResource(r.contentId()),
-                le.getUser().getId(),
-                le.getHappenedOn());
-        }
-    }
-
-    private void setStyleSheet(final ResourceBean r,
-                               final Map<String, String> properties) {
-        final String styleSheet =
-            _legacyQueries.selectStyleSheet(r.contentId());
-        if (styleSheet != null) {
-            properties.put("bodyId", styleSheet);
-        }
-    }
-
-    private void setFlagged(final ResourceBean r,
-                            final Map<String, String> properties) {
-        final String flagged = _legacyQueries.selectFlagged(r.contentId());
-        if (flagged != null && flagged.equals("Y")) {
-            properties.put("flagged", Boolean.TRUE.toString());
-        }
-    }
-
-
-
-
-
-
-    private void setTemplateForResource(final ResourceBean r,
-                                        final ResourceSummary rs,
-                                        final LogEntryBean le)
-                                                 throws RestException {
-        final String templateName = r.displayTemplate();
-        final String templateDescription = r.templateDescription();
-
-        if (null == templateName) { // Resource has no template
-            return;
-        }
-
-        final UUID templateId = _tm.getTemplate(
-            templateName,
-            templateDescription,
-            _templateFolder);
-        _resourcesExt.updateResourceTemplate(
-            rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
-    }
-
-
-
-
-
 
 }
