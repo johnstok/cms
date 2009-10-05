@@ -77,7 +77,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    public void executeAction() {
+    public void executeAll() {
         LOG.debug("Executing scheduled actions.");
 
         final List<Action> actions = getActions().latest(new Date());
@@ -85,12 +85,8 @@ public class ActionsEJB
 
         for (final Action action : actions) {
             try {
-                _resourcesExt.executeAction(// Executes in nested txn.
-                    action.subject().id(),
-                    action.actor().id(),
-                    action.type(),
-                    action.parameters());
-                action.complete();
+                _resourcesExt
+                    .executeAction(action.id()); // Executes in nested txn.
                 LOG.info("Completed action: "+action.id());
 
             } catch (final RestException e) {
@@ -219,7 +215,7 @@ public class ActionsEJB
      */
     @Timeout
     public void run(@SuppressWarnings("unused") final Timer timer) {
-        executeAction();
+        executeAll();
     }
 
 

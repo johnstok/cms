@@ -24,8 +24,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.action.ActionExecutor;
-import ccc.action.ActionExecutorImpl;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
@@ -42,6 +40,7 @@ import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
+import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.rest.Resources;
@@ -52,7 +51,6 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.serialization.Json;
-import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ResourcePath;
 
@@ -72,20 +70,88 @@ public class ResourcesEJB
     implements
         ResourcesExt {
 
-    private final ActionExecutor _executor = new ActionExecutorImpl(this);
-
 
     /** {@inheritDoc} */
     @Override
     @TransactionAttribute(REQUIRES_NEW)
     @RolesAllowed({CONTENT_CREATOR})
-    public void executeAction(final UUID subjectId,
-                              final UUID actorId,
-                              final CommandType command,
-                              final Map<String, String> params)
+    public void executeAction(final UUID actionId)
     throws RestException {
-        _executor.executeAction(subjectId, actorId, command, params);
+        try {
+            final Action a = getActions().find(actionId);
+
+            if (new Date().before(a.executeAfter())) {
+                return; // Too early.
+            }
+
+            executeAction(a);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
+
+    //--
+    private void executeAction(final Action action) throws RestException {
+        switch (action.type()) {
+
+            case RESOURCE_UNPUBLISH:
+                executeUnpublish(action);
+                break;
+
+            case RESOURCE_PUBLISH:
+                executePublish(action);
+                break;
+
+            case PAGE_UPDATE:
+                executeUpdate(action);
+                break;
+
+            case RESOURCE_DELETE:
+                executeDelete(action);
+                break;
+
+            default:
+                throw new UnsupportedOperationException(
+                    "Unsupported action type: "+action.type());
+
+        }
+
+        action.complete();
+    }
+
+
+    private void executeDelete(final Action action) throws RestException {
+        delete(
+            action.subject().id(),
+            action.actor().id(),
+            new Date());
+    }
+
+
+    private void executeUpdate(final Action action) throws RestException {
+        applyWorkingCopy(
+            action.subject().id(),
+            action.actor().id(),
+            new Date(),
+            Boolean.valueOf(action.getParams().get("MAJOR")).booleanValue(),
+            action.getParams().get("COMMENT"));
+    }
+
+
+    private void executePublish(final Action action) throws RestException {
+        publish(action.subject().id(),
+            action.actor().id(), new Date());
+    }
+
+
+    private void executeUnpublish(final Action action) throws RestException {
+        unpublish(
+            action.subject().id(),
+            action.actor().id(),
+            new Date());
+    }
+    //--
 
 
     /** {@inheritDoc} */

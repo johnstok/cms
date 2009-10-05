@@ -101,11 +101,34 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        getActions().executeAction();
+        getActions().executeAll();
 
         // ASSERT
         final ActionSummary completed = getActions().findAction(a.getId());
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
+    }
+
+    /**
+     * Test.
+     * @throws RestException If the test fails.
+     */
+    public void testFailingAction() throws RestException {
+        // ARRANGE
+        final Date epoch =  new Date(0);
+        final ResourceSummary rs = tempFolder();
+        final ActionSummary a = getActions().createAction(
+            new ActionDto(
+                rs.getId(),
+                CommandType.RESOURCE_PUBLISH,
+                epoch,
+                new HashMap<String, String>()));
+
+        // ACT
+        getActions().executeAll();
+
+        // ASSERT
+        final ActionSummary failed = getActions().findAction(a.getId());
+        assertEquals(ActionStatus.FAILED, failed.getStatus());
     }
 
     /**
@@ -126,7 +149,7 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        getActions().executeAction();
+        getActions().executeAll();
 
         // ASSERT
         final ActionSummary completed = getActions().findAction(a.getId());

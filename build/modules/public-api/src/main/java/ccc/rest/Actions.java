@@ -83,10 +83,10 @@ public interface Actions {
 
 
     /**
-     * Execute the next available action.
+     * Executes all available actions whose 'execute after' date is in the past.
      */
-    @POST @Path("/actions/next")
-    void executeAction();
+    @POST @Path("/actions/all")
+    void executeAll();
 
 
     /**
