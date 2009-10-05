@@ -28,7 +28,7 @@ import ccc.snapshots.FileSnapshot;
  *
  * @author Civic Computing Ltd.
  */
-public final class ReadContentToStringAction
+public final class ReadToStringAction
     implements
         StreamAction {
 
@@ -41,7 +41,7 @@ public final class ReadContentToStringAction
      * @param sb The string builder to read into.
      * @param charset The character set to use.
      */
-    public ReadContentToStringAction(final StringBuilder sb,
+    public ReadToStringAction(final StringBuilder sb,
                                      final String charset) {
         _sb = sb;
         _charset = charset;
@@ -70,7 +70,7 @@ public final class ReadContentToStringAction
     public static String read(final DataRepository dm, final File file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
-            file.data(), new ReadContentToStringAction(sb, file.charset()));
+            file.data(), new ReadToStringAction(sb, file.charset()));
         return sb.toString();
     }
 
@@ -88,7 +88,7 @@ public final class ReadContentToStringAction
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
             (Data) file.getData(),
-            new ReadContentToStringAction(sb, file.getCharset()));
+            new ReadToStringAction(sb, file.getCharset()));
         return sb.toString();
     }
 }
