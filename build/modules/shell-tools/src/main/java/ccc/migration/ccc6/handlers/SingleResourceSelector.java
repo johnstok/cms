@@ -2,6 +2,7 @@ package ccc.migration.ccc6.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import ccc.migration.MigrationException;
 import ccc.migration.ResourceBean;
@@ -31,6 +32,7 @@ public final class SingleResourceSelector
             final boolean isSecure = (null!=rs.getString("permission_name"));
             final String useInIndex = rs.getString("USE_IN_INDEX");
             final String description = rs.getString("DESCRIPTION");
+            final Date expiryDate = rs.getDate("EXPIRY_DATE");
 
             return new ResourceBean(contentId,
                                             type,
@@ -41,7 +43,8 @@ public final class SingleResourceSelector
                                             isSecure,
                                             title,
                                             useInIndex,
-                                            description);
+                                            description,
+                                            expiryDate);
         }
         if (rs.next()) {
             throw new MigrationException("Too many found");
@@ -54,7 +57,8 @@ public final class SingleResourceSelector
     public String getSql() {
         return
             "SELECT content_id, content_type, name, index_title, page, "
-            + "status,version_id, permission_name, use_in_index, description "
+            + "status,version_id, permission_name, use_in_index, description, "
+            + " embargo_date, expiry_date "
             + "FROM c3_content, c3_display_templates "
             + "WHERE c3_content.content_id = ? "
             + "AND version_id = 0 "

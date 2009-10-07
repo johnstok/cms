@@ -66,11 +66,12 @@ public final class MigrateMhtsFiles extends CccApp {
             services.getPages(),
             services.getFolders(),
             services.getUsers(),
+            services.getTemplates(),
             new FileUploader(
                 options.getCcURL(),
                 options.getUsername(),
                 options.getPassword()),
-                options);
+            options);
 
 
         migration.migrate(282, "/content/Members_Area"); // FIXME
@@ -204,6 +205,7 @@ public final class MigrateMhtsFiles extends CccApp {
         public String getProviderURL() {
             return _providerURL;
         }
+
 
         /**
          * Accessor.

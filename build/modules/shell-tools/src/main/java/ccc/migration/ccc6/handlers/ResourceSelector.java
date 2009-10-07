@@ -3,6 +3,7 @@ package ccc.migration.ccc6.handlers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ccc.migration.ResourceBean;
@@ -34,6 +35,7 @@ public final class ResourceSelector
             final boolean isSecure = (null!=rs.getString("permission_name"));
             final String useInIndex = rs.getString("USE_IN_INDEX");
             final String description = rs.getString("DESCRIPTION");
+            final Date expiryDate = rs.getDate("EXPIRY_DATE");
 
             resultList.add(new ResourceBean(contentId,
                                             type,
@@ -44,7 +46,8 @@ public final class ResourceSelector
                                             isSecure,
                                             title,
                                             useInIndex,
-                                            description));
+                                            description,
+                                            expiryDate));
         }
         return resultList;
     }
@@ -54,7 +57,8 @@ public final class ResourceSelector
     public String getSql() {
         return
             "SELECT content_id, content_type, name, index_title, page, "
-            + " status,version_id, permission_name, use_in_index, description "
+            + " status,version_id, permission_name, use_in_index, description, "
+            + " embargo_date, expiry_date "
             + "FROM c3_content, c3_display_templates "
             + "WHERE c3_content.parent_id = ? "
             + "AND version_id = 0 "
