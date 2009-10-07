@@ -11,8 +11,7 @@
  */
 package ccc.migration;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,6 +22,7 @@ import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
+import ccc.rest.dto.TemplateSummary;
 import ccc.types.MimeType;
 
 
@@ -36,9 +36,6 @@ public class TemplateMigration {
 
     private final LegacyDBQueries _legacyQueries;
     private final Templates       _templateApi;
-
-    private final Map<String, ResourceSummary> _templates =
-        new HashMap<String, ResourceSummary>();
 
 
     /**
@@ -74,16 +71,14 @@ public class TemplateMigration {
                 MimeType.HTML);
 
         try {
-            final ResourceSummary ts =
-                _templateApi.createTemplate(
-                    new TemplateDto(
-                        templateFolder.getId(),
-                        t,
-                        templateName,
-                        templateDescription,
-                        templateName));
+            _templateApi.createTemplate(
+                new TemplateDto(
+                    templateFolder.getId(),
+                    t,
+                    templateName,
+                    templateDescription,
+                    templateName));
 
-            _templates.put(templateName, ts);
         } catch (final RestException e) {
             log.error("Failed to create template: "+templateName, e);
         }
@@ -101,10 +96,20 @@ public class TemplateMigration {
     public UUID getTemplate(final String templateName,
                           final String templateDescription,
                           final ResourceSummary templateFolder) {
-        if (!_templates.containsKey(templateName)) { // Not yet migrated
+
+        final Set<TemplateSummary> templates =
+            new HashSet<TemplateSummary>(_templateApi.templates());
+
+        TemplateSummary template = null;
+        for (final TemplateSummary ts : templates) {
+            if (ts.getName().equals(templateName)) {
+                template = ts;
+            }
+        }
+
+        if (null==template) { // Not yet migrated or does not exists
             createTemplate(templateName, templateDescription, templateFolder);
         }
-        final ResourceSummary template = _templates.get(templateName);
         return (null==template) ? null : template.getId();
     }
 }

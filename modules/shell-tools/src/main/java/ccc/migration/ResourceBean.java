@@ -1,5 +1,7 @@
 package ccc.migration;
 
+import java.util.Date;
+
 import ccc.commons.WordCharFixer;
 
 
@@ -20,6 +22,7 @@ public class ResourceBean {
     private final String _title;
     private final String _useInIndex;
     private final String _templateDescription;
+    private Date _expiryDate;
 
     /**
      * Constructor.
@@ -44,7 +47,8 @@ public class ResourceBean {
                         final boolean isSecure,
                         final String title,
                         final String useInIndex,
-                        final String templateDescription) {
+                        final String templateDescription,
+                        final Date expiryDate) {
         _contentId = contentId;
         _displayTemplate = displayTemplate;
         _name = name;
@@ -55,6 +59,7 @@ public class ResourceBean {
         _title = title;
         _useInIndex = useInIndex;
         _templateDescription = templateDescription;
+        _expiryDate = expiryDate;
     }
 
 
@@ -159,5 +164,14 @@ public class ResourceBean {
      */
     public String templateDescription() {
         return _templateDescription;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The expiry date.
+     */
+    public Date expiryDate() {
+        return _expiryDate;
     }
 }

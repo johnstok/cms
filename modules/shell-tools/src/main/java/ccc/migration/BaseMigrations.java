@@ -131,44 +131,6 @@ public abstract class BaseMigrations {
         return delta;
     }
 
-    private ParagraphType getParagraphType(final String paragraphName) {
-        final String pType = _paragraphTypes.getProperty(paragraphName, "TEXT");
-        return ParagraphType.valueOf(pType);
-    }
-
-    private Map<String, StringBuffer> assembleParagraphs(final int pageId,
-        final int version, final Logger log) {
-        log.debug("Assembling paragraphs for "+pageId+" v."+version);
-
-        final Map<String, StringBuffer> map =
-            new HashMap<String, StringBuffer>();
-        final List<ParagraphBean> paragraphs =
-            _legacyQueries.selectParagraphs(pageId, version);
-
-        for (final ParagraphBean p : paragraphs) {
-            if (p.text() == null) { // ignore empty/null texts
-                log.debug("Ignoring empty part for paragraph "+p.key());
-
-            } else if (map.containsKey(p.key())) { // merge
-                final StringBuffer sb = map.get(p.key());
-                map.put(p.key(), sb.append(p.text()));
-                log.debug("Appended to paragraph "+p.key());
-
-            } else { // new item
-                map.put(p.key(), new StringBuffer(p.text()));
-                log.debug("Created paragraph "+p.key());
-            }
-        }
-        log.debug("Assembly done.");
-
-        new LinkFixer(_linkPrefix).extractURLs(map);
-        new WordCharFixer().warn(map);
-
-        return map;
-    }
-
-
-
 
     protected ResourceSummary createPage(final UUID parentFolderId,
                                        final ResourceBean r,
@@ -215,6 +177,7 @@ public abstract class BaseMigrations {
         return rs;
     }
 
+
     protected void setResourceRoles(final ResourceBean r,
                                   final ResourceSummary rs,
                                   final LogEntryBean le,
@@ -229,7 +192,6 @@ public abstract class BaseMigrations {
                 le.getHappenedOn());
         }
     }
-
 
 
     protected void setTemplateForResource(final ResourceBean r,
@@ -252,6 +214,7 @@ public abstract class BaseMigrations {
             rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
     }
 
+
     protected void publish(final ResourceBean r,
                          final ResourceSummary rs,
                          final LogEntryBean le) throws RestException {
@@ -260,6 +223,7 @@ public abstract class BaseMigrations {
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
         }
     }
+
 
     protected void setMetadata(final ResourceBean r,
                              final ResourceSummary rs,
@@ -285,6 +249,41 @@ public abstract class BaseMigrations {
             le.getHappenedOn());
     }
 
+    private ParagraphType getParagraphType(final String paragraphName) {
+        final String pType = _paragraphTypes.getProperty(paragraphName, "TEXT");
+        return ParagraphType.valueOf(pType);
+    }
+
+    private Map<String, StringBuffer> assembleParagraphs(final int pageId,
+        final int version, final Logger log) {
+        log.debug("Assembling paragraphs for "+pageId+" v."+version);
+
+        final Map<String, StringBuffer> map =
+            new HashMap<String, StringBuffer>();
+        final List<ParagraphBean> paragraphs =
+            _legacyQueries.selectParagraphs(pageId, version);
+
+        for (final ParagraphBean p : paragraphs) {
+            if (p.text() == null) { // ignore empty/null texts
+                log.debug("Ignoring empty part for paragraph "+p.key());
+
+            } else if (map.containsKey(p.key())) { // merge
+                final StringBuffer sb = map.get(p.key());
+                map.put(p.key(), sb.append(p.text()));
+                log.debug("Appended to paragraph "+p.key());
+
+            } else { // new item
+                map.put(p.key(), new StringBuffer(p.text()));
+                log.debug("Created paragraph "+p.key());
+            }
+        }
+        log.debug("Assembly done.");
+
+        new LinkFixer(_linkPrefix).extractURLs(map);
+        new WordCharFixer().warn(map);
+
+        return map;
+    }
 
     private void setStyleSheet(final ResourceBean r,
                                final Map<String, String> properties) {

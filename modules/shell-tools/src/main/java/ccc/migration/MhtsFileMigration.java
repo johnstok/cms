@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import ccc.cli.MigrateMhtsFiles.Options;
 import ccc.rest.RestException;
+import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -30,7 +31,7 @@ import ccc.types.Paragraph;
 
 
 /**
- * TODO: Add a description for this type.
+ * MHTS members area specific migration tool.
  *
  * @author Civic Computing Ltd.
  */
@@ -46,6 +47,7 @@ public class MhtsFileMigration extends BaseMigrations {
     private FileUploader _fu;
 
     private String _filePath;
+
 
     /**
      * Constructor.
@@ -63,6 +65,7 @@ public class MhtsFileMigration extends BaseMigrations {
                              final PagesExt pagesExt,
                              final FoldersExt foldersExt,
                              final Users users,
+                             final Templates templates,
                              final FileUploader fileUploader,
                              final Options options) {
         _userCommands = users;
@@ -85,12 +88,14 @@ public class MhtsFileMigration extends BaseMigrations {
                 "Failed to retrieve default folder structure.", e);
         }
 
+        _tm = new TemplateMigration(_legacyQueries, templates);
     }
 
     /**
-     * TODO: Add a description for this method.
-     * @param path
+     * Migrate MHTS members area.
      *
+     * @param legacyParent The content id for the legacy members area.
+     * @param path The path to migrate members area files in CCC7.
      */
     public void migrate(final int legacyParent, final String path) {
         final List<ResourceBean> resources =
@@ -98,13 +103,12 @@ public class MhtsFileMigration extends BaseMigrations {
 
         try {
             final UUID parentFolderId = createFileFolder(legacyParent, path);
-			// TODO publish
 
             for (final ResourceBean r : resources) {
                 final LogEntryBean le = logEntryForVersion(
                     r.contentId(),
                     r.legacyVersion(),
-                    "CREATED FOLDER",
+                    "CREATED PAGE",
                     _username,
                     log);
 
@@ -118,57 +122,78 @@ public class MhtsFileMigration extends BaseMigrations {
                 log.debug("Created folder: "+r.contentId());
 
                 _resourcesExt.lock(
-                    UUID.fromString(
-                        folderRs.getId().toString()),
+                        folderRs.getId(),
                         le.getUser().getId(),
                         le.getHappenedOn());
                 setTemplateForResource(r, folderRs, le, _templateFolder);
                 publish(r, folderRs, le);
-//                showInMainMenu(r, folderRs, le); // TODO ?
+                // showInMainMenu(r, folderRs, le); // TODO ?
                 setMetadata(r, folderRs, le);
                 setResourceRoles(r, folderRs, le, log);
 
-                // migrate pages
-                final ResourceBean pageBean = new ResourceBean(
-                    r.contentId(),
-                    r.type(),
-                    r.name().substring(0, r.name().lastIndexOf(".")),
-                    r.displayTemplate(),
-                    r.isPublished(),
-                    r.legacyVersion(),
-                    r.isSecure(),
-                    r.title(),
-                    r.useInIndex(),
-                    r.templateDescription());
-
-
-                final PageDelta delta = assemblePage(pageBean, 0, log);
-                createPage(folderRs.getId(), pageBean, 0, le, delta, log);
-
-                for (final Paragraph para : delta.getParagraphs()) {
-                    if (para.name().startsWith("Document")) {
-                        final String filename = para.text();
-                        final File file = new File(_filePath+filename);
-
-                        _fu.uploadFile(folderRs.getId(),
-                            filename,
-                            filename,
-                            "",
-                            null,
-                            file,
-                            true);
-                    }
-
-                }
+                migratePage(r, folderRs, le);
 
                 _resourcesExt.unlock(
                     folderRs.getId(), le.getUser().getId(), le.getHappenedOn());
-        }
+            }
 
         } catch (final RestException e) {
             log.error("MHTS file migration failed.", e);
         }
 
+    }
+
+    /**
+     * Migrate the case page and upload its files.
+     *
+     * @param r
+     * @param folderRs
+     * @param le
+     * @throws RestException
+     */
+    private void migratePage(final ResourceBean r,
+                             final ResourceSummary folderRs,
+                             final LogEntryBean le) throws RestException {
+
+        final ResourceBean pageBean = new ResourceBean(
+            r.contentId(),
+            r.type(),
+            r.name().substring(0, r.name().lastIndexOf(".")),
+            r.displayTemplate(),
+            r.isPublished(),
+            r.legacyVersion(),
+            r.isSecure(),
+            r.title(),
+            r.useInIndex(),
+            r.templateDescription(),
+            r.expiryDate());
+
+
+        final PageDelta delta = assemblePage(pageBean, 0, log);
+        final ResourceSummary pageRs =
+            createPage(folderRs.getId(), pageBean, 0, le, delta, log);
+
+        _resourcesExt.lock(pageRs.getId(),
+                le.getUser().getId(),
+                le.getHappenedOn());
+        publish(pageBean, pageRs, le);
+        _resourcesExt.unlock(
+            pageRs.getId(), le.getUser().getId(), le.getHappenedOn());
+
+        for (final Paragraph para : delta.getParagraphs()) {
+            if (para.name().startsWith("Document")) {
+                final String filename = para.text();
+                final File file = new File(_filePath+filename);
+
+                _fu.uploadFile(folderRs.getId(),
+                    filename,
+                    filename,
+                    "",
+                    null,
+                    file,
+                    true);
+            }
+        }
     }
 
     private UUID createFileFolder(final int legacyParent,
@@ -187,17 +212,25 @@ public class MhtsFileMigration extends BaseMigrations {
             _username,
             log);
 
-      final ResourceSummary rs = _foldersExt.createFolder(
+        final ResourceSummary rs = _foldersExt.createFolder(
             parentFolder.getId(),
             legacyFileFolder.name(),
             legacyFileFolder.title(),
             false,
             le.getUser().getId(),
             le.getHappenedOn());
-      log.debug("Created folder: "+legacyFileFolder.contentId());
-      return rs.getId();
+
+        log.debug("Created folder: "+legacyFileFolder.contentId());
+        _resourcesExt.lock(
+            UUID.fromString(
+                rs.getId().toString()),
+                le.getUser().getId(),
+                le.getHappenedOn());
+        setTemplateForResource(legacyFileFolder, rs, le, _templateFolder);
+        publish(legacyFileFolder, rs, le);
+
+        _resourcesExt.unlock(
+            rs.getId(), le.getUser().getId(), le.getHappenedOn());
+        return rs.getId();
     }
-
-
-
 }
