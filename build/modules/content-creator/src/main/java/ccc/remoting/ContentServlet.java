@@ -14,7 +14,6 @@ package ccc.remoting;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -23,17 +22,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.UserTransaction;
 
 import ccc.remoting.actions.CheckSecurityAction;
 import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.LookupResourceAction;
-import ccc.remoting.actions.PersistenceAction;
-import ccc.remoting.actions.ReadOnlyTxAction;
-import ccc.remoting.actions.ReadWriteTxAction;
 import ccc.remoting.actions.ReaderAction;
 import ccc.remoting.actions.RenderResourceAction;
-import ccc.remoting.actions.ScriptedAction;
+import ccc.remoting.actions.SerialAction;
 import ccc.remoting.actions.ServletAction;
 import ccc.remoting.actions.SessionKeys;
 import ccc.rest.Users;
@@ -49,9 +44,6 @@ import ccc.search.SearchEngine;
 public class ContentServlet
     extends
         HttpServlet {
-
-    @Resource                    private transient UserTransaction      _utx;
-    @PersistenceUnit             private transient EntityManagerFactory _emf;
 
     @EJB(name=SearchEngine.NAME) private transient SearchEngine         _search;
     @EJB(name=Users.NAME)        private transient Users                _users;
@@ -90,14 +82,11 @@ public class ContentServlet
 
         final ServletAction action =
             new ErrorHandlingAction(
-                new ReadOnlyTxAction(
-                    new PersistenceAction(
-                        _emf,
+                    new SerialAction(
                         new ReaderAction(),
                         new LookupResourceAction(_rootName),
                         new CheckSecurityAction(_respectVisibility),
                         new RenderResourceAction(_respectVisibility, _search)),
-                    _utx),
                 getServletContext(),
                 "/content/login?tg="
             );
@@ -111,24 +100,7 @@ public class ContentServlet
     protected void doPost(final HttpServletRequest req,
                           final HttpServletResponse resp)
                                           throws ServletException, IOException {
-
-        bindServices(req);
-
-        final ServletAction action =
-            new ErrorHandlingAction(
-                new ReadWriteTxAction(
-                    new PersistenceAction(
-                        _emf,
-                        new ReaderAction(),
-                        new LookupResourceAction(_rootName),
-                        new CheckSecurityAction(true),
-                        new ScriptedAction()),
-                    _utx),
-                getServletContext(),
-                "/content/login?tg="
-            );
-
-        action.execute(req, resp);
+        doGet(req, resp);
     }
 
 

@@ -13,20 +13,15 @@ package ccc.remoting;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.UserTransaction;
 
 import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.FixLinkAction;
-import ccc.remoting.actions.PersistenceAction;
-import ccc.remoting.actions.ReadOnlyTxAction;
 import ccc.remoting.actions.ReaderAction;
+import ccc.remoting.actions.SerialAction;
 import ccc.remoting.actions.ServletAction;
 
 
@@ -43,24 +38,19 @@ public final class BrokenLinkServlet
     extends
         HttpServlet {
 
-    // TODO: How do we re-establish these fields following serialisation?
-    @Resource        private transient UserTransaction      _utx;
-    @PersistenceUnit private transient EntityManagerFactory _emf;
-
 
     /** {@inheritDoc} */
     @Override
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp)
                                           throws ServletException, IOException {
+
+        // FIXME: We need to add txn & jpa filters for this servlet
         final ServletAction action =
             new ErrorHandlingAction(
-                new ReadOnlyTxAction(
-                    new PersistenceAction(
-                        _emf,
+                    new SerialAction(
                         new ReaderAction(),
                         new FixLinkAction()),
-                    _utx),
                 getServletContext(),
                 "/content/login?tg=");
 

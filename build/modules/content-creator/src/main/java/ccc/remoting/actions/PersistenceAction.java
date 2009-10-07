@@ -15,9 +15,13 @@ import java.io.IOException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 
 
@@ -27,40 +31,40 @@ import javax.servlet.http.HttpServletResponse;
  * @author Civic Computing Ltd.
  */
 public class PersistenceAction
-    extends
-        SerialAction {
+    implements
+        Filter {
 
-    private final EntityManagerFactory _emf;
+    @PersistenceUnit private transient EntityManagerFactory _emf;
 
-    /**
-     * Constructor.
-     *
-     * @param emf The entity manager factory used to create entity mangers.
-     * @param actions The actions to perform.
-     */
-    public PersistenceAction(final EntityManagerFactory emf,
-                             final ServletAction... actions) {
-        super(actions);
-        _emf = emf;
-    }
 
     /** {@inheritDoc} */
     @Override
-    public void execute(final HttpServletRequest req,
-                        final HttpServletResponse resp) throws ServletException,
-                                                               IOException {
+    public void doFilter(final ServletRequest request,
+                         final ServletResponse response,
+                         final FilterChain chain)
+                                        throws IOException, ServletException {
 
         final EntityManager em = _emf.createEntityManager();
 
         try {
-            req.setAttribute(
+            request.setAttribute(
                 SessionKeys.EM_KEY,
                 em);
 
-            super.execute(req, resp);
+            chain.doFilter(request, response);
 
         } finally {
             em.close();
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void destroy() { /* NO OP */ }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void init(final FilterConfig filterConfig) { /* NO OP */ }
 }

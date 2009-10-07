@@ -109,8 +109,7 @@ public class UsersEJB
             currentUser(),
             new Date(),
             userId,
-            user.getEmail(),
-            user.getPassword());
+            user);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }

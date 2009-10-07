@@ -20,6 +20,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
+import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
@@ -52,8 +53,7 @@ public class UpdateCurrentUserCommand {
      * Update a user's email and password.
      *
      * @param userId The user's id.
-     * @param email The new email.
-     * @param password The new password.
+     * @param delta The changes to apply.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
@@ -62,8 +62,7 @@ public class UpdateCurrentUserCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
-                        final String email,
-                        final String password) throws CccCheckedException {
+                        final UserDto delta) throws CccCheckedException {
 
         if (!actor.id().equals(userId)) {
             throw new InsufficientPrivilegesException(
@@ -72,11 +71,20 @@ public class UpdateCurrentUserCommand {
 
         final User current = _repository.find(userId);
 
-        if (password != null) {
-            current.password(password);
+        if (null != delta.getPassword()) {
+            current.password(delta.getPassword());
+            _audit.record(
+                new LogEntry(
+                    actor,
+                    CommandType.USER_CHANGE_PASSWORD,
+                    happenedOn,
+                    userId,
+                    ""));
         }
 
-        current.email(new EmailAddress(email));
+        current.email(new EmailAddress(delta.getEmail()));
+        current.clearMetadata();
+        current.addMetadata(delta.getMetadata());
 
         _audit.record(
             new LogEntry(
