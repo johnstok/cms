@@ -42,4 +42,19 @@ public final class SessionKeys {
 
     /** USERS_KEY : String. */
     public static final String USERS_KEY = "ccc.users";
+
+    /** FILES_KEY : String. */
+    public static final String FILES_KEY = "ccc.files";
+
+    /** PAGES_KEY : String. */
+    public static final String PAGES_KEY = "ccc.pages";
+
+    /** RESOURCES_KEY : String. */
+    public static final String RESOURCES_KEY = "ccc.resources";
+
+    /** FOLDERS_KEY : String. */
+    public static final String FOLDERS_KEY = "ccc.folders";
+
+    /** ACTIONS_KEY : String. */
+    public static final String ACTIONS_KEY = "ccc.actions";
 }

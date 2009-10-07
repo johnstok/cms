@@ -49,35 +49,35 @@ public class RequestScopeServiceLocator
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Actions) _request.getAttribute(SessionKeys.ACTIONS_KEY);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Files getFiles() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Files) _request.getAttribute(SessionKeys.FILES_KEY);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Folders getFolders() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Folders) _request.getAttribute(SessionKeys.FOLDERS_KEY);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Pages getPages() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Pages) _request.getAttribute(SessionKeys.PAGES_KEY);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Resources getResources() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Resources) _request.getAttribute(SessionKeys.RESOURCES_KEY);
     }
 
 
