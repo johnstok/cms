@@ -15,8 +15,6 @@ package ccc.remoting;
 import java.io.IOException;
 
 import javax.ejb.EJB;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +29,16 @@ import ccc.remoting.actions.RenderResourceAction;
 import ccc.remoting.actions.SerialAction;
 import ccc.remoting.actions.ServletAction;
 import ccc.remoting.actions.SessionKeys;
+import ccc.rest.Actions;
+import ccc.rest.Files;
+import ccc.rest.Folders;
+import ccc.rest.Pages;
+import ccc.rest.Resources;
 import ccc.rest.Users;
+import ccc.rest.extensions.FilesExt;
+import ccc.rest.extensions.FoldersExt;
+import ccc.rest.extensions.PagesExt;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.search.SearchEngine;
 
 
@@ -45,8 +52,13 @@ public class ContentServlet
     extends
         HttpServlet {
 
-    @EJB(name=SearchEngine.NAME) private transient SearchEngine         _search;
-    @EJB(name=Users.NAME)        private transient Users                _users;
+    @EJB(name = SearchEngine.NAME) private transient SearchEngine _search;
+    @EJB(name = Users.NAME)        private transient Users        _users;
+    @EJB(name = Pages.NAME)        private transient PagesExt     _pages;
+    @EJB(name = Folders.NAME)      private transient FoldersExt   _folders;
+    @EJB(name = Files.NAME)        private transient FilesExt     _files;
+    @EJB(name = Resources.NAME)    private transient ResourcesExt _resources;
+    @EJB(name = Actions.NAME)      private transient Actions      _actions;
 
 
     private String _rootName           = null;
@@ -105,6 +117,12 @@ public class ContentServlet
 
 
     private void bindServices(final HttpServletRequest req) {
-        req.setAttribute(SessionKeys.USERS_KEY, _users);
+        // FIXME: Wrap the 'Ext' objects to remove access to their methods.
+        req.setAttribute(SessionKeys.USERS_KEY,     _users);
+        req.setAttribute(SessionKeys.FILES_KEY,     _files);
+        req.setAttribute(SessionKeys.PAGES_KEY,     _pages);
+        req.setAttribute(SessionKeys.RESOURCES_KEY, _resources);
+        req.setAttribute(SessionKeys.FOLDERS_KEY,   _folders);
+        req.setAttribute(SessionKeys.ACTIONS_KEY,   _actions);
     }
 }
