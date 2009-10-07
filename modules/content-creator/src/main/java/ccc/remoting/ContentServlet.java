@@ -44,7 +44,6 @@ import ccc.search.SearchEngine;
 
 /**
  * The ContentServlet class serves CCC content.
- * Only the HTTP GET method is supported.
  *
  * @author Civic Computing Ltd.
  */
@@ -124,5 +123,6 @@ public class ContentServlet
         req.setAttribute(SessionKeys.RESOURCES_KEY, _resources);
         req.setAttribute(SessionKeys.FOLDERS_KEY,   _folders);
         req.setAttribute(SessionKeys.ACTIONS_KEY,   _actions);
+        req.setAttribute(SessionKeys.SEARCH_KEY,    _search);
     }
 }
