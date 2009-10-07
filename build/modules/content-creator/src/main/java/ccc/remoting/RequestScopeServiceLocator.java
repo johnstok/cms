@@ -84,7 +84,7 @@ public class RequestScopeServiceLocator
     /** {@inheritDoc} */
     @Override
     public Templates getTemplates() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Templates) _request.getAttribute(SessionKeys.TEMPLATES_KEY);
     }
 
 

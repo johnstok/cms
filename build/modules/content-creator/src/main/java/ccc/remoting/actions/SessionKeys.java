@@ -57,4 +57,10 @@ public final class SessionKeys {
 
     /** ACTIONS_KEY : String. */
     public static final String ACTIONS_KEY = "ccc.actions";
+
+    /** TEMPLATES_KEY : String. */
+    public static final String TEMPLATES_KEY = "ccc.templates";
+
+    /** SEARCH_KEY : String. */
+    public static final String SEARCH_KEY = "ccc.search";
 }
