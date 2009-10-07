@@ -303,12 +303,8 @@ public final class Folder extends Resource implements IFolder {
     }
 
 
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
+    /** {@inheritDoc} */
+    @Override
     public List<Page> pages() {
         final List<Page> entries = new ArrayList<Page>();
         for (final Resource entry : entries()) {

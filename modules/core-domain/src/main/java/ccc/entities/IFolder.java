@@ -14,6 +14,8 @@ package ccc.entities;
 
 import java.util.List;
 
+import ccc.domain.Page;
+
 
 /**
  * API for a folder.
@@ -51,9 +53,17 @@ public interface IFolder {
     List<? extends IFolder> foldersAsSnapshots();
 
     /**
-     * Retrieve a list of all the pages in this folder with sort order applied.
+     * Retrieve a list of all the pages as snapshots in this folder with sort
+     * order applied.
      *
      * @return A list of pages.
      */
     List<? extends IPage> pagesAsSnapshots();
+
+    /**
+     * Retrieve a list of all the pages in this folder with sort order applied.
+     *
+     * @return A list of pages.
+     */
+    List<Page> pages();
 }
