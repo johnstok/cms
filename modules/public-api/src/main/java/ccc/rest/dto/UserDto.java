@@ -127,10 +127,10 @@ public final class UserDto implements Serializable, Jsonable {
      * @param password The user's password.
      */
     public UserDto(final String email,
-                       final Username username,
-                       final Set<String> roles,
-                       final Map<String, String> metadata,
-                       final String password) {
+                   final Username username,
+                   final Set<String> roles,
+                   final Map<String, String> metadata,
+                   final String password) {
         _email = email;
         _username = username;
         _roles = new HashSet<String>(roles);

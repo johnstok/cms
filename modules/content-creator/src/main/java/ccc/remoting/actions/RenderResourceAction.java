@@ -12,14 +12,21 @@
 package ccc.remoting.actions;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.DataRepository;
+import ccc.persistence.streams.ReadToStringAction;
+import ccc.remoting.RequestScopeServiceLocator;
 import ccc.rendering.DefaultRenderer;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
@@ -58,14 +65,39 @@ public class RenderResourceAction
     @Override
     public void execute(final HttpServletRequest request,
                         final HttpServletResponse response) throws IOException {
+
         final DataRepository data = getDataManager(request);
         final StatefulReader reader = getStatefulReader(request);
         final User currentUser = getCurrentUser(request);
-
         final Resource rs = getResource(request);
 
-        final Response r =
-            prepareResponse(request, reader, data, _search, rs);
+        if (rs instanceof File) {
+            final File f = (File) rs;
+
+            if (f.isText() && f.isExecutable()) {
+                final String fileContent = ReadToStringAction.read(data, f);
+                invokeScript(request, response, fileContent);
+
+            } else {
+                renderResource(
+                    request, response, data, reader, currentUser, rs);
+            }
+        } else {
+            renderResource(request, response, data, reader, currentUser, rs);
+        }
+
+
+    }
+
+
+    private void renderResource(final HttpServletRequest request,
+                                final HttpServletResponse response,
+                                final DataRepository data,
+                                final StatefulReader reader,
+                                final User currentUser,
+                                final Resource rs) throws IOException {
+
+        final Response r = prepareResponse(request, reader, data, _search, rs);
 
         if (rs.roles().size()>0) { // Dont'cache secure pages.
             r.setExpiry(null);
@@ -99,5 +131,37 @@ public class RenderResourceAction
             r = renderer.render(rs, parameters);
         }
         return r;
+    }
+
+
+    private void disableCaching(final HttpServletResponse resp) {
+        resp.setHeader("Pragma", "no-cache");
+        resp.setHeader("Cache-Control", "no-store, must-revalidate, max-age=0");
+        resp.setDateHeader("Expires", new Date(0).getTime());
+    }
+
+
+    private void invokeScript(final HttpServletRequest req,
+                              final HttpServletResponse resp,
+                              final String script) {
+        try {
+            disableCaching(resp);
+
+            final ScriptEngineManager factory = new ScriptEngineManager();
+            final ScriptEngine engine = factory.getEngineByName("JavaScript");
+            engine.getContext().setWriter(resp.getWriter());
+
+            engine.put("request",  req);
+            engine.put("response", resp);
+            engine.put("services", new RequestScopeServiceLocator(req));
+            engine.put("user", getCurrentUser(req));
+
+            engine.eval(script);
+
+        } catch (final ScriptException e) {
+            throw new RuntimeException("Error invoking script.", e);
+        } catch (final IOException e) {
+            throw new RuntimeException("Error invoking script.", e);
+        }
     }
 }

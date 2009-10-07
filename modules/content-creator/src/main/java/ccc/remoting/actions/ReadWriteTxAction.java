@@ -13,9 +13,13 @@ package ccc.remoting.actions;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -35,29 +39,18 @@ import org.apache.log4j.Logger;
  */
 public class ReadWriteTxAction
     implements
-        ServletAction {
+        Filter {
     private static final Logger LOG = Logger.getLogger(ReadWriteTxAction.class);
 
-    private final UserTransaction _utx;
-    private final ServletAction _delegate;
+    @Resource private transient UserTransaction _utx;
 
-    /**
-     * Constructor.
-     *
-     * @param delegate The action to call next in the chain.
-     * @param utx The J2EE transaction to use.
-     */
-    public ReadWriteTxAction(final ServletAction delegate,
-                            final UserTransaction utx) {
-        _delegate = delegate;
-        _utx = utx;
-    }
 
     /** {@inheritDoc} */
     @Override
-    public void execute(final HttpServletRequest req,
-                        final HttpServletResponse resp) throws ServletException,
-                                                               IOException {
+    public void doFilter(final ServletRequest request,
+                         final ServletResponse response,
+                         final FilterChain chain)
+                                        throws IOException, ServletException {
         try {
             _utx.begin();
         } catch (final NotSupportedException e) {
@@ -67,7 +60,7 @@ public class ReadWriteTxAction
         }
 
         try {
-            _delegate.execute(req, resp);
+            chain.doFilter(request, response);
             commit();
 
         } catch (final ServletException e) {
@@ -81,6 +74,7 @@ public class ReadWriteTxAction
             throw e;
         }
     }
+
 
     private void commit() {
         try {
@@ -100,6 +94,7 @@ public class ReadWriteTxAction
         }
     }
 
+
     private void rollback() {
         try {
             _utx.rollback();
@@ -111,4 +106,14 @@ public class ReadWriteTxAction
             LOG.warn("Error rolling back transaction.", e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void destroy() { /* NO OP */ }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void init(final FilterConfig filterConfig) { /* NO OP */ }
 }

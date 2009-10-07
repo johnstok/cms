@@ -62,6 +62,15 @@
             org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
         </listener-class>
     </listener>
+    
+    <filter>
+        <filter-name>txn-filter</filter-name>
+        <filter-class>ccc.remoting.actions.ReadWriteTxAction</filter-class>
+    </filter>
+    <filter>
+        <filter-name>jpa-filter</filter-name>
+        <filter-class>ccc.remoting.actions.PersistenceAction</filter-class>
+    </filter>
 
     <servlet>
         <servlet-name>Resteasy</servlet-name>
@@ -141,6 +150,23 @@
         <servlet-name>notfound</servlet-name>
         <jsp-file>/notfound.jsp</jsp-file>
     </servlet>
+
+    <filter-mapping>
+        <filter-name>txn-filter</filter-name>
+        <url-pattern>/content/*</url-pattern>
+        <url-pattern>/assets/*</url-pattern>
+        <url-pattern>/preview/content/*</url-pattern>
+        <url-pattern>/preview/assets/*</url-pattern>
+    </filter-mapping>  
+
+    <filter-mapping>
+        <filter-name>jpa-filter</filter-name>
+        <url-pattern>/content/*</url-pattern>
+        <url-pattern>/assets/*</url-pattern>
+        <url-pattern>/preview/content/*</url-pattern>
+        <url-pattern>/preview/assets/*</url-pattern>
+    </filter-mapping>  
+    
     
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>

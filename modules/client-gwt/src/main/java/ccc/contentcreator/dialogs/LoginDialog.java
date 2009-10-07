@@ -111,6 +111,6 @@ public class LoginDialog extends AbstractEditDialog {
      * @return The password as a string.
      */
     public String getPassword() {
-        return _password.getValue();
+        return (null==_password.getValue()) ? "" : _password.getValue();
     }
 }

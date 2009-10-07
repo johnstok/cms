@@ -66,7 +66,6 @@ public abstract class AbstractServletAction
                                  final HttpServletResponse response,
                                  final Exception e)
                                           throws ServletException, IOException {
-
         request.setAttribute(SessionKeys.EXCEPTION_KEY, e);
         request.getRequestDispatcher("/error").forward(request, response);
     }
@@ -81,9 +80,8 @@ public abstract class AbstractServletAction
      * @throws IOException Servlet API can throw an {@link IOException}.
      */
     protected void dispatchRedirect(final HttpServletRequest request,
-                                  final HttpServletResponse response,
-                                  final String relUri) throws IOException {
-
+                                    final HttpServletResponse response,
+                                    final String relUri) throws IOException {
         final String context = request.getContextPath();
         response.sendRedirect(context+relUri);
     }
