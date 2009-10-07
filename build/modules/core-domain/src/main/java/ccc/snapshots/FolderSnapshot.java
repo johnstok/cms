@@ -94,23 +94,23 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     /** {@inheritDoc} */
     @Override
     public List<FolderSnapshot> foldersAsSnapshots() {
-        return onlyPublished(_delegate.foldersAsSnapshots());
+        return onlyPublishedSnapshot(_delegate.foldersAsSnapshots());
     }
 
     /** {@inheritDoc} */
     @Override
     public List<PageSnapshot> pagesAsSnapshots() {
-        return onlyPublished(_delegate.pagesAsSnapshots());
+        return onlyPublishedSnapshot(_delegate.pagesAsSnapshots());
     }
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param folders
-     * @return
-     * @return
-     */
-    private <T extends ResourceSnapshot> List<T> onlyPublished(final List<T> c) {
+    /** {@inheritDoc} */
+    @Override
+    public List<Page> pages() {
+        return onlyPublished(_delegate.pages());
+    }
+
+    private <T extends ResourceSnapshot> List<T> onlyPublishedSnapshot(
+                                                              final List<T> c) {
         final List<T> cleaned = new ArrayList<T>();
         for (final T item : c) {
             if (item.isPublished()) {
@@ -120,6 +120,14 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
         return cleaned;
     }
 
-
+    private <T extends Resource> List<T> onlyPublished(final List<T> c) {
+        final List<T> cleaned = new ArrayList<T>();
+        for (final T item : c) {
+            if (item.isPublished()) {
+                cleaned.add(item);
+            }
+        }
+        return cleaned;
+    }
 
 }
