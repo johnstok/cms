@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import ccc.domain.User;
-
 
 
 /**
@@ -32,12 +30,12 @@ public interface Body {
      * @param os The stream to which the body will be written.
      * @param charset The character set for the output stream.
      * @param processor A text processor for generating markup, etc.
-     * @param user The user reading the data.
+     * @param context The template context.
      *
      * @throws IOException - if writing to the output stream fails.
      */
     void write(OutputStream os,
                Charset charset,
-               User user,
+               Context context,
                TextProcessor processor) throws IOException;
 }

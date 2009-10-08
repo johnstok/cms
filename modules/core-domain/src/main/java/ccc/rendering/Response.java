@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.User;
 import ccc.types.DBC;
 import ccc.types.Duration;
 import ccc.types.MimeType;
@@ -161,18 +160,18 @@ public class Response {
      *
      * @param httpResponse The servlet response.
      * @param processor The text processor used to render the body.
-     * @param user The user reading the response.
+     * @param context The context for the response.
      *
      * @throws IOException Thrown if writing fails.
      */
     public void write(final HttpServletResponse httpResponse,
-                      final User user,
+                      final Context context,
                       final TextProcessor processor) throws IOException {
         writeHeaders(httpResponse);
         writeBody(
             httpResponse.getOutputStream(),
             httpResponse.getCharacterEncoding(),
-            user,
+            context,
             processor);
     }
 
@@ -182,14 +181,14 @@ public class Response {
      *
      * @param os The output stream.
      * @param charsetName The character set to use.
-     * @param user The user reading the response.
+     * @param context The context for the response.
      * @param processor The text processor used to render the body.
      *
      * @throws IOException If the output stream encounters an error.
      */
     void writeBody(final OutputStream os,
                    final String charsetName,
-                   final User user,
+                   final Context context,
                    final TextProcessor processor) throws IOException {
         Charset charset = Charset.defaultCharset();
         try {
@@ -197,7 +196,7 @@ public class Response {
         } catch (final RuntimeException e) {
             LOG.warn("Ignoring invalid charset: "+charset);
         }
-        _body.write(os, charset, user, processor);
+        _body.write(os, charset, context, processor);
     }
 
 

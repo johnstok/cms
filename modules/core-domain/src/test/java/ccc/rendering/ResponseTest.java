@@ -15,13 +15,11 @@ import static org.easymock.EasyMock.*;
 
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -161,11 +159,7 @@ public class ResponseTest
 
         // ARRANGE
         final Body expected =
-            new PageBody(
-                _p.forCurrentRevision(),
-                Testing.dummy(StatefulReader.class),
-                PageBody.BUILT_IN_PAGE_TEMPLATE,
-                new HashMap<String, String[]>());
+            new PageBody(PageBody.BUILT_IN_PAGE_TEMPLATE);
         final Response r = new Response(expected);
 
         // ACT
@@ -184,11 +178,7 @@ public class ResponseTest
 
         // ACT
         try {
-            new PageBody(
-                null,
-                Testing.dummy(StatefulReader.class),
-                PageBody.BUILT_IN_PAGE_TEMPLATE,
-                new HashMap<String, String[]>());
+            new PageBody(null);
             fail("Should be rejected.");
 
         // ASSERT

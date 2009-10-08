@@ -29,13 +29,13 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
-import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.DataRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.search.SearchEngine;
+import ccc.snapshots.PageSnapshot;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
@@ -59,7 +59,7 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Renderer rr =
-            new DefaultRenderer(_dm, _se, _sr, true);
+            new DefaultRenderer(true);
 
         final Page p =
             new Page(
@@ -75,7 +75,7 @@ public class DefaultRendererTest
         p.setOrUpdateWorkingCopy(delta);
 
         // ACT
-        rr.renderWorkingCopy(p, _noParams);
+        rr.renderWorkingCopy(p, new Context());
 
         // ASSERT
         assertEquals(1, p.currentRevision().paragraphs().size());
@@ -99,17 +99,18 @@ public class DefaultRendererTest
         delta.setParagraphs(
             Collections.singleton(Paragraph.fromText("some", "other value")));
         p.setOrUpdateWorkingCopy(delta);
+        final Context ctxt = new Context();
 
         // ACT
-        final Response r = _renderer.renderWorkingCopy(p, _noParams);
+        final Response r = _renderer.renderWorkingCopy(p, ctxt);
 
         // ASSERT
         assertEquals(PageBody.class, r.getBody().getClass());
         final PageBody body = (PageBody) r.getBody();
-        assertEquals(1, body.getPage().getContent().size());
+        assertEquals(1, ctxt.get("resource", PageSnapshot.class).getContent().size());
         assertEquals(
             "other value",
-            body.getPage().getContent().iterator().next().text());
+            ctxt.get("resource", PageSnapshot.class).getContent().iterator().next().text());
     }
 
 
@@ -134,7 +135,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(t, _noParams);
+            _renderer.render(t, new Context());
             fail();
 
         // ASSERT
@@ -153,7 +154,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(null, _noParams);
+            _renderer.render(null, new Context());
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -171,7 +172,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render((Resource) null, _noParams);
+            _renderer.render(null, new Context());
 
         // ASSERT
         } catch (final NotFoundException e) {
@@ -189,7 +190,7 @@ public class DefaultRendererTest
         final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
 
         // ACT
-        final Response r = _renderer.render(p, _noParams);
+        final Response r = _renderer.render(p, new Context());
 
         // ASSERT
         final List<Header> expected = new ArrayList<Header>() {{
@@ -223,7 +224,7 @@ public class DefaultRendererTest
                 _rm);
 
         // ACT
-        final Response r = _renderer.render(f, _noParams);
+        final Response r = _renderer.render(f, new Context());
 
         // ASSERT
         final List<Header> expected = new ArrayList<Header>() {{
@@ -255,7 +256,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, _noParams);
+            _renderer.render(f, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -282,7 +283,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, _noParams);
+            _renderer.render(f, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -309,7 +310,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, _noParams);
+            _renderer.render(f, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -336,7 +337,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(f, _noParams);
+            _renderer.render(f, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -387,7 +388,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(root, _noParams);
+            _renderer.render(root, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -409,7 +410,7 @@ public class DefaultRendererTest
 
         // ACT
         try {
-            _renderer.render(a, _noParams);
+            _renderer.render(a, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -426,12 +427,12 @@ public class DefaultRendererTest
 
         // ARRANGE
         final Renderer rr =
-            new DefaultRenderer(_dm, _se, _sr, true);
+            new DefaultRenderer(true);
         final Page p = new Page(new ResourceName("zzz"), "zzz", null, _rm);
 
         // ACT
         try {
-            rr.render(p, _noParams);
+            rr.render(p, new Context());
             fail("Should throw exception");
 
         // ASSERT
@@ -444,7 +445,7 @@ public class DefaultRendererTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _renderer = new DefaultRenderer(_dm, _se, _sr, false);
+        _renderer = new DefaultRenderer(false);
 
     }
 

@@ -16,7 +16,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import ccc.commons.Exceptions;
 import ccc.domain.RevisionMetadata;
@@ -24,7 +25,6 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
-import ccc.snapshots.SearchSnapshot;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 
@@ -40,71 +40,61 @@ public class SearchBody
         Body {
 
     private static final int DEFAULT_FIRST_PAGE = 0;
-	private static final int DEFAULT_MINIMUM_SEARCH_RESULTS = 10;
-	private final StatefulReader _reader;
-    private final SearchEngine _searchEngine;
+    private static final int DEFAULT_MINIMUM_SEARCH_RESULTS = 10;
+
     private final Template _template;
-    private final Map<String, String[]> _parameters;
-    private final SearchSnapshot _searchResource;
+
 
     /**
      * Constructor.
      *
-     * @param reader A stateful reader to access other resources.
-     * @param searchEngine The engine used to perform the search.
-     * @param searchResource The search this body will render.
-     * @param parameters The request parameters.
      * @param t The template to use for this body.
      */
-    public SearchBody(final StatefulReader reader,
-                      final SearchEngine searchEngine,
-                      SearchSnapshot searchResource, 
-                      final Template t,
-                      final Map<String, String[]> parameters) {
-        DBC.require().notNull(reader);
-        DBC.require().notNull(searchEngine);
-        DBC.require().notNull(parameters);
+    public SearchBody(final Template t) {
         DBC.require().notNull(t);
-
-        _reader = reader;
-        _searchEngine = searchEngine;
-        _parameters = parameters;
         _template = t;
-        _searchResource = searchResource;
     }
 
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
-                      final User user,
+                      final Context context,
                       final TextProcessor processor) {
 
         String searchQuery = "";
-        final String[] qParams = _parameters.get("q");
+        final HttpServletRequest request =
+            context.get("request", HttpServletRequest.class);
+        final SearchEngine searchEngine =
+            context.get("search", SearchEngine.class);
+
+        final String[] qParams = request.getParameterValues("q");
         if (qParams != null && qParams.length != 0) {
             searchQuery = qParams[0];
         }
 
-        int pageNumber = getScalarInt("p", DEFAULT_FIRST_PAGE);
-        int noOfResultsPerPage = getScalarInt("r", DEFAULT_MINIMUM_SEARCH_RESULTS);
+        final int pageNumber =
+            getScalarInt(
+                request.getParameterValues("p"),
+                DEFAULT_FIRST_PAGE);
+        final int noOfResultsPerPage =
+            getScalarInt(
+                request.getParameterValues("r"),
+                DEFAULT_MINIMUM_SEARCH_RESULTS);
 
         final SearchResult result =
-            _searchEngine.find(searchQuery, noOfResultsPerPage, pageNumber);
+            searchEngine.find(searchQuery, noOfResultsPerPage, pageNumber);
+        context.add("result", result);
 
         final String templateString = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
-        final Context context = new Context(_reader, _searchResource, _parameters);
-        context.add("result", result);
-        context.add("user", user);
 
         processor.render(templateString, w, context);
     }
 
-    
-	private int getScalarInt(String paramName, int defaultValue) {
-		int scalarInt = defaultValue;
-        final String[] pParams = _parameters.get(paramName);
+
+    private int getScalarInt(final String[] pParams, final int defaultValue) {
+        int scalarInt = defaultValue;
         if (pParams != null && pParams.length != 0) {
             try {
                 scalarInt = Integer.parseInt(pParams[0]);
@@ -112,8 +102,8 @@ public class SearchBody
                 Exceptions.swallow(e);
             }
         }
-		return scalarInt;
-	}
+        return scalarInt;
+    }
 
 
     /** BUILT_IN_SEARCH_TEMPLATE : Template. */

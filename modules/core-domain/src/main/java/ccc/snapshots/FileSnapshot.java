@@ -11,16 +11,11 @@
  */
 package ccc.snapshots;
 
-import java.util.Map;
-
 import ccc.domain.File;
 import ccc.entities.IData;
 import ccc.entities.IFile;
-import ccc.persistence.DataRepository;
 import ccc.rendering.FileBody;
 import ccc.rendering.Response;
-import ccc.rendering.StatefulReader;
-import ccc.search.SearchEngine;
 import ccc.types.MimeType;
 
 
@@ -73,11 +68,8 @@ public class FileSnapshot extends ResourceSnapshot implements IFile {
 
     /** {@inheritDoc} */
     @Override
-    public Response render(final Map<String, String[]> parameters,
-                           final SearchEngine search,
-                           final StatefulReader reader,
-                           final DataRepository dm) {
-        final Response r = new Response(new FileBody(this, dm));
+    public Response render() {
+        final Response r = new Response(new FileBody(this));
         r.setDescription(description());
         r.setDisposition("inline; filename=\""+name()+"\"");
         r.setMimeType(

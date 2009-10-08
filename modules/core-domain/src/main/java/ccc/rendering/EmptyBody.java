@@ -14,8 +14,6 @@ package ccc.rendering;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import ccc.domain.User;
-
 
 
 
@@ -32,7 +30,7 @@ public class EmptyBody
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
-                      final User user,
+                      final Context context,
                       final TextProcessor processor) {
         // No Op
     }

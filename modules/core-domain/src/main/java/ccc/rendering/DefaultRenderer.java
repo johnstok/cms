@@ -12,13 +12,8 @@
 
 package ccc.rendering;
 
-import java.util.Map;
-
 import ccc.domain.Resource;
-import ccc.persistence.DataRepository;
-import ccc.search.SearchEngine;
 import ccc.snapshots.ResourceSnapshot;
-import ccc.types.DBC;
 
 /**
  * Default implementation of the {@link Renderer} interface.
@@ -29,30 +24,14 @@ public class DefaultRenderer
     implements
         Renderer {
 
-    private final DataRepository _dm;
-    private final SearchEngine _search;
     private final boolean _respectVisibility;
-    private final StatefulReader _reader;
 
     /**
      * Constructor.
      *
-     * @param dm The data manager for this resource renderer.
      * @param respectVisiblity Should we check a resource's visibility?
-     * @param searchEngine The search engine to use.
-     * @param reader The resource reader to use.
      */
-    public DefaultRenderer(final DataRepository dm,
-                           final SearchEngine searchEngine,
-                           final StatefulReader reader,
-                           final boolean respectVisiblity) {
-        DBC.require().notNull(dm);
-        DBC.require().notNull(searchEngine);
-        DBC.require().notNull(reader);
-
-        _dm = dm;
-        _search = searchEngine;
-        _reader = reader;
+    public DefaultRenderer(final boolean respectVisiblity) {
         _respectVisibility = respectVisiblity;
     }
 
@@ -60,16 +39,16 @@ public class DefaultRenderer
     /** {@inheritDoc} */
     @Override
     public Response render(final Resource resource,
-                           final Map<String, String[]> parameters) {
+                           final Context context) {
         if (resource == null) {
             throw new NotFoundException();
         }
-        return renderResourceSnaphot(resource.forCurrentRevision(), parameters);
+        return renderResourceSnaphot(resource.forCurrentRevision(), context);
     }
 
 
     private Response renderResourceSnaphot(final ResourceSnapshot resource,
-                             final Map<String, String[]> parameters) {
+                                           final Context context) {
 
         if (resource == null) {
             throw new NotFoundException();
@@ -77,14 +56,16 @@ public class DefaultRenderer
             throw new NotFoundException();
         }
 
-        return resource.render(parameters, _search, _reader, _dm);
+        context.add("resource", resource);
+
+        return resource.render();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Response renderWorkingCopy(final Resource resource,
-                                      final Map<String, String[]> parameters) {
+                                      final Context context) {
         if (resource == null) {
             throw new NotFoundException();
         }
@@ -94,7 +75,7 @@ public class DefaultRenderer
                 ? resource.forCurrentRevision()
                 : resource.forWorkingCopy();
 
-        return renderResourceSnaphot(r, parameters);
+        return renderResourceSnaphot(r, context);
     }
 
 
@@ -102,7 +83,8 @@ public class DefaultRenderer
     @Override
     public Response renderHistoricalVersion(
                                     final Resource resource,
-                                    final Map<String, String[]> parameters) {
+                                    final String version,
+                                    final Context context) {
         if (resource == null) {
             throw new NotFoundException();
         }
@@ -110,30 +92,19 @@ public class DefaultRenderer
         ResourceSnapshot snapshot = resource.forCurrentRevision();
 
         if (!_respectVisibility) {
-            if (!parameters.containsKey("v")) {
-                throw new NotFoundException();
-            }
-
-            final String[] vStrings = parameters.get("v");
-            if (null==vStrings) {
-                throw new NotFoundException();
-            } else if (1 != vStrings.length){
-                throw new NotFoundException();
-            } else {
-                try {
-                    final long v = new Long(vStrings[0]).intValue();
-                    if (v<0) {
-                        throw new NotFoundException();
-                    }
-
-                    snapshot = resource.forSpecificRevision((int) v);
-
-                } catch (final NumberFormatException e) {
+            try {
+                final long v = new Long(version).longValue();
+                if (v<0) {
                     throw new NotFoundException();
                 }
+
+                snapshot = resource.forSpecificRevision((int) v);
+
+            } catch (final NumberFormatException e) {
+                throw new NotFoundException();
             }
         }
 
-        return renderResourceSnaphot(snapshot, parameters);
+        return renderResourceSnaphot(snapshot, context);
     }
 }

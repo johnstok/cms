@@ -11,16 +11,11 @@
  */
 package ccc.snapshots;
 
-import java.util.Map;
-
 import ccc.domain.Alias;
 import ccc.domain.Resource;
-import ccc.persistence.DataRepository;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
-import ccc.rendering.StatefulReader;
-import ccc.search.SearchEngine;
 
 
 /**
@@ -52,10 +47,7 @@ public class AliasSnapshot extends ResourceSnapshot {
 
     /** {@inheritDoc} */
     @Override
-    public Response render(final Map<String, String[]> parameters,
-                           final SearchEngine search,
-                           final StatefulReader reader,
-                           final DataRepository dm) {
+    public Response render() {
         if (null==target()) {
             throw new NotFoundException();
         }

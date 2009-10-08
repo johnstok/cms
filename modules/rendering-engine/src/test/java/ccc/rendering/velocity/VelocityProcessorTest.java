@@ -33,7 +33,7 @@ import ccc.types.ResourceName;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessorTest extends TestCase {
-    private static final Context EMPTY_CONTEXT = new Context(null, null, null);
+    private static final Context EMPTY_CONTEXT = new Context();
 
 
     /**
@@ -46,11 +46,11 @@ public class VelocityProcessorTest extends TestCase {
             .andReturn("#macro(foo)foo!#end");
         replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
+        final Context ctxt = new Context();
+        ctxt.add("reader", _reader);
 
         // ACT
-        final String actual =
-            vp.render(
-                "#parse('/a/b/c')\n#foo()", new Context(_reader, null, null));
+        final String actual = vp.render("#parse('/a/b/c')\n#foo()", ctxt);
 
         // ASSERT
         verify(_reader);
@@ -68,11 +68,11 @@ public class VelocityProcessorTest extends TestCase {
             .andReturn("#macro(foo)foo!#end");
         replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
+        final Context ctxt = new Context();
+        ctxt.add("reader", _reader);
 
         // ACT
-        final String actual =
-            vp.render(
-                "#include('/a/b/c')\n#foo()", new Context(_reader, null, null));
+        final String actual = vp.render("#include('/a/b/c')\n#foo()", ctxt);
 
         // ASSERT
         verify(_reader);
@@ -122,12 +122,11 @@ public class VelocityProcessorTest extends TestCase {
                 _rm,
                 Paragraph.fromText("bar", "baz"));
         final String template = "Hello $resource.id()";
+        final Context ctxt = new Context();
+        ctxt.add("resource", foo);
 
         // ACT
-        final String html =
-            _vp.render(
-                template,
-                new Context(null, foo, null));
+        final String html = _vp.render(template, ctxt);
 
         // ASSERT
         assertEquals("Hello "+foo.id(), html);
@@ -144,12 +143,14 @@ public class VelocityProcessorTest extends TestCase {
         final String expectedMessage = "A macro declaration requires at least "
             + "a name argumentVelocityProcessor";
         final StringWriter renderedOutput = new StringWriter();
+        final Context ctxt = new Context();
+        ctxt.add("resource", foo);
 
         // ACT
         _vp.render(
             template,
             renderedOutput,
-            new Context(null, foo, null));
+            ctxt);
 
         // ASSERT
         final String html = renderedOutput.toString();
@@ -169,12 +170,14 @@ public class VelocityProcessorTest extends TestCase {
             + "threw exception java.lang.RuntimeException: Fail. "
             + "at VelocityProcessor[line 1, column 11]";
         final StringWriter renderedOutput = new StringWriter();
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
 
         // ACT
         _vp.render(
             template,
             renderedOutput,
-            new Context(null, this, null));
+            ctxt);
 
         // ASSERT
         final String html = renderedOutput.toString();

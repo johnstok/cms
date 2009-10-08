@@ -27,6 +27,7 @@ import ccc.domain.User;
 import ccc.persistence.DataRepository;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.remoting.RequestScopeServiceLocator;
+import ccc.rendering.Context;
 import ccc.rendering.DefaultRenderer;
 import ccc.rendering.Renderer;
 import ccc.rendering.Response;
@@ -45,7 +46,7 @@ public class RenderResourceAction
         AbstractServletAction {
 
     private final boolean _respectVisiblity;
-    private final SearchEngine _search;
+    private final SearchEngine _search; // FIXME: Already attached to the request!
 
     /**
      * Constructor.
@@ -97,38 +98,41 @@ public class RenderResourceAction
                                 final User currentUser,
                                 final Resource rs) throws IOException {
 
-        final Response r = prepareResponse(request, reader, data, _search, rs);
+        final Context context = new Context();
+        context.add("user", currentUser);
+        context.add("request",  request);
+        context.add("response", response);
+        context.add("search", _search);
+        context.add("data", data);
+        context.add("reader", reader);
+        context.add("services", new RequestScopeServiceLocator(request));
+
+        final Response r = prepareResponse(request, rs, context);
 
         if (rs.roles().size()>0) { // Dont'cache secure pages.
             r.setExpiry(null);
         }
 
-        r.write(response, currentUser, new VelocityProcessor());
+        r.write(response, context, new VelocityProcessor());
     }
 
 
     @SuppressWarnings("unchecked")
     private Response prepareResponse(final HttpServletRequest request,
-                                     final StatefulReader reader,
-                                     final DataRepository dataMgr,
-                                     final SearchEngine searchEngine,
-                                     final Resource rs) {
+                                     final Resource rs,
+                                     final Context context) {
 
         final Map<String, String[]> parameters = request.getParameterMap();
-        final Renderer renderer =
-            new DefaultRenderer(
-                dataMgr,
-                searchEngine,
-                reader,
-                _respectVisiblity);
+        final Renderer renderer = new DefaultRenderer(_respectVisiblity);
 
         final Response r;
         if (parameters.keySet().contains("wc")) {
-            r = renderer.renderWorkingCopy(rs, parameters);
+            r = renderer.renderWorkingCopy(rs, context);
         } else if (parameters.keySet().contains("v")) {
-            r = renderer.renderHistoricalVersion(rs, parameters);
+            r = renderer.renderHistoricalVersion(
+                rs, request.getParameter("v"), context);
         } else {
-            r = renderer.render(rs, parameters);
+            r = renderer.render(rs, context);
         }
         return r;
     }

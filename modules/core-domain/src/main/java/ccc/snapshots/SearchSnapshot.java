@@ -11,15 +11,10 @@
  */
 package ccc.snapshots;
 
-import java.util.Map;
-
 import ccc.domain.Search;
 import ccc.domain.Template;
-import ccc.persistence.DataRepository;
 import ccc.rendering.Response;
 import ccc.rendering.SearchBody;
-import ccc.rendering.StatefulReader;
-import ccc.search.SearchEngine;
 
 
 /**
@@ -42,20 +37,10 @@ public class SearchSnapshot
 
     /** {@inheritDoc} */
     @Override
-    public Response render(final Map<String, String[]> parameters,
-                           final SearchEngine search,
-                           final StatefulReader reader,
-                           final DataRepository dm) {
+    public Response render() {
         final Template t =
             computeTemplate(SearchBody.BUILT_IN_SEARCH_TEMPLATE);
-        final Response r =
-            new Response(
-                new SearchBody(
-                    reader,
-                    search,
-                    this,
-                    t,
-                    parameters));
+        final Response r = new Response(new SearchBody(t));
         r.setCharSet("UTF-8");
         r.setMimeType(t.mimeType().getPrimaryType(), t.mimeType().getSubType());
         r.setExpiry(computeCache());
