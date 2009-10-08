@@ -13,19 +13,15 @@ package ccc.snapshots;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.entities.IFolder;
 import ccc.entities.IResource;
-import ccc.persistence.DataRepository;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
-import ccc.rendering.StatefulReader;
-import ccc.search.SearchEngine;
 import ccc.types.ResourceType;
 
 
@@ -69,10 +65,7 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
 
     /** {@inheritDoc} */
     @Override
-    public Response render(final Map<String, String[]> parameters,
-                           final SearchEngine search,
-                           final StatefulReader reader,
-                           final DataRepository dm) {
+    public Response render() {
         if (indexPage() != null) {
             throw new RedirectRequiredException(indexPage());
         }

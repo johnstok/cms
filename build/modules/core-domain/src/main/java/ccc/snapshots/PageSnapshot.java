@@ -11,17 +11,13 @@
  */
 package ccc.snapshots;
 
-import java.util.Map;
 import java.util.Set;
 
 import ccc.domain.Page;
 import ccc.domain.Template;
 import ccc.entities.IPage;
-import ccc.persistence.DataRepository;
 import ccc.rendering.PageBody;
 import ccc.rendering.Response;
-import ccc.rendering.StatefulReader;
-import ccc.search.SearchEngine;
 import ccc.types.Paragraph;
 
 
@@ -64,14 +60,11 @@ public class PageSnapshot extends ResourceSnapshot implements IPage {
 
     /** {@inheritDoc} */
     @Override
-    public Response render(final Map<String, String[]> parameters,
-                           final SearchEngine search,
-                           final StatefulReader reader,
-                           final DataRepository dm) {
+    public Response render() {
         final Template t =
             computeTemplate(PageBody.BUILT_IN_PAGE_TEMPLATE);
         final Response r =
-            new Response(new PageBody(this, reader, t, parameters));
+            new Response(new PageBody(t));
         r.setCharSet("UTF-8");
         r.setMimeType(t.mimeType().getPrimaryType(), t.mimeType().getSubType());
         r.setExpiry(computeCache());

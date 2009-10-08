@@ -16,13 +16,11 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.Map;
 
 import ccc.commons.Resources;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 
@@ -37,31 +35,16 @@ public class PageBody
     implements
         Body {
 
-    private final PageSnapshot    _page;
-    private final Map<String, String[]> _params;
-    private final StatefulReader _reader;
     private final Template _template;
+
 
     /**
      * Constructor.
      *
-     * @param page The page to render.
-     * @param reader A stateful reader to access other resources.
-     * @param parameters Additional parameters to control rendering.
      * @param t The template to use for this body.
      */
-    public PageBody(final PageSnapshot page,
-                    final StatefulReader reader,
-                    final Template t,
-                    final Map<String, String[]> parameters) {
-        DBC.require().notNull(page);
-        DBC.require().notNull(reader);
-        DBC.require().notNull(parameters);
+    public PageBody(final Template t) {
         DBC.require().notNull(t);
-
-        _page = page;
-        _reader = reader;
-        _params = parameters;
         _template = t;
     }
 
@@ -69,12 +52,10 @@ public class PageBody
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
-                      final User user,
+                      final Context context,
                       final TextProcessor processor) {
         final String t = _template.body();
         final Writer w = new OutputStreamWriter(os, charset);
-        final Context context = new Context(_reader, _page, _params);
-        context.add("user", user);
 
         processor.render(t, w, context);
     }
@@ -96,13 +77,4 @@ public class PageBody
                 User.SYSTEM_USER,
                 true,
                 "Created."));
-
-    /**
-     * Get the snapshot this body will render.
-     *
-     * @return The page snapshot.
-     */
-    public PageSnapshot getPage() {
-        return _page;
-    }
 }

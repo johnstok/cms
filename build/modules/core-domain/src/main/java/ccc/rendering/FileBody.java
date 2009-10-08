@@ -14,7 +14,6 @@ package ccc.rendering;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import ccc.domain.User;
 import ccc.persistence.DataRepository;
 import ccc.snapshots.FileSnapshot;
 import ccc.types.DBC;
@@ -30,29 +29,25 @@ public class FileBody
         Body {
 
     private final FileSnapshot _file;
-    private final DataRepository _dataRepository;
 
     /**
      * Constructor.
      *
      * @param f The file this body represents.
-     * @param dataRepository The data manager used to retrieve the file's
-     *      contents from the data store.
      */
-    public FileBody(final FileSnapshot f, final DataRepository dataRepository) {
+    public FileBody(final FileSnapshot f) {
         DBC.require().notNull(f);
-        DBC.require().notNull(dataRepository);
-
         _file = f;
-        _dataRepository = dataRepository;
     }
 
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream os,
                       final Charset charset,
-                      final User user,
+                      final Context context,
                       final TextProcessor processor) {
-        _dataRepository.retrieve(_file.getData(), os);
+        final DataRepository dataRepository =
+            context.get("data", DataRepository.class);
+        dataRepository.retrieve(_file.getData(), os);
     }
 }

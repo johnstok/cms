@@ -97,16 +97,14 @@ public class VelocityProcessor implements TextProcessor {
                                                 : ctxt.getExtras().entrySet()) {
                 context.put(extra.getKey(), extra.getValue());
             }
-            context.put("reader", ctxt.getReader());
-            context.put("resource", ctxt.getResource());
-            context.put("parameters", ctxt.getParams());
             context.put("random", _random);
             context.put("math", Math.class);
             context.put("calendar", Calendar.class);
             context.put("html", XHTML.class);
 
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
-            ve.setApplicationAttribute("ccc-reader", ctxt.getReader());
+            ve.setApplicationAttribute(
+                "ccc-reader", ctxt.get("reader", Object.class));
             ve.init();
 
             ve.evaluate(context, output, "VelocityProcessor", template);

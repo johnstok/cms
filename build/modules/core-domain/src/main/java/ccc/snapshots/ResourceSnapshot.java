@@ -24,11 +24,8 @@ import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.entities.IResource;
-import ccc.persistence.DataRepository;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
-import ccc.rendering.StatefulReader;
-import ccc.search.SearchEngine;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
@@ -228,17 +225,10 @@ public class ResourceSnapshot implements IResource {
     /**
      * Render the resource, as a response.
      *
-     * @param parameters Additional parameters for the response.
-     * @param search A search engine implementation.
-     * @param reader A resource reader implementation.
-     * @param dm A file repository implementation.
      * @return A response representing the resource.
      */
     @SuppressWarnings("unused")
-    public Response render(final Map<String, String[]> parameters,
-                           final SearchEngine search,
-                           final StatefulReader reader,
-                           final DataRepository dm) {
+    public Response render() {
         throw new NotFoundException();
     }
 

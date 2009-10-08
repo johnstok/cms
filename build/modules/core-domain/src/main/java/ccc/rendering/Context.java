@@ -23,56 +23,7 @@ import java.util.Map;
  */
 public class Context {
 
-    private final StatefulReader _reader;
-    private final Object _resource;
-    private final Map<String, String[]> _params;
     private final Map<String, Object> _extra = new HashMap<String, Object>();
-
-
-    /**
-     * Constructor.
-     *
-     * @param reader The stateful reader for this context.
-     * @param resource The resource for the context.
-     * @param params Additional param's to be added to the context.
-     */
-    public Context(final StatefulReader reader,
-                   final Object resource,
-                   final Map<String, String[]> params) {
-        _reader = reader;
-        _resource = resource;
-        _params = params;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the reader.
-     */
-    public final StatefulReader getReader() {
-        return _reader;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the subject.
-     */
-    public final Object getResource() {
-        return _resource;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the param's.
-     */
-    public final Map<String, String[]> getParams() {
-        return _params;
-    }
 
 
     /**
@@ -93,5 +44,19 @@ public class Context {
      */
     public void add(final String key, final Object value) {
         _extra.put(key, value);
+    }
+
+
+    /**
+     * Look up a value from the context.
+     *
+     * @param key The key used to look up the value.
+     * @param type The type of the value.
+     * @param <T> The type of the object in the repository.
+     *
+     * @return The value for the specified key, or NULL if no value exists.
+     */
+    public <T> T get(final String key, final Class<T> type) {
+        return type.cast(_extra.get(key));
     }
 }
