@@ -42,20 +42,22 @@ public class Mailer
     /**
      * Sends a plain text message to the specified recipient.
      *
+     * @param location The location in registry, for example java:/mail/appname
      * @param toAddress The address to which the email will be sent.
      * @param subject The email's subject.
      * @param message The email's body.
      *
      * @return True if the mail was sent successfully, false otherwise.
      */
-    public boolean send(final String toAddress,
+    public boolean send(final String location,
+                        final String toAddress,
                         final String subject,
                         final String message) {
         try {
 
             // Create the session.
             final Registry r = new JNDI();
-            final Session session = r.get("java:/mail/ash");
+            final Session session = r.get(location);
 
             // Create the message.
             final Message msg = new MimeMessage(session);
