@@ -69,7 +69,7 @@ public interface Resources {
     @POST // Should be DELETE but hard to support from the browser.
     @Path("/resources/{id}/delete")
     @NoCache
-    void delete(@PathParam("id") UUID resourceId) throws RestException;
+    void deleteResource(@PathParam("id") UUID resourceId) throws RestException;
 
 
     /**

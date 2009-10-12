@@ -122,7 +122,7 @@ public class ResourcesEJB
 
 
     private void executeDelete(final Action action) throws RestException {
-        delete(
+        deleteResource(
             action.subject().id(),
             action.actor().id(),
             new Date());
@@ -819,7 +819,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public void delete(final UUID resourceId) throws RestException {
+    public void deleteResource(final UUID resourceId) throws RestException {
         try {
             new DeleteResourceCommand(getResources(), getAuditLog()).execute(
                 currentUser(), new Date(), resourceId);
@@ -833,7 +833,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public void delete(final UUID resourceId,
+    public void deleteResource(final UUID resourceId,
                        final UUID actorId,
                        final Date happenedOn) throws RestException {
         try {

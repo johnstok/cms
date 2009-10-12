@@ -261,7 +261,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void delete(final UUID resourceId) throws RestException {
-        getResources().delete(resourceId);
+    public void deleteResource(final UUID resourceId) throws RestException {
+        getResources().deleteResource(resourceId);
     }
 }

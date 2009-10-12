@@ -398,7 +398,7 @@ public class ResourceAcceptanceTest
 
         // ACT
         getCommands().lock(f.getId());
-        getCommands().delete(f.getId());
+        getCommands().deleteResource(f.getId());
 
         // ASSERT
         try {
