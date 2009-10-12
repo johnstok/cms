@@ -57,7 +57,7 @@ public class CreateFileServlet
 
         final MultipartForm form = new MultipartForm(request);
 
-        final FileItem file        = form.getFileItem();
+        final FileItem file        = form.getFileItem().get("file");
         final FileItem name        = form.getFormItem("fileName");
         final FileItem title       = form.getFormItem("title");
         final FileItem description = form.getFormItem("description");
