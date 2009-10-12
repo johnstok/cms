@@ -60,7 +60,7 @@ public class UpdateFileServlet extends MultipartServlet {
         final FileItem bItem = form.getFormItem("majorEdit");
         final boolean isMajorEdit = bItem == null ? false : true;
 
-        final FileItem file = form.getFileItem();
+        final FileItem file = form.getFileItem().get("file");
 
         final Map<String, String> props = new HashMap<String, String>();
         props.put(FilePropertyNames.CHARSET, toCharset(file.getContentType()));

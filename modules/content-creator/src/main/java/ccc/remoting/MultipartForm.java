@@ -39,7 +39,7 @@ public class MultipartForm {
     private final Map<String, FileItem> _formItems =
         new HashMap<String, FileItem>();
 
-    private FileItem _fileItem = null;
+    private Map<String, FileItem> _fileItem = new HashMap<String, FileItem>();
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public class MultipartForm {
                 }
                 _formItems.put(fn, item);
             } else {
-                _fileItem = item;
+                _fileItem.put(item.getFieldName(), item);
             }
         }
     }
@@ -87,7 +87,7 @@ public class MultipartForm {
         DBC.require().notNull(request);
 
         // Check that we have a file upload request
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        final boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
             throw new CCCException("Not a multipart");
         }
@@ -122,11 +122,11 @@ public class MultipartForm {
     }
 
     /**
-     * Retrieve a file item.
+     * Retrieve a file item map.
      *
      * @return The file item identified by the specified name.
      */
-    public FileItem getFileItem() {
+    public Map<String, FileItem> getFileItem() {
         return _fileItem;
     }
 }
