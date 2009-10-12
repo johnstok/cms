@@ -42,7 +42,7 @@ public interface ResourcesExt
      *
      * @throws RestException If the method fails.
      */
-    void delete(UUID resourceId,
+    void deleteResource(UUID resourceId,
                 UUID actorId,
                 Date happenedOn) throws RestException;
 
