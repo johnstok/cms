@@ -126,4 +126,11 @@ public class UsersImpl
     public UserDto userByLegacyId(final String legacyId) throws RestException {
         return getUsers().userByLegacyId(legacyId);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<String> listUserMetadataValuesWithKey(final String key) {
+        return getUsers().listUserMetadataValuesWithKey(key);
+    }
 }

@@ -15,10 +15,12 @@ import static ccc.persistence.QueryNames.*;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
@@ -32,6 +34,7 @@ import ccc.domain.User;
 public class UserRepositoryImpl implements UserRepository {
 
     private Repository _repository;
+    private EntityManager _emm;
 
 
     /**
@@ -51,6 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
      */
     public UserRepositoryImpl(final EntityManager em) {
         this(new JpaRepository(em));
+        _emm = em;
     }
 
 
@@ -124,4 +128,17 @@ public class UserRepositoryImpl implements UserRepository {
     throws EntityNotFoundException {
         return _repository.find(USERS_WITH_LEGACY_ID, User.class, legacyId);
     }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    public List<String> listMetadataValuesWithKey(final String key) {
+        // FIXME move to JpaRepository?
+        // http://stackoverflow.com/questions/1572980/
+        // how-to-query-distinct-values-from-map-with-given-key-in-hibernate
+        final Query q = _emm.createNativeQuery(
+          "select distinct datum_value from user_metadata where datum_key = ?");
+        q.setParameter(1, key);
+        return q.getResultList();
+    }
+
 }
