@@ -171,4 +171,14 @@ public interface Users {
     @NoCache
     UserDto userByLegacyId(@PathParam("id") String legacyId)
     throws RestException;
+
+    /**
+     * Query metadata values with given key.
+     *
+     * @param key The key as a string.
+     * @return Returns list of users.
+     */
+    @GET @Path("/users/metadata/{key}") @NoCache
+    Collection<String> listUserMetadataValuesWithKey(
+        @PathParam("key") String key);
 }

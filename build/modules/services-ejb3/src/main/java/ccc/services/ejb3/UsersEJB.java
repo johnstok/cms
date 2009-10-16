@@ -196,4 +196,12 @@ public class UsersEJB
             throw fail(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Collection<String> listUserMetadataValuesWithKey(final String key) {
+        return getUsers().listMetadataValuesWithKey(key);
+    }
 }

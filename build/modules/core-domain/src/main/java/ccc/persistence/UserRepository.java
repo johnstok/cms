@@ -13,6 +13,7 @@ package ccc.persistence;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.EntityNotFoundException;
@@ -103,11 +104,20 @@ public interface UserRepository {
     /**
      * Look up a user using the legacy id.
      *
-     * @param legacyId
+     * @param legacyId The legacy Id.
      *
      * @throws EntityNotFoundException If no user exists for the specified ID.
      *
      * @return The user corresponding to 'legacyId'.
      */
     User userByLegacyId(String legacyId) throws EntityNotFoundException;
+
+
+    /**
+     * Return list of unique values in user metadata with given key.
+     *
+     * @param key The key for the metadata values.
+     * @return The list of values.
+     */
+    List<String> listMetadataValuesWithKey(final String key);
 }
