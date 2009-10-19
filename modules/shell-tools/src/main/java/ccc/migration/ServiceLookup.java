@@ -132,7 +132,7 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _registry.<Actions>get(jndiPath(Actions.NAME));
     }
 
 

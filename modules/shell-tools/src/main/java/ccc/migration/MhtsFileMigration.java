@@ -12,20 +12,24 @@
 package ccc.migration;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
 import ccc.cli.MigrateMhtsFiles.Options;
+import ccc.rest.Actions;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.Users;
+import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.types.CommandType;
 import ccc.types.Paragraph;
 
 
@@ -36,31 +40,33 @@ import ccc.types.Paragraph;
  * @author Civic Computing Ltd.
  */
 public class MhtsFileMigration extends BaseMigrations {
+    
+    private static final boolean DONT_PUBLISH = false;
+    private static final String CREATED_PAGE_ACTION = "CREATED PAGE";
     private static Logger log = Logger.getLogger(MhtsFileMigration.class);
 
     private final ResourceSummary _templateFolder;
 
     private FoldersExt _foldersExt;
-
     private String _username;
-
     private FileUploader _fu;
-
     private String _filePath;
-
+    private Actions _actions;
 
     /**
      * Constructor.
-     * @param fileUploader
-     * @param users
-     * @param foldersExt
-     * @param pagesExt
-     * @param resourcesExt
      * @param legacyDBQueries
+     * @param actions TODO
+     * @param resourcesExt
+     * @param pagesExt
+     * @param foldersExt
+     * @param users
+     * @param fileUploader
      * @param options
      *
      */
     public MhtsFileMigration(final LegacyDBQueries legacyDBQueries,
+                             final Actions actions,
                              final ResourcesExt resourcesExt,
                              final PagesExt pagesExt,
                              final FoldersExt foldersExt,
@@ -71,6 +77,7 @@ public class MhtsFileMigration extends BaseMigrations {
         _userCommands = users;
         _linkPrefix = options.getApp()+"/";
         _legacyQueries = legacyDBQueries;
+        _actions = actions;
         _foldersExt = foldersExt;
         _pagesExt = pagesExt;
         _resourcesExt = resourcesExt;
@@ -98,49 +105,102 @@ public class MhtsFileMigration extends BaseMigrations {
      * @param path The path to migrate members area files in CCC7.
      */
     public void migrate(final int legacyParent, final String path) {
+
         final List<ResourceBean> resources =
             _legacyQueries.selectResources(legacyParent);
 
         try {
             final UUID parentFolderId = createFileFolder(legacyParent, path);
 
-            for (final ResourceBean r : resources) {
-                final LogEntryBean le = logEntryForVersion(
-                    r.contentId(),
-                    r.legacyVersion(),
-                    "CREATED PAGE",
-                    _username,
-                    log);
+            for (final ResourceBean resourceBean : resources) {
 
-                final ResourceSummary folderRs = _foldersExt.createFolder(
-                    parentFolderId,
-                    r.name().substring(0, r.name().lastIndexOf(".")),
-                    r.title(),
-                    false,
-                    le.getUser().getId(),
-                    le.getHappenedOn());
-                log.debug("Created folder: "+r.contentId());
+                int contentId = resourceBean.contentId();
+                int legacyVersion = resourceBean.legacyVersion();
 
-                _resourcesExt.lock(
-                        folderRs.getId(),
-                        le.getUser().getId(),
-                        le.getHappenedOn());
-                setTemplateForResource(r, folderRs, le, _templateFolder);
-                publish(r, folderRs, le);
+                final LogEntryBean logEntryBean =
+                    logEntryForVersion(contentId,
+                                       legacyVersion,
+                                       CREATED_PAGE_ACTION,
+                                       _username, log);
+
+                UUID logEntryBeanId = logEntryBean.getUser().getId();
+                Date happenedOn = logEntryBean.getHappenedOn();
+
+                final ResourceSummary folderResourceSummary =
+                    createFolderResourceSummary(parentFolderId,
+                                                resourceBean,
+                                                logEntryBeanId,
+                                                happenedOn);
+
+                log.debug("Created folder: " + contentId);
+
+                UUID folderId = folderResourceSummary.getId();
+                
+                lockFolder(logEntryBeanId, happenedOn, folderId);
+                setTemplateForResource(resourceBean,
+                                       folderResourceSummary,
+                                       logEntryBean,
+                                       _templateFolder);
+                publish(resourceBean, folderResourceSummary, logEntryBean);
                 // showInMainMenu(r, folderRs, le); // TODO ?
-                setMetadata(r, folderRs, le);
-                setResourceRoles(r, folderRs, le, log);
+                setMetadata(resourceBean, folderResourceSummary, logEntryBean);
+                setResourceRoles(resourceBean,
+                                 folderResourceSummary,
+                                 logEntryBean, log);
 
-                migratePage(r, folderRs, le);
-
-                _resourcesExt.unlock(
-                    folderRs.getId(), le.getUser().getId(), le.getHappenedOn());
+                migratePage(resourceBean, folderResourceSummary, logEntryBean);
+                
+                unlockFolder(logEntryBeanId, happenedOn, folderId);
+                createDeleteOnExpiryAction(resourceBean, folderResourceSummary);
             }
 
         } catch (final RestException e) {
             log.error("MHTS file migration failed.", e);
         }
+    }
 
+    private ResourceSummary createFolderResourceSummary(final UUID parentFolderId,
+                                                        final ResourceBean resourceBean,
+                                                        UUID logEntryBeanId,
+                                                        Date happenedOn)
+                                                        throws RestException {
+
+        int lastIndexOf = resourceBean.name().lastIndexOf(".");
+        String resourceBeanName = resourceBean.name().substring(0, lastIndexOf);
+        String folderTitle = resourceBean.title();
+        final ResourceSummary folderResourceSummary =
+            _foldersExt.createFolder(parentFolderId,
+                                     resourceBeanName,
+                                     folderTitle,
+                                     DONT_PUBLISH,
+                                     logEntryBeanId,
+                                     happenedOn);
+        return folderResourceSummary;
+    }
+
+    private void lockFolder(UUID logEntryBeanId,
+                            Date happenedOn,
+                            UUID folderId) throws RestException {
+
+        _resourcesExt.lock(folderId, logEntryBeanId, happenedOn);
+    }
+
+    private void unlockFolder(UUID logEntryBeanId,
+                              Date happenedOn,
+                              UUID folderId) throws RestException {
+
+        _resourcesExt.unlock(folderId, logEntryBeanId, happenedOn);
+    }
+
+    private void createDeleteOnExpiryAction(final ResourceBean resourceBean,
+                                            final ResourceSummary folderResourceSummary)
+                                            throws RestException {
+
+        ActionDto actionDto = new ActionDto(folderResourceSummary.getId(),
+            CommandType.RESOURCE_DELETE,
+            resourceBean.expiryDate(),
+            null);
+        _actions.createAction(actionDto);
     }
 
     /**
