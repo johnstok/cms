@@ -62,6 +62,7 @@ public final class MigrateMhtsFiles extends CccApp {
 
         final MhtsFileMigration migration = new MhtsFileMigration(
             legacyDBQueries,
+            services.getActions(),
             services.getResources(),
             services.getPages(),
             services.getFolders(),
@@ -70,8 +71,7 @@ public final class MigrateMhtsFiles extends CccApp {
             new FileUploader(
                 options.getCcURL(),
                 options.getUsername(),
-                options.getPassword()),
-            options);
+                options.getPassword()), options);
 
 
         migration.migrate(282, "/content/Members_Area"); // FIXME
