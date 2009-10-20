@@ -36,6 +36,6 @@
 	<source path="tests" />
 
 	<!-- Specify the application specific style sheet. -->
-	<stylesheet src="gxt/2.0.1/resources/css/gxt-all.css" />
+	<stylesheet src="gxt/2.0.3/resources/css/gxt-all.css" />
 
 </module>
