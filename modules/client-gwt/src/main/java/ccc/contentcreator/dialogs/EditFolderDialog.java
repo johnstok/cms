@@ -45,6 +45,7 @@ import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -270,6 +271,7 @@ AbstractEditDialog {
             +"<div class=x-combo-list-item id=\"{name}\">{name}</div></tpl>");
         cb.setEditable(false);
         cb.setStore(store);
+        cb.setTriggerAction(TriggerAction.ALL);
         addField(cb);
     }
 

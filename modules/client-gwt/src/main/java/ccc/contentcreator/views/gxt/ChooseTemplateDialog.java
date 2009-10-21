@@ -27,6 +27,7 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 
 
 /**
@@ -76,6 +77,7 @@ public class ChooseTemplateDialog
             TemplateSummaryModelData.Property.NAME.name());
         _selectedTemplate.setForceSelection(true);
         _selectedTemplate.setEditable(false);
+        _selectedTemplate.setTriggerAction(TriggerAction.ALL);
         addField(_selectedTemplate);
     }
 

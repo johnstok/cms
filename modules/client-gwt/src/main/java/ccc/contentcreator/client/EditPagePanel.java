@@ -45,6 +45,7 @@ import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.xml.client.Document;
@@ -550,6 +551,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      */
     private void addElementForCombobox(final String name, final Element field) {
         final ComboBox<BaseModelData> cb = new ComboBox<BaseModelData>();
+        cb.setTriggerAction(TriggerAction.ALL);
         cb.setFieldLabel(createLabel(name));
         cb.setToolTip(name);
         cb.setData("type", FieldType.COMBOBOX);
