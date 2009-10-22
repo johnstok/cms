@@ -39,6 +39,7 @@ import com.google.gwt.http.client.Response;
 public class EditUserDialog extends AbstractEditDialog {
 
     private final TextField<String> _username = new TextField<String>();
+    private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
     private final TextArea          _roles = new TextArea();
 
@@ -71,6 +72,12 @@ public class EditUserDialog extends AbstractEditDialog {
         _username.setValue(_userDTO.getUsername().toString());
         addField(_username);
 
+        _name.setFieldLabel(constants().fullName());
+        _name.setAllowBlank(false);
+        _name.setId("name");
+        _name.setValue(_userDTO.getName());
+        addField(_name);
+
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
         _email.setId("useremail");
@@ -98,6 +105,7 @@ public class EditUserDialog extends AbstractEditDialog {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(updateUser())
                     .check(notEmpty(_email))
+                    .check(notEmpty(_name))
                     .stopIfInError()
                     .check(notValidEmail(_email))
                     .callMethodOr(reportErrors());
@@ -115,6 +123,7 @@ public class EditUserDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 _userDTO.setEmail(_email.getValue());
+                _userDTO.setName(_name.getValue());
 
                 final Set<String> validRoles = new HashSet<String>();
                 final String roleValue = _roles.getValue();
