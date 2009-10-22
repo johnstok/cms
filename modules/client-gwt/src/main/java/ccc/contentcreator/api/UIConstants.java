@@ -1525,4 +1525,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Content")
     String content();
 
+    /**
+     * "Full name".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Full name")
+    String fullName();
+
 }
