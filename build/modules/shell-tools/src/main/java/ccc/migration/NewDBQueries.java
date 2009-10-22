@@ -52,13 +52,14 @@ public class NewDBQueries {
         try {
             // insert user
             ps = _connection.prepareStatement(
-                "INSERT INTO users (id, email, username, vn, hash) "
-                + "VALUES (?,?,?,?,?)");
+                "INSERT INTO users (id, email, username, vn, hash, name) "
+                + "VALUES (?,?,?,?,?,?)");
             ps.setString(1, uid.toString());
             ps.setString(2, email);
             ps.setString(3, username);
             ps.setInt(4, 0);
             ps.setBytes(5, hash);
+            ps.setString(6, username);
             ps.executeUpdate();
 
             // insert role

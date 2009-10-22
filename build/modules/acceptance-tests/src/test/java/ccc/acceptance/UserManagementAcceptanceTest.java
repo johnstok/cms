@@ -115,6 +115,7 @@ public class UserManagementAcceptanceTest
         // ARRANGE
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
+        final String name = "testuser";
 
         final UserDto us = tempUser();
 
@@ -124,6 +125,7 @@ public class UserManagementAcceptanceTest
             new UserDto(
                 email,
                 username,
+                name,
                 Collections.singleton("a2"),
                 Collections.singletonMap("key2", "value2")));
 
@@ -146,12 +148,14 @@ public class UserManagementAcceptanceTest
 
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
+        final String name = "testuser";
 
         // Create the user
         final UserDto u =
             new UserDto(
                 email,
                 username,
+                name,
                 Collections.singleton("a"),
                 Collections.singletonMap("key", "value"),
                 "Testtest00-");
@@ -208,12 +212,14 @@ public class UserManagementAcceptanceTest
         // ARRANGE
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
+        final String name = "testuser";
 
         // Create the user
         final UserDto u =
             new UserDto(
                 email,
                 username,
+                name,
                 Collections.singleton("a"),
                 Collections.singletonMap("key", "value"),
                 "Testtest00-");
@@ -261,6 +267,7 @@ public class UserManagementAcceptanceTest
             new UserDto(
                 us.getEmail(),
                 us.getUsername(),
+                us.getName(),
                 Collections.singleton("a2"),
                 Collections.singletonMap("legacyId", ""+legacyId)));
 
@@ -279,12 +286,14 @@ public class UserManagementAcceptanceTest
 
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
+        final String name = "testuser";
 
         // Create the user
         final UserDto u =
             new UserDto(
                 email,
                 username,
+                name,
                 Collections.singleton("CONTENT_CREATOR"),
                 Collections.singletonMap("key", "value"),
                 "Testtest00-");

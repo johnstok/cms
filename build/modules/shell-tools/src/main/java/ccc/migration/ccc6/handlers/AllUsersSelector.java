@@ -43,6 +43,7 @@ public final class AllUsersSelector
         while (rs.next()) {
             final String userName = rs.getString("user_name");
             final String password = rs.getString("user_passwd");
+            final String name = rs.getString("name");
             final int userId = rs.getInt("user_id");
             try {
                 final Map<String, String> metamap =
@@ -63,6 +64,7 @@ public final class AllUsersSelector
                     new UserDto(
                         email,
                         new Username(userName),
+                        name,
                         roles,
                         metamap,
                         password);
