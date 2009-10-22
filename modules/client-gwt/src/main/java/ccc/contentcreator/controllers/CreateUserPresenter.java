@@ -130,6 +130,7 @@ public class CreateUserPresenter implements EditController {
                 final UserDto d = new UserDto(
                     getDialog().getEmail().getValue(),
                     new Username(getDialog().getUsername().getValue()),
+                    getDialog().getName().getValue(),
                     new HashSet<String>(),
                     new HashMap<String, String>(),
                     p);

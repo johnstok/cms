@@ -34,6 +34,13 @@ public interface CreateUser extends Closeable {
     /**
      * Accessor.
      *
+     * @return Returns the full name.
+     */
+    TextField<String> getName();
+
+    /**
+     * Accessor.
+     *
      * @return Returns the password1.
      */
     TextField<String> getPassword1();

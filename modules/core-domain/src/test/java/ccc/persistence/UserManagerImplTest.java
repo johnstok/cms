@@ -25,10 +25,6 @@ import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
-import ccc.persistence.UserRepositoryImpl;
 import ccc.rest.dto.UserDto;
 import ccc.types.CreatorRoles;
 import ccc.types.EmailAddress;
@@ -245,6 +241,7 @@ public class UserManagerImplTest extends TestCase {
             new UserDto(
                 "new.email@civicuk.com",
                 new Username("newNameUser"),
+                "newNameUser",
                 new HashSet<String>(),
                 new HashMap<String, String>(),
                 "foopass");

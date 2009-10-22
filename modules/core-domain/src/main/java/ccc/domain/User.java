@@ -39,12 +39,13 @@ public class User extends Entity {
 
     /** SYSTEM_USER : User. */
     public static final User SYSTEM_USER =
-        new User(new Username("SYSTEM"), "SYSTEM");
+        new User(new Username("SYSTEM"), "SYSTEM", "SYSTEM");
     private static final int HASH_REPETITIONS = 1000;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
     private Username _username;
+    private String _name;
     private EmailAddress _email;
     private byte[] _hash;
     // TODO: Use the Role class.
@@ -61,12 +62,32 @@ public class User extends Entity {
      * Constructor.
      *
      * @param username The user's unique name within CCC.
+     * @param name The user's full name.
      * @param passwordString The unhashed password as a string.
      */
-    public User(final Username username, final String passwordString) {
+    public User(final Username username,
+                final String name,
+                final String passwordString) {
+        DBC.require().notNull(username);
+        DBC.require().notNull(name);
+        DBC.require().notEmpty(username.toString());
+        _username = username;
+        _name = name;
+        _hash = hash(passwordString, id().toString());
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param username The user's unique name within CCC.
+     * @param passwordString The unhashed password as a string.
+     */
+    public User(final Username username,
+                final String passwordString) {
         DBC.require().notNull(username);
         DBC.require().notEmpty(username.toString());
         _username = username;
+        _name = username.toString();
         _hash = hash(passwordString, id().toString());
     }
 
@@ -86,6 +107,24 @@ public class User extends Entity {
      */
     public void username(final Username username) {
         _username = username;
+    }
+
+    /**
+     * Accessor for the name property.
+     *
+     * @return The name.
+     */
+    public String name() {
+        return _name;
+    }
+
+    /**
+     * Mutator for the name.
+     *
+     * @param name The name.
+     */
+    public void name(final String name) {
+        _name = name;
     }
 
 
@@ -288,6 +327,7 @@ public class User extends Entity {
     public void toJson(final Json json) {
         super.toJson(json);
         json.set(JsonKeys.USERNAME, username().toString());
+        json.set(JsonKeys.NAME, name());
         json.set(JsonKeys.EMAIL, (null==email()) ? null : email().toString());
         json.setStrings(JsonKeys.ROLES, new ArrayList<String>(roles()));
         json.set(JsonKeys.METADATA, metadata());

@@ -34,6 +34,7 @@ import ccc.types.Username;
  */
 public final class UserDto implements Serializable, Jsonable {
     private String _email;
+    private String _name;
     private UUID _id;
     private Username _username;
     private HashSet<String> _roles;
@@ -48,15 +49,18 @@ public final class UserDto implements Serializable, Jsonable {
      * @param email The user's email.
      * @param id The user's id.
      * @param username The user's username.
+     * @param name The user's full name.
      * @param roles The user's roles.
      * @param metadata The user's metadata.
      */
     public UserDto(final String email,
                        final UUID id,
                        final Username username,
+                       final String name,
                        final Set<String> roles,
                        final Map<String, String> metadata) {
         _email = email;
+        _name = name;
         _id = id;
         _username = username;
         _roles = new HashSet<String>(roles);
@@ -72,6 +76,7 @@ public final class UserDto implements Serializable, Jsonable {
     public UserDto(final Json json) {
         _id = json.getId(ID);
         _email = json.getString(EMAIL);
+        _name = json.getString(NAME);
         _password = json.getString(PASSWORD);
 
         final String un = json.getString(USERNAME);
@@ -93,15 +98,18 @@ public final class UserDto implements Serializable, Jsonable {
      *
      * @param email The user's email.
      * @param username The user's username.
+     * @param name The user's  full name.
      * @param roles The user's roles.
      * @param metadata The user's metadata.
      */
     public UserDto(final String email,
                        final Username username,
+                       final String name,
                        final Set<String> roles,
                        final Map<String, String> metadata) {
         _email = email;
         _username = username;
+        _name = name;
         _roles = new HashSet<String>(roles);
         _metadata = new HashMap<String, String>(metadata);
     }
@@ -122,16 +130,19 @@ public final class UserDto implements Serializable, Jsonable {
      *
      * @param email The user's email address.
      * @param username The user's username.
+     * @param name The user's full name.
      * @param roles The user's roles.
      * @param metadata Metadata associated with the user.
      * @param password The user's password.
      */
     public UserDto(final String email,
                    final Username username,
+                   final String name,
                    final Set<String> roles,
                    final Map<String, String> metadata,
                    final String password) {
         _email = email;
+        _name = name;
         _username = username;
         _roles = new HashSet<String>(roles);
         _metadata = metadata;
@@ -178,6 +189,15 @@ public final class UserDto implements Serializable, Jsonable {
      */
     public Username getUsername() {
         return _username;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return _name;
     }
 
 
@@ -240,6 +260,15 @@ public final class UserDto implements Serializable, Jsonable {
         _username = username;
     }
 
+    /**
+     * Mutator.
+     *
+     * @param name The name to set.
+     */
+    public void setName(final String name) {
+        _name = name;
+    }
+
 
     /**
      * Mutator.
@@ -274,6 +303,7 @@ public final class UserDto implements Serializable, Jsonable {
     public void toJson(final Json json) {
         json.set(ID, getId());
         json.set(EMAIL, getEmail());
+        json.set(NAME, getName());
         json.set(
             USERNAME, (null==getUsername()) ? null : getUsername().toString());
         json.setStrings(ROLES, getRoles());

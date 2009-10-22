@@ -37,6 +37,7 @@ public class CreateUserDialog
 
     private static final int LABEL_WIDTH = 150;
     private final TextField<String> _username = new TextField<String>();
+    private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
@@ -55,6 +56,12 @@ public class CreateUserDialog
         _username.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
         _username.setId("username");
         addField(_username);
+
+        _name.setFieldLabel(constants().fullName());
+        _name.setAllowBlank(false);
+        _name.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
+        _name.setId("name");
+        addField(_name);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
@@ -87,6 +94,10 @@ public class CreateUserDialog
 
     /** {@inheritDoc} */
     public final TextField<String> getUsername() { return _username; }
+
+
+    /** {@inheritDoc} */
+    public final TextField<String> getName() { return _name; }
 
 
     /** {@inheritDoc} */

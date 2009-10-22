@@ -58,7 +58,7 @@ public class CreateUserCommand {
                         final Date happenedOn,
                         final UserDto delta) {
         final User user =
-            new User(delta.getUsername(), delta.getPassword());
+            new User(delta.getUsername(), delta.getName(), delta.getPassword());
         user.email(new EmailAddress(delta.getEmail()));
         user.roles(delta.getRoles());
         user.addMetadata(delta.getMetadata());

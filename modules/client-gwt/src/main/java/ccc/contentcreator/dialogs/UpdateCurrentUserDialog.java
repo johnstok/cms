@@ -32,6 +32,7 @@ import com.google.gwt.http.client.Response;
 public class UpdateCurrentUserDialog extends AbstractEditDialog {
 
     private final TextField<String> _username = new TextField<String>();
+    private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
@@ -51,6 +52,12 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
         _username.setId("username");
         _username.setValue(_user.getUsername().toString());
         addField(_username);
+
+        _name.setFieldLabel(constants().fullName());
+        _name.setAllowBlank(false);
+        _name.setId("name");
+        _name.setValue(_user.getName());
+        addField(_name);
 
         _email.setFieldLabel(constants().email());
         _email.setAllowBlank(false);
@@ -79,6 +86,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                     && _password2.getValue() != null) {
                     Validate.callTo(updateUser())
                     .check(notEmpty(_email))
+                    .check(notEmpty(_name))
                     .stopIfInError()
                     .check(notValidEmail(_email))
                     .check(passwordStrength(_password1.getValue()))
@@ -88,6 +96,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                 } else {
                     Validate.callTo(updateUser())
                     .check(notEmpty(_email))
+                    .check(notEmpty(_name))
                     .stopIfInError()
                     .check(notValidEmail(_email))
                         .callMethodOr(reportErrors());
@@ -107,6 +116,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
             public void run() {
                 _user.setPassword(_password1.getValue());
                 _user.setEmail(_email.getValue());
+                _user.setName(_name.getValue());
 
                 new UpdateCurrentUserAction(
                     _user.getId(),
@@ -119,6 +129,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                             _email.getValue(),
                             _user.getId(),
                             _user.getUsername(),
+                            _user.getName(),
                             _user.getRoles(),
                             _user.getMetadata());
                         GLOBALS.currentUser(user);

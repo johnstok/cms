@@ -377,6 +377,7 @@ abstract class AbstractEJB {
                 user.email().getText(),
                 user.id(),
                 user.username(),
+                user.name(),
                 user.roles(),
                 user.metadata());
     }
@@ -451,6 +452,7 @@ abstract class AbstractEJB {
             new UserDto(
                 user.email().getText(),
                 user.username(),
+                user.name(),
                 user.roles(),
                 user.metadata());
         return delta;
