@@ -11,6 +11,7 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -26,7 +27,7 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionDto implements Jsonable {
+public class ActionDto implements Jsonable, Serializable {
 
     private final UUID _resourceId;
     private final CommandType _command;
