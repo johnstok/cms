@@ -80,7 +80,7 @@ abstract class JaxrsCollection
     public final Actions getActions() {
         return
         (null==_actions)
-        ? (Actions) _reg.get(_appName+"/"+Actions.NAME+"/local")
+        ? (Actions) _reg.get(_appName+"/"+Actions.NAME+"/remote")
             : _actions;
     }
 
