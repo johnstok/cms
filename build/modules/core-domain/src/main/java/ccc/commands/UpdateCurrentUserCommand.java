@@ -83,6 +83,7 @@ public class UpdateCurrentUserCommand {
         }
 
         current.email(new EmailAddress(delta.getEmail()));
+        current.name(delta.getName());
         current.clearMetadata();
         current.addMetadata(delta.getMetadata());
 
