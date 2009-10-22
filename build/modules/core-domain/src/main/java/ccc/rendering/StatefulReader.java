@@ -11,6 +11,8 @@
  */
 package ccc.rendering;
 
+import java.util.UUID;
+
 import ccc.entities.IResource;
 
 
@@ -51,4 +53,13 @@ public interface StatefulReader {
      * @return The contents as a string.
      */
     String fileContentsFromPath(String absolutePath, String charset);
+
+
+    /**
+     * Create UUID from a String.
+     *
+     * @param id The id as a string.
+     * @return The UUID.
+     */
+    UUID uuidFromString(String id);
 }

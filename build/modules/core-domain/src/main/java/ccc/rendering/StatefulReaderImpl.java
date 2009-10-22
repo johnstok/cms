@@ -99,4 +99,11 @@ public final class StatefulReaderImpl
             return null;
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public UUID uuidFromString(final String id) {
+        return UUID.fromString(id);
+    }
 }
