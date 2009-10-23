@@ -14,6 +14,7 @@ package ccc.migration;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.domain.Scheduler;
+import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Files;
 import ccc.rest.Folders;
@@ -107,8 +108,8 @@ public class ServiceLookup implements ServiceLocator {
      *
      * @return An action scheduler.
      */
-    public Scheduler lookupActionScheduler() {
-        return _registry.<Scheduler>get(jndiPath(Actions.NAME));
+    public ActionScheduler lookupActionScheduler() {
+        return _registry.<ActionScheduler>get(jndiPath(ActionScheduler.NAME));
     }
 
 

@@ -17,14 +17,16 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Collection;
 
 import javax.annotation.security.RolesAllowed;
-import javax.annotation.security.RunAs;
+import javax.ejb.Local;
 import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
 import ccc.domain.Scheduler;
+import ccc.rest.ActionScheduler;
 
 
 /**
@@ -32,10 +34,11 @@ import ccc.domain.Scheduler;
  *
  * @author Civic Computing Ltd.
  */
+@Stateless(name=ActionScheduler.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Scheduler.class)
+@Local(ActionScheduler.class)
 @RolesAllowed({ADMINISTRATOR})
-@RunAs(CONTENT_CREATOR)
 public class ActionsSchedulerEJB
     extends
         AbstractEJB
@@ -47,7 +50,6 @@ public class ActionsSchedulerEJB
     private static final String TIMER_NAME = "action_scheduler";
     private static final Logger LOG =
         Logger.getLogger(ActionsSchedulerEJB.class.getName());
-
 
 
     /** Constructor. */
