@@ -24,7 +24,7 @@
         <lib.version.pdfbox>0.7.3</lib.version.pdfbox>
         <lib.version.poi>3.0.1-FINAL</lib.version.poi>
         <lib.version.tmextractors>1.0</lib.version.tmextractors>
-        <lib.version.gxt>2.0.3</lib.version.gxt>
+        <lib.version.gxt>2.0.4</lib.version.gxt>
         <lib.version.gwt>1.7.0</lib.version.gwt>
         <lib.version.velocity>1.6.2</lib.version.velocity>
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
