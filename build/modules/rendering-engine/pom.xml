@@ -25,6 +25,12 @@
             <artifactId>velocity</artifactId>
             <version>${lib.version.velocity}</version>
         </dependency>
+
+        <dependency>
+            <groupId>velocity-tools</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+            <version>${lib.version.velocity-tools}</version>
+        </dependency>
     </dependencies>
 
 </project>
