@@ -27,6 +27,7 @@
         <lib.version.gxt>2.0.4</lib.version.gxt>
         <lib.version.gwt>1.7.0</lib.version.gwt>
         <lib.version.velocity>1.6.2</lib.version.velocity>
+        <lib.version.velocity-tools>1.4</lib.version.velocity-tools>
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
         <lib.version.h2>1.1.103</lib.version.h2>
         <lib.version.selenium>1.0.1</lib.version.selenium>
