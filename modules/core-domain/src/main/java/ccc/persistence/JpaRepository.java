@@ -40,6 +40,7 @@ class JpaRepository implements Repository {
      * @param em The JPA entity manager for this DAO.
      */
     JpaRepository(final EntityManager em) {
+        DBC.require().notNull(em);
         _em = em;
     }
 
