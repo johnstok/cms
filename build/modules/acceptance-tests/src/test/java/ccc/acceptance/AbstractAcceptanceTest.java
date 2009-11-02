@@ -124,7 +124,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addStringConverter(UUIDProvider.class);
     }
 
-    private final String _hostUrl       = "http://localhost:81";
+    private final String _hostUrl       = "http://localhost";
     private final String _secure        = _hostUrl+"/api/secure";
     private final String _public        = _hostUrl+"/api/public";
     private final String _createFileUrl = _hostUrl+"/upload";
@@ -386,7 +386,7 @@ public abstract class AbstractAcceptanceTest
     throws IOException {
         final GetMethod get =
             new GetMethod(
-                "http://localhost:81/preview"
+                _hostUrl+"/preview"
                 + rs.getAbsolutePath()
                 + ((wc) ? "?wc=" : ""));
         try {
