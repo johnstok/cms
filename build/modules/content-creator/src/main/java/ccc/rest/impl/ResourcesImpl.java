@@ -264,4 +264,14 @@ public class ResourcesImpl
     public void deleteResource(final UUID resourceId) throws RestException {
         getResources().deleteResource(resourceId);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void createLogEntry(final UUID resourceId,
+                               final String action,
+                               final String detail)
+    throws RestException {
+        getResources().createLogEntry(resourceId, action, detail);
+    }
 }

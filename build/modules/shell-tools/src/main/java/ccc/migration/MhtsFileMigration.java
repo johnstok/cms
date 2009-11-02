@@ -12,8 +12,10 @@
 package ccc.migration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -26,6 +28,7 @@ import ccc.rest.Users;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
@@ -110,6 +113,8 @@ public class MhtsFileMigration extends BaseMigrations {
             _legacyQueries.selectResources(legacyParent);
 
         try {
+            updateUserRoles();
+
             final UUID parentFolderId = createFileFolder(legacyParent, path);
 
             for (final ResourceBean resourceBean : resources) {
@@ -156,6 +161,22 @@ public class MhtsFileMigration extends BaseMigrations {
 
         } catch (final RestException e) {
             log.error("MHTS file migration failed.", e);
+        }
+    }
+
+    /**
+     * Adds API_USER role to member users.
+     * @throws RestException
+     *
+     */
+    private void updateUserRoles() throws RestException {
+        final List<UserDto> users =
+            new ArrayList<UserDto>(_userCommands.listUsersWithRole("Members"));
+        for (final UserDto user :  users) {
+            final Set<String> roles = user.getRoles();
+            roles.add("API_USER");
+            user.setRoles(roles);
+            _userCommands.updateUser(user.getId(), user);
         }
     }
 

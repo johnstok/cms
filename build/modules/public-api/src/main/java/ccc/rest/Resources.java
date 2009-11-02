@@ -413,4 +413,19 @@ public interface Resources {
      */
     @GET @Path("/fail")
     void fail() throws RestException;
+
+    /**
+     * Create a new log entry for the resource.
+     *
+     * @param resourceId The id of the resource to create log entry for.
+     * @param action The action for the log entry.
+     * @param detail The details for the log entry.
+     *
+     * @throws RestException If the method fails.
+     */
+    @POST @Path("/resources/{id}/logentry-create")
+    void createLogEntry(
+        @PathParam("id") UUID resourceId,
+        String action,
+        String detail) throws RestException;
 }

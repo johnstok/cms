@@ -29,4 +29,7 @@ public final class CreatorRoles {
 
     /** ADMINISTRATOR : String. */
     public static final String ADMINISTRATOR = "ADMINISTRATOR";
+
+    /** API_USER : String. */
+    public static final String API_USER = "API_USER";
 }

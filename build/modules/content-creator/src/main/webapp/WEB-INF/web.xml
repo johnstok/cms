@@ -283,4 +283,7 @@
     <security-role>
         <role-name>SITE_BUILDER</role-name>
     </security-role>
+    <security-role>
+        <role-name>API_USER</role-name>
+    </security-role>
 </web-app>
