@@ -76,6 +76,8 @@ public final class Resources {
     /**
      * Read a resource path into memory as properties.
      *
+     * <p><b>"/"-separated names; no leading "/" (all names are absolute)</b>
+     *
      * @param resourcePath The path to the resource.
      * @return The resource as a properties object.
      */

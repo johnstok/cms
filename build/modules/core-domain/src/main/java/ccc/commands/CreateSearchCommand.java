@@ -19,6 +19,7 @@ import ccc.domain.Search;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.types.CommandType;
 
 
 /**
@@ -28,39 +29,41 @@ import ccc.persistence.ResourceRepository;
  */
 public class CreateSearchCommand
     extends
-        CreateResourceCommand {
+        CreateResourceCommand<Search> {
+
+    private final UUID _parentFolder;
+    private final String _title;
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public CreateSearchCommand(final ResourceRepository repository,
-                               final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-    /**
-     * Create a new search.
-     *
      * @param parentFolder The folder in which the search will be created.
      * @param title The title of the search.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     *
-     *  @return The new search.
      */
-    public Search execute(final User actor,
-                          final Date happenedOn,
-                          final UUID parentFolder,
-                          final String title) throws CccCheckedException {
-        final Search s = new Search(title);
+    public CreateSearchCommand(final ResourceRepository repository,
+                               final LogEntryRepository audit,
+                               final UUID parentFolder,
+                               final String title) {
+        super(repository, audit);
+        _parentFolder = parentFolder;
+        _title = title;
+    }
 
-        create(actor, happenedOn, parentFolder, s);
+    /** {@inheritDoc} */
+    @Override
+    public Search doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+        final Search s = new Search(_title);
+
+        create(actor, happenedOn, _parentFolder, s);
 
         return s;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.SEARCH_CREATE; }
 }

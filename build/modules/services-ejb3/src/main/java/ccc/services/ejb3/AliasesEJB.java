@@ -75,12 +75,15 @@ public class AliasesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateAliasCommand(getResources(), getAuditLog()).execute(
-                    currentUser(),
-                    new Date(),
+                new CreateAliasCommand(
+                    getResources(),
+                    getAuditLog(),
                     alias.getParentId(),
                     alias.getTargetId(),
-                    alias.getName()));
+                    alias.getName())
+                .execute(
+                    currentUser(),
+                    new Date()));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

@@ -21,6 +21,7 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.types.CommandType;
 
 
 /**
@@ -30,45 +31,50 @@ import ccc.persistence.ResourceRepository;
  */
 public class CreateAliasCommand
     extends
-        CreateResourceCommand {
+        CreateResourceCommand<Alias> {
+
+    private final UUID _parentFolder;
+    private final UUID _targetId;
+    private final String _title;
+
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public CreateAliasCommand(final ResourceRepository repository,
-                              final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-    /**
-     * Create an alias.
-     *
      * @param parentFolder The folder in which the alias should be created.
      * @param targetId The alias' target resource.
      * @param title The alias' title.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     *
-     *  @return The new alias.
      */
-    public Alias execute(final User actor,
-                         final Date happenedOn,
-                         final UUID parentFolder,
-                         final UUID targetId,
-                         final String title) throws CccCheckedException {
-        final Resource target = getDao().find(Resource.class, targetId);
+    public CreateAliasCommand(final ResourceRepository repository,
+                              final LogEntryRepository audit,
+                              final UUID parentFolder,
+                              final UUID targetId,
+                              final String title) {
+        super(repository, audit);
+        _parentFolder = parentFolder;
+        _targetId = targetId;
+        _title = title;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Alias doExecute(final User actor,
+                           final Date happenedOn) throws CccCheckedException {
+        final Resource target = getRepository().find(Resource.class, _targetId);
         if (target == null) {
             throw new CCCException("Target does not exists.");
         }
-        final Alias a = new Alias(title, target);
+        final Alias a = new Alias(_title, target);
 
-        create(actor, happenedOn, parentFolder, a);
+        create(actor, happenedOn, _parentFolder, a);
 
         return a;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.ALIAS_CREATE; }
 }

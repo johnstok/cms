@@ -88,14 +88,16 @@ public final class TemplatesEJB
         try {
             return mapResource(
                 new CreateTemplateCommand(
-                    getResources(), getAuditLog()).execute(
-                        currentUser(),
-                        new Date(),
-                        template.getParentId(),
-                        template.getDelta(),
-                        template.getTitle(),
-                        template.getDescription(),
-                        new ResourceName(template.getName())));
+                    getResources(),
+                    getAuditLog(),
+                    template.getParentId(),
+                    template.getDelta(),
+                    template.getTitle(),
+                    template.getDescription(),
+                    new ResourceName(template.getName()))
+                .execute(
+                    currentUser(),
+                    new Date()));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

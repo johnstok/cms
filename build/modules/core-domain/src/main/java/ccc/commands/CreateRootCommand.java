@@ -21,6 +21,7 @@ import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.types.CommandType;
 
 
 /**
@@ -28,45 +29,48 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateRootCommand extends CreateResourceCommand {
+public class CreateRootCommand extends CreateResourceCommand<Void> {
+
+    private final Folder _folder;
+
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
+     * @param folder The root folder to create.
      */
     public CreateRootCommand(final ResourceRepository repository,
-                             final LogEntryRepository audit) {
+                             final LogEntryRepository audit,
+                             final Folder folder) {
         super(repository, audit);
+        _folder = folder; // FIXME: Should create the folder in doExecute().
     }
 
 
-    /**
-     * Create a new root folder.
-     * <p>The name is checked against existing root folders in order to prevent
-     * conflicts.
-     *
-     * @param folder The root folder to create.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final Folder folder) throws CccCheckedException {
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
         try {
             final Resource possibleRoot =
-                getDao().root(folder.name().toString());
+                getRepository().root(_folder.name().toString());
             throw new ResourceExistsException(null, possibleRoot);
 
         } catch (final EntityNotFoundException e) {
-            folder.dateCreated(happenedOn);
-            folder.dateChanged(happenedOn);
-            getDao().create(folder);
+            _folder.dateCreated(happenedOn);
+            _folder.dateChanged(happenedOn);
+            getRepository().create(_folder);
 
-            audit(folder, actor, happenedOn);
+            audit(_folder, actor, happenedOn);
+
+            return null;
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.FOLDER_CREATE; }
 }

@@ -13,14 +13,14 @@ package ccc.remoting.actions;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ccc.commons.ScriptRunner;
 import ccc.domain.File;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -151,16 +151,13 @@ public class RenderResourceAction
         try {
             disableCaching(resp);
 
-            final ScriptEngineManager factory = new ScriptEngineManager();
-            final ScriptEngine engine = factory.getEngineByName("JavaScript");
-            engine.getContext().setWriter(resp.getWriter());
+            final Map<String, Object> context = new HashMap<String, Object>();
+            context.put("request",  req);
+            context.put("response", resp);
+            context.put("services", new RequestScopeServiceLocator(req));
+            context.put("user", getCurrentUser(req));
 
-            engine.put("request",  req);
-            engine.put("response", resp);
-            engine.put("services", new RequestScopeServiceLocator(req));
-            engine.put("user", getCurrentUser(req));
-
-            engine.eval(script);
+            new ScriptRunner().eval(script, context, resp.getWriter());
 
         } catch (final ScriptException e) {
             throw new RuntimeException("Error invoking script.", e);

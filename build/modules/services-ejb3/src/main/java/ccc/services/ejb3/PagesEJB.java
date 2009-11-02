@@ -78,16 +78,17 @@ public class PagesEJB
             final User u = userForId(actorId);
 
             final Page p =
-                new CreatePageCommand(getResources(), getAuditLog()).execute(
-                    u,
-                    happenedOn,
+                new CreatePageCommand(
+                    getResources(),
+                    getAuditLog(),
                     parentId,
                     delta,
                     ResourceName.escape(name),
                     title,
                     templateId,
                     comment,
-                    majorChange);
+                    majorChange)
+                .execute(u, happenedOn);
 
             if (publish) {
                 p.lock(u);

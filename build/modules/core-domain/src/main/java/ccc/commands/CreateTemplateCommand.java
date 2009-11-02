@@ -21,6 +21,7 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.TemplateDelta;
+import ccc.types.CommandType;
 import ccc.types.ResourceName;
 
 
@@ -29,7 +30,14 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateTemplateCommand extends CreateResourceCommand {
+public class CreateTemplateCommand extends CreateResourceCommand<Template> {
+
+
+    private final UUID _parentFolder;
+    private final TemplateDelta _delta;
+    private final String _title;
+    private final String _description;
+    private final ResourceName _name;
 
 
     /**
@@ -37,50 +45,52 @@ public class CreateTemplateCommand extends CreateResourceCommand {
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public CreateTemplateCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-    /**
-     * Create the template.
-     *
      * @param parentFolder The folder in which the template will be created.
      * @param delta The template's details.
      * @param name The name of the template.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      * @param title The template's title.
      * @param description The template's description.
-     *
-     * @throws CccCheckedException If the command fails.
-     *
-     *  @return The new template.
      */
-    public Template execute(final User actor,
-                            final Date happenedOn,
-                            final UUID parentFolder,
-                            final TemplateDelta delta,
-                            final String title,
-                            final String description,
-                            final ResourceName name)
+    public CreateTemplateCommand(final ResourceRepository repository,
+                                 final LogEntryRepository audit,
+                                 final UUID parentFolder,
+                                 final TemplateDelta delta,
+                                 final String title,
+                                 final String description,
+                                 final ResourceName name) {
+        super(repository, audit);
+        _parentFolder = parentFolder;
+        _delta = delta;
+        _title = title;
+        _description = description;
+        _name = name;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Template doExecute(final User actor,
+                              final Date happenedOn)
                                                 throws CccCheckedException {
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Created.");
 
         final Template t =
             new Template(
-                name,
-                title,
-                description,
-                delta.getBody(),
-                delta.getDefinition(),
-                delta.getMimeType(),
+                _name,
+                _title,
+                _description,
+                _delta.getBody(),
+                _delta.getDefinition(),
+                _delta.getMimeType(),
                 rm);
 
-        create(actor, happenedOn, parentFolder, t);
+        create(actor, happenedOn, _parentFolder, t);
 
         return t;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.TEMPLATE_CREATE; }
 }
