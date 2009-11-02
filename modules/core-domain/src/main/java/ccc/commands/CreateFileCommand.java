@@ -12,6 +12,7 @@
 package ccc.commands;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
@@ -19,10 +20,12 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
+import ccc.domain.User;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.FileDelta;
+import ccc.types.CommandType;
 import ccc.types.ResourceName;
 
 
@@ -31,9 +34,16 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateFileCommand extends CreateResourceCommand {
+public class CreateFileCommand extends CreateResourceCommand<File> {
 
     private final DataRepository _data;
+    private final UUID _parentFolder;
+    private final FileDelta _file;
+    private final String _title;
+    private final String _description;
+    private final ResourceName _name;
+    private final RevisionMetadata _rm;
+    private final InputStream _dataStream;
 
     /**
      * Constructor.
@@ -41,18 +51,6 @@ public class CreateFileCommand extends CreateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      * @param data The data manager to use for reading / writing the file data.
-     */
-    public CreateFileCommand(final ResourceRepository repository,
-                             final LogEntryRepository audit,
-                             final DataRepository data) {
-        super(repository, audit);
-        _data = data;
-    }
-
-
-    /**
-     * Create the file.
-     *
      * @param file The File to persist.
      * @param parentFolder The unique id of the folder acting as a parent for
      *  file.
@@ -62,39 +60,58 @@ public class CreateFileCommand extends CreateResourceCommand {
      * @param title The file's title.
      * @param description The description of the file.
      * @param rm Metadata describing the revision.
-     *
-     * @throws CccCheckedException If the command fails.
-     *
-     * @return The file that was created.
      */
-    public File execute(final UUID parentFolder,
-                        final FileDelta file,
-                        final String title,
-                        final String description,
-                        final ResourceName name,
-                        final RevisionMetadata rm,
-                        final InputStream dataStream)
-                                                throws CccCheckedException {
-        final Data data = _data.create(dataStream, file.getSize());
+    public CreateFileCommand(final ResourceRepository repository,
+                             final LogEntryRepository audit,
+                             final DataRepository data,
+                             final UUID parentFolder,
+                             final FileDelta file,
+                             final String title,
+                             final String description,
+                             final ResourceName name,
+                             final RevisionMetadata rm,
+                             final InputStream dataStream) {
+        super(repository, audit);
+        _data = data;
+        _parentFolder = parentFolder;
+        _file = file;
+        _title = title;
+        _description = description;
+        _name = name;
+        _rm = rm;
+        _dataStream = dataStream;
+    }
 
-        if ("image".equals(file.getMimeType().getPrimaryType())) {
+
+    /** {@inheritDoc} */
+    @Override
+    public File doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+        final Data data = _data.create(_dataStream, _file.getSize());
+
+        if ("image".equals(_file.getMimeType().getPrimaryType())) {
             new FileHelper().extractImageMetadata(
-                data, file.getProperties(), _data);
+                data, _file.getProperties(), _data);
         }
 
         final File f =
             new File(
-                name,
-                title,
-                description,
+                _name,
+                _title,
+                _description,
                 data,
-                file.getSize(),
-                file.getMimeType(),
-                file.getProperties(),
-                rm);
+                _file.getSize(),
+                _file.getMimeType(),
+                _file.getProperties(),
+                _rm);
 
-        create(rm.getActor(), rm.getTimestamp(), parentFolder, f);
+        create(_rm.getActor(), _rm.getTimestamp(), _parentFolder, f);
 
         return f;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.FILE_CREATE; }
 }

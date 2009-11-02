@@ -32,43 +32,40 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class DeleteResourceCommand {
+public class DeleteResourceCommand extends Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _resourceId;
+
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
+     * @param resourceId The ID of the resource to delete.
      */
     public DeleteResourceCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+                                 final LogEntryRepository audit,
+                                 final UUID resourceId) {
+        super(repository, audit);
+        _resourceId = resourceId;
     }
 
-    /**
-     * Delete a resource.
-     *
-     * @param resourceId The id of the resource to delete.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID resourceId) throws CccCheckedException {
-        final Resource resource = _repository.find(Resource.class, resourceId);
+
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final User actor,
+                             final Date happenedOn) throws CccCheckedException {
+        final Resource resource =
+            getRepository().find(Resource.class, _resourceId);
         resource.confirmLock(actor);
 
         if (resource.isDeleted()) {
             throw new RuntimeException("Can't delete a deleted resource.");
         }
 
-        final Folder trash = _repository.root(PredefinedResourceNames.TRASH);
+        final Folder trash =
+            getRepository().root(PredefinedResourceNames.TRASH);
 
         resource.delete();
         resource.name(new ResourceName(resource.id().toString()));
@@ -79,10 +76,25 @@ public class DeleteResourceCommand {
         final LogEntry le =
             new LogEntry(
                 actor,
-                CommandType.RESOURCE_DELETE,
+                getType(),
                 happenedOn,
-                resourceId,
+                _resourceId,
                 new JsonImpl(resource).getDetail());
-        _audit.record(le);
+        getAudit().record(le);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_DELETE; }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the resourceId.
+     */
+    public UUID getResourceId() { return _resourceId; }
 }

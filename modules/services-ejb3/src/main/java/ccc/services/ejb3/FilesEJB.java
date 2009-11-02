@@ -107,14 +107,16 @@ public class FilesEJB
 
             final File f =
                 new CreateFileCommand(
-                    getResources(), getAuditLog(), getFiles()).execute(
-                        parentFolder,
-                        file,
-                        title,
-                        description,
-                        new ResourceName(resourceName),
-                        rm,
-                        dataStream);
+                    getResources(),
+                    getAuditLog(), getFiles(),
+                    parentFolder,
+                    file,
+                    title,
+                    description,
+                    new ResourceName(resourceName),
+                    rm,
+                    dataStream)
+                .execute(u, lastUpdated);
 
             if (publish) {
                 f.lock(u);

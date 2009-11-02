@@ -528,8 +528,12 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateSearchCommand(getResources(), getAuditLog()).execute(
-                    currentUser(), new Date(), parentId, title)
+                new CreateSearchCommand(
+                    getResources(),
+                    getAuditLog(),
+                    parentId,
+                    title)
+                .execute(currentUser(), new Date())
             );
 
         } catch (final CccCheckedException e) {
@@ -822,8 +826,8 @@ public class ResourcesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public void deleteResource(final UUID resourceId) throws RestException {
         try {
-            new DeleteResourceCommand(getResources(), getAuditLog()).execute(
-                currentUser(), new Date(), resourceId);
+            new DeleteResourceCommand(getResources(), getAuditLog(), resourceId)
+                .execute(currentUser(), new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -835,11 +839,11 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public void deleteResource(final UUID resourceId,
-                       final UUID actorId,
-                       final Date happenedOn) throws RestException {
+                               final UUID actorId,
+                               final Date happenedOn) throws RestException {
         try {
-            new DeleteResourceCommand(getResources(), getAuditLog()).execute(
-                getUsers().find(actorId), happenedOn, resourceId);
+            new DeleteResourceCommand(getResources(), getAuditLog(), resourceId)
+                .execute(getUsers().find(actorId), happenedOn);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

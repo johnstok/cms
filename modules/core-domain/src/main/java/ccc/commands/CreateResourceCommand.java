@@ -23,18 +23,16 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
-import ccc.types.CommandType;
 
 
 /**
  * Abstract superclass for commands that create resources.
  *
+ * @param <T> The result type of the command.
+ *
  * @author Civic Computing Ltd.
  */
-public abstract class CreateResourceCommand {
-
-    private final ResourceRepository      _repository;
-    private final LogEntryRepository _audit;
+public abstract class CreateResourceCommand<T> extends Command<T> {
 
     /**
      * Constructor.
@@ -44,8 +42,7 @@ public abstract class CreateResourceCommand {
      */
     public CreateResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+        super(repository, audit);
     }
 
     /**
@@ -66,12 +63,12 @@ public abstract class CreateResourceCommand {
         newResource.dateCreated(happenedOn);
         newResource.dateChanged(happenedOn);
 
-        final Folder folder = _repository.find(Folder.class, folderId);
+        final Folder folder = getRepository().find(Folder.class, folderId);
         if (null==folder) {
             throw new CCCException("No folder exists with id: "+folderId);
         }
         folder.add(newResource);
-        _repository.create(newResource);
+        getRepository().create(newResource);
 
         audit(newResource, actor, happenedOn);
     }
@@ -88,60 +85,16 @@ public abstract class CreateResourceCommand {
                          final User actor,
                          final Date happenedOn) {
 
-        CommandType type;
-        switch (resource.type()) {
-            case ALIAS:
-                type = CommandType.ALIAS_CREATE;
-                break;
-            case FILE:
-                type = CommandType.FILE_CREATE;
-                break;
-            case FOLDER:
-                type = CommandType.FOLDER_CREATE;
-                break;
-            case PAGE:
-                type = CommandType.PAGE_CREATE;
-                break;
-            case SEARCH:
-                type = CommandType.SEARCH_CREATE;
-                break;
-            case TEMPLATE:
-                type = CommandType.TEMPLATE_CREATE;
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-
         final JsonImpl ss = new JsonImpl(resource);
 
         final LogEntry le =
             new LogEntry(
                 actor,
-                type,
+                getType(),
                 happenedOn,
                 resource.id(),
                 ss.getDetail());
 
-        _audit.record(le);
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the DAO.
-     */
-    protected ResourceRepository getDao() {
-        return _repository;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the audit logger.
-     */
-    protected LogEntryRepository getAudit() {
-        return _audit;
+        getAudit().record(le);
     }
 }

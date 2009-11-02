@@ -107,8 +107,13 @@ public class FoldersEJB
             final User u = userForId(actorId);
 
             final Folder f =
-                new CreateFolderCommand(getResources(), getAuditLog()).execute(
-                    u, happenedOn, parentId, name, title);
+                new CreateFolderCommand(
+                    getResources(),
+                    getAuditLog(),
+                    parentId,
+                    name,
+                    title)
+                .execute(u, happenedOn);
 
             if (publish) {
                 f.lock(u);
@@ -131,8 +136,12 @@ public class FoldersEJB
                                                  throws RestException {
         try {
             final Folder f = new Folder(name);
-            new CreateRootCommand(getResources(), getAuditLog()).execute(
-                currentUser(), new Date(), f);
+            new CreateRootCommand(
+                getResources(),
+                getAuditLog(),
+                f)
+            .execute(currentUser(), new Date());
+
             return mapResource(f);
 
         } catch (final CccCheckedException e) {
