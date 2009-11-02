@@ -42,6 +42,7 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -840,6 +841,25 @@ public class ResourcesEJB
             new DeleteResourceCommand(getResources(), getAuditLog()).execute(
                 getUsers().find(actorId), happenedOn, resourceId);
 
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    public void createLogEntry(final UUID resourceId,
+                               final String action,
+                               final String detail)
+        throws RestException {
+        try {
+            final LogEntry le = new LogEntry(currentUser(),
+                                            action,
+                                            new Date(),
+                                            resourceId,
+                                            detail);
+            getAuditLog().record(le);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
