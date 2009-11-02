@@ -59,6 +59,9 @@ import org.apache.commons.logging.LogFactory;
  *         component. The component is provided as a reference material, which
  *         may be inappropriate for use without additional customization.
  *         </p>
+ *
+ * <b>Copied from http://svn.apache.org/viewvc/httpcomponents/oac.hc3x/trunk/src/contrib/org/apache/commons/httpclient/contrib/ssl/EasyX509TrustManager.java
+ * on 02 Nov 2009.</b>
  */
 
 public class EasyX509TrustManager
