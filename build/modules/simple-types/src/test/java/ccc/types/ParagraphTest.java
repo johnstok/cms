@@ -77,7 +77,7 @@ public final class ParagraphTest extends TestCase {
         _json.set("name", "foo");
         _json.set("type", "TEXT");
         _json.set("text", "bar");
-        _json.set("bool", (Boolean) null);
+        _json.set("boolean", (Boolean) null);
         _json.set("date", (Date) null);
         replay(_json);
 
@@ -100,7 +100,7 @@ public final class ParagraphTest extends TestCase {
         _json.set("name", "foo");
         _json.set("type", "NUMBER");
         _json.set("text", "123.456");
-        _json.set("bool", (Boolean) null);
+        _json.set("boolean", (Boolean) null);
         _json.set("date", (Date) null);
         replay(_json);
 
@@ -308,11 +308,11 @@ public final class ParagraphTest extends TestCase {
         _json.set("name", "foo");
         _json.set("type", "TEXT");
         _json.set("text", "bar");
-        _json.set("bool", (Boolean) null);
+        _json.set("boolean", (Boolean) null);
         _json.set("date", (Date) null);
         expect(_json.getString("name")).andReturn("bar");
         expect(_json.getString("type")).andReturn("BOOLEAN");
-        expect(_json.getBool("bool")).andReturn(true);
+        expect(_json.getBool("boolean")).andReturn(true);
         replay(_json);
         p.toJson(_json);
 
@@ -331,7 +331,7 @@ public final class ParagraphTest extends TestCase {
         _json.set("name", "foo");
         _json.set("type", "DATE");
         _json.set("text", (String)null);
-        _json.set("bool", (Boolean) null);
+        _json.set("boolean", (Boolean) null);
         _json.set("date", testDate);
         expect(_json.getString("name")).andReturn("bar");
         expect(_json.getString("type")).andReturn("DATE");
