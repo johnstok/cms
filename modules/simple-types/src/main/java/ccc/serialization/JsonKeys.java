@@ -144,4 +144,6 @@ public final class JsonKeys {
     public static final String PARAGRAPHS = "paragraphs";
     /** DELETED : String. */
     public static final String DELETED = "deleted";
+    /** PROPERTIES : String. */
+    public static final String PROPERTIES = "properties";
 }

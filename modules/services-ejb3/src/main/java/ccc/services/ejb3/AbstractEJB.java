@@ -396,7 +396,8 @@ abstract class AbstractEJB {
                 file.absolutePath().toString(),
                 file.id(),
                 file.name().toString(),
-                file.title());
+                file.title(),
+                file.properties());
         return fs;
     }
 

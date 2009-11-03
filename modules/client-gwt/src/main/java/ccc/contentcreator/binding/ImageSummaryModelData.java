@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.rest.dto.FileDto;
+import ccc.types.FilePropertyNames;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -28,19 +29,23 @@ import com.extjs.gxt.ui.client.data.ModelData;
  *
  * @author Civic Computing Ltd.
  */
-public class FileSummaryModelData
+public class ImageSummaryModelData
     implements
         ModelData {
 
     private FileDto _fs;
+    private int _maxDimension;
 
     /**
      * Constructor.
      *
      * @param fs The file summary.
+     * @param maxDimension The maximum dimension for thumb nails.
      */
-    public FileSummaryModelData(final FileDto fs) {
+    public ImageSummaryModelData(final FileDto fs,
+                                 final int maxDimension) {
         _fs = fs;
+        _maxDimension = maxDimension;
     }
 
     /** {@inheritDoc} */
@@ -62,6 +67,18 @@ public class FileSummaryModelData
 
             case NAME:
                 return (X) _fs.getName();
+
+            case WIDTH:
+                return (X) getWidth();
+
+            case HEIGHT:
+                return (X) getHeight();
+
+            case DWIDTH:
+                return (X) getDisplayWidth();
+
+            case DHEIGHT:
+                return (X) getDisplayHeight();
 
             case TITLE:
             case SHORT_NAME:
@@ -109,7 +126,16 @@ public class FileSummaryModelData
      * Property names for a file summary.
      */
     private enum Property {
-        ID, NAME, TITLE, MIME_TYPE, PATH, SHORT_NAME;
+        ID,
+        NAME,
+        TITLE,
+        MIME_TYPE,
+        PATH,
+        SHORT_NAME,
+        WIDTH,
+        HEIGHT,
+        DWIDTH,
+        DHEIGHT;
     }
 
     /**
@@ -137,5 +163,67 @@ public class FileSummaryModelData
      */
     public UUID getId() {
         return _fs.getId();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The width of the image resource.
+     */
+    public String getWidth() {
+        return _fs.getProperties().get(FilePropertyNames.WIDTH);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The height of the image resource.
+     */
+    public String getHeight() {
+        return _fs.getProperties().get(FilePropertyNames.HEIGHT);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The display width of the image resource.
+     */
+    public String getDisplayWidth() {
+        final int width =
+            Integer.decode(getWidth()).intValue();
+        final int height =
+            Integer.decode(getHeight()).intValue();
+        if (_maxDimension > 0
+            && (width > _maxDimension || height > _maxDimension)) {
+            if (width >= height) {
+                return ""+_maxDimension;
+            }
+            final float f = (float) width/(float) height;
+            return ""+f*_maxDimension;
+
+        }
+        return ""+width;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return The height of the image resource.
+     */
+    public String getDisplayHeight() {
+        final int width =
+            Integer.decode(getWidth()).intValue();
+        final int height =
+            Integer.decode(getHeight()).intValue();
+        if (_maxDimension > 0
+            && (width > _maxDimension || height > _maxDimension)) {
+            if (height >= width) {
+                return ""+_maxDimension;
+            }
+            final float f = (float) height/(float) width;
+            return ""+f*_maxDimension;
+
+        }
+        return ""+width;
     }
 }

@@ -13,12 +13,13 @@ package ccc.contentcreator.client;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.actions.GetAbsolutePathAction;
-import ccc.contentcreator.binding.FileSummaryModelData;
+import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
 import ccc.rest.dto.FileDto;
@@ -225,10 +226,14 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
                                       resourceId) {
                 @Override protected void execute(final String path) {
-                    final FileDto fs =
-                        new FileDto("image", path, resourceId, "", "");
-                    final FileSummaryModelData model =
-                        new FileSummaryModelData(fs);
+                    final FileDto fs = new FileDto("image",
+                        path,
+                        resourceId,
+                        "",
+                        "",
+                        new HashMap<String, String>());
+                    final ImageSummaryModelData model =
+                        new ImageSummaryModelData(fs, 200);
                     image.setValue(path);
                     image.setFSModel(model);
                 }
@@ -287,7 +292,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private Paragraph extractImage(final PageElement c) {
         final ImageTriggerField image = c.image();
         String id = "";
-        final FileSummaryModelData model = image.getFSModel();
+        final ImageSummaryModelData model = image.getFSModel();
         if (model != null) {
             id = model.getId().toString();
         }
