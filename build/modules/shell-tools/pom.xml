@@ -88,11 +88,6 @@
                                     jar-with-dependencies
                                 </descriptorRef>
                             </descriptorRefs>
-                            <archive>
-                                <manifest>
-                                    <mainClass>ccc.cli.Migrate</mainClass>
-                                </manifest>
-                            </archive>
                         </configuration>
                         <executions>
                             <execution>
