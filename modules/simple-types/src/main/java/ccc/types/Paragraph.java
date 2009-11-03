@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 
 
@@ -49,24 +50,24 @@ public final class Paragraph implements Serializable, Jsonable {
     public Paragraph(final Json json) {
         require().notNull(json);
 
-        _name = json.getString("name");
-        _type = ParagraphType.valueOf(json.getString("type"));
+        _name = json.getString(JsonKeys.NAME);
+        _type = ParagraphType.valueOf(json.getString(JsonKeys.TYPE));
         switch (_type) {
             case BOOLEAN:
-                _boolean = json.getBool("bool");
+                _boolean = json.getBool(JsonKeys.BOOLEAN);
                 break;
 
             case DATE:
-                _date = json.getDate("date");
+                _date = json.getDate(JsonKeys.DATE);
                 break;
 
             case TEXT:
             case LIST:
-                _text = json.getString("text");
+                _text = json.getString(JsonKeys.TEXT);
                 break;
 
             case NUMBER:
-                _text = json.getBigDecimal("number").toString();
+                _text = json.getBigDecimal(JsonKeys.NUMBER).toString();
                 break;
 
             default:
@@ -332,12 +333,12 @@ public final class Paragraph implements Serializable, Jsonable {
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) { // FIXME: Use JsonKeys
-        json.set("name", name());
-        json.set("type", _type.name());
-        json.set("text", text());
-        json.set("bool", bool());
-        json.set("date", date());
+    public void toJson(final Json json) {
+        json.set(JsonKeys.NAME, name());
+        json.set(JsonKeys.TYPE, _type.name());
+        json.set(JsonKeys.TEXT, text());
+        json.set(JsonKeys.BOOLEAN, bool());
+        json.set(JsonKeys.DATE, date());
     }
 
 

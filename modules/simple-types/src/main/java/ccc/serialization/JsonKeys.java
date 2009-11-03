@@ -146,4 +146,12 @@ public final class JsonKeys {
     public static final String DELETED = "deleted";
     /** PROPERTIES : String. */
     public static final String PROPERTIES = "properties";
+    /** TEXT : String. */
+    public static final String TEXT = "text";
+    /** DATE : String. */
+    public static final String DATE = "date";
+    /** NUMBER : String. */
+    public static final String NUMBER = "number";
+    /** BOOLEAN : String. */
+    public static final String BOOLEAN = "boolean";
 }
