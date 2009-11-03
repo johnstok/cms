@@ -22,30 +22,19 @@ import java.util.Map;
 import junit.framework.TestCase;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
-import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
-import ccc.commands.PublishCommand;
 import ccc.commands.RenameResourceCommand;
-import ccc.commands.UnlockResourceCommand;
-import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
-import ccc.domain.InsufficientPrivilegesException;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.QueryNames;
-import ccc.persistence.Repository;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.types.CommandType;
 import ccc.types.CreatorRoles;
 import ccc.types.Duration;
 import ccc.types.MimeType;
@@ -61,17 +50,13 @@ import ccc.types.Username;
  * Tests for the {@link ResourceRepositoryImpl} class.
  *
  * TODO: testQueryAllLockedResources cannot be called by non-admin?
- * TODO: Test lock(null) fails with illegal arg exception.
- * TODO: Test unlock(null) fails with illegal arg exception.
- * TODO: Test unlock() behaviour for an unlocked resource.
- * TODO: Test lock behaviour if called when by the user that already holds the
- *  lock.
  *
  * @author Civic Computing Ltd.
  */
 public class ResourceDaoImplTest
     extends
         TestCase {
+
 
     /**
      * Test.
@@ -101,6 +86,7 @@ public class ResourceDaoImplTest
             verifyAll();
         }
     }
+
 
     /**
      * Test.
@@ -143,6 +129,7 @@ public class ResourceDaoImplTest
         assertEquals(1, page.currentRevision().paragraphs().size());
     }
 
+
     /**
      * Test.
      * @throws CccCheckedException If the command fails.
@@ -165,6 +152,7 @@ public class ResourceDaoImplTest
         assertEquals(true, _r.includeInMainMenu());
 
     }
+
 
     /**
      * Test.
@@ -200,127 +188,6 @@ public class ResourceDaoImplTest
         assertTrue(_r.tags().contains("bar"));
     }
 
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testResourceCanBeUnlockedByLockerNonadmin()
-    throws CccCheckedException {
-
-        // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        _r.lock(_regularUser);
-
-        // ACT
-        new UnlockResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id());
-
-        // ASSERT
-        assertFalse("Should be unlocked.", _r.isLocked());
-        verifyAll();
-    }
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testResourceCannotBeUnlockedByNonlockerNonAdmin()
-    throws CccCheckedException {
-
-        // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        replayAll();
-
-        _r.lock(_anotherUser);
-
-        // ACT
-        try {
-            new UnlockResourceCommand(_rdao, _al).execute(
-                _regularUser, new Date(), _r.id());
-            fail("Should fail.");
-
-        // ASSERT
-        } catch (final InsufficientPrivilegesException e) {
-            assertEquals(
-                "User regular[] may not perform action: "
-                +CommandType.RESOURCE_UNLOCK,
-                e.getMessage());
-        }
-        assertEquals(_anotherUser, _r.lockedBy());
-        verifyAll();
-    }
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testResourceCanBeUnlockedByNonlockerAdmin()
-    throws CccCheckedException {
-
-        // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        _r.lock(_regularUser);
-
-        // ACT
-        new UnlockResourceCommand(_rdao, _al).execute(
-            _adminUser, new Date(), _r.id());
-
-        // ASSERT
-        assertFalse("Should be unlocked.", _r.isLocked());
-        verifyAll();
-    }
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testUnlockedResourceCanBeLocked()
-    throws CccCheckedException {
-
-        // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new LockResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id());
-
-        // ASSERT
-        assertEquals(_regularUser, _r.lockedBy());
-        verifyAll();
-    }
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testLockedResourceCannotBeRelockedBySomeoneElse()
-    throws CccCheckedException {
-
-        // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        replayAll();
-        _r.lock(_anotherUser);
-
-        // ACT
-        try {
-            new LockResourceCommand(_rdao, _al).execute(
-                _regularUser, new Date(), _r.id());
-            fail("Lock should fail.");
-
-        // ASSERT
-        } catch (final LockMismatchException e) {
-            assertEquals(_r, e.resource());
-        }
-        verifyAll();
-    }
 
     /**
      * Test.
@@ -339,6 +206,7 @@ public class ResourceDaoImplTest
         assertNotNull("Shouldn't be null.", locked);
         verifyAll();
     }
+
 
     /**
      * Test.
@@ -378,6 +246,7 @@ public class ResourceDaoImplTest
         assertEquals(defaultTemplate, _r.template());
     }
 
+
     /**
      * Test.
      * @throws CccCheckedException If the command fails.
@@ -407,6 +276,7 @@ public class ResourceDaoImplTest
         assertEquals(newParent, _r.parent());
     }
 
+
     /**
      * Test.
      * @throws CccCheckedException If the command fails.
@@ -428,6 +298,7 @@ public class ResourceDaoImplTest
         verifyAll();
         assertEquals("baz", _r.name().toString());
     }
+
 
     /**
      * Test.
@@ -461,25 +332,6 @@ public class ResourceDaoImplTest
         assertEquals(1, page.currentRevision().paragraphs().size());
     }
 
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testPublish() throws CccCheckedException {
-
-        // ARRANGE
-        _r.lock(_regularUser);
-
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new PublishCommand(_al).execute(new Date(), _regularUser, _r);
-
-        // ASSERT
-        verifyAll();
-        assertEquals(_regularUser, _r.publishedBy());
-    }
 
     /**
      * Test.
@@ -502,30 +354,6 @@ public class ResourceDaoImplTest
 //        // ASSERT
 //        verifyAll();
 //        assertEquals(_regularUser, _r.publishedBy());
-    }
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testUnpublishWithUser()
-    throws CccCheckedException {
-
-        // ARRANGE
-        _r.lock(_regularUser);
-        _r.publish(_regularUser);
-
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new UnpublishResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id());
-
-        // ASSERT
-        verifyAll();
-        assertEquals(null, _r.publishedBy());
     }
 
 

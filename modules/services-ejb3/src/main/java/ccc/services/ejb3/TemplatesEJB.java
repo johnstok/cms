@@ -23,7 +23,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.commands.CreateTemplateCommand;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
@@ -34,7 +33,6 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
 import ccc.rest.dto.TemplateSummary;
-import ccc.types.ResourceName;
 
 
 /**
@@ -87,17 +85,8 @@ public final class TemplatesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateTemplateCommand(
-                    getResources(),
-                    getAuditLog(),
-                    template.getParentId(),
-                    template.getDelta(),
-                    template.getTitle(),
-                    template.getDescription(),
-                    new ResourceName(template.getName()))
-                .execute(
-                    currentUser(),
-                    new Date()));
+                commands().createTemplateCommand(template)
+                          .execute(currentUser(), new Date()));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

@@ -22,55 +22,58 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
+import ccc.types.DBC;
 
 
 /**
  * Command: unlocks a resource.
+ * If the logged in user does not have privileges to unlock this resource a
+ * CCCException will be thrown.
+ * Unlocking an unlocked resource has no effect.
  *
  * @author Civic Computing Ltd.
  */
-public class UnlockResourceCommand {
+class UnlockResourceCommand extends Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _resourceId;
+
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
+     * @param resourceId The resource to unlock.
      */
     public UnlockResourceCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+                                 final LogEntryRepository audit,
+                                 final UUID resourceId) {
+        super(repository, audit);
+        DBC.require().notNull(resourceId);
+        _resourceId = resourceId;
     }
 
-    /**
-     * Unlock the specified Resource.
-     * If the logged in user does not have privileges to unlock this resource a
-     * CCCException will be thrown.
-     * Unlocking an unlocked resource has no effect.
-     *
-     * @param resourceId The resource to unlock.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID resourceId) throws CccCheckedException {
-        final Resource r = _repository.find(Resource.class, resourceId);
+    /** {@inheritDoc} */
+    @Override
+    protected Void doExecute(final User actor,
+                             final Date happenedOn) throws CccCheckedException {
+        final Resource r = getRepository().find(Resource.class, _resourceId);
         r.unlock(actor);
 
         final LogEntry le =
             new LogEntry(
                 actor,
-                CommandType.RESOURCE_UNLOCK,
+                getType(),
                 happenedOn,
-                resourceId,
+                _resourceId,
                 new JsonImpl(r).getDetail());
-        _audit.record(le);
+        getAudit().record(le);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_UNLOCK; }
 }

@@ -12,18 +12,17 @@
 package ccc.commands;
 
 import java.util.Date;
+import java.util.UUID;
 
-import ccc.domain.Action;
-import ccc.domain.Command;
-import ccc.domain.LockMismatchException;
-import ccc.domain.LogEntry;
 import ccc.domain.CccCheckedException;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.UnlockedException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
+import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
+import ccc.types.DBC;
 
 
 /**
@@ -31,47 +30,33 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class PublishCommand
-    implements
-        Command<Void> {
+class PublishCommand extends Command<Void> {
 
-    private LogEntryRepository _audit;
+    private final UUID _resourceId;
+
 
     /**
      * Constructor.
      *
-     * @param audit The audit log to record this command.
+     * @param repository The ResourceDao used for CRUD operations, etc.
+     * @param audit The audit logger, for logging business actions.
+     * @param resourceId The resource to publish.
      */
-    public PublishCommand(final LogEntryRepository audit) {
-        _audit = audit;
+    public PublishCommand(final ResourceRepository repository,
+                          final LogEntryRepository audit,
+                          final UUID resourceId) {
+        super(repository, audit);
+        DBC.require().notNull(resourceId);
+        _resourceId = resourceId;
     }
+
 
     /** {@inheritDoc} */
-    @Override public Void execute(final Action a, final Date happenedOn)
-                                                 throws CccCheckedException {
-        final User publishedBy = a.actor();
-        final Resource r = a.subject();
+    @Override
+    protected Void doExecute(final User publishedBy,
+                             final Date happenedOn) throws CccCheckedException {
 
-        execute(happenedOn, publishedBy, r);
-
-        return null;
-    }
-
-    /**
-     * Publishes the resource by specified user.
-     *
-     * @param r The resource to update.
-     * @param publishedBy The id of the publishing user.
-     * @param happenedOn The date the resource was published.
-     *
-     * @throws UnlockedException If the resource is unlocked.
-     * @throws LockMismatchException If the resource is locked by another user.
-     */
-    public void execute(final Date happenedOn,
-                        final User publishedBy,
-                        final Resource r)
-                               throws UnlockedException, LockMismatchException {
-
+        final Resource r = getRepository().find(Resource.class, _resourceId);
         r.confirmLock(publishedBy);
 
         r.publish(publishedBy);
@@ -80,11 +65,17 @@ public class PublishCommand
         final LogEntry le =
             new LogEntry(
                 publishedBy,
-                CommandType.RESOURCE_PUBLISH,
+                getType(),
                 happenedOn,
                 r.id(),
                 new JsonImpl(r).getDetail());
-        _audit.record(le);
+        getAudit().record(le);
+
+        return null;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_PUBLISH; }
 }

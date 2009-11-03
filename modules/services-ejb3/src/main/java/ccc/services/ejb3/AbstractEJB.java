@@ -13,6 +13,7 @@ package ccc.services.ejb3;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,6 +26,8 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.commands.Command;
+import ccc.commands.CommandFactory;
 import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
@@ -80,6 +83,7 @@ abstract class AbstractEJB {
     private LogEntryRepository _audit;
     private DataRepository     _dm;
     private ActionRepository   _actions;
+    private CommandFactory     _cFactory;
 
 
     @PostConstruct @SuppressWarnings("unused")
@@ -89,6 +93,17 @@ abstract class AbstractEJB {
         _resources = new ResourceRepositoryImpl(_em);
         _dm = DataRepositoryImpl.onFileSystem(_em);
         _actions = new ActionRepositoryImpl(_em);
+        _cFactory = new CommandFactory(_resources, _audit, _dm);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the command factory.
+     */
+    public CommandFactory commands() {
+        return _cFactory;
     }
 
 
@@ -165,6 +180,50 @@ abstract class AbstractEJB {
         log.info(
             "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
         return cfe;
+    }
+
+
+    /**
+     * Execute a command on behalf of another user.
+     *
+     * @param <T> The command's return type.
+     * @param command The command to execute.
+     * @param actorId The actor executing the command.
+     * @param happenedOn When the command was executed.
+     *
+     * @return The command's return value.
+     *
+     * @throws RestException If execution fails.
+     */
+    protected final <T> T sudoExecute(final Command<T> command,
+                                      final UUID actorId,
+                                      final Date happenedOn)
+                                                        throws RestException {
+        try {
+            return command.execute(getUsers().find(actorId), happenedOn);
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /**
+     * Execute a command on behalf of the current user.
+     *
+     * @param <T> The command's return type.
+     * @param command The command to execute.
+     *
+     * @return The command's return value.
+     *
+     * @throws RestException If execution fails.
+     */
+    protected final <T> T execute(final Command<T> command)
+                                                        throws RestException {
+        try {
+            return command.execute(currentUser(), new Date());
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 

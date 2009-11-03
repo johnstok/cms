@@ -27,15 +27,9 @@ import javax.ejb.TransactionAttribute;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
-import ccc.commands.CreateSearchCommand;
-import ccc.commands.DeleteResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
-import ccc.commands.LockResourceCommand;
 import ccc.commands.MoveResourceCommand;
-import ccc.commands.PublishCommand;
 import ccc.commands.RenameResourceCommand;
-import ccc.commands.UnlockResourceCommand;
-import ccc.commands.UnpublishResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
@@ -159,12 +153,8 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void lock(final UUID resourceId) throws RestException {
-        try {
-            lock(resourceId, currentUserId(), new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        execute(
+            commands().lockResourceCommand(resourceId));
     }
 
 
@@ -174,13 +164,8 @@ public class ResourcesEJB
     public void lock(final UUID resourceId,
                      final UUID actorId,
                      final Date happenedOn) throws RestException {
-        try {
-            new LockResourceCommand(getResources(), getAuditLog()).execute(
-                userForId(actorId), happenedOn, resourceId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        sudoExecute(
+            commands().lockResourceCommand(resourceId), actorId, happenedOn);
     }
 
 
@@ -206,15 +191,8 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void publish(final UUID resourceId) throws RestException {
-        try {
-            new PublishCommand(getAuditLog()).execute(
-                new Date(),
-                currentUser(),
-                getResources().find(Resource.class, resourceId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        execute(
+            commands().publishResource(resourceId));
     }
 
 
@@ -224,15 +202,8 @@ public class ResourcesEJB
     public void publish(final UUID resourceId,
                         final UUID userId,
                         final Date date) throws RestException {
-        try {
-            new PublishCommand(getAuditLog()).execute(
-                date,
-                userForId(userId),
-                getResources().find(Resource.class, resourceId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        sudoExecute(
+            commands().publishResource(resourceId), userId, date);
     }
 
 
@@ -271,13 +242,8 @@ public class ResourcesEJB
     public void unlock(final UUID resourceId,
                        final UUID actorId,
                        final Date happenedOn) throws RestException {
-        try {
-            new UnlockResourceCommand(getResources(), getAuditLog()).execute(
-                userForId(actorId), happenedOn, resourceId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        sudoExecute(
+            commands().unlockResourceCommand(resourceId), actorId, happenedOn);
     }
 
 
@@ -285,14 +251,8 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void unpublish(final UUID resourceId) throws RestException {
-        try {
-            new UnpublishResourceCommand(
-                getResources(), getAuditLog()).execute(
-                    currentUser(), new Date(), resourceId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        execute(
+            commands().unpublishResourceCommand(resourceId));
     }
 
 
@@ -301,28 +261,20 @@ public class ResourcesEJB
     @RolesAllowed({CONTENT_CREATOR})
     public void unpublish(final UUID resourceId,
                           final UUID userId,
-                          final Date publishDate)
-                                                 throws RestException {
-        try {
-            new UnpublishResourceCommand(
-                getResources(), getAuditLog()).execute(
-                    getUsers().find(userId),
-                    publishDate,
-                    resourceId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                          final Date publishDate) throws RestException {
+        sudoExecute(
+            commands().unpublishResourceCommand(resourceId),
+            userId,
+            publishDate);
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void createWorkingCopy(final UUID resourceId, final long index)
-                                                 throws RestException {
+    public void createWorkingCopy(final UUID resourceId,
+                                  final long index) throws RestException {
         try {
-
             new UpdateWorkingCopyCommand(
                 getResources(), getAuditLog()).execute(
                     currentUser(),
@@ -340,8 +292,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceDto pu)
-    throws RestException {
+                                  final ResourceDto pu) throws RestException {
         createWorkingCopy(resourceId, pu.getRevision().longValue());
     }
 
@@ -413,8 +364,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public void includeInMainMenu(final UUID resourceId)
-    throws RestException {
+    public void includeInMainMenu(final UUID resourceId) throws RestException {
         includeInMainMenu(resourceId, true);
     }
 
@@ -528,9 +478,7 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             return mapResource(
-                new CreateSearchCommand(
-                    getResources(),
-                    getAuditLog(),
+                commands().createSearchCommand(
                     parentId,
                     title)
                 .execute(currentUser(), new Date())
@@ -825,13 +773,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public void deleteResource(final UUID resourceId) throws RestException {
-        try {
-            new DeleteResourceCommand(getResources(), getAuditLog(), resourceId)
-                .execute(currentUser(), new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        execute(commands().createDeleteResourceCmd(resourceId));
     }
 
 
@@ -841,14 +783,12 @@ public class ResourcesEJB
     public void deleteResource(final UUID resourceId,
                                final UUID actorId,
                                final Date happenedOn) throws RestException {
-        try {
-            new DeleteResourceCommand(getResources(), getAuditLog(), resourceId)
-                .execute(getUsers().find(actorId), happenedOn);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        sudoExecute(
+            commands().createDeleteResourceCmd(resourceId),
+            actorId,
+            happenedOn);
     }
+
 
     /** {@inheritDoc} */
     @Override

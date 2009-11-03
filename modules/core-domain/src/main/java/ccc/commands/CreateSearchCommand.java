@@ -27,7 +27,7 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateSearchCommand
+class CreateSearchCommand
     extends
         CreateResourceCommand<Search> {
 

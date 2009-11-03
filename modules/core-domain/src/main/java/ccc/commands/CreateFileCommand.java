@@ -34,7 +34,7 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateFileCommand extends CreateResourceCommand<File> {
+class CreateFileCommand extends CreateResourceCommand<File> {
 
     private final DataRepository _data;
     private final UUID _parentFolder;

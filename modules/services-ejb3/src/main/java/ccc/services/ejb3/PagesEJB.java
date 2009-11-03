@@ -24,8 +24,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.commands.CreatePageCommand;
-import ccc.commands.PublishCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
@@ -78,9 +76,7 @@ public class PagesEJB
             final User u = userForId(actorId);
 
             final Page p =
-                new CreatePageCommand(
-                    getResources(),
-                    getAuditLog(),
+                commands().createPageCommand(
                     parentId,
                     delta,
                     ResourceName.escape(name),
@@ -92,7 +88,7 @@ public class PagesEJB
 
             if (publish) {
                 p.lock(u);
-                new PublishCommand(getAuditLog()).execute(happenedOn, u, p);
+                commands().publishResource(p.id()).execute(u, happenedOn);
                 p.unlock(u);
             }
 
