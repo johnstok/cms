@@ -16,7 +16,7 @@ import java.util.List;
 
 import ccc.contentcreator.actions.GetContentImagesAction;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.binding.FileSummaryModelData;
+import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.FileDto;
 
@@ -38,9 +38,9 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
     private static final int PANEL_HEIGHT = 460;
     private static final int PANEL_WIDTH = 620;
 
-    private  final ListView<FileSummaryModelData> _view =
-        new ListView<FileSummaryModelData>();
-    private List<FileSummaryModelData> _models;
+    private  final ListView<ImageSummaryModelData> _view =
+        new ListView<ImageSummaryModelData>();
+    private List<ImageSummaryModelData> _models;
     private final String _elementid;
 
 
@@ -54,8 +54,8 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
               new IGlobalsImpl());
         _elementid = elementid;
 
-        final ListStore<FileSummaryModelData> store =
-            new ListStore<FileSummaryModelData>();
+        final ListStore<ImageSummaryModelData> store =
+            new ListStore<ImageSummaryModelData>();
 
         new GetContentImagesAction(getUiConstants().selectImage()){
             @Override
@@ -95,7 +95,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final FileSummaryModelData md =
+                final ImageSummaryModelData md =
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
                     jsniSetUrl(
@@ -124,22 +124,23 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         return null;
     }-*/;
 
-
     // TODO: Property names aren't type safe.
     private native String getTemplate() /*-{
+
     return ['<tpl for=".">',
      '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
-     '<div class="thumb"><img src="{PATH}" title="{TITLE}"></div>',
-     '<span class="x-editable">{SHORT_NAME}</span></div>',
+     '<div class="thumb">',
+     '<img src="{PATH}" width="{DWIDTH}" height="{DHEIGHT}" title="{TITLE}"></div>',
+     '<span class="x-editable">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
      '</tpl>',
      '<div class="x-clear"></div>'].join("");
 
      }-*/;
 
-    private void loadModel(final ListStore<FileSummaryModelData> store,
+    private void loadModel(final ListStore<ImageSummaryModelData> store,
                            final Collection<FileDto> arg0) {
 
-        _models = DataBinding.bindFileSummary(arg0);
+        _models = DataBinding.bindFileSummary(arg0, 200);
         if (_models != null && _models.size() > 0) {
             store.add(_models);
         }

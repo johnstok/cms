@@ -11,27 +11,27 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.binding.FileSummaryModelData;
+import ccc.contentcreator.binding.ImageSummaryModelData;
 
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
 
 /**
  * An extended trigger field storing selected image as
- * {@link FileSummaryModelData}.
+ * {@link ImageSummaryModelData}.
  *
  * @author Civic Computing Ltd.
  */
 public class ImageTriggerField extends TriggerField<String> {
 
-    private FileSummaryModelData _md;
+    private ImageSummaryModelData _md;
 
     /**
      * Mutator.
      *
      * @param md FileSummaryModelData to set.
      */
-    public void setFSModel(final FileSummaryModelData md) {
+    public void setFSModel(final ImageSummaryModelData md) {
         _md = md;
     }
 
@@ -40,7 +40,7 @@ public class ImageTriggerField extends TriggerField<String> {
      *
      * @return FileSummaryModelData of the field.
      */
-    public FileSummaryModelData getFSModel() {
+    public ImageSummaryModelData getFSModel() {
         return _md;
     }
 

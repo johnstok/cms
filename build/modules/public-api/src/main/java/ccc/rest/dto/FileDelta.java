@@ -64,7 +64,7 @@ public final class FileDelta implements Serializable, Jsonable {
             new MimeType(json.getJson(JsonKeys.MIME_TYPE)),
             json.getId(JsonKeys.DATA),
             json.getInt(JsonKeys.SIZE).intValue(),
-            json.getStringMap("properties"));
+            json.getStringMap(JsonKeys.PROPERTIES));
     }
 
 
@@ -123,6 +123,6 @@ public final class FileDelta implements Serializable, Jsonable {
         json.set(JsonKeys.MIME_TYPE, getMimeType());
         json.set(JsonKeys.SIZE, Long.valueOf(getSize()));
         json.set(JsonKeys.DATA, getData());
-        json.set("properties", getProperties());
+        json.set(JsonKeys.PROPERTIES, getProperties());
     }
 }

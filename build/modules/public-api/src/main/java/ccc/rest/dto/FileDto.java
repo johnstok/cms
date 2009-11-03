@@ -14,6 +14,7 @@ package ccc.rest.dto;
 import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.serialization.Json;
@@ -32,6 +33,7 @@ public final class FileDto implements Serializable, Jsonable {
     private UUID   _id;
     private String _name;
     private String _title;
+    private Map<String, String> _properties;
 
     @SuppressWarnings("unused") private FileDto() { super(); }
 
@@ -43,17 +45,20 @@ public final class FileDto implements Serializable, Jsonable {
      * @param id The file's id.
      * @param name The file's name.
      * @param title The file's title.
+     * @param properties The file's properties
      */
     public FileDto(final String type,
                    final String path,
                    final UUID id,
                    final String name,
-                   final String title) {
+                   final String title,
+                   final Map<String, String> properties) {
         _mimeType = type;
         _path = path;
         _id = id;
         _name = name;
         _title = title;
+        _properties = properties;
     }
 
 
@@ -68,7 +73,8 @@ public final class FileDto implements Serializable, Jsonable {
             json.getString(PATH),
             json.getId(ID),
             json.getString(NAME),
-            json.getString(TITLE)
+            json.getString(TITLE),
+            json.getStringMap(PROPERTIES)
         );
     }
 
@@ -121,6 +127,14 @@ public final class FileDto implements Serializable, Jsonable {
         return _title;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the properties.
+     */
+    public Map<String, String> getProperties() {
+        return _properties;
+    }
 
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
@@ -129,5 +143,6 @@ public final class FileDto implements Serializable, Jsonable {
         json.set(ID, getId());
         json.set(NAME, getName());
         json.set(TITLE, getTitle());
+        json.set(PROPERTIES, getProperties());
     }
 }
