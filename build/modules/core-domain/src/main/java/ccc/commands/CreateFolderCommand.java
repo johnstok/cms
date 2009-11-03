@@ -27,7 +27,7 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateFolderCommand extends CreateResourceCommand<Folder> {
+class CreateFolderCommand extends CreateResourceCommand<Folder> {
 
     private final UUID _parentFolder;
     private final String _name;

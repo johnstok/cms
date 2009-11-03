@@ -30,7 +30,7 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateTemplateCommand extends CreateResourceCommand<Template> {
+class CreateTemplateCommand extends CreateResourceCommand<Template> {
 
 
     private final UUID _parentFolder;

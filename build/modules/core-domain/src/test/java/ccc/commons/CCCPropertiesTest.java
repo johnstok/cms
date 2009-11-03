@@ -28,20 +28,6 @@ public class CCCPropertiesTest
     /**
      * Test.
      */
-    public void testGetProperty() {
-
-        // ARRANGE
-
-        // ACT
-        final String value = CCCProperties.get("application.name");
-
-        // ASSERT
-        assertEquals("ash", value);
-    }
-
-    /**
-     * Test.
-     */
     public void testMissingProperty() {
 
         // ARRANGE

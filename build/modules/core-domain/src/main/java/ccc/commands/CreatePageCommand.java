@@ -33,7 +33,7 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class CreatePageCommand extends CreateResourceCommand<Page> {
+class CreatePageCommand extends CreateResourceCommand<Page> {
 
     private final UUID _templateId;
     private final boolean _majorChange;

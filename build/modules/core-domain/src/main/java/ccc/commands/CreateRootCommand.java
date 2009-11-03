@@ -29,7 +29,7 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateRootCommand extends CreateResourceCommand<Void> {
+class CreateRootCommand extends CreateResourceCommand<Void> {
 
     private final Folder _folder;
 

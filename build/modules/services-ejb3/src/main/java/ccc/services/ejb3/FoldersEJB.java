@@ -25,9 +25,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.commands.CreateFolderCommand;
-import ccc.commands.CreateRootCommand;
-import ccc.commands.PublishCommand;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
@@ -107,17 +104,12 @@ public class FoldersEJB
             final User u = userForId(actorId);
 
             final Folder f =
-                new CreateFolderCommand(
-                    getResources(),
-                    getAuditLog(),
-                    parentId,
-                    name,
-                    title)
+                commands().createFolderCommand(parentId, name, title)
                 .execute(u, happenedOn);
 
             if (publish) {
                 f.lock(u);
-                new PublishCommand(getAuditLog()).execute(happenedOn, u, f);
+                commands().publishResource(f.id()).execute(u, happenedOn);
                 f.unlock(u);
             }
 
@@ -136,11 +128,8 @@ public class FoldersEJB
                                                  throws RestException {
         try {
             final Folder f = new Folder(name);
-            new CreateRootCommand(
-                getResources(),
-                getAuditLog(),
-                f)
-            .execute(currentUser(), new Date());
+            commands().createRootCommand(f)
+                      .execute(currentUser(), new Date());
 
             return mapResource(f);
 

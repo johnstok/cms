@@ -26,6 +26,7 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.types.CommandType;
+import ccc.types.DBC;
 
 
 /**
@@ -49,6 +50,8 @@ public abstract class Command<T> {
      */
     public Command(final ResourceRepository repository,
                    final LogEntryRepository audit) {
+        DBC.require().notNull(audit);
+        DBC.require().notNull(repository);
         _repository = repository;
         _audit = audit;
     }
@@ -66,7 +69,10 @@ public abstract class Command<T> {
     public final T execute(final User actor,
                            final Date happenedOn) throws CccCheckedException {
         beforeExecute(actor, happenedOn);
+//        LOG.info(
+//            "Trying command "+getType()+" for actor "+actor.username()+".");
         final T result = doExecute(actor, happenedOn);
+//        LOG.info("Completed command.");
         afterExecute(actor, happenedOn, result);
         return result;
     }

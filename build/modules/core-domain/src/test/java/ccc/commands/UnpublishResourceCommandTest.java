@@ -45,10 +45,10 @@ public class UnpublishResourceCommandTest
         replayAll();
 
         final UnpublishResourceCommand c =
-            new UnpublishResourceCommand(getRepository(), getAudit());
+            new UnpublishResourceCommand(getRepository(), getAudit(), s.id());
 
         // ACT
-        c.execute(getUser(), getNow(), s.id());
+        c.execute(getUser(), getNow());
 
         // ASSERT
         verifyAll();

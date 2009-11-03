@@ -29,8 +29,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.commands.CreateFileCommand;
-import ccc.commands.PublishCommand;
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.File;
@@ -106,9 +104,7 @@ public class FilesEJB
                 );
 
             final File f =
-                new CreateFileCommand(
-                    getResources(),
-                    getAuditLog(), getFiles(),
+                commands().createFileCommand(
                     parentFolder,
                     file,
                     title,
@@ -120,7 +116,7 @@ public class FilesEJB
 
             if (publish) {
                 f.lock(u);
-                new PublishCommand(getAuditLog()).execute(lastUpdated, u, f);
+                commands().publishResource(f.id()).execute(u, lastUpdated);
                 f.unlock(u);
             }
 

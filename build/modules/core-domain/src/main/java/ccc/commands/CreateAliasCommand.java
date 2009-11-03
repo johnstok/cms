@@ -29,7 +29,7 @@ import ccc.types.CommandType;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateAliasCommand
+class CreateAliasCommand
     extends
         CreateResourceCommand<Alias> {
 
