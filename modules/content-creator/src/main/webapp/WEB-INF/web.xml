@@ -157,6 +157,7 @@
         <url-pattern>/assets/*</url-pattern>
         <url-pattern>/preview/content/*</url-pattern>
         <url-pattern>/preview/assets/*</url-pattern>
+        <url-pattern>/${application.prefix}/*</url-pattern>
     </filter-mapping>  
 
     <filter-mapping>
@@ -165,6 +166,7 @@
         <url-pattern>/assets/*</url-pattern>
         <url-pattern>/preview/content/*</url-pattern>
         <url-pattern>/preview/assets/*</url-pattern>
+        <url-pattern>/${application.prefix}/*</url-pattern>
     </filter-mapping>  
     
     
