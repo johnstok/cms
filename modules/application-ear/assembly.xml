@@ -9,12 +9,6 @@
 			<directory>../../deploy</directory>
 			<lineEnding>keep</lineEnding>
 			<outputDirectory>containers</outputDirectory>
-			<excludes>
-				<exclude>jboss-5.0.1.GA-jdk6/server/standard/log/**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6/server/standard/work/**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6/server/standard/tmp/**</exclude>
-				<exclude>jboss-5.0.1.GA-jdk6/server/standard/data/**</exclude>
-			</excludes>
 		</fileSet>
 	</fileSets>
 </assembly>
