@@ -152,7 +152,7 @@ public final class PageTest extends TestCase {
         page.setOrUpdateWorkingCopy(new PageDelta(new HashSet<Paragraph>()));
 
         // ASSERT
-        assertEquals("foo", page.title()); // The page hasn't changed.
+        assertEquals("foo", page.getTitle()); // The page hasn't changed.
 //        assertNull(page.workingCopy().getTitle());
     }
 
@@ -269,7 +269,7 @@ public final class PageTest extends TestCase {
         final Page page = new Page("foo", _rm);
 
         // ASSERT
-        assertEquals("foo", page.title());
+        assertEquals("foo", page.getTitle());
         assertEquals(new ResourceName("foo"), page.name());
     }
 

@@ -407,7 +407,7 @@ public final class Folder extends Resource implements IFolder {
         return new Jsonable(){
             /** {@inheritDoc} */
             @Override public void toJson(final Json json) {
-                json.set(JsonKeys.TITLE, title());
+                json.set(JsonKeys.TITLE, getTitle());
             }
         };
     }

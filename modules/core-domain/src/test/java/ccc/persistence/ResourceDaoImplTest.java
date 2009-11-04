@@ -182,7 +182,7 @@ public class ResourceDaoImplTest
         // ASSERT
         verifyAll();
         assertEquals("example", _r.getMetadatum("bodyId"));
-        assertEquals("newTitle", _r.title());
+        assertEquals("newTitle", _r.getTitle());
         assertEquals("newDesc", _r.description());
         assertTrue(_r.tags().contains("foo"));
         assertTrue(_r.tags().contains("bar"));

@@ -51,7 +51,7 @@ public class Search
         return new Jsonable(){
             /** {@inheritDoc} */
             @Override public void toJson(final Json json) {
-                json.set(JsonKeys.TITLE, title());
+                json.set(JsonKeys.TITLE, getTitle());
             }
         };
     }

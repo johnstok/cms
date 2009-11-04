@@ -824,7 +824,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), r.name());
-        assertEquals("foo?", r.title());
+        assertEquals("foo?", r.getTitle());
     }
 
     /**
@@ -1171,8 +1171,8 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertFalse("Title must no contain bad characters",
-            resource.title().equals(bad.toString()));
-        assertEquals("before–middle’end†", resource.title());
+            resource.getTitle().equals(bad.toString()));
+        assertEquals("before–middle’end†", resource.getTitle());
     }
 
     private static final int WAIT_LENGTH = 100;

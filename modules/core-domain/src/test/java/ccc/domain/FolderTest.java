@@ -49,13 +49,13 @@ public final class FolderTest extends TestCase {
         // ACT
 
         // ASSERT
-        assertEquals("k", f.entries(3, 1, "MANUAL").get(0).title());
-        assertEquals("a", f.entries(3, 1, "MANUAL").get(1).title());
-        assertEquals("z", f.entries(3, 1, "MANUAL").get(2).title());
+        assertEquals("k", f.entries(3, 1, "MANUAL").get(0).getTitle());
+        assertEquals("a", f.entries(3, 1, "MANUAL").get(1).getTitle());
+        assertEquals("z", f.entries(3, 1, "MANUAL").get(2).getTitle());
 
-        assertEquals("a", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(0).title());
-        assertEquals("k", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(1).title());
-        assertEquals("z", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(2).title());
+        assertEquals("a", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(0).getTitle());
+        assertEquals("k", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(1).getTitle());
+        assertEquals("z", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(2).getTitle());
 
     }
 
@@ -81,8 +81,8 @@ public final class FolderTest extends TestCase {
         assertEquals(5,   f.entries(9, 1, "MANUAL").size());
         assertEquals(1,   f.entries(4, 2, "MANUAL").size());
         assertEquals(0,   f.entries(5, 2, "MANUAL").size());
-        assertEquals("a", f.entries(1, 1, "MANUAL").get(0).title());
-        assertEquals("e", f.entries(5, 1, "MANUAL").get(4).title());
+        assertEquals("a", f.entries(1, 1, "MANUAL").get(0).getTitle());
+        assertEquals("e", f.entries(5, 1, "MANUAL").get(4).getTitle());
 
     }
 
@@ -202,7 +202,7 @@ public final class FolderTest extends TestCase {
         final Folder actual = new Folder("foo");
 
         // ASSERT
-        assertEquals("foo", actual.title());
+        assertEquals("foo", actual.getTitle());
         assertEquals(new ResourceName("foo"), actual.name());
     }
 

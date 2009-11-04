@@ -164,7 +164,7 @@ public abstract class Resource
     }
 
     /** {@inheritDoc} */
-    public String title() {
+    public String getTitle() {
         return _title;
     }
 
@@ -645,7 +645,7 @@ public abstract class Resource
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.TITLE, title());
+        json.set(JsonKeys.TITLE, getTitle());
         json.set(JsonKeys.NAME, name().toString());
         json.set(
             JsonKeys.TEMPLATE_ID,
