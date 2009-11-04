@@ -19,6 +19,7 @@ import ccc.contentcreator.client.IGlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.TextField;
@@ -31,6 +32,8 @@ import com.google.gwt.http.client.Response;
  * @author Civic Computing Ltd.
  */
 public class LoginDialog extends AbstractEditDialog {
+    /** ENTER_KEY : int. */
+    private static final int ENTER_KEY = 13;
     private static final int DIALOG_WIDTH = 375;
     private static final int DIALOG_HEIGHT = 380;
 
@@ -43,7 +46,6 @@ public class LoginDialog extends AbstractEditDialog {
      */
     public LoginDialog() {
         super(new IGlobalsImpl().uiConstants().login(), new IGlobalsImpl());
-
         final GetPropertyAction action = new GetPropertyAction() {
             /** {@inheritDoc} */
             @Override
@@ -80,6 +82,8 @@ public class LoginDialog extends AbstractEditDialog {
         setMaximizable(false);
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
+
+        _username.focus();
     }
 
     /** {@inheritDoc} */
@@ -87,6 +91,14 @@ public class LoginDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new ButtonSelectionListenerAction(
             new LoginAction(LoginDialog.this));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onKeyPress(final WindowEvent we) {
+        if (we.getKeyCode() == ENTER_KEY) {
+            new LoginAction(LoginDialog.this).execute();
+        }
     }
 
     /**
