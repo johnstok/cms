@@ -31,6 +31,13 @@
             <artifactId>velocity-tools-generic</artifactId>
             <version>${lib.version.velocity-tools}</version>
         </dependency>
+        
+        <dependency>
+        	<groupId>commons-beanutils</groupId>
+        	<artifactId>commons-beanutils</artifactId>
+        	<version>1.8.1</version>
+        </dependency>
+        
     </dependencies>
 
 </project>
