@@ -404,7 +404,7 @@ abstract class AbstractEJB {
                 r.name().toString(),
                 (r.isPublished())
                     ? r.publishedBy().username() : null,
-                r.title(),
+                r.getTitle(),
                 (r.isLocked()) ? r.lockedBy().username() : null,
                 r.type(),
                 childCount,
@@ -455,7 +455,7 @@ abstract class AbstractEJB {
                 file.absolutePath().toString(),
                 file.id(),
                 file.name().toString(),
-                file.title(),
+                file.getTitle(),
                 file.properties());
         return fs;
     }
@@ -620,7 +620,7 @@ abstract class AbstractEJB {
             new TemplateSummary(
                 t.id(),
                 t.name().toString(),
-                t.title(),
+                t.getTitle(),
                 t.description(),
                 t.body(),
                 t.definition());

@@ -121,7 +121,7 @@ public class AliasTest extends TestCase {
 
         // ASSERT
         assertEquals(p, alias.target());
-        assertEquals("bar", alias.title());
+        assertEquals("bar", alias.getTitle());
         assertEquals(new ResourceName("bar"), alias.name());
     }
 

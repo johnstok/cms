@@ -58,7 +58,7 @@ public abstract class AbstractIndexer
     public void indexFile(final ccc.domain.File file) {
         if (!PredefinedResourceNames.CONTENT.equals(
             file.root().name().toString())) {
-            LOG.debug("Skipped indexing for non content file : "+file.title());
+            LOG.debug("Skipped indexing for non content file : "+file.getTitle());
             return;
         }
 
@@ -68,15 +68,15 @@ public abstract class AbstractIndexer
 
         if ("pdf".equalsIgnoreCase(subType)) {
             content = indexPDF(file);
-            LOG.info("Indexed PDF: "+file.title());
+            LOG.info("Indexed PDF: "+file.getTitle());
 
         } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
             content = indexWord(file);
-            LOG.info("Indexed Word: "+file.title());
+            LOG.info("Indexed Word: "+file.getTitle());
 
         } else if ("text".equalsIgnoreCase(primaryType)) {
             content = indexText(file);
-            LOG.info("Indexed text: "+file.title());
+            LOG.info("Indexed text: "+file.getTitle());
 
         } else {
             LOG.info("Unknown type "+subType);
@@ -91,7 +91,7 @@ public abstract class AbstractIndexer
     /** {@inheritDoc} */
     @Override
     public void indexPage(final Page page) {
-        final StringBuilder sb = new StringBuilder(page.title());
+        final StringBuilder sb = new StringBuilder(page.getTitle());
         for (final Paragraph p : page.currentRevision().paragraphs()) {
             if (ParagraphType.TEXT == p.type() && p.text() != null) {
                 sb.append(" ");
@@ -99,7 +99,7 @@ public abstract class AbstractIndexer
             }
         }
         createDocument(page.id(), sb.toString());
-        LOG.info("Indexed: "+page.title());
+        LOG.info("Indexed: "+page.getTitle());
     }
 
 
@@ -114,7 +114,7 @@ public abstract class AbstractIndexer
 
 
     private String indexPDF(final File file) {
-        final PdfLoader pdfLoader = new PdfLoader(file.title());
+        final PdfLoader pdfLoader = new PdfLoader(file.getTitle());
         PDDocument doc = null;
 
         try {
@@ -125,7 +125,7 @@ public abstract class AbstractIndexer
             }
             final PDFTextStripper stripper = new PDFTextStripper();
             stripper.setEndPage(MAX_PAGES_TO_INDEX);
-            final StringBuilder sb = new StringBuilder(file.title());
+            final StringBuilder sb = new StringBuilder(file.getTitle());
             sb.append(" ");
             final String content = stripper.getText(doc);
             sb.append(XHTML.cleanUpContent(content));
@@ -152,7 +152,7 @@ public abstract class AbstractIndexer
 
         try {
             _data.retrieve(file.data(), we);
-            final StringBuilder sb = new StringBuilder(file.title());
+            final StringBuilder sb = new StringBuilder(file.getTitle());
             sb.append(" ");
             final String content = we.getExtractor().getText();
             sb.append(XHTML.cleanUpContent(content));
@@ -168,7 +168,7 @@ public abstract class AbstractIndexer
     private String indexText(final File file) {
         final TxtExtractor te = new TxtExtractor();
         _data.retrieve(file.data(), te);
-        final StringBuilder sb = new StringBuilder(file.title());
+        final StringBuilder sb = new StringBuilder(file.getTitle());
         sb.append(" ");
         final String content = te.getContent();
         sb.append(XHTML.cleanUpContent(content));

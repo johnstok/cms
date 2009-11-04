@@ -28,6 +28,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
+import org.apache.velocity.tools.generic.SortTool;
 
 import ccc.commons.XHTML;
 import ccc.domain.CCCException;
@@ -102,7 +103,9 @@ public class VelocityProcessor implements TextProcessor {
             context.put("math", Math.class);
             context.put("calendar", Calendar.class);
             context.put("html", XHTML.class);
+            
             context.put("dateTool", new DateTool());
+            context.put("sortTool", new SortTool());
 
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
             ve.setApplicationAttribute(

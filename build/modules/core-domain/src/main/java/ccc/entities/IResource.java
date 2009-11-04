@@ -38,7 +38,7 @@ public interface IResource {
      *
      * @return The content's title, as a string.
      */
-    String title();
+    String getTitle();
 
     /**
      * Accessor for a resource's tags.

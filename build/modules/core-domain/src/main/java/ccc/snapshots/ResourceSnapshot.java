@@ -209,8 +209,8 @@ public class ResourceSnapshot implements IResource {
     }
 
     /** {@inheritDoc} */
-    public String title() {
-        return _delegate.title();
+    public String getTitle() {
+        return _delegate.getTitle();
     }
 
     /**
