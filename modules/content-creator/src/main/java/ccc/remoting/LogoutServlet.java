@@ -41,7 +41,7 @@ public class LogoutServlet
             new ErrorHandlingAction(
                 new LogoutAction(),
                 getServletContext(),
-                "/content/login?tg=");
+                "/login.html?tg=");
         action.execute(req, resp);
     }
 }

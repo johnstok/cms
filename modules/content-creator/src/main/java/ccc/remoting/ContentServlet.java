@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ccc.remoting.actions.CheckSecurityAction;
 import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.LookupResourceAction;
@@ -50,6 +52,7 @@ import ccc.search.SearchEngine;
 public class ContentServlet
     extends
         HttpServlet {
+    private static final Logger LOG = Logger.getLogger(ContentServlet.class);
 
     @EJB(name = SearchEngine.NAME) private transient SearchEngine _search;
     @EJB(name = Users.NAME)        private transient Users        _users;
@@ -89,6 +92,8 @@ public class ContentServlet
                          final HttpServletResponse resp)
                                           throws IOException, ServletException {
 
+        LOG.info("Serving content for: "+req.getContextPath()+req.getServletPath()+req.getPathInfo());
+
         bindServices(req);
 
         final ServletAction action =
@@ -99,7 +104,7 @@ public class ContentServlet
                         new CheckSecurityAction(_respectVisibility),
                         new RenderResourceAction(_respectVisibility, _search)),
                 getServletContext(),
-                "/content/login?tg="
+                "/login.html?tg="
             );
 
         action.execute(req, resp);

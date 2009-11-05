@@ -54,7 +54,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final TextArea _comment = new TextArea();
 
     private final Image _image =
-        new Image("images/icons/large-loading.gif");
+        new Image("static/images/icons/large-loading.gif");
 
     /**
      * Constructor.

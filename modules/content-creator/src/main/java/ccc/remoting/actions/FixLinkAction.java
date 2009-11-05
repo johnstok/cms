@@ -19,6 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.persistence.ResourceRepository;
@@ -33,6 +35,7 @@ import ccc.types.ResourceName;
 public class FixLinkAction
     extends
         AbstractServletAction {
+    private static final Logger LOG = Logger.getLogger(FixLinkAction.class);
 
 
     /** {@inheritDoc} */
@@ -43,6 +46,7 @@ public class FixLinkAction
 
         final String path = req.getPathInfo();
         final ResourceRepository rdao = getResourceDao(req);
+        LOG.info("Fixing path: "+path);
 
         final Matcher pageMatcher = PAGE_PATTERN.matcher(path);
         final Matcher fileMatcher = FILE_PATTERN.matcher(path);
@@ -55,6 +59,7 @@ public class FixLinkAction
         } else if (imageMatcher.matches()) {
             redirectToImage(req, resp, imageMatcher);
         } else {
+            LOG.info("No fix available.");
             dispatchNotFound(req, resp);
         }
     }
@@ -64,8 +69,9 @@ public class FixLinkAction
                                 final HttpServletResponse resp,
                                 final Matcher fileMatcher) throws IOException {
         final String fixedUrl =
-            "/content/files/"
+            "/files/"
             + ResourceName.escape(fileMatcher.group(1));
+        LOG.info("Fixed to path: "+fixedUrl);
         dispatchRedirect(req, resp, fixedUrl);
     }
 
@@ -74,8 +80,9 @@ public class FixLinkAction
                                  final HttpServletResponse resp,
                                  final Matcher fileMatcher) throws IOException {
         final String fixedUrl =
-            "/content/images/"
+            "/images/"
             + ResourceName.escape(fileMatcher.group(1));
+        LOG.info("Fixed to path: "+fixedUrl);
         dispatchRedirect(req, resp, fixedUrl);
     }
 
@@ -89,7 +96,9 @@ public class FixLinkAction
 
         try {
             final Resource r = rdao.lookupWithLegacyId(legacyId);
-            final String resourcePath = r.absolutePath().toString();
+            final String resourcePath = r.absolutePath().removeTop().toString();
+            LOG.info("Fixed to path: "+resourcePath);
+
             dispatchRedirect(req, resp, resourcePath);
 
         } catch (final EntityNotFoundException e) {

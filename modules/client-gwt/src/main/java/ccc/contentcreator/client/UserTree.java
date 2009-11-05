@@ -120,28 +120,28 @@ public class UserTree {
         final ModelData creator = getNewItem(
             _constants.contentCreator(),
             CONTENT_CREATOR,
-            "images/icons/user.gif");
+            "static/images/icons/user.gif");
         _store.add(all, creator, false);
         _tree.setLeaf(creator, true);
 
         final ModelData builder = getNewItem(
             _constants.siteBuilder(),
             SITE_BUILDER,
-            "images/icons/user.gif");
+            "static/images/icons/user.gif");
         _store.add(all, builder, false);
         _tree.setLeaf(builder, true);
 
         final ModelData admin = getNewItem(
             _constants.administrator(),
             ADMINISTRATOR,
-            "images/icons/user_gray.gif");
+            "static/images/icons/user_gray.gif");
         _store.add(all, admin, false);
         _tree.setLeaf(admin, true);
 
         final ModelData search = getNewItem(
             _constants.search(),
             SEARCH,
-            "images/icons/magnifier.gif");
+            "static/images/icons/magnifier.gif");
         _store.add(users, search, false);
         _tree.setLeaf(all, false);
 
