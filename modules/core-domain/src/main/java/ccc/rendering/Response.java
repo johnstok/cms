@@ -11,13 +11,15 @@
  */
 package ccc.rendering;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -37,7 +39,8 @@ public class Response {
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
     private static final Logger LOG = Logger.getLogger(Response.class);
 
-    private final List<Header> _headers = new ArrayList<Header>();
+    private final Map<String, Header> _headers =
+        new LinkedHashMap<String, Header>();
     private final Body    _body;
 
     /**
@@ -57,7 +60,8 @@ public class Response {
      * @param description The new description.
      */
     public void setDescription(final String description) {
-        _headers.add(new StringHeader("Content-Description", description));
+        _headers.put("Content-Description",
+            new StringHeader("Content-Description", description));
     }
 
 
@@ -67,7 +71,7 @@ public class Response {
      * @param length The size of the response's body, in bytes.
      */
     public void setLength(final int length) {
-        _headers.add(new IntHeader("Content-Length", length));
+        _headers.put("Content-Length", new IntHeader("Content-Length", length));
     }
 
 
@@ -78,7 +82,8 @@ public class Response {
      */
     public void setCharSet(final String charset) {
         try {
-            _headers.add(new CharEncodingHeader(Charset.forName(charset)));
+            _headers.put("Charset",
+                new CharEncodingHeader(Charset.forName(charset)));
         } catch (final RuntimeException e) {
             LOG.warn("Ignoring invalid charset: "+charset);
         }
@@ -92,7 +97,8 @@ public class Response {
      * @param secondary The secondary part of the mime type.
      */
     public void setMimeType(final String primary, final String secondary) {
-        _headers.add(new ContentTypeHeader(new MimeType(primary, secondary)));
+        _headers.put("MimeType",
+            new ContentTypeHeader(new MimeType(primary, secondary)));
     }
 
 
@@ -103,23 +109,23 @@ public class Response {
      */
     public void setExpiry(final Duration expiry) {
         if (expiry == null || expiry.time() <= 0) {
-            _headers.add(new StringHeader("Pragma", "no-cache"));
-            _headers.add(new StringHeader(
+            _headers.put("Pragma", new StringHeader("Pragma", "no-cache"));
+            _headers.put("Cache-Control", new StringHeader(
                 "Cache-Control", "no-store, must-revalidate, max-age=0"));
-            _headers.add(new DateHeader("Expires", new Date(0)));
+            _headers.put("Expires", new DateHeader("Expires", new Date(0)));
         } else {
     /* Pragma needs to be set to NULL because tomcat is adding
      * "pragma:no-cache" otherwise. See
      * https://issues.apache.org/bugzilla/show_bug.cgi?id=27122 and
      * http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
      */
-            _headers.add(new StringHeader("Pragma", null));
+            _headers.put("Pragma", new StringHeader("Pragma", null));
             final Date now = new Date();
             final Date expiryDate =
                 new Date(
                     now.getTime()+(expiry.time()*MILLISECONDS_IN_A_SECOND));
-            _headers.add(new DateHeader("Expires", expiryDate));
-            _headers.add(
+            _headers.put("Expires", new DateHeader("Expires", expiryDate));
+            _headers.put("Cache-Control",
                 new StringHeader("Cache-Control", "max-age="+expiry.time()));
         }
     }
@@ -131,7 +137,8 @@ public class Response {
      * @param disposition The new disposition for this response.
      */
     public void setDisposition(final String disposition) {
-        _headers.add(new StringHeader("Content-Disposition", disposition));
+        _headers.put("Content-Disposition",
+            new StringHeader("Content-Disposition", disposition));
     }
 
 
@@ -150,8 +157,8 @@ public class Response {
      *
      * @return The response's headers.
      */
-    public List<Header> getHeaders() {
-        return new ArrayList<Header>(_headers);
+    public Map<String, Header> getHeaders() {
+        return new LinkedHashMap<String, Header>(_headers);
     }
 
 
@@ -167,12 +174,35 @@ public class Response {
     public void write(final HttpServletResponse httpResponse,
                       final Context context,
                       final TextProcessor processor) throws IOException {
-        writeHeaders(httpResponse);
-        writeBody(
-            httpResponse.getOutputStream(),
-            httpResponse.getCharacterEncoding(),
-            context,
-            processor);
+
+            final HttpServletRequest r =
+                 context.get("request", HttpServletRequest.class);
+            if (r != null && r.getParameter("thumb") != null) {
+                // For thumbnails only
+                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                writeBody(
+                    baos,
+                    httpResponse.getCharacterEncoding(),
+                    context,
+                    processor);
+
+                setLength(baos.size());
+                setMimeType("image", "jpeg");
+
+                writeHeaders(httpResponse);
+                final byte[] b = baos.toByteArray();
+                httpResponse.getOutputStream().write(b);
+
+        } else {
+            writeHeaders(httpResponse);
+
+            writeBody(
+                httpResponse.getOutputStream(),
+                httpResponse.getCharacterEncoding(),
+                context,
+                processor);
+        }
+
     }
 
 
@@ -206,7 +236,7 @@ public class Response {
      * @param httpResponse The servlet response.
      */
     void writeHeaders(final HttpServletResponse httpResponse) {
-        for (final Header h : _headers) {
+        for (final Header h : _headers.values()) {
             h.writeTo(httpResponse);
         }
     }

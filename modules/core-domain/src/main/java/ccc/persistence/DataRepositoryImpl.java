@@ -23,6 +23,7 @@ import ccc.domain.Setting;
 import ccc.entities.IData;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.CoreData;
+import ccc.persistence.streams.ThumbAction;
 import ccc.types.DBC;
 
 
@@ -88,6 +89,18 @@ public class DataRepositoryImpl implements DataRepository {
         retrieve(
             (Data) data, // TODO: Shouldn't need to cast here.
             new CopyAction(dataStream)
+        );
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void retrieveThumb(final IData data,
+                             final OutputStream dataStream,
+                             final int maxDimension) {
+        final ThumbAction action = new ThumbAction(dataStream, maxDimension);
+        retrieve(
+            (Data) data, // TODO: Shouldn't need to cast here.
+            action
         );
     }
 }

@@ -54,4 +54,14 @@ public interface DataRepository {
      * @param action An action to perform with the retrieved data.
      */
     void retrieve(Data data, StreamAction action);
+
+    /**
+     * Retrieve an existing image, create a thumbnail and write it to an output
+     * stream.
+     *
+     * @param data The identifier for the existing data.
+     * @param os The output stream to which the data should be written.
+     * @param maxDimension The maximum dimension of the thumbnail.
+     */
+    void retrieveThumb(IData data, OutputStream os, int maxDimension);
 }
