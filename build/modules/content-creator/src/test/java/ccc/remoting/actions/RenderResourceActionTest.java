@@ -52,6 +52,7 @@ public final class RenderResourceActionTest extends TestCase {
         final Body b = createStrictMock(Body.class);
         final Response r = new Response(b);
 
+        _response.reset();
         expect(_response.getOutputStream()).andReturn(os);
         expect(_response.getCharacterEncoding()).andReturn("UTF-8");
         b.write(os, null, new Context(), tp);

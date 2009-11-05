@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.LogoutAction;
 import ccc.remoting.actions.ServletAction;
 
@@ -37,11 +36,8 @@ public class LogoutServlet
     protected void doGet(final HttpServletRequest req,
                          final HttpServletResponse resp)
                                           throws ServletException, IOException {
-        final ServletAction action =
-            new ErrorHandlingAction(
-                new LogoutAction(),
-                getServletContext(),
-                "/login.html?tg=");
+        //TODO: Inline the LogoutAction class.
+        final ServletAction action = new LogoutAction();
         action.execute(req, resp);
     }
 }

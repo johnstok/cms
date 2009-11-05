@@ -175,6 +175,8 @@ public class Response {
                       final Context context,
                       final TextProcessor processor) throws IOException {
 
+        httpResponse.reset();
+
             final HttpServletRequest r =
                  context.get("request", HttpServletRequest.class);
             if (r != null && r.getParameter("thumb") != null) {

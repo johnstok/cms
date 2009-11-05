@@ -28,6 +28,14 @@ public final class HttpStatusCode {
     public static final int IM_A_TEAPOT = 418;
 
 
+    /** NOT_FOUND : int. */
+    public static final int NOT_FOUND = 404;
+
+
+    /** ERROR : int. */
+    public static final int ERROR = 500;
+
+
     /**
      * Constructor.
      */
