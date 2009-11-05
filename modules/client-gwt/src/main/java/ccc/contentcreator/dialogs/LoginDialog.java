@@ -97,6 +97,7 @@ public class LoginDialog extends AbstractEditDialog {
     @Override
     protected void onKeyPress(final WindowEvent we) {
         if (we.getKeyCode() == ENTER_KEY) {
+            we.preventDefault();
             new LoginAction(LoginDialog.this).execute();
         }
     }
