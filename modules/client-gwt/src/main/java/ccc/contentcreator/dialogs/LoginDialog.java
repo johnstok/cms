@@ -115,7 +115,7 @@ public class LoginDialog extends AbstractEditDialog {
      * @return The username as a string.
      */
     public String getUsername() {
-        return _username.getValue();
+        return (null==_username.getValue()) ? "" : _username.getValue();
     }
 
     /**
