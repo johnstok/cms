@@ -65,15 +65,15 @@
     
     <filter>
         <filter-name>txn-filter</filter-name>
-        <filter-class>ccc.remoting.filters.ReadWriteTxAction</filter-class>
+        <filter-class>ccc.remoting.filters.ReadWriteTxFilter</filter-class>
     </filter>
     <filter>
         <filter-name>jpa-filter</filter-name>
-        <filter-class>ccc.remoting.filters.PersistenceAction</filter-class>
+        <filter-class>ccc.remoting.filters.PersistenceFilter</filter-class>
     </filter>
     <filter>
         <filter-name>err-filter</filter-name>
-        <filter-class>ccc.remoting.filters.ErrorHandlingAction</filter-class>
+        <filter-class>ccc.remoting.filters.ErrorHandlingFilter</filter-class>
     </filter>
 
     <servlet>

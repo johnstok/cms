@@ -32,7 +32,7 @@ import ccc.remoting.actions.SessionKeys;
  *
  * @author Civic Computing Ltd.
  */
-public class PersistenceAction
+public class PersistenceFilter
     implements
         Filter {
 

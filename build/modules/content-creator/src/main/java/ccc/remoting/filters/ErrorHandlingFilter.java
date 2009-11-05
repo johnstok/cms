@@ -37,11 +37,11 @@ import ccc.types.HttpStatusCode;
  *
  * @author Civic Computing Ltd.
  */
-public class ErrorHandlingAction
+public class ErrorHandlingFilter
     implements
         Filter {
     private static final Logger LOG =
-        Logger.getLogger(ErrorHandlingAction.class);
+        Logger.getLogger(ErrorHandlingFilter.class);
 
     // FIXME: Move to web.xml!
     private final String _loginUri = "/login.html";
