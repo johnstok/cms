@@ -92,7 +92,7 @@ public class LookupResourceAction
         pathString = nvl(pathString, "/");
         pathString = removeTrailing('/', pathString);
         LOG.info(
-            "Request for "+request.getContextPath()+"/"+_rootName+pathString);
+            "Resource path is /"+_rootName+pathString);
 
         if (ResourcePath.isValid(pathString)) {
             return new ResourcePath(pathString);

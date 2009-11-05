@@ -33,8 +33,8 @@ public class LoginServlet
      HttpServlet {
 
     // Move to web.xml?
-    private final String _siteRoot = "/content";
-    private final String _loginPage = "/content/login";
+    private final String _siteRoot = "/";
+    private final String _loginPage = "/login.html";
 
     /** {@inheritDoc} */
     @Override
@@ -45,7 +45,7 @@ public class LoginServlet
             new ErrorHandlingAction(
                 new LoginAction(_siteRoot, _loginPage),
                 getServletContext(),
-                "/content/login?tg="
+                _loginPage+"?tg="
             );
 
         action.execute(req, resp);

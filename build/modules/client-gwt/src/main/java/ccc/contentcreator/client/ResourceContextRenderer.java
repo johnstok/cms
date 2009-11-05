@@ -42,7 +42,7 @@ public class ResourceContextRenderer
         html.append("<img class='action' id='");
         html.append(model.getName());
         html.append("_cog");
-        html.append("' src='images/icons/cog_go.gif'/>&#160;");
+        html.append("' src='static/images/icons/cog_go.gif'/>&#160;");
         return html.toString();
     }
 }

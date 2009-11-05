@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.FixLinkAction;
 import ccc.remoting.actions.ReaderAction;
@@ -37,6 +39,7 @@ import ccc.remoting.actions.ServletAction;
 public final class BrokenLinkServlet
     extends
         HttpServlet {
+    private static final Logger LOG = Logger.getLogger(BrokenLinkServlet.class);
 
 
     /** {@inheritDoc} */
@@ -45,14 +48,15 @@ public final class BrokenLinkServlet
                          final HttpServletResponse resp)
                                           throws ServletException, IOException {
 
-        // FIXME: We need to add txn & jpa filters for this servlet
+        LOG.info("Handling broken link: "+req.getContextPath()+req.getServletPath()+req.getPathInfo());
+
         final ServletAction action =
             new ErrorHandlingAction(
                     new SerialAction(
                         new ReaderAction(),
                         new FixLinkAction()),
                 getServletContext(),
-                "/content/login?tg=");
+                "/login.html?tg=");
 
         action.execute(req, resp);
     }

@@ -10,7 +10,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Not found</title>
-        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/advanced.css" type="text/css" media="screen"  />
     </head>
 
     <body id="notFoundPage">

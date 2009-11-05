@@ -64,12 +64,15 @@ public class ErrorHandlingAction
             dispatchNotFound(req, resp);
 
         } catch (final RedirectRequiredException e) {
-            final String relUri = e.getResource().absolutePath().toString();
+            final String relUri =
+                req.getServletPath() +
+                e.getResource().absolutePath().removeTop().toString();
             dispatchRedirect(req, resp, relUri);
 
         } catch (final AuthenticationRequiredException e) {
+            // FIXME: Calculate relUri as above?
             final String relUri =
-                _loginUri+e.getResource().absolutePath().toString();
+                _loginUri+e.getResource().absolutePath().removeTop().toString();
             dispatchRedirect(req, resp, relUri);
 
         } catch (final UnsupportMethodException e) {

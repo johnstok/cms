@@ -44,7 +44,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
     private final HiddenField<String> _id = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
     private final Image _image =
-        new Image("images/icons/large-loading.gif");
+        new Image("static/images/icons/large-loading.gif");
 
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();

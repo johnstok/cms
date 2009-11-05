@@ -39,7 +39,7 @@ public class ResourceIncludedInMainMenuRenderer
                          final Grid<ResourceSummaryModelData> grid) {
 
         if (model.isIncludedInMainMenu()) {
-            return "<img src='images/icons/tick.gif'/>&#160;";
+            return "<img src='static/images/icons/tick.gif'/>&#160;";
         }
         return "";
     }

@@ -18,6 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ccc.domain.CCCException;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -36,6 +38,8 @@ import ccc.rendering.StatefulReader;
 public abstract class AbstractServletAction
     implements
         ServletAction {
+    private static final Logger LOG =
+        Logger.getLogger(AbstractServletAction.class);
 
 
     /**
@@ -49,6 +53,7 @@ public abstract class AbstractServletAction
     protected void dispatchNotFound(final HttpServletRequest request,
                                     final HttpServletResponse response)
                                           throws ServletException, IOException {
+        LOG.info("Forwarding to /notfound for: "+request.getContextPath()+request.getServletPath()+request.getPathInfo());
         request.getRequestDispatcher("/notfound").forward(request, response);
     }
 
@@ -82,8 +87,9 @@ public abstract class AbstractServletAction
     protected void dispatchRedirect(final HttpServletRequest request,
                                     final HttpServletResponse response,
                                     final String relUri) throws IOException {
-        final String context = request.getContextPath();
-        response.sendRedirect(context+relUri);
+        final String target = request.getContextPath()+relUri;
+        LOG.info("Redirecting to "+target+" from "+request.getContextPath()+request.getServletPath()+request.getPathInfo());
+        response.sendRedirect(target);
     }
 
 

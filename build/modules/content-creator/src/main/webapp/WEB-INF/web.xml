@@ -150,23 +150,35 @@
         <servlet-name>notfound</servlet-name>
         <jsp-file>/notfound.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>client</servlet-name>
+        <jsp-file>/ContentCreator.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>login-page</servlet-name>
+        <jsp-file>/static/Login.html</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>login-error-page</servlet-name>
+        <jsp-file>/static/LoginError.html</jsp-file>
+    </servlet>
 
     <filter-mapping>
         <filter-name>txn-filter</filter-name>
-        <url-pattern>/content/*</url-pattern>
-        <url-pattern>/assets/*</url-pattern>
-        <url-pattern>/preview/content/*</url-pattern>
-        <url-pattern>/preview/assets/*</url-pattern>
-        <url-pattern>/${application.prefix}/*</url-pattern>
+        <servlet-name>content</servlet-name>
+        <servlet-name>assets</servlet-name>
+        <servlet-name>preview-content</servlet-name>
+        <servlet-name>preview-assets</servlet-name>
+        <servlet-name>broken-links</servlet-name>
     </filter-mapping>  
 
     <filter-mapping>
         <filter-name>jpa-filter</filter-name>
-        <url-pattern>/content/*</url-pattern>
-        <url-pattern>/assets/*</url-pattern>
-        <url-pattern>/preview/content/*</url-pattern>
-        <url-pattern>/preview/assets/*</url-pattern>
-        <url-pattern>/${application.prefix}/*</url-pattern>
+        <servlet-name>content</servlet-name>
+        <servlet-name>assets</servlet-name>
+        <servlet-name>preview-content</servlet-name>
+        <servlet-name>preview-assets</servlet-name>
+        <servlet-name>broken-links</servlet-name>
     </filter-mapping>  
     
     
@@ -184,7 +196,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>content</servlet-name>
-        <url-pattern>/content/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>assets</servlet-name>
@@ -218,16 +230,29 @@
         <servlet-name>notfound</servlet-name>
         <url-pattern>/notfound</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>client</servlet-name>
+        <url-pattern>/client</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>login-page</servlet-name>
+        <url-pattern>/static/Login.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>login-error-page</servlet-name>
+        <url-pattern>/static/LoginError.html</url-pattern>
+    </servlet-mapping>
+    
     
     <!--
     <session-config>
         <session-timeout>1</session-timeout>
     </session-config>
     -->
-
-    <welcome-file-list>
-        <welcome-file>content/</welcome-file>
-    </welcome-file-list>
 
     <error-page>
         <error-code>404</error-code>
@@ -271,8 +296,8 @@
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
-            <form-login-page>/Login.html</form-login-page>
-            <form-error-page>/LoginError.html</form-error-page>
+            <form-login-page>/static/Login.html</form-login-page>
+            <form-error-page>/static/LoginError.html</form-error-page>
         </form-login-config>
     </login-config>
 
