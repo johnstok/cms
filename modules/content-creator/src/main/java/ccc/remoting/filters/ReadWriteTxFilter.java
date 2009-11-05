@@ -37,10 +37,10 @@ import org.apache.log4j.Logger;
  *
  * @author Civic Computing Ltd.
  */
-public class ReadWriteTxAction
+public class ReadWriteTxFilter
     implements
         Filter {
-    private static final Logger LOG = Logger.getLogger(ReadWriteTxAction.class);
+    private static final Logger LOG = Logger.getLogger(ReadWriteTxFilter.class);
 
     @Resource private transient UserTransaction _utx;
 
