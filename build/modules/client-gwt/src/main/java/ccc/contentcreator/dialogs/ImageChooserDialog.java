@@ -114,7 +114,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
     return ['<tpl for=".">',
      '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
      '<div class="thumb">',
-     '<img src="{PATH}" width="{DWIDTH}" height="{DHEIGHT}" title="{TITLE}"></div>',
+     '<img src="{PATH}?thumb=200"  title="{TITLE}"></div>',
      '<span class="x-editable">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
      '</tpl>',
      '<div class="x-clear"></div>'].join("");

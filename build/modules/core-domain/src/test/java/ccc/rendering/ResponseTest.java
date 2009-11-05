@@ -15,7 +15,7 @@ import static org.easymock.EasyMock.*;
 
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,11 +48,12 @@ public class ResponseTest
         _r.setDescription("foo");
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(
-            headers.contains(new StringHeader("Content-Description", "foo")));
+            headers.containsValue(
+                new StringHeader("Content-Description", "foo")));
     }
 
     /**
@@ -64,11 +65,11 @@ public class ResponseTest
         _r.setLength(1);
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(
-            headers.contains(new IntHeader("Content-Length", 1)));
+            headers.containsValue(new IntHeader("Content-Length", 1)));
     }
 
     /**
@@ -80,11 +81,11 @@ public class ResponseTest
         _r.setCharSet("UTF-8");
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(
-            headers.contains(new CharEncodingHeader(Charset.forName("UTF-8"))));
+            headers.containsValue(new CharEncodingHeader(Charset.forName("UTF-8"))));
     }
 
     /**
@@ -96,11 +97,11 @@ public class ResponseTest
         _r.setMimeType("text", "html");
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(
-            headers.contains(
+            headers.containsValue(
                 new ContentTypeHeader(MimeType.HTML)));
     }
 
@@ -113,10 +114,10 @@ public class ResponseTest
         _r.setExpiry(null);
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
-        assertTrue(headers.contains(new DateHeader("Expires", new Date(0))));
+        assertTrue(headers.containsValue(new DateHeader("Expires", new Date(0))));
     }
     /**
      * Test.
@@ -127,11 +128,11 @@ public class ResponseTest
         _r.setExpiry(new Duration(MILLISECS_300));
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(
-            headers.contains(
+            headers.containsValue(
                 new StringHeader("Cache-Control", "max-age="+MILLISECS_300)));
         System.out.println(headers);
     }
@@ -145,11 +146,11 @@ public class ResponseTest
         _r.setDisposition("foo");
 
         // ACT
-        final List<Header> headers = _r.getHeaders();
+        final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
         assertTrue(
-            headers.contains(new StringHeader("Content-Disposition", "foo")));
+            headers.containsValue(new StringHeader("Content-Disposition", "foo")));
     }
 
     /**

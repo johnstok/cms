@@ -201,7 +201,7 @@ public class DefaultRendererTest
                 "no-store, must-revalidate, max-age=0"));
             add(new DateHeader("Expires", new Date(0)));
         }};
-        assertEquals(expected, r.getHeaders());
+        assertEquals(expected, new ArrayList<Header>(r.getHeaders().values()));
         assertNotNull(r.getBody());
         assertEquals(PageBody.class, r.getBody().getClass());
     }
@@ -238,7 +238,7 @@ public class DefaultRendererTest
                 "no-store, must-revalidate, max-age=0"));
             add(new DateHeader("Expires", new Date(0)));
         }};
-        assertEquals(expected, r.getHeaders());
+        assertEquals(expected, new ArrayList<Header>(r.getHeaders().values()));
 
 
         assertNotNull(r.getBody());

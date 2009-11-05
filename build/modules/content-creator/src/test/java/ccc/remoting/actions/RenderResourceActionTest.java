@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.rendering.Body;
+import ccc.rendering.Context;
 import ccc.rendering.Response;
 import ccc.rendering.TextProcessor;
 import ccc.rendering.velocity.VelocityProcessor;
@@ -53,11 +54,11 @@ public final class RenderResourceActionTest extends TestCase {
 
         expect(_response.getOutputStream()).andReturn(os);
         expect(_response.getCharacterEncoding()).andReturn("UTF-8");
-        b.write(os, null, null, tp);
+        b.write(os, null, new Context(), tp);
         replayAll();
 
         // ACT
-        r.write(_response, null, tp);
+        r.write(_response, new Context(), tp);
 
         // ASSERT
         verifyAll();
