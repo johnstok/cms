@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.remoting.actions.CheckSecurityAction;
-import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.LookupResourceAction;
 import ccc.remoting.actions.ReaderAction;
 import ccc.remoting.actions.RenderResourceAction;
@@ -92,20 +91,20 @@ public class ContentServlet
                          final HttpServletResponse resp)
                                           throws IOException, ServletException {
 
-        LOG.info("Serving content for: "+req.getContextPath()+req.getServletPath()+req.getPathInfo());
+        LOG.info(
+            "Serving content for: "
+            + req.getContextPath()
+            + req.getServletPath()
+            + req.getPathInfo());
 
         bindServices(req);
 
         final ServletAction action =
-            new ErrorHandlingAction(
                     new SerialAction(
                         new ReaderAction(),
                         new LookupResourceAction(_rootName),
                         new CheckSecurityAction(_respectVisibility),
-                        new RenderResourceAction(_respectVisibility, _search)),
-                getServletContext(),
-                "/login.html?tg="
-            );
+                        new RenderResourceAction(_respectVisibility, _search));
 
         action.execute(req, resp);
     }

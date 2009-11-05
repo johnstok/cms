@@ -65,11 +65,15 @@
     
     <filter>
         <filter-name>txn-filter</filter-name>
-        <filter-class>ccc.remoting.actions.ReadWriteTxAction</filter-class>
+        <filter-class>ccc.remoting.filters.ReadWriteTxAction</filter-class>
     </filter>
     <filter>
         <filter-name>jpa-filter</filter-name>
-        <filter-class>ccc.remoting.actions.PersistenceAction</filter-class>
+        <filter-class>ccc.remoting.filters.PersistenceAction</filter-class>
+    </filter>
+    <filter>
+        <filter-name>err-filter</filter-name>
+        <filter-class>ccc.remoting.filters.ErrorHandlingAction</filter-class>
     </filter>
 
     <servlet>
@@ -164,12 +168,25 @@
     </servlet>
 
     <filter-mapping>
+        <filter-name>err-filter</filter-name>
+        <servlet-name>content</servlet-name>
+        <servlet-name>assets</servlet-name>
+        <servlet-name>preview-content</servlet-name>
+        <servlet-name>preview-assets</servlet-name>
+        <servlet-name>broken-links</servlet-name>
+        <servlet-name>login</servlet-name>
+        <servlet-name>logout</servlet-name>
+    </filter-mapping>  
+
+    <filter-mapping>
         <filter-name>txn-filter</filter-name>
         <servlet-name>content</servlet-name>
         <servlet-name>assets</servlet-name>
         <servlet-name>preview-content</servlet-name>
         <servlet-name>preview-assets</servlet-name>
         <servlet-name>broken-links</servlet-name>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
 
     <filter-mapping>
@@ -179,8 +196,9 @@
         <servlet-name>preview-content</servlet-name>
         <servlet-name>preview-assets</servlet-name>
         <servlet-name>broken-links</servlet-name>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
-    
     
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
@@ -259,9 +277,10 @@
         <location>/notfound</location>
     </error-page>
     <error-page>
-        <error-code>500</error-code>
+        <exception-type>java.lang.Exception</exception-type>
         <location>/error</location>
     </error-page>
+    
 
     <security-constraint>
         <web-resource-collection>

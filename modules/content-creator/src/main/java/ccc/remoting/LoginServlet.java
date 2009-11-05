@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.LoginAction;
 import ccc.remoting.actions.ServletAction;
 
@@ -32,7 +31,7 @@ public class LoginServlet
     extends
      HttpServlet {
 
-    // Move to web.xml?
+    // TODO: Move to web.xml.
     private final String _siteRoot = "/";
     private final String _loginPage = "/login.html";
 
@@ -41,13 +40,8 @@ public class LoginServlet
     protected void doPost(final HttpServletRequest req,
                           final HttpServletResponse resp)
                                           throws ServletException, IOException {
-        final ServletAction action =
-            new ErrorHandlingAction(
-                new LoginAction(_siteRoot, _loginPage),
-                getServletContext(),
-                _loginPage+"?tg="
-            );
-
+        // TODO: inline the LoginAction class.
+        final ServletAction action = new LoginAction(_siteRoot, _loginPage);
         action.execute(req, resp);
     }
 }

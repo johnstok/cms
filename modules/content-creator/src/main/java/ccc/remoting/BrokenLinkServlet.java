@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.remoting.actions.ErrorHandlingAction;
 import ccc.remoting.actions.FixLinkAction;
 import ccc.remoting.actions.ReaderAction;
 import ccc.remoting.actions.SerialAction;
@@ -48,15 +47,16 @@ public final class BrokenLinkServlet
                          final HttpServletResponse resp)
                                           throws ServletException, IOException {
 
-        LOG.info("Handling broken link: "+req.getContextPath()+req.getServletPath()+req.getPathInfo());
+        LOG.info(
+            "Handling broken link: "
+            + req.getContextPath()
+            + req.getServletPath()
+            + req.getPathInfo());
 
         final ServletAction action =
-            new ErrorHandlingAction(
                     new SerialAction(
                         new ReaderAction(),
-                        new FixLinkAction()),
-                getServletContext(),
-                "/login.html?tg=");
+                        new FixLinkAction());
 
         action.execute(req, resp);
     }

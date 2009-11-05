@@ -63,4 +63,7 @@ public final class SessionKeys {
 
     /** SEARCH_KEY : String. */
     public static final String SEARCH_KEY = "ccc.search";
+
+    /** EXCEPTION_CODE : String. */
+    public static final String EXCEPTION_CODE = "ccc.exception_code";
 }

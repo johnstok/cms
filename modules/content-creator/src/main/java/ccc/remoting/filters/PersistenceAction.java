@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.remoting.actions;
+package ccc.remoting.filters;
 
 import java.io.IOException;
 
@@ -22,6 +22,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
+import ccc.remoting.actions.SessionKeys;
 
 
 
@@ -54,7 +56,12 @@ public class PersistenceAction
             chain.doFilter(request, response);
 
         } finally {
-            em.close();
+            try {
+                em.close();
+            } finally {
+                // Prevent access to a closed entity manager.
+                request.removeAttribute(SessionKeys.EM_KEY);
+            }
         }
     }
 
