@@ -26,8 +26,6 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.log4j.Logger;
-import org.jboss.security.SimpleGroup;
-import org.jboss.security.SimplePrincipal;
 
 import ccc.domain.User;
 import ccc.types.Username;

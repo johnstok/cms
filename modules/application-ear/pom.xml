@@ -22,7 +22,7 @@
                 <version>2.3.2</version>
                 <configuration>
                     <filtering>true</filtering>
-                    <unpackTypes>sar,war,ejb</unpackTypes>
+                    <unpackTypes>sar,war,ejb,jar</unpackTypes>
                     <displayName>${application.prefix}</displayName>
                     <finalName>${application.name}</finalName>
                     <version>5</version>
@@ -32,11 +32,6 @@
                         ${basedir}/target/descriptors
                     </generatedDescriptorLocation>
                     <modules>
-                        <!-- webModule>
-                            <groupId>CCC7</groupId>
-                            <artifactId>content-server</artifactId>
-                            <contextRoot>/${application.prefix}/server</contextRoot>
-                        </webModule -->
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-creator</artifactId>
@@ -46,10 +41,6 @@
                             <groupId>CCC7</groupId>
                             <artifactId>services-ejb3</artifactId>
                         </ejbModule>
-                        <sarModule>
-                            <groupId>CCC7</groupId>
-                            <artifactId>security-config</artifactId>
-                        </sarModule>
                     </modules>
                     <jboss>
                         <version>4.2</version><!-- Left at 4.2 due to http://jira.codehaus.org/browse/MEAR-105 -->
@@ -57,6 +48,7 @@
                         <data-sources>
                             <data-source>${application.db-datasource}</data-source>
                             <data-source>mail-service.xml</data-source>
+                            <data-source>auth-service.xml</data-source>
                         </data-sources>
 
                         <loader-repository>
@@ -81,12 +73,6 @@
             <groupId>CCC7</groupId>
             <artifactId>services-ejb3</artifactId>
             <type>ejb</type>
-            <version>7.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>CCC7</groupId>
-            <artifactId>security-config</artifactId>
-            <type>sar</type>
             <version>7.0.0-SNAPSHOT</version>
         </dependency>
 
