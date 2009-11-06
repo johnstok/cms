@@ -32,7 +32,6 @@ import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
-import ccc.domain.Scheduler;
 import ccc.rest.Actions;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -42,7 +41,7 @@ import ccc.rest.extensions.ResourcesExt;
 
 
 /**
- * EJB implementation of the {@link Scheduler}.
+ * EJB implementation of the {@link Actions}.
  *
  * @author Civic Computing Ltd.
  */

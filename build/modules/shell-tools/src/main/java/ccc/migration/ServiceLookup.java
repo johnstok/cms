@@ -108,8 +108,8 @@ public class ServiceLookup implements ServiceLocator {
      *
      * @return An action scheduler.
      */
-    public ActionScheduler lookupActionScheduler() {
-        return _registry.<ActionScheduler>get(jndiPath(ActionScheduler.NAME));
+    public Scheduler lookupActionScheduler() {
+        return _registry.<Scheduler>get(jndiPath(ActionScheduler.NAME));
     }
 
 

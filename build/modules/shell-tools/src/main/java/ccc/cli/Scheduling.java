@@ -4,8 +4,8 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
+import ccc.domain.Scheduler;
 import ccc.migration.ServiceLookup;
-import ccc.rest.ActionScheduler;
 
 /**
  * Command line management of Action executor.
@@ -33,7 +33,7 @@ public final class Scheduling extends CccApp {
 
         services = new ServiceLookup(options.getApp(), options._providerURL);
 
-        final ActionScheduler s = services.lookupActionScheduler();
+        final Scheduler s = services.lookupActionScheduler();
 
         if ("start".equals(options.getAction())) {
             s.start();
