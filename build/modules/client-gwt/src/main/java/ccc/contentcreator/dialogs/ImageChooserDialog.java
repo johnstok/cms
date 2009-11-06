@@ -44,7 +44,8 @@ public class ImageChooserDialog extends AbstractBaseDialog {
     private List<ImageSummaryModelData> _models;
 
     private static final int PANEL_HEIGHT = 460;
-    private static final int PANEL_WIDTH = 620;
+    private static final int PANEL_WIDTH = 700;
+    private static final int DIALOG_WIDTH = 720;
 
     /**
      * Constructor.
@@ -55,7 +56,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
 
         super(new IGlobalsImpl().uiConstants().selectImage(),
               new IGlobalsImpl());
-
+        setWidth(DIALOG_WIDTH);
         _image = image;
         final ListStore<ImageSummaryModelData> store =
             new ListStore<ImageSummaryModelData>();
@@ -114,8 +115,8 @@ public class ImageChooserDialog extends AbstractBaseDialog {
     return ['<tpl for=".">',
      '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
      '<div class="thumb">',
-     '<img src="{PATH}?thumb=200"  title="{TITLE}"></div>',
-     '<span class="x-editable">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
+     '<img src="preview/{PATH}?thumb=200"  title="{TITLE}"></div>',
+     '<span class="x-editable" style="position: absolute; bottom: 0;">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
      '</tpl>',
      '<div class="x-clear"></div>'].join("");
 

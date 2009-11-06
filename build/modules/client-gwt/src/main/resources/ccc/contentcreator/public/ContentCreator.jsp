@@ -5,6 +5,7 @@
     <meta name="gwt:property" content="locale=<%= request.getLocale() %>" />
     
     <link rel="stylesheet" type="text/css" href="static/gxt/2.0.4/resources/css/gxt-all.css" />
+     <link rel="stylesheet" type="text/css" href="static/listview.css" />
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->

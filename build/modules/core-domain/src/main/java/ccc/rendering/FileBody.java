@@ -31,6 +31,8 @@ public class FileBody
     implements
         Body {
 
+    /** DEFAULT_MAX_DIMENSION : int. */
+    private static final int DEFAULT_MAX_DIMENSION = 200;
     private final FileSnapshot _file;
 
     /**
@@ -54,14 +56,15 @@ public class FileBody
         final HttpServletRequest r =
             (HttpServletRequest) context.getExtras().get("request");
         if (r != null && r.getParameter("thumb") != null) {
-            int maxDimension = 200;
+            int maxDimension = DEFAULT_MAX_DIMENSION;
             try {
                 maxDimension = Integer.parseInt(r.getParameter("thumb"));
             } catch (final NumberFormatException e) {
                 Exceptions.swallow(e);
             }
             dataRepository.retrieveThumb(_file.getData(), os, maxDimension);
+        } else {
+            dataRepository.retrieve(_file.getData(), os);
         }
-        dataRepository.retrieve(_file.getData(), os);
     }
 }
