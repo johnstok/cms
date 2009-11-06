@@ -102,7 +102,9 @@ public class ImageChooserDialog extends AbstractBaseDialog {
                 final ImageSummaryModelData md =
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
-                    _image.setValue(md.getPath());
+                    String path = md.getPath().substring(1);
+                    path = path.substring(path.indexOf("/")+1);
+                    _image.setValue(path);
                 }
                     _image.setFSModel(md);
                 hide();
@@ -126,7 +128,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
                            final ListStore<ImageSummaryModelData> store,
                            final Collection<FileDto> arg0) {
 
-        _models = DataBinding.bindFileSummary(arg0, 200);
+        _models = DataBinding.bindFileSummary(arg0);
         if (_models != null && _models.size() > 0) {
             store.add(_models);
             final ImageSummaryModelData fs = image.getFSModel();

@@ -34,18 +34,14 @@ public class ImageSummaryModelData
         ModelData {
 
     private FileDto _fs;
-    private int _maxDimension;
 
     /**
      * Constructor.
      *
      * @param fs The file summary.
-     * @param maxDimension The maximum dimension for thumb nails.
      */
-    public ImageSummaryModelData(final FileDto fs,
-                                 final int maxDimension) {
+    public ImageSummaryModelData(final FileDto fs) {
         _fs = fs;
-        _maxDimension = maxDimension;
     }
 
     /** {@inheritDoc} */
@@ -73,12 +69,6 @@ public class ImageSummaryModelData
 
             case HEIGHT:
                 return (X) getHeight();
-
-            case DWIDTH:
-                return (X) getDisplayWidth();
-
-            case DHEIGHT:
-                return (X) getDisplayHeight();
 
             case TITLE:
             case SHORT_NAME:
@@ -133,9 +123,7 @@ public class ImageSummaryModelData
         PATH,
         SHORT_NAME,
         WIDTH,
-        HEIGHT,
-        DWIDTH,
-        DHEIGHT;
+        HEIGHT;
     }
 
     /**
@@ -183,47 +171,4 @@ public class ImageSummaryModelData
         return _fs.getProperties().get(FilePropertyNames.HEIGHT);
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The display width of the image resource.
-     */
-    public String getDisplayWidth() {
-        final int width =
-            Integer.decode(getWidth()).intValue();
-        final int height =
-            Integer.decode(getHeight()).intValue();
-        if (_maxDimension > 0
-            && (width > _maxDimension || height > _maxDimension)) {
-            if (width >= height) {
-                return ""+_maxDimension;
-            }
-            final float f = (float) width/(float) height;
-            return ""+f*_maxDimension;
-
-        }
-        return ""+width;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The height of the image resource.
-     */
-    public String getDisplayHeight() {
-        final int width =
-            Integer.decode(getWidth()).intValue();
-        final int height =
-            Integer.decode(getHeight()).intValue();
-        if (_maxDimension > 0
-            && (width > _maxDimension || height > _maxDimension)) {
-            if (height >= width) {
-                return ""+_maxDimension;
-            }
-            final float f = (float) height/(float) width;
-            return ""+f*_maxDimension;
-
-        }
-        return ""+width;
-    }
 }

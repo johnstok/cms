@@ -233,7 +233,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         "",
                         new HashMap<String, String>());
                     final ImageSummaryModelData model =
-                        new ImageSummaryModelData(fs, 200);
+                        new ImageSummaryModelData(fs);
                     image.setValue(path);
                     image.setFSModel(model);
                 }
