@@ -12,7 +12,6 @@
 package ccc.rendering;
 
 import ccc.domain.CCCException;
-import ccc.domain.Resource;
 import ccc.types.DBC;
 
 
@@ -26,14 +25,14 @@ public class AuthenticationRequiredException
     extends
         CCCException {
 
-    private final Resource _resource;
+    private final String _resource;
 
     /**
      * Constructor.
      *
-     * @param r The resource that requires authentication.
+     * @param r The path to the resource that requires authentication.
      */
-    public AuthenticationRequiredException(final Resource r) {
+    public AuthenticationRequiredException(final String r) {
         DBC.require().notNull(r);
         _resource = r;
     }
@@ -41,9 +40,9 @@ public class AuthenticationRequiredException
     /**
      * Accessor.
      *
-     * @return The resource that requires authentication.
+     * @return The path to the resource that requires authentication.
      */
-    public Resource getResource() {
+    public String getTarget() {
         return _resource;
     }
 }

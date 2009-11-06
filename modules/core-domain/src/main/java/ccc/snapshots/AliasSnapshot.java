@@ -51,7 +51,8 @@ public class AliasSnapshot extends ResourceSnapshot {
         if (null==target()) {
             throw new NotFoundException();
         }
-        throw new RedirectRequiredException(target());
+        throw new RedirectRequiredException(// FIXME: Broken for /assets
+            target().absolutePath().removeTop().toString());
     }
 
 }
