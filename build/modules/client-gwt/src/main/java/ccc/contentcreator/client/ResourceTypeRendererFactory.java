@@ -103,19 +103,17 @@ public final class ResourceTypeRendererFactory  {
     private static String resolveIcon(final ResourceType type) {
 
         if (type.equals(ResourceType.PAGE)) {
-            return "<img src='static/images/icons/page.gif'/>&#160;";
+            return "<img src='"+ImagePaths.PAGE+"'/>&#160;";
         } else  if (type.equals(ResourceType.FOLDER)) {
-            return "<img src='static/images/icons/folder.gif'/>&#160;";
+            return "<img src='"+ImagePaths.FOLDER+"'/>&#160;";
         } else  if (type.equals(ResourceType.ALIAS)) {
-            return "<img src='static/images/icons/link.gif'/>&#160;";
-        } else  if (type.equals(ResourceType.ALIAS)) {
-            return "<img src='static/images/icons/link.gif'/>&#160;";
+            return "<img src='"+ImagePaths.ALIAS+"'/>&#160;";
         } else  if (type.equals(ResourceType.TEMPLATE)) {
-            return "<img src='static/images/icons/page_code.gif'/>&#160;";
+            return "<img src='"+ImagePaths.TEMPLATE+"'/>&#160;";
         } else  if (type.equals(ResourceType.FILE)) {
-            return "<img src='static/images/icons/image.gif'/>&#160;";
+            return "<img src='"+ImagePaths.FILE+"'/>&#160;";
         } else  if (type.equals(ResourceType.SEARCH)) {
-            return "<img src='static/images/icons/magnifier.gif'/>&#160;";
+            return "<img src='"+ImagePaths.SEARCH+"'/>&#160;";
         }
         return "unknown";
     }

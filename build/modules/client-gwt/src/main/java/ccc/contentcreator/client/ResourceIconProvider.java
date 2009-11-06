@@ -29,17 +29,17 @@ final class ResourceIconProvider
                                  final String property) {
         switch (model.getType()) {
             case FOLDER:
-                return "static/gxt/2.0.4/resources/images/gxt/icons/folder.gif";
+                return  ImagePaths.FOLDER;
             case PAGE:
-                return "static/images/icons/page.gif";
+                return ImagePaths.PAGE;
             case TEMPLATE:
-                return "static/images/icons/page_code.gif";
+                return ImagePaths.TEMPLATE;
             case ALIAS:
-                return "static/images/icons/link.gif";
+                return ImagePaths.ALIAS;
             case FILE:
-                return "static/images/icons/image.gif";
+                return ImagePaths.FILE;
             case SEARCH:
-                return "static/images/icons/magnifier.gif";
+                return ImagePaths.SEARCH;
             default:
                 return null;
         }

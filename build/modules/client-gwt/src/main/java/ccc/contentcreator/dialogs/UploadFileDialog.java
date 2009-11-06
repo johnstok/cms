@@ -14,6 +14,7 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.ImagePaths;
 import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.client.SingleSelectionModel;
@@ -54,7 +55,7 @@ public class UploadFileDialog extends AbstractEditDialog {
     private final TextArea _comment = new TextArea();
 
     private final Image _image =
-        new Image("static/images/icons/large-loading.gif");
+        new Image(ImagePaths.LARGE_LOADING);
 
     /**
      * Constructor.

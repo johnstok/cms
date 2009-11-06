@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.client.ImagePaths;
 import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
 import ccc.contentcreator.overlays.FailureOverlay;
@@ -44,7 +45,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
     private final HiddenField<String> _id = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
     private final Image _image =
-        new Image("static/images/icons/large-loading.gif");
+        new Image(ImagePaths.LARGE_LOADING);
 
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();

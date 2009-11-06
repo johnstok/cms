@@ -51,10 +51,10 @@ public class ActionTree extends Tree {
         actions.setId(ACTIONS);
         final TreeItem pending = new TreeItem(_constants.pending());
         pending.setId(PENDING);
-        pending.setIconStyle("static/images/icons/hourglass.gif");
+        pending.setIconStyle(ImagePaths.HOURGLASS);
         final TreeItem completed = new TreeItem(_constants.completed());
         completed.setId(COMPLETED);
-        completed.setIconStyle("static/images/icons/accept.gif");
+        completed.setIconStyle(ImagePaths.ACCEPT);
 
         getRootItem().add(actions);
         actions.add(pending);
