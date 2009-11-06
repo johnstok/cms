@@ -38,7 +38,7 @@ public class ResourceWorkingCopyRenderer
                          final Grid<ResourceSummaryModelData> grid) {
 
         if (model.hasWorkingCopy()) {
-            return "<img src='static/images/icons/tick.gif'/>&#160;";
+            return "<img src='"+ImagePaths.TICK+"'/>&#160;";
         }
         return "";
     }
