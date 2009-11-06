@@ -100,8 +100,10 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 final ImageSummaryModelData md =
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
+                    String path = md.getPath().substring(1);
+                    path = path.substring(path.indexOf("/")+1);
                     jsniSetUrl(
-                        md.getPath().substring(1),
+                        path,
                         md.getTitle(),
                         md.getId().toString(),
                         _elementid);
@@ -142,7 +144,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
     private void loadModel(final ListStore<ImageSummaryModelData> store,
                            final Collection<FileDto> arg0) {
 
-        _models = DataBinding.bindFileSummary(arg0, 200);
+        _models = DataBinding.bindFileSummary(arg0);
         if (_models != null && _models.size() > 0) {
             store.add(_models);
         }

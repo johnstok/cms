@@ -134,16 +134,14 @@ public final class DataBinding {
      * Create model data objects for a collection of file DTOs.
      *
      * @param arg0 The file DTOs.
-     * @param maxDimension The maximum dimension for thumb nails.
      * @return The corresponding model data objects.
      */
     public static List<ImageSummaryModelData> bindFileSummary(
-                                           final Collection<FileDto> arg0,
-                                           final int maxDimension) {
+                                           final Collection<FileDto> arg0) {
         final List<ImageSummaryModelData> boundData =
             new ArrayList<ImageSummaryModelData>();
         for (final FileDto fs : arg0) {
-            boundData.add(new ImageSummaryModelData(fs, maxDimension));
+            boundData.add(new ImageSummaryModelData(fs));
         }
         return boundData;
     }
