@@ -17,9 +17,12 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.util.Collection;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
 
@@ -27,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.Scheduler;
 import ccc.rest.ActionScheduler;
+import ccc.rest.Actions;
 
 
 /**
@@ -40,10 +44,9 @@ import ccc.rest.ActionScheduler;
 @Local(ActionScheduler.class)
 @RolesAllowed({ADMINISTRATOR})
 public class ActionsSchedulerEJB
-    extends
-        AbstractEJB
     implements
         Scheduler {
+    @EJB(name = Actions.NAME)      private transient Actions      _action;
 
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
@@ -52,6 +55,7 @@ public class ActionsSchedulerEJB
         Logger.getLogger(ActionsSchedulerEJB.class.getName());
 
 
+    @javax.annotation.Resource private EJBContext _context;
     /** Constructor. */
     public ActionsSchedulerEJB() { super(); }
 
@@ -65,7 +69,7 @@ public class ActionsSchedulerEJB
     @Override
     public void start() {
         LOG.debug("Starting scheduler.");
-        getTimerService().createTimer(
+        _context.getTimerService().createTimer(
             INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
         LOG.debug("Started scheduler.");
     }
@@ -76,7 +80,7 @@ public class ActionsSchedulerEJB
     @SuppressWarnings("unchecked")
     public void stop() {
         LOG.debug("Stopping scheduler.");
-        final Collection<Timer> c = getTimerService().getTimers();
+        final Collection<Timer> c = _context.getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 t.cancel();
@@ -90,13 +94,24 @@ public class ActionsSchedulerEJB
     @Override
     @SuppressWarnings("unchecked")
     public boolean isRunning() {
-        final Collection<Timer> c = getTimerService().getTimers();
+        final Collection<Timer> c = _context.getTimerService().getTimers();
         for (final Timer t : c) {
             if (TIMER_NAME.equals(t.getInfo())) {
                 return true;
             }
         }
         return false;
+    }
+
+
+    /**
+     * Run the scheduled action.
+     *
+     * @param timer The timer that called this method.
+     */
+    @Timeout
+    public void run(@SuppressWarnings("unused") final Timer timer) {
+        _action.executeAll();
     }
 
 }
