@@ -62,7 +62,9 @@ public class CheckSecurityAction
             ? new User(new Username("anonymous"), "password")
             : user;
         if (!r.isAccessibleTo(u)) {
-            throw new AuthenticationRequiredException(r);
+            throw new AuthenticationRequiredException(
+                // FIXME: Broken for /assets
+                r.absolutePath().removeTop().toString());
         }
     }
 }

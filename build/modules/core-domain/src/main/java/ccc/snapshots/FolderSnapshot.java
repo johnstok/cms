@@ -67,13 +67,15 @@ public class FolderSnapshot extends ResourceSnapshot implements IFolder {
     @Override
     public Response render() {
         if (indexPage() != null) {
-            throw new RedirectRequiredException(indexPage());
+            throw new RedirectRequiredException(// FIXME: Broken for /assets
+                indexPage().absolutePath().removeTop().toString());
         }
 
         for (final Resource r : entries()) {
             if (ResourceType.PAGE.equals(r.type())
                 && r.isPublished()) {
-                throw new RedirectRequiredException(r);
+                throw new RedirectRequiredException(// FIXME: Broken for /assets
+                    r.absolutePath().removeTop().toString());
             }
         }
         throw new NotFoundException();

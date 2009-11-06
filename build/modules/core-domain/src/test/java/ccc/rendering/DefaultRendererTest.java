@@ -288,7 +288,8 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final RedirectRequiredException e) {
-            assertEquals(a, e.getResource());
+            assertEquals(
+                a.absolutePath().removeTop().toString(), e.getTarget());
         }
     }
 
@@ -315,7 +316,8 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final RedirectRequiredException e) {
-            assertEquals(z, e.getResource());
+            assertEquals(
+                z.absolutePath().removeTop().toString(), e.getTarget());
         }
     }
 
@@ -342,7 +344,8 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final RedirectRequiredException e) {
-            assertEquals(z, e.getResource());
+            assertEquals(
+                z.absolutePath().removeTop().toString(), e.getTarget());
         }
     }
 
@@ -393,7 +396,8 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final RedirectRequiredException rre) {
-            assertEquals(e, rre.getResource());
+            assertEquals(
+                e.absolutePath().removeTop().toString(), rre.getTarget());
         }
     }
 
@@ -415,7 +419,8 @@ public class DefaultRendererTest
 
         // ASSERT
         } catch (final RedirectRequiredException e) {
-            assertEquals(p, e.getResource());
+            assertEquals(
+                p.absolutePath().removeTop().toString(), e.getTarget());
         }
     }
 

@@ -65,16 +65,11 @@ public class ErrorHandlingFilter
             dispatchNotFound(req, resp);
 
         } catch (final RedirectRequiredException e) {
-            final String relUri =
-                req.getServletPath()
-                + e.getResource().absolutePath().removeTop().toString();
+            final String relUri = req.getServletPath() + e.getTarget();
             dispatchRedirect(req, resp, relUri);
 
         } catch (final AuthenticationRequiredException e) {
-            final String relUri =
-                _loginUri
-                + "?tg="
-                + e.getResource().absolutePath().removeTop().toString();
+            final String relUri = _loginUri + "?tg=" + e.getTarget();
             dispatchRedirect(req, resp, relUri);
 
         } catch (final RuntimeException e) {

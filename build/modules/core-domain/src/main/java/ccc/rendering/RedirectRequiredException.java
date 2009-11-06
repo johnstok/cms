@@ -12,7 +12,6 @@
 package ccc.rendering;
 
 import ccc.domain.CCCException;
-import ccc.domain.Resource;
 import ccc.types.DBC;
 
 
@@ -25,14 +24,14 @@ public class RedirectRequiredException
     extends
         CCCException {
 
-    private final Resource _target;
+    private final String _target;
 
     /**
      * Constructor.
      *
-     * @param target The target of the redirect.
+     * @param target The target path for the redirect.
      */
-    public RedirectRequiredException(final Resource target) {
+    public RedirectRequiredException(final String target) {
         DBC.require().notNull(target);
         _target = target;
     }
@@ -42,7 +41,7 @@ public class RedirectRequiredException
      *
      * @return The redirect's target, a Resource.
      */
-    public Resource getResource() {
+    public String getTarget() {
         return _target;
     }
 
