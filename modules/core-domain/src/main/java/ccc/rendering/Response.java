@@ -188,11 +188,11 @@ public class Response {
                     context,
                     processor);
 
-                setLength(baos.size());
+                final byte[] b = baos.toByteArray();
+                setLength(b.length);
                 setMimeType("image", "jpeg");
 
                 writeHeaders(httpResponse);
-                final byte[] b = baos.toByteArray();
                 httpResponse.getOutputStream().write(b);
 
         } else {

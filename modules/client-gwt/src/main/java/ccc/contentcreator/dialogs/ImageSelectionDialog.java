@@ -36,7 +36,8 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 public class ImageSelectionDialog extends AbstractBaseDialog {
 
     private static final int PANEL_HEIGHT = 460;
-    private static final int PANEL_WIDTH = 620;
+    private static final int PANEL_WIDTH = 700;
+    private static final int DIALOG_WIDTH = 720;
 
     private  final ListView<ImageSummaryModelData> _view =
         new ListView<ImageSummaryModelData>();
@@ -53,6 +54,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         super(new IGlobalsImpl().uiConstants().selectImage(),
               new IGlobalsImpl());
         _elementid = elementid;
+        setWidth(DIALOG_WIDTH);
 
         final ListStore<ImageSummaryModelData> store =
             new ListStore<ImageSummaryModelData>();
@@ -130,7 +132,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
     return ['<tpl for=".">',
      '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
      '<div class="thumb">',
-     '<img src="{PATH}?thumb=200" title="{TITLE}"></div>',
+     '<img src="preview/{PATH}?thumb=200" title="{TITLE}"></div>',
      '<span class="x-editable">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
      '</tpl>',
      '<div class="x-clear"></div>'].join("");
