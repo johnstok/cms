@@ -19,7 +19,7 @@
 
     <persistence-unit name="${application.prefix}-persistence">
         <jta-data-source>java:/${application.prefix}</jta-data-source>
-        <jar-file>../services-ejb3-7.0.0-SNAPSHOT.jar</jar-file>
+        <jar-file>lib/persistence-jpa-7.0.0-SNAPSHOT.jar</jar-file>
         <properties>
 
             <!-- Connection mgmt -->

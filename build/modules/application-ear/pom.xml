@@ -22,7 +22,7 @@
                 <version>2.3.2</version>
                 <configuration>
                     <filtering>true</filtering>
-                    <unpackTypes>sar,war,ejb,jar</unpackTypes>
+                    <unpackTypes>sar,war,ejb</unpackTypes>
                     <displayName>${application.prefix}</displayName>
                     <finalName>${application.name}</finalName>
                     <version>5</version>
