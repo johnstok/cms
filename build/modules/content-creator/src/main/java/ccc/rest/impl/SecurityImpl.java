@@ -12,6 +12,9 @@
 
 package ccc.rest.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -35,7 +38,10 @@ import ccc.serialization.JsonImpl;
 @Consumes("application/json")
 @Produces("application/json")
 public class SecurityImpl
-    implements Security {
+    extends
+        JaxrsCollection
+    implements
+        Security {
 
     private static final Logger LOG = Logger.getLogger(SecurityImpl.class);
 
@@ -84,8 +90,15 @@ public class SecurityImpl
     /** {@inheritDoc} */
     @Override
     public String readAllProperties() {
+        final Map<String, String> props = new HashMap<String, String>();
+        props.put("buildNumber", CCCProperties.buildNumber());
+        props.put("ccc-version", CCCProperties.version());
+        props.put("timestamp", CCCProperties.timestamp());
+        props.put("application.name", getAppName());
+        props.put("application.base-href", getBaseHref());
+
         final JsonImpl ss = new JsonImpl();
-        ss.set("properties", CCCProperties.getAll());
+        ss.set("properties", props);
         return ss.getDetail();
     }
 
