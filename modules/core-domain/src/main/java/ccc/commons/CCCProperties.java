@@ -13,8 +13,6 @@ package ccc.commons;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -46,25 +44,29 @@ public final class CCCProperties {
     }
 
     /**
-     * Look up a ccc property.
+     * Get the app's build number.
      *
-     * @param key The key for the property.
-     * @return The value of the property, or NULL if it doesn't exist.
+     * @return The build number as a string.
      */
-    public static String get(final String key) {
-        return PROPS.getProperty(key);
+    public static String buildNumber() {
+        return PROPS.getProperty("buildNumber");
     }
 
     /**
-     * Return a map containing all properties allowed to client.
+     * Get the app version.
      *
-     * @return The map of properties.
+     * @return The version, as a string.
      */
-    public static Map<String, String> getAll() {
-        final Map<String, String> map = new HashMap<String, String>();
-        for (final String key : PROPS.stringPropertyNames()) {
-            map.put(key, PROPS.getProperty(key));
-        }
-        return map;
+    public static String version() {
+        return PROPS.getProperty("ccc-version");
+    }
+
+    /**
+     * Get the build timestamp.
+     *
+     * @return The timestamp, as a string.
+     */
+    public static String timestamp() {
+        return PROPS.getProperty("timestamp");
     }
 }

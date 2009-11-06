@@ -11,8 +11,6 @@
  */
 package ccc.commons;
 
-import java.util.Map;
-
 import junit.framework.TestCase;
 
 
@@ -28,28 +26,14 @@ public class CCCPropertiesTest
     /**
      * Test.
      */
-    public void testMissingProperty() {
+    public void testVersion() {
 
         // ARRANGE
 
         // ACT
-        final String value = CCCProperties.get("missing.prop");
+        final String value = CCCProperties.version();
 
         // ASSERT
-        assertNull(value);
-    }
-
-    /**
-     * Test.
-     */
-    public void testGetAllProperties() {
-
-        // ARRANGE
-
-        // ACT
-        final Map<String, String> map = CCCProperties.getAll();
-
-        // ASSERT
-        assertEquals(5, map.size());
+        assertEquals("7.0.0-SNAPSHOT", value);
     }
 }
