@@ -84,7 +84,8 @@ public abstract class BaseMigrations {
         try {
             user = _userCommands.userByLegacyId(""+le.getActor());
         } catch (final RestException e) {
-            throw new MigrationException("User fetching failed ",e);
+            throw new MigrationException(
+                "User fetching failed with legacyID "+le.getActor(),e);
         }
         if (null == user) {
             throw new MigrationException("User missing: "+le.getActor());
