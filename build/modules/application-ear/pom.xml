@@ -35,7 +35,7 @@
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-creator</artifactId>
-                            <contextRoot>/${application.prefix}/creator</contextRoot>
+                            <contextRoot>/${application.prefix}</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>CCC7</groupId>

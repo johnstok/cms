@@ -124,7 +124,7 @@ public abstract class AbstractAcceptanceTest
         pFactory.addStringConverter(UUIDProvider.class);
     }
 
-    private final String _hostUrl       = "http://localhost";
+    private final String _hostUrl       = "http://localhost:8080/ash";
     private final String _secure        = _hostUrl+"/api/secure";
     private final String _public        = _hostUrl+"/api/public";
     private final String _createFileUrl = _hostUrl+"/upload";
