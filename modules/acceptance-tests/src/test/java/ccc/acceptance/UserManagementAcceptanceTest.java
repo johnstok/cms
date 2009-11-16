@@ -186,14 +186,15 @@ public class UserManagementAcceptanceTest
         getSecurity().login(user.getUsername().toString(), "Testtest00-");
         user = getUsers().loggedInUser();
 
-        final UserDto uo = new UserDto(email, password);
+        user.setEmail(email);
+        user.setPassword(password);
 
         // ACT
-        getUsers().updateYourUser(user.getId(), uo);
+        getUsers().updateYourUser(user.getId(), user);
         user = getUsers().loggedInUser();
 
         // ASSERT
-        assertEquals(user.getEmail(), uo.getEmail());
+        assertEquals(email, user.getEmail());
         assertTrue(
             getSecurity().login(user.getUsername().toString(), password)
             .booleanValue());
