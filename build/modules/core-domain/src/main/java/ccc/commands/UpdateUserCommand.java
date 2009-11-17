@@ -30,58 +30,58 @@ import ccc.types.EmailAddress;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateUserCommand {
+public class UpdateUserCommand
+    extends
+        Command<User> {
 
+    private final UUID _userId;
+    private final UserDto _delta;
 
-    private final UserRepository     _repository;
-    private final LogEntryRepository _audit;
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
-     */
-    public UpdateUserCommand(final UserRepository repository,
-                             final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
-    }
-
-    /**
-     * Update user.
-     *
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     *
-     * @return The updated user.
      */
-    public User execute(final User actor,
-                        final Date happenedOn,
-                        final UUID userId,
-                        final UserDto delta) throws CccCheckedException {
+    public UpdateUserCommand(final UserRepository repository,
+                             final LogEntryRepository audit,
+                             final UUID userId,
+                             final UserDto delta) {
+        super(null, audit, repository);
+        _userId = userId;
+        _delta = delta;
+    }
 
-        final User current = _repository.find(userId);
+    /** {@inheritDoc} */
+    @Override
+    public User doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final User current = getUsers().find(_userId);
 
         // current.username(delta.getUsername().toString()); #571
-        current.email(new EmailAddress(delta.getEmail()));
-        current.name(delta.getEmail());
-        current.roles(delta.getRoles());
+        current.email(new EmailAddress(_delta.getEmail()));
+        current.name(_delta.getEmail());
+        current.roles(_delta.getRoles());
         current.clearMetadata();
-        current.addMetadata(delta.getMetadata());
+        current.addMetadata(_delta.getMetadata());
 
-        _audit.record(
+        getAudit().record(
             new LogEntry(
                 actor,
-                CommandType.USER_UPDATE,
+                getType(),
                 happenedOn,
-                userId,
+                _userId,
                 new JsonImpl(current).getDetail()));
 
         return current;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.USER_UPDATE; }
 }

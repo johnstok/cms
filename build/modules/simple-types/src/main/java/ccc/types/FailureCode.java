@@ -34,5 +34,7 @@ public enum  FailureCode {
     /** CYCLE : FailureCode. */
     CYCLE,
     /** NOT_FOUND : FailureCode. */
-    NOT_FOUND;
+    NOT_FOUND,
+    /** INVALID : FailureCode. */
+    INVALID;
 }

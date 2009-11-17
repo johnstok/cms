@@ -71,8 +71,14 @@ public class UsersEJB
     public void updateUser(final UUID userId, final UserDto delta)
     throws RestException {
         try {
-            new UpdateUserCommand(getUsers(), getAuditLog()).execute(
-                currentUser(), new Date(), userId, delta);
+            new UpdateUserCommand(
+                getUsers(),
+                getAuditLog(),
+                userId,
+                delta)
+            .execute(
+                currentUser(),
+                new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -105,11 +111,14 @@ public class UsersEJB
                                final UserDto user)
                                                  throws RestException {
         try {
-        new UpdateCurrentUserCommand(getUsers(), getAuditLog()).execute(
-            currentUser(),
-            new Date(),
-            userId,
-            user);
+            new UpdateCurrentUserCommand(
+                getUsers(),
+                getAuditLog(),
+                userId,
+                user)
+            .execute(
+                currentUser(),
+                new Date());
         } catch (final CccCheckedException e) {
             throw fail(e);
         }

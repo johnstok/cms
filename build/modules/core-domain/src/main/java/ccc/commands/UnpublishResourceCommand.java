@@ -45,7 +45,7 @@ class UnpublishResourceCommand extends Command<Void> {
     public UnpublishResourceCommand(final ResourceRepository repository,
                                     final LogEntryRepository audit,
                                     final UUID resourceId) {
-           super(repository, audit);
+           super(repository, audit, null);
            DBC.require().notNull(resourceId);
            _resourceId = resourceId;
        }

@@ -47,7 +47,7 @@ class DeleteResourceCommand extends Command<Void> {
     public DeleteResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit,
                                  final UUID resourceId) {
-        super(repository, audit);
+        super(repository, audit, null);
         _resourceId = resourceId;
     }
 
