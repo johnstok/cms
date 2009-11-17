@@ -22,6 +22,7 @@ import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.types.CommandType;
 
 
 /**
@@ -29,7 +30,13 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
+public class ApplyWorkingCopyCommand
+    extends
+        UpdateResourceCommand<Void> {
+
+    private final UUID _id;
+    private final String _comment;
+    private final boolean _isMajorEdit;
 
 
     /**
@@ -37,40 +44,48 @@ public class ApplyWorkingCopyCommand extends UpdateResourceCommand {
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public ApplyWorkingCopyCommand(final ResourceRepository repository,
-                                   final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-    /**
-     * Applies the current working copy to update a resource.
-     *
      * @param id The resource's id.
      * @param comment The comment for the page edit.
      * @param isMajorEdit A boolean for major edit.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID id,
-                        final String comment,
-                        final boolean isMajorEdit) throws CccCheckedException {
-        final Resource r = getDao().find(Resource.class, id);
+    public ApplyWorkingCopyCommand(final ResourceRepository repository,
+                                   final LogEntryRepository audit,
+                                   final UUID id,
+                                   final String comment,
+                                   final boolean isMajorEdit) {
+        super(repository, audit, null);
+        _id = id;
+        _comment = comment;
+        _isMajorEdit = isMajorEdit;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final Resource r = getRepository().find(Resource.class, _id);
         r.confirmLock(actor);
 
         if (r instanceof WCAware<?>) {
             final WCAware<?> wcAware = (WCAware<?>) r;
             final RevisionMetadata rm =
-                new RevisionMetadata(happenedOn, actor, isMajorEdit, comment);
+                new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
             wcAware.applyWorkingCopy(rm);
         } else {
             throw new WorkingCopyNotSupportedException(r);
         }
 
         update(r, actor, happenedOn);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() {
+        // FIXME: Not always a page!!!
+        return CommandType.PAGE_UPDATE; }
 }

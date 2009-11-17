@@ -48,7 +48,7 @@ class UnlockResourceCommand extends Command<Void> {
     public UnlockResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit,
                                  final UUID resourceId) {
-        super(repository, audit, null);
+        super(repository, audit, null, null);
         DBC.require().notNull(resourceId);
         _resourceId = resourceId;
     }

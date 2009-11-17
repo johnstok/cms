@@ -139,14 +139,17 @@ public class FilesEJB
 
         try {
             new UpdateFileCommand(
-                getResources(), getAuditLog(), getFiles()).execute(
-                    currentUser(),
-                    new Date(),
-                    UUID.fromString(fileId.toString()),
-                    fileDelta,
-                    comment,
-                    isMajorEdit,
-                    dataStream);
+                getResources(),
+                getAuditLog(),
+                getFiles(),
+                UUID.fromString(fileId.toString()),
+                fileDelta,
+                comment,
+                isMajorEdit,
+                dataStream)
+            .execute(
+                currentUser(),
+                new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);

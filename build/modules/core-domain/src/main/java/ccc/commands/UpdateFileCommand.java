@@ -25,6 +25,7 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.FileDelta;
+import ccc.types.CommandType;
 
 
 /**
@@ -32,9 +33,15 @@ import ccc.rest.dto.FileDelta;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFileCommand extends UpdateResourceCommand {
+public class UpdateFileCommand
+    extends
+        UpdateResourceCommand<Void> {
 
-    private final DataRepository _data;
+    private final UUID        _fileId;
+    private final FileDelta   _fileDelta;
+    private final String      _comment;
+    private final boolean     _isMajorEdit;
+    private final InputStream _dataStream;
 
     /**
      * Constructor.
@@ -42,57 +49,62 @@ public class UpdateFileCommand extends UpdateResourceCommand {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      * @param data The data manager to use for reading / writing the file data.
-     */
-    public UpdateFileCommand(final ResourceRepository repository,
-                             final LogEntryRepository audit,
-                             final DataRepository data) {
-        super(repository, audit);
-        _data = data;
-    }
-
-
-    /**
-     * Update a file.
-     *
-     * @param actor The user updating the file.
-     * @param happenedOn The date that the file was updated.
      * @param fileId The id of the file to update.
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
      * @param fileDelta The delta describing changes to the file's metadata.
      * @param comment Comment describing the change.
      * @param isMajorEdit Is this a major change.
-     *
-     * @throws CccCheckedException If the command failed.
      */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID fileId,
-                        final FileDelta fileDelta,
-                        final String comment,
-                        final boolean isMajorEdit,
-                        final InputStream dataStream)
-                                                    throws CccCheckedException {
-        final File f = getDao().find(File.class, fileId);
+    public UpdateFileCommand(final ResourceRepository repository,
+                             final LogEntryRepository audit,
+                             final DataRepository data,
+                             final UUID fileId,
+                             final FileDelta fileDelta,
+                             final String comment,
+                             final boolean isMajorEdit,
+                             final InputStream dataStream) {
+        super(repository, audit, data);
+        _fileId = fileId;
+        _fileDelta = fileDelta;
+        _comment = comment;
+        _isMajorEdit = isMajorEdit;
+        _dataStream = dataStream;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final File f = getRepository().find(File.class, _fileId);
         f.confirmLock(actor);
 
-        final Data d = _data.create(dataStream, fileDelta.getSize());
-        fileDelta.setData(d.id());
+        final Data d = getData().create(_dataStream, _fileDelta.getSize());
+        _fileDelta.setData(d.id());
 
-        if ("image".equals(fileDelta.getMimeType().getPrimaryType())) {
+        if ("image".equals(_fileDelta.getMimeType().getPrimaryType())) {
             new FileHelper().extractImageMetadata(
-                d, fileDelta.getProperties(), _data);
+                d, _fileDelta.getProperties(), getData());
         }
 
         final RevisionMetadata rm = new RevisionMetadata(
             happenedOn,
             actor,
-            isMajorEdit,
-            comment == null || comment.isEmpty() ? "Updated." : comment);
+            _isMajorEdit,
+            _comment == null || _comment.isEmpty() ? "Updated." : _comment);
 
-        f.setOrUpdateWorkingCopy(fileDelta);
+        f.setOrUpdateWorkingCopy(_fileDelta);
         f.applyWorkingCopy(rm);
 
         update(f, actor, happenedOn);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.FILE_UPDATE; }
 }

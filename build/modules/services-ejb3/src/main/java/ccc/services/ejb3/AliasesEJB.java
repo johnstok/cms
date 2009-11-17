@@ -55,11 +55,14 @@ public class AliasesEJB
                             final AliasDelta delta)
                                                  throws RestException {
         try {
-            new UpdateAliasCommand(getResources(), getAuditLog()).execute(
-                currentUser(),
-                new Date(),
+            new UpdateAliasCommand(
+                getResources(),
+                getAuditLog(),
                 delta.getTargetId(),
-                aliasId);
+                aliasId)
+            .execute(
+                currentUser(),
+                new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);

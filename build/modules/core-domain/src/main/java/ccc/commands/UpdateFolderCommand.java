@@ -34,53 +34,59 @@ import ccc.types.ResourceOrder;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFolderCommand extends UpdateResourceCommand {
+public class UpdateFolderCommand
+    extends
+        UpdateResourceCommand<Void> {
+
+    private final UUID _folderId;
+    private final ResourceOrder _order;
+    private final UUID _indexPageId;
+    private final List<UUID> _orderList;
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public UpdateFolderCommand(final ResourceRepository repository,
-                               final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-
-    /**
-     * Update the folder.
-     *
      * @param folderId The folder to update.
      * @param order The new sort order.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
      * @param indexPageId The index page.
      * @param orderList The manual order of the resources in the specified
      *  folder.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID folderId,
-                        final ResourceOrder order,
-                        final UUID indexPageId,
-                        final List<UUID> orderList) throws CccCheckedException {
+    public UpdateFolderCommand(final ResourceRepository repository,
+                               final LogEntryRepository audit,
+                               final UUID folderId,
+                               final ResourceOrder order,
+                               final UUID indexPageId,
+                               final List<UUID> orderList) {
+        super(repository, audit, null);
+        _folderId = folderId;
+        _order = order;
+        _indexPageId = indexPageId;
+        _orderList = orderList;
+    }
 
-        final Folder f = getDao().find(Folder.class, folderId);
-        Page p = null;
-        if (indexPageId != null) {
-            p = getDao().find(Page.class, indexPageId);
-        }
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final Folder f = getRepository().find(Folder.class, _folderId);
         f.confirmLock(actor);
-        f.indexPage(p);
-        f.sortOrder(order);
 
-        if (orderList != null && !orderList.isEmpty()) {
+        Page p = null;
+        if (_indexPageId != null) {
+            p = getRepository().find(Page.class, _indexPageId);
+        }
+        f.indexPage(p);
+        f.sortOrder(_order);
+
+        if (_orderList != null && !_orderList.isEmpty()) {
             final List<Resource> newOrder = new ArrayList<Resource>();
             final List<Resource> currentOrder = f.entries();
-            for (final UUID resourceId : orderList) {
+            for (final UUID resourceId : _orderList) {
                 for (final Resource r : currentOrder) {
                     if (r.id().equals(resourceId)) {
                         newOrder.add(r);
@@ -95,10 +101,17 @@ public class UpdateFolderCommand extends UpdateResourceCommand {
         final LogEntry le =
             new LogEntry(
                 actor,
-                CommandType.FOLDER_UPDATE,
+                getType(),
                 happenedOn,
-                folderId,
+                _folderId,
                 new JsonImpl(f).getDetail());
         getAudit().record(le);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.FOLDER_UPDATE; }
 }

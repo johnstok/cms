@@ -50,7 +50,7 @@ public class UpdateUserCommand
                              final LogEntryRepository audit,
                              final UUID userId,
                              final UserDto delta) {
-        super(null, audit, repository);
+        super(null, audit, repository, null);
         _userId = userId;
         _delta = delta;
     }

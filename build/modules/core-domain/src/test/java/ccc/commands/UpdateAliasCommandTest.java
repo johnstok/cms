@@ -46,10 +46,11 @@ public class UpdateAliasCommandTest
         replayAll();
 
         final UpdateAliasCommand c =
-            new UpdateAliasCommand(getRepository(), getAudit());
+            new UpdateAliasCommand(
+                getRepository(), getAudit(), bar.id(), alias.id());
 
         // ACT
-        c.execute(getUser(), getNow(), bar.id(), alias.id());
+        c.execute(getUser(), getNow());
 
         // ASSERT
         verifyAll();

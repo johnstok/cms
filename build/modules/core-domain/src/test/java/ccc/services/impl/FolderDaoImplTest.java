@@ -57,15 +57,16 @@ public class FolderDaoImplTest
         replayAll();
 
         final UpdateFolderCommand uf =
-            new UpdateFolderCommand(_rdao, _al);
+            new UpdateFolderCommand(
+                _rdao,
+                _al,
+                _f.id(),
+                ResourceOrder.NAME_ALPHANUM_ASC,
+                null,
+                null);
 
         // ACT
-        uf.execute(_regularUser,
-                    new Date(),
-                    _f.id(),
-                    ResourceOrder.NAME_ALPHANUM_ASC,
-                    null,
-                    null);
+        uf.execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();
@@ -92,21 +93,22 @@ public class FolderDaoImplTest
         _al.record(isA(LogEntry.class));
         replayAll();
 
-        final UpdateFolderCommand uf =
-            new UpdateFolderCommand(_rdao, _al);
-
-        // ACT
         final List<UUID> order = new ArrayList<UUID>();
         order.add(baz.id());
         order.add(foo.id());
         order.add(bar.id());
 
-        uf.execute(_regularUser,
-            new Date(),
-            _f.id(),
-            ResourceOrder.MANUAL,
-            null,
-            order);
+        // ACT
+        final UpdateFolderCommand uf =
+            new UpdateFolderCommand(
+                _rdao,
+                _al,
+                _f.id(),
+                ResourceOrder.MANUAL,
+                null,
+                order);
+
+        uf.execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();

@@ -50,7 +50,7 @@ public class UpdateResourceRolesCommand
                                       final LogEntryRepository audit,
                                       final UUID id,
                                       final Collection<String> roles) {
-        super(repository, audit, null);
+        super(repository, audit, null, null);
         _id = id;
         _roles = roles;
     }

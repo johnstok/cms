@@ -21,6 +21,7 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
+import ccc.types.CommandType;
 
 
 /**
@@ -28,48 +29,60 @@ import ccc.rest.dto.PageDelta;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdatePageCommand extends UpdateResourceCommand{
+public class UpdatePageCommand
+    extends
+        UpdateResourceCommand<Void> {
+
+    private final UUID      _id;
+    private final PageDelta _delta;
+    private final boolean   _isMajorEdit;
+    private final String    _comment;
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public UpdatePageCommand(final ResourceRepository repository,
-                             final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-
-    /**
-     * Update a page.
-     *
      * @param id The id of the page to update.
      * @param delta The changes to the page.
      * @param comment Comment describing the change.
      * @param isMajorEdit Is this a major change.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID id,
-                        final PageDelta delta,
-                        final String comment,
-                        final boolean isMajorEdit) throws CccCheckedException {
+    public UpdatePageCommand(final ResourceRepository repository,
+                             final LogEntryRepository audit,
+                             final UUID id,
+                             final PageDelta delta,
+                             final String comment,
+                             final boolean isMajorEdit) {
+        super(repository, audit, null);
+        _id = id;
+        _delta = delta;
+        _comment = comment;
+        _isMajorEdit = isMajorEdit;
+    }
 
-        final Page page = getDao().find(Page.class, id);
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final Page page = getRepository().find(Page.class, _id);
         page.confirmLock(actor);
 
         final RevisionMetadata rm =
-            new RevisionMetadata(happenedOn, actor, isMajorEdit, comment);
+            new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
 
-        page.setOrUpdateWorkingCopy(delta);
+        page.setOrUpdateWorkingCopy(_delta);
         page.applyWorkingCopy(rm);
 
         update(page, actor, happenedOn);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.PAGE_UPDATE; }
 }

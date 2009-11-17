@@ -20,6 +20,7 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.types.CommandType;
 
 
 /**
@@ -27,40 +28,49 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateAliasCommand extends UpdateResourceCommand {
+public class UpdateAliasCommand
+    extends
+        UpdateResourceCommand<Void> {
+
+    private final UUID _targetId;
+    private final UUID _aliasId;
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
+     * @param targetId The new target for the alias.
+     * @param aliasId The alias to update.
      */
     public UpdateAliasCommand(final ResourceRepository repository,
-                              final LogEntryRepository audit) {
-        super(repository, audit);
+                              final LogEntryRepository audit,
+                              final UUID targetId,
+                              final UUID aliasId) {
+        super(repository, audit, null);
+        _targetId = targetId;
+        _aliasId = aliasId;
     }
 
 
-    /**
-     * Perform the update.
-     *
-     * @param targetId The new target for the alias.
-     * @param aliasId The alias to update.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID targetId,
-                        final UUID aliasId) throws CccCheckedException {
-        final Alias alias = getDao().find(Alias.class, aliasId);
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final Alias alias = getRepository().find(Alias.class, _aliasId);
         alias.confirmLock(actor);
 
-        final Resource target = getDao().find(Resource.class, targetId);
+        final Resource target = getRepository().find(Resource.class, _targetId);
         alias.target(target);
 
         update(alias, actor, happenedOn);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.ALIAS_UPDATE; }
 }

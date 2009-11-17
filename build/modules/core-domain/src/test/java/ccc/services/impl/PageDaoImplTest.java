@@ -60,6 +60,9 @@ public class PageDaoImplTest
             new PageDelta(
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
         page.lock(_u);
+        final UpdatePageCommand updatePage =
+            new UpdatePageCommand(
+                _repository, _al, page.id(), delta, "comment text", false);
 
         expect(_repository.find(Page.class, page.id())).andReturn(page);
         _al.record(isA(LogEntry.class));
@@ -67,8 +70,7 @@ public class PageDaoImplTest
 
 
         // ACT
-        _updatePage.execute(
-            _u, _now, page.id(), delta, "comment text", false);
+        updatePage.execute(_u, _now);
 
 
         // ASSERT
@@ -97,20 +99,17 @@ public class PageDaoImplTest
     protected void setUp() {
         _repository = createStrictMock(ResourceRepository.class);
         _al = createStrictMock(LogEntryRepository.class);
-        _updatePage = new UpdatePageCommand(_repository, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _updatePage = null;
         _al = null;
         _repository = null;
     }
 
     private ResourceRepository _repository;
     private LogEntryRepository _al;
-    private UpdatePageCommand _updatePage;
     private final Date _now = new Date();
     private final User _u = new User(new Username("user"), "password");
     private final RevisionMetadata _rm =

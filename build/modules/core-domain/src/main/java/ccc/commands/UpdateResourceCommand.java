@@ -16,34 +16,34 @@ import java.util.Date;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
-import ccc.types.CommandType;
 
 
 /**
  * Abstract superclass for commands that update resources.
  *
+ * @param <T> The result type of the command.
+ *
  * @author Civic Computing Ltd.
  */
-class UpdateResourceCommand {
-
-
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
-
+abstract class UpdateResourceCommand<T>
+    extends
+        Command<T> {
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
+     * @param data The data repository for storing binary data.
      */
     public UpdateResourceCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+                                 final LogEntryRepository audit,
+                                 final DataRepository data) {
+        super(repository, audit, null, data);
     }
 
 
@@ -65,58 +65,16 @@ class UpdateResourceCommand {
     private void audit(final Resource resource,
                        final Date happenedOn,
                        final User actor) {
-        CommandType type;
-        switch (resource.type()) {
-            case ALIAS:
-                type = CommandType.ALIAS_UPDATE;
-                break;
-            case FILE:
-                type = CommandType.FILE_UPDATE;
-                break;
-            case FOLDER:
-                type = CommandType.FOLDER_UPDATE;
-                break;
-            case PAGE:
-                type = CommandType.PAGE_UPDATE;
-                break;
-            case TEMPLATE:
-                type = CommandType.TEMPLATE_UPDATE;
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
 
         final JsonImpl ss = new JsonImpl(resource);
 
         final LogEntry le =
             new LogEntry(
                 actor,
-                type,
+                getType(),
                 happenedOn,
                 resource.id(),
                 ss.getDetail());
-        _audit.record(le);
+        getAudit().record(le);
     }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the DAO.
-     */
-    protected ResourceRepository getDao() {
-        return _repository;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the audit logger.
-     */
-    protected LogEntryRepository getAudit() {
-        return _audit;
-    }
-
-
 }
