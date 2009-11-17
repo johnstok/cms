@@ -308,8 +308,21 @@ public class Migrations extends BaseMigrations {
                         "UPDATE",
                         _userName,
                         log);
-                    delta = assemblePage(resource, version, log);
-                    updatePage(resource, rs, version, le, delta);
+
+                    _resourcesExt.lock(
+                        UUID.fromString(
+                            rs.getId().toString()),
+                            le.getUser().getId(),
+                            le.getHappenedOn());
+                    try {
+                        delta = assemblePage(resource, version, log);
+                        updatePage(resource, rs, version, le, delta);
+                    } catch (final MigrationException e) {
+                        log.warn("Update skipped(inner) for version  "+version
+                            +" of page "+resource.contentId());
+                    }
+                    _resourcesExt.unlock(
+                        rs.getId(), le.getUser().getId(), le.getHappenedOn());
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
                         +" of page "+resource.contentId());
@@ -360,16 +373,21 @@ public class Migrations extends BaseMigrations {
 
 
     private List<Integer> determinePageVersions(final ResourceBean r) {
+        final List<Integer> only0 = new ArrayList<Integer>();
+        only0.add(Integer.valueOf(0));
 
         if (!_migrateVersions) {
-            final List<Integer> only0 = new ArrayList<Integer>();
-            only0.add(Integer.valueOf(0));
             return only0;
         }
 
         final List<Integer> paragraphVersions =
             _legacyQueries.selectParagraphVersions(r.contentId());
         log.debug("Page versions available: "+paragraphVersions);
+        if (paragraphVersions.size() == 0) {
+            log.warn("No versions found! Uses version 0 only for resource "+r.contentId());
+            return only0;
+        }
+
 
         if (-1 == paragraphVersions.get(0)) { // Discard working version
             paragraphVersions.remove(0);
@@ -397,12 +415,6 @@ public class Migrations extends BaseMigrations {
                             final LogEntryBean le,
                             final PageDelta d) throws RestException {
 
-        _resourcesExt.lock(
-            UUID.fromString(
-                rs.getId().toString()),
-                le.getUser().getId(),
-                le.getHappenedOn());
-
         final String userComment =
             _legacyQueries.selectUserComment(r.contentId(), version);
 
@@ -418,8 +430,6 @@ public class Migrations extends BaseMigrations {
             isMajorEdit.booleanValue(),
             le.getUser().getId(),
             le.getHappenedOn());
-        _resourcesExt.unlock(
-            rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
         log.debug("Updated page: "+r.contentId()+" v."+version);
     }
