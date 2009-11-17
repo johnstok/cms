@@ -31,40 +31,41 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class RenameResourceCommand {
+public class RenameResourceCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID   _resourceId;
+    private final String _name;
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
-     */
-    public RenameResourceCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
-    }
-
-    /**
-     * Rename a resource.
-     *
-     * @param actor The actor performing the rename.
-     * @param happenedOn The date rename took place.
      * @param resourceId The resource to rename.
      * @param name The new name for the resource.
-     * @throws CccCheckedException If the command fails.
      */
-    public void rename(final User actor,
-                       final Date happenedOn,
-                       final UUID resourceId,
-                       final String name) throws CccCheckedException {
-        final Resource resource = _repository.find(Resource.class, resourceId);
+    public RenameResourceCommand(final ResourceRepository repository,
+                                 final LogEntryRepository audit,
+                                 final UUID resourceId,
+                                 final String name) {
+        super(repository, audit, null, null);
+        _resourceId = resourceId;
+        _name = name;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final Resource resource =
+            getRepository().find(Resource.class, _resourceId);
         resource.confirmLock(actor);
 
-        final ResourceName newName = new ResourceName(name);
+        final ResourceName newName = new ResourceName(_name);
         final Resource existingResource =
             resource.parent().entryWithName(newName);
         if (null!=existingResource) {
@@ -72,15 +73,22 @@ public class RenameResourceCommand {
                 resource.parent(), existingResource);
         }
 
-        resource.name(new ResourceName(name));
+        resource.name(new ResourceName(_name));
 
         final LogEntry le =
             new LogEntry(
                 actor,
-                CommandType.RESOURCE_RENAME,
+                getType(),
                 happenedOn,
                 resource.id(),
                 new JsonImpl(resource).getDetail());
-        _audit.record(le);
+        getAudit().record(le);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.RESOURCE_RENAME; }
 }

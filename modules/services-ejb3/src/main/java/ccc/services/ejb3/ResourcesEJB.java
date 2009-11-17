@@ -214,8 +214,13 @@ public class ResourcesEJB
                        final String name) throws RestException {
             try {
                 new RenameResourceCommand(
-                    getResources(), getAuditLog()).rename(
-                        currentUser(), new Date(), resourceId, name);
+                    getResources(),
+                    getAuditLog(),
+                    resourceId,
+                    name)
+                .execute(
+                    currentUser(),
+                    new Date());
 
             } catch (final CccCheckedException e) {
                 throw fail(e);
@@ -535,8 +540,15 @@ public class ResourcesEJB
     public void applyWorkingCopy(final UUID resourceId)
                                                  throws RestException {
         try {
-            new ApplyWorkingCopyCommand(getResources(), getAuditLog()).execute(
-                currentUser(), new Date(), resourceId, null, false);
+            new ApplyWorkingCopyCommand(
+                getResources(),
+                getAuditLog(),
+                resourceId,
+                null,
+                false)
+            .execute(
+                currentUser(),
+                new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -554,12 +566,15 @@ public class ResourcesEJB
                                  final String comment)
                                                  throws RestException {
         try {
-            new ApplyWorkingCopyCommand(getResources(), getAuditLog()).execute(
-                getUsers().find(userId),
-                happenedOn,
+            new ApplyWorkingCopyCommand(
+                getResources(),
+                getAuditLog(),
                 resourceId,
                 comment,
-                isMajorEdit);
+                isMajorEdit)
+            .execute(
+                getUsers().find(userId),
+                happenedOn);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -574,8 +589,14 @@ public class ResourcesEJB
                                     final Duration duration)
                                                  throws RestException {
         try {
-            new UpdateCachingCommand(getResources(), getAuditLog()).execute(
-                currentUser(), new Date(), resourceId, duration);
+            new UpdateCachingCommand(
+                getResources(),
+                getAuditLog(),
+                resourceId,
+                duration)
+            .execute(
+                currentUser(),
+                new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);

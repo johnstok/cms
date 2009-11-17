@@ -160,13 +160,16 @@ public class PagesEJB
                            final Date happenedOn)
                                                  throws RestException {
         try {
-            new UpdatePageCommand(getResources(), getAuditLog()).execute(
-                userForId(actorId),
-                happenedOn,
+            new UpdatePageCommand(
+                getResources(),
+                getAuditLog(),
                 pageId,
                 delta,
                 comment,
-                isMajorEdit);
+                isMajorEdit)
+            .execute(
+                userForId(actorId),
+                happenedOn);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

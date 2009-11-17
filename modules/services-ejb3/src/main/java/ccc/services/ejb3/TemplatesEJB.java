@@ -102,8 +102,14 @@ public final class TemplatesEJB
                                final TemplateDelta delta)
                                                  throws RestException {
         try {
-            new UpdateTemplateCommand(getResources(), getAuditLog()).execute(
-                currentUser(), new Date(), templateId, delta);
+            new UpdateTemplateCommand(
+                getResources(),
+                getAuditLog(),
+                templateId,
+                delta)
+            .execute(
+                currentUser(),
+                new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);

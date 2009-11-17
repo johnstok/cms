@@ -65,11 +65,11 @@ public class TemplateDaoImplTest
         replay(_repository, _al);
 
         final UpdateTemplateCommand ut =
-            new UpdateTemplateCommand(_repository, _al);
+            new UpdateTemplateCommand(_repository, _al, foo.id(), td);
 
 
         // ACT
-        ut.execute(_user, _now, foo.id(), td);
+        ut.execute(_user, _now);
 
 
         // ASSERT

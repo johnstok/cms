@@ -50,7 +50,7 @@ public class UpdateCurrentUserCommand
                                     final LogEntryRepository audit,
                                     final UUID userId,
                                     final UserDto delta) {
-        super(null, audit, repository);
+        super(null, audit, repository, null);
         _userId = userId;
         _delta = delta;
     }
@@ -59,7 +59,7 @@ public class UpdateCurrentUserCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                         final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) throws CccCheckedException {
 
         final User current = getUsers().find(_userId);
 

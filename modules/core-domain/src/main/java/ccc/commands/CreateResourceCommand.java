@@ -32,7 +32,9 @@ import ccc.serialization.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-abstract class CreateResourceCommand<T> extends Command<T> {
+abstract class CreateResourceCommand<T>
+    extends
+        Command<T> {
 
     /**
      * Constructor.
@@ -42,7 +44,7 @@ abstract class CreateResourceCommand<T> extends Command<T> {
      */
     public CreateResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit) {
-        super(repository, audit, null);
+        super(repository, audit, null, null);
     }
 
     /**

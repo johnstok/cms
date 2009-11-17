@@ -24,6 +24,7 @@ import ccc.commons.ScriptRunner;
 import ccc.domain.CccCheckedException;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.User;
+import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
@@ -42,6 +43,7 @@ public abstract class Command<T> {
     private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
     private final UserRepository _userRepo;
+    private final DataRepository _data;
 
 
     /**
@@ -50,14 +52,17 @@ public abstract class Command<T> {
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      * @param userRepo The repository for users.
+     * @param data The data repository for storing binary data.
      */
     public Command(final ResourceRepository repository,
                    final LogEntryRepository audit,
-                   final UserRepository userRepo) {
+                   final UserRepository userRepo,
+                   final DataRepository data) {
         // TODO: Test for NULL here?
         _repository = repository;
         _audit = audit;
         _userRepo = userRepo;
+        _data = data;
     }
 
     /**
@@ -216,10 +221,18 @@ public abstract class Command<T> {
      * @return Returns the user repository.
      */
     public UserRepository getUsers() {
-
         return _userRepo;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the data repository.
+     */
+    public DataRepository getData() {
+        return _data;
+    }
 
     /**
      * Execute the command.

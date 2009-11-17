@@ -291,8 +291,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new RenameResourceCommand(_rdao, _al).rename(
-            _regularUser, new Date(), _r.id(), "baz");
+        new RenameResourceCommand(_rdao, _al, _r.id(), "baz")
+            .execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();
@@ -371,8 +371,8 @@ public class ResourceDaoImplTest
         replayAll();
 
         // ACT
-        new UpdateCachingCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id(), new Duration(0, 1, 2, 7));
+        new UpdateCachingCommand(_rdao, _al, _r.id(), new Duration(0, 1, 2, 7))
+            .execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();

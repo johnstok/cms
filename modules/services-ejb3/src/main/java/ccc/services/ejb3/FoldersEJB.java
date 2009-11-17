@@ -152,13 +152,16 @@ public class FoldersEJB
                 list.add(UUID.fromString(item));
             }
 
-            new UpdateFolderCommand(getResources(), getAuditLog()).execute(
+            new UpdateFolderCommand(
+                getResources(),
+                getAuditLog(),
+                folderId,
+                ResourceOrder.valueOf(delta.getSortOrder()),
+                delta.getIndexPage(),
+                list)
+            .execute(
                 currentUser(),
-                 new Date(),
-                 folderId,
-                 ResourceOrder.valueOf(delta.getSortOrder()),
-                 delta.getIndexPage(),
-                 list);
+                 new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);

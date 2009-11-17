@@ -30,50 +30,55 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateCachingCommand {
+public class UpdateCachingCommand
+    extends
+        Command<Void> {
 
-    private final ResourceRepository _repository;
-    private final LogEntryRepository _audit;
+    private final UUID     _resourceId;
+    private final Duration _duration;
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
-     */
-    public UpdateCachingCommand(final ResourceRepository repository,
-                                final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
-    }
-
-    /**
-     * Change the cache duration for a resource.
-     *
      * @param resourceId The resource to update.
      * @param duration The new caching duration.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID resourceId,
-                        final Duration duration) throws CccCheckedException {
-        final Resource r = _repository.find(Resource.class, resourceId);
+    public UpdateCachingCommand(final ResourceRepository repository,
+                                final LogEntryRepository audit,
+                                final UUID resourceId,
+                                final Duration duration) {
+        super(repository, audit, null, null);
+        _resourceId = resourceId;
+        _duration = duration;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+        final Resource r = getRepository().find(Resource.class, _resourceId);
         r.confirmLock(actor);
 
-        r.cache(duration);
+        r.cache(_duration);
 
         final LogEntry le =
             new LogEntry(
                 actor,
-                CommandType.RESOURCE_UPDATE_CACHE,
+                getType(),
                 happenedOn,
                 r.id(),
                 new JsonImpl(r).getDetail());
-        _audit.record(le);
+        getAudit().record(le);
+
+        return null;
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() {
+        return CommandType.RESOURCE_UPDATE_CACHE;
+    }
 }

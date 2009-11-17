@@ -21,6 +21,7 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.TemplateDelta;
+import ccc.types.CommandType;
 
 
 /**
@@ -28,42 +29,53 @@ import ccc.rest.dto.TemplateDelta;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateTemplateCommand extends UpdateResourceCommand {
+public class UpdateTemplateCommand
+    extends
+        UpdateResourceCommand<Void> {
+
+    private final UUID _templateId;
+    private final TemplateDelta _delta;
+
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
-     */
-    public UpdateTemplateCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit) {
-        super(repository, audit);
-    }
-
-    /**
-     * Update a template.
-     *
      * @param templateId The id of the template to update.
      * @param delta The changes to the template.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID templateId,
-                        final TemplateDelta delta) throws CccCheckedException {
+    public UpdateTemplateCommand(final ResourceRepository repository,
+                                 final LogEntryRepository audit,
+                                 final UUID templateId,
+                                 final TemplateDelta delta) {
+        super(repository, audit, null);
+        _templateId = templateId;
+        _delta = delta;
+    }
 
-        final Template template = getDao().find(Template.class, templateId);
+
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                          final Date happenedOn) throws CccCheckedException {
+
+        final Template template =
+            getRepository().find(Template.class, _templateId);
         template.confirmLock(actor);
 
         final RevisionMetadata rm =
-            new RevisionMetadata(happenedOn, actor, true, "Created.");
+            new RevisionMetadata(happenedOn, actor, true, "Updated.");
 
-        template.update(delta, rm);
+        template.update(_delta, rm);
 
         update(template, actor, happenedOn);
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.TEMPLATE_UPDATE; }
 }
