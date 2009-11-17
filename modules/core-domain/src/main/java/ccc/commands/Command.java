@@ -22,11 +22,12 @@ import javax.script.ScriptException;
 import ccc.commons.Resources;
 import ccc.commons.ScriptRunner;
 import ccc.domain.CccCheckedException;
+import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.persistence.UserRepository;
 import ccc.types.CommandType;
-import ccc.types.DBC;
 
 
 /**
@@ -40,6 +41,7 @@ public abstract class Command<T> {
 
     private final ResourceRepository _repository;
     private final LogEntryRepository _audit;
+    private final UserRepository _userRepo;
 
 
     /**
@@ -47,13 +49,15 @@ public abstract class Command<T> {
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
+     * @param userRepo The repository for users.
      */
     public Command(final ResourceRepository repository,
-                   final LogEntryRepository audit) {
-        DBC.require().notNull(audit);
-        DBC.require().notNull(repository);
+                   final LogEntryRepository audit,
+                   final UserRepository userRepo) {
+        // TODO: Test for NULL here?
         _repository = repository;
         _audit = audit;
+        _userRepo = userRepo;
     }
 
     /**
@@ -68,6 +72,8 @@ public abstract class Command<T> {
      */
     public final T execute(final User actor,
                            final Date happenedOn) throws CccCheckedException {
+        validate();
+        authorize(actor);
         beforeExecute(actor, happenedOn);
 //        LOG.info(
 //            "Trying command "+getType()+" for actor "+actor.username()+".");
@@ -77,6 +83,27 @@ public abstract class Command<T> {
         return result;
     }
 
+
+    /**
+     * Validate the command.
+     *
+     * @throws InvalidCommandException If the delta is invalid.
+     */
+    @SuppressWarnings("unused")
+    protected void validate() throws InvalidCommandException { /* NO OP */ }
+
+
+    /**
+     * Confirm that the actor may execute this command.
+     * <p>The default implementation allows any actor to execute the command.
+     *
+     * @param actor The actor performing the command.
+     *
+     * @throws InsufficientPrivilegesException If the actor is not authorized.
+     */
+    @SuppressWarnings("unused")
+    protected void authorize(final User actor)
+                        throws InsufficientPrivilegesException { /* NO OP */ }
 
     /**
      * Event handler that executes after the command has executed successfully.
@@ -166,7 +193,7 @@ public abstract class Command<T> {
     /**
      * Accessor.
      *
-     * @return Returns the repository.
+     * @return Returns the resource repository.
      */
     protected ResourceRepository getRepository() {
         return _repository;
@@ -180,6 +207,17 @@ public abstract class Command<T> {
      */
     protected LogEntryRepository getAudit() {
         return _audit;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user repository.
+     */
+    public UserRepository getUsers() {
+
+        return _userRepo;
     }
 
 

@@ -515,8 +515,13 @@ public class ResourcesEJB
                                                  throws RestException {
         try {
             new UpdateResourceRolesCommand(
-                getResources(), getAuditLog()).execute(
-                    userForId(actorId), happenedOn, resourceId, roles);
+                getResources(),
+                getAuditLog(),
+                resourceId,
+                roles)
+            .execute(
+                userForId(actorId),
+                happenedOn);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

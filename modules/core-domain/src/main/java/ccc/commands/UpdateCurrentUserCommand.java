@@ -31,68 +31,89 @@ import ccc.types.EmailAddress;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateCurrentUserCommand {
+public class UpdateCurrentUserCommand
+    extends
+        Command<Void> {
 
-    private final UserRepository     _repository;
-    private final LogEntryRepository _audit;
+    private final UUID _userId;
+    private final UserDto _delta;
 
     /**
      * Constructor.
      *
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
+     * @param userId The user's id.
+     * @param delta The changes to apply.
      */
     public UpdateCurrentUserCommand(final UserRepository repository,
-                                    final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+                                    final LogEntryRepository audit,
+                                    final UUID userId,
+                                    final UserDto delta) {
+        super(null, audit, repository);
+        _userId = userId;
+        _delta = delta;
     }
 
 
-    /**
-     * Update a user's email and password.
-     *
-     * @param userId The user's id.
-     * @param delta The changes to apply.
-     * @param actor The user who performed the command.
-     * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
-     */
-    public void execute(final User actor,
-                        final Date happenedOn,
-                        final UUID userId,
-                        final UserDto delta) throws CccCheckedException {
+    /** {@inheritDoc} */
+    @Override
+    public Void doExecute(final User actor,
+                         final Date happenedOn) throws CccCheckedException {
 
-        if (!actor.id().equals(userId)) {
-            throw new InsufficientPrivilegesException(
-                CommandType.USER_UPDATE, actor);
-        }
+        final User current = getUsers().find(_userId);
 
-        final User current = _repository.find(userId);
-
-        if (null != delta.getPassword()) {
-            current.password(delta.getPassword());
-            _audit.record(
+        // TODO: Move to separate command
+        if (null != _delta.getPassword()) {
+            current.password(_delta.getPassword());
+            getAudit().record(
                 new LogEntry(
                     actor,
                     CommandType.USER_CHANGE_PASSWORD,
                     happenedOn,
-                    userId,
+                    _userId,
                     ""));
         }
 
-        current.email(new EmailAddress(delta.getEmail()));
-        current.name(delta.getName());
+        current.email(new EmailAddress(_delta.getEmail()));
+        current.name(_delta.getName());
         current.clearMetadata();
-        current.addMetadata(delta.getMetadata());
+        current.addMetadata(_delta.getMetadata());
 
-        _audit.record(
+        getAudit().record(
             new LogEntry(
                 actor,
-                CommandType.USER_UPDATE,
+                getType(),
                 happenedOn,
-                userId,
+                _userId,
                 new JsonImpl(current).getDetail()));
+
+        return null;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void validate() throws InvalidCommandException {
+        if (null==_delta.getName()
+            || null==_delta.getEmail()) {
+            throw new InvalidCommandException();
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void authorize(final User actor)
+                                    throws InsufficientPrivilegesException {
+        if (!actor.id().equals(_userId)) {
+            throw new InsufficientPrivilegesException(
+                getType(), actor);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected CommandType getType() { return CommandType.USER_UPDATE; }
 }

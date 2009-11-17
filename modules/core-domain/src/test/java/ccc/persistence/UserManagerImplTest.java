@@ -192,10 +192,11 @@ public class UserManagerImplTest extends TestCase {
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
-        final UpdateUserCommand uu = new UpdateUserCommand(_um, _audit);
+        final UpdateUserCommand uu =
+            new UpdateUserCommand(_um, _audit, _u.id(), _uDelta);
 
         // ACT
-        uu.execute(_u, now, _u.id(), _uDelta);
+        uu.execute(_u, now);
 
         // ASSERT
         verifyAll();

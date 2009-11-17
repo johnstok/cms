@@ -42,7 +42,7 @@ abstract class CreateResourceCommand<T> extends Command<T> {
      */
     public CreateResourceCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit) {
-        super(repository, audit);
+        super(repository, audit, null);
     }
 
     /**
