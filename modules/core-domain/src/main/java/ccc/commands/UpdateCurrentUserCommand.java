@@ -96,7 +96,8 @@ public class UpdateCurrentUserCommand
     @Override
     protected void validate() throws InvalidCommandException {
         if (null==_delta.getName()
-            || null==_delta.getEmail()) {
+            || null==_delta.getEmail()
+            || !EmailAddress.isValidText(_delta.getEmail())) {
             throw new InvalidCommandException();
         }
     }
