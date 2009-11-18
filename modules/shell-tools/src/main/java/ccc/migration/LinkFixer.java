@@ -48,15 +48,18 @@ public class LinkFixer {
     static final Pattern SRC_PATTERN =
         Pattern.compile("src\\s*=\\s*\"(.*?)\"");
     private final String _prefix;
+    private final String _sourceRef;
 
     /**
      * Constructor.
      *
      * @param prefix The prefix used when correcting links.
      */
-    public LinkFixer(final String prefix) {
+    public LinkFixer(final String prefix, final String sourceRef) {
         DBC.require().notNull(prefix);
+        DBC.require().notNull(sourceRef);
         _prefix = prefix;
+        _sourceRef = sourceRef;
     }
 
     /**
@@ -133,7 +136,7 @@ public class LinkFixer {
 
         } else {
             uncorrectedLinks.add(link);
-            LOG.info("Didn't correct "+link);
+            LOG.info("Source: "+_sourceRef+", didn't correct "+link);
 
         }
         return corrected;
