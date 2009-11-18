@@ -45,6 +45,7 @@ import ccc.types.Username;
  * @author Civic Computing Ltd.
  */
 public abstract class BaseMigrations {
+    private static Logger log = Logger.getLogger(BaseMigrations.class);
 
     protected  LegacyDBQueries _legacyQueries;
     protected Users _userCommands;
@@ -52,11 +53,11 @@ public abstract class BaseMigrations {
     protected PagesExt _pagesExt;
     protected ResourcesExt _resourcesExt;
     protected TemplateMigration _tm;
-
     protected String _linkPrefix;
 
     private final Properties _paragraphTypes =
         Resources.readIntoProps("paragraph-types.properties");
+
 
     @SuppressWarnings("unchecked")
     protected LogEntryBean logEntryForVersion(final int id,
@@ -98,12 +99,11 @@ public abstract class BaseMigrations {
 
 
     protected PageDelta assemblePage(final ResourceBean r,
-                                     final int version,
-                                     final Logger log) {
+                                     final int version) {
         final Set<Paragraph> paragraphDeltas =
             new HashSet<Paragraph>();
         final Map<String, StringBuffer> paragraphs =
-            assembleParagraphs(r.contentId(), version, log);
+            assembleParagraphs(r.contentId(), version);
         for (final Map.Entry<String, StringBuffer> para
             : paragraphs.entrySet()) {
 
@@ -137,8 +137,7 @@ public abstract class BaseMigrations {
                                        final ResourceBean r,
                                        final Integer version,
                                        final LogEntryBean le,
-                                       final PageDelta delta,
-                                       final Logger log)
+                                       final PageDelta delta)
                                                  throws RestException {
 
         final String pageTitle = r.cleanTitle();
@@ -250,13 +249,15 @@ public abstract class BaseMigrations {
             le.getHappenedOn());
     }
 
+
     private ParagraphType getParagraphType(final String paragraphName) {
         final String pType = _paragraphTypes.getProperty(paragraphName, "TEXT");
         return ParagraphType.valueOf(pType);
     }
 
+
     private Map<String, StringBuffer> assembleParagraphs(final int pageId,
-        final int version, final Logger log) {
+                                                         final int version) {
         log.debug("Assembling paragraphs for "+pageId+" v."+version);
 
         final Map<String, StringBuffer> map =
@@ -286,14 +287,24 @@ public abstract class BaseMigrations {
         return map;
     }
 
+
     private void setStyleSheet(final ResourceBean r,
                                final Map<String, String> properties) {
         final String styleSheet =
             _legacyQueries.selectStyleSheet(r.contentId());
         if (styleSheet != null) {
-            properties.put("bodyId", styleSheet);
+            if (isValidMetadatum(styleSheet)) {
+                properties.put("bodyId", styleSheet);
+            } else {
+                log.warn(
+                    "Ignored invalid stylesheet '"
+                    + styleSheet
+                    + "' for page "
+                    + r.contentId());
+            }
         }
     }
+
 
     private void setFlagged(final ResourceBean r,
                             final Map<String, String> properties) {
@@ -303,4 +314,8 @@ public abstract class BaseMigrations {
         }
     }
 
+
+    private boolean isValidMetadatum(final String value) {
+        return value.matches("[^<^>]*");
+    }
 }

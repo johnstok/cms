@@ -68,12 +68,8 @@ public class Migrations extends BaseMigrations {
      * Constructor.
      *
      * @param legacyQueries Queries
-     * @param linkPrefix The prefix to attach to legacy URLs.
      * @param resourcesExt The available commands for CCC7.
      * @param fu The file up-loader to use.
-     * @param migrateHomepage The boolean for home page migration.
-     * @param migrateIsMajorEdit The boolean for is_major_edit migration.
-     * @param migrateVersions The boolean for page versions migration.
      * @param pagesExt Pages API implementation.
      * @param foldersExt Folders API implementation.
      * @param userCommands Templates API implementation.
@@ -295,9 +291,9 @@ public class Migrations extends BaseMigrations {
                 }
             }
 
-            PageDelta delta = assemblePage(resource, createVersion.intValue(), log);
+            PageDelta delta = assemblePage(resource, createVersion.intValue());
             final ResourceSummary rs =
-                createPage(parentFolderId, resource, createVersion, le, delta, log);
+                createPage(parentFolderId, resource, createVersion, le, delta);
 
             // Apply all updates
             for (final Integer version : paragraphVersions) {
@@ -315,7 +311,7 @@ public class Migrations extends BaseMigrations {
                             le.getUser().getId(),
                             le.getHappenedOn());
                     try {
-                        delta = assemblePage(resource, version, log);
+                        delta = assemblePage(resource, version);
                         updatePage(resource, rs, version, le, delta);
                     } catch (final MigrationException e) {
                         log.warn("Update skipped(inner) for version  "+version

@@ -43,10 +43,10 @@ import ccc.types.Paragraph;
  * @author Civic Computing Ltd.
  */
 public class MhtsFileMigration extends BaseMigrations {
+    private static Logger log = Logger.getLogger(MhtsFileMigration.class);
 
     private static final boolean DONT_PUBLISH = false;
     private static final String CREATED_PAGE_ACTION = "CREATED PAGE";
-    private static Logger log = Logger.getLogger(MhtsFileMigration.class);
 
     private final ResourceSummary _templateFolder;
 
@@ -250,9 +250,9 @@ public class MhtsFileMigration extends BaseMigrations {
             r.expiryDate());
 
 
-        final PageDelta delta = assemblePage(pageBean, 0, log);
+        final PageDelta delta = assemblePage(pageBean, 0);
         final ResourceSummary pageRs =
-            createPage(folderRs.getId(), pageBean, 0, le, delta, log);
+            createPage(folderRs.getId(), pageBean, 0, le, delta);
 
         _resourcesExt.lock(pageRs.getId(),
                 le.getUser().getId(),
