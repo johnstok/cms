@@ -33,7 +33,7 @@ public class LinkFixerTest
     public void testFixParagraph() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
         final Map<String, StringBuffer> paras =
             new HashMap<String, StringBuffer>();
         paras.put(
@@ -58,7 +58,7 @@ public class LinkFixerTest
     public void testFixImageUrls() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
         final Map<String, StringBuffer> paras =
             new HashMap<String, StringBuffer>();
         paras.put(
@@ -79,7 +79,7 @@ public class LinkFixerTest
     public void testFixFileUrls() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
         final Map<String, StringBuffer> paras =
             new HashMap<String, StringBuffer>();
         paras.put(
@@ -120,7 +120,7 @@ public class LinkFixerTest
     public void testFixAbsoluteUrls() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
         final Map<String, StringBuffer> paras =
             new HashMap<String, StringBuffer>();
         paras.put(
@@ -142,7 +142,7 @@ public class LinkFixerTest
     public void testCorrectHandlesOldPageLinksA() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
 
         // ACT
         final String corrected =
@@ -158,7 +158,7 @@ public class LinkFixerTest
     public void testCorrectHandlesOldPageLinksB() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
 
         // ACT
         final String corrected =
@@ -174,7 +174,7 @@ public class LinkFixerTest
     public void testCorrectHandlesPageLinks() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
 
         // ACT
         final String corrected = lf.correct("3481.html");
@@ -189,7 +189,7 @@ public class LinkFixerTest
     public void testCorrectHandlesComplexPageLinks() {
 
         // ARRANGE
-        final LinkFixer lf = new LinkFixer("ash/");
+        final LinkFixer lf = new LinkFixer("ash/", "foo");
 
         // ACT
         final String corrected = lf.correct("3481.7.1071.html");

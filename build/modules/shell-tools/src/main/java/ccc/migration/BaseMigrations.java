@@ -280,7 +280,7 @@ public abstract class BaseMigrations {
         }
         log.debug("Assembly done.");
 
-        new LinkFixer(_linkPrefix).extractURLs(map);
+        new LinkFixer(_linkPrefix, String.valueOf(pageId)).extractURLs(map);
         new WordCharFixer().warn(map);
 
         return map;
