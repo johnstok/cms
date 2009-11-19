@@ -193,7 +193,7 @@
         <servlet-name>preview-content</servlet-name>
         <servlet-name>preview-assets</servlet-name>
         <servlet-name>broken-links</servlet-name>
-        <dispatcher>FORWARD</dispatcher>
+        <!-- dispatcher>FORWARD</dispatcher -->
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
 
@@ -204,7 +204,7 @@
         <servlet-name>preview-content</servlet-name>
         <servlet-name>preview-assets</servlet-name>
         <servlet-name>broken-links</servlet-name>
-        <dispatcher>FORWARD</dispatcher>
+        <!-- dispatcher>FORWARD</dispatcher -->
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
     
