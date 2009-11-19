@@ -106,7 +106,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public void updateYourUser(final UUID userId,
                                final UserDto user)
                                                  throws RestException {
@@ -209,7 +209,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
         return getUsers().listMetadataValuesWithKey(key);
     }

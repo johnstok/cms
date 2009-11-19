@@ -102,7 +102,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public ResourceSummary createPage(final PageDto page)
                                                  throws RestException {
         try {

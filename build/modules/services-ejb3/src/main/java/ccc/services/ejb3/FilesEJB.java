@@ -80,7 +80,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public ResourceSummary createFile(final UUID parentFolder,
                                       final FileDelta file,
                                       final String resourceName,
