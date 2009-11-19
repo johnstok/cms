@@ -13,6 +13,7 @@ package ccc.domain;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
@@ -35,6 +36,123 @@ public final class ResourceTest extends TestCase {
     private final Template _default = new Template();
     private User _jill = new User(new Username("jill"), "password");
     private User _jack = new User(new Username("jack"), "password");
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testSecureResourcesWithInsecureParentsAreSecure()
+    throws Exception {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        final Page p = new Page();
+        p.roles(Arrays.asList("foo"));
+        f.add(p);
+
+        // ACT
+        final boolean secure = p.isSecure();
+
+        // ASSERT
+        assertTrue(secure);
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testSecureResourcesWithSecureParentsAreSecure()
+    throws Exception {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.roles(Arrays.asList("foo"));
+        final Page p = new Page();
+        p.roles(Arrays.asList("bar"));
+        f.add(p);
+
+        // ACT
+        final boolean secure = p.isSecure();
+
+        // ASSERT
+        assertTrue(secure);
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testInsecureResourcesWithSecureParentsAreSecure()
+    throws Exception {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.roles(Arrays.asList("foo"));
+        final Page p = new Page();
+        f.add(p);
+
+        // ACT
+        final boolean secure = p.isSecure();
+
+        // ASSERT
+        assertTrue(secure);
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testInsecureResourcesWithInsecureParentsAreInsecure()
+    throws Exception {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        final Page p = new Page();
+        f.add(p);
+
+        // ACT
+        final boolean secure = p.isSecure();
+
+        // ASSERT
+        assertFalse(secure);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testResourcesWithRolesAreSecure() {
+
+        // ARRANGE
+        final Page p = new Page();
+        p.roles(Collections.singleton("foo"));
+
+        // ACT
+        final boolean secure = p.isSecure();
+
+        // ASSERT
+        assertTrue(secure);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testResourcesWithoutRolesArentSecure() {
+
+        // ARRANGE
+        final Page p = new Page();
+
+        // ACT
+        final boolean secure = p.isSecure();
+
+        // ASSERT
+        assertFalse(secure);
+    }
 
 
     /**

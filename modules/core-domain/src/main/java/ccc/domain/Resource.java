@@ -377,12 +377,25 @@ public abstract class Resource
      *
      * A resource is visible if itself and all of its parents are published.
      *
-     * @return True if resource's all parents are published.
+     * @return True if this resource and all parents are published.
      */
     public boolean isVisible() {
         final boolean parentVisible =
             (null==_parent) ? true : _parent.isVisible();
         return parentVisible && isPublished() && !isDeleted();
+    }
+
+    /**
+     * Query method to determine whether a resource is secure.
+     *
+     * A resource is secure if itself or any of its parents have roles.
+     *
+     * @return True if this resource or any of its parents have roles.
+     */
+    public boolean isSecure() {
+        final boolean parentSecure =
+            (null==_parent) ? false : _parent.isSecure();
+        return parentSecure || !roles().isEmpty();
     }
 
     /**

@@ -163,7 +163,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private void indexFiles(final SimpleLucene lucene) {
         final List<File> files = _resources.files();
         for (final File f : files) {
-            if (f.isVisible() && f.roles().isEmpty()) {
+            if (f.isVisible() && !f.isSecure()) {
                 lucene.indexFile(f);
             }
         }
@@ -173,7 +173,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private void indexPages(final SimpleLucene lucene) {
         final List<Page> pages = _resources.pages();
         for (final Page p : pages) {
-            if (p.isVisible() && p.roles().isEmpty()) {
+            if (p.isVisible() && !p.isSecure()) {
                 lucene.indexPage(p);
             }
         }
