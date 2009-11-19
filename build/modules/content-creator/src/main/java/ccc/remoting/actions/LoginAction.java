@@ -66,7 +66,10 @@ public class LoginAction
         req.getSession(true);
         final WebAuthentication pwl = new WebAuthentication();
         if(pwl.login(username, password)) {
-            SecurityImpl.logSuccesfulLogin(username, req.getRemoteAddr());
+            SecurityImpl.logSuccesfulLogin(
+                username,
+                req.getRemoteAddr(),
+                req.getHeader("X-Forwarded-For"));
             dispatchRedirect(req, resp, target);
         } else {
             dispatchRedirect(req, resp, _loginPage+"?tg="+target);
