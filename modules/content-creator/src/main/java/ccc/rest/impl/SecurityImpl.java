@@ -71,7 +71,10 @@ public class SecurityImpl
         if (_request.isUserInRole("ADMINISTRATOR")
             || _request.isUserInRole("CONTENT_CREATOR")
             || _request.isUserInRole("SITE_BUILDER")) {
-            logSuccesfulLogin(username, _request.getRemoteAddr());
+            logSuccesfulLogin(
+                username,
+                _request.getRemoteAddr(),
+                _request.getHeader("X-Forwarded-For"));
             return Boolean.TRUE;
         }
 
@@ -108,9 +111,14 @@ public class SecurityImpl
      *
      * @param username The username used to log in.
      * @param ip The IP address the user logged in from.
+     * @param forwarded The IP addresses the request has been forwarded for.
      */
     public static void logSuccesfulLogin(final String username,
-                                         final String ip) {
-        LOG.info("Login OK for ip "+ip+" with username "+username);
+                                         final String ip,
+                                         final String forwarded) {
+        LOG.info(
+            "Login OK for username "+username
+            + " [Remote-Address="+ip
+            + ", X-Forwarded-For="+forwarded+"]");
     }
 }
