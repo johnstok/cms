@@ -130,7 +130,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public ActionSummary createAction(final ActionDto action)
     throws RestException {
         try {

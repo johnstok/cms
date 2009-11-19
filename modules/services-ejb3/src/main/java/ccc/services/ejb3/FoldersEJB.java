@@ -58,7 +58,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
         return createFolder(
@@ -69,7 +69,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
@@ -226,7 +226,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public Boolean nameExistsInFolder(final UUID folderId, final String name)
     throws RestException {
         try {

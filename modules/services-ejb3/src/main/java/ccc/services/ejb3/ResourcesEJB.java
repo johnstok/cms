@@ -151,7 +151,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public void lock(final UUID resourceId) throws RestException {
         execute(
             commands().lockResourceCommand(resourceId));
@@ -230,7 +230,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({CONTENT_CREATOR, API_USER})
     public void unlock(final UUID resourceId) throws RestException {
         try {
             unlock(resourceId, currentUserId(), new Date());
@@ -689,7 +689,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public ResourceSummary resource(final UUID resourceId)
     throws RestException {
         try {
@@ -767,7 +767,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public ResourceSummary resourceForPath(final String rootPath)
     throws RestException {
         try {
