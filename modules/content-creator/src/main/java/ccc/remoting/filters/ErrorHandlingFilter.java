@@ -72,8 +72,8 @@ public class ErrorHandlingFilter
             final String relUri = _loginUri + "?tg=" + e.getTarget();
             dispatchRedirect(req, resp, relUri);
 
-        } catch (final RuntimeException e) {
-            dispatchError(req, resp, e);
+//        } catch (final RuntimeException e) {
+//            dispatchError(req, resp, e);
         }
     }
 
