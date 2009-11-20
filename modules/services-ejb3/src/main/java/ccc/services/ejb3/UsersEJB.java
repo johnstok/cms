@@ -182,7 +182,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public UserDto userDelta(final UUID userId) throws RestException {
         try {
             return
