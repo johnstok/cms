@@ -84,7 +84,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                             _md = folderSelect.selectedResource();
                             if (_md != null) {
                                 _linkPath.setValue(
-                                    _md.getAbsolutePath().substring(1));
+                                    _md.getAbsolutePath().substring(8));
                                 _linkName.setValue(_md.getName());
                                 _uuid =_md.getId().toString();
                             }
