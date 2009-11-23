@@ -85,9 +85,7 @@
         <module>modules/public-api</module>
         <module>modules/core-domain</module>
         <module>modules/client-gwt</module>
-        <module>modules/persistence-jpa</module>
         <module>modules/search-lucene</module>
-        <module>modules/rendering-engine</module>
         <module>modules/services-ejb3</module>
         <module>modules/shell-tools</module>
         <module>modules/content-creator</module>
