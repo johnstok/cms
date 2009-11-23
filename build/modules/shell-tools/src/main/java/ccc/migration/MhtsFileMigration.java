@@ -156,6 +156,7 @@ public class MhtsFileMigration extends BaseMigrations {
                 migratePage(resourceBean, folderResourceSummary, logEntryBean);
 
                 unlockFolder(logEntryBeanId, happenedOn, folderId);
+                _resourcesExt.lock(folderId);
                 createDeleteOnExpiryAction(resourceBean, folderResourceSummary);
             }
 
