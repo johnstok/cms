@@ -9,9 +9,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rendering;
+package ccc.domain;
 
-import ccc.domain.CCCException;
 
 
 /**

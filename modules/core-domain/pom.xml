@@ -42,12 +42,6 @@
         </dependency>
         
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4</version>
@@ -57,6 +51,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
             <version>1.0.1.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.3.2.GA</version>
         </dependency>
         <dependency>
             <groupId>pdfbox</groupId>
@@ -74,5 +73,44 @@
             <version>${lib.version.tmextractors}</version>
        </dependency>
     </dependencies>
+    
+    <profiles>
+        <profile>
+            <id>schema</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>hibernate3-maven-plugin</artifactId>
+                        <configuration>
+                            <components>
+                                <component>
+                                    <name>hbm2ddl</name>
+                                </component>
+                            </components>
+                            <componentProperties>
+                                <implementation>jpaconfiguration</implementation>
+                                <persistenceunit>${application.prefix}-persistence</persistenceunit>
+                                <outputfilename>ccc7-schema.sql</outputfilename>
+                                <drop>false</drop>
+                                <create>true</create>
+                                <update>false</update>
+                                <export>false</export>
+                                <ejb3>true</ejb3>
+                            </componentProperties>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>hbm2ddl</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

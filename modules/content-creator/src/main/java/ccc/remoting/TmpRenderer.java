@@ -13,8 +13,8 @@ package ccc.remoting;
 
 import java.util.UUID;
 
+import ccc.domain.NotFoundException;
 import ccc.rendering.FileBody;
-import ccc.rendering.NotFoundException;
 import ccc.rendering.PageBody;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;

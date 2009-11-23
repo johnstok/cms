@@ -30,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.commons.ScriptRunner;
+import ccc.domain.NotFoundException;
 import ccc.remoting.actions.SessionKeys;
 import ccc.rendering.Context;
-import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.rendering.velocity.VelocityProcessor;
 import ccc.rest.Actions;

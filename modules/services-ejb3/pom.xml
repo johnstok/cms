@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>CCC7</groupId>
-            <artifactId>persistence-jpa</artifactId>
+            <artifactId>core-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
