@@ -36,6 +36,7 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.rest.Resources;
@@ -74,6 +75,10 @@ public class ResourcesEJB
     throws RestException {
         try {
             final Action a = getActions().find(actionId);
+
+            if (a.subject().isDeleted()) {
+                throw new EntityNotFoundException(a.subject().id());
+            }
 
             if (new Date().before(a.executeAfter())) {
                 return; // Too early.
