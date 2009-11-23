@@ -38,6 +38,8 @@ import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.types.Failure;
+import ccc.types.FailureCode;
 
 
 /**
@@ -84,9 +86,9 @@ public class ActionsEJB
                 fail(action, e);
 
             } catch (final RuntimeException e) {
-                LOG.warn("Error executing action.", e);
-                throw e;
-
+                final Failure f = new Failure(FailureCode.UNEXPECTED);
+                LOG.warn("Error executing action: "+f.getExceptionId(), e);
+                fail(action, new RestException(f));
             }
         }
     }
