@@ -228,7 +228,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
                                       resourceId) {
                 @Override protected void execute(final String path) {
-                    // FIXME: Dodgy.
+                    // FIXME: Dodgy - just get the FileDTO for the specified Id.
                     final FileDto fs = new FileDto(
                         new MimeType("image", "*"),
                         path,
