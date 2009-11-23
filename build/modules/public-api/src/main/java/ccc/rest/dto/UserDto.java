@@ -54,11 +54,11 @@ public final class UserDto implements Serializable, Jsonable {
      * @param metadata The user's metadata.
      */
     public UserDto(final String email,
-                       final UUID id,
-                       final Username username,
-                       final String name,
-                       final Set<String> roles,
-                       final Map<String, String> metadata) {
+                   final UUID id,
+                   final Username username,
+                   final String name,
+                   final Set<String> roles,
+                   final Map<String, String> metadata) {
         _email = email;
         _name = name;
         _id = id;
@@ -103,10 +103,10 @@ public final class UserDto implements Serializable, Jsonable {
      * @param metadata The user's metadata.
      */
     public UserDto(final String email,
-                       final Username username,
-                       final String name,
-                       final Set<String> roles,
-                       final Map<String, String> metadata) {
+                   final Username username,
+                   final String name,
+                   final Set<String> roles,
+                   final Map<String, String> metadata) {
         _email = email;
         _username = username;
         _name = name;

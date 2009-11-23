@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateSummary;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
@@ -147,5 +148,47 @@ public class Template
                 delta.getBody(),
                 delta.getDefinition(),
                 delta.getMimeType()));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TemplateSummary forCurrentRevision() {
+        final TemplateSummary dto = mapTemplate();
+        setDtoProps(dto);
+        return dto;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TemplateSummary forSpecificRevision(final int revNo) {
+        // FIXME: Always return current rev.
+        final TemplateSummary dto = mapTemplate();
+        setDtoProps(dto);
+        return dto;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TemplateSummary forWorkingCopy() {
+        // FIXME: Always return current rev.
+        final TemplateSummary dto = mapTemplate();
+        setDtoProps(dto);
+        return dto;
+    }
+
+    /**
+     * Create a summary for a template.
+     *
+     * @return The corresponding summary.
+     */
+    public TemplateSummary mapTemplate() {
+        return
+            new TemplateSummary(
+                id(),
+                name(),
+                getTitle(),
+                description(),
+                body(),
+                definition());
     }
 }

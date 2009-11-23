@@ -24,7 +24,9 @@ import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.dialogs.ImageChooserDialog;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.PageDelta;
+import ccc.types.MimeType;
 import ccc.types.Paragraph;
+import ccc.types.ResourceName;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -226,10 +228,12 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
                                       resourceId) {
                 @Override protected void execute(final String path) {
-                    final FileDto fs = new FileDto("image",
+                    // FIXME: Dodgy.
+                    final FileDto fs = new FileDto(
+                        new MimeType("image", "*"),
                         path,
                         resourceId,
-                        "",
+                        new ResourceName("img"),
                         "",
                         new HashMap<String, String>());
                     final ImageSummaryModelData model =

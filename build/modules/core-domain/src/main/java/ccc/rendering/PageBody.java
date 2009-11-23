@@ -35,7 +35,7 @@ public class PageBody
     implements
         Body {
 
-    private final Template _template;
+    private final String _template;
 
 
     /**
@@ -43,7 +43,7 @@ public class PageBody
      *
      * @param t The template to use for this body.
      */
-    public PageBody(final Template t) {
+    public PageBody(final String t) {
         DBC.require().notNull(t);
         _template = t;
     }
@@ -54,7 +54,7 @@ public class PageBody
                       final Charset charset,
                       final Context context,
                       final TextProcessor processor) {
-        final String t = _template.body();
+        final String t = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
         processor.render(t, w, context);

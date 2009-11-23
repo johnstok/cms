@@ -16,7 +16,6 @@ import static java.util.Collections.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.entities.IPage;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 
@@ -28,9 +27,7 @@ import ccc.types.Paragraph;
  */
 public class PageWorkingCopy
     extends
-        WorkingCopy<PageDelta>
-    implements
-        IPage {
+        WorkingCopy<PageDelta> {
 
     private Set<Paragraph> _wcContent;
 
@@ -59,22 +56,14 @@ public class PageWorkingCopy
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Set<Paragraph> getContent() {
-        return new HashSet<Paragraph>(_wcContent);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Set<Paragraph> paragraphs() { // TODO: Duplicated in PageRevision
+    public Set<Paragraph> getParagraphs() { // TODO: Duplicated in PageRevision
         return unmodifiableSet(_wcContent);
     }
 
 
     /** {@inheritDoc} */
-    @Override
     // TODO: Duplicated in PageRevision
-    public Paragraph paragraph(final String name) {
+    public Paragraph getParagraph(final String name) {
         for (final Paragraph p : _wcContent) {
             if (p.name().equals(name)) {
                 return p;

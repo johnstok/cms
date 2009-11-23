@@ -13,13 +13,10 @@ package ccc.remoting;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.remoting.actions.LogoutAction;
-import ccc.remoting.actions.ServletAction;
+import ccc.remoting.actions.AbstractServletAction;
 
 
 /**
@@ -29,15 +26,13 @@ import ccc.remoting.actions.ServletAction;
  */
 public class LogoutServlet
     extends
-     HttpServlet {
+    AbstractServletAction{
 
     /** {@inheritDoc} */
     @Override
     protected void doGet(final HttpServletRequest req,
-                         final HttpServletResponse resp)
-                                          throws ServletException, IOException {
-        //TODO: Inline the LogoutAction class.
-        final ServletAction action = new LogoutAction();
-        action.execute(req, resp);
+                         final HttpServletResponse resp) throws IOException {
+        req.getSession().invalidate();
+        dispatchRedirect(req, resp, "/");
     }
 }

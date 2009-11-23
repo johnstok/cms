@@ -96,14 +96,14 @@ public class VelocityProcessor implements TextProcessor {
             final VelocityContext context = new VelocityContext();
 
             for (final Map.Entry<String, Object> extra
-                                                : ctxt.getExtras().entrySet()) {
+                                                : ctxt.getAll().entrySet()) {
                 context.put(extra.getKey(), extra.getValue());
             }
             context.put("random", _random);
             context.put("math", Math.class);
             context.put("calendar", Calendar.class);
             context.put("html", XHTML.class);
-            
+
             context.put("dateTool", new DateTool());
             context.put("sortTool", new SortTool());
 

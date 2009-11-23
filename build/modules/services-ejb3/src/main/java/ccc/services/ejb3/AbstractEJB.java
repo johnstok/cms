@@ -40,15 +40,11 @@ import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ActionRepository;
-import ccc.persistence.ActionRepositoryImpl;
 import ccc.persistence.DataRepository;
-import ccc.persistence.DataRepositoryImpl;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.LogEntryRepositoryImpl;
+import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.UserRepository;
-import ccc.persistence.UserRepositoryImpl;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionSummary;
@@ -88,11 +84,12 @@ abstract class AbstractEJB {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _audit = new LogEntryRepositoryImpl(_em);
-        _users = new UserRepositoryImpl(_em);
-        _resources = new ResourceRepositoryImpl(_em);
-        _dm = DataRepositoryImpl.onFileSystem(_em);
-        _actions = new ActionRepositoryImpl(_em);
+        final RepositoryFactory rf = new RepositoryFactory(_em);
+        _audit = rf.createLogEntryRepo();
+        _users = rf.createUserRepo();
+        _resources = rf.createResourceRepository();
+        _dm = rf.createDataRepository();
+        _actions = rf.createActionRepository();
         _cFactory = new CommandFactory(_resources, _audit, _dm);
     }
 
@@ -149,6 +146,7 @@ abstract class AbstractEJB {
 
     /**
      * Accessor.
+     * TODO: Rename.
      *
      * @return Returns the file repository.
      */
@@ -315,7 +313,7 @@ abstract class AbstractEJB {
     protected Collection<FileDto> mapFiles(final Collection<File> files) {
         final Collection<FileDto> mapped = new ArrayList<FileDto>();
         for (final File f : files) {
-            mapped.add(mapFile(f));
+            mapped.add(f.mapFile());
         }
         return mapped;
     }
@@ -349,7 +347,8 @@ abstract class AbstractEJB {
                                                final List<Template> templates) {
         final Collection<TemplateSummary> mapped =
             new ArrayList<TemplateSummary>();
-        for (final Template t : templates) { mapped.add(mapTemplate(t)); }
+        for (final Template t : templates) {
+            mapped.add(t.mapTemplate()); }
         return mapped;
     }
 
@@ -439,25 +438,6 @@ abstract class AbstractEJB {
                 user.name(),
                 user.roles(),
                 user.metadata());
-    }
-
-
-    /**
-     * Create a summary of a file.
-     *
-     * @param file The file to map.
-     * @return The summary of the file.
-     */
-    protected FileDto mapFile(final File file) {
-        final FileDto fs =
-            new FileDto(
-                file.mimeType().toString(),
-                file.absolutePath().toString(),
-                file.id(),
-                file.name().toString(),
-                file.getTitle(),
-                file.properties());
-        return fs;
     }
 
 
@@ -603,26 +583,5 @@ abstract class AbstractEJB {
                 a.status(),
                 (null==a.getCode()) ? null : a.getCode());
         return summary;
-    }
-
-
-    /**
-     * Create a summary for a template.
-     *
-     * @param t The template.
-     * @return The corresponding summary.
-     */
-    protected TemplateSummary mapTemplate(final Template t) {
-        if (t == null) {
-            return null;
-        }
-        return
-            new TemplateSummary(
-                t.id(),
-                t.name().toString(),
-                t.getTitle(),
-                t.description(),
-                t.body(),
-                t.definition());
     }
 }

@@ -39,7 +39,7 @@ import ccc.types.ResourcePath;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceRepositoryImpl implements ResourceRepository {
+class ResourceRepositoryImpl implements ResourceRepository {
 
     private final Repository _repository;
 

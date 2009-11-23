@@ -10,7 +10,9 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.entities;
+package ccc.rest.entities;
+
+import java.util.UUID;
 
 import ccc.types.MimeType;
 
@@ -20,14 +22,16 @@ import ccc.types.MimeType;
  *
  * @author Civic Computing Ltd.
  */
-public interface IFile {
+public interface IFile
+    extends
+        IResource {
 
     /**
      * Accessor.
      *
      * @return Returns the data.
      */
-    IData getData();
+    UUID getData();
 
     /**
      * Accessor.
@@ -49,6 +53,20 @@ public interface IFile {
      * @return True if the file is an image, false otherwise.
      */
     boolean isImage();
+
+    /**
+     * Query if this file is an text.
+     *
+     * @return True if the file is a text, false otherwise.
+     */
+    boolean isText();
+
+    /**
+     * Query if this file is executable.
+     *
+     * @return True if the file is executable, false otherwise.
+     */
+    boolean isExecutable();
 
     /**
      * Accessor.

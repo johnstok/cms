@@ -14,7 +14,6 @@ package ccc.domain;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.entities.IFile;
 import ccc.rest.dto.FileDelta;
 import ccc.types.FilePropertyNames;
 import ccc.types.MimeType;
@@ -27,7 +26,7 @@ import ccc.types.MimeType;
  */
 public class FileWorkingCopy
     extends
-        WorkingCopy<FileDelta> implements IFile {
+        WorkingCopy<FileDelta> {
 
     private MimeType _mimeType;
     private int _size;
@@ -65,34 +64,42 @@ public class FileWorkingCopy
             _properties);
     }
 
-    /** {@inheritDoc} */
-    @Override
     public Data getData() {
         return _data;
     }
 
-    /** {@inheritDoc} */
-    @Override
     public MimeType getMimeType() {
         return _mimeType;
     }
 
-    /** {@inheritDoc} */
-    @Override
     public int getSize() {
         return _size;
     }
 
-    /** {@inheritDoc} */
-    @Override
     public boolean isImage() {
         // TODO: Factor into superclass?
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }
 
-    /** {@inheritDoc} */
-    @Override
     public String getCharset() {
         return _properties.get(FilePropertyNames.CHARSET);
+    }
+
+    /** {@inheritDoc} */
+    public boolean isText() {
+        // TODO: Factor into superclass?
+        final String primary = getMimeType().getPrimaryType();
+        final String sub = getMimeType().getSubType();
+        if ("text".equalsIgnoreCase(primary)) {
+            return true;
+        } else if ("application".equalsIgnoreCase(primary)) {
+            if ("xml".equalsIgnoreCase(sub)
+                || "plain".equalsIgnoreCase(sub)
+                || "javascript".equalsIgnoreCase(sub)
+                || "x-javascript".equalsIgnoreCase(sub)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

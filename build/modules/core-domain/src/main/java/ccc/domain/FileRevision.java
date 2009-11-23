@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.entities.IFile;
 import ccc.rest.dto.FileDelta;
 import ccc.types.DBC;
 import ccc.types.FilePropertyNames;
@@ -29,9 +28,7 @@ import ccc.types.MimeType;
  */
 public class FileRevision
     extends
-        Revision<FileDelta>
-    implements
-        IFile {
+        Revision<FileDelta> {
 
     private Data      _data;
     private int       _size;
@@ -71,24 +68,20 @@ public class FileRevision
     }
 
 
-    /** {@inheritDoc} */
     public final Data getData() {
         return _data;
     }
 
 
-    /** {@inheritDoc} */
     public final int getSize() {
         return _size;
     }
 
 
-    /** {@inheritDoc} */
     public final MimeType getMimeType() {
         return _mimeType;
     }
 
-    /** {@inheritDoc} */
     public boolean isImage() {
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }
@@ -129,8 +122,6 @@ public class FileRevision
         return new HashMap<String, String>(_properties);
     }
 
-    /** {@inheritDoc} */
-    @Override
     public String getCharset() {
         return getProperties().get(FilePropertyNames.CHARSET);
     }

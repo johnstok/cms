@@ -160,6 +160,6 @@ public class TemplateSummaryModelData
      * @return The name.
      */
     public String getName() {
-        return _ts.getName();
+        return _ts.getName().toString();
     }
 }

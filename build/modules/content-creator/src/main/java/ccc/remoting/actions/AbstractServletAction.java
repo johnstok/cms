@@ -13,20 +13,14 @@ package ccc.remoting.actions;
 
 import java.io.IOException;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
 import ccc.domain.CCCException;
-import ccc.domain.Resource;
-import ccc.domain.User;
-import ccc.persistence.DataRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.persistence.ResourceRepositoryImpl;
-import ccc.rendering.StatefulReader;
 
 
 
@@ -36,8 +30,8 @@ import ccc.rendering.StatefulReader;
  * @author Civic Computing Ltd.
  */
 public abstract class AbstractServletAction
-    implements
-        ServletAction {
+    extends
+        HttpServlet {
     private static final Logger LOG =
         Logger.getLogger(AbstractServletAction.class);
 
@@ -53,7 +47,11 @@ public abstract class AbstractServletAction
     protected void dispatchNotFound(final HttpServletRequest request,
                                     final HttpServletResponse response)
                                           throws ServletException, IOException {
-        LOG.info("Forwarding to /notfound for: "+request.getContextPath()+request.getServletPath()+request.getPathInfo());
+        LOG.info(
+            "Forwarding to /notfound for: "
+            + request.getContextPath()
+            + request.getServletPath()
+            + request.getPathInfo());
         request.getRequestDispatcher("/notfound").forward(request, response);
     }
 
@@ -88,7 +86,13 @@ public abstract class AbstractServletAction
                                     final HttpServletResponse response,
                                     final String relUri) throws IOException {
         final String target = request.getContextPath()+relUri;
-        LOG.info("Redirecting to "+target+" from "+request.getContextPath()+request.getServletPath()+request.getPathInfo());
+        LOG.info(
+            "Redirecting to "
+            + target
+            + " from "
+            + request.getContextPath()
+            + request.getServletPath()
+            + request.getPathInfo());
         response.sendRedirect(target);
     }
 
@@ -114,32 +118,5 @@ public abstract class AbstractServletAction
         } else {
             return Exception.class.cast(o);
         }
-    }
-
-
-
-    protected final ResourceRepository getResourceDao(final HttpServletRequest req) {
-        return new ResourceRepositoryImpl(
-            (EntityManager) req.getAttribute(SessionKeys.EM_KEY));
-    }
-
-
-    protected final User getCurrentUser(final HttpServletRequest request) {
-        return (User) request.getAttribute(SessionKeys.CURRENT_USER);
-    }
-
-
-    protected final DataRepository getDataManager(final HttpServletRequest request) {
-        return (DataRepository) request.getAttribute(SessionKeys.DATA_KEY);
-    }
-
-
-    protected final StatefulReader getStatefulReader(final HttpServletRequest request) {
-        return (StatefulReader) request.getAttribute(RenderingKeys.READER_KEY);
-    }
-
-
-    protected final Resource getResource(final HttpServletRequest req) {
-        return (Resource) req.getAttribute(SessionKeys.RESOURCE_KEY);
     }
 }

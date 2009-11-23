@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
@@ -27,11 +28,17 @@ import ccc.types.Paragraph;
  *
  * @author Civic Computing Ltd.
  */
-public final class PageDelta implements Serializable, Jsonable {
+public final class PageDelta
+    extends
+        ResourceSnapshot
+    implements
+        Serializable,
+        Jsonable {
 
     private HashSet<Paragraph> _paragraphs = new HashSet<Paragraph>();
 
     @SuppressWarnings("unused") private PageDelta() { super(); }
+
 
     /**
      * Constructor.
@@ -54,6 +61,7 @@ public final class PageDelta implements Serializable, Jsonable {
         }
     }
 
+
     /**
      * Accessor.
      *
@@ -71,6 +79,22 @@ public final class PageDelta implements Serializable, Jsonable {
      */
     public void setParagraphs(final Set<Paragraph> paragraphs) {
         _paragraphs = new HashSet<Paragraph>(paragraphs);
+    }
+
+
+    /**
+     * Look up a paragraph on this page by name.
+     *
+     * @param name The name of the paragraph to retrieve.
+     * @return The paragraph with the specified name.
+     */
+    public Paragraph getParagraph(final String name) {
+        for (final Paragraph p : _paragraphs) {
+            if (p.name().equals(name)) {
+                return p;
+            }
+        }
+        return null;
     }
 
 

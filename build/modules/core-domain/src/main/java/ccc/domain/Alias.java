@@ -12,9 +12,9 @@
 package ccc.domain;
 
 import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.AliasDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
-import ccc.snapshots.AliasSnapshot;
 import ccc.types.DBC;
 import ccc.types.ResourceType;
 
@@ -115,19 +115,33 @@ public class Alias extends Resource {
 
     /** {@inheritDoc} */
     @Override
-    public final AliasSnapshot forWorkingCopy() {
-        return new AliasSnapshot(this);
+    public final AliasDto forWorkingCopy() {
+        return createDto();
     }
 
     /** {@inheritDoc} */
     @Override
-    public final AliasSnapshot forCurrentRevision() {
-        return new AliasSnapshot(this);
+    public final AliasDto forCurrentRevision() {
+        return createDto();
     }
 
     /** {@inheritDoc} */
     @Override
-    public final AliasSnapshot forSpecificRevision(final int revNo) {
-        return new AliasSnapshot(this);
+    public final AliasDto forSpecificRevision(final int revNo) {
+        return createDto();
+    }
+
+    private AliasDto createDto() {
+        final AliasDto dto =
+            new AliasDto(
+                parent().id(),
+                name(),
+                (null==target())?null:target().id());
+        dto.setTargetPath(
+            (null==target())
+                ? null
+                : target().absolutePath().removeTop().toString()); // FIXME: Broken for /assets
+        setDtoProps(dto);
+        return dto;
     }
 }

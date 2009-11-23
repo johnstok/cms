@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.entities.IPage;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 
@@ -29,9 +28,7 @@ import ccc.types.Paragraph;
  */
 public class PageRevision
     extends
-        Revision<PageDelta>
-    implements
-        IPage {
+        Revision<PageDelta> {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
 
@@ -60,21 +57,13 @@ public class PageRevision
 
 
     /** {@inheritDoc} */
-    public final Set<Paragraph> getContent() {
-        return _content;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Set<Paragraph> paragraphs() {
+    public Set<Paragraph> getParagraphs() {
         return unmodifiableSet(_content);
     }
 
 
     /** {@inheritDoc} */
-    @Override
-    public Paragraph paragraph(final String name) {
+    public Paragraph getParagraph(final String name) {
         for (final Paragraph p : _content) {
             if (p.name().equals(name)) {
                 return p;

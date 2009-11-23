@@ -13,6 +13,7 @@ import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.types.ResourceName;
 
 /**
  * Entry class for the 'create' application.
@@ -57,12 +58,17 @@ public final class Create extends CccApp {
             final ResourceSummary content = foldersExt.createRoot(CONTENT);
             foldersExt.createRoot(TRASH);
 
-            foldersExt.createFolder(new FolderDto(assets.getId(), TEMPLATES));
-            foldersExt.createFolder(new FolderDto(assets.getId(), CSS));
-            foldersExt.createFolder(new FolderDto(assets.getId(), IMAGES));
+            foldersExt.createFolder(
+                new FolderDto(assets.getId(), new ResourceName(TEMPLATES)));
+            foldersExt.createFolder(
+                new FolderDto(assets.getId(), new ResourceName(CSS)));
+            foldersExt.createFolder(
+                new FolderDto(assets.getId(), new ResourceName(IMAGES)));
 
-            foldersExt.createFolder(new FolderDto(content.getId(), FILES));
-            foldersExt.createFolder(new FolderDto(content.getId(), IMAGES));
+            foldersExt.createFolder(
+                new FolderDto(content.getId(), new ResourceName(FILES)));
+            foldersExt.createFolder(
+                new FolderDto(content.getId(), new ResourceName(IMAGES)));
             resourcesExt.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI

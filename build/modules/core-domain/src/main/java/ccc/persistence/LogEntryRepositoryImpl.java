@@ -24,7 +24,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class LogEntryRepositoryImpl
+class LogEntryRepositoryImpl
     implements
         LogEntryRepository {
     private static final Logger LOG =

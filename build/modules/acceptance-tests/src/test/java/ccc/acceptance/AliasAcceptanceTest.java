@@ -17,6 +17,7 @@ import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.types.ResourceName;
 
 
 /**
@@ -59,7 +60,8 @@ public class AliasAcceptanceTest
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = tempFolder();
         final AliasDto alias =
-            new AliasDto(folder.getId(), name, folder.getId());
+            new AliasDto(
+                folder.getId(), new ResourceName(name), folder.getId());
 
         // ACT
         final ResourceSummary rs = getAliases().createAlias(alias);

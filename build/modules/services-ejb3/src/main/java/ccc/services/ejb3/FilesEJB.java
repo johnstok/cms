@@ -16,6 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -31,6 +33,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.CccCheckedException;
+import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -228,5 +231,25 @@ public class FilesEJB
             file.getRevisionComment(),
             file.isMajorRevision()
             );
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public void retrieveThumb(final UUID data,
+                              final OutputStream os,
+                              final int maxDimension) {
+        // FIXME: check file is accessible to user.
+        getFiles().retrieveThumb(new Data(), os, maxDimension);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public void retrieve(final UUID data, final OutputStream dataStream) {
+        // FIXME: check file is accessible to user.
+        getFiles().retrieve(new Data(data), dataStream);
     }
 }

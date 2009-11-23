@@ -12,6 +12,7 @@
 package ccc.rest.extensions;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.UUID;
 
@@ -76,4 +77,24 @@ public interface FilesExt
                     String comment,
                     boolean isMajorEdit,
                     InputStream dataStream) throws RestException;
+
+
+    /**
+     * Write the contents of a file to an output stream.
+     *
+     * @param data The file data identifier.
+     * @param dataStream The output stream to which the data should be written.
+     */
+    void retrieve(UUID data, OutputStream dataStream);
+
+
+    /**
+     * Retrieve an existing image file, create a thumbnail and write it to an
+     * output stream.
+     *
+     * @param data The file data identifier.
+     * @param os The output stream to which the data should be written.
+     * @param maxDimension The maximum dimension of the thumbnail.
+     */
+    void retrieveThumb(UUID data, OutputStream os, int maxDimension);
 }

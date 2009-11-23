@@ -140,7 +140,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final String name = UUID.randomUUID().toString();
 
         final TemplateDelta newTemplate =
-            new TemplateDelta("$resource.paragraph(\"foo\").text()",
+            new TemplateDelta("$resource.getParagraph(\"foo\").text()",
                 "<fields><field name=\"foo\" type=\"html\"/></fields>",
                 MimeType.HTML);
 

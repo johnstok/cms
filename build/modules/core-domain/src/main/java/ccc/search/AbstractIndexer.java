@@ -92,7 +92,7 @@ public abstract class AbstractIndexer
     @Override
     public void indexPage(final Page page) {
         final StringBuilder sb = new StringBuilder(page.getTitle());
-        for (final Paragraph p : page.currentRevision().paragraphs()) {
+        for (final Paragraph p : page.currentRevision().getParagraphs()) {
             if (ParagraphType.TEXT == p.type() && p.text() != null) {
                 sb.append(" ");
                 sb.append(XHTML.cleanUpContent(p.text()));

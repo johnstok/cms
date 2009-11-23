@@ -21,8 +21,8 @@ import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.rendering.Context;
-import ccc.rendering.StatefulReader;
 import ccc.rendering.TextProcessor;
+import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 
@@ -190,7 +190,7 @@ public class VelocityProcessorTest extends TestCase {
     @Override
     protected void setUp() {
         _vp = new VelocityProcessor();
-        _reader = createStrictMock(StatefulReader.class);
+        _reader = createStrictMock(ResourcesExt.class);
     }
 
     /** {@inheritDoc} */
@@ -210,5 +210,5 @@ public class VelocityProcessorTest extends TestCase {
     private TextProcessor _vp;
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
-    private StatefulReader _reader;
+    private ResourcesExt _reader;
 }

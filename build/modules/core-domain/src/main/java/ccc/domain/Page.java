@@ -17,7 +17,6 @@ import java.util.HashSet;
 
 import ccc.commons.WordCharFixer;
 import ccc.rest.dto.PageDelta;
-import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -122,7 +121,7 @@ public class Page
     @Override
     public PageDelta createSnapshot() {
         return new PageDelta(
-            new HashSet<Paragraph>(currentRevision().paragraphs()));
+            new HashSet<Paragraph>(currentRevision().getParagraphs()));
     }
 
 
@@ -163,19 +162,31 @@ public class Page
 
     /** {@inheritDoc} */
     @Override
-    public final PageSnapshot forWorkingCopy() {
-        return new PageSnapshot(this, getWorkingCopy());
+    public final PageDelta forWorkingCopy() {
+        final PageDelta dto =
+            new PageDelta(
+                new HashSet<Paragraph>(getWorkingCopy().getParagraphs()));
+        setDtoProps(dto);
+        return dto;
     }
 
     /** {@inheritDoc} */
     @Override
-    public final PageSnapshot forCurrentRevision() {
-        return new PageSnapshot(this, currentRevision());
+    public final PageDelta forCurrentRevision() {
+        final PageDelta dto =
+            new PageDelta(
+                new HashSet<Paragraph>(currentRevision().getParagraphs()));
+        setDtoProps(dto);
+        return dto;
     }
 
     /** {@inheritDoc} */
     @Override
-    public final PageSnapshot forSpecificRevision(final int revNo) {
-        return new PageSnapshot(this, revision(revNo));
+    public final PageDelta forSpecificRevision(final int revNo) {
+        final PageDelta dto =
+            new PageDelta(
+                new HashSet<Paragraph>(revision(revNo).getParagraphs()));
+        setDtoProps(dto);
+        return dto;
     }
 }

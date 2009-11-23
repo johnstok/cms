@@ -42,7 +42,7 @@ public class SearchBody
     private static final int DEFAULT_FIRST_PAGE = 0;
     private static final int DEFAULT_MINIMUM_SEARCH_RESULTS = 10;
 
-    private final Template _template;
+    private final String _template;
 
 
     /**
@@ -50,7 +50,7 @@ public class SearchBody
      *
      * @param t The template to use for this body.
      */
-    public SearchBody(final Template t) {
+    public SearchBody(final String t) {
         DBC.require().notNull(t);
         _template = t;
     }
@@ -86,7 +86,7 @@ public class SearchBody
             searchEngine.find(searchQuery, noOfResultsPerPage, pageNumber);
         context.add("result", result);
 
-        final String templateString = _template.body();
+        final String templateString = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
         processor.render(templateString, w, context);

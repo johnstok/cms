@@ -13,12 +13,13 @@ package ccc.rendering;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import ccc.commons.Exceptions;
-import ccc.persistence.DataRepository;
-import ccc.snapshots.FileSnapshot;
+import ccc.rest.ServiceLocator;
+import ccc.rest.extensions.FilesExt;
 import ccc.types.DBC;
 
 
@@ -33,16 +34,16 @@ public class FileBody
 
     /** DEFAULT_MAX_DIMENSION : int. */
     private static final int DEFAULT_MAX_DIMENSION = 200;
-    private final FileSnapshot _file;
+    private final UUID _data;
 
     /**
      * Constructor.
      *
-     * @param f The file this body represents.
+     * @param data The data to render.
      */
-    public FileBody(final FileSnapshot f) {
-        DBC.require().notNull(f);
-        _file = f;
+    public FileBody(final UUID data) {
+        DBC.require().notNull(data);
+        _data = data;
     }
 
     /** {@inheritDoc} */
@@ -51,10 +52,10 @@ public class FileBody
                       final Charset charset,
                       final Context context,
                       final TextProcessor processor) {
-        final DataRepository dataRepository =
-            context.get("data", DataRepository.class);
+        final ServiceLocator sl = context.get("services", ServiceLocator.class);
+        final FilesExt files = (FilesExt) sl.getFiles();
         final HttpServletRequest r =
-            (HttpServletRequest) context.getExtras().get("request");
+            context.get("request", HttpServletRequest.class);
         if (r != null && r.getParameter("thumb") != null) {
             int maxDimension = DEFAULT_MAX_DIMENSION;
             try {
@@ -62,9 +63,9 @@ public class FileBody
             } catch (final NumberFormatException e) {
                 Exceptions.swallow(e);
             }
-            dataRepository.retrieveThumb(_file.getData(), os, maxDimension);
+            files.retrieveThumb(_data, os, maxDimension);
         } else {
-            dataRepository.retrieve(_file.getData(), os);
+            files.retrieve(_data, os);
         }
     }
 }

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.rest.dto.FileDelta;
-import ccc.snapshots.FileSnapshot;
+import ccc.rest.dto.FileDto;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
@@ -258,19 +258,65 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public final FileSnapshot forWorkingCopy() {
-        return new FileSnapshot(this, getWorkingCopy());
+    public final FileDto forWorkingCopy() {
+        final FileDto dto = mapFile();
+        final FileWorkingCopy sn = getWorkingCopy();
+        dto.setCharset(sn.getCharset());
+        dto.setDataId(sn.getData().id());
+        dto.setExecutable(isExecutable());
+        dto.setImage(sn.isImage());
+        dto.setSize(sn.getSize());
+        dto.setText(sn.isText());
+        dto.setMimeType(sn.getMimeType());
+        return dto;
     }
 
     /** {@inheritDoc} */
     @Override
-    public final FileSnapshot forCurrentRevision() {
-        return new FileSnapshot(this, currentRevision());
+    public final FileDto forCurrentRevision() {
+        final FileDto dto = mapFile();
+        final FileRevision sn = currentRevision();
+        dto.setCharset(sn.getCharset());
+        dto.setDataId(sn.getData().id());
+        dto.setExecutable(isExecutable());
+        dto.setImage(sn.isImage());
+        dto.setSize(sn.getSize());
+        dto.setText(sn.isText());
+        dto.setMimeType(sn.getMimeType());
+        return dto;
     }
 
     /** {@inheritDoc} */
     @Override
-    public final FileSnapshot forSpecificRevision(final int revNo) {
-        return new FileSnapshot(this, revision(revNo));
+    public final FileDto forSpecificRevision(final int revNo) {
+        final FileDto dto = mapFile();
+        final FileRevision sn = revision(revNo);
+        dto.setCharset(sn.getCharset());
+        dto.setDataId(sn.getData().id());
+        dto.setExecutable(isExecutable());
+        dto.setImage(sn.isImage());
+        dto.setSize(sn.getSize());
+        dto.setText(sn.isText());
+        dto.setMimeType(sn.getMimeType());
+        return dto;
+    }
+
+
+    /**
+     * Create a summary of a file.
+     *
+     * @return The summary of the file.
+     */
+    public FileDto mapFile() {
+        final FileDto fs =
+            new FileDto(
+                mimeType(),
+                absolutePath().toString(),
+                id(),
+                name(),
+                getTitle(),
+                properties());
+        setDtoProps(fs);
+        return fs;
     }
 }

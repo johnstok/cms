@@ -11,10 +11,10 @@
  */
 package ccc.domain;
 
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.snapshots.SearchSnapshot;
 import ccc.types.ResourceType;
 
 
@@ -30,6 +30,7 @@ public class Search
     /** Constructor: for persistence only. */
     protected Search() { super(); }
 
+
     /**
      * Constructor.
      *
@@ -39,11 +40,13 @@ public class Search
         super(title);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public ResourceType type() {
         return ResourceType.SEARCH;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -56,9 +59,31 @@ public class Search
         };
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public final SearchSnapshot forCurrentRevision() {
-        return new SearchSnapshot(this);
+    public final ResourceSnapshot forCurrentRevision() {
+        final ResourceSnapshot dto = new ResourceSnapshot();
+        setDtoProps(dto);
+        return dto;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSnapshot forSpecificRevision(final int revNo) {
+        final ResourceSnapshot dto = new ResourceSnapshot();
+        setDtoProps(dto);
+        return dto;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSnapshot forWorkingCopy() {
+        final ResourceSnapshot dto = new ResourceSnapshot();
+        setDtoProps(dto);
+        return dto;
+    }
+
 }

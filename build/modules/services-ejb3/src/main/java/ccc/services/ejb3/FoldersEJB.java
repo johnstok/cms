@@ -62,7 +62,7 @@ public class FoldersEJB
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
         return createFolder(
-            folder.getParentId(), folder.getName(), null, false);
+            folder.getParent(), folder.getName().toString(), null, false);
 
     }
 

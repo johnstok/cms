@@ -20,8 +20,8 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.persistence.DataRepository;
 import ccc.persistence.StreamAction;
+import ccc.rest.dto.FileDto;
 import ccc.serialization.IO;
-import ccc.snapshots.FileSnapshot;
 
 /**
  * A stream action that can read a raw bytes into a string.
@@ -84,10 +84,10 @@ public final class ReadToStringAction
      * @return The file's contents as a string.
      */
     public static String read(final DataRepository dm,
-                              final FileSnapshot file) {
+                              final FileDto file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
-            (Data) file.getData(),
+            new Data(file.getData()),
             new ReadToStringAction(sb, file.getCharset()));
         return sb.toString();
     }

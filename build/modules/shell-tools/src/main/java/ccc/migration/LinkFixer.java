@@ -85,19 +85,14 @@ public class LinkFixer {
         while (hrefMatcher.find()) { // search for href attributes
             final String url = hrefMatcher.group(1);
 
-            if (url.startsWith("mailto:")    // net URL
-                || url.startsWith("http://") // net URL
+            if (url.startsWith("mailto:")     // net URL
+                || url.startsWith("http://")  // net URL
+                || url.startsWith("/")        // Absolute URL
                 || url.startsWith("#")) {     // link on the same page
                 hrefMatcher.appendReplacement(// no correction
                     correctedPara,
                     Matcher.quoteReplacement(hrefMatcher.group()));
 
-            } else if (url.startsWith("/")) { // absolute URL
-                final String correctedUrl =
-                    url.substring(1); // Trim leading /
-                hrefMatcher.appendReplacement(
-                    correctedPara,
-                    Matcher.quoteReplacement(attName+"=\""+correctedUrl+"\""));
             } else {
                 final String correctedHref = attName+"=\""+correct(url)+"\"";
                 hrefMatcher.appendReplacement(

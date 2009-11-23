@@ -22,6 +22,7 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.dialogs.AbstractEditDialog;
 import ccc.contentcreator.views.ChangeResourceTemplate;
 import ccc.rest.dto.TemplateSummary;
+import ccc.types.ResourceName;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -52,7 +53,7 @@ public class ChooseTemplateDialog
         new TemplateSummaryModelData(
             new TemplateSummary(
                 null,
-                "{none}",
+                new ResourceName("NONE"),
                 "{none}",
                 "{none}",
                 "{none}",

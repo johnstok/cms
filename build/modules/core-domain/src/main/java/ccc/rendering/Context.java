@@ -31,7 +31,7 @@ public class Context {
      *
      * @return Returns the extra.
      */
-    public final Map<String, Object> getExtras() {
+    public final Map<String, Object> getAll() {
         return new HashMap<String, Object>(_extra);
     }
 

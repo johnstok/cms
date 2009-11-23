@@ -101,9 +101,11 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
                     String path = md.getPath().substring(1);
-                    path = path.substring(path.indexOf("/")+1);
+                    path = path.substring(path.indexOf("/"));
+                    final String appContext =
+                        new IGlobalsImpl().getSetting("application.context");
                     jsniSetUrl(
-                        path,
+                        appContext+path,
                         md.getTitle(),
                         md.getId().toString(),
                         _elementid);

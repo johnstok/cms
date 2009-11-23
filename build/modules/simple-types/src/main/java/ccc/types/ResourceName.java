@@ -13,7 +13,6 @@
 package ccc.types;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 
 
@@ -38,7 +37,8 @@ public final class ResourceName implements Serializable {
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
-    private String _representation = escapeString(UUID.randomUUID().toString());
+    private String _representation = "default_name";
+
 
     /**
      * Constructor.
@@ -49,6 +49,7 @@ public final class ResourceName implements Serializable {
 
     /**
      * Constructor.
+     * TODO: Make private; add static factory method that handles NULL.
      *
      * @param stringRepresentation
      *  The representation of this name - as a string.
@@ -87,7 +88,6 @@ public final class ResourceName implements Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-
         if (this == obj) { return true; }
         if (obj == null) { return false; }
         if (getClass() != obj.getClass()) { return false; }

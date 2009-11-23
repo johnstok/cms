@@ -22,6 +22,7 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.types.CommandType;
+import ccc.types.ResourceName;
 
 
 /**
@@ -35,7 +36,7 @@ class CreateAliasCommand
 
     private final UUID _parentFolder;
     private final UUID _targetId;
-    private final String _title;
+    private final ResourceName _title;
 
 
     /**
@@ -51,7 +52,7 @@ class CreateAliasCommand
                               final LogEntryRepository audit,
                               final UUID parentFolder,
                               final UUID targetId,
-                              final String title) {
+                              final ResourceName title) {
         super(repository, audit);
         _parentFolder = parentFolder;
         _targetId = targetId;
@@ -66,7 +67,7 @@ class CreateAliasCommand
         if (target == null) {
             throw new CCCException("Target does not exists.");
         }
-        final Alias a = new Alias(_title, target);
+        final Alias a = new Alias(_title.toString(), target);
 
         create(actor, happenedOn, _parentFolder, a);
 

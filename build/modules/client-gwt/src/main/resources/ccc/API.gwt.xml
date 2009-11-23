@@ -1,3 +1,5 @@
 <module>
     <source path="rest/dto" />
+    <source path="rest/snapshots" />
+    <source path="rest/entities" />
 </module>

@@ -495,7 +495,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder root = new Folder("root");
-        final Resource child = new DummyResource("child");
+        final Resource child = new Page();
         root.add(child);
 
         // ACT
@@ -511,7 +511,7 @@ public final class ResourceTest extends TestCase {
     public void testRootAccessorReturnsThisForNullParent() {
 
         // ARRANGE
-        final Resource root = new DummyResource("root");
+        final Resource root = new Page();
 
         // ACT
         final Resource actual = root.root();
@@ -526,7 +526,7 @@ public final class ResourceTest extends TestCase {
     public void testIncludeInMainMenu() {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         assertEquals(false, p.includeInMainMenu());
@@ -544,7 +544,7 @@ public final class ResourceTest extends TestCase {
     public void testLockFailsWhenAlreadyLocked() throws LockMismatchException {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
         p.lock(_jack);
 
         // ACT
@@ -567,7 +567,7 @@ public final class ResourceTest extends TestCase {
     throws InsufficientPrivilegesException {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         try {
@@ -592,7 +592,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
         p.lock(_jack);
 
         // ACT
@@ -620,7 +620,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
         p.lock(_jill);
 
         // ACT
@@ -635,7 +635,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         try {
@@ -657,7 +657,7 @@ public final class ResourceTest extends TestCase {
     throws LockMismatchException, UnlockedException {
 
         // ARRANGE
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
         p.lock(_jack);
 
         // ACT
@@ -678,7 +678,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "foo,bar,baz";
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         p.tags(tagString);
@@ -698,7 +698,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "foo, bar ,baz";
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         p.tags(tagString);
@@ -718,7 +718,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "";
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         p.tags(tagString);
@@ -735,7 +735,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final String tagString = "foo,, ,baz";
-        final Resource p = new DummyResource("myPage");
+        final Resource p = new Page();
 
         // ACT
         p.tags(tagString);
@@ -754,7 +754,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            final Resource p = new DummyResource("myPage");
+            final Resource p = new Page();
             p.tags(null);
             fail("Null should be rejected.");
 
@@ -770,7 +770,7 @@ public final class ResourceTest extends TestCase {
     public void testIsLockedReturnsFalseByDefault() {
 
         // ARRANGE
-        final Resource r = new DummyResource("foo");
+        final Resource r = new Page();
 
         // ACT
         final boolean isLocked = r.isLocked();
@@ -787,7 +787,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User(new Username("blat"), "password");
-        final Resource r = new DummyResource("foo");
+        final Resource r = new Page();
 
         // ACT
         r.lock(u);
@@ -803,7 +803,7 @@ public final class ResourceTest extends TestCase {
     public void testLockResourceRejectsNull() throws LockMismatchException {
         // ACT
         try {
-            final Resource r = new DummyResource("foo");
+            final Resource r = new Page();
             r.lock(null);
             fail("Null should be rejected.");
 
@@ -825,7 +825,7 @@ public final class ResourceTest extends TestCase {
                                             UnlockedException {
 
         //ARRANGE
-        final Resource r = new DummyResource("foo");
+        final Resource r = new Page();
         r.lock(_jack);
 
         // ACT
@@ -843,7 +843,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User(new Username("blat"), "password");
-        final Resource r = new DummyResource("foo");
+        final Resource r = new Page();
 
         // ACT
         r.lock(u);
@@ -858,34 +858,13 @@ public final class ResourceTest extends TestCase {
     public void testNameMutatorRejectsNull() {
         // ACT
         try {
-            final Resource r = new DummyResource("foo");
+            final Resource r = new Page();
             r.name((ResourceName) null);
             fail("Null should be rejected.");
 
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
-        }
-    }
-
-    /**
-     * Test.
-     */
-    public void testTitleslongerThan256AreRejectedByFullConstructor() {
-
-        // ARRANGE
-        final String tooLongTitle = Testing.dummyString('a', 257);
-
-        // ACT
-        try {
-            new DummyResource(new ResourceName("x"), tooLongTitle);
-            fail("Title should be rejected - too long.");
-
-        // ASSERT
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Specified string exceeds max length of 256.",
-                e.getMessage());
         }
     }
 
@@ -899,7 +878,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new DummyResource(tooLongTitle);
+            new Folder(tooLongTitle);
             fail("Title should be rejected - too long.");
 
         // ASSERT
@@ -920,7 +899,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            final Resource r = new DummyResource("foo");
+            final Resource r = new Page();
             r.title(tooLongTitle);
             fail("Title should be rejected - too long.");
 
@@ -938,7 +917,7 @@ public final class ResourceTest extends TestCase {
     public void testTitleOnlyConstructor() {
 
         // ACT
-        final Resource r = new DummyResource("foo?");
+        final Resource r = new Folder("foo?");
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), r.name());
@@ -952,7 +931,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new DummyResource((String) null);
+            new Folder((String) null);
             fail("Null should be rejected.");
 
         // ASSERT
@@ -969,7 +948,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder("foo");
-        final Resource p = new DummyResource("bar");
+        final Resource p = new Folder("bar");
         f.add(p);
 
         // ACT
@@ -1128,7 +1107,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new DummyResource(null);
+            new Folder(null);
             fail("Resources should reject NULL for the title parameter.");
 
          // ASSERT
@@ -1144,7 +1123,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new DummyResource("");
+            new Folder("");
             fail("Resources should reject the ZLS for the title parameter.");
 
          // ASSERT
@@ -1161,7 +1140,7 @@ public final class ResourceTest extends TestCase {
 
         //ARRANGE
         final User u = new User(new Username("user"), "password");
-        final Resource p = new DummyResource("foo");
+        final Resource p = new Page();
 
         // ACT
         p.publish(u);
@@ -1176,7 +1155,7 @@ public final class ResourceTest extends TestCase {
     public void testPublishRejectsNullUser() {
         // ACT
         try {
-            final Resource r = new DummyResource("foo");
+            final Resource r = new Page();
             r.publish(null);
             fail("Null should be rejected.");
 
@@ -1205,7 +1184,7 @@ public final class ResourceTest extends TestCase {
         final Folder f3 = new Folder("parent3");
         f3.publish(u);
 
-        final Resource p = new DummyResource("foo");
+        final Resource p = new Page();
         p.publish(u);
 
         f1.add(f2);
@@ -1233,7 +1212,7 @@ public final class ResourceTest extends TestCase {
         final Folder f3 = new Folder("parent2");
         f3.publish(u);
 
-        final Resource p = new DummyResource("foo");
+        final Resource p = new Page();
         p.publish(u);
 
         f1.add(f2);

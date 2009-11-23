@@ -25,6 +25,7 @@ import javax.ws.rs.ext.Provider;
 import ccc.rest.dto.AliasDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
+import ccc.types.ResourceName;
 
 
 /**
@@ -60,7 +61,7 @@ public class AliasNewReader
         final Json json = readJson(mimetype, is);
         return new AliasDto(
             json.getId(JsonKeys.PARENT_ID),
-            json.getString(JsonKeys.NAME),
+            new ResourceName(json.getString(JsonKeys.NAME)),
             json.getId(JsonKeys.TARGET_ID));
     }
 }
