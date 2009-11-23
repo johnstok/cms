@@ -165,3 +165,7 @@ resteasy
 ws
 txn
 var
+standalone
+chimp
+authorized
+thumbnail
