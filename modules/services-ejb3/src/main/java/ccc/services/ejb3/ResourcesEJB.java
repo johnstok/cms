@@ -37,8 +37,14 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.File;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Template;
+import ccc.domain.User;
+import ccc.persistence.streams.ReadToStringAction;
+import ccc.rendering.AuthenticationRequiredException;
+import ccc.rendering.NotFoundException;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceDto;
@@ -46,6 +52,7 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.ResourcePath;
@@ -75,10 +82,6 @@ public class ResourcesEJB
     throws RestException {
         try {
             final Action a = getActions().find(actionId);
-
-            if (a.subject().isDeleted()) {
-                throw new EntityNotFoundException(a.subject().id());
-            }
 
             if (new Date().before(a.executeAfter())) {
                 return; // Too early.
@@ -762,7 +765,8 @@ public class ResourcesEJB
         try {
             final Resource r =
                 getResources().find(Resource.class, resourceId);
-            return mapTemplate(r.computeTemplate(null));
+            final Template t = r.computeTemplate(null);
+            return (null==t) ? null : t.mapTemplate();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -779,6 +783,24 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(rootPath);
             return mapResource(
                 getResources().lookup(rp.top().toString(), rp.removeTop()));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    public ResourceSnapshot resourceForPathSecure(final String rootPath)
+    throws RestException {
+        try {
+            final ResourcePath rp = new ResourcePath(rootPath);
+            final Resource r =
+                getResources().lookup(rp.top().toString(), rp.removeTop());
+            checkSecurity(r, currentUser());
+            return r.forCurrentRevision();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -839,4 +861,134 @@ public class ResourcesEJB
             throw fail(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary lookupWithLegacyId(final String legacyId) {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    private void checkSecurity(final Resource r, final User u) {
+        if (!r.isAccessibleTo(u)) {
+            throw new AuthenticationRequiredException(
+                // FIXME: Broken for /assets
+                r.absolutePath().removeTop().toString());
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    public ResourceSnapshot workingCopyForPath(final String rootPath)
+    throws RestException {
+        try {
+            final ResourcePath rp = new ResourcePath(rootPath);
+            final Resource r =
+                getResources().lookup(rp.top().toString(), rp.removeTop());
+            checkSecurity(r, currentUser());
+            return r.forWorkingCopy();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    public ResourceSnapshot revisionForPath(final String path,
+                                            final String version)
+    throws RestException {
+        try {
+            final ResourcePath rp = new ResourcePath(path);
+            final Resource r =
+                getResources().lookup(rp.top().toString(), rp.removeTop());
+            checkSecurity(r, currentUser());
+
+            try {
+                final int v = new Integer(version).intValue();
+                if (v<0) {
+                    throw new NotFoundException();
+                }
+
+                return r.forSpecificRevision(v);
+
+            } catch (final NumberFormatException e) {
+                throw new NotFoundException();
+            }
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+/* StatefulReaderImpl */
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public IResource resourceFromPath(final String absolutePath) {
+//        return continuityForPath(absolutePath).forCurrentRevision();
+//    }
+//
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public IResource resourceFromId(final String id) {
+//        try {
+//            return _resources.find(
+//                Resource.class, UUID.fromString(id)).forCurrentRevision();
+//        } catch (final EntityNotFoundException e) {
+//            throw new NotFoundException();
+//        }
+//    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String fileContentsFromPath(final String absolutePath,
+                                       final String charset) {
+        final StringBuilder sb = new StringBuilder();
+        final ResourcePath rp = new ResourcePath(absolutePath);
+        Resource r;
+        try {
+            r = getResources().lookup(rp.top().toString(), rp.removeTop());
+        } catch (final EntityNotFoundException e) {
+            return null;
+        }
+        if (r instanceof File) {
+            final File f = (File) r;
+            if (f.isText()) {
+                getFiles().retrieve(
+                    f.data(),
+                    new ReadToStringAction(sb, charset)
+                );
+            }
+        }
+        return sb.toString();
+    }
+//
+//
+//    private Resource continuityForPath(final String absolutePath) {
+//        final ResourcePath rp = new ResourcePath(absolutePath);
+//        try {
+//            return getResources().lookup(
+//                rp.top().toString(), rp.removeTop(), currentUser());
+//        } catch (final EntityNotFoundException e) {
+//            return null;
+//        }
+//    }
+//
+//
+//    /** {@inheritDoc} */
+//    @Override
+//    public UUID uuidFromString(final String id) {
+//        return UUID.fromString(id);
+//    }
 }

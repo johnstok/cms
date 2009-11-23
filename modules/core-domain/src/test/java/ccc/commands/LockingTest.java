@@ -26,8 +26,7 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.Repository;
-import ccc.persistence.ResourceRepositoryImpl;
+import ccc.persistence.ResourceRepository;
 import ccc.types.CommandType;
 import ccc.types.CreatorRoles;
 import ccc.types.ResourceName;
@@ -57,7 +56,7 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         replayAll();
 
         _r.lock(_anotherUser);
@@ -87,7 +86,7 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -110,7 +109,7 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -131,7 +130,7 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         replayAll();
         _r.lock(_anotherUser);
 
@@ -159,7 +158,7 @@ public class LockingTest
         _r.lock(_regularUser);
         _r.publish(_regularUser);
 
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -182,7 +181,7 @@ public class LockingTest
         // ARRANGE
         _r.lock(_regularUser);
 
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -204,7 +203,7 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -221,19 +220,18 @@ public class LockingTest
 
 
     private void replayAll() {
-        replay(_repository, _al);
+        replay(_rdao, _al);
     }
 
     private void verifyAll() {
-        verify(_repository, _al);
+        verify(_rdao, _al);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
-        _repository = createStrictMock(Repository.class);
         _al = createStrictMock(LogEntryRepository.class);
-        _rdao = new ResourceRepositoryImpl(_repository);
+        _rdao = createStrictMock(ResourceRepository.class);
         _r = new Page(new ResourceName("foo"), "foo", null, _rm);
         _parent = new Folder("parent");
         _parent.add(_r);
@@ -246,13 +244,11 @@ public class LockingTest
         _r      = null;
         _rdao   = null;
         _al     = null;
-        _repository    = null;
     }
 
 
-    private Repository _repository;
     private LogEntryRepository _al;
-    private ResourceRepositoryImpl _rdao;
+    private ResourceRepository _rdao;
     private Resource _r;
     private Folder _parent;
 

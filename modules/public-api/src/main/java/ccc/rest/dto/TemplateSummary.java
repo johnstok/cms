@@ -16,8 +16,10 @@ import static ccc.serialization.JsonKeys.*;
 import java.io.Serializable;
 import java.util.UUID;
 
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
+import ccc.types.ResourceName;
 
 
 /**
@@ -25,11 +27,13 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public final class TemplateSummary implements Serializable, Jsonable {
-    private UUID     _id;
-    private String _name;
-    private String _title;
-    private String _description;
+public final class TemplateSummary
+    extends
+        ResourceSnapshot
+    implements
+        Serializable,
+        Jsonable {
+
     private String _body;
     private String _definition;
 
@@ -46,15 +50,15 @@ public final class TemplateSummary implements Serializable, Jsonable {
      * @param definition The template's definition.
      */
     public TemplateSummary(final UUID id,
-                         final String name,
-                         final String title,
-                         final String description,
-                         final String body,
-                         final String definition) {
-        _id = id;
-        _name = name;
-        _title = title;
-        _description = description;
+                           final ResourceName name,
+                           final String title,
+                           final String description,
+                           final String body,
+                           final String definition) {
+        setId(id);
+        setName(name);
+        setTitle(title);
+        setDescription(description);
         _body = body;
         _definition = definition;
     }
@@ -68,51 +72,12 @@ public final class TemplateSummary implements Serializable, Jsonable {
     public TemplateSummary(final Json json) {
         this(
             json.getId(ID),
-            json.getString(NAME),
+            new ResourceName(json.getString(NAME)),
             json.getString(TITLE),
             json.getString(DESCRIPTION),
             json.getString(BODY),
             json.getString(DEFINITION)
         );
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the UUID.
-     */
-    public UUID getId() {
-        return _id;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public String getName() {
-        return _name;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the title.
-     */
-    public String getTitle() {
-        return _title;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the description.
-     */
-    public String getDescription() {
-        return _description;
     }
 
 
@@ -139,7 +104,7 @@ public final class TemplateSummary implements Serializable, Jsonable {
     @Override
     public void toJson(final Json json) {
         json.set(ID, getId());
-        json.set(NAME, getName());
+        json.set(NAME, getName().toString());
         json.set(TITLE, getTitle());
         json.set(DESCRIPTION, getDescription());
         json.set(BODY, getBody());

@@ -14,14 +14,13 @@ package ccc.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.domain.sorting.Sorter;
-import ccc.entities.IFolder;
+import ccc.rest.dto.FolderDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.snapshots.FolderSnapshot;
-import ccc.snapshots.PageSnapshot;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
@@ -34,7 +33,9 @@ import ccc.types.ResourceType;
  *
  * @author Civic Computing Ltd
  */
-public final class Folder extends Resource implements IFolder {
+public final class Folder
+    extends
+        Resource {
 
     private List<Resource> _entries = new ArrayList<Resource>();
     private ResourceOrder  _order = ResourceOrder.MANUAL;
@@ -132,16 +133,28 @@ public final class Folder extends Resource implements IFolder {
         _entries = resources;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for entries.
+     *
+     * @return A list of all the resources in this folder.
+     */
     public List<Resource> entries() {
         final List<Resource> entries = new ArrayList<Resource>(_entries);
         Sorter.sort(entries, _order);
         return entries;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for entries.
+     * <p>For example, calling entries(10, 3) will return the resources with
+     * positions 20..29 in the list.
+     *
+     * @param count The number of entries to return.
+     * @param page The page of entries to return.
+     * @param sortOrder The order in which the entries should be sorted.
+     *
+     * @return A list of all the resources in this folder.
+     */
     public List<Resource> entries(final int count,
                                   final int page,
                                   final String sortOrder) {
@@ -255,7 +268,8 @@ public final class Folder extends Resource implements IFolder {
      * @param <T> The type of the resources in this folder.
      * @return The entries in this folder as a type-safe list.
      */
-    public <T extends Resource> List<T> entries(final Class<T> resourceType) {
+    public <T extends Resource> List<T> entries(
+                                                final Class<T> resourceType) {
         final List<T> entries = new ArrayList<T>();
         for (final Resource entry : entries()) {
             entries.add(entry.as(resourceType));
@@ -303,8 +317,11 @@ public final class Folder extends Resource implements IFolder {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Retrieve a list of all the pages in this folder with sort order applied.
+     *
+     * @return A list of pages.
+     */
     public List<Page> pages() {
         final List<Page> entries = new ArrayList<Page>();
         for (final Resource entry : entries()) {
@@ -314,35 +331,42 @@ public final class Folder extends Resource implements IFolder {
         }
         return entries;
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<PageSnapshot> pagesAsSnapshots() {
-        final List<PageSnapshot> entries = new ArrayList<PageSnapshot>();
-        for (final Resource entry : entries()) {
-            if (entry.type()==ResourceType.PAGE) {
-                entries.add(entry.as(Page.class).forCurrentRevision());
-            }
-        }
-        return entries;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<FolderSnapshot> foldersAsSnapshots() {
-        final List<FolderSnapshot> entries = new ArrayList<FolderSnapshot>();
-        for (final Resource entry : _entries) {
-            if (entry.type()==ResourceType.FOLDER) {
-                entries.add(entry.as(Folder.class).forCurrentRevision());
-            }
-        }
-        return entries;
-    }
+//
+//    /**
+//     * Retrieve a list of all the pages as snapshots in this folder with sort
+//     * order applied.
+//     *
+//     * @return A list of pages.
+//     */
+//    public List<PageSnapshot> pagesAsSnapshots() {
+//        final List<PageSnapshot> entries = new ArrayList<PageSnapshot>();
+//        for (final Resource entry : entries()) {
+//            if (entry.type()==ResourceType.PAGE) {
+//                entries.add(entry.as(Page.class).forCurrentRevision());
+//            }
+//        }
+//        return entries;
+//    }
+//
+//    /**
+//     * Retrieve a list of all the folders in this folder.
+//     *
+//     * @return A list of folders.
+//     */
+//    public List<FolderSnapshot> foldersAsSnapshots() {
+//        final List<FolderSnapshot> entries = new ArrayList<FolderSnapshot>();
+//        for (final Resource entry : _entries) {
+//            if (entry.type()==ResourceType.FOLDER) {
+//                entries.add(entry.as(Folder.class).forCurrentRevision());
+//            }
+//        }
+//        return entries;
+//    }
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve a list of all the folders in this folder.
      *
-     * @return
+     * @return A list of folders.
      */
     public List<Folder> folders() {
         final List<Folder> entries = new ArrayList<Folder>();
@@ -421,6 +445,7 @@ public final class Folder extends Resource implements IFolder {
         return _indexPage;
     }
 
+
     /**
      * Mutator for the index page.
      *
@@ -430,6 +455,15 @@ public final class Folder extends Resource implements IFolder {
         _indexPage = indexPage;
     }
 
+    private UUID getDefaultPage() {
+        for (final Resource r : entries()) {
+            if (ResourceType.PAGE.equals(r.type())
+                && r.isPublished()) {
+                return r.id();
+            }
+        }
+        return null;
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -439,7 +473,6 @@ public final class Folder extends Resource implements IFolder {
             r.delete();
         }
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -470,19 +503,33 @@ public final class Folder extends Resource implements IFolder {
 
     /** {@inheritDoc} */
     @Override
-    public FolderSnapshot forWorkingCopy() {
-        return new FolderSnapshot(this);
+    public FolderDto forWorkingCopy() {
+        final FolderDto dto = new FolderDto(
+            (null==parent()) ? null : parent().id(),
+                name());
+        super.setDtoProps(dto);
+        dto.setIndexPage((null==_indexPage) ? null : _indexPage.id());
+        dto.setDefaultPage(getDefaultPage());
+        return dto;
     }
 
     /** {@inheritDoc} */
     @Override
-    public FolderSnapshot forCurrentRevision() {
-        return new FolderSnapshot(this);
+    public FolderDto forCurrentRevision() {
+        final FolderDto dto = new FolderDto(
+            (null==parent()) ? null : parent().id(),
+                name());
+        super.setDtoProps(dto);
+        return dto;
     }
 
     /** {@inheritDoc} */
     @Override
-    public FolderSnapshot forSpecificRevision(final int revNo) {
-        return new FolderSnapshot(this);
+    public FolderDto forSpecificRevision(final int revNo) {
+        final FolderDto dto = new FolderDto(
+            (null==parent()) ? null : parent().id(),
+                name());
+        super.setDtoProps(dto);
+        return dto;
     }
 }

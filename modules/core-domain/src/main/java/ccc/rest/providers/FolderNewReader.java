@@ -25,6 +25,7 @@ import javax.ws.rs.ext.Provider;
 import ccc.rest.dto.FolderDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
+import ccc.types.ResourceName;
 
 
 /**
@@ -60,6 +61,6 @@ public class FolderNewReader
         final Json json = readJson(mimetype, is);
         return new FolderDto(
             json.getId(JsonKeys.PARENT_ID),
-            json.getString(JsonKeys.NAME));
+            new ResourceName(json.getString(JsonKeys.NAME)));
     }
 }

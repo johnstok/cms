@@ -89,7 +89,7 @@ public class Migrations extends BaseMigrations {
         _pagesExt = pagesExt;
         _foldersExt = foldersExt;
         _userCommands = userCommands;
-        _linkPrefix = options.getApp()+"/";
+        _linkPrefix = "/"+options.getApp()+"/";
         _migrateHomepage = options.isMigrateHomepage();
         _migrateIsMajorEdit = options.isMigrateIsMajorEdit();
         _migrateVersions = options.isMigrateVersions();

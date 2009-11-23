@@ -20,7 +20,7 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import ccc.rendering.StatefulReader;
+import ccc.rest.extensions.ResourcesExt;
 
 
 /**
@@ -42,16 +42,16 @@ public class CCCResourceLoader
     /** {@inheritDoc} */
     @Override
     public InputStream getResourceStream(final String absolutePath) {
-        final StatefulReader reader =
-            (StatefulReader) rsvc.getApplicationAttribute("ccc-reader");
+        final ResourcesExt resources =
+            (ResourcesExt) rsvc.getApplicationAttribute("ccc-reader");
 
-        if (null==reader) {
+        if (null==resources) {
             return new ByteArrayInputStream(new byte[0]);
         }
 
         // TODO: Throw resource not found exception?
         final String contents =
-            reader.fileContentsFromPath(absolutePath, "UTF8");
+            resources.fileContentsFromPath(absolutePath, "UTF8");
 
         try {
             return new ByteArrayInputStream(contents.getBytes("UTF8"));

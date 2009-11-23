@@ -98,7 +98,7 @@ public class SecurityImpl
         props.put("ccc-version", CCCProperties.version());
         props.put("timestamp", CCCProperties.timestamp());
         props.put("application.name", getAppName());
-        props.put("application.base-href", getBaseHref());
+        props.put("application.context", getContextName());
 
         final JsonImpl ss = new JsonImpl();
         ss.set("properties", props);

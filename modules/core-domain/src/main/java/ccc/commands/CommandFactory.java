@@ -53,6 +53,9 @@ public class CommandFactory {
     public CommandFactory(final ResourceRepository repository,
                           final LogEntryRepository audit,
                           final DataRepository data) {
+        /*
+         * TODO: The command factory should accept a repository factory.
+         */
         DBC.require().notNull(audit);
         DBC.require().notNull(repository);
         DBC.require().notNull(data);
@@ -104,7 +107,7 @@ public class CommandFactory {
         return new CreateAliasCommand(
             _repository,
             _audit,
-            alias.getParentId(),
+            alias.getParent(),
             alias.getTargetId(),
             alias.getName());
     }

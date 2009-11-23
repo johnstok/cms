@@ -37,9 +37,9 @@ import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Scheduler;
 import ccc.domain.Setting;
-import ccc.persistence.DataRepositoryImpl;
+import ccc.persistence.DataRepository;
+import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.ResourceRepositoryImpl;
 import ccc.persistence.SettingsRepository;
 import ccc.search.SearchEngine;
 import ccc.search.SearchResult;
@@ -182,7 +182,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        _resources = new ResourceRepositoryImpl(_em);
+        _resources =
+            new RepositoryFactory(_em).createResourceRepository();
     }
 
 
@@ -195,7 +196,8 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
             throw new RuntimeException(
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
-        return new SimpleLuceneFS(
-            DataRepositoryImpl.onFileSystem(_em), indexPath.value());
+        final DataRepository dr =
+            new RepositoryFactory(_em).createDataRepository();
+        return new SimpleLuceneFS(dr, indexPath.value());
     }
 }

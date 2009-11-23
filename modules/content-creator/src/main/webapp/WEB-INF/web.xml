@@ -64,6 +64,10 @@
        <param-name>ccc.application-name</param-name>
        <param-value>${application.name}</param-value>
     </context-param>
+    <context-param>
+       <param-name>ccc.context-name</param-name>
+       <param-value>/${application.name}</param-value>
+    </context-param>
 
     <listener>
         <listener-class>
@@ -76,12 +80,12 @@
         <filter-class>ccc.remoting.filters.ReadWriteTxFilter</filter-class>
     </filter>
     <filter>
-        <filter-name>jpa-filter</filter-name>
-        <filter-class>ccc.remoting.filters.PersistenceFilter</filter-class>
-    </filter>
-    <filter>
         <filter-name>err-filter</filter-name>
         <filter-class>ccc.remoting.filters.ErrorHandlingFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>ccc6-filter</filter-name>
+        <filter-class>ccc.remoting.filters.BrokenLinkServlet</filter-class>
     </filter>
 
     <servlet>
@@ -151,10 +155,6 @@
         <servlet-class>ccc.remoting.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>broken-links</servlet-name>
-        <servlet-class>ccc.remoting.BrokenLinkServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>error</servlet-name>
         <jsp-file>/error.jsp</jsp-file>
     </servlet>
@@ -181,7 +181,6 @@
         <servlet-name>assets</servlet-name>
         <servlet-name>preview-content</servlet-name>
         <servlet-name>preview-assets</servlet-name>
-        <servlet-name>broken-links</servlet-name>
         <servlet-name>login</servlet-name>
         <servlet-name>logout</servlet-name>
     </filter-mapping>  
@@ -192,19 +191,13 @@
         <servlet-name>assets</servlet-name>
         <servlet-name>preview-content</servlet-name>
         <servlet-name>preview-assets</servlet-name>
-        <servlet-name>broken-links</servlet-name>
         <!-- dispatcher>FORWARD</dispatcher -->
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
 
     <filter-mapping>
-        <filter-name>jpa-filter</filter-name>
+        <filter-name>ccc6-filter</filter-name>
         <servlet-name>content</servlet-name>
-        <servlet-name>assets</servlet-name>
-        <servlet-name>preview-content</servlet-name>
-        <servlet-name>preview-assets</servlet-name>
-        <servlet-name>broken-links</servlet-name>
-        <!-- dispatcher>FORWARD</dispatcher -->
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
     
@@ -243,10 +236,6 @@
     <servlet-mapping>
         <servlet-name>logout</servlet-name>
         <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>broken-links</servlet-name>
-        <url-pattern>/${application.prefix}/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>error</servlet-name>

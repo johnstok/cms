@@ -24,11 +24,10 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.commons.WordCharFixer;
-import ccc.entities.IResource;
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
-import ccc.snapshots.ResourceSnapshot;
 import ccc.types.CommandType;
 import ccc.types.CreatorRoles;
 import ccc.types.Duration;
@@ -47,7 +46,7 @@ public abstract class Resource
     extends
         Entity
     implements
-        SnapshotSupport<ResourceSnapshot>, IResource {
+        SnapshotSupport<ResourceSnapshot> {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
@@ -686,25 +685,25 @@ public abstract class Resource
     }
 
 
-
-
-
-    /* ====================================================================
-     * Snapshot support.
-     * ================================================================== */
-
-    /** {@inheritDoc} */
-    public ResourceSnapshot forWorkingCopy() {
-        return new ResourceSnapshot(this);
-    }
-
-    /** {@inheritDoc} */
-    public ResourceSnapshot forCurrentRevision() {
-        return new ResourceSnapshot(this);
-    }
-
-    /** {@inheritDoc} */
-    public ResourceSnapshot forSpecificRevision(final int revNo) {
-        return new ResourceSnapshot(this);
+    /**
+     * Populate the specified DTO with data from this resource.
+     *
+     * @param dto The DTO to populate.
+     */
+    protected void setDtoProps(final ResourceSnapshot dto) {
+        dto.setDescription(description());
+        dto.setId(id());
+        dto.setName(name());
+        dto.setParent((null==parent())?null:parent().id());
+        dto.setTitle(getTitle());
+        dto.setType(type());
+        dto.setSecure(isSecure());
+        dto.setTemplate(
+            (null==computeTemplate(null)) ? null : computeTemplate(null).id());
+        dto.setAbsolutePath(absolutePath().toString());
+        dto.setLocked(isLocked());
+        dto.setPublished(isPublished());
+        dto.setVisible(isVisible());
+        // FIXME: Missing!
     }
 }

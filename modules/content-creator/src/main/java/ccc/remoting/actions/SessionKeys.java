@@ -25,20 +25,8 @@ public final class SessionKeys {
     /** EXCEPTION_KEY : String. */
     public static final String EXCEPTION_KEY = "ccc.exception";
 
-    /** CURRENT_USER : String. */
-    public static final String CURRENT_USER = "ccc.current_user";
-
     /** AUDIT_KEY : String. */
     public static final String AUDIT_KEY = "ccc.audit";
-
-    /** DATA_KEY : String. */
-    public static final String DATA_KEY = "ccc.data";
-
-    /** EM_KEY : String. */
-    public static final String EM_KEY = "ccc.em";
-
-    /** RESOURCE_KEY : String. */
-    public static final String RESOURCE_KEY = "ccc.resource";
 
     /** USERS_KEY : String. */
     public static final String USERS_KEY = "ccc.users";

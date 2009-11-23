@@ -77,6 +77,7 @@ import ccc.types.Failure;
 import ccc.types.HttpStatusCode;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
+import ccc.types.ResourceName;
 
 
 /**
@@ -312,7 +313,8 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = resourceForPath("/content");
-        return _folders.createFolder(new FolderDto(content.getId(), fName));
+        return _folders.createFolder(
+            new FolderDto(content.getId(), new ResourceName(fName)));
     }
 
 
@@ -327,7 +329,8 @@ public abstract class AbstractAcceptanceTest
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = resourceForPath("/content");
         final AliasDto alias =
-            new AliasDto(folder.getId(), name, folder.getId());
+            new AliasDto(
+                folder.getId(), new ResourceName(name), folder.getId());
         return _aliases.createAlias(alias);
     }
 

@@ -35,9 +35,9 @@ public class SorterTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new DummyResource("k"));
-            add(new DummyResource("z"));
-            add(new DummyResource("a"));
+            add(new Folder("k"));
+            add(new Folder("z"));
+            add(new Folder("a"));
         }};
 
         // ACT
@@ -56,8 +56,8 @@ public class SorterTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new DummyResource("z"));
-            add(new DummyResource("a"));
+            add(new Folder("z"));
+            add(new Folder("a"));
         }};
 
         // ACT
@@ -74,8 +74,8 @@ public class SorterTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new DummyResource("z"));
-            add(new DummyResource("a"));
+            add(new Folder("z"));
+            add(new Folder("a"));
         }};
 
         // ACT
@@ -92,8 +92,8 @@ public class SorterTest
 
         // ARRANGE
         final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new DummyResource("z"));
-            add(new DummyResource("a"));
+            add(new Folder("z"));
+            add(new Folder("a"));
         }};
 
         // ACT

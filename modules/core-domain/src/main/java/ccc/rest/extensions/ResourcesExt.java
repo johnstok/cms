@@ -16,10 +16,13 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.ws.rs.PathParam;
+
 import ccc.action.ActionExecutor;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.Duration;
 
 
@@ -32,6 +35,26 @@ public interface ResourcesExt
     extends
         Resources,
         ActionExecutor {
+
+
+    /**
+     * Look up the resource for a specified path.
+     * <p>If the resource is not accessible to the current user an
+     * AuthenticationRequiredException will be thrown.
+     *
+     * @param path The absolute path.
+     * @throws RestException If the method fails
+     * @return A summary of the corresponding resource.
+     */
+    ResourceSnapshot resourceForPathSecure(@PathParam("path") String path)
+    throws RestException;
+
+    ResourceSnapshot revisionForPath(final String path, final String version)
+    throws RestException;
+
+    ResourceSnapshot workingCopyForPath(final String path)
+    throws RestException;
+
 
     /**
      * Delete a resource.
@@ -260,4 +283,54 @@ public interface ResourcesExt
      */
     void updateCacheDuration(UUID resourceId, Duration duration)
     throws RestException;
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param legacyId
+     * @return
+     */
+    ResourceSummary lookupWithLegacyId(String legacyId);
+
+
+    /* StatefulReader */
+//    /**
+//     * Look up a resource from its absolute path.
+//     *
+//     * @param absolutePath The absolute path to the resource.
+//     * @return Resource The resource at the specified path, or NULL if it
+//     *  doesn't exist.
+//     */
+//    IResource resourceFromPath(String absolutePath);
+//
+//
+//    /**
+//     * Look up a resource from its UUID.
+//     *
+//     * @param id The id of the resource.
+//     * @return Resource The resource at the specified path, or NULL if it
+//     *  doesn't exist.
+//     */
+//    IResource resourceFromId(String id);
+
+
+    /**
+     * Look up the contents of a file as a String.
+     *
+     * @param absolutePath The absolute path to the resource.
+     * @param charset The character set for the file.
+     *
+     * @return The contents as a string.
+     */
+    String fileContentsFromPath(String absolutePath, String charset);
+//
+//
+//    /**
+//     * Create UUID from a String.
+//     *
+//     * @param id The id as a string.
+//     * @return The UUID.
+//     */
+//    UUID uuidFromString(String id);
 }

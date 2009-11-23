@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.commons.Resources;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -160,7 +161,11 @@ public class ResponseTest
 
         // ARRANGE
         final Body expected =
-            new PageBody(PageBody.BUILT_IN_PAGE_TEMPLATE);
+            new PageBody(
+                Resources.readIntoString(
+                    PageBody.class.getResource(
+                    "/ccc/content/server/default-page-template.txt"),
+                Charset.forName("UTF-8")));
         final Response r = new Response(expected);
 
         // ACT

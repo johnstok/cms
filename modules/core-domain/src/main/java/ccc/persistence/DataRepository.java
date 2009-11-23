@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import ccc.domain.Data;
-import ccc.entities.IData;
 
 
 /**
@@ -44,7 +43,7 @@ public interface DataRepository {
      * @param data The identifier for the existing data.
      * @param dataStream The output stream to which the data should be written.
      */
-    void retrieve(IData data, OutputStream dataStream);
+    void retrieve(Data data, OutputStream dataStream);
 
     /**
      * Retrieve an existing item of binary data and write it to an output
@@ -63,5 +62,5 @@ public interface DataRepository {
      * @param os The output stream to which the data should be written.
      * @param maxDimension The maximum dimension of the thumbnail.
      */
-    void retrieveThumb(IData data, OutputStream os, int maxDimension);
+    void retrieveThumb(Data data, OutputStream os, int maxDimension);
 }

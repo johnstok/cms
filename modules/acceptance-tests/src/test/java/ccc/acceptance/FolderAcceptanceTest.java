@@ -21,6 +21,7 @@ import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.PredefinedResourceNames;
+import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 
 
@@ -44,11 +45,14 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final String cn2 = UUID.randomUUID().toString();
         final ResourceSummary content = resourceForPath("/content");
         final ResourceSummary testFolder =
-            getFolders().createFolder(new FolderDto(content.getId(), fName));
+            getFolders().createFolder(
+                new FolderDto(content.getId(), new ResourceName(fName)));
         final ResourceSummary child1 =
-            getFolders().createFolder(new FolderDto(testFolder.getId(), cn1));
+            getFolders().createFolder(
+                new FolderDto(testFolder.getId(), new ResourceName(cn1)));
         final ResourceSummary child2 =
-            getFolders().createFolder(new FolderDto(testFolder.getId(), cn2));
+            getFolders().createFolder(
+                new FolderDto(testFolder.getId(), new ResourceName(cn2)));
 
         // ACT
         final List<ResourceSummary> folders = new ArrayList<ResourceSummary>(

@@ -47,7 +47,7 @@ public class ActionTest
     public void testFailAnAction() {
 
         // ARRANGE
-        final DummyResource p = new DummyResource("page");
+        final Page p = new Page();
         final Action a = new Action();
         final RestException e =
             new UnlockedException(p).toRemoteException();

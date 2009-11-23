@@ -72,10 +72,10 @@ public final class PageTest extends TestCase {
         final PageRevision rev1 = page.revision(1);
 
         // ASSERT
-        assertEquals(1, rev0.getContent().size());
-        assertEquals("Header", rev0.getContent().iterator().next().text());
-        assertEquals(1, rev1.getContent().size());
-        assertEquals(Boolean.TRUE, rev1.getContent().iterator().next().bool());
+        assertEquals(1, rev0.getParagraphs().size());
+        assertEquals("Header", rev0.getParagraphs().iterator().next().text());
+        assertEquals(1, rev1.getParagraphs().size());
+        assertEquals(Boolean.TRUE, rev1.getParagraphs().iterator().next().bool());
     }
 
     /**
@@ -96,8 +96,8 @@ public final class PageTest extends TestCase {
         final PageRevision rev = page.currentRevision();
 
         // ASSERT
-        assertEquals(1, rev.getContent().size());
-        assertEquals("Header", rev.getContent().iterator().next().text());
+        assertEquals(1, rev.getParagraphs().size());
+        assertEquals("Header", rev.getParagraphs().iterator().next().text());
     }
 
 
@@ -130,13 +130,13 @@ public final class PageTest extends TestCase {
                 new Date(), User.SYSTEM_USER, true, "Updated."));
 
         // ASSERT
-        assertEquals(2, page.currentRevision().paragraphs().size());
+        assertEquals(2, page.currentRevision().getParagraphs().size());
         assertEquals(
             Boolean.TRUE,
-            page.currentRevision().paragraph("A boolean").bool());
+            page.currentRevision().getParagraph("A boolean").bool());
         final Date now = new Date();
         assertTrue(
-            page.currentRevision().paragraph("A date").date().compareTo(now)
+            page.currentRevision().getParagraph("A date").date().compareTo(now)
             <= 0);
     }
 
@@ -228,7 +228,7 @@ public final class PageTest extends TestCase {
                 header);
 
         // ACT
-        final Paragraph p = page.currentRevision().paragraph("header");
+        final Paragraph p = page.currentRevision().getParagraph("header");
 
         // ASSERT
         assertEquals(header.text(), p.text());
@@ -251,7 +251,7 @@ public final class PageTest extends TestCase {
 
         // ACT
         try {
-            page.currentRevision().paragraphs().add(
+            page.currentRevision().getParagraphs().add(
                 Paragraph.fromText("foo", "aaa"));
             fail("Should be rejected.");
 
@@ -290,7 +290,7 @@ public final class PageTest extends TestCase {
                 Paragraph.fromText("header", "<H1>Header</H1>"));
 
         // Assert
-        assertEquals(1, page.currentRevision().paragraphs().size());
+        assertEquals(1, page.currentRevision().getParagraphs().size());
 
     }
 
@@ -328,7 +328,7 @@ public final class PageTest extends TestCase {
         // ASSERT
         assertEquals(
             Page.MAXIMUM_PARAGRAPHS,
-            page.currentRevision().paragraphs().size());
+            page.currentRevision().getParagraphs().size());
 
     }
 

@@ -25,7 +25,7 @@ import ccc.domain.EntityNotFoundException;
  *
  * @author Civic Computing Ltd.
  */
-public interface Repository {
+interface Repository {
 
     /**
      * Find the object with the specified type and id.

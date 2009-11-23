@@ -14,9 +14,11 @@ package ccc.rest.dto;
 import java.io.Serializable;
 import java.util.UUID;
 
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
+import ccc.types.ResourceName;
 
 
 /**
@@ -24,11 +26,15 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class AliasDto implements Jsonable, Serializable {
+public class AliasDto
+    extends
+        ResourceSnapshot
+    implements
+        Jsonable,
+        Serializable {
 
-    private final UUID _parentId;
-    private final String _name;
     private final UUID _targetId;
+    private String _targetPath;
 
 
     /**
@@ -39,31 +45,11 @@ public class AliasDto implements Jsonable, Serializable {
      * @param targetId The alias' target.
      */
     public AliasDto(final UUID parentId,
-                    final String name,
+                    final ResourceName name,
                     final UUID targetId) {
-        _parentId = parentId;
-        _name = name;
+        setParent(parentId);
+        setName(name);
         _targetId = targetId;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the parentId.
-     */
-    public final UUID getParentId() {
-        return _parentId;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public final String getName() {
-        return _name;
     }
 
 
@@ -77,11 +63,31 @@ public class AliasDto implements Jsonable, Serializable {
     }
 
 
+    /**
+     * Mutator.
+     *
+     * @param targetPath The targetPath to set.
+     */
+    public void setTargetPath(final String targetPath) {
+        _targetPath = targetPath;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the targetPath.
+     */
+    public String getTargetPath() {
+        return _targetPath;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, _parentId);
-        json.set(JsonKeys.NAME, _name);
+        json.set(JsonKeys.PARENT_ID, getParent());
+        json.set(JsonKeys.NAME, getName().toString());
         json.set(JsonKeys.TARGET_ID, _targetId);
     }
 }

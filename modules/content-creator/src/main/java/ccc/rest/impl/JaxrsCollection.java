@@ -58,6 +58,11 @@ abstract class JaxrsCollection
     }
 
 
+    protected String getContextName() {
+        return _sContext.getInitParameter("ccc.context-name");
+    }
+
+
     protected String getBaseHref() {
         return _sContext.getInitParameter("ccc.base-href");
     }

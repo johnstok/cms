@@ -27,7 +27,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionRepositoryImpl
+class ActionRepositoryImpl
     implements
         ActionRepository {
 

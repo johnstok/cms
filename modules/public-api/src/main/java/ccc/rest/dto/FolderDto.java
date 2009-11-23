@@ -14,9 +14,11 @@ package ccc.rest.dto;
 import java.io.Serializable;
 import java.util.UUID;
 
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
+import ccc.types.ResourceName;
 
 
 /**
@@ -24,10 +26,15 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderDto implements Jsonable, Serializable {
+public class FolderDto
+    extends
+        ResourceSnapshot
+    implements
+        Jsonable,
+        Serializable {
 
-    private final UUID     _parentId;
-    private final String _name;
+    private UUID _indexPage;
+    private UUID _defaultPage;
 
 
     /**
@@ -36,36 +43,56 @@ public class FolderDto implements Jsonable, Serializable {
      * @param parentId The folder's parent.
      * @param name     The folder's name.
      */
-    public FolderDto(final UUID parentId, final String name) {
-        _parentId = parentId;
-        _name = name;
+    public FolderDto(final UUID parentId, final ResourceName name) {
+        setParent(parentId);
+        setName(name);
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the parentId.
+     * @return Returns the indexPage.
      */
-    public final UUID getParentId() {
-        return _parentId;
+    public UUID getIndexPage() {
+        return _indexPage;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param indexPage The indexPage to set.
+     */
+    public void setIndexPage(final UUID indexPage) {
+        _indexPage = indexPage;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param defaultPage The defaultPage to set.
+     */
+    public void setDefaultPage(final UUID defaultPage) {
+        _defaultPage = defaultPage;
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the name.
+     * @return Returns the defaultPage.
      */
-    public final String getName() {
-        return _name;
+    public UUID getDefaultPage() {
+        return _defaultPage;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, _parentId);
-        json.set(JsonKeys.NAME, _name);
+        json.set(JsonKeys.PARENT_ID, getParent());
+        json.set(JsonKeys.NAME, getName().toString());
     }
 }

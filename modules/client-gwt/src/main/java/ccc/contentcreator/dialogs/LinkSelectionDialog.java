@@ -83,8 +83,11 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                         public void handleEvent(final ComponentEvent ce) {
                             _md = folderSelect.selectedResource();
                             if (_md != null) {
-                                _linkPath.setValue(
-                                    _md.getAbsolutePath().substring(8));
+                                final String appContext =
+                                    new IGlobalsImpl().getSetting("application.context");
+                                String path =_md.getAbsolutePath().substring(1);
+                                path = path.substring(path.indexOf("/"));
+                                _linkPath.setValue(appContext+path);
                                 _linkName.setValue(_md.getName());
                                 _uuid =_md.getId().toString();
                             }
@@ -146,7 +149,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
             @Override public void componentSelected(final ButtonEvent ce) {
                 if (_linkPath.getValue() != null
                     && _linkName.getValue() != null) {
-                    jsniSetUrl(_linkPath.getValue(),
+                    jsniSetUrl(
+                        _linkPath.getValue(),
                         _linkName.getValue(),
                         _uuid,
                         _elementid);

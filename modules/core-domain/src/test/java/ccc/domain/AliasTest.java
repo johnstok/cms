@@ -97,7 +97,7 @@ public class AliasTest extends TestCase {
     public void testSnapshot() throws CycleDetectedException {
 
         // ARRANGE
-        final DummyResource p = new DummyResource("foo");
+        final Resource p = new Folder("foo");
         final Alias alias = new Alias("bar", p);
 
         // ACT
@@ -114,7 +114,7 @@ public class AliasTest extends TestCase {
     public void testCreateAliasWithTitle() throws CycleDetectedException {
 
         // ARRANGE
-        final DummyResource p = new DummyResource("foo");
+        final Page p = new Page();
 
         // ACT
         final Alias alias = new Alias("bar", p);
@@ -144,7 +144,7 @@ public class AliasTest extends TestCase {
     public void testCreateAliasWithName() throws CycleDetectedException {
 
         // ARRANGE
-        final DummyResource p = new DummyResource("foo");
+        final Page p = new Page();
 
         // ACT
         final Alias alias = new Alias("bar", p);

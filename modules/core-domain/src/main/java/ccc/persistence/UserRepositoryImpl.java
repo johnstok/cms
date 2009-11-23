@@ -31,7 +31,7 @@ import ccc.domain.User;
  *
  * @author Civic Computing Ltd.
  */
-public class UserRepositoryImpl implements UserRepository {
+class UserRepositoryImpl implements UserRepository {
 
     private Repository _repository;
     private EntityManager _emm;
