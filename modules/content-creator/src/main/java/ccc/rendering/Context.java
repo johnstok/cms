@@ -23,27 +23,27 @@ import java.util.Map;
  */
 public class Context {
 
-    private final Map<String, Object> _extra = new HashMap<String, Object>();
+    private final Map<String, Object> _entries = new HashMap<String, Object>();
 
 
     /**
      * Accessor.
      *
-     * @return Returns the extra.
+     * @return Returns all context entries.
      */
     public final Map<String, Object> getAll() {
-        return new HashMap<String, Object>(_extra);
+        return new HashMap<String, Object>(_entries);
     }
 
 
     /**
-     * Add an additional value to a text processing context.
+     * Add an additional value to the context.
      *
      * @param key The key used to look up the value.
      * @param value The value to store.
      */
     public void add(final String key, final Object value) {
-        _extra.put(key, value);
+        _entries.put(key, value);
     }
 
 
@@ -57,6 +57,6 @@ public class Context {
      * @return The value for the specified key, or NULL if no value exists.
      */
     public <T> T get(final String key, final Class<T> type) {
-        return type.cast(_extra.get(key));
+        return type.cast(_entries.get(key));
     }
 }

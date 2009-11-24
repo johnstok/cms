@@ -34,6 +34,8 @@ public enum CommandType {
     RESOURCE_UPDATE_WC,
     /** RESOURCE_DELETE : CommandType. */
     RESOURCE_DELETE,
+    /** RESOURCE_APPLY_WC : CommandType. */
+    RESOURCE_APPLY_WC,
 
     // Folder
     /** FOLDER_UPDATE : CommandType. */

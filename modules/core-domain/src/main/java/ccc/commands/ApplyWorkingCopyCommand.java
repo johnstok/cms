@@ -85,7 +85,5 @@ public class ApplyWorkingCopyCommand
 
     /** {@inheritDoc} */
     @Override
-    protected CommandType getType() {
-        // FIXME: Not always a page!!!
-        return CommandType.PAGE_UPDATE; }
+    protected CommandType getType() { return CommandType.RESOURCE_APPLY_WC; }
 }

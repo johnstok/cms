@@ -138,12 +138,17 @@ public class MimeType implements Serializable, Jsonable {
         return _primaryType+"/"+_subType;
     }
 
+
     /** HTML : MimeType. */
     public static final MimeType HTML =
         new MimeType("text", "html");
     /** BINARY_DATA : MimeType. */
     public static final MimeType BINARY_DATA =
         new MimeType("application", "octet-stream");
+    /** JPEG : MimeType. */
+    public static final MimeType JPEG =
+        new MimeType("image", "jpeg");
+
 
     /** {@inheritDoc} */
     @Override

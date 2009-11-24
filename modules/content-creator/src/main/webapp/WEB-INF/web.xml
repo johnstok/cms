@@ -85,7 +85,7 @@
     </filter>
     <filter>
         <filter-name>ccc6-filter</filter-name>
-        <filter-class>ccc.remoting.filters.BrokenLinkServlet</filter-class>
+        <filter-class>ccc.remoting.filters.LegacyLinkFilter</filter-class>
     </filter>
 
     <servlet>

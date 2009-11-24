@@ -44,10 +44,10 @@ import ccc.rest.extensions.ResourcesExt;
  *
  * @author Civic Computing Ltd.
  */
-public final class BrokenLinkServlet
+public final class LegacyLinkFilter
     implements
         Filter {
-    private static final Logger LOG = Logger.getLogger(BrokenLinkServlet.class);
+    private static final Logger LOG = Logger.getLogger(LegacyLinkFilter.class);
 
     @EJB(name = Resources.NAME) private transient ResourcesExt _resources;
 
@@ -119,7 +119,7 @@ public final class BrokenLinkServlet
 
         final String legacyId = pageMatcher.group(1);
 
-     // FIXME: Broken.
+        // FIXME: Broken.
         try {
             final ResourceSummary r = _resources.lookupWithLegacyId(legacyId);
             final String resourcePath = r.getAbsolutePath().substring(8);

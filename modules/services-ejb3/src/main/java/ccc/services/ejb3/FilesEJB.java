@@ -37,6 +37,7 @@ import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.persistence.StreamAction;
 import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
@@ -234,6 +235,12 @@ public class FilesEJB
     }
 
 
+
+
+    /* ====================================================================
+     * UNSAFE METHODS.
+     * ================================================================== */
+
     /** {@inheritDoc} */
     @Override
     @PermitAll
@@ -248,8 +255,51 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public void retrieve(final UUID data, final OutputStream dataStream) {
-        // FIXME: check file is accessible to user.
-        getFiles().retrieve(new Data(data), dataStream);
+    public void retrieve(final UUID file,
+                         final StreamAction action)
+    throws RestException {
+        try {
+            final File f = getResources().find(File.class, file);
+            checkSecurity(f, currentUser());
+            getFiles().retrieve(f.data(), action);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public void retrieveRevision(final UUID file,
+                                 final int revision,
+                                 final StreamAction action)
+    throws RestException {
+        try {
+            final File f = getResources().find(File.class, file);
+            checkSecurity(f, currentUser());
+            getFiles().retrieve(f.revision(revision).getData(), action);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public void retrieveWorkingCopy(final UUID file,
+                                    final StreamAction action)
+    throws RestException {
+        try {
+            final File f = getResources().find(File.class, file);
+            checkSecurity(f, currentUser());
+            getFiles().retrieve(f.getWorkingCopy().getData(), action);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }
