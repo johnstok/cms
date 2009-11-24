@@ -34,6 +34,7 @@ import ccc.commons.XHTML;
 import ccc.domain.CCCException;
 import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
+import ccc.rest.ServiceLocator;
 
 
 /**
@@ -43,6 +44,7 @@ import ccc.rendering.TextProcessor;
  */
 public class VelocityProcessor implements TextProcessor {
     private static final Logger LOG = Logger.getLogger(VelocityProcessor.class);
+
 
     /*
      * resource.manager.logwhenfound = true
@@ -108,8 +110,8 @@ public class VelocityProcessor implements TextProcessor {
             context.put("sortTool", new SortTool());
 
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
-            ve.setApplicationAttribute(
-                "ccc-reader", ctxt.get("reader", Object.class));
+            final ServiceLocator sl = (ServiceLocator) context.get("services");
+            ve.setApplicationAttribute("ccc-reader", sl.getResources());
             ve.init();
 
             ve.evaluate(context, output, "VelocityProcessor", template);

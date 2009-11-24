@@ -17,11 +17,20 @@ import java.io.StringWriter;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
+import ccc.rest.Actions;
+import ccc.rest.Files;
+import ccc.rest.Folders;
+import ccc.rest.Pages;
+import ccc.rest.Resources;
+import ccc.rest.ServiceLocator;
+import ccc.rest.Templates;
+import ccc.rest.Users;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
@@ -33,8 +42,6 @@ import ccc.types.ResourceName;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessorTest extends TestCase {
-    private static final Context EMPTY_CONTEXT = new Context();
-
 
     /**
      * Test.
@@ -47,7 +54,7 @@ public class VelocityProcessorTest extends TestCase {
         replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
         final Context ctxt = new Context();
-        ctxt.add("reader", _reader);
+        ctxt.add("services", new TestServiceLocator());
 
         // ACT
         final String actual = vp.render("#parse('/a/b/c')\n#foo()", ctxt);
@@ -69,7 +76,7 @@ public class VelocityProcessorTest extends TestCase {
         replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
         final Context ctxt = new Context();
-        ctxt.add("reader", _reader);
+        ctxt.add("services",  new TestServiceLocator());
 
         // ACT
         final String actual = vp.render("#include('/a/b/c')\n#foo()", ctxt);
@@ -86,9 +93,10 @@ public class VelocityProcessorTest extends TestCase {
 
         // ARRANGE
         final StringWriter output = new StringWriter();
-
+        final Context ctxt = new Context();
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
         // ACT
-        _vp.render("foo", output, EMPTY_CONTEXT);
+        _vp.render("foo", output, ctxt);
 
         // ASSERT
         assertEquals("foo", output.toString());
@@ -100,9 +108,10 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderToString() {
 
         // ARRANGE
-
+        final Context ctxt = new Context();
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
         // ACT
-        final String output = _vp.render("foo", EMPTY_CONTEXT);
+        final String output = _vp.render("foo", ctxt);
 
         // ASSERT
         assertEquals("foo", output);
@@ -124,6 +133,7 @@ public class VelocityProcessorTest extends TestCase {
         final String template = "Hello $resource.id()";
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
         final String html = _vp.render(template, ctxt);
@@ -145,6 +155,7 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter renderedOutput = new StringWriter();
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
         _vp.render(
@@ -172,6 +183,7 @@ public class VelocityProcessorTest extends TestCase {
         final StringWriter renderedOutput = new StringWriter();
         final Context ctxt = new Context();
         ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
         _vp.render(
@@ -211,4 +223,49 @@ public class VelocityProcessorTest extends TestCase {
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
     private ResourcesExt _reader;
+
+
+    private class TestServiceLocator implements ServiceLocator {
+            @Override
+            public Actions getActions() {
+
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+
+            @Override
+            public Files getFiles() {
+
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+
+            @Override
+            public Folders getFolders() {
+
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+
+            @Override
+            public Pages getPages() {
+
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+
+            @Override
+            public Resources getResources() {
+                return _reader;
+            }
+
+            @Override
+            public Templates getTemplates() {
+
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+
+            @Override
+            public Users getUsers() {
+
+                throw new UnsupportedOperationException("Method not implemented.");
+            }
+
+    }
 }
