@@ -315,13 +315,13 @@ public class Migrations extends BaseMigrations {
                         updatePage(resource, rs, version, le, delta);
                     } catch (final MigrationException e) {
                         log.warn("Update skipped(inner) for version  "+version
-                            +" of page "+resource.contentId());
+                          +" of page "+resource.contentId()+" "+e.getMessage());
                     }
                     _resourcesExt.unlock(
                         rs.getId(), le.getUser().getId(), le.getHappenedOn());
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
-                        +" of page "+resource.contentId());
+                        +" of page "+resource.contentId()+" "+e.getMessage());
                 }
             }
 
