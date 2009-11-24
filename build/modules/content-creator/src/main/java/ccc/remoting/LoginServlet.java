@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
-import ccc.remoting.actions.AbstractServletAction;
+import ccc.remoting.actions.AbstractCCCServlet;
 import ccc.rest.impl.SecurityImpl;
 
 
@@ -29,7 +29,7 @@ import ccc.rest.impl.SecurityImpl;
  */
 public class LoginServlet
     extends
-        AbstractServletAction {
+        AbstractCCCServlet {
 
     // FIXME: Move to web.xml.
     private final String _siteRoot = "/";

@@ -36,14 +36,15 @@ public class ScriptRunner {
      * @throws ScriptException If execution of the script fails.
      */
     public void eval(final String script,
-                      final Map<String, Object> context,
+                      final Context context,
                       final Writer out) throws ScriptException {
 
         final ScriptEngineManager factory = new ScriptEngineManager();
         final ScriptEngine engine = factory.getEngineByName("JavaScript");
         engine.getContext().setWriter(out);
 
-        for (final Map.Entry<String, Object> entry : context.entrySet()) {
+        for (final Map.Entry<String, Object> entry
+                : context.getAll().entrySet()) {
             engine.put(entry.getKey(), entry.getValue());
         }
 

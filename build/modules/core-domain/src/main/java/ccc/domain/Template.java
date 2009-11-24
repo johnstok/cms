@@ -39,7 +39,7 @@ public class Template
      * @param body A valid velocity template for rendering a page.
      * @param definiton An xml definition of the fields that the body requires.
      * @param mimeType The mime type this template will produce.
-     * @param metadata The metatdata describing the initial revision.
+     * @param metadata The metadata describing the initial revision.
      */
     public Template(final String title,
                     final String description,
@@ -153,27 +153,21 @@ public class Template
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forCurrentRevision() {
-        final TemplateSummary dto = mapTemplate();
-        setDtoProps(dto);
-        return dto;
+        return mapTemplate();
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forSpecificRevision(final int revNo) {
         // FIXME: Always return current rev.
-        final TemplateSummary dto = mapTemplate();
-        setDtoProps(dto);
-        return dto;
+        return mapTemplate();
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forWorkingCopy() {
         // FIXME: Always return current rev.
-        final TemplateSummary dto = mapTemplate();
-        setDtoProps(dto);
-        return dto;
+        return mapTemplate();
     }
 
     /**
@@ -182,7 +176,7 @@ public class Template
      * @return The corresponding summary.
      */
     public TemplateSummary mapTemplate() {
-        return
+        final TemplateSummary dto =
             new TemplateSummary(
                 id(),
                 name(),
@@ -190,5 +184,8 @@ public class Template
                 description(),
                 body(),
                 definition());
+        setDtoProps(dto);
+        dto.setRevision(0);
+        return dto;
     }
 }

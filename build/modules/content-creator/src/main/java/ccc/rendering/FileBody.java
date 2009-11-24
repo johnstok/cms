@@ -16,10 +16,12 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ccc.commons.Context;
 import ccc.commons.Exceptions;
 import ccc.persistence.streams.CopyAction;
 import ccc.rest.RestException;
 import ccc.rest.ServiceLocator;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.FileDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.types.DBC;
@@ -37,19 +39,15 @@ public class FileBody
     /** DEFAULT_MAX_DIMENSION : int. */
     private static final int DEFAULT_MAX_DIMENSION = 200;
     private final FileDto _file;
-    private boolean _wc;
-    private int _rev;
 
     /**
      * Constructor.
      *
      * @param file The file to render.
      */
-    public FileBody(final FileDto file, final int rev, final boolean wc) {
+    public FileBody(final FileDto file) {
         DBC.require().notNull(file);
         _file = file;
-        _rev = rev;
-        _wc = wc;
     }
 
     /** {@inheritDoc} */
@@ -62,7 +60,9 @@ public class FileBody
         final FilesExt files = (FilesExt) sl.getFiles();
         final HttpServletRequest r =
             context.get("request", HttpServletRequest.class);
+
         if (r != null && r.getParameter("thumb") != null) {
+            // TODO: Extract this code to a ThiumbnailStreamAction class.
             int maxDimension = DEFAULT_MAX_DIMENSION;
             try {
                 maxDimension = Integer.parseInt(r.getParameter("thumb"));
@@ -70,20 +70,24 @@ public class FileBody
                 Exceptions.swallow(e);
             }
             files.retrieveThumb(_file.getData(), os, maxDimension);
+
         } else {
             try {
-                if (_wc) {
+                if (_file.isWorkingCopy()) {
                     files.retrieveWorkingCopy(
                         _file.getId(), new CopyAction(os));
-                } else if (_rev>0) {
-                    files.retrieveRevision(
-                        _file.getId(), _rev, new CopyAction(os));
-                } else {
+                } else if (_file.isCurrentRevision()) {
                     files.retrieve(
                         _file.getId(), new CopyAction(os));
+                } else {
+                    files.retrieveRevision(
+                        _file.getId(), _file.getRevision(), new CopyAction(os));
                 }
             } catch (final RestException e) {
                 throw new RuntimeException(e);
+            } catch (final UnauthorizedException e) {
+                throw new AuthenticationRequiredException(
+                    _file.getAbsolutePath());
             }
         }
     }

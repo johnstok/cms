@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.AuthenticationRequiredException;
-import ccc.domain.NotFoundException;
 import ccc.remoting.actions.SessionKeys;
+import ccc.rendering.AuthenticationRequiredException;
+import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.types.HttpStatusCode;
 

@@ -30,7 +30,6 @@ import ccc.commands.Command;
 import ccc.commands.CommandFactory;
 import ccc.domain.Action;
 import ccc.domain.Alias;
-import ccc.domain.AuthenticationRequiredException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
@@ -48,6 +47,7 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.FileDelta;
@@ -273,12 +273,13 @@ abstract class AbstractEJB {
      *
      * @param r The resource to check.
      * @param u The user attempting to access the resource.
+     * @throws UnauthorizedException If the resource cannot be accessed.
      */
-    protected void checkSecurity(final Resource r, final User u) {
+    protected void checkSecurity(final Resource r,
+                                 final User u) throws UnauthorizedException {
         if (!r.isAccessibleTo(u)) {
-            throw new AuthenticationRequiredException(
-                // FIXME: Broken for /assets
-                r.absolutePath().removeTop().toString());
+            _context.setRollbackOnly();  // CRITICAL
+            throw new UnauthorizedException();
         }
     }
 

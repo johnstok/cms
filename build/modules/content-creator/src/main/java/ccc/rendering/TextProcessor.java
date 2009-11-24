@@ -14,6 +14,8 @@ package ccc.rendering;
 
 import java.io.Writer;
 
+import ccc.commons.Context;
+
 
 /**
  * API for text processing.

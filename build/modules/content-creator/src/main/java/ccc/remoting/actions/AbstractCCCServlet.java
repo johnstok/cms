@@ -29,11 +29,11 @@ import ccc.domain.CCCException;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractServletAction
+public abstract class AbstractCCCServlet
     extends
         HttpServlet {
     private static final Logger LOG =
-        Logger.getLogger(AbstractServletAction.class);
+        Logger.getLogger(AbstractCCCServlet.class);
 
 
     /**

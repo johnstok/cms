@@ -16,7 +16,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.remoting.actions.AbstractServletAction;
+import ccc.remoting.actions.AbstractCCCServlet;
 
 
 /**
@@ -26,7 +26,7 @@ import ccc.remoting.actions.AbstractServletAction;
  */
 public class LogoutServlet
     extends
-    AbstractServletAction{
+    AbstractCCCServlet{
 
     /** {@inheritDoc} */
     @Override

@@ -15,12 +15,8 @@ package ccc.remoting;
 import static ccc.commons.Strings.*;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.script.ScriptException;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.ScriptRunner;
-import ccc.domain.NotFoundException;
+import ccc.commons.Context;
 import ccc.remoting.actions.SessionKeys;
-import ccc.rendering.Context;
+import ccc.rendering.AuthenticationRequiredException;
+import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.rendering.velocity.VelocityProcessor;
 import ccc.rest.Actions;
@@ -41,9 +37,8 @@ import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.Users;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.rest.extensions.FoldersExt;
@@ -52,7 +47,6 @@ import ccc.rest.extensions.ResourcesExt;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.search.SearchEngine;
 import ccc.types.ResourcePath;
-import ccc.types.ResourceType;
 
 
 /**
@@ -114,28 +108,25 @@ public class ContentServlet
         final ResourcePath contentPath = determineResourcePath(req);
         final boolean wc = req.getParameterMap().keySet().contains("wc");
         final int version = determineVersion(req);
+        LOG.info("[wc="+wc+", v="+version+"]");
 
         final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
 
-        if (resource == null) {
+        if (null == resource) {
             throw new NotFoundException();
         } else if (_respectVisibility && !resource.isVisible()) {
             throw new NotFoundException();
         }
 
-        if (ResourceType.FILE==resource.getType()) {
+        final Response r =
+            new TmpRenderer(_files, _templates, _resources).render(resource);
 
-            final FileDto f = (FileDto) resource;
-
-            if (f.isText() && f.isExecutable()) {
-                invokeScript(req, resp, f);
-
-            } else {
-                renderResource(req, resp, resource, wc, version);
-            }
-        } else {
-            renderResource(req, resp, resource, wc, version);
+        if (resource.isSecure()) { // Dont'cache secure pages.
+            r.setExpiry(null);
         }
+
+        final Context context = createContext(req, resp, resource);
+        r.write(resp, context, new VelocityProcessor());
     }
 
 
@@ -173,90 +164,24 @@ public class ContentServlet
     }
 
 
-    private void renderResource(final HttpServletRequest request,
-                                final HttpServletResponse response,
-                                final ResourceSnapshot rs,
-                                final boolean workingCopy,
-                                final int version) throws IOException {
-
-        final Context context = createContext(request, response, rs);
-
-        final Response r =
-            new TmpRenderer(_templates, _resources)
-                .render(rs, workingCopy, version);
-
-        if (rs.isSecure()) { // Dont'cache secure pages.
-            r.setExpiry(null);
-        }
-
-        r.write(response, context, new VelocityProcessor());
-    }
-
-
-    @SuppressWarnings("unchecked")
     private ResourceSnapshot getSnapshot(final ResourcePath contentPath,
                                          final boolean workingCopy,
                                          final int version) {
-
+        final String path = "/"+_rootName+contentPath;
         try {
             if (_respectVisibility) {
-                return _resources.resourceForPathSecure(
-                    "/"+_rootName+contentPath);
+                return _resources.resourceForPathSecure(path);
             } else if (workingCopy) {
-                return _resources.workingCopyForPath(
-                    "/"+_rootName+contentPath);
+                return _resources.workingCopyForPath(path);
             } else if (version>0) {
-                return _resources.revisionForPath(
-                    "/"+_rootName+contentPath, version);
+                return _resources.revisionForPath(path, version);
             } else {
-                return _resources.resourceForPathSecure(
-                    "/"+_rootName+contentPath);
+                return _resources.resourceForPathSecure(path);
             }
         } catch (final RestException e) {
             throw new NotFoundException();
-        }
-    }
-
-
-    private void disableCaching(final HttpServletResponse resp) {
-        resp.setHeader("Pragma", "no-cache");
-        resp.setHeader("Cache-Control", "no-store, must-revalidate, max-age=0");
-        resp.setDateHeader("Expires", new Date(0).getTime());
-    }
-
-
-    private void invokeScript(final HttpServletRequest req,
-                              final HttpServletResponse resp,
-                              final FileDto f) {
-
-        try {
-            final TextFileDelta tf = _files.get(f.getId());
-            invokeScript(req, resp, tf.getContent());
-        } catch (final RestException e) {
-            // FIXME: How to handle this?
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private void invokeScript(final HttpServletRequest req,
-                              final HttpServletResponse resp,
-                              final String script) {
-        try {
-            disableCaching(resp);
-
-            final Map<String, Object> context = new HashMap<String, Object>();
-            context.put("request",  req);
-            context.put("response", resp);
-            context.put("services", new RequestScopeServiceLocator(req));
-            context.put("user", loggedInUser());
-
-            new ScriptRunner().eval(script, context, resp.getWriter());
-
-        } catch (final ScriptException e) {
-            throw new RuntimeException("Error invoking script.", e);
-        } catch (final IOException e) {
-            throw new RuntimeException("Error invoking script.", e);
+        } catch (final UnauthorizedException e) {
+            throw new AuthenticationRequiredException(path);
         }
     }
 

@@ -21,6 +21,7 @@ import javax.ws.rs.PathParam;
 import ccc.action.ActionExecutor;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.Duration;
@@ -47,13 +48,13 @@ public interface ResourcesExt
      * @return A summary of the corresponding resource.
      */
     ResourceSnapshot resourceForPathSecure(@PathParam("path") String path)
-    throws RestException;
+    throws RestException, UnauthorizedException;
 
     ResourceSnapshot revisionForPath(final String path, final int version)
-    throws RestException;
+    throws RestException, UnauthorizedException;
 
     ResourceSnapshot workingCopyForPath(final String path)
-    throws RestException;
+    throws RestException, UnauthorizedException;
 
 
     /**

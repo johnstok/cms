@@ -12,7 +12,6 @@
 package ccc.commons;
 
 import java.io.PrintWriter;
-import java.util.HashMap;
 
 import junit.framework.TestCase;
 
@@ -39,7 +38,7 @@ public class ScriptRunnerTest
         // ACT
         runner.eval(
             "print(java.lang.String);",
-            new HashMap<String, Object>(),
+            new Context(),
             new PrintWriter(System.out));
 
         // ASSERT

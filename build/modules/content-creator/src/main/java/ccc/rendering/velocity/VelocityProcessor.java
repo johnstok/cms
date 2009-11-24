@@ -30,9 +30,9 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
+import ccc.commons.Context;
 import ccc.commons.XHTML;
 import ccc.domain.CCCException;
-import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
 import ccc.rest.ServiceLocator;
 

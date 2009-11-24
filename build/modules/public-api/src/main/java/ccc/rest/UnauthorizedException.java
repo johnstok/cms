@@ -1,29 +1,24 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
-
+package ccc.rest;
 
 
 /**
- * An exception to represent a missing resource.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class NotFoundException
+public class UnauthorizedException
     extends
-        CCCException {
+        Exception {
 
-    /**
-     * Constructor.
-     */
-    public NotFoundException() { super("Resource not found"); }
 }

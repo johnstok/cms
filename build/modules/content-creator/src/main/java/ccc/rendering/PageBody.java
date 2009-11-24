@@ -17,6 +17,7 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Date;
 
+import ccc.commons.Context;
 import ccc.commons.Resources;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;

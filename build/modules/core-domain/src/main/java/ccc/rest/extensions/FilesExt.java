@@ -19,6 +19,7 @@ import java.util.UUID;
 import ccc.persistence.StreamAction;
 import ccc.rest.Files;
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
 
@@ -89,7 +90,7 @@ public interface FilesExt
      * @throws RestException If an error occurs retrieving the file.
      */
     void retrieve(UUID file, StreamAction action)
-    throws RestException;
+    throws RestException, UnauthorizedException;
 
 
     /**
@@ -101,7 +102,7 @@ public interface FilesExt
      * @throws RestException If an error occurs retrieving the file.
      */
     void retrieveWorkingCopy(UUID file, StreamAction action)
-    throws RestException;
+    throws RestException, UnauthorizedException;
 
 
     /**
@@ -114,7 +115,7 @@ public interface FilesExt
      * @throws RestException If an error occurs retrieving the file.
      */
     void retrieveRevision(UUID file, int revision, StreamAction action)
-    throws RestException;
+    throws RestException, UnauthorizedException;
 
 
     /**

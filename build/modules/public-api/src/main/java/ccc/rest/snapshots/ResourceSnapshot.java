@@ -51,6 +51,7 @@ public class ResourceSnapshot implements IResource, Serializable {
     private boolean _isVisible;
     private UUID _template;
     private boolean _isSecure;
+    private int _revision = 0;
 
 
     /** {@inheritDoc} */
@@ -404,6 +405,47 @@ public class ResourceSnapshot implements IResource, Serializable {
      */
     public void setTemplate(final UUID template) {
         _template = template;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param revision The revision to set.
+     */
+    public void setRevision(final int revision) {
+        _revision = revision;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the revision.
+     */
+    public int getRevision() {
+        return _revision;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return True if the snapshot is for a working copy, false otherwise.
+     */
+    public boolean isWorkingCopy() {
+        return _revision<0;
+    }
+
+
+    /**
+     * Accessor..
+     *
+     * @return True if the snapshot is for the current revision, false
+     *  otherwise.
+     */
+    public boolean isCurrentRevision() {
+        return 0==_revision;
     }
 
 

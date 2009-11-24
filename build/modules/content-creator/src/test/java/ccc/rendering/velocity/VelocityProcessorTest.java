@@ -17,11 +17,11 @@ import java.io.StringWriter;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.commons.Context;
 import ccc.commons.Testing;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.rendering.Context;
 import ccc.rendering.TextProcessor;
 import ccc.rest.Actions;
 import ccc.rest.Files;
