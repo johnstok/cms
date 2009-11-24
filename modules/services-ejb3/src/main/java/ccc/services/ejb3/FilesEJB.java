@@ -40,6 +40,7 @@ import ccc.domain.User;
 import ccc.persistence.StreamAction;
 import ccc.rest.Files;
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
@@ -257,7 +258,7 @@ public class FilesEJB
     @PermitAll
     public void retrieve(final UUID file,
                          final StreamAction action)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f, currentUser());
@@ -275,7 +276,7 @@ public class FilesEJB
     public void retrieveRevision(final UUID file,
                                  final int revision,
                                  final StreamAction action)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f, currentUser());
@@ -292,7 +293,7 @@ public class FilesEJB
     @PermitAll
     public void retrieveWorkingCopy(final UUID file,
                                     final StreamAction action)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f, currentUser());

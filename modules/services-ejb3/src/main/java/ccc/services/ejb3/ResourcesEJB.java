@@ -45,6 +45,7 @@ import ccc.domain.Template;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -861,7 +862,7 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public ResourceSnapshot resourceForPathSecure(final String rootPath)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
@@ -879,7 +880,7 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public ResourceSnapshot workingCopyForPath(final String rootPath)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
@@ -898,7 +899,7 @@ public class ResourcesEJB
     @PermitAll
     public ResourceSnapshot revisionForPath(final String path,
                                             final int version)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         try {
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =

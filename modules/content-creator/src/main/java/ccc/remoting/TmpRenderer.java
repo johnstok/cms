@@ -13,12 +13,14 @@ package ccc.remoting;
 
 import java.util.UUID;
 
-import ccc.domain.NotFoundException;
 import ccc.rendering.FileBody;
+import ccc.rendering.NotFoundException;
 import ccc.rendering.PageBody;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rendering.Response;
+import ccc.rendering.ScriptBody;
 import ccc.rendering.SearchBody;
+import ccc.rest.Files;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
@@ -27,6 +29,7 @@ import ccc.rest.dto.FileDto;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TextFileDelta;
 import ccc.rest.snapshots.ResourceSnapshot;
 
 
@@ -39,17 +42,53 @@ public class TmpRenderer {
 
     private final Templates _templates;
     private final Resources _resources;
+    private final Files     _files;
 
 
     /**
      * Constructor.
      *
+     * @param files     The files API.
      * @param templates The templates API.
      * @param resources The resources API.
      */
-    public TmpRenderer(final Templates templates, final Resources resources) {
+    public TmpRenderer(final Files files,
+                       final Templates templates,
+                       final Resources resources) {
         _templates = templates;
         _resources = resources;
+        _files = files;
+    }
+
+
+    /**
+     * Render the resource, as a response.
+     *
+     * @param s The snapshot to render.
+     * @param wc Is the working copy to be rendered.
+     * @param rev The revision to be rendered.
+     *
+     * @return A response representing the resource.
+     */
+    public Response render(final ResourceSnapshot s) {
+        switch (s.getType()) {
+            case ALIAS:
+                return render((AliasDto) s);
+            case FILE:
+                final FileDto f = (FileDto) s;
+                if (f.isText() && f.isExecutable()) {
+                    return invoke(f);
+                }
+                return render(f);
+            case FOLDER:
+                return render((FolderDto) s);
+            case PAGE:
+                return render((PageDelta) s);
+            case SEARCH:
+                return renderSearch(s);
+            default:
+                throw new NotFoundException();
+        }
     }
 
 
@@ -70,29 +109,16 @@ public class TmpRenderer {
     }
 
 
-    /**
-     * Render the resource, as a response.
-     *
-     * @param s The snapshot to render.
-     *
-     * @return A response representing the resource.
-     */
-    public Response render(final ResourceSnapshot s,
-                           final boolean wc,
-                           final int rev) {
-        switch (s.getType()) {
-            case ALIAS:
-                return render((AliasDto) s);
-            case FILE:
-                return render((FileDto) s, rev, wc);
-            case FOLDER:
-                return render((FolderDto) s);
-            case PAGE:
-                return render((PageDelta) s);
-            case SEARCH:
-                return renderSearch(s);
-            default:
-                throw new NotFoundException();
+    private Response invoke(final FileDto f) {
+
+        try {
+            final TextFileDelta tf = _files.get(f.getId());
+            return
+                new Response(
+                    new ScriptBody(tf.getContent()));
+        } catch (final RestException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException(e);
         }
     }
 
@@ -133,10 +159,8 @@ public class TmpRenderer {
     }
 
 
-    private Response render(final FileDto s,
-                            final int rev,
-                            final boolean wc) {
-        final Response r = new Response(new FileBody(s, rev, wc));
+    private Response render(final FileDto s) {
+        final Response r = new Response(new FileBody(s));
         r.setDescription(s.getDescription());
         r.setDisposition("inline; filename=\""+s.getName()+"\"");
         r.setMimeType(s.getMimeType());

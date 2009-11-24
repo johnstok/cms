@@ -11,6 +11,7 @@
  */
 package ccc.rendering;
 
+import ccc.commons.Context;
 import ccc.domain.Resource;
 
 

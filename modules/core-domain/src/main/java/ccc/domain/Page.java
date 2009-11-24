@@ -167,6 +167,7 @@ public class Page
             new PageDelta(
                 new HashSet<Paragraph>(getWorkingCopy().getParagraphs()));
         setDtoProps(dto);
+        dto.setRevision(-1);
         return dto;
     }
 
@@ -177,6 +178,7 @@ public class Page
             new PageDelta(
                 new HashSet<Paragraph>(currentRevision().getParagraphs()));
         setDtoProps(dto);
+        dto.setRevision(0);
         return dto;
     }
 
@@ -187,6 +189,7 @@ public class Page
             new PageDelta(
                 new HashSet<Paragraph>(revision(revNo).getParagraphs()));
         setDtoProps(dto);
+        dto.setRevision(revNo);
         return dto;
     }
 }

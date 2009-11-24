@@ -268,6 +268,7 @@ public class File
         dto.setSize(sn.getSize());
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
+        dto.setRevision(-1);
         return dto;
     }
 
@@ -283,6 +284,7 @@ public class File
         dto.setSize(sn.getSize());
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
+        dto.setRevision(0);
         return dto;
     }
 
@@ -298,6 +300,7 @@ public class File
         dto.setSize(sn.getSize());
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
+        dto.setRevision(revNo);
         return dto;
     }
 

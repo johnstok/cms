@@ -13,12 +13,11 @@ package ccc.commands;
 
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.script.ScriptException;
 
+import ccc.commons.Context;
 import ccc.commons.Resources;
 import ccc.commons.ScriptRunner;
 import ccc.domain.CccCheckedException;
@@ -124,13 +123,13 @@ public abstract class Command<T> {
         final String script = getAfterScript();
         if (null==script) { return; }
 
-        final Map<String, Object> context = new HashMap<String, Object>();
-        context.put("audit", _audit);
-        context.put("resources", _repository);
-        context.put("actor", actor);
-        context.put("happenedOn", happenedOn);
-        context.put("command", this);
-        context.put("result", result);
+        final Context context = new Context();
+        context.add("audit", _audit);
+        context.add("resources", _repository);
+        context.add("actor", actor);
+        context.add("happenedOn", happenedOn);
+        context.add("command", this);
+        context.add("result", result);
 
         try {
             new ScriptRunner().eval(
@@ -154,12 +153,12 @@ public abstract class Command<T> {
         final String script = getBeforeScript();
         if (null==script) { return; }
 
-        final Map<String, Object> context = new HashMap<String, Object>();
-        context.put("audit", _audit);
-        context.put("resources", _repository);
-        context.put("actor", actor);
-        context.put("happenedOn", happenedOn);
-        context.put("command", this);
+        final Context context = new Context();
+        context.add("audit", _audit);
+        context.add("resources", _repository);
+        context.add("actor", actor);
+        context.add("happenedOn", happenedOn);
+        context.add("command", this);
 
         try {
             new ScriptRunner().eval(
