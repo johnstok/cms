@@ -36,15 +36,12 @@ import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Action;
-import ccc.domain.AuthenticationRequiredException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.LogEntry;
-import ccc.domain.NotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.Template;
-import ccc.domain.User;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -658,21 +655,6 @@ public class ResourcesEJB
     /* ====================================================================
      * Queries API.
      * ================================================================== */
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public String getAbsolutePath(final UUID resourceId) throws RestException {
-        try {
-            return
-                getResources().find(Resource.class, resourceId)
-                          .absolutePath()
-                          .toString();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
 
     /** {@inheritDoc} */
     @Override
@@ -793,24 +775,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
-    public ResourceSnapshot resourceForPathSecure(final String rootPath)
-    throws RestException {
-        try {
-            final ResourcePath rp = new ResourcePath(rootPath);
-            final Resource r =
-                getResources().lookup(rp.top().toString(), rp.removeTop());
-            checkSecurity(r, currentUser());
-            return r.forCurrentRevision();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public ResourceSummary resourceForLegacyId(final String legacyId)
     throws RestException {
@@ -866,24 +830,54 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
-    @Deprecated
-    public ResourceSummary lookupWithLegacyId(final String legacyId) throws RestException {
-        return resourceForLegacyId(legacyId);
+    public ResourceSummary lookupWithLegacyId(final String legacyId) {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 
 
-    private void checkSecurity(final Resource r, final User u) {
-        if (!r.isAccessibleTo(u)) {
-            throw new AuthenticationRequiredException(
-                // FIXME: Broken for /assets
-                r.absolutePath().removeTop().toString());
-        }
-    }
+
+
+    /* ====================================================================
+     * UNSAFE METHODS.
+     * ================================================================== */
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @PermitAll
+    public String getAbsolutePath(final UUID resourceId) throws RestException {
+        try {
+            return
+                getResources().find(Resource.class, resourceId)
+                          .absolutePath()
+                          .toString();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public ResourceSnapshot resourceForPathSecure(final String rootPath)
+    throws RestException {
+        try {
+            final ResourcePath rp = new ResourcePath(rootPath);
+            final Resource r =
+                getResources().lookup(rp.top().toString(), rp.removeTop());
+            checkSecurity(r, currentUser());
+            return r.forCurrentRevision();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
     public ResourceSnapshot workingCopyForPath(final String rootPath)
     throws RestException {
         try {
@@ -901,31 +895,46 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @PermitAll
     public ResourceSnapshot revisionForPath(final String path,
-                                            final String version)
+                                            final int version)
     throws RestException {
         try {
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =
                 getResources().lookup(rp.top().toString(), rp.removeTop());
             checkSecurity(r, currentUser());
-
-            try {
-                final int v = new Integer(version).intValue();
-                if (v<0) {
-                    throw new NotFoundException();
-                }
-
-                return r.forSpecificRevision(v);
-
-            } catch (final NumberFormatException e) {
-                throw new NotFoundException();
-            }
+            return r.forSpecificRevision(version);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public String fileContentsFromPath(final String absolutePath,
+                                       final String charset) {
+        final StringBuilder sb = new StringBuilder();
+        final ResourcePath rp = new ResourcePath(absolutePath);
+        Resource r;
+        try {
+            r = getResources().lookup(rp.top().toString(), rp.removeTop());
+        } catch (final EntityNotFoundException e) {
+            return null;
+        }
+        if (r instanceof File) {
+            final File f = (File) r;
+            if (f.isText()) {
+                getFiles().retrieve(
+                    f.data(),
+                    new ReadToStringAction(sb, charset)
+                );
+            }
+        }
+        return sb.toString();
     }
 
 
@@ -951,31 +960,6 @@ public class ResourcesEJB
 //            throw new NotFoundException();
 //        }
 //    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String fileContentsFromPath(final String absolutePath,
-                                       final String charset) {
-        final StringBuilder sb = new StringBuilder();
-        final ResourcePath rp = new ResourcePath(absolutePath);
-        Resource r;
-        try {
-            r = getResources().lookup(rp.top().toString(), rp.removeTop());
-        } catch (final EntityNotFoundException e) {
-            return null;
-        }
-        if (r instanceof File) {
-            final File f = (File) r;
-            if (f.isText()) {
-                getFiles().retrieve(
-                    f.data(),
-                    new ReadToStringAction(sb, charset)
-                );
-            }
-        }
-        return sb.toString();
-    }
 //
 //
 //    private Resource continuityForPath(final String absolutePath) {

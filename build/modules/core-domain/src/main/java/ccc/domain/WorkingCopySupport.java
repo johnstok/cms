@@ -83,7 +83,7 @@ public abstract class WorkingCopySupport<T extends Revision<U>,
      *
      * @return The current working copy or NULL if no working copy exists.
      */
-    protected V getWorkingCopy() {
+    public V getWorkingCopy() {
         if (0==_wc.size()) {
             return null;
         }

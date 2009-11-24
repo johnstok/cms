@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -117,9 +118,15 @@ public final class TemplatesEJB
     }
 
 
+
+
+    /* ====================================================================
+     * UNSAFE METHODS.
+     * ================================================================== */
+
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @PermitAll
     public TemplateDelta templateDelta(final UUID templateId)
     throws RestException {
         try {

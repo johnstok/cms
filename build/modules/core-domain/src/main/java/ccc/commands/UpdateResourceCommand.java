@@ -68,6 +68,8 @@ abstract class UpdateResourceCommand<T>
 
         final JsonImpl ss = new JsonImpl(resource);
 
+        // TODO Resolve type for RESOURCE_APPLY_WC commands?
+
         final LogEntry le =
             new LogEntry(
                 actor,

@@ -49,7 +49,7 @@ public interface ResourcesExt
     ResourceSnapshot resourceForPathSecure(@PathParam("path") String path)
     throws RestException;
 
-    ResourceSnapshot revisionForPath(final String path, final String version)
+    ResourceSnapshot revisionForPath(final String path, final int version)
     throws RestException;
 
     ResourceSnapshot workingCopyForPath(final String path)
@@ -295,7 +295,18 @@ public interface ResourcesExt
     ResourceSummary lookupWithLegacyId(String legacyId) throws RestException;
 
 
-    /* StatefulReader */
+    /**
+     * Look up the contents of a file as a String.
+     *
+     * @param absolutePath The absolute path to the resource.
+     * @param charset The character set for the file.
+     *
+     * @return The contents as a string.
+     */
+    String fileContentsFromPath(String absolutePath, String charset);
+
+
+/* StatefulReader */
 //    /**
 //     * Look up a resource from its absolute path.
 //     *
@@ -314,17 +325,6 @@ public interface ResourcesExt
 //     *  doesn't exist.
 //     */
 //    IResource resourceFromId(String id);
-
-
-    /**
-     * Look up the contents of a file as a String.
-     *
-     * @param absolutePath The absolute path to the resource.
-     * @param charset The character set for the file.
-     *
-     * @return The contents as a string.
-     */
-    String fileContentsFromPath(String absolutePath, String charset);
 //
 //
 //    /**

@@ -95,7 +95,7 @@ public class ResponseTest
     public void testMimeTypeProperty() {
 
         // ARRANGE
-        _r.setMimeType("text", "html");
+        _r.setMimeType(MimeType.HTML);
 
         // ACT
         final Map<String, Header>headers = _r.getHeaders();
@@ -261,7 +261,7 @@ public class ResponseTest
 
         // ARRANGE
         final Response r = new Response(new EmptyBody());
-        r.setMimeType("text", "html");
+        r.setMimeType(MimeType.HTML);
 
         _response.setContentType("text/html");
         replayAll();

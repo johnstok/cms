@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.persistence.StreamAction;
 import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
@@ -82,10 +83,38 @@ public interface FilesExt
     /**
      * Write the contents of a file to an output stream.
      *
-     * @param data The file data identifier.
-     * @param dataStream The output stream to which the data should be written.
+     * @param file The file's ID.
+     * @param action The action to perform.
+     *
+     * @throws RestException If an error occurs retrieving the file.
      */
-    void retrieve(UUID data, OutputStream dataStream);
+    void retrieve(UUID file, StreamAction action)
+    throws RestException;
+
+
+    /**
+     * Write the contents of a file to an output stream.
+     *
+     * @param file The file's ID.
+     * @param action The action to perform.
+     *
+     * @throws RestException If an error occurs retrieving the file.
+     */
+    void retrieveWorkingCopy(UUID file, StreamAction action)
+    throws RestException;
+
+
+    /**
+     * Write the contents of a file to an output stream.
+     *
+     * @param file The file's ID.
+     * @param revision The file revision to retrieve.
+     * @param action The action to perform.
+     *
+     * @throws RestException If an error occurs retrieving the file.
+     */
+    void retrieveRevision(UUID file, int revision, StreamAction action)
+    throws RestException;
 
 
     /**
@@ -96,5 +125,6 @@ public interface FilesExt
      * @param os The output stream to which the data should be written.
      * @param maxDimension The maximum dimension of the thumbnail.
      */
+    @Deprecated
     void retrieveThumb(UUID data, OutputStream os, int maxDimension);
 }

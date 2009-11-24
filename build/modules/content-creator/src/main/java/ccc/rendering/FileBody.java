@@ -13,12 +13,14 @@ package ccc.rendering;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import ccc.commons.Exceptions;
+import ccc.persistence.streams.CopyAction;
+import ccc.rest.RestException;
 import ccc.rest.ServiceLocator;
+import ccc.rest.dto.FileDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.types.DBC;
 
@@ -34,16 +36,20 @@ public class FileBody
 
     /** DEFAULT_MAX_DIMENSION : int. */
     private static final int DEFAULT_MAX_DIMENSION = 200;
-    private final UUID _data;
+    private final FileDto _file;
+    private boolean _wc;
+    private int _rev;
 
     /**
      * Constructor.
      *
-     * @param data The data to render.
+     * @param file The file to render.
      */
-    public FileBody(final UUID data) {
-        DBC.require().notNull(data);
-        _data = data;
+    public FileBody(final FileDto file, final int rev, final boolean wc) {
+        DBC.require().notNull(file);
+        _file = file;
+        _rev = rev;
+        _wc = wc;
     }
 
     /** {@inheritDoc} */
@@ -63,9 +69,22 @@ public class FileBody
             } catch (final NumberFormatException e) {
                 Exceptions.swallow(e);
             }
-            files.retrieveThumb(_data, os, maxDimension);
+            files.retrieveThumb(_file.getData(), os, maxDimension);
         } else {
-            files.retrieve(_data, os);
+            try {
+                if (_wc) {
+                    files.retrieveWorkingCopy(
+                        _file.getId(), new CopyAction(os));
+                } else if (_rev>0) {
+                    files.retrieveRevision(
+                        _file.getId(), _rev, new CopyAction(os));
+                } else {
+                    files.retrieve(
+                        _file.getId(), new CopyAction(os));
+                }
+            } catch (final RestException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

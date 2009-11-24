@@ -53,24 +53,16 @@ public class TmpRenderer {
     }
 
 
-    /**
-     * Render the resource, as a response.
-     *
-     * @param s The
-     *
-     * @return A response representing the resource.
-     */
-    public Response renderSearch(final ResourceSnapshot s) {
+    private Response renderSearch(final ResourceSnapshot s) {
         try {
             final UUID tId = s.getTemplate();
             final TemplateDelta t = _templates.templateDelta(tId);
             final Response r = new Response(new SearchBody(t.getBody()));
             r.setCharSet("UTF-8");
-            r.setMimeType(
-                t.getMimeType().getPrimaryType(), t.getMimeType().getSubType());
+            r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
-
             return r;
+
         } catch (final RestException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
@@ -85,12 +77,14 @@ public class TmpRenderer {
      *
      * @return A response representing the resource.
      */
-    public Response render(final ResourceSnapshot s) {
+    public Response render(final ResourceSnapshot s,
+                           final boolean wc,
+                           final int rev) {
         switch (s.getType()) {
             case ALIAS:
                 return render((AliasDto) s);
             case FILE:
-                return render((FileDto) s);
+                return render((FileDto) s, rev, wc);
             case FOLDER:
                 return render((FolderDto) s);
             case PAGE:
@@ -103,23 +97,16 @@ public class TmpRenderer {
     }
 
 
-    /**
-     * Render the resource, as a response.
-     *
-     * @return A response representing the resource.
-     */
-    public Response render(final PageDelta s) {
+    private Response render(final PageDelta s) {
         try {
             final UUID tId = s.getTemplate();
             final TemplateDelta t = _templates.templateDelta(tId);
-            final Response r =
-                new Response(new PageBody(t.getBody()));
+            final Response r = new Response(new PageBody(t.getBody()));
             r.setCharSet("UTF-8");
-            r.setMimeType(
-                t.getMimeType().getPrimaryType(), t.getMimeType().getSubType());
+            r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
-
             return r;
+
         } catch (final RestException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
@@ -127,12 +114,7 @@ public class TmpRenderer {
     }
 
 
-    /**
-     * Render the resource, as a response.
-     *
-     * @return A response representing the resource.
-     */
-    public Response render(final FolderDto s) {
+    private Response render(final FolderDto s) {
         try {
             if (null!= s.getIndexPage()) {
                 throw new RedirectRequiredException(// FIXME: Broken for /assets
@@ -141,38 +123,30 @@ public class TmpRenderer {
                 throw new RedirectRequiredException(// FIXME: Broken for /assets
                     _resources.getAbsolutePath(s.getIndexPage()));
             }
+
         } catch (final RestException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
+
         throw new NotFoundException();
     }
 
 
-    /**
-     * Render the resource, as a response.
-     *
-     * @return A response representing the resource.
-     */
-    public Response render(final FileDto s) {
-        final Response r = new Response(new FileBody(s.getData()));
+    private Response render(final FileDto s,
+                            final int rev,
+                            final boolean wc) {
+        final Response r = new Response(new FileBody(s, rev, wc));
         r.setDescription(s.getDescription());
         r.setDisposition("inline; filename=\""+s.getName()+"\"");
-        r.setMimeType(
-            s.getMimeType().getPrimaryType(), s.getMimeType().getSubType());
+        r.setMimeType(s.getMimeType());
         r.setLength(s.getSize());
         r.setExpiry(s.getCacheDuration());
-
         return r;
     }
 
 
-    /**
-     * Render the resource, as a response.
-     *
-     * @return A response representing the resource.
-     */
-    public Response render(final AliasDto s) {
+    private Response render(final AliasDto s) {
         if (null==s.getTargetPath()) {
             throw new NotFoundException();
         }

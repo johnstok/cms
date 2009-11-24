@@ -93,12 +93,10 @@ public class Response {
     /**
      * Mutator.
      *
-     * @param primary The primary part of the mime type.
-     * @param secondary The secondary part of the mime type.
+     * @param mType The mime type for the response.
      */
-    public void setMimeType(final String primary, final String secondary) {
-        _headers.put("MimeType",
-            new ContentTypeHeader(new MimeType(primary, secondary)));
+    public void setMimeType(final MimeType mType) {
+        _headers.put("MimeType", new ContentTypeHeader(mType));
     }
 
 
@@ -190,7 +188,7 @@ public class Response {
 
                 final byte[] b = baos.toByteArray();
                 setLength(b.length);
-                setMimeType("image", "jpeg");
+                setMimeType(MimeType.JPEG);
 
                 writeHeaders(httpResponse);
                 httpResponse.getOutputStream().write(b);

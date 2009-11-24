@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -137,19 +138,6 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public UserDto loggedInUser() throws RestException {
-        try {
-            return mapUser(currentUser());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsers() {
         return mapUsers(getUsers().listUsers());
     }
@@ -212,5 +200,24 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
         return getUsers().listMetadataValuesWithKey(key);
+    }
+
+
+
+
+    /* ====================================================================
+     * UNSAFE METHODS.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public UserDto loggedInUser() throws RestException {
+        try {
+            return mapUser(currentUser());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 }

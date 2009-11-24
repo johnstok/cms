@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.script.ScriptException;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +44,7 @@ import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.TextFileDelta;
+import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
@@ -112,7 +112,10 @@ public class ContentServlet
         bindServices(req);
 
         final ResourcePath contentPath = determineResourcePath(req);
-        final ResourceSnapshot resource = getSnapshot(req, contentPath);
+        final boolean wc = req.getParameterMap().keySet().contains("wc");
+        final int version = determineVersion(req);
+
+        final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
 
         if (resource == null) {
             throw new NotFoundException();
@@ -128,21 +131,33 @@ public class ContentServlet
                 invokeScript(req, resp, f);
 
             } else {
-                renderResource(req, resp, resource);
+                renderResource(req, resp, resource, wc, version);
             }
         } else {
-            renderResource(req, resp, resource);
+            renderResource(req, resp, resource, wc, version);
         }
     }
 
 
-    /**
-     * Determine the ResourcePath from a request's pathInfo.
-     *
-     * @param request The HTTP request.
-     * @return The corresponding resource path.
-     */
-    public ResourcePath determineResourcePath(
+    private int determineVersion(final HttpServletRequest req) {
+        final String version = req.getParameter("v");
+        if (null==version) {
+            return 0;
+        }
+        try {
+            final int v = new Integer(version).intValue();
+            if (v<0) {
+                throw new NotFoundException();
+            }
+            return v;
+
+        } catch (final NumberFormatException e) {
+            throw new NotFoundException();
+        }
+    }
+
+
+    private ResourcePath determineResourcePath(
                                              final HttpServletRequest request) {
         String pathString = request.getPathInfo();
         pathString = nvl(pathString, "/");
@@ -158,23 +173,17 @@ public class ContentServlet
     }
 
 
-    // RenderResourceAction
     private void renderResource(final HttpServletRequest request,
                                 final HttpServletResponse response,
-                                final ResourceSnapshot rs) throws IOException {
+                                final ResourceSnapshot rs,
+                                final boolean workingCopy,
+                                final int version) throws IOException {
 
-        final Context context = new Context();
-        try {
-            context.add("user", _users.loggedInUser());
-        } catch (final RestException e) {
-            throw new RuntimeException(e);
-        }
-        context.add("request",  request);
-        context.add("response", response);
-        context.add("services", new RequestScopeServiceLocator(request));
-        context.add("resource", rs);
+        final Context context = createContext(request, response, rs);
 
-        final Response r = new TmpRenderer(_templates, _resources).render(rs);
+        final Response r =
+            new TmpRenderer(_templates, _resources)
+                .render(rs, workingCopy, version);
 
         if (rs.isSecure()) { // Dont'cache secure pages.
             r.setExpiry(null);
@@ -185,21 +194,20 @@ public class ContentServlet
 
 
     @SuppressWarnings("unchecked")
-    private ResourceSnapshot getSnapshot(final HttpServletRequest request,
-                                         final ResourcePath contentPath) {
-
-        final Map<String, String[]> parameters = request.getParameterMap();
+    private ResourceSnapshot getSnapshot(final ResourcePath contentPath,
+                                         final boolean workingCopy,
+                                         final int version) {
 
         try {
             if (_respectVisibility) {
                 return _resources.resourceForPathSecure(
                     "/"+_rootName+contentPath);
-            } else if (parameters.keySet().contains("wc")) {
+            } else if (workingCopy) {
                 return _resources.workingCopyForPath(
                     "/"+_rootName+contentPath);
-            } else if (parameters.keySet().contains("v")) {
+            } else if (version>0) {
                 return _resources.revisionForPath(
-                    "/"+_rootName+contentPath, request.getParameter("v"));
+                    "/"+_rootName+contentPath, version);
             } else {
                 return _resources.resourceForPathSecure(
                     "/"+_rootName+contentPath);
@@ -241,15 +249,13 @@ public class ContentServlet
             context.put("request",  req);
             context.put("response", resp);
             context.put("services", new RequestScopeServiceLocator(req));
-            context.put("user", _users.loggedInUser());
+            context.put("user", loggedInUser());
 
             new ScriptRunner().eval(script, context, resp.getWriter());
 
         } catch (final ScriptException e) {
             throw new RuntimeException("Error invoking script.", e);
         } catch (final IOException e) {
-            throw new RuntimeException("Error invoking script.", e);
-        } catch (final RestException e) {
             throw new RuntimeException("Error invoking script.", e);
         }
     }
@@ -258,9 +264,30 @@ public class ContentServlet
     /** {@inheritDoc} */
     @Override
     protected void doPost(final HttpServletRequest req,
-                          final HttpServletResponse resp)
-                                          throws ServletException, IOException {
+                          final HttpServletResponse resp) throws IOException {
         doGet(req, resp);
+    }
+
+
+    private Context createContext(final HttpServletRequest request,
+                                  final HttpServletResponse response,
+                                  final ResourceSnapshot rs) {
+        final Context context = new Context();
+        context.add("user", loggedInUser());
+        context.add("request",  request);
+        context.add("response", response);
+        context.add("services", new RequestScopeServiceLocator(request));
+        context.add("resource", rs);
+        return context;
+    }
+
+
+    private UserDto loggedInUser() {
+        try {
+            return _users.loggedInUser();
+        } catch (final RestException e) { // NotFoundException
+            return null;
+        }
     }
 
 

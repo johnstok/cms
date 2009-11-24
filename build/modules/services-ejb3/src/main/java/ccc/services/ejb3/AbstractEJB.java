@@ -30,6 +30,7 @@ import ccc.commands.Command;
 import ccc.commands.CommandFactory;
 import ccc.domain.Action;
 import ccc.domain.Alias;
+import ccc.domain.AuthenticationRequiredException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
@@ -264,6 +265,21 @@ abstract class AbstractEJB {
      */
     protected UUID currentUserId() throws EntityNotFoundException {
         return currentUser().id();
+    }
+
+
+    /**
+     * Check that a resource is accessible to a user.
+     *
+     * @param r The resource to check.
+     * @param u The user attempting to access the resource.
+     */
+    protected void checkSecurity(final Resource r, final User u) {
+        if (!r.isAccessibleTo(u)) {
+            throw new AuthenticationRequiredException(
+                // FIXME: Broken for /assets
+                r.absolutePath().removeTop().toString());
+        }
     }
 
 
