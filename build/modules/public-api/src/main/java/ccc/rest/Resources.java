@@ -194,6 +194,20 @@ public interface Resources {
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId)
     throws RestException;
 
+    /**
+     * Look up the resource for a specified metadata key.
+     *
+     * @param key The legacy id of the resource.
+     * @throws RestException If the method fails
+     * @return A summary of the corresponding resource.
+     */
+    @GET
+    @Path("/resources-by-metadata-key/{id}")
+    @NoCache
+    Collection<ResourceSummary> resourceForMetadataKey(
+        @PathParam("id") String key)
+    throws RestException;
+
 
     /**
      * Update the period that a resource should be cached for.

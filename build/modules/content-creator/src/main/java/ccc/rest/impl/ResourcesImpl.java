@@ -107,6 +107,13 @@ public class ResourcesImpl
         return getResources().resourceForLegacyId(legacyId);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> resourceForMetadataKey(final String key)
+    throws RestException {
+        return getResources().resourceForMetadataKey(key);
+    }
+
 
     /** {@inheritDoc} */
     @Override

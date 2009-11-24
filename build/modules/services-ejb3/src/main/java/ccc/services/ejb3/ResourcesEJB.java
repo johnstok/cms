@@ -777,6 +777,15 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public Collection<ResourceSummary> resourceForMetadataKey(
+        final String key) {
+        return mapResources(getResources().lookupWithMetadataKey(key));
+
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public ResourceSummary resourceForLegacyId(final String legacyId)
     throws RestException {
         try {

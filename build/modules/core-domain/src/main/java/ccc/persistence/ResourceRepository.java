@@ -95,6 +95,15 @@ public interface ResourceRepository {
     Resource lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
 
     /**
+     * Look up a resource, given its metadata key.
+     *
+     * @param key The metadata key.
+     *
+     * @return The corresponding resources in CCC7.
+     */
+    List<Resource> lookupWithMetadataKey(String key);
+
+    /**
      * Lookup a root folder by name.
      *
      * @param name The name of the root folder.
@@ -151,10 +160,10 @@ public interface ResourceRepository {
      * Find a template, given its name.
      *
      * @param name The name of the template.
-     * 
+     *
      * @throws EntityNotFoundException If no template exists with the specified
      *  name.
-     * 
+     *
      * @return The template with the specified name.
      */
     Template template(String name) throws EntityNotFoundException;
