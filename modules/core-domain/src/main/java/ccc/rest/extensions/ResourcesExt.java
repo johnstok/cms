@@ -290,8 +290,9 @@ public interface ResourcesExt
      *
      * @param legacyId
      * @return
+     * @throws RestException
      */
-    ResourceSummary lookupWithLegacyId(String legacyId);
+    ResourceSummary lookupWithLegacyId(String legacyId) throws RestException;
 
 
     /* StatefulReader */

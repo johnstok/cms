@@ -27,8 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.domain.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rest.Resources;
+import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.ResourcesExt;
 
@@ -118,7 +120,7 @@ public final class BrokenLinkServlet
         final String legacyId = pageMatcher.group(1);
 
      // FIXME: Broken.
-//        try {
+        try {
             final ResourceSummary r = _resources.lookupWithLegacyId(legacyId);
             final String resourcePath = r.getAbsolutePath().substring(8);
             LOG.info("Fixed to path: "+resourcePath);
@@ -126,9 +128,9 @@ public final class BrokenLinkServlet
             // TODO: Should be permanent redirect.
             throw new RedirectRequiredException(resourcePath);
 
-//        } catch (final EntityNotFoundException e) {
-//            throw new NotFoundException();
-//        }
+        } catch (final RestException e) {
+            throw new NotFoundException();
+        }
     }
 
 
