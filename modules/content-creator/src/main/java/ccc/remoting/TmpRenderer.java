@@ -65,8 +65,6 @@ public class TmpRenderer {
      * Render the resource, as a response.
      *
      * @param s The snapshot to render.
-     * @param wc Is the working copy to be rendered.
-     * @param rev The revision to be rendered.
      *
      * @return A response representing the resource.
      */

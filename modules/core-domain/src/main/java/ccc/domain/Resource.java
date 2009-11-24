@@ -571,6 +571,10 @@ public abstract class Resource
             return parentIsAccessible;
         }
 
+        if (null==user) {
+            return false;
+        }
+
         for (final String role : roles()) {
             if (user.hasRole(role)) {
                 return parentIsAccessible;

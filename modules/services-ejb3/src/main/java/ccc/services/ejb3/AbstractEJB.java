@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import ccc.commands.Command;
 import ccc.commands.CommandFactory;
+import ccc.commons.Exceptions;
 import ccc.domain.Action;
 import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
@@ -272,11 +273,16 @@ abstract class AbstractEJB {
      * Check that a resource is accessible to a user.
      *
      * @param r The resource to check.
-     * @param u The user attempting to access the resource.
      * @throws UnauthorizedException If the resource cannot be accessed.
      */
-    protected void checkSecurity(final Resource r,
-                                 final User u) throws UnauthorizedException {
+    protected void checkSecurity(final Resource r)
+    throws UnauthorizedException {
+        User u = null;
+        try {
+            u = currentUser();
+        } catch (final EntityNotFoundException e) {
+            Exceptions.swallow(e); // Leave user as NULL.
+        }
         if (!r.isAccessibleTo(u)) {
             _context.setRollbackOnly();  // CRITICAL
             throw new UnauthorizedException();
