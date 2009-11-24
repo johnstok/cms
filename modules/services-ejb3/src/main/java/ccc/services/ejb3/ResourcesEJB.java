@@ -838,18 +838,21 @@ public class ResourcesEJB
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary lookupWithLegacyId(final String legacyId) {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
 
 
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    @Deprecated
+    public ResourceSummary lookupWithLegacyId(final String legacyId)
+    throws RestException {
+        return resourceForLegacyId(legacyId);
+    }
 
     /** {@inheritDoc} */
     @Override
