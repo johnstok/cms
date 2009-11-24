@@ -283,7 +283,7 @@ public class Migrations extends BaseMigrations {
                         log);
                 } catch (final MigrationException e) {
                     log.warn("Skipped version "+createVersion+" of page "
-                        +resource.contentId());
+                        +resource.contentId()+" "+e.getMessage());
                     if (paragraphVersions.size() == 0) {
                         throw e;
                     }
