@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -792,7 +793,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @PermitAll
     public ResourceSnapshot resourceForPathSecure(final String rootPath)
     throws RestException {
         try {
@@ -865,8 +866,10 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary lookupWithLegacyId(final String legacyId) {
-        throw new UnsupportedOperationException("Method not implemented.");
+    @PermitAll
+    @Deprecated
+    public ResourceSummary lookupWithLegacyId(final String legacyId) throws RestException {
+        return resourceForLegacyId(legacyId);
     }
 
 
