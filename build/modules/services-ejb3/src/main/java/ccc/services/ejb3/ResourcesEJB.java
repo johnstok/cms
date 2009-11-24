@@ -876,7 +876,7 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
                 getResources().lookup(rp.top().toString(), rp.removeTop());
-            checkSecurity(r, currentUser());
+            checkSecurity(r);
             return r.forCurrentRevision();
 
         } catch (final CccCheckedException e) {
@@ -894,7 +894,7 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
                 getResources().lookup(rp.top().toString(), rp.removeTop());
-            checkSecurity(r, currentUser());
+            checkSecurity(r);
             return r.forWorkingCopy();
 
         } catch (final CccCheckedException e) {
@@ -913,7 +913,7 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =
                 getResources().lookup(rp.top().toString(), rp.removeTop());
-            checkSecurity(r, currentUser());
+            checkSecurity(r);
             return r.forSpecificRevision(version);
 
         } catch (final CccCheckedException e) {

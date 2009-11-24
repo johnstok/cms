@@ -40,6 +40,39 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     */
+    public void testAccessibilityCheckHandlesNullUser() {
+
+        // ARRANGE
+        final Page p = new Page();
+
+        // ACT
+        final boolean isAccessible = p.isAccessibleTo(null);
+
+        // ASSERT
+        assertTrue(isAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testSecureResourceInaccessibleToNullUser() {
+
+        // ARRANGE
+        final Page p = new Page();
+        p.roles(Collections.singleton("foo"));
+
+        // ACT
+        final boolean isAccessible = p.isAccessibleTo(null);
+
+        // ASSERT
+        assertFalse(isAccessible);
+    }
+
+
+    /**
+     * Test.
      * @throws Exception If the test fails.
      */
     public void testSecureResourcesWithInsecureParentsAreSecure()

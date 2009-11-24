@@ -261,7 +261,7 @@ public class FilesEJB
     throws RestException, UnauthorizedException {
         try {
             final File f = getResources().find(File.class, file);
-            checkSecurity(f, currentUser());
+            checkSecurity(f);
             getFiles().retrieve(f.data(), action);
 
         } catch (final CccCheckedException e) {
@@ -279,7 +279,7 @@ public class FilesEJB
     throws RestException, UnauthorizedException {
         try {
             final File f = getResources().find(File.class, file);
-            checkSecurity(f, currentUser());
+            checkSecurity(f);
             getFiles().retrieve(f.revision(revision).getData(), action);
 
         } catch (final CccCheckedException e) {
@@ -296,7 +296,7 @@ public class FilesEJB
     throws RestException, UnauthorizedException {
         try {
             final File f = getResources().find(File.class, file);
-            checkSecurity(f, currentUser());
+            checkSecurity(f);
             getFiles().retrieve(f.getWorkingCopy().getData(), action);
 
         } catch (final CccCheckedException e) {
