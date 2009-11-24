@@ -24,6 +24,7 @@ import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.MimeType;
+import ccc.types.ResourceName;
 
 
 /**
@@ -93,9 +94,9 @@ public class TemplateMigration {
      * @param templateFolder The folder in which templates should be created.
      * @return The corresponding template, or null;
      */
-    public UUID getTemplate(final String templateName,
-                          final String templateDescription,
-                          final ResourceSummary templateFolder) {
+    public UUID getTemplate(final ResourceName templateName,
+                            final String templateDescription,
+                            final ResourceSummary templateFolder) {
 
         final Set<TemplateSummary> templates =
             new HashSet<TemplateSummary>(_templateApi.templates());
@@ -108,7 +109,8 @@ public class TemplateMigration {
         }
 
         if (null==template) { // Not yet migrated or does not exists
-            createTemplate(templateName, templateDescription, templateFolder);
+            createTemplate(
+                templateName.toString(), templateDescription, templateFolder);
         }
         return (null==template) ? null : template.getId();
     }

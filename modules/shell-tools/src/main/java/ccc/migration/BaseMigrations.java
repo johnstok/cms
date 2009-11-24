@@ -37,6 +37,7 @@ import ccc.rest.extensions.ResourcesExt;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
+import ccc.types.ResourceName;
 import ccc.types.Username;
 
 /**
@@ -195,9 +196,9 @@ public abstract class BaseMigrations {
 
 
     protected void setTemplateForResource(final ResourceBean r,
-                                        final ResourceSummary rs,
-                                        final LogEntryBean le,
-                                        final ResourceSummary templateFolder)
+                                          final ResourceSummary rs,
+                                          final LogEntryBean le,
+                                          final ResourceSummary templateFolder)
                                                  throws RestException {
         final String templateName = r.displayTemplate();
         final String templateDescription = r.templateDescription();
@@ -207,7 +208,7 @@ public abstract class BaseMigrations {
         }
 
         final UUID templateId = _tm.getTemplate(
-            templateName,
+            new ResourceName(templateName),
             templateDescription,
             templateFolder);
         _resourcesExt.updateResourceTemplate(
