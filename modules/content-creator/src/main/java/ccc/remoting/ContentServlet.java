@@ -208,11 +208,7 @@ public class ContentServlet
 
 
     private UserDto loggedInUser() {
-        try {
-            return _users.loggedInUser();
-        } catch (final RestException e) { // NotFoundException
-            return null;
-        }
+        return _users.loggedInUser();
     }
 
 

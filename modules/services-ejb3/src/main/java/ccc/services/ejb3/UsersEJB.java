@@ -29,6 +29,7 @@ import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
 import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
@@ -212,12 +213,11 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public UserDto loggedInUser() throws RestException {
+    public UserDto loggedInUser() {
         try {
             return mapUser(currentUser());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        } catch (final EntityNotFoundException e) {
+            return null;
         }
     }
 }

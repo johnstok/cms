@@ -41,7 +41,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto loggedInUser() throws RestException {
+    public UserDto loggedInUser() {
         return getUsers().loggedInUser();
     }
 
