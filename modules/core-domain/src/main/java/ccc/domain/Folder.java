@@ -504,6 +504,12 @@ public final class Folder
     /** {@inheritDoc} */
     @Override
     public FolderDto forWorkingCopy() {
+        return forCurrentRevision();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FolderDto forCurrentRevision() {
         final FolderDto dto = new FolderDto(
             (null==parent()) ? null : parent().id(),
                 name());
@@ -515,21 +521,7 @@ public final class Folder
 
     /** {@inheritDoc} */
     @Override
-    public FolderDto forCurrentRevision() {
-        final FolderDto dto = new FolderDto(
-            (null==parent()) ? null : parent().id(),
-                name());
-        super.setDtoProps(dto);
-        return dto;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public FolderDto forSpecificRevision(final int revNo) {
-        final FolderDto dto = new FolderDto(
-            (null==parent()) ? null : parent().id(),
-                name());
-        super.setDtoProps(dto);
-        return dto;
+        return forCurrentRevision();
     }
 }
