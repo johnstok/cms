@@ -155,7 +155,7 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final String template = "#macro failthis #end";
         final String expectedMessage = "A macro declaration requires at least "
-            + "a name argumentVelocityProcessor[line 1, column 1]\n";
+            + "a name argumentVelocityProcessor[line 1, column 1]";
         final StringWriter renderedOutput = new StringWriter();
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
@@ -173,7 +173,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         } catch (final RuntimeException e) {
             assertTrue(e.getCause() instanceof ParseErrorException);
-            assertEquals(expectedMessage, e.getCause().getMessage());
+            assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
 
     }
@@ -205,7 +205,7 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         } catch (final RuntimeException e) {
             assertTrue(e.getCause() instanceof MethodInvocationException);
-            assertEquals(expectedMessage, e.getCause().getMessage());
+            assertTrue(e.getCause().getMessage().startsWith(expectedMessage));
         }
 
     }
