@@ -116,33 +116,23 @@ public class VelocityProcessor implements TextProcessor {
 
             ve.evaluate(context, output, "VelocityProcessor", template);
 
+            output.flush();
+
         } catch (final ParseErrorException e) {
-            handleException(output, e);
+            handleException(e);
         } catch (final MethodInvocationException e) {
-            handleException(output, e);
+            handleException(e);
         } catch (final ResourceNotFoundException e) {
-            handleException(output, e);
+            handleException(e);
         } catch (final IOException e) {
-            handleException(output, e);
+            handleException(e);
         } catch (final Exception e) {
-            handleException(output, e);
-        } finally {
-            try {
-                output.flush();
-            } catch (final IOException e) {
-                LOG.warn("Error flushing servlet response.", e);
-            }
+            handleException(e);
         }
     }
 
-    private void handleException(final Writer output, final Exception e) {
-        final String msg = ""+e.getMessage(); // getMessage() is NULL for an NPE
-        LOG.warn("Error in template: "+msg);
-
-        try {
-            output.write(msg);
-        } catch (final IOException e1) {
-            LOG.warn("Error writing to servlet response.", e1);
-        }
+    private void handleException(final Exception e) {
+        LOG.warn("Error in template: "+e.getMessage());
+        throw new RuntimeException("Error in template.", e);
     }
 }

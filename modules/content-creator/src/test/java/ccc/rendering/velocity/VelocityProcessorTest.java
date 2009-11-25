@@ -17,6 +17,10 @@ import java.io.StringWriter;
 import java.util.Date;
 
 import junit.framework.TestCase;
+
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+
 import ccc.commons.Context;
 import ccc.commons.Testing;
 import ccc.domain.Page;
@@ -151,21 +155,27 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final String template = "#macro failthis #end";
         final String expectedMessage = "A macro declaration requires at least "
-            + "a name argumentVelocityProcessor";
+            + "a name argumentVelocityProcessor[line 1, column 1]\n";
         final StringWriter renderedOutput = new StringWriter();
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        _vp.render(
-            template,
-            renderedOutput,
-            ctxt);
+        try {
+            _vp.render(
+                template,
+                renderedOutput,
+                ctxt);
+            fail();
+
 
         // ASSERT
-        final String html = renderedOutput.toString();
-        assertTrue(html.startsWith(expectedMessage));
+        } catch (final RuntimeException e) {
+            assertTrue(e.getCause() instanceof ParseErrorException);
+            assertEquals(expectedMessage, e.getCause().getMessage());
+        }
+
     }
 
     /**
@@ -186,14 +196,17 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        _vp.render(
-            template,
-            renderedOutput,
-            ctxt);
+        try {
+            _vp.render(
+                template,
+                renderedOutput,
+                ctxt);
 
         // ASSERT
-        final String html = renderedOutput.toString();
-        assertEquals(expectedMessage, html);
+        } catch (final RuntimeException e) {
+            assertTrue(e.getCause() instanceof MethodInvocationException);
+            assertEquals(expectedMessage, e.getCause().getMessage());
+        }
 
     }
 
