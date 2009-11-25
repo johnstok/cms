@@ -14,8 +14,11 @@ package ccc.services.ejb3;
 import static ccc.types.CreatorRoles.*;
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,6 +42,7 @@ import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
+import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
@@ -948,6 +952,36 @@ public class ResourcesEJB
             }
         }
         return sb.toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public Collection<Collection<ResourceSummary>> getMenuResources(
+        final UUID resourceId) throws UnauthorizedException {
+        final List<Collection<ResourceSummary>> menuResources =
+            new ArrayList<Collection<ResourceSummary>>();
+
+        try {
+            Resource r =
+                getResources().find(Resource.class, resourceId);
+            checkSecurity(r);
+            while (r.parent() != null) {
+                r = r.parent();
+                final Folder f = r.as(Folder.class);
+                final List<ResourceSummary> menulevel =
+                    new ArrayList<ResourceSummary>();
+                for (final Resource item : f.entries()) {
+                    menulevel.add(mapResource(item));
+                }
+                menuResources.add(menulevel);
+            }
+
+        } catch (final CccCheckedException e) {
+            fail(e);
+        }
+        Collections.reverse(menuResources);
+        return menuResources;
     }
 
 
