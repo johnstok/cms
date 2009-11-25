@@ -19,6 +19,7 @@ import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.SearchEngine;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -93,4 +94,11 @@ public class RequestScopeServiceLocator
     public Users getUsers() {
         return (Users) _request.getAttribute(SessionKeys.USERS_KEY);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchEngine getSearch() {
+        return (SearchEngine) _request.getAttribute(SessionKeys.SEARCH_KEY);
+    }
+
 }

@@ -18,7 +18,7 @@ import ccc.commons.Testing;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.DataRepository;
-import ccc.search.SearchEngine;
+import ccc.rest.SearchEngine;
 import ccc.types.Username;
 
 

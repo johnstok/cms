@@ -24,8 +24,9 @@ import ccc.commons.Exceptions;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.search.SearchEngine;
-import ccc.search.SearchResult;
+import ccc.rest.SearchEngine;
+import ccc.rest.SearchResult;
+import ccc.rest.ServiceLocator;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 
@@ -66,8 +67,8 @@ public class SearchBody
         String searchQuery = "";
         final HttpServletRequest request =
             context.get("request", HttpServletRequest.class);
-        final SearchEngine searchEngine =
-            context.get("search", SearchEngine.class);
+        final ServiceLocator sl = context.get("services", ServiceLocator.class);
+        final SearchEngine searchEngine = sl.getSearch();
 
         final String[] qParams = request.getParameterValues("q");
         if (qParams != null && qParams.length != 0) {

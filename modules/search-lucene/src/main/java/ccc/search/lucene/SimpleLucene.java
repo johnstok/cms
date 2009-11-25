@@ -11,6 +11,7 @@
  */
 package ccc.search.lucene;
 
+
 import ccc.search.Index;
 import ccc.search.Indexer;
 

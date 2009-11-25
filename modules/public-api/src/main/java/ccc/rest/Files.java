@@ -62,7 +62,8 @@ public interface Files {
      * @throws RestException If an error occurs updating the file.
      */
     @POST @Path("/{id}")
-    void update(@PathParam("id") UUID id, TextFileDelta file) throws RestException;
+    void update(@PathParam("id") UUID id, TextFileDelta file)
+        throws RestException;
 
 
     /**

@@ -11,6 +11,8 @@
  */
 package ccc.search;
 
+import ccc.rest.SearchResult;
+
 
 /**
  * API for querying a search index.

@@ -18,10 +18,8 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 import ccc.domain.Data;
-import ccc.persistence.DataRepositoryImpl;
-import ccc.persistence.StreamAction;
 import ccc.persistence.streams.CoreData;
-import ccc.search.SearchEngine;
+import ccc.rest.SearchEngine;
 
 
 /**

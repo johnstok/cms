@@ -27,9 +27,9 @@ import org.apache.lucene.search.TopDocs;
 
 import ccc.commons.Exceptions;
 import ccc.persistence.DataRepository;
+import ccc.rest.SearchResult;
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
-import ccc.search.SearchResult;
 
 
 /**

@@ -70,4 +70,10 @@ public interface ServiceLocator {
      */
     Files getFiles();
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the search index service.
+     */
+    SearchEngine getSearch();
 }
