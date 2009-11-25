@@ -22,6 +22,7 @@ import javax.ws.rs.Produces;
 
 import ccc.rest.Resources;
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -280,5 +281,13 @@ public class ResourcesImpl
                                final String detail)
     throws RestException {
         getResources().createLogEntry(resourceId, action, detail);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<Collection<ResourceSummary>> getMenuResources(
+        final UUID resourceId) throws RestException, UnauthorizedException {
+        return getResources().getMenuResources(resourceId);
     }
 }

@@ -442,4 +442,12 @@ public interface Resources {
         @PathParam("id") UUID resourceId,
         String action,
         String detail) throws RestException;
+
+
+
+    @GET
+    @Path("/resources-for-menu/{id}")
+    @NoCache
+    Collection<Collection<ResourceSummary>> getMenuResources(@PathParam("id") UUID resourceId)
+    throws RestException, UnauthorizedException;
 }
