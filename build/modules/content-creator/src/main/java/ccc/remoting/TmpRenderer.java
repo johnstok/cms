@@ -142,10 +142,10 @@ public class TmpRenderer {
         try {
             if (null!= s.getIndexPage()) {
                 throw new RedirectRequiredException(// FIXME: Broken for /assets
-                    _resources.getAbsolutePath(s.getIndexPage()));
+                    _resources.getAbsolutePath(s.getIndexPage()).substring(8));
             } else if (null != s.getDefaultPage()) {
                 throw new RedirectRequiredException(// FIXME: Broken for /assets
-                    _resources.getAbsolutePath(s.getIndexPage()));
+                    _resources.getAbsolutePath(s.getIndexPage()).substring(8));
             }
 
         } catch (final RestException e) {
