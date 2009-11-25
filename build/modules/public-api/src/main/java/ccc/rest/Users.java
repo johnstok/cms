@@ -53,11 +53,11 @@ public interface Users {
     /**
      * Returns currently logged in user.
      *
-     * @throws RestException If the method fails
+
      * @return UserDTO
      */
     @GET @Path("/users/me") @NoCache
-    UserDto loggedInUser() throws RestException;
+    UserDto loggedInUser();
 
     /**
      * Query all users.
