@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+package ccc.rest;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class SearchResult {
     private int _totalResults = 0;
     private String _terms = "";
     private int _pageNo;
-	private int _noOfResultsPerPage;
+    private int _noOfResultsPerPage;
 
 
 
@@ -113,19 +113,19 @@ public class SearchResult {
 
     /**
      * Mutator.
-     * 
-     * @param _noOfResultsPerPage
+     *
+     * @param noOfResultsPerPage Number of results per page.
      */
-	public void noOfResultsPerPage(int _noOfResultsPerPage) {
-		this._noOfResultsPerPage = _noOfResultsPerPage;
-	}
+    public void noOfResultsPerPage(final int noOfResultsPerPage) {
+        _noOfResultsPerPage = noOfResultsPerPage;
+    }
 
-	/**
+    /**
      * Accessor.
-     * 
-	 * @return _noOfResultsPerPage
-	 */
-	public int noOfResultsPerPage() {
-		return _noOfResultsPerPage;
-	}
+     *
+     * @return noOfResultsPerPage
+     */
+    public int noOfResultsPerPage() {
+        return _noOfResultsPerPage;
+    }
 }

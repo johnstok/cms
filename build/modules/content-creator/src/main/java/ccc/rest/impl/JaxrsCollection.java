@@ -23,6 +23,7 @@ import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.SearchEngine;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -50,6 +51,7 @@ abstract class JaxrsCollection
     private Users _userCommands;
     private Actions _actions;
     private Files _files;
+    private SearchEngine _search;
     private Aliases _aliases;
 
 
@@ -132,6 +134,14 @@ abstract class JaxrsCollection
         (null==_files)
         ? (Files) _reg.get(getAppName()+"/"+Files.NAME+"/local")
             : _files;
+    }
+
+    /** {@inheritDoc} */
+    public final SearchEngine getSearch() {
+        return
+        (null==_search)
+        ? (SearchEngine) _reg.get(getAppName()+"/"+SearchEngine.NAME+"/local")
+            : _search;
     }
 
     /**

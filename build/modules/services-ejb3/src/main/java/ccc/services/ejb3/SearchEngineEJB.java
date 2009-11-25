@@ -41,8 +41,8 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
-import ccc.search.SearchEngine;
-import ccc.search.SearchResult;
+import ccc.rest.SearchEngine;
+import ccc.rest.SearchResult;
 import ccc.search.lucene.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
 

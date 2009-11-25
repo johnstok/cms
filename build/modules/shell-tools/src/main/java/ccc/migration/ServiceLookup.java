@@ -20,13 +20,13 @@ import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.SearchEngine;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
-import ccc.search.SearchEngine;
 
 
 /**
@@ -100,6 +100,12 @@ public class ServiceLookup implements ServiceLocator {
     @Override
     public Users getUsers() {
         return _registry.<Users>get(jndiPath(Users.NAME));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchEngine getSearch() {
+        return _registry.<SearchEngine>get(jndiPath(SearchEngine.NAME));
     }
 
 

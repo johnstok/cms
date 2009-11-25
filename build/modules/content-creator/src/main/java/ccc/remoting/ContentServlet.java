@@ -36,6 +36,7 @@ import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
+import ccc.rest.SearchEngine;
 import ccc.rest.Templates;
 import ccc.rest.UnauthorizedException;
 import ccc.rest.Users;
@@ -45,7 +46,6 @@ import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.rest.snapshots.ResourceSnapshot;
-import ccc.search.SearchEngine;
 import ccc.types.ResourcePath;
 
 
