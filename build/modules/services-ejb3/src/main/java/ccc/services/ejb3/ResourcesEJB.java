@@ -776,7 +776,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @PermitAll
     public Collection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         return mapResources(getResources().lookupWithMetadataKey(key));
