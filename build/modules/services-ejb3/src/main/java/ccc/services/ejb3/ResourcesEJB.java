@@ -752,7 +752,7 @@ public class ResourcesEJB
     throws RestException {
         try {
             return mapResource(
-                getResources().lookup("content", new ResourcePath(rootPath)));
+                getResources().lookup(new ResourcePath(rootPath)));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -865,7 +865,7 @@ public class ResourcesEJB
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
-                getResources().lookup("content", rp);
+                getResources().lookup(rp);
             checkSecurity(r);
             return r.forCurrentRevision();
 
@@ -883,7 +883,7 @@ public class ResourcesEJB
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
-                getResources().lookup("content", rp);
+                getResources().lookup(rp);
             checkSecurity(r);
             return r.forWorkingCopy();
 
@@ -902,7 +902,7 @@ public class ResourcesEJB
         try {
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =
-                getResources().lookup("content", rp);
+                getResources().lookup(rp);
             checkSecurity(r);
             return r.forSpecificRevision(version);
 
@@ -921,7 +921,7 @@ public class ResourcesEJB
         final ResourcePath rp = new ResourcePath(absolutePath);
         Resource r;
         try {
-            r = getResources().lookup("content", rp);
+            r = getResources().lookup(rp);
         } catch (final EntityNotFoundException e) {
             return null;
         }

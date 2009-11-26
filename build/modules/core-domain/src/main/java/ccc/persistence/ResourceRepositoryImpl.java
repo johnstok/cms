@@ -94,9 +94,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
      * {@inheritDoc}
      */
     @Override
-    public Resource lookup(final String rootName, final ResourcePath path)
+    public Resource lookup(final ResourcePath path)
     throws EntityNotFoundException {
-        final Folder root = root(rootName);
+        final Folder root = root(PredefinedResourceNames.CONTENT);
         try {
             return root.navigateTo(path);
         } catch (final CCCException e) { // TODO: Dodgy?

@@ -71,7 +71,6 @@ public interface ResourceRepository {
      * Look up a resource.
      *
      * @param contentPath ResourcePath The path to the resource.
-     * @param rootName The name of the root folder in which the resource exists.
      *
      * @throws EntityNotFoundException If no entity exists with the specified
      *  path.
@@ -79,7 +78,7 @@ public interface ResourceRepository {
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    Resource lookup(String rootName, ResourcePath contentPath)
+    Resource lookup(ResourcePath contentPath)
     throws EntityNotFoundException;
 
     /**
