@@ -16,6 +16,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -103,6 +104,7 @@ public class VelocityProcessor implements TextProcessor {
             }
             context.put("random", _random);
             context.put("math", Math.class);
+            context.put("collections", Collections.class);
             context.put("calendar", Calendar.class);
             context.put("html", XHTML.class);
 

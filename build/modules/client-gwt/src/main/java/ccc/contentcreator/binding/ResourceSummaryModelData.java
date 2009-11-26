@@ -160,8 +160,8 @@ public class ResourceSummaryModelData
             case NAME:
                 return (X) _rs.getName();
 
-            case PARENT_ID:
-                return (X) _rs.getParentId();
+            case PARENT:
+                return (X) _rs.getParent();
 
             case PUBLISHED:
                 return (X) _rs.getPublishedBy();
@@ -233,8 +233,8 @@ public class ResourceSummaryModelData
     public enum Property {
         /** UUID : Property. */
         UUID,
-        /** PARENT_ID : Property. */
-        PARENT_ID,
+        /** PARENT : Property. */
+        PARENT,
         /** NAME : Property. */
         NAME,
         /** PUBLISHED : Property. */
@@ -363,7 +363,7 @@ public class ResourceSummaryModelData
      * @return The UUID of the parent.
      */
     public UUID getParent() {
-        return _rs.getParentId();
+        return _rs.getParent();
     }
 
     /**

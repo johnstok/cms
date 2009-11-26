@@ -69,7 +69,7 @@ public class AliasAcceptanceTest
         // ASSERT
         final String targetName = getAliases().aliasTargetName(rs.getId());
         assertEquals(name, rs.getName());
-        assertEquals(folder.getId(), rs.getParentId());
+        assertEquals(folder.getId(), rs.getParent());
         assertEquals(targetName, folder.getName());
     }
 }

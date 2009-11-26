@@ -32,7 +32,7 @@ import ccc.types.Username;
 public final class ResourceSummary implements Serializable, Jsonable {
 
     private UUID _id;
-    private UUID _parentId;
+    private UUID _parent;
     private String _name;
     private Username _publishedBy;
     private String _title;
@@ -57,7 +57,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * Constructor.
      *
      * @param id The resource's id.
-     * @param parentId The resource's parent folder id.
+     * @param parent The resource's parent folder id.
      * @param name The resource's name.
      * @param publishedBy The user that published the resource.
      * @param title The resource's title.
@@ -77,7 +77,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * @param description The description of the resource.
      */
     public ResourceSummary(final UUID id,
-                           final UUID parentId,
+                           final UUID parent,
                            final String name,
                            final Username publishedBy,
                            final String title,
@@ -96,7 +96,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final UUID indexPageId,
                            final String description) {
         _id = id;
-        _parentId = parentId;
+        _parent = parent;
         _name = name;
         _publishedBy = publishedBy;
         _title = title;
@@ -123,7 +123,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
      */
     public ResourceSummary(final Json json) {
         _id = json.getId(ID);
-        _parentId = json.getId(PARENT_ID);
+        _parent = json.getId(PARENT_ID);
         _name = json.getString(NAME);
         _publishedBy =
             (null==json.getString(PUBLISHED_BY))
@@ -163,10 +163,10 @@ public final class ResourceSummary implements Serializable, Jsonable {
     /**
      * Accessor.
      *
-     * @return Returns the parentId.
+     * @return Returns the parent.
      */
-    public UUID getParentId() {
-        return _parentId;
+    public UUID getParent() {
+        return _parent;
     }
 
 
@@ -403,7 +403,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
     public void toJson(final Json json) {
         json.set(ID, _id);
         json.set(NAME, _name);
-        json.set(PARENT_ID, _parentId);
+        json.set(PARENT_ID, _parent);
         json.set(TYPE, _type.name());
         json.set(LOCKED_BY, (null==_lockedBy)?null:_lockedBy.toString());
         json.set(TITLE, _title);
