@@ -16,7 +16,6 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -701,22 +700,6 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Map<String, String> metadata(final UUID resourceId)
-    throws RestException {
-        try {
-            final Resource r =
-                getResources().find(Resource.class, resourceId);
-            return r.metadata();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<String> roles(final UUID resourceId)
     throws RestException {
         try {
@@ -954,34 +937,43 @@ public class ResourcesEJB
         return sb.toString();
     }
 
+
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<Collection<ResourceSummary>> getMenuResources(
-        final UUID resourceId) throws UnauthorizedException {
-        final List<Collection<ResourceSummary>> menuResources =
-            new ArrayList<Collection<ResourceSummary>>();
-
+    public Collection<ResourceSummary> getSiblings(final UUID resourceId)
+    throws UnauthorizedException {
+        final List<ResourceSummary> siblings = new ArrayList<ResourceSummary>();
         try {
-            Resource r =
+            final Resource r =
                 getResources().find(Resource.class, resourceId);
             checkSecurity(r);
-            while (r.parent() != null) {
-                r = r.parent();
-                final Folder f = r.as(Folder.class);
-                final List<ResourceSummary> menulevel =
-                    new ArrayList<ResourceSummary>();
-                for (final Resource item : f.entries()) {
-                    menulevel.add(mapResource(item));
-                }
-                menuResources.add(menulevel);
+
+            final Folder f = r.parent().as(Folder.class);
+            for (final Resource item : f.entries()) {
+                siblings.add(mapResource(item));
             }
 
         } catch (final CccCheckedException e) {
             fail(e);
         }
-        Collections.reverse(menuResources);
-        return menuResources;
+        return siblings;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public Map<String, String> metadata(final UUID resourceId)
+    throws RestException {
+        try {
+            final Resource r =
+                getResources().find(Resource.class, resourceId);
+            return r.metadata();
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 

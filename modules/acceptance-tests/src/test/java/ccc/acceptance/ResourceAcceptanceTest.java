@@ -90,7 +90,7 @@ public class ResourceAcceptanceTest
 
         // ASSERT
         assertEquals("/content/"+folder.getName(), folder.getAbsolutePath());
-        assertEquals(assets.getId(), moved.getParentId());
+        assertEquals(assets.getId(), moved.getParent());
     }
 
 
@@ -176,7 +176,7 @@ public class ResourceAcceptanceTest
 
         // ASSERT
         assertEquals("content", contentRoot.getName());
-        assertNull(contentRoot.getParentId());
+        assertNull(contentRoot.getParent());
     }
 
 

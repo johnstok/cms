@@ -286,8 +286,8 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<Collection<ResourceSummary>> getMenuResources(
-        final UUID resourceId) throws RestException, UnauthorizedException {
-        return getResources().getMenuResources(resourceId);
+    public Collection<ResourceSummary> getSiblings(final UUID resourceId)
+        throws RestException, UnauthorizedException {
+        return getResources().getSiblings(resourceId);
     }
 }

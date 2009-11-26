@@ -443,11 +443,17 @@ public interface Resources {
         String action,
         String detail) throws RestException;
 
-
-
+    /**
+     * Returns siblings of the resource, the resource included.
+     *
+     * @param resourceId The id of the resource to create log entry for.
+     * @return The list of siblings.
+     * @throws RestException If the method fails.
+     * @throws UnauthorizedException If the user does not have right to access.
+     */
     @GET
-    @Path("/resources-for-menu/{id}")
+    @Path("/siblings/{id}")
     @NoCache
-    Collection<Collection<ResourceSummary>> getMenuResources(@PathParam("id") UUID resourceId)
+    Collection<ResourceSummary> getSiblings(@PathParam("id") UUID resourceId)
     throws RestException, UnauthorizedException;
 }
