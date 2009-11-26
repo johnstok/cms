@@ -102,9 +102,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
                 final ImageSummaryModelData md =
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
-                    String path = md.getPath().substring(1);
-                    path = path.substring(path.indexOf("/")+1);
-                    _image.setValue(path);
+                    _image.setValue(md.getPath());
                 }
                     _image.setFSModel(md);
                 hide();

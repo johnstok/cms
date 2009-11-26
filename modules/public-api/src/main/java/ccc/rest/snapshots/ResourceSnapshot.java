@@ -30,28 +30,27 @@ import ccc.types.ResourceType;
  */
 public class ResourceSnapshot implements IResource, Serializable {
 
-    private String _absolutePath;
-    private String _title;
-    private Set<String> _tags;
-    private UUID _root;
-    private UUID _publishedBy;
-    private UUID _parent;
+    private String              _absolutePath;
+    private Duration            _cacheDuration;
+    private Date                _dateChanged;
+    private Date                _dateCreated;
+    private String              _description;
+    private UUID                _id;
+    private boolean             _inMainMenu;
+    private boolean             _isLocked;
+    private boolean             _isPublished;
+    private boolean             _isSecure;
+    private boolean             _isVisible;
+    private UUID                _lockedBy;
     private Map<String, String> _metadata;
-    private boolean _isPublished;
-    private UUID _lockedBy;
-    private boolean _isLocked;
-    private boolean _includeInMainMenu;
-    private UUID _id;
-    private Date _dateCreated;
-    private Date _dateChanged;
-    private Duration _cache;
-    private ResourceName _name;
-    private String _description;
-    private ResourceType _type;
-    private boolean _isVisible;
-    private UUID _template;
-    private boolean _isSecure;
-    private int _revision = 0;
+    private ResourceName        _name;
+    private UUID                _parent;
+    private UUID                _publishedBy;
+    private int                 _revision;
+    private Set<String>         _tags;
+    private UUID                _template;
+    private String              _title;
+    private ResourceType        _type;
 
 
     /** {@inheritDoc} */
@@ -92,7 +91,7 @@ public class ResourceSnapshot implements IResource, Serializable {
     /** {@inheritDoc} */
     @Override
     public final Duration getCacheDuration() {
-        return _cache;
+        return _cacheDuration;
     }
 
 
@@ -127,7 +126,7 @@ public class ResourceSnapshot implements IResource, Serializable {
     /** {@inheritDoc} */
     @Override
     public final boolean isInMainMenu() {
-        return _includeInMainMenu;
+        return _inMainMenu;
     }
 
 
@@ -175,33 +174,8 @@ public class ResourceSnapshot implements IResource, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public final UUID getRoot() {
-        return _root;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public final Set<String> getTags() {
         return _tags;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public final String getTagString() {
-        final StringBuilder sb = new StringBuilder();
-        for (final String tag : getTags()) {
-            sb.append(tag);
-            sb.append(',');
-        }
-
-        String tagString = sb.toString();
-        if (tagString.endsWith(",")) {
-            tagString = tagString.substring(0, tagString.length()-1);
-        }
-
-        return tagString;
     }
 
 
@@ -408,6 +382,28 @@ public class ResourceSnapshot implements IResource, Serializable {
     }
 
 
+
+    /**
+     * Mutator.
+     *
+     * @param cacheDuration The cacheDuration to set.
+     */
+    public void setCacheDuration(final Duration cacheDuration) {
+        _cacheDuration = cacheDuration;
+    }
+
+
+
+    /**
+     * Mutator.
+     *
+     * @param inMainMenu The inMainMenu to set.
+     */
+    public void setInMainMenu(final boolean inMainMenu) {
+        _inMainMenu = inMainMenu;
+    }
+
+
     /**
      * Mutator.
      *
@@ -436,42 +432,4 @@ public class ResourceSnapshot implements IResource, Serializable {
     public boolean isWorkingCopy() {
         return _revision<0;
     }
-
-
-    /**
-     * Accessor..
-     *
-     * @return True if the snapshot is for the current revision, false
-     *  otherwise.
-     */
-    public boolean isCurrentRevision() {
-        return 0==_revision;
-    }
-
-
-
-//    /** {@inheritDoc} */
-//    @Override
-//    public final List<IResource> selectPathElements() {
-//
-//            final List<IResource> elements =
-//                new ArrayList<IResource>();
-//
-//            ResourceSnapshot current = this;
-//
-//            elements.add(current);
-//            while (current.parent() != null) {
-//                current = current.parent().forCurrentRevision();
-//                elements.add(current);
-//            }
-//            Collections.reverse(elements);
-//            return elements;
-//    }
-//
-//
-//    /** {@inheritDoc} */
-//    @Override
-//    public final boolean isAccessibleTo(final User user) {
-//        return _delegate.isAccessibleTo(user);
-//    }
 }

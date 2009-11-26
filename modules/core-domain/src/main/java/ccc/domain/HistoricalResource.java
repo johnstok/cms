@@ -73,6 +73,16 @@ public abstract class HistoricalResource<S, T extends Revision<S>>
 
 
     /**
+     * Retrieve the current revision number.
+     *
+     * @return The revision number corresponding to the current version.
+     */
+    public int currentRevisionNo() {
+        return _currentRev;
+    }
+
+
+    /**
      * Retrieve the specified revision.
      *
      * @param i The revision number.

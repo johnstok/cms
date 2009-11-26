@@ -695,19 +695,27 @@ public abstract class Resource
      * @param dto The DTO to populate.
      */
     protected void setDtoProps(final ResourceSnapshot dto) {
+        /* These methods are in alphabetical order, for simplicity. */
+        dto.setAbsolutePath(absolutePath().removeTop().toString());
+        dto.setCacheDuration(computeCache());
+        dto.setDateChanged(dateChanged());
+        dto.setDateCreated(dateCreated());
         dto.setDescription(description());
         dto.setId(id());
+        dto.setInMainMenu(includeInMainMenu());
+        dto.setLocked(isLocked());
+        dto.setLockedBy((isLocked()) ? lockedBy().id() : null);
+        dto.setMetadata(metadata());
         dto.setName(name());
         dto.setParent((null==parent())?null:parent().id());
-        dto.setTitle(getTitle());
-        dto.setType(type());
+        dto.setPublished(isPublished());
+        dto.setPublishedBy((isPublished()) ? publishedBy().id() : null);
         dto.setSecure(isSecure());
+        dto.setTags(tags());
         dto.setTemplate(
             (null==computeTemplate(null)) ? null : computeTemplate(null).id());
-        dto.setAbsolutePath(absolutePath().toString());
-        dto.setLocked(isLocked());
-        dto.setPublished(isPublished());
+        dto.setTitle(getTitle());
+        dto.setType(type());
         dto.setVisible(isVisible());
-        // FIXME: Missing!
     }
 }

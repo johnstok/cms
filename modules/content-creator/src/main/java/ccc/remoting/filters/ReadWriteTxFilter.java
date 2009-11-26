@@ -51,8 +51,10 @@ public class ReadWriteTxFilter
                          final ServletResponse response,
                          final FilterChain chain)
                                         throws IOException, ServletException {
+        final long then = System.currentTimeMillis();
         try {
             _utx.begin();
+            LOG.debug("Transaction started.");
         } catch (final NotSupportedException e) {
             throw new ServletException("Failed to start transaction.", e);
         } catch (final SystemException e) {
@@ -73,12 +75,16 @@ public class ReadWriteTxFilter
             rollback();
             throw e;
         }
+
+        final long now = System.currentTimeMillis();
+        LOG.debug("Request finished in "+(now-then)+"ms.");
     }
 
 
     private void commit() {
         try {
             _utx.commit();
+            LOG.debug("Transaction committed.");
         } catch (final SecurityException e) {
             LOG.warn("Error commiting transaction.", e);
         } catch (final IllegalStateException e) {
@@ -98,6 +104,7 @@ public class ReadWriteTxFilter
     private void rollback() {
         try {
             _utx.rollback();
+            LOG.debug("Transaction rolled back.");
         } catch (final IllegalStateException e) {
             LOG.warn("Error rolling back transaction.", e);
         } catch (final SecurityException e) {

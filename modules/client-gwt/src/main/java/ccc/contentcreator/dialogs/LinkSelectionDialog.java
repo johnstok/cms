@@ -85,8 +85,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                             if (_md != null) {
                                 final String appContext =
                                     new IGlobalsImpl().getSetting("application.context");
-                                String path =_md.getAbsolutePath().substring(1);
-                                path = path.substring(path.indexOf("/"));
+                                final String path =_md.getAbsolutePath();
                                 _linkPath.setValue(appContext+path);
                                 _linkName.setValue(_md.getName());
                                 _uuid =_md.getId().toString();

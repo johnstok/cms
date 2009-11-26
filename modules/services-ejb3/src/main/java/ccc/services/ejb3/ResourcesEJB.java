@@ -751,9 +751,8 @@ public class ResourcesEJB
     public ResourceSummary resourceForPath(final String rootPath)
     throws RestException {
         try {
-            final ResourcePath rp = new ResourcePath(rootPath);
             return mapResource(
-                getResources().lookup(rp.top().toString(), rp.removeTop()));
+                getResources().lookup("content", new ResourcePath(rootPath)));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -849,6 +848,7 @@ public class ResourcesEJB
             return
                 getResources().find(Resource.class, resourceId)
                           .absolutePath()
+                          .removeTop()
                           .toString();
 
         } catch (final CccCheckedException e) {

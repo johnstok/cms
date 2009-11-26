@@ -46,7 +46,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath("/content"));
+            dummyTemplate(resourceForPath(""));
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
@@ -66,7 +66,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath("/content"));
+            dummyTemplate(resourceForPath(""));
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         final Set<Paragraph> paras = new HashSet<Paragraph>();

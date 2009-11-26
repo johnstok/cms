@@ -16,6 +16,8 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
 import ccc.commons.Context;
 import ccc.commons.Exceptions;
 import ccc.persistence.streams.CopyAction;
@@ -35,8 +37,8 @@ import ccc.types.DBC;
 public class FileBody
     implements
         Body {
+    private static final Logger LOG = Logger.getLogger(FileBody.class);
 
-    /** DEFAULT_MAX_DIMENSION : int. */
     private static final int DEFAULT_MAX_DIMENSION = 200;
     private final FileDto _file;
 
@@ -74,12 +76,14 @@ public class FileBody
         } else {
             try {
                 if (_file.isWorkingCopy()) {
+                    LOG.debug("Writing file contents for working copy.");
                     files.retrieveWorkingCopy(
                         _file.getId(), new CopyAction(os));
-                } else if (_file.isCurrentRevision()) {
-                    files.retrieve(
-                        _file.getId(), new CopyAction(os));
                 } else {
+                    LOG.debug(
+                        "Writing file contents for revision "
+                        + _file.getRevision()
+                        + ".");
                     files.retrieveRevision(
                         _file.getId(), _file.getRevision(), new CopyAction(os));
                 }

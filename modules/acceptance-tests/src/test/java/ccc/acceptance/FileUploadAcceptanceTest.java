@@ -17,10 +17,10 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.rest.RestException;
-import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
+import ccc.rest.dto.TextFileDelta;
 import ccc.types.FailureCode;
 import ccc.types.MimeType;
 
@@ -43,7 +43,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("/content");
+        final ResourceSummary content = resourceForPath("");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         getCommands().lock(file.getId());
@@ -68,7 +68,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("/content");
+        final ResourceSummary content = resourceForPath("");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         // History for first revision
@@ -121,7 +121,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/content/files");
+        final ResourceSummary filesFolder = resourceForPath("/files");
 
         // ACT
         final ResourceSummary rs =
@@ -129,7 +129,7 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         assertEquals(fName, rs.getName());
-        assertEquals("/content/files/"+fName, rs.getAbsolutePath());
+        assertEquals("/files/"+fName, rs.getAbsolutePath());
         assertEquals("Hello!", previewContent(rs, false));
     }
 
@@ -145,7 +145,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/content/files");
+        final ResourceSummary filesFolder = resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
 
@@ -159,7 +159,7 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         assertEquals(fName, rs.getName());
-        assertEquals("/content/files/"+fName, rs.getAbsolutePath());
+        assertEquals("/files/"+fName, rs.getAbsolutePath());
         assertEquals("Hello!", previewContent(rs, false));
     }
 
@@ -174,7 +174,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/content/files");
+        final ResourceSummary filesFolder = resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
         getCommands().lock(rs.getId());
@@ -198,7 +198,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/content/files");
+        final ResourceSummary filesFolder = resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
         getCommands().lock(rs.getId());
@@ -228,7 +228,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/content/files");
+        final ResourceSummary filesFolder = resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
 

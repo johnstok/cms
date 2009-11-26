@@ -104,10 +104,10 @@ public class Migrations extends BaseMigrations {
         }
 
         try {
-            _contentRoot = _resourcesExt.resourceForPath("/content");
-            _filesFolder = _resourcesExt.resourceForPath("/content/files");
+            _contentRoot = _resourcesExt.resourceForPath("");
+            _filesFolder = _resourcesExt.resourceForPath("/files");
             _contentImagesFolder =
-                _resourcesExt.resourceForPath("/content/images");
+                _resourcesExt.resourceForPath("/images");
 
             _templateFolder =
                 _resourcesExt.resourceForPath("/assets/templates");

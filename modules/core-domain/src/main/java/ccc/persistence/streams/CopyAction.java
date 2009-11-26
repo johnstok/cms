@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.log4j.Logger;
+
 import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
 
@@ -27,6 +29,7 @@ import ccc.serialization.IO;
 public final class CopyAction
     implements
         StreamAction {
+    private static final Logger LOG = Logger.getLogger(CopyAction.class);
 
     private final OutputStream _dataStream;
 
@@ -42,6 +45,8 @@ public final class CopyAction
 
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) throws IOException {
+        LOG.debug("Starting write.");
         IO.copy(is, _dataStream);
+        LOG.debug("Write completed.");
     }
 }

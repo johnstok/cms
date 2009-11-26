@@ -144,7 +144,7 @@ public class FolderResourceTree extends Tree {
      *
      * @author Civic Computing Ltd.
      */
-    static final class FolderBinder
+    final class FolderBinder
         extends
             TreeBinder<ResourceSummaryModelData> {
 
@@ -165,7 +165,7 @@ public class FolderResourceTree extends Tree {
         protected TreeItem createItem(final ResourceSummaryModelData model) {
             final TreeItem item = super.createItem(model);
 
-            item.setId(model.getAbsolutePath());
+            item.setId("/"+_root.getName()+model.getAbsolutePath());
 
             if (ResourceType.FOLDER!=model.getType()) {
                 item.setVisible(false);

@@ -438,7 +438,7 @@ abstract class AbstractEJB {
                 r.dateChanged(),
                 (null==r.template()) ? null : r.template().id(),
                 r.tagString(),
-                r.absolutePath().toString(),
+                r.absolutePath().removeTop().toString(),
                 indexPage,
                 r.description()
             );
@@ -602,7 +602,7 @@ abstract class AbstractEJB {
                 a.actor().username(),
                 a.executeAfter(),
                 a.subject().type(),
-                a.subject().absolutePath().toString(),
+                a.subject().absolutePath().removeTop().toString(),
                 a.status(),
                 (null==a.getCode()) ? null : a.getCode());
         return summary;

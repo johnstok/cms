@@ -27,6 +27,7 @@
         <param-name>resteasy.providers</param-name>
         <param-value>
             ccc.rest.providers.CommandFailedExceptionMapper,
+            ccc.rest.providers.RuntimeExceptionMapper,
             ccc.rest.providers.DurationReader,
             ccc.rest.providers.FailureWriter,
             ccc.rest.providers.UUIDProvider,
@@ -119,31 +120,11 @@
         </init-param>
     </servlet>
     <servlet>
-        <servlet-name>preview-assets</servlet-name>
-        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
-        <init-param>
-            <param-name>root_name</param-name>
-            <param-value>assets</param-value>
-        </init-param>
-            <init-param>
-            <param-name>respect_visibility</param-name>
-            <param-value>false</param-value>
-        </init-param>
-    </servlet>
-    <servlet>
         <servlet-name>content</servlet-name>
         <servlet-class>ccc.remoting.ContentServlet</servlet-class>
         <init-param>
             <param-name>root_name</param-name>
             <param-value>content</param-value>
-        </init-param>
-    </servlet>
-    <servlet>
-        <servlet-name>assets</servlet-name>
-        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
-        <init-param>
-            <param-name>root_name</param-name>
-            <param-value>assets</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -178,9 +159,7 @@
     <filter-mapping>
         <filter-name>err-filter</filter-name>
         <servlet-name>content</servlet-name>
-        <servlet-name>assets</servlet-name>
         <servlet-name>preview-content</servlet-name>
-        <servlet-name>preview-assets</servlet-name>
         <servlet-name>login</servlet-name>
         <servlet-name>logout</servlet-name>
     </filter-mapping>  
@@ -188,9 +167,7 @@
     <filter-mapping>
         <filter-name>txn-filter</filter-name>
         <servlet-name>content</servlet-name>
-        <servlet-name>assets</servlet-name>
         <servlet-name>preview-content</servlet-name>
-        <servlet-name>preview-assets</servlet-name>
         <!-- dispatcher>FORWARD</dispatcher -->
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
@@ -218,16 +195,8 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>assets</servlet-name>
-        <url-pattern>/assets/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>preview-content</servlet-name>
-        <url-pattern>/preview/content/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>preview-assets</servlet-name>
-        <url-pattern>/preview/assets/*</url-pattern>
+        <url-pattern>/preview/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>login</servlet-name>
@@ -286,7 +255,7 @@
             <url-pattern>/update_file</url-pattern>
             <url-pattern>/preview/*</url-pattern>
             <url-pattern>/api/secure/*</url-pattern>
-            <!-- Secure all HTTP Methods -->
+            <!-- Constrain all HTTP Methods -->
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
@@ -298,14 +267,8 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Public Area</web-resource-name>
-            <url-pattern>/api/public/*</url-pattern>
-            <url-pattern>/content/*</url-pattern>
-            <url-pattern>/assets/*</url-pattern>
-            <url-pattern>/${application.prefix}/*</url-pattern>
-            <url-pattern>/login</url-pattern>
-            <url-pattern>/logout</url-pattern>
-            <url-pattern>/error</url-pattern>
-            <url-pattern>/notfound</url-pattern>
+            <url-pattern>/*</url-pattern>
+            <!-- Constrain all HTTP Methods -->
         </web-resource-collection>
     </security-constraint>
 
