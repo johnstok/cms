@@ -76,9 +76,7 @@ public class ResourceDaoImplTest
 
         // ACT
         try {
-            _rdao.lookup(
-                PredefinedResourceNames.CONTENT,
-                new ResourcePath("/foo/bar"));
+            _rdao.lookup(new ResourcePath("/foo/bar"));
             fail();
 
         // ASSERT
@@ -117,10 +115,7 @@ public class ResourceDaoImplTest
 
 
         // ACT
-        final Resource resource =
-            _rdao.lookup(
-                PredefinedResourceNames.CONTENT,
-                new ResourcePath("/foo/bar"));
+        final Resource resource = _rdao.lookup(new ResourcePath("/foo/bar"));
 
 
         verifyAll();
