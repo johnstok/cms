@@ -68,8 +68,6 @@ public class ContentServlet
     @EJB(name = Actions.NAME)      private transient Actions      _actions;
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
 
-
-    private String        _rootName          = null;
     private boolean       _respectVisibility = true;
 
 
@@ -77,7 +75,6 @@ public class ContentServlet
     @Override
     public void init() {
         final ServletConfig cf = getServletConfig();
-        _rootName = cf.getInitParameter("root_name");
         if ("false".equals(cf.getInitParameter("respect_visibility"))) {
             _respectVisibility = false;
         } else {
@@ -105,7 +102,7 @@ public class ContentServlet
 
         bindServices(req);
 
-        final ResourcePath contentPath = determineResourcePath(req);
+        final String contentPath = determineResourcePath(req);
         final boolean wc = req.getParameterMap().keySet().contains("wc");
         final Integer version = determineVersion(req);
         LOG.info("[wc="+wc+", v="+version+"]");
@@ -148,26 +145,21 @@ public class ContentServlet
     }
 
 
-    private ResourcePath determineResourcePath(
-                                             final HttpServletRequest request) {
+    private String determineResourcePath(final HttpServletRequest request) {
         String pathString = request.getPathInfo();
         pathString = nvl(pathString, "/");
         pathString = removeTrailing('/', pathString);
-        LOG.info(
-            "Resource path is /"+_rootName+pathString);
+        LOG.info("Resource path is "+pathString);
 
-        if (ResourcePath.isValid(pathString)) {
-            return new ResourcePath(pathString);
-        }
+        if (ResourcePath.isValid(pathString)) { return pathString; }
 
         throw new NotFoundException();
     }
 
 
-    private ResourceSnapshot getSnapshot(final ResourcePath contentPath,
+    private ResourceSnapshot getSnapshot(final String path,
                                          final boolean workingCopy,
                                          final Integer version) {
-        final String path = "/"+_rootName+contentPath;
         try {
             if (_respectVisibility) {
                 LOG.debug("Retrieving current revision.");

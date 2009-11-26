@@ -111,10 +111,6 @@
         <servlet-name>preview-content</servlet-name>
         <servlet-class>ccc.remoting.ContentServlet</servlet-class>
         <init-param>
-            <param-name>root_name</param-name>
-            <param-value>content</param-value>
-        </init-param>
-        <init-param>
             <param-name>respect_visibility</param-name>
             <param-value>false</param-value>
         </init-param>
@@ -122,10 +118,6 @@
     <servlet>
         <servlet-name>content</servlet-name>
         <servlet-class>ccc.remoting.ContentServlet</servlet-class>
-        <init-param>
-            <param-name>root_name</param-name>
-            <param-value>content</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>login</servlet-name>

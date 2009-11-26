@@ -865,7 +865,7 @@ public class ResourcesEJB
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
-                getResources().lookup(rp.top().toString(), rp.removeTop());
+                getResources().lookup("content", rp);
             checkSecurity(r);
             return r.forCurrentRevision();
 
@@ -883,7 +883,7 @@ public class ResourcesEJB
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
-                getResources().lookup(rp.top().toString(), rp.removeTop());
+                getResources().lookup("content", rp);
             checkSecurity(r);
             return r.forWorkingCopy();
 
@@ -902,7 +902,7 @@ public class ResourcesEJB
         try {
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =
-                getResources().lookup(rp.top().toString(), rp.removeTop());
+                getResources().lookup("content", rp);
             checkSecurity(r);
             return r.forSpecificRevision(version);
 
@@ -921,7 +921,7 @@ public class ResourcesEJB
         final ResourcePath rp = new ResourcePath(absolutePath);
         Resource r;
         try {
-            r = getResources().lookup(rp.top().toString(), rp.removeTop());
+            r = getResources().lookup("content", rp);
         } catch (final EntityNotFoundException e) {
             return null;
         }
