@@ -50,7 +50,7 @@ public interface Server {
 
     /**
      * Get the id of the root folder in the new system.
-     * FIXME: Throw a more appropriate exception.
+     * TODO: Throw a more appropriate exception.
      *
      * @throws RestException If the root folder doesn't exist.
      *

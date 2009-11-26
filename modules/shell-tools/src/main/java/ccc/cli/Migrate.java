@@ -59,7 +59,7 @@ public final class Migrate extends CccApp {
     }
 
     private static void performMigration() {
-        // FIXME: pass options instead of 8 parameters?
+        // TODO: pass options instead of 8 parameters?
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,

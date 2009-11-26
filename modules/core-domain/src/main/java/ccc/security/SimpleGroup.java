@@ -56,8 +56,16 @@ public class SimpleGroup
     /** {@inheritDoc} */
     @Override
     public boolean isMember(final Principal member) {
-        // FIXME search must be recursive!
-        return _members.contains(member);
+        if (null==member) { return false; }
+
+        for (final Principal p : _members) {
+            if (p instanceof Group) {
+                final Group nestedGroup = (Group) p;
+                if (nestedGroup.isMember(member)) { return true; }
+            } else if (member.equals(p)) { return true; }
+        }
+
+        return false;
     }
 
     /** {@inheritDoc} */

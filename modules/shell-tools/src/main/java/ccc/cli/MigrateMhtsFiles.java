@@ -74,7 +74,8 @@ public final class MigrateMhtsFiles extends CccApp {
                 options.getPassword()), options);
 
 
-        migration.migrate(282, "/content/Members_Area"); // FIXME
+        // TODO: Find a better way to handle this.
+        migration.migrate(282, "/content/Members_Area");
     }
 
     /**

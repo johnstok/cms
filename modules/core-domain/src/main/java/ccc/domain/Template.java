@@ -159,14 +159,14 @@ public class Template
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forSpecificRevision(final int revNo) {
-        // FIXME: Always return current rev.
+        // TODO: Return correct revision.
         return mapTemplate();
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forWorkingCopy() {
-        // FIXME: Always return current rev.
+        // TODO: Return working copy.
         return mapTemplate();
     }
 

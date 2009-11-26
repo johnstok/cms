@@ -132,7 +132,7 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     public List<String> listMetadataValuesWithKey(final String key) {
-        // FIXME move to JpaRepository?
+        // TODO move to JpaRepository?
         // http://stackoverflow.com/questions/1572980/
         // how-to-query-distinct-values-from-map-with-given-key-in-hibernate
         final Query q = _emm.createNativeQuery(

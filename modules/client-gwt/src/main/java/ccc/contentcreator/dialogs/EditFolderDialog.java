@@ -375,7 +375,7 @@ AbstractEditDialog {
                                  final SelectionChangedEvent<ModelData> se) {
             final ModelData md = se.getSelectedItem();
             if (md != null) {
-                // FIXME: We should be using a switch statement here.
+                // TODO: We should be using a switch statement here.
                 final String order = md.<String>get("value");
                 if (MANUAL.name().equals(order)) {
                     _grid.enable();

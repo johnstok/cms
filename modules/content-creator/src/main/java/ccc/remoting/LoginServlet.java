@@ -31,7 +31,7 @@ public class LoginServlet
     extends
         AbstractCCCServlet {
 
-    // FIXME: Move to web.xml.
+    // TODO: Move to web.xml.
     private final String _siteRoot = "/";
     private final String _loginPage = "/login.html";
 

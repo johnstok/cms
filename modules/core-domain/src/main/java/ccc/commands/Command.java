@@ -135,7 +135,6 @@ public abstract class Command<T> {
             new ScriptRunner().eval(
                 script, context, new PrintWriter(System.out));
         } catch (final ScriptException e) {
-            // FIXME Auto-generated catch block
             throw new RuntimeException(e);
         }
     }
@@ -164,7 +163,6 @@ public abstract class Command<T> {
             new ScriptRunner().eval(
                 script, context, new PrintWriter(System.out));
         } catch (final ScriptException e) {
-            // FIXME Auto-generated catch block
             throw new RuntimeException(e);
         }
     }
