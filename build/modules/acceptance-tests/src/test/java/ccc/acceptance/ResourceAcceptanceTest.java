@@ -89,7 +89,7 @@ public class ResourceAcceptanceTest
         final ResourceSummary moved = getCommands().resource(folder.getId());
 
         // ASSERT
-        assertEquals("/content/"+folder.getName(), folder.getAbsolutePath());
+        assertEquals("/assets/"+folder.getName(), moved.getAbsolutePath());
         assertEquals(assets.getId(), moved.getParent());
     }
 
@@ -172,7 +172,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
 
         // ACT
-        final ResourceSummary contentRoot = resourceForPath("/content");
+        final ResourceSummary contentRoot = resourceForPath("");
 
         // ASSERT
         assertEquals("content", contentRoot.getName());
@@ -189,7 +189,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
 
-        final ResourceSummary contentRoot = resourceForPath("/content");
+        final ResourceSummary contentRoot = resourceForPath("");
 
         // ACT
         getCommands().lock(contentRoot.getId());
@@ -212,7 +212,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
 
-        final ResourceSummary folder = resourceForPath("/content");
+        final ResourceSummary folder = resourceForPath("");
         final ResourceSummary ts = dummyTemplate(folder);
         getCommands().lock(folder.getId());
 

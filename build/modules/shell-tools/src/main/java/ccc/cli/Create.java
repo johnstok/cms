@@ -54,9 +54,11 @@ public final class Create extends CccApp {
             final ResourcesExt resourcesExt = services.getResources();
             final FoldersExt foldersExt = services.getFolders();
 
-            final ResourceSummary assets = foldersExt.createRoot(ASSETS);
             final ResourceSummary content = foldersExt.createRoot(CONTENT);
             foldersExt.createRoot(TRASH);
+
+            final ResourceSummary assets = foldersExt.createFolder(
+                new FolderDto(content.getId(), new ResourceName(ASSETS)));
 
             foldersExt.createFolder(
                 new FolderDto(assets.getId(), new ResourceName(TEMPLATES)));

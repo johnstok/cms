@@ -122,7 +122,7 @@ public final class LegacyLinkFilter
         // FIXME: Broken.
         try {
             final ResourceSummary r = _resources.lookupWithLegacyId(legacyId);
-            final String resourcePath = r.getAbsolutePath().substring(8);
+            final String resourcePath = r.getAbsolutePath();
             LOG.info("Fixed to path: "+resourcePath);
 
             // TODO: Should be permanent redirect.

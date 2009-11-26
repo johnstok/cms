@@ -312,7 +312,7 @@ public abstract class AbstractAcceptanceTest
      */
     protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("/content");
+        final ResourceSummary content = resourceForPath("");
         return _folders.createFolder(
             new FolderDto(content.getId(), new ResourceName(fName)));
     }
@@ -327,7 +327,7 @@ public abstract class AbstractAcceptanceTest
      */
     protected ResourceSummary tempAlias() throws RestException {
         final String name = UUID.randomUUID().toString();
-        final ResourceSummary folder = resourceForPath("/content");
+        final ResourceSummary folder = resourceForPath("");
         final AliasDto alias =
             new AliasDto(
                 folder.getId(), new ResourceName(name), folder.getId());

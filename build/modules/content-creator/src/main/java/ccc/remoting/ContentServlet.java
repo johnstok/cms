@@ -107,7 +107,7 @@ public class ContentServlet
 
         final ResourcePath contentPath = determineResourcePath(req);
         final boolean wc = req.getParameterMap().keySet().contains("wc");
-        final int version = determineVersion(req);
+        final Integer version = determineVersion(req);
         LOG.info("[wc="+wc+", v="+version+"]");
 
         final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
@@ -130,14 +130,14 @@ public class ContentServlet
     }
 
 
-    private int determineVersion(final HttpServletRequest req) {
+    private Integer determineVersion(final HttpServletRequest req) {
         final String version = req.getParameter("v");
         if (null==version) {
-            return 0;
+            return null;
         }
         try {
-            final int v = new Integer(version).intValue();
-            if (v<0) {
+            final Integer v = new Integer(version);
+            if (v.intValue()<0) {
                 throw new NotFoundException();
             }
             return v;
@@ -166,17 +166,21 @@ public class ContentServlet
 
     private ResourceSnapshot getSnapshot(final ResourcePath contentPath,
                                          final boolean workingCopy,
-                                         final int version) {
+                                         final Integer version) {
         final String path = "/"+_rootName+contentPath;
         try {
             if (_respectVisibility) {
+                LOG.debug("Retrieving current revision.");
                 return _resources.resourceForPathSecure(path);
             } else if (workingCopy) {
+                LOG.debug("Retrieving working copy.");
                 return _resources.workingCopyForPath(path);
-            } else if (version>0) {
-                return _resources.revisionForPath(path, version);
-            } else {
+            } else if (null==version) {
+                LOG.debug("Retrieving current revision.");
                 return _resources.resourceForPathSecure(path);
+            } else {
+                LOG.debug("Retrieving revision: "+version+".");
+                return _resources.revisionForPath(path, version.intValue());
             }
         } catch (final RestException e) {
             throw new NotFoundException();

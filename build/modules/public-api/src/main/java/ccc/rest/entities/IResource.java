@@ -171,20 +171,6 @@ public interface IResource {
     /**
      * Accessor.
      *
-     * @return The root parent folder for this resource.
-     */
-    UUID getRoot();
-
-    /**
-     * Accessor.
-     *
-     * @return The tags for this resource, as a comma-delimited string.
-     */
-    String getTagString();
-
-    /**
-     * Accessor.
-     *
      * @return The absolute path to the resource.
      */
     String getAbsolutePath();
@@ -197,23 +183,4 @@ public interface IResource {
      *  false otherwise.
      */
     boolean isSecure();
-
-//    /**
-//     * Retrieve the parents of this resource, as a list.
-//     *
-//     * @return The list of parents.
-//     */
-//    List<IResource> selectPathElements();
-//
-//
-//    /**
-//     * Determine if this resource is accessible by the specified user.
-//     * A user must have all of a resource's roles for the resource to be
-//     * accessible.
-//     *
-//     * @param user The user trying to access the resource.
-//     * @return True if the user may access the resource, false otherwise.
-//     */
-//    boolean isAccessibleTo(final User user);
-
 }

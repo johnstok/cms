@@ -178,7 +178,7 @@ public class Page
             new PageDelta(
                 new HashSet<Paragraph>(currentRevision().getParagraphs()));
         setDtoProps(dto);
-        dto.setRevision(0);
+        dto.setRevision(currentRevisionNo());
         return dto;
     }
 

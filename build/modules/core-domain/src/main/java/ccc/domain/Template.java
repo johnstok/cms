@@ -185,7 +185,7 @@ public class Template
                 body(),
                 definition());
         setDtoProps(dto);
-        dto.setRevision(0);
+        dto.setRevision(currentRevisionNo());
         return dto;
     }
 }

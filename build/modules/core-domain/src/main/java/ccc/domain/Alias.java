@@ -140,7 +140,7 @@ public class Alias extends Resource {
         dto.setTargetPath(
             (null==target())
                 ? null
-                : target().absolutePath().removeTop().toString()); // FIXME: Broken for /assets
+                : target().absolutePath().removeTop().toString());
         setDtoProps(dto);
         return dto;
     }

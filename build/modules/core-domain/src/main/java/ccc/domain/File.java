@@ -284,7 +284,7 @@ public class File
         dto.setSize(sn.getSize());
         dto.setText(sn.isText());
         dto.setMimeType(sn.getMimeType());
-        dto.setRevision(0);
+        dto.setRevision(currentRevisionNo());
         return dto;
     }
 
@@ -314,7 +314,7 @@ public class File
         final FileDto fs =
             new FileDto(
                 mimeType(),
-                absolutePath().toString(),
+                absolutePath().removeTop().toString(),
                 id(),
                 name(),
                 getTitle(),
