@@ -45,7 +45,7 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
                              final LogEntryRepository audit,
                              final Folder folder) {
         super(repository, audit);
-        _folder = folder; // FIXME: Should create the folder in doExecute().
+        _folder = folder; // TODO: Should create the folder in doExecute().
     }
 
 

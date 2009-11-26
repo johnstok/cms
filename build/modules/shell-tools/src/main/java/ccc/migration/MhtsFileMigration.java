@@ -59,7 +59,7 @@ public class MhtsFileMigration extends BaseMigrations {
     /**
      * Constructor.
      * @param legacyDBQueries
-     * @param actions TODO
+     * @param actions
      * @param resourcesExt
      * @param pagesExt
      * @param foldersExt

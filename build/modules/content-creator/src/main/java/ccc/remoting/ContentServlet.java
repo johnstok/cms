@@ -213,7 +213,7 @@ public class ContentServlet
 
 
     private void bindServices(final HttpServletRequest req) {
-        // FIXME: Wrap the 'Ext' objects to remove access to their methods.
+        // TODO: Wrap the 'Ext' objects to remove access to their methods.
         req.setAttribute(SessionKeys.USERS_KEY,     _users);
         req.setAttribute(SessionKeys.FILES_KEY,     _files);
         req.setAttribute(SessionKeys.PAGES_KEY,     _pages);

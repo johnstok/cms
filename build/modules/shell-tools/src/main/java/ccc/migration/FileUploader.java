@@ -86,7 +86,10 @@ public class FileUploader {
             new GetMethod(_appURL+"/upload");
         try {
             _client.executeMethod(get);
-            // FIXME: Fail for invalid response code.
+            final int statusType = get.getStatusCode()%100;
+            if (2!=statusType) {
+                throw new RuntimeException(get.getStatusText());
+            }
         } catch (final Exception e) {
             log.error("initial get method failed ", e);
         }

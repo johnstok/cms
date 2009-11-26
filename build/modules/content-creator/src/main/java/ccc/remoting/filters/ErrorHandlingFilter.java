@@ -43,7 +43,7 @@ public class ErrorHandlingFilter
     private static final Logger LOG =
         Logger.getLogger(ErrorHandlingFilter.class);
 
-    // FIXME: Move to web.xml!
+    // TODO: Move to web.xml.
     private final String _loginUri = "/login.html";
     private final String _errorPath = "/error.html";
 
