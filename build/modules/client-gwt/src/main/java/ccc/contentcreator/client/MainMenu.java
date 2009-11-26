@@ -79,7 +79,6 @@ public class MainMenu
         if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)
                 || _user.getRoles().contains(IGlobals.SITE_BUILDER)) {
             createContentRootMenu(CONTENT, _constants.contentRoot());
-            createContentRootMenu(ASSETS, _constants.assetsRoot());
         }
 
         addMenu(
