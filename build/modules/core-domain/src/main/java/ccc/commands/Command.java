@@ -15,8 +15,6 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.script.ScriptException;
-
 import ccc.commons.Context;
 import ccc.commons.Resources;
 import ccc.commons.ScriptRunner;
@@ -131,12 +129,8 @@ public abstract class Command<T> {
         context.add("command", this);
         context.add("result", result);
 
-        try {
-            new ScriptRunner().eval(
-                script, context, new PrintWriter(System.out));
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
-        }
+        // FIXME: Add a white-list.
+        new ScriptRunner().eval(script, context, new PrintWriter(System.out));
     }
 
 
@@ -159,12 +153,8 @@ public abstract class Command<T> {
         context.add("happenedOn", happenedOn);
         context.add("command", this);
 
-        try {
-            new ScriptRunner().eval(
-                script, context, new PrintWriter(System.out));
-        } catch (final ScriptException e) {
-            throw new RuntimeException(e);
-        }
+        // FIXME: Add a white-list.
+        new ScriptRunner().eval(script, context, new PrintWriter(System.out));
     }
 
 
