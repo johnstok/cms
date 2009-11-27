@@ -169,3 +169,4 @@ standalone
 chimp
 authorized
 thumbnail
+rhino
