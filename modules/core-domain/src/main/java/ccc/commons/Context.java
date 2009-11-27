@@ -41,9 +41,12 @@ public class Context {
      *
      * @param key The key used to look up the value.
      * @param value The value to store.
+     *
+     * @return Returns a reference to 'this' context.
      */
-    public void add(final String key, final Object value) {
+    public Context add(final String key, final Object value) {
         _entries.put(key, value);
+        return this;
     }
 
 

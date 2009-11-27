@@ -16,7 +16,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 
-import javax.script.ScriptException;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.Context;
@@ -52,16 +51,13 @@ public class ScriptBody
                       final Charset charset,
                       final Context context,
                       final TextProcessor processor) throws IOException {
-        try {
 
-            final HttpServletResponse resp =
-                context.get("response", HttpServletResponse.class);
-            disableCaching(resp);
-            new ScriptRunner().eval(_script, context, resp.getWriter());
+        final HttpServletResponse resp =
+            context.get("response", HttpServletResponse.class);
+        disableCaching(resp);
 
-        } catch (final ScriptException e) {
-            throw new RuntimeException("Error invoking script.", e);
-        }
+        // FIXME: Add a white-list.
+        new ScriptRunner().eval(_script, context, resp.getWriter());
     }
 
 

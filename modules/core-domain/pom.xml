@@ -72,6 +72,11 @@
             <artifactId>tm-extractors</artifactId>
             <version>${lib.version.tmextractors}</version>
        </dependency>
+        <dependency>
+        	<groupId>rhino</groupId>
+        	<artifactId>js</artifactId>
+        	<version>1.7R2</version>
+        </dependency>
     </dependencies>
     
 </project>
