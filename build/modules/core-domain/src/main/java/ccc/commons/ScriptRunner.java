@@ -53,7 +53,7 @@ public class ScriptRunner {
     /**
      * Constructor.
      */
-    public ScriptRunner() {
+    ScriptRunner() {
         _allowedClasses = null;
     }
 
