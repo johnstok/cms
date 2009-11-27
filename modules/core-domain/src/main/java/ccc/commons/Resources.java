@@ -48,11 +48,30 @@ public final class Resources {
         DBC.require().notNull(url);
         DBC.require().notNull(charset);
 
+        try {
+            return readIntoString(url.openStream(), charset);
+        } catch (final IOException e) {
+            throw new CCCException(e);
+        }
+    }
+
+    /**
+     * Read an input stream into memory as a string.
+     *
+     * @param is The input stream to read from.
+     * @param charset The character set to use when reading the url.
+     * @return The resource as a String.
+     */
+    public static String readIntoString(final InputStream is,
+                                        final Charset charset) {
+        DBC.require().notNull(is);
+        DBC.require().notNull(charset);
+
         InputStreamReader isr = null;
         try {
             final StringBuffer sb = new StringBuffer();
             final char[] buffer = new char[BUFFER_SIZE];
-            isr = new InputStreamReader(url.openStream(), charset);
+            isr = new InputStreamReader(is, charset);
             int bytesRead = isr.read(buffer, 0, buffer.length);
             while (bytesRead>0) {
                 sb.append(buffer, 0, bytesRead);
