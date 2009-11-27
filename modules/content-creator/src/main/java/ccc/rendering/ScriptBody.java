@@ -14,6 +14,7 @@ package ccc.rendering;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -56,8 +57,8 @@ public class ScriptBody
             context.get("response", HttpServletResponse.class);
         disableCaching(resp);
 
-        // FIXME: Add a white-list.
-        new ScriptRunner().eval(_script, context, resp.getWriter());
+        new ScriptRunner(new ArrayList<String>())
+            .eval(_script, context, resp.getWriter());
     }
 
 

@@ -12,6 +12,7 @@
 package ccc.commands;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -129,8 +130,8 @@ public abstract class Command<T> {
         context.add("command", this);
         context.add("result", result);
 
-        // FIXME: Add a white-list.
-        new ScriptRunner().eval(script, context, new PrintWriter(System.out));
+        new ScriptRunner(new ArrayList<String>())
+            .eval(script, context, new PrintWriter(System.out));
     }
 
 
@@ -153,8 +154,8 @@ public abstract class Command<T> {
         context.add("happenedOn", happenedOn);
         context.add("command", this);
 
-        // FIXME: Add a white-list.
-        new ScriptRunner().eval(script, context, new PrintWriter(System.out));
+        new ScriptRunner(new ArrayList<String>())
+            .eval(script, context, new PrintWriter(System.out));
     }
 
 
