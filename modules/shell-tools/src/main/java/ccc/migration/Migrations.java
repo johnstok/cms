@@ -62,6 +62,7 @@ public class Migrations extends BaseMigrations {
     private final List<String> _ignoreList;
 
     private final FileMigrator _fm;
+    private final UserMigration _um;
 
 
     /**
@@ -82,14 +83,16 @@ public class Migrations extends BaseMigrations {
                       final Users userCommands,
                       final FileUploader fu,
                       final Templates templates,
-                      final Options options
-                      ) {
-        _legacyQueries = legacyQueries;
-        _resourcesExt = resourcesExt;
-        _pagesExt = pagesExt;
+                      final Options options) {
+        super(
+            userCommands,
+            pagesExt,
+            resourcesExt,
+            legacyQueries,
+            new TemplateMigration(legacyQueries, templates),
+            "/"+options.getApp()+"/");
+
         _foldersExt = foldersExt;
-        _userCommands = userCommands;
-        _linkPrefix = "/"+options.getApp()+"/";
         _migrateHomepage = options.isMigrateHomepage();
         _migrateIsMajorEdit = options.isMigrateIsMajorEdit();
         _migrateVersions = options.isMigrateVersions();
@@ -104,24 +107,23 @@ public class Migrations extends BaseMigrations {
         }
 
         try {
-            _contentRoot = _resourcesExt.resourceForPath("");
-            _filesFolder = _resourcesExt.resourceForPath("/files");
+            _contentRoot = getResources().resourceForPath("");
+            _filesFolder = getResources().resourceForPath("/files");
             _contentImagesFolder =
-                _resourcesExt.resourceForPath("/images");
+                getResources().resourceForPath("/images");
 
             _templateFolder =
-                _resourcesExt.resourceForPath("/assets/templates");
+                getResources().resourceForPath("/assets/templates");
             _assetsImagesFolder =
-                _resourcesExt.resourceForPath("/assets/images");
-            _cssFolder = _resourcesExt.resourceForPath("/assets/css");
+                getResources().resourceForPath("/assets/images");
+            _cssFolder = getResources().resourceForPath("/assets/css");
         } catch (final RestException e) {
             throw new MigrationException(
                 "Failed to retrieve default folder structure.", e);
         }
 
-        _fm = new FileMigrator(fu, _legacyQueries, "files/", "images/", "css/");
-        _um = new UserMigration(_legacyQueries, _userCommands);
-        _tm = new TemplateMigration(_legacyQueries, templates);
+        _fm = new FileMigrator(fu, legacyQueries, "files/", "images/", "css/");
+        _um = new UserMigration(legacyQueries, getUsers());
     }
 
 
@@ -150,18 +152,18 @@ public class Migrations extends BaseMigrations {
     }
 
     private void migrateHomepages() throws RestException {
-        final Map<Integer, Integer> map = _legacyQueries.homepages();
+        final Map<Integer, Integer> map = getLegacyQueries().homepages();
         for (final Entry<Integer, Integer> e : map.entrySet()) {
             final ResourceSummary f =
-                _resourcesExt.resourceForLegacyId(""+e.getKey());
+                getResources().resourceForLegacyId(""+e.getKey());
             final ResourceSummary hp =
-                _resourcesExt.resourceForLegacyId(""+map.get(e.getKey()));
+                getResources().resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
-                _resourcesExt.lock(UUID.fromString(f.getId().toString()));
+                getResources().lock(UUID.fromString(f.getId().toString()));
                 _foldersExt.updateFolder(
                     f.getId(),
                     new FolderDelta(f.getSortOrder(), hp.getId(), null));
-                _resourcesExt.unlock(f.getId());
+                getResources().unlock(f.getId());
             }
         }
         log.info("Migrated home page information of the folders.");
@@ -171,8 +173,8 @@ public class Migrations extends BaseMigrations {
     // TODO: Move under command-resourceDao?
     private void publishRecursive(final ResourceSummary resource)
                                                  throws RestException {
-        _resourcesExt.lock(UUID.fromString(resource.getId().toString()));
-        _resourcesExt.publish(resource.getId());
+        getResources().lock(UUID.fromString(resource.getId().toString()));
+        getResources().publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
             final Collection<ResourceSummary> children =
                 _foldersExt.getChildren(resource.getId());
@@ -180,12 +182,12 @@ public class Migrations extends BaseMigrations {
                 publishRecursive(child);
             }
         }
-        _resourcesExt.unlock(resource.getId());
+        getResources().unlock(resource.getId());
     }
 
 
     private void loadSupportingData() {
-        _menuItems = _legacyQueries.selectMenuItems();
+        _menuItems = getLegacyQueries().selectMenuItems();
     }
 
 
@@ -193,7 +195,7 @@ public class Migrations extends BaseMigrations {
                                   final int parent) {
 
         final List<ResourceBean> resources =
-            _legacyQueries.selectResources(parent);
+            getLegacyQueries().selectResources(parent);
 
         for (final ResourceBean r : resources) {
             if (r.name() == null || r.name().trim().equals("")) {
@@ -225,8 +227,7 @@ public class Migrations extends BaseMigrations {
                 r.contentId(),
                 r.legacyVersion(),
                 "CREATED FOLDER",
-                _userName,
-                log);
+                _userName);
 
             final ResourceSummary rs = _foldersExt.createFolder(
                     parentFolderId,
@@ -237,7 +238,7 @@ public class Migrations extends BaseMigrations {
                     le.getHappenedOn());
             log.debug("Created folder: "+r.contentId());
 
-            _resourcesExt.lock(
+            getResources().lock(
                 UUID.fromString(
                     rs.getId().toString()),
                     le.getUser().getId(),
@@ -246,8 +247,8 @@ public class Migrations extends BaseMigrations {
             publish(r, rs, le);
             showInMainMenu(r, rs, le);
             setMetadata(r, rs, le);
-            setResourceRoles(r, rs, le, log);
-            _resourcesExt.unlock(
+            setResourceRoles(r, rs, le);
+            getResources().unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             migrateResources(rs.getId(), r.contentId());
@@ -259,9 +260,13 @@ public class Migrations extends BaseMigrations {
     }
 
 
-    private String logMigrationError(final String errorText, final ResourceBean r, final Exception e) {
+    private String logMigrationError(final String errorText,
+                                     final ResourceBean r,
+                                     final Exception e) {
 
-        return errorText + r.contentId()+ ", " + r.cleanTitle() + ": "+e.getMessage();
+        return
+            errorText + r.contentId()+ ", "
+            + r.cleanTitle() + ": "+e.getMessage();
     }
 
     private void migratePage(final UUID parentFolderId,
@@ -269,7 +274,8 @@ public class Migrations extends BaseMigrations {
 
         try {
             // Query the versions of a page
-            final List<Integer> paragraphVersions = determinePageVersions(resource);
+            final List<Integer> paragraphVersions =
+                determinePageVersions(resource);
 
             // Create the page
             LogEntryBean le = null;
@@ -279,8 +285,7 @@ public class Migrations extends BaseMigrations {
                     le = logEntryForVersion(
                         resource.contentId(),
                         createVersion, "CREATED PAGE",
-                        _userName,
-                        log);
+                        _userName);
                 } catch (final MigrationException e) {
                     log.warn("Skipped version "+createVersion+" of page "
                         +resource.contentId()+" "+e.getMessage());
@@ -302,10 +307,9 @@ public class Migrations extends BaseMigrations {
                         resource.contentId(),
                         version,
                         "UPDATE",
-                        _userName,
-                        log);
+                        _userName);
 
-                    _resourcesExt.lock(
+                    getResources().lock(
                         UUID.fromString(
                             rs.getId().toString()),
                             le.getUser().getId(),
@@ -317,7 +321,7 @@ public class Migrations extends BaseMigrations {
                         log.warn("Update skipped(inner) for version  "+version
                           +" of page "+resource.contentId()+" "+e.getMessage());
                     }
-                    _resourcesExt.unlock(
+                    getResources().unlock(
                         rs.getId(), le.getUser().getId(), le.getHappenedOn());
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
@@ -325,7 +329,7 @@ public class Migrations extends BaseMigrations {
                 }
             }
 
-            _resourcesExt.lock(
+            getResources().lock(
                 UUID.fromString(
                     rs.getId().toString()),
                     le.getUser().getId(),
@@ -343,16 +347,20 @@ public class Migrations extends BaseMigrations {
             }
 
             setMetadata(resource, rs, le);
-            setResourceRoles(resource, rs, le, log);
-            _resourcesExt.unlock(
+            setResourceRoles(resource, rs, le);
+            getResources().unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             log.debug("Migrated page "+resource.contentId());
 
         } catch (final RestException exception) {
-            log.warn(logMigrationError("Error migrating page ", resource, exception));
+            log.warn(
+                logMigrationError(
+                    "Error migrating page ", resource, exception));
         } catch (final RuntimeException exception) {
-            log.warn(logMigrationError("Error migrating page ", resource, exception));
+            log.warn(
+                logMigrationError(
+                    "Error migrating page ", resource, exception));
         }
     }
 
@@ -362,7 +370,7 @@ public class Migrations extends BaseMigrations {
                                 final LogEntryBean le)
                                                  throws RestException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
-            _resourcesExt.includeInMainMenu(
+            getResources().includeInMainMenu(
                 rs.getId(), true, le.getUser().getId(), le.getHappenedOn());
         }
     }
@@ -377,10 +385,12 @@ public class Migrations extends BaseMigrations {
         }
 
         final List<Integer> paragraphVersions =
-            _legacyQueries.selectParagraphVersions(r.contentId());
+            getLegacyQueries().selectParagraphVersions(r.contentId());
         log.debug("Page versions available: "+paragraphVersions);
         if (paragraphVersions.size() == 0) {
-            log.warn("No versions found! Uses version 0 only for resource "+r.contentId());
+            log.warn(
+                "No versions found! Uses version 0 only for resource "
+                + r.contentId());
             return only0;
         }
 
@@ -412,14 +422,14 @@ public class Migrations extends BaseMigrations {
                             final PageDelta d) throws RestException {
 
         final String userComment =
-            _legacyQueries.selectUserComment(r.contentId(), version);
+            getLegacyQueries().selectUserComment(r.contentId(), version);
 
         Boolean isMajorEdit = Boolean.valueOf(false);
         if (_migrateIsMajorEdit) {
             isMajorEdit =
-                _legacyQueries.selectIsMajorEdit(r.contentId(), version);
+                getLegacyQueries().selectIsMajorEdit(r.contentId(), version);
         }
-        _pagesExt.updatePage(
+        getPages().updatePage(
             rs.getId(),
             d,
             userComment,

@@ -48,24 +48,48 @@ import ccc.types.Username;
 public abstract class BaseMigrations {
     private static Logger log = Logger.getLogger(BaseMigrations.class);
 
-    protected  LegacyDBQueries _legacyQueries;
-    protected Users _userCommands;
-    protected UserMigration _um;
-    protected PagesExt _pagesExt;
-    protected ResourcesExt _resourcesExt;
-    protected TemplateMigration _tm;
-    protected String _linkPrefix;
+    private final Users _userCommands;
+    private final PagesExt _pagesExt;
+    private final ResourcesExt _resourcesExt;
+
+    private final LegacyDBQueries _legacyQueries;
+    private final TemplateMigration _tm;
+    private final String _linkPrefix;
 
     private final Properties _paragraphTypes =
         Resources.readIntoProps("paragraph-types.properties");
+
+
+
+
+
+    /**
+     * Constructor.
+     *
+     * @param userCommands The CCC7 users API.
+     * @param pagesExt The CCC7 pages API.
+     * @param resourcesExt The CCC7 resources API.
+     */
+    protected BaseMigrations(final Users userCommands,
+                             final PagesExt pagesExt,
+                             final ResourcesExt resourcesExt,
+                             final LegacyDBQueries legacyQueries,
+                             final TemplateMigration tm,
+                             final String linkPrefix) {
+        _userCommands = userCommands;
+        _pagesExt = pagesExt;
+        _resourcesExt = resourcesExt;
+        _legacyQueries = legacyQueries;
+        _tm = tm;
+        _linkPrefix = linkPrefix;
+    }
 
 
     @SuppressWarnings("unchecked")
     protected LogEntryBean logEntryForVersion(final int id,
                                               final int version,
                                               final String action,
-                                              final String username,
-                                              final Logger log) {
+                                              final String username) {
         final LogEntryBean le =
             _legacyQueries.selectUserFromLog(id, version, action);
 
@@ -87,7 +111,7 @@ public abstract class BaseMigrations {
             user = _userCommands.userByLegacyId(""+le.getActor());
         } catch (final RestException e) {
             throw new MigrationException(
-                "User fetching failed with legacyID "+le.getActor(),e);
+                "User fetching failed with legacyID "+le.getActor(), e);
         }
         if (null == user) {
             throw new MigrationException("User missing: "+le.getActor());
@@ -99,8 +123,15 @@ public abstract class BaseMigrations {
     }
 
 
-    protected PageDelta assemblePage(final ResourceBean r,
-                                     final int version) {
+    /**
+     * Assemble a page delta from the specified CCC6 resource.
+     *
+     * @param r The CCC6 resource data.
+     * @param version The version of the CCC6 page to duplicate.
+     *
+     * @return A page delta representing the CCC6 resource.
+     */
+    protected PageDelta assemblePage(final ResourceBean r, final int version) {
         final Set<Paragraph> paragraphDeltas =
             new HashSet<Paragraph>();
         final Map<String, StringBuffer> paragraphs =
@@ -180,12 +211,13 @@ public abstract class BaseMigrations {
 
 
     protected void setResourceRoles(final ResourceBean r,
-                                  final ResourceSummary rs,
-                                  final LogEntryBean le,
-                                  final Logger log)
+                                    final ResourceSummary rs,
+                                    final LogEntryBean le)
                                                  throws RestException {
         if (r.isSecure()) {
-            log.info("Resource has security constraints " +r.contentId() + ", " + r.cleanTitle());
+            log.info(
+                "Resource has security constraints "
+                + r.contentId() + ", " + r.cleanTitle());
             _resourcesExt.changeRoles(
                 rs.getId(),
                 _legacyQueries.selectRolesForResource(r.contentId()),
@@ -195,6 +227,16 @@ public abstract class BaseMigrations {
     }
 
 
+    /**
+     * Set the template for a resource.
+     *
+     * @param templateFolder The folder where the migration creates templates.
+     * @param r The CCC6 resource.
+     * @param rs The equivalent CCC7 resource.
+     * @param le Audit details for the metadata change.
+     *
+     * @throws RestException If the update fails.
+     */
     protected void setTemplateForResource(final ResourceBean r,
                                           final ResourceSummary rs,
                                           final LogEntryBean le,
@@ -216,9 +258,18 @@ public abstract class BaseMigrations {
     }
 
 
+    /**
+     * Publish a resource.
+     *
+     * @param r The CCC6 resource.
+     * @param rs The equivalent CCC7 resource.
+     * @param le Audit details for the metadata change.
+     *
+     * @throws RestException If the update fails.
+     */
     protected void publish(final ResourceBean r,
-                         final ResourceSummary rs,
-                         final LogEntryBean le) throws RestException {
+                           final ResourceSummary rs,
+                           final LogEntryBean le) throws RestException {
         if (r.isPublished()) {
             _resourcesExt.publish(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
@@ -226,9 +277,18 @@ public abstract class BaseMigrations {
     }
 
 
+    /**
+     * Set the metadata for a resource.
+     *
+     * @param r The CCC6 resource.
+     * @param rs The equivalent CCC7 resource.
+     * @param le Audit details for the metadata change.
+     *
+     * @throws RestException If the update fails.
+     */
     protected void setMetadata(final ResourceBean r,
-                             final ResourceSummary rs,
-                             final LogEntryBean le)
+                               final ResourceSummary rs,
+                               final LogEntryBean le)
                                                  throws RestException {
 
         final Map<String, String> metadata =
@@ -318,5 +378,65 @@ public abstract class BaseMigrations {
 
     private boolean isValidMetadatum(final String value) {
         return value.matches("[^<^>]*");
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the CCC7 users API.
+     */
+    protected final Users getUsers() {
+        return _userCommands;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the CCC7 pages API.
+     */
+    protected final PagesExt getPages() {
+        return _pagesExt;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the CCC7 resources API.
+     */
+    protected final ResourcesExt getResources() {
+        return _resourcesExt;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the legacyQueries.
+     */
+    protected final LegacyDBQueries getLegacyQueries() {
+        return _legacyQueries;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the tm.
+     */
+    protected final TemplateMigration getTm() {
+        return _tm;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the linkPrefix.
+     */
+    protected final String getLinkPrefix() {
+        return _linkPrefix;
     }
 }
