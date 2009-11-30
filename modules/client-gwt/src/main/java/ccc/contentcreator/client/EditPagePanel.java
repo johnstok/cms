@@ -771,11 +771,10 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     }
 
     private void addStaticFields() {
-
         _name = new TextField<String>();
         _name.setFieldLabel(_globals.uiConstants().name());
         _name.setAllowBlank(false);
-        _name.setId(_globals.uiConstants().name());
+//        _name.setId(_globals.uiConstants().name());
         add(_name, new FormData("95%"));
     }
 }
