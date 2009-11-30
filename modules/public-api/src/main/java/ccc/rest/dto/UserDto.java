@@ -298,6 +298,17 @@ public final class UserDto implements Serializable, Jsonable {
         _password = password;
     }
 
+
+    /**
+     * Helper method to check if the user has defined role.
+     *
+     * @param role The role to be checked.
+     * @return True if the user has the role.
+     */
+    public boolean hasRole(final String role) {
+        return _roles.contains(role);
+    }
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {

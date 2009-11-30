@@ -96,7 +96,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resource(final UUID resourceId)
-    throws RestException {
+    throws RestException, UnauthorizedException {
         return getResources().resource(resourceId);
     }
 

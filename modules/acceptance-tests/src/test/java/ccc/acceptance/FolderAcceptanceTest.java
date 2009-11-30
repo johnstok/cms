@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -94,7 +95,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
      *
      * @throws RestException If the test fails.
      */
-    public void testGetChildrenManualOrder() throws RestException {
+    public void testGetChildrenManualOrder() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -141,7 +142,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
      *
      * @throws RestException If the test fails.
      */
-    public void testGetChildren() throws RestException {
+    public void testGetChildren() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -183,7 +184,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
      *
      * @throws RestException If the test fails.
      */
-    public void testChangeFolderIndexPage() throws RestException {
+    public void testChangeFolderIndexPage() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -217,7 +218,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
      *
      * @throws RestException If the test fails.
      */
-    public void testChangeFolderSortOrder() throws RestException {
+    public void testChangeFolderSortOrder() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();

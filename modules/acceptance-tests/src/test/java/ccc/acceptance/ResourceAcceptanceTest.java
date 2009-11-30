@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -52,8 +53,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      * @throws RestException If the test fails.
+     * @throws UnauthorizedException
      */
-    public void testUnlockResource() throws RestException {
+    public void testUnlockResource() throws RestException, UnauthorizedException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -77,7 +79,7 @@ public class ResourceAcceptanceTest
      * Test.
      * @throws RestException If the test fails.
      */
-    public void testMoveResource() throws RestException {
+    public void testMoveResource() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -98,7 +100,7 @@ public class ResourceAcceptanceTest
      * Test.
      * @throws RestException If the test fails.
      */
-    public void testUpdateResourceMetadata() throws RestException {
+    public void testUpdateResourceMetadata() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -185,7 +187,7 @@ public class ResourceAcceptanceTest
      *
      * @throws RestException If the test fails.
      */
-    public void testLockResource() throws RestException {
+    public void testLockResource() throws RestException, UnauthorizedException  {
 
         // ARRANGE
 
@@ -208,7 +210,7 @@ public class ResourceAcceptanceTest
      *
      * @throws RestException If the test fails.
      */
-    public void testChangeResourceTemplate() throws RestException {
+    public void testChangeResourceTemplate() throws RestException, UnauthorizedException  {
 
         // ARRANGE
 
@@ -277,7 +279,7 @@ public class ResourceAcceptanceTest
      *
      * @throws RestException If the test fails.
      */
-    public void testRename() throws RestException {
+    public void testRename() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -301,7 +303,7 @@ public class ResourceAcceptanceTest
      *
      * @throws RestException If the test fails.
      */
-    public void testIncludeInMainMenu() throws RestException {
+    public void testIncludeInMainMenu() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -330,7 +332,7 @@ public class ResourceAcceptanceTest
      *
      * @throws RestException If the test fails.
      */
-    public void testPublish() throws RestException {
+    public void testPublish() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -391,7 +393,7 @@ public class ResourceAcceptanceTest
      *
      * @throws RestException If the test fails.
      */
-    public void testSimpleDelete() throws RestException {
+    public void testSimpleDelete() throws RestException, UnauthorizedException  {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();

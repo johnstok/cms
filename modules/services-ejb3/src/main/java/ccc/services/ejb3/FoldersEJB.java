@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -172,23 +173,6 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> getChildren(final UUID folderId)
-    throws RestException {
-        try {
-            final Folder f =
-                getResources().find(Folder.class, folderId);
-            return mapResources(
-                f != null ? f.entries() : new ArrayList<Resource>());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                         final UUID folderId)
     throws RestException {
@@ -200,23 +184,6 @@ public class FoldersEJB
                 return mapResources(f.entries());
             }
             return mapResources(new ArrayList<Resource>());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
-    throws RestException {
-        try {
-            final Folder f =
-                getResources().find(Folder.class, folderId);
-            return mapResources(
-                f != null ? f.folders() : new ArrayList<Folder>());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -249,4 +216,42 @@ public class FoldersEJB
     public Collection<ResourceSummary> roots() {
         return mapResources(getResources().roots());
     }
+
+    /* ====================================================================
+     * UNSAFE METHODS.
+     * ================================================================== */
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
+    throws RestException {
+        try {
+            final Folder f =
+                getResources().find(Folder.class, folderId);
+            return mapResources(
+                f != null ? f.folders() : new ArrayList<Folder>());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public Collection<ResourceSummary> getChildren(final UUID folderId)
+    throws RestException {
+        try {
+            final Folder f =
+                getResources().find(Folder.class, folderId);
+            return mapResources(
+                f != null ? f.entries() : new ArrayList<Resource>());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
 }
