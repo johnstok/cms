@@ -237,10 +237,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testLoggedInUser() throws Exception {
+    public void testLoggedInUser() {
 
         // ACT
         final UserDto user = getUsers().loggedInUser();
