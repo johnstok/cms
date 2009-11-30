@@ -35,8 +35,10 @@ public class FileRevision
     private MimeType  _mimeType;
     private Map<String, String> _properties;
 
+
     /** Constructor: for persistence only. */
     protected FileRevision() { super(); }
+
 
     /**
      * Constructor.
@@ -68,23 +70,45 @@ public class FileRevision
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return The file revision's data reference.
+     */
     public final Data getData() {
         return _data;
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return The file revision's size, in bytes.
+     */
     public final int getSize() {
         return _size;
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return The file revision's mime type.
+     */
     public final MimeType getMimeType() {
         return _mimeType;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return True if the file is an image; false otherwise.
+     */
     public boolean isImage() {
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }
+
 
     /** {@inheritDoc} */
     public boolean isText() {
@@ -103,6 +127,7 @@ public class FileRevision
         return false;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public FileDelta delta() {
@@ -113,6 +138,7 @@ public class FileRevision
             _properties);
     }
 
+
     /**
      * Retrieve the properties for a file.
      *
@@ -122,6 +148,12 @@ public class FileRevision
         return new HashMap<String, String>(_properties);
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return The file revision's character set.
+     */
     public String getCharset() {
         return getProperties().get(FilePropertyNames.CHARSET);
     }

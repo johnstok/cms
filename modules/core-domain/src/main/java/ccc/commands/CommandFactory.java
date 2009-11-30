@@ -82,7 +82,7 @@ public class CommandFactory {
      *
      * @param template Details of the template to create.
      *
-     * @return The  corresponding command.
+     * @return The corresponding command.
      */
     public Command<? extends Resource> createTemplateCommand(
                                                 final TemplateDto template) {
@@ -98,12 +98,14 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'create alias' command.
      *
-     * @param alias
-     * @return
+     * @param alias Details of the alias to create.
+     *
+     * @return The corresponding command.
      */
-    public Command<? extends Resource> createAliasCommand(final AliasDto alias) {
+    public Command<? extends Resource> createAliasCommand(
+                                                        final AliasDto alias) {
         return new CreateAliasCommand(
             _repository,
             _audit,
@@ -114,17 +116,17 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'create file' command.
      *
-     * @param files
-     * @param parentFolder
-     * @param file
-     * @param title
-     * @param description
-     * @param resourceName
-     * @param rm
-     * @param dataStream
-     * @return
+     * @param parentFolder The folder in which the file will be created.
+     * @param file The details of the file.
+     * @param title The file's title.
+     * @param description The file's description.
+     * @param resourceName The file's name.
+     * @param rm Details of the revision.
+     * @param dataStream The stream containing the contents of the file.
+     *
+     * @return The corresponding command.
      */
     public Command<File> createFileCommand(final UUID parentFolder,
                                            final FileDelta file,
@@ -148,12 +150,13 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'create folder' command.
      *
-     * @param parentId
-     * @param name
-     * @param title
-     * @return
+     * @param name The name of the folder.
+     * @param parentId The folder's parent.
+     * @param title The folder's title.
+     *
+     * @return The corresponding command.
      */
     public Command<Folder> createFolderCommand(final UUID parentId,
                                               final String name,
@@ -169,10 +172,11 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'create root' command.
      *
-     * @param f
-     * @return
+     * @param f The folder to create.
+     *
+     * @return The corresponding command.
      */
     public Command<Void> createRootCommand(final Folder f) {
         return new CreateRootCommand(
@@ -183,16 +187,17 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'create page' command.
      *
-     * @param parentId
-     * @param delta
-     * @param name
-     * @param title
-     * @param templateId
-     * @param comment
-     * @param majorChange
-     * @return
+     * @param parentId The parent folder in which the page will be created.
+     * @param delta The page content.
+     * @param name The page's name.
+     * @param title The page's title.
+     * @param templateId The page's template.
+     * @param comment A description of the revision.
+     * @param majorChange Is this a major revision.
+     *
+     * @return The corresponding command.
      */
     public Command<Page> createPageCommand(final UUID parentId,
                                             final PageDelta delta,
@@ -216,11 +221,12 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'create search' command.
      *
-     * @param parentId
-     * @param title
-     * @return
+     * @param title The search's title.
+     * @param parentId The search's parent folder.
+     *
+     * @return The corresponding command.
      */
     public Command<Search> createSearchCommand(final UUID parentId,
                                                final String title) {
@@ -233,10 +239,11 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'publish resource' command.
      *
-     * @param id
-     * @return
+     * @param resourceId The ID of the resource to publish.
+     *
+     * @return The corresponding command.
      */
     public Command<Void> publishResource(final UUID resourceId) {
         return new PublishCommand(
@@ -247,10 +254,11 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a 'lock resource' command.
      *
-     * @param resourceId
-     * @return
+     * @param resourceId The ID of the resource to lock.
+     *
+     * @return The corresponding command.
      */
     public Command<Void> lockResourceCommand(final UUID resourceId) {
         return new LockResourceCommand(
@@ -261,10 +269,11 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create an 'unlock resource' command.
      *
-     * @param resourceId
-     * @return
+     * @param resourceId The ID of the resource to unlock;
+     *
+     * @return The corresponding command.
      */
     public Command<Void> unlockResourceCommand(final UUID resourceId) {
         return new UnlockResourceCommand(
@@ -275,10 +284,11 @@ public class CommandFactory {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create an 'unpublish resource' command.
      *
-     * @param resourceId
-     * @return
+     * @param resourceId The ID of the resource to unpublish.
+     *
+     * @return The corresponding command.
      */
     public Command<Void> unpublishResourceCommand(final UUID resourceId) {
         return new UnpublishResourceCommand(

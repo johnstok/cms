@@ -58,7 +58,8 @@ public abstract class AbstractIndexer
     public void indexFile(final ccc.domain.File file) {
         if (!PredefinedResourceNames.CONTENT.equals(
             file.root().name().toString())) {
-            LOG.debug("Skipped indexing for non content file : "+file.getTitle());
+            LOG.debug(
+                "Skipped indexing for non content file : "+file.getTitle());
             return;
         }
 

@@ -360,6 +360,7 @@ public class ResourceDaoImplTest
     throws CccCheckedException {
 
         // ARRANGE
+        final int expecteduration = 3727;
         _r.lock(_regularUser);
         expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
         _al.record(isA(LogEntry.class));
@@ -371,7 +372,7 @@ public class ResourceDaoImplTest
 
         // ASSERT
         verifyAll();
-        assertEquals(3727, _r.cache().time());
+        assertEquals(expecteduration, _r.cache().time());
     }
 
 

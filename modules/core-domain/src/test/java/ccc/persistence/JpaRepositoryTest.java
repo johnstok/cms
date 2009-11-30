@@ -24,7 +24,6 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.JpaRepository;
 import ccc.types.ResourceName;
 
 

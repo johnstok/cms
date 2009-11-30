@@ -88,6 +88,8 @@ public interface FilesExt
      * @param action The action to perform.
      *
      * @throws RestException If an error occurs retrieving the file.
+     * @throws UnauthorizedException If the file is not accessible to the
+     *  current user.
      */
     void retrieve(UUID file, StreamAction action)
     throws RestException, UnauthorizedException;
@@ -100,6 +102,8 @@ public interface FilesExt
      * @param action The action to perform.
      *
      * @throws RestException If an error occurs retrieving the file.
+     * @throws UnauthorizedException If the file is not accessible to the
+     *  current user.
      */
     void retrieveWorkingCopy(UUID file, StreamAction action)
     throws RestException, UnauthorizedException;
@@ -113,6 +117,8 @@ public interface FilesExt
      * @param action The action to perform.
      *
      * @throws RestException If an error occurs retrieving the file.
+     * @throws UnauthorizedException If the file is not accessible to the
+     *  current user.
      */
     void retrieveRevision(UUID file, int revision, StreamAction action)
     throws RestException, UnauthorizedException;

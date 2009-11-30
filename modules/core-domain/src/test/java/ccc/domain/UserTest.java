@@ -378,7 +378,8 @@ public class UserTest
             digest.update(password);
             byte[] hash = digest.digest();
 
-            for (int i = 0; i < 1000; i++) {
+            final int hashRepetitions = 1000;
+            for (int i = 0; i < hashRepetitions; i++) {
                 digest.reset();
                 hash = digest.digest(hash);
             }

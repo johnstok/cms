@@ -28,8 +28,6 @@ import org.h2.jdbcx.JdbcDataSource;
 
 import ccc.domain.CCCException;
 import ccc.domain.Data;
-import ccc.persistence.JdbcCoreData;
-import ccc.persistence.StreamAction;
 import ccc.serialization.IO;
 
 

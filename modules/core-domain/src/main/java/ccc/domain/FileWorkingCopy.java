@@ -33,8 +33,10 @@ public class FileWorkingCopy
     private Data _data;
     private Map<String, String> _properties;
 
+
     /** Constructor: for persistence only. */
     protected FileWorkingCopy() { super(); }
+
 
     /**
      * Constructor.
@@ -45,6 +47,7 @@ public class FileWorkingCopy
         delta(delta);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void delta(final FileDelta snapshot) {
@@ -53,6 +56,7 @@ public class FileWorkingCopy
         _data = new Data(UUID.fromString(snapshot.getData().toString()));
         _properties = snapshot.getProperties();
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -64,30 +68,61 @@ public class FileWorkingCopy
             _properties);
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return The working copy's data reference.
+     */
     public Data getData() {
         return _data;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return The working copy's mime type.
+     */
     public MimeType getMimeType() {
         return _mimeType;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return The working copy's size, in bytes.
+     */
     public int getSize() {
         return _size;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return True if the working copy is an image; false otherwise.
+     */
     public boolean isImage() {
-        // TODO: Factor into superclass?
+        // TODO: Factor into superclass.
         return "image".equalsIgnoreCase(getMimeType().getPrimaryType());
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return The working copy's character set.
+     */
     public String getCharset() {
         return _properties.get(FilePropertyNames.CHARSET);
     }
 
+
     /** {@inheritDoc} */
     public boolean isText() {
-        // TODO: Factor into superclass?
+        // TODO: Factor into superclass.
         final String primary = getMimeType().getPrimaryType();
         final String sub = getMimeType().getSubType();
         if ("text".equalsIgnoreCase(primary)) {
