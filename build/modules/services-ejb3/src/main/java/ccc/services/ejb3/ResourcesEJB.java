@@ -684,21 +684,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
-    public ResourceSummary resource(final UUID resourceId)
-    throws RestException {
-        try {
-            return
-                mapResource(getResources().find(Resource.class, resourceId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<String> roles(final UUID resourceId)
     throws RestException {
@@ -976,6 +961,23 @@ public class ResourcesEJB
         }
     }
 
+
+    /** {@inheritDoc}
+     * @throws UnauthorizedException */
+    @Override
+    @PermitAll
+    public ResourceSummary resource(final UUID resourceId)
+    throws RestException, UnauthorizedException {
+        try {
+            final Resource r = getResources().find(Resource.class, resourceId);
+            checkSecurity(r);
+            return
+                mapResource(r);
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
 
 /* StatefulReaderImpl */
 //    /**

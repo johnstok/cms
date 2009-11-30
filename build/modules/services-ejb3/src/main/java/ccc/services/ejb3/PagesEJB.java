@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -209,10 +210,13 @@ public class PagesEJB
         return new PageHelper().validateFields(p, def);
     }
 
+    /* ====================================================================
+     * UNSAFE METHODS.
+     * ================================================================== */
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @PermitAll
     public PageDelta pageDelta(final UUID pageId) throws RestException {
         try {
             return
