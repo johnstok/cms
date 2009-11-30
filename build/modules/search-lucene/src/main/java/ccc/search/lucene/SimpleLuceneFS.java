@@ -80,17 +80,28 @@ public class SimpleLuceneFS
                              final int nofOfResultsPerPage,
                              final int pageNo) {
         if (searchTerms == null || searchTerms.trim().equals("")) {
-            return new SearchResult(new HashSet<UUID>(), 0, nofOfResultsPerPage, searchTerms, pageNo);
+            return
+                new SearchResult(
+                    new HashSet<UUID>(),
+                    0,
+                    nofOfResultsPerPage,
+                    searchTerms,
+                    pageNo);
         }
 
         final String field = "content";
         final int maxHits = (pageNo+1)*nofOfResultsPerPage;
-        final CapturingHandler capturingHandler = new CapturingHandler(nofOfResultsPerPage, pageNo);
+        final CapturingHandler capturingHandler =
+            new CapturingHandler(nofOfResultsPerPage, pageNo);
 
         find(searchTerms, field, maxHits, capturingHandler);
 
         return new SearchResult(
-            capturingHandler.getHits(), capturingHandler.getTotalResultsCount(), nofOfResultsPerPage, searchTerms, pageNo);
+            capturingHandler.getHits(),
+            capturingHandler.getTotalResultsCount(),
+            nofOfResultsPerPage,
+            searchTerms,
+            pageNo);
     }
 
 
