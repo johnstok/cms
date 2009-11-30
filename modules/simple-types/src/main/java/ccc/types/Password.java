@@ -17,7 +17,9 @@ package ccc.types;
  *
  * @author Civic Computing Ltd.
  */
-public class Password {
+public final class Password {
+
+    private Password() { /* NO OP */ }
 
     private static final String STRONG_PW =
         "^(?=.{10,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$";

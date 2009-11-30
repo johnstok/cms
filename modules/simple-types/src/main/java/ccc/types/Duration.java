@@ -122,8 +122,9 @@ public final class Duration implements Serializable, Jsonable {
     @Override
     public int hashCode() {
         final int prime = 31;
+        final int bitsInAnInt = 32;
         int result = 1;
-        result = prime * result + (int) (_time ^ (_time >>> 32));
+        result = prime * result + (int) (_time ^ (_time >>> bitsInAnInt));
         return result;
     }
 

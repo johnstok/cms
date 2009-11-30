@@ -50,7 +50,10 @@ public final class ParagraphTest extends TestCase {
         assertEquals(ParagraphType.LIST, p.type());
     }
 
-    public void testListCondtructorWithComma() throws Exception {
+    /**
+     * Test.
+     */
+    public void testListCondtructorWithComma() {
         // ARRANGE
         final List<String> strings = new ArrayList<String>();
         strings.add("one");
@@ -301,7 +304,10 @@ public final class ParagraphTest extends TestCase {
         assertEquals("", p.text());
     }
 
-    public void testParagraphConstructorBooleanTypeJSON() throws Exception {
+    /**
+     * Test.
+     */
+    public void testParagraphConstructorBooleanTypeJSON() {
 
         final Paragraph p = Paragraph.fromText("foo", "bar");
 
@@ -323,14 +329,17 @@ public final class ParagraphTest extends TestCase {
 
     }
 
-    public void testParagraphConstructorDateTypeJSON() throws Exception {
+    /**
+     * Test.
+     */
+    public void testParagraphConstructorDateTypeJSON() {
 
         final Date testDate = new Date(System.currentTimeMillis());
 
         final Paragraph p = Paragraph.fromDate("foo", testDate);
         _json.set("name", "foo");
         _json.set("type", "DATE");
-        _json.set("text", (String)null);
+        _json.set("text", (String) null);
         _json.set("boolean", (Boolean) null);
         _json.set("date", testDate);
         expect(_json.getString("name")).andReturn("bar");
@@ -392,26 +401,38 @@ public final class ParagraphTest extends TestCase {
 
     }
 
-    public void testEqualsHandleNull() throws Exception {
+    /**
+     * Test.
+     */
+    public void testEqualsHandleNull() {
 
         final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
         final Paragraph paragraph2 = null;
         assertFalse(paragraph1.equals(paragraph2));
     }
 
-    public void testEqualsHandlesDifferentClass() throws Exception {
+    /**
+     * Test.
+     */
+    public void testEqualsHandlesDifferentClass() {
 
         final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
         final Object paragraph2 = new Object();
         assertFalse(paragraph1.equals(paragraph2));
     }
 
-    public void testEqulasHandlesIdenticalObjects() throws Exception {
+    /**
+     * Test.
+     */
+    public void testEqulasHandlesIdenticalObjects() {
         final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
         assertTrue(paragraph1.equals(paragraph1));
     }
 
-    public void testEqualsHandlesDiffesrentNames() throws Exception {
+    /**
+     * Test.
+     */
+    public void testEqualsHandlesDiffesrentNames() {
         final Paragraph paragraph1 = Paragraph.fromText("foo", "Hello world");
         final Paragraph paragraph2 = Paragraph.fromText("bar", "Hello world");
         assertFalse(paragraph1.equals(paragraph2));
