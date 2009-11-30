@@ -49,14 +49,17 @@ public class LogEntryTest
         assertEquals(_actor, le.actor());
         assertEquals(CommandType.RESOURCE_RENAME.name(), le.action());
     }
-    
+
+    /**
+     * Test.
+     */
     public void testCreatorActionAsString() {
 
         // ARRANGE
-    	final String actionAsString = "TEST_ACTION_NAME";
+        final String actionAsString = "TEST_ACTION_NAME";
         final Page p = new Page("foo", _rm);
 
-		// ACT
+        // ACT
         final LogEntry le = new LogEntry(_actor, actionAsString,
             _happenedOn, p.id(), new JsonImpl(p).getDetail());
 

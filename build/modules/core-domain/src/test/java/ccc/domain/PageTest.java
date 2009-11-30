@@ -75,7 +75,8 @@ public final class PageTest extends TestCase {
         assertEquals(1, rev0.getParagraphs().size());
         assertEquals("Header", rev0.getParagraphs().iterator().next().text());
         assertEquals(1, rev1.getParagraphs().size());
-        assertEquals(Boolean.TRUE, rev1.getParagraphs().iterator().next().bool());
+        assertEquals(
+            Boolean.TRUE, rev1.getParagraphs().iterator().next().bool());
     }
 
     /**

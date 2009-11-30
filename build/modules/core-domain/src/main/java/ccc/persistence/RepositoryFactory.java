@@ -36,45 +36,45 @@ public class RepositoryFactory {
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Create an instance of the {@link LogEntryRepository} interface.
      *
-     * @return
+     * @return A repository instance.
      */
     public LogEntryRepository createLogEntryRepo() {
         return new LogEntryRepositoryImpl(_em);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Create an instance of the {@link UserRepository} interface.
      *
-     * @return
+     * @return A repository instance.
      */
     public UserRepository createUserRepo() {
         return new UserRepositoryImpl(_em);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Create an instance of the {@link ResourceRepository} interface.
      *
-     * @return
+     * @return A repository instance.
      */
     public ResourceRepository createResourceRepository() {
         return new ResourceRepositoryImpl(_em);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Create an instance of the {@link DataRepository} interface.
      *
-     * @return
+     * @return A repository instance.
      */
     public DataRepository createDataRepository() {
         return DataRepositoryImpl.onFileSystem(_em);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Create an instance of the {@link ActionRepository} interface.
      *
-     * @return
+     * @return A repository instance.
      */
     public ActionRepository createActionRepository() {
         return new ActionRepositoryImpl(_em);

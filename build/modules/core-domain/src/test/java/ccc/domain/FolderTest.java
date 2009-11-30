@@ -53,9 +53,12 @@ public final class FolderTest extends TestCase {
         assertEquals("a", f.entries(3, 1, "MANUAL").get(1).getTitle());
         assertEquals("z", f.entries(3, 1, "MANUAL").get(2).getTitle());
 
-        assertEquals("a", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(0).getTitle());
-        assertEquals("k", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(1).getTitle());
-        assertEquals("z", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(2).getTitle());
+        assertEquals(
+            "a", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(0).getTitle());
+        assertEquals(
+            "k", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(1).getTitle());
+        assertEquals(
+            "z", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(2).getTitle());
 
     }
 

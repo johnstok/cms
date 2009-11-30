@@ -66,11 +66,12 @@ public abstract class Resource
     private Duration       _cache             = null;
     private String         _description       = "";
     private boolean        _deleted           = false;
-
     private Map<String, String> _metadata = new HashMap<String, String>();
+
 
     /** Constructor: for persistence only. */
     protected Resource() { super(); }
+
 
     /**
      * Constructor.
@@ -86,6 +87,7 @@ public abstract class Resource
         title(title);
     }
 
+
     /**
      * Constructor.
      * The title parameter is escaped via {@link ResourceName#escape(String)} to
@@ -99,12 +101,14 @@ public abstract class Resource
         name(ResourceName.escape(title));
     }
 
+
     /**
      * Query the type of this resource.
      *
      * @return The ResourceType that describes this resource.
      */
     public abstract ResourceType type();
+
 
     /**
      * Type-safe helper method to convert an instance of {@link Resource} to a
@@ -118,6 +122,7 @@ public abstract class Resource
     public final <T extends Resource> T as(final Class<T> resourceType) {
         return resourceType.cast(this);
     }
+
 
     /**
      * Determine the template for this resource. Iterates up the parent
@@ -135,6 +140,7 @@ public abstract class Resource
                 : def;
     }
 
+
     /**
      * Determine the absolute path for a resource.
      *
@@ -147,10 +153,12 @@ public abstract class Resource
         : parent().absolutePath().append(name());
     }
 
+
     /** {@inheritDoc} */
     public ResourceName name() {
         return _name;
     }
+
 
     /**
      * Mutator for the name field.
@@ -162,10 +170,12 @@ public abstract class Resource
         _name = resourceName;
     }
 
+
     /** {@inheritDoc} */
     public String getTitle() {
         return _title;
     }
+
 
     /**
      * Sets the title of the resource.
@@ -179,6 +189,7 @@ public abstract class Resource
         final WordCharFixer fixer = new WordCharFixer();
         _title = fixer.fix(titleString);
     }
+
 
     /**
      * Accessor for the template.
@@ -194,6 +205,7 @@ public abstract class Resource
         return _template;
     }
 
+
     /**
      * Sets the template for this resource.
      *
@@ -203,6 +215,7 @@ public abstract class Resource
         _template = template;
     }
 
+
     /**
      * Accessor for the resource's parent.
      *
@@ -211,6 +224,7 @@ public abstract class Resource
     public Folder parent() {
         return _parent;
     }
+
 
     /**
      * Mutator for the resource's parent. <i>This method should only be called
@@ -222,6 +236,7 @@ public abstract class Resource
         _parent = parent;
     }
 
+
     /**
      * Query method to determine whether a resource is locked.
      *
@@ -230,6 +245,7 @@ public abstract class Resource
     public boolean isLocked() {
         return null != _lockedBy;
     }
+
 
     /**
      * Lock a resource.
@@ -245,6 +261,7 @@ public abstract class Resource
         _lockedBy = u;
     }
 
+
     /**
      * Query method - determine who has locked this resource.
      *
@@ -253,6 +270,7 @@ public abstract class Resource
     public User lockedBy() {
         return _lockedBy;
     }
+
 
     /**
      * Unlock the resource.
@@ -279,6 +297,7 @@ public abstract class Resource
         _lockedBy = null;
     }
 
+
     /**
      * Determine whether a user can unlock this resource.
      *
@@ -289,6 +308,7 @@ public abstract class Resource
         return user.equals(lockedBy())
         || user.hasRole(CreatorRoles.ADMINISTRATOR);
     }
+
 
     /**
      * Set the tags for this resource.
@@ -309,6 +329,7 @@ public abstract class Resource
             _tags.add(tag.trim());
         }
     }
+
 
     /** {@inheritDoc} */
     public Set<String> tags() {
@@ -336,6 +357,7 @@ public abstract class Resource
         return tagString;
     }
 
+
     /**
      * Publish the resource.
      *
@@ -346,6 +368,7 @@ public abstract class Resource
         _publishedBy = user;
     }
 
+
     /**
      * Query method to determine whether a resource is published.
      *
@@ -354,6 +377,7 @@ public abstract class Resource
     public boolean isPublished() {
         return _publishedBy != null;
     }
+
 
     /**
      * Return user who published the resource.
@@ -364,12 +388,14 @@ public abstract class Resource
         return _publishedBy;
     }
 
+
     /**
      * Unpublish the resource.
      */
     public void unpublish() {
         _publishedBy = null;
     }
+
 
     /**
      * Query method to determine whether a resource is visible.
@@ -384,6 +410,7 @@ public abstract class Resource
         return parentVisible && isPublished() && !isDeleted();
     }
 
+
     /**
      * Query method to determine whether a resource is secure.
      *
@@ -396,6 +423,7 @@ public abstract class Resource
             (null==_parent) ? false : _parent.isSecure();
         return parentSecure || !roles().isEmpty();
     }
+
 
     /**
      * Confirm this resource is locked by the specified user.
@@ -416,10 +444,12 @@ public abstract class Resource
         }
     }
 
+
     /** {@inheritDoc} */
     public boolean includeInMainMenu() {
         return _includeInMainMenu;
     }
+
 
     /**
      * Mutator for 'include in main menu' property.
@@ -429,6 +459,7 @@ public abstract class Resource
     public void includeInMainMenu(final boolean shouldInclude) {
             _includeInMainMenu = shouldInclude;
     }
+
 
     /**
      * Accessor for the root parent of this resource.
@@ -441,6 +472,7 @@ public abstract class Resource
         }
         return _parent.root();
     }
+
 
     /**
      * Add new metadata for this resource.
@@ -458,6 +490,7 @@ public abstract class Resource
         _metadata.put(key, value);
     }
 
+
     /** {@inheritDoc} */
     public String getMetadatum(final String key) {
         String datum = _metadata.get(key);
@@ -466,6 +499,7 @@ public abstract class Resource
         }
         return datum;
     }
+
 
     /**
      * Remove the metadatum with the specified key.
@@ -477,6 +511,7 @@ public abstract class Resource
         _metadata.remove(key);
     }
 
+
     /**
      * Accessor for all metadata.
      *
@@ -486,12 +521,14 @@ public abstract class Resource
         return new HashMap<String, String>(_metadata);
     }
 
+
     /**
      * Remove all metadata for this resource.
      */
     public void clearMetadata() {
         _metadata.clear();
     }
+
 
     /** {@inheritDoc} */
     public Date dateCreated() {
@@ -509,10 +546,12 @@ public abstract class Resource
         _dateCreated = new Date(createdOn.getTime());
     }
 
+
     /** {@inheritDoc} */
     public Date dateChanged() {
         return new Date(_dateChanged.getTime());
     }
+
 
     /**
      * Mutator for the date the resource last changed.
@@ -524,6 +563,7 @@ public abstract class Resource
         _dateChanged = new Date(changedOn.getTime());
     }
 
+
     /**
      * Mutator.
      *
@@ -533,6 +573,7 @@ public abstract class Resource
         _roles.clear();
         _roles.addAll(roles);
     }
+
 
     /**
      * Accessor.
@@ -562,6 +603,7 @@ public abstract class Resource
         return roles;
     }
 
+
     /** {@inheritDoc} */
     public boolean isAccessibleTo(final User user) {
         final boolean parentIsAccessible =
@@ -584,6 +626,7 @@ public abstract class Resource
         return false;
     }
 
+
     /**
      * Mutator.
      *
@@ -593,6 +636,7 @@ public abstract class Resource
         _cache = cache;
     }
 
+
     /**
      * Accessor.
      *
@@ -601,6 +645,7 @@ public abstract class Resource
     public Duration cache() {
         return _cache;
     }
+
 
     /**
      * Compute the cache duration for the resource.
@@ -615,10 +660,12 @@ public abstract class Resource
         return parent().computeCache();
     }
 
+
     /** {@inheritDoc} */
     public final String description() {
         return _description;
     }
+
 
     /**
      * Mutator for the file description.
@@ -629,6 +676,7 @@ public abstract class Resource
         _description = (null==description) ? "" : description;
     }
 
+
     /**
      * Add metadata to this resource.
      *
@@ -638,17 +686,32 @@ public abstract class Resource
         _metadata.putAll(metadata);
     }
 
+
+    /**
+     * Query method.
+     *
+     * @return True if this resource is deleted; false otherwise.
+     */
     public boolean isDeleted() {
         return _deleted;
     }
 
+
+    /**
+     * Mark this file as deleted.
+     */
     public void delete() {
         _deleted = true;
     }
 
+
+    /**
+     * Mark this file as un-deleted.
+     */
     public void undelete() {
         _deleted = false;
     }
+
 
     /**
      * Create a snapshot of this resource that can be serialized to JSON.

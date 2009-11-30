@@ -20,48 +20,52 @@ import ccc.domain.EntityNotFoundException;
 
 
 /**
- * TODO: Add a description for this type.
+ * Repository for actions.
  *
  * @author Civic Computing Ltd.
  */
 public interface ActionRepository {
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve the latest actions.
      *
-     * @param since
+     * @param until Cut off date.
      *
-     * @return
+     * @return All SCHEDULED actions with an execute_after date less than the
+     *  specified date.
      */
-    List<Action> latest(Date since);
+    List<Action> latest(Date until);
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve all actions in the status SCHEDULED.
      *
-     * @return
+     * @return A list of actions.
      */
     List<Action> pending();
 
     /**
-     * TODO: Add a description for this method.
+     * Retrieve all actions not in the status SCHEDULED.
      *
-     * @return
+     * @return A list of actions.
      */
     List<Action> completed();
 
     /**
-     * TODO: Add a description for this method.
+     * Find an action from its ID.
      *
-     * @param actionId
-     * @throws EntityNotFoundException
-     * @return
+     * @param actionId The action's ID.
+     *
+     * @throws EntityNotFoundException If no action exists with the specified
+     *  ID.
+     *
+     * @return The corresponding action.
      */
     Action find(UUID actionId) throws EntityNotFoundException;
 
     /**
-     * TODO: Add a description for this method.
+     * Persist a newly created action.
      *
-     * @param action
+     * @param action The action to persist.
      */
     void create(Action action);
 
