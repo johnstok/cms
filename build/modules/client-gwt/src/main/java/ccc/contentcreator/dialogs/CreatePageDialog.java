@@ -323,7 +323,7 @@ public class CreatePageDialog
      *
      * @author Civic Computing Ltd.
      */
-    private static final class IdRenderer
+    static final class IdRenderer
         implements
             GridCellRenderer<TemplateSummaryModelData> {
 
