@@ -49,6 +49,7 @@ public class DeleteResourceAction
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        return GLOBALS.confirm("Are sure you want to delete the selected resource?");
+        return GLOBALS.confirm(
+            "Are sure you want to delete the selected resource?");
     }
 }

@@ -84,7 +84,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                             _md = folderSelect.selectedResource();
                             if (_md != null) {
                                 final String appContext =
-                                    new IGlobalsImpl().getSetting("application.context");
+                                    new IGlobalsImpl()
+                                        .getSetting("application.context");
                                 final String path =_md.getAbsolutePath();
                                 _linkPath.setValue(appContext+path);
                                 _linkName.setValue(_md.getName());
