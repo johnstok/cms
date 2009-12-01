@@ -52,7 +52,7 @@ public interface Resources {
      * @param resourceId The id of the existing resource.
      * @throws RestException If the method fails
      * @return A summary of the resource.
-     * @throws  If the user does not have right to access.
+     * @throws UnauthorizedException If the user does not have right to access.
      */
     @GET
     @Path("/resources/{id}")

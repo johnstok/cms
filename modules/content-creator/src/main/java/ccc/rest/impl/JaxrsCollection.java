@@ -55,18 +55,23 @@ abstract class JaxrsCollection
     private Aliases _aliases;
 
 
+    /**
+     * Accessor.
+     *
+     * @return The name of the app, as a string.
+     */
     protected String getAppName() {
         return _sContext.getInitParameter("ccc.application-name");
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return The context of the app, as a string.
+     */
     protected String getContextName() {
         return _sContext.getInitParameter("ccc.context-name");
-    }
-
-
-    protected String getBaseHref() {
-        return _sContext.getInitParameter("ccc.base-href");
     }
 
 
@@ -74,7 +79,8 @@ abstract class JaxrsCollection
     public final Templates getTemplates() {
         return
             (null==_templates)
-                ? (Templates) _reg.get(getAppName()+"/"+Templates.NAME+"/remote")
+                ? (Templates)
+                        _reg.get(getAppName()+"/"+Templates.NAME+"/remote")
                 : _templates;
     }
 
