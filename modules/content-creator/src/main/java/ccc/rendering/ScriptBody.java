@@ -13,9 +13,12 @@ package ccc.rendering;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,9 +59,20 @@ public class ScriptBody
         final HttpServletResponse resp =
             context.get("response", HttpServletResponse.class);
         disableCaching(resp);
+        final PrintWriter pw =
+            new PrintWriter(new OutputStreamWriter(os, charset));
 
-        new ScriptRunner(new ArrayList<String>())
-            .eval(_script, context, resp.getWriter());
+        final List<String> whiteList = new ArrayList<String>();
+        whiteList.add("java.util");
+        whiteList.add("ccc.types");
+        whiteList.add("ccc.rest.dto.UserDto");
+        whiteList.add("ccc.mail.Mailer");
+        whiteList.add("java.lang.String");
+        whiteList.add("java.util.ArrayList");
+        whiteList.add("java.lang.Object");
+        whiteList.add("org.apache.catalina.core.ApplicationDispatcher");
+        new ScriptRunner(whiteList)
+            .eval(_script, context, pw);
     }
 
 

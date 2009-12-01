@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
@@ -107,6 +108,7 @@ public class VelocityProcessor implements TextProcessor {
             context.put("collections", Collections.class);
             context.put("calendar", Calendar.class);
             context.put("html", XHTML.class);
+            context.put("uuid", UUID.class);
 
             context.put("dateTool", new DateTool());
             context.put("sortTool", new SortTool());
