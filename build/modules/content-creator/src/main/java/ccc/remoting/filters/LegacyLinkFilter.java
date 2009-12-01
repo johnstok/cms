@@ -89,7 +89,8 @@ public final class LegacyLinkFilter
 
 //    private void redirectToFile(final HttpServletRequest req,
 //                                final HttpServletResponse resp,
-//                                final Matcher fileMatcher) throws IOException {
+//                                final Matcher fileMatcher)
+//    throws IOException {
 //        final String fixedUrl =
 //            "/files/"
 //            + ResourceName.escape(fileMatcher.group(1));
@@ -100,7 +101,8 @@ public final class LegacyLinkFilter
 //
 //    private void redirectToImage(final HttpServletRequest req,
 //                                 final HttpServletResponse resp,
-//                                 final Matcher fileMatcher) throws IOException {
+//                                 final Matcher fileMatcher)
+//    throws IOException {
 //        final String fixedUrl =
 //            "/images/"
 //            + ResourceName.escape(fileMatcher.group(1));

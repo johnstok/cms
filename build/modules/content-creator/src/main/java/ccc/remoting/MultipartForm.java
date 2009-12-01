@@ -87,7 +87,8 @@ public class MultipartForm {
         DBC.require().notNull(request);
 
         // Check that we have a file upload request
-        final boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        final boolean isMultipart =
+            ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
             throw new CCCException("Not a multipart");
         }
