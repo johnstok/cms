@@ -45,7 +45,7 @@ import ccc.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class BaseMigrations {
+public class BaseMigrations {
     private static Logger log = Logger.getLogger(BaseMigrations.class);
 
     private final Users _userCommands;
@@ -345,7 +345,31 @@ public abstract class BaseMigrations {
         new LinkFixer(_linkPrefix, String.valueOf(pageId)).extractURLs(map);
         new WordCharFixer().warn(map);
 
+        checkDuplicateKeys(map);
+
         return map;
+    }
+
+
+    /**
+     * Check that a paragraph map has no duplicate paragraphs.
+     *
+     * @param map The map to check.
+     */
+    final void checkDuplicateKeys(final Map<String, StringBuffer> map) {
+        boolean hasDuplicates = false;
+        for (final String key : map.keySet()) {
+            for (final String possDuplicate : map.keySet()) {
+                if (!key.equals(possDuplicate)
+                    && key.equalsIgnoreCase(possDuplicate)) {
+                    hasDuplicates = true;
+                    log.warn(key+" is a duplicate of "+possDuplicate);
+                }
+            }
+        }
+        if (hasDuplicates) {
+            throw new RuntimeException("Duplicate paragraphs found.");
+        }
     }
 
 
