@@ -24,38 +24,11 @@ public class InvalidSnapshotException
 
     /**
      * Constructor.
-     */
-    public InvalidSnapshotException() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param message Error message.
-     * @param cause The cause of the exception.
-     */
-    public InvalidSnapshotException(final String message,
-                                    final Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param message Error message.
-     */
-    public InvalidSnapshotException(final String message) {
-        super(message);
-    }
-
-    /**
-     * Constructor.
      *
      * @param cause The cause of the exception.
      */
     public InvalidSnapshotException(final Throwable cause) {
-        super(cause);
+        super("Invalid snapshot", cause);
     }
 
 }
