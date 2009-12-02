@@ -18,9 +18,9 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
+import ccc.api.client1.JaxrsServiceLocator;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
-import ccc.migration.FileUploader;
 import ccc.migration.ServiceLookup;
 import ccc.rest.RestException;
 import ccc.rest.extensions.FoldersExt;
@@ -81,18 +81,18 @@ public class FileUpload extends CccApp {
 
         services =
             new ServiceLookup(o._appName, o._providerURL);
+        final JaxrsServiceLocator sl =
+            new JaxrsServiceLocator(o._uploadUrl);
 
         final ResourcesExt resources = services.getResources();
         final FoldersExt foldersExt = services.getFolders();
 
         login(o.getUsername(), o.getPassword());
+        sl.getSecurity().login(o.getUsername(), o.getPassword());
 
         server = new CccServer(
             new ResourcePath(o.getRemotePath()),
-            new FileUploader(
-                o._uploadUrl,
-                o.getUsername(),
-                o.getPassword()),
+            sl.getFileUploader(),
             foldersExt,
             resources);
 

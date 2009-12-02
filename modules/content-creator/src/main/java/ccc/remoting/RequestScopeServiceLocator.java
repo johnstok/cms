@@ -15,11 +15,13 @@ import javax.servlet.ServletRequest;
 
 import ccc.remoting.actions.SessionKeys;
 import ccc.rest.Actions;
+import ccc.rest.Aliases;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
+import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -101,4 +103,17 @@ public class RequestScopeServiceLocator
         return (SearchEngine) _request.getAttribute(SessionKeys.SEARCH_KEY);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public Aliases getAliases() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Security getSecurity() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
 }

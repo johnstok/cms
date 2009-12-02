@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.client1.IFileUploader;
 import ccc.cli.MigrateMhtsFiles.Options;
 import ccc.rest.Actions;
 import ccc.rest.RestException;
@@ -52,7 +53,7 @@ public class MhtsFileMigration extends BaseMigrations {
 
     private FoldersExt _foldersExt;
     private String _username;
-    private FileUploader _fu;
+    private IFileUploader _fu;
     private String _filePath;
     private Actions _actions;
 
@@ -75,7 +76,7 @@ public class MhtsFileMigration extends BaseMigrations {
                              final FoldersExt foldersExt,
                              final Users users,
                              final Templates templates,
-                             final FileUploader fileUploader,
+                             final IFileUploader fileUploader,
                              final Options options) {
         super(
             users,

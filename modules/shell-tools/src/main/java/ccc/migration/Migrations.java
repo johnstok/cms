@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.client1.IFileUploader;
 import ccc.cli.Migrate.Options;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
@@ -81,7 +82,7 @@ public class Migrations extends BaseMigrations {
                       final PagesExt pagesExt,
                       final FoldersExt foldersExt,
                       final Users userCommands,
-                      final FileUploader fu,
+                      final IFileUploader fu,
                       final Templates templates,
                       final Options options) {
         super(

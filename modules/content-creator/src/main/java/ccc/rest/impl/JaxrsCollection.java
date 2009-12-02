@@ -24,6 +24,7 @@ import ccc.rest.Folders;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
+import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -157,9 +158,9 @@ abstract class JaxrsCollection
      */
     public final Aliases getAliases() {
         return
-        (null==_aliases)
-        ? (Aliases) _reg.get(getAppName()+"/"+Aliases.NAME+"/remote")
-            : _aliases;
+            (null==_aliases)
+                ? (Aliases) _reg.get(getAppName()+"/"+Aliases.NAME+"/remote")
+                : _aliases;
     }
 
     /**
@@ -214,5 +215,12 @@ abstract class JaxrsCollection
      */
     public final void setAliases(final Aliases aliases) {
         _aliases = aliases;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Security getSecurity() {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 }

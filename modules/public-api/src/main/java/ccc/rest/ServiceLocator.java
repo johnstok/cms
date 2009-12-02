@@ -76,4 +76,18 @@ public interface ServiceLocator {
      * @return Returns the search index service.
      */
     SearchEngine getSearch();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    Security getSecurity();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    Aliases getAliases();
 }
