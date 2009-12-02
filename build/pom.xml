@@ -90,7 +90,6 @@
         <module>modules/shell-tools</module>
         <module>modules/content-creator</module>
         <module>modules/application-ear</module>
-        <module>modules/db-schema</module>
         <module>modules/acceptance-tests</module>
     </modules>
 
