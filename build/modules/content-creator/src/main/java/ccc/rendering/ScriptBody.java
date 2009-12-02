@@ -69,6 +69,7 @@ public class ScriptBody
         whiteList.add("ccc.mail.Mailer");
         whiteList.add("java.lang.String");
         whiteList.add("java.util.ArrayList");
+        whiteList.add("java.util.UUID");
         whiteList.add("java.lang.Object");
         whiteList.add("org.apache.catalina.core.ApplicationDispatcher");
         new ScriptRunner(whiteList)
