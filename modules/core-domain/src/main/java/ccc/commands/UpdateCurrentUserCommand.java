@@ -24,6 +24,7 @@ import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
+import ccc.types.Password;
 
 
 /**
@@ -95,7 +96,9 @@ public class UpdateCurrentUserCommand
     /** {@inheritDoc} */
     @Override
     protected void validate() throws InvalidCommandException {
-        if (null==_delta.getName()
+        if ((null!=_delta.getPassword()
+                && !Password.isStrong(_delta.getPassword()))
+            || null==_delta.getName()
             || null==_delta.getEmail()
             || !EmailAddress.isValidText(_delta.getEmail())) {
             throw new InvalidCommandException();
