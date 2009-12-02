@@ -65,13 +65,19 @@ public class ScriptBody
         final List<String> whiteList = new ArrayList<String>();
         whiteList.add("java.util");
         whiteList.add("ccc.types");
-        whiteList.add("ccc.rest.dto.UserDto");
+        whiteList.add("ccc.rest.dto");
         whiteList.add("ccc.mail.Mailer");
-        whiteList.add("java.lang.String");
-        whiteList.add("java.util.ArrayList");
-        whiteList.add("java.util.UUID");
         whiteList.add("java.lang.Object");
+        whiteList.add("java.lang.String");
+        whiteList.add("java.lang.Boolean");
+        whiteList.add("java.text");
+        whiteList.add("java.io.ByteArrayInputStream");
+        whiteList.add("javax.activation.MimeType");
+        whiteList.add("org.mozilla.javascript.WrappedException");
+        whiteList.add("org.mozilla.javascript.EcmaError");
         whiteList.add("org.apache.catalina.core.ApplicationDispatcher");
+        whiteList.add("org.apache.commons.fileupload.servlet.ServletFileUpload");
+        whiteList.add("org.apache.commons.fileupload.disk.DiskFileItem");
         new ScriptRunner(whiteList)
             .eval(_script, context, pw);
     }
