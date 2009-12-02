@@ -14,11 +14,14 @@ package ccc.domain;
 import static ccc.types.FilePropertyNames.*;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
 
 import ccc.persistence.StreamAction;
 
@@ -31,18 +34,29 @@ final class ImageMetadataStreamAction
     implements
         StreamAction {
 
+    private static final Logger LOG =
+        Logger.getLogger(ImageMetadataStreamAction.class);
+
     private final Map<String, String> _metadata = new HashMap<String, String>();
 
 
     /** {@inheritDoc} */
-    @Override public void execute(final InputStream is) throws Exception {
+    @Override public void execute(final InputStream is) {
 
-        final BufferedImage image = ImageIO.read(is);
+        _metadata.clear();
+
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(is);
+        } catch (final IOException e) {
+            LOG.warn("Error reading image.", e);
+        } catch (final IllegalArgumentException e) {
+            LOG.warn("Error reading image.", e);
+        }
         if (null==image) { // No valid image reader exists.
             return;
         }
 
-        _metadata.clear();
         _metadata.put(HEIGHT, String.valueOf(image.getHeight()));
         _metadata.put(WIDTH, String.valueOf(image.getWidth()));
     }

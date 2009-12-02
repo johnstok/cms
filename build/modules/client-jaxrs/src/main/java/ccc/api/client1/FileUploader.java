@@ -119,14 +119,12 @@ class FileUploader implements IFileUploader {
             if (status == HttpStatus.SC_OK) {
                 LOG.debug(
                     "Upload complete, response="
-                    + filePost.getResponseBodyAsString()
-                );
+                    + filePost.getResponseBodyAsString());
             } else {
                 LOG.error(
-                    "Upload failed, response="
-                    + status+", "
-                    + HttpStatus.getStatusText(status)
-                );
+                    "Upload failed for "+file.getAbsolutePath()+" - "
+                    + status+"\n"
+                    + filePost.getResponseBodyAsString());
             }
         } catch (final RuntimeException e) {
             LOG.error("File migration failed ", e);
