@@ -22,7 +22,7 @@
 		</dependency>
 		<dependency>
 			<groupId>CCC7</groupId>
-			<artifactId>db-schema</artifactId>
+			<artifactId>client-jaxrs</artifactId>
 			<version>${project.version}</version>
 		</dependency>
         
@@ -37,11 +37,6 @@
 			<artifactId>commons-dbutils</artifactId>
 			<version>${lib.version.dbutils}</version>
 		</dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${lib.version.httpclient}</version>
-        </dependency>
         
         <!-- Database drivers -->
         <dependency>

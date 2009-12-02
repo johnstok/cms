@@ -22,7 +22,6 @@ import java.util.UUID;
 import junit.framework.TestCase;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
@@ -33,10 +32,8 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ProxyFactory;
-import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
+import ccc.api.client1.JaxrsServiceLocator;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Files;
@@ -45,6 +42,7 @@ import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.Security;
+import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.AliasDto;
@@ -54,24 +52,6 @@ import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
-import ccc.rest.providers.ActionSummaryCollectionReader;
-import ccc.rest.providers.ActionSummaryReader;
-import ccc.rest.providers.AliasDeltaReader;
-import ccc.rest.providers.BooleanProvider;
-import ccc.rest.providers.DurationReader;
-import ccc.rest.providers.FailureWriter;
-import ccc.rest.providers.JsonReader;
-import ccc.rest.providers.JsonableWriter;
-import ccc.rest.providers.MetadataWriter;
-import ccc.rest.providers.PageDeltaReader;
-import ccc.rest.providers.ResSummaryReader;
-import ccc.rest.providers.ResourceSummaryCollectionReader;
-import ccc.rest.providers.RevisionSummaryCollectionReader;
-import ccc.rest.providers.StringCollectionWriter;
-import ccc.rest.providers.TemplateDeltaReader;
-import ccc.rest.providers.UUIDProvider;
-import ccc.rest.providers.UserSummaryCollectionReader;
-import ccc.rest.providers.UserSummaryReader;
 import ccc.serialization.JsonImpl;
 import ccc.types.Failure;
 import ccc.types.HttpStatusCode;
@@ -91,39 +71,7 @@ public abstract class AbstractAcceptanceTest
     private static final Logger LOG =
         Logger.getLogger(AbstractAcceptanceTest.class);
 
-    static {
-        final ResteasyProviderFactory pFactory =
-            ResteasyProviderFactory.getInstance();
-        RegisterBuiltin.register(pFactory);
-
-        // Writers
-        pFactory.addMessageBodyWriter(JsonableWriter.class);
-        pFactory.addMessageBodyWriter(StringCollectionWriter.class);
-        pFactory.addMessageBodyWriter(MetadataWriter.class);
-        pFactory.addMessageBodyWriter(JsonReader.class);
-        pFactory.addMessageBodyWriter(UUIDProvider.class);
-
-        // Readers
-        pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(ResSummaryReader.class);
-        pFactory.addMessageBodyReader(DurationReader.class);
-        pFactory.addMessageBodyReader(UserSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(UserSummaryReader.class);
-        pFactory.addMessageBodyReader(BooleanProvider.class);
-        pFactory.addMessageBodyReader(FailureWriter.class);
-        pFactory.addMessageBodyReader(StringCollectionWriter.class);
-        pFactory.addMessageBodyReader(MetadataWriter.class);
-        pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(AliasDeltaReader.class);
-        pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(UUIDProvider.class);
-        pFactory.addMessageBodyReader(TemplateDeltaReader.class);
-        pFactory.addMessageBodyReader(PageDeltaReader.class);
-        pFactory.addMessageBodyReader(ActionSummaryReader.class);
-
-        // String Converters
-        pFactory.addStringConverter(UUIDProvider.class);
-    }
+    private ServiceLocator _sl;
 
     private final String _hostUrl       = "http://localhost:8080/ash";
     private final String _secure        = _hostUrl+"/api/secure";
@@ -132,15 +80,6 @@ public abstract class AbstractAcceptanceTest
     private final String _updateFileUrl = _hostUrl+"/update_file";
 
     private HttpClient _http;
-    private Resources _commands;
-    private Users _users;
-    private Actions _actions;
-    private Folders _folders;
-    private Pages _pages;
-    private Security _security;
-    private Templates _templates;
-    private Files _files;
-    private Aliases _aliases;
 
 
     /**
@@ -169,7 +108,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the commands.
      */
     protected Resources getCommands() {
-        return _commands;
+        return _sl.getResources();
     }
 
 
@@ -179,7 +118,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the users.
      */
     protected Users getUsers() {
-        return _users;
+        return _sl.getUsers();
     }
 
 
@@ -189,7 +128,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the actions.
      */
     protected Actions getActions() {
-        return _actions;
+        return _sl.getActions();
     }
 
 
@@ -199,7 +138,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the folders.
      */
     protected Folders getFolders() {
-        return _folders;
+        return _sl.getFolders();
     }
 
 
@@ -209,7 +148,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the pages.
      */
     protected Pages getPages() {
-        return _pages;
+        return _sl.getPages();
     }
 
 
@@ -219,7 +158,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the security.
      */
     protected Security getSecurity() {
-        return _security;
+        return _sl.getSecurity();
     }
 
 
@@ -229,7 +168,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the templates.
      */
     protected Templates getTemplates() {
-        return _templates;
+        return _sl.getTemplates();
     }
 
 
@@ -239,7 +178,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the files.
      */
     protected Files getFiles() {
-        return _files;
+        return _sl.getFiles();
     }
 
 
@@ -249,7 +188,7 @@ public abstract class AbstractAcceptanceTest
      * @return Returns the aliases.
      */
     protected Aliases getAliases() {
-        return _aliases;
+        return _sl.getAliases();
     }
 
 
@@ -268,7 +207,7 @@ public abstract class AbstractAcceptanceTest
         final TemplateDelta newTemplate =
             new TemplateDelta("body", "<fields/>", MimeType.HTML);
         final ResourceSummary ts =
-            _templates.createTemplate(
+            getTemplates().createTemplate(
                 new TemplateDto(
                     parent.getId(),
                     newTemplate,
@@ -300,7 +239,7 @@ public abstract class AbstractAcceptanceTest
                                         "title",
                                         "",
                                         true);
-        return _pages.createPage(page);
+        return getPages().createPage(page);
     }
 
     /**
@@ -313,7 +252,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = resourceForPath("");
-        return _folders.createFolder(
+        return getFolders().createFolder(
             new FolderDto(content.getId(), new ResourceName(fName)));
     }
 
@@ -331,7 +270,7 @@ public abstract class AbstractAcceptanceTest
         final AliasDto alias =
             new AliasDto(
                 folder.getId(), new ResourceName(name), folder.getId());
-        return _aliases.createAlias(alias);
+        return getAliases().createAlias(alias);
     }
 
 
@@ -482,32 +421,13 @@ public abstract class AbstractAcceptanceTest
     }
 
 
-    private HttpClient login() {
-        final HttpClient client = new HttpClient();
-
-        final Security security =
-            ProxyFactory.create(Security.class, _public, client);
-        security.login("super", "sup3r2008");
-
-        return client;
-    }
-
-
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _http     = login();
-        _commands = ProxyFactory.create(Resources.class, _secure, _http);
-        _users =    ProxyFactory.create(Users.class, _secure, _http);
-        _actions =  ProxyFactory.create(Actions.class, _secure, _http);
-        _folders =  ProxyFactory.create(Folders.class, _secure, _http);
-        _pages =    ProxyFactory.create(Pages.class, _secure, _http);
-        _security = ProxyFactory.create(Security.class, _public, _http);
-        _templates = ProxyFactory.create(Templates.class, _secure, _http);
-        _files = ProxyFactory.create(Files.class, _secure+"/files", _http);
-        _aliases =
-            ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
+        _http = new HttpClient();
+        _sl   = new JaxrsServiceLocator(_http, _hostUrl);
+        getSecurity().login("super", "sup3r2008");
     }
 
 
@@ -515,47 +435,11 @@ public abstract class AbstractAcceptanceTest
     @Override
     protected void tearDown() {
         try {
-            _security.logout();
+            getSecurity().logout();
         } catch (final Exception e) {
             LOG.warn("Logout failed.", e);
         }
-        _http     = null;
-        _commands = null;
-        _security = null;
-        _users    = null;
-        _actions  = null;
-        _folders  = null;
-        _pages  = null;
-        _templates  = null;
-        _files  = null;
-        _aliases  = null;
+        _sl   = null;
+        _http = null;
     }
-
-
-    @SuppressWarnings("unused")
-    private void post(final String url) throws IOException {
-            final PostMethod postMethod = new PostMethod(url);
-
-            final NameValuePair userid   =
-                new NameValuePair("j_username", "super");
-            final NameValuePair password =
-                new NameValuePair("j_password", "sup3r2008");
-            postMethod.setRequestBody(
-                new NameValuePair[] {userid, password});
-
-            final int status = _http.executeMethod(postMethod);
-    //        final String body = postMethod.getResponseBodyAsString();
-            postMethod.releaseConnection();
-            LOG.debug("POST "+url+"  ->  "+status+"\n\n");
-        }
-
-    @SuppressWarnings("unused")
-    private void get(final String url) throws IOException {
-        final GetMethod getMethod = new GetMethod(url);
-        final int status = _http.executeMethod(getMethod);
-        final String body = getMethod.getResponseBodyAsString();
-        getMethod.releaseConnection();
-        LOG.debug("GET "+url+"  ->  "+status+"\n"+body+"\n\n");
-    }
-
 }

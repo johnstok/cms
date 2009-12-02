@@ -16,8 +16,8 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.client1.IFileUploader;
 import ccc.cli.FileUpload;
-import ccc.migration.FileUploader;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
@@ -35,7 +35,7 @@ public class CccServer implements Server {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
     private ResourcePath _rootPath;
-    private FileUploader _uploader;
+    private IFileUploader _uploader;
     private FoldersExt _foldersExt;
     private ResourcesExt _resources;
 
@@ -51,7 +51,7 @@ public class CccServer implements Server {
      * @param resources The resources API.
      */
     public CccServer(final ResourcePath rootPath,
-                     final FileUploader uploader,
+                     final IFileUploader uploader,
                      final FoldersExt foldersExt,
                      final ResourcesExt resources) {
         _rootPath = rootPath;

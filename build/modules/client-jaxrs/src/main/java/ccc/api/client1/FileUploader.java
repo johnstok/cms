@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.migration;
+package ccc.api.client1;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +21,6 @@ import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
@@ -38,104 +36,33 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-public class FileUploader {
+class FileUploader implements IFileUploader {
+
     /** CONNECTION_TIMEOUT : int. */
     private static final int CONNECTION_TIMEOUT = 5000;
 
-    private static Logger log = Logger.getLogger(FileUploader.class);
+    private static final Logger LOG = Logger.getLogger(FileUploader.class);
 
-    private final HttpClient _client = new HttpClient();
+    private final HttpClient _client;
     private final String _targetUploadURL;
-    private final String _appURL;
-    private final String _username;
-    private final String _password;
     private MimetypesFileTypeMap _mimemap;
 
     /**
      * Constructor.
-     *
-     * @param appURL The url to upload to.
-     * @param username The username to authenticate with.
-     * @param password The password to authenticate with.
      */
-    public FileUploader(final String appURL,
-                        final String username,
-                        final String password) {
-        _appURL = appURL;
-        _targetUploadURL = appURL+"/upload";
-        _username = username;
-        _password = password;
+    public FileUploader(final HttpClient httpClient,
+                        final String targetUploadURL) {
+        _targetUploadURL = targetUploadURL;
+        _client          = httpClient;
 
         final InputStream mimes =
             Thread.currentThread().
             getContextClassLoader().
             getResourceAsStream("ccc7mime.types");
         _mimemap = new MimetypesFileTypeMap(mimes);
-
-        authenticateForUpload();
     }
 
-    /**
-     * Authenticate using login form.
-     *
-     * @param client
-     */
-    void authenticateForUpload() {
-
-        final GetMethod get =
-            new GetMethod(_appURL+"/upload");
-        try {
-            _client.executeMethod(get);
-            final int statusType = get.getStatusCode()%100;
-            if (2!=statusType) {
-                throw new RuntimeException(get.getStatusText());
-            }
-        } catch (final Exception e) {
-            log.error("initial get method failed ", e);
-        }
-        get.releaseConnection();
-
-        final PostMethod authpost = new PostMethod(_appURL+"/j_security_check");
-
-        final NameValuePair userid   =
-            new NameValuePair("j_username", _username);
-        final NameValuePair password =
-            new NameValuePair("j_password", _password);
-        authpost.setRequestBody(
-            new NameValuePair[] {userid, password});
-
-        try {
-            final int status = _client.executeMethod(authpost);
-            log.debug("Authenticate response code: "+status);
-            log.debug(
-                "Authenticate response body:\n"
-                +authpost.getResponseBodyAsString());
-        } catch (final IOException e) {
-            log.error("Authentication failed ", e);
-        }
-        authpost.releaseConnection();
-
-        /* in order to prevent 'not a multi-part
-         * post error' for the first upload      */
-        try {
-            _client.executeMethod(get);
-        } catch (final Exception e) {
-            log.error("get method failed ", e);
-        }
-        get.releaseConnection();
-    }
-
-    /**
-     * Upload a file.
-     *
-     * @param parentId The folder in which the file should be uploaded.
-     * @param fileName The name of the file.
-     * @param originalTitle The title of the file.
-     * @param originalDescription The file's description.
-     * @param originalLastUpdate The file's last update date.
-     * @param file The local file reference.
-     * @param publish Should the file be published.
-     */
+    /** {@inheritDoc} */
     public void uploadFile(final UUID parentId,
                     final String fileName,
                     final String originalTitle,
@@ -145,13 +72,13 @@ public class FileUploader {
                     final boolean publish) {
         try {
             if (file.length() < 1) {
-                log.warn("Zero length file : "+fileName);
+                LOG.warn("Zero length file : "+fileName);
                 return;
             }
 
             final PostMethod filePost =
                 new PostMethod(_targetUploadURL);
-            log.debug("Migrating file: "+fileName);
+            LOG.debug("Migrating file: "+fileName);
             final String name =
                 ResourceName.escape(fileName).toString();
 
@@ -190,36 +117,27 @@ public class FileUploader {
 
             final int status = _client.executeMethod(filePost);
             if (status == HttpStatus.SC_OK) {
-                log.debug(
+                LOG.debug(
                     "Upload complete, response="
                     + filePost.getResponseBodyAsString()
                 );
             } else {
-                log.error(
+                LOG.error(
                     "Upload failed, response="
                     + status+", "
                     + HttpStatus.getStatusText(status)
                 );
             }
         } catch (final RuntimeException e) {
-            log.error("File migration failed ", e);
+            LOG.error("File migration failed ", e);
         } catch (final IOException e) {
-            log.error("File migration failed ", e);
+            LOG.error("File migration failed ", e);
         }
     }
 
 
-    /**
-     * Upload a file.
-     *
-     * @param parentId The folder in which the file should be uploaded.
-     * @param fileName The name of the file.
-     * @param title The title of the file.
-     * @param lastUpdate The last update of the file.
-     * @param description The file's description.
-     * @param directory The directory that the local file is stored.
-     */
-    void uploadFile(final UUID parentId,
+    /** {@inheritDoc} */
+    public void uploadFile(final UUID parentId,
                     final String fileName,
                     final String title,
                     final String description,
@@ -227,9 +145,10 @@ public class FileUploader {
                     final String directory
                     ) {
 
-        final File file = new File(directory+fileName);
+        final String path = directory+fileName;
+        final File file = new File(path);
         if (!file.exists()) {
-            log.debug("File not found: "+fileName);
+            LOG.warn("File not found: "+path);
         } else {
             uploadFile(parentId,
                 fileName,

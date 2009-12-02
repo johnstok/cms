@@ -6,8 +6,8 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
+import ccc.api.client1.JaxrsServiceLocator;
 import ccc.migration.DbUtilsDB;
-import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.Migrations;
 import ccc.migration.ServiceLookup;
@@ -19,6 +19,7 @@ public final class Migrate extends CccApp {
     private static final Logger LOG = Logger.getLogger(Migrate.class);
     private static LegacyDBQueries legacyDBQueries;
     private static ServiceLookup services;
+    private static JaxrsServiceLocator sl;
     private static Options options;
 
     private Migrate() { /* NO-OP */ }
@@ -34,10 +35,12 @@ public final class Migrate extends CccApp {
 
         options  = parseOptions(args, Options.class);
 
-        login(options.getUsername(), options.getPassword());
-
         services =
             new ServiceLookup(options.getApp(), options.getProviderURL());
+        sl = new JaxrsServiceLocator(options._ccURL);
+
+        login(options.getUsername(), options.getPassword());
+        sl.getSecurity().login(options.getUsername(), options.getPassword());
 
         connectToLegacySystem();
 
@@ -67,13 +70,9 @@ public final class Migrate extends CccApp {
                 services.getPages(),
                 services.getFolders(),
                 services.getUsers(),
-                new FileUploader(
-                    options.getCcURL(),
-                    options.getUsername(),
-                    options.getPassword()),
+                sl.getFileUploader(),
                 services.getTemplates(),
-                options
-                );
+                options);
         migrations.migrate();
     }
 

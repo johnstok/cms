@@ -289,7 +289,7 @@
                                             <arg value="-a"/>
                                             <arg value="${application.prefix}"/>
                                             <arg value="-cu"/>
-                                            <arg value="http://localhost:8080/${application.prefix}/creator"/>
+                                            <arg value="http://localhost:8080/${application.prefix}"/>
                                             <arg value="-lu"/>
                                             <arg value="ccc_migration"/>
                                             <arg value="-lp"/>

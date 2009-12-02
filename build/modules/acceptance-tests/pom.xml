@@ -23,22 +23,16 @@
         </dependency>
         <dependency>
             <groupId>CCC7</groupId>
-            <artifactId>core-domain</artifactId>
+            <artifactId>client-jaxrs</artifactId>
             <version>${project.version}</version>
         </dependency>
         
         <!-- For testing. -->
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${lib.version.httpclient}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${lib.version.slf4j}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-        	<groupId>org.slf4j</groupId>
-        	<artifactId>slf4j-log4j12</artifactId>
-        	<version>1.5.8</version>
-        	<scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium.client-drivers</groupId>

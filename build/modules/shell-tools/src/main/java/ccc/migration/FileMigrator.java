@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.client1.IFileUploader;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -26,10 +27,10 @@ import ccc.rest.dto.ResourceSummary;
  * @author Civic Computing Ltd.
  */
 public class FileMigrator {
-    private static Logger log = Logger.getLogger(Migrations.class);
+    private static Logger log = Logger.getLogger(FileMigrator.class);
 
 
-    private final FileUploader _fu;
+    private final IFileUploader _fu;
     private final LegacyDBQueries _legacyQueries;
     private final String _filesSourcePath;
     private final String _imagesSourcePath;
@@ -45,7 +46,7 @@ public class FileMigrator {
      * @param imagesSourcePath The local path for image files.
      * @param cssSourcePath The local path for css files.
      */
-    public FileMigrator(final FileUploader fu,
+    public FileMigrator(final IFileUploader fu,
                         final LegacyDBQueries legacyQueries,
                         final String filesSourcePath,
                         final String imagesSourcePath,
