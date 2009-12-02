@@ -24,7 +24,9 @@ import java.nio.charset.Charset;
  * @author Civic Computing Ltd.
  */
 public final class IO {
-    private static final int BUFFER_SIZE = 8*1024; //8K
+
+    /** BUFFER_SIZE : int. */
+    static final int BUFFER_SIZE = 8*1024; //8K
 
     private IO() { super(); }
 
