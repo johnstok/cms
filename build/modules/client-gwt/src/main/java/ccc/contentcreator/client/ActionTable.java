@@ -22,6 +22,7 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.rest.dto.ActionSummary;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -30,7 +31,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 
@@ -136,11 +136,12 @@ public class ActionTable extends TablePanel {
      *
      * @param selectedItem The tree item selection.
      */
-    public void displayActionsFor(final TreeItem selectedItem) {
+    public void displayActionsFor(final ModelData selectedItem) {
         _actionStore.removeAll();
-        if (ActionTree.PENDING.equals(selectedItem.getId())) {
+        
+        if (ActionTree.PENDING.equals(selectedItem.get("id"))) {
             displayPendingActions();
-        } else if (ActionTree.COMPLETED.equals(selectedItem.getId())){
+        } else if (ActionTree.COMPLETED.equals(selectedItem.get("id"))){
             displayCompletedActions();
         }
     }
