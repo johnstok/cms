@@ -154,4 +154,6 @@ public final class JsonKeys {
     public static final String NUMBER = "number";
     /** BOOLEAN : String. */
     public static final String BOOLEAN = "boolean";
+    /** CREATED_BY : String. */
+    public static final String CREATED_BY = "created_by";
 }
