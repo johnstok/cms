@@ -25,7 +25,6 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 
-
 /**
  * Accordion control for selecting a resource root.
  *
@@ -113,7 +112,7 @@ public class ResourceNavigator extends ContentPanel {
         actionPanel.setAnimCollapse(false);
         actionPanel.setScrollMode(Scroll.AUTO);
         actionPanel.setHeading("Actions");
-        actionPanel.add(_actionTree);
+        actionPanel.add(_actionTree.getTree());
         add(actionPanel);
         actionPanel.addListener(
             Events.Expand,
