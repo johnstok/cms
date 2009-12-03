@@ -35,6 +35,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private UUID _parent;
     private String _name;
     private Username _publishedBy;
+    private Username _createdBy;
     private String _title;
     private Username _lockedBy;
     private ResourceType _type;
@@ -94,7 +95,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final String tags,
                            final String absolutePath,
                            final UUID indexPageId,
-                           final String description) {
+                           final String description,
+                           final Username createdBy) {
         _id = id;
         _parent = parent;
         _name = name;
@@ -114,6 +116,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _absolutePath = absolutePath;
         _indexPageId = indexPageId;
         _description = description;
+        _createdBy = createdBy;
     }
 
     /**
@@ -187,6 +190,16 @@ public final class ResourceSummary implements Serializable, Jsonable {
      */
     public Username getPublishedBy() {
         return _publishedBy;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the createdBy.
+     */
+    public Username getCreatedBy() {
+        return _createdBy;
     }
 
 

@@ -123,7 +123,11 @@ public class ResourceSummaryModelData
             :UUID.fromString(summaryObject.get(
                 JsonKeys.INDEX_PAGE_ID).isString().stringValue()),
 
-            summaryObject.get(JsonKeys.DESCRIPTION).isString().stringValue()
+            summaryObject.get(JsonKeys.DESCRIPTION).isString().stringValue(),
+            (null!=summaryObject.get(JsonKeys.CREATED_BY).isNull())
+            ? null
+            : new Username(summaryObject.get(
+                JsonKeys.CREATED_BY).isString().stringValue())
         ));
     }
 
