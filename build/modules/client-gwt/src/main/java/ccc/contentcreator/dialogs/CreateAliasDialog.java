@@ -25,6 +25,8 @@ import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.WindowEvent;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.google.gwt.http.client.Response;
@@ -81,10 +83,17 @@ public class CreateAliasDialog extends AbstractEditDialog {
                     final FolderSelectionDialog folderSelect =
                         new FolderSelectionDialog(root);
                     folderSelect.addListener(Events.Hide,
-                        new Listener<ComponentEvent>() {
-                        public void handleEvent(final ComponentEvent be2) {
+                        new Listener<WindowEvent>() {
+                        public void handleEvent(final WindowEvent be2) {
+                            final Button b = be2.getButtonClicked();
+                            if (null==b) { // 'X' button clicked.
+                                return;
+                            }
                             _parent = folderSelect.selectedFolder();
-                            _parentFolder.setValue(_parent.getName());
+                            _parentFolder.setValue(
+                                (null==_parent)
+                                    ? null
+                                    : _parent.getName());
                         }});
                     folderSelect.show();
                 }});
