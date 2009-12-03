@@ -52,7 +52,6 @@ public class MainMenu
         AbstractToolBar {
 
     private static final String CONTENT = "content";
-    private static final String ASSETS = "assets";
 
     private final IGlobals _globals = new IGlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
