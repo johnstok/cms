@@ -62,7 +62,7 @@ public class FolderSelectionDialog extends Window {
                     if (null==_tree.getSelectedItem()) {
                         return; // No selection made.
                     }
-                    hide();
+                    hide(ce.getButton());
                 }});
         save.setId("FolderSelectSave");
         addButton(save);
