@@ -121,34 +121,35 @@ class FileUploader implements IFileUploader {
                     "Upload complete, response="
                     + filePost.getResponseBodyAsString());
             } else {
-                LOG.error(
-                    "Upload failed for "+file.getAbsolutePath()+" - "
-                    + status+"\n"
+                throw new RuntimeException(
+                    "Error returned by server: "+status+"\n"
                     + filePost.getResponseBodyAsString());
             }
+
         } catch (final RuntimeException e) {
-            LOG.error("File migration failed ", e);
+            LOG.error("Upload failed: "+file.getAbsolutePath(), e);
         } catch (final IOException e) {
-            LOG.error("File migration failed ", e);
+            LOG.error("Upload failed: "+file.getAbsolutePath(), e);
         }
     }
 
 
     /** {@inheritDoc} */
     public void uploadFile(final UUID parentId,
-                    final String fileName,
-                    final String title,
-                    final String description,
-                    final Date lastUpdate,
-                    final String directory
-                    ) {
+                           final String fileName,
+                           final String title,
+                           final String description,
+                           final Date lastUpdate,
+                           final String directory) {
 
         final String path = directory+fileName;
         final File file = new File(path);
+
         if (!file.exists()) {
             LOG.warn("File not found: "+path);
         } else {
-            uploadFile(parentId,
+            uploadFile(
+                parentId,
                 fileName,
                 title,
                 description,
