@@ -110,6 +110,7 @@ public class MoveDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
+                if (null==_parent) { return; }
                 Validate.callTo(move())
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
