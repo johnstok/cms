@@ -47,6 +47,15 @@ public class FoldersImpl
         return getFolders().getChildren(folderId);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId)
+    throws RestException {
+        return getFolders().getAccessibleChildren(folderId);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(

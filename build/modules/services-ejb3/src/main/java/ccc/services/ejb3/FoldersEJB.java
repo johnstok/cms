@@ -244,10 +244,31 @@ public class FoldersEJB
     public Collection<ResourceSummary> getChildren(final UUID folderId)
     throws RestException {
         try {
-            final Folder f =
-                getResources().find(Folder.class, folderId);
+            final Folder f = getResources().find(Folder.class, folderId);
             return mapResources(
                 f != null ? f.entries() : new ArrayList<Resource>());
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId)
+    throws RestException {
+        try {
+            final Folder f = getResources().find(Folder.class, folderId);
+            final List<Resource> filtered = new ArrayList<Resource>();
+            final User user = currentUser();
+            for (final Resource r : f.entries()) {
+                if (r.isAccessibleTo(user)) {
+                    filtered.add(r);
+                }
+            }
+            return mapResources(filtered);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

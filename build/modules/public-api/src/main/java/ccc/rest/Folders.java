@@ -68,6 +68,20 @@ public interface Folders {
         @PathParam("id") UUID folderId) throws RestException;
 
     /**
+     * List all of the children of the specified folder which are  accessible
+     * to current user.
+     *
+     * @param folderId The folder.
+     * @throws RestException If the method fails
+     * @return The folder's of children.
+     */
+    @GET
+    @Path("/folders/{id}/accessible-children")
+    @NoCache
+    Collection<ResourceSummary> getAccessibleChildren(
+        @PathParam("id") UUID folderId) throws RestException;
+
+    /**
      * List all of the children of the specified folder in manual order.
      *
      * @param folderId The folder.
