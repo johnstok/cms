@@ -16,6 +16,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.CccCheckedException;
+import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -163,19 +165,6 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({CONTENT_CREATOR})
-    public TextFileDelta get(final UUID fileId) throws RestException {
-        try {
-            return mapTextFile(getResources().find(File.class, fileId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({CONTENT_CREATOR})
     public void update(final UUID id, final TextFileDelta file)
     throws RestException {
         byte[] bytes;
@@ -239,6 +228,20 @@ public class FilesEJB
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public TextFileDelta get(final UUID fileId) throws RestException {
+        try {
+            // FIXME: check file is accessible to user.
+            return mapTextFile(getResources().find(File.class, fileId));
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
 
 
     /** {@inheritDoc} */
