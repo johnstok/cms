@@ -71,6 +71,11 @@ public class ScriptBody
         whiteList.add("java.lang.Object");
         whiteList.add("java.lang.String");
         whiteList.add("java.lang.Boolean");
+        whiteList.add("java.net.URL");
+        whiteList.add("java.nio.charset.Charset");
+        whiteList.add("sun.nio.cs.UTF_8");
+        whiteList.add("sun.net.www.protocol.http.HttpURLConnection$HttpInputStream");
+        whiteList.add("ccc.commons.Resources");
         whiteList.add("java.io.ByteArrayInputStream");
         whiteList.add("javax.activation.MimeType");
         whiteList.add("org.mozilla.javascript.WrappedException");
