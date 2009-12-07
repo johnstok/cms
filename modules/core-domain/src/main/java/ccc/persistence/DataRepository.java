@@ -13,7 +13,6 @@
 package ccc.persistence;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import ccc.domain.Data;
 
@@ -41,26 +40,7 @@ public interface DataRepository {
      * stream.
      *
      * @param data The identifier for the existing data.
-     * @param dataStream The output stream to which the data should be written.
-     */
-    void retrieve(Data data, OutputStream dataStream);
-
-    /**
-     * Retrieve an existing item of binary data and write it to an output
-     * stream.
-     *
-     * @param data The identifier for the existing data.
      * @param action An action to perform with the retrieved data.
      */
     void retrieve(Data data, StreamAction action);
-
-    /**
-     * Retrieve an existing image, create a thumbnail and write it to an output
-     * stream.
-     *
-     * @param data The identifier for the existing data.
-     * @param os The output stream to which the data should be written.
-     * @param maxDimension The maximum dimension of the thumbnail.
-     */
-    void retrieveThumb(Data data, OutputStream os, int maxDimension);
 }

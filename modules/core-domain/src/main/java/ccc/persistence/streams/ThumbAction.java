@@ -21,6 +21,7 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import ccc.commons.Exceptions;
 import ccc.persistence.StreamAction;
 
 /**
@@ -33,7 +34,8 @@ public final class ThumbAction
         StreamAction {
 
     private final OutputStream _dataStream;
-    private int _maxDimension = 0;
+    private static final int DEFAULT_MAX_DIMENSION = 200;
+    private int _maxDimension = DEFAULT_MAX_DIMENSION;
 
     /**
      * Constructor.
@@ -41,9 +43,14 @@ public final class ThumbAction
      * @param dataStream The output stream to copy to.
      * @param maxDimension The maximum dimension of the image.
      */
-    public ThumbAction(final OutputStream dataStream, final int maxDimension) {
+    public ThumbAction(final OutputStream dataStream,
+                       final String maxDimension) {
         _dataStream = dataStream;
-        _maxDimension = maxDimension;
+        try {
+            _maxDimension = Integer.parseInt(maxDimension);
+        } catch (final NumberFormatException e) {
+            Exceptions.swallow(e);
+        }
     }
 
 

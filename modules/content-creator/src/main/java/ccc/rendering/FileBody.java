@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ccc.commons.Context;
-import ccc.commons.Exceptions;
 import ccc.persistence.streams.CopyAction;
+import ccc.persistence.streams.ThumbAction;
 import ccc.rest.RestException;
 import ccc.rest.ServiceLocator;
 import ccc.rest.UnauthorizedException;
@@ -39,7 +39,6 @@ public class FileBody
         Body {
     private static final Logger LOG = Logger.getLogger(FileBody.class);
 
-    private static final int DEFAULT_MAX_DIMENSION = 200;
     private final FileDto _file;
 
     /**
@@ -63,18 +62,12 @@ public class FileBody
         final HttpServletRequest r =
             context.get("request", HttpServletRequest.class);
 
-        if (r != null && r.getParameter("thumb") != null) {
-            // TODO: Extract this code to a ThiumbnailStreamAction class.
-            int maxDimension = DEFAULT_MAX_DIMENSION;
-            try {
-                maxDimension = Integer.parseInt(r.getParameter("thumb"));
-            } catch (final NumberFormatException e) {
-                Exceptions.swallow(e);
-            }
-            files.retrieveThumb(_file.getData(), os, maxDimension);
+        try {
+            if (r != null && r.getParameter("thumb") != null) {
+                files.retrieve(_file.getId(),
+                    new ThumbAction(os, r.getParameter("thumb")));
 
-        } else {
-            try {
+            } else {
                 if (_file.isWorkingCopy()) {
                     LOG.debug("Writing file contents for working copy.");
                     files.retrieveWorkingCopy(
@@ -87,12 +80,12 @@ public class FileBody
                     files.retrieveRevision(
                         _file.getId(), _file.getRevision(), new CopyAction(os));
                 }
-            } catch (final RestException e) {
-                throw new RuntimeException(e);
-            } catch (final UnauthorizedException e) {
-                throw new AuthenticationRequiredException(
-                    _file.getAbsolutePath());
             }
+        } catch (final RestException e) {
+            throw new RuntimeException(e);
+        } catch (final UnauthorizedException e) {
+            throw new AuthenticationRequiredException(
+                _file.getAbsolutePath());
         }
     }
 }
