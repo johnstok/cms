@@ -1,4 +1,16 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: See subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.types;
+
 
 /** Valid actions for a log entry. */
 public enum CommandType {
