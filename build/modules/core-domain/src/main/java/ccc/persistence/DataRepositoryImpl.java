@@ -13,16 +13,13 @@
 package ccc.persistence;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.persistence.EntityManager;
 
 import ccc.domain.Data;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Setting;
-import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.CoreData;
-import ccc.persistence.streams.ThumbAction;
 import ccc.types.DBC;
 
 
@@ -81,19 +78,4 @@ class DataRepositoryImpl implements DataRepository {
         _cd.retrieve(data, action);
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public void retrieve(final Data data, final OutputStream dataStream) {
-        retrieve(data, new CopyAction(dataStream));
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void retrieveThumb(final Data data,
-                              final OutputStream dataStream,
-                              final int maxDimension) {
-        final ThumbAction action = new ThumbAction(dataStream, maxDimension);
-        retrieve(data, action);
-    }
 }

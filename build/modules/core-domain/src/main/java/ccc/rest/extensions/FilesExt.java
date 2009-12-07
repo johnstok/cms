@@ -12,7 +12,6 @@
 package ccc.rest.extensions;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.UUID;
 
@@ -123,15 +122,4 @@ public interface FilesExt
     void retrieveRevision(UUID file, int revision, StreamAction action)
     throws RestException, UnauthorizedException;
 
-
-    /**
-     * Retrieve an existing image file, create a thumbnail and write it to an
-     * output stream.
-     *
-     * @param data The file data identifier.
-     * @param os The output stream to which the data should be written.
-     * @param maxDimension The maximum dimension of the thumbnail.
-     */
-    @Deprecated
-    void retrieveThumb(UUID data, OutputStream os, int maxDimension);
 }
