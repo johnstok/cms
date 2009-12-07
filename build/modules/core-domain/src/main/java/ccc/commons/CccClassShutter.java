@@ -1,3 +1,14 @@
+/*-----------------------------------------------------------------------------
+ * Copyright (c) 2009 Civic Computing Ltd.
+ * All rights reserved.
+ *
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
+ *
+ * Changes: See subversion log.
+ *-----------------------------------------------------------------------------
+ */
 package ccc.commons;
 
 import java.util.List;

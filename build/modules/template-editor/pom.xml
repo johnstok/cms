@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    ========================================================================
+    * Copyright (c) 2009 Civic Computing Ltd.
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: See Subversion log.
+    ========================================================================
+-->
+
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

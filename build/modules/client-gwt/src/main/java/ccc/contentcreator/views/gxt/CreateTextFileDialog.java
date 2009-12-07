@@ -1,12 +1,12 @@
 /*-----------------------------------------------------------------------------
-EditTextFileDialog.java * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.contentcreator.views.gxt;

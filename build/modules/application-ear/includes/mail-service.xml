@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: mail-service.xml 62350 2007-04-15 16:50:12Z dimitris@jboss.org $ -->
+<!-- 
+    ========================================================================
+    * Copyright (c) 2009 Civic Computing Ltd.
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: See Subversion log.
+    ========================================================================
+-->
+
 <server>
 
   <!-- ==================================================================== -->

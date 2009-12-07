@@ -1,3 +1,16 @@
+<!-- 
+    ========================================================================
+    * Copyright (c) 2009 Civic Computing Ltd.
+    * All rights reserved.
+    *
+    * Revision      $Rev: 1811 $
+    * Modified by   $Author: petteri $
+    * Modified on   $Date: 2009-09-09 11:25:35 +0100 (Wed, 09 Sep 2009) $
+    *
+    * Changes: See Subversion log.
+    ========================================================================
+-->
+
 <project 
     xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

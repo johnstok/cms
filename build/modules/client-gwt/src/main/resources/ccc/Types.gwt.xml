@@ -1,3 +1,16 @@
+<!-- 
+    ========================================================================
+    * Copyright (c) 2009 Civic Computing Ltd.
+    * All rights reserved.
+    *
+    * Revision      $Rev$
+    * Modified by   $Author$
+    * Modified on   $Date$
+    *
+    * Changes: See Subversion log.
+    ========================================================================
+-->
+
 <module>
     <source path="types" excludes="EmailAddress.java ResourcePath.java Failure.java" />
     <source path="serialization" excludes="InvalidSnapshotException.java JsonImpl.java IO.java"/>
