@@ -28,6 +28,8 @@ package ccc.rest.snapshots;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -301,7 +303,7 @@ public class ResourceSnapshot implements IResource, Serializable {
      * @param tags The tags to set.
      */
     public void setTags(final Set<String> tags) {
-        _tags = tags;
+        _tags = new HashSet<String>(tags);
     }
 
 
@@ -321,7 +323,7 @@ public class ResourceSnapshot implements IResource, Serializable {
      * @param metadata The metadata to set.
      */
     public void setMetadata(final Map<String, String> metadata) {
-        _metadata = metadata;
+        _metadata = new HashMap<String, String>(metadata);
     }
 
 
