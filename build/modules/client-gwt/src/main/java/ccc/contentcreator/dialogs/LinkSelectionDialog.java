@@ -29,6 +29,7 @@ package ccc.contentcreator.dialogs;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.ResourceSummary;
+import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -183,8 +184,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                 if (_linkPath.getValue() != null
                     && _linkName.getValue() != null) {
                     jsniSetUrl(
-                        _linkPath.getValue(),
-                        _linkName.getValue(),
+                        Paragraph.escape(_linkPath.getValue()),
+                        Paragraph.escape(_linkName.getValue()),
                         _uuid,
                         _elementid,
                         _openInNew.getValue().booleanValue());
