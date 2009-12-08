@@ -28,7 +28,6 @@ package ccc.contentcreator.binding;
 
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,13 +35,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.JsonKeys;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONValue;
 
 
 /**
@@ -66,86 +62,6 @@ public class ResourceSummaryModelData
     public ResourceSummaryModelData(final ResourceSummary rs) {
         _rs = rs;
     }
-
-    /**
-     * Factory method.
-     *
-     * @param jsonObject JSON object representing a resource summary.
-     * @return A model data object representing the resource summary.
-     */
-    public static ResourceSummaryModelData create(final JSONValue jsonObject) {
-
-        final JSONObject summaryObject = jsonObject.isObject();
-
-        return new ResourceSummaryModelData(new ResourceSummary(
-            UUID.fromString(
-                summaryObject.get(JsonKeys.ID).isString().stringValue()),
-
-            UUID.fromString(summaryObject.get(
-                JsonKeys.PARENT_ID).isString().stringValue()),
-
-            summaryObject.get(JsonKeys.NAME).isString().stringValue(),
-
-            (null!=summaryObject.get(JsonKeys.PUBLISHED_BY).isNull())
-                ? null
-                : new Username(summaryObject.get(
-                    JsonKeys.PUBLISHED_BY).isString().stringValue()),
-
-            summaryObject.get(JsonKeys.TITLE).isString().stringValue(),
-
-            (null!=summaryObject.get(JsonKeys.LOCKED_BY).isNull())
-                ? null
-                : new Username(summaryObject.get(
-                    JsonKeys.LOCKED_BY).isString().stringValue()),
-
-            ResourceType.valueOf(
-                summaryObject.get(JsonKeys.TYPE).isString().stringValue()),
-
-            (int) summaryObject.get(
-                JsonKeys.CHILD_COUNT).isNumber().doubleValue(),
-
-            (int) summaryObject.get(
-                JsonKeys.FOLDER_COUNT).isNumber().doubleValue(),
-
-            summaryObject.get(
-                JsonKeys.INCLUDE_IN_MAIN_MENU).isBoolean().booleanValue(),
-
-            (null!=summaryObject.get(JsonKeys.SORT_ORDER).isNull())
-                ? null
-                :summaryObject.get(
-                    JsonKeys.SORT_ORDER).isString().stringValue(),
-
-            summaryObject.get(
-                JsonKeys.HAS_WORKING_COPY).isBoolean().booleanValue(),
-
-            new Date((long) summaryObject.get(
-                JsonKeys.DATE_CREATED).isNumber().doubleValue()),
-
-            new Date((long) summaryObject.get(
-                JsonKeys.DATE_CHANGED).isNumber().doubleValue()),
-
-            (null!=summaryObject.get(JsonKeys.TEMPLATE_ID).isNull())
-                ? null
-                : UUID.fromString(summaryObject.get(
-                    JsonKeys.TEMPLATE_ID).isString().stringValue()),
-
-            summaryObject.get(JsonKeys.TAGS).isString().stringValue(),
-
-            summaryObject.get(JsonKeys.ABSOLUTE_PATH).isString().stringValue(),
-
-            (null!=summaryObject.get(JsonKeys.INDEX_PAGE_ID).isNull())
-            ? null
-            :UUID.fromString(summaryObject.get(
-                JsonKeys.INDEX_PAGE_ID).isString().stringValue()),
-
-            summaryObject.get(JsonKeys.DESCRIPTION).isString().stringValue(),
-            (null!=summaryObject.get(JsonKeys.CREATED_BY).isNull())
-            ? null
-            : new Username(summaryObject.get(
-                JsonKeys.CREATED_BY).isString().stringValue())
-        ));
-    }
-
 
     /** {@inheritDoc} */
     @Override @SuppressWarnings("unchecked") @Deprecated
