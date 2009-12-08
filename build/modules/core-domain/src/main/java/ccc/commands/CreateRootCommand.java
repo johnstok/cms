@@ -74,8 +74,8 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
             throw new ResourceExistsException(null, possibleRoot);
 
         } catch (final EntityNotFoundException e) {
-            _folder.dateCreated(happenedOn);
-            _folder.dateChanged(happenedOn);
+            _folder.dateCreated(happenedOn, actor);
+            _folder.dateChanged(happenedOn, actor);
             getRepository().create(_folder);
 
             audit(_folder, actor, happenedOn);

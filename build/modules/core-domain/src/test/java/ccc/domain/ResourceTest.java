@@ -387,7 +387,7 @@ public final class ResourceTest extends TestCase {
         Thread.sleep(WAIT_LENGTH); // Wait
 
         // ACT
-        r.dateChanged(new Date());
+        r.dateChanged(new Date(), new User());
 
         // ASSERT
         assertTrue(r.dateChanged().after(r.dateCreated()));

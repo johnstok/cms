@@ -111,7 +111,7 @@ public class UpdateFolderCommand
             f.reorder(newOrder);
         }
 
-        f.dateChanged(happenedOn);
+        f.dateChanged(happenedOn, actor);
 
         final LogEntry le =
             new LogEntry(
