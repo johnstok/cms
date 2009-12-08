@@ -30,29 +30,16 @@ package ccc.contentcreator.client;
 import ccc.contentcreator.api.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.util.IconHelper;
-import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
-
 
 /**
  * Tree for users. Users are grouped based on their roles.
  *
  * @author Civic Computing Ltd.
  */
-public class UserTree {
-
-    /** USER_TREE_HEIGHT : int. */
-    private static final int USER_TREE_HEIGHT = 300;
-    private final UserTable _ut = new UserTable();
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
-    private final LeftRightPane _view;
+public class UserTree extends Tree {
 
     /** USERS : String. */
     public static final String USERS = "Users";
@@ -66,9 +53,68 @@ public class UserTree {
     public static final String ADMINISTRATOR = "Administrator";
     /** SEARCH : String. */
     public static final String SEARCH = "Search";
+    /** USER_TREE_HEIGHT : int. 
+     * TODO load USER_TREE_HEIGHT from properties file*/
+    private static final int USER_TREE_HEIGHT = 300;
 
-    private final TreeStore<ModelData> _store = new TreeStore<ModelData>();
-    private final TreePanel<ModelData> _tree = new TreePanel<ModelData>(_store);
+    private final UserTable _userTable = new UserTable();
+    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final LeftRightPane _view;
+
+    /**
+     * Constructor.
+     *
+     * @param view LeftRightPane of the surrounding view.
+     */
+    UserTree(final LeftRightPane view) {
+        _view = view;
+        
+        _tree.setDisplayProperty("name");
+        _tree.setHeight(USER_TREE_HEIGHT);
+        _tree.setIconProvider(new ModelIconProviderImplementation());
+        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        _tree.setStyleAttribute(BACKGROUND_ATTRIBUTE, BACKGROUND_COLOUR);
+        _tree.getSelectionModel().addSelectionChangedListener(
+            new UserSelectedListener());
+        
+        final ModelData users = getNewItem(_constants.users(), USERS);
+        _store.add(users, ADD_ALL_CHILDREN);
+        _tree.setLeaf(users, IS_NOT_LEAF);
+        _tree.setExpanded(users, EXPANDED);
+
+        final ModelData all = getNewItem(_constants.all(), ALL);
+        _store.add(users, all, DONT_ADD_CHILDREN);
+        _tree.setLeaf(all, IS_NOT_LEAF);
+
+        final ModelData creator = getNewItem(
+            _constants.contentCreator(),
+            CONTENT_CREATOR,
+            ImagePaths.USER);
+        _store.add(all, creator, DONT_ADD_CHILDREN);
+        _tree.setLeaf(creator, IS_LEAF);
+
+        final ModelData builder = getNewItem(
+            _constants.siteBuilder(),
+            SITE_BUILDER,
+            ImagePaths.USER);
+        _store.add(all, builder, DONT_ADD_CHILDREN);
+        _tree.setLeaf(builder, IS_LEAF);
+
+        final ModelData admin = getNewItem(
+            _constants.administrator(),
+            ADMINISTRATOR,
+            ImagePaths.ADMINISTRATOR);
+        _store.add(all, admin, DONT_ADD_CHILDREN);
+        _tree.setLeaf(admin, IS_LEAF);
+
+        final ModelData search = getNewItem(
+            _constants.search(),
+            SEARCH,
+            ImagePaths.SEARCH);
+        _store.add(users, search, DONT_ADD_CHILDREN);
+        _tree.setLeaf(all, IS_NOT_LEAF);
+    }
+    
     /**
      * Selection listener for {@link UserTree}.
      *
@@ -80,107 +126,18 @@ public class UserTree {
 
         /** {@inheritDoc} */
         @Override
-        public void selectionChanged(
-                                 final SelectionChangedEvent<ModelData> se) {
-            final ModelData objItem = se.getSelectedItem();
-            _ut.displayUsersFor(objItem);
+        public void selectionChanged(final SelectionChangedEvent<ModelData>
+                                     selectionChangedEvent) {
+            final ModelData selectedItem = 
+                selectionChangedEvent.getSelectedItem();
+            _userTable.displayUsersFor(selectedItem);
         }
-    }
-
-    private ModelData getNewItem(final String name, final String id) {
-        return getNewItem(name, id, null);
-    }
-
-    private ModelData getNewItem(final String name,
-                                 final String id,
-                                 final String iconPath) {
-        final ModelData objItem = new BaseModelData();
-        objItem.set("name", name);
-        objItem.set("id", id);
-        if (iconPath != null) {
-            objItem.set("icon", iconPath);
-        }
-        return objItem;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param view LeftRightPane of the surrounding view.
-     */
-    UserTree(final LeftRightPane view) {
-        _view = view;
-        _tree.setDisplayProperty("name");
-
-        _tree.setIconProvider(new ModelIconProvider<ModelData>() {
-            public AbstractImagePrototype getIcon(final ModelData model) {
-                if (model.get("icon") != null) {
-                    return IconHelper.createPath((String) model.get("icon"));
-                }
-                return null;
-            }
-        });
-
-        _tree.setHeight(USER_TREE_HEIGHT);
-
-        final ModelData users = getNewItem(_constants.users(), USERS);
-        _store.add(users, true);
-        _tree.setLeaf(users, false);
-        _tree.setExpanded(users, true);
-
-        final ModelData all = getNewItem(_constants.all(), ALL);
-        _store.add(users, all, false);
-        _tree.setLeaf(all, false);
-
-        final ModelData creator = getNewItem(
-            _constants.contentCreator(),
-            CONTENT_CREATOR,
-            ImagePaths.USER);
-        _store.add(all, creator, false);
-        _tree.setLeaf(creator, true);
-
-        final ModelData builder = getNewItem(
-            _constants.siteBuilder(),
-            SITE_BUILDER,
-            ImagePaths.USER);
-        _store.add(all, builder, false);
-        _tree.setLeaf(builder, true);
-
-        final ModelData admin = getNewItem(
-            _constants.administrator(),
-            ADMINISTRATOR,
-            ImagePaths.ADMINISTRATOR);
-        _store.add(all, admin, false);
-        _tree.setLeaf(admin, true);
-
-        final ModelData search = getNewItem(
-            _constants.search(),
-            SEARCH,
-            ImagePaths.SEARCH);
-        _store.add(users, search, false);
-        _tree.setLeaf(all, false);
-
-        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        _tree.setStyleAttribute("background", "white");
-
-        _tree.getSelectionModel().addSelectionChangedListener(
-            new UserSelectedListener());
-
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The tree.
-     */
-    public TreePanel<ModelData> getTree() {
-        return _tree;
     }
 
     /**
      * Sets user table to be the content of the right hand pane.
      */
     public void showTable() {
-        _view.setRightHandPane(_ut);
+        _view.setRightHandPane(_userTable);
     }
 }

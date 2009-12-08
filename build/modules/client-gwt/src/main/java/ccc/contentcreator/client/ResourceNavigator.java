@@ -49,8 +49,8 @@ public class ResourceNavigator extends ContentPanel {
 
     private final IGlobals _globals = new IGlobalsImpl();
     private final LeftRightPane _view;
-    private final UserTree _usersTree;
-    private final ActionTree _actionTree;
+    private final Tree _usersTree;
+    private final Tree _actionTree;
     private final List<EnhancedResourceTree> _rootTrees =
         new ArrayList<EnhancedResourceTree>();
 
@@ -80,54 +80,52 @@ public class ResourceNavigator extends ContentPanel {
                 }
             }
 
-            final EnhancedResourceTree tree =
+            final EnhancedResourceTree enhancedResourceTree =
                 new EnhancedResourceTree(root, _view, user, _globals);
-            _rootTrees.add(tree);
-
+            _rootTrees.add(enhancedResourceTree);
             final ContentPanel contentPanel = new ContentPanel();
             contentPanel.getHeader().setId(root.getName()+"-navigator");
             contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
             contentPanel.setHeading(root.getCappedName());
-            contentPanel.add(tree);
+            contentPanel.add(enhancedResourceTree);
             add(contentPanel);
             contentPanel.addListener(
                 Events.Expand,
                 new Listener<ComponentEvent>(){
                     public void handleEvent(final ComponentEvent bce) {
-                        tree.showTable();
+                        enhancedResourceTree.showTable();
                     }
                 }
             );
         }
-
 
         _usersTree = new UserTree(_view);
         if (user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
             final ContentPanel usersPanel = new ContentPanel();
-            usersPanel.setAnimCollapse(false);
-            usersPanel.getHeader().setId("user-navigator");
-            usersPanel.setScrollMode(Scroll.AUTO);
-            usersPanel.setHeading("Users");
-            usersPanel.add(_usersTree.getTree());
-            add(usersPanel);
-            usersPanel.addListener(
-                Events.Expand,
-                new Listener<ComponentEvent>(){
-                    public void handleEvent(final ComponentEvent bce) {
-                        _usersTree.showTable();
-                    }
-                }
-            );
+            setPanel(usersPanel, "user-navigator",
+                "Users", _usersTree, _usersTree);
         }
 
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();
-        actionPanel.getHeader().setId("action-navigator");
+        setPanel(actionPanel, "action-navigator",
+            "Actions", _actionTree, _actionTree);
+
+        _rootTrees.get(0).showTable();
+    }
+
+    private void setPanel(final ContentPanel actionPanel,
+                          String id,
+                          String text,
+                          Tree actionTree,
+                          final Tree _actionTree) {
+
+        actionPanel.getHeader().setId(id);
         actionPanel.setAnimCollapse(false);
         actionPanel.setScrollMode(Scroll.AUTO);
-        actionPanel.setHeading("Actions");
-        actionPanel.add(_actionTree.getTree());
+        actionPanel.setHeading(text);
+        actionPanel.add(actionTree.getTree());
         add(actionPanel);
         actionPanel.addListener(
             Events.Expand,
@@ -137,7 +135,5 @@ public class ResourceNavigator extends ContentPanel {
                 }
             }
         );
-
-        _rootTrees.get(0).showTable();
     }
 }
