@@ -67,8 +67,10 @@ public final class PreviewAction
 
         Window.open(
             url,
-            "_blank",
+            "ccc_preview",
             "menubar=no,"
+            + "width=640,"
+            + "height=480,"
             + "location=yes,"
             + "toolbar=no,"
             + "resizable=yes,"
