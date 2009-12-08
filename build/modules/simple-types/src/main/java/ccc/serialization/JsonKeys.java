@@ -171,4 +171,6 @@ public final class JsonKeys {
     public static final String BOOLEAN = "boolean";
     /** CREATED_BY : String. */
     public static final String CREATED_BY = "created_by";
+    /** CHANGED_BY : String. */
+    public static final String CHANGED_BY = "changed_by";
 }

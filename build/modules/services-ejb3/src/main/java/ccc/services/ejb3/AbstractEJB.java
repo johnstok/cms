@@ -77,7 +77,6 @@ import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.UserDto;
 import ccc.types.CommandType;
 import ccc.types.ResourceType;
-import ccc.types.Username;
 
 
 /**
@@ -435,11 +434,6 @@ abstract class AbstractEJB {
             hasWorkingCopy = (r.as(File.class).hasWorkingCopy());
         }
 
-        Username createdBy = null;
-        if (r.type() == ResourceType.PAGE) {
-            createdBy = r.as(Page.class).revision(0).getActor().username();
-        }
-
         final ResourceSummary rs =
             new ResourceSummary(
                 r.id(),
@@ -462,7 +456,10 @@ abstract class AbstractEJB {
                 r.absolutePath().removeTop().toString(),
                 indexPage,
                 r.description(),
-                createdBy
+                (r.createdBy() != null)
+                    ? r.createdBy().username() : null,
+                (r.changedBy() != null)
+                    ? r.changedBy().username() : null
             );
         return rs;
     }

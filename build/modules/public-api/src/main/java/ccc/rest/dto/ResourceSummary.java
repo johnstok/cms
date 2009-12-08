@@ -51,6 +51,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private String _name;
     private Username _publishedBy;
     private Username _createdBy;
+    private Username _changedBy;
     private String _title;
     private Username _lockedBy;
     private ResourceType _type;
@@ -91,6 +92,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
      * @param absolutePath The resource's absolute path.
      * @param indexPageId The id of the index page.
      * @param description The description of the resource.
+     * @param createdBy The user who created the resource.
+     * @param changedBy The user who changed the resource.
      */
     public ResourceSummary(final UUID id,
                            final UUID parent,
@@ -111,7 +114,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
                            final String absolutePath,
                            final UUID indexPageId,
                            final String description,
-                           final Username createdBy) {
+                           final Username createdBy,
+                           final Username changedBy) {
         _id = id;
         _parent = parent;
         _name = name;
@@ -132,6 +136,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _indexPageId = indexPageId;
         _description = description;
         _createdBy = createdBy;
+        _changedBy = changedBy;
     }
 
     /**
@@ -165,6 +170,14 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _absolutePath = json.getString(ABSOLUTE_PATH);
         _indexPageId = json.getId(INDEX_PAGE_ID);
         _description = json.getString(DESCRIPTION);
+        _createdBy =
+            (null==json.getString(CREATED_BY))
+                ? null
+                : new Username(json.getString(CREATED_BY));
+        _changedBy =
+            (null==json.getString(CHANGED_BY))
+            ? null
+                : new Username(json.getString(CHANGED_BY));
     }
 
 
@@ -215,6 +228,15 @@ public final class ResourceSummary implements Serializable, Jsonable {
      */
     public Username getCreatedBy() {
         return _createdBy;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the changedBy.
+     */
+    public Username getChangedBy() {
+        return _changedBy;
     }
 
 
@@ -449,6 +471,8 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(ABSOLUTE_PATH, _absolutePath);
         json.set(INDEX_PAGE_ID, _indexPageId);
         json.set(DESCRIPTION, _description);
+        json.set(CREATED_BY, (null==_createdBy)?null:_createdBy.toString());
+        json.set(CHANGED_BY, (null==_changedBy)?null:_changedBy.toString());
     }
 
     /**

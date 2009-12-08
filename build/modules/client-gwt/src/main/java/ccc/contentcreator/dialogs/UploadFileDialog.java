@@ -12,6 +12,7 @@
 package ccc.contentcreator.dialogs;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ImagePaths;
@@ -21,6 +22,7 @@ import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -126,10 +128,12 @@ public class UploadFileDialog extends AbstractEditDialog {
                                         getUiConstants().uploadFile());
                         } else {
                             hide();
+                            final JSONObject json =
+                                JSONParser.parse(be.getResultHtml()).isObject();
+                            final ResourceSummary rs =
+                                new ResourceSummary(new GwtJson(json));
                             ssm.create(
-                                ResourceSummaryModelData.create(
-                                    JSONParser.parse(
-                                        be.getResultHtml())), _parent);
+                                new ResourceSummaryModelData(rs), _parent);
                         }
                     }
                 }
