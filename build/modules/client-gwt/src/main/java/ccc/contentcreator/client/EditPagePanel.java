@@ -155,7 +155,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final int editorIndex = indexOf(c.editor());
         remove(c.editor());
         final FCKEditor fck =
-            new FCKEditor(para.text(), "250px", _globals);
+            new FCKEditor(para.text(), "250px");
         insert(fck, editorIndex, new FormData("95%"));
         c.editor(fck);
     }
@@ -693,7 +693,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final Text fieldName = new Text(name+":");
         fieldName.setStyleName("x-form-item");
         add(fieldName);
-        final FCKEditor fck = new FCKEditor("", "250px", _globals);
+        final FCKEditor fck = new FCKEditor("", "250px");
         final PageElement pe = new PageElement(name);
         pe.fieldType(FieldType.HTML);
         pe.editorLabel(fieldName);
