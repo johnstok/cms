@@ -95,6 +95,16 @@
             column="published_by_id"
             not-null="false" 
             foreign-key="FK_RESOURCE_USER_PUBLISHED_ID"/>
+		<many-to-one
+            name="_createdBy"
+            column="created_by_id"
+            not-null="false" 
+            foreign-key="FK_RESOURCE_USER_CREATED_ID"/>
+		<many-to-one
+            name="_changedBy"
+            column="changed_by_id"
+            not-null="false" 
+            foreign-key="FK_RESOURCE_USER_CHANGED_ID"/>
 
 		<component name="_name" class="ccc.types.ResourceName">
 			<property

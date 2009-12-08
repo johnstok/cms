@@ -72,7 +72,7 @@ abstract class UpdateResourceCommand<T>
     protected void update(final Resource resource,
                           final User actor,
                           final Date happenedOn) {
-        resource.dateChanged(happenedOn);
+        resource.dateChanged(happenedOn, actor);
         audit(resource, happenedOn, actor);
     }
 

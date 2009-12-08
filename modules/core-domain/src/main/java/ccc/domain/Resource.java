@@ -81,6 +81,8 @@ public abstract class Resource
     private Duration       _cache             = null;
     private String         _description       = "";
     private boolean        _deleted           = false;
+    private User           _changedBy         = null;
+    private User           _createdBy         = null;
     private Map<String, String> _metadata = new HashMap<String, String>();
 
 
@@ -552,13 +554,25 @@ public abstract class Resource
 
 
     /**
+     * Query method - determine who created this resource.
+     *
+     * @return The creating user.
+     */
+    public User createdBy() {
+        return _createdBy;
+    }
+
+
+    /**
      * Mutator for the date the resource was created.
      *
      * @param createdOn The date of creation.
      */
-    public void dateCreated(final Date createdOn) {
+    public void dateCreated(final Date createdOn, final User createdBy) {
         require().notNull(createdOn);
+        require().notNull(createdBy);
         _dateCreated = new Date(createdOn.getTime());
+        _createdBy = createdBy;
     }
 
 
@@ -569,13 +583,25 @@ public abstract class Resource
 
 
     /**
+     * Query method - determine who last changed this resource.
+     *
+     * @return The last user to change this resource.
+     */
+    public User changedBy() {
+        return _changedBy;
+    }
+
+
+    /**
      * Mutator for the date the resource last changed.
      *
      * @param changedOn The date the resource changed.
      */
-    public void dateChanged(final Date changedOn) {
+    public void dateChanged(final Date changedOn, final User changedBy) {
         require().notNull(changedOn);
+        require().notNull(changedBy);
         _dateChanged = new Date(changedOn.getTime());
+        _changedBy = changedBy;
     }
 
 
