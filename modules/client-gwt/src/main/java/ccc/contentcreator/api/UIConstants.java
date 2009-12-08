@@ -1548,4 +1548,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Full name")
     String fullName();
 
+    /**
+     * "Open in new window".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Open in new window")
+    String openInNewWindow();
+
 }

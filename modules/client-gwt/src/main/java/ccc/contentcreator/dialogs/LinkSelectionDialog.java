@@ -36,6 +36,8 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.CheckBoxGroup;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
@@ -51,6 +53,9 @@ public class LinkSelectionDialog extends AbstractEditDialog {
     private final TriggerField<String> _linkPath =
         new TriggerField<String>();
     private final TextField<String> _linkName = new TextField<String>();
+    private final CheckBox _openInNew = new CheckBox();
+    private final CheckBoxGroup _cbg = new CheckBoxGroup();
+
     private final String _elementid;
 
     private ResourceSummaryModelData _md = null;
@@ -64,11 +69,13 @@ public class LinkSelectionDialog extends AbstractEditDialog {
      * @param elementid Element ID for FCKEditor
      * @param url URL of selected link
      * @param title Title of the link
+     * @param openInNew Boolean  for opening the link in the new  of the window.
      */
     public LinkSelectionDialog(final ResourceSummary targetRoot,
                                final String elementid,
                                final String url,
-                               final String title) {
+                               final String title,
+                               final boolean openInNew) {
         super(new IGlobalsImpl().uiConstants().selectResource(),
               new IGlobalsImpl());
         _elementid = elementid;
@@ -80,9 +87,13 @@ public class LinkSelectionDialog extends AbstractEditDialog {
             _linkPath.setValue(url);
         }
 
-        _linkName.setFieldLabel(constants().name());
+        _linkName.setFieldLabel(constants().title());
         _linkName.setId("linkName");
         _linkName.setAllowBlank(false);
+
+        _openInNew.setValue(new Boolean(openInNew));
+        _cbg.add(_openInNew);
+        _cbg.setFieldLabel(constants().openInNewWindow());
 
         _linkPath.setFieldLabel(constants().path());
         _linkPath.setId("linkPath");
@@ -103,7 +114,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                         .getSetting("application.context");
                                 final String path =_md.getAbsolutePath();
                                 _linkPath.setValue(appContext+path);
-                                _linkName.setValue(_md.getName());
+                                _linkName.setValue(_md.getTitle());
                                 _uuid =_md.getId().toString();
                             }
                         }});
@@ -117,6 +128,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
             }
         });
         addField(_linkName);
+        addField(_cbg);
         addField(_linkPath);
     }
 
@@ -124,7 +136,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
     private static native String jsniSetUrl(final String selectedUrl,
                                             final String title,
                                             final String uuid,
-                                            final String elementID) /*-{
+                                            final String elementID,
+                                            final boolean openInNew) /*-{
         if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance == null) {
@@ -140,16 +153,21 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                 link.href = selectedUrl;
                 link.setAttribute('_fcksavedurl', selectedUrl);
                 link.innerHTML = title;
+                if (openInNew) {
+                    link.target = "_blank";
+                }
+
                 link.setAttribute( 'class', "ccc:"+uuid) ;
             } else {
-                if (uuid == null) {
-                    return instance.InsertHtml("<a href='"+selectedUrl+"'>"
-                    +title+"</a>");
-                } else {
-                    return instance.InsertHtml("<a href='"+selectedUrl
-                    +"' class='ccc:"+uuid+"'>"
-                    +title+"</a>");
+                var linkURL = "<a href='"+selectedUrl+"' title='"+title+"'";
+                if (uuid != null) {
+                    linkURL = linkURL +" class='ccc:"+uuid+"'";
                 }
+                if (openInNew) {
+                    linkURL = linkURL +" target='_blank'";
+                }
+                linkURL = linkURL +">"+ title +"</a>";
+                return instance.InsertHtml(linkURL);
             }
         }
         return null;
@@ -168,7 +186,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                         _linkPath.getValue(),
                         _linkName.getValue(),
                         _uuid,
-                        _elementid);
+                        _elementid,
+                        _openInNew.getValue().booleanValue());
                     hide();
                 }
             }

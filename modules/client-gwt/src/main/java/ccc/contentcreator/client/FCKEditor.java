@@ -17,7 +17,6 @@ package ccc.contentcreator.client;
 import java.util.Collection;
 
 import ccc.contentcreator.actions.GetRootsAction;
-import ccc.contentcreator.api.ActionNameConstants;
 import ccc.contentcreator.dialogs.ImageSelectionDialog;
 import ccc.contentcreator.dialogs.LinkSelectionDialog;
 import ccc.rest.dto.ResourceSummary;
@@ -67,7 +66,6 @@ import com.google.gwt.user.client.ui.Frame;
 public class FCKEditor extends LayoutContainer {
 
     private final String _elementID;
-    private final ActionNameConstants _userActions;
 
 
     /**
@@ -75,11 +73,9 @@ public class FCKEditor extends LayoutContainer {
      *
      * @param html The html to be edited.
      * @param cssHeight The height of the editor in pixels.
-     * @param globals The globals for this UI control.
      */
     public FCKEditor(final String html,
-                     final String cssHeight,
-                     final IGlobals globals) {
+                     final String cssHeight) {
 
         //Work out an ID
         _elementID =
@@ -87,9 +83,6 @@ public class FCKEditor extends LayoutContainer {
             + System.identityHashCode(this);
 
         initJSNI(this);
-
-        _userActions = globals.userActions();
-
 
         //Create the hidden input box
         final HiddenField<String> inputBox = new HiddenField<String>();
@@ -165,8 +158,8 @@ public class FCKEditor extends LayoutContainer {
 
 
     private static native String initJSNI(final FCKEditor obj) /*-{
-        $wnd.cccLinkSelector = function(fckname, url, title) {
-            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,title);
+        $wnd.cccLinkSelector = function(fckname, url, title, openInNew) {
+            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,openInNew);
         };
 
         $wnd.cccImageSelector = function(fckname) {
@@ -181,10 +174,12 @@ public class FCKEditor extends LayoutContainer {
      * @param elementID The element id for the FCK editor instance.
      * @param url The link's URL.
      * @param title The title of the link.
+     * @param openInNew Boolean  for opening the link in the new  of the window.
      */
     public void openLinkSelector(final String elementID,
                                  final String url,
-                                 final String title) {
+                                 final String title,
+                                 final boolean openInNew) {
         new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
             @Override
             protected void onSuccess(final Collection<ResourceSummary> roots) {
@@ -194,7 +189,8 @@ public class FCKEditor extends LayoutContainer {
                         rs = rr;
                     }
                 }
-                new LinkSelectionDialog(rs, elementID, url, title).show();
+                new LinkSelectionDialog(
+                    rs, elementID, url, title, openInNew).show();
             }
 
         }.execute();
