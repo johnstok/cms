@@ -34,6 +34,7 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.FileDto;
+import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -115,12 +116,12 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 final ImageSummaryModelData md =
                     _view.getSelectionModel().getSelectedItem();
                 if (md != null) {
-                    final String path = md.getPath();
+                    final String path = Paragraph.escape(md.getPath());
                     final String appContext =
                         new IGlobalsImpl().getSetting("application.context");
                     jsniSetUrl(
                         appContext+path,
-                        md.getTitle(),
+                        Paragraph.escape(md.getTitle()),
                         md.getId().toString(),
                         _elementid);
                     hide();
