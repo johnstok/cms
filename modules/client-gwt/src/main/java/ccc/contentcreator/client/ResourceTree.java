@@ -37,28 +37,24 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.widget.tree.Tree;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 
 /**
  * Renders a tree of resources.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceTree extends Tree {
+public class ResourceTree{
 
     private final IGlobals _globals;
-    private final TreeStore<ResourceSummaryModelData> _store;
     private final ResourceSummary _root;
 
-
+    private TreePanel<ResourceSummaryModelData> _tree = null;
     /**
      * Constructor.
      *
@@ -69,10 +65,6 @@ public class ResourceTree extends Tree {
 
         _root = root;
         _globals = globals;
-
-        setSelectionMode(SelectionMode.SINGLE);
-        setStyleAttribute("background", "white");
-
 
         final RpcProxy<List<ResourceSummaryModelData>> proxy =
             new RpcProxy<List<ResourceSummaryModelData>>() {
@@ -117,31 +109,17 @@ public class ResourceTree extends Tree {
             }
         };
 
+        final TreeStore<ResourceSummaryModelData> _store;
         _store = new TreeStore<ResourceSummaryModelData>(loader);
 
-
-        final TreeBinder<ResourceSummaryModelData> binder =
-            new TreeBinder<ResourceSummaryModelData>(this, _store) {
-            @Override
-            protected void update(final TreeItem item,
-                                  final ResourceSummaryModelData model) {
-                super.update(item, model);
-                item.setId(model.getName());
-            }
-        };
-        binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
-        binder.setCaching(false);
-        binder.setIconProvider(new ResourceIconProvider());
+        _tree = new TreePanel<ResourceSummaryModelData>(_store);
+        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        _tree.setStyleAttribute("background", "white");
 
         loader.load(null);
     }
-
-    /**
-     * Accessor for this tree's data store.
-     *
-     * @return The internal store.
-     */
-    public TreeStore<ResourceSummaryModelData> store() {
-        return _store;
+    
+    public TreePanel<ResourceSummaryModelData> getTree() {
+        return _tree;
     }
 }
