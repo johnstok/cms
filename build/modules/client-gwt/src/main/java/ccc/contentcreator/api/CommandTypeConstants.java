@@ -53,6 +53,14 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
     String resourceMove();
 
     /**
+     * "Delete".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Delete")
+    String resourceDelete();
+
+    /**
      * "Publish".
      *
      * @return The constant, in the appropriate locale.
