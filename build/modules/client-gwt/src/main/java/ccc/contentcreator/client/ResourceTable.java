@@ -39,6 +39,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -282,14 +283,21 @@ public class ResourceTable
                      final ResourceSummaryModelData newParent,
                      final ResourceSummaryModelData oldParent) {
         _detailsStore.remove(model);
-        _tree.store().remove(oldParent, model);
+        
+        TreeStore<ResourceSummaryModelData> store = _tree.store();
+        store.remove(oldParent, model);
 
-        final ResourceSummaryModelData np =
-            _tree.store().findModel(
-                ResourceSummaryModelData.Property.UUID.name(),
-                newParent.getId());
-        if (null!=np) { // May not exist in other store
-            _tree.store().add(np, model, false);
+        String uuidPropertyName = ResourceSummaryModelData.Property.UUID.name();
+        final ResourceSummaryModelData destinationFolder =
+            store.findModel(uuidPropertyName, newParent.getId());
+
+        if (null!=destinationFolder) { // May not exist in other store
+            String newPath = newParent.getAbsolutePath();
+            String oldPath = oldParent.getAbsolutePath();
+            String currentPath = model.getAbsolutePath();
+            String newModelPath = currentPath.replaceFirst(oldPath, newPath);
+            model.setAbsolutePath(newModelPath);
+            store.add(destinationFolder, model, false);
         }
     }
 }
