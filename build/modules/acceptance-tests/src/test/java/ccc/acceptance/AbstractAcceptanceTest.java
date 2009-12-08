@@ -89,10 +89,11 @@ public abstract class AbstractAcceptanceTest
     private ServiceLocator _sl;
 
     private final String _hostUrl       = "http://localhost:8080/ash";
-    private final String _secure        = _hostUrl+"/api/secure";
-    private final String _public        = _hostUrl+"/api/public";
-    private final String _createFileUrl = _hostUrl+"/upload";
-    private final String _updateFileUrl = _hostUrl+"/update_file";
+    private final String _secure        = _hostUrl+"/ccc/api/secure";
+    private final String _public        = _hostUrl+"/ccc/api/public";
+    private final String _createFileUrl = _hostUrl+"/ccc/upload";
+    private final String _updateFileUrl = _hostUrl+"/ccc/update_file";
+    private final String _previewUrl    = _hostUrl+"/ccc/preview";
 
     private HttpClient _http;
 
@@ -343,7 +344,7 @@ public abstract class AbstractAcceptanceTest
     throws IOException {
         final GetMethod get =
             new GetMethod(
-                _hostUrl+"/preview"
+                _previewUrl
                 + rs.getAbsolutePath()
                 + ((wc) ? "?wc=" : ""));
         try {

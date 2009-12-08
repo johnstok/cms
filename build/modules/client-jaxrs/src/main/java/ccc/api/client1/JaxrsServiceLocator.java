@@ -127,9 +127,9 @@ public class JaxrsServiceLocator implements ServiceLocator {
     public JaxrsServiceLocator(final HttpClient _http, final String hostUrl) {
         _httpClient = _http;
         _hostUrl = hostUrl;
-        _secure = _hostUrl+"/api/secure";
-        _public = _hostUrl+"/api/public";
-        _upload = _hostUrl+"/upload";
+        _secure = _hostUrl+"/ccc/api/secure";
+        _public = _hostUrl+"/ccc/api/public";
+        _upload = _hostUrl+"/ccc/upload";
 
         LOG.debug("Secure URL: "+_secure);
         LOG.debug("Public URL: "+_public);
