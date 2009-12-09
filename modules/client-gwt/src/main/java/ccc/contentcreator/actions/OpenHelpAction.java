@@ -42,7 +42,10 @@ public final class OpenHelpAction
 
     /** {@inheritDoc} */
     public void execute() {
-        Window.open("manual/ContentCreatorManual.html",
-          "_blank", "resizable=yes,scrollbars=yes,status=no");
+        Window.open("static/manual/CCC7_UserManual.htm",
+          "_blank",
+          "height=480,width=640,"
+          + "menubar=no,toolbar=no,location=no,"
+          + "resizable=yes,scrollbars=yes,status=no");
     }
 }
