@@ -34,6 +34,7 @@ import ccc.contentcreator.dialogs.AbstractEditDialog;
 import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.EditTextFile;
 
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -59,6 +60,9 @@ public class EditTextFileDialog
 
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 590;
+    /** TEXT_AREA_HEIGHT : int. */
+    protected static final int TEXT_AREA_HEIGHT = 300;
+
     private CodeMirrorEditor _text;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
@@ -130,6 +134,18 @@ public class EditTextFileDialog
 
         _text = new CodeMirrorEditor("textEditorID");
         addField(_text);
+
+        addListener(Events.Resize,
+            new Listener<BoxComponentEvent>() {
+            @Override
+            public void handleEvent(final BoxComponentEvent be) {
+                final int eheight =
+                    be.getHeight()-(DIALOG_HEIGHT - TEXT_AREA_HEIGHT);
+                if (eheight > (DIALOG_HEIGHT - TEXT_AREA_HEIGHT)) {
+                    _text.setEditorHeight(eheight+"px");
+                }
+            }
+        });
     }
 
     /** {@inheritDoc} */
