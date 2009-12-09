@@ -60,9 +60,6 @@
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.use_sql_comments" value="true" />
 
-            <!-- Drop and re-create the database schema on startup -->
-            <property name="hibernate.hbm2ddl.auto" value="${ccc.hibernate.hbm2ddl.auto}" />
-
         </properties>
     </persistence-unit>
 </persistence>

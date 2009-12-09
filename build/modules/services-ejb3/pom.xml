@@ -77,7 +77,7 @@
                                 <implementation>jpaconfiguration</implementation>
                                 <persistenceunit>${application.prefix}-persistence</persistenceunit>
                                 <outputfilename>ccc7-schema.sql</outputfilename>
-                                <drop>false</drop>
+                                <drop>true</drop>
                                 <create>true</create>
                                 <update>false</update>
                                 <export>false</export>
