@@ -478,7 +478,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         nf.setPropertyEditor(new BigDecimalPropertyEditor(BigDecimal.class));
         nf.setFieldLabel(createLabel(name));
         nf.setData("type", FieldType.NUMBER);
-        nf.setId(name);
 
         final PageElement pe = new PageElement(name);
         pe.fieldType(FieldType.NUMBER);
@@ -498,7 +497,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         image.setFieldLabel(createLabel(name));
         image.setToolTip(name);
         image.setData("type", FieldType.IMAGE);
-        image.setId(name);
         image.setEditable(false);
 
         image.addListener(
@@ -531,7 +529,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         list.setData("type", FieldType.LIST);
         list.setDisplayField("title");
         list.setValueField("value");
-        list.setId(name);
 
         final ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
         final List<BaseModelData> selection = new ArrayList<BaseModelData>();
@@ -581,7 +578,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cb.setData("type", FieldType.COMBOBOX);
         cb.setDisplayField("title");
         cb.setValueField("value");
-        cb.setId(name);
         cb.setEditable(false);
 
         final ListStore<BaseModelData> store =  new ListStore<BaseModelData>();
@@ -620,7 +616,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         cbg.setFieldLabel(createLabel(name));
         cbg.setToolTip(name);
         cbg.setData("type", FieldType.CHECKBOX);
-        cbg.setId(name);
         cbg.setOrientation(Orientation.VERTICAL);
         cbg.setStyleAttribute("overflow", "hidden");
 
@@ -657,7 +652,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         rg.setFieldLabel(createLabel(name));
         rg.setToolTip(name);
         rg.setData("type", FieldType.RADIO);
-        rg.setId(name);
         rg.setOrientation(Orientation.VERTICAL);
         rg.setStyleAttribute("overflow", "hidden");
 
@@ -713,7 +707,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final DateField df = new DateField();
         df.setFieldLabel(createLabel(name));
         df.setData("type", FieldType.DATE);
-        df.setId(name);
         df.setEditable(false);
 
         final PageElement pe = new PageElement(name);
@@ -733,7 +726,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final TextArea ta = new TextArea();
         ta.setData("type", FieldType.TEXT);
-        ta.setId(name);
         ta.setFieldLabel(createLabel(name));
         ta.setToolTip(name);
         if (regexp != null) {
@@ -757,7 +749,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         final TextField<String> tf = new TextField<String>();
         tf.setData("type", FieldType.TEXT);
-        tf.setId(name);
 
         tf.setFieldLabel(createLabel(name));
         tf.setToolTip(name);
@@ -789,7 +780,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         _name = new TextField<String>();
         _name.setFieldLabel(_globals.uiConstants().name());
         _name.setAllowBlank(false);
-//        _name.setId(_globals.uiConstants().name());
         add(_name, new FormData("95%"));
     }
 }
