@@ -17,7 +17,7 @@ create table pages (id varchar(36) not null, current_revision integer not null, 
 create table resource_metadata (resource_id varchar(36) not null, datum_value varchar(1024) not null, datum_key varchar(255) not null, primary key (resource_id, datum_key));
 create table resource_roles (resource_id varchar(36) not null, role varchar(255) not null, primary key (resource_id, role));
 create table resource_tags (resource_id varchar(36) not null, tag_value varchar(255) not null, primary key (resource_id, tag_value));
-create table resources (id varchar(36) not null, vn bigint not null, title varchar(255) not null, in_main_menu bit not null, deleted bit not null, date_created timestamp not null, date_changed timestamp not null, description varchar(1024), template_id varchar(36), locked_by_id varchar(36), published_by_id varchar(36), name varchar(255) not null, parent_id varchar(36), cache_duration bigint, parent_index integer, primary key (id));
+create table resources (id varchar(36) not null, vn bigint not null, title varchar(255) not null, in_main_menu bit not null, deleted bit not null, date_created timestamp not null, date_changed timestamp not null, description varchar(1024), template_id varchar(36), locked_by_id varchar(36), published_by_id varchar(36), created_by_id varchar(36), changed_by_id varchar(36), name varchar(255) not null, parent_id varchar(36), cache_duration bigint, parent_index integer, primary key (id));
 create table searches (id varchar(36) not null, primary key (id));
 create table settings (id varchar(36) not null, vn bigint not null, value varchar(1024) not null, name varchar(255) not null unique, primary key (id));
 create table template_revisions (id varchar(36) not null, vn bigint not null, body clob not null, definition clob not null, mime_type_primary varchar(255) not null, mime_type_sub varchar(255) not null, major_change bit not null, actor_comment varchar(1024), timestamp timestamp not null, actor_id varchar(36) not null, template_id varchar(36) not null, revision_no integer, primary key (id));
@@ -49,7 +49,9 @@ alter table pages add constraint FK_PAGE_RESOURCE_ID foreign key (id) references
 alter table resource_metadata add constraint FK_RESMETADATA_RESOURCE_ID foreign key (resource_id) references resources;
 alter table resource_roles add constraint FK_RESROLES_RESOURCE_ID foreign key (resource_id) references resources;
 alter table resource_tags add constraint FK_RESTAGS_RESOURCE_ID foreign key (resource_id) references resources;
+alter table resources add constraint FK_RESOURCE_USER_CHANGED_ID foreign key (changed_by_id) references users;
 alter table resources add constraint FK_RESOURCE_USER_PUBLISHED_ID foreign key (published_by_id) references users;
+alter table resources add constraint FK_RESOURCE_USER_CREATED_ID foreign key (created_by_id) references users;
 alter table resources add constraint FK_RESOURCE_TEMPLATE_ID foreign key (template_id) references templates;
 alter table resources add constraint FK_RESOURCE_FOLDER_PARENT_ID foreign key (parent_id) references folders;
 alter table resources add constraint FK_RESOURCE_USER_LOCKED_ID foreign key (locked_by_id) references users;
