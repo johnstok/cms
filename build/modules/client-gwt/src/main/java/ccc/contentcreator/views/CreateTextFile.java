@@ -56,6 +56,13 @@ public interface CreateTextFile extends View<Editable>, Validatable {
     /**
      * Accessor.
      *
+     * @return The mime primary type of the text file.
+     */
+    String getPrimaryMime();
+
+    /**
+     * Accessor.
+     *
      * @return The mime sub type of the text file.
      */
     String getSubMime();

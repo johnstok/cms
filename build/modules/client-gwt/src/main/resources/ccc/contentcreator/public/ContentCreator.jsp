@@ -5,7 +5,8 @@
     <meta name="gwt:property" content="locale=<%= request.getLocale() %>" />
     
     <link rel="stylesheet" type="text/css" href="static/gxt/2.0.4/resources/css/gxt-all.css" />
-     <link rel="stylesheet" type="text/css" href="static/listview.css" />
+    <link rel="stylesheet" type="text/css" href="static/listview.css" />
+    <link rel="stylesheet" type="text/css" href="static/js/codemirror/css/editor.css" />
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
@@ -16,6 +17,7 @@
     <!-- If you add any GWT meta tags, they must   -->
     <!-- be added before this line.                -->
     <!--                                           -->
+    <script type="text/javascript" language="javascript" src="static/js/codemirror/js/codemirror.js"></script>
     <script type="text/javascript" language="javascript" src="static/ccc.contentcreator.ContentCreator.nocache.js"></script>
   </head>
 
