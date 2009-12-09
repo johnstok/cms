@@ -70,7 +70,11 @@ public class Schema
 
     @Option(
         name="-v", required=true, usage="Version of the database to build.")
-        private int _version;
+    private int _version;
+
+    @Option(
+        name="-d", required=false, usage="Drop existing tables first.")
+    private boolean _drop = false;
 
     private void create() {
         final DatabaseVendor vendor =
@@ -84,19 +88,24 @@ public class Schema
                 _password);
 
         try {
-            final String sqlPath =
-                "/create/"
-                +_version+"/"
-                +vendor.name().toLowerCase(Locale.US)
-                +"/ccc7-schema.sql";
+            if (_drop) {
+                final String drop =
+                    "/create/"
+                    +_version+"/"
+                    +vendor.name().toLowerCase(Locale.US)
+                    +"/drop.sql";
 
-            LOG.debug("Executing "+sqlPath);
-            LOG.info("Running create script.");
+                runScript(newConnection, drop);
+            }
 
-            final List<String> statements =
-                Resources.readIntoList(sqlPath, Charset.forName("UTF-8"));
-            for (final String statement : statements) {
-                execute(newConnection, statement);
+            if (true) {
+                final String create =
+                    "/create/"
+                    +_version+"/"
+                    +vendor.name().toLowerCase(Locale.US)
+                    +"/ccc7-schema.sql";
+
+                runScript(newConnection, create);
             }
 
             try {
@@ -110,6 +119,19 @@ public class Schema
 
         } finally {
             DbUtils.closeQuietly(newConnection);
+        }
+    }
+
+
+    private void runScript(final Connection newConnection,
+                           final String create) {
+
+        LOG.info("Running script: "+create);
+
+        final List<String> statements =
+            Resources.readIntoList(create, Charset.forName("UTF-8"));
+        for (final String statement : statements) {
+            execute(newConnection, statement);
         }
     }
 

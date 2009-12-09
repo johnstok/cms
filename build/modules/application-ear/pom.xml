@@ -273,7 +273,6 @@
                                         <!-- echo
                                             message="data migration classpath: ${migration_classpath}" / -->
 
-                                        <!--
                                         <java
                                             classname="ccc.cli.Schema"
                                             fork="true"
@@ -285,10 +284,10 @@
                                             <arg value="${application.db-username}"/>
                                             <arg value="-p"/>
                                             <arg value="${application.db-password}"/>
+                                            <arg value="-d"/>
                                             <arg value="-v"/>
                                             <arg value="1"/>
                                         </java>
-                                        -->
 
                                         <java
                                             classname="ccc.cli.Users"
