@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.views.gxt;
 
+import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ValidationResult;
@@ -34,11 +35,15 @@ import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.EditTextFile;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.Radio;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.weborient.codemirror.client.CodeMirrorConfiguration;
-import com.weborient.codemirror.client.CodeMirrorEditorWidget;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 
 
 /**
@@ -53,11 +58,13 @@ public class EditTextFileDialog
         EditTextFile{
 
     private Editable _presenter;
-    private static final int DIALOG_HEIGHT = 580;
-    private CodeMirrorEditorWidget _text = new CodeMirrorEditorWidget();
-//    private final TextArea _text = new TextArea();
+    private static final int DIALOG_HEIGHT = 590;
+    private CodeMirrorEditor _text;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
+    private final  RadioGroup _radioGroup = new RadioGroup();
+    private final TextField<String> _mimePrimaryType = new TextField<String>();
+    private final TextField<String> _mimeSubType = new TextField<String>();
 
     /**
      * Constructor.
@@ -66,13 +73,18 @@ public class EditTextFileDialog
     public EditTextFileDialog() {
 
         super(new IGlobalsImpl().uiConstants().edit(), new IGlobalsImpl());
-        final CodeMirrorConfiguration configuration =
-            new CodeMirrorConfiguration();
 
         setHeight(DIALOG_HEIGHT);
 
-        _text = new CodeMirrorEditorWidget(configuration);
-        _text.getToolBar().removeFromParent(); // remove toolbar
+        _mimePrimaryType.setName("mimePrimaryType");
+        _mimePrimaryType.setFieldLabel(getUiConstants().mimePrimaryType());
+        _mimePrimaryType.setAllowBlank(false);
+        addField(_mimePrimaryType);
+
+        _mimeSubType.setName("fileMimeSubType");
+        _mimeSubType.setFieldLabel(getUiConstants().mimeSubType());
+        _mimeSubType.setAllowBlank(false);
+        addField(_mimeSubType);
 
         _majorEdit.setName("majorEdit");
         _majorEdit.setValue(Boolean.TRUE);
@@ -84,22 +96,52 @@ public class EditTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-//        _text.setFieldLabel(getUiConstants().content());
-//        _text.setHeight(TEXT_AREA_HEIGHT);
+        final Radio radio = new Radio();
+        radio.setBoxLabel("CSSParser");
+        radio.setValue(true);
+
+        final Radio radio2 = new Radio();
+        radio2.setBoxLabel("JSParser");
+        radio2.setValue(false);
+
+        final Radio radio3 = new Radio();
+        radio3.setBoxLabel("HTMLMixedParser");
+        radio3.setValue(false);
+
+        final Radio radio4 = new Radio();
+        radio4.setBoxLabel("DummyParser");
+        radio4.setValue(false);
+
+        _radioGroup.setFieldLabel("Parser");
+        _radioGroup.add(radio);
+        _radioGroup.add(radio2);
+        _radioGroup.add(radio3);
+        _radioGroup.add(radio4);
+        _radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
+
+            @Override
+            public void handleEvent(final FieldEvent be) {
+                _text.setParser(_radioGroup.getValue().getBoxLabel());
+            }
+
+        });
+
+        addField(_radioGroup);
+
+        _text = new CodeMirrorEditor("textEditorID");
         addField(_text);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getText() {
-        return _text.getText();
-//        return "";
+        return _text.getEditorCode();
     }
 
     /** {@inheritDoc} */
     @Override
     public void setText(final String text) {
-        _text.setText(text);
+        _text.setEditorCode(text);
     }
 
     /** {@inheritDoc} */
@@ -131,7 +173,7 @@ public class EditTextFileDialog
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(_text.getText())) {
+        if (!Validations2.notEmpty(_text.getEditorCode())) {
             result.addError(
                 getUiConstants().content()+getUiConstants().cannotBeEmpty());
         }
@@ -148,5 +190,29 @@ public class EditTextFileDialog
     @Override
     public boolean isMajorEdit() {
         return _majorEdit.getValue().booleanValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getPrimaryMime() {
+        return _mimePrimaryType.getValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getSubMime() {
+        return _mimeSubType.getValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setPrimaryMime(final String primary) {
+        _mimePrimaryType.setValue(primary);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setSubMime(final String sub) {
+        _mimeSubType.setValue(sub);
     }
 }

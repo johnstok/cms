@@ -86,14 +86,15 @@ CommandResponseHandler<ResourceSummaryModelData> {
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().getValidationResult().isValid()) {
+        final CreateTextFile view = getView();
+        if (view.getValidationResult().isValid()) {
             final TextFileDto dto = new TextFileDto(
                 getModel().getId(),
-                getView().getName(),
-                new MimeType("text", getView().getSubMime()),
-                getView().isMajorEdit(),
-                getView().getComment(),
-                getView().getText());
+                view.getName(),
+                new MimeType(view.getPrimaryMime(), view.getSubMime()),
+                view.isMajorEdit(),
+                view.getComment(),
+                view.getText());
 
             new CreateTextFileAction(dto){
                 @Override protected void execute(final ResourceSummary folder) {
@@ -104,7 +105,7 @@ CommandResponseHandler<ResourceSummaryModelData> {
             }.execute();
         } else {
             getGlobals().alert(
-                getView().getValidationResult().getErrorText());
+                view.getValidationResult().getErrorText());
         }
     }
 }

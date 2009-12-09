@@ -68,5 +68,32 @@ public interface EditTextFile extends View<Editable>, Validatable {
      */
     boolean isMajorEdit();
 
+    /**
+     * Accessor.
+     *
+     * @return The mime primary type of the text file.
+     */
+    String getPrimaryMime();
+
+    /**
+     * Accessor.
+     *
+     * @return The mime sub type of the text file.
+     */
+    String getSubMime();
+
+    /**
+     * Mutator.
+     *
+     * @param sub The new sub mime type to set.
+     */
+    void setSubMime(String sub);
+
+    /**
+     * Mutator.
+     *
+     * @param primary The new primary mime type to set.
+     */
+    void setPrimaryMime(String primary);
 }
 

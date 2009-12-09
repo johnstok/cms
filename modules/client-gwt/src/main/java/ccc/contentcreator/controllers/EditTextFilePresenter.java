@@ -34,6 +34,7 @@ import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.views.EditTextFile;
 import ccc.rest.dto.TextFileDelta;
+import ccc.types.MimeType;
 
 import com.google.gwt.http.client.Response;
 
@@ -66,6 +67,8 @@ CommandResponseHandler<Void> {
         getView().setPresenter(this);
         getView().show();
         getView().setText(model.getContent());
+        getView().setPrimaryMime(model.getMimeType().getPrimaryType());
+        getView().setSubMime(model.getMimeType().getSubType());
     }
 
     /** {@inheritDoc} */
@@ -86,12 +89,13 @@ CommandResponseHandler<Void> {
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().getValidationResult().isValid()) {
+        final EditTextFile view = getView();
+        if (view.getValidationResult().isValid()) {
             final TextFileDelta dto = new TextFileDelta(getModel().getId(),
-                getView().getText(),
-                getModel().getMimeType(),
-                getView().isMajorEdit(),
-                getView().getComment());
+                view.getText(),
+                new MimeType(view.getPrimaryMime(), view.getSubMime()),
+                view.isMajorEdit(),
+                view.getComment());
             new EditTextFileAction(dto) {
                 /** {@inheritDoc} */
                 @Override
