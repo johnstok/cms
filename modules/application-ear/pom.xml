@@ -273,6 +273,23 @@
                                         <!-- echo
                                             message="data migration classpath: ${migration_classpath}" / -->
 
+                                        <!--
+                                        <java
+                                            classname="ccc.cli.Schema"
+                                            fork="true"
+                                            failonerror="true"
+                                            classpath="${migration_classpath}">
+                                            <arg value="-c"/>
+                                            <arg value="${ccc.db.connection.url}"/>
+                                            <arg value="-u"/>
+                                            <arg value="${application.db-username}"/>
+                                            <arg value="-p"/>
+                                            <arg value="${application.db-password}"/>
+                                            <arg value="-v"/>
+                                            <arg value="1"/>
+                                        </java>
+                                        -->
+
                                         <java
                                             classname="ccc.cli.Users"
                                             fork="true"
