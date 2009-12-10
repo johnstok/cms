@@ -29,6 +29,9 @@ package ccc.domain;
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
 import ccc.rest.dto.AliasDelta;
+import ccc.serialization.Json;
+import ccc.serialization.JsonImpl;
+import ccc.serialization.JsonKeys;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 
@@ -39,6 +42,42 @@ import ccc.types.ResourceType;
  * @author Civic Computing Ltd.
  */
 public class AliasTest extends TestCase {
+
+    /**
+     * Test.
+     * @throws CycleDetectedException If the test fails.
+     */
+    public void testConvertToJson() throws CycleDetectedException {
+
+        // ARRANGE
+        final Json json = new JsonImpl();
+        final Alias a = new Alias();
+        final Page p = new Page();
+        a.target(p);
+
+        // ACT
+        a.toJson(json);
+
+        // ASSERT
+        assertEquals(p.id(), json.getId(JsonKeys.TARGET_ID));
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testConvertToJsonWithMissingTarget() {
+
+        // ARRANGE
+        final Json json = new JsonImpl();
+        final Alias a = new Alias();
+
+        // ACT
+        a.toJson(json);
+
+        // ASSERT
+        assertNull(json.getId(JsonKeys.TARGET_ID));
+    }
 
     /**
      * Test.
