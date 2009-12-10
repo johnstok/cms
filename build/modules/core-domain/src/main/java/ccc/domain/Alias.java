@@ -118,7 +118,9 @@ public class Alias extends Resource {
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.TARGET_ID, target().id().toString());
+        json.set(
+            JsonKeys.TARGET_ID,
+            (null==target()) ? null : target().id().toString());
     }
 
 
