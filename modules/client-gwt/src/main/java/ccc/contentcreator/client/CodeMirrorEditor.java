@@ -133,7 +133,9 @@ public class CodeMirrorEditor extends Composite {
      */
     public native void setEditorHeight(final String height)/*-{
         var txed = this.@ccc.contentcreator.client.CodeMirrorEditor::_editor;
-        txed.wrapping.style.height = height;
+        if (txed) {
+            txed.wrapping.style.height = height;
+        }
     }-*/;
 
 }
