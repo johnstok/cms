@@ -37,7 +37,6 @@
 	<inherits name="ccc.API" />
 	<inherits name="ccc.Types" />
     
-    <inherits name="com.weborient.codemirror.CodemirrorGwt"/>
 
 	<!-- Supported locales.
 	<extend-property name="locale" values="fi" />
