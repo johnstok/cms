@@ -8,7 +8,7 @@ create table file_wc_properties (file_wc_id varchar(36) not null, prop_value var
 create table file_wcopies (id varchar(36) not null, vn bigint not null, size_in_bytes integer not null, data_id varchar(36) not null, mime_type_primary varchar(255) not null, mime_type_sub varchar(255) not null, file_id varchar(36) not null, primary key (id), unique (data_id)) ENGINE=InnoDB;
 create table files (id varchar(36) not null, current_revision integer not null, primary key (id)) ENGINE=InnoDB;
 create table folders (id varchar(36) not null, sort_order varchar(255) not null, index_page varchar(36), primary key (id)) ENGINE=InnoDB;
-create table logentries (id varchar(36) not null, vn bigint not null, actor_id varchar(36) not null, command varchar(255) not null, system bit not null, happened_on datetime not null, subject_id varchar(36) not null, detail longtext not null, index_position bigint not null, recorded_on datetime not null, primary key (id)) ENGINE=InnoDB;
+create table logentries (id varchar(36) not null, vn bigint not null, actor_id varchar(36) not null, command varchar(255) not null, system bit not null, happened_on datetime not null, subject_id varchar(36) not null, detail longtext not null, index_position BIGINT(20) NOT NULL AUTO_INCREMENT UNIQUE, recorded_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, primary key (id)) ENGINE=InnoDB;
 create table page_revision_paragraphs (page_revision_id varchar(36) not null, name varchar(255) not null, type varchar(255) not null, value_text longtext, value_boolean bit, value_date datetime, primary key (page_revision_id, name)) ENGINE=InnoDB;
 create table page_revisions (id varchar(36) not null, vn bigint not null, major_change bit not null, actor_comment varchar(1024), timestamp datetime not null, actor_id varchar(36) not null, page_id varchar(36) not null, revision_no integer not null, primary key (id)) ENGINE=InnoDB;
 create table page_wcopies (id varchar(36) not null, vn bigint not null, page_id varchar(36) not null, primary key (id)) ENGINE=InnoDB;
@@ -61,8 +61,6 @@ alter table template_revisions add index FK_REVISION_TEMPLATE_ID (template_id), 
 alter table templates add index FK_TEMPLATE_RESOURCE_ID (id), add constraint FK_TEMPLATE_RESOURCE_ID foreign key (id) references resources (id);
 alter table user_metadata add index FK_USERMETADATA_USER_ID (user_id), add constraint FK_USERMETADATA_USER_ID foreign key (user_id) references users (id);
 alter table user_roles add index FK_USERROLES_USER_ID (user_id), add constraint FK_USERROLES_USER_ID foreign key (user_id) references users (id);
-ALTER TABLE logentries CHANGE COLUMN index_position index_position BIGINT(20) NOT NULL AUTO_INCREMENT UNIQUE;
-ALTER TABLE logentries CHANGE COLUMN recorded_on recorded_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c03', 0, '0', 'DATABASE_VERSION');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c04', 0, '/tmp/CCC7/lucene', 'LUCENE_INDEX_PATH');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c05', 0, '/tmp/CCC7/filestore', 'FILE_STORE_PATH');

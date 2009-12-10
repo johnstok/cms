@@ -1,3 +1,4 @@
+CREATE SEQUENCE log_entry_index START WITH 1 INCREMENT BY 1 CACHE 0;
 create table action_fail_params (action_id varchar(36) not null, param_value varchar(1024) not null, param_key varchar(255) not null, primary key (action_id, param_key));
 create table action_params (action_id varchar(36) not null, param_value varchar(1024) not null, param_key varchar(255) not null, primary key (action_id, param_key));
 create table actions (id varchar(36) not null, vn bigint not null, execute_after timestamp not null, command varchar(255) not null, status varchar(255) not null, actor_id varchar(36) not null, subject_id varchar(36) not null, failure_code varchar(255), failure_id varchar(36), primary key (id));
@@ -8,7 +9,7 @@ create table file_wc_properties (file_wc_id varchar(36) not null, prop_value var
 create table file_wcopies (id varchar(36) not null, vn bigint not null, size_in_bytes integer not null, data_id varchar(36) not null, mime_type_primary varchar(255) not null, mime_type_sub varchar(255) not null, file_id varchar(36) not null, primary key (id), unique (data_id));
 create table files (id varchar(36) not null, current_revision integer not null, primary key (id));
 create table folders (id varchar(36) not null, sort_order varchar(255) not null, index_page varchar(36), primary key (id));
-create table logentries (id varchar(36) not null, vn bigint not null, actor_id varchar(36) not null, command varchar(255) not null, system bit not null, happened_on timestamp not null, subject_id varchar(36) not null, detail clob not null, index_position bigint not null, recorded_on timestamp not null, primary key (id));
+create table logentries (id varchar(36) not null, vn bigint not null, actor_id varchar(36) not null, command varchar(255) not null, system bit not null, happened_on timestamp not null, subject_id varchar(36) not null, detail clob not null, index_position bigint not null DEFAULT nextval('LOG_ENTRY_INDEX'), recorded_on timestamp not null DEFAULT CURRENT_TIMESTAMP(), primary key (id));
 create table page_revision_paragraphs (page_revision_id varchar(36) not null, name varchar(255) not null, type varchar(255) not null, value_text clob, value_boolean bit, value_date timestamp, primary key (page_revision_id, name));
 create table page_revisions (id varchar(36) not null, vn bigint not null, major_change bit not null, actor_comment varchar(1024), timestamp timestamp not null, actor_id varchar(36) not null, page_id varchar(36) not null, revision_no integer not null, primary key (id));
 create table page_wcopies (id varchar(36) not null, vn bigint not null, page_id varchar(36) not null, primary key (id));
@@ -61,9 +62,6 @@ alter table template_revisions add constraint FK_REVISION_TEMPLATE_ID foreign ke
 alter table templates add constraint FK_TEMPLATE_RESOURCE_ID foreign key (id) references resources;
 alter table user_metadata add constraint FK_USERMETADATA_USER_ID foreign key (user_id) references users;
 alter table user_roles add constraint FK_USERROLES_USER_ID foreign key (user_id) references users;
-CREATE SEQUENCE log_entry_index START WITH 1 INCREMENT BY 1 CACHE 0;
-ALTER TABLE logentries ALTER COLUMN index_position SET DEFAULT nextval('LOG_ENTRY_INDEX');
-ALTER TABLE logentries ALTER COLUMN recorded_on SET DEFAULT CURRENT_TIMESTAMP();
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c03', 0, '0', 'DATABASE_VERSION');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c04', 0, '/tmp/CCC7/lucene', 'LUCENE_INDEX_PATH');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c05', 0, '/tmp/CCC7/filestore', 'FILE_STORE_PATH');
