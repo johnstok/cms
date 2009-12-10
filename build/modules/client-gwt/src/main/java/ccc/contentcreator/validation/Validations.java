@@ -104,16 +104,26 @@ public final class Validations {
     /**
      * Validates that name is not empty.
      *
-     * @param name The string to validate.
+     * @param name The field to validate.
      * @return The Validator
      */
     public static Validator notEmpty(final TextField<String> name) {
+        return notEmpty(name.getValue(), name.getFieldLabel());
+    }
+
+    /**
+     * Validates that value is not empty.
+     *
+     * @param value The string to validate.
+     * @param label The label of the field to validate.
+     * @return The Validator
+     */
+    public static Validator notEmpty(final String value, final String label) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if(null == name.getValue()
-                   || name.getValue().trim().equals("")) {
+                if(null == value || value.trim().equals("")) {
                     validate.addMessage(
-                        name.getFieldLabel()
+                        label
                         + UI_CONSTANTS.cannotBeEmpty()
                     );
                 }
@@ -128,11 +138,11 @@ public final class Validations {
      * @param definition The string to validate.
      * @return The Validator
      */
-    public static Validator notValidXML(final TextField<String> definition) {
+    public static Validator notValidXML(final String definition) {
         return new Validator() {
             public void validate(final Validate validate) {
                 try {
-                    final Document d = XMLParser.parse(definition.getValue());
+                    final Document d = XMLParser.parse(definition);
                     final NodeList l = d.getElementsByTagName("option");
                     for (int n=0; n<l.getLength(); n++) {
                         final NamedNodeMap al = l.item(n).getAttributes();

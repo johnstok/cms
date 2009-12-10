@@ -37,12 +37,9 @@ import ccc.contentcreator.views.CreateTextFile;
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.form.Radio;
-import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 
@@ -62,14 +59,12 @@ public class CreateTextFileDialog
     private final TextField<String> _mimePrimaryType = new TextField<String>();
     private final TextField<String> _mimeSubType = new TextField<String>();
 
-    private final  RadioGroup _radioGroup = new RadioGroup();
-
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
     private CodeMirrorEditor _text;
 
     private Editable _presenter;
-    private static final int DIALOG_HEIGHT = 620;
+    private static final int DIALOG_HEIGHT = 650;
     /** TEXT_AREA_HEIGHT : int. */
     protected static final int TEXT_AREA_HEIGHT = 300;
 
@@ -110,39 +105,8 @@ public class CreateTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-        final Radio radio = new Radio();
-        radio.setBoxLabel("CSSParser");
-        radio.setValue(true);
-
-        final Radio radio2 = new Radio();
-        radio2.setBoxLabel("JSParser");
-        radio2.setValue(false);
-
-        final Radio radio3 = new Radio();
-        radio3.setBoxLabel("HTMLMixedParser");
-        radio3.setValue(false);
-
-        final Radio radio4 = new Radio();
-        radio4.setBoxLabel("DummyParser");
-        radio4.setValue(false);
-
-        _radioGroup.setFieldLabel("Parser");
-        _radioGroup.add(radio);
-        _radioGroup.add(radio2);
-        _radioGroup.add(radio3);
-        _radioGroup.add(radio4);
-        _radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
-
-            @Override
-            public void handleEvent(final FieldEvent be) {
-                _text.setParser(_radioGroup.getValue().getBoxLabel());
-            }
-
-        });
-
-        addField(_radioGroup);
-
-        _text = new CodeMirrorEditor("textEditorID");
+        _text = new CodeMirrorEditor("textEditorID", "");
+        addField(_text.parserSelector(getUiConstants()));
         addField(_text);
 
         addListener(Events.Resize,

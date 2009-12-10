@@ -33,7 +33,7 @@ import ccc.contentcreator.actions.CreateTemplateAction;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.validation.Validate;
@@ -48,8 +48,8 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.http.client.Response;
@@ -65,9 +65,9 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     /** DEFAULT_WIDTH : int. */
     protected static final int DEFAULT_WIDTH = 640;
     /** DEFAULT_HEIGHT : int. */
-    protected static final int DEFAULT_HEIGHT = 480;
+    protected static final int DEFAULT_HEIGHT = 430;
     /** TEXT_AREA_HEIGHT : int. */
-    protected static final int TEXT_AREA_HEIGHT = 350;
+    protected static final int TEXT_AREA_HEIGHT = 300;
 
 
     private final FormPanel _first = new FormPanel();
@@ -77,14 +77,13 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _mimePrimary = new TextField<String>();
     private final TextField<String> _mimeSub = new TextField<String>();
-    private final TextArea _body = new TextArea();
-    private final TextArea _definition = new TextArea();
+    private CodeMirrorEditor _body;
+    private CodeMirrorEditor _definition;
 
     private UUID _id;
-    private final UUID _parentFolderId;
+    private UUID _parentFolderId = null;
     private DialogMode _mode;
     private final SingleSelectionModel _ssm;
-    private TemplateDelta _model;
     private ResourceSummaryModelData _proxy;
 
     /**
@@ -99,36 +98,20 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
               new IGlobalsImpl());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
+        _mode = DialogMode.CREATE;
 
         _parentFolderId = parentFolderId;
         _ssm = ssm;
 
-        _name.setId("name");
-        _mimePrimary.setId("mime-primary");
-        _mimeSub.setId("mime-sub");
-
         populateFirstScreen();
-        populateSecondScreen();
-        populateThirdScreen();
+        populateSecondScreen("<fields></fields>");
+        populateThirdScreen("<html/>");
 
         addCard(_first);
         addCard(_second);
         addCard(_third);
 
-        _mode = DialogMode.CREATE;
-
-        addListener(Events.Resize,
-            new Listener<BoxComponentEvent>() {
-            @Override
-            public void handleEvent(final BoxComponentEvent be) {
-                final int height =
-                    be.getHeight()-(IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
-                if (height > (IGlobals.DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
-                    _definition.setHeight(height);
-                    _body.setHeight(height);
-                }
-            }
-        });
+        addResizeListener();
 
         refresh();
     }
@@ -143,22 +126,49 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     public EditTemplateDialog(final TemplateDelta model,
                               final ResourceSummaryModelData proxy,
                               final SingleSelectionModel ssm) {
-        this(null, ssm);
+        super(new IGlobalsImpl().uiConstants().editTemplate(),
+            new IGlobalsImpl());
+        setWidth(DEFAULT_WIDTH);
+        setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.UPDATE;
 
-        _model = model;
         _proxy = proxy;
-
         _id = proxy.getId();
+        _ssm = ssm;
+
+        populateFirstScreen();
+        populateSecondScreen(model.getDefinition());
+        populateThirdScreen(model.getBody());
+
+        addCard(_first);
+        addCard(_second);
+        addCard(_third);
+
+        addResizeListener();
 
         _name.setReadOnly(true);
         _name.disable();
 
-        _body.setValue(_model.getBody());
-        _definition.setValue(_model.getDefinition());
         _name.setValue(proxy.getName());
         _mimePrimary.setValue(model.getMimeType().getPrimaryType());
         _mimeSub.setValue(model.getMimeType().getSubType());
+        refresh();
+    }
+
+    private void addResizeListener() {
+
+        addListener(Events.Resize,
+            new Listener<BoxComponentEvent>() {
+            @Override
+            public void handleEvent(final BoxComponentEvent be) {
+                final int h =
+                    be.getHeight()-(DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
+                if (h > (DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
+                    _definition.setEditorHeight(h+"px");
+                    _body.setEditorHeight(h+"px");
+                }
+            }
+        });
     }
 
     private void populateFirstScreen() {
@@ -181,39 +191,39 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _first.add(_mimeSub, new FormData("95%"));
     }
 
-    private void populateSecondScreen() {
+    private void populateSecondScreen(final String definition) {
         _second.setWidth("100%");
         _second.setBorders(false);
         _second.setBodyBorder(false);
         _second.setHeaderVisible(false);
 
-        _definition.setFieldLabel("content xml");
-        _definition.setAllowBlank(false);
-        _definition.setId("content_xml");
-        _definition.setHeight(TEXT_AREA_HEIGHT);
+        final Text fieldName = new Text(getUiConstants().definitionXML());
+        fieldName.setStyleName("x-form-item");
+        _second.add(fieldName);
 
+        _definition = new CodeMirrorEditor("definition", definition);
         _second.add(_definition, new FormData("95%"));
     }
 
-    private void populateThirdScreen() {
+    private void populateThirdScreen(final String bodyContent) {
         _third.setWidth("100%");
         _third.setBorders(false);
         _third.setBodyBorder(false);
         _third.setHeaderVisible(false);
 
-        _body.setFieldLabel(getUiConstants().body());
-        _body.setAllowBlank(false);
-        _body.setId("body");
-        _body.setHeight(TEXT_AREA_HEIGHT);
+        final Text fieldName = new Text(getUiConstants().body());
+        fieldName.setStyleName("x-form-item");
+        _third.add(fieldName);
 
+        _body = new CodeMirrorEditor("body", bodyContent);
         _third.add(_body, new FormData("95%"));
     }
 
     private TemplateDelta model() {
         final TemplateDelta delta =
             new TemplateDelta(
-                _body.getValue(),
-                _definition.getValue(),
+                _body.getEditorCode(),
+                _definition.getEditorCode(),
                 new MimeType(_mimePrimary.getValue(), _mimeSub.getValue())
             );
         return delta;
@@ -225,14 +235,15 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(createTemplates())
-                    .check(Validations.notEmpty(_definition))
+                    .check(Validations.notEmpty(
+                        _definition.getEditorCode(), "Definition"))
                     .check(Validations.notEmpty(_name))
                     .check(Validations.notValidResourceName(_name))
-                    .check(Validations.notEmpty(_body))
+                    .check(Validations.notEmpty(_body.getEditorCode(), "body"))
                     .check(Validations.notEmpty(_mimePrimary))
                     .check(Validations.notEmpty(_mimeSub))
                     .stopIfInError()
-                    .check(Validations.notValidXML(_definition))
+                    .check(Validations.notValidXML(_definition.getEditorCode()))
                     .check(uniqueTemplateName(_name))
                     .callMethodOr(Validations.reportErrors());
             }

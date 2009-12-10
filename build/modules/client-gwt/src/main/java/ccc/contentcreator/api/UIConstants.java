@@ -1556,4 +1556,28 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Open in new window")
     String openInNewWindow();
 
+    /**
+     * "Syntax".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Syntax")
+    String syntax();
+
+    /**
+     * "text".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("text")
+    String text();
+
+    /**
+     * "Definition XML".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Definition XML")
+    String definitionXML();
+
 }
