@@ -11,6 +11,13 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.api.UIConstants;
+
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.form.Radio;
+import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
@@ -25,6 +32,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class CodeMirrorEditor extends Composite {
     private String _id;
+    private String _initialText;
 
     @SuppressWarnings("unused")
     private JavaScriptObject _editor;
@@ -33,10 +41,12 @@ public class CodeMirrorEditor extends Composite {
      * Constructor.
      *
      * @param id The ID of the editor.
+     * @param initialText The initial text of the editor.
      */
-    public CodeMirrorEditor(final String id) {
+    public CodeMirrorEditor(final String id, final String initialText) {
         super();
         _id = id;
+        _initialText = initialText;
         initWidget();
     }
 
@@ -54,21 +64,67 @@ public class CodeMirrorEditor extends Composite {
     }
 
 
+    /**
+     * Creates populated RadioGroup for parser selection.
+     *
+     * @param constants UIConstants for labels.
+     * @return RadioGroup of possible parsers options.
+     */
+    public RadioGroup parserSelector(final UIConstants constants) {
+        final RadioGroup radioGroup = new RadioGroup();
+
+        final Radio radioHTML = new Radio();
+        radioHTML.setBoxLabel("HTML");
+        radioHTML.setValueAttribute("HTMLMixedParser");
+        radioHTML.setValue(true);
+
+        final Radio radioJS = new Radio();
+        radioJS.setBoxLabel("JS");
+        radioJS.setValueAttribute("JSParser");
+        radioJS.setValue(false);
+
+        final Radio radioCSS = new Radio();
+        radioCSS.setBoxLabel("CSS");
+        radioCSS.setValueAttribute("CSSParser");
+        radioCSS.setValue(false);
+
+        final Radio radioNone = new Radio();
+        radioNone.setBoxLabel(constants.text());
+        radioNone.setValueAttribute("DummyParser");
+        radioNone.setValue(false);
+
+        radioGroup.setFieldLabel(constants.syntax());
+        radioGroup.add(radioHTML);
+        radioGroup.add(radioJS);
+        radioGroup.add(radioCSS);
+        radioGroup.add(radioNone);
+
+        radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
+            @Override
+            public void handleEvent(final FieldEvent be) {
+                if (radioGroup.getValue() != null) {
+                    setParser(radioGroup.getValue().getValueAttribute());
+                }
+            }
+        });
+        return radioGroup;
+    }
+
     /** {@inheritDoc} */
     @Override
     protected void onLoad() {
-        _editor = initCodeMirror(_id);
+        _editor = initCodeMirror(_id, _initialText);
     }
-
-
 
     /**
      * Initialises CodeMirror editor.
      *
      * @param id The ID of the editor.
+     * @param initialText The initial text of the editor.
      * @return The editor instance.
      */
-    public native JavaScriptObject initCodeMirror(final String id) /*-{
+    public native JavaScriptObject initCodeMirror(final String id,
+                                                  final String initialText) /*-{
 
             var editor = $wnd.CodeMirror.fromTextArea(id, {
                 height: "300px",
@@ -86,7 +142,7 @@ public class CodeMirrorEditor extends Composite {
                 lineNumbers: true,
                 textWrapping: false,
                 tabMode: "spaces",
-                content: ' '
+                content: initialText
               });
 
               return editor;
