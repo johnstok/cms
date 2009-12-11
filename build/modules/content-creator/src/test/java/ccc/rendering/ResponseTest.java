@@ -36,12 +36,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Resources;
-import ccc.domain.Page;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
 import ccc.types.Duration;
 import ccc.types.MimeType;
-import ccc.types.ResourceName;
 
 
 /**
@@ -101,7 +97,8 @@ public class ResponseTest
 
         // ASSERT
         assertTrue(
-            headers.containsValue(new CharEncodingHeader(Charset.forName("UTF-8"))));
+            headers.containsValue(
+                new CharEncodingHeader(Charset.forName("UTF-8"))));
     }
 
     /**
@@ -133,7 +130,8 @@ public class ResponseTest
         final Map<String, Header>headers = _r.getHeaders();
 
         // ASSERT
-        assertTrue(headers.containsValue(new DateHeader("Expires", new Date(0))));
+        assertTrue(
+            headers.containsValue(new DateHeader("Expires", new Date(0))));
     }
     /**
      * Test.
@@ -166,7 +164,8 @@ public class ResponseTest
 
         // ASSERT
         assertTrue(
-            headers.containsValue(new StringHeader("Content-Disposition", "foo")));
+            headers.containsValue(
+                new StringHeader("Content-Disposition", "foo")));
     }
 
     /**
@@ -237,9 +236,9 @@ public class ResponseTest
         final Response r = new Response(new EmptyBody());
         r.setExpiry(new Duration(0));
 
-        _response.setHeader("Pragma", "no-cache");
+        _response.setHeader("Pragma", null);
         _response.setHeader(
-            "Cache-Control", "no-store, must-revalidate, max-age=0");
+            "Cache-Control", "private, must-revalidate, max-age=0");
         _response.setDateHeader("Expires", 0);
         replayAll();
 
@@ -353,12 +352,5 @@ public class ResponseTest
     }
 
     private Response _r;
-    private Page _p =
-        new Page(
-            new ResourceName("my_page"),
-            "my_page",
-            null,
-            new RevisionMetadata(
-                new Date(), User.SYSTEM_USER, true, "Created."));
     private HttpServletResponse _response;
 }

@@ -96,4 +96,9 @@ public class StringHeader
         }
         return true;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() { return _name + ": " + _value; }
 }
