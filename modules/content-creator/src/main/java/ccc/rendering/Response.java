@@ -122,18 +122,22 @@ public class Response {
      * @param expiry The response's expiry time, as a Duration.
      */
     public void setExpiry(final Duration expiry) {
+
+        /* Pragma needs to be set to NULL because tomcat is adding
+         * "pragma:no-cache" otherwise. See
+         * https://issues.apache.org/bugzilla/show_bug.cgi?id=27122 and
+         * http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
+         */
+        _headers.put("Pragma", new StringHeader("Pragma", null));
+
         if (expiry == null || expiry.time() <= 0) {
-            _headers.put("Pragma", new StringHeader("Pragma", "no-cache"));
-            _headers.put("Cache-Control", new StringHeader(
-                "Cache-Control", "no-store, must-revalidate, max-age=0"));
+            _headers.put(
+                "Cache-Control",
+                new StringHeader(
+                    "Cache-Control",
+                    "private, must-revalidate, max-age=0"));
             _headers.put("Expires", new DateHeader("Expires", new Date(0)));
         } else {
-    /* Pragma needs to be set to NULL because tomcat is adding
-     * "pragma:no-cache" otherwise. See
-     * https://issues.apache.org/bugzilla/show_bug.cgi?id=27122 and
-     * http://www.mail-archive.com/tomcat-user@jakarta.apache.org/msg151294.html
-     */
-            _headers.put("Pragma", new StringHeader("Pragma", null));
             final Date now = new Date();
             final Date expiryDate =
                 new Date(
