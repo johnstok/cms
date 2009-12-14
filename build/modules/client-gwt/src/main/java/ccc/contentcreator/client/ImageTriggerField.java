@@ -27,7 +27,11 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
+import ccc.contentcreator.dialogs.ImageChooserDialog;
 
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 
 
@@ -57,6 +61,35 @@ public class ImageTriggerField extends TriggerField<String> {
      */
     public ImageSummaryModelData getFSModel() {
         return _md;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     */
+    public ImageTriggerField() {
+        super();
+
+        setEditable(true);
+
+        addListener(
+            Events.TriggerClick,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent be) {
+                    final ImageChooserDialog imageChooser =
+                        new ImageChooserDialog(ImageTriggerField.this);
+                    imageChooser.show();
+                }});
+
+        addListener(
+            Events.KeyPress,
+            new Listener<ComponentEvent>(){
+                public void handleEvent(final ComponentEvent be) {
+                    clear();
+                    _md = null;
+                    be.stopEvent();
+                }});
     }
 
 }

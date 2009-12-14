@@ -36,7 +36,6 @@ import java.util.UUID;
 import ccc.contentcreator.actions.GetAbsolutePathAction;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
-import ccc.contentcreator.dialogs.ImageChooserDialog;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.PageDelta;
 import ccc.types.MimeType;
@@ -46,7 +45,6 @@ import ccc.types.ResourceName;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -497,16 +495,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         image.setFieldLabel(createLabel(name));
         image.setToolTip(name);
         image.setData("type", FieldType.IMAGE);
-        image.setEditable(false);
-
-        image.addListener(
-            Events.TriggerClick,
-            new Listener<ComponentEvent>(){
-                public void handleEvent(final ComponentEvent be) {
-                    final ImageChooserDialog imageChooser =
-                        new ImageChooserDialog(image);
-                    imageChooser.show();
-                }});
 
         add(image, new FormData("95%"));
 
