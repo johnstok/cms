@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
@@ -45,6 +46,7 @@ public class CodeMirrorEditor extends Composite {
      */
     public CodeMirrorEditor(final String id, final String initialText) {
         super();
+
         _id = id;
         _initialText = initialText;
         initWidget();
@@ -113,7 +115,9 @@ public class CodeMirrorEditor extends Composite {
     /** {@inheritDoc} */
     @Override
     protected void onLoad() {
-        _editor = initCodeMirror(_id, _initialText);
+        _editor = initCodeMirror(_id,
+            _initialText,
+            GWT.getModuleBaseURL()+"js/codemirror/");
     }
 
     /**
@@ -121,10 +125,12 @@ public class CodeMirrorEditor extends Composite {
      *
      * @param id The ID of the editor.
      * @param initialText The initial text of the editor.
+     * @param baseUrl The base URL for scripts and css.
      * @return The editor instance.
      */
     public native JavaScriptObject initCodeMirror(final String id,
-                                                  final String initialText) /*-{
+                                                  final String initialText,
+                                                  final String baseUrl) /*-{
 
             var editor = $wnd.CodeMirror.fromTextArea(id, {
                 height: "300px",
@@ -134,10 +140,10 @@ public class CodeMirrorEditor extends Composite {
                              "tokenizejavascript.js",
                              "parsejavascript.js",
                              "parsehtmlmixed.js"],
-                stylesheet: ["static/js/codemirror/css/xmlcolors.css",
-                             "static/js/codemirror/css/jscolors.css",
-                             "static/js/codemirror/css/csscolors.css"],
-                path: "static/js/codemirror/js/",
+                stylesheet: [baseUrl+"css/xmlcolors.css",
+                             baseUrl+"css/jscolors.css",
+                             baseUrl+"css/csscolors.css"],
+                path: baseUrl+"js/",
                 continuousScanning: 1000,
                 lineNumbers: true,
                 textWrapping: false,

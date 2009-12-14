@@ -105,7 +105,7 @@ public class CreateTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-        _text = new CodeMirrorEditor("textEditorID", "");
+        _text = new CodeMirrorEditor("textCreateEditorID", "");
         addField(_text.parserSelector(getUiConstants()));
         addField(_text);
 
