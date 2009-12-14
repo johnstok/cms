@@ -97,7 +97,7 @@ public class EditTextFileDialog
         addField(_comment);
 
 
-        _text = new CodeMirrorEditor("textEditorID", "");
+        _text = new CodeMirrorEditor("textEditEditorID", "");
 
         addField(_text.parserSelector(getUiConstants()));
         addField(_text);
