@@ -804,28 +804,6 @@ public class ResourcesEJB
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
-    public void createLogEntry(final UUID resourceId,
-                               final String action,
-                               final String detail)
-        throws RestException {
-        try {
-            final LogEntry le = new LogEntry(currentUser(),
-                                            action,
-                                            new Date(),
-                                            resourceId,
-                                            detail);
-            getAuditLog().record(le);
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-
-
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */
@@ -989,6 +967,25 @@ public class ResourcesEJB
             return
                 mapResource(r);
 
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public void createLogEntry(final UUID resourceId,
+                               final String action,
+                               final String detail)
+        throws RestException {
+        try {
+            final LogEntry le = new LogEntry(currentUser(),
+                                            action,
+                                            new Date(),
+                                            resourceId,
+                                            detail);
+            getAuditLog().record(le);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
