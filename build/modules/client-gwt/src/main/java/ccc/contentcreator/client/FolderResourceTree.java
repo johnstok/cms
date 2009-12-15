@@ -42,6 +42,7 @@ import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
+import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.store.TreeStoreEvent;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
@@ -60,7 +61,7 @@ public class FolderResourceTree extends Tree {
     private final IGlobals _globals;
 
     private final TreeStore<ResourceSummaryModelData> _store;
-    private final FolderBinder _binder;
+    final FolderBinder _binder;
 
     /**
      * Constructor.
@@ -189,6 +190,24 @@ public class FolderResourceTree extends Tree {
             return item;
         }
 
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected void onAdd(final StoreEvent<ResourceSummaryModelData> se) {
+            final TreeStoreEvent<ResourceSummaryModelData> tse =
+                (TreeStoreEvent<ResourceSummaryModelData>) se;
+            TreeItem p = (TreeItem) findItem(tse.getParent());
+            if (p == null) {
+                p = tree.getRootItem();
+            }
+            final ResourceSummaryModelData pModel = p.getModel();
+
+            p.setLeaf(pModel.getFolderCount()<1);
+            p.updateJointStyle();
+        }
+
+
         /**
          * Load the children for a specified tree node.
          *
@@ -205,6 +224,13 @@ public class FolderResourceTree extends Tree {
             if (loader.hasChildren(te.getParent())) {
                 super.onRenderChildren(te);
             }
+        }
+
+
+        /** {@inheritDoc} */
+        @Override
+        protected boolean hasChildren(final ResourceSummaryModelData parent) {
+            return parent.getFolderCount() > 0;
         }
     }
 }

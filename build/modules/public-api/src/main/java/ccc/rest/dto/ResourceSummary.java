@@ -547,4 +547,14 @@ public final class ResourceSummary implements Serializable, Jsonable {
         final String cappedName = c+heading.substring(1);
         return cappedName;
     }
+
+
+    /**
+     * Mutator.
+     *
+     * @param count The folder count.
+     */
+    public void setFolderCount(final int count) {
+        _folderCount = count;
+    }
 }

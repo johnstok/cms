@@ -32,6 +32,7 @@ import java.util.List;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
+import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -256,8 +257,19 @@ public class ResourceTable
     /** {@inheritDoc} */
     @Override
     public void delete(final ResourceSummaryModelData item) {
+        final ResourceSummaryModelData parent = _tree.store().getParent(item);
+        if (null!=parent && ResourceType.FOLDER==item.getType()) {
+            parent.decrementFolderCount();
+        }
         _detailsStore.remove(item);
         _tree.store().remove(item);
+
+        final TreeItem p = (TreeItem) _tree._binder.findItem(parent);
+        if (parent.getFolderCount()<1) {
+            p.setExpanded(false);
+            p.setLeaf(true);
+        }
+        p.updateJointStyle();
     }
 
 
@@ -283,20 +295,25 @@ public class ResourceTable
                      final ResourceSummaryModelData newParent,
                      final ResourceSummaryModelData oldParent) {
         _detailsStore.remove(model);
-        
-        TreeStore<ResourceSummaryModelData> store = _tree.store();
+
+        final TreeStore<ResourceSummaryModelData> store = _tree.store();
         store.remove(oldParent, model);
 
-        String uuidPropertyName = ResourceSummaryModelData.Property.UUID.name();
+        final String uuidPropertyName =
+            ResourceSummaryModelData.Property.UUID.name();
         final ResourceSummaryModelData destinationFolder =
             store.findModel(uuidPropertyName, newParent.getId());
 
         if (null!=destinationFolder) { // May not exist in other store
-            String newPath = newParent.getAbsolutePath();
-            String oldPath = oldParent.getAbsolutePath();
-            String currentPath = model.getAbsolutePath();
-            String newModelPath = currentPath.replaceFirst(oldPath, newPath);
+            final String newPath = newParent.getAbsolutePath();
+            final String oldPath = oldParent.getAbsolutePath();
+            final String currentPath = model.getAbsolutePath();
+            final String newModelPath =
+                currentPath.replaceFirst(oldPath, newPath);
             model.setAbsolutePath(newModelPath);
+            if (ResourceType.FOLDER==model.getType()) {
+                destinationFolder.incrementFolderCount();
+            }
             store.add(destinationFolder, model, false);
         }
     }

@@ -481,4 +481,18 @@ public class ResourceSummaryModelData
     public String revisionsPath() {
         return "/resources/"+getId()+"/revisions";
     }
+
+    /**
+     * Increase the folder count by 1.
+     */
+    public void incrementFolderCount() {
+        _rs.setFolderCount(_rs.getFolderCount()+1);
+    }
+
+    /**
+     * Decrease the folder count by 1.
+     */
+    public void decrementFolderCount() {
+        _rs.setFolderCount(_rs.getFolderCount()-1);
+    }
 }
