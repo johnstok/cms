@@ -88,7 +88,7 @@ public abstract class AbstractAcceptanceTest
 
     private ServiceLocator _sl;
 
-    private final String _hostUrl       = "http://localhost:8080/ash";
+    private final String _hostUrl       = "http://localhost:8080/cc7";
     private final String _secure        = _hostUrl+"/ccc/api/secure";
     private final String _public        = _hostUrl+"/ccc/api/public";
     private final String _createFileUrl = _hostUrl+"/ccc/upload";
