@@ -83,6 +83,7 @@ public class ScriptBody
         whiteList.add("ccc.types");
         whiteList.add("ccc.rest.dto");
         whiteList.add("ccc.mail.Mailer");
+        whiteList.add("java.io.FileInputStream"); // fileupload failed without sometimes
         whiteList.add("java.lang.Object");
         whiteList.add("java.lang.String");
         whiteList.add("java.lang.Boolean");
