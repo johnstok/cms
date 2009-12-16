@@ -1,26 +1,10 @@
-<!-- 
-    ========================================================================
-    * Copyright (c) 2009 Civic Computing Ltd.
-    * All rights reserved.
-    *
-    * Revision      $Rev$
-    * Modified by   $Author$
-    * Modified on   $Date$
-    *
-    * Changes: See Subversion log.
-    ========================================================================
--->
-
-<project 
-    xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.0-SNAPSHOT</version>
+        <version>7.0.0</version>
     </parent>
 
     <artifactId>services-ejb3</artifactId>

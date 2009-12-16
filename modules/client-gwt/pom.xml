@@ -1,41 +1,10 @@
-<!-- 
-    ========================================================================
-    * Copyright (c) 2009 Civic Computing Ltd.
-    * All rights reserved.
-    *
-    * This file is part of Content Control.
-    *
-    * Content Control is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
-    *
-    * Content Control is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with Content Control.  If not, see http://www.gnu.org/licenses/.
-    *
-    * Revision      $Rev$
-    * Modified by   $Author$
-    * Modified on   $Date$
-    *
-    * Changes: See Subversion log.
-    ========================================================================
--->
-
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.0-SNAPSHOT</version>
+        <version>7.0.0</version>
     </parent>
     
     <artifactId>client-gwt</artifactId>
@@ -53,35 +22,26 @@
                         <configuration>
                             <tasks>
 
-                                <property name="compile_classpath"
-                                    refid="maven.compile.classpath" />
+                                <property name="compile_classpath" refid="maven.compile.classpath" />
                                 <path id="gwt.compile.classpath">
-                                    <pathelement
-                                        location="${basedir}/src/main/java" />
-                                    <pathelement
-                                        location="${basedir}/src/main/resources" />
-                                    <pathelement
-                                        location="${basedir}/../public-api/src/main/java" />
-                                    <pathelement
-                                        location="${basedir}/../simple-types/src/main/java" />
+                                    <pathelement location="${basedir}/src/main/java" />
+                                    <pathelement location="${basedir}/src/main/resources" />
+                                    <pathelement location="${basedir}/../public-api/src/main/java" />
+                                    <pathelement location="${basedir}/../simple-types/src/main/java" />
                                     <pathelement path="${compile_classpath}" />
                                 </path>
-                                <property name="gwt_compile_classpath"
-                                    refid="gwt.compile.classpath" />
+                                <property name="gwt_compile_classpath" refid="gwt.compile.classpath" />
                                 <!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
 
                                 <echo message="Running GWT compiler" />
-                                <java classname="com.google.gwt.dev.GWTCompiler"
-                                    classpath="${gwt_compile_classpath}"
-                                    fork="true" failonerror="true">
-                                    <jvmarg value="-Xms512M"/>
-                                    <jvmarg value="-Xmx512M"/>
-                                    <jvmarg value="-Xss4M"/>
-                                    <jvmarg value="-Dgwt.nowarn.legacy.tools"/>
+                                <java classname="com.google.gwt.dev.GWTCompiler" classpath="${gwt_compile_classpath}" fork="true" failonerror="true">
+                                    <jvmarg value="-Xms512M" />
+                                    <jvmarg value="-Xmx512M" />
+                                    <jvmarg value="-Xss4M" />
+                                    <jvmarg value="-Dgwt.nowarn.legacy.tools" />
                                     <arg value="-out" />
                                     <arg value="${basedir}/target/www" />
-                                    <arg
-                                        value="ccc.contentcreator.ContentCreator" />
+                                    <arg value="ccc.contentcreator.ContentCreator" />
                                 </java>
 
                             </tasks>

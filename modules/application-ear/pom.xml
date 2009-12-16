@@ -1,41 +1,10 @@
-<!-- 
-    ========================================================================
-    * Copyright (c) 2009 Civic Computing Ltd.
-    * All rights reserved.
-    *
-    * This file is part of Content Control.
-    *
-    * Content Control is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
-    *
-    * Content Control is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with Content Control.  If not, see http://www.gnu.org/licenses/.
-    *
-    * Revision      $Rev$
-    * Modified by   $Author$
-    * Modified on   $Date$
-    *
-    * Changes: See Subversion log.
-    ========================================================================
--->
-
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.0-SNAPSHOT</version>
+        <version>7.0.0</version>
     </parent>
     
     <artifactId>application-ear</artifactId>
@@ -95,13 +64,13 @@
             <groupId>CCC7</groupId>
             <artifactId>content-creator</artifactId>
             <type>war</type>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>7.0.0</version>
         </dependency>
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>services-ejb3</artifactId>
             <type>ejb</type>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>7.0.0</version>
         </dependency>
 
         <!-- For rest-api (exclude dependencies). -->
@@ -200,7 +169,7 @@
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>shell-tools</artifactId>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>7.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -262,84 +231,65 @@
                                     <tasks>
                                         <echo>Running migration</echo>
 
-                                        <property name="test_classpath"
-                                            refid="maven.test.classpath" />
+                                        <property name="test_classpath" refid="maven.test.classpath" />
                                         <path id="migration.classpath">
-                                            <pathelement
-                                                path="${test_classpath}" />
+                                            <pathelement path="${test_classpath}" />
                                         </path>
-                                        <property name="migration_classpath"
-                                            refid="migration.classpath" />
+                                        <property name="migration_classpath" refid="migration.classpath" />
                                         <!-- echo
                                             message="data migration classpath: ${migration_classpath}" / -->
 
-                                        <java
-                                            classname="ccc.cli.Schema"
-                                            fork="true"
-                                            failonerror="true"
-                                            classpath="${migration_classpath}">
-                                            <arg value="-c"/>
-                                            <arg value="${ccc.db.connection.url}"/>
-                                            <arg value="-u"/>
-                                            <arg value="${application.db-username}"/>
-                                            <arg value="-p"/>
-                                            <arg value="${application.db-password}"/>
-                                            <arg value="-d"/>
-                                            <arg value="-v"/>
-                                            <arg value="1"/>
+                                        <java classname="ccc.cli.Schema" fork="true" failonerror="true" classpath="${migration_classpath}">
+                                            <arg value="-c" />
+                                            <arg value="${ccc.db.connection.url}" />
+                                            <arg value="-u" />
+                                            <arg value="${application.db-username}" />
+                                            <arg value="-p" />
+                                            <arg value="${application.db-password}" />
+                                            <arg value="-d" />
+                                            <arg value="-v" />
+                                            <arg value="1" />
                                         </java>
 
-                                        <java
-                                            classname="ccc.cli.Users"
-                                            fork="true"
-                                            failonerror="true"
-                                            classpath="${migration_classpath}">
-                                            <arg value="-c"/>
-                                            <arg value="${ccc.db.connection.url}"/>
-                                            <arg value="-u"/>
-                                            <arg value="${application.db-username}"/>
-                                            <arg value="-p"/>
-                                            <arg value="${application.db-password}"/>
-                                            <arg value="-nu"/>
-                                            <arg value="migration"/>
-                                            <arg value="-ne"/>
-                                            <arg value="migration@civicuk.com"/>
-                                            <arg value="-np"/>
-                                            <arg value="migration"/>
+                                        <java classname="ccc.cli.Users" fork="true" failonerror="true" classpath="${migration_classpath}">
+                                            <arg value="-c" />
+                                            <arg value="${ccc.db.connection.url}" />
+                                            <arg value="-u" />
+                                            <arg value="${application.db-username}" />
+                                            <arg value="-p" />
+                                            <arg value="${application.db-password}" />
+                                            <arg value="-nu" />
+                                            <arg value="migration" />
+                                            <arg value="-ne" />
+                                            <arg value="migration@civicuk.com" />
+                                            <arg value="-np" />
+                                            <arg value="migration" />
                                         </java>
                                         
-                                        <java
-                                            classname="ccc.cli.Create"
-                                            fork="true"
-                                            failonerror="true"
-                                            classpath="${migration_classpath}">
-                                            <arg value="-u"/>
-                                            <arg value="migration"/>
-                                            <arg value="-p"/>
-                                            <arg value="migration"/>
-                                            <arg value="-a"/>
-                                            <arg value="${application.prefix}"/>
+                                        <java classname="ccc.cli.Create" fork="true" failonerror="true" classpath="${migration_classpath}">
+                                            <arg value="-u" />
+                                            <arg value="migration" />
+                                            <arg value="-p" />
+                                            <arg value="migration" />
+                                            <arg value="-a" />
+                                            <arg value="${application.prefix}" />
                                         </java>
                                         
-                                        <java
-                                            classname="ccc.cli.Migrate"
-                                            fork="true"
-                                            failonerror="true"
-                                            classpath="${migration_classpath}">
-                                            <arg value="-u"/>
-                                            <arg value="migration"/>
-                                            <arg value="-p"/>
-                                            <arg value="migration"/>
-                                            <arg value="-a"/>
-                                            <arg value="${application.prefix}"/>
-                                            <arg value="-cu"/>
-                                            <arg value="http://localhost:8080/${application.prefix}"/>
-                                            <arg value="-lu"/>
-                                            <arg value="ccc_migration"/>
-                                            <arg value="-lp"/>
-                                            <arg value="d3ccc_migration"/>
-                                            <arg value="-lc"/>
-                                            <arg value="jdbc:oracle:thin:@poseidon:1521:DEV"/>
+                                        <java classname="ccc.cli.Migrate" fork="true" failonerror="true" classpath="${migration_classpath}">
+                                            <arg value="-u" />
+                                            <arg value="migration" />
+                                            <arg value="-p" />
+                                            <arg value="migration" />
+                                            <arg value="-a" />
+                                            <arg value="${application.prefix}" />
+                                            <arg value="-cu" />
+                                            <arg value="http://localhost:8080/${application.prefix}" />
+                                            <arg value="-lu" />
+                                            <arg value="ccc_migration" />
+                                            <arg value="-lp" />
+                                            <arg value="d3ccc_migration" />
+                                            <arg value="-lc" />
+                                            <arg value="jdbc:oracle:thin:@poseidon:1521:DEV" />
                                         </java>
                                     </tasks>
                                 </configuration>
