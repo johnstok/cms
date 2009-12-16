@@ -34,6 +34,8 @@ import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.views.RenameResource;
+import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 
 /**
@@ -93,6 +95,10 @@ public class RenameResourcePresenter
     @Override
     public void onSuccess(final Void result) {
         getModel().setName(getView().getName());
+        final ResourcePath p = new ResourcePath(getModel().getAbsolutePath());
+        final ResourcePath newPath =
+            p.parent().append(new ResourceName(getView().getName()));
+        getModel().setAbsolutePath(newPath.toString());
         getBus().put(new ResourceUpdatedEvent(getModel()));
         getView().hide();
     }

@@ -30,8 +30,6 @@ import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -42,18 +40,16 @@ import java.util.regex.Pattern;
 public final class ResourcePath {
 
     /** PATH_PATTERN : Pattern. */
-    public static final Pattern PATH_PATTERN =
-        Pattern.compile("(/"+ResourceName.VALID_CHARACTERS+")*");
-    /** TOKEN_PATTERN : String. */
-    public static final String TOKEN_PATTERN =
-        "/("+ResourceName.VALID_CHARACTERS+")";
+    public static final String PATH_PATTERN =
+        "(/"+ResourceName.VALID_CHARACTERS+")*";
+
     private final List<ResourceName> _elements;
 
     /**
      * Constructor.
      *
      * Converts a string into a ResourcePath, performing validation. A valid
-     * path should match the java.util.regex regular expression defined by
+     * path should match the regex regular expression defined by
      * {@value ResourcePath#PATH_PATTERN}.
      *
      * @param pathString The absolute resource path, represented as a string.
@@ -70,11 +66,12 @@ public final class ResourcePath {
 
         final List<ResourceName> parts = new ArrayList<ResourceName>();
 
-        final Matcher m = Pattern.compile(TOKEN_PATTERN).matcher(pathString);
-        while (m.find()) {
+        final String[] stringParts = pathString.split("/");
+        for (int i=1; i<stringParts.length; i++) {
             parts.add(
-                new ResourceName(pathString.substring(m.start()+1, m.end())));
+                new ResourceName(stringParts[i]));
         }
+
         _elements = unmodifiableList(parts);
     }
 
@@ -131,8 +128,7 @@ public final class ResourcePath {
      * @return True if the string is valid, false otherwise.
      */
     public static boolean isValid(final String pathString) {
-        final Matcher m = PATH_PATTERN.matcher(pathString);
-        return m.matches();
+        return pathString.matches(PATH_PATTERN);
     }
 
     /**
@@ -245,5 +241,18 @@ public final class ResourcePath {
      */
     public ResourceName top() { // Rename to 'start()'
         return (0==_elements.size()) ? null : _elements.get(0);
+    }
+
+    /**
+     * Return a path minus the bottom most (i.e. leaf) element.
+     *
+     * @return Resource path.
+     */
+    public ResourcePath parent() {
+        if (0==_elements.size()) { return null; }
+        final List<ResourceName> elements =
+            new ArrayList<ResourceName>(elements());
+        elements.remove(elements.size()-1);
+        return new ResourcePath(elements);
     }
 }
