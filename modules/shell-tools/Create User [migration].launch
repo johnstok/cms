@@ -11,7 +11,6 @@
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.Users"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-c jdbc:h2:tcp:localhost/mem:ash&#10;-u CCC&#10;-p CCC&#10;-nu migration&#10;-ne  migration@civicuk.com&#10;-np migration"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="shell-tools"/>
