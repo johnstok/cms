@@ -133,7 +133,8 @@ public class ContentServlet
         final Response r =
             new TmpRenderer(_files, _templates, _resources).render(resource);
 
-        if (resource.isSecure()) { // Dont'cache secure pages.
+        if (resource.isSecure()       // Don't cache secure pages.
+            || !_respectVisibility) { // Don't cache previews or working copies.
             r.setExpiry(null);
         }
 
