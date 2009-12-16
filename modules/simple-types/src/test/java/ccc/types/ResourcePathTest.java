@@ -27,6 +27,34 @@ public final class ResourcePathTest extends TestCase {
     /**
      * Test.
      */
+    public void testParentReturnsNullForEmptyPath() {
+
+        // ARRANGE
+
+        // ACT
+        final ResourcePath p = new ResourcePath().parent();
+
+        // ASSERT
+        assertNull(p);
+    }
+
+    /**
+     * Test.
+     */
+    public void testParentMethodRemovesLeafElement() {
+
+        // ARRANGE
+
+        // ACT
+        final ResourcePath p = new ResourcePath("/foo/bar/baz").parent();
+
+        // ASSERT
+        assertEquals(new ResourcePath("/foo/bar"), p);
+    }
+
+    /**
+     * Test.
+     */
     public void testConstructorRejectsInvalidStrings() {
 
         // ARRANGE
