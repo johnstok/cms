@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.0</version>
+        <version>7.0.1-SNAPSHOT</version>
     </parent>
     
     <artifactId>search-lucene</artifactId>

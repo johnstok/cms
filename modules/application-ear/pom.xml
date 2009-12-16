@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.0</version>
+        <version>7.0.1-SNAPSHOT</version>
     </parent>
     
     <artifactId>application-ear</artifactId>
@@ -32,11 +32,13 @@
                         <webModule>
                             <groupId>CCC7</groupId>
                             <artifactId>content-creator</artifactId>
+                            <bundleFileName>content-creator.war</bundleFileName>
                             <contextRoot>/${application.prefix}</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>CCC7</groupId>
                             <artifactId>services-ejb3</artifactId>
+                            <bundleFileName>services-ejb3.jar</bundleFileName>
                         </ejbModule>
                     </modules>
                     <jboss>
@@ -64,13 +66,13 @@
             <groupId>CCC7</groupId>
             <artifactId>content-creator</artifactId>
             <type>war</type>
-            <version>7.0.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>services-ejb3</artifactId>
             <type>ejb</type>
-            <version>7.0.0</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- For rest-api (exclude dependencies). -->
@@ -169,7 +171,7 @@
         <dependency>
             <groupId>CCC7</groupId>
             <artifactId>shell-tools</artifactId>
-            <version>7.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -24,5 +24,4 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.contentcreator.ContentCreatorGwtTestSuite"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="client-gwt"/>
-<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
 </launchConfiguration>
