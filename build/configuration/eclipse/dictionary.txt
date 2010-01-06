@@ -171,3 +171,7 @@ authorized
 thumbnail
 rhino
 tomcat
+sanitized
+sanitize
+sanitization
+antisamy
