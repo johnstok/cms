@@ -56,6 +56,7 @@ import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ActionRepository;
+import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.RepositoryFactory;
@@ -96,6 +97,7 @@ abstract class AbstractEJB {
     private LogEntryRepository _audit;
     private DataRepository     _dm;
     private ActionRepository   _actions;
+    private CommentRepository  _comments;
     private CommandFactory     _cFactory;
 
 
@@ -103,6 +105,7 @@ abstract class AbstractEJB {
     private void configureCoreData() {
         final RepositoryFactory rf = new RepositoryFactory(_em);
         _audit = rf.createLogEntryRepo();
+        _comments = rf.createCommentRepo();
         _users = rf.createUserRepo();
         _resources = rf.createResourceRepository();
         _dm = rf.createDataRepository();
@@ -138,6 +141,16 @@ abstract class AbstractEJB {
      */
     protected final UserRepository getUsers() {
         return _users;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the comment repository.
+     */
+    protected final CommentRepository getComments() {
+        return _comments;
     }
 
 

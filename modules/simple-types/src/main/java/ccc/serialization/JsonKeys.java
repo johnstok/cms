@@ -173,4 +173,8 @@ public final class JsonKeys {
     public static final String CREATED_BY = "created_by";
     /** CHANGED_BY : String. */
     public static final String CHANGED_BY = "changed_by";
+    /** AUTHOR : String. */
+    public static final String AUTHOR = "author";
+    /** URL : String. */
+    public static final String URL = "url";
 }

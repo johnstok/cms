@@ -126,4 +126,11 @@ class JpaRepository implements Repository {
     public void create(final Entity entity) {
         _em.persist(entity);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void delete(final Entity entity) {
+        _em.remove(entity);
+    }
 }

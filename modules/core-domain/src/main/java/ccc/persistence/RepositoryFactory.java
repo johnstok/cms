@@ -95,4 +95,13 @@ public class RepositoryFactory {
         return new ActionRepositoryImpl(_em);
     }
 
+    /**
+     * Create an instance of the {@link CommentRepository} interface.
+     *
+     * @return A repository instance.
+     */
+    public CommentRepository createCommentRepo() {
+        return new CommentRepositoryImpl(_em);
+    }
+
 }

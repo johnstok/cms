@@ -31,6 +31,7 @@ import javax.servlet.ServletRequest;
 import ccc.remoting.actions.SessionKeys;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -129,6 +130,13 @@ public class RequestScopeServiceLocator
     /** {@inheritDoc} */
     @Override
     public Security getSecurity() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Comments getComments() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 }

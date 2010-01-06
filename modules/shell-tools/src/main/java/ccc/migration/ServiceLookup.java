@@ -32,6 +32,7 @@ import ccc.domain.Scheduler;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -177,6 +178,13 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Security getSecurity() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Comments getComments() {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 

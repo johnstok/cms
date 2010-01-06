@@ -34,6 +34,7 @@ import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -69,6 +70,7 @@ abstract class JaxrsCollection
     private Files _files;
     private SearchEngine _search;
     private Aliases _aliases;
+    private Comments _comments;
 
 
     /**
@@ -92,6 +94,7 @@ abstract class JaxrsCollection
 
 
     /** {@inheritDoc} */
+    @Override
     public final Templates getTemplates() {
         return
             (null==_templates)
@@ -110,6 +113,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final ResourcesExt getResources() {
         return
             (null==_resourcesExt)
@@ -119,6 +123,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final Actions getActions() {
         return
         (null==_actions)
@@ -127,6 +132,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final PagesExt getPages() {
         return
         (null==_pagesExt)
@@ -135,6 +141,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final FoldersExt getFolders() {
         return
         (null==_foldersExt)
@@ -143,6 +150,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final Users getUsers() {
         return
         (null==_userCommands)
@@ -151,6 +159,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final Files getFiles() {
         return
         (null==_files)
@@ -159,6 +168,7 @@ abstract class JaxrsCollection
     }
 
     /** {@inheritDoc} */
+    @Override
     public final SearchEngine getSearch() {
         return
         (null==_search)
@@ -166,16 +176,22 @@ abstract class JaxrsCollection
             : _search;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the aliases.
-     */
+    /** {@inheritDoc} */
+    @Override
     public final Aliases getAliases() {
         return
             (null==_aliases)
                 ? (Aliases) _reg.get(getAppName()+"/"+Aliases.NAME+"/remote")
                 : _aliases;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Comments getComments() {
+        return
+        (null==_comments)
+            ? (Comments) _reg.get(getAppName()+"/"+Comments.NAME+"/local")
+            : _comments;
     }
 
     /**

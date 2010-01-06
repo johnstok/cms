@@ -115,4 +115,11 @@ interface Repository {
      */
     void create(Entity entity);
 
+    /**
+     * Delete the specified entity.
+     *
+     * @param entity The entity to delete.
+     */
+    void delete(Entity entity);
+
 }

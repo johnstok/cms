@@ -34,6 +34,7 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -47,6 +48,7 @@ import ccc.rest.providers.ActionSummaryCollectionReader;
 import ccc.rest.providers.ActionSummaryReader;
 import ccc.rest.providers.AliasDeltaReader;
 import ccc.rest.providers.BooleanProvider;
+import ccc.rest.providers.CommentReader;
 import ccc.rest.providers.DurationReader;
 import ccc.rest.providers.FailureWriter;
 import ccc.rest.providers.JsonReader;
@@ -102,6 +104,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(TemplateDeltaReader.class);
         pFactory.addMessageBodyReader(PageDeltaReader.class);
         pFactory.addMessageBodyReader(ActionSummaryReader.class);
+        pFactory.addMessageBodyReader(CommentReader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);
@@ -114,6 +117,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
     private Pages _pages;
     private Security _security;
     private Templates _templates;
+    private Comments  _comments;
     private Files _files;
     private Aliases _aliases;
 
@@ -135,14 +139,15 @@ public class JaxrsServiceLocator implements ServiceLocator {
         LOG.debug("Public URL: "+_public);
         LOG.debug("Upload URL: "+_upload);
 
-        _commands = ProxyFactory.create(Resources.class, _secure, _http);
-        _users =    ProxyFactory.create(Users.class, _secure, _http);
-        _actions =  ProxyFactory.create(Actions.class, _secure, _http);
-        _folders =  ProxyFactory.create(Folders.class, _secure, _http);
-        _pages =    ProxyFactory.create(Pages.class, _secure, _http);
-        _security = ProxyFactory.create(Security.class, _public, _http);
+        _commands  = ProxyFactory.create(Resources.class, _secure, _http);
+        _users     = ProxyFactory.create(Users.class, _secure, _http);
+        _actions   = ProxyFactory.create(Actions.class, _secure, _http);
+        _folders   = ProxyFactory.create(Folders.class, _secure, _http);
+        _pages     = ProxyFactory.create(Pages.class, _secure, _http);
+        _security  = ProxyFactory.create(Security.class, _public, _http);
         _templates = ProxyFactory.create(Templates.class, _secure, _http);
-        _files = ProxyFactory.create(Files.class, _secure+"/files", _http);
+        _comments  = ProxyFactory.create(Comments.class, _secure, _http);
+        _files     = ProxyFactory.create(Files.class, _secure+"/files", _http);
         _aliases =
             ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
     }
@@ -155,6 +160,10 @@ public class JaxrsServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Actions getActions() { return _actions; }
+
+    /** {@inheritDoc} */
+    @Override
+    public Comments getComments() { return _comments; }
 
     /** {@inheritDoc} */
     @Override
