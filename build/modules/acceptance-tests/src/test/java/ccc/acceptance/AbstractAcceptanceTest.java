@@ -51,6 +51,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import ccc.api.client1.JaxrsServiceLocator;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -125,6 +126,16 @@ public abstract class AbstractAcceptanceTest
      */
     protected Resources getCommands() {
         return _sl.getResources();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the comments.
+     */
+    protected Comments getComments() {
+        return _sl.getComments();
     }
 
 

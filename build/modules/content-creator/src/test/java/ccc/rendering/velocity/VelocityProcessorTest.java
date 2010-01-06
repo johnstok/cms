@@ -44,6 +44,7 @@ import ccc.domain.User;
 import ccc.rendering.TextProcessor;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -259,61 +260,58 @@ public class VelocityProcessorTest extends TestCase {
     private class TestServiceLocator implements ServiceLocator {
             @Override
             public Actions getActions() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public Files getFiles() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public Folders getFolders() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public Pages getPages() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             @Override
-            public Resources getResources() {
-                return _reader;
-            }
+            public Resources getResources() { return _reader; }
 
             @Override
             public Templates getTemplates() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public Users getUsers() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public SearchEngine getSearch() {
-
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             /** {@inheritDoc} */
             @Override
             public Aliases getAliases() {
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
             }
 
             /** {@inheritDoc} */
             @Override
             public Security getSecurity() {
-                throw new UnsupportedOperationException("Method not implemented.");
+                throw new UnsupportedOperationException();
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public Comments getComments() {
+                throw new UnsupportedOperationException();
             }
 
     }

@@ -39,6 +39,13 @@ public interface ServiceLocator {
     /**
      * Accessor.
      *
+     * @return Returns the comments service.
+     */
+    Comments getComments();
+
+    /**
+     * Accessor.
+     *
      * @return Returns the templates service.
      */
     Templates getTemplates();
@@ -93,16 +100,16 @@ public interface ServiceLocator {
     SearchEngine getSearch();
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return Returns the security service.
      */
     Security getSecurity();
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return Returns the alias service.
      */
     Aliases getAliases();
 }

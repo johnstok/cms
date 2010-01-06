@@ -65,6 +65,7 @@
             ccc.rest.providers.FolderNewReader,
             ccc.rest.providers.TextFileDeltaReader,
             ccc.rest.providers.TemplateNewReader,
+            ccc.rest.providers.CommentReader,
             ccc.rest.providers.TextFileDtoReader
         </param-value>
     </context-param>
