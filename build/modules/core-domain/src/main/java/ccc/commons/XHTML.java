@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd
+ * Copyright (c) 2010 Civic Computing Ltd
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,7 +21,7 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.commons;
@@ -31,33 +31,36 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.log4j.Logger;
 import org.ccil.cowan.tagsoup.Parser;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
@@ -73,134 +76,6 @@ import ccc.types.DBC;
 public final class XHTML {
 
     private XHTML() { /* NO-OP */ }
-
-    /**
-     * A SAX content handler that only operates on white-listed elements.
-     * FIXME: Ignore all children of a blacklisted element? Stax may be a better
-     * option in this case? Or count element depth and a 'mode' -> DISCARD,
-     * BLOCK, ECHO, etc.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static final class WhitelistContentHandler
-        implements
-            ContentHandler {
-
-        private static final Logger LOG =
-            Logger.getLogger(WhitelistContentHandler.class);
-
-        private final StringBuffer _sb = new StringBuffer();
-        private Set<String> _elements = new HashSet<String>();
-
-
-        /** {@inheritDoc} */
-        @Override public void characters(final char[] ch,
-                                         final int start,
-                                         final int length) {
-            /* TODO: Handle multi-char code points. How?! */
-            for (int i=start; i<(start+length); i++) {
-                _sb.append(escape(ch[i]));
-            }
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void endDocument() {
-            /* NO OP */
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void endElement(final String uri,
-                                         final String localName,
-                                         final String name) {
-            if (_elements.contains(name.toLowerCase())) {
-                _sb.append("</"+name+">");
-            }
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void endPrefixMapping(final String prefix) {
-            /* NO OP */
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void ignorableWhitespace(final char[] ch,
-                                                  final int start,
-                                                  final int length)
-        throws SAXException {
-            throw new UnsupportedOperationException("Method not implemented.");
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void processingInstruction(final String target,
-                                                    final String data) {
-            LOG.debug("Ignoring processing instruction: "+target);
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void setDocumentLocator(final Locator locator) {
-            /* NO OP */
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void skippedEntity(final String name)
-        throws SAXException {
-            throw new UnsupportedOperationException("Method not implemented.");
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void startDocument() {
-            /* NO OP */
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void startElement(final String uri,
-                                           final String localName,
-                                           final String name,
-                                           final Attributes atts) {
-            if (_elements.contains(name.toLowerCase())) {
-                _sb.append("<"+name+">");
-            } else {
-                LOG.debug("Ignoring element: "+name);
-            }
-        }
-
-
-        /** {@inheritDoc} */
-        @Override public void startPrefixMapping(final String prefix,
-                                                 final String uri) {
-            /* NO OP */
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return This content handler's buffer.
-         */
-        StringBuffer buffer() { return _sb; }
-
-
-        /**
-         * Specify the element names allowed by this handler.
-         *
-         * @param elements An array of allowed element names.
-         */
-        public void setAllowedElements(final String... elements) {
-            _elements.clear();
-            for (final String element : elements) {
-                _elements.add(element.toLowerCase());
-            }
-        }
-    }
 
     /**
      * An implementation of {@link EntityResolver} that reads xhtml dtd's from
@@ -517,9 +392,23 @@ public final class XHTML {
 
         final XMLReader reader = new Parser();
         final WhitelistContentHandler ch = new WhitelistContentHandler();
-        ch.setAllowedElements("p", "b", "i", "strong", "em", "br");
-        reader.setContentHandler(ch);
 
+        // FIXME: Allow lists? Allow tables?
+        ch.setAllowedElements(
+            "p",
+            "b",
+            "i",
+            "strong",
+            "em",
+            "br",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6");
+        ch.setIgnoredElements("a", "html", "body");
+        reader.setContentHandler(ch);
 
         try {
             reader.parse(new InputSource(new StringReader(raw)));
@@ -527,6 +416,34 @@ public final class XHTML {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         } catch (final SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Fix a html/xhtml string.
+     *
+     * @param raw The un-fixed string.
+     * @return The fixed string.
+     */
+    static String fix(final String raw) {
+        try {
+            final InputSource is = new InputSource(new StringReader(raw));
+            final XMLReader reader = new Parser();
+            final Transformer transformer =
+                TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            final StreamResult result = new StreamResult(new StringWriter());
+            final SAXSource source = new SAXSource(reader, is);
+            transformer.transform(source, result);
+            return result.getWriter().toString();
+
+        } catch (final TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (final TransformerFactoryConfigurationError e) {
+            throw new RuntimeException(e);
+        } catch (final TransformerException e) {
             throw new RuntimeException(e);
         }
     }

