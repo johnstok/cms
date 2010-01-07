@@ -26,10 +26,14 @@
  */
 package ccc.persistence;
 
+import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Comment;
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.Resource;
+import ccc.types.CommentStatus;
+import ccc.types.SortOrder;
 
 
 /**
@@ -39,12 +43,14 @@ import ccc.domain.EntityNotFoundException;
  */
 public interface CommentRepository {
 
+
     /**
      * Persist a newly created comment.
      *
      * @param comment The comment to persist.
      */
     void create(Comment comment);
+
 
     /**
      * Delete a comment.
@@ -54,6 +60,7 @@ public interface CommentRepository {
      * @param commentId The ID of the comment to delete.
      */
     void delete(UUID commentId) throws EntityNotFoundException;
+
 
     /**
      * Retrieve a single comment.
@@ -65,4 +72,22 @@ public interface CommentRepository {
      * @return The corresponding comment.
      */
     Comment retrieve(UUID commentId) throws EntityNotFoundException;
+
+
+    /**
+     * List existing comments.
+     *
+     * @param resource Filter comments by resource. NULL will return all.
+     * @param status Filter comments based on status. NULL will return all.
+     * @param sortOrder The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
+     * @return A list of comments.
+     */
+    List<Comment> list(Resource resource,
+                       CommentStatus status,
+                       SortOrder sortOrder,
+                       int pageNo,
+                       int pageSize);
 }

@@ -27,7 +27,9 @@
 package ccc.domain;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ccc.rest.dto.CommentDto;
 import ccc.types.CommentStatus;
@@ -168,5 +170,19 @@ public class Comment
         dto.setStatus(getStatus());
 
         return dto;
+    }
+
+    /**
+     * Map a list of comments to a list of comment DTOs.
+     *
+     * @param comments The comments to map.
+     * @return The corresponding DTOs.
+     */
+    public static List<CommentDto> map(final List<Comment> comments) {
+        final List<CommentDto> mapped = new ArrayList<CommentDto>();
+        for (final Comment c : comments) {
+            mapped.add(c.createDto());
+        }
+        return mapped;
     }
 }

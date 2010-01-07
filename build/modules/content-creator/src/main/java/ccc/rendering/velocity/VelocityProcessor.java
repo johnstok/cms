@@ -60,6 +60,25 @@ import ccc.rest.ServiceLocator;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessor implements TextProcessor {
+    /**
+     * TODO: Add a description for this type.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static final class EnumTools {
+
+        @SuppressWarnings("unchecked")
+        public Object of(final String className, final String value) {
+            try {
+                return
+                    Enum.valueOf(
+                        (Class<Enum>) Class.forName(className), value);
+            } catch (final ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     private static final Logger LOG = Logger.getLogger(VelocityProcessor.class);
 
 
@@ -124,6 +143,7 @@ public class VelocityProcessor implements TextProcessor {
             context.put("calendar", Calendar.class);
             context.put("html", XHTML.class);
             context.put("uuid", UUID.class);
+            context.put("enums", new EnumTools());
 
             context.put("dateTool", new DateTool());
             context.put("sortTool", new SortTool());

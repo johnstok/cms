@@ -31,8 +31,10 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -44,6 +46,8 @@ import ccc.domain.Resource;
 import ccc.rest.Comments;
 import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
+import ccc.types.CommentStatus;
+import ccc.types.SortOrder;
 
 
 /**
@@ -64,7 +68,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @PermitAll
     public CommentDto create(final CommentDto comment) throws RestException {
         try {
             final Resource r =
@@ -122,6 +126,27 @@ public class CommentsEJB
     public void delete(final UUID commentId) throws RestException {
         try {
             getComments().delete(commentId);
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public List<CommentDto> list(final UUID resourceId,
+                                 final CommentStatus status,
+                                 final SortOrder sortOrder,
+                                 final int pageNo,
+                                 final int pageSize) throws RestException {
+        try {
+            final Resource r =
+                (null==resourceId)
+                    ? null
+                    : getResources().find(Resource.class, resourceId);
+            return Comment.map(
+                getComments().list(r, status, sortOrder, pageNo, pageSize));
+
         } catch (final CccCheckedException e) {
             throw fail(e);
         }

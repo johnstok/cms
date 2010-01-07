@@ -26,6 +26,7 @@
  */
 package ccc.rest.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -35,6 +36,8 @@ import javax.ws.rs.Produces;
 import ccc.rest.Comments;
 import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
+import ccc.types.CommentStatus;
+import ccc.types.SortOrder;
 
 
 /**
@@ -75,5 +78,17 @@ public class CommentsImpl
     @Override
     public void delete(final UUID commentId) throws RestException {
         getComments().delete(commentId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<CommentDto> list(final UUID resourceId,
+                                 final CommentStatus status,
+                                 final SortOrder sortOrder,
+                                 final int pageNo,
+                                 final int pageSize)
+    throws RestException {
+        return getComments().list(
+            resourceId, status, sortOrder, pageNo, pageSize);
     }
 }

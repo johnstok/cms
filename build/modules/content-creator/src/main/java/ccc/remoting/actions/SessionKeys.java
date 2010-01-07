@@ -69,4 +69,7 @@ public final class SessionKeys {
 
     /** EXCEPTION_CODE : String. */
     public static final String EXCEPTION_CODE = "ccc.exception_code";
+
+    /** COMMENTS_KEY : String. */
+    public static final String COMMENTS_KEY = "ccc.comments";
 }
