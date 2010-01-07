@@ -61,6 +61,7 @@ class JpaRepository implements Repository {
 
 
     /** {@inheritDoc} */
+    @Override
     public <T extends Entity> T find(final Class<T> type, final UUID id)
     throws EntityNotFoundException {
         DBC.require().notNull(id);
@@ -73,6 +74,7 @@ class JpaRepository implements Repository {
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
+    @Override
     public <T> List<T> list(final String queryName,
                             final Class<T> resultType,
                             final Object... params) {
@@ -82,10 +84,30 @@ class JpaRepository implements Repository {
             q.setParameter((i+1), params[i]);
         }
         return q.getResultList();
-
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked") // JPA query API isn't type safe.
+    @Override
+    public <T> List<T> listDyn(final String queryString,
+                               final Class<T> resultType,
+                               final int pageNo,
+                               final int pageSize,
+                               final Object... params) {
+        DBC.require().greaterThan(0, pageNo);
+        DBC.require().greaterThan(0, pageSize);
+
+        final Query q = _em.createQuery(queryString);
+        for (int i=0; i<params.length; i++) {
+            q.setParameter((i+1), params[i]);
+        }
+        q.setMaxResults(pageSize);
+        q.setFirstResult((pageNo-1)*pageSize);
+        return q.getResultList();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public <T> Collection<T> uniquify(final String queryName,
                                       final Class<T> resultType,
                                       final Object... params) {
@@ -94,6 +116,7 @@ class JpaRepository implements Repository {
 
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked") // JPA query API isn't type safe.
+    @Override
     public <T> T find(final String queryName,
                       final Class<T> resultType,
                       final Object... params) throws EntityNotFoundException {
@@ -111,6 +134,7 @@ class JpaRepository implements Repository {
     }
 
     /** {@inheritDoc} */
+    @Override
     public <T> boolean exists(final String queryName,
                               final Class<T> resultType,
                               final Object... params) {
@@ -123,6 +147,7 @@ class JpaRepository implements Repository {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void create(final Entity entity) {
         _em.persist(entity);
     }

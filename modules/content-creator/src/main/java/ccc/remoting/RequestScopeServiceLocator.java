@@ -137,6 +137,6 @@ public class RequestScopeServiceLocator
     /** {@inheritDoc} */
     @Override
     public Comments getComments() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return (Comments) _request.getAttribute(SessionKeys.COMMENTS_KEY);
     }
 }

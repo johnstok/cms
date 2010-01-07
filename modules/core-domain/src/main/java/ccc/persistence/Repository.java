@@ -42,6 +42,7 @@ import ccc.domain.EntityNotFoundException;
  */
 interface Repository {
 
+
     /**
      * Find the object with the specified type and id.
      *
@@ -56,6 +57,7 @@ interface Repository {
     <T extends Entity> T find(Class<T> type, UUID id)
     throws EntityNotFoundException;
 
+
     /**
      * List zero or more matches for a query - duplicates may be possible.
      *
@@ -66,6 +68,25 @@ interface Repository {
      * @return A collection of objects of type T.
      */
     <T> List<T> list(String queryName, Class<T> resultType, Object... params);
+
+
+    /**
+     * List zero or more matches for a query - duplicates may be possible.
+     *
+     * @param <T> The type of the resource to be searched for.
+     * @param queryString The query used to perform the search.
+     * @param resultType The class representing the type of the resource.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     * @param params The query parameters.
+     * @return A collection of objects of type T.
+     */
+    <T> List<T> listDyn(String queryString,
+                        Class<T> resultType,
+                        int pageNo,
+                        int pageSize,
+                        Object... params);
+
 
     /**
      * List zero or more matches for a query - each result is guaranteed to
@@ -79,6 +100,7 @@ interface Repository {
      */
     <T> Collection<T> uniquify(
         String queryName, Class<T> resultType, Object... params);
+
 
     /**
      * Find a single object using a query.
@@ -97,6 +119,7 @@ interface Repository {
     <T> T find(String queryName, Class<T> resultType, Object... params)
     throws EntityNotFoundException;
 
+
     /**
      * Determine whether a resource exists.
      *
@@ -108,12 +131,14 @@ interface Repository {
      */
     <T> boolean exists(String queryName, Class<T> resultType, Object... params);
 
+
     /**
      * Persist the specified entity.
      *
      * @param entity The un-persisted entity.
      */
     void create(Entity entity);
+
 
     /**
      * Delete the specified entity.

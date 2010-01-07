@@ -26,13 +26,18 @@
  */
 package ccc.persistence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
 import ccc.domain.Comment;
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.Resource;
+import ccc.types.CommentStatus;
 import ccc.types.DBC;
+import ccc.types.SortOrder;
 
 
 /**
@@ -86,5 +91,42 @@ public class CommentRepositoryImpl
     public Comment retrieve(final UUID commentId)
     throws EntityNotFoundException {
         return _repo.find(Comment.class, commentId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Comment> list(final Resource resource,
+                              final CommentStatus status,
+                              final SortOrder sortOrder,
+                              final int pageNo,
+                              final int pageSize) {
+
+        final StringBuffer query = new StringBuffer();
+        final List<Object> params = new ArrayList<Object>();
+
+        query.append("from ccc.domain.Comment c");
+
+        if (null!=status) {
+            query.append(" where c._status = ?");
+            params.add(status);
+        }
+
+        if (null!=resource) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" c._resource = ?");
+            params.add(resource);
+        }
+
+        query.append(" order by c._timestamp ");
+        query.append(sortOrder.name());
+
+        return
+            _repo.listDyn(
+                query.toString(),
+                Comment.class,
+                pageNo,
+                pageSize,
+                params.toArray());
     }
 }

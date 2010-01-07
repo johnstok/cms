@@ -88,8 +88,6 @@
             not-null="true"
             update="false"
             foreign-key="FK_COMMENT_RESOURCE_ID"/>
-
-        
     </class>
     
 </hibernate-mapping>

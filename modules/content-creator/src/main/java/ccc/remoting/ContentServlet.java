@@ -46,6 +46,7 @@ import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
 import ccc.rendering.velocity.VelocityProcessor;
 import ccc.rest.Actions;
+import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Pages;
@@ -82,6 +83,7 @@ public class ContentServlet
     @EJB(name = Resources.NAME)    private transient ResourcesExt _resources;
     @EJB(name = Actions.NAME)      private transient Actions      _actions;
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
+    @EJB(name = Comments.NAME)     private transient Comments     _comments;
 
     private boolean       _respectVisibility = true;
 
@@ -233,5 +235,6 @@ public class ContentServlet
         req.setAttribute(SessionKeys.FOLDERS_KEY,   _folders);
         req.setAttribute(SessionKeys.ACTIONS_KEY,   _actions);
         req.setAttribute(SessionKeys.SEARCH_KEY,    _search);
+        req.setAttribute(SessionKeys.COMMENTS_KEY,  _comments);
     }
 }
