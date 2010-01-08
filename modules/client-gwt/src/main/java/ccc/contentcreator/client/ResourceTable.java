@@ -58,7 +58,6 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -114,6 +113,7 @@ public class ResourceTable
         setUpGrid();
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
+
         add(_grid);
 
         _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
@@ -249,7 +249,7 @@ public class ResourceTable
 
     private void setUpGrid() {
         _grid.setId("ResourceGrid");
-
+        _grid.setLoadMask(true);
         _grid.setBorders(false);
 
         // Assign a CSS style for each row with GridViewConfig
@@ -289,37 +289,50 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     public ResourceSummaryModelData treeSelection() {
-        final TreeItem item = _tree.getSelectedItem();
+        final ResourceSummaryModelData item = _tree.tree().getSelectionModel().getSelectedItem();
         if (item == null) {
             return null;
         }
-        return (ResourceSummaryModelData) item.getModel();
+        return item;
     }
 
 
     /** {@inheritDoc} */
     public void update(final ResourceSummaryModelData model) {
+        final String uuidPropertyName =
+            ResourceSummaryModelData.Property.UUID.name();
+        final ResourceSummaryModelData parent =
+            _tree.store().findModel(uuidPropertyName, model.getParent());
         _detailsStore.update(model);
         _tree.store().update(model);
+        if (null!=parent) {
+            _tree.tree().setExpanded(parent, false);
+            _tree.tree().setExpanded(parent, true);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void delete(final ResourceSummaryModelData item) {
-        final ResourceSummaryModelData parent = _tree.store().getParent(item);
+        final String uuidPropertyName =
+            ResourceSummaryModelData.Property.UUID.name();
+        final ResourceSummaryModelData parent =
+            _tree.store().findModel(uuidPropertyName, item.getParent());
         if (null!=parent && ResourceType.FOLDER==item.getType()) {
             parent.decrementFolderCount();
         }
         _detailsStore.remove(item);
         _tree.store().remove(item);
-
-        final TreeItem p = (TreeItem) _tree._binder.findItem(parent);
-        if (parent.getFolderCount()<1) {
-            p.setExpanded(false);
-            p.setLeaf(true);
+        if (null!=parent) {
+            _tree.tree().setExpanded(parent, false);
+            if (parent.getFolderCount()<1) {
+                _tree.tree().setLeaf(parent, true);
+            } else {
+                _tree.tree().setExpanded(parent, true);
+            }
         }
-        p.updateJointStyle();
+        _tree.store().update(parent);
     }
 
 
@@ -331,8 +344,18 @@ public class ResourceTable
                 ResourceSummaryModelData.Property.UUID.name(),
                 newParent.getId());
         if (null!=np) { // May not exist in the store
-            _tree.store().add(np, model, false); // Add to the left-hand tree
-
+            if (model.getType() == ResourceType.FOLDER) {
+                // Add to the left-hand tree
+                final TreeStore<ResourceSummaryModelData> store = _tree.store();
+                store.add(np, model, false);
+                final String uuidPropertyName =
+                    ResourceSummaryModelData.Property.UUID.name();
+                final ResourceSummaryModelData destinationFolder =
+                    store.findModel(uuidPropertyName, newParent.getId());
+                destinationFolder.incrementFolderCount();
+                _tree.store().update(model);
+                _tree.store().update(destinationFolder);
+            }
             if (np.equals(treeSelection())) {   // Add to the right-hand table
                 _detailsStore.add(model);
             }
@@ -363,8 +386,8 @@ public class ResourceTable
             model.setAbsolutePath(newModelPath);
             if (ResourceType.FOLDER==model.getType()) {
                 destinationFolder.incrementFolderCount();
+                store.add(destinationFolder, model, false);
             }
-            store.add(destinationFolder, model, false);
         }
     }
 }

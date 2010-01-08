@@ -35,19 +35,17 @@ import ccc.contentcreator.actions.GetChildrenFolderAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
-import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.binder.TreeBinder;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
-import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.store.TreeStoreEvent;
-import com.extjs.gxt.ui.client.widget.tree.Tree;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.extjs.gxt.ui.client.util.IconHelper;
+import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 
 /**
@@ -55,13 +53,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderResourceTree extends Tree {
+public class FolderResourceTree  {
 
     private final ResourceSummary _root;
     private final IGlobals _globals;
 
-    private final TreeStore<ResourceSummaryModelData> _store;
-    final FolderBinder _binder;
+    private TreeStore<ResourceSummaryModelData> _store;
+    private final TreePanel<ResourceSummaryModelData> _tree;
+
 
     /**
      * Constructor.
@@ -74,10 +73,6 @@ public class FolderResourceTree extends Tree {
 
         _root = root;
         _globals = globals;
-
-        setSelectionMode(SelectionMode.SINGLE);
-        setStyleAttribute("background", "white");
-
 
         final RpcProxy<List<ResourceSummaryModelData>> proxy =
             new RpcProxy<List<ResourceSummaryModelData>>() {
@@ -93,15 +88,14 @@ public class FolderResourceTree extends Tree {
                         DataBinding.bindResourceSummary(
                             Collections.singletonList(_root)));
                 } else {
-                    new GetChildrenFolderAction(_globals.userActions().loadData(),
+                    new GetChildrenFolderAction(
+                        _globals.userActions().loadData(),
                         ((ResourceSummaryModelData) loadConfig).getId()) {
-
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
                             callback.onFailure(t);
                         }
-
 
                         /** {@inheritDoc} */
                         @Override protected void execute(
@@ -125,23 +119,22 @@ public class FolderResourceTree extends Tree {
         };
 
         _store = new TreeStore<ResourceSummaryModelData>(loader);
+        _tree = new TreePanel<ResourceSummaryModelData>(_store);
+        _tree.setCaching(false);
+        _tree.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
+        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        _tree.setStyleAttribute("background", "white");
+        _tree.setHeight(600);
 
-        _binder = new FolderBinder(this, _store);
-        _binder.setCaching(false);
-        _binder.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
-        _binder.setIconProvider(new ResourceIconProvider());
+        _tree.setIconProvider(new ModelIconProvider<ResourceSummaryModelData>() {
+            @Override
+            public AbstractImagePrototype getIcon(final ResourceSummaryModelData model) {
+                return IconHelper.createPath(
+                    new ResourceIconProvider().getStringValue(model, null));
+            }
+        });
 
         loader.load(null);
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the binder.
-     */
-    protected FolderBinder getBinder() {
-        return _binder;
     }
 
 
@@ -154,83 +147,12 @@ public class FolderResourceTree extends Tree {
         return _store;
     }
 
-
     /**
-     * Tree binder for folder trees.
+     * Accessor for this tree's tree.
      *
-     * @author Civic Computing Ltd.
+     * @return The internal tree.
      */
-    final class FolderBinder
-        extends
-            TreeBinder<ResourceSummaryModelData> {
-
-        /**
-         * Constructor.
-         *
-         * @param tree The UI tree used for rendering.
-         * @param store The underlying data store for the tree.
-         */
-        FolderBinder(final Tree tree,
-                     final TreeStore<ResourceSummaryModelData> store) {
-            super(tree, store);
-        }
-
-
-        /** {@inheritDoc} */
-        @Override
-        protected TreeItem createItem(final ResourceSummaryModelData model) {
-            final TreeItem item = super.createItem(model);
-
-            item.setId("/"+_root.getName()+model.getAbsolutePath());
-
-            if (ResourceType.FOLDER!=model.getType()) {
-                item.setVisible(false);
-            }
-
-            return item;
-        }
-
-
-
-        /** {@inheritDoc} */
-        @Override
-        protected void onAdd(final StoreEvent<ResourceSummaryModelData> se) {
-            final TreeStoreEvent<ResourceSummaryModelData> tse =
-                (TreeStoreEvent<ResourceSummaryModelData>) se;
-            TreeItem p = (TreeItem) findItem(tse.getParent());
-            if (p == null) {
-                p = tree.getRootItem();
-            }
-            final ResourceSummaryModelData pModel = p.getModel();
-
-            p.setLeaf(pModel.getFolderCount()<1);
-            p.updateJointStyle();
-        }
-
-
-        /**
-         * Load the children for a specified tree node.
-         *
-         * @param item The node whose children should be loaded.
-         */
-        protected void loadChildren(final TreeItem item) {
-            loader.loadChildren((ResourceSummaryModelData) item.getModel());
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        protected void onRenderChildren(
-                            final TreeStoreEvent<ResourceSummaryModelData> te) {
-            if (loader.hasChildren(te.getParent())) {
-                super.onRenderChildren(te);
-            }
-        }
-
-
-        /** {@inheritDoc} */
-        @Override
-        protected boolean hasChildren(final ResourceSummaryModelData parent) {
-            return parent.getFolderCount() > 0;
-        }
+    public TreePanel<ResourceSummaryModelData> tree() {
+        return _tree;
     }
 }
