@@ -27,18 +27,25 @@
 package ccc.contentcreator.client;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import ccc.contentcreator.actions.GetChildrenPagedAction;
+import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -52,6 +59,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -126,11 +134,53 @@ public class ResourceTable
     /**
      * Updated this table to render the children of the specified TreeItem.
      *
-     * @param data A list of records to display in the table.
+     * @param folder The parent folder for the records to display in the table.
      */
     @SuppressWarnings("unchecked")
-    public void displayResourcesFor(final List<ResourceSummaryModelData> data) {
-        final PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
+    public void displayResourcesFor(final ResourceSummaryModelData folder) {
+
+        final RpcProxy<PagingLoadResult<ResourceSummaryModelData>> proxy =
+            new RpcProxy<PagingLoadResult<ResourceSummaryModelData>>() {
+
+            @Override
+            protected void load(final Object loadConfig,
+                                final AsyncCallback<PagingLoadResult<ResourceSummaryModelData>> callback) {
+                if (folder == null
+                    || null==loadConfig
+                    || !(loadConfig instanceof BasePagingLoadConfig)) {
+                    final PagingLoadResult<ResourceSummaryModelData> plr =
+                        new BasePagingLoadResult<ResourceSummaryModelData>
+                    (null);
+                    callback.onSuccess(plr);
+                } else {
+                    final BasePagingLoadConfig config =
+                        (BasePagingLoadConfig) loadConfig;
+                    final PagingDto pdto = new PagingDto(config.getOffset(),
+                        config.getLimit());
+
+                    new GetChildrenPagedAction(folder.getId(), pdto) {
+                        /** {@inheritDoc} */
+                        @Override protected void onFailure(final Throwable t) {
+                            callback.onFailure(t);
+                        }
+
+                        /** {@inheritDoc} */
+                        @Override protected void execute(
+                                 final Collection<ResourceSummary> children) {
+                            final List<ResourceSummaryModelData> results =
+                                DataBinding.bindResourceSummary(children);
+
+                            final PagingLoadResult<ResourceSummaryModelData> plr =
+                                new BasePagingLoadResult<ResourceSummaryModelData>
+                            (results, config.getOffset(), folder.getChildCount());
+                            callback.onSuccess(plr);
+                        }
+                    }.execute();
+                }
+            }
+
+        };
+
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<ResourceSummaryModelData>(loader);

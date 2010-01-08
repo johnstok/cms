@@ -37,6 +37,7 @@ import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
+import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -116,5 +117,13 @@ public class FoldersImpl
     public void updateFolder(final UUID folderId, final FolderDelta delta)
     throws RestException {
         getFolders().updateFolder(folderId, delta);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> getChildrenPaged(final UUID folderId,
+                                                        final PagingDto pagingDto) throws RestException {
+        return getFolders().getChildrenPaged(folderId, pagingDto);
     }
 }
