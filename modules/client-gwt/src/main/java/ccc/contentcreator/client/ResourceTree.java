@@ -118,7 +118,7 @@ public class ResourceTree{
 
         loader.load(null);
     }
-    
+
     public TreePanel<ResourceSummaryModelData> getTree() {
         return _tree;
     }

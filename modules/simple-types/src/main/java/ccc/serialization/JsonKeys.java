@@ -177,4 +177,8 @@ public final class JsonKeys {
     public static final String AUTHOR = "author";
     /** URL : String. */
     public static final String URL = "url";
+    /** OFFSET : String. */
+    public static final String OFFSET = "offset";
+    /** LIMIT : String. */
+    public static final String LIMIT = "limit";
 }

@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import ccc.contentcreator.actions.GetChildrenAction;
+import ccc.contentcreator.actions.GetChildrenFolderAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
@@ -93,7 +93,7 @@ public class FolderResourceTree extends Tree {
                         DataBinding.bindResourceSummary(
                             Collections.singletonList(_root)));
                 } else {
-                    new GetChildrenAction(_globals.userActions().loadData(),
+                    new GetChildrenFolderAction(_globals.userActions().loadData(),
                         ((ResourceSummaryModelData) loadConfig).getId()) {
 
 

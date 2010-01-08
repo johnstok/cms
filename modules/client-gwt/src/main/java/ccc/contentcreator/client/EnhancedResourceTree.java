@@ -26,9 +26,6 @@
  */
 package ccc.contentcreator.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -87,7 +84,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                     final boolean itemSelected = null!=getSelectedItem();
                      if (itemSelected
                          && te.getParent() == getSelectedItem().getModel()) {
-                         _rt.displayResourcesFor(te.getChildren());
+                         _rt.displayResourcesFor(te.getModel());
                      }
                 }
 
@@ -101,27 +98,26 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
                     // #327. in case root folder is collapsed.
                     if (ti == null) {
-                        _rt.displayResourcesFor(
-                            new ArrayList<ResourceSummaryModelData>());
+//                        _rt.displayResourcesFor(
+//                            new ArrayList<ResourceSummaryModelData>());
                         return;
                     }
                     final ResourceSummaryModelData selectedModel =
                         (ResourceSummaryModelData) ti.getModel();
 
-                    final List<ResourceSummaryModelData> children =
-                        store().getChildren(selectedModel);
-                    _rt.displayResourcesFor(children);
+                    _rt.displayResourcesFor(selectedModel);
 
 
                     final int folderCount = selectedModel.getFolderCount();
                     final int childCount = selectedModel.getChildCount();
 
-                    if (folderCount > 0) {         // Children are loaded.
-                        ti.setExpanded(true);
-                    } else if (childCount > 0
-                        && children.size() == 0) { // Children not loaded.
-                        getBinder().loadChildren(ti);
-                    }
+                    // FIXME is this needed??
+//                    if (folderCount > 0) {         // Children are loaded.
+//                        ti.setExpanded(true);
+//                    } else if (childCount > 0
+//                        && children.size() == 0) { // Children not loaded.
+//                        getBinder().loadChildren(ti);
+//                    }
                 }
             };
 

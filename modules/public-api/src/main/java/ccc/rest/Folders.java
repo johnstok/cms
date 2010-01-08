@@ -41,6 +41,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
+import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
 
 
@@ -68,6 +69,20 @@ public interface Folders {
     @NoCache
     Collection<ResourceSummary> getFolderChildren(
         @PathParam("id") UUID folderId) throws RestException;
+
+    /**
+     * List paged set of the children of the specified folder.
+     *
+     * @param folderId The id of the folder.
+     * @param pagingDto Paging control.
+     * @return The list of child resource for paging.
+     * @throws RestException If the method fails
+     */
+    @POST
+    @Path("/folders/{id}/children-paged")
+    @NoCache
+    Collection<ResourceSummary> getChildrenPaged(@PathParam("id") UUID folderId,
+        PagingDto pagingDto) throws RestException;
 
     /**
      * List all of the children of the specified folder.
