@@ -32,12 +32,10 @@ import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.TreeEvent;
-import com.extjs.gxt.ui.client.store.StoreEvent;
-import com.extjs.gxt.ui.client.store.StoreListener;
-import com.extjs.gxt.ui.client.store.TreeStoreEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.event.TreePanelEvent;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
-import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 
 
 /**
@@ -71,63 +69,33 @@ public class EnhancedResourceTree extends FolderResourceTree {
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 
-        store().addStoreListener(
-            new StoreListener<ResourceSummaryModelData>(){
+        tree().getSelectionModel().addSelectionChangedListener(
+            new SelectionChangedListener<ResourceSummaryModelData>(){
 
-                /** {@inheritDoc} */
                 @Override
-                public void storeDataChanged(
-                             final StoreEvent<ResourceSummaryModelData> se) {
-                    super.storeDataChanged(se);
-                    final TreeStoreEvent<ResourceSummaryModelData> te =
-                        (TreeStoreEvent<ResourceSummaryModelData>) se;
-                    final boolean itemSelected = null!=getSelectedItem();
-                     if (itemSelected
-                         && te.getParent() == getSelectedItem().getModel()) {
-                         _rt.displayResourcesFor(te.getModel());
-                     }
+                public void selectionChanged(final SelectionChangedEvent<ResourceSummaryModelData> se) {
+                    final ResourceSummaryModelData item = se.getSelectedItem();
+                    if (item != null) {
+                        _rt.displayResourcesFor(item);
+                    }
                 }
-
             }
         );
 
-        final Listener<TreeEvent> treeSelectionListener =
-            new Listener<TreeEvent>() {
-                public void handleEvent(final TreeEvent te) {
-                    final TreeItem ti = getSelectedItem();
-
-                    // #327. in case root folder is collapsed.
-                    if (ti == null) {
-//                        _rt.displayResourcesFor(
-//                            new ArrayList<ResourceSummaryModelData>());
-                        return;
-                    }
-                    final ResourceSummaryModelData selectedModel =
-                        (ResourceSummaryModelData) ti.getModel();
-
-                    _rt.displayResourcesFor(selectedModel);
-
-
-                    final int folderCount = selectedModel.getFolderCount();
-                    final int childCount = selectedModel.getChildCount();
-
-                    // FIXME is this needed??
-//                    if (folderCount > 0) {         // Children are loaded.
-//                        ti.setExpanded(true);
-//                    } else if (childCount > 0
-//                        && children.size() == 0) { // Children not loaded.
-//                        getBinder().loadChildren(ti);
-//                    }
+        final Listener<TreePanelEvent<ResourceSummaryModelData>> listener =
+            new Listener<TreePanelEvent<ResourceSummaryModelData>>() {
+                @Override
+                public void handleEvent(
+                           final TreePanelEvent<ResourceSummaryModelData> be) {
+                    _rt.displayResourcesFor(
+                        tree().getSelectionModel().getSelectedItem());
                 }
             };
 
-        addListener(
-            Events.SelectionChange,
-            treeSelectionListener
-        );
+        tree().addListener(Events.SelectionChange, listener);
 
         _contextMenu.setId("navigator-menu");
-        setContextMenu(_contextMenu);
+        tree().setContextMenu(_contextMenu);
     }
 
 

@@ -88,7 +88,7 @@ public class ResourceNavigator extends ContentPanel {
             contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
             contentPanel.setHeading(root.getCappedName());
-            contentPanel.add(enhancedResourceTree);
+            contentPanel.add(enhancedResourceTree.tree());
             add(contentPanel);
             contentPanel.addListener(
                 Events.Expand,
@@ -116,9 +116,9 @@ public class ResourceNavigator extends ContentPanel {
     }
 
     private void setPanel(final ContentPanel actionPanel,
-                          String id,
-                          String text,
-                          Tree actionTree,
+                          final String id,
+                          final String text,
+                          final Tree actionTree,
                           final Tree _actionTree) {
 
         actionPanel.getHeader().setId(id);
