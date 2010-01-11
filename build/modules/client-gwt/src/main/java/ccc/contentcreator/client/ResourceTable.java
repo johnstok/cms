@@ -289,7 +289,8 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     public ResourceSummaryModelData treeSelection() {
-        final ResourceSummaryModelData item = _tree.tree().getSelectionModel().getSelectedItem();
+        final ResourceSummaryModelData item =
+            _tree.treePanel().getSelectionModel().getSelectedItem();
         if (item == null) {
             return null;
         }
@@ -306,8 +307,8 @@ public class ResourceTable
         _detailsStore.update(model);
         _tree.store().update(model);
         if (null!=parent) {
-            _tree.tree().setExpanded(parent, false);
-            _tree.tree().setExpanded(parent, true);
+            _tree.treePanel().setExpanded(parent, false);
+            _tree.treePanel().setExpanded(parent, true);
         }
     }
 
@@ -325,11 +326,11 @@ public class ResourceTable
         _detailsStore.remove(item);
         _tree.store().remove(item);
         if (null!=parent) {
-            _tree.tree().setExpanded(parent, false);
+            _tree.treePanel().setExpanded(parent, false);
             if (parent.getFolderCount()<1) {
-                _tree.tree().setLeaf(parent, true);
+                _tree.treePanel().setLeaf(parent, true);
             } else {
-                _tree.tree().setExpanded(parent, true);
+                _tree.treePanel().setExpanded(parent, true);
             }
         }
         _tree.store().update(parent);

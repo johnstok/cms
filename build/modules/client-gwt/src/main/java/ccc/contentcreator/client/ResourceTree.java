@@ -36,12 +36,7 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 
-import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.data.TreeLoader;
-import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -49,12 +44,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceTree{
+public class ResourceTree extends AbstractResourceTree {
 
     private final IGlobals _globals;
     private final ResourceSummary _root;
 
-    private TreePanel<ResourceSummaryModelData> _tree = null;
     /**
      * Constructor.
      *
@@ -65,6 +59,13 @@ public class ResourceTree{
 
         _root = root;
         _globals = globals;
+
+        _loader.load(null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected RpcProxy<List<ResourceSummaryModelData>> createProxy() {
 
         final RpcProxy<List<ResourceSummaryModelData>> proxy =
             new RpcProxy<List<ResourceSummaryModelData>>() {
@@ -97,29 +98,6 @@ public class ResourceTree{
                     }.execute();
             }
         };
-
-        final TreeLoader<ResourceSummaryModelData> loader =
-            new BaseTreeLoader<ResourceSummaryModelData>(proxy) {
-            @Override
-            public boolean hasChildren(final ResourceSummaryModelData parent) {
-                if (parent.getChildCount() > 0) {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        final TreeStore<ResourceSummaryModelData> _store;
-        _store = new TreeStore<ResourceSummaryModelData>(loader);
-
-        _tree = new TreePanel<ResourceSummaryModelData>(_store);
-        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        _tree.setStyleAttribute("background", "white");
-
-        loader.load(null);
-    }
-
-    public TreePanel<ResourceSummaryModelData> getTree() {
-        return _tree;
+        return proxy;
     }
 }
