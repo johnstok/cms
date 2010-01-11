@@ -70,7 +70,7 @@ public class ResourceSelectionDialog extends Window {
         setLayout(new FitLayout());
 
         _tree = new ResourceTree(targetRoot, _globals);
-        add(_tree.getTree());
+        add(_tree.treePanel());
 
         final Button save = new Button(
             _globals.uiConstants().save(),
@@ -92,8 +92,8 @@ public class ResourceSelectionDialog extends Window {
      */
     public ResourceSummaryModelData selectedResource() {
         return
-            (null==_tree.getTree().getSelectionModel().getSelectedItem())
+            (null==_tree.treePanel().getSelectionModel().getSelectedItem())
                 ? null
-                : (ResourceSummaryModelData) _tree.getTree().getSelectionModel().getSelectedItem();
+                : (ResourceSummaryModelData) _tree.treePanel().getSelectionModel().getSelectedItem();
     }
 }

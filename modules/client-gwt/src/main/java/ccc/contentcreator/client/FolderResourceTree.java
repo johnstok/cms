@@ -36,16 +36,9 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 
-import com.extjs.gxt.ui.client.Style.SelectionMode;
-import com.extjs.gxt.ui.client.data.BaseTreeLoader;
-import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
-import com.extjs.gxt.ui.client.util.IconHelper;
-import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 
 /**
@@ -53,14 +46,10 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderResourceTree  {
+public class FolderResourceTree extends AbstractResourceTree {
 
     private final ResourceSummary _root;
     private final IGlobals _globals;
-
-    private TreeStore<ResourceSummaryModelData> _store;
-    private final TreePanel<ResourceSummaryModelData> _tree;
-
 
     /**
      * Constructor.
@@ -74,6 +63,23 @@ public class FolderResourceTree  {
         _root = root;
         _globals = globals;
 
+        treePanel().setHeight(600);
+
+        _loader.load(null);
+    }
+
+    /**
+     * Accessor for this tree's data store.
+     *
+     * @return The internal store.
+     */
+    public TreeStore<ResourceSummaryModelData> store() {
+        return _store;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected RpcProxy<List<ResourceSummaryModelData>> createProxy() {
         final RpcProxy<List<ResourceSummaryModelData>> proxy =
             new RpcProxy<List<ResourceSummaryModelData>>() {
 
@@ -107,52 +113,6 @@ public class FolderResourceTree  {
                 }
             }
         };
-
-
-        final TreeLoader<ResourceSummaryModelData> loader =
-            new BaseTreeLoader<ResourceSummaryModelData>(proxy) {
-            @Override
-            public boolean hasChildren(final ResourceSummaryModelData parent) {
-                final int folderCount = parent.getFolderCount();
-                return folderCount > 0;
-            }
-        };
-
-        _store = new TreeStore<ResourceSummaryModelData>(loader);
-        _tree = new TreePanel<ResourceSummaryModelData>(_store);
-        _tree.setCaching(false);
-        _tree.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
-        _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        _tree.setStyleAttribute("background", "white");
-        _tree.setHeight(600);
-
-        _tree.setIconProvider(new ModelIconProvider<ResourceSummaryModelData>() {
-            @Override
-            public AbstractImagePrototype getIcon(final ResourceSummaryModelData model) {
-                return IconHelper.createPath(
-                    new ResourceIconProvider().getStringValue(model, null));
-            }
-        });
-
-        loader.load(null);
-    }
-
-
-    /**
-     * Accessor for this tree's data store.
-     *
-     * @return The internal store.
-     */
-    public TreeStore<ResourceSummaryModelData> store() {
-        return _store;
-    }
-
-    /**
-     * Accessor for this tree's tree.
-     *
-     * @return The internal tree.
-     */
-    public TreePanel<ResourceSummaryModelData> tree() {
-        return _tree;
+        return proxy;
     }
 }

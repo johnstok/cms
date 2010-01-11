@@ -88,7 +88,7 @@ public class ResourceNavigator extends ContentPanel {
             contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
             contentPanel.setHeading(root.getCappedName());
-            contentPanel.add(enhancedResourceTree.tree());
+            contentPanel.add(enhancedResourceTree.treePanel());
             add(contentPanel);
             contentPanel.addListener(
                 Events.Expand,

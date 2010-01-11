@@ -68,13 +68,13 @@ public class FolderSelectionDialog extends Window {
         setMinWidth(IGlobals.MIN_WIDTH);
         setLayout(new FitLayout());
         _tree = new FolderResourceTree(root, _globals);
-        add(_tree.tree());
+        add(_tree.treePanel());
         final Button save = new Button(
             _globals.uiConstants().ok(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {
-                    if (null==_tree.tree().getSelectionModel().getSelectedItem()) {
+                    if (null==_tree.treePanel().getSelectionModel().getSelectedItem()) {
                         return; // No selection made.
                     }
                     hide(ce.getButton());
@@ -90,8 +90,8 @@ public class FolderSelectionDialog extends Window {
      */
     ResourceSummaryModelData selectedFolder() {
         return
-            (null==_tree.tree().getSelectionModel().getSelectedItem())
+            (null==_tree.treePanel().getSelectionModel().getSelectedItem())
                 ? null
-                : (ResourceSummaryModelData) _tree.tree().getSelectionModel().getSelectedItem();
+                : (ResourceSummaryModelData) _tree.treePanel().getSelectionModel().getSelectedItem();
     }
 }

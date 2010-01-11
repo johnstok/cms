@@ -69,11 +69,12 @@ public class EnhancedResourceTree extends FolderResourceTree {
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 
-        tree().getSelectionModel().addSelectionChangedListener(
+        treePanel().getSelectionModel().addSelectionChangedListener(
             new SelectionChangedListener<ResourceSummaryModelData>(){
 
                 @Override
-                public void selectionChanged(final SelectionChangedEvent<ResourceSummaryModelData> se) {
+                public void selectionChanged(
+                     final SelectionChangedEvent<ResourceSummaryModelData> se) {
                     final ResourceSummaryModelData item = se.getSelectedItem();
                     if (item != null) {
                         _rt.displayResourcesFor(item);
@@ -88,14 +89,14 @@ public class EnhancedResourceTree extends FolderResourceTree {
                 public void handleEvent(
                            final TreePanelEvent<ResourceSummaryModelData> be) {
                     _rt.displayResourcesFor(
-                        tree().getSelectionModel().getSelectedItem());
+                        treePanel().getSelectionModel().getSelectedItem());
                 }
             };
 
-        tree().addListener(Events.SelectionChange, listener);
+        treePanel().addListener(Events.SelectionChange, listener);
 
         _contextMenu.setId("navigator-menu");
-        tree().setContextMenu(_contextMenu);
+        treePanel().setContextMenu(_contextMenu);
     }
 
 
