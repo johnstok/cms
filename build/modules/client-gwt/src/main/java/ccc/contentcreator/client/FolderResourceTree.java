@@ -37,7 +37,6 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.store.TreeStore;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -65,16 +64,7 @@ public class FolderResourceTree extends AbstractResourceTree {
 
         treePanel().setHeight(600);
 
-        _loader.load(null);
-    }
-
-    /**
-     * Accessor for this tree's data store.
-     *
-     * @return The internal store.
-     */
-    public TreeStore<ResourceSummaryModelData> store() {
-        return _store;
+        loader().load(null);
     }
 
     /** {@inheritDoc} */
