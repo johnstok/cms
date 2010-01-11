@@ -26,15 +26,15 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 
 /**
- * TODO: Add a description for this type.
+ * Abstract base class for resource trees.
  *
  * @author Civic Computing Ltd.
  */
 public abstract class AbstractResourceTree {
 
     private final TreePanel<ResourceSummaryModelData> _tree;
-    protected TreeStore<ResourceSummaryModelData> _store;
-    protected BaseTreeLoader<ResourceSummaryModelData> _loader;
+    private final TreeStore<ResourceSummaryModelData> _store;
+    private final BaseTreeLoader<ResourceSummaryModelData> _loader;
 
     /**
      * Constructor.
@@ -74,6 +74,24 @@ public abstract class AbstractResourceTree {
      */
     public TreePanel<ResourceSummaryModelData> treePanel() {
         return _tree;
+    }
+
+    /**
+     * Accessor for this tree's loader.
+     *
+     * @return The loader.
+     */
+    public BaseTreeLoader<ResourceSummaryModelData> loader() {
+        return _loader;
+    }
+
+    /**
+     * Accessor for this tree's data store.
+     *
+     * @return The internal store.
+     */
+    public TreeStore<ResourceSummaryModelData> store() {
+        return _store;
     }
 
     /**
