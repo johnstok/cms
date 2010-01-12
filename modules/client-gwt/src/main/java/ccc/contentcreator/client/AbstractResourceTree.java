@@ -41,13 +41,7 @@ public abstract class AbstractResourceTree {
      *
      */
     public AbstractResourceTree() {
-        _loader = new BaseTreeLoader<ResourceSummaryModelData>(createProxy()) {
-            @Override
-            public boolean hasChildren(final ResourceSummaryModelData parent) {
-                final int folderCount = parent.getFolderCount();
-                return folderCount > 0;
-            }
-          };
+        _loader = createLoader();
 
         _store = new TreeStore<ResourceSummaryModelData>(_loader);
         _tree = new TreePanel<ResourceSummaryModelData>(_store);
@@ -77,12 +71,11 @@ public abstract class AbstractResourceTree {
     }
 
     /**
-     * Accessor for this tree's loader.
+     * Loads data using loader.
      *
-     * @return The loader.
      */
-    public BaseTreeLoader<ResourceSummaryModelData> loader() {
-        return _loader;
+    public void load() {
+        _loader.load(null);
     }
 
     /**
@@ -101,5 +94,11 @@ public abstract class AbstractResourceTree {
      */
     protected abstract RpcProxy<List<ResourceSummaryModelData>> createProxy();
 
+    /**
+     * Creates tree specific {@link BaseTreeLoader}.
+     *
+     * @return A base tree loader.
+     */
+    protected abstract BaseTreeLoader<ResourceSummaryModelData> createLoader();
 
 }

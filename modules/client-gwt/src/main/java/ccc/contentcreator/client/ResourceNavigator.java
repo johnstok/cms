@@ -88,6 +88,7 @@ public class ResourceNavigator extends ContentPanel {
             contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
             contentPanel.setHeading(root.getCappedName());
+
             contentPanel.add(enhancedResourceTree.treePanel());
             add(contentPanel);
             contentPanel.addListener(
@@ -104,13 +105,13 @@ public class ResourceNavigator extends ContentPanel {
         if (user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
-                "Users", _usersTree, _usersTree);
+                "Users", _usersTree);
         }
 
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();
         setPanel(actionPanel, "action-navigator",
-            "Actions", _actionTree, _actionTree);
+            "Actions", _actionTree);
 
         _rootTrees.get(0).showTable();
     }
@@ -118,8 +119,7 @@ public class ResourceNavigator extends ContentPanel {
     private void setPanel(final ContentPanel actionPanel,
                           final String id,
                           final String text,
-                          final Tree actionTree,
-                          final Tree _actionTree) {
+                          final Tree actionTree) {
 
         actionPanel.getHeader().setId(id);
         actionPanel.setAnimCollapse(false);
@@ -131,7 +131,7 @@ public class ResourceNavigator extends ContentPanel {
             Events.Expand,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent bce) {
-                    _actionTree.showTable();
+                    actionTree.showTable();
                 }
             }
         );

@@ -97,6 +97,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
 
         _contextMenu.setId("navigator-menu");
         treePanel().setContextMenu(_contextMenu);
+        treePanel().setStyleAttribute("overflow", "hidden");
     }
 
 
