@@ -67,7 +67,6 @@
             ccc.rest.providers.TemplateNewReader,
             ccc.rest.providers.CommentReader,
             ccc.rest.providers.TextFileDtoReader,
-            ccc.rest.providers.PagingDtoReader
         </param-value>
     </context-param>
     <context-param>
