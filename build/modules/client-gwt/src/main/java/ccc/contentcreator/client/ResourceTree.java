@@ -36,6 +36,7 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
 
+import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -59,8 +60,7 @@ public class ResourceTree extends AbstractResourceTree {
 
         _root = root;
         _globals = globals;
-
-        loader().load(null);
+        load();
     }
 
     /** {@inheritDoc} */
@@ -99,5 +99,17 @@ public class ResourceTree extends AbstractResourceTree {
             }
         };
         return proxy;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected BaseTreeLoader<ResourceSummaryModelData> createLoader() {
+        return new BaseTreeLoader<ResourceSummaryModelData>(createProxy()) {
+            @Override
+            public boolean hasChildren(final ResourceSummaryModelData parent) {
+                final int childCount = parent.getChildCount();
+                return childCount > 0;
+            }
+        };
     }
 }
