@@ -38,11 +38,14 @@ import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 /**
  * Renders a tree of resources.
@@ -115,7 +118,19 @@ public class ResourceTree{
         _tree = new TreePanel<ResourceSummaryModelData>(_store);
         _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         _tree.setStyleAttribute("background", "white");
+        _tree.setDisplayProperty(ResourceSummaryModelData.DISPLAY_PROPERTY);
 
+        _tree.setIconProvider(
+            new ModelIconProvider<ResourceSummaryModelData>() {
+            @Override
+            public AbstractImagePrototype getIcon(
+                                        final ResourceSummaryModelData model) {
+                return IconHelper.createPath(
+                    new ResourceIconProvider().getStringValue(model, null));
+            }
+        });
+
+        
         loader.load(null);
     }
     
