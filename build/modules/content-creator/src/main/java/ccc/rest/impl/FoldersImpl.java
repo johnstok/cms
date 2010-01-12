@@ -37,8 +37,8 @@ import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
-import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.types.SortOrder;
 
 
 /**
@@ -120,10 +120,18 @@ public class FoldersImpl
     }
 
 
+
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildrenPaged(final UUID folderId,
-                                                        final PagingDto pagingDto) throws RestException {
-        return getFolders().getChildrenPaged(folderId, pagingDto);
+                                                        final String sort,
+                                                        final SortOrder sortOrder,
+                                                        final int offset,
+                                                        final int limit) throws RestException {
+        return getFolders().getChildrenPaged(folderId,
+                                             sort,
+                                             sortOrder,
+                                             offset,
+                                             limit);
     }
 }

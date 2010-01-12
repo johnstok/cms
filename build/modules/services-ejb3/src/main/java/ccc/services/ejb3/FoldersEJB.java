@@ -50,11 +50,11 @@ import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
-import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
+import ccc.types.SortOrder;
 
 
 /**
@@ -292,18 +292,19 @@ public class FoldersEJB
     }
 
 
+
     /** {@inheritDoc} */
     @Override
     @PermitAll
     public Collection<ResourceSummary> getChildrenPaged(final UUID folderId,
-                                                        final PagingDto pagingDto) throws RestException {
+                                                        final String sort,
+                                                        final SortOrder sortOrder,
+                                                        final int pageNo,
+                                                        final int pageSize)
+                                                        throws RestException {
         try {
             final Folder f = getResources().find(Folder.class, folderId);
-
-            return mapResources(
-                f != null ? f.entries(pagingDto.getLimit(),
-                    pagingDto.getOffset()/pagingDto.getLimit()+1,
-                    f.sortOrder().name()) : new ArrayList<Resource>());
+            return mapResources(getResources().list(f, sort, sortOrder, pageNo, pageSize));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

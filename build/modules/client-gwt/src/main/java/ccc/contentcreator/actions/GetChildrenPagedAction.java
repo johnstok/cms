@@ -16,17 +16,15 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
 
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Get paged child resources for specified folder.
  *
  * @author Civic Computing Ltd.
  */
@@ -34,24 +32,39 @@ public abstract class GetChildrenPagedAction
 extends
 RemotingAction{
 
-    private final PagingDto _pagingDto;
     private final UUID _parentId;
+    private int _pageNo;
+    private int _pageSize;
+    private String _sort;
+    private String _order;
 
     /**
      * Constructor.
      *
+     * @param parentId The id of the parent folder.
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
+     * @param sort The column to sort.
+     * @param order The sort order (ASC/DESC).
      */
     public GetChildrenPagedAction(final UUID parentId,
-                                  final PagingDto pagingDto) {
-        super("get children paged", RequestBuilder.POST); // FIXME i18n
-        _pagingDto = pagingDto;
+                                  final int pageNo,
+                                  final int pageSize,
+                                  final String sort,
+                                  final String order) {
+        super(GLOBALS.uiConstants().getChildrenPaged());
         _parentId = parentId;
+        _pageNo = pageNo;
+        _pageSize = pageSize;
+        _sort = sort;
+        _order = order;
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/folders/"+_parentId+"/children-paged";
+        return "/folders/"+_parentId+"/children-paged?page="+_pageNo
+        +"&count="+_pageSize+"&sort="+_sort+"&order="+_order;
     }
 
 
@@ -67,13 +80,6 @@ RemotingAction{
         }
 
         execute(children);
-    }
-
-    /** {@inheritDoc} */
-    @Override protected String getBody() {
-        final GwtJson json = new GwtJson();
-        _pagingDto.toJson(json);
-        return json.toString();
     }
 
     /**

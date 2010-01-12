@@ -31,18 +31,20 @@ import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
-import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.types.SortOrder;
 
 
 /**
@@ -74,15 +76,23 @@ public interface Folders {
      * List paged set of the children of the specified folder.
      *
      * @param folderId The id of the folder.
-     * @param pagingDto Paging control.
+     * @param sort The column to sort.
+     * @param sortOrder The sort order (ASC/DESC).
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
      * @return The list of child resource for paging.
      * @throws RestException If the method fails
      */
-    @POST
+    @GET
     @Path("/folders/{id}/children-paged")
     @NoCache
-    Collection<ResourceSummary> getChildrenPaged(@PathParam("id") UUID folderId,
-        PagingDto pagingDto) throws RestException;
+    Collection<ResourceSummary> getChildrenPaged(
+        @PathParam("id") UUID folderId,
+        @QueryParam("sort") @DefaultValue("name") String sort,
+        @QueryParam("order") @DefaultValue("ASC") SortOrder sortOrder,
+        @QueryParam("page") @DefaultValue("0") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize)
+         throws RestException;
 
     /**
      * List all of the children of the specified folder.

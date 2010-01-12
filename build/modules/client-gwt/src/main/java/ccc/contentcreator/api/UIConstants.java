@@ -1580,4 +1580,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Definition XML")
     String definitionXML();
 
+    /**
+     * "Get children paged".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Get children paged")
+    String getChildrenPaged();
+
 }
