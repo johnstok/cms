@@ -10,7 +10,8 @@ FCKConfig.ToolbarSets["ccc"] = [
         ['Cut','Copy','Paste','PasteText','PasteWord','-'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         '/',
-        ['FontFormat','Bold','Italic','Underline','StrikeThrough','-'],
+        ['FontFormat','Bold','Italic','Underline','StrikeThrough'],
+        ['OrderedList','UnorderedList'],
         ['Anchor','Table','SpecialChar','CCC_Image','CCC_Link']
 ] ;
 
