@@ -33,11 +33,11 @@ import java.util.List;
 import ccc.contentcreator.actions.GetChildrenPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.rest.dto.PagingDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.types.ResourceType;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -155,10 +155,18 @@ public class ResourceTable
                 } else {
                     final BasePagingLoadConfig config =
                         (BasePagingLoadConfig) loadConfig;
-                    final PagingDto pdto = new PagingDto(config.getOffset(),
-                        config.getLimit());
 
-                    new GetChildrenPagedAction(folder.getId(), pdto) {
+                    final int page =  config.getOffset()/ config.getLimit()+1;
+                    final String order = (
+                        config.getSortDir() == Style.SortDir.ASC
+                        ? "ASC" : "DESC");
+
+                    new GetChildrenPagedAction(
+                        folder.getId(),
+                        page,
+                        config.getLimit(),
+                        config.getSortField(),
+                        order) {
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
                             callback.onFailure(t);

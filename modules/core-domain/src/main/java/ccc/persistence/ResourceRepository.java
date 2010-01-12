@@ -38,6 +38,7 @@ import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.types.ResourcePath;
+import ccc.types.SortOrder;
 
 
 /**
@@ -181,4 +182,21 @@ public interface ResourceRepository {
      * @return The template with the specified name.
      */
     Template template(String name) throws EntityNotFoundException;
+
+    /**
+     * List folder children.
+     *
+     * @param resource Filter comments by resource. NULL will return all.
+     * @param sort The sort results be sorted in.
+     * @param sortOrder The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
+     * @return A list of comments.
+     */
+    List<Resource> list(Resource resource,
+                       String sort,
+                       SortOrder sortOrder,
+                       int pageNo,
+                       int pageSize);
 }

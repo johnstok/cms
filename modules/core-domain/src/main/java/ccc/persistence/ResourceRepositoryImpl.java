@@ -47,6 +47,7 @@ import ccc.types.DBC;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
+import ccc.types.SortOrder;
 
 
 /**
@@ -245,5 +246,34 @@ class ResourceRepositoryImpl implements ResourceRepository {
             if (!r.isDeleted()) { nondeleted.add(r); }
         }
         return nondeleted;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Resource> list(final Resource resource,
+                               final String sort,
+                               final SortOrder sortOrder,
+                               final int pageNo,
+                               final int pageSize) {
+        final StringBuffer query = new StringBuffer();
+        final List<Object> params = new ArrayList<Object>();
+
+        query.append("from ccc.domain.Resource r");
+
+        query.append(" where r._parent = ?");
+        params.add(resource);
+
+        if (null != sort) {
+            query.append(" order by r._name ");
+            query.append(sortOrder.name());
+        }
+        return
+        _repository.listDyn(
+            query.toString(),
+            Resource.class,
+            pageNo,
+            pageSize,
+            params.toArray());
     }
 }
