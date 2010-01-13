@@ -205,6 +205,7 @@ public class ResourceTable
                 ResourceSummaryModelData.Property.TYPE.name(),
                 UI_CONSTANTS.type(),
                 40);
+        typeColumn.setSortable(false);
         typeColumn.setRenderer(
             ResourceTypeRendererFactory.rendererForResourceSummary());
         configs.add(typeColumn);
@@ -214,6 +215,7 @@ public class ResourceTable
                 ResourceSummaryModelData.Property.WORKING_COPY.name(),
                 UI_CONSTANTS.draft(),
                 40);
+        workingCopyColumn.setSortable(false);
         workingCopyColumn.setRenderer(new ResourceWorkingCopyRenderer());
         configs.add(workingCopyColumn);
 

@@ -265,7 +265,17 @@ class ResourceRepositoryImpl implements ResourceRepository {
         params.add(resource);
 
         if (null != sort) {
-            query.append(" order by r._name ");
+            if ("title".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(r._title) ");
+            } else if ("mm_include".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(r._includeInMainMenu) ");
+            } else if ("locked".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(r._lockedBy) ");
+            } else if ("published".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(r._publishedBy) ");
+            } else {
+                query.append(" order by upper(r._name) ");
+            }
             query.append(sortOrder.name());
         }
         return
