@@ -1644,4 +1644,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Spam")
     String spam();
 
+    /**
+     * "Inner HTML".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Inner HTML")
+    String innerHTML();
+
 }

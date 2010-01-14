@@ -16,18 +16,20 @@ LinkSelectCommand.Execute=function() {
 	
 	var url = "";
 	var title = "";
+	var innerText = "";
 	var openInNew = false;
 	
 	if (selection.HasAncestorNode('A')) {
 		var oldLink = selection.MoveToAncestorNode( 'A' ) ;
 		url =  oldLink.getAttribute( 'href' , 2 ) || '' ;
-		title =  oldLink.innerHTML;
+		title =  oldLink.title;
+		innerText =  oldLink.innerHTML;
 		if (oldLink.target == "_blank") {
 			openInNew = true;
 		}
 	}
 	
-	parent.cccLinkSelector(fckname, url, title, openInNew);
+	parent.cccLinkSelector(fckname, url, title, innerText, openInNew);
 }
 FCKCommands.RegisterCommand('CCC_Link', LinkSelectCommand );
         
