@@ -158,8 +158,8 @@ public class FCKEditor extends LayoutContainer {
 
 
     private static native String initJSNI(final FCKEditor obj) /*-{
-        $wnd.cccLinkSelector = function(fckname, url, title, openInNew) {
-            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,openInNew);
+        $wnd.cccLinkSelector = function(fckname, url, title, innerText, openInNew) {
+            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,innerText,openInNew);
         };
 
         $wnd.cccImageSelector = function(fckname) {
@@ -174,11 +174,13 @@ public class FCKEditor extends LayoutContainer {
      * @param elementID The element id for the FCK editor instance.
      * @param url The link's URL.
      * @param title The title of the link.
+     * @param innerText The inner text/HTML of the link.
      * @param openInNew Boolean  for opening the link in the new  of the window.
      */
     public void openLinkSelector(final String elementID,
                                  final String url,
                                  final String title,
+                                 final String innerText,
                                  final boolean openInNew) {
         new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
             @Override
@@ -190,7 +192,7 @@ public class FCKEditor extends LayoutContainer {
                     }
                 }
                 new LinkSelectionDialog(
-                    rs, elementID, url, title, openInNew).show();
+                    rs, elementID, url, title, innerText, openInNew).show();
             }
 
         }.execute();

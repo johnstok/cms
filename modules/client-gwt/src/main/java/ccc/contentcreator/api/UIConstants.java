@@ -1580,4 +1580,12 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Definition XML")
     String definitionXML();
 
+    /**
+    * "Inner HTML".
+    *
+    * @return The constant, in the appropriate locale.
+    */
+    @DefaultStringValue("Inner HTML")
+    String innerHTML();
+     
 }
