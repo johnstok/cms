@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,31 +24,50 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.actions.remote;
 
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.actions.RemotingAction;
+import ccc.contentcreator.client.GwtJson;
+import ccc.rest.dto.CommentDto;
 
-import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Abstract base class for table panels.
+ * Remote action for page updating.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class TablePanel extends ContentPanel {
+public class UpdateCommentAction
+    extends
+        RemotingAction {
 
-    /** GLOBALS : IGlobals. */
-    protected static final IGlobals GLOBALS = new IGlobalsImpl();
+    private final CommentDto _comment;
 
-    /** USER_ACTIONS : ActionNameConstants. */
-    protected static final ActionNameConstants USER_ACTIONS =
-        GLOBALS.userActions();
 
-    /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
+    /**
+     * Constructor.
+     *
+     * @param comment The updated comment.
+     */
+    public UpdateCommentAction(final CommentDto comment) {
+        super(UI_CONSTANTS.updateComment(), RequestBuilder.POST);
+        _comment = comment;
+    }
 
-    /** PAGING_ROW_COUNT : int. */
-    protected static final int PAGING_ROW_COUNT = 20;
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return "/comments/"+_comment.getId();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final GwtJson json = new GwtJson();
+        _comment.toJson(json);
+        return json.toString();
+    }
 }

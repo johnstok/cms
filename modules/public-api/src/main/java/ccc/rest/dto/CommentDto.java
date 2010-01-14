@@ -78,6 +78,22 @@ public class CommentDto
 
 
     /**
+     * Constructor.
+     *
+     * @param json The JSON representation of this comment.
+     */
+    public CommentDto(final Json json) {
+        _timestamp = json.getDate(JsonKeys.DATE_CREATED);
+        _resourceId = json.getId(JsonKeys.TARGET_ID);
+        _body = json.getString(JsonKeys.BODY);
+        _author = json.getString(JsonKeys.AUTHOR);
+        _url = json.getString(JsonKeys.URL);
+        _id = json.getId(JsonKeys.ID);
+        _status = CommentStatus.valueOf(json.getString(JsonKeys.STATUS));
+    }
+
+
+    /**
      * Accessor.
      *
      * @return Returns the resourceId.
@@ -158,6 +174,42 @@ public class CommentDto
      * @param id The ID to set.
      */
     public final void setId(final UUID id) { _id = id; }
+
+
+    /**
+     * Mutator.
+     *
+     * @param resourceId The resourceId to set.
+     */
+    public final void setResourceId(final UUID resourceId) {
+        _resourceId = resourceId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param author The author to set.
+     */
+    public final void setAuthor(final String author) { _author = author; }
+
+
+    /**
+     * Mutator.
+     *
+     * @param url The url to set.
+     */
+    public final void setUrl(final String url) { _url = url; }
+
+
+    /**
+     * Mutator.
+     *
+     * @param timestamp The timestamp to set.
+     */
+    public final void setTimestamp(final Date timestamp) {
+        _timestamp = timestamp;
+    }
 
 
     /** {@inheritDoc} */

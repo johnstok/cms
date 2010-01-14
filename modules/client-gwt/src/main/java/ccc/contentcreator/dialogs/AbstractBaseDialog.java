@@ -140,7 +140,6 @@ public abstract class AbstractBaseDialog
                 hide();
             }
         });
-        cancel.setId("cancel");
         return cancel;
     }
 

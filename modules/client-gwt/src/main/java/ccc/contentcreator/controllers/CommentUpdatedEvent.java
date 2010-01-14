@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,34 +21,48 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.controllers;
 
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.UIConstants;
-
-import com.extjs.gxt.ui.client.widget.ContentPanel;
+import ccc.contentcreator.binding.CommentModelData;
+import ccc.contentcreator.client.Event;
 
 
 /**
- * Abstract base class for table panels.
+ * An event indicating a comment was updated.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class TablePanel extends ContentPanel {
+public class CommentUpdatedEvent implements Event {
 
-    /** GLOBALS : IGlobals. */
-    protected static final IGlobals GLOBALS = new IGlobalsImpl();
+    private final CommentModelData _comment;
 
-    /** USER_ACTIONS : ActionNameConstants. */
-    protected static final ActionNameConstants USER_ACTIONS =
-        GLOBALS.userActions();
 
-    /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();
+    /**
+     * Constructor.
+     *
+     * @param resource The updated resource.
+     */
+    public CommentUpdatedEvent(final CommentModelData resource) {
+        _comment = resource;
+    }
 
-    /** PAGING_ROW_COUNT : int. */
-    protected static final int PAGING_ROW_COUNT = 20;
+
+    /** {@inheritDoc} */
+    @Override
+    public Type getType() {
+        return Event.Type.COMMENT_UPDATED;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the comment.
+     */
+    public CommentModelData getComment() {
+        return _comment;
+    }
 }
