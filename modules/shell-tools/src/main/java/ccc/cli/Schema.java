@@ -31,7 +31,9 @@ import static ccc.commons.Exceptions.*;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,11 +72,12 @@ public class Schema
 
     @Option(
         name="-v", required=true, usage="Version of the database to build.")
-    private int _version;
+        private int _version;
 
     @Option(
         name="-d", required=false, usage="Drop existing tables first.")
     private boolean _drop = false;
+
 
     private void create() {
         final DatabaseVendor vendor =
@@ -87,53 +90,78 @@ public class Schema
                 _username,
                 _password);
 
+        int currentVersion = currentVersion(newConnection);
+        LOG.info("Current database version: "+currentVersion);
+
         try {
             if (_drop) {
-                final String drop =
-                    "/create/"
-                    +_version+"/"
-                    +vendor.name().toLowerCase(Locale.US)
-                    +"/drop.sql";
-
-                runScript(newConnection, drop);
+                doDrop(vendor, newConnection, currentVersion);
+                currentVersion = 0;
             }
 
-            if (true) {
-                final String create =
-                    "/create/"
-                    +_version+"/"
-                    +vendor.name().toLowerCase(Locale.US)
-                    +"/ccc7-schema.sql";
-
-                runScript(newConnection, create);
+            for (int i=(currentVersion+1); i<=_version; i++) {
+                doCreate(vendor, newConnection, i);
             }
 
-            try {
-                newConnection.commit();
-                LOG.info("Commited.");
-            } catch (final SQLException e) {
-                LOG.info("Error commiting changes.", e);
-            }
-
-            LOG.info("Finished.");
+            commit(newConnection);
 
         } finally {
             DbUtils.closeQuietly(newConnection);
+        }
+
+        LOG.info("Finished.");
+    }
+
+
+    private void commit(final Connection newConnection) {
+        try {
+            newConnection.commit();
+            LOG.info("Commited.");
+        } catch (final SQLException e) {
+            LOG.info("Error commiting changes.", e);
+        }
+    }
+
+
+    private void doCreate(final DatabaseVendor vendor,
+                          final Connection newConnection,
+                          final int version) {
+        final String create =
+            "/create/"
+            +version+"/"
+            +vendor.name().toLowerCase(Locale.US)
+            +"/create.sql";
+        runScript(newConnection, create);
+    }
+
+
+    private void doDrop(final DatabaseVendor vendor,
+                        final Connection newConnection,
+                        final int currentVersion) {
+        LOG.info("Dropping existing schema.");
+        for (int i=currentVersion; i>0; i--) {
+            final String drop =
+                "/create/"
+                +i+"/"
+                +vendor.name().toLowerCase(Locale.US)
+                +"/drop.sql";
+            runScript(newConnection, drop);
         }
     }
 
 
     private void runScript(final Connection newConnection,
                            final String create) {
-
         LOG.info("Running script: "+create);
-
         final List<String> statements =
             Resources.readIntoList(create, Charset.forName("UTF-8"));
+        LOG.info("Statements to process: "+statements.size());
         for (final String statement : statements) {
+//            LOG.debug("Executing statement: "+statement);
             execute(newConnection, statement);
         }
     }
+
 
     private void execute(final Connection newConnection,
                          final String statement) {
@@ -152,9 +180,40 @@ public class Schema
                 }
             }
         } catch (final SQLException e) {
-            LOG.warn("Failed to execute statement: "+statement, e);
+            LOG.warn("Failed to execute statement: "+e.getMessage());
         }
     }
+
+
+    private int currentVersion(final Connection connection) {
+        final String versionQuery =
+            "SELECT value FROM settings WHERE name='DATABASE_VERSION'";
+
+        try {
+            final Statement s = connection.createStatement();
+
+            try {
+                final ResultSet rs = s.executeQuery(versionQuery);
+                if (rs.next()) {
+                    return rs.getInt(1)+1;
+                }
+                return 0;
+
+            } catch (final SQLException e) { // Assume SETTINGS table missing.
+                try {
+                    s.close();
+                } catch (final SQLException ee) {
+                    swallow(e);
+                }
+                return 0;
+            }
+
+        } catch (final SQLException e) {
+            throw new RuntimeException(
+                "Failed to determine current DB version.", e);
+        }
+    }
+
 
     /**
      * Entry point for this application.

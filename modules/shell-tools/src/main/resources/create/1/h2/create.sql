@@ -26,7 +26,6 @@ create table templates (id varchar(36) not null, current_revision integer not nu
 create table user_metadata (user_id varchar(36) not null, datum_value varchar(1024) not null, datum_key varchar(255) not null, primary key (user_id, datum_key));
 create table user_roles (user_id varchar(36) not null, role varchar(255) not null, primary key (user_id, role));
 create table users (id varchar(36) not null, vn bigint not null, username varchar(255) not null unique, hash binary(255) not null, email varchar(512) not null, name varchar(255) not null, primary key (id));
-create table comments (id varchar(36) not null, vn bigint not null, timestamp timestamp not null, body clob not null, author varchar(1024), url varchar(1024), status varchar(255) not null, resource_id varchar(36) not null, primary key (id));
 alter table action_fail_params add constraint FK_ACTION_FPARAM_ACTION_ID foreign key (action_id) references actions;
 alter table action_params add constraint FK_ACTION_PARAM_ACTION_ID foreign key (action_id) references actions;
 alter table actions add constraint FK_ACTION_RESOURCE_SUBJECT_ID foreign key (subject_id) references resources;
@@ -63,7 +62,6 @@ alter table template_revisions add constraint FK_REVISION_TEMPLATE_ID foreign ke
 alter table templates add constraint FK_TEMPLATE_RESOURCE_ID foreign key (id) references resources;
 alter table user_metadata add constraint FK_USERMETADATA_USER_ID foreign key (user_id) references users;
 alter table user_roles add constraint FK_USERROLES_USER_ID foreign key (user_id) references users;
-alter table comments add constraint FK_COMMENT_RESOURCE_ID foreign key (resource_id) references resources;
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c03', 0, '0', 'DATABASE_VERSION');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c04', 0, '/tmp/CCC7/lucene', 'LUCENE_INDEX_PATH');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c05', 0, '/tmp/CCC7/filestore', 'FILE_STORE_PATH');
