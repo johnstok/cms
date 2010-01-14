@@ -1588,4 +1588,60 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Get children paged")
     String getChildrenPaged();
 
+    /**
+     * "Approved".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Approved")
+    String approved();
+
+    /**
+     * "Comments".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Comments")
+    String comments();
+
+    /**
+     * "Comment details".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Comment details")
+    String commentDetails();
+
+    /**
+     * "Url".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Url")
+    String url();
+
+    /**
+     * "Author".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Author")
+    String author();
+
+    /**
+     * "Update comment".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update comment")
+    String updateComment();
+
+    /**
+     * "Spam".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Spam")
+    String spam();
+
 }

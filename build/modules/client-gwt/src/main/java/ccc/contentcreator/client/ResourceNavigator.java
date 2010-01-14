@@ -51,6 +51,7 @@ public class ResourceNavigator extends ContentPanel {
     private final LeftRightPane _view;
     private final Tree _usersTree;
     private final Tree _actionTree;
+    private final CommentTree _commentTree;
     private final List<EnhancedResourceTree> _rootTrees =
         new ArrayList<EnhancedResourceTree>();
 
@@ -112,6 +113,11 @@ public class ResourceNavigator extends ContentPanel {
         final ContentPanel actionPanel = new ContentPanel();
         setPanel(actionPanel, "action-navigator",
             "Actions", _actionTree);
+
+        _commentTree = new CommentTree(_view);
+        final ContentPanel commentsPanel = new ContentPanel();
+        setPanel(commentsPanel, "comment-navigator",
+            _globals.uiConstants().comments(), _commentTree);
 
         _rootTrees.get(0).showTable();
     }

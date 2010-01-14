@@ -34,7 +34,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -80,7 +79,7 @@ public interface Comments {
      *
      * @return Return the corresponding comment.
      */
-    @GET @Path("/comment/{id}")
+    @GET @Path("/comments/{id}")
     CommentDto retrieve(@PathParam("id") UUID commentId) throws RestException;
 
 
@@ -92,7 +91,7 @@ public interface Comments {
      *
      * @throws RestException If the method fails.
      */
-    @PUT @Path("/comment/{id}")
+    @POST @Path("/comments/{id}")
     void update(@PathParam("id") UUID commentId,
                 CommentDto comment) throws RestException;
 
@@ -104,7 +103,7 @@ public interface Comments {
      *
      * @throws RestException If the method fails.
      */
-    @DELETE @Path("/comment/{id}")
+    @DELETE @Path("/comments/{id}")
     void delete(@PathParam("id") UUID commentId) throws RestException;
 
 

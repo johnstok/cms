@@ -114,4 +114,12 @@ public interface ActionNameConstants extends Constants {
      */
     @DefaultStringValue("Load data")
     String loadData();
+
+    /**
+     * "View comments".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("View comments")
+    String viewComments();
 }

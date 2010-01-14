@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -194,6 +195,17 @@ public final class DataBinding {
             new ArrayList<ActionSummaryModelData>();
         for (final ActionSummary as : result) {
             boundData.add(new ActionSummaryModelData(as, GLOBALS));
+        }
+        return boundData;
+    }
+
+
+    public static List<CommentModelData> bindCommentSummary(
+                                    final Collection<CommentDto> comments) {
+        final List<CommentModelData> boundData =
+            new ArrayList<CommentModelData>();
+        for (final CommentDto as : comments) {
+            boundData.add(new CommentModelData(as));
         }
         return boundData;
     }
