@@ -85,12 +85,12 @@ public final class ResourceSelector
             "SELECT content_id, content_type, name, index_title, page, "
             + " status,version_id, permission_name, use_in_index, description, "
             + " embargo_date, expiry_date "
-            + "FROM c3_content, c3_display_templates "
+            + "FROM c3_content "
+            + "LEFT OUTER JOIN c3_display_templates "
+            + "ON c3_content.display_template_id = c3_display_templates.template_id "
             + "WHERE c3_content.parent_id = ? "
             + "AND version_id = 0 "
             + "AND (status = 'PUBLISHED' OR status = 'NEW') "
-            + "AND c3_content.display_template_id = "
-            +   "c3_display_templates.template_id(+) "
             + "ORDER BY SORT_ORDER";
     }
 }

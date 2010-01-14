@@ -56,18 +56,16 @@ public final class StyleSheetSelector
     public String getSql() {
         return
             "SELECT code "
-            + "FROM ("
-            + "(SELECT code "
             + "FROM c3_pages, c3_scripts "
             + "WHERE c3_pages.page_id = ? "
             + "AND c3_pages.version_id = 0 "
-            + "AND c3_pages.stylesheet = c3_scripts.id) "
+            + "AND c3_pages.stylesheet = c3_scripts.id "
             + "UNION ALL "
-            + "(SELECT code "
+            + "SELECT code "
             + "FROM  c3_folders, c3_scripts "
             + "WHERE c3_folders.folder_id = ? "
             + "AND c3_folders.version_id = 0 "
-            + "AND c3_folders.stylesheet = c3_scripts.id))";
+            + "AND c3_folders.stylesheet = c3_scripts.id";
 
     }
 }

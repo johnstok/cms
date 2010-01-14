@@ -248,7 +248,7 @@ public class Migrations extends BaseMigrations {
             final ResourceSummary rs = _foldersExt.createFolder(
                     parentFolderId,
                     r.name(),
-                    r.title(),
+                    r.cleanTitle(),
                     false,
                     le.getUser().getId(),
                     le.getHappenedOn());

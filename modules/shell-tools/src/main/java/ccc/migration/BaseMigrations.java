@@ -311,7 +311,7 @@ public class BaseMigrations {
         setStyleSheet(r, metadata);
         setFlagged(r, metadata);
         metadata.put("legacyId", ""+r.contentId());
-        if (r.useInIndex() != null) {
+        if (r.useInIndex() != null && !r.useInIndex().equals("")) {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
@@ -342,7 +342,7 @@ public class BaseMigrations {
             _legacyQueries.selectParagraphs(pageId, version);
 
         for (final ParagraphBean p : paragraphs) {
-            if (p.text() == null) { // ignore empty/null texts
+            if (p.text() == null || p.text().equals("")) { // ignore empty/null texts
                 log.debug("Ignoring empty part for paragraph "+p.key());
 
             } else if (map.containsKey(p.key())) { // merge
@@ -392,7 +392,7 @@ public class BaseMigrations {
                                final Map<String, String> properties) {
         final String styleSheet =
             _legacyQueries.selectStyleSheet(r.contentId());
-        if (styleSheet != null) {
+        if (styleSheet != null && !styleSheet.equals("")) {
             if (isValidMetadatum(styleSheet)) {
                 properties.put("bodyId", styleSheet);
             } else {

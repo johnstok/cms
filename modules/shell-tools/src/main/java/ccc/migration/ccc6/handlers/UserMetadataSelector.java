@@ -45,7 +45,7 @@ public final class UserMetadataSelector
     public Map<String, String> handle(final ResultSet rs) throws SQLException {
         final Map<String, String> metamap = new HashMap<String, String>();
         while (rs.next()) {
-            final String key = rs.getString("key");
+            final String key = rs.getString("key1");
             final String value = rs.getString("value");
             if (key != null && !key.trim().equals("")) {
                 metamap.put(key, value);
@@ -58,7 +58,7 @@ public final class UserMetadataSelector
     @Override
     public String getSql() {
         return
-        "SELECT udb.display_name key, ud.attribute_value value "
+        "SELECT udb.display_name key1, ud.attribute_value value "
         + "FROM user_data ud, user_data_attrib udb, users u "
         + "WHERE u.user_id = ud.user_id "
         + "AND ud.attribute_id=udb.attribute_id "
