@@ -57,6 +57,7 @@ import ccc.types.SortOrder;
  */
 class ResourceRepositoryImpl implements ResourceRepository {
 
+    private static final int MAX_RESULTS = 1000;
     private final Repository _repository;
 
     /**
@@ -256,6 +257,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                                final SortOrder sortOrder,
                                final int pageNo,
                                final int pageSize) {
+
         final StringBuffer query = new StringBuffer();
         final List<Object> params = new ArrayList<Object>();
 
@@ -283,7 +285,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             query.toString(),
             Resource.class,
             pageNo,
-            pageSize,
+            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
             params.toArray());
     }
 }
