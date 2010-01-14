@@ -56,7 +56,7 @@ public class TemplateFieldsSelector implements SqlQuery<Set<String>> {
     /** {@inheritDoc} */
     @Override
     public String getSql() {
-        return "SELECT unique p.para_type "
+        return "SELECT distinct p.para_type "
         + "FROM c3_content c, c3_paragraphs p, c3_display_templates dt "
         + "WHERE c.content_id = p.page_id "
         + "AND c.display_template_id is not null "

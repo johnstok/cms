@@ -178,7 +178,8 @@ public class ResourceBean {
      * @return The title.
      */
     public String cleanTitle() {
-        final String cleanTitle =  (null==title()) ? name() : title();
+        final String cleanTitle =
+            (null==title() || title().trim().equals("")) ? name() : title();
         return new WordCharFixer().fix(cleanTitle);
     }
 
