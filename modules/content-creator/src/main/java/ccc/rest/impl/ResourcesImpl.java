@@ -46,6 +46,7 @@ import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
+import ccc.types.SortOrder;
 
 
 /**
@@ -304,5 +305,16 @@ public class ResourcesImpl
     public Collection<ResourceSummary> getSiblings(final UUID resourceId)
         throws RestException, UnauthorizedException {
         return getResources().getSiblings(resourceId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> list(final String tag,
+                                      final String sort,
+                                      final SortOrder order,
+                                      final int pageNo,
+                                      final int pageSize) throws RestException {
+        return getResources().list(tag, sort, order, pageNo, pageSize);
     }
 }

@@ -32,11 +32,13 @@ import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
@@ -46,6 +48,7 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.serialization.Json;
 import ccc.types.Duration;
+import ccc.types.SortOrder;
 
 
 /**
@@ -59,6 +62,29 @@ public interface Resources {
 
     /** NAME : String. */
     String NAME = "PublicCommands";
+
+
+    /**
+     * List existing resources.
+     *
+     * @param tag Filter resources by tag. NULL will return all.
+     * @param sort The field results be sorted on.
+     * @param order The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
+     * @return A list of resources.
+     *
+     * @throws RestException If the method fails.
+     */
+    @GET @Path("/resources")
+    Collection<ResourceSummary> list(
+        @QueryParam("tag") String tag,
+        @QueryParam("sort") @DefaultValue("name") String sort,
+        @QueryParam("order") @DefaultValue("ASC") SortOrder order,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize)
+    throws RestException;
 
 
     /**

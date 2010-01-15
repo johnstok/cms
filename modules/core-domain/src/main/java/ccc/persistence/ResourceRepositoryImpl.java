@@ -253,6 +253,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     /** {@inheritDoc} */
     @Override
     public List<Resource> list(final Resource resource,
+                               final String tag,
                                final String sort,
                                final SortOrder sortOrder,
                                final int pageNo,
@@ -263,8 +264,16 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
         query.append("from ccc.domain.Resource r");
 
-        query.append(" where r._parent = ?");
-        params.add(resource);
+        if (null!=resource) {
+            query.append(" where r._parent = ?");
+            params.add(resource);
+        }
+
+        if (null!=tag) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" ? in elements(r._tags)");
+            params.add(tag);
+        }
 
         if (null != sort) {
             if ("title".equalsIgnoreCase(sort)) {

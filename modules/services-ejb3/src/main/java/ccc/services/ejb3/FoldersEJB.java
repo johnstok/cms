@@ -296,15 +296,19 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getChildrenPaged(final UUID folderId,
-                                                        final String sort,
-                                                        final SortOrder sortOrder,
-                                                        final int pageNo,
-                                                        final int pageSize)
-                                                        throws RestException {
+    public Collection<ResourceSummary> getChildrenPaged(
+                                                    final UUID folderId,
+                                                    final String sort,
+                                                    final SortOrder sortOrder,
+                                                    final int pageNo,
+                                                    final int pageSize)
+                                                    throws RestException {
         try {
             final Folder f = getResources().find(Folder.class, folderId);
-            return mapResources(getResources().list(f, sort, sortOrder, pageNo, pageSize));
+            return
+                mapResources(
+                    getResources().list(
+                        f, null, sort, sortOrder, pageNo, pageSize));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
