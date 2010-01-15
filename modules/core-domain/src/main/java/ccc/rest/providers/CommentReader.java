@@ -39,8 +39,6 @@ import javax.ws.rs.ext.Provider;
 
 import ccc.rest.dto.CommentDto;
 import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.types.CommentStatus;
 
 
 /**
@@ -75,17 +73,6 @@ public class CommentReader
                               final InputStream arg5) throws IOException {
 
         final Json json = readJson(arg3, arg5);
-
-        final CommentDto dto =
-            new CommentDto(
-                json.getString(JsonKeys.AUTHOR),
-                json.getString(JsonKeys.BODY),
-                json.getId(JsonKeys.TARGET_ID),
-                json.getDate(JsonKeys.DATE_CREATED),
-                json.getString(JsonKeys.URL));
-        dto.setId(json.getId(JsonKeys.ID));
-        dto.setStatus(CommentStatus.valueOf(json.getString(JsonKeys.STATUS)));
-
-        return dto;
+        return new CommentDto(json);
     }
 }

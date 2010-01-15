@@ -63,6 +63,8 @@ public class CommentsAcceptanceTest
                 folder.getId(),
                 new Date(),
                 "http://www.google.com");
+        c.setEmail("test@example.com");
+        c.setStatus(CommentStatus.APPROVED);
 
         // ACT
         final CommentDto actual = getComments().create(c);
@@ -73,6 +75,7 @@ public class CommentsAcceptanceTest
         assertEquals("http://www.google.com", actual.getUrl());
         assertEquals(folder.getId(), actual.getResourceId());
         assertEquals(CommentStatus.PENDING, actual.getStatus());
+        assertEquals("test@example.com", actual.getEmail());
     }
 
 
@@ -85,14 +88,15 @@ public class CommentsAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final CommentDto c =
-            getComments().create(
-                new CommentDto(
-                    "keith",
-                    "Hello world",
-                    folder.getId(),
-                    new Date(),
-                    "http://www.google.com"));
+        final CommentDto comment =
+            new CommentDto(
+                "keith",
+                "Hello world",
+                folder.getId(),
+                new Date(),
+                "http://www.google.com");
+        comment.setEmail("test@example.com");
+        final CommentDto c = getComments().create(comment);
         getComments().retrieve(c.getId()); // Comment exists.
 
         // ACT
@@ -118,18 +122,20 @@ public class CommentsAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final CommentDto c =
-            getComments().create(
-                new CommentDto(
-                    "keith",
-                    "Hello world",
-                    folder.getId(),
-                    new Date(),
-                "http://www.google.com"));
+        final CommentDto comment =
+            new CommentDto(
+                "keith",
+                "Hello world",
+                folder.getId(),
+                new Date(),
+            "http://www.google.com");
+        comment.setEmail("test@example.com");
+        final CommentDto c = getComments().create(comment);
 
         // ACT
         c.setBody("Updated world!");
         c.setStatus(CommentStatus.APPROVED);
+        c.setEmail("new@example.com");
 
         getComments().update(c.getId(), c);
 
@@ -138,5 +144,6 @@ public class CommentsAcceptanceTest
 
         assertEquals("Updated world!", actual.getBody());
         assertEquals(CommentStatus.APPROVED, actual.getStatus());
+        assertEquals("new@example.com", actual.getEmail());
     }
 }

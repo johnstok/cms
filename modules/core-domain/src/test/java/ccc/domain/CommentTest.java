@@ -30,6 +30,7 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import ccc.rest.dto.CommentDto;
+import ccc.types.EmailAddress;
 
 
 /**
@@ -50,6 +51,7 @@ public class CommentTest
         // ARRANGE
         final Comment c = new Comment(P, "Foo", "keith");
         c.setUrl(new URL("http://www.google.com"));
+        c.setEmail(new EmailAddress("test@example.com"));
 
         // ACT
         final CommentDto dto = c.createDto();
