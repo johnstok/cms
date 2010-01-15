@@ -51,6 +51,7 @@ public class CommentDto
     private String        _body;
     private String        _author;
     private String        _url;
+    private String        _email;
     private Date          _timestamp;
     private CommentStatus _status = CommentStatus.PENDING;
 
@@ -90,6 +91,7 @@ public class CommentDto
         _url = json.getString(JsonKeys.URL);
         _id = json.getId(JsonKeys.ID);
         _status = CommentStatus.valueOf(json.getString(JsonKeys.STATUS));
+        _email = json.getString(JsonKeys.EMAIL);
     }
 
 
@@ -148,6 +150,23 @@ public class CommentDto
      */
     public final CommentStatus getStatus() { return _status; }
 
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the email.
+     */
+    public final String getEmail() { return _email; }
+
+
+
+    /**
+     * Mutator.
+     *
+     * @param email The email to set.
+     */
+    public final void setEmail(final String email) { _email = email; }
 
 
     /**
@@ -222,5 +241,6 @@ public class CommentDto
         json.set(JsonKeys.URL, _url);
         json.set(JsonKeys.ID, _id);
         json.set(JsonKeys.STATUS, _status.name());
+        json.set(JsonKeys.EMAIL, _email);
     }
 }

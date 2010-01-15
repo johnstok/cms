@@ -34,6 +34,7 @@ import java.util.List;
 import ccc.rest.dto.CommentDto;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
+import ccc.types.EmailAddress;
 
 
 /**
@@ -46,9 +47,12 @@ public class Comment
         Entity {
 
     private String _body;
-    private Resource _resource;
     private String _author;
     private URL _url;
+    private EmailAddress _email;
+
+    private Resource _resource;
+
     private final Date _timestamp = new Date();
     private CommentStatus _status = CommentStatus.PENDING;
 
@@ -155,6 +159,27 @@ public class Comment
 
 
     /**
+     * Accessor.
+     *
+     * @return Returns the email.
+     */
+    public final EmailAddress getEmail() {
+        return _email;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param email The email to set.
+     */
+    public final void setEmail(final EmailAddress email) {
+        DBC.require().notNull(email);
+        _email = email;
+    }
+
+
+    /**
      * Create a DTO for this comment.
      *
      * @return A DTO representing this comment.
@@ -168,6 +193,7 @@ public class Comment
             getUrl().toExternalForm());
         dto.setId(id());
         dto.setStatus(getStatus());
+        dto.setEmail(getEmail().getText());
 
         return dto;
     }

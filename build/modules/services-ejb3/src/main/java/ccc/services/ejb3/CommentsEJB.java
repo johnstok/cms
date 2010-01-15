@@ -47,6 +47,7 @@ import ccc.rest.Comments;
 import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
 import ccc.types.CommentStatus;
+import ccc.types.EmailAddress;
 import ccc.types.SortOrder;
 
 
@@ -76,13 +77,13 @@ public class CommentsEJB
 
             final Comment c =
                 new Comment(r, comment.getBody(), comment.getAuthor());
-
             try {
                 c.setUrl(new URL(comment.getUrl()));
             } catch (final MalformedURLException e) {
                 // FIXME Auto-generated catch block
                 throw new RuntimeException(e);
             }
+            c.setEmail(new EmailAddress(comment.getEmail()));
 
             getComments().create(c);
 
@@ -114,6 +115,7 @@ public class CommentsEJB
 
             c.setBody(comment.getBody());
             c.setStatus(comment.getStatus());
+            c.setEmail(new EmailAddress(comment.getEmail()));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
