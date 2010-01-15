@@ -30,6 +30,32 @@ public final class XHTMLTest extends TestCase {
     /**
      * Test.
      */
+    public void testSanitizeUrl() {
+
+        // ARRANGE
+        final String[] badUrls = {
+            "javascript:alert('XSS');",
+            "JaVaScRiPt:alert('XSS')",
+            "jav\tascript:alert('XSS');",
+            "java\u0000script:alert(\"XSS\")",
+            "//ha.ckers.org/.j",
+            "vbscript:msgbox(\"XSS\")",
+            "http://;URL=javascript:alert('XSS');",
+            "data:image/svg+xml;base64,PHN2ZyB4bWxuczpzdmc9=="
+        };
+
+        // ACT
+        for (final String badUrl : badUrls) {
+            final String sanitized = XHTML.sanitizeUrl(badUrl);
+
+        // ASSERT
+            assertEquals("", sanitized);
+        }
+    }
+
+    /**
+     * Test.
+     */
     public void testXssExamplesSanitized() {
 
         // ARRANGE
