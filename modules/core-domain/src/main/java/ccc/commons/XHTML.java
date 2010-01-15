@@ -32,6 +32,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -417,6 +420,29 @@ public final class XHTML {
             throw new RuntimeException(e);
         } catch (final SAXException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Sanitize a string representation of a URL.
+     * <p>This method only allows correctly form HTTP URLs.
+     *
+     * @param raw The un-sanitized string.
+     * @return The input string or a zero length string if the URL is sanitized.
+     */
+    public static String sanitizeUrl(final String raw) {
+        try {
+            final URI rawUrl = new URI(raw);
+            if (!"http".equalsIgnoreCase(rawUrl.getScheme())) {
+                return "";
+            }
+            rawUrl.toURL();
+            return raw;
+        } catch (final URISyntaxException e) {
+            return "";
+        } catch (final MalformedURLException e) {
+            return "";
         }
     }
 
