@@ -276,6 +276,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         }
 
         if (null != sort) {
+            boolean knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._title) ");
             } else if ("mm_include".equalsIgnoreCase(sort)) {
@@ -284,10 +285,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(" order by upper(r._lockedBy) ");
             } else if ("published".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._publishedBy) ");
-            } else {
+            } else if ("name".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._name) ");
+            } else {
+                knownSort = false;
             }
-            query.append(sortOrder.name());
+            if (knownSort) {
+                query.append(sortOrder.name());
+            }
         }
         return
         _repository.listDyn(
