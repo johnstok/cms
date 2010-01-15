@@ -88,9 +88,9 @@ public interface Folders {
     @NoCache
     Collection<ResourceSummary> getChildrenPaged(
         @PathParam("id") UUID folderId,
-        @QueryParam("sort") @DefaultValue("name") String sort,
+        @QueryParam("sort") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder sortOrder,
-        @QueryParam("page") @DefaultValue("0") int pageNo,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize)
          throws RestException;
 

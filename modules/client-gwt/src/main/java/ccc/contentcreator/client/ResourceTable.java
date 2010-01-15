@@ -144,13 +144,13 @@ public class ResourceTable
 
             @Override
             protected void load(final Object loadConfig,
-                                final AsyncCallback<PagingLoadResult<ResourceSummaryModelData>> callback) {
+                                final AsyncCallback<PagingLoadResult
+                                <ResourceSummaryModelData>> callback) {
                 if (folder == null
                     || null==loadConfig
                     || !(loadConfig instanceof BasePagingLoadConfig)) {
                     final PagingLoadResult<ResourceSummaryModelData> plr =
-                        new BasePagingLoadResult<ResourceSummaryModelData>
-                    (null);
+                       new BasePagingLoadResult<ResourceSummaryModelData>(null);
                     callback.onSuccess(plr);
                 } else {
                     final BasePagingLoadConfig config =
