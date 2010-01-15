@@ -62,7 +62,7 @@ alter table templates add constraint FK_TEMPLATE_RESOURCE_ID foreign key (id) re
 alter table user_metadata add constraint FK_USERMETADATA_USER_ID foreign key (user_id) references users;
 alter table user_roles add constraint FK_USERROLES_USER_ID foreign key (user_id) references users;
 CREATE SEQUENCE log_entry_index START WITH 1 INCREMENT BY 1;
-CREATE OR REPLACE TRIGGER logentry_autonumber BEFORE INSERT ON logentries FOR EACH ROW BEGIN SELECT log_entry_index.nextval into :new.index_position from dual; END;;
+CREATE TRIGGER logentry_autonumber BEFORE INSERT ON logentries FOR EACH ROW BEGIN SELECT log_entry_index.nextval INTO :new.index_position FROM dual; END;;
 CREATE TRIGGER logentry_timestamp BEFORE INSERT ON logentries FOR EACH ROW BEGIN SELECT systimestamp INTO :new.recorded_on FROM dual; END;;
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c03', 0, '0', 'DATABASE_VERSION');
 INSERT INTO settings (id, vn, value, name) VALUES ('145e827a-0f11-41bf-af0b-ad9a4a982c04', 0, '/tmp/CCC7/lucene', 'LUCENE_INDEX_PATH');

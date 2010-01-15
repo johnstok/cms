@@ -88,7 +88,7 @@ public class UpdateCurrentUserCommand
                     CommandType.USER_CHANGE_PASSWORD,
                     happenedOn,
                     _userId,
-                    ""));
+                    "{}"));
         }
 
         current.email(new EmailAddress(_delta.getEmail()));
