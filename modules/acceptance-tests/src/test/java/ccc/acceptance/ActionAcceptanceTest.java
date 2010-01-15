@@ -65,7 +65,7 @@ public class ActionAcceptanceTest
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
-                new Date(Long.MAX_VALUE),
+                new Date(24*60*60*1000),
                 new HashMap<String, String>()));
         final Collection<ActionSummary> pending =
             getActions().listPendingActions();
@@ -88,7 +88,7 @@ public class ActionAcceptanceTest
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
-                new Date(Long.MAX_VALUE),
+                new Date(24*60*60*1000),
                 new HashMap<String, String>()));
 
         // ACT

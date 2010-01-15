@@ -30,7 +30,6 @@ import static ccc.commons.Exceptions.*;
 
 import java.nio.charset.Charset;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -89,6 +88,7 @@ public class Schema
                 _conString,
                 _username,
                 _password);
+        LOG.info("Connected to "+_conString);
 
         int currentVersion = currentVersion(newConnection);
         LOG.info("Current database version: "+currentVersion);
@@ -166,12 +166,11 @@ public class Schema
     private void execute(final Connection newConnection,
                          final String statement) {
         try {
-            final PreparedStatement ps =
-                newConnection.prepareStatement(
-                    statement.substring(0, statement.length()-1));
+            final Statement ps = newConnection.createStatement();
 
             try {
-                ps.execute();
+                ps.execute(statement.substring(0, statement.length()-1));
+
             } finally {
                 try {
                     ps.close();
@@ -180,7 +179,9 @@ public class Schema
                 }
             }
         } catch (final SQLException e) {
-            LOG.warn("Failed to execute statement: "+e.getMessage());
+            LOG.warn(
+                "Failed to execute statement: "+statement
+                +"\n > "+e.getMessage());
         }
     }
 
