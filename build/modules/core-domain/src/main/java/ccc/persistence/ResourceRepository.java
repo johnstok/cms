@@ -195,8 +195,9 @@ public interface ResourceRepository {
      * @return A list of comments.
      */
     List<Resource> list(Resource resource,
-                       String sort,
-                       SortOrder sortOrder,
-                       int pageNo,
-                       int pageSize);
+                        String tag,
+                        String sort,
+                        SortOrder sortOrder,
+                        int pageNo,
+                        int pageSize);
 }

@@ -73,6 +73,7 @@ import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.ResourcePath;
+import ccc.types.SortOrder;
 
 
 /**
@@ -989,6 +990,20 @@ public class ResourcesEJB
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public Collection<ResourceSummary> list(final String tag,
+                                            final String sort,
+                                            final SortOrder order,
+                                            final int pageNo,
+                                            final int pageSize) {
+        // FIXME: Security not applied!!!
+        return
+            mapResources(
+                getResources().list(null, tag, sort, order, pageNo, pageSize));
     }
 
 /* StatefulReaderImpl */
