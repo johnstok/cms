@@ -31,9 +31,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -48,7 +46,6 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.CccCheckedException;
-import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -63,7 +60,6 @@ import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.TextFileDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.types.FilePropertyNames;
-import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 
 
@@ -86,15 +82,30 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<FileDto> getAllContentImages() {
-        final List<File> list = new ArrayList<File>();
-        for (final File file : getResources().images()) {
-            if (PredefinedResourceNames.CONTENT.equals(
-                file.root().name().toString())) {
-                list.add(file);
+    public Collection<FileDto> getPagedImages(final UUID folderId,
+        final int pageNo,
+        final int pageSize)
+        throws RestException {
+        try {
+            final List<File> list =  getResources().images(folderId);
+            if (list.isEmpty()) {
+                return mapFiles(list);
             }
+            return mapFiles(list.subList(pageNo, (pageNo+pageSize+1) > list.size() ? (list.size()) : pageNo+pageSize));
+        } catch (final CccCheckedException e) {
+            throw fail(e);
         }
-        return mapFiles(list);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    public String getImagesCount(final UUID folderId) throws RestException {
+        try {
+            return ""+getResources().images(folderId).size();
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
 
@@ -309,4 +320,5 @@ public class FilesEJB
             throw fail(e);
         }
     }
+
 }

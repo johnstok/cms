@@ -165,8 +165,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<File> images() {
-        return list(QueryNames.ALL_IMAGES, File.class);
+    public List<File> images(final UUID folderId)
+    throws EntityNotFoundException {
+        final Resource r = find(Resource.class, folderId);
+        return list(QueryNames.IMAGES_FROM_FOLDER, File.class, r);
     }
 
 

@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccc.contentcreator.actions.GetChildrenFolderAction;
+import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.rest.dto.ResourceSummary;
@@ -48,19 +49,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class FolderResourceTree extends AbstractResourceTree {
 
-    private final ResourceSummary _root;
     private final IGlobals _globals;
 
     /**
      * Constructor.
      *
-     * @param root The root of the tree.
      * @param globals IGlobals globals.
      */
-    public FolderResourceTree(final ResourceSummary root,
-                              final IGlobals globals) {
-
-        _root = root;
+    public FolderResourceTree(final IGlobals globals) {
         _globals = globals;
         load();
     }
@@ -78,9 +74,19 @@ public class FolderResourceTree extends AbstractResourceTree {
 
                 if (null==loadConfig
                     || !(loadConfig instanceof ResourceSummaryModelData)) {
-                    callback.onSuccess(
-                        DataBinding.bindResourceSummary(
-                            Collections.singletonList(_root)));
+                    new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
+                        @Override
+                        protected void onSuccess(final Collection<ResourceSummary> roots) {
+                            for (final ResourceSummary rr : roots) {
+                                if (rr.getName().equals("content")) {
+                                    callback.onSuccess(
+                                        DataBinding.bindResourceSummary(
+                                            Collections.singletonList(rr)));
+                                }
+                            }
+                        }
+
+                    }.execute();
                 } else {
                     new GetChildrenFolderAction(
                         _globals.userActions().loadData(),

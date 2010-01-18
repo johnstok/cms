@@ -58,12 +58,6 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FileDto> getAllContentImages() {
-        return getFiles().getAllContentImages();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public TextFileDelta get(final UUID fileId) throws RestException {
         return getFiles().get(fileId);
     }
@@ -80,5 +74,20 @@ public class FilesImpl
     public ResourceSummary createTextFile(final TextFileDto textFile)
     throws RestException {
         return getFiles().createTextFile(textFile);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Collection<FileDto> getPagedImages(final UUID folderId,
+                                              final int pageNo,
+                                              final int pageSize)
+                                              throws RestException {
+        return getFiles().getPagedImages(folderId, pageNo, pageSize);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getImagesCount(final UUID folderId) throws RestException  {
+        return getFiles().getImagesCount(folderId);
     }
 }

@@ -63,7 +63,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
                          final UserDto user,
                          final IGlobals globals) {
 
-        super(root, globals);
+        super(globals);
 
         _rt = new ResourceTable(root, this, user);
         _view = view;

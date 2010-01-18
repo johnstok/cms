@@ -138,10 +138,12 @@ public interface ResourceRepository {
 
     /**
      * List all image files.
+     *  @param folderId The id of the folder whose images we will look up.
      *
      * @return A list of files.
+     * @throws EntityNotFoundException If no folder exists with the id.
      */
-    List<File> images();
+    List<File> images(UUID folderId) throws EntityNotFoundException;
 
     /**
      * List all root folders.
