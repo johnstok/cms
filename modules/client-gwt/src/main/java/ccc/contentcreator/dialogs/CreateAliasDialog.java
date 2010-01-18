@@ -96,7 +96,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
-                        new FolderSelectionDialog(root);
+                        new FolderSelectionDialog();
                     folderSelect.addListener(Events.Hide,
                         new Listener<WindowEvent>() {
                         public void handleEvent(final WindowEvent be2) {

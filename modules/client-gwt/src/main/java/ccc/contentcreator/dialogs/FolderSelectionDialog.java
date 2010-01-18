@@ -30,7 +30,6 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.FolderResourceTree;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -53,12 +52,12 @@ public class FolderSelectionDialog extends Window {
     private final FolderResourceTree _tree;
     private final IGlobals _globals = new IGlobalsImpl();
 
+
     /**
      * Constructor.
      *
-     * @param root ResourceSummary root.
      */
-    FolderSelectionDialog(final ResourceSummary root) {
+    FolderSelectionDialog() {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
@@ -67,14 +66,16 @@ public class FolderSelectionDialog extends Window {
         setHeight(HEIGHT);
         setMinWidth(IGlobals.MIN_WIDTH);
         setLayout(new FitLayout());
-        _tree = new FolderResourceTree(root, _globals);
+        _tree = new FolderResourceTree(_globals);
         add(_tree.treePanel());
         final Button save = new Button(
             _globals.uiConstants().ok(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {
-                    if (null==_tree.treePanel().getSelectionModel().getSelectedItem()) {
+                    final ResourceSummaryModelData item =
+                        _tree.treePanel().getSelectionModel().getSelectedItem();
+                    if (null==item) {
                         return; // No selection made.
                     }
                     hide(ce.getButton());
@@ -89,9 +90,6 @@ public class FolderSelectionDialog extends Window {
      * @return Returns the selected folder as {@link FolderDTO}
      */
     ResourceSummaryModelData selectedFolder() {
-        return
-            (null==_tree.treePanel().getSelectionModel().getSelectedItem())
-                ? null
-                : (ResourceSummaryModelData) _tree.treePanel().getSelectionModel().getSelectedItem();
+        return _tree.treePanel().getSelectionModel().getSelectedItem();
     }
 }

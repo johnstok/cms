@@ -17,24 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 2246 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2009-12-07 17:46:54 +0000 (Mon, 07 Dec 2009) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.contentcreator.actions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import ccc.contentcreator.client.GwtJson;
-import ccc.rest.dto.FileDto;
+import java.util.UUID;
 
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -42,37 +36,41 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetContentImagesAction
+public abstract class GetImagesCountAction
     extends
         RemotingAction {
+
+    private final UUID _parentId;
 
     /**
      * Constructor.
      *
+     * @param parentId The id of the folder.
      * @param actionName Local-specific name for the action.
      */
-    public GetContentImagesAction(final String actionName) {
+    public GetImagesCountAction(final String actionName,
+                                  final UUID parentId) {
         super(actionName);
+        _parentId = parentId;
+
     }
 
     /** {@inheritDoc} */
-    @Override protected String getPath() { return "/files/images"; }
+    @Override protected String getPath() {
+        return "/files/imagescount/"+_parentId+"/";
+    }
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<FileDto> files = new ArrayList<FileDto>();
-        for (int i=0; i<result.size(); i++) {
-            files.add(new FileDto(new GwtJson(result.get(i).isObject())));
-        }
-        execute(files);
+        final String count = response.getText();
+        execute(Integer.decode(count).intValue());
     }
 
     /**
      * Handle the data returned from the server.
      *
-     * @param images The available images.
+     * @param count The number of available images.
      */
-    protected abstract void execute(Collection<FileDto> images);
+    protected abstract void execute(int count);
 }

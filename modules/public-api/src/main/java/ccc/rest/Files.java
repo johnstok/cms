@@ -30,11 +30,13 @@ import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
@@ -58,14 +60,21 @@ public interface Files {
 
 
     /**
-     * List all content images.
-     *
+     * List all images of the given folder id.
+     * @param folderId The id of the folder.
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
      * @return The list of images.
+     * @throws RestException If an error occurs updating the file.
      */
     @GET
-    @Path("/images")
+    @Path("/images/{id}")
     @NoCache
-    Collection<FileDto> getAllContentImages();
+    Collection<FileDto> getPagedImages(
+        @PathParam("id") UUID folderId,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize)
+        throws RestException;
 
 
     /**
@@ -106,4 +115,16 @@ public interface Files {
     @Path("")
     ResourceSummary createTextFile(TextFileDto textFile)
     throws RestException;
+
+
+    /**
+     * Number of images in the given folder id.
+     * @param folderId The id of the folder.
+     * @return The list of images.
+     * @throws RestException If an error occurs updating the file.
+     */
+    @GET
+    @Path("/imagescount/{id}")
+    @NoCache
+    String getImagesCount(@PathParam("id") UUID folderId) throws RestException;
 }

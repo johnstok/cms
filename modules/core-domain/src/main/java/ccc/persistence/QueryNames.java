@@ -45,8 +45,8 @@ final class QueryNames {
     /** LOG_ENTRY_BY_ID : String. */
     public static final String LOG_ENTRY_BY_ID = "logEntryById";
 
-    /** ALL_IMAGES : String. */
-    public static final String ALL_IMAGES = "allImages";
+    /** IMAGES_FROM_FOLDER : String. */
+    public static final String IMAGES_FROM_FOLDER = "imagesFromFolder";
 
     /** ROOT_BY_NAME : String. */
     public static final String ROOT_BY_NAME = "rootByName";

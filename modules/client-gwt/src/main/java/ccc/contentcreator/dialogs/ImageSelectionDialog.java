@@ -26,40 +26,21 @@
  */
 package ccc.contentcreator.dialogs;
 
-import java.util.Collection;
-import java.util.List;
-
-import ccc.contentcreator.actions.GetContentImagesAction;
-import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.rest.dto.FileDto;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.ListView;
-import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 /**
  * Image selection dialog for FCKEditor use.
  *
  * @author Civic Computing Ltd.
  */
-public class ImageSelectionDialog extends AbstractBaseDialog {
+public class ImageSelectionDialog extends AbstractImageSelectionDialog {
 
-    private static final int PANEL_HEIGHT = 460;
-    private static final int PANEL_WIDTH = 700;
-    private static final int DIALOG_WIDTH = 720;
-
-    private  final ListView<ImageSummaryModelData> _view =
-        new ListView<ImageSummaryModelData>();
-    private List<ImageSummaryModelData> _models;
     private final String _elementid;
-
 
     /**
      * Constructor.
@@ -70,51 +51,16 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         super(new IGlobalsImpl().uiConstants().selectImage(),
               new IGlobalsImpl());
         _elementid = elementid;
-        setWidth(DIALOG_WIDTH);
-
-        final ListStore<ImageSummaryModelData> store =
-            new ListStore<ImageSummaryModelData>();
-
-        new GetContentImagesAction(getUiConstants().selectImage()){
-            @Override
-            protected void execute(final Collection<FileDto> images) {
-                loadModel(store, images);
-            }
-        }.execute();
-
-
-        final ContentPanel panel = new ContentPanel();
-        panel.setCollapsible(false);
-        panel.setAnimCollapse(false);
-        panel.setId("images-view");
-        panel.setHeaderVisible(false);
-        panel.setWidth(PANEL_WIDTH);
-        panel.setHeight(PANEL_HEIGHT);
-        panel.setLayout(new FitLayout());
-        panel.setBorders(false);
-        panel.setBodyBorder(false);
-        panel.setBodyStyleName("backgroundColor: white;");
-
-        _view.setBorders(false);
-        _view.setTemplate(getTemplate());
-        _view.setStore(store);
-        _view.setItemSelector("div.thumb-wrap");
-
-        panel.add(_view);
-        add(panel);
-
-        addButton(getCancel());
-        final Button save = new Button(constants().save(), saveAction());
-        addButton(save);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
                 final ImageSummaryModelData md =
-                    _view.getSelectionModel().getSelectedItem();
+                    getView().getSelectionModel().getSelectedItem();
                 if (md != null) {
                     final String path = Paragraph.escape(md.getPath());
                     final String appContext =
@@ -144,27 +90,5 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         }
         return null;
     }-*/;
-
-    // TODO: Property names aren't type safe.
-    private native String getTemplate() /*-{
-
-    return ['<tpl for=".">',
-     '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
-     '<div class="thumb">',
-     '<img src="preview/{PATH}?thumb=200" title="{TITLE}"></div>',
-     '<span class="x-editable">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
-     '</tpl>',
-     '<div class="x-clear"></div>'].join("");
-
-     }-*/;
-
-    private void loadModel(final ListStore<ImageSummaryModelData> store,
-                           final Collection<FileDto> arg0) {
-
-        _models = DataBinding.bindFileSummary(arg0);
-        if (_models != null && _models.size() > 0) {
-            store.add(_models);
-        }
-    }
 
 }
