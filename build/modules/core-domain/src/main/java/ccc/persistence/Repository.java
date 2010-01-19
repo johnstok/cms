@@ -147,4 +147,14 @@ interface Repository {
      */
     void delete(Entity entity);
 
+
+    /**
+     * Returns the result of the count query.
+     *
+     * @param queryString The query used to perform the count.
+     * @param params The query parameters.
+     * @return The count.
+     */
+    long count(final String queryString, final Object... params);
+
 }

@@ -138,12 +138,16 @@ public interface ResourceRepository {
 
     /**
      * List all image files.
-     *  @param folderId The id of the folder whose images we will look up.
+     *
+     * @param folderId The id of the folder whose images we will look up.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      *
      * @return A list of files.
      * @throws EntityNotFoundException If no folder exists with the id.
      */
-    List<File> images(UUID folderId) throws EntityNotFoundException;
+    List<File> images(UUID folderId, final int pageNo,
+        final int pageSize) throws EntityNotFoundException;
 
     /**
      * List all root folders.
@@ -202,4 +206,13 @@ public interface ResourceRepository {
                         SortOrder sortOrder,
                         int pageNo,
                         int pageSize);
+
+    /**
+     * Return count of images in the folder.
+     *
+     * @param folderId The id of the folder whose images we will look up.
+     * @return The count.
+     * @throws EntityNotFoundException If no folder exists with the id.
+     */
+    long imagesCount(UUID folderId) throws EntityNotFoundException;
 }

@@ -158,4 +158,15 @@ class JpaRepository implements Repository {
     public void delete(final Entity entity) {
         _em.remove(entity);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public long count(final String queryString, final Object... params) {
+        final Query q=_em.createQuery(queryString);
+        for (int i=0; i<params.length; i++) {
+            q.setParameter((i+1), params[i]);
+        }
+        final long countResult=((Long) q.getSingleResult()).longValue();
+        return countResult;
+    }
 }

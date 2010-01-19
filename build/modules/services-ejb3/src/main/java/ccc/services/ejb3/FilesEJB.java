@@ -87,11 +87,9 @@ public class FilesEJB
         final int pageSize)
         throws RestException {
         try {
-            final List<File> list =  getResources().images(folderId);
-            if (list.isEmpty()) {
-                return mapFiles(list);
-            }
-            return mapFiles(list.subList(pageNo, (pageNo+pageSize+1) > list.size() ? (list.size()) : pageNo+pageSize));
+            final List<File> list =
+                getResources().images(folderId, pageNo, pageSize);
+            return mapFiles(list);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
@@ -102,7 +100,7 @@ public class FilesEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public String getImagesCount(final UUID folderId) throws RestException {
         try {
-            return ""+getResources().images(folderId).size();
+            return ""+getResources().imagesCount(folderId);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }

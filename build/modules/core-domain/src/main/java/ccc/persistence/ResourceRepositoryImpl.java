@@ -165,10 +165,27 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<File> images(final UUID folderId)
+    public List<File> images(final UUID folderId,
+        final int pageNo,
+        final int pageSize)
     throws EntityNotFoundException {
         final Resource r = find(Resource.class, folderId);
-        return list(QueryNames.IMAGES_FROM_FOLDER, File.class, r);
+
+        final StringBuffer query = new StringBuffer();
+        query.append("FROM ccc.domain.File f WHERE f._publishedBy is not null "
+            + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
+            + " AND f._parent = ? "
+            + " order by upper(f._name) ASC");
+        final List<Object> params = new ArrayList<Object>();
+        params.add(r);
+
+        return
+        _repository.listDyn(
+            query.toString(),
+            File.class,
+            pageNo,
+            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
+            params.toArray());
     }
 
 
@@ -303,5 +320,17 @@ class ResourceRepositoryImpl implements ResourceRepository {
             pageNo,
             pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
             params.toArray());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long imagesCount(final UUID folderId)
+        throws EntityNotFoundException {
+        final Resource r = find(Resource.class, folderId);
+        return _repository.count("SELECT COUNT(f) FROM ccc.domain.File f "
+        + " WHERE f._publishedBy is not null"
+        + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
+        + " AND f._parent = ?", r);
     }
 }
