@@ -116,6 +116,16 @@ public class Comment
     /**
      * Mutator.
      *
+     * @param author The author to set.
+     */
+    public final void setAuthor(final String author) {
+        _author = author;
+    }
+
+
+    /**
+     * Mutator.
+     *
      * @param url The comment's URL, the URL may be NULL.
      */
     public void setUrl(final URL url) {  _url = url; }

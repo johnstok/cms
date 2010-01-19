@@ -148,6 +148,11 @@ public final class CommentModelData
     }
 
 
+    public final String getEmail() {
+        return _delegate.getEmail();
+    }
+
+
     public void setDelegate(final CommentDto updated) {
         _delegate = updated;
     }

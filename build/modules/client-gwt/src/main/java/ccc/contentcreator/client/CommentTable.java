@@ -40,11 +40,16 @@ import ccc.contentcreator.views.CommentView;
 import ccc.rest.dto.CommentDto;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
+import ccc.types.SortOrder;
 
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
-import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.DataProxy;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -56,6 +61,7 @@ import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -164,42 +170,71 @@ public class CommentTable extends TablePanel implements EventBus {
     /**
      *  Displays comments based on selected item.
      *
-     * @param selectedItem The selected TreeItem.
+     * @param status Filter the comments to display on status.
      */
-    public void displayComments(final ModelData selectedItem) {
+    public void displayComments(final CommentStatus status) {
         _detailsStore.removeAll();
 
-        if ("all".equals(selectedItem.get("id"))) {
-            new ListComments(){
-                @Override protected void execute(
-                                 final Collection<CommentDto> comments) {
-                    updatePager(comments);
-                }
-            }.execute();
+        final DataProxy<PagingLoadResult<CommentModelData>> proxy =
+            new RpcProxy<PagingLoadResult<CommentModelData>>() {
 
-        } else {
-            try {
-                final CommentStatus status =
-                    CommentStatus.valueOf((String) selectedItem.get("id"));
+                @Override
+                protected void load(final Object loadConfig,
+                                    final AsyncCallback<PagingLoadResult<CommentModelData>> callback) {
 
-                new ListComments(status){
-                    @Override protected void execute(
-                                     final Collection<CommentDto> comments) {
-                        updatePager(comments);
+                    if (null==loadConfig
+                        || !(loadConfig instanceof BasePagingLoadConfig)) {
+                        final PagingLoadResult<CommentModelData> plr =
+                           new BasePagingLoadResult<CommentModelData>(null);
+                        callback.onSuccess(plr);
+
+                    } else {
+                        final BasePagingLoadConfig config =
+                            (BasePagingLoadConfig) loadConfig;
+
+                        final int page =
+                            config.getOffset()/ config.getLimit()+1;
+                        final SortOrder order =
+                            (Style.SortDir.ASC==config.getSortDir())
+                                ? SortOrder.ASC
+                                : SortOrder.DESC;
+
+                        new ListComments(status,
+                                         page,
+                                         config.getLimit(),
+                                         config.getSortField(),
+                                         order) {
+
+                            /** {@inheritDoc} */
+                            @Override
+                            protected void onFailure(final Throwable t) {
+                                callback.onFailure(t);
+                            }
+
+                            @Override
+                            protected void execute(
+                                       final Collection<CommentDto> comments,
+                                       final int totalCount) {
+
+                                final List<CommentModelData> results =
+                                    DataBinding.bindCommentSummary(comments);
+
+                                final PagingLoadResult<CommentModelData> plr =
+                                    new BasePagingLoadResult<CommentModelData>
+                                (results, config.getOffset(), totalCount);
+                                callback.onSuccess(plr);
+                            }
+                        }.execute();
                     }
-                }.execute();
-            } catch (final RuntimeException e) {
-                updatePager(new ArrayList<CommentDto>());
-            }
-        }
+                }
+            };
+
+        updatePager(proxy);
     }
 
 
     @SuppressWarnings("unchecked")
-    private void updatePager(final Collection<CommentDto> comments){
-        final PagingModelMemoryProxy proxy =
-            new PagingModelMemoryProxy(
-                DataBinding.bindCommentSummary(comments));
+    private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<CommentModelData>(loader);

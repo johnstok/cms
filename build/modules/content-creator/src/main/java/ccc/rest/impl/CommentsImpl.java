@@ -26,7 +26,6 @@
  */
 package ccc.rest.impl;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -36,6 +35,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.Comments;
 import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
+import ccc.rest.dto.DtoCollection;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 
@@ -82,13 +82,14 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<CommentDto> list(final UUID resourceId,
-                                 final CommentStatus status,
-                                 final SortOrder sortOrder,
-                                 final int pageNo,
-                                 final int pageSize)
+    public DtoCollection<CommentDto> list(final UUID resourceId,
+                                          final CommentStatus status,
+                                          final String sort,
+                                          final SortOrder sortOrder,
+                                          final int pageNo,
+                                          final int pageSize)
     throws RestException {
         return getComments().list(
-            resourceId, status, sortOrder, pageNo, pageSize);
+            resourceId, status, sort, sortOrder, pageNo, pageSize);
     }
 }

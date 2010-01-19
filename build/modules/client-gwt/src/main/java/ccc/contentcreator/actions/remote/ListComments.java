@@ -32,10 +32,14 @@ import java.util.Collection;
 import ccc.contentcreator.actions.RemotingAction;
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.CommentDto;
+import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
+import ccc.types.DBC;
+import ccc.types.SortOrder;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -49,48 +53,74 @@ public abstract class ListComments
         RemotingAction {
 
     private CommentStatus _status;
+    private int           _page;
+    private int           _count;
+    private SortOrder     _order;
+    private String        _sort;
 
-    /**
-     * Constructor.
-     */
-    public ListComments() {
-        super(USER_ACTIONS.viewComments());
-    }
 
     /**
      * Constructor.
      *
-     * @param status Filter comments based on status.
+     * @param order The sort order.
+     * @param sort The column to sort on.
      */
-    public ListComments(final CommentStatus status) {
-        this();
+    public ListComments(final CommentStatus status,
+                        final int page,
+                        final int count,
+                        final String sort,
+                        final SortOrder order) {
+        super(USER_ACTIONS.viewComments());
+
+        DBC.require().toBeTrue(page>0);
+        DBC.require().toBeTrue(count>0);
+
         _status = status;
+        _page = page;
+        _count = count;
+        _sort = sort;
+        _order = order;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
+        final String path =
             "/comments"
-            + ((null==_status) ? "" : "?status="+_status.name());
+            + "?page="+_page
+            + "&count="+_count
+            + ((null==_status) ? "" : "&status="+_status.name())
+            + ((null==_order) ? "" : "&order="+_order.name())
+            + ((null==_sort) ? "" : "&sort="+_sort);
+        return path;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<CommentDto> users = new ArrayList<CommentDto>();
+        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+
+        final int totalCount =
+            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
+        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
+        final Collection<CommentDto> comments = new ArrayList<CommentDto>();
         for (int i=0; i<result.size(); i++) {
-            users.add(new CommentDto(new GwtJson(result.get(i).isObject())));
+            comments.add(new CommentDto(new GwtJson(result.get(i).isObject())));
         }
 
-        execute(users);
+        execute(comments, totalCount);
     }
+
 
     /**
      * Handle the result of a successful call.
      *
-     * @param users The collection of users returned.
+     * @param comments The page of comments returned.
+     * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<CommentDto> users);
+    protected abstract void execute(Collection<CommentDto> comments,
+                                    int totalCount);
 }
