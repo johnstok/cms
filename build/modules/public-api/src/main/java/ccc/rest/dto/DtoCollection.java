@@ -42,7 +42,7 @@ import ccc.serialization.Jsonable;
  */
 public class DtoCollection<T extends Jsonable> implements Jsonable {
 
-    private final int _totalCount;
+    private final long _totalCount;
     private final List<T> _elements;
 
 
@@ -52,7 +52,7 @@ public class DtoCollection<T extends Jsonable> implements Jsonable {
      * @param totalCount The total number of elements in the collection.
      * @param elements The elements on the current page.
      */
-    public DtoCollection(final int totalCount, final List<T> elements) {
+    public DtoCollection(final long totalCount, final List<T> elements) {
         _totalCount = totalCount;
         _elements = elements;
     }
@@ -63,7 +63,7 @@ public class DtoCollection<T extends Jsonable> implements Jsonable {
      *
      * @return Returns the total count.
      */
-    public final int getTotalCount() {
+    public final long getTotalCount() {
 
         return _totalCount;
     }

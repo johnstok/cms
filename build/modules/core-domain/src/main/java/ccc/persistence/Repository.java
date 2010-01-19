@@ -88,14 +88,14 @@ interface Repository {
                         Object... params);
 
     /**
-     * Query for a single integer value.
+     * Query for a single long value.
      *
      * @param queryString The query used to perform the search.
      * @param params The query parameters.
      *
      * @return The value as an integer.
      */
-    int scalarInt(String queryString, Object... params);
+    long scalarLong(String queryString, Object... params);
 
 
     /**
@@ -156,15 +156,5 @@ interface Repository {
      * @param entity The entity to delete.
      */
     void delete(Entity entity);
-
-
-    /**
-     * Returns the result of the count query.
-     *
-     * @param queryString The query used to perform the count.
-     * @param params The query parameters.
-     * @return The count.
-     */
-    long count(final String queryString, final Object... params);
 
 }
