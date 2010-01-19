@@ -73,21 +73,21 @@ public class CommentTree extends Tree {
         final ModelData approved = getNewItem(
             _constants.approved(),
             CommentStatus.APPROVED.name(),
-            null);
+            ImagePaths.TICK);
         _store.add(all, approved, DONT_ADD_CHILDREN);
         _tree.setLeaf(approved, IS_LEAF);
 
         final ModelData pending = getNewItem(
             _constants.pending(),
             CommentStatus.PENDING.name(),
-            null);
+            ImagePaths.HOURGLASS);
         _store.add(all, pending, DONT_ADD_CHILDREN);
         _tree.setLeaf(pending, IS_LEAF);
 
         final ModelData spam = getNewItem(
             _constants.spam(),
             CommentStatus.SPAM.name(),
-            null);
+            ImagePaths.EXCLAMATION);
         _store.add(all, spam, DONT_ADD_CHILDREN);
         _tree.setLeaf(spam, IS_LEAF);
     }

@@ -38,33 +38,49 @@ public final class ImagePaths {
         // NO-OP
     }
 
-    /** IMG_HOURGLASS : String. */
+    /** HOURGLASS : String. */
     public static final String HOURGLASS = "static/images/icons/hourglass.gif";
-    /** IMG_ACCEPT : String. */
+
+    /** ACCEPT : String. */
     public static final String ACCEPT = "static/images/icons/accept.gif";
-    /** IMG_COG_GO : String. */
+
+    /** COG_GO : String. */
     public static final String COG_GO = "static/images/icons/cog_go.gif";
-    /** IMG_FOLDER : String. */
+
+    /** FOLDER : String. */
     public static final String FOLDER =
         "static/gxt/2.0.4/resources/images/gxt/icons/folder.gif";
-    /** IMG_PAGE : String. */
+
+    /** PAGE : String. */
     public static final String PAGE = "static/images/icons/page.gif";
-    /** IMG_TEMPLATE : String. */
+
+    /** TEMPLATE : String. */
     public static final String TEMPLATE = "static/images/icons/page_code.gif";
-    /** IMG_ALIAS : String. */
+
+    /** ALIAS : String. */
     public static final String ALIAS = "static/images/icons/link.gif";
-    /** IMG_FILE : String. */
+
+    /** FILE : String. */
     public static final String FILE = "static/images/icons/image.gif";
-    /** IMG_SEARCH : String. */
+
+    /** SEARCH : String. */
     public static final String SEARCH = "static/images/icons/magnifier.gif";
-    /** IMG_TICK : String. */
+
+    /** TICK : String. */
     public static final String TICK = "static/images/icons/tick.gif";
-    /** IMG_ADMINISTRATOR : String. */
+
+    /** ADMINISTRATOR : String. */
     public static final String ADMINISTRATOR =
         "static/images/icons/user_gray.gif";
-    /** IMG_USER : String. */
+
+    /** USER : String. */
     public static final String USER = "static/images/icons/user.gif";
-    /** IMG_LARGE_LOADING : String. */
+
+    /** LARGE_LOADING : String. */
     public static final String LARGE_LOADING =
         "static/images/icons/large-loading.gif";
+
+    /** EXCLAMATION : String. */
+    public static final String EXCLAMATION =
+        "static/images/icons/exclamation.gif";
 }
