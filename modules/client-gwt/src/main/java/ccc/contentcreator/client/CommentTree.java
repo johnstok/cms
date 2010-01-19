@@ -65,7 +65,7 @@ public class CommentTree extends Tree {
         _tree.getSelectionModel().addSelectionChangedListener(
             new UserSelectedListener());
 
-        final ModelData all = getNewItem(_constants.comments(), "all");
+        final ModelData all = getNewItem(_constants.comments(), null);
         _store.add(all, ADD_ALL_CHILDREN);
         _tree.setLeaf(all, IS_NOT_LEAF);
         _tree.setExpanded(all, EXPANDED);
@@ -105,9 +105,11 @@ public class CommentTree extends Tree {
         @Override
         public void selectionChanged(final SelectionChangedEvent<ModelData>
                                      selectionChangedEvent) {
-            final ModelData selectedItem =
-                selectionChangedEvent.getSelectedItem();
-            _commentTable.displayComments(selectedItem);
+            final String id =
+                selectionChangedEvent.getSelectedItem().get("id");
+
+            _commentTable.displayComments(
+                (null==id) ? null : CommentStatus.valueOf(id));
         }
     }
 

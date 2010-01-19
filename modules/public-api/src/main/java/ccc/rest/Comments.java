@@ -26,7 +26,6 @@
  */
 package ccc.rest;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,6 +39,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.rest.dto.CommentDto;
+import ccc.rest.dto.DtoCollection;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 
@@ -112,6 +112,7 @@ public interface Comments {
      *
      * @param resourceId Filter comments by resource. NULL will return all.
      * @param status Filter comments based on status. NULL will return all.
+     * @param sort The field to sort on.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.
      * @param pageSize The number of results in a page.
@@ -121,9 +122,10 @@ public interface Comments {
      * @throws RestException If the method fails.
      */
     @GET @Path("/comments")
-    List<CommentDto> list(
+    DtoCollection<CommentDto> list(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,
+        @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize)

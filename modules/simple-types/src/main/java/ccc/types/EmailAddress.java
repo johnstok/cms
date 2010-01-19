@@ -199,6 +199,7 @@ public class EmailAddress implements Serializable {
      * @param text The text representation.
      */
     public void setText(final String text) {
+        DBC.require().notNull(text);
         _text = text;
     }
 

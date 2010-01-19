@@ -35,6 +35,7 @@ import javax.persistence.EntityManager;
 import ccc.domain.Comment;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
+import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 import ccc.types.SortOrder;
@@ -98,6 +99,7 @@ public class CommentRepositoryImpl
     @Override
     public List<Comment> list(final Resource resource,
                               final CommentStatus status,
+                              final String sort,
                               final SortOrder sortOrder,
                               final int pageNo,
                               final int pageSize) {
@@ -118,7 +120,9 @@ public class CommentRepositoryImpl
             params.add(resource);
         }
 
-        query.append(" order by c._timestamp ");
+        query.append(" order by c.");
+        query.append(mapSortColumn(sort));
+        query.append(" ");
         query.append(sortOrder.name());
 
         return
@@ -128,5 +132,41 @@ public class CommentRepositoryImpl
                 pageNo,
                 pageSize,
                 params.toArray());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public int count(final Resource resource, final CommentStatus status) {
+
+        final StringBuffer query = new StringBuffer();
+        final List<Object> params = new ArrayList<Object>();
+
+        query.append("select count(*) from ccc.domain.Comment c");
+
+        if (null!=status) {
+            query.append(" where c._status = ?");
+            params.add(status);
+        }
+
+        if (null!=resource) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" c._resource = ?");
+            params.add(resource);
+        }
+
+        return _repo.scalarInt(query.toString(), params.toArray());
+    }
+
+
+    private String mapSortColumn(final String sort) {
+        if (JsonKeys.AUTHOR.equals(sort)) {
+            return "_author";
+        } else if (JsonKeys.URL.equals(sort)) {
+            return "_url";
+        } else if (JsonKeys.DATE_CREATED.equals(sort)) {
+            return "_timestamp";
+        }
+        return "_status";
     }
 }

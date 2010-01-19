@@ -31,7 +31,6 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -46,6 +45,7 @@ import ccc.domain.Resource;
 import ccc.rest.Comments;
 import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
+import ccc.rest.dto.DtoCollection;
 import ccc.types.CommentStatus;
 import ccc.types.EmailAddress;
 import ccc.types.SortOrder;
@@ -115,7 +115,17 @@ public class CommentsEJB
 
             c.setBody(comment.getBody());
             c.setStatus(comment.getStatus());
-            c.setEmail(new EmailAddress(comment.getEmail()));
+            c.setAuthor(comment.getAuthor());
+            try {
+                c.setUrl(new URL(comment.getUrl()));
+            } catch (final MalformedURLException e) {
+                // TODO Auto-generated catch block
+                throw new RuntimeException(e);
+            }
+            c.setEmail(
+                (null==comment.getEmail())
+                     ? null
+                     : new EmailAddress(comment.getEmail()));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -136,18 +146,24 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public List<CommentDto> list(final UUID resourceId,
-                                 final CommentStatus status,
-                                 final SortOrder sortOrder,
-                                 final int pageNo,
-                                 final int pageSize) throws RestException {
+    public DtoCollection<CommentDto> list(final UUID resourceId,
+                                          final CommentStatus status,
+                                          final String sort,
+                                          final SortOrder sortOrder,
+                                          final int pageNo,
+                                          final int pageSize)
+    throws RestException {
         try {
             final Resource r =
                 (null==resourceId)
                     ? null
                     : getResources().find(Resource.class, resourceId);
-            return Comment.map(
-                getComments().list(r, status, sortOrder, pageNo, pageSize));
+            return
+                new DtoCollection<CommentDto>(
+                    getComments().count(r, status),
+                    Comment.map(
+                        getComments().list(
+                            r, status, sort, sortOrder, pageNo, pageSize)));
 
         } catch (final CccCheckedException e) {
             throw fail(e);

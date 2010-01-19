@@ -87,6 +87,7 @@ public class UpdateCommentPresenter
                     getView().getUrl2());
             updated.setId(getModel().getId());
             updated.setStatus(getView().getStatus());
+            updated.setEmail(getModel().getEmail());
 
             new UpdateCommentAction(updated) {
 

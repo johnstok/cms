@@ -87,6 +87,16 @@ interface Repository {
                         int pageSize,
                         Object... params);
 
+    /**
+     * Query for a single integer value.
+     *
+     * @param queryString The query used to perform the search.
+     * @param params The query parameters.
+     *
+     * @return The value as an integer.
+     */
+    int scalarInt(String queryString, Object... params);
+
 
     /**
      * List zero or more matches for a query - each result is guaranteed to

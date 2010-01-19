@@ -79,6 +79,7 @@ public interface CommentRepository {
      *
      * @param resource Filter comments by resource. NULL will return all.
      * @param status Filter comments based on status. NULL will return all.
+     * @param sort The field to sort on.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.
      * @param pageSize The number of results in a page.
@@ -87,7 +88,19 @@ public interface CommentRepository {
      */
     List<Comment> list(Resource resource,
                        CommentStatus status,
+                       String sort,
                        SortOrder sortOrder,
                        int pageNo,
                        int pageSize);
+
+
+    /**
+     * Count existing comments.
+     *
+     * @param resource Filter comments by resource. NULL will return all.
+     * @param status Filter comments based on status. NULL will return all.
+     *
+     * @return The number of comments.
+     */
+    int count(Resource resource, CommentStatus status);
 }
