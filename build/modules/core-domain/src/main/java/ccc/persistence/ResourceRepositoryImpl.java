@@ -27,6 +27,7 @@
 package ccc.persistence;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,6 +274,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public List<Resource> list(final Resource resource,
                                final String tag,
+                               final Date before,
+                               final Date after,
                                final String sort,
                                final SortOrder sortOrder,
                                final int pageNo,
@@ -292,6 +295,18 @@ class ResourceRepositoryImpl implements ResourceRepository {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" ? in elements(r._tags)");
             params.add(tag);
+        }
+
+        if (null!=before) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" ? > r._dateChanged");
+            params.add(before);
+        }
+
+        if (null!=after) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" ? < r._dateChanged");
+            params.add(after);
         }
 
         if (null != sort) {

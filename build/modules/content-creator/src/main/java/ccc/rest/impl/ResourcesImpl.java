@@ -310,11 +310,15 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> list(final String tag,
+    public Collection<ResourceSummary> list(
+                                      final String tag,
+                                      final Long before,
+                                      final Long after,
                                       final String sort,
                                       final SortOrder order,
                                       final int pageNo,
                                       final int pageSize) throws RestException {
-        return getResources().list(tag, sort, order, pageNo, pageSize);
+        return getResources().list(
+            tag, before, after, sort, order, pageNo, pageSize);
     }
 }

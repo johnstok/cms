@@ -80,6 +80,8 @@ public interface Resources {
     @GET @Path("/resources")
     Collection<ResourceSummary> list(
         @QueryParam("tag") String tag,
+        @QueryParam("before") Long before,
+        @QueryParam("after") Long after,
         @QueryParam("sort") @DefaultValue("name") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,

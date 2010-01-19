@@ -996,6 +996,8 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public Collection<ResourceSummary> list(final String tag,
+                                            final Long before,
+                                            final Long after,
                                             final String sort,
                                             final SortOrder order,
                                             final int pageNo,
@@ -1003,47 +1005,14 @@ public class ResourcesEJB
         // FIXME: Security not applied!!!
         return
             mapResources(
-                getResources().list(null, tag, sort, order, pageNo, pageSize));
+                getResources().list(
+                    null,
+                    tag,
+                    (null==before)?null:new Date(before.longValue()),
+                    (null==after)?null:new Date(after.longValue()),
+                    sort,
+                    order,
+                    pageNo,
+                    pageSize));
     }
-
-/* StatefulReaderImpl */
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public IResource resourceFromPath(final String absolutePath) {
-//        return continuityForPath(absolutePath).forCurrentRevision();
-//    }
-//
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public IResource resourceFromId(final String id) {
-//        try {
-//            return _resources.find(
-//                Resource.class, UUID.fromString(id)).forCurrentRevision();
-//        } catch (final EntityNotFoundException e) {
-//            throw new NotFoundException();
-//        }
-//    }
-//
-//
-//    private Resource continuityForPath(final String absolutePath) {
-//        final ResourcePath rp = new ResourcePath(absolutePath);
-//        try {
-//            return getResources().lookup(
-//                rp.top().toString(), rp.removeTop(), currentUser());
-//        } catch (final EntityNotFoundException e) {
-//            return null;
-//        }
-//    }
-//
-//
-//    /** {@inheritDoc} */
-//    @Override
-//    public UUID uuidFromString(final String id) {
-//        return UUID.fromString(id);
-//    }
 }
