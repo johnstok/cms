@@ -328,7 +328,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     public long imagesCount(final UUID folderId)
         throws EntityNotFoundException {
         final Resource r = find(Resource.class, folderId);
-        return _repository.count("SELECT COUNT(f) FROM ccc.domain.File f "
+        return _repository.scalarLong("SELECT COUNT(f) FROM ccc.domain.File f "
         + " WHERE f._publishedBy is not null"
         + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
         + " AND f._parent = ?", r);

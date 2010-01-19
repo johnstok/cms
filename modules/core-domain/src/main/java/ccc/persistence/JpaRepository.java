@@ -162,24 +162,13 @@ class JpaRepository implements Repository {
 
     /** {@inheritDoc} */
     @Override
-    public int scalarInt(final String queryString, final Object... params) {
+    public long scalarLong(final String queryString, final Object... params) {
         final Query q = _em.createQuery(queryString);
         for (int i=0; i<params.length; i++) {
             q.setParameter((i+1), params[i]);
         }
         final Number result = (Number) q.getSingleResult();
-        return result.intValue();
+        return result.longValue();
     }
-    
-    
-    /** {@inheritDoc} */
-    @Override
-    public long count(final String queryString, final Object... params) {
-        final Query q=_em.createQuery(queryString);
-        for (int i=0; i<params.length; i++) {
-            q.setParameter((i+1), params[i]);
-        }
-        final long countResult=((Long) q.getSingleResult()).longValue();
-        return countResult;
-    }
+
 }

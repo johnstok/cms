@@ -102,5 +102,5 @@ public interface CommentRepository {
      *
      * @return The number of comments.
      */
-    int count(Resource resource, CommentStatus status);
+    long count(Resource resource, CommentStatus status);
 }

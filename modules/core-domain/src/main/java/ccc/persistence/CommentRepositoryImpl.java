@@ -137,7 +137,7 @@ public class CommentRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public int count(final Resource resource, final CommentStatus status) {
+    public long count(final Resource resource, final CommentStatus status) {
 
         final StringBuffer query = new StringBuffer();
         final List<Object> params = new ArrayList<Object>();
@@ -155,7 +155,7 @@ public class CommentRepositoryImpl
             params.add(resource);
         }
 
-        return _repo.scalarInt(query.toString(), params.toArray());
+        return _repo.scalarLong(query.toString(), params.toArray());
     }
 
 
