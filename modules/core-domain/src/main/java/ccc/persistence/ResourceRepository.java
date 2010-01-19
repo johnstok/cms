@@ -26,6 +26,7 @@
  */
 package ccc.persistence;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -192,7 +193,10 @@ public interface ResourceRepository {
     /**
      * List folder children.
      *
-     * @param resource Filter comments by resource. NULL will return all.
+     * @param parent Filter resources by parent. NULL will return all.
+     * @param tag Filter resources by tag. NULL will return all.
+     * @param after Only return comments created after this date.
+     * @param before Only return comments before this date.
      * @param sort The sort results be sorted in.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.
@@ -200,8 +204,10 @@ public interface ResourceRepository {
      *
      * @return A list of comments.
      */
-    List<Resource> list(Resource resource,
+    List<Resource> list(Resource parent,
                         String tag,
+                        Date before,
+                        Date after,
                         String sort,
                         SortOrder sortOrder,
                         int pageNo,

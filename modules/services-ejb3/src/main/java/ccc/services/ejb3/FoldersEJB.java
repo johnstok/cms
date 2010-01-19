@@ -308,7 +308,14 @@ public class FoldersEJB
             return
                 mapResources(
                     getResources().list(
-                        f, null, sort, sortOrder, pageNo, pageSize));
+                        f,
+                        null,
+                        null,
+                        null,
+                        sort,
+                        sortOrder,
+                        pageNo,
+                        pageSize));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
