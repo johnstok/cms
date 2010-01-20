@@ -361,8 +361,8 @@ abstract class AbstractEJB {
      * @param files The files.
      * @return The corresponding summaries.
      */
-    protected Collection<FileDto> mapFiles(final Collection<File> files) {
-        final Collection<FileDto> mapped = new ArrayList<FileDto>();
+    protected List<FileDto> mapFiles(final Collection<File> files) {
+        final List<FileDto> mapped = new ArrayList<FileDto>();
         for (final File f : files) {
             mapped.add(f.mapFile());
         }

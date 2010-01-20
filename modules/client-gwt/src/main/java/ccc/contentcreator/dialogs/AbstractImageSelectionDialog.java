@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.GetImagesCountAction;
 import ccc.contentcreator.actions.GetImagesPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
@@ -66,7 +65,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * TODO: Add a description for this type.
+ * Abstract dialog for image selectors.
  *
  * @author Civic Computing Ltd.
  */
@@ -83,7 +82,6 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
     private static final int IMAGES_PER_PAGE = 20;
 
     private ResourceSummaryModelData _folder = null;
-    private int _totalCount = -1;
     private  final ListView<ImageSummaryModelData> _view =
         new ListView<ImageSummaryModelData>();
 
@@ -192,21 +190,11 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
                     final BasePagingLoadConfig config =
                         (BasePagingLoadConfig) loadConfig;
 
-                    new GetImagesCountAction(
+                    new GetImagesPaged(
                         getUiConstants().selectImage(),
-                        _folder.getId()) {
-
-                        @Override
-                        protected void execute(final int count) {
-                            _totalCount=count;
-                            new GetImagesPaged(
-                                getUiConstants().selectImage(),
-                                _folder.getId(),
-                                config,
-                                callback).execute();
-                        }
-                    }.execute();
-
+                        _folder.getId(),
+                        config,
+                        callback).execute();
                 }
             }
         };
@@ -249,12 +237,13 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
         }
 
         @Override
-        protected void execute(final Collection<FileDto> images) {
+        protected void execute(final Collection<FileDto> images,
+                               final int totalCount) {
             final List<ImageSummaryModelData> results =
                 loadModel(_image, images);
             final PagingLoadResult<ImageSummaryModelData> plr =
                 new BasePagingLoadResult<ImageSummaryModelData>(
-                    results, _config.getOffset(), _totalCount);
+                    results, _config.getOffset(), totalCount);
             _callback.onSuccess(plr);
         }
     }

@@ -32,9 +32,11 @@ import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
 import ccc.rest.dto.FileDto;
+import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -75,21 +77,31 @@ public abstract class GetImagesPagedAction
         return "/files/images/"+_parentId+"/?page="+_pageNo+"&count="+_pageSize;
     }
 
+
+
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+
+        final int totalCount =
+            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
+        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
         final Collection<FileDto> files = new ArrayList<FileDto>();
         for (int i=0; i<result.size(); i++) {
             files.add(new FileDto(new GwtJson(result.get(i).isObject())));
         }
-        execute(files);
+
+        execute(files, totalCount);
     }
 
     /**
      * Handle the data returned from the server.
      *
      * @param images The available images.
+     * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<FileDto> images);
+    protected abstract void execute(Collection<FileDto> images,
+                                    int totalCount);
 }
