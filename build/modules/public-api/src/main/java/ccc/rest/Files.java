@@ -26,7 +26,6 @@
  */
 package ccc.rest;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,6 +39,7 @@ import javax.ws.rs.QueryParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDelta;
@@ -70,7 +70,7 @@ public interface Files {
     @GET
     @Path("/images/{id}")
     @NoCache
-    Collection<FileDto> getPagedImages(
+    DtoCollection<FileDto> getPagedImages(
         @PathParam("id") UUID folderId,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize)
@@ -116,15 +116,4 @@ public interface Files {
     ResourceSummary createTextFile(TextFileDto textFile)
     throws RestException;
 
-
-    /**
-     * Number of images in the given folder id.
-     * @param folderId The id of the folder.
-     * @return The list of images.
-     * @throws RestException If an error occurs updating the file.
-     */
-    @GET
-    @Path("/imagescount/{id}")
-    @NoCache
-    String getImagesCount(@PathParam("id") UUID folderId) throws RestException;
 }

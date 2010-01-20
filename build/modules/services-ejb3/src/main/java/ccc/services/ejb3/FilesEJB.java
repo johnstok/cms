@@ -32,7 +32,6 @@ import static javax.ejb.TransactionAttributeType.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +52,7 @@ import ccc.persistence.StreamAction;
 import ccc.rest.Files;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
@@ -82,25 +82,15 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<FileDto> getPagedImages(final UUID folderId,
+    public DtoCollection<FileDto> getPagedImages(final UUID folderId,
         final int pageNo,
         final int pageSize)
         throws RestException {
         try {
             final List<File> list =
                 getResources().images(folderId, pageNo, pageSize);
-            return mapFiles(list);
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public String getImagesCount(final UUID folderId) throws RestException {
-        try {
-            return ""+getResources().imagesCount(folderId);
+            final long c = getResources().imagesCount(folderId);
+            return new DtoCollection<FileDto>(c, mapFiles(list));
         } catch (final CccCheckedException e) {
             throw fail(e);
         }

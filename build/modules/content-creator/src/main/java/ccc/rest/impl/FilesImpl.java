@@ -26,7 +26,6 @@
  */
 package ccc.rest.impl;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -35,6 +34,7 @@ import javax.ws.rs.Produces;
 
 import ccc.rest.Files;
 import ccc.rest.RestException;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDelta;
@@ -78,16 +78,11 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<FileDto> getPagedImages(final UUID folderId,
+    public DtoCollection<FileDto> getPagedImages(final UUID folderId,
                                               final int pageNo,
                                               final int pageSize)
                                               throws RestException {
         return getFiles().getPagedImages(folderId, pageNo, pageSize);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String getImagesCount(final UUID folderId) throws RestException  {
-        return getFiles().getImagesCount(folderId);
-    }
 }

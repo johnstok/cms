@@ -93,7 +93,7 @@ interface Repository {
      * @param queryString The query used to perform the search.
      * @param params The query parameters.
      *
-     * @return The value as an integer.
+     * @return The value as a long.
      */
     long scalarLong(String queryString, Object... params);
 
