@@ -1,6 +1,6 @@
-/*
+﻿/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2008 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2009 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -66,7 +66,7 @@ FCKConfig.ProcessHTMLEntities	= true ;
 FCKConfig.IncludeLatinEntities	= true ;
 FCKConfig.IncludeGreekEntities	= true ;
 
-FCKConfig.ProcessNumericEntities = true ;
+FCKConfig.ProcessNumericEntities = false ;
 
 FCKConfig.AdditionalNumericEntities = ''  ;		// Single Quote: "'"
 
@@ -76,7 +76,7 @@ FCKConfig.FormatSource		= true ;
 FCKConfig.FormatOutput		= true ;
 FCKConfig.FormatIndentator	= '    ' ;
 
-FCKConfig.EMailProtection = 'encode' ; // none | encode | function
+FCKConfig.EMailProtection = 'none' ; // none | encode | function
 FCKConfig.EMailProtectionFunction = 'mt(NAME,DOMAIN,SUBJECT,BODY)' ;
 
 FCKConfig.StartupFocus	= false ;
@@ -160,7 +160,7 @@ FCKConfig.FontSizes		= 'smaller;larger;xx-small;x-small;small;medium;large;x-lar
 FCKConfig.StylesXmlPath		= FCKConfig.EditorPath + 'fckstyles.xml' ;
 FCKConfig.TemplatesXmlPath	= FCKConfig.EditorPath + 'fcktemplates.xml' ;
 
-FCKConfig.SpellChecker			= 'ieSpell' ;	// 'ieSpell' | 'SpellerPages'
+FCKConfig.SpellChecker			= 'WSC' ;	// 'WSC' | 'SCAYT' | 'SpellerPages' | 'ieSpell'
 FCKConfig.IeSpellDownloadUrl	= 'http://www.iespell.com/download.php' ;
 FCKConfig.SpellerPagesServerScript = 'server-scripts/spellchecker.php' ;	// Available extension: .php .cfm .pl
 FCKConfig.FirefoxSpellChecker	= false ;
@@ -282,12 +282,12 @@ var _FileBrowserExtension = _FileBrowserLanguage == 'perl' ? 'cgi' : _FileBrowse
 var _QuickUploadExtension = _QuickUploadLanguage == 'perl' ? 'cgi' : _QuickUploadLanguage ;
 
 FCKConfig.LinkBrowser = true ;
-FCKConfig.LinkBrowserURL = '/creator/ContentCreator.html?browse=link' ;
+FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
 FCKConfig.LinkBrowserWindowWidth	= FCKConfig.ScreenWidth * 0.7 ;		// 70%
 FCKConfig.LinkBrowserWindowHeight	= FCKConfig.ScreenHeight * 0.7 ;	// 70%
 
 FCKConfig.ImageBrowser = true ;
-FCKConfig.ImageBrowserURL = '/creator/ContentCreator.html?browse=image' ;
+FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
 FCKConfig.ImageBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;	// 70% ;
 FCKConfig.ImageBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;	// 70% ;
 
