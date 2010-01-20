@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.Frame;
  * Implements the <a href="http://www.fckeditor.net">FCKEditor</a> editor
  * as a GXT component.
  *
- * <p>The editor version is currently FCKEditor 2.6.3</p>
+ * <p>The editor version is currently FCKEditor 2.6.5</p>
  *
  * <h3>Installation</h3>
  * <p>This component contains the source and "compiled" code for the fckEditor
