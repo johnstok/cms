@@ -567,6 +567,7 @@ public abstract class Resource
      * Mutator for the date the resource was created.
      *
      * @param createdOn The date of creation.
+     * @param createdBy The user who created.
      */
     public void dateCreated(final Date createdOn, final User createdBy) {
         require().notNull(createdOn);
@@ -596,6 +597,7 @@ public abstract class Resource
      * Mutator for the date the resource last changed.
      *
      * @param changedOn The date the resource changed.
+     * @param changedBy The user who changed the resource.
      */
     public void dateChanged(final Date changedOn, final User changedBy) {
         require().notNull(changedOn);

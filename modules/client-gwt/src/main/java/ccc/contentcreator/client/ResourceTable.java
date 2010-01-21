@@ -205,7 +205,6 @@ public class ResourceTable
                 ResourceSummaryModelData.Property.TYPE.name(),
                 UI_CONSTANTS.type(),
                 40);
-        typeColumn.setSortable(false);
         typeColumn.setRenderer(
             ResourceTypeRendererFactory.rendererForResourceSummary());
         configs.add(typeColumn);
