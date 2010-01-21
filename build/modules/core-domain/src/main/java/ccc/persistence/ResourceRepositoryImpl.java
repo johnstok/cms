@@ -316,11 +316,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
             } else if ("mm_include".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._includeInMainMenu) ");
             } else if ("locked".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._lockedBy) ");
+                query.append(" order by upper(r._lockedBy._username) ");
             } else if ("published".equalsIgnoreCase(sort)) {
-                query.append(" order by upper(r._publishedBy) ");
+                query.append(" order by upper(r._publishedBy._username) ");
             } else if ("name".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._name) ");
+            } else if ("type".equalsIgnoreCase(sort)) {
+                query.append(" order by r.class ");
             } else {
                 knownSort = false;
             }
