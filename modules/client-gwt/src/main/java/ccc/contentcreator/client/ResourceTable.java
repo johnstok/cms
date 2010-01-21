@@ -215,6 +215,7 @@ public class ResourceTable
                 UI_CONSTANTS.draft(),
                 40);
         workingCopyColumn.setSortable(false);
+        workingCopyColumn.setMenuDisabled(true);
         workingCopyColumn.setRenderer(new ResourceWorkingCopyRenderer());
         configs.add(workingCopyColumn);
 
