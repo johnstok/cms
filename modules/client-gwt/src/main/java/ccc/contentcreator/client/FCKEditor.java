@@ -162,8 +162,8 @@ public class FCKEditor extends LayoutContainer {
             obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,innerText,openInNew);
         };
 
-        $wnd.cccImageSelector = function(fckname) {
-            obj.@ccc.contentcreator.client.FCKEditor::openImageSelector(Ljava/lang/String;)(fckname);
+        $wnd.cccImageSelector = function(fckname, url, alt, title, cccId) {
+            obj.@ccc.contentcreator.client.FCKEditor::openImageSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,alt,title,cccId);
         };
     }-*/;
 
@@ -204,7 +204,11 @@ public class FCKEditor extends LayoutContainer {
      *
      * @param elementID The name of the FCKEditor.
      */
-    public void openImageSelector(final String elementID) {
-        new ImageSelectionDialog(elementID).show();
+    public void openImageSelector(final String elementID,
+    							  final String url,
+    							  final String alt,
+    							  final String title,
+    							  final String cccId) {
+        new ImageSelectionDialog(elementID, url, alt, title, cccId).show();
     }
 }

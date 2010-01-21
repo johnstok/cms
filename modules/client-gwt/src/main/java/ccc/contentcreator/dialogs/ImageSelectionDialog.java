@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.contentcreator.actions.GetContentImagesAction;
+import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
@@ -37,12 +38,20 @@ import ccc.rest.dto.FileDto;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.ListView;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.FormData;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.extjs.gxt.ui.client.widget.layout.MarginData;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 
 /**
  * Image selection dialog for FCKEditor use.
@@ -59,19 +68,32 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         new ListView<ImageSummaryModelData>();
     private List<ImageSummaryModelData> _models;
     private final String _elementid;
+    private final UIConstants _constants;
+    private String _cccId;
 
-
+    private final TextField<String> _urlField = new TextField<String>();
+    private final TextField<String> _altField = new TextField<String>();
+    private final TextField<String> _titleField = new TextField<String>();
+    
     /**
      * Constructor.
      *
-     * @param elementid Element ID for FCKEditor
+     * @param elementid Element ID for FCKEditor.
+     * @param url The URL of the selected image.
+     * @param alt The alternative text for the selected image.
+     * @param title The title of the selected image.
+     * @param cccId The ccc id stored in class of the image.
      */
-    public ImageSelectionDialog(final String elementid) {
+    public ImageSelectionDialog(final String elementid, String url, String alt, String title, String cccId) {
         super(new IGlobalsImpl().uiConstants().selectImage(),
               new IGlobalsImpl());
+        _constants = new IGlobalsImpl().uiConstants();
+        setLayout(new RowLayout());
         _elementid = elementid;
-        setWidth(DIALOG_WIDTH);
+        _cccId = cccId;
 
+        setWidth(DIALOG_WIDTH);
+        setFrame(true);
         final ListStore<ImageSummaryModelData> store =
             new ListStore<ImageSummaryModelData>();
 
@@ -81,7 +103,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 loadModel(store, images);
             }
         }.execute();
-
+        final ContentPanel details = createDetailPanel(url, alt, title);
 
         final ContentPanel panel = new ContentPanel();
         panel.setCollapsible(false);
@@ -100,7 +122,24 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         _view.setStore(store);
         _view.setItemSelector("div.thumb-wrap");
 
+        _view.getSelectionModel().addListener(Events.SelectionChange,  
+        		new Listener<SelectionChangedEvent<ImageSummaryModelData>>() {  
+        	public void handleEvent(SelectionChangedEvent<ImageSummaryModelData> be) {
+        		final ImageSummaryModelData md = be.getSelectedItem();
+        		if (md != null) {
+                    final String path = Paragraph.escape(md.getPath());
+                    final String appContext =
+                        new IGlobalsImpl().getSetting("application.context");
+                    _urlField.setValue(appContext+path);
+                    _titleField.setValue(Paragraph.escape(md.getTitle()));
+                    _altField.setValue(Paragraph.escape(md.getTitle()));
+                    _cccId = md.getId().toString();
+        		}
+        	}  
+        });  
+
         panel.add(_view);
+        add(details, new MarginData(5,5,5,5));
         add(panel);
 
         addButton(getCancel());
@@ -108,24 +147,47 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         addButton(save);
     }
 
-    /** {@inheritDoc} */
+    private ContentPanel createDetailPanel(String url, String alt, String title) {
+    	ContentPanel details = new ContentPanel();
+        details.setCollapsible(false);
+        details.setAnimCollapse(false);
+        details.setHeaderVisible(false);
+        details.setWidth(PANEL_WIDTH);
+        details.setHeight(100);
+        details.setLayout(new FormLayout());
+        details.setBorders(false);
+        details.setBodyBorder(false);
+        details.setBodyStyleName("backgroundColor: white;");
+        
+        _urlField.setFieldLabel("url");
+        _urlField.setReadOnly(true);
+        _urlField.setValue(url);
+        details.add(_urlField, new FormData("95%"));
+
+        _altField.setFieldLabel("alt");
+        _altField.setValue(alt);
+        details.add(_altField, new FormData("95%"));
+        
+        _titleField.setFieldLabel(_constants.title());
+        _titleField.setValue(title);
+        details.add(_titleField, new FormData("95%"));
+		return details;
+	}
+
+	/** {@inheritDoc} */
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final ImageSummaryModelData md =
-                    _view.getSelectionModel().getSelectedItem();
-                if (md != null) {
-                    final String path = Paragraph.escape(md.getPath());
-                    final String appContext =
-                        new IGlobalsImpl().getSetting("application.context");
-                    jsniSetUrl(
-                        appContext+path,
-                        Paragraph.escape(md.getTitle()),
-                        md.getId().toString(),
-                        _elementid);
-                    hide();
-                }
+            	if (_cccId != null && !_cccId.equals("")) {
+            		jsniSetUrl(
+            				_urlField.getValue(),
+            				_titleField.getValue(),
+            				_altField.getValue(),
+            				_cccId,
+            				_elementid);
+            		hide();
+            	} 
             }
         };
     }
@@ -133,13 +195,14 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
 
     private static native String jsniSetUrl(final String selectedUrl,
                                             final String title,
+                                            final String alt,
                                             final String uuid,
                                             final String elementID) /*-{
      if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
                 return instance.InsertHtml("<img title='"+title+"' alt='"
-                +title+"' class='ccc:"+uuid+"' src='"+selectedUrl+"'/>");
+                +alt+"' class='ccc:"+uuid+"' src='"+selectedUrl+"'/>");
             }
         }
         return null;

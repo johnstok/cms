@@ -9,8 +9,25 @@ ImageSelectCommand.GetState=function() {
 ImageSelectCommand.Execute=function() {
 	//open a popup window when the button is clicked
 	var fckname = FCKURLParams['InstanceName'] ;
-
-	parent.cccImageSelector(fckname);
+	var editor = FCKeditorAPI.GetInstance(fckname) ;
+	var selection = editor.Selection;
+	
+	var url = "";
+	var alt = "";
+	var title = "";
+	var cccId = "";
+	
+	
+	if (selection.HasAncestorNode('IMG')) {
+		var oldImage = selection.MoveToAncestorNode( 'IMG' ) ;
+		url =  oldImage.getAttribute( 'src' , 2 ) || '' ;
+		cccId =  oldImage.getAttribute( 'class' , 2 ) || '' ;
+		alt = oldImage.alt;
+		title = oldImage.title;
+	}
+	
+	
+	parent.cccImageSelector(fckname, url, alt, title, cccId);
 }
 FCKCommands.RegisterCommand('CCC_Image', ImageSelectCommand );
         
