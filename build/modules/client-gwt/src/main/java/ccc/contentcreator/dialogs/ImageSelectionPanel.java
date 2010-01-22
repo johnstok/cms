@@ -36,6 +36,7 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ImageTriggerField;
 import ccc.rest.dto.FileDto;
 
@@ -45,11 +46,9 @@ import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -65,25 +64,26 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
- * Abstract dialog for image selectors.
+ * Image selection panel.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
+public class ImageSelectionPanel extends ContentPanel {
 
     private final TriggerField<String> _folderField =
         new TriggerField<String>();
 
     private final PagingToolBar _pagerBar;
 
-    private static final int PANEL_HEIGHT = 460;
-    private static final int PANEL_WIDTH = 700;
-    private static final int DIALOG_WIDTH = 720;
+    private static final int PANEL_HEIGHT = 478;
+//    private static final int PANEL_WIDTH = 700;
     private static final int IMAGES_PER_PAGE = 20;
 
     private ResourceSummaryModelData _folder = null;
     private  final ListView<ImageSummaryModelData> _view =
         new ListView<ImageSummaryModelData>();
+
+    private final IGlobals _globals = new IGlobalsImpl();
 
     private ImageTriggerField _image;
 
@@ -91,13 +91,8 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
     /**
      * Constructor.
      *
-     * @param title The title of the dialog.
-     * @param globals The globals.
      */
-    public AbstractImageSelectionDialog(final String title,
-                                        final IGlobals globals) {
-        super(title, globals);
-        setWidth(DIALOG_WIDTH);
+    public ImageSelectionPanel() {
 
         final RpcProxy<PagingLoadResult<ImageSummaryModelData>> proxy =
             createProxy();
@@ -133,41 +128,37 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
                         }});
                     folderSelect.show();
                 }});
-        toolBar.add(new Text(constants().folder()));
+        toolBar.add(new Text(_globals.uiConstants().folder()));
         toolBar.add(_folderField);
         toolBar.add(new SeparatorToolItem());
-        setTopComponent(toolBar);
 
         final ListStore<ImageSummaryModelData> listStore =
             new ListStore<ImageSummaryModelData>(loader);
 
-        final ContentPanel panel = new ContentPanel();
-        panel.setCollapsible(false);
-        panel.setAnimCollapse(false);
-        panel.setId("images-view");
-        panel.setHeaderVisible(false);
-        panel.setWidth(PANEL_WIDTH);
-        panel.setHeight(PANEL_HEIGHT);
-        panel.setLayout(new FitLayout());
-        panel.setBorders(false);
-        panel.setBodyBorder(false);
-        panel.setBodyStyleName("backgroundColor: white;");
+        setCollapsible(false);
+        setAnimCollapse(false);
+        setId("images-view");
+        setHeaderVisible(false);
+//        setWidth(PANEL_WIDTH);
+        setAutoWidth(true);
+        setHeight(PANEL_HEIGHT);
+        setLayout(new FitLayout());
+        setBorders(false);
+        setBodyBorder(false);
+        setBodyStyleName("backgroundColor: white;");
 
         _view.setBorders(false);
+        _view.setAutoWidth(true);
         _view.setTemplate(getTemplate());
         _view.setStore(listStore);
         _view.setItemSelector("div.thumb-wrap");
 
-        panel.add(_view);
-        add(panel);
-
-        addButton(getCancel());
-        final Button save = new Button(constants().save(), saveAction());
-        addButton(save);
+        add(_view);
 
         _pagerBar = new PagingToolBar(IMAGES_PER_PAGE);
         _pagerBar.bind(loader);
         loader.load(0, IMAGES_PER_PAGE);
+        setTopComponent(toolBar);
         setBottomComponent(_pagerBar);
     }
 
@@ -191,7 +182,7 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
                         (BasePagingLoadConfig) loadConfig;
 
                     new GetImagesPaged(
-                        getUiConstants().selectImage(),
+                        _globals.uiConstants().selectImage(),
                         _folder.getId(),
                         config,
                         callback).execute();
@@ -275,7 +266,7 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
      *
      * @return Returns the list view.
      */
-    protected ListView<ImageSummaryModelData> getView() {
+    public ListView<ImageSummaryModelData> getView() {
         return _view;
     }
 
@@ -293,8 +284,6 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
 
      }-*/;
 
-    /** {@inheritDoc} */
-    protected abstract SelectionListener<ButtonEvent> saveAction();
 
 
     /**
@@ -302,7 +291,7 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
      *
      * @return Returns the image.
      */
-    protected final ImageTriggerField getImage() {
+    public final ImageTriggerField getImage() {
         return _image;
     }
 
@@ -311,7 +300,9 @@ public abstract class AbstractImageSelectionDialog extends AbstractBaseDialog {
      *
      * @param image The image to set.
      */
-    protected final void setImage(final ImageTriggerField image) {
+    public final void setImage(final ImageTriggerField image) {
         _image = image;
     }
+
+
 }

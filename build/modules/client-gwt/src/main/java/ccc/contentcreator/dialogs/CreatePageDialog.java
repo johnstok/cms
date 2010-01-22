@@ -109,7 +109,7 @@ public class CreatePageDialog
 
     private final ContentPanel _descriptionPanel =
         new ContentPanel(new RowLayout());
-    private final ContentPanel _templatePanel = 
+    private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
 
     private final SingleSelectionModel _ssm;
@@ -136,7 +136,7 @@ public class CreatePageDialog
         _parent = parent;
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-        
+
         final ColumnConfig templateNameColumn = new ColumnConfig();
         templateNameColumn.setId(TemplateSummaryModelData.Property.NAME.name());
         templateNameColumn.setHeader(getUiConstants().name());
@@ -176,19 +176,19 @@ public class CreatePageDialog
         _descriptionPanel.setHeading(getUiConstants().description());
         _descriptionPanel.add(_description);
 
-        int templatePanelWidth = NAME_COLUMN_WIDTH + SCROLLBAR_WIDTH;
+        final int templatePanelWidth = NAME_COLUMN_WIDTH + SCROLLBAR_WIDTH;
         final BorderLayoutData templateBorderLayoutData =
             new BorderLayoutData(LayoutRegion.WEST, templatePanelWidth);
         templateBorderLayoutData.setMargins(new Margins(TOP_MARGIN,
                                                    RIGHT_MARGIN,
-                                                   BOTTOM_MARGIN, 
+                                                   BOTTOM_MARGIN,
                                                    LEFT_MARGIN));
-        
+
         _firstWizardPage.setLayout(new BorderLayout());
         _firstWizardPage.setBorders(false);
         _firstWizardPage.setBodyBorder(false);
         _firstWizardPage.setHeaderVisible(false);
-        
+
         _firstWizardPage.add(_templatePanel, templateBorderLayoutData);
         _firstWizardPage.add(_descriptionPanel, centerData);
         addCard(_firstWizardPage);
@@ -208,7 +208,7 @@ public class CreatePageDialog
 
         _comment.setFieldLabel(getUiConstants().comment());
         _comment.setName("comment");
-        
+
         _thirdWizardPage.add(_majorEdit);
         _thirdWizardPage.add(_comment);
         addCard(_thirdWizardPage);
