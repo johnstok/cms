@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.3-SNAPSHOT</version>
+        <version>7.0.3</version>
     </parent>
     
     <artifactId>acceptance-tests</artifactId>
