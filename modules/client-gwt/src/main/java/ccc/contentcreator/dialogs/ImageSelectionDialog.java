@@ -60,9 +60,11 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
  */
 public class ImageSelectionDialog extends AbstractBaseDialog {
 
-    private static final int PANEL_HEIGHT = 460;
     private static final int PANEL_WIDTH = 700;
     private static final int DIALOG_WIDTH = 720;
+    private static final int DIALOG_HEIGHT = 580;
+    private static final int VIEW_HEIGHT = 400;
+    private static final int DETAILS_HEIGHT = 90;
 
     private  final ListView<ImageSummaryModelData> _view =
         new ListView<ImageSummaryModelData>();
@@ -74,7 +76,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
     private final TextField<String> _urlField = new TextField<String>();
     private final TextField<String> _altField = new TextField<String>();
     private final TextField<String> _titleField = new TextField<String>();
-    
+
     /**
      * Constructor.
      *
@@ -84,20 +86,25 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      * @param title The title of the selected image.
      * @param cccId The ccc id stored in class of the image.
      */
-    public ImageSelectionDialog(final String elementid, String url, String alt, String title, String cccId) {
+    public ImageSelectionDialog(final String elementid,
+                                final String url,
+                                final String alt,
+                                final String title,
+                                final String cccId) {
         super(new IGlobalsImpl().uiConstants().selectImage(),
-              new IGlobalsImpl());
+            new IGlobalsImpl());
         _constants = new IGlobalsImpl().uiConstants();
         setLayout(new RowLayout());
         _elementid = elementid;
         _cccId = cccId;
 
+        setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
         setFrame(true);
         final ListStore<ImageSummaryModelData> store =
             new ListStore<ImageSummaryModelData>();
 
-        new GetContentImagesAction(getUiConstants().selectImage()){
+        new GetContentImagesAction(getUiConstants().selectImage()) {
             @Override
             protected void execute(final Collection<FileDto> images) {
                 loadModel(store, images);
@@ -111,7 +118,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         panel.setId("images-view");
         panel.setHeaderVisible(false);
         panel.setWidth(PANEL_WIDTH);
-        panel.setHeight(PANEL_HEIGHT);
+        panel.setHeight(VIEW_HEIGHT);
         panel.setLayout(new FitLayout());
         panel.setBorders(false);
         panel.setBodyBorder(false);
@@ -122,24 +129,25 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         _view.setStore(store);
         _view.setItemSelector("div.thumb-wrap");
 
-        _view.getSelectionModel().addListener(Events.SelectionChange,  
-        		new Listener<SelectionChangedEvent<ImageSummaryModelData>>() {  
-        	public void handleEvent(SelectionChangedEvent<ImageSummaryModelData> be) {
-        		final ImageSummaryModelData md = be.getSelectedItem();
-        		if (md != null) {
+        _view.getSelectionModel().addListener(Events.SelectionChange,
+            new Listener<SelectionChangedEvent<ImageSummaryModelData>>() {
+            public void handleEvent(final SelectionChangedEvent
+                                    <ImageSummaryModelData> be) {
+                final ImageSummaryModelData md = be.getSelectedItem();
+                if (md != null) {
                     final String path = Paragraph.escape(md.getPath());
                     final String appContext =
                         new IGlobalsImpl().getSetting("application.context");
-                    _urlField.setValue(appContext+path);
+                    _urlField.setValue(appContext + path);
                     _titleField.setValue(Paragraph.escape(md.getTitle()));
                     _altField.setValue(Paragraph.escape(md.getTitle()));
                     _cccId = md.getId().toString();
-        		}
-        	}  
-        });  
+                }
+            }
+        });
 
         panel.add(_view);
-        add(details, new MarginData(5,5,5,5));
+        add(details, new MarginData(5, 5, 5, 5));
         add(panel);
 
         addButton(getCancel());
@@ -147,47 +155,49 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         addButton(save);
     }
 
-    private ContentPanel createDetailPanel(String url, String alt, String title) {
-    	ContentPanel details = new ContentPanel();
+    private ContentPanel createDetailPanel(final String url,
+                                           final String alt,
+                                           final String title) {
+        ContentPanel details = new ContentPanel();
         details.setCollapsible(false);
         details.setAnimCollapse(false);
         details.setHeaderVisible(false);
         details.setWidth(PANEL_WIDTH);
-        details.setHeight(100);
+        details.setHeight(DETAILS_HEIGHT);
         details.setLayout(new FormLayout());
         details.setBorders(false);
         details.setBodyBorder(false);
         details.setBodyStyleName("backgroundColor: white;");
-        
-        _urlField.setFieldLabel("url");
+
+        _urlField.setFieldLabel("URL");
         _urlField.setReadOnly(true);
         _urlField.setValue(url);
         details.add(_urlField, new FormData("95%"));
 
-        _altField.setFieldLabel("alt");
+        _altField.setFieldLabel("ALT");
         _altField.setValue(alt);
         details.add(_altField, new FormData("95%"));
-        
+
         _titleField.setFieldLabel(_constants.title());
         _titleField.setValue(title);
         details.add(_titleField, new FormData("95%"));
-		return details;
-	}
+        return details;
+    }
 
-	/** {@inheritDoc} */
+    /** {@inheritDoc} */
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-            	if (_cccId != null && !_cccId.equals("")) {
-            		jsniSetUrl(
-            				_urlField.getValue(),
-            				_titleField.getValue(),
-            				_altField.getValue(),
-            				_cccId,
-            				_elementid);
-            		hide();
-            	} 
+                if (_cccId != null && !_cccId.equals("")) {
+                    jsniSetUrl(
+                        _urlField.getValue(),
+                        _titleField.getValue(),
+                        _altField.getValue(),
+                        _cccId,
+                        _elementid);
+                    hide();
+                }
             }
         };
     }
