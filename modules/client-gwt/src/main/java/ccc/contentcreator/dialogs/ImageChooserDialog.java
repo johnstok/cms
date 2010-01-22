@@ -32,6 +32,7 @@ import ccc.contentcreator.client.ImageTriggerField;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.button.Button;
 
 
 /**
@@ -39,8 +40,8 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
  *
  * @author Civic Computing Ltd.
  */
-public class ImageChooserDialog extends AbstractImageSelectionDialog {
-
+public class ImageChooserDialog extends AbstractBaseDialog {
+    private ImageSelectionPanel _imagePanel = new ImageSelectionPanel();
     /**
      * Constructor.
      *
@@ -50,22 +51,24 @@ public class ImageChooserDialog extends AbstractImageSelectionDialog {
 
         super(new IGlobalsImpl().uiConstants().selectImage(),
               new IGlobalsImpl());
-        setImage(image);
+        _imagePanel.setImage(image);
+        add(_imagePanel);
+        addButton(getCancel());
+        final Button save = new Button(constants().save(), saveAction());
+        addButton(save);
     }
 
-
     /** {@inheritDoc} */
-    @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
                 final ImageSummaryModelData md =
-                    getView().getSelectionModel().getSelectedItem();
+                    _imagePanel.getView().getSelectionModel().getSelectedItem();
                 if (md != null) {
-                    getImage().setValue(md.getPath());
+                    _imagePanel.getImage().setValue(md.getPath());
                 }
-                    getImage().setFSModel(md);
+                    _imagePanel.getImage().setFSModel(md);
                 hide();
             }
         };

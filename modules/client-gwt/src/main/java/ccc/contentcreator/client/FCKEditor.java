@@ -162,9 +162,10 @@ public class FCKEditor extends LayoutContainer {
             obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,innerText,openInNew);
         };
 
-        $wnd.cccImageSelector = function(fckname) {
-            obj.@ccc.contentcreator.client.FCKEditor::openImageSelector(Ljava/lang/String;)(fckname);
+        $wnd.cccImageSelector = function(fckname, url, alt, title, cccId) {
+            obj.@ccc.contentcreator.client.FCKEditor::openImageSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(fckname,url,alt,title,cccId);
         };
+
     }-*/;
 
 
@@ -203,8 +204,17 @@ public class FCKEditor extends LayoutContainer {
      * Displays the FCKEditor specific image selection dialog.
      *
      * @param elementID The name of the FCKEditor.
+     * @param url The URL of the selected image.
+     * @param alt The alternative text for the selected image.
+     * @param title The title of the selected image.
+     * @param cccId The ccc id stored in class of the image.
      */
-    public void openImageSelector(final String elementID) {
-        new ImageSelectionDialog(elementID).show();
+    public void openImageSelector(final String elementID,
+                                  final String url,
+                                  final String alt,
+                                  final String title,
+                                  final String cccId) {
+        new ImageSelectionDialog(elementID, url, alt, title, cccId).show();
     }
+
 }
