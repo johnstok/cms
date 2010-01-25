@@ -72,4 +72,7 @@ public final class SessionKeys {
 
     /** COMMENTS_KEY : String. */
     public static final String COMMENTS_KEY = "ccc.comments";
+
+    /** GROUPS_KEY : String. */
+    public static final String GROUPS_KEY = "ccc.groups";
 }

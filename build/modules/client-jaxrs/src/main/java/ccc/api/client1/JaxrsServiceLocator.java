@@ -37,6 +37,7 @@ import ccc.rest.Aliases;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
@@ -44,6 +45,7 @@ import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
+import ccc.rest.providers.AclReader;
 import ccc.rest.providers.ActionSummaryCollectionReader;
 import ccc.rest.providers.ActionSummaryReader;
 import ccc.rest.providers.AliasDeltaReader;
@@ -51,6 +53,8 @@ import ccc.rest.providers.BooleanProvider;
 import ccc.rest.providers.CommentReader;
 import ccc.rest.providers.DurationReader;
 import ccc.rest.providers.FailureWriter;
+import ccc.rest.providers.GroupCollectionReader;
+import ccc.rest.providers.GroupReader;
 import ccc.rest.providers.JsonReader;
 import ccc.rest.providers.JsonableWriter;
 import ccc.rest.providers.MetadataWriter;
@@ -63,6 +67,7 @@ import ccc.rest.providers.TemplateDeltaReader;
 import ccc.rest.providers.UUIDProvider;
 import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
+import ccc.rest.providers.UuidCollectionWriter;
 
 
 /**
@@ -86,6 +91,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyWriter(MetadataWriter.class);
         pFactory.addMessageBodyWriter(JsonReader.class);
         pFactory.addMessageBodyWriter(UUIDProvider.class);
+        pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
 
         // Readers
         pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
@@ -105,6 +111,10 @@ public class JaxrsServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(PageDeltaReader.class);
         pFactory.addMessageBodyReader(ActionSummaryReader.class);
         pFactory.addMessageBodyReader(CommentReader.class);
+        pFactory.addMessageBodyReader(GroupCollectionReader.class);
+        pFactory.addMessageBodyReader(GroupReader.class);
+        pFactory.addMessageBodyReader(AclReader.class);
+        pFactory.addMessageBodyReader(UuidCollectionWriter.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);
@@ -120,6 +130,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
     private Comments  _comments;
     private Files _files;
     private Aliases _aliases;
+    private Groups _groups;
 
     private final String     _secure;
     private final String     _public;
@@ -148,6 +159,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
         _templates = ProxyFactory.create(Templates.class, _secure, _http);
         _comments  = ProxyFactory.create(Comments.class, _secure, _http);
         _files     = ProxyFactory.create(Files.class, _secure+"/files", _http);
+        _groups    = ProxyFactory.create(Groups.class, _secure, _http);
         _aliases =
             ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
     }
@@ -176,6 +188,10 @@ public class JaxrsServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Pages getPages() { return _pages; }
+
+    /** {@inheritDoc} */
+    @Override
+    public Groups getGroups() { return _groups; }
 
     /** {@inheritDoc} */
     @Override

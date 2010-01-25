@@ -28,6 +28,7 @@ package ccc.migration;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,8 +43,11 @@ import org.apache.log4j.Logger;
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
 import ccc.domain.CCCException;
+import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.Users;
+import ccc.rest.dto.AclDto;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -66,10 +70,14 @@ public class BaseMigrations {
     private final Users _userCommands;
     private final PagesExt _pagesExt;
     private final ResourcesExt _resourcesExt;
+    private final Groups _groups;
 
     private final LegacyDBQueries _legacyQueries;
     private final TemplateMigration _tm;
     private final String _linkPrefix;
+
+    private Map<String, GroupDto> _cachedGroups =
+        new HashMap<String, GroupDto>();
 
     private final Properties _paragraphTypes =
         Resources.readIntoProps("paragraph-types.properties");
@@ -88,6 +96,7 @@ public class BaseMigrations {
     protected BaseMigrations(final Users userCommands,
                              final PagesExt pagesExt,
                              final ResourcesExt resourcesExt,
+                             final Groups groups,
                              final LegacyDBQueries legacyQueries,
                              final TemplateMigration tm,
                              final String linkPrefix) {
@@ -97,6 +106,7 @@ public class BaseMigrations {
         _legacyQueries = legacyQueries;
         _tm = tm;
         _linkPrefix = linkPrefix;
+        _groups = groups;
     }
 
 
@@ -121,13 +131,7 @@ public class BaseMigrations {
 
         log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
 
-        UserDto user = null;
-        try {
-            user = _userCommands.userByLegacyId(""+le.getActor());
-        } catch (final RestException e) {
-            throw new MigrationException(
-                "User fetching failed with legacyID "+le.getActor(), e);
-        }
+        final UserDto user = userForLegacyId(le.getActor());
         if (null == user) {
             throw new MigrationException("User missing: "+le.getActor());
         }
@@ -135,6 +139,16 @@ public class BaseMigrations {
 
 
         return le;
+    }
+
+
+    private UserDto userForLegacyId(final int ccc6UserId) {
+        try {
+            return _userCommands.userByLegacyId(""+ccc6UserId);
+        } catch (final RestException e) {
+            throw new RuntimeException(
+                "User fetching failed with legacyID "+ccc6UserId, e);
+        }
     }
 
 
@@ -233,9 +247,27 @@ public class BaseMigrations {
             log.info(
                 "Resource has security constraints "
                 + r.contentId() + ", " + r.cleanTitle());
+
+            final Collection<String> roles =
+                _legacyQueries.selectRolesForResource(r.contentId());
+            final Set<UUID> groupList =
+                UserMigration.migrateGroups(roles, _cachedGroups, _groups);
+
+            final Collection<Integer> users =
+                _legacyQueries.selectUsersForResource(r.contentId());
+            final Set<UUID> userList = new HashSet<UUID>();
+            for (final Integer user : users) {
+                userList.add(userForLegacyId(user.intValue()).getId());
+            }
+
+            final AclDto acl =
+                new AclDto()
+                    .setGroups(groupList)
+                    .setUsers(userList);
+
             _resourcesExt.changeRoles(
                 rs.getId(),
-                _legacyQueries.selectRolesForResource(r.contentId()),
+                acl,
                 le.getUser().getId(),
                 le.getHappenedOn());
         }
@@ -447,6 +479,16 @@ public class BaseMigrations {
      */
     protected final ResourcesExt getResources() {
         return _resourcesExt;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the CCC7 groups API.
+     */
+    protected Groups getGroups() {
+        return _groups;
     }
 
 

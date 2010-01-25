@@ -69,8 +69,8 @@ public class FolderToolBar
             _constants.createPage(),
             new OpenCreatePageAction(ssm));
         addSeparator();
-        if (user.getRoles().contains(IGlobals.ADMINISTRATOR)
-                || user.getRoles().contains(IGlobals.SITE_BUILDER)) {
+        if (user.hasPermission(IGlobals.ADMINISTRATOR)
+                || user.hasPermission(IGlobals.SITE_BUILDER)) {
             addButton(
                 "Create template",
                 _constants.createTemplate(),

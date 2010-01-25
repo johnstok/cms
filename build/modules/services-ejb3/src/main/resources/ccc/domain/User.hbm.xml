@@ -74,13 +74,12 @@
             type="string"
             length="255" />
             
-        <set name="_roles" lazy="false" table="user_roles">
+        <set name="_roles" table="user_roles">
+            <cache usage="transactional"/>
             <key not-null="true" column="user_id" foreign-key="FK_USERROLES_USER_ID"/>
-            <element
-                column="role"
-                type="string"
-                not-null="true"
-                length="255" />
+            <many-to-many
+                class="ccc.domain.Group"
+                column="group_id" />
         </set>
         
         <map name="_metadata" table="user_metadata">

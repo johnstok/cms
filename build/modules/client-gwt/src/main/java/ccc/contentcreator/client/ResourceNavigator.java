@@ -75,8 +75,8 @@ public class ResourceNavigator extends ContentPanel {
 
         for (final ResourceSummary root : roots) {
             if ("assets".equals(root.getName())) {
-                if (!user.getRoles().contains(IGlobals.ADMINISTRATOR)
-                    && !user.getRoles().contains(IGlobals.SITE_BUILDER)) {
+                if (!user.hasPermission(IGlobals.ADMINISTRATOR)
+                    && !user.hasPermission(IGlobals.SITE_BUILDER)) {
                     continue;
                 }
             }
@@ -103,7 +103,7 @@ public class ResourceNavigator extends ContentPanel {
         }
 
         _usersTree = new UserTree(_view);
-        if (user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
+        if (user.hasPermission(IGlobals.ADMINISTRATOR)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
                 "Users", _usersTree);

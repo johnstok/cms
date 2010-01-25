@@ -27,9 +27,12 @@
 package ccc.commands;
 
 import java.util.Date;
+import java.util.UUID;
 
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
+import ccc.persistence.GroupRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
 import ccc.rest.dto.UserDto;
@@ -46,6 +49,7 @@ import ccc.types.EmailAddress;
 public class CreateUserCommand {
 
     private final UserRepository     _repository;
+    private final GroupRepository    _groups;
     private final LogEntryRepository _audit;
 
     /**
@@ -55,9 +59,11 @@ public class CreateUserCommand {
      * @param audit The audit logger, for logging business actions.
      */
     public CreateUserCommand(final UserRepository repository,
+                             final GroupRepository groups,
                              final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
+        _groups = groups;
     }
 
     /**
@@ -67,15 +73,19 @@ public class CreateUserCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
+     * @throws CccCheckedException If the command fails.
+     *
      * @return Persisted user.
      */
     public User execute(final User actor,
                         final Date happenedOn,
-                        final UserDto delta) {
+                        final UserDto delta) throws CccCheckedException {
         final User user =
             new User(delta.getUsername(), delta.getName(), delta.getPassword());
         user.email(new EmailAddress(delta.getEmail()));
-        user.roles(delta.getRoles());
+        for (final UUID groupId : delta.getRoles()) {
+            user.addRole(_groups.find(groupId));
+        }
         user.addMetadata(delta.getMetadata());
         _repository.create(user);
 

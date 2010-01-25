@@ -26,16 +26,22 @@
  */
 package ccc.commands;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
+import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.persistence.GroupRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.persistence.UserRepository;
+import ccc.rest.dto.AclDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -50,7 +56,8 @@ public class UpdateResourceRolesCommand
         Command<Void> {
 
     private final UUID _id;
-    private final Collection<String> _roles;
+    private final AclDto _roles;
+    private final GroupRepository _groups;
 
 
     /**
@@ -59,15 +66,18 @@ public class UpdateResourceRolesCommand
      * @param repository The ResourceDao used for CRUD operations, etc.
      * @param audit The audit logger, for logging business actions.
      * @param id The id of the resource to update.
-     * @param roles The new roles.
+     * @param acl The new access control list.
      */
     public UpdateResourceRolesCommand(final ResourceRepository repository,
                                       final LogEntryRepository audit,
+                                      final GroupRepository group,
+                                      final UserRepository users,
                                       final UUID id,
-                                      final Collection<String> roles) {
-        super(repository, audit, null, null);
+                                      final AclDto acl) {
+        super(repository, audit, users, null);
         _id = id;
-        _roles = roles;
+        _roles = acl;
+        _groups = group;
     }
 
     /** {@inheritDoc} */
@@ -78,7 +88,8 @@ public class UpdateResourceRolesCommand
         final Resource r = getRepository().find(Resource.class, _id);
         r.confirmLock(actor);
 
-        r.roles(_roles);
+        lookupGroups(r);
+        lookupUsers(r);
 
         final LogEntry le = new LogEntry(
             actor,
@@ -89,6 +100,24 @@ public class UpdateResourceRolesCommand
         getAudit().record(le);
 
         return null;
+    }
+
+
+    private void lookupGroups(final Resource r) throws EntityNotFoundException {
+        final Set<Group> groups = new HashSet<Group>();
+        for (final UUID groupId : _roles.getGroups()) {
+            groups.add(_groups.find(groupId));
+        }
+        r.roles(groups);
+    }
+
+
+    private void lookupUsers(final Resource r) throws EntityNotFoundException {
+        final Set<User> users = new HashSet<User>();
+        for (final UUID userId : _roles.getUsers()) {
+            users.add(getUsers().find(userId));
+        }
+        r.setUserAcl(users);
     }
 
 

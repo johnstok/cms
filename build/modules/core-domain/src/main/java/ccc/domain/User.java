@@ -33,11 +33,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
+import ccc.rest.dto.UserDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.DBC;
@@ -63,8 +66,7 @@ public class User extends Entity {
     private String _name;
     private EmailAddress _email;
     private byte[] _hash;
-    // TODO: Use the Role class.
-    private Set<String> _roles = new HashSet<String>();
+    private Set<Group> _roles = new HashSet<Group>();
     private Map<String, String> _metadata = new HashMap<String, String>();
 
     /**
@@ -167,18 +169,31 @@ public class User extends Entity {
      *
      * @param newRole The role to assign.
      */
-    public void addRole(final String newRole) {
+    public void addRole(final Group newRole) {
         _roles.add(newRole);
     }
 
     /**
-     * Helper method to check if the user has defined role.
+     * Helper method to check if the user has the specified permission.
      *
-     * @param role The role to be checked.
-     * @return True if the user has the role.
+     * @param permission The permission to be checked.
+     * @return True if the user has the permission.
      */
-    public boolean hasRole(final String role) {
-        return _roles.contains(role);
+    public boolean hasPermission(final String permission) {
+        for (final Group g : roles()) {
+            if (g.hasPermission(permission)) { return true; }
+        }
+        return false;
+    }
+
+    /**
+     * Helper method to check if the user is a member of a specified group.
+     *
+     * @param group The group to check.
+     * @return True if the user is a member.
+     */
+    public boolean memberOf(final Group group) {
+        return roles().contains(group);
     }
 
     /**
@@ -186,17 +201,8 @@ public class User extends Entity {
      *
      * @return Roles of the user.
      */
-    public Set<String> roles() {
-        return new HashSet<String>(_roles);
-    }
-
-    /**
-     * Mutator in order to replace roles of the user.
-     *
-     * @param roles The set of new roles.
-     */
-    public void roles(final Set<String> roles) {
-        _roles = roles;
+    public Set<Group> roles() {
+        return new HashSet<Group>(_roles);
     }
 
 
@@ -344,7 +350,69 @@ public class User extends Entity {
         json.set(JsonKeys.USERNAME, username().toString());
         json.set(JsonKeys.NAME, name());
         json.set(JsonKeys.EMAIL, (null==email()) ? null : email().toString());
-        json.setStrings(JsonKeys.ROLES, new ArrayList<String>(roles()));
+        json.set(JsonKeys.ROLES, roles());
         json.set(JsonKeys.METADATA, metadata());
+    }
+
+    /**
+     * Query - return the IDs for all groups this user is a member of.
+     *
+     * @return The group IDs, as a set.
+     */
+    public Set<UUID> groupIds() {
+        final Set<UUID> groupIds = new HashSet<UUID>();
+        for (final Group g : roles()) {
+            groupIds.add(g.id());
+        }
+        return groupIds;
+    }
+
+    /**
+     * Mutator - clear all groups for this user.
+     */
+    public void clearGroups() {
+        _roles.clear();
+    }
+
+    /**
+     * Convert a user to a DTO.
+     *
+     * @return A DTO representation of this user.
+     */
+    public UserDto toDto() {
+        final UserDto dto = new UserDto();
+        dto.setEmail(email().getText());
+        dto.setId(id());
+        dto.setUsername(username());
+        dto.setName(name());
+        dto.setRoles(groupIds());
+        dto.setMetadata(metadata());
+        dto.setPermissions(getPermissions());
+        return dto;
+    }
+
+    /**
+     * Query - determines all permissions available to this user.
+     *
+     * @return The collection of permissions.
+     */
+    public Collection<String> getPermissions() {
+        final Set<String> perms = new HashSet<String>();
+        for (final Group g : roles()) { perms.addAll(g.getPermissions()); }
+        return perms;
+    }
+
+
+
+    /**
+     * Create summaries for a list of users.
+     *
+     * @param users The users.
+     * @return The corresponding summaries.
+     */
+    public static Collection<UserDto> map(final Collection<User> users) {
+        final Collection<UserDto> mapped = new ArrayList<UserDto>();
+        for (final User u : users) { mapped.add(u.toDto()); }
+        return mapped;
     }
 }

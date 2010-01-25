@@ -18,7 +18,8 @@
     <dependencies>
         <dependency>
             <groupId>CCC7</groupId>
-            <artifactId>core-domain</artifactId><!-- FIXME: api-rest -->
+            <!-- TODO: Should only depend on api-rest -->
+            <artifactId>core-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
 

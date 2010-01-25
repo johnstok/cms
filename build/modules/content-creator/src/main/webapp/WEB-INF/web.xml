@@ -66,6 +66,9 @@
             ccc.rest.providers.TextFileDeltaReader,
             ccc.rest.providers.TemplateNewReader,
             ccc.rest.providers.CommentReader,
+            ccc.rest.providers.GroupReader,
+            ccc.rest.providers.AclReader,
+            ccc.rest.providers.UuidCollectionWriter,
             ccc.rest.providers.TextFileDtoReader,
         </param-value>
     </context-param>

@@ -42,6 +42,7 @@ import javax.ws.rs.QueryParam;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -174,12 +175,12 @@ public interface Resources {
      *
      * @param resourceId The resource's id.
      * @throws RestException If the method fails
-     * @return The roles, as a collection of strings.
+     * @return The access control list for the specified resource.
      */
     @GET
     @Path("/resources/{id}/roles")
     @NoCache
-    Collection<String> roles(@PathParam("id") UUID resourceId)
+    AclDto roles(@PathParam("id") UUID resourceId)
     throws RestException;
 
 
@@ -377,14 +378,14 @@ public interface Resources {
      * Change the security roles for a resource.
      *
      * @param resourceId The resource to update.
-     * @param roles The new set of roles.
+     * @param acl The access control list for the specified resource.
      *
      * @throws RestException If the method fails.
      */
     @POST @Path("/resources/{id}/roles")
     void changeRoles(
         @PathParam("id") UUID resourceId,
-        Collection<String> roles) throws RestException;
+        AclDto acl) throws RestException;
 
 
     /**

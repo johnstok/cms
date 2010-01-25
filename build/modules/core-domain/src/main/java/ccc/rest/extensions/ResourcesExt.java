@@ -26,7 +26,6 @@
  */
 package ccc.rest.extensions;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +34,7 @@ import ccc.action.ActionExecutor;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.Duration;
@@ -285,14 +285,14 @@ public interface ResourcesExt
      * Change the security roles for a resource.
      *
      * @param resourceId The resource to update.
-     * @param roles The new set of roles.
+     * @param acl The access control list for this resource.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
      * @throws RestException If the method fails.
      */
     void changeRoles(UUID resourceId,
-                     Collection<String> roles,
+                     AclDto acl,
                      UUID actorId,
                      Date happenedOn)
     throws RestException;

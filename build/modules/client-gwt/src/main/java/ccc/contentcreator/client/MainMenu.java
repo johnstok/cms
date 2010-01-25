@@ -44,8 +44,10 @@ import ccc.contentcreator.actions.PublishAction;
 import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
+import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 
@@ -79,7 +81,7 @@ public class MainMenu
      */
     public MainMenu(final UserDto user) {
         _user = user;
-        if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
+        if (_user.hasPermission(IGlobals.ADMINISTRATOR)) {
             addMenu(
                 "users-menu",
                 _constants.users(),
@@ -90,8 +92,8 @@ public class MainMenu
             );
         }
 
-        if (_user.getRoles().contains(IGlobals.ADMINISTRATOR)
-                || _user.getRoles().contains(IGlobals.SITE_BUILDER)) {
+        if (_user.hasPermission(IGlobals.ADMINISTRATOR)
+                || _user.hasPermission(IGlobals.SITE_BUILDER)) {
             createContentRootMenu(CONTENT, _constants.contentRoot());
         }
 
@@ -176,7 +178,7 @@ public class MainMenu
                 new LockAction(ssm)));
         } else {
             if (root.getLockedBy().equals(_user.getUsername())
-                    || _user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
+                    || _user.hasPermission(IGlobals.ADMINISTRATOR)) {
 
                 rootMenu.add(createMenuItem(
                     "unlock-root-"+name,
@@ -209,7 +211,12 @@ public class MainMenu
                 rootMenu.add(createMenuItem(
                     "updateRoles-root-"+name,
                     _constants.updateRoles(),
-                    new OpenUpdateResourceRolesAction(ssm)));
+                    new ListGroups() {
+                        @Override
+                        protected void execute(final Collection<GroupDto> g) {
+                            new OpenUpdateResourceRolesAction(ssm, g)
+                                .execute();
+                        }}));
                 rootMenu.add(createMenuItem(
                     "updateMetadata-root-"+name,
                     _constants.updateMetadata(),

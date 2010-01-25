@@ -37,6 +37,7 @@ import ccc.rest.Aliases;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
@@ -71,6 +72,7 @@ abstract class JaxrsCollection
     private SearchEngine _search;
     private Aliases _aliases;
     private Comments _comments;
+    private Groups _groups;
 
 
     /**
@@ -192,6 +194,15 @@ abstract class JaxrsCollection
         (null==_comments)
             ? (Comments) _reg.get(getAppName()+"/"+Comments.NAME+"/local")
             : _comments;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Groups getGroups() {
+        return
+        (null==_groups)
+        ? (Groups) _reg.get(getAppName()+"/"+Groups.NAME+"/remote")
+            : _groups;
     }
 
     /**

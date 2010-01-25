@@ -119,7 +119,7 @@ public class CommentsEJB
             try {
                 c.setUrl(new URL(comment.getUrl()));
             } catch (final MalformedURLException e) {
-                // TODO Auto-generated catch block
+                // FIXME Auto-generated catch block
                 throw new RuntimeException(e);
             }
             c.setEmail(

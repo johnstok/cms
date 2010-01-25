@@ -30,7 +30,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -83,18 +82,15 @@ public final class AllUsersSelector
                     email = metamap.get("Email");
                 }
 
-                final Set<String> roles =
-                    _legacyDBQueries.selectRolesForUser(userId);
-                roles.add("USER_"+userName);
-                final UserDto user =
-                    new UserDto(
-                        email,
-                        new Username(userName),
-                        name,
-                        roles,
-                        metamap,
-                        password);
+                final UserDto user = new UserDto();
+                user.setEmail(email);
+                user.setUsername(new Username(userName));
+                user.setName(name);
+                user.setMetadata(metamap);
+                user.setPassword(password);
+
                 resultList.put(Integer.valueOf(userId), user);
+
             } catch (final MigrationException e) {
                 log.warn("Error selecting user: "+e.getMessage());
             }

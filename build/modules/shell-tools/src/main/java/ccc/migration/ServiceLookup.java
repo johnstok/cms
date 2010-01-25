@@ -35,6 +35,7 @@ import ccc.rest.Aliases;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
@@ -158,6 +159,13 @@ public class ServiceLookup implements ServiceLocator {
     @Override
     public Actions getActions() {
         return _registry.<Actions>get(jndiPath(Actions.NAME));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Groups getGroups() {
+        return _registry.<Groups>get(jndiPath(Groups.NAME));
     }
 
 

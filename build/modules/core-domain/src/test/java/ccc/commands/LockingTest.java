@@ -33,6 +33,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
+import ccc.domain.Group;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
@@ -273,7 +274,8 @@ public class LockingTest
         new User(new Username("another"), "password");
     private final User _adminUser =
         new User(new Username("admin"), "password"){{
-       addRole(CreatorRoles.ADMINISTRATOR);
+       addRole(
+           new Group(CreatorRoles.ADMINISTRATOR, CreatorRoles.ADMINISTRATOR));
     }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

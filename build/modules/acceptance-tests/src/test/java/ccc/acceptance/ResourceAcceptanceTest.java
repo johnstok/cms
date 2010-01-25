@@ -26,12 +26,9 @@
  */
 package ccc.acceptance;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -39,6 +36,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -70,7 +68,7 @@ public class ResourceAcceptanceTest
      * @throws RestException If the test fails.
      * @throws UnauthorizedException
      */
-    public void testUnlockResource() throws RestException, UnauthorizedException {
+    public void testUnlockResource() throws Exception {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -94,7 +92,7 @@ public class ResourceAcceptanceTest
      * Test.
      * @throws RestException If the test fails.
      */
-    public void testMoveResource() throws RestException, UnauthorizedException  {
+    public void testMoveResource() throws Exception  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -115,7 +113,7 @@ public class ResourceAcceptanceTest
      * Test.
      * @throws RestException If the test fails.
      */
-    public void testUpdateResourceMetadata() throws RestException, UnauthorizedException  {
+    public void testUpdateResourceMetadata() throws Exception  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -154,30 +152,58 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
+     * @throws Exception If the test fails.
+     */
+    public void testUpdateAclUsers() throws Exception {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final UserDto user = tempUser();
+        final AclDto acl = new AclDto();
+
+        // ACT
+        acl.setUsers(Collections.singleton(user.getId()));
+        getCommands().lock(folder.getId());
+        getCommands().changeRoles(folder.getId(), acl);
+
+        // ASSERT
+        final AclDto actual = getCommands().roles(folder.getId());
+        assertEquals(0, actual.getGroups().size());
+        assertEquals(1, actual.getUsers().size());
+        assertTrue(acl.getUsers().contains(user.getId()));
+    }
+
+
+    /**
+     * Test.
+     *
      * @throws RestException If the test fails.
      */
     public void testUpdateResourceRoles() throws RestException {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final Collection<String> origRoles =
+        final AclDto origRoles =
             getCommands().roles(folder.getId());
-        final Set<String> roles = Collections.singleton("foo");
+        final AclDto roles =
+            new AclDto()
+                .setGroups(Collections.singleton(getGroups()
+                    .list("SITE_BUILDER").iterator().next().getId()));
 
         // ACT
         getCommands().lock(folder.getId());
         getCommands().changeRoles(folder.getId(), roles);
-        final Collection<String> withRoles =
+        final AclDto withRoles =
             getCommands().roles(folder.getId());
 
-        getCommands().changeRoles(folder.getId(), new HashSet<String>());
-        final Collection<String> noRoles = getCommands().roles(folder.getId());
+        getCommands().changeRoles(folder.getId(), new AclDto());
+        final AclDto noRoles = getCommands().roles(folder.getId());
 
         // ASSERT
-        assertEquals(0, origRoles.size());
-        assertEquals(roles.size(), withRoles.size());
-        assertTrue(roles.containsAll(withRoles));
-        assertEquals(0, noRoles.size());
+        assertEquals(0, origRoles.getGroups().size());
+        assertEquals(roles.getGroups().size(), withRoles.getGroups().size());
+        assertTrue(roles.getGroups().containsAll(withRoles.getGroups()));
+        assertEquals(0, noRoles.getGroups().size());
     }
 
 
@@ -200,9 +226,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testLockResource() throws RestException, UnauthorizedException  {
+    public void testLockResource() throws Exception  {
 
         // ARRANGE
 
@@ -223,9 +249,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testChangeResourceTemplate() throws RestException, UnauthorizedException  {
+    public void testChangeResourceTemplate() throws Exception  {
 
         // ARRANGE
 
@@ -292,9 +318,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testRename() throws RestException, UnauthorizedException  {
+    public void testRename() throws Exception  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -316,9 +342,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testIncludeInMainMenu() throws RestException, UnauthorizedException  {
+    public void testIncludeInMainMenu() throws Exception  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -345,9 +371,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testPublish() throws RestException, UnauthorizedException  {
+    public void testPublish() throws Exception  {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -406,9 +432,9 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testSimpleDelete() throws RestException, UnauthorizedException  {
+    public void testSimpleDelete() throws Exception  {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();

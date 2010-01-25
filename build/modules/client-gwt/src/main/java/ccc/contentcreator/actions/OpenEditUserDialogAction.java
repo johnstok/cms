@@ -26,11 +26,13 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.dialogs.EditUserDialog;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.Response;
@@ -49,6 +51,7 @@ public class OpenEditUserDialogAction
 
     private final UUID _userId;
     private final UserTable _userTable;
+    private Collection<GroupDto> _groups;
 
     /**
      * Constructor.
@@ -56,10 +59,12 @@ public class OpenEditUserDialogAction
      * @param userId The id of the user to be edited.
      */
     public OpenEditUserDialogAction(final UUID userId,
-                                    final UserTable userTable) {
+                                    final UserTable userTable,
+                                    final Collection<GroupDto> groups) {
         super(UI_CONSTANTS.editUser());
         _userId = userId;
         _userTable = userTable;
+        _groups = groups;
     }
 
     /** {@inheritDoc} */
@@ -74,6 +79,6 @@ public class OpenEditUserDialogAction
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
         final UserDto delta = new UserDto(new GwtJson(result));
-        new EditUserDialog(_userId, delta, _userTable).show();
+        new EditUserDialog(_userId, delta, _userTable, _groups).show();
     }
 }

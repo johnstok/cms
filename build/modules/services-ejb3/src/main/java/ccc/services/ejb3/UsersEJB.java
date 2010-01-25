@@ -45,6 +45,7 @@ import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
+import ccc.domain.User;
 import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
@@ -72,9 +73,10 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR})
     public UserDto createUser(final UserDto delta) throws RestException {
         try {
-            return mapUser(
-                new CreateUserCommand(getUsers(), getAuditLog()).execute(
-                    currentUser(), new Date(), delta));
+            return
+                new CreateUserCommand(getUsers(), getGroups(), getAuditLog())
+                .execute(currentUser(), new Date(), delta)
+                .toDto();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -91,6 +93,7 @@ public class UsersEJB
             new UpdateUserCommand(
                 getUsers(),
                 getAuditLog(),
+                getGroups(),
                 userId,
                 delta)
             .execute(
@@ -155,7 +158,7 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsers() {
-        return mapUsers(getUsers().listUsers());
+        return User.map(getUsers().listUsers());
     }
 
 
@@ -163,7 +166,7 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithEmail(final String email) {
-        return mapUsers(getUsers().listUsersWithEmail(email));
+        return User.map(getUsers().listUsersWithEmail(email));
     }
 
 
@@ -171,7 +174,7 @@ public class UsersEJB
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public Collection<UserDto> listUsersWithRole(final String role) {
-        return mapUsers(getUsers().listUsersWithRole(role));
+        return User.map(getUsers().listUsersWithRole(role));
     }
 
 
@@ -180,7 +183,7 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public Collection<UserDto> listUsersWithUsername(
                                                     final Username username) {
-        return mapUsers(getUsers().listUsersWithUsername(username.toString()));
+        return User.map(getUsers().listUsersWithUsername(username.toString()));
     }
 
 
@@ -189,8 +192,7 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
     public UserDto userDelta(final UUID userId) throws RestException {
         try {
-            return
-            deltaUser(getUsers().find(userId));
+            return getUsers().find(userId).toDto();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -203,7 +205,7 @@ public class UsersEJB
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
     public UserDto userByLegacyId(final String legacyId) throws RestException {
         try {
-            return mapUser(getUsers().userByLegacyId(legacyId));
+            return getUsers().userByLegacyId(legacyId).toDto();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -230,7 +232,7 @@ public class UsersEJB
     @PermitAll
     public UserDto loggedInUser() {
         try {
-            return mapUser(currentUser());
+            return currentUser().toDto();
         } catch (final EntityNotFoundException e) {
             return null;
         }

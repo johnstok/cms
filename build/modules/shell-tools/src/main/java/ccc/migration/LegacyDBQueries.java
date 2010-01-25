@@ -43,6 +43,7 @@ import ccc.migration.ccc6.handlers.ParagraphSelector;
 import ccc.migration.ccc6.handlers.ParagraphVersionsSelector;
 import ccc.migration.ccc6.handlers.ResourceRolesSelector;
 import ccc.migration.ccc6.handlers.ResourceSelector;
+import ccc.migration.ccc6.handlers.ResourceUsersSelector;
 import ccc.migration.ccc6.handlers.ShowInMainMenuSelector;
 import ccc.migration.ccc6.handlers.SingleResourceSelector;
 import ccc.migration.ccc6.handlers.StyleSheetSelector;
@@ -163,7 +164,7 @@ public class LegacyDBQueries {
      */
     public Collection<String> selectRolesForResource(final int resourceId) {
         final ResourceRolesSelector rsh = new ResourceRolesSelector();
-        return _db.select(rsh, resourceId, resourceId);
+        return _db.select(rsh, resourceId);
     }
 
     /**
@@ -276,5 +277,17 @@ public class LegacyDBQueries {
     public Set<String> selectTemplateFields(final String templateName) {
         final TemplateFieldsSelector query = new TemplateFieldsSelector();
         return _db.select(query, templateName);
+    }
+
+    /**
+     * Returns the users allowed to access a resource.
+     *
+     * @param contentId The resource ID.
+     *
+     * @return A collection of user IDs.
+     */
+    public Collection<Integer> selectUsersForResource(final int contentId) {
+        final ResourceUsersSelector rsh = new ResourceUsersSelector();
+        return _db.select(rsh, contentId);
     }
 }

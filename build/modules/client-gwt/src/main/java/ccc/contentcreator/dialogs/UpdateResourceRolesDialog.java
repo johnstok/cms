@@ -33,10 +33,14 @@ import java.util.UUID;
 
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
 import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.rest.dto.AclDto;
+import ccc.rest.dto.GroupDto;
 
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.google.gwt.http.client.Response;
 
 
@@ -50,7 +54,9 @@ public class UpdateResourceRolesDialog
         AbstractEditDialog {
 
     private final UUID _resourceId;
-    private final TextArea _roles = new TextArea();
+    private final ListField<BaseModelData> _groups =
+        new ListField<BaseModelData>();
+    private final AclDto _acl;
 
     private static final int DIALOG_WIDTH = 400;
     private static final int DIALOG_HEIGHT = 300;
@@ -60,27 +66,36 @@ public class UpdateResourceRolesDialog
      * Constructor.
      *
      * @param resourceId The resource whose roles will be updated.
-     * @param currentRoles The roles the resource currently has.
+     * @param acl The access control list for the resource.
+     * @param allGroups A list of all groups available in the system.
      */
     public UpdateResourceRolesDialog(final UUID resourceId,
-                                     final Collection<String> currentRoles) {
+                                     final AclDto acl,
+                                     final Collection<GroupDto> allGroups) {
         super(new IGlobalsImpl().uiConstants().updateRoles(),
               new IGlobalsImpl());
         _resourceId = resourceId;
+        _acl = acl;
 
         setWidth(DIALOG_WIDTH);
         setHeight(DIALOG_HEIGHT);
 
-        _roles.setFieldLabel(getUiConstants().roles());
-        _roles.setId("resource-roles");
-        _roles.setHeight(ROLES_HEIGHT);
-        final StringBuilder rolesString = new StringBuilder();
-        for (final String role : currentRoles) {
-            rolesString.append(role);
-            rolesString.append('\n');
+        final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
+        final List<BaseModelData> selected = new ArrayList<BaseModelData>();
+        for (final GroupDto g : allGroups) {
+            final BaseModelData d = new BaseModelData();
+            d.set("name", g.getName());
+            d.set("id", g.getId());
+            gData.add(d);
+            if (acl.getGroups().contains((g.getId()))) { selected.add(d); }
         }
-        _roles.setValue(rolesString.toString());
-        addField(_roles);
+
+        _groups.setFieldLabel(getUiConstants().roles());
+        _groups.setHeight(ROLES_HEIGHT);
+        _groups.setStore(gData);
+        _groups.setSelection(selected);
+        _groups.setDisplayField("name");
+        addField(_groups);
     }
 
     /** {@inheritDoc} */
@@ -89,21 +104,18 @@ public class UpdateResourceRolesDialog
         return new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final List<String> validRoles = new ArrayList<String>();
-                String roleString = _roles.getValue();
-                if (null==roleString) {
-                    roleString = "";
-                }
-                final String[] roles =
-                    roleString.split("\n|\r|\r\n");
-                for (final String role : roles) {
-                    final String cleanRole = role.trim();
-                    if (cleanRole.length() > 0) {
-                        validRoles.add(cleanRole);
-                    }
+
+                final List<UUID> newGroups = new ArrayList<UUID>();
+                for (final BaseModelData selected : _groups.getSelection()) {
+                    newGroups.add(selected.<UUID>get("id"));
                 }
 
-                new UpdateResourceRolesAction(_resourceId, validRoles) {
+                final AclDto acl =
+                    new AclDto()
+                        .setGroups(newGroups)
+                        .setUsers(_acl.getUsers());
+
+                new UpdateResourceRolesAction(_resourceId, acl) {
                     /** {@inheritDoc} */
                     @Override
                     protected void onNoContent(final Response response) {

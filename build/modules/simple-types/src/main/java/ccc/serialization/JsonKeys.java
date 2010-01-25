@@ -183,4 +183,12 @@ public final class JsonKeys {
     public static final String LIMIT = "limit";
     /** ELEMENTS : String. */
     public static final String ELEMENTS = "elements";
+    /** PERMISSIONS : String. */
+    public static final String PERMISSIONS = "permissions";
+    /** USERS : String. */
+    public static final String USERS = "users";
+    /** GROUPS : String. */
+    public static final String GROUPS = "groups";
+    /** ACL : String. */
+    public static final String ACL = "acl";
 }

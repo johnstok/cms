@@ -65,14 +65,6 @@ public final class ResourceRolesSelector
             + "to_number(a.owner_id)=p.profile_id AND "
             + "a.attribute=to_char(?) AND "
             + "(a.permission_name='folder_access' "
-            + "OR a.permission_name='content_view')"
-            + " UNION "
-            + "select distinct 'USER_'||u.user_name "
-            + "from perm_attributes a, users u "
-            + "where a.attribute=to_char(?) "
-            + "and user_id=owner_id "
-            + "and type='USER'"
-            + "and (a.permission_name='folder_access' "
             + "OR a.permission_name='content_view')";
     }
 }

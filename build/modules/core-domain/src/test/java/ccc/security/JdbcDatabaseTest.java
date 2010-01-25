@@ -44,6 +44,7 @@ import javax.sql.DataSource;
 import junit.framework.TestCase;
 import ccc.commons.MapRegistry;
 import ccc.commons.Registry;
+import ccc.domain.Group;
 import ccc.domain.User;
 import ccc.types.CreatorRoles;
 import ccc.types.Username;
@@ -150,8 +151,7 @@ public class JdbcDatabaseTest
         final User u = new User(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement("x"))
-        .andReturn(_s);
+        expect(_c.prepareStatement("x")).andReturn(_s);
         _s.setString(1, u.username().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
@@ -188,12 +188,11 @@ public class JdbcDatabaseTest
 
         // ARRANGE
         final User u = new User(new Username("user"), "password");
-        u.addRole(CreatorRoles.ADMINISTRATOR);
-        u.addRole(CreatorRoles.CONTENT_CREATOR);
+        u.addRole(new Group(CreatorRoles.ADMINISTRATOR));
+        u.addRole(new Group(CreatorRoles.CONTENT_CREATOR));
 
         expect(_ds.getConnection()).andReturn(_c);
-        expect(_c.prepareStatement("y"))
-            .andReturn(_s);
+        expect(_c.prepareStatement("y")).andReturn(_s);
         _s.setString(1, u.id().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);

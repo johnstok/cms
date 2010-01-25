@@ -31,13 +31,12 @@ import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import junit.framework.TestCase;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
+import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.rest.dto.UserDto;
@@ -48,6 +47,7 @@ import ccc.types.Username;
 
 /**
  * Tests for the {@link UserRepositoryImpl} class.
+ * TODO: Test users who belong to groups.
  *
  * @author Civic Computing Ltd.
  */
@@ -96,9 +96,10 @@ public class UserManagerImplTest extends TestCase {
 
     /**
      * Test.
-     * TODO: Test the actual values of the created user.
+     *
+     * @throws CccCheckedException If the test fails.
      */
-    public void testCreateUser() {
+    public void testCreateUser() throws CccCheckedException {
 
         // ARRANGE
         final Date now = new Date();
@@ -106,7 +107,8 @@ public class UserManagerImplTest extends TestCase {
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
-        final CreateUserCommand cu = new CreateUserCommand(_um, _audit);
+        final CreateUserCommand cu =
+            new CreateUserCommand(_um, _groups, _audit);
 
         // ACT
         final User u = cu.execute(_u, now, _uDelta);
@@ -208,7 +210,7 @@ public class UserManagerImplTest extends TestCase {
         replayAll();
 
         final UpdateUserCommand uu =
-            new UpdateUserCommand(_um, _audit, _u.id(), _uDelta);
+            new UpdateUserCommand(_um, _audit, _groups, _u.id(), _uDelta);
 
         // ACT
         uu.execute(_u, now);
@@ -245,6 +247,7 @@ public class UserManagerImplTest extends TestCase {
 
     private User _u;
     private LogEntryRepository _audit;
+    private GroupRepository _groups;
     private UserDto _uDelta;
     private Repository _repository;
     private UserRepositoryImpl _um;
@@ -253,17 +256,17 @@ public class UserManagerImplTest extends TestCase {
     @Override
     protected void setUp() {
         _u = new User(new Username("testUser"), "password");
-        _uDelta =
-            new UserDto(
-                "new.email@civicuk.com",
-                new Username("newNameUser"),
-                "newNameUser",
-                new HashSet<String>(),
-                new HashMap<String, String>(),
-                "foopass");
         _u.email(new EmailAddress("test@civicuk.com"));
+
+        _uDelta = new UserDto();
+        _uDelta.setEmail("new.email@civicuk.com");
+        _uDelta.setUsername(new Username("newNameUser"));
+        _uDelta.setName("newNameUser");
+        _uDelta.setPassword("foopass");
+
         _repository = createStrictMock(Repository.class);
         _audit = createStrictMock(LogEntryRepository.class);
+        _groups = createStrictMock(GroupRepository.class);
         _um = new UserRepositoryImpl(_repository);
     }
 
@@ -275,13 +278,14 @@ public class UserManagerImplTest extends TestCase {
         _uDelta = null;
         _repository = null;
         _um = null;
+        _groups = null;
     }
 
     private void verifyAll() {
-        verify(_repository, _audit);
+        verify(_repository, _audit, _groups);
     }
 
     private void replayAll() {
-        replay(_repository, _audit);
+        replay(_repository, _audit, _groups);
     }
 }

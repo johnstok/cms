@@ -47,6 +47,7 @@ import ccc.rest.Aliases;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
@@ -258,61 +259,66 @@ public class VelocityProcessorTest extends TestCase {
 
 
     private class TestServiceLocator implements ServiceLocator {
-            @Override
-            public Actions getActions() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public Actions getActions() {
+            throw new UnsupportedOperationException();
+        }
 
-            @Override
-            public Files getFiles() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public Files getFiles() {
+            throw new UnsupportedOperationException();
+        }
 
-            @Override
-            public Folders getFolders() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public Folders getFolders() {
+            throw new UnsupportedOperationException();
+        }
 
-            @Override
-            public Pages getPages() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public Pages getPages() {
+            throw new UnsupportedOperationException();
+        }
 
-            @Override
-            public Resources getResources() { return _reader; }
+        @Override
+        public Resources getResources() { return _reader; }
 
-            @Override
-            public Templates getTemplates() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public Templates getTemplates() {
+            throw new UnsupportedOperationException();
+        }
 
-            @Override
-            public Users getUsers() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public Users getUsers() {
+            throw new UnsupportedOperationException();
+        }
 
-            @Override
-            public SearchEngine getSearch() {
-                throw new UnsupportedOperationException();
-            }
+        @Override
+        public SearchEngine getSearch() {
+            throw new UnsupportedOperationException();
+        }
 
-            /** {@inheritDoc} */
-            @Override
-            public Aliases getAliases() {
-                throw new UnsupportedOperationException();
-            }
+        /** {@inheritDoc} */
+        @Override
+        public Aliases getAliases() {
+            throw new UnsupportedOperationException();
+        }
 
-            /** {@inheritDoc} */
-            @Override
-            public Security getSecurity() {
-                throw new UnsupportedOperationException();
-            }
+        /** {@inheritDoc} */
+        @Override
+        public Security getSecurity() {
+            throw new UnsupportedOperationException();
+        }
 
-            /** {@inheritDoc} */
-            @Override
-            public Comments getComments() {
-                throw new UnsupportedOperationException();
-            }
+        /** {@inheritDoc} */
+        @Override
+        public Comments getComments() {
+            throw new UnsupportedOperationException();
+        }
 
+        /** {@inheritDoc} */
+        @Override
+        public Groups getGroups() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

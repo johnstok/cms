@@ -58,6 +58,7 @@ import ccc.domain.User;
 import ccc.persistence.ActionRepository;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
+import ccc.persistence.GroupRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
@@ -75,7 +76,6 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.TextFileDelta;
-import ccc.rest.dto.UserDto;
 import ccc.types.CommandType;
 import ccc.types.ResourceType;
 
@@ -93,6 +93,7 @@ abstract class AbstractEJB {
     @PersistenceContext        private EntityManager   _em;
 
     private UserRepository     _users;
+    private GroupRepository    _groups;
     private ResourceRepository _resources;
     private LogEntryRepository _audit;
     private DataRepository     _dm;
@@ -107,6 +108,7 @@ abstract class AbstractEJB {
         _audit = rf.createLogEntryRepo();
         _comments = rf.createCommentRepo();
         _users = rf.createUserRepo();
+        _groups = rf.createGroupRepo();
         _resources = rf.createResourceRepository();
         _dm = rf.createDataRepository();
         _actions = rf.createActionRepository();
@@ -131,6 +133,16 @@ abstract class AbstractEJB {
      */
     protected final TimerService getTimerService() {
         return _context.getTimerService();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the group repository.
+     */
+    protected final GroupRepository getGroups() {
+        return _groups;
     }
 
 
@@ -341,21 +353,6 @@ abstract class AbstractEJB {
 
 
     /**
-     * Create summaries for a list of users.
-     *
-     * @param users The users.
-     * @return The corresponding summaries.
-     */
-    protected Collection<UserDto> mapUsers(final Collection<User> users) {
-        final Collection<UserDto> mapped = new ArrayList<UserDto>();
-        for (final User u : users) {
-            mapped.add(mapUser(u));
-        }
-        return mapped;
-    }
-
-
-    /**
      * Create summaries for a collection of files.
      *
      * @param files The files.
@@ -479,24 +476,6 @@ abstract class AbstractEJB {
 
 
     /**
-     * Create a summary for a user.
-     *
-     * @param user The user.
-     * @return A corresponding summary.
-     */
-    protected UserDto mapUser(final User user) {
-        return
-            new UserDto(
-                user.email().getText(),
-                user.id(),
-                user.username(),
-                user.name(),
-                user.roles(),
-                user.metadata());
-    }
-
-
-    /**
      * Create a summary of a text file.
      *
      * @param file The file to map.
@@ -532,24 +511,6 @@ abstract class AbstractEJB {
                 template.definition(),
                 template.mimeType()
         );
-        return delta;
-    }
-
-
-    /**
-     * Create a delta for a user.
-     *
-     * @param user The user.
-     * @return A corresponding summary.
-     */
-    protected UserDto deltaUser(final User user) {
-        final UserDto delta =
-            new UserDto(
-                user.email().getText(),
-                user.username(),
-                user.name(),
-                user.roles(),
-                user.metadata());
         return delta;
     }
 

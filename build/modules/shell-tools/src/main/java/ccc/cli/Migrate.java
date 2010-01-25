@@ -96,6 +96,7 @@ public final class Migrate extends CccApp {
                 services.getPages(),
                 services.getFolders(),
                 services.getUsers(),
+                services.getGroups(),
                 sl.getFileUploader(),
                 services.getTemplates(),
                 options);
