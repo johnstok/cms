@@ -1581,11 +1581,19 @@ public interface UIConstants extends Constants {
     String definitionXML();
 
     /**
-    * "Inner HTML".
+    * "Text of the link".
     *
     * @return The constant, in the appropriate locale.
     */
-    @DefaultStringValue("Inner HTML")
-    String innerHTML();
-     
+    @DefaultStringValue("Text of the link")
+    String textOfTheLink();
+
+    /**
+     * "Alternative text".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Alternative text")
+    String alternativeText();
+
 }

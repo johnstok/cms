@@ -18,6 +18,7 @@ LinkSelectCommand.Execute=function() {
 	var title = "";
 	var innerText = "";
 	var openInNew = false;
+	var cccId = "";
 	
 	if (selection.HasAncestorNode('A')) {
 		var oldLink = selection.MoveToAncestorNode( 'A' ) ;
@@ -27,9 +28,10 @@ LinkSelectCommand.Execute=function() {
 		if (oldLink.target == "_blank") {
 			openInNew = true;
 		}
+		cccId =  oldLink.getAttribute( 'class' , 2 ) || '' ;
 	}
 	
-	parent.cccLinkSelector(fckname, url, title, innerText, openInNew);
+	parent.cccLinkSelector(fckname, url, title, innerText, cccId, openInNew);
 }
 FCKCommands.RegisterCommand('CCC_Link', LinkSelectCommand );
         

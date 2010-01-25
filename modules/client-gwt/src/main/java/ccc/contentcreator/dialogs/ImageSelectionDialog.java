@@ -38,7 +38,9 @@ import ccc.rest.dto.FileDto;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -60,6 +62,7 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
  */
 public class ImageSelectionDialog extends AbstractBaseDialog {
 
+    private static final int CCC_ID_LENGTH = 40;
     private static final int PANEL_WIDTH = 700;
     private static final int DIALOG_WIDTH = 720;
     private static final int DIALOG_HEIGHT = 580;
@@ -71,7 +74,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
     private List<ImageSummaryModelData> _models;
     private final String _elementid;
     private final UIConstants _constants;
-    private String _cccId;
+    private String _uuid;
 
     private final TextField<String> _urlField = new TextField<String>();
     private final TextField<String> _altField = new TextField<String>();
@@ -96,7 +99,12 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         _constants = new IGlobalsImpl().uiConstants();
         setLayout(new RowLayout());
         _elementid = elementid;
-        _cccId = cccId;
+        if (cccId != null
+                && cccId.indexOf("ccc:") != -1
+                && cccId.length() >= cccId.indexOf("ccc:")+CCC_ID_LENGTH){
+            _uuid = cccId.substring(cccId.indexOf("ccc:")+4,
+                cccId.indexOf("ccc:")+CCC_ID_LENGTH);
+        }
 
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
@@ -141,7 +149,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                     _urlField.setValue(appContext + path);
                     _titleField.setValue(Paragraph.escape(md.getTitle()));
                     _altField.setValue(Paragraph.escape(md.getTitle()));
-                    _cccId = md.getId().toString();
+                    _uuid = md.getId().toString();
                 }
             }
         });
@@ -169,12 +177,17 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         details.setBodyBorder(false);
         details.setBodyStyleName("backgroundColor: white;");
 
-        _urlField.setFieldLabel("URL");
-        _urlField.setReadOnly(true);
+        _urlField.setFieldLabel(_constants.path());
         _urlField.setValue(url);
+        _urlField.addKeyListener(new KeyListener() {
+            @Override
+            public void componentKeyUp(final ComponentEvent event) {
+                _uuid = null;
+            }
+        });
         details.add(_urlField, new FormData("95%"));
 
-        _altField.setFieldLabel("ALT");
+        _altField.setFieldLabel(_constants.alternativeText());
         _altField.setValue(alt);
         details.add(_altField, new FormData("95%"));
 
@@ -189,12 +202,13 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                if (_cccId != null && !_cccId.equals("")) {
+                if (_urlField.getValue() != null
+                        && !_urlField.getValue().equals("")) {
                     jsniSetUrl(
                         _urlField.getValue(),
                         _titleField.getValue(),
                         _altField.getValue(),
-                        _cccId,
+                        _uuid,
                         _elementid);
                     hide();
                 }
@@ -211,8 +225,14 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
-                return instance.InsertHtml("<img title='"+title+"' alt='"
-                +alt+"' class='ccc:"+uuid+"' src='"+selectedUrl+"'/>");
+                var linkURL = "<img title='"+title+"' alt='"
+                +alt+"' src='"+selectedUrl+"'"
+
+                if (uuid != null) {
+                    linkURL = linkURL +" class='ccc:"+uuid+"'";
+                }
+                linkURL = linkURL +"/>";
+                return instance.InsertHtml(linkURL);
             }
         }
         return null;

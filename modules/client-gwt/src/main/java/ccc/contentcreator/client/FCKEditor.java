@@ -71,7 +71,7 @@ public class FCKEditor extends LayoutContainer {
     /**
      * Constructor.
      *
-     * @param html The html to be edited.
+     * @param html The HTML to be edited.
      * @param cssHeight The height of the editor in pixels.
      */
     public FCKEditor(final String html,
@@ -158,8 +158,8 @@ public class FCKEditor extends LayoutContainer {
 
 
     private static native String initJSNI(final FCKEditor obj) /*-{
-        $wnd.cccLinkSelector = function(fckname, url, title, innerText, openInNew) {
-            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,innerText,openInNew);
+        $wnd.cccLinkSelector = function(fckname, url, title, innerText, cccId, openInNew) {
+            obj.@ccc.contentcreator.client.FCKEditor::openLinkSelector(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)(fckname,url,title,innerText,cccId,openInNew);
         };
 
         $wnd.cccImageSelector = function(fckname, url, alt, title, cccId) {
@@ -175,12 +175,14 @@ public class FCKEditor extends LayoutContainer {
      * @param url The link's URL.
      * @param title The title of the link.
      * @param innerText The inner text/HTML of the link.
+     * @param cccId The ccc id stored in class of the link.
      * @param openInNew Boolean  for opening the link in the new  of the window.
      */
     public void openLinkSelector(final String elementID,
                                  final String url,
                                  final String title,
                                  final String innerText,
+                                 final String cccId,
                                  final boolean openInNew) {
         new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
             @Override
@@ -191,8 +193,13 @@ public class FCKEditor extends LayoutContainer {
                         rs = rr;
                     }
                 }
-                new LinkSelectionDialog(
-                    rs, elementID, url, title, innerText, openInNew).show();
+                new LinkSelectionDialog(rs,
+                                        elementID,
+                                        url,
+                                        title,
+                                        innerText,
+                                        cccId,
+                                        openInNew).show();
             }
 
         }.execute();
