@@ -37,8 +37,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import ccc.commons.WordCharFixer;
+import ccc.rest.dto.AclDto;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
@@ -73,7 +75,8 @@ public abstract class Resource
     private Folder         _parent            = null;
     private User           _lockedBy          = null;
     private Set<String>    _tags              = new HashSet<String>();
-    private Set<String>    _roles             = new HashSet<String>();
+    private Set<Group>     _roles             = new HashSet<Group>();
+    private Set<User>      _userAcl           = new HashSet<User>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
@@ -323,7 +326,7 @@ public abstract class Resource
      */
     public boolean canUnlock(final User user) {
         return user.equals(lockedBy())
-        || user.hasRole(CreatorRoles.ADMINISTRATOR);
+        || user.hasPermission(CreatorRoles.ADMINISTRATOR);
     }
 
 
@@ -438,7 +441,7 @@ public abstract class Resource
     public boolean isSecure() {
         final boolean parentSecure =
             (null==_parent) ? false : _parent.isSecure();
-        return parentSecure || !roles().isEmpty();
+        return parentSecure || !roles().isEmpty() || !getUserAcl().isEmpty();
     }
 
 
@@ -612,7 +615,7 @@ public abstract class Resource
      *
      * @param roles The roles this collection should have.
      */
-    public void roles(final Collection<String> roles) {
+    public void roles(final Collection<Group> roles) {
         _roles.clear();
         _roles.addAll(roles);
     }
@@ -623,8 +626,57 @@ public abstract class Resource
      *
      * @return This resource's roles.
      */
-    public Collection<String> roles() {
-        return new HashSet<String>(_roles);
+    public Collection<Group> roles() {
+        return new HashSet<Group>(_roles);
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param users The users allowed to access this resource.
+     */
+    public void setUserAcl(final Collection<User> users) {
+        _userAcl.clear();
+        _userAcl.addAll(users);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The users allowed to access this resource.
+     */
+    public Collection<User> getUserAcl() {
+        return new HashSet<User>(_userAcl);
+    }
+
+
+    /**
+     * Query - return the IDs for all groups this resource is accessible to.
+     *
+     * @return The group IDs, as a set.
+     */
+    public Set<UUID> groupIds() {
+        final Set<UUID> groupIds = new HashSet<UUID>();
+        for (final Group g : roles()) {
+            groupIds.add(g.id());
+        }
+        return groupIds;
+    }
+
+
+    /**
+     * Query - return the IDs for all users this resource is accessible to.
+     *
+     * @return The user IDs, as a set.
+     */
+    public Collection<UUID> userIds() {
+        final Set<UUID> userIds = new HashSet<UUID>();
+        for (final User u : getUserAcl()) {
+            userIds.add(u.id());
+        }
+        return userIds;
     }
 
 
@@ -635,12 +687,12 @@ public abstract class Resource
      *
      * @return The roles as a collection.
      */
-    public Collection<String> computeRoles() {
+    public Collection<Group> computeRoles() {
         // TODO: Can we make this more efficient?
         if (null==_parent) {
             return roles();
         }
-        final Collection<String> roles = new ArrayList<String>();
+        final Collection<Group> roles = new ArrayList<Group>();
         roles.addAll(_parent.computeRoles());
         roles.addAll(roles());
         return roles;
@@ -652,7 +704,7 @@ public abstract class Resource
         final boolean parentIsAccessible =
             (null==_parent) ? true : parent().isAccessibleTo(user);
 
-        if (0==roles().size()) {
+        if (0==roles().size() && 0==getUserAcl().size()) {
             return parentIsAccessible;
         }
 
@@ -660,13 +712,13 @@ public abstract class Resource
             return false;
         }
 
-        for (final String role : roles()) {
-            if (user.hasRole(role)) {
+        for (final Group role : roles()) {
+            if (user.memberOf(role)) {
                 return parentIsAccessible;
             }
         }
 
-        return false;
+        return getUserAcl().contains(user);
     }
 
 
@@ -779,7 +831,9 @@ public abstract class Resource
             JsonKeys.LOCKED_BY,
             (null==lockedBy()) ? null : lockedBy().id().toString());
         json.setStrings(JsonKeys.TAGS, new ArrayList<String>(tags()));
-        json.setStrings(JsonKeys.ROLES, new ArrayList<String>(tags()));
+        json.set(
+            JsonKeys.ACL,
+            new AclDto().setGroups(groupIds()).setUsers(userIds()));
         json.set(
             JsonKeys.PUBLISHED_BY,
             (null==publishedBy()) ? null : publishedBy().id().toString());

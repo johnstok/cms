@@ -26,12 +26,19 @@
  */
 package ccc.migration;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.Users;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 
 
@@ -46,6 +53,9 @@ public class UserMigration {
 
     private final LegacyDBQueries _legacyQueries;
     private final Users _userCommands;
+    private final Groups _groups;
+    private Map<String, GroupDto> _cachedGroups =
+        new HashMap<String, GroupDto>();
 
     /**
      * Constructor.
@@ -54,9 +64,11 @@ public class UserMigration {
      * @param userCommands User API implementation.
      */
     public UserMigration(final LegacyDBQueries legacyQueries,
-                         final Users userCommands) {
+                         final Users userCommands,
+                         final Groups groups) {
         _legacyQueries = legacyQueries;
         _userCommands = userCommands;
+        _groups = groups;
     }
 
 
@@ -67,11 +79,20 @@ public class UserMigration {
      * @throws RestException If an error occurs during migration.
      */
     void migrateUsers() throws RestException {
+
         final Map<Integer, UserDto> mus = _legacyQueries.selectUsers();
+
         for (final Map.Entry<Integer, UserDto> mu : mus.entrySet()) {
             try {
                 // TODO: improve reporting
                 final UserDto ud = mu.getValue();
+
+                final Set<String> roles =
+                    _legacyQueries.selectRolesForUser(mu.getKey().intValue());
+                final Set<UUID> groupList =
+                    migrateGroups(roles, _cachedGroups, _groups);
+
+                ud.setRoles(groupList);
 
                 if (null == ud.getPassword()) {
                     log.warn(
@@ -88,10 +109,38 @@ public class UserMigration {
                 _userCommands.createUser(ud);
             } catch (final RuntimeException e) {
                 log.warn(
-                    "Failed to create user "+mu.getKey()+": "+e.getMessage());
+                    "Failed creating user "+mu.getKey()+": "+e.getMessage(), e);
             }
         }
         log.info("Migrated users.");
     }
 
+
+    static Set<UUID> migrateGroups(final Collection<String> roles,
+                                   final Map<String, GroupDto> cachedGroups,
+                                   final Groups groups) {
+
+        final Set<UUID> groupList = new HashSet<UUID>();
+
+        for (final String role : roles) {
+            if (cachedGroups.containsKey(role)) {
+                groupList.add(cachedGroups.get(role).getId());
+
+            } else { // Group not cached
+                final Collection<GroupDto> gs = groups.list(role);
+                if (0==gs.size()) { // Doesn't exist.
+                    final GroupDto g = new GroupDto();
+                    g.setName(role);
+                    final GroupDto created = groups.create(g);
+                    cachedGroups.put(role, created);
+                    groupList.add(created.getId());
+                } else {
+                    final GroupDto retrieved = gs.iterator().next();
+                    cachedGroups.put(role, retrieved);
+                    groupList.add(retrieved.getId());
+                }
+            }
+        }
+        return groupList;
+    }
 }

@@ -26,12 +26,12 @@
  */
 package ccc.contentcreator.actions;
 
-import java.util.List;
 import java.util.UUID;
 
+import ccc.contentcreator.client.GwtJson;
+import ccc.rest.dto.AclDto;
+
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONString;
 
 
 /**
@@ -44,20 +44,20 @@ public class UpdateResourceRolesAction
         RemotingAction {
 
     private final UUID _resource;
-    private final List<String> _roles;
+    private final AclDto _acl;
 
 
     /**
      * Constructor.
      *
-     * @param roles The roles for the resource.
      * @param resource The resource to update.
+     * @param acl The updated access control list.
      */
     public UpdateResourceRolesAction(final UUID resource,
-                                      final List<String> roles) {
+                                     final AclDto acl) {
         super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
         _resource = resource;
-        _roles = roles;
+        _acl = acl;
     }
 
 
@@ -71,10 +71,8 @@ public class UpdateResourceRolesAction
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final JSONArray body = new JSONArray();
-        for (int i=0; i<_roles.size(); i++) {
-            body.set(i, new JSONString(_roles.get(i)));
-        }
-        return body.toString();
+        final GwtJson json = new GwtJson();
+        _acl.toJson(json);
+        return json.toString();
     }
 }

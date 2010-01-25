@@ -44,6 +44,7 @@ import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
+import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -433,7 +434,7 @@ public class ResourceDaoImplTest
         new User(new Username("another"), "password");
     private final User _adminUser =
         new User(new Username("admin"), "password"){{
-       addRole(CreatorRoles.ADMINISTRATOR);
+       addRole(new Group(CreatorRoles.ADMINISTRATOR));
     }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

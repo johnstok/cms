@@ -113,7 +113,7 @@ public class UserTest
         final User u = new User(new Username("dummy"), "password");
 
         // ACT
-        final Set<String> roles = u.roles();
+        final Set<Group> roles = u.roles();
 
         // ASSERT
         assertEquals(0, roles.size());
@@ -208,26 +208,26 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        final Set<String> expected =
-            new HashSet<String>() {{
-                add(CreatorRoles.CONTENT_CREATOR);
-                add(CreatorRoles.SITE_BUILDER);
+        final Set<Group> expected =
+            new HashSet<Group>() {{
+                add(CONTENT_CREATOR);
+                add(SITE_BUILDER);
             }};
 
         // ACT
-        u.addRole(CreatorRoles.CONTENT_CREATOR);
-        u.addRole(CreatorRoles.SITE_BUILDER);
-        u.addRole(CreatorRoles.SITE_BUILDER);
+        u.addRole(CONTENT_CREATOR);
+        u.addRole(SITE_BUILDER);
+        u.addRole(SITE_BUILDER);
 
         // ASSERT
         assertEquals(2, u.roles().size());
         assertEquals(expected, u.roles());
         assertTrue(
             "Should be site builder",
-            u.hasRole(CreatorRoles.SITE_BUILDER));
+            u.memberOf(SITE_BUILDER));
         assertTrue(
             "Should be content creator",
-            u.hasRole(CreatorRoles.CONTENT_CREATOR));
+            u.memberOf(CONTENT_CREATOR));
     }
 
     /**
@@ -352,31 +352,30 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.addRole(CreatorRoles.CONTENT_CREATOR);
-        u.addRole(CreatorRoles.SITE_BUILDER);
-        u.addRole(CreatorRoles.SITE_BUILDER);
+        u.addRole(CONTENT_CREATOR);
+        u.addRole(SITE_BUILDER);
+        u.addRole(SITE_BUILDER);
 
-        final Set<String> expected =
-            new HashSet<String>() {{
-                add(CreatorRoles.ADMINISTRATOR);
-                add(CreatorRoles.SITE_BUILDER);
+        final Set<Group> expected =
+            new HashSet<Group>() {{
+                add(ADMINISTRATOR);
+                add(SITE_BUILDER);
             }};
 
         // ACT
-        final Set<String> newRoles = new HashSet<String>();
-        newRoles.add(CreatorRoles.ADMINISTRATOR);
-        newRoles.add(CreatorRoles.SITE_BUILDER);
-        u.roles(newRoles);
+        u.clearGroups();
+        u.addRole(ADMINISTRATOR);
+        u.addRole(SITE_BUILDER);
 
         // ASSERT
         assertEquals(2, u.roles().size());
         assertEquals(expected, u.roles());
         assertTrue(
             "Should be site builder",
-            u.hasRole(CreatorRoles.SITE_BUILDER));
+            u.memberOf(SITE_BUILDER));
         assertTrue(
             "Should be administrator",
-            u.hasRole(CreatorRoles.ADMINISTRATOR));
+            u.memberOf(ADMINISTRATOR));
     }
 
     private byte[] hash(final User u, final String passwordString) {
@@ -405,4 +404,11 @@ public class UserTest
             throw new CCCException("Failed to compute password digest.", e);
         }
     }
+
+    private static final Group SITE_BUILDER =
+        new Group(CreatorRoles.SITE_BUILDER);
+    private static final Group CONTENT_CREATOR =
+        new Group(CreatorRoles.CONTENT_CREATOR);
+    private static final Group ADMINISTRATOR =
+        new Group(CreatorRoles.ADMINISTRATOR);
 }

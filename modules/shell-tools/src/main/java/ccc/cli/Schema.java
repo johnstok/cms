@@ -157,6 +157,7 @@ public class Schema
             Resources.readIntoList(create, Charset.forName("UTF-8"));
         LOG.info("Statements to process: "+statements.size());
         for (final String statement : statements) {
+            if (statement.trim().length()<1) { continue; }
 //            LOG.debug("Executing statement: "+statement);
             execute(newConnection, statement);
         }

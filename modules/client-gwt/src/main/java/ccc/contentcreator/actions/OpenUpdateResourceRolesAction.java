@@ -26,15 +26,17 @@
  */
 package ccc.contentcreator.actions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.dialogs.UpdateResourceRolesDialog;
+import ccc.rest.dto.AclDto;
+import ccc.rest.dto.GroupDto;
 
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 /**
@@ -48,15 +50,19 @@ public final class OpenUpdateResourceRolesAction
 
 
     private final SingleSelectionModel _selectionModel;
+    private Collection<GroupDto> _groups;
 
     /**
      * Constructor.
      *
      * @param ssm The selection model to use.
+     * @param groups All groups available on the server.
      */
-    public OpenUpdateResourceRolesAction(final SingleSelectionModel ssm) {
+    public OpenUpdateResourceRolesAction(final SingleSelectionModel ssm,
+                                         final Collection<GroupDto> groups) {
         super(UI_CONSTANTS.updateRoles());
         _selectionModel = ssm;
+        _groups = groups;
     }
 
     /** {@inheritDoc} */
@@ -71,17 +77,15 @@ public final class OpenUpdateResourceRolesAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final List<String> data = new ArrayList<String>();
-        final JSONArray rawData =
-            JSONParser.parse(response.getText()).isArray();
-        for (int i=0; i<rawData.size(); i++) {
-            data.add(rawData.get(i).isString().stringValue());
-        }
+
+        final JSONObject o = JSONParser.parse(response.getText()).isObject();
+        final AclDto acl = new AclDto(new GwtJson(o));
 
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         new UpdateResourceRolesDialog(
             item.getId(),
-            data)
+            acl,
+            _groups)
         .show();
     }
 }

@@ -32,6 +32,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import ccc.rest.RestException;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -57,8 +58,8 @@ public class UserManagementAcceptanceTest
         final UserDto us = tempUser();
 
         // ACT
-        getUsers().updateUserPassword(
-            us.getId(), new UserDto("Another00-"));
+        us.setPassword("Another00-");
+        getUsers().updateUserPassword(us.getId(), us);
 
         // ASSERT
         assertFalse(
@@ -90,7 +91,6 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());
-        assertTrue(uq.getRoles().contains("CONTENT_CREATOR"));
         // TODO: Test metadata set correctly.
     }
 
@@ -115,7 +115,6 @@ public class UserManagementAcceptanceTest
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());
-        assertTrue(uq.getRoles().contains("CONTENT_CREATOR"));
         // TODO: Test metadata set correctly.
     }
 
@@ -131,25 +130,28 @@ public class UserManagementAcceptanceTest
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
         final String name = "testuser";
+        final GroupDto siteBuilder =
+            getGroups().list("SITE_BUILDER").iterator().next();
 
         final UserDto us = tempUser();
 
         // ACT
+
         getUsers().updateUser(
             us.getId(),
-            new UserDto(
-                email,
-                username,
-                name,
-                Collections.singleton("a2"),
-                Collections.singletonMap("key2", "value2")));
+            new UserDto()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setRoles(Collections.singleton(siteBuilder.getId()))
+                .setMetadata(Collections.singletonMap("key2", "value2")));
 
         // ASSERT
         final UserDto ud = getUsers().userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(1, ud.getRoles().size());
-        assertTrue(ud.getRoles().contains("a2"));
+        assertEquals(siteBuilder.getId(), ud.getRoles().iterator().next());
         // TODO: Test metadata set correctly.
     }
 
@@ -164,23 +166,25 @@ public class UserManagementAcceptanceTest
         final Username username = new Username(UUID.randomUUID().toString());
         final String email = username+"@abc.def";
         final String name = "testuser";
+        final GroupDto siteBuilder =
+            getGroups().list("SITE_BUILDER").iterator().next();
 
         // Create the user
         final UserDto u =
-            new UserDto(
-                email,
-                username,
-                name,
-                Collections.singleton("a"),
-                Collections.singletonMap("key", "value"),
-                "Testtest00-");
-
-
+            new UserDto()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setRoles(Collections.singleton(siteBuilder.getId()))
+                .setMetadata(Collections.singletonMap("key", "value"))
+                .setPassword("Testtest00-");
         final UserDto us = getUsers().createUser(u);
+
+
         assertEquals(username, us.getUsername());
         assertEquals(email, us.getEmail());
         assertEquals(1, us.getRoles().size());
-        assertTrue(us.getRoles().contains("a"));
+        assertEquals(siteBuilder.getId(), us.getRoles().iterator().next());
         // TODO: Test metadata set correctly.
     }
 
@@ -232,14 +236,12 @@ public class UserManagementAcceptanceTest
 
         // Create the user
         final UserDto u =
-            new UserDto(
-                email,
-                username,
-                name,
-                Collections.singleton("a"),
-                Collections.singletonMap("key", "value"),
-                "Testtest00-");
-
+            new UserDto()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setMetadata(Collections.singletonMap("key", "value"))
+                .setPassword("Testtest00-");
 
         getUsers().createUser(u);
 
@@ -278,12 +280,12 @@ public class UserManagementAcceptanceTest
 
         getUsers().updateUser(
             us.getId(),
-            new UserDto(
-                us.getEmail(),
-                us.getUsername(),
-                us.getName(),
-                Collections.singleton("a2"),
-                Collections.singletonMap("legacyId", ""+legacyId)));
+            new UserDto()
+                .setEmail(us.getEmail())
+                .setUsername(us.getUsername())
+                .setName(us.getName())
+                .setMetadata(
+                    Collections.singletonMap("legacyId", ""+legacyId)));
 
         // ACT
         final UserDto ul = getUsers().userByLegacyId(""+legacyId);
@@ -292,26 +294,6 @@ public class UserManagementAcceptanceTest
         assertNotNull(ul);
         assertEquals(us.getUsername(), ul.getUsername());
         assertEquals(us.getEmail(), ul.getEmail());
-        assertEquals(1, ul.getRoles().size());
-        assertTrue(ul.getRoles().contains("a2"));
-    }
-
-    private UserDto tempUser() throws RestException {
-
-        final Username username = new Username(UUID.randomUUID().toString());
-        final String email = username+"@abc.def";
-        final String name = "testuser";
-
-        // Create the user
-        final UserDto u =
-            new UserDto(
-                email,
-                username,
-                name,
-                Collections.singleton("CONTENT_CREATOR"),
-                Collections.singletonMap("key", "value"),
-                "Testtest00-");
-
-        return getUsers().createUser(u);
+        assertEquals(0, ul.getRoles().size());
     }
 }

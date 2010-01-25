@@ -27,6 +27,9 @@
 package ccc.contentcreator.client;
 
 import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
+
+import java.util.Collection;
+
 import ccc.contentcreator.actions.ApplyWorkingCopyAction;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.ClearWorkingCopyAction;
@@ -52,9 +55,11 @@ import ccc.contentcreator.actions.UnlockAction;
 import ccc.contentcreator.actions.UnpublishAction;
 import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.actions.remote.DeleteResourceAction;
+import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.dialogs.UpdateFileDialog;
 import ccc.contentcreator.dialogs.UpdatePageDialog;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.UserDto;
@@ -131,7 +136,12 @@ public class ResourceContextMenu
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new OpenCreateActionAction(_table);
-        _updateRolesAction = new OpenUpdateResourceRolesAction(_table);
+        _updateRolesAction = new ListGroups() {
+            @Override
+            protected void execute(final Collection<GroupDto> g) {
+                new OpenUpdateResourceRolesAction(_table, g)
+                    .execute();
+            }};
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
         _editCacheAction = new OpenEditCacheAction(_table);
         _deleteResourceAction = new DeleteResourceAction(_table);
@@ -166,7 +176,7 @@ public class ResourceContextMenu
             addLockResource();
         } else {
             if (item.getLocked().equals(user.getUsername())
-                 || user.getRoles().contains(IGlobals.ADMINISTRATOR)) {
+                 || user.hasPermission(IGlobals.ADMINISTRATOR)) {
                 addUnlockResource();
             }
             if (item.getLocked().equals(user.getUsername())) {
@@ -212,8 +222,8 @@ public class ResourceContextMenu
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                if (user.getRoles().contains(IGlobals.ADMINISTRATOR)
-                    || user.getRoles().contains(IGlobals.SITE_BUILDER)) {
+                if (user.hasPermission(IGlobals.ADMINISTRATOR)
+                    || user.hasPermission(IGlobals.SITE_BUILDER)) {
                     addEditCache();
                 }
 

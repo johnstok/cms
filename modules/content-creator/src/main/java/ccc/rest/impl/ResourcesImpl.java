@@ -38,6 +38,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -142,7 +143,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<String> roles(final UUID resourceId)
+    public AclDto roles(final UUID resourceId)
     throws RestException {
         return getResources().roles(resourceId);
     }
@@ -184,7 +185,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final UUID resourceId,
-                            final Collection<String> roles)
+                            final AclDto roles)
     throws RestException {
         getResources().changeRoles(resourceId, roles);
     }

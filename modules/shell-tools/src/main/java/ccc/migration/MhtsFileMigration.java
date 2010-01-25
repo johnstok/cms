@@ -27,10 +27,8 @@
 package ccc.migration;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -38,13 +36,13 @@ import org.apache.log4j.Logger;
 import ccc.api.client1.IFileUploader;
 import ccc.cli.MigrateMhtsFiles.Options;
 import ccc.rest.Actions;
+import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
@@ -89,6 +87,7 @@ public class MhtsFileMigration extends BaseMigrations {
                              final ResourcesExt resourcesExt,
                              final PagesExt pagesExt,
                              final FoldersExt foldersExt,
+                             final Groups groups,
                              final Users users,
                              final Templates templates,
                              final IFileUploader fileUploader,
@@ -97,6 +96,7 @@ public class MhtsFileMigration extends BaseMigrations {
             users,
             pagesExt,
             resourcesExt,
+            groups,
             legacyDBQueries,
             new TemplateMigration(legacyDBQueries, templates),
             "/"+options.getApp()+"/");
@@ -126,8 +126,6 @@ public class MhtsFileMigration extends BaseMigrations {
             getLegacyQueries().selectResources(legacyParent);
 
         try {
-            updateUserRoles();
-
             final UUID parentFolderId = createFileFolder(legacyParent, path);
 
             for (final ResourceBean resourceBean : resources) {
@@ -178,21 +176,6 @@ public class MhtsFileMigration extends BaseMigrations {
         }
     }
 
-    /**
-     * Adds API_USER role to member users.
-     * @throws RestException
-     *
-     */
-    private void updateUserRoles() throws RestException {
-        final List<UserDto> users =
-            new ArrayList<UserDto>(getUsers().listUsersWithRole("Members"));
-        for (final UserDto user :  users) {
-            final Set<String> roles = user.getRoles();
-            roles.add("API_USER");
-            user.setRoles(roles);
-            getUsers().updateUser(user.getId(), user);
-        }
-    }
 
     private ResourceSummary createFolderResourceSummary(
                                                 final UUID parentFolderId,

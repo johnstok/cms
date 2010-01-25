@@ -32,6 +32,7 @@ import java.util.UUID;
 import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
+import ccc.persistence.GroupRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
 import ccc.rest.dto.UserDto;
@@ -51,6 +52,7 @@ public class UpdateUserCommand
 
     private final UUID _userId;
     private final UserDto _delta;
+    private final GroupRepository _groups;
 
 
     /**
@@ -63,11 +65,13 @@ public class UpdateUserCommand
      */
     public UpdateUserCommand(final UserRepository repository,
                              final LogEntryRepository audit,
+                             final GroupRepository groups,
                              final UUID userId,
                              final UserDto delta) {
         super(null, audit, repository, null);
         _userId = userId;
         _delta = delta;
+        _groups = groups;
     }
 
     /** {@inheritDoc} */
@@ -80,7 +84,10 @@ public class UpdateUserCommand
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(_delta.getEmail()));
         current.name(_delta.getEmail());
-        current.roles(_delta.getRoles());
+        current.clearGroups();
+        for (final UUID groupId : _delta.getRoles()) {
+            current.addRole(_groups.find(groupId));
+        }
         current.clearMetadata();
         current.addMetadata(_delta.getMetadata());
 

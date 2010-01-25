@@ -29,7 +29,10 @@ package ccc.contentcreator.dialogs;
 
 import static ccc.contentcreator.validation.Validations.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,11 +40,14 @@ import ccc.contentcreator.actions.UpdateUserAction;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.validation.Validate;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;
 
@@ -56,7 +62,8 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
-    private final TextArea          _roles = new TextArea();
+    private final ListField<BaseModelData> _groups =
+        new ListField<BaseModelData>();
 
     private final UUID          _userId;
     private final UserDto _userDTO;
@@ -74,7 +81,8 @@ public class EditUserDialog extends AbstractEditDialog {
      */
     public EditUserDialog(final UUID userId,
                           final UserDto userDTO,
-                          final UserTable userTable) {
+                          final UserTable userTable,
+                          final Collection<GroupDto> allGroups) {
         super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());
 
         _userId    = userId;
@@ -99,16 +107,22 @@ public class EditUserDialog extends AbstractEditDialog {
         _email.setValue(_userDTO.getEmail());
         addField(_email);
 
-        _roles.setFieldLabel(getUiConstants().roles());
-        _roles.setId("resource-roles");
-        _roles.setHeight(ROLE_HEIGHT);
-        final StringBuilder rolesString = new StringBuilder();
-        for (final String role : _userDTO.getRoles()) {
-            rolesString.append(role);
-            rolesString.append('\n');
+        final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
+        final List<BaseModelData> selected = new ArrayList<BaseModelData>();
+        for (final GroupDto g : allGroups) {
+            final BaseModelData d = new BaseModelData();
+            d.set("name", g.getName());
+            d.set("id", g.getId());
+            gData.add(d);
+            if (_userDTO.getRoles().contains((g.getId()))) { selected.add(d); }
         }
-        _roles.setValue(rolesString.toString());
-        addField(_roles);
+
+        _groups.setFieldLabel(getUiConstants().roles());
+        _groups.setHeight(ROLE_HEIGHT);
+        _groups.setStore(gData);
+        _groups.setSelection(selected);
+        _groups.setDisplayField("name");
+        addField(_groups);
 
 
         setPanelId("UserPanel");
@@ -140,17 +154,9 @@ public class EditUserDialog extends AbstractEditDialog {
                 _userDTO.setEmail(_email.getValue());
                 _userDTO.setName(_name.getValue());
 
-                final Set<String> validRoles = new HashSet<String>();
-                final String roleValue = _roles.getValue();
-                final String[] roles =
-                    (null==roleValue)
-                        ? new String[]{}
-                        : roleValue.split("\n|\r|\r\n");
-                for (final String role : roles) {
-                    final String cleanRole = role.trim();
-                    if (cleanRole.length() > 0) {
-                        validRoles.add(cleanRole);
-                    }
+                final Set<UUID> validRoles = new HashSet<UUID>();
+                for (final BaseModelData selected : _groups.getSelection()) {
+                    validRoles.add(selected.<UUID>get("id"));
                 }
                 _userDTO.setRoles(validRoles);
 

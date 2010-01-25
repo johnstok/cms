@@ -30,6 +30,7 @@ import static ccc.types.DBC.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.UUID;
@@ -88,22 +89,23 @@ public class NewDBQueries {
             ps.setString(6, username);
             ps.executeUpdate();
 
+            final PreparedStatement gs = _connection.prepareStatement(
+                "select ID from groups where name in "
+                + "('ADMINISTRATOR', 'SITE_BUILDER', 'CONTENT_CREATOR')");
+            final ResultSet groups = gs.executeQuery();
+
             // insert role
-            ps = _connection.prepareStatement(
-                "INSERT INTO user_roles (user_id, role) "
-                + "VALUES (?, 'ADMINISTRATOR')");
-            ps.setString(1, uid.toString());
-            ps.executeUpdate();
-            ps = _connection.prepareStatement(
-                "INSERT INTO user_roles (user_id, role) "
-                + "VALUES (?, 'CONTENT_CREATOR')");
-            ps.setString(1, uid.toString());
-            ps.executeUpdate();
-            ps = _connection.prepareStatement(
-                "INSERT INTO user_roles (user_id, role) "
-                + "VALUES (?, 'SITE_BUILDER')");
-            ps.setString(1, uid.toString());
-            ps.executeUpdate();
+            while (groups.next()) {
+                ps = _connection.prepareStatement(
+                    "INSERT INTO user_roles (user_id, group_id) "
+                    + "VALUES (?, ?)");
+                ps.setString(1, uid.toString());
+                ps.setString(2, groups.getString(1));
+                ps.executeUpdate();
+            }
+
+            groups.close();
+            gs.close();
 
             _connection.commit();
         } catch (final SQLException e) {

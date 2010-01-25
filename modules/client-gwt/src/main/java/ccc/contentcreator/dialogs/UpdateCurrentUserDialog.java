@@ -140,13 +140,14 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {
-                        final UserDto user = new UserDto(
-                            _email.getValue(),
-                            _user.getId(),
-                            _user.getUsername(),
-                            _user.getName(),
-                            _user.getRoles(),
-                            _user.getMetadata());
+                        // TODO Update current user should return a UserDto.
+                        final UserDto user = new UserDto();
+                        user.setEmail(_email.getValue());
+                        user.setId(_user.getId());
+                        user.setUsername(_user.getUsername());
+                        user.setName(_user.getName());
+                        user.setRoles(_user.getRoles());
+                        user.setMetadata(_user.getMetadata());
                         GLOBALS.currentUser(user);
                         hide();
                     }

@@ -35,9 +35,11 @@ import ccc.contentcreator.actions.ListUsersWithEmailAction;
 import ccc.contentcreator.actions.ListUsersWithRoleAction;
 import ccc.contentcreator.actions.ListUsersWithUsernameAction;
 import ccc.contentcreator.actions.OpenEditUserDialogAction;
+import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.dialogs.EditUserPwDialog;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
@@ -143,9 +145,14 @@ public class UserTable extends TablePanel {
                     final UserSummaryModelData userDTO =
                         grid.getSelectionModel().getSelectedItem();
 
-                    new OpenEditUserDialogAction(
-                        userDTO.getId(), UserTable.this)
-                    .execute();
+                    new ListGroups() {
+                        @Override
+                        protected void execute(final Collection<GroupDto> g) {
+                            new OpenEditUserDialogAction(
+                                userDTO.getId(), UserTable.this, g)
+                            .execute();
+                        }}.execute();
+
                 }
             }
         );

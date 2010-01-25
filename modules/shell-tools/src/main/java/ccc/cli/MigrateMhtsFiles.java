@@ -95,6 +95,7 @@ public final class MigrateMhtsFiles extends CccApp {
             services.getResources(),
             services.getPages(),
             services.getFolders(),
+            services.getGroups(),
             services.getUsers(),
             services.getTemplates(),
             sl.getFileUploader(),

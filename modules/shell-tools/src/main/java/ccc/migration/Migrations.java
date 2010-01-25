@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.client1.IFileUploader;
 import ccc.cli.Migrate.Options;
+import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.Users;
@@ -97,6 +98,7 @@ public class Migrations extends BaseMigrations {
                       final PagesExt pagesExt,
                       final FoldersExt foldersExt,
                       final Users userCommands,
+                      final Groups groups,
                       final IFileUploader fu,
                       final Templates templates,
                       final Options options) {
@@ -104,6 +106,7 @@ public class Migrations extends BaseMigrations {
             userCommands,
             pagesExt,
             resourcesExt,
+            groups,
             legacyQueries,
             new TemplateMigration(legacyQueries, templates),
             "/"+options.getApp()+"/");
@@ -139,7 +142,7 @@ public class Migrations extends BaseMigrations {
         }
 
         _fm = new FileMigrator(fu, legacyQueries, "files/", "images/", "css/");
-        _um = new UserMigration(legacyQueries, getUsers());
+        _um = new UserMigration(legacyQueries, getUsers(), getGroups());
     }
 
 
@@ -271,7 +274,7 @@ public class Migrations extends BaseMigrations {
 
         } catch (final Exception e) {
 //          log.warn("Error migrating folder "+r.contentId(),  e);
-            log.warn(logMigrationError("Error migrating folder ", r, e));
+            log.warn(logMigrationError("Error migrating folder ", r, e), e);
         }
     }
 

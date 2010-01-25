@@ -112,4 +112,11 @@ public interface ServiceLocator {
      * @return Returns the alias service.
      */
     Aliases getAliases();
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the groups service.
+     */
+    Groups getGroups();
 }

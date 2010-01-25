@@ -38,7 +38,7 @@ import ccc.types.HttpStatusCode;
 
 
 /**
- * Tests for the manipulating resources.
+ * Tests for the manipulating groups.
  *
  * @author Civic Computing Ltd.
  */

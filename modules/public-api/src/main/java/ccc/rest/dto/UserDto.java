@@ -30,15 +30,18 @@ package ccc.rest.dto;
 import static ccc.serialization.JsonKeys.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
+import ccc.types.DBC;
 import ccc.types.Username;
 
 
@@ -48,39 +51,21 @@ import ccc.types.Username;
  * @author Civic Computing Ltd.
  */
 public final class UserDto implements Serializable, Jsonable {
+
     private String _email;
     private String _name;
     private UUID _id;
     private Username _username;
-    private HashSet<String> _roles;
-    private Map<String, String> _metadata;
+    private Set<UUID> _roles = new HashSet<UUID>();
+    private Set<String> _permissions = new HashSet<String>();
+    private Map<String, String> _metadata = new HashMap<String, String>();
     private String _password;
 
-    @SuppressWarnings("unused") private UserDto() { super(); }
 
     /**
      * Constructor.
-     *
-     * @param email The user's email.
-     * @param id The user's id.
-     * @param username The user's username.
-     * @param name The user's full name.
-     * @param roles The user's roles.
-     * @param metadata The user's metadata.
      */
-    public UserDto(final String email,
-                   final UUID id,
-                   final Username username,
-                   final String name,
-                   final Set<String> roles,
-                   final Map<String, String> metadata) {
-        _email = email;
-        _name = name;
-        _id = id;
-        _username = username;
-        _roles = new HashSet<String>(roles);
-        _metadata = metadata;
-    }
+    public UserDto() { super(); }
 
 
     /**
@@ -89,91 +74,7 @@ public final class UserDto implements Serializable, Jsonable {
      * @param json The JSON representation of a user.
      */
     public UserDto(final Json json) {
-        _id = json.getId(ID);
-        _email = json.getString(EMAIL);
-        _name = json.getString(NAME);
-        _password = json.getString(PASSWORD);
-
-        final String un = json.getString(USERNAME);
-        _username = (null==un) ? null : new Username(un);
-
-        final Collection<String> r = json.getStrings(ROLES);
-        _roles = (null==r) ? null : new HashSet<String>(r);
-
-        final Map<String, String> md = json.getStringMap(METADATA);
-        _metadata =
-            (null==md)
-                ? new HashMap<String, String>()
-                : new HashMap<String, String>(md);
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param email The user's email.
-     * @param username The user's username.
-     * @param name The user's  full name.
-     * @param roles The user's roles.
-     * @param metadata The user's metadata.
-     */
-    public UserDto(final String email,
-                   final Username username,
-                   final String name,
-                   final Set<String> roles,
-                   final Map<String, String> metadata) {
-        _email = email;
-        _username = username;
-        _name = name;
-        _roles = new HashSet<String>(roles);
-        _metadata = new HashMap<String, String>(metadata);
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param password The user's password.
-     */
-    public UserDto(final String password) {
-        _password = password;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param email The user's email address.
-     * @param username The user's username.
-     * @param name The user's full name.
-     * @param roles The user's roles.
-     * @param metadata Metadata associated with the user.
-     * @param password The user's password.
-     */
-    public UserDto(final String email,
-                   final Username username,
-                   final String name,
-                   final Set<String> roles,
-                   final Map<String, String> metadata,
-                   final String password) {
-        _email = email;
-        _name = name;
-        _username = username;
-        _roles = new HashSet<String>(roles);
-        _metadata = metadata;
-        _password = password;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param email The user's email address.
-     * @param password The user's password.
-     */
-    public UserDto(final String email, final String password) {
-        _email = email;
-        _password = password;
+        fromJson(json);
     }
 
 
@@ -206,6 +107,7 @@ public final class UserDto implements Serializable, Jsonable {
         return _username;
     }
 
+
     /**
      * Accessor.
      *
@@ -221,7 +123,7 @@ public final class UserDto implements Serializable, Jsonable {
      *
      * @return Returns the roles.
      */
-    public Set<String> getRoles() {
+    public Set<UUID> getRoles() {
         return _roles;
     }
 
@@ -240,9 +142,13 @@ public final class UserDto implements Serializable, Jsonable {
      * Mutator.
      *
      * @param metadata The metadata to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setMetadata(final Map<String, String> metadata) {
+    public UserDto setMetadata(final Map<String, String> metadata) {
+        DBC.require().notNull(metadata);
         _metadata = new HashMap<String, String>(metadata);
+        return this;
     }
 
 
@@ -250,9 +156,12 @@ public final class UserDto implements Serializable, Jsonable {
      * Mutator.
      *
      * @param email The email to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setEmail(final String email) {
+    public UserDto setEmail(final String email) {
         _email = email;
+        return this;
     }
 
 
@@ -260,9 +169,12 @@ public final class UserDto implements Serializable, Jsonable {
      * Mutator.
      *
      * @param id The id to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setId(final UUID id) {
+    public UserDto setId(final UUID id) {
         _id = id;
+        return this;
     }
 
 
@@ -270,18 +182,25 @@ public final class UserDto implements Serializable, Jsonable {
      * Mutator.
      *
      * @param username The username to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setUsername(final Username username) {
+    public UserDto setUsername(final Username username) {
         _username = username;
+        return this;
     }
+
 
     /**
      * Mutator.
      *
      * @param name The name to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setName(final String name) {
+    public UserDto setName(final String name) {
         _name = name;
+        return this;
     }
 
 
@@ -289,10 +208,15 @@ public final class UserDto implements Serializable, Jsonable {
      * Mutator.
      *
      * @param roles The roles to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setRoles(final Set<String> roles) {
-        _roles = new HashSet<String>(roles);
+    public UserDto setRoles(final Set<UUID> roles) {
+        DBC.require().notNull(roles);
+        _roles = new HashSet<UUID>(roles);
+        return this;
     }
+
 
     /**
      * Accessor.
@@ -308,21 +232,71 @@ public final class UserDto implements Serializable, Jsonable {
      * Mutator.
      *
      * @param password The password to set.
+     *
+     * @return Returns 'this' reference, to allow method chaining.
      */
-    public void setPassword(final String password) {
+    public UserDto setPassword(final String password) {
         _password = password;
+        return this;
     }
 
 
     /**
-     * Helper method to check if the user has defined role.
+     * Accessor.
      *
-     * @param role The role to be checked.
-     * @return True if the user has the role.
+     * @return Returns the permissions.
      */
-    public boolean hasRole(final String role) {
-        return _roles.contains(role);
+    public Set<String> getPermissions() {
+        return _permissions;
     }
+
+
+    /**
+     * Mutator.
+     *
+     * @param permissions The permissions to set.
+     */
+    public void setPermissions(final Collection<String> permissions) {
+        DBC.require().notNull(permissions);
+        _permissions = new HashSet<String>(permissions);
+    }
+
+
+    /**
+     * Helper method to check if the user has a specified permission.
+     *
+     * @param perm The permission to be checked.
+     * @return True if the user has the permission.
+     */
+    public boolean hasPermission(final String perm) {
+        return _permissions.contains(perm);
+    }
+
+
+    private void fromJson(final Json json) {
+        setId(json.getId(ID));
+        setEmail(json.getString(EMAIL));
+        setName(json.getString(NAME));
+        setPassword(json.getString(PASSWORD));
+        setPermissions(json.getStrings(PERMISSIONS));
+
+        final String un = json.getString(USERNAME);
+        setUsername((null==un) ? null : new Username(un));
+
+        final Collection<String> r = json.getStrings(ROLES);
+        setRoles(
+            (null==r)
+                ? new HashSet<UUID>()
+                : new HashSet<UUID>(mapUuid(r)));
+
+        final Map<String, String> md = json.getStringMap(METADATA);
+        setMetadata(
+            (null==md)
+                ? new HashMap<String, String>()
+                : new HashMap<String, String>(md));
+
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -332,8 +306,27 @@ public final class UserDto implements Serializable, Jsonable {
         json.set(NAME, getName());
         json.set(
             USERNAME, (null==getUsername()) ? null : getUsername().toString());
-        json.setStrings(ROLES, getRoles());
+        json.setStrings(ROLES, mapString(getRoles()));
         json.set(METADATA, _metadata);
         json.set(PASSWORD, _password);
+        json.setStrings(PERMISSIONS, _permissions);
+    }
+
+
+    private Set<String> mapString(final Set<UUID> roles) {
+        final Set<String> strings = new HashSet<String>();
+        for (final UUID role : roles) {
+            strings.add(role.toString());
+        }
+        return strings;
+    }
+
+
+    private Collection<? extends UUID> mapUuid(final Collection<String> s) {
+        final List<UUID> uuids = new ArrayList<UUID>();
+        for (final String string : s) {
+            uuids.add(UUID.fromString(string));
+        }
+        return uuids;
     }
 }

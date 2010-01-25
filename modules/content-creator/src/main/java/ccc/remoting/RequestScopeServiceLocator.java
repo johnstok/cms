@@ -34,6 +34,7 @@ import ccc.rest.Aliases;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;
@@ -138,5 +139,12 @@ public class RequestScopeServiceLocator
     @Override
     public Comments getComments() {
         return (Comments) _request.getAttribute(SessionKeys.COMMENTS_KEY);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Groups getGroups() {
+        return (Groups) _request.getAttribute(SessionKeys.GROUPS_KEY);
     }
 }

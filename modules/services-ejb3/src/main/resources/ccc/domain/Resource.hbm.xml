@@ -143,11 +143,17 @@
         <set name="_roles" table="resource_roles">
             <cache usage="transactional"/>
             <key column="resource_id" not-null="true" foreign-key="FK_RESROLES_RESOURCE_ID"/>
-            <element
-                column="role"
-                type="string"
-                not-null="true"
-                length="255" />
+            <many-to-many
+                class="ccc.domain.Group"
+                column="group_id" />
+        </set>
+
+        <set name="_userAcl" table="resource_users">
+            <cache usage="transactional"/>
+            <key column="resource_id" not-null="true" foreign-key="FK_RESUSERS_RESOURCE_ID"/>
+            <many-to-many
+                class="ccc.domain.User"
+                column="user_id" />
         </set>
         
         <map name="_metadata" table="resource_metadata">

@@ -49,6 +49,7 @@ import ccc.rest.Actions;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -84,8 +85,9 @@ public class ContentServlet
     @EJB(name = Actions.NAME)      private transient Actions      _actions;
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
     @EJB(name = Comments.NAME)     private transient Comments     _comments;
+    @EJB(name = Groups.NAME)       private transient Groups       _groups;
 
-    private boolean       _respectVisibility = true;
+    private boolean _respectVisibility = true;
 
 
     /** {@inheritDoc} */
@@ -236,5 +238,6 @@ public class ContentServlet
         req.setAttribute(SessionKeys.ACTIONS_KEY,   _actions);
         req.setAttribute(SessionKeys.SEARCH_KEY,    _search);
         req.setAttribute(SessionKeys.COMMENTS_KEY,  _comments);
+        req.setAttribute(SessionKeys.GROUPS_KEY,    _groups);
     }
 }

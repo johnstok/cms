@@ -104,4 +104,12 @@ public class RepositoryFactory {
         return new CommentRepositoryImpl(_em);
     }
 
+    /**
+     * Create an instance of the {@link GroupRepository} interface.
+     *
+     * @return A repository instance.
+     */
+    public GroupRepository createGroupRepo() {
+        return new GroupRepositoryImpl(_em);
+    }
 }

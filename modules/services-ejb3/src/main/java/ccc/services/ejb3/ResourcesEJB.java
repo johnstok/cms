@@ -64,6 +64,7 @@ import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
@@ -525,10 +526,10 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({CONTENT_CREATOR})
     public void changeRoles(final UUID resourceId,
-                            final Collection<String> roles)
-                                                 throws RestException {
+                            final AclDto acl) throws RestException {
         try {
-            changeRoles(resourceId, roles, currentUserId(), new Date());
+            changeRoles(
+                resourceId, acl, currentUserId(), new Date());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -540,7 +541,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed({ADMINISTRATOR})
     public void changeRoles(final UUID resourceId,
-                            final Collection<String> roles,
+                            final AclDto acl,
                             final UUID actorId,
                             final Date happenedOn)
                                                  throws RestException {
@@ -548,8 +549,10 @@ public class ResourcesEJB
             new UpdateResourceRolesCommand(
                 getResources(),
                 getAuditLog(),
+                getGroups(),
+                getUsers(),
                 resourceId,
-                roles)
+                acl)
             .execute(
                 userForId(actorId),
                 happenedOn);
@@ -701,12 +704,16 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
-    public Collection<String> roles(final UUID resourceId)
+    public AclDto roles(final UUID resourceId)
     throws RestException {
         try {
             final Resource r =
                 getResources().find(Resource.class, resourceId);
-            return r.roles();
+            return
+                new AclDto()
+                    .setGroups(r.groupIds())
+                    .setUsers(r.userIds());
+
 
         } catch (final CccCheckedException e) {
             throw fail(e);

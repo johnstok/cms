@@ -32,7 +32,13 @@
             <login-module code="ccc.security.CCCLoginModule" flag="required">
                 <module-option name="dsJndiName">java:/${application.prefix}</module-option>
                 <module-option name="principalsQuery">SELECT users.id, users.hash, users.id  FROM users WHERE users.username=?</module-option>
-                <module-option name="rolesQuery">SELECT role FROM user_roles where user_id=?</module-option>
+                <module-option name="rolesQuery">
+                    SELECT p.permission 
+                    FROM user_roles u, groups g, group_permissions p 
+                    WHERE u.group_id = g.id 
+                    AND g.id  = p.group_id  
+                    AND u.user_id=?
+                </module-option>
             </login-module>
         </authentication>
     </application-policy>

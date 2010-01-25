@@ -48,7 +48,7 @@ public class BaseMigrationsTest
 
         // ARRANGE
         final BaseMigrations bm =
-            new BaseMigrations(null, null, null, null, null, null);
+            new BaseMigrations(null, null, null, null, null, null, null);
         final Map<String, StringBuffer> dups =
             new HashMap<String, StringBuffer>();
 

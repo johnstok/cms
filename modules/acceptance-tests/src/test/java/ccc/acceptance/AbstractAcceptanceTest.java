@@ -31,6 +31,7 @@ import static ccc.types.HttpStatusCode.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -54,6 +55,7 @@ import ccc.rest.Aliases;
 import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
+import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -63,17 +65,20 @@ import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FolderDto;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
+import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.Failure;
 import ccc.types.HttpStatusCode;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
+import ccc.types.Username;
 
 
 /**
@@ -176,6 +181,16 @@ public abstract class AbstractAcceptanceTest
      */
     protected Pages getPages() {
         return _sl.getPages();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the groups.
+     */
+    protected Groups getGroups() {
+        return _sl.getGroups();
     }
 
 
@@ -300,6 +315,34 @@ public abstract class AbstractAcceptanceTest
         return getAliases().createAlias(alias);
     }
 
+
+    /**
+     * Create a user for testing.
+     *
+     * @return The user DTO.
+     *
+     * @throws RestException If creation fails on the server.
+     */
+    protected UserDto tempUser() throws RestException {
+
+        final Username username = new Username(UUID.randomUUID().toString());
+        final String email = username+"@abc.def";
+        final String name = "testuser";
+        final GroupDto contentCreator =
+            getGroups().list("CONTENT_CREATOR").iterator().next();
+
+        // Create the user
+        final UserDto u =
+            new UserDto()
+                .setEmail(email)
+                .setUsername(username)
+                .setName(name)
+                .setRoles(Collections.singleton(contentCreator.getId()))
+                .setMetadata(Collections.singletonMap("key", "value"))
+                .setPassword("Testtest00-");
+
+        return getUsers().createUser(u);
+    }
 
     /**
      * Update an existing file to be a text file with the specified text.

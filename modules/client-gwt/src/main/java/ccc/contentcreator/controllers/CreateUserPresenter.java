@@ -27,10 +27,6 @@
 package ccc.contentcreator.controllers;
 
 import static ccc.contentcreator.validation.Validations.*;
-
-import java.util.HashMap;
-import java.util.HashSet;
-
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.UniqueUsernameAction;
 import ccc.contentcreator.api.UIMessages;
@@ -141,14 +137,13 @@ public class CreateUserPresenter implements EditController {
     private Runnable createUser() {
         return new Runnable() {
             public void run() {
-                final String p = getDialog().getPassword1().getValue();
-                final UserDto d = new UserDto(
-                    getDialog().getEmail().getValue(),
-                    new Username(getDialog().getUsername().getValue()),
-                    getDialog().getName().getValue(),
-                    new HashSet<String>(),
-                    new HashMap<String, String>(),
-                    p);
+
+                final UserDto d = new UserDto();
+                d.setEmail(getDialog().getEmail().getValue());
+                d.setUsername(
+                    new Username(getDialog().getUsername().getValue()));
+                d.setName(getDialog().getName().getValue());
+                d.setPassword(getDialog().getPassword1().getValue());
 
                 new CreateUserAction(d){
                     @Override protected void onOK(final Response response) {

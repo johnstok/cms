@@ -40,6 +40,104 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testAccessibilityCheckRespectsAclCombinations()
+    throws Exception {
+
+        // ARRANGE
+        final User tom = new User(new Username("tom"), "password");
+        tom.addRole(BAZ);
+        final User dick = new User(new Username("dick"), "password");
+        dick.addRole(FOO);
+        final User harry = new User(new Username("harry"), "password");
+        harry.addRole(FOO);
+
+        final Folder f = new Folder();
+        f.setUserAcl(Arrays.asList(new User[]{tom, harry}));
+        final Page p = new Page();
+        p.roles(Arrays.asList(new Group[]{FOO, BAR}));
+        f.add(p);
+
+        // ACT
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(p.isAccessibleTo(harry));
+        assertFalse(p.isAccessibleTo(tom)); // Doesn't have FOO or BAR.
+        assertFalse(p.isAccessibleTo(dick)); // Isn't tom or harry.
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testAccessibilityCheckRespectsAclUsersFromParent()
+    throws Exception {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.setUserAcl(Collections.singleton(_jill));
+        final Page p = new Page();
+        f.add(p);
+
+        // ACT
+        final boolean isAccessible = p.isAccessibleTo(_jill);
+        final boolean isNotAccessible = p.isAccessibleTo(_jack);
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(isAccessible);
+        assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testAccessibilityCheckAllowsAclUser() {
+
+        // ARRANGE
+        final Page p = new Page();
+        p.setUserAcl(Collections.singleton(_jill));
+
+        // ACT
+        final boolean isAccessible = p.isAccessibleTo(_jill);
+        final boolean isNotAccessible = p.isAccessibleTo(_jack);
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(isAccessible);
+        assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testAccessibilityCheckAllowsAclUserWithGroupsInAcl() {
+
+        // ARRANGE
+        final Page p = new Page();
+        p.roles(Collections.singleton(FOO));
+        p.setUserAcl(Collections.singleton(_jill));
+
+        // ACT
+        final boolean isAccessible = p.isAccessibleTo(_jill);
+        final boolean isNotAccessible = p.isAccessibleTo(_jack);
+
+        // ASSERT
+        assertTrue(p.isSecure());
+        assertTrue(isAccessible);
+        assertFalse(isNotAccessible);
+    }
+
+
+    /**
+     * Test.
      */
     public void testAccessibilityCheckHandlesNullUser() {
 
@@ -61,7 +159,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.roles(Collections.singleton("foo"));
+        p.roles(Collections.singleton(FOO));
 
         // ACT
         final boolean isAccessible = p.isAccessibleTo(null);
@@ -81,7 +179,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final Folder f = new Folder();
         final Page p = new Page();
-        p.roles(Arrays.asList("foo"));
+        p.roles(Arrays.asList(FOO));
         f.add(p);
 
         // ACT
@@ -101,9 +199,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList("foo"));
+        f.roles(Arrays.asList(FOO));
         final Page p = new Page();
-        p.roles(Arrays.asList("bar"));
+        p.roles(Arrays.asList(BAR));
         f.add(p);
 
         // ACT
@@ -123,7 +221,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList("foo"));
+        f.roles(Arrays.asList(FOO));
         final Page p = new Page();
         f.add(p);
 
@@ -162,7 +260,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.roles(Collections.singleton("foo"));
+        p.roles(Collections.singleton(FOO));
 
         // ACT
         final boolean secure = p.isSecure();
@@ -197,13 +295,13 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList("bar"));
+        f.roles(Arrays.asList(BAR));
         final Resource r = new Page();
-        r.roles(Arrays.asList("foo"));
+        r.roles(Arrays.asList(FOO));
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole("foo");
+        tom.addRole(FOO);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -219,7 +317,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList(new String[]{}));
+        r.roles(Arrays.asList(new Group[]{}));
         final User tom = new User(new Username("paul"), "password");
 
         // ACT
@@ -236,9 +334,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList("foo"));
+        r.roles(Arrays.asList(FOO));
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole("foo");
+        tom.addRole(FOO);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -254,9 +352,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList("foo", "bar"));
+        r.roles(Arrays.asList(FOO, BAR));
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole("foo");
+        tom.addRole(FOO);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -273,14 +371,14 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList("bar", "baz"));
+        f.roles(Arrays.asList(BAR, BAZ));
         final Resource r = new Page();
-        r.roles(Arrays.asList("foo", "foz"));
+        r.roles(Arrays.asList(FOO, FOZ));
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole("foo");
-        tom.addRole("bar");
+        tom.addRole(FOO);
+        tom.addRole(BAR);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -296,7 +394,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList("foo"));
+        r.roles(Arrays.asList(FOO));
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(_jack);
@@ -313,19 +411,19 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList("foo"));
+        f.roles(Arrays.asList(FOO));
         final Page r = new Page();
-        r.roles(Arrays.asList("bar"));
+        r.roles(Arrays.asList(BAR));
         f.add(r);
 
 
         // ACT
-        final Collection<String> roles = r.computeRoles();
+        final Collection<Group> roles = r.computeRoles();
 
         // ASSERT
         assertEquals(2, roles.size());
-        assertTrue(roles.contains("foo"));
-        assertTrue(roles.contains("bar"));
+        assertTrue(roles.contains(FOO));
+        assertTrue(roles.contains(BAR));
     }
 
     /**
@@ -337,12 +435,12 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
 
         // ACT
-        r.roles(Arrays.asList("foo", "bar"));
+        r.roles(Arrays.asList(FOO, BAR));
 
         // ASSERT
         assertEquals(2, r.roles().size());
-        assertTrue(r.roles().contains("foo"));
-        assertTrue(r.roles().contains("bar"));
+        assertTrue(r.roles().contains(FOO));
+        assertTrue(r.roles().contains(BAR));
     }
 
     /**
@@ -1306,4 +1404,8 @@ public final class ResourceTest extends TestCase {
     }
 
     private static final int WAIT_LENGTH = 100;
+    private static final Group FOO = new Group("foo");
+    private static final Group BAR = new Group("bar");
+    private static final Group BAZ = new Group("baz");
+    private static final Group FOZ = new Group("foz");
 }
