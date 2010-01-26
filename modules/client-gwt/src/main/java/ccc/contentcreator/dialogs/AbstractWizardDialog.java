@@ -134,6 +134,19 @@ public abstract class AbstractWizardDialog
         _cards.remove(component);
     }
 
+    /**
+     * Replaces card.
+     *
+     * @param original The component to replace.
+     * @param replace The new component.
+     */
+    public void replaceCard(final Component original, final Component replace) {
+        final int index = _cards.indexOf(original);
+        if (index > 0) {
+            _cards.set(index, replace);
+        }
+    }
+
     private int currentIndex(final Component current) {
         if (current != null &&_cards.size() > 0) {
             return _cards.indexOf(current);

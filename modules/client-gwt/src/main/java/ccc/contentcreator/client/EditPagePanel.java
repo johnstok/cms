@@ -431,8 +431,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      */
     public void createFields(final String definition) {
         _definition = definition;
-        _pageElements.clear();
-        removeAll();
         if (definition == null || definition.trim().equals("")) {
             return;
         }

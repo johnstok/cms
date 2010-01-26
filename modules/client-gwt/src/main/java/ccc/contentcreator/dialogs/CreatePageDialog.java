@@ -100,7 +100,7 @@ public class CreatePageDialog
     private static final int NAME_COLUMN_WIDTH = 260;
 
     private final ContentPanel _firstWizardPage = new ContentPanel();
-    private final EditPagePanel _secondWizardPage = new EditPagePanel();
+    private EditPagePanel _secondWizardPage = new EditPagePanel();
     private final ContentPanel _thirdWizardPage = new ContentPanel();
 
     private final ListStore<TemplateSummaryModelData> _templatesStore =
@@ -153,11 +153,10 @@ public class CreatePageDialog
         final Listener<GridEvent<?>> gridEventlistener =
             new Listener<GridEvent<?>>() {
             public void handleEvent(final GridEvent<?> gridEvent) {
-                final TemplateSummaryModelData template =
+                final TemplateSummaryModelData t =
                     (TemplateSummaryModelData)
                         gridEvent.getGrid().getSelectionModel().getSelectedItem();
-                _secondWizardPage.createFields(template.getDefinition());
-                _description.setText(template.getDescription());
+                updateSecondPage(t.getDefinition(), t.getDescription());
             }
         };
         _templateGrid.addListener(Events.RowClick, gridEventlistener);
@@ -243,8 +242,7 @@ public class CreatePageDialog
                 cb.setValue(Boolean.TRUE);
                 _templateGrid.disable();
                 _templateGrid.getSelectionModel().deselectAll();
-                _secondWizardPage.createFields(ts.getDefinition());
-                _description.setText(ts.getDescription());
+                updateSecondPage(ts.getDefinition(), ts.getDescription());
             }
 
         }.execute();
@@ -272,8 +270,8 @@ public class CreatePageDialog
                                             response.getText()).isObject()));
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            _secondWizardPage.createFields(ts.getDefinition());
-                            _description.setText(ts.getDescription());
+                            updateSecondPage(ts.getDefinition(),
+                                ts.getDescription());
                         }
 
                     }.execute();
@@ -293,7 +291,8 @@ public class CreatePageDialog
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final List<PageElement> definitions =_secondWizardPage.pageElements();
+                final List<PageElement> definitions =
+                    _secondWizardPage.pageElements();
                 final Set<Paragraph> paragraphs =
                     new HashSet<Paragraph>();
 
@@ -302,7 +301,8 @@ public class CreatePageDialog
                 Validate.callTo(createPage(paragraphs))
                     .check(Validations.notEmpty(_secondWizardPage.name()))
                     .stopIfInError()
-                    .check(Validations.notValidResourceName(_secondWizardPage.name()))
+                    .check(Validations.notValidResourceName(
+                        _secondWizardPage.name()))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
                         _parent, _secondWizardPage.name()))
@@ -379,5 +379,16 @@ public class CreatePageDialog
             }
             return value;
         }
+    }
+
+    private void updateSecondPage(final String definition,
+                                  final String description) {
+        final EditPagePanel second = new EditPagePanel();
+        second.createFields(definition);
+        second.setScrollMode(Style.Scroll.AUTOY);
+        replaceCard(_secondWizardPage, second);
+        _secondWizardPage = second;
+        _description.setText(description);
+        refresh();
     }
 }
