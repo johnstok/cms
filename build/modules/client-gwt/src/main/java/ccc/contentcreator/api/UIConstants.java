@@ -1645,11 +1645,19 @@ public interface UIConstants extends Constants {
     String spam();
 
     /**
-     * "Inner HTML".
+    * "Text of the link".
+    *
+    * @return The constant, in the appropriate locale.
+    */
+    @DefaultStringValue("Text of the link")
+    String textOfTheLink();
+
+    /**
+     * "Alternative text".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Inner HTML")
-    String innerHTML();
+    @DefaultStringValue("Alternative text")
+    String alternativeText();
 
 }
