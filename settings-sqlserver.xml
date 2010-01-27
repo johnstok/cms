@@ -1,0 +1,33 @@
+<settings
+    xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <mirrors>
+        <mirror>
+            <id>apollo</id>
+            <mirrorOf>*</mirrorOf>
+            <url>http://apollo-vm226:8081/nexus/content/groups/public</url>
+        </mirror>
+    </mirrors>
+    <profiles>
+        <profile>
+            <activation><activeByDefault>true</activeByDefault></activation>
+            
+            <properties>
+            
+                <!-- Application properties -->
+                <application.prefix>cc7</application.prefix>
+                <application.name>${application.prefix}</application.name>
+                
+                
+                <!-- Database properties -->
+                <ccc.db.connection.url>jdbc:sqlserver://hestia:1260;DatabaseName=CCC</ccc.db.connection.url>
+                <application.db-dialect>org.hibernate.dialect.SQLServerDialect</application.db-dialect>
+                <application.db-datasource>mssql-ds.xml</application.db-datasource>
+                <application.db-username>ci</application.db-username>
+                <application.db-password>17c8a25fb9bf</application.db-password>
+
+            </properties>
+        </profile>
+    </profiles>
+</settings>
