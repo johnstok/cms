@@ -103,7 +103,7 @@ public final class MigrateMhtsFiles extends CccApp {
 
 
         // TODO: Find a better way to handle this.
-        migration.migrate(282, "/content/Members_Area");
+        migration.migrate(282, "/Members_Area");
     }
 
     /**
