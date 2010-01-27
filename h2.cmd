@@ -7,4 +7,4 @@ echo  -----------------
 %SystemDrive%
 cd \
 cd %USERPROFILE%\.m2\repository\com\h2database\h2\%h2_version%
-java -Xms512m -Xmx768m -cp h2-%h2_version%.jar org.h2.tools.Server -tcpAllowOthers
+java -Xmx512m -cp h2-%h2_version%.jar org.h2.tools.Server -tcpAllowOthers
