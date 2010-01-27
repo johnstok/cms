@@ -1,0 +1,33 @@
+<settings
+    xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <mirrors>
+        <mirror>
+            <id>apollo</id>
+            <mirrorOf>*</mirrorOf>
+            <url>http://apollo-vm226:8081/nexus/content/groups/public</url>
+        </mirror>
+    </mirrors>
+    <profiles>
+        <profile>
+            <activation><activeByDefault>true</activeByDefault></activation>
+            
+            <properties>
+            
+                <!-- Application properties -->
+                <application.prefix>cc7</application.prefix>
+                <application.name>${application.prefix}</application.name>
+                
+                
+                <!-- Database properties -->
+                <ccc.db.connection.url>jdbc:mysql://helios:3306/ci?characterEncoding=UTF-8</ccc.db.connection.url>
+                <application.db-dialect>org.hibernate.dialect.MySQL5InnoDBDialect</application.db-dialect>
+                <application.db-datasource>mysql-ds.xml</application.db-datasource>
+                <application.db-username>ci</application.db-username>
+                <application.db-password>c97b6a3a38ff</application.db-password>
+
+            </properties>
+        </profile>
+    </profiles>
+</settings>
