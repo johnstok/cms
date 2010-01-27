@@ -57,6 +57,29 @@
             </build>
         </profile>
         <profile>
+            <id>deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jboss-maven-plugin</artifactId>
+                        <configuration>
+                            <fileName>${basedir}/../application-ear/target/${application.name}.ear</fileName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>undeploy</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>acceptance-browser</id>
             <build>
                 <plugins>
