@@ -217,7 +217,7 @@ abstract class AbstractEJB {
     protected RestException fail(final CccCheckedException e) {
         _context.setRollbackOnly();  // CRITICAL
         final RestException cfe = e.toRemoteException();
-        log.info(
+        log.debug(
             "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
         return cfe;
     }
