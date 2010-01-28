@@ -1660,4 +1660,37 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Alternative text")
     String alternativeText();
 
+    /**
+     * "Groups".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Groups")
+    String groups();
+
+    /**
+     * "Add".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Add")
+    String add();
+
+    /**
+     * "Select groups".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Select groups")
+    String selectGroups();
+
+    /**
+     * "Select users".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Select users")
+    String selectUsers();
+
+
 }
