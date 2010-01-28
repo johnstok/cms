@@ -31,21 +31,51 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.contentcreator.actions.GetUserAction;
+import ccc.contentcreator.actions.ListUsers;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
+import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.GroupDto;
+import ccc.rest.dto.UserDto;
 
+import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.form.ListField;
+import com.extjs.gxt.ui.client.util.Margins;
+import com.extjs.gxt.ui.client.widget.CheckBoxListView;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Window;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
+import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
+import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.http.client.Response;
 
 
 /**
- * Dialog for updating the security roles associated with a resource.
+ * Dialog for updating the access control associated with a resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -53,14 +83,28 @@ public class UpdateResourceRolesDialog
     extends
         AbstractEditDialog {
 
-    private final UUID _resourceId;
-    private final ListField<BaseModelData> _groups =
-        new ListField<BaseModelData>();
-    private final AclDto _acl;
+    private CheckBoxSelectionModel<ModelData> _groupSM;
+    private final ListStore<ModelData> _groupStore = new ListStore<ModelData>();
+    private Grid<ModelData> _groupGrid;
+    private final ContentPanel _groupGridPanel = new ContentPanel();
 
-    private static final int DIALOG_WIDTH = 400;
-    private static final int DIALOG_HEIGHT = 300;
-    private static final int ROLES_HEIGHT = 200;
+    private CheckBoxSelectionModel<UserSummaryModelData> _userSM;
+    private ListStore<UserSummaryModelData> _userStore =
+        new ListStore<UserSummaryModelData>();
+    private Grid<UserSummaryModelData> _userGrid;
+    private final ContentPanel _userGridPanel = new ContentPanel();
+
+    private final UUID _resourceId;
+
+    private final AclDto _acl;
+    private Collection<GroupDto> _allGroups;
+
+    private static final int DIALOG_WIDTH = 440;
+    private static final int GRID_WIDTH = 200;
+    private static final int GRIDPANEL_WIDTH = 210;
+    private static final int DIALOG_HEIGHT = 400;
+    private static final int ROLES_HEIGHT = 300;
+    private static final int DEFAULT_MARGIN = 5;
 
     /**
      * Constructor.
@@ -76,27 +120,133 @@ public class UpdateResourceRolesDialog
               new IGlobalsImpl());
         _resourceId = resourceId;
         _acl = acl;
+        _allGroups = allGroups;
+        setLayout(new RowLayout(Orientation.HORIZONTAL));
+        setLayout(new BorderLayout());
 
         setWidth(DIALOG_WIDTH);
         setHeight(DIALOG_HEIGHT);
 
-        final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
-        final List<BaseModelData> selected = new ArrayList<BaseModelData>();
+        createGroupPanel(allGroups);
+        createUsersPanel();
+    }
+
+    private void createUsersPanel() {
+
+        final List<UserSummaryModelData> uData =
+            new ArrayList<UserSummaryModelData>();
+        for (final UUID u : _acl.getUsers()) {
+            new GetUserAction(u) {
+                @Override
+                protected void execute(final UserDto user) {
+                    final UserSummaryModelData d =
+                        new UserSummaryModelData(user);
+                    uData.add(d);
+                    _userStore.add(d);
+                }
+            }.execute();
+
+        }
+        _userGridPanel.setBodyBorder(false);
+        _userGridPanel.setBorders(true);
+        _userGridPanel.setHeading(getConstants().users());
+        _userGridPanel.setHeaderVisible(true);
+        _userGridPanel.setLayout(new FitLayout());
+        _userGridPanel.setWidth(GRIDPANEL_WIDTH);
+
+        final ColumnModel ucm = defineUserColumnModel();
+
+        _userStore.add(uData);
+        _userGrid = new Grid<UserSummaryModelData>(_userStore, ucm);
+        _userGrid.setAutoExpandColumn("USERNAME");
+        _userGrid.setSelectionModel(_userSM);
+        _userGrid.addPlugin(_userSM);
+        _userGrid.setBorders(false);
+        _userGrid.setHeight(ROLES_HEIGHT);
+        _userGrid.setWidth(GRID_WIDTH);
+        _userGrid.getSelectionModel().setSelectionMode(SelectionMode.MULTI);
+
+        _userGridPanel.add(_userGrid);
+
+        final BorderLayoutData centerData =
+            new BorderLayoutData(LayoutRegion.CENTER);
+        centerData.setMargins(new Margins(DEFAULT_MARGIN));
+
+        addUserToolbar();
+        add(_userGridPanel, centerData);
+    }
+
+    private void createGroupPanel(final Collection<GroupDto> allGroups) {
+
+        final List<ModelData> gData = new ArrayList<ModelData>();
         for (final GroupDto g : allGroups) {
             final BaseModelData d = new BaseModelData();
-            d.set("name", g.getName());
-            d.set("id", g.getId());
-            gData.add(d);
-            if (acl.getGroups().contains((g.getId()))) { selected.add(d); }
+            if (_acl.getGroups().contains((g.getId()))) {
+                d.set("name", g.getName());
+                d.set("id", g.getId());
+                gData.add(d);
+            }
         }
 
-        _groups.setFieldLabel(getUiConstants().roles());
-        _groups.setHeight(ROLES_HEIGHT);
-        _groups.setStore(gData);
-        _groups.setSelection(selected);
-        _groups.setDisplayField("name");
-        addField(_groups);
+        _groupGridPanel.setBodyBorder(false);
+        _groupGridPanel.setBorders(true);
+        _groupGridPanel.setHeading(getConstants().groups());
+        _groupGridPanel.setHeaderVisible(true);
+        _groupGridPanel.setLayout(new FitLayout());
+        _groupGridPanel.setWidth(GRIDPANEL_WIDTH);
+
+        final ColumnModel cm = defineGroupColumnModel();
+
+        _groupStore.add(gData);
+        _groupGrid = new Grid<ModelData>(_groupStore, cm);
+        _groupGrid.setAutoExpandColumn("name");
+        _groupGrid.setSelectionModel(_groupSM);
+        _groupGrid.addPlugin(_groupSM);
+        _groupGrid.setBorders(false);
+        _groupGrid.setHeight(ROLES_HEIGHT);
+        _groupGrid.setWidth(GRID_WIDTH);
+        _groupGrid.getSelectionModel().setSelectionMode(SelectionMode.MULTI);
+
+        _groupGridPanel.add(_groupGrid);
+
+        final BorderLayoutData westData =
+            new BorderLayoutData(LayoutRegion.WEST);
+        westData.setMargins(new Margins(DEFAULT_MARGIN));
+        addGroupToolbar();
+        add(_groupGridPanel, westData);
     }
+
+
+    private ColumnModel defineGroupColumnModel() {
+        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+        _groupSM = new CheckBoxSelectionModel<ModelData>();
+        configs.add(_groupSM.getColumn());
+
+        final ColumnConfig keyColumn =
+            new ColumnConfig("name", constants().name(), 100);
+        final TextField<String> keyField = new TextField<String>();
+        keyField.setReadOnly(true);
+        configs.add(keyColumn);
+
+        return new ColumnModel(configs);
+    }
+
+    private ColumnModel defineUserColumnModel() {
+        final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+        _userSM = new CheckBoxSelectionModel<UserSummaryModelData>();
+        configs.add(_userSM.getColumn());
+
+        final ColumnConfig keyColumn =
+            new ColumnConfig("USERNAME", constants().name(), 100);
+        final TextField<String> keyField = new TextField<String>();
+        keyField.setReadOnly(true);
+        configs.add(keyColumn);
+
+        return new ColumnModel(configs);
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -106,14 +256,18 @@ public class UpdateResourceRolesDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 final List<UUID> newGroups = new ArrayList<UUID>();
-                for (final BaseModelData selected : _groups.getSelection()) {
+                for (final ModelData selected : _groupStore.getModels()) {
                     newGroups.add(selected.<UUID>get("id"));
+                }
+                final List<UUID> newUsers = new ArrayList<UUID>();
+                for (final UserSummaryModelData um : _userStore.getModels()) {
+                    newUsers.add(um.getId());
                 }
 
                 final AclDto acl =
                     new AclDto()
                         .setGroups(newGroups)
-                        .setUsers(_acl.getUsers());
+                        .setUsers(newUsers);
 
                 new UpdateResourceRolesAction(_resourceId, acl) {
                     /** {@inheritDoc} */
@@ -124,5 +278,213 @@ public class UpdateResourceRolesDialog
                 }.execute();
             }
         };
+    }
+
+    private void addGroupToolbar() {
+
+        final ToolBar toolBar = new ToolBar();
+        toolBar.add(new SeparatorToolItem());
+
+        final Button add = new Button(constants().add());
+        add.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                new GroupSelector(_allGroups).show();
+            }
+        });
+        toolBar.add(add);
+        toolBar.add(new SeparatorToolItem());
+
+        final Button remove = new Button(constants().remove());
+        remove.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                for (final ModelData item
+                        : _groupGrid.getSelectionModel().getSelectedItems()) {
+                    _groupStore.remove(item);
+                }
+            }
+        });
+        toolBar.add(remove);
+
+        toolBar.add(new SeparatorToolItem());
+        _groupGridPanel.setBottomComponent(toolBar);
+    }
+
+    private void addUserToolbar() {
+
+        final ToolBar toolBar = new ToolBar();
+        toolBar.add(new SeparatorToolItem());
+
+        final Button add = new Button(constants().add());
+        add.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                new ListUsers() {
+
+                    @Override
+                    protected void execute(final Collection<UserDto> users) {
+                        new UserSelector(users).show();
+                    }
+
+                }.execute();
+            }
+        });
+        toolBar.add(add);
+        toolBar.add(new SeparatorToolItem());
+
+        final Button remove = new Button(constants().remove());
+        remove.addSelectionListener(new SelectionListener<ButtonEvent>() {
+            @Override public void componentSelected(final ButtonEvent ce) {
+                for (final UserSummaryModelData item
+                    : _userGrid.getSelectionModel().getSelectedItems()) {
+                    _userStore.remove(item);
+                }
+            }
+        });
+        toolBar.add(remove);
+
+        toolBar.add(new SeparatorToolItem());
+        _userGridPanel.setBottomComponent(toolBar);
+    }
+
+    /**
+     * Group selector.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private class GroupSelector extends Window {
+        private static final int WIDTH = 200;
+
+        /**
+         * Constructor.
+         *
+         */
+        public GroupSelector(final Collection<GroupDto> allGroups) {
+            setWidth(WIDTH);
+            setModal(true);
+            setBodyStyle("backgroundColor: white;");
+            setScrollMode(Scroll.AUTOY);
+            setHeading(getConstants().selectGroups());
+
+            final ContentPanel panel = new ContentPanel();
+            panel.setCollapsible(false);
+            panel.setAnimCollapse(false);
+            panel.setFrame(true);
+            panel.setHeaderVisible(false);
+            panel.setBodyBorder(false);
+
+            final ListStore<ModelData> gData = new ListStore<ModelData>();
+            for (final GroupDto g : allGroups) {
+                final BaseModelData d = new BaseModelData();
+                boolean contains = false;
+                for (final ModelData m : _groupStore.getModels()) {
+                    if (m.get("id") == g.getId()) {
+                        contains = true;
+                    }
+                }
+                if (!contains) {
+                    d.set("name", g.getName());
+                    d.set("id", g.getId());
+                    gData.add(d);
+                }
+            }
+
+            final CheckBoxListView<ModelData> view =
+                new CheckBoxListView<ModelData>();
+            view.setStore(gData);
+            view.setDisplayProperty("name");
+            panel.add(view);
+            panel.addButton(new Button(getConstants().add(),
+                new SelectionListener<ButtonEvent>() {
+
+                @Override
+                public void componentSelected(final ButtonEvent ce) {
+                    for (final ModelData m : view.getChecked()) {
+                        _groupStore.add(m);
+                    }
+                    hide();
+                }
+
+            }));
+            add(panel);
+        }
+    }
+
+    /**
+     * User selector.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private class UserSelector extends Window {
+        private static final int WIDTH = 400;
+        private static final int HEIGHT = 485;
+        private static final int PANEL_HEIGHT = 450;
+        private static final int VIEW_HEIGHT = 400;
+        private static final int PAGER_LIMIT = 15;
+        private final PagingToolBar _pagerBar;
+
+        private CheckBoxListView<UserSummaryModelData> _view =
+            new CheckBoxListView<UserSummaryModelData>();
+        /**
+         * Constructor.
+         *
+         */
+        public UserSelector(final Collection<UserDto> allUsers) {
+            setWidth(WIDTH);
+            setHeight(HEIGHT);
+            setModal(true);
+            setBodyStyle("backgroundColor: white;");
+            setScrollMode(Scroll.AUTOY);
+            setHeading(getConstants().selectUsers());
+            _view.setHeight(VIEW_HEIGHT);
+
+            final ContentPanel panel = new ContentPanel();
+            panel.setCollapsible(false);
+            panel.setAnimCollapse(false);
+            panel.setFrame(true);
+            panel.setHeaderVisible(false);
+            panel.setBodyBorder(false);
+            panel.setHeight(PANEL_HEIGHT);
+
+            final List<UserDto> users = new ArrayList<UserDto>();
+            for (final UserDto u : allUsers) {
+                boolean contains = false;
+                for (final UserSummaryModelData m : _userStore.getModels()) {
+                    if (m.getId() == u.getId()) {
+                        contains = true;
+                    }
+                }
+                if (!contains) {
+                    users.add(u);
+                }
+            }
+            _pagerBar = new PagingToolBar(PAGER_LIMIT);
+            final PagingModelMemoryProxy proxy =
+                new PagingModelMemoryProxy(DataBinding.bindUserSummary(users));
+
+            final PagingLoader<PagingLoadResult<UserSummaryModelData>> loader =
+                new BasePagingLoader<PagingLoadResult
+                <UserSummaryModelData>>(proxy);
+            loader.setRemoteSort(true);
+            _pagerBar.bind(loader);
+            _view.setStore(new ListStore<UserSummaryModelData>(loader));
+            loader.load(0, PAGER_LIMIT);
+
+
+            _view.setDisplayProperty("USERNAME");
+            panel.add(_view);
+            panel.addButton(new Button(getConstants().add(),
+                new SelectionListener<ButtonEvent>() {
+
+                @Override
+                public void componentSelected(final ButtonEvent ce) {
+                    for (final UserSummaryModelData m : _view.getChecked()) {
+                        _userStore.add(m);
+                    }
+                    hide();
+                }
+            }));
+            panel.setBottomComponent(_pagerBar);
+            add(panel);
+        }
+
     }
 }
