@@ -58,7 +58,7 @@
             </build>
         </profile>
         <profile>
-            <id>deploy</id>
+            <id>undeploy</id>
             <build>
                 <plugins>
                     <plugin>
