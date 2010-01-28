@@ -52,6 +52,7 @@ import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
+import ccc.commons.Exceptions;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
@@ -60,6 +61,7 @@ import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
+import ccc.domain.User;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -1009,17 +1011,35 @@ public class ResourcesEJB
                                             final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
-        // FIXME: Security not applied!!!
+        User u = null;
+        try {
+            u = currentUser();
+        } catch (final EntityNotFoundException e) {
+            Exceptions.swallow(e); // Leave user as NULL.
+        }
+
         return
             mapResources(
-                getResources().list(
-                    null,
-                    tag,
-                    (null==before)?null:new Date(before.longValue()),
-                    (null==after)?null:new Date(after.longValue()),
-                    sort,
-                    order,
-                    pageNo,
-                    pageSize));
+                filterAccessibleTo(u,
+                    getResources().list(
+                        null,
+                        tag,
+                        (null==before)?null:new Date(before.longValue()),
+                        (null==after)?null:new Date(after.longValue()),
+                        sort,
+                        order,
+                        pageNo,
+                        pageSize)));
+    }
+
+
+    private Collection<? extends Resource> filterAccessibleTo(
+                                            final User u,
+                                            final List<Resource> resources) {
+        final List<Resource> accessible = new ArrayList<Resource>();
+        for (final Resource r : resources) {
+            if (r.isAccessibleTo(u)) { accessible.add(r); }
+        }
+        return accessible;
     }
 }
