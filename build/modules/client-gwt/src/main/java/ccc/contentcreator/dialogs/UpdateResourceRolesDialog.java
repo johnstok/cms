@@ -34,7 +34,6 @@ import java.util.UUID;
 import ccc.contentcreator.actions.GetUserAction;
 import ccc.contentcreator.actions.ListUsers;
 import ccc.contentcreator.actions.UpdateResourceRolesAction;
-import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.AclDto;
@@ -43,21 +42,14 @@ import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
-import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
-import com.extjs.gxt.ui.client.widget.CheckBoxListView;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
@@ -68,7 +60,6 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.http.client.Response;
@@ -84,7 +75,7 @@ public class UpdateResourceRolesDialog
         AbstractEditDialog {
 
     private CheckBoxSelectionModel<ModelData> _groupSM;
-    private final ListStore<ModelData> _groupStore = new ListStore<ModelData>();
+    final ListStore<ModelData> _groupStore = new ListStore<ModelData>();
     private Grid<ModelData> _groupGrid;
     private final ContentPanel _groupGridPanel = new ContentPanel();
 
@@ -288,7 +279,10 @@ public class UpdateResourceRolesDialog
         final Button add = new Button(constants().add());
         add.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                new GroupSelector(_allGroups).show();
+                new GroupACLSelector(
+                    _groupStore,
+                    _allGroups,
+                    getConstants()).show();
             }
         });
         toolBar.add(add);
@@ -321,7 +315,10 @@ public class UpdateResourceRolesDialog
 
                     @Override
                     protected void execute(final Collection<UserDto> users) {
-                        new UserSelector(users).show();
+                        new UserACLSelector(
+                            _userStore,
+                            users,
+                            getConstants()).show();
                     }
 
                 }.execute();
@@ -343,148 +340,5 @@ public class UpdateResourceRolesDialog
 
         toolBar.add(new SeparatorToolItem());
         _userGridPanel.setBottomComponent(toolBar);
-    }
-
-    /**
-     * Group selector.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private class GroupSelector extends Window {
-        private static final int WIDTH = 200;
-
-        /**
-         * Constructor.
-         *
-         */
-        public GroupSelector(final Collection<GroupDto> allGroups) {
-            setWidth(WIDTH);
-            setModal(true);
-            setBodyStyle("backgroundColor: white;");
-            setScrollMode(Scroll.AUTOY);
-            setHeading(getConstants().selectGroups());
-
-            final ContentPanel panel = new ContentPanel();
-            panel.setCollapsible(false);
-            panel.setAnimCollapse(false);
-            panel.setFrame(true);
-            panel.setHeaderVisible(false);
-            panel.setBodyBorder(false);
-
-            final ListStore<ModelData> gData = new ListStore<ModelData>();
-            for (final GroupDto g : allGroups) {
-                final BaseModelData d = new BaseModelData();
-                boolean contains = false;
-                for (final ModelData m : _groupStore.getModels()) {
-                    if (m.get("id") == g.getId()) {
-                        contains = true;
-                    }
-                }
-                if (!contains) {
-                    d.set("name", g.getName());
-                    d.set("id", g.getId());
-                    gData.add(d);
-                }
-            }
-
-            final CheckBoxListView<ModelData> view =
-                new CheckBoxListView<ModelData>();
-            view.setStore(gData);
-            view.setDisplayProperty("name");
-            panel.add(view);
-            panel.addButton(new Button(getConstants().add(),
-                new SelectionListener<ButtonEvent>() {
-
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    for (final ModelData m : view.getChecked()) {
-                        _groupStore.add(m);
-                    }
-                    hide();
-                }
-
-            }));
-            add(panel);
-        }
-    }
-
-    /**
-     * User selector.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private class UserSelector extends Window {
-        private static final int WIDTH = 400;
-        private static final int HEIGHT = 485;
-        private static final int PANEL_HEIGHT = 450;
-        private static final int VIEW_HEIGHT = 400;
-        private static final int PAGER_LIMIT = 15;
-        private final PagingToolBar _pagerBar;
-
-        private CheckBoxListView<UserSummaryModelData> _view =
-            new CheckBoxListView<UserSummaryModelData>();
-        /**
-         * Constructor.
-         *
-         */
-        public UserSelector(final Collection<UserDto> allUsers) {
-            setWidth(WIDTH);
-            setHeight(HEIGHT);
-            setModal(true);
-            setBodyStyle("backgroundColor: white;");
-            setScrollMode(Scroll.AUTOY);
-            setHeading(getConstants().selectUsers());
-            _view.setHeight(VIEW_HEIGHT);
-
-            final ContentPanel panel = new ContentPanel();
-            panel.setCollapsible(false);
-            panel.setAnimCollapse(false);
-            panel.setFrame(true);
-            panel.setHeaderVisible(false);
-            panel.setBodyBorder(false);
-            panel.setHeight(PANEL_HEIGHT);
-
-            final List<UserDto> users = new ArrayList<UserDto>();
-            for (final UserDto u : allUsers) {
-                boolean contains = false;
-                for (final UserSummaryModelData m : _userStore.getModels()) {
-                    if (m.getId() == u.getId()) {
-                        contains = true;
-                    }
-                }
-                if (!contains) {
-                    users.add(u);
-                }
-            }
-            _pagerBar = new PagingToolBar(PAGER_LIMIT);
-            final PagingModelMemoryProxy proxy =
-                new PagingModelMemoryProxy(DataBinding.bindUserSummary(users));
-
-            final PagingLoader<PagingLoadResult<UserSummaryModelData>> loader =
-                new BasePagingLoader<PagingLoadResult
-                <UserSummaryModelData>>(proxy);
-            loader.setRemoteSort(true);
-            _pagerBar.bind(loader);
-            _view.setStore(new ListStore<UserSummaryModelData>(loader));
-            loader.load(0, PAGER_LIMIT);
-
-
-            _view.setDisplayProperty("USERNAME");
-            panel.add(_view);
-            panel.addButton(new Button(getConstants().add(),
-                new SelectionListener<ButtonEvent>() {
-
-                @Override
-                public void componentSelected(final ButtonEvent ce) {
-                    for (final UserSummaryModelData m : _view.getChecked()) {
-                        _userStore.add(m);
-                    }
-                    hide();
-                }
-            }));
-            panel.setBottomComponent(_pagerBar);
-            add(panel);
-        }
-
     }
 }
