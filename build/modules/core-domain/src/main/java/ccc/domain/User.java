@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import ccc.rest.dto.UserDto;
 import ccc.serialization.Json;
@@ -219,7 +220,11 @@ public class User extends Entity {
         require().maxLength(key, MAXIMUM_DATUM_KEY_LENGTH);
         require().containsNoBrackets(key);
         require().containsNoBrackets(value);
-        _metadata.put(key, value);
+        if (value.isEmpty()) {
+            clearMetadatum(key);
+        } else {
+            _metadata.put(key, value);
+        }
     }
 
     /**
@@ -265,7 +270,13 @@ public class User extends Entity {
      * @param metadata The metadata to add, as a hashmap.
      */
     public void addMetadata(final Map<String, String> metadata) {
-        _metadata.putAll(metadata);
+        for (final Entry<String, String> e : metadata.entrySet()) {
+            if (e.getValue() == null || e.getValue().isEmpty()) {
+                clearMetadatum(e.getKey());
+            } else {
+                _metadata.put(e.getKey(), e.getValue());
+            }
+        }
     }
 
 
