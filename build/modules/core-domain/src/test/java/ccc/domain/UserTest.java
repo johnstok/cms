@@ -34,7 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.types.CreatorRoles;
+import ccc.types.Permission;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
 
@@ -406,9 +406,9 @@ public class UserTest
     }
 
     private static final Group SITE_BUILDER =
-        new Group(CreatorRoles.SITE_BUILDER);
+        new Group(Permission.SITE_BUILDER);
     private static final Group CONTENT_CREATOR =
-        new Group(CreatorRoles.CONTENT_CREATOR);
+        new Group(Permission.CONTENT_CREATOR);
     private static final Group ADMINISTRATOR =
-        new Group(CreatorRoles.ADMINISTRATOR);
+        new Group(Permission.ADMINISTRATOR);
 }

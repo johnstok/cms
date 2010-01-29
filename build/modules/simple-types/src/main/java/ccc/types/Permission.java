@@ -28,13 +28,13 @@ package ccc.types;
 
 
 /**
- * Security roles for content creation.
+ * Group permissions.
  *
  * @author Civic Computing Ltd.
  */
-public final class CreatorRoles {
+public final class Permission {
 
-    private CreatorRoles() { super(); }
+    private Permission() { super(); }
 
     /** CONTENT_CREATOR : String. */
     public static final String CONTENT_CREATOR = "CONTENT_CREATOR";

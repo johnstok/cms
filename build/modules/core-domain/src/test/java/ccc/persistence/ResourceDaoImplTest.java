@@ -51,7 +51,7 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.types.CreatorRoles;
+import ccc.types.Permission;
 import ccc.types.Duration;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
@@ -434,7 +434,7 @@ public class ResourceDaoImplTest
         new User(new Username("another"), "password");
     private final User _adminUser =
         new User(new Username("admin"), "password"){{
-       addRole(new Group(CreatorRoles.ADMINISTRATOR));
+       addRole(new Group(Permission.ADMINISTRATOR));
     }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
