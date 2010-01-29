@@ -46,7 +46,7 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.CommandType;
-import ccc.types.CreatorRoles;
+import ccc.types.Permission;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
@@ -326,7 +326,7 @@ public abstract class Resource
      */
     public boolean canUnlock(final User user) {
         return user.equals(lockedBy())
-        || user.hasPermission(CreatorRoles.ADMINISTRATOR);
+        || user.hasPermission(Permission.ADMINISTRATOR);
     }
 
 

@@ -44,7 +44,7 @@ import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.types.CommandType;
-import ccc.types.CreatorRoles;
+import ccc.types.Permission;
 import ccc.types.ResourceName;
 import ccc.types.Username;
 
@@ -275,7 +275,7 @@ public class LockingTest
     private final User _adminUser =
         new User(new Username("admin"), "password"){{
        addRole(
-           new Group(CreatorRoles.ADMINISTRATOR, CreatorRoles.ADMINISTRATOR));
+           new Group(Permission.ADMINISTRATOR, Permission.ADMINISTRATOR));
     }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
