@@ -148,6 +148,7 @@ public class UserManagementAcceptanceTest
         final UserDto ud = getUsers().userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
+        assertEquals(name, ud.getName());
         assertEquals(1, ud.getRoles().size());
         assertTrue(ud.getRoles().contains("a2"));
         // TODO: Test metadata set correctly.
