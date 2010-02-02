@@ -40,6 +40,7 @@ public class RedirectRequiredException
         CCCException {
 
     private final String _target;
+    private final boolean _isPermanent;
 
     /**
      * Constructor.
@@ -47,8 +48,20 @@ public class RedirectRequiredException
      * @param target The target path for the redirect.
      */
     public RedirectRequiredException(final String target) {
+        this(target, false);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param target The target path for the redirect.
+     * @param isPermanent Is the redirect permanent.
+     */
+    public RedirectRequiredException(final String target,
+                                     final boolean isPermanent) {
         DBC.require().notNull(target);
         _target = target;
+        _isPermanent = isPermanent;
     }
 
     /**
@@ -60,4 +73,13 @@ public class RedirectRequiredException
         return _target;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns true if the redirect is permanent, false otherwise.
+     */
+    public final boolean isPermanent() {
+        return _isPermanent;
+    }
 }
