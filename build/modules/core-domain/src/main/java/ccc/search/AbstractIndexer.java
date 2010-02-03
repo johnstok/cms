@@ -84,18 +84,18 @@ public abstract class AbstractIndexer
 
         if ("pdf".equalsIgnoreCase(subType)) {
             content = indexPDF(file);
-            LOG.info("Indexed PDF: "+file.getTitle());
+            LOG.debug("Indexed PDF: "+file.getTitle());
 
         } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
             content = indexWord(file);
-            LOG.info("Indexed Word: "+file.getTitle());
+            LOG.debug("Indexed Word: "+file.getTitle());
 
         } else if ("text".equalsIgnoreCase(primaryType)) {
             content = indexText(file);
-            LOG.info("Indexed text: "+file.getTitle());
+            LOG.debug("Indexed text: "+file.getTitle());
 
         } else {
-            LOG.info("Unknown type "+subType);
+            LOG.debug("Ignored unknown type: "+subType);
 
         }
 
@@ -115,7 +115,7 @@ public abstract class AbstractIndexer
             }
         }
         createDocument(page.id(), sb.toString());
-        LOG.info("Indexed: "+page.getTitle());
+        LOG.debug("Indexed page: "+page.getTitle());
     }
 
 
@@ -148,7 +148,7 @@ public abstract class AbstractIndexer
             return sb.toString();
 
         } catch (final Exception e) {
-            LOG.error("PDF indexing failed.", e);
+            LOG.warn("PDF indexing failed: "+e.getMessage());
             return null;
 
         } finally {
@@ -157,7 +157,7 @@ public abstract class AbstractIndexer
                     doc.close();
                 }
             } catch (final IOException e) {
-                LOG.error("Closing PDF Document failed. ", e);
+                LOG.debug("Closing PDF Document failed. ", e);
             }
         }
     }
@@ -175,7 +175,7 @@ public abstract class AbstractIndexer
             return sb.toString();
 
         } catch (final Exception e) {
-            LOG.error("Exception caught when trying to extract text ", e);
+            LOG.warn("Word document indexing failed: "+e.getMessage());
             return null;
         }
     }

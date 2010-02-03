@@ -230,7 +230,7 @@ public class SimpleLuceneFS
                     Field.Store.NO,
                     Field.Index.ANALYZED));
             _writer.addDocument(d);
-            LOG.info("Added document.");
+            LOG.debug("Added document.");
 
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);

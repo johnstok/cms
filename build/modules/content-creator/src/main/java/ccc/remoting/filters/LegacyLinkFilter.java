@@ -27,6 +27,7 @@
 package ccc.remoting.filters;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,7 @@ import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.types.ResourceName;
 
 
 
@@ -56,6 +58,8 @@ import ccc.rest.extensions.ResourcesExt;
  * <br>Supports links in the following forms:
  * <br>- /2334.html
  * <br>- /files/my%20file.txt
+ * <br>- /images/my%20image.jpg
+ * <br>- /foo?p_service=Content.show&p_applic=CCC&pContentID=557
  *
  * @author Civic Computing Ltd.
  */
@@ -65,6 +69,24 @@ public final class LegacyLinkFilter
     private static final Logger LOG = Logger.getLogger(LegacyLinkFilter.class);
 
     @EJB(name = Resources.NAME) private transient ResourcesExt _resources;
+
+
+    /**
+     * Constructor.
+     *
+     * @param resources The resource API for this filter.
+     */
+    public LegacyLinkFilter() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param resources The resource API for this filter.
+     */
+    public LegacyLinkFilter(final ResourcesExt resources) {
+        _resources = resources;
+    }
 
 
     /** {@inheritDoc} */
@@ -77,73 +99,97 @@ public final class LegacyLinkFilter
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse resp = (HttpServletResponse) response;
 
-//        final ServletAction action =
-//                    new SerialAction(
-//                        new ReaderAction(),
-//                        new FixLinkAction());
-
-
         final String path = req.getPathInfo();
         LOG.debug("Checking path: "+path);
 
         final Matcher pageMatcher = PAGE_PATTERN.matcher(path);
-//        final Matcher fileMatcher = FILE_PATTERN.matcher(path);
-//        final Matcher imageMatcher = IMAGE_PATTERN.matcher(path);
+        final Matcher fileMatcher = FILE_PATTERN.matcher(path);
+        final Matcher imageMatcher = IMAGE_PATTERN.matcher(path);
 
         if (pageMatcher.matches()) {
-            redirectToPage(req, pageMatcher);
-//        } else if (fileMatcher.matches()) {
-//            redirectToFile(req, resp, fileMatcher);
-//        } else if (imageMatcher.matches()) {
-//            redirectToImage(req, resp, imageMatcher);
+            redirectToPage(req, pageMatcher.group(1));
+
+        } else if (fileMatcher.matches()
+                   && !ResourceName.isValid(fileMatcher.group(1))) {
+            redirectToFile(req, fileMatcher.group(1));
+
+        } else if (imageMatcher.matches()
+                   && !ResourceName.isValid(imageMatcher.group(1))) {
+            redirectToImage(req, imageMatcher.group(1));
+
+        } else if (isController(req.getParameterMap())) {
+            redirectToPage(req, req.getParameter("pContentID"));
+
         } else {
             chain.doFilter(req, resp);
         }
     }
 
 
-//    private void redirectToFile(final HttpServletRequest req,
-//                                final HttpServletResponse resp,
-//                                final Matcher fileMatcher)
-//    throws IOException {
-//        final String fixedUrl =
-//            "/files/"
-//            + ResourceName.escape(fileMatcher.group(1));
-//        LOG.info("Fixed to path: "+fixedUrl);
-//        dispatchRedirect(req, resp, fixedUrl);
-//    }
-//
-//
-//    private void redirectToImage(final HttpServletRequest req,
-//                                 final HttpServletResponse resp,
-//                                 final Matcher fileMatcher)
-//    throws IOException {
-//        final String fixedUrl =
-//            "/images/"
-//            + ResourceName.escape(fileMatcher.group(1));
-//        LOG.info("Fixed to path: "+fixedUrl);
-//        dispatchRedirect(req, resp, fixedUrl);
-//    }
+    /**
+     * Determine whether the request is for a CCC6 controller.
+     *
+     * @param queryParams The requeste's query parameters.
+     *
+     * @return True if the request is to a CCC6 controller, false otherwise.
+     */
+    protected boolean isController(final Map<String, String> queryParams) {
+        return
+            queryParams.containsKey("p_applic")
+            &&  queryParams.containsKey("p_service")
+            &&  queryParams.containsKey("pContentID");
+    }
 
 
-    private void redirectToPage(final HttpServletRequest req,
-                                final Matcher pageMatcher) {
+    private void redirectToFile(final HttpServletRequest req,
+                                final String badPath) {
+
         LOG.info(
             "Handling broken link: "
             + req.getContextPath()
             + req.getServletPath()
             + req.getPathInfo());
 
-        final String legacyId = pageMatcher.group(1);
 
-        // FIXME: Broken.
+        final String fixedUrl = "/files/" + ResourceName.escape(badPath);
+        LOG.debug("Fixed to path: "+fixedUrl);
+
+        throw new RedirectRequiredException(fixedUrl, true);
+    }
+
+
+    private void redirectToImage(final HttpServletRequest req,
+                                 final String badPath) {
+
+        LOG.info(
+            "Handling broken link: "
+            + req.getContextPath()
+            + req.getServletPath()
+            + req.getPathInfo());
+
+
+        final String fixedUrl = "/images/" + ResourceName.escape(badPath);
+        LOG.debug("Fixed to path: "+fixedUrl);
+
+        throw new RedirectRequiredException(fixedUrl, true);
+    }
+
+
+
+    private void redirectToPage(final HttpServletRequest req,
+                                final String legacyId) {
+        LOG.info(
+            "Handling broken link: "
+            + req.getContextPath()
+            + req.getServletPath()
+            + req.getPathInfo());
+
         try {
             final ResourceSummary r = _resources.lookupWithLegacyId(legacyId);
             final String resourcePath = r.getAbsolutePath();
-            LOG.info("Fixed to path: "+resourcePath);
+            LOG.debug("Fixed to path: "+resourcePath);
 
-            // TODO: Should be permanent redirect.
-            throw new RedirectRequiredException(resourcePath);
+            throw new RedirectRequiredException(resourcePath, true);
 
         } catch (final RestException e) {
             throw new NotFoundException();

@@ -83,7 +83,7 @@ public class UpdateUserCommand
 
         // current.username(delta.getUsername().toString()); #571
         current.email(new EmailAddress(_delta.getEmail()));
-        current.name(_delta.getEmail());
+        current.name(_delta.getName());
         current.clearGroups();
         for (final UUID groupId : _delta.getRoles()) {
             current.addRole(_groups.find(groupId));
