@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.5</version>
+        <version>7.0.6-SNAPSHOT</version>
     </parent>
     
     <artifactId>application-ear</artifactId>
@@ -336,7 +336,7 @@
                                             <arg value="start" />
                                         </java>
                                         
-                                        <sleep seconds="60"/>
+                                        <sleep seconds="60" />
 
                                         <java classname="ccc.cli.Search" fork="true" failonerror="true" classpath="${migration_classpath}">
                                             <arg value="-u" />

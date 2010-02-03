@@ -4,7 +4,7 @@
     <parent>
         <artifactId>build</artifactId>
         <groupId>CCC7</groupId>
-        <version>7.0.5</version>
+        <version>7.0.6-SNAPSHOT</version>
     </parent>
     
     <artifactId>content-creator</artifactId>
