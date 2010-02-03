@@ -124,7 +124,7 @@ public class ContentServlet
         final String contentPath = determineResourcePath(req);
         final boolean wc = req.getParameterMap().keySet().contains("wc");
         final Integer version = determineVersion(req);
-        LOG.info("[wc="+wc+", v="+version+"]");
+        LOG.debug("[wc="+wc+", v="+version+"]");
 
         final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
 
@@ -169,7 +169,7 @@ public class ContentServlet
         String pathString = request.getPathInfo();
         pathString = nvl(pathString, "/");
         pathString = removeTrailing('/', pathString);
-        LOG.info("Resource path is "+pathString);
+        LOG.debug("Resource path is "+pathString);
 
         if (ResourcePath.isValid(pathString)) { return pathString; }
 

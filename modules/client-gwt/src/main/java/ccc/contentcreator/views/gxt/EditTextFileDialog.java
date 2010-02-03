@@ -26,7 +26,6 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ValidationResult;
@@ -60,7 +59,7 @@ public class EditTextFileDialog
     /** TEXT_AREA_HEIGHT : int. */
     protected static final int TEXT_AREA_HEIGHT = 300;
 
-    private CodeMirrorEditor _text;
+    private TextArea _text;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
     private final TextField<String> _mimePrimaryType = new TextField<String>();
@@ -97,9 +96,10 @@ public class EditTextFileDialog
         addField(_comment);
 
 
-        _text = new CodeMirrorEditor("textEditEditorID", "");
+        _text = new TextArea();
+        _text.setFieldLabel(getUiConstants().content());
+        _text.setHeight(TEXT_AREA_HEIGHT);
 
-        addField(_text.parserSelector(getUiConstants()));
         addField(_text);
 
         addListener(Events.Resize,
@@ -109,7 +109,7 @@ public class EditTextFileDialog
                 final int eheight =
                     be.getHeight()-(DIALOG_HEIGHT - TEXT_AREA_HEIGHT);
                 if (eheight > (DIALOG_HEIGHT - TEXT_AREA_HEIGHT)) {
-                    _text.setEditorHeight(eheight+"px");
+                    _text.setHeight(eheight+"px");
                 }
             }
         });
@@ -118,13 +118,13 @@ public class EditTextFileDialog
     /** {@inheritDoc} */
     @Override
     public String getText() {
-        return _text.getEditorCode();
+        return _text.getValue();
     }
 
     /** {@inheritDoc} */
     @Override
     public void setText(final String text) {
-        _text.setEditorCode(text);
+        _text.setValue(text);
     }
 
     /** {@inheritDoc} */
@@ -156,7 +156,7 @@ public class EditTextFileDialog
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(_text.getEditorCode())) {
+        if (!Validations2.notEmpty(_text.getValue())) {
             result.addError(
                 getUiConstants().content()+getUiConstants().cannotBeEmpty());
         }

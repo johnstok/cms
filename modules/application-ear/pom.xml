@@ -336,6 +336,63 @@
             </build>
         </profile>
         <profile>
+            <id>index</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>run-search-indexer</id>
+                                <phase>post-integration-test</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo>Starting search indexer.</echo>
+
+                                        <property name="test_classpath" refid="maven.test.classpath" />
+                                        <path id="migration.classpath">
+                                            <pathelement path="${test_classpath}" />
+                                        </path>
+                                        <property name="migration_classpath" refid="migration.classpath" />
+                                        <!-- echo
+                                            message="data migration classpath: ${migration_classpath}" / -->
+
+                                        <java classname="ccc.cli.Search" fork="true" failonerror="true" classpath="${migration_classpath}">
+                                            <arg value="-u" />
+                                            <arg value="migration" />
+                                            <arg value="-p" />
+                                            <arg value="migration" />
+                                            <arg value="-a" />
+                                            <arg value="${application.prefix}" />
+                                            <arg value="-c" />
+                                            <arg value="start" />
+                                        </java>
+                                        
+                                        <sleep seconds="60" />
+
+                                        <java classname="ccc.cli.Search" fork="true" failonerror="true" classpath="${migration_classpath}">
+                                            <arg value="-u" />
+                                            <arg value="migration" />
+                                            <arg value="-p" />
+                                            <arg value="migration" />
+                                            <arg value="-a" />
+                                            <arg value="${application.prefix}" />
+                                            <arg value="-c" />
+                                            <arg value="stop" />
+                                        </java>
+
+                                    </tasks>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>ff-acceptance</id>
             <build>
                 <plugins>

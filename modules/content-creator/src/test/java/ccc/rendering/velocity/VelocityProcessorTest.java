@@ -230,6 +230,98 @@ public class VelocityProcessorTest extends TestCase {
 
     }
 
+    /**
+     * Test.
+     */
+    public void testSecurityPass() {
+
+        // ARRANGE
+        final String template = "$uuid.fromString(\"f7627735-6276-45b1-a516-aa8a1f9f28f2\")";
+        final String expectedMessage =
+            "f7627735-6276-45b1-a516-aa8a1f9f28f2";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+
+        // ACT
+        final String html = _vp.render(template, ctxt);
+
+        // ASSERT
+        assertEquals(expectedMessage, html);
+    }
+    
+    /**
+     * Test.
+     */
+    public void testSecurityBlockedClassName() {
+        
+        // ARRANGE
+        final String template = "$uuid.Class.Name";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+        
+        // ACT
+        final String html = _vp.render(template, ctxt);
+        
+        // ASSERT
+        assertEquals(template, html);
+    }
+    
+    /**
+     * Test.
+     */
+    public void testSecurityBlockedClassMethods() {
+        
+        // ARRANGE
+        final String template = "$uuid.Class.Methods";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+        
+        // ACT
+        final String html = _vp.render(template, ctxt);
+        
+        // ASSERT
+        assertEquals(template, html);
+    }
+
+    /**
+     * Test.
+     */
+    public void testSecurityBlockedClassClassLoader() {
+        
+        // ARRANGE
+        final String template = "$uuid.Class.Methods";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+        
+        // ACT
+        final String html = _vp.render(template, ctxt);
+        
+        // ASSERT
+        assertEquals(template, html);
+    }
+    
+    /**
+     * Test.
+     */
+    public void testSecurityBlockedNewInstance() {
+        
+        // ARRANGE
+        final String template = "$uuid.Class.ClassLoader.loadClass('java.util.HashMap').newInstance().size()";
+        final Context ctxt = new Context();
+        ctxt.add("resource", this);
+        ctxt.add("services", Testing.stub(ServiceLocator.class));
+        
+        // ACT
+        final String html = _vp.render(template, ctxt);
+        
+        // ASSERT
+        assertEquals(template, html);
+    }
+    
 
     /** {@inheritDoc} */
     @Override

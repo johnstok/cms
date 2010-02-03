@@ -26,7 +26,6 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ValidationResult;
@@ -61,7 +60,7 @@ public class CreateTextFileDialog
 
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
-    private CodeMirrorEditor _text;
+    private TextArea _text;
 
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 650;
@@ -105,8 +104,10 @@ public class CreateTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-        _text = new CodeMirrorEditor("textCreateEditorID", "");
-        addField(_text.parserSelector(getUiConstants()));
+        _text = new TextArea();
+        _text.setFieldLabel(getUiConstants().content());
+        _text.setHeight(TEXT_AREA_HEIGHT);
+
         addField(_text);
 
         addListener(Events.Resize,
@@ -116,7 +117,7 @@ public class CreateTextFileDialog
                 final int eheight =
                     be.getHeight()-(DIALOG_HEIGHT - TEXT_AREA_HEIGHT);
                 if (eheight > (DIALOG_HEIGHT - TEXT_AREA_HEIGHT)) {
-                    _text.setEditorHeight(eheight+"px");
+                    _text.setHeight(eheight+"px");
                 }
             }
         });
@@ -125,7 +126,7 @@ public class CreateTextFileDialog
     /** {@inheritDoc} */
     @Override
     public String getText() {
-        return _text.getEditorCode();
+        return _text.getValue();
     }
 
     /** {@inheritDoc} */
@@ -173,7 +174,7 @@ public class CreateTextFileDialog
             result.addError(
                 _mimeSubType.getFieldLabel()+getUiConstants().cannotBeEmpty());
         }
-        if (!Validations2.notEmpty(_text.getEditorCode())) {
+        if (!Validations2.notEmpty(_text.getValue())) {
             result.addError(
                 getUiConstants().content()+getUiConstants().cannotBeEmpty());
         }
