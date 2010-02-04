@@ -48,6 +48,8 @@ import ccc.types.MimeType;
 /**
  * A CCC response.
  * TODO: Never cache secure resources (i.e. with roles).
+ * TODO: The Response#write() method IS NOT THE PLACE for thumbnail code.
+ * TODO: _headers should be a set not a map.
  *
  * @author Civic Computing Ltd.
  */
@@ -259,5 +261,31 @@ public class Response {
         for (final Header h : _headers.values()) {
             h.writeTo(httpResponse);
         }
+    }
+
+
+    /**
+     * Set an ETag for the response.
+     * <p>The specified tag will be quoted before it is sent.
+     *
+     * @param tag The entity tag to set.
+     * @param weak True if this is a weak entity tag, false otherwise.
+     */
+    public void setEtag(final String tag, final boolean weak) {
+        _headers.put(
+            "ETag",
+            new StringHeader("ETag", ((weak) ? "W/\"" : "\"")+tag+"\""));
+    }
+
+
+    /**
+     * Set a 'last modified' date for the response.
+     *
+     * @param dateModified The last time the response body was modified.
+     */
+    public void setLastModified(final Date dateModified) {
+        _headers.put(
+            "Last-Modified",
+            new DateHeader("Last-Modified", dateModified));
     }
 }
