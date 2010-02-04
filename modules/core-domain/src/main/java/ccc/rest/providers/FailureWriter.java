@@ -87,7 +87,7 @@ public class FailureWriter
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        final PrintWriter pw = new PrintWriter(outputStream);
+        final PrintWriter pw = createWriter(outputStream);
         final JsonImpl sn = new JsonImpl(object);
         pw.println(sn.getDetail());
         pw.flush();

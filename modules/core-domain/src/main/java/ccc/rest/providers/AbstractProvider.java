@@ -30,6 +30,11 @@ package ccc.rest.providers;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -135,5 +140,22 @@ public class AbstractProvider {
         final String body = readString(mediaType, entityStream);
         final Json json = new JsonImpl(body);
         return json;
+    }
+
+
+    /**
+     * Create a UTF-8 print-writer.
+     *
+     * @param outputStream The output stream the writer will write to.
+     *
+     * @return The new print-writer.
+     */
+    protected PrintWriter createWriter(final OutputStream outputStream) {
+        try {
+            final Writer osw = new OutputStreamWriter(outputStream, "UTF-8");
+            return new PrintWriter(osw);
+        } catch (final UnsupportedEncodingException e) {
+            throw new RuntimeException("UTF-8 encoding unsupported.", e);
+        }
     }
 }

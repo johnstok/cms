@@ -95,7 +95,7 @@ public class MetadataWriter
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        final PrintWriter pw = new PrintWriter(outputStream);
+        final PrintWriter pw = createWriter(outputStream);
         pw.println(new JsonImpl(object).getDetail());
         pw.flush();
     }

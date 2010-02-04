@@ -79,7 +79,6 @@ public class UUIDProvider
                               final Type arg1,
                               final Annotation[] arg2,
                               final MediaType arg3) {
-
         return UUID.class.equals(clazz);
     }
 
@@ -102,7 +101,6 @@ public class UUIDProvider
                         final Type arg2,
                         final Annotation[] arg3,
                         final MediaType arg4) {
-
         return -1;
     }
 
@@ -112,8 +110,8 @@ public class UUIDProvider
                                final Type arg1,
                                final Annotation[] arg2,
                                final MediaType arg3) {
-
-        return UUID.class.equals(arg0);    }
+        return UUID.class.equals(arg0);
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -124,8 +122,7 @@ public class UUIDProvider
                         final MediaType arg4,
                         final MultivaluedMap<String, Object> arg5,
                         final OutputStream outputStream) {
-
-        final PrintWriter pw = new PrintWriter(outputStream);
+        final PrintWriter pw = createWriter(outputStream);
         pw.print(arg0);
         pw.flush();
     }
