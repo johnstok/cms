@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
@@ -50,6 +51,37 @@ import ccc.types.Paragraph;
  * @author Civic Computing Ltd.
  */
 public class PageAcceptanceTest extends AbstractAcceptanceTest {
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testCreatePage() throws RestException {
+
+        // ARRANGE
+        final String hw = "Hello World"; // Unicode non-breaking space.
+        final ResourceSummary f = tempFolder();
+        final String name = UUID.randomUUID().toString();
+        final PageDelta delta = new PageDelta(
+            new HashSet<Paragraph>(){{
+                add(Paragraph.fromText("test", hw));
+            }});
+
+        // ACT
+        final PageDto page = new PageDto(f.getId(),
+                                         delta,
+                                         name,
+                                         null,
+                                         "title",
+                                         "",
+                                         true);
+        final ResourceSummary ps = getPages().createPage(page);
+
+        // ASSERT
+        final PageDelta pd = getPages().pageDelta(ps.getId());
+        assertEquals(hw, pd.getParagraph("test").text());
+    }
 
     /**
      * Test.
