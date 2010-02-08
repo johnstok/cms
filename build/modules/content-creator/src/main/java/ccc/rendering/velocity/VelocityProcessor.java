@@ -127,7 +127,7 @@ public class VelocityProcessor implements TextProcessor {
             "org.apache.velocity.runtime.log.Log4JLogChute");
         velocityProperties.setProperty(
             "runtime.log.logsystem.log4j.logger",
-            getClass().getName());
+            "ccc.rendering.velocity.Template");
         velocityProperties.setProperty("runtime.introspector.uberspect",
             "org.apache.velocity.util.introspection.SecureUberspector");
         try {

@@ -26,9 +26,14 @@
  */
 package ccc.contentcreator.views.gxt;
 
+import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.Editable;
+import ccc.contentcreator.client.Event;
+import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ValidationResult;
+import ccc.contentcreator.client.Event.Type;
+import ccc.contentcreator.controllers.CMEditorReadyEvent;
 import ccc.contentcreator.dialogs.AbstractEditDialog;
 import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.CreateTextFile;
@@ -52,7 +57,7 @@ public class CreateTextFileDialog
     extends
         AbstractEditDialog
     implements
-        CreateTextFile{
+        CreateTextFile, EventBus {
 
     private final TextField<String> _fileName = new TextField<String>();
     private final TextField<String> _mimePrimaryType = new TextField<String>();
@@ -60,7 +65,8 @@ public class CreateTextFileDialog
 
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
-    private TextArea _text;
+
+    private CodeMirrorEditor _cme;
 
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 650;
@@ -104,11 +110,12 @@ public class CreateTextFileDialog
         _comment.setName("comment");
         addField(_comment);
 
-        _text = new TextArea();
-        _text.setFieldLabel(getUiConstants().content());
-        _text.setHeight(TEXT_AREA_HEIGHT);
-
-        addField(_text);
+        _cme = new CodeMirrorEditor(
+            "textEditEditorID",
+            this,
+            CodeMirrorEditor.Type.TEXT);
+        addField(_cme.parserSelector(getUiConstants()));
+        addField(_cme);
 
         addListener(Events.Resize,
             new Listener<BoxComponentEvent>() {
@@ -117,7 +124,7 @@ public class CreateTextFileDialog
                 final int eheight =
                     be.getHeight()-(DIALOG_HEIGHT - TEXT_AREA_HEIGHT);
                 if (eheight > (DIALOG_HEIGHT - TEXT_AREA_HEIGHT)) {
-                    _text.setHeight(eheight+"px");
+                    _cme.setEditorHeight(eheight+"px");
                 }
             }
         });
@@ -126,7 +133,7 @@ public class CreateTextFileDialog
     /** {@inheritDoc} */
     @Override
     public String getText() {
-        return _text.getValue();
+        return _cme.getEditorCode();
     }
 
     /** {@inheritDoc} */
@@ -174,7 +181,7 @@ public class CreateTextFileDialog
             result.addError(
                 _mimeSubType.getFieldLabel()+getUiConstants().cannotBeEmpty());
         }
-        if (!Validations2.notEmpty(_text.getValue())) {
+        if (!Validations2.notEmpty(_cme.getEditorCode())) {
             result.addError(
                 getUiConstants().content()+getUiConstants().cannotBeEmpty());
         }
@@ -211,4 +218,11 @@ public class CreateTextFileDialog
         return _majorEdit.getValue().booleanValue();
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void put(final Event event) {
+        if (Type.CM_EDITOR_READY==event.getType()) {
+            ((CMEditorReadyEvent) event).getCodeMirrorEditor();
+        }
+    }
 }

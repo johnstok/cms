@@ -115,7 +115,7 @@ public class BooleanProvider
                         final MediaType arg4,
                         final MultivaluedMap<String, Object> arg5,
                         final OutputStream outputStream) {
-        final PrintWriter pw = new PrintWriter(outputStream);
+        final PrintWriter pw = createWriter(outputStream);
         pw.print(arg0);
         pw.flush();
     }

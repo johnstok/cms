@@ -49,6 +49,8 @@ import ccc.serialization.Jsonable;
 @Provider
 @Produces("application/json")
 public class JsonableWriter
+    extends
+        AbstractProvider
     implements
         MessageBodyWriter<Jsonable> {
 
@@ -81,8 +83,9 @@ public class JsonableWriter
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        final PrintWriter pw = new PrintWriter(outputStream);
-        pw.println(new JsonImpl(object).getDetail());
+        final PrintWriter pw = createWriter(outputStream);
+        final String entity = new JsonImpl(object).getDetail();
+        pw.println(entity);
         pw.flush();
     }
 }

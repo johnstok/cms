@@ -50,6 +50,8 @@ public interface Event {
         /** RESOURCE_CREATED : Type. */
         RESOURCE_CREATED,
         /** COMMENT_UPDATED : Type. */
-        COMMENT_UPDATED;
+        COMMENT_UPDATED,
+        /** CM_EDITOR_READY : Type. */
+        CM_EDITOR_READY;
     }
 }

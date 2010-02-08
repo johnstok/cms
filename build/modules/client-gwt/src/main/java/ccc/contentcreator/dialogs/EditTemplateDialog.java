@@ -33,8 +33,12 @@ import ccc.contentcreator.actions.CreateTemplateAction;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.client.Event;
+import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
+import ccc.contentcreator.client.Event.Type;
+import ccc.contentcreator.controllers.CMEditorReadyEvent;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
@@ -49,7 +53,6 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.http.client.Response;
@@ -60,7 +63,8 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public class EditTemplateDialog extends AbstractWizardDialog  {
+public class EditTemplateDialog extends AbstractWizardDialog
+    implements EventBus {
 
     /** DEFAULT_WIDTH : int. */
     protected static final int DEFAULT_WIDTH = 640;
@@ -77,14 +81,16 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _mimePrimary = new TextField<String>();
     private final TextField<String> _mimeSub = new TextField<String>();
-    private TextArea _body;
-    private TextArea _definition;
+    private CodeMirrorEditor _body;
+    private CodeMirrorEditor _definition;
 
     private UUID _id;
     private UUID _parentFolderId = null;
     private DialogMode _mode;
     private final SingleSelectionModel _ssm;
     private ResourceSummaryModelData _proxy;
+    private String _definitionString;
+    private String _bodyString;
 
     /**
      * Constructor.
@@ -103,9 +109,11 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _parentFolderId = parentFolderId;
         _ssm = ssm;
 
+        _definitionString = "<fields></fields>";
+        _bodyString = "<html/>";
         populateFirstScreen();
-        populateSecondScreen("<fields></fields>");
-        populateThirdScreen("<html/>");
+        populateSecondScreen();
+        populateThirdScreen();
 
         addCard(_first);
         addCard(_second);
@@ -136,9 +144,11 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _id = proxy.getId();
         _ssm = ssm;
 
+        _definitionString = model.getDefinition();
+        _bodyString = model.getBody();
         populateFirstScreen();
-        populateSecondScreen(model.getDefinition());
-        populateThirdScreen(model.getBody());
+        populateSecondScreen();
+        populateThirdScreen();
 
         addCard(_first);
         addCard(_second);
@@ -164,8 +174,8 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 final int h =
                     be.getHeight()-(DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
                 if (h > (DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
-                    _definition.setHeight(h+"px");
-                    _body.setHeight(h+"px");
+                    _definition.setEditorHeight(h+"px");
+                    _body.setEditorHeight(h+"px");
                 }
             }
         });
@@ -191,35 +201,43 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
         _first.add(_mimeSub, new FormData("95%"));
     }
 
-    private void populateSecondScreen(final String definition) {
+    private void populateSecondScreen() {
         _second.setWidth("100%");
         _second.setBorders(false);
         _second.setBodyBorder(false);
         _second.setHeaderVisible(false);
 
-        _definition = new TextArea();
-        _definition.setFieldLabel(getUiConstants().definitionXML());
-        _definition.setValue(definition);
+        final Text fieldName = new Text(getUiConstants().definitionXML());
+        fieldName.setStyleName("x-form-item");
+        _second.add(fieldName);
+        _definition = new CodeMirrorEditor(
+            "definition",
+            this,
+            CodeMirrorEditor.Type.DEFINITION);
         _second.add(_definition, new FormData("95%"));
     }
 
-    private void populateThirdScreen(final String bodyContent) {
+    private void populateThirdScreen() {
         _third.setWidth("100%");
         _third.setBorders(false);
         _third.setBodyBorder(false);
         _third.setHeaderVisible(false);
 
-        _body = new TextArea();
-        _body.setFieldLabel(getUiConstants().body());
-        _body.setValue(bodyContent);
+        final Text fieldName = new Text(getUiConstants().body());
+        fieldName.setStyleName("x-form-item");
+        _third.add(fieldName);
+        _body = new CodeMirrorEditor(
+            "body",
+            this,
+            CodeMirrorEditor.Type.BODY);
         _third.add(_body, new FormData("95%"));
     }
 
     private TemplateDelta model() {
         final TemplateDelta delta =
             new TemplateDelta(
-                _body.getValue(),
-                _definition.getValue(),
+                _body.getEditorCode(),
+                _definition.getEditorCode(),
                 new MimeType(_mimePrimary.getValue(), _mimeSub.getValue())
             );
         return delta;
@@ -232,14 +250,14 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
             @Override public void componentSelected(final ButtonEvent ce) {
                 Validate.callTo(createTemplates())
                     .check(Validations.notEmpty(
-                        _definition.getValue(), "Definition"))
+                        _definition.getEditorCode(), "Definition"))
                     .check(Validations.notEmpty(_name))
                     .check(Validations.notValidResourceName(_name))
-                    .check(Validations.notEmpty(_body.getValue(), "body"))
+                    .check(Validations.notEmpty(_body.getEditorCode(), "body"))
                     .check(Validations.notEmpty(_mimePrimary))
                     .check(Validations.notEmpty(_mimeSub))
                     .stopIfInError()
-                    .check(Validations.notValidXML(_definition.getValue()))
+                    .check(Validations.notValidXML(_definition.getEditorCode()))
                     .check(uniqueTemplateName(_name))
                     .callMethodOr(Validations.reportErrors());
             }
@@ -304,6 +322,19 @@ public class EditTemplateDialog extends AbstractWizardDialog  {
                 }
             }
         };
+    }
+    /** {@inheritDoc} */
+    @Override
+    public void put(final Event event) {
+        if (Type.CM_EDITOR_READY==event.getType()) {
+            final CodeMirrorEditor cme =
+                ((CMEditorReadyEvent) event).getCodeMirrorEditor();
+            if (cme.getType() == CodeMirrorEditor.Type.BODY) {
+                cme.setEditorCode(_bodyString);
+            } else if (cme.getType() == CodeMirrorEditor.Type.DEFINITION) {
+                cme.setEditorCode(_definitionString);
+            }
+        }
     }
 
 }
