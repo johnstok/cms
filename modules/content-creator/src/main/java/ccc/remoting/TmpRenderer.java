@@ -144,9 +144,6 @@ public class TmpRenderer {
             r.setCharSet("UTF-8");
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
-            if (s.getCacheDuration().time() > 0) {
-                r.setEtag(s.getId()+"-"+s.getRevision(), true);
-            }
             return r;
 
         } catch (final RestException e) {
@@ -182,10 +179,6 @@ public class TmpRenderer {
         r.setMimeType(s.getMimeType());
         r.setLength(s.getSize());
         r.setExpiry(s.getCacheDuration());
-        if (s.getCacheDuration().time() > 0) {
-            r.setEtag(s.getId()+"-"+s.getRevision(), false);
-            r.setLastModified(s.getDateChanged());
-        }
         return r;
     }
 
