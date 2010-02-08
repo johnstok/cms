@@ -175,8 +175,8 @@ public class EditTemplateDialog extends AbstractWizardDialog
                 final int h =
                     be.getHeight()-(DEFAULT_HEIGHT - TEXT_AREA_HEIGHT);
                 if (h > (DEFAULT_HEIGHT - TEXT_AREA_HEIGHT)) {
-                    _definition.setHeight(h+"px");
-                    _body.setHeight(h+"px");
+                    _definition.setEditorHeight(h+"px");
+                    _body.setEditorHeight(h+"px");
                 }
             }
         });
