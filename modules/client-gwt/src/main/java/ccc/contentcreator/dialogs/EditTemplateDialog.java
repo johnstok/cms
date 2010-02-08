@@ -33,6 +33,7 @@ import ccc.contentcreator.actions.CreateTemplateAction;
 import ccc.contentcreator.actions.TemplateNameExistsAction;
 import ccc.contentcreator.actions.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.Event;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobalsImpl;
