@@ -48,6 +48,8 @@ public interface Event {
         /** RESOURCE_UPDATED : Type. */
         RESOURCE_UPDATED,
         /** RESOURCE_CREATED : Type. */
-        RESOURCE_CREATED;
+        RESOURCE_CREATED,
+        /** CM_EDITOR_READY : Type. */
+        CM_EDITOR_READY;
     }
 }

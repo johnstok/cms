@@ -12,6 +12,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.controllers.CMEditorReadyEvent;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -33,23 +34,52 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class CodeMirrorEditor extends Composite {
     private String _id;
-    private String _initialText;
 
     @SuppressWarnings("unused")
     private JavaScriptObject _editor;
+    private final RadioGroup _radioGroup = new RadioGroup();
+    private boolean _ready = false;
+    private EventBus _bus;
+    private Type _type;
 
     /**
      * Constructor.
      *
      * @param id The ID of the editor.
-     * @param initialText The initial text of the editor.
+     * @param bus The event bus.
+     * @param type The of the editor.
      */
-    public CodeMirrorEditor(final String id, final String initialText) {
+    public CodeMirrorEditor(final String id,
+                            final EventBus bus,
+                            final Type type) {
         super();
-
         _id = id;
-        _initialText = initialText;
+        _bus = bus;
+        _type = type;
         initWidget();
+    }
+
+    /**
+     * Type of the editor.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public enum Type {
+        /** DEFINITION : type. */
+        DEFINITION,
+        /** BODY : type. */
+        BODY,
+        /** TEXT : type. */
+        TEXT
+    };
+
+    /**
+     * Accessor for editor type.
+     *
+     * @return The type.
+     */
+    public Type getType(){
+        return _type;
     }
 
     private void initWidget() {
@@ -73,7 +103,8 @@ public class CodeMirrorEditor extends Composite {
      * @return RadioGroup of possible parsers options.
      */
     public RadioGroup parserSelector(final UIConstants constants) {
-        final RadioGroup radioGroup = new RadioGroup();
+
+        _radioGroup.setEnabled(false);
 
         final Radio radioHTML = new Radio();
         radioHTML.setBoxLabel("HTML");
@@ -95,63 +126,87 @@ public class CodeMirrorEditor extends Composite {
         radioNone.setValueAttribute("DummyParser");
         radioNone.setValue(false);
 
-        radioGroup.setFieldLabel(constants.syntax());
-        radioGroup.add(radioHTML);
-        radioGroup.add(radioJS);
-        radioGroup.add(radioCSS);
-        radioGroup.add(radioNone);
+        _radioGroup.setFieldLabel(constants.syntax());
+        _radioGroup.add(radioHTML);
+        _radioGroup.add(radioJS);
+        _radioGroup.add(radioCSS);
+        _radioGroup.add(radioNone);
 
-        radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
+        _radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
             @Override
             public void handleEvent(final FieldEvent be) {
-                if (radioGroup.getValue() != null) {
-                    setParser(radioGroup.getValue().getValueAttribute());
+                if (_radioGroup.getValue() != null) {
+                    if (_ready) {
+                        setParser(_radioGroup.getValue().getValueAttribute());
+                    }
                 }
             }
         });
-        return radioGroup;
+        return _radioGroup;
     }
 
     /** {@inheritDoc} */
     @Override
     protected void onLoad() {
-        _editor = initCodeMirror(_id,
-            _initialText,
+        _editor = initCodeMirror(this,
+            _id,
             GWT.getModuleBaseURL()+"js/codemirror/");
+    }
+
+    /**
+     * Sets ready status and send an event.
+     *
+     */
+    public void onInitialized() {
+        _ready = true;
+        _radioGroup.setEnabled(true);
+        _bus.put(new CMEditorReadyEvent(this));
+    }
+
+    /**
+     * Returns true if editor is ready.
+     *
+     * @return Editor status.
+     */
+    public boolean isReady() {
+        return _ready;
     }
 
     /**
      * Initialises CodeMirror editor.
      *
+     * @param obj The CodeMirrorEditor instance
      * @param id The ID of the editor.
-     * @param initialText The initial text of the editor.
      * @param baseUrl The base URL for scripts and css.
      * @return The editor instance.
      */
-    public native JavaScriptObject initCodeMirror(final String id,
-                                                  final String initialText,
+    public native JavaScriptObject initCodeMirror(final CodeMirrorEditor obj,
+                                                  final String id,
                                                   final String baseUrl) /*-{
+        initCMCallback = function() {
+           obj.@ccc.contentcreator.client.CodeMirrorEditor::onInitialized()();
+        }
 
-            var editor = $wnd.CodeMirror.fromTextArea(id, {
-                height: "300px",
-                parserfile: ["parsedummy.js",
-                             "parsexml.js",
-                             "parsecss.js",
-                             "tokenizejavascript.js",
-                             "parsejavascript.js",
-                             "parsehtmlmixed.js"],
-                stylesheet: [baseUrl+"css/xmlcolors.css",
-                             baseUrl+"css/jscolors.css",
-                             baseUrl+"css/csscolors.css"],
-                path: baseUrl+"js/",
-                continuousScanning: 1000,
-                lineNumbers: true,
-                textWrapping: false,
-                tabMode: "spaces",
-                content: initialText
-              });
+        var editor = $wnd.CodeMirror.fromTextArea(id, {
+            height: "300px",
+            parserfile: ["parsedummy.js",
+                         "parsexml.js",
+                         "parsecss.js",
+                         "tokenizejavascript.js",
+                         "parsejavascript.js",
+                         "parsehtmlmixed.js"],
+            stylesheet: [baseUrl+"css/xmlcolors.css",
+                         baseUrl+"css/jscolors.css",
+                         baseUrl+"css/csscolors.css"],
+            path: baseUrl+"js/",
+            continuousScanning: 1000,
+            textWrapping: false,
+            tabMode: "spaces",
+            content: " ",
+            initCallback: initCMCallback
+          });
 
-              return editor;
+          return editor;
     }-*/;
 
     /**
@@ -171,9 +226,7 @@ public class CodeMirrorEditor extends Composite {
      */
     public native void setEditorCode(final String code)/*-{
         var txed = this.@ccc.contentcreator.client.CodeMirrorEditor::_editor;
-        $wnd.setTimeout(function(a, b){
-            txed.setCode(code);
-        }, 1000);
+        txed.setCode(code);
     }-*/;
 
     /**
@@ -183,9 +236,7 @@ public class CodeMirrorEditor extends Composite {
      */
     public native void setParser(final String parser)/*-{
         var txed = this.@ccc.contentcreator.client.CodeMirrorEditor::_editor;
-        $wnd.setTimeout(function(a, b){
-            txed.setParser(parser);
-        }, 1000);
+        txed.setParser(parser);
     }-*/;
 
     /**
