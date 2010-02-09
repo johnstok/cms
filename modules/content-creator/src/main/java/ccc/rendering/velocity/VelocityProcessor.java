@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Map;
@@ -60,6 +62,8 @@ import ccc.rest.ServiceLocator;
  * @author Civic Computing Ltd.
  */
 public class VelocityProcessor implements TextProcessor {
+
+    private static final String HOSTNAME = getHostname();
     /**
      * TODO: Add a description for this type.
      *
@@ -144,6 +148,7 @@ public class VelocityProcessor implements TextProcessor {
             context.put("html", XHTML.class);
             context.put("uuid", UUID.class);
             context.put("enums", new EnumTools());
+            context.put("hostname", HOSTNAME);
 
             context.put("dateTool", new DateTool());
             context.put("sortTool", new SortTool());
@@ -173,5 +178,15 @@ public class VelocityProcessor implements TextProcessor {
     private void handleException(final Exception e) {
         LOG.warn("Error in template: "+e.getMessage());
         throw new RuntimeException("Error in template.", e);
+    }
+
+    private static String getHostname() {
+        try {
+            final InetAddress addr = InetAddress.getLocalHost();
+            return addr.getHostName();
+        } catch (final UnknownHostException e) {
+            LOG.warn("Failed to determine host address.", e);
+            return "<unknown>";
+        }
     }
 }
