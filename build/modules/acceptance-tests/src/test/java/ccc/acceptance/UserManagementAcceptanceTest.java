@@ -255,6 +255,39 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testUsernameSensitiveExists() throws RestException {
+
+        // ARRANGE
+        final String uuid = UUID.randomUUID().toString();
+        final Username originalUsername = new Username(uuid+"A");
+        final Username testUsername = new Username(uuid+"a");
+        final String email = originalUsername+"@abc.def";
+        final String name = "testuser";
+
+        // Create the user
+        final UserDto u =
+            new UserDto()
+        .setEmail(email)
+        .setUsername(originalUsername)
+        .setName(name)
+        .setMetadata(Collections.singletonMap("key", "value"))
+        .setPassword("Testtest00-");
+
+        getUsers().createUser(u);
+
+        // ACT
+        final Boolean exists = getUsers().usernameExists(testUsername);
+
+        // ASSERT
+        assertFalse("Username should not exists", exists.booleanValue());
+    }
+
+    
+    /**
+     * Test.
      */
     public void testLoggedInUser() {
 

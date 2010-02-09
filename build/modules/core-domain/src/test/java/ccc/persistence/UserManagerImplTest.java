@@ -61,7 +61,7 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         expect(Boolean.valueOf(
             _repository.exists(
-            QueryNames.USERS_WITH_USERNAME, User.class, "blat")))
+            QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "blat")))
             .andReturn(Boolean.TRUE);
         replayAll();
 
@@ -81,7 +81,7 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         expect(Boolean.valueOf(
             _repository.exists(
-                QueryNames.USERS_WITH_USERNAME, User.class, "blat")))
+                QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "blat")))
             .andReturn(Boolean.FALSE);
         replayAll();
 

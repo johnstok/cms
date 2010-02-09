@@ -72,6 +72,10 @@ final class QueryNames {
 
     /** USERS_WITH_USERNAME : String. */
     public static final String USERS_WITH_USERNAME = "usersWithUsername";
+    
+    /** USER_WITH_MATCHING_USERNAME : String. Case sensitive! */
+    public static final String USER_WITH_MATCHING_USERNAME =
+        "userWithMatchingUsername";
 
     /** USERS_WITH_EMAIL : String. */
     public static final String USERS_WITH_EMAIL = "usersWithEmail";

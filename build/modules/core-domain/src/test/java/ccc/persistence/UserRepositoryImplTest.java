@@ -56,7 +56,7 @@ public class UserRepositoryImplTest
         final Principal p = new Principal() {
             @Override public String getName() { return "foo"; }};
         expect(_repository.find(
-            QueryNames.USERS_WITH_USERNAME, User.class, "foo"))
+            QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "foo"))
             .andReturn(null);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
@@ -81,7 +81,7 @@ public class UserRepositoryImplTest
         final Principal p = new Principal() {
             @Override public String getName() { return "user"; }};
         expect(_repository.find(
-            QueryNames.USERS_WITH_USERNAME, User.class, "user"))
+            QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "user"))
             .andReturn(u);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);

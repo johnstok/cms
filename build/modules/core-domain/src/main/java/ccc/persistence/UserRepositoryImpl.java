@@ -104,7 +104,10 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @Override
     public boolean usernameExists(final String username) {
-        return _repository.exists(USERS_WITH_USERNAME, User.class, username);
+        return _repository.exists(
+            USER_WITH_MATCHING_USERNAME,
+            User.class,
+            username);
     }
 
     /** {@inheritDoc} */
@@ -122,7 +125,7 @@ class UserRepositoryImpl implements UserRepository {
         try {
             final String principalName = p.getName();
             final User user = _repository.find(
-                USERS_WITH_USERNAME, User.class, principalName);
+                USER_WITH_MATCHING_USERNAME, User.class, principalName);
             return user;
         } catch (final IllegalStateException e) {
             return null;
