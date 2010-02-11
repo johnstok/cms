@@ -288,4 +288,14 @@ public class Response {
             "Last-Modified",
             new DateHeader("Last-Modified", dateModified));
     }
+
+
+    /**
+     * Configure headers to prevent caching of this response.
+     */
+    public void dontCache() {
+        _headers.remove("Last-Modified");
+        _headers.remove("ETag");
+        setExpiry(null);
+    }
 }

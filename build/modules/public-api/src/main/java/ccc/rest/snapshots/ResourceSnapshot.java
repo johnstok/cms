@@ -449,4 +449,14 @@ public class ResourceSnapshot implements IResource, Serializable {
     public boolean isWorkingCopy() {
         return _revision<0;
     }
+
+
+    /**
+     * Query.
+     *
+     * @return True if the resource is cache-able, false otherwise.
+     */
+    public boolean isCacheable() {
+        return null!=_cacheDuration && _cacheDuration.time()>0;
+    }
 }

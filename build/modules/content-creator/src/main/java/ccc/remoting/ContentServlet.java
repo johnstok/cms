@@ -139,7 +139,7 @@ public class ContentServlet
 
         if (resource.isSecure()       // Don't cache secure pages.
             || !_respectVisibility) { // Don't cache previews or working copies.
-            r.setExpiry(null);
+            r.dontCache();
         }
 
         final Context context = createContext(req, resp, resource);
