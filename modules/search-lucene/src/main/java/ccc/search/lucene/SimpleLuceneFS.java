@@ -190,7 +190,7 @@ public class SimpleLuceneFS
     @Override
     public void rollbackUpdate() {
         try {
-            _writer.rollback();
+            if (null!=_writer) { _writer.rollback(); }
             LOG.info("Rolled back index update.");
         } catch (final IOException e) {
             _writer = null;
