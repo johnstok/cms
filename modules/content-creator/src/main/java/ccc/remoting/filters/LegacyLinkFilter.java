@@ -151,7 +151,7 @@ public final class LegacyLinkFilter
             + req.getPathInfo());
 
 
-        final String fixedUrl = "/files/" + ResourceName.escape(badPath);
+        final String fixedUrl = "/files/" + escape(badPath);
         LOG.debug("Fixed to path: "+fixedUrl);
 
         throw new RedirectRequiredException(fixedUrl, true);
@@ -168,12 +168,16 @@ public final class LegacyLinkFilter
             + req.getPathInfo());
 
 
-        final String fixedUrl = "/images/" + ResourceName.escape(badPath);
+        final String fixedUrl = "/images/" + escape(badPath);
         LOG.debug("Fixed to path: "+fixedUrl);
 
         throw new RedirectRequiredException(fixedUrl, true);
     }
 
+
+    private String escape(final String badPath) {
+        return badPath.replaceAll("[^\\.\\-\\w/]", "_");
+    }
 
 
     private void redirectToPage(final HttpServletRequest req,
