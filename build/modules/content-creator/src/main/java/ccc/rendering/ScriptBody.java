@@ -83,6 +83,12 @@ public class ScriptBody
         whiteList.add("ccc.types");
         whiteList.add("ccc.rest.dto");
         whiteList.add("ccc.mail.Mailer");
+        whiteList.add("ccc.domain");
+        whiteList.add("ccc.commons.Resources");
+        whiteList.add("ccc.commands.CreateFolderCommand");
+        whiteList.add("ccc.persistence.ResourceRepositoryImpl");
+        whiteList.add("ccc.persistence.LogEntryRepositoryImpl");
+
         whiteList.add("java.io.FileInputStream"); // fileupload failed without sometimes
         whiteList.add("java.lang.Object");
         whiteList.add("java.lang.String");
@@ -91,11 +97,11 @@ public class ScriptBody
         whiteList.add("java.nio.charset.Charset");
         whiteList.add("sun.nio.cs.UTF_8");
         whiteList.add("sun.net.www.protocol.http.HttpURLConnection$HttpInputStream");
-        whiteList.add("ccc.commons.Resources");
         whiteList.add("java.io.ByteArrayInputStream");
         whiteList.add("javax.activation.MimeType");
         whiteList.add("org.mozilla.javascript.WrappedException");
         whiteList.add("org.mozilla.javascript.EcmaError");
+        whiteList.add("org.mozilla.javascript.EvaluatorException");
         whiteList.add("org.apache.catalina.core.ApplicationDispatcher");
         whiteList.add("org.apache.commons.fileupload.servlet.ServletFileUpload");
         whiteList.add("org.apache.commons.fileupload.disk.DiskFileItem");

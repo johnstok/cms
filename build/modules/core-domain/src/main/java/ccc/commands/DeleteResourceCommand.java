@@ -47,7 +47,7 @@ import ccc.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-class DeleteResourceCommand extends Command<Void> {
+public class DeleteResourceCommand extends Command<Void> {
 
     private final UUID _resourceId;
 
