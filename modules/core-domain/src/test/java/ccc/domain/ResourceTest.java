@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -1303,6 +1304,30 @@ public final class ResourceTest extends TestCase {
         assertFalse("Title must no contain bad characters",
             resource.getTitle().equals(bad.toString()));
         assertEquals("before–middle’end†", resource.getTitle());
+    }
+    
+
+    /**
+     * Test.
+     * @throws CccCheckedException If the test fails.
+     */
+    public void testComputeMetadata() throws CccCheckedException {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.addMetadatum("foo", "1");
+        f.addMetadatum("bar", "1");
+        final Page p = new Page();
+        f.addMetadatum("foo", "2");
+        f.add(p);
+
+        // ACT
+        final Map<String, String> metadata = p.computeMetadata();
+
+        // ASSERT
+        assertEquals(2, metadata.size());
+        assertTrue(metadata.get("foo").equals("2"));
+        assertTrue(metadata.get("bar").equals("1"));
     }
 
     private static final int WAIT_LENGTH = 100;
