@@ -57,6 +57,34 @@ public class LegacyLinkFilterTest
      *
      * @throws Exception If the test fails.
      */
+    public void testHandlesPathsWithSlash() throws Exception {
+
+        // ARRANGE
+        final LegacyLinkFilter f = new LegacyLinkFilter();
+        final String badPath = "/images/stories/story 01.jpg";
+
+
+        // ACT
+        try {
+            f.doFilter(
+                new ServletRequestStub(
+                    "/shc", "", badPath, new HashMap<String, String>()),
+                null,
+                null);
+
+        // ASSERT
+        } catch (final RedirectRequiredException rre) {
+            assertTrue(rre.isPermanent());
+            assertEquals("/images/stories/story_01.jpg", rre.getTarget());
+        }
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
     public void testHandlesFilesWithSpaces() throws Exception {
 
         // ARRANGE
@@ -69,10 +97,10 @@ public class LegacyLinkFilterTest
             f.doFilter(
                 new ServletRequestStub(
                     "/shc", "", badPath, new HashMap<String, String>()),
-                null,
-                null);
+                    null,
+                    null);
 
-        // ASSERT
+            // ASSERT
         } catch (final RedirectRequiredException rre) {
             assertTrue(rre.isPermanent());
             assertEquals("/files/shc_Minutes_09.02.pdf", rre.getTarget());

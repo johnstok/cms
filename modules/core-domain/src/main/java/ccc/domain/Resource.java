@@ -533,12 +533,31 @@ public abstract class Resource
 
 
     /**
-     * Accessor for all metadata.
+     * Accessor for all metadata of the resource. Does not return any parent
+     * metadata.
      *
      * @return The metadata as a hash map.
      */
     public Map<String, String> metadata() {
         return new HashMap<String, String>(_metadata);
+    }
+
+    /**
+     * Compute the complete set of metadata for this resource.
+     * This method recursively queries all parents to determine the complete
+     * set of metadata.
+     *
+     * @return The metadata as a map.
+     */
+    public Map<String, String> computeMetadata() {
+        // TODO: Can we make this more efficient?
+        if (null==_parent) {
+            return new HashMap<String, String>(_metadata);
+        }
+        final HashMap<String, String> metadata =new HashMap<String, String>();
+        metadata.putAll(_parent.computeMetadata());
+        metadata.putAll(metadata());
+        return metadata;
     }
 
 
@@ -865,7 +884,7 @@ public abstract class Resource
         dto.setInMainMenu(includeInMainMenu());
         dto.setLocked(isLocked());
         dto.setLockedBy((isLocked()) ? lockedBy().id() : null);
-        dto.setMetadata(metadata());
+        dto.setMetadata(computeMetadata());
         dto.setName(name());
         dto.setParent((null==parent())?null:parent().id());
         dto.setPublished(isPublished());
