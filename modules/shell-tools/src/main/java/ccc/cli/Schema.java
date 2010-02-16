@@ -51,6 +51,8 @@ import ccc.commons.Resources;
 public class Schema
     extends
         CccApp {
+
+    private static final int    NEW_DB_VERSION = -1;
     private static final Logger LOG = Logger.getLogger(Schema.class);
 
     @Option(
@@ -96,7 +98,7 @@ public class Schema
         try {
             if (_drop) {
                 doDrop(vendor, newConnection, currentVersion);
-                currentVersion = 0;
+                currentVersion = NEW_DB_VERSION;
             }
 
             for (int i=(currentVersion+1); i<=_version; i++) {
@@ -127,7 +129,7 @@ public class Schema
                           final Connection newConnection,
                           final int version) {
         final String create =
-            "/create/"
+            "sql/"
             +version+"/"
             +vendor.name().toLowerCase(Locale.US)
             +"/create.sql";
@@ -139,9 +141,9 @@ public class Schema
                         final Connection newConnection,
                         final int currentVersion) {
         LOG.info("Dropping existing schema.");
-        for (int i=currentVersion; i>0; i--) {
+        for (int i=currentVersion; i>=0; i--) {
             final String drop =
-                "/create/"
+                "sql/"
                 +i+"/"
                 +vendor.name().toLowerCase(Locale.US)
                 +"/drop.sql";
@@ -190,6 +192,7 @@ public class Schema
     private int currentVersion(final Connection connection) {
         final String versionQuery =
             "SELECT value FROM settings WHERE name='DATABASE_VERSION'";
+        int dbVersion = NEW_DB_VERSION;
 
         try {
             final Statement s = connection.createStatement();
@@ -197,23 +200,23 @@ public class Schema
             try {
                 final ResultSet rs = s.executeQuery(versionQuery);
                 if (rs.next()) {
-                    return rs.getInt(1)+1;
+                    dbVersion = rs.getInt(1);
                 }
-                return 0;
 
             } catch (final SQLException e) { // Assume SETTINGS table missing.
                 try {
                     s.close();
                 } catch (final SQLException ee) {
-                    swallow(e);
+                    LOG.warn("Error closing statement.", ee);
                 }
-                return 0;
             }
 
         } catch (final SQLException e) {
             throw new RuntimeException(
                 "Failed to determine current DB version.", e);
         }
+
+        return dbVersion;
     }
 
 
