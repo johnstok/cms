@@ -65,9 +65,9 @@ public final class RhinoGlobalFunctions {
             for (final Object arg : args) {
                 if (arg instanceof NativeJavaObject) {
                     final NativeJavaObject jObj = (NativeJavaObject) arg;
-                    out.write(jObj.unwrap().toString());
+                    out.write(String.valueOf(jObj.unwrap()));
                 } else {
-                    out.write(arg.toString());
+                    out.write(String.valueOf(arg));
                 }
             }
             out.flush();
