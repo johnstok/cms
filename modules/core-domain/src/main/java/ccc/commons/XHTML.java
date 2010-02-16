@@ -43,7 +43,6 @@ import java.util.Iterator;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -196,7 +195,7 @@ public final class XHTML {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final XhtmlEntityResolver resolver = new XhtmlEntityResolver();
             final DocumentBuilder parser =
-                createParser(errorHandler, resolver);
+                XML.createParser(errorHandler, resolver);
             parser.parse(page);
             return errorHandler.errors().size() == 0;
         } catch (final ParserConfigurationException e) {
@@ -259,7 +258,7 @@ public final class XHTML {
     private static Document parse(final InputStream page) {
         try {
             final DocumentBuilder builder =
-                createParser(new XhtmlErrorHandler(),
+                XML.createParser(new XhtmlErrorHandler(),
                              new XhtmlEntityResolver());
             return builder.parse(page);
 
@@ -279,20 +278,6 @@ public final class XHTML {
         return xpath;
     }
 
-    private static DocumentBuilder createParser(
-                                    final XhtmlErrorHandler errorHandler,
-                                    final XhtmlEntityResolver entityResolver)
-                                       throws ParserConfigurationException {
-
-        final DocumentBuilderFactory factory =
-            DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        factory.setValidating(true);
-        final DocumentBuilder parser = factory.newDocumentBuilder();
-        parser.setEntityResolver(entityResolver);
-        parser.setErrorHandler(errorHandler);
-        return parser;
-    }
 
     /**
      * Validate an xhtml page and print any errors to the specified
@@ -307,7 +292,7 @@ public final class XHTML {
         try {
             final XhtmlErrorHandler errorHandler = new XhtmlErrorHandler();
             final XhtmlEntityResolver resolver = new XhtmlEntityResolver();
-            final DocumentBuilder parser = createParser(errorHandler, resolver);
+            final DocumentBuilder parser = XML.createParser(errorHandler, resolver);
             parser.parse(page);
             for (final String error : errorHandler.errors()) {
                 out.println(error);

@@ -150,7 +150,10 @@ public final class Resources {
                                             final Charset charset) {
         final List<String> strings = new ArrayList<String>();
         final InputStream is =
-            Resources.class.getResourceAsStream(resourcePath);
+            Thread
+                .currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(resourcePath);
         if (null!=is) {
             try {
                 BufferedReader r = null;
@@ -181,5 +184,11 @@ public final class Resources {
         return strings;
     }
 
+    /** UTF8 : Charset. */
+    public static final Charset UTF8;
     private static final int BUFFER_SIZE = 1024;
+
+    static {
+        UTF8 = Charset.forName("UTF-8");
+    }
 }
