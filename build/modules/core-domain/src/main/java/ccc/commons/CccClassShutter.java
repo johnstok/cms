@@ -31,6 +31,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.mozilla.javascript.ClassShutter;
 
+import ccc.types.DBC;
+
 /**
  * Class shutter for the Rhino scripting environment.
  * <p>This classes uses a white-list approach to allow access to Java
@@ -54,7 +56,13 @@ final class CccClassShutter
      * @param allowedClasses The classes to allow access to.
      */
     public CccClassShutter(final List<String> allowedClasses) {
+        DBC.require().notNull(allowedClasses);
         _allowedClasses = allowedClasses;
+        if (LOG.isDebugEnabled()) {
+            for (final String allowed : _allowedClasses) {
+                LOG.debug("Whitelisted: "+allowed);
+            }
+        }
     }
 
 
