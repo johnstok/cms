@@ -200,7 +200,7 @@ public class Comment
             getBody(),
             getResource().id(),
             getTimestamp(),
-            getUrl().toExternalForm());
+            getUrl()==null ? null : getUrl().toExternalForm());
         dto.setId(id());
         dto.setStatus(getStatus());
         dto.setEmail(getEmail().getText());

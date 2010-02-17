@@ -77,7 +77,6 @@ public class CommentView
         addField(_author);
 
         _url.setFieldLabel(constants().url());
-        _url.setAllowBlank(false);
         addField(_url);
 
         final ListStore<EnumModelData<CommentStatus>> statuses =
@@ -195,9 +194,17 @@ public class CommentView
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(_url.getValue())
-            || !Validations2.notEmpty(_author.getValue())) {
-            result.addError("Comment not valid");
+        final String url = _url.getValue();
+        if (url != null && !url.trim().isEmpty()) {
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                _url.setValue("http://"+url);
+            }
+            if (!Validations2.notValidURL(_url.getValue())) {
+                result.addError(constants().websiteAddressNotValid());
+            }
+        }
+        if (!Validations2.notEmpty(_author.getValue())) {
+            result.addError(constants().commentNotValid());
         }
         return result;
     }

@@ -116,6 +116,18 @@ public final class Validations2 {
         return email.matches(Validations.VALID_EMAIL);
     }
 
+    /**
+     * Validates URL.
+     * java.net.URI is not available in GWT JRE.
+     *
+     * @param url The URL.
+     *
+     * @return True if the input is valid, false otherwise.
+     */
+    public static boolean notValidURL(final String url) {
+        return url.matches(Validations.VALID_URL);
+    }
+
 
     /**
      * Validates that input is not too short.

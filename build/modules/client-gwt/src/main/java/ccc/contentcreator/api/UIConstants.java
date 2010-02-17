@@ -1692,5 +1692,19 @@ public interface UIConstants extends Constants {
     @DefaultStringValue("Select users")
     String selectUsers();
 
+    /**
+     * "Comment not valid".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Comment not valid")
+    String commentNotValid();
 
+    /**
+     * "Web site address is not valid.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Web site address is not valid.")
+    String websiteAddressNotValid();
 }

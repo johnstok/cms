@@ -88,4 +88,13 @@ public interface ErrorDescriptions extends Messages {
     @DefaultMessage(
         "Creating this relationship would cause a circular dependency.")
     String cycle();
+
+    /**
+     * "Command parameters were not valid.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage(
+    "Command parameters were not valid.")
+    String invalidCommand();
 }

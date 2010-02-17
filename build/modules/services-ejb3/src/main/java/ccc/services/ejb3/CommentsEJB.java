@@ -39,6 +39,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.commands.InvalidCommandException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Comment;
 import ccc.domain.Resource;
@@ -77,11 +78,12 @@ public class CommentsEJB
 
             final Comment c =
                 new Comment(r, comment.getBody(), comment.getAuthor());
-            try {
-                c.setUrl(new URL(comment.getUrl()));
-            } catch (final MalformedURLException e) {
-                // FIXME Auto-generated catch block
-                throw new RuntimeException(e);
+            if (comment.getUrl() != null) {
+                try {
+                    c.setUrl(new URL(comment.getUrl()));
+                } catch (final MalformedURLException e) {
+                    throw new InvalidCommandException();
+                }
             }
             c.setEmail(new EmailAddress(comment.getEmail()));
 
@@ -116,12 +118,16 @@ public class CommentsEJB
             c.setBody(comment.getBody());
             c.setStatus(comment.getStatus());
             c.setAuthor(comment.getAuthor());
-            try {
-                c.setUrl(new URL(comment.getUrl()));
-            } catch (final MalformedURLException e) {
-                // FIXME Auto-generated catch block
-                throw new RuntimeException(e);
+            if (comment.getUrl() == null || comment.getUrl().trim().isEmpty()) {
+                c.setUrl(null);
+            } else {
+                try {
+                    c.setUrl(new URL(comment.getUrl()));
+                } catch (final MalformedURLException e) {
+                    throw new InvalidCommandException();
+                }
             }
+
             c.setEmail(
                 (null==comment.getEmail())
                      ? null
