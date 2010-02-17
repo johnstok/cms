@@ -151,6 +151,8 @@ public class ErrorDialog extends AbstractEditDialog {
                 return globals.errorResolutions().contactSysAdmin();
             case CYCLE:
                 return globals.errorResolutions().cycle();
+            case INVALID:
+                return globals.errorResolutions().invalidCommand();
             default:
                 return globals.errorResolutions().contactSysAdmin();
         }
@@ -170,6 +172,8 @@ public class ErrorDialog extends AbstractEditDialog {
                 return globals.errorDescriptions().unknown();
             case CYCLE:
                 return globals.errorDescriptions().cycle();
+            case INVALID:
+                return globals.errorDescriptions().invalidCommand();
             default:
                 return globals.errorDescriptions().unknown();
         }

@@ -76,4 +76,12 @@ public interface ErrorResolutions extends Messages {
      */
     @DefaultMessage("Choose a different resource.")
     String cycle();
+
+    /**
+     * "Verify command parameters.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("Verify command parameters.")
+    String invalidCommand();
 }

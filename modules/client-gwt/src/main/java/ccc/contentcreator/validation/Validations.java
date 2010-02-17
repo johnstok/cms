@@ -75,6 +75,11 @@ public final class Validations {
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
 
+    /** VALID_URL : String. */
+    static final String VALID_URL ="(http://|https://)([a-zA-Z0-9]+\\."
+        + "[a-zA-Z0-9\\-]+|[a-zA-Z0-9\\-]+)\\.[a-zA-Z0-9\\.]{2,9}(/"
+        + "[a-zA-Z0-9\\.\\?=/#%&\\+-]+|/|)";
+
     /** GLOBALS : IGlobals. */
     static final IGlobals GLOBALS = new IGlobalsImpl();
 

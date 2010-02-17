@@ -8,6 +8,9 @@ java.lang.Object
 java.lang.String
 java.lang.Boolean
 java.net.URL
+java.net.URI
+java.net.MalformedURLException
+java.net.URISyntaxException
 java.nio.charset.Charset
 sun.nio.cs.UTF_8
 sun.net.www.protocol.http.HttpURLConnection$HttpInputStream
@@ -16,6 +19,7 @@ java.io.ByteArrayInputStream
 javax.activation.MimeType
 org.mozilla.javascript.WrappedException
 org.mozilla.javascript.EcmaError
+org.mozilla.javascript.EvaluatorException      
 org.apache.catalina.core.ApplicationDispatcher
 org.apache.commons.fileupload.servlet.ServletFileUpload
 org.apache.commons.fileupload.disk.DiskFileItem
@@ -26,4 +30,3 @@ ccc.domain
 ccc.commands.CreateFolderCommand
 ccc.persistence.ResourceRepositoryImpl
 ccc.persistence.LogEntryRepositoryImpl
-org.mozilla.javascript.EvaluatorException      
