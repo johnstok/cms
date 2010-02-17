@@ -35,7 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.FilterChain;
+
 import junit.framework.TestCase;
+import ccc.commons.Testing;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.ResourcesExt;
@@ -50,6 +53,29 @@ import ccc.types.ResourceType;
 public class LegacyLinkFilterTest
     extends
         TestCase {
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testDoesntRedirect() throws Exception {
+
+        // ARRANGE
+        final LegacyLinkFilter f = new LegacyLinkFilter();
+        final String goodPath = "/images/titles/organise.jpg";
+
+
+        // ACT
+        f.doFilter(
+            new ServletRequestStub(
+                "/shc", "", goodPath, new HashMap<String, String>()),
+                null,
+                Testing.stub(FilterChain.class));
+
+        // ASSERT
+    }
 
 
     /**

@@ -49,7 +49,7 @@ import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.ResourcesExt;
-import ccc.types.ResourceName;
+import ccc.types.ResourcePath;
 
 
 
@@ -73,8 +73,6 @@ public final class LegacyLinkFilter
 
     /**
      * Constructor.
-     *
-     * @param resources The resource API for this filter.
      */
     public LegacyLinkFilter() { super(); }
 
@@ -110,11 +108,11 @@ public final class LegacyLinkFilter
             redirectToPage(req, pageMatcher.group(1));
 
         } else if (fileMatcher.matches()
-                   && !ResourceName.isValid(fileMatcher.group(1))) {
+                   && !ResourcePath.isValid("/"+fileMatcher.group(1))) {
             redirectToFile(req, fileMatcher.group(1));
 
         } else if (imageMatcher.matches()
-                   && !ResourceName.isValid(imageMatcher.group(1))) {
+                   && !ResourcePath.isValid("/"+imageMatcher.group(1))) {
             redirectToImage(req, imageMatcher.group(1));
 
         } else if (isController(req.getParameterMap())) {
