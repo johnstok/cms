@@ -32,6 +32,7 @@ package ccc.contentcreator.validation;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public interface Validator {
 
     /**

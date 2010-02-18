@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 

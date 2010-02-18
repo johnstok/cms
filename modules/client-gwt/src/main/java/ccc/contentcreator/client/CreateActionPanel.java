@@ -30,7 +30,9 @@ package ccc.contentcreator.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.i18n.UIConstants;
 import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;

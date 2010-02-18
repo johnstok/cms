@@ -26,8 +26,10 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.ActionNameConstants;
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.i18n.ActionNameConstants;
+import ccc.contentcreator.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 

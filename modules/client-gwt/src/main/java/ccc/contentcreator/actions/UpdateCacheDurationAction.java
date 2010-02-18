@@ -28,7 +28,8 @@ package ccc.contentcreator.actions;
 
 import java.util.UUID;
 
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
 

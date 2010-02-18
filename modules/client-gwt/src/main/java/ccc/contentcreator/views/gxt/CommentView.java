@@ -26,12 +26,11 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.Validatable;
-import ccc.contentcreator.client.ValidationResult;
-import ccc.contentcreator.controllers.UpdateCommentPresenter;
-import ccc.contentcreator.dialogs.AbstractEditDialog;
-import ccc.contentcreator.validation.Validations2;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Validatable;
+import ccc.contentcreator.core.ValidationResult;
+import ccc.contentcreator.core.Validations2;
+import ccc.contentcreator.presenters.UpdateCommentPresenter;
 import ccc.contentcreator.views.EnumModelData;
 import ccc.types.CommentStatus;
 

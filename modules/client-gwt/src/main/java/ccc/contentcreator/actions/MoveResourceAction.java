@@ -28,6 +28,8 @@ package ccc.contentcreator.actions;
 
 import java.util.UUID;
 
+import ccc.contentcreator.core.RemotingAction;
+
 import com.google.gwt.http.client.RequestBuilder;
 
 

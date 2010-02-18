@@ -35,6 +35,7 @@ import ccc.contentcreator.actions.GetChildrenFolderAction;
 import ccc.contentcreator.actions.GetRootsAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.core.IGlobals;
 import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;

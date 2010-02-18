@@ -28,6 +28,8 @@ package ccc.contentcreator.actions;
 
 import java.util.UUID;
 
+import ccc.contentcreator.core.RemotingAction;
+
 
 /**
  * TODO: Add a description for this type.

@@ -29,9 +29,10 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.UserTable;
-import ccc.contentcreator.dialogs.EditUserDialog;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.views.gxt.EditUserDialog;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 

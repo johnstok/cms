@@ -27,9 +27,9 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.EditFolderDialog;
+import ccc.contentcreator.core.Action;
+import ccc.contentcreator.views.gxt.EditFolderDialog;
 
 /**
  * Edit a folder.

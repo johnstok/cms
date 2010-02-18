@@ -29,6 +29,7 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 
 import ccc.contentcreator.client.ActionTable;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.rest.dto.ActionSummary;
 
 import com.google.gwt.http.client.Response;

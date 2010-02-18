@@ -33,8 +33,8 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.contentcreator.api.CommandTypeConstants;
-import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.i18n.CommandTypeConstants;
 import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
 

@@ -29,8 +29,8 @@ package ccc.contentcreator.actions.remote;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.contentcreator.actions.RemotingAction;
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.rest.dto.CommentDto;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;

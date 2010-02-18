@@ -26,8 +26,8 @@
  */
 package ccc.contentcreator.actions.remote;
 
-import ccc.contentcreator.actions.RemotingAction;
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.events.GroupCreated;
 import ccc.rest.dto.GroupDto;
 

@@ -26,6 +26,8 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.core.Action;
+
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 

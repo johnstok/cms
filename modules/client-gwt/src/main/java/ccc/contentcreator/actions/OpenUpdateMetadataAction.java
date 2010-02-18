@@ -30,7 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.MetadataDialog;
+import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.views.gxt.MetadataDialog;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

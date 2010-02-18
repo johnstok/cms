@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.Action;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.CreateAliasDialog;
+import ccc.contentcreator.core.Action;
+import ccc.contentcreator.views.gxt.CreateAliasDialog;
 import ccc.rest.dto.ResourceSummary;
 
 /**

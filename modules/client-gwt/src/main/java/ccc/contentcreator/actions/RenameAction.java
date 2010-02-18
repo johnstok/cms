@@ -29,6 +29,7 @@ package ccc.contentcreator.actions;
 import java.util.UUID;
 
 import ccc.contentcreator.client.CommandResponseHandler;
+import ccc.contentcreator.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

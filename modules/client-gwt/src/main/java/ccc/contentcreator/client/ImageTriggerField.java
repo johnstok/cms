@@ -27,7 +27,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
-import ccc.contentcreator.dialogs.ImageChooserDialog;
+import ccc.contentcreator.views.gxt.ImageChooserDialog;
 
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;

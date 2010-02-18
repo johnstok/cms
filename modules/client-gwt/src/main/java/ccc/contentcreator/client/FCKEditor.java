@@ -17,8 +17,8 @@ package ccc.contentcreator.client;
 import java.util.Collection;
 
 import ccc.contentcreator.actions.GetRootsAction;
-import ccc.contentcreator.dialogs.ImageSelectionDialog;
-import ccc.contentcreator.dialogs.LinkSelectionDialog;
+import ccc.contentcreator.views.gxt.ImageSelectionDialog;
+import ccc.contentcreator.views.gxt.LinkSelectionDialog;
 import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;

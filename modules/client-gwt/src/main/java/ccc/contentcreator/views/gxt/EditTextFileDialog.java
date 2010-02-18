@@ -27,15 +27,14 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.client.CodeMirrorEditor;
-import ccc.contentcreator.client.Editable;
-import ccc.contentcreator.client.Event;
-import ccc.contentcreator.client.EventBus;
-import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.contentcreator.client.ValidationResult;
-import ccc.contentcreator.client.Event.Type;
-import ccc.contentcreator.dialogs.AbstractEditDialog;
+import ccc.contentcreator.core.Editable;
+import ccc.contentcreator.core.Event;
+import ccc.contentcreator.core.EventBus;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.ValidationResult;
+import ccc.contentcreator.core.Validations2;
+import ccc.contentcreator.core.Event.Type;
 import ccc.contentcreator.events.CMEditorReadyEvent;
-import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.EditTextFile;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;

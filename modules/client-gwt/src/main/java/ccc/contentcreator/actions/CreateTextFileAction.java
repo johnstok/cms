@@ -26,7 +26,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDto;
 import ccc.serialization.JsonKeys;

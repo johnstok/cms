@@ -31,10 +31,9 @@ import java.util.UUID;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
-import ccc.contentcreator.client.Editable;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.contentcreator.dialogs.AbstractEditDialog;
+import ccc.contentcreator.core.Editable;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.views.ChangeResourceTemplate;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.ResourceName;

@@ -27,6 +27,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.core.IGlobals;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 

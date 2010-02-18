@@ -26,6 +26,8 @@
  */
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.core.Event;
+import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.events.ResourceCreatedEvent;
 import ccc.contentcreator.events.ResourceUpdatedEvent;
 import ccc.types.DBC;

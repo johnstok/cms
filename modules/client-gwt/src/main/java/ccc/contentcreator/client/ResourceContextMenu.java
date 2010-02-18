@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.client;
 
-import static ccc.contentcreator.dialogs.AbstractBaseDialog.*;
+import static ccc.contentcreator.views.gxt.AbstractBaseDialog.*;
 
 import java.util.Collection;
 
@@ -57,8 +57,11 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.actions.remote.DeleteResourceAction;
 import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.dialogs.UpdateFileDialog;
-import ccc.contentcreator.dialogs.UpdatePageDialog;
+import ccc.contentcreator.core.Action;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.views.gxt.UpdateFileDialog;
+import ccc.contentcreator.views.gxt.UpdatePageDialog;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateSummary;

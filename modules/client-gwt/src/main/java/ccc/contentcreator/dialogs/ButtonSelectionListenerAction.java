@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.dialogs;
 
-import ccc.contentcreator.client.Action;
+import ccc.contentcreator.core.Action;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -36,9 +36,9 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
  *
  * @author Civic Computing Ltd.
  */
-final class ButtonSelectionListenerAction
-extends
-SelectionListener<ButtonEvent> {
+public final class ButtonSelectionListenerAction
+    extends
+        SelectionListener<ButtonEvent> {
 
     private final Action _action;
 
@@ -47,7 +47,7 @@ SelectionListener<ButtonEvent> {
      *
      * @param action The Action.
      */
-    ButtonSelectionListenerAction(final Action action) {
+    public ButtonSelectionListenerAction(final Action action) {
         _action = action;
     }
 

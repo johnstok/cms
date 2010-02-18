@@ -26,12 +26,11 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.client.Editable;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
-import ccc.contentcreator.client.ValidationResult;
-import ccc.contentcreator.dialogs.AbstractEditDialog;
-import ccc.contentcreator.validation.Validations2;
+import ccc.contentcreator.core.Editable;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.ValidationResult;
+import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.views.CreateFolder;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

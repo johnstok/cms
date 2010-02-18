@@ -35,9 +35,10 @@ import ccc.contentcreator.actions.GetImagesPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ImageTriggerField;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.views.gxt.FolderSelectionDialog;
 import ccc.rest.dto.FileDto;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
