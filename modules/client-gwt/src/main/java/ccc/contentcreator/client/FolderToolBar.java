@@ -33,6 +33,7 @@ import ccc.contentcreator.actions.OpenCreateTemplateAction;
 import ccc.contentcreator.actions.OpenCreateTextFileAction;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.rest.dto.UserDto;
 

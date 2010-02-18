@@ -29,8 +29,8 @@ package ccc.contentcreator.actions;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.MetadataDialog;
 
 import com.google.gwt.http.client.Response;

@@ -24,18 +24,35 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
+import ccc.contentcreator.core.Action;
+
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 
 /**
- * API for closing a UI component.
+ * Adapter class - wires an action to a GWT selection listener.
  *
  * @author Civic Computing Ltd.
  */
-public interface Closeable {
+public final class ButtonSelectionListenerAction
+    extends
+        SelectionListener<ButtonEvent> {
+
+    private final Action _action;
 
     /**
-     * Close a UI component.
+     * Constructor.
+     *
+     * @param action The Action.
      */
-    void close();
+    public ButtonSelectionListenerAction(final Action action) {
+        _action = action;
+    }
+
+    /** {@inheritDoc} */
+    @Override public void componentSelected(final ButtonEvent ce) {
+        _action.execute();
+    }
 }

@@ -29,9 +29,9 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.UpdateResourceRolesDialog;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.GroupDto;

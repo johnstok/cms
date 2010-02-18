@@ -29,9 +29,9 @@ package ccc.contentcreator.actions;
 import java.util.Collection;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.SelectionModelEventBus;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.Action;
+import ccc.contentcreator.core.SelectionModelEventBus;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.ChangeResourceTemplatePresenter;
 import ccc.contentcreator.views.gxt.ChooseTemplateDialog;
 import ccc.rest.dto.TemplateSummary;

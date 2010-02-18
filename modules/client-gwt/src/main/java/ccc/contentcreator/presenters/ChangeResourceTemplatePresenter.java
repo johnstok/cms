@@ -30,8 +30,8 @@ import java.util.Collection;
 
 import ccc.contentcreator.actions.UpdateResourceTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.CommandResponseHandler;
 import ccc.contentcreator.core.AbstractPresenter;
+import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.IGlobals;

@@ -12,13 +12,13 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.ImagePaths;
-import ccc.contentcreator.client.RemoteException;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.ImagePaths;
+import ccc.contentcreator.core.RemoteException;
 import ccc.contentcreator.core.SessionTimeoutException;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;

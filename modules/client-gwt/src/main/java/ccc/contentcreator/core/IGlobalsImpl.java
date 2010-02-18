@@ -29,7 +29,6 @@ package ccc.contentcreator.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.i18n.ActionNameConstants;
 import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;

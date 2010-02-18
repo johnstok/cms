@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.client.ContentCreator;
-import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;

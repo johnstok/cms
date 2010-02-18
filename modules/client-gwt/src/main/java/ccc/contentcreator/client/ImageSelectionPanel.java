@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.client;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,6 @@ import ccc.contentcreator.actions.GetImagesPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.ImageTriggerField;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.views.gxt.FolderSelectionDialog;

@@ -27,6 +27,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.binding.UserSummaryModelData;
+import ccc.contentcreator.core.ImagePaths;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;

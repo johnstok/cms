@@ -28,6 +28,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;

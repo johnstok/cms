@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.core;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 
