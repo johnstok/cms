@@ -34,6 +34,7 @@ import java.util.UUID;
 import ccc.contentcreator.actions.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.core.IGlobals;
 import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;

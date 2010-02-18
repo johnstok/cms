@@ -26,7 +26,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

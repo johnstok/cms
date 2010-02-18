@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.views;
 
-import ccc.contentcreator.client.Editable;
-import ccc.contentcreator.client.Validatable;
-import ccc.contentcreator.client.View;
+import ccc.contentcreator.core.Editable;
+import ccc.contentcreator.core.Validatable;
+import ccc.contentcreator.core.View;
 
 
 /**

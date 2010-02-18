@@ -34,6 +34,7 @@ import java.util.List;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public interface ErrorReporter {
 
     /**

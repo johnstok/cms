@@ -27,7 +27,8 @@
 
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.i18n.UIConstants;
 import ccc.types.CommentStatus;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;

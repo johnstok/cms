@@ -27,9 +27,10 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.dialogs.EditTemplateDialog;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.views.gxt.EditTemplateDialog;
 import ccc.rest.dto.TemplateDelta;
 
 import com.google.gwt.http.client.Response;

@@ -29,8 +29,8 @@ package ccc.contentcreator.views;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.contentcreator.client.Editable;
-import ccc.contentcreator.client.View;
+import ccc.contentcreator.core.Editable;
+import ccc.contentcreator.core.View;
 import ccc.rest.dto.TemplateSummary;
 
 

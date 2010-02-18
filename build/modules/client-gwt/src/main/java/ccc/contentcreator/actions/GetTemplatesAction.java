@@ -29,7 +29,8 @@ package ccc.contentcreator.actions;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.rest.dto.TemplateSummary;
 
 import com.google.gwt.http.client.Response;

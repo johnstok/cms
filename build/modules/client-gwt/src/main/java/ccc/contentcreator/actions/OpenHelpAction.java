@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.Action;
+import ccc.contentcreator.core.Action;
 
 import com.google.gwt.user.client.Window;
 

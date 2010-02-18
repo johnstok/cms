@@ -26,7 +26,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.GwtJson;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.RequestBuilder;

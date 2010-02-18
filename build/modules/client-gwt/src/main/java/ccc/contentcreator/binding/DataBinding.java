@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.FileDto;

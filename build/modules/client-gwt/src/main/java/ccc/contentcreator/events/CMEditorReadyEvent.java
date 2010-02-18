@@ -12,7 +12,7 @@
 package ccc.contentcreator.events;
 
 import ccc.contentcreator.client.CodeMirrorEditor;
-import ccc.contentcreator.client.Event;
+import ccc.contentcreator.core.Event;
 
 
 /**

@@ -27,6 +27,8 @@
 
 package ccc.contentcreator.client;
 
+import ccc.contentcreator.core.Action;
+
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.menu.Menu;

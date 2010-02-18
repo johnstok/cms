@@ -27,7 +27,10 @@
 
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.core.Action;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;

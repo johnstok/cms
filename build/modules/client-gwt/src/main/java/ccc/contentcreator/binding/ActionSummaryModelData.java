@@ -34,9 +34,9 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.api.ActionStatusConstants;
-import ccc.contentcreator.api.CommandTypeConstants;
-import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.i18n.ActionStatusConstants;
+import ccc.contentcreator.i18n.CommandTypeConstants;
 import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.ResourceType;

@@ -27,7 +27,7 @@
 package ccc.contentcreator.events;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Event;
+import ccc.contentcreator.core.Event;
 
 
 /**

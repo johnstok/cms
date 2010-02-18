@@ -38,7 +38,7 @@ import ccc.contentcreator.actions.OpenEditUserDialogAction;
 import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
-import ccc.contentcreator.dialogs.EditUserPwDialog;
+import ccc.contentcreator.views.gxt.EditUserPwDialog;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 

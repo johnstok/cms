@@ -26,7 +26,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.dialogs.LoginDialog;
+import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.views.gxt.LoginDialog;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

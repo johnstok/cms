@@ -32,11 +32,11 @@ import java.util.UUID;
 
 import ccc.contentcreator.actions.ResourceNameExistsAction;
 import ccc.contentcreator.actions.ValidateFieldAction;
-import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.api.UIMessages;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.IGlobals;
-import ccc.contentcreator.client.IGlobalsImpl;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.i18n.UIConstants;
+import ccc.contentcreator.i18n.UIMessages;
 import ccc.types.Paragraph;
 import ccc.types.Password;
 
@@ -55,28 +55,29 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public final class Validations {
 
     /** MIN_PASSWORD_LENGTH : int. */
-    static final int MIN_PASSWORD_LENGTH = 10;
+    public static final int MIN_PASSWORD_LENGTH = 10;
 
     /** VALID_CHARACTERS : String. */
-    static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
+    public static final String  VALID_CHARACTERS = "[\\.\\-\\w]+";
 
     /** VALID_USERNAME_CHARACTERS : String. */
-    static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
+    public static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
 
     /** NO_BRACKETS : String. */
-    static final String  NO_BRACKETS = "[^<^>]*";
+    public static final String  NO_BRACKETS = "[^<^>]*";
 
     /** VALID_EMAIL : String. */
-    static final String VALID_EMAIL =
+    public static final String VALID_EMAIL =
         "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
         + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*"
         +"[a-z0-9])?";
 
     /** VALID_URL : String. */
-    static final String VALID_URL ="(http://|https://)([a-zA-Z0-9]+\\."
+    public static final String VALID_URL ="(http://|https://)([a-zA-Z0-9]+\\."
         + "[a-zA-Z0-9\\-]+|[a-zA-Z0-9\\-]+)\\.[a-zA-Z0-9\\.]{2,9}(/"
         + "[a-zA-Z0-9\\.\\?=/#%&\\+-]+|/|)";
 

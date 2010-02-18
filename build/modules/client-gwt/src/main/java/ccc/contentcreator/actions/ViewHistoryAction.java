@@ -29,9 +29,10 @@ package ccc.contentcreator.actions;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.SingleSelectionModel;
-import ccc.contentcreator.dialogs.HistoryDialog;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.views.gxt.HistoryDialog;
 import ccc.rest.dto.RevisionDto;
 
 import com.google.gwt.http.client.Response;

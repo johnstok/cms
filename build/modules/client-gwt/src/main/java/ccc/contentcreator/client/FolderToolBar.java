@@ -31,7 +31,9 @@ import ccc.contentcreator.actions.OpenCreateFolderAction;
 import ccc.contentcreator.actions.OpenCreatePageAction;
 import ccc.contentcreator.actions.OpenCreateTemplateAction;
 import ccc.contentcreator.actions.OpenCreateTextFileAction;
-import ccc.contentcreator.api.UIConstants;
+import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.i18n.UIConstants;
 import ccc.rest.dto.UserDto;
 
 

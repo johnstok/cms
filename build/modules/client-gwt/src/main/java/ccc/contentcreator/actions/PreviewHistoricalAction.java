@@ -27,8 +27,8 @@
 package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
-import ccc.contentcreator.client.Action;
-import ccc.contentcreator.dialogs.HistoryDialog;
+import ccc.contentcreator.core.Action;
+import ccc.contentcreator.views.gxt.HistoryDialog;
 
 import com.google.gwt.user.client.Window;
 

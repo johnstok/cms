@@ -28,6 +28,7 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.client.ActionTable;
+import ccc.contentcreator.core.RemotingAction;
 import ccc.types.ActionStatus;
 
 import com.google.gwt.http.client.RequestBuilder;

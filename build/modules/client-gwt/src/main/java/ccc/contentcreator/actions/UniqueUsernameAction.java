@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.contentcreator.core.RemotingAction;
 import ccc.types.Username;
 
 import com.google.gwt.http.client.Response;
