@@ -33,8 +33,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.remote.ComputeTemplateAction;
-import ccc.contentcreator.actions.remote.CreatePageAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
@@ -43,6 +41,8 @@ import ccc.contentcreator.client.PageElement;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.remoting.ComputeTemplateAction;
+import ccc.contentcreator.remoting.CreatePageAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.rest.dto.PageDelta;

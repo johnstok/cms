@@ -27,10 +27,10 @@
 package ccc.contentcreator.views.gxt;
 
 
-import ccc.contentcreator.actions.remote.CreateAliasAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.remoting.CreateAliasAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.rest.dto.ResourceSummary;

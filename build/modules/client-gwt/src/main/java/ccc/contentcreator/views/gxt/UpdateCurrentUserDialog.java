@@ -28,8 +28,8 @@ package ccc.contentcreator.views.gxt;
 
 
 import static ccc.contentcreator.validation.Validations.*;
-import ccc.contentcreator.actions.remote.UpdateCurrentUserAction;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.remoting.UpdateCurrentUserAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.rest.dto.UserDto;
 

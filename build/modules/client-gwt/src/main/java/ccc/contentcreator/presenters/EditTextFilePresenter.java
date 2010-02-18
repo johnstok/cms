@@ -26,12 +26,12 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.remote.EditTextFileAction;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.remoting.EditTextFileAction;
 import ccc.contentcreator.views.EditTextFile;
 import ccc.rest.dto.TextFileDelta;
 import ccc.types.MimeType;

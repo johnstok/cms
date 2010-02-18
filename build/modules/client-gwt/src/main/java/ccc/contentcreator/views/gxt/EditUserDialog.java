@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.remote.UpdateUserAction;
 import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.remoting.UpdateUserAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;

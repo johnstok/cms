@@ -28,10 +28,10 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Map;
 
-import ccc.contentcreator.actions.remote.GetPropertyAction;
-import ccc.contentcreator.actions.remote.LoginAction;
 import ccc.contentcreator.client.ButtonSelectionListenerAction;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.remoting.GetPropertyAction;
+import ccc.contentcreator.remoting.LoginAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

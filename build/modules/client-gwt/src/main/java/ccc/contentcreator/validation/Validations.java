@@ -30,13 +30,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.remote.ResourceNameExistsAction;
-import ccc.contentcreator.actions.remote.ValidateFieldAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.i18n.UIMessages;
+import ccc.contentcreator.remoting.ResourceNameExistsAction;
+import ccc.contentcreator.remoting.ValidateFieldAction;
 import ccc.types.Paragraph;
 import ccc.types.Password;
 

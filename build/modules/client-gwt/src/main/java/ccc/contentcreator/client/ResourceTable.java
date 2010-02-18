@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.remote.GetChildrenPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.remoting.GetChildrenPagedAction;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.types.ResourceType;

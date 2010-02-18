@@ -30,12 +30,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.GroupModelData;
 import ccc.contentcreator.events.GroupUpdated;
 import ccc.contentcreator.events.GroupUpdated.GroupUpdatedHandler;
 import ccc.contentcreator.presenters.UpdateGroupPresenter;
+import ccc.contentcreator.remoting.ListGroups;
 import ccc.contentcreator.views.gxt.GroupViewImpl;
 import ccc.rest.dto.GroupDto;
 import ccc.serialization.JsonKeys;

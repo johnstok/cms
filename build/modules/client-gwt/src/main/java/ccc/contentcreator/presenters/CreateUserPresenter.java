@@ -27,11 +27,11 @@
 package ccc.contentcreator.presenters;
 
 import static ccc.contentcreator.validation.Validations.*;
-import ccc.contentcreator.actions.remote.CreateUserAction;
-import ccc.contentcreator.actions.remote.UniqueUsernameAction;
 import ccc.contentcreator.core.EditController;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.i18n.UIMessages;
+import ccc.contentcreator.remoting.CreateUserAction;
+import ccc.contentcreator.remoting.UniqueUsernameAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.views.CreateUser;

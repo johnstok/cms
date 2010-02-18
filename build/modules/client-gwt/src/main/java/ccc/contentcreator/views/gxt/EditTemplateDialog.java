@@ -29,9 +29,6 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
-import ccc.contentcreator.actions.remote.CreateTemplateAction;
-import ccc.contentcreator.actions.remote.TemplateNameExistsAction;
-import ccc.contentcreator.actions.remote.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.core.DialogMode;
@@ -41,6 +38,9 @@ import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.core.Event.Type;
 import ccc.contentcreator.events.CMEditorReadyEvent;
+import ccc.contentcreator.remoting.CreateTemplateAction;
+import ccc.contentcreator.remoting.TemplateNameExistsAction;
+import ccc.contentcreator.remoting.UpdateTemplateAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;

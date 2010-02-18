@@ -31,12 +31,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.remote.GetImagesPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.remoting.GetImagesPagedAction;
 import ccc.contentcreator.views.gxt.FolderSelectionDialog;
 import ccc.rest.dto.FileDto;
 

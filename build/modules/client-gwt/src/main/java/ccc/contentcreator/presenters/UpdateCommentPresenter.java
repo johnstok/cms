@@ -26,13 +26,13 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.remote.UpdateCommentAction;
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.events.CommentUpdatedEvent;
+import ccc.contentcreator.remoting.UpdateCommentAction;
 import ccc.contentcreator.views.gxt.CommentView;
 import ccc.rest.dto.CommentDto;
 
