@@ -27,8 +27,8 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.widgets.ResourceTree;
 import ccc.rest.dto.ResourceSummary;
 
@@ -52,7 +52,7 @@ public class ResourceSelectionDialog extends Window {
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final ResourceTree _tree;
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
 
     /**
      * Constructor.
@@ -65,7 +65,7 @@ public class ResourceSelectionDialog extends Window {
         setScrollMode(Scroll.AUTOY);
         setHeading(_globals.uiConstants().selectResource());
         setWidth(DIALOG_WIDTH);
-        setMinWidth(IGlobals.MIN_WIDTH);
+        setMinWidth(Globals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
         setLayout(new FitLayout());
 

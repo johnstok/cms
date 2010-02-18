@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.RemoteException;
 import ccc.types.FailureCode;
 
@@ -58,7 +58,7 @@ public class ErrorDialog extends AbstractEditDialog {
     private ErrorDialog(final String action,
                         final String error,
                         final String resolution,
-                        final IGlobals globals) {
+                        final Globals globals) {
         super(globals.uiConstants().error(), globals);
         setPanelId("error-panel");
 
@@ -112,7 +112,7 @@ public class ErrorDialog extends AbstractEditDialog {
      */
     public ErrorDialog(final Throwable e,
                        final String action,
-                       final IGlobals globals) {
+                       final Globals globals) {
         this(
             action,
             e.getMessage(),
@@ -129,7 +129,7 @@ public class ErrorDialog extends AbstractEditDialog {
      */
     public ErrorDialog(final RemoteException e,
                        final String action,
-                       final IGlobals globals) {
+                       final Globals globals) {
         this(
             action,
             lookupError(e.getCode(), globals),
@@ -139,7 +139,7 @@ public class ErrorDialog extends AbstractEditDialog {
 
 
     private static String lookupResolution(final FailureCode code,
-                                           final IGlobals globals) {
+                                           final Globals globals) {
         switch (code) {
             case UNLOCKED:
                 return globals.errorResolutions().unlocked();
@@ -160,7 +160,7 @@ public class ErrorDialog extends AbstractEditDialog {
 
 
     private static String lookupError(final FailureCode code,
-                                      final IGlobals globals) {
+                                      final Globals globals) {
         switch (code) {
             case UNLOCKED:
                 return globals.errorDescriptions().unlocked();

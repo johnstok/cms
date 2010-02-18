@@ -28,8 +28,8 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.core.RemoteException;
 import ccc.contentcreator.core.SessionTimeoutException;
@@ -72,9 +72,9 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param fileId The {@link UUID} of the file.
      */
     public UpdateFileDialog(final UUID fileId) {
-        super(new IGlobalsImpl().uiConstants().updateFile(),
-              new IGlobalsImpl());
-        setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
+        super(new GlobalsImpl().uiConstants().updateFile(),
+              new GlobalsImpl());
+        setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
         getPanel().setAction("update_file");
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);

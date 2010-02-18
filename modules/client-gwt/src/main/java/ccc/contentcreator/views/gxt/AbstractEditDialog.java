@@ -28,7 +28,7 @@
 package ccc.contentcreator.views.gxt;
 
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -58,7 +58,7 @@ public abstract class AbstractEditDialog
      * @param title Title for the dialog.
      * @param globals The globals for this dialog.
      */
-    public AbstractEditDialog(final String title, final IGlobals globals) {
+    public AbstractEditDialog(final String title, final Globals globals) {
         super(title, globals);
 
         _save.setId("save");

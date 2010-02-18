@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.views.ChangeResourceTemplate;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.ResourceName;
@@ -80,9 +80,9 @@ public class ChooseTemplateDialog
      * Constructor.
      */
     public ChooseTemplateDialog() {
-        super(new IGlobalsImpl().uiConstants().chooseTemplate(),
-              new IGlobalsImpl());
-        setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
+        super(new GlobalsImpl().uiConstants().chooseTemplate(),
+              new GlobalsImpl());
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         _selectedTemplate.setFieldLabel(constants().defaultTemplate());
         _selectedTemplate.setTemplate("<tpl for=\".\">"

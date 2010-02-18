@@ -29,7 +29,7 @@ package ccc.contentcreator.views.gxt;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.remoting.CreateActionAction;
 import ccc.contentcreator.widgets.CreateActionPanel;
@@ -65,8 +65,8 @@ public class CreateActionDialog
      * @param resourceId The UUID of the resource.
      */
     public CreateActionDialog(final UUID resourceId) {
-        super(new IGlobalsImpl().uiConstants().createAction(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().createAction(),
+              new GlobalsImpl());
 
         _resourceId = resourceId;
 
@@ -115,7 +115,7 @@ public class CreateActionDialog
         private final DateField _date = new DateField();
         private final TimeField _time = new TimeField();
         private static final UIConstants UICONSTANTS =
-            new IGlobalsImpl().uiConstants();
+            new GlobalsImpl().uiConstants();
 
         DateTimePicker() {
             setLayout(new FormLayout());

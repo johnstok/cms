@@ -29,7 +29,7 @@ package ccc.contentcreator.views.gxt;
 
 import static ccc.contentcreator.validation.Validations.*;
 import ccc.contentcreator.binding.UserSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateUserPasswordAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.rest.dto.UserDto;
@@ -59,8 +59,8 @@ public class EditUserPwDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      */
     public EditUserPwDialog(final UserSummaryModelData userDTO) {
-        super(new IGlobalsImpl().uiConstants().editUserPw(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().editUserPw(),
+              new GlobalsImpl());
 
         _userDTO = userDTO;
 

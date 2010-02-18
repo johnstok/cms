@@ -38,7 +38,7 @@ package ccc.contentcreator.core;
  */
 public abstract class AbstractPresenter<T, U> {
 
-    private final IGlobals _globals;
+    private final Globals _globals;
     private final EventBus _bus;
     private final T _view;
     private final U _model;
@@ -52,7 +52,7 @@ public abstract class AbstractPresenter<T, U> {
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public AbstractPresenter(final IGlobals globals,
+    public AbstractPresenter(final Globals globals,
                              final EventBus bus,
                              final T view,
                              final U model) {
@@ -68,7 +68,7 @@ public abstract class AbstractPresenter<T, U> {
      *
      * @return Returns the globals.
      */
-    public IGlobals getGlobals() {
+    public Globals getGlobals() {
         return _globals;
     }
 

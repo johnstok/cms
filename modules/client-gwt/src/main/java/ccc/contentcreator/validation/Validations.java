@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.remoting.ResourceNameExistsAction;
@@ -82,7 +82,7 @@ public final class Validations {
         + "[a-zA-Z0-9\\.\\?=/#%&\\+-]+|/|)";
 
     /** GLOBALS : IGlobals. */
-    static final IGlobals GLOBALS = new IGlobalsImpl();
+    static final Globals GLOBALS = new GlobalsImpl();
 
     /** UI_CONSTANTS : UIConstants. */
     static final UIConstants UI_CONSTANTS = GLOBALS.uiConstants();

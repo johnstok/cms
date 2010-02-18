@@ -48,13 +48,13 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 
 
 /**
- * {@link IGlobals} implementation.
+ * {@link Globals} implementation.
  *
  * @author Civic Computing Ltd.
  */
-public class IGlobalsImpl
+public class GlobalsImpl
     implements
-        IGlobals {
+        Globals {
 
     private static final Map<String, String> SETTINGS =
         new HashMap<String, String>();
@@ -217,7 +217,7 @@ public class IGlobalsImpl
     }
 
     /**
-     * User Summary shared by all instances of {@link IGlobalsImpl}.
+     * User Summary shared by all instances of {@link GlobalsImpl}.
      *
      * @author Civic Computing Ltd.
      */

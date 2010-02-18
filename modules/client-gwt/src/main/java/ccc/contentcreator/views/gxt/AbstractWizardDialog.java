@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.ArrayList;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -71,7 +71,7 @@ public abstract class AbstractWizardDialog
      * @param title Title of the dialog.
      * @param globals The globals for this dialog.
      */
-    public AbstractWizardDialog(final String title, final IGlobals globals) {
+    public AbstractWizardDialog(final String title, final Globals globals) {
 
         super(title, globals);
 

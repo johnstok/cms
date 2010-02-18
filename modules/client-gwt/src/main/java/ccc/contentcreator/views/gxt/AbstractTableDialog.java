@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Collection;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -64,7 +64,7 @@ public abstract class AbstractTableDialog<T, S extends ModelData>
      * @param editable EditorGrid is used if editable is true.
      */
     public AbstractTableDialog(final String title,
-                               final IGlobals globals,
+                               final Globals globals,
                                final Collection<T> data,
                                final boolean editable) {
 

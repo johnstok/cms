@@ -29,7 +29,7 @@ package ccc.contentcreator.views.gxt;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdatePageAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -70,8 +70,8 @@ public class PageCommentDialog extends AbstractEditDialog {
     public PageCommentDialog(final UUID pageId,
                              final PageDelta page,
                              final UpdatePageDialog updatePageDialog) {
-        super(new IGlobalsImpl().uiConstants().pageEditComment(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().pageEditComment(),
+              new GlobalsImpl());
         _pageId = pageId;
         _page = page;
         _updatePageDialog = updatePageDialog;

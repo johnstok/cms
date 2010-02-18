@@ -33,7 +33,7 @@ import java.util.List;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.remoting.GetChildrenFolderAction;
 import ccc.contentcreator.remoting.GetRootsAction;
 import ccc.rest.dto.ResourceSummary;
@@ -50,14 +50,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class FolderResourceTree extends AbstractResourceTree {
 
-    private final IGlobals _globals;
+    private final Globals _globals;
 
     /**
      * Constructor.
      *
      * @param globals IGlobals globals.
      */
-    public FolderResourceTree(final IGlobals globals) {
+    public FolderResourceTree(final Globals globals) {
         _globals = globals;
         load();
     }

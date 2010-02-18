@@ -27,8 +27,8 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.views.RenameResource;
@@ -59,8 +59,8 @@ public class RenameDialog
      * Constructor.
      */
     public RenameDialog() {
-        super(new IGlobalsImpl().uiConstants().rename(), new IGlobalsImpl());
-        setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
+        super(new GlobalsImpl().uiConstants().rename(), new GlobalsImpl());
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         setPanelId("RenamePanel");
 

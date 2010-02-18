@@ -27,7 +27,7 @@
 
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.i18n.UIConstants;
 
@@ -61,7 +61,7 @@ public class UserTree extends Tree {
 
     private final UserTable _userTable = new UserTable();
     private final GroupTable _groupTable = new GroupTable();
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final UIConstants _constants = new GlobalsImpl().uiConstants();
     private final LeftRightPane _view;
 
     /**

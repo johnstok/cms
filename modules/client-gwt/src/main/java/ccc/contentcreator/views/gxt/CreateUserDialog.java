@@ -27,8 +27,8 @@
 package ccc.contentcreator.views.gxt;
 
 
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.presenters.CreateUserPresenter;
 import ccc.contentcreator.views.CreateUser;
 import ccc.contentcreator.widgets.SubmitControllerSelectionListener;
@@ -60,20 +60,20 @@ public class CreateUserDialog
      * Constructor.
      */
     public CreateUserDialog() {
-        super(new IGlobalsImpl().uiConstants().createUser(),
-             new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().createUser(),
+             new GlobalsImpl());
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
 
         _username.setFieldLabel(constants().username());
         _username.setAllowBlank(false);
-        _username.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
+        _username.setMinLength(Globals.MIN_USER_NAME_LENGTH);
         _username.setId("username");
         addField(_username);
 
         _name.setFieldLabel(constants().fullName());
         _name.setAllowBlank(false);
-        _name.setMinLength(IGlobals.MIN_USER_NAME_LENGTH);
+        _name.setMinLength(Globals.MIN_USER_NAME_LENGTH);
         _name.setId("name");
         addField(_name);
 
@@ -102,7 +102,7 @@ public class CreateUserDialog
     @Override
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SubmitControllerSelectionListener(
-            new CreateUserPresenter(this, new IGlobalsImpl()));
+            new CreateUserPresenter(this, new GlobalsImpl()));
     }
 
 

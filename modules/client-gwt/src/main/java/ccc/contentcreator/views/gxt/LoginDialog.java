@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Map;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetPropertyAction;
 import ccc.contentcreator.remoting.LoginAction;
 import ccc.contentcreator.widgets.ButtonSelectionListenerAction;
@@ -61,7 +61,7 @@ public class LoginDialog extends AbstractEditDialog {
      * Constructor.
      */
     public LoginDialog() {
-        super(new IGlobalsImpl().uiConstants().login(), new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().login(), new GlobalsImpl());
         final GetPropertyAction action = new GetPropertyAction() {
             /** {@inheritDoc} */
             @Override

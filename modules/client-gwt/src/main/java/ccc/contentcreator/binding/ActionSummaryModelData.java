@@ -34,7 +34,7 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;
 import ccc.rest.dto.ActionSummary;
@@ -54,7 +54,7 @@ public class ActionSummaryModelData
         ModelData {
 
     private final ActionSummary _as;
-    private IGlobals _globals;
+    private Globals _globals;
 
     /**
      * Constructor.
@@ -63,7 +63,7 @@ public class ActionSummaryModelData
      * @param globals The globals.
      */
     public ActionSummaryModelData(final ActionSummary as,
-                                  final IGlobals globals) {
+                                  final Globals globals) {
         _as = as;
         _globals = globals;
     }

@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.FileDto;
@@ -59,7 +59,7 @@ public final class DataBinding {
     /** KEY : String. */
     public static final String KEY = "key";
 
-    private static final IGlobals GLOBALS = new IGlobalsImpl();
+    private static final Globals GLOBALS = new GlobalsImpl();
 
 
     private DataBinding() { super(); }

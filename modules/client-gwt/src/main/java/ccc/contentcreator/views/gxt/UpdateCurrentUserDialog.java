@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 
 import static ccc.contentcreator.validation.Validations.*;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateCurrentUserAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.rest.dto.UserDto;
@@ -59,8 +59,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      */
     public UpdateCurrentUserDialog() {
-        super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());
-        _user    = new IGlobalsImpl().currentUser();
+        super(new GlobalsImpl().uiConstants().editUser(), new GlobalsImpl());
+        _user    = new GlobalsImpl().currentUser();
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateUserAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.widgets.UserTable;
@@ -83,7 +83,7 @@ public class EditUserDialog extends AbstractEditDialog {
                           final UserDto userDTO,
                           final UserTable userTable,
                           final Collection<GroupDto> allGroups) {
-        super(new IGlobalsImpl().uiConstants().editUser(), new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().editUser(), new GlobalsImpl());
 
         _userId    = userId;
         _userDTO   = userDTO;

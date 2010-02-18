@@ -29,7 +29,7 @@ package ccc.contentcreator.presenters;
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.events.CommentUpdatedEvent;
 import ccc.contentcreator.remoting.UpdateCommentAction;
@@ -57,7 +57,7 @@ public class UpdateCommentPresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public UpdateCommentPresenter(final IGlobals globals,
+    public UpdateCommentPresenter(final Globals globals,
                                   final EventBus bus,
                                   final CommentView view,
                                   final CommentModelData model) {

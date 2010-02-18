@@ -27,7 +27,7 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.widgets.ImageSelectionPanel;
 import ccc.contentcreator.widgets.ImageTriggerField;
 
@@ -50,8 +50,8 @@ public class ImageChooserDialog extends AbstractBaseDialog {
      */
     public ImageChooserDialog(final ImageTriggerField image) {
 
-        super(new IGlobalsImpl().uiConstants().selectImage(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().selectImage(),
+              new GlobalsImpl());
         _imagePanel.setImage(image);
         add(_imagePanel);
         addButton(getCancel());

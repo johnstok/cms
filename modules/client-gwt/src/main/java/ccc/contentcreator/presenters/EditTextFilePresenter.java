@@ -30,7 +30,7 @@ import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.remoting.EditTextFileAction;
 import ccc.contentcreator.views.EditTextFile;
 import ccc.rest.dto.TextFileDelta;
@@ -58,7 +58,7 @@ CommandResponseHandler<Void> {
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public EditTextFilePresenter(final IGlobals globals,
+    public EditTextFilePresenter(final Globals globals,
                                  final EventBus bus,
                                  final EditTextFile view,
                                  final TextFileDelta model) {

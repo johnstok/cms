@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateWorkingCopyAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -86,8 +86,8 @@ public class UpdatePageDialog
                             final String pageName,
                             final TemplateSummary template,
                             final ResourceTable rt) {
-        super(new IGlobalsImpl().uiConstants().updateContent(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().updateContent(),
+              new GlobalsImpl());
         _rt = rt;
         _page = page;
         _template = template;

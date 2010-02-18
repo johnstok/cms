@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.presenters.GroupPresenter.GroupView;
@@ -70,7 +70,7 @@ public class GroupViewImpl
      *
      * @param globals The globals implementation.
      */
-    public GroupViewImpl(final IGlobals globals) {
+    public GroupViewImpl(final Globals globals) {
         super(globals.uiConstants().createGroup(), globals);
 
         _name.setFieldLabel(globals.uiConstants().name());

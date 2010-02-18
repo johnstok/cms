@@ -27,7 +27,7 @@
 
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.i18n.UIConstants;
 
@@ -55,7 +55,7 @@ public class ActionTree extends Tree {
     private static final int ACTION_TREE_HEIGHT = 300;
     
     private final ActionTable _actionTable = new ActionTable();
-    private final UIConstants _uiConstants = new IGlobalsImpl().uiConstants();
+    private final UIConstants _uiConstants = new GlobalsImpl().uiConstants();
     protected final LeftRightPane _view;
     
     /**

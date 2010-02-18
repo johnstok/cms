@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.remoting;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -56,7 +56,7 @@ public final class LogoutAction
     protected void onNoContent(final Response response) {
         GLOBALS.currentUser(null);
         GLOBALS.disableExitConfirmation();
-        GLOBALS.redirectTo(IGlobals.APP_URL);
+        GLOBALS.redirectTo(Globals.APP_URL);
     }
 
 

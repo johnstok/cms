@@ -30,8 +30,8 @@ package ccc.contentcreator.widgets;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.types.CommandType;
 
@@ -63,7 +63,7 @@ public class CreateActionPanel
     extends
         LayoutContainer {
 
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
     private final UIConstants _uiConstants = _globals.uiConstants();
 
     private final DataList _list = new DataList();
@@ -220,14 +220,14 @@ public class CreateActionPanel
         private final Html _title = new Html();
         private final CheckBox _majorEdit = new CheckBox();
         private final TextArea _comment = new TextArea();
-        private final IGlobals _globals;
+        private final Globals _globals;
 
         /**
          * Constructor.
          *
          * @param globals The globals object.
          */
-        public UpdatePanel(final IGlobals globals) {
+        public UpdatePanel(final Globals globals) {
             _globals = globals;
         }
 

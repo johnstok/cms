@@ -27,7 +27,7 @@
 package ccc.contentcreator.widgets;
 
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetPropertyAction;
 import ccc.contentcreator.remoting.IsLoggedInAction;
 
@@ -44,7 +44,7 @@ public final class ContentCreator implements EntryPoint {
     /** EVENT_BUS : HandlerManager. */
     public static final HandlerManager EVENT_BUS =
         new HandlerManager("Event bus");
-    private IGlobalsImpl _globals = new IGlobalsImpl();
+    private GlobalsImpl _globals = new GlobalsImpl();
 
 
     /**

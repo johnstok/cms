@@ -27,8 +27,8 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.views.CreateFolder;
@@ -58,10 +58,10 @@ public class CreateFolderDialog
      * Constructor.
      */
     public CreateFolderDialog() {
-        super(new IGlobalsImpl().uiConstants().createFolder(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().createFolder(),
+              new GlobalsImpl());
 
-        setHeight(IGlobals.DEFAULT_MIN_HEIGHT);
+        setHeight(Globals.DEFAULT_MIN_HEIGHT);
         setLayout(new FitLayout());
         setPanelId("create-folder-dialog");
 

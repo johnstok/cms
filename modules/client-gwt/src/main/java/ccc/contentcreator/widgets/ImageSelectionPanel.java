@@ -34,8 +34,8 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetImagesPagedAction;
 import ccc.contentcreator.views.gxt.FolderSelectionDialog;
 import ccc.rest.dto.FileDto;
@@ -83,7 +83,7 @@ public class ImageSelectionPanel extends ContentPanel {
     private  final ListView<ImageSummaryModelData> _view =
         new ListView<ImageSummaryModelData>();
 
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
 
     private ImageTriggerField _image;
 

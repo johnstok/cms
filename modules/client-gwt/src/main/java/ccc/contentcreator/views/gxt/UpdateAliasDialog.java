@@ -31,7 +31,7 @@ package ccc.contentcreator.views.gxt;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateAliasAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
@@ -75,8 +75,8 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                              final String targetName,
                              final String aliasName,
                              final ResourceSummary targetRoot) {
-        super(new IGlobalsImpl().uiConstants().updateAlias(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().updateAlias(),
+              new GlobalsImpl());
 
         _aliasId = aliasId;
         _targetRoot = targetRoot;
