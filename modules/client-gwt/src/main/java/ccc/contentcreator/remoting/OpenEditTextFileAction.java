@@ -27,13 +27,13 @@
 package ccc.contentcreator.remoting;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.SelectionModelEventBus;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.EditTextFilePresenter;
 import ccc.contentcreator.views.gxt.EditTextFileDialog;
+import ccc.contentcreator.widgets.ResourceTable;
 import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.Response;

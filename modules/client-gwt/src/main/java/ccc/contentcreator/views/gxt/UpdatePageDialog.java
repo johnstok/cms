@@ -33,13 +33,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.EditPagePanel;
-import ccc.contentcreator.client.PageElement;
-import ccc.contentcreator.client.ResourceTable;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.remoting.UpdateWorkingCopyAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.contentcreator.widgets.EditPagePanel;
+import ccc.contentcreator.widgets.PageElement;
+import ccc.contentcreator.widgets.ResourceTable;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.Paragraph;

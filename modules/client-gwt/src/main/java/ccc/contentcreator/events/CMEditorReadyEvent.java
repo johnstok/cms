@@ -11,8 +11,8 @@
  */
 package ccc.contentcreator.events;
 
-import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.core.Event;
+import ccc.contentcreator.widgets.CodeMirrorEditor;
 
 
 /**

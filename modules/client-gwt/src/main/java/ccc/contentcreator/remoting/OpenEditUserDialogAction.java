@@ -29,10 +29,10 @@ package ccc.contentcreator.remoting;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.contentcreator.client.UserTable;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.views.gxt.EditUserDialog;
+import ccc.contentcreator.widgets.UserTable;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 

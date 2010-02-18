@@ -30,7 +30,6 @@ package ccc.contentcreator.views.gxt;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.core.DialogMode;
 import ccc.contentcreator.core.Event;
 import ccc.contentcreator.core.EventBus;
@@ -44,6 +43,7 @@ import ccc.contentcreator.remoting.UpdateTemplateAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
+import ccc.contentcreator.widgets.CodeMirrorEditor;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.MimeType;

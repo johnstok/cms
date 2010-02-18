@@ -28,9 +28,9 @@ package ccc.contentcreator.remoting;
 
 import java.util.Collection;
 
-import ccc.contentcreator.client.LeftRightPane;
-import ccc.contentcreator.client.MainMenu;
-import ccc.contentcreator.client.ResourceNavigator;
+import ccc.contentcreator.widgets.LeftRightPane;
+import ccc.contentcreator.widgets.MainMenu;
+import ccc.contentcreator.widgets.ResourceNavigator;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 

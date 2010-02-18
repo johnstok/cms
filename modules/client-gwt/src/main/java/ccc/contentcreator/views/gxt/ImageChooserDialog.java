@@ -27,9 +27,9 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
-import ccc.contentcreator.client.ImageSelectionPanel;
-import ccc.contentcreator.client.ImageTriggerField;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.widgets.ImageSelectionPanel;
+import ccc.contentcreator.widgets.ImageTriggerField;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

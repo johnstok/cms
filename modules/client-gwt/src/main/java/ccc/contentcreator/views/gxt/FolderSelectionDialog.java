@@ -27,9 +27,9 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.FolderResourceTree;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.widgets.FolderResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

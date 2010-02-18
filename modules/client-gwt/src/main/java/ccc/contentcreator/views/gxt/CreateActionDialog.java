@@ -29,10 +29,10 @@ package ccc.contentcreator.views.gxt;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.remoting.CreateActionAction;
+import ccc.contentcreator.widgets.CreateActionPanel;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
