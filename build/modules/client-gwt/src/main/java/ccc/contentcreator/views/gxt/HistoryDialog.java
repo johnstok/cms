@@ -35,8 +35,8 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.HistoryToolBar;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
 

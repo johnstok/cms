@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.core;
 
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.types.DBC;

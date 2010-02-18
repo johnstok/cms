@@ -28,10 +28,10 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.ResourceTable;
-import ccc.contentcreator.client.SelectionModelEventBus;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.SelectionModelEventBus;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.EditTextFilePresenter;
 import ccc.contentcreator.views.gxt.EditTextFileDialog;
 import ccc.rest.dto.TextFileDelta;

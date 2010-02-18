@@ -24,18 +24,18 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.core;
 
 
 /**
- * A controller used for editing data.
+ * API for closing a UI component.
  *
  * @author Civic Computing Ltd.
  */
-public interface EditController {
+public interface Closeable {
 
     /**
-     * Perform the edit.
+     * Close a UI component.
      */
-    void submit();
+    void close();
 }

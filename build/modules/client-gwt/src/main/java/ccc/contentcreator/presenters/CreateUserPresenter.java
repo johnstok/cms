@@ -29,7 +29,7 @@ package ccc.contentcreator.presenters;
 import static ccc.contentcreator.validation.Validations.*;
 import ccc.contentcreator.actions.CreateUserAction;
 import ccc.contentcreator.actions.UniqueUsernameAction;
-import ccc.contentcreator.client.EditController;
+import ccc.contentcreator.core.EditController;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.validation.Validate;

@@ -24,35 +24,18 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.dialogs;
+package ccc.contentcreator.core;
 
-import ccc.contentcreator.core.Action;
-
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
 
 /**
- * Adapter class - wires an action to a GWT selection listener.
+ * A controller used for editing data.
  *
  * @author Civic Computing Ltd.
  */
-public final class ButtonSelectionListenerAction
-    extends
-        SelectionListener<ButtonEvent> {
-
-    private final Action _action;
+public interface EditController {
 
     /**
-     * Constructor.
-     *
-     * @param action The Action.
+     * Perform the edit.
      */
-    public ButtonSelectionListenerAction(final Action action) {
-        _action = action;
-    }
-
-    /** {@inheritDoc} */
-    @Override public void componentSelected(final ButtonEvent ce) {
-        _action.execute();
-    }
+    void submit();
 }

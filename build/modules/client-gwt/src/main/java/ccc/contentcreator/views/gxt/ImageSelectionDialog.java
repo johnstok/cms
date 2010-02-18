@@ -27,8 +27,8 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
+import ccc.contentcreator.client.ImageSelectionPanel;
 import ccc.contentcreator.core.IGlobalsImpl;
-import ccc.contentcreator.dialogs.ImageSelectionPanel;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

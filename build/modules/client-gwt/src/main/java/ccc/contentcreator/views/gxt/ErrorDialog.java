@@ -26,8 +26,8 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.RemoteException;
 import ccc.types.FailureCode;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;

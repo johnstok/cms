@@ -27,8 +27,8 @@
 package ccc.contentcreator.actions.remote;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.SingleSelectionModel;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

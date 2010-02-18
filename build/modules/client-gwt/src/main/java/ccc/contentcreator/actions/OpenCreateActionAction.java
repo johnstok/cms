@@ -26,8 +26,8 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.core.Action;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.CreateActionDialog;
 
 /**

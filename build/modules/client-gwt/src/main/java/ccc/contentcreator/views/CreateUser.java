@@ -27,7 +27,7 @@
 
 package ccc.contentcreator.views;
 
-import ccc.contentcreator.dialogs.Closeable;
+import ccc.contentcreator.core.Closeable;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 

@@ -30,8 +30,8 @@ import java.util.Map;
 
 import ccc.contentcreator.actions.GetPropertyAction;
 import ccc.contentcreator.actions.LoginAction;
+import ccc.contentcreator.client.ButtonSelectionListenerAction;
 import ccc.contentcreator.core.IGlobalsImpl;
-import ccc.contentcreator.dialogs.ButtonSelectionListenerAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

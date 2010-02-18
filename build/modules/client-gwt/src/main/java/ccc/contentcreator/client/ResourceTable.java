@@ -33,6 +33,7 @@ import java.util.List;
 import ccc.contentcreator.actions.GetChildrenPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.types.ResourceType;
