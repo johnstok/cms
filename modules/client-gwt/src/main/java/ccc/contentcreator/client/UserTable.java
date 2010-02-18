@@ -30,12 +30,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.ListUsers;
-import ccc.contentcreator.actions.ListUsersWithEmailAction;
-import ccc.contentcreator.actions.ListUsersWithRoleAction;
-import ccc.contentcreator.actions.ListUsersWithUsernameAction;
-import ccc.contentcreator.actions.OpenEditUserDialogAction;
 import ccc.contentcreator.actions.remote.ListGroups;
+import ccc.contentcreator.actions.remote.ListUsers;
+import ccc.contentcreator.actions.remote.ListUsersWithEmailAction;
+import ccc.contentcreator.actions.remote.ListUsersWithRoleAction;
+import ccc.contentcreator.actions.remote.ListUsersWithUsernameAction;
+import ccc.contentcreator.actions.remote.OpenEditUserDialogAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.views.gxt.EditUserPwDialog;

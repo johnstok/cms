@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.actions.MoveResourceAction;
+import ccc.contentcreator.actions.remote.MoveResourceAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;

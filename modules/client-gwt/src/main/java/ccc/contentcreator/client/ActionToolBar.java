@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.actions.CancelActionAction;
+import ccc.contentcreator.actions.remote.CancelActionAction;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 

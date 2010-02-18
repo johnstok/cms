@@ -33,8 +33,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.GetChildrenAction;
-import ccc.contentcreator.actions.UpdateFolderAction;
+import ccc.contentcreator.actions.remote.GetChildrenAction;
+import ccc.contentcreator.actions.remote.UpdateFolderAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;

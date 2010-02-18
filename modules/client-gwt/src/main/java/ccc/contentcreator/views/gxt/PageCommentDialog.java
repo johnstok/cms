@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
-import ccc.contentcreator.actions.UpdatePageAction;
+import ccc.contentcreator.actions.remote.UpdatePageAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;

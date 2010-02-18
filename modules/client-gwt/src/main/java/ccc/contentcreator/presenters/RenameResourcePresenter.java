@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.RenameAction;
+import ccc.contentcreator.actions.remote.RenameAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;

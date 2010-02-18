@@ -53,9 +53,7 @@
 	<source path="actions" />
 	<source path="i18n" />
 	<source path="binding" />
-	<source path="callbacks" />
 	<source path="client" />
-	<source path="dialogs" />
 	<source path="validation" />
 	<source path="presenters" />
 	<source path="views" />

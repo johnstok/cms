@@ -30,7 +30,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
-import ccc.contentcreator.actions.UpdateAliasAction;
+import ccc.contentcreator.actions.remote.UpdateAliasAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;

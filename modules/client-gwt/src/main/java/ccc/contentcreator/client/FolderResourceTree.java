@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import ccc.contentcreator.actions.GetChildrenFolderAction;
-import ccc.contentcreator.actions.GetRootsAction;
+import ccc.contentcreator.actions.remote.GetChildrenFolderAction;
+import ccc.contentcreator.actions.remote.GetRootsAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;

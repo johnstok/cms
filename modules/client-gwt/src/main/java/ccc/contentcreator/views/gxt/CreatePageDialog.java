@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.ComputeTemplateAction;
-import ccc.contentcreator.actions.CreatePageAction;
+import ccc.contentcreator.actions.remote.ComputeTemplateAction;
+import ccc.contentcreator.actions.remote.CreatePageAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;

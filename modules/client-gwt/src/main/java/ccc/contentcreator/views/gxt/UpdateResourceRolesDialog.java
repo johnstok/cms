@@ -31,9 +31,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.GetUserAction;
-import ccc.contentcreator.actions.ListUsers;
-import ccc.contentcreator.actions.UpdateResourceRolesAction;
+import ccc.contentcreator.actions.remote.GetUserAction;
+import ccc.contentcreator.actions.remote.ListUsers;
+import ccc.contentcreator.actions.remote.UpdateResourceRolesAction;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.rest.dto.AclDto;

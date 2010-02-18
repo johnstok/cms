@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.GetAbsolutePathAction;
+import ccc.contentcreator.actions.remote.GetAbsolutePathAction;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.client.PageElement.FieldType;
 import ccc.contentcreator.core.IGlobals;

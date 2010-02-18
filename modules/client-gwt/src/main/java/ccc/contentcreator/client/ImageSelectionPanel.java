@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.GetImagesPagedAction;
+import ccc.contentcreator.actions.remote.GetImagesPagedAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;

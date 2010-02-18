@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ccc.contentcreator.actions.UpdateMetadataAction;
+import ccc.contentcreator.actions.remote.UpdateMetadataAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;

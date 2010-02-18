@@ -28,7 +28,7 @@ package ccc.contentcreator.presenters;
 
 import java.util.Collection;
 
-import ccc.contentcreator.actions.UpdateResourceTemplateAction;
+import ccc.contentcreator.actions.remote.UpdateResourceTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
