@@ -31,6 +31,7 @@ import ccc.contentcreator.actions.GetPropertyAction;
 import ccc.contentcreator.actions.IsLoggedInAction;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Response;
 
 
@@ -39,6 +40,9 @@ import com.google.gwt.http.client.Response;
  */
 public final class ContentCreator implements EntryPoint {
 
+    /** EVENT_BUS : HandlerManager. */
+    public static final HandlerManager EVENT_BUS =
+        new HandlerManager("Event bus");
     private IGlobalsImpl _globals = new IGlobalsImpl();
 
 

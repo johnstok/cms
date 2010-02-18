@@ -47,6 +47,8 @@ import ccc.contentcreator.actions.ViewHistoryAction;
 import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.api.UIConstants;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.controllers.CreateGroupPresenter;
+import ccc.contentcreator.views.gxt.GroupViewImpl;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -88,8 +90,16 @@ public class MainMenu
                 createMenuItem(
                     "create-user-menu-item",
                     _constants.createUser(),
-                    new OpenCreateUserAction())
-            );
+                    new OpenCreateUserAction()),
+                createMenuItem(
+                    "create-group-menu-item",
+                    _constants.createGroup(),
+                    new Action(){
+                        @Override public void execute() {
+                            new CreateGroupPresenter(
+                                new GroupViewImpl(_globals));
+                        }
+                    }));
         }
 
         if (_user.hasPermission(IGlobals.ADMINISTRATOR)

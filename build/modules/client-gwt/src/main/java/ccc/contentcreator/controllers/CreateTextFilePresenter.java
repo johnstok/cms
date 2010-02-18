@@ -33,6 +33,7 @@ import ccc.contentcreator.client.CommandResponseHandler;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.events.ResourceCreatedEvent;
 import ccc.contentcreator.views.CreateTextFile;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDto;
@@ -64,8 +65,7 @@ CommandResponseHandler<ResourceSummaryModelData> {
                                  final ResourceSummaryModelData model) {
 
         super(globals, bus, view, model);
-        getView().setPresenter(this);
-        getView().show();
+        getView().show(this);
     }
 
     /** {@inheritDoc} */

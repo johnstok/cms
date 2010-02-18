@@ -24,40 +24,36 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controllers;
+package ccc.contentcreator.events;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.Event;
 
 
 /**
- * An event indicating a new resource was created.
+ * An event indicating a resource was updated.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceCreatedEvent implements Event {
+public class ResourceUpdatedEvent implements Event {
 
     private final ResourceSummaryModelData _resource;
-    private final ResourceSummaryModelData _parentFolder;
 
 
     /**
      * Constructor.
      *
-     * @param resource The newly created resource.
-     * @param parentFolder The parent folder for the resource.
+     * @param resource The updated resource.
      */
-    public ResourceCreatedEvent(final ResourceSummaryModelData resource,
-                                final ResourceSummaryModelData parentFolder) {
+    public ResourceUpdatedEvent(final ResourceSummaryModelData resource) {
         _resource = resource;
-        _parentFolder = parentFolder;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Type getType() {
-        return Event.Type.RESOURCE_CREATED;
+        return Event.Type.RESOURCE_UPDATED;
     }
 
 
@@ -68,15 +64,5 @@ public class ResourceCreatedEvent implements Event {
      */
     public ResourceSummaryModelData getResource() {
         return _resource;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the parentFolder.
-     */
-    public ResourceSummaryModelData getParentFolder() {
-        return _parentFolder;
     }
 }

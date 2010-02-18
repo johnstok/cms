@@ -12,7 +12,7 @@
 package ccc.contentcreator.client;
 
 import ccc.contentcreator.api.UIConstants;
-import ccc.contentcreator.controllers.CMEditorReadyEvent;
+import ccc.contentcreator.events.CMEditorReadyEvent;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;

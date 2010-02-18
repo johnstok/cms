@@ -26,6 +26,11 @@
  */
 package ccc.types;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 
 /**
  * Group permissions.
@@ -47,4 +52,17 @@ public final class Permission {
 
     /** API_USER : String. */
     public static final String API_USER = "API_USER";
+
+    /** ALL : Set. */
+    public static final Set<String> ALL;
+
+    static {
+        final SortedSet<String> allPerms = new TreeSet<String>();
+        allPerms.add(API_USER);
+        allPerms.add(CONTENT_CREATOR);
+        allPerms.add(SITE_BUILDER);
+        allPerms.add(ADMINISTRATOR);
+
+        ALL = Collections.unmodifiableSortedSet(allPerms);
+    }
 }

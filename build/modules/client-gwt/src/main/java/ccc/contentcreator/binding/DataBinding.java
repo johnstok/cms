@@ -37,6 +37,7 @@ import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.FileDto;
+import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
@@ -186,14 +187,14 @@ public final class DataBinding {
     /**
      * Create model data objects for a collection of action summaries.
      *
-     * @param result The action summaries.
+     * @param actions The action summaries.
      * @return The corresponding model data objects.
      */
     public static List<ActionSummaryModelData> bindActionSummary(
-                                      final Collection<ActionSummary> result) {
+                                      final Collection<ActionSummary> actions) {
         final List<ActionSummaryModelData> boundData =
             new ArrayList<ActionSummaryModelData>();
-        for (final ActionSummary as : result) {
+        for (final ActionSummary as : actions) {
             boundData.add(new ActionSummaryModelData(as, GLOBALS));
         }
         return boundData;
@@ -206,6 +207,17 @@ public final class DataBinding {
             new ArrayList<CommentModelData>();
         for (final CommentDto as : comments) {
             boundData.add(new CommentModelData(as));
+        }
+        return boundData;
+    }
+
+
+    public static List<GroupModelData> bindGroupSummary(
+                                    final Collection<GroupDto> groups) {
+        final List<GroupModelData> boundData =
+            new ArrayList<GroupModelData>();
+        for (final GroupDto as : groups) {
+            boundData.add(new GroupModelData(as));
         }
         return boundData;
     }

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.client.Action;
+import ccc.contentcreator.client.ContentCreator;
 import ccc.contentcreator.client.GwtJson;
 import ccc.contentcreator.client.RemoteException;
 import ccc.contentcreator.client.SessionTimeoutException;
@@ -43,6 +44,7 @@ import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -335,5 +337,15 @@ public abstract class RemotingAction
         final Json json = new GwtJson(result);
 
         return json.getStringMap("properties");
+    }
+
+
+    /**
+     * Submit an event to the event bus.
+     *
+     * @param event The event to submit.
+     */
+    protected void fireEvent(final GwtEvent<?> event) {
+        ContentCreator.EVENT_BUS.fireEvent(event);
     }
 }

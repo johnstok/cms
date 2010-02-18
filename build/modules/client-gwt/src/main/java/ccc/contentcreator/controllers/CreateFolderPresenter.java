@@ -33,6 +33,7 @@ import ccc.contentcreator.client.CommandResponseHandler;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.events.ResourceCreatedEvent;
 import ccc.contentcreator.views.CreateFolder;
 import ccc.rest.dto.ResourceSummary;
 
@@ -64,8 +65,7 @@ public class CreateFolderPresenter
                                  final CreateFolder view,
                                  final ResourceSummaryModelData model) {
         super(globals, bus, view, model);
-        getView().setPresenter(this);
-        getView().show();
+        getView().show(this);
     }
 
     /** {@inheritDoc} */

@@ -28,26 +28,24 @@ package ccc.contentcreator.binding;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.rest.dto.CommentDto;
+import ccc.rest.dto.GroupDto;
 import ccc.serialization.JsonKeys;
-import ccc.types.CommentStatus;
 
 
 
 /**
- * A CCC comment.
+ * Gxt model data binding for a group.
  *
  * @author Civic Computing Ltd.
  */
-public final class CommentModelData
+public final class GroupModelData
     extends
         CccModelData {
 
-    private CommentDto _delegate;
+    private GroupDto _delegate;
 
 
     /**
@@ -55,7 +53,7 @@ public final class CommentModelData
      *
      * @param delegate The DTO this model delegates to.
      */
-    public CommentModelData(final CommentDto delegate) {
+    public GroupModelData(final GroupDto delegate) {
         _delegate = delegate;
     }
 
@@ -64,14 +62,12 @@ public final class CommentModelData
     @SuppressWarnings("unchecked")
     @Override
     public <X> X get(final String property) {
-        if (property.equals(JsonKeys.URL)) {
-            return (X) _delegate.getUrl();
-        } else if (property.equals(JsonKeys.DATE_CREATED)) {
-            return (X) _delegate.getTimestamp();
-        } else if (property.equals(JsonKeys.AUTHOR)) {
-            return (X) _delegate.getAuthor();
-        } else if (property.equals(JsonKeys.STATUS)) {
-            return (X) _delegate.getStatus();
+        if (property.equals(JsonKeys.ID)) {
+            return (X) _delegate.getId();
+        } else if (property.equals(JsonKeys.NAME)) {
+            return (X) _delegate.getName();
+        } else if (property.equals(JsonKeys.PERMISSIONS)) {
+            return (X) _delegate.getPermissions();
         } else {
             throw new IllegalArgumentException("Key not supported: "+property);
         }
@@ -90,10 +86,9 @@ public final class CommentModelData
     public Collection<String> getPropertyNames() {
         return
             Arrays.asList(
-                JsonKeys.URL,
-                JsonKeys.DATE_CREATED,
-                JsonKeys.AUTHOR,
-                JsonKeys.STATUS);
+                JsonKeys.ID,
+                JsonKeys.NAME,
+                JsonKeys.PERMISSIONS);
     }
 
 
@@ -111,49 +106,27 @@ public final class CommentModelData
     }
 
 
-    public final String getAuthor() {
-        return _delegate.getAuthor();
+    /**
+     * Mutator.
+     *
+     * @param delegate The DTO this model data delegates to.
+     */
+    public void setDelegate(final GroupDto delegate) {
+        _delegate = delegate;
     }
 
 
-    public final String getBody() {
-        return _delegate.getBody();
-    }
-
-
-    public final UUID getResourceId() {
-        return _delegate.getResourceId();
-    }
-
-
-    public final CommentStatus getStatus() {
-        return _delegate.getStatus();
-    }
-
-
-    public final Date getTimestamp() {
-        return _delegate.getTimestamp();
-    }
-
-
-    public final String getUrl() {
-        return _delegate.getUrl();
+    /**
+     * Accessor.
+     *
+     * @return The underlying DTO.
+     */
+    public GroupDto getDelegate() {
+        return _delegate;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public final UUID getId() {
-        return _delegate.getId();
-    }
-
-
-    public final String getEmail() {
-        return _delegate.getEmail();
-    }
-
-
-    public void setDelegate(final CommentDto updated) {
-        _delegate = updated;
-    }
+    public UUID getId() { return get(JsonKeys.ID); }
 }

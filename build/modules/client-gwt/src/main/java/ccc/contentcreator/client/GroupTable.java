@@ -30,16 +30,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.remote.ListComments;
-import ccc.contentcreator.binding.CommentModelData;
+import ccc.contentcreator.actions.remote.ListGroups;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.client.Event.Type;
-import ccc.contentcreator.controllers.UpdateCommentPresenter;
-import ccc.contentcreator.events.CommentUpdatedEvent;
-import ccc.contentcreator.views.gxt.CommentView;
-import ccc.rest.dto.CommentDto;
+import ccc.contentcreator.binding.GroupModelData;
+import ccc.contentcreator.controllers.UpdateGroupPresenter;
+import ccc.contentcreator.events.GroupUpdated;
+import ccc.contentcreator.events.GroupUpdated.GroupUpdatedHandler;
+import ccc.contentcreator.views.gxt.GroupViewImpl;
+import ccc.rest.dto.GroupDto;
 import ccc.serialization.JsonKeys;
-import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 
 import com.extjs.gxt.ui.client.Style;
@@ -60,7 +59,6 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -69,65 +67,66 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class CommentTable extends TablePanel implements EventBus {
+public class GroupTable
+    extends
+        TablePanel
+    implements
+        GroupUpdatedHandler {
 
-    private ListStore<CommentModelData> _detailsStore =
-        new ListStore<CommentModelData>();
+    private ListStore<GroupModelData> _detailsStore =
+        new ListStore<GroupModelData>();
 
-    private final Grid<CommentModelData> _grid;
+    private final Grid<GroupModelData> _grid;
     private final PagingToolBar _pagerBar;
 
-    private static final int COLUMN_WIDTH = 200;
+    private static final int COLUMN_WIDTH = 400;
 
 
     /**
      * Constructor.
      */
-    CommentTable() {
-        setHeading(UI_CONSTANTS.commentDetails());
+    GroupTable() {
+        ContentCreator.EVENT_BUS.addHandler(GroupUpdated.TYPE, this);
+
+        setHeading(UI_CONSTANTS.groups());
         setLayout(new FitLayout());
 
         final Menu contextMenu = new Menu();
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
-        gp.setRenderer(new ContextMenuRenderer<CommentModelData>());
+        gp.setRenderer(new ContextMenuRenderer<GroupModelData>());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<CommentModelData>(_detailsStore, cm);
+        _grid = new Grid<GroupModelData>(_detailsStore, cm);
 
-        contextMenu.add(createUpdateCommentMenu(_grid));
+        contextMenu.add(createUpdateGroupItem(_grid));
 
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
         add(_grid);
 
-        _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
+        _pagerBar = new PagingToolBar(10000); //FIXME: No paging for groups.
         setBottomComponent(_pagerBar);
     }
 
 
-    private MenuItem createUpdateCommentMenu(
-                                         final Grid<CommentModelData> grid) {
-        final MenuItem updateComment =
-            new MenuItem(UI_CONSTANTS.updateComment());
-        updateComment.addSelectionListener(
+    private MenuItem createUpdateGroupItem(final Grid<GroupModelData> grid) {
+        final MenuItem updateGroup = new MenuItem(UI_CONSTANTS.updateGroup());
+        updateGroup.addSelectionListener(
             new SelectionListener<MenuEvent>() {
                 @Override public void componentSelected(final MenuEvent ce) {
-                    final CommentModelData commentModel =
+                    final GroupModelData groupModel =
                         grid.getSelectionModel().getSelectedItem();
 
-                    new UpdateCommentPresenter(
-                        GLOBALS,
-                        CommentTable.this,
-                        new CommentView(
-                            UI_CONSTANTS.updateComment(), GLOBALS),
-                        commentModel);
+                    new UpdateGroupPresenter(
+                        new GroupViewImpl(GLOBALS),
+                        groupModel.getDelegate());
                 }
             }
         );
-        return updateComment;
+        return updateGroup;
     }
 
 
@@ -137,55 +136,33 @@ public class CommentTable extends TablePanel implements EventBus {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         configs.add(gp);
 
-        final ColumnConfig authorColumn = new ColumnConfig();
-        authorColumn.setId(JsonKeys.AUTHOR);
-        authorColumn.setHeader(UI_CONSTANTS.author());
-        authorColumn.setWidth(COLUMN_WIDTH);
-        configs.add(authorColumn);
-
-        final ColumnConfig urlColumn = new ColumnConfig();
-        urlColumn.setId(JsonKeys.URL);
-        urlColumn.setHeader(UI_CONSTANTS.url());
-        urlColumn.setWidth(COLUMN_WIDTH);
-        configs.add(urlColumn);
-
-        final ColumnConfig timestampColumn = new ColumnConfig();
-        timestampColumn.setDateTimeFormat(
-            DateTimeFormat.getMediumDateTimeFormat());
-        timestampColumn.setId(JsonKeys.DATE_CREATED);
-        timestampColumn.setHeader(UI_CONSTANTS.dateCreated());
-        timestampColumn.setWidth(COLUMN_WIDTH);
-        configs.add(timestampColumn);
-
-        final ColumnConfig statusColumn = new ColumnConfig();
-        statusColumn.setId(JsonKeys.STATUS);
-        statusColumn.setHeader(UI_CONSTANTS.status());
-        statusColumn.setWidth(COLUMN_WIDTH);
-        configs.add(statusColumn);
+        final ColumnConfig nameColumn = new ColumnConfig();
+        nameColumn.setId(JsonKeys.NAME);
+        nameColumn.setHeader(UI_CONSTANTS.name());
+        nameColumn.setWidth(COLUMN_WIDTH);
+        configs.add(nameColumn);
 
         return configs;
     }
 
 
     /**
-     *  Displays comments based on selected item.
-     *
-     * @param status Filter the comments to display on status.
+     *  Displays all groups.
      */
-    public void displayComments(final CommentStatus status) {
+    public void displayGroups() {
         _detailsStore.removeAll();
 
-        final DataProxy<PagingLoadResult<CommentModelData>> proxy =
-            new RpcProxy<PagingLoadResult<CommentModelData>>() {
+        final DataProxy<PagingLoadResult<GroupModelData>> proxy =
+            new RpcProxy<PagingLoadResult<GroupModelData>>() {
 
                 @Override
                 protected void load(final Object loadConfig,
-                                    final AsyncCallback<PagingLoadResult<CommentModelData>> callback) {
+                                    final AsyncCallback<PagingLoadResult<GroupModelData>> callback) {
 
                     if (null==loadConfig
                         || !(loadConfig instanceof BasePagingLoadConfig)) {
-                        final PagingLoadResult<CommentModelData> plr =
-                           new BasePagingLoadResult<CommentModelData>(null);
+                        final PagingLoadResult<GroupModelData> plr =
+                           new BasePagingLoadResult<GroupModelData>(null);
                         callback.onSuccess(plr);
 
                     } else {
@@ -199,11 +176,7 @@ public class CommentTable extends TablePanel implements EventBus {
                                 ? SortOrder.ASC
                                 : SortOrder.DESC;
 
-                        new ListComments(status,
-                                         page,
-                                         config.getLimit(),
-                                         config.getSortField(),
-                                         order) {
+                        new ListGroups() {
 
                             /** {@inheritDoc} */
                             @Override
@@ -213,15 +186,14 @@ public class CommentTable extends TablePanel implements EventBus {
 
                             @Override
                             protected void execute(
-                                       final Collection<CommentDto> comments,
-                                       final int totalCount) {
+                                       final Collection<GroupDto> groups) {
 
-                                final List<CommentModelData> results =
-                                    DataBinding.bindCommentSummary(comments);
+                                final List<GroupModelData> results =
+                                    DataBinding.bindGroupSummary(groups);
 
-                                final PagingLoadResult<CommentModelData> plr =
-                                    new BasePagingLoadResult<CommentModelData>
-                                (results, config.getOffset(), totalCount);
+                                final PagingLoadResult<GroupModelData> plr =
+                                    new BasePagingLoadResult<GroupModelData>
+                                (results, config.getOffset(), groups.size());
                                 callback.onSuccess(plr);
                             }
                         }.execute();
@@ -237,7 +209,7 @@ public class CommentTable extends TablePanel implements EventBus {
     private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
-        _detailsStore = new ListStore<CommentModelData>(loader);
+        _detailsStore = new ListStore<GroupModelData>(loader);
         _pagerBar.bind(loader);
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
@@ -247,10 +219,12 @@ public class CommentTable extends TablePanel implements EventBus {
 
     /** {@inheritDoc} */
     @Override
-    public void put(final Event event) {
-        if (Type.COMMENT_UPDATED==event.getType()) {
-            _detailsStore.update(
-                ((CommentUpdatedEvent) event).getComment());
+    public void onUpdate(final GroupUpdated event) {
+        final GroupModelData gMD =
+            _detailsStore.findModel(JsonKeys.ID, event.getGroup().getId());
+        if (null!=gMD) {
+            gMD.setDelegate(event.getGroup());
+            _detailsStore.update(gMD);
         }
     }
 }

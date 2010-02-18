@@ -33,6 +33,7 @@ import ccc.contentcreator.client.CommandResponseHandler;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.events.ResourceUpdatedEvent;
 import ccc.contentcreator.views.RenameResource;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
@@ -64,9 +65,8 @@ public class RenameResourcePresenter
                                    final RenameResource view,
                                    final ResourceSummaryModelData model) {
         super(globals, bus, view, model);
-        getView().setPresenter(this);
         getView().setName(getModel().getName());
-        getView().show();
+        getView().show(this);
     }
 
 

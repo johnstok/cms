@@ -53,11 +53,12 @@ public class UserTree extends Tree {
     public static final String ADMINISTRATOR = "Administrator";
     /** SEARCH : String. */
     public static final String SEARCH = "Search";
-    /** USER_TREE_HEIGHT : int. 
+    /** USER_TREE_HEIGHT : int.
      * TODO load USER_TREE_HEIGHT from properties file*/
     private static final int USER_TREE_HEIGHT = 300;
 
     private final UserTable _userTable = new UserTable();
+    private final GroupTable _groupTable = new GroupTable();
     private final UIConstants _constants = new IGlobalsImpl().uiConstants();
     private final LeftRightPane _view;
 
@@ -68,7 +69,7 @@ public class UserTree extends Tree {
      */
     UserTree(final LeftRightPane view) {
         _view = view;
-        
+
         _tree.setDisplayProperty("name");
         _tree.setHeight(USER_TREE_HEIGHT);
         _tree.setIconProvider(new ModelIconProviderImplementation());
@@ -76,11 +77,15 @@ public class UserTree extends Tree {
         _tree.setStyleAttribute(BACKGROUND_ATTRIBUTE, BACKGROUND_COLOUR);
         _tree.getSelectionModel().addSelectionChangedListener(
             new UserSelectedListener());
-        
+
         final ModelData users = getNewItem(_constants.users(), USERS);
         _store.add(users, ADD_ALL_CHILDREN);
         _tree.setLeaf(users, IS_NOT_LEAF);
         _tree.setExpanded(users, EXPANDED);
+
+        final ModelData groups = getNewItem(_constants.groups(), "Groups");
+        _store.add(groups, DONT_ADD_CHILDREN);
+        _tree.setLeaf(groups, IS_LEAF);
 
         final ModelData all = getNewItem(_constants.all(), ALL);
         _store.add(users, all, DONT_ADD_CHILDREN);
@@ -114,7 +119,7 @@ public class UserTree extends Tree {
         _store.add(users, search, DONT_ADD_CHILDREN);
         _tree.setLeaf(all, IS_NOT_LEAF);
     }
-    
+
     /**
      * Selection listener for {@link UserTree}.
      *
@@ -128,15 +133,23 @@ public class UserTree extends Tree {
         @Override
         public void selectionChanged(final SelectionChangedEvent<ModelData>
                                      selectionChangedEvent) {
-            final ModelData selectedItem = 
+            final ModelData selectedItem =
                 selectionChangedEvent.getSelectedItem();
-            _userTable.displayUsersFor(selectedItem);
+
+            if ("Groups".equals(selectedItem.get("id"))) {
+                _view.setRightHandPane(_groupTable);
+                _groupTable.displayGroups();
+            } else {
+                _view.setRightHandPane(_userTable);
+                _userTable.displayUsersFor(selectedItem);
+            }
         }
     }
 
     /**
      * Sets user table to be the content of the right hand pane.
      */
+    @Override
     public void showTable() {
         _view.setRightHandPane(_userTable);
     }
