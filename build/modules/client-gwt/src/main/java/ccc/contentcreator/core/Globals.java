@@ -41,7 +41,7 @@ import ccc.rest.dto.UserDto;
  *
  * @author Civic Computing Ltd.
  */
-public interface IGlobals {
+public interface Globals {
 
     /**
      * Install an exception handler for exceptions that would otherwise escape

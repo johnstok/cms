@@ -34,8 +34,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetAbsolutePathAction;
 import ccc.contentcreator.widgets.PageElement.FieldType;
 import ccc.rest.dto.FileDto;
@@ -83,7 +83,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
     private String _definition;
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
     private int _fckCount = 0;
 
     /**

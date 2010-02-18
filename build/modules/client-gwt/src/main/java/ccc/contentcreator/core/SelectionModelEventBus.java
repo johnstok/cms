@@ -37,6 +37,7 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public class SelectionModelEventBus
     implements
         EventBus {

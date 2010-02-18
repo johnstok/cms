@@ -27,7 +27,7 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.Paragraph;
 
@@ -83,8 +83,8 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                final String innerText,
                                final String cccId,
                                final boolean openInNew) {
-        super(new IGlobalsImpl().uiConstants().selectResource(),
-            new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().selectResource(),
+            new GlobalsImpl());
         _targetRoot = targetRoot;
         _elementid = elementid;
         if (cccId != null
@@ -219,7 +219,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     _md = folderSelect.selectedResource();
                     if (_md != null) {
                         final String appContext =
-                            new IGlobalsImpl()
+                            new GlobalsImpl()
                         .getSetting("application.context");
                         final String path =_md.getAbsolutePath();
                         _linkPath.setValue(appContext+path);

@@ -33,7 +33,7 @@ import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.events.ResourceUpdatedEvent;
 import ccc.contentcreator.remoting.UpdateResourceTemplateAction;
 import ccc.contentcreator.views.ChangeResourceTemplate;
@@ -65,7 +65,7 @@ public class ChangeResourceTemplatePresenter
      * @param templates The templates to choose from.
      */
     public ChangeResourceTemplatePresenter(
-                               final IGlobals globals,
+                               final Globals globals,
                                final EventBus bus,
                                final ChangeResourceTemplate view,
                                final ResourceSummaryModelData model,

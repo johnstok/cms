@@ -27,7 +27,7 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ImageSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.widgets.ImageSelectionPanel;
 import ccc.types.Paragraph;
 
@@ -84,8 +84,8 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                                 final String alt,
                                 final String title,
                                 final String cccId) {
-        super(new IGlobalsImpl().uiConstants().selectImage(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().selectImage(),
+              new GlobalsImpl());
         setLayout(new RowLayout());
         _elementid = elementid;
         if (cccId != null
@@ -109,7 +109,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 if (md != null) {
                     final String path = Paragraph.escape(md.getPath());
                     final String appContext =
-                        new IGlobalsImpl().getSetting("application.context");
+                        new GlobalsImpl().getSetting("application.context");
                     _urlField.setValue(appContext + path);
                     _titleField.setValue(Paragraph.escape(md.getTitle()));
                     _altField.setValue(Paragraph.escape(md.getTitle()));

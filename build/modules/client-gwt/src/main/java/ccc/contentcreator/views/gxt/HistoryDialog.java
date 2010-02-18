@@ -34,7 +34,7 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.widgets.HistoryToolBar;
 import ccc.rest.dto.RevisionDto;
@@ -73,8 +73,8 @@ public class HistoryDialog
     public HistoryDialog(final Collection<RevisionDto> data,
                          final UUID resourceId,
                          final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().resourceHistory(),
-              new IGlobalsImpl(),
+        super(new GlobalsImpl().uiConstants().resourceHistory(),
+              new GlobalsImpl(),
               data,
               false);
 

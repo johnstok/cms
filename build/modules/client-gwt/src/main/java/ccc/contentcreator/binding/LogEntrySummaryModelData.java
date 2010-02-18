@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.i18n.CommandTypeConstants;
 import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
@@ -54,7 +54,7 @@ public class LogEntrySummaryModelData
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
     private final RevisionDto _les;
-    private IGlobals _globals;
+    private Globals _globals;
 
     /**
      * Constructor.
@@ -63,7 +63,7 @@ public class LogEntrySummaryModelData
      * @param globals The globals.
      */
     public LogEntrySummaryModelData(final RevisionDto les,
-                                    final IGlobals globals) {
+                                    final Globals globals) {
         _les = les;
         _globals = globals;
     }

@@ -32,6 +32,7 @@ package ccc.contentcreator.core;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public interface Event {
 
     /**

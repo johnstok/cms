@@ -40,7 +40,7 @@ import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.core.GwtJson;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.remoting.ApplyWorkingCopyAction;
 import ccc.contentcreator.remoting.ClearWorkingCopyAction;
 import ccc.contentcreator.remoting.ComputeTemplateAction;
@@ -179,7 +179,7 @@ public class ResourceContextMenu
             addLockResource();
         } else {
             if (item.getLocked().equals(user.getUsername())
-                 || user.hasPermission(IGlobals.ADMINISTRATOR)) {
+                 || user.hasPermission(Globals.ADMINISTRATOR)) {
                 addUnlockResource();
             }
             if (item.getLocked().equals(user.getUsername())) {
@@ -225,8 +225,8 @@ public class ResourceContextMenu
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                if (user.hasPermission(IGlobals.ADMINISTRATOR)
-                    || user.hasPermission(IGlobals.SITE_BUILDER)) {
+                if (user.hasPermission(Globals.ADMINISTRATOR)
+                    || user.hasPermission(Globals.SITE_BUILDER)) {
                     addEditCache();
                 }
 

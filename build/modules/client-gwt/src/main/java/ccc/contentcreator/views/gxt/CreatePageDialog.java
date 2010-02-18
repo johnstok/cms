@@ -37,7 +37,7 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.core.GwtJson;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.ComputeTemplateAction;
 import ccc.contentcreator.remoting.CreatePageAction;
@@ -130,8 +130,8 @@ public class CreatePageDialog
                     final Collection<TemplateSummary> list,
                     final ResourceSummaryModelData parent,
                     final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().createPage(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().createPage(),
+              new GlobalsImpl());
         _ssm = ssm;
         _parent = parent;
 

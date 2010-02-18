@@ -33,7 +33,7 @@ import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.DialogMode;
 import ccc.contentcreator.core.Event;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.core.Event.Type;
 import ccc.contentcreator.events.CMEditorReadyEvent;
@@ -102,8 +102,8 @@ public class EditTemplateDialog extends AbstractWizardDialog
      */
     public EditTemplateDialog(final UUID parentFolderId,
                               final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().editTemplate(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().editTemplate(),
+              new GlobalsImpl());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.CREATE;
@@ -136,8 +136,8 @@ public class EditTemplateDialog extends AbstractWizardDialog
     public EditTemplateDialog(final TemplateDelta model,
                               final ResourceSummaryModelData proxy,
                               final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().editTemplate(),
-            new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().editTemplate(),
+            new GlobalsImpl());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         _mode = DialogMode.UPDATE;

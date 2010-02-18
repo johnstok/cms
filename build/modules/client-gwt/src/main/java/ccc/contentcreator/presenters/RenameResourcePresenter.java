@@ -31,7 +31,7 @@ import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.events.ResourceUpdatedEvent;
 import ccc.contentcreator.remoting.RenameAction;
 import ccc.contentcreator.views.RenameResource;
@@ -60,7 +60,7 @@ public class RenameResourcePresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public RenameResourcePresenter(final IGlobals globals,
+    public RenameResourcePresenter(final Globals globals,
                                    final EventBus bus,
                                    final RenameResource view,
                                    final ResourceSummaryModelData model) {

@@ -27,7 +27,7 @@
 package ccc.contentcreator.widgets;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 
@@ -62,7 +62,7 @@ public class EnhancedResourceTree extends FolderResourceTree {
     EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view,
                          final UserDto user,
-                         final IGlobals globals) {
+                         final Globals globals) {
 
         super(globals);
 

@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.remoting.CancelActionAction;
 
@@ -40,7 +40,7 @@ public class ActionToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final UIConstants _constants = new GlobalsImpl().uiConstants();
     private final ActionTable _actionTable;
 
     /**

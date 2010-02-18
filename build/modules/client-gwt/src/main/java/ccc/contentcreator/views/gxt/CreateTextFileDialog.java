@@ -29,7 +29,7 @@ package ccc.contentcreator.views.gxt;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Event;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.core.Event.Type;
@@ -78,8 +78,8 @@ public class CreateTextFileDialog
      */
     public CreateTextFileDialog() {
 
-        super(new IGlobalsImpl().uiConstants().createTextFile(),
-            new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().createTextFile(),
+            new GlobalsImpl());
 
         setHeight(DIALOG_HEIGHT);
 

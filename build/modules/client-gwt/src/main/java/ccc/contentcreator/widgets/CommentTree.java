@@ -27,7 +27,7 @@
 
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.types.CommentStatus;
@@ -48,7 +48,7 @@ public class CommentTree extends Tree {
     private static final int USER_TREE_HEIGHT = 300;
 
     private final CommentTable _commentTable = new CommentTable();
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final UIConstants _constants = new GlobalsImpl().uiConstants();
     private final LeftRightPane _view;
 
     /**

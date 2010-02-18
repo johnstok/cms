@@ -27,7 +27,7 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.EnumModelData;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.Validatable;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
@@ -69,7 +69,7 @@ public class CommentView
      * @param title
      * @param globals
      */
-    public CommentView(final String title, final IGlobals globals) {
+    public CommentView(final String title, final Globals globals) {
         super(title, globals);
 
         _author.setFieldLabel(constants().author());

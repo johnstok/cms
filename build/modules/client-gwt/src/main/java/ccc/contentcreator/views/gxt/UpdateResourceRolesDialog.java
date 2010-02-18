@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.contentcreator.binding.UserSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetUserAction;
 import ccc.contentcreator.remoting.ListUsers;
 import ccc.contentcreator.remoting.UpdateResourceRolesAction;
@@ -107,8 +107,8 @@ public class UpdateResourceRolesDialog
     public UpdateResourceRolesDialog(final UUID resourceId,
                                      final AclDto acl,
                                      final Collection<GroupDto> allGroups) {
-        super(new IGlobalsImpl().uiConstants().updateRoles(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().updateRoles(),
+              new GlobalsImpl());
         _resourceId = resourceId;
         _acl = acl;
         _allGroups = allGroups;

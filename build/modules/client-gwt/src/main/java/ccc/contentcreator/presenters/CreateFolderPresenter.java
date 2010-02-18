@@ -31,7 +31,7 @@ import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.events.ResourceCreatedEvent;
 import ccc.contentcreator.remoting.CreateFolderAction;
 import ccc.contentcreator.views.CreateFolder;
@@ -60,7 +60,7 @@ public class CreateFolderPresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateFolderPresenter(final IGlobals globals,
+    public CreateFolderPresenter(final Globals globals,
                                  final EventBus bus,
                                  final CreateFolder view,
                                  final ResourceSummaryModelData model) {

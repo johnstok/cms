@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 
@@ -49,7 +49,7 @@ import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
  */
 public class ResourceNavigator extends ContentPanel {
 
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
     private final LeftRightPane _view;
     private final Tree _usersTree;
     private final Tree _actionTree;
@@ -77,8 +77,8 @@ public class ResourceNavigator extends ContentPanel {
 
         for (final ResourceSummary root : roots) {
             if ("assets".equals(root.getName())) {
-                if (!user.hasPermission(IGlobals.ADMINISTRATOR)
-                    && !user.hasPermission(IGlobals.SITE_BUILDER)) {
+                if (!user.hasPermission(Globals.ADMINISTRATOR)
+                    && !user.hasPermission(Globals.SITE_BUILDER)) {
                     continue;
                 }
             }
@@ -105,7 +105,7 @@ public class ResourceNavigator extends ContentPanel {
         }
 
         _usersTree = new UserTree(_view);
-        if (user.hasPermission(IGlobals.ADMINISTRATOR)) {
+        if (user.hasPermission(Globals.ADMINISTRATOR)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
                 "Users", _usersTree);

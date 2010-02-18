@@ -27,7 +27,7 @@
 package ccc.contentcreator.widgets;
 
 import ccc.contentcreator.actions.PreviewHistoricalAction;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.remoting.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.contentcreator.views.gxt.HistoryDialog;
@@ -42,7 +42,7 @@ public class HistoryToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new IGlobalsImpl().uiConstants();
+    private final UIConstants _constants = new GlobalsImpl().uiConstants();
     private final HistoryDialog _historyDialog;
 
     /**

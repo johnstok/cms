@@ -36,8 +36,8 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.GetChildrenAction;
 import ccc.contentcreator.remoting.UpdateFolderAction;
@@ -109,10 +109,10 @@ AbstractEditDialog {
     public EditFolderDialog(final SingleSelectionModel ssm,
                                        final String currentSortOrder,
                                        final UUID currentIndexPage) {
-        super(new IGlobalsImpl().uiConstants().edit(), new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().edit(), new GlobalsImpl());
 
         _currentIndexPage = currentIndexPage;
-        setHeight(IGlobals.DEFAULT_HEIGHT);
+        setHeight(Globals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
         loadDetailStore(_currentIndexPage);
 
@@ -148,8 +148,8 @@ AbstractEditDialog {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
                 final int height =
-                    be.getHeight() - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
-                if (height > (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
+                    be.getHeight() - (Globals.DEFAULT_HEIGHT - GRID_HEIGHT);
+                if (height > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
                     _grid.setHeight(height);
                 }
             }

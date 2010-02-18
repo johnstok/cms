@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Map;
 
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetPropertyAction;
 
 import com.google.gwt.http.client.Response;
@@ -53,8 +53,8 @@ public class AboutDialog extends AbstractBaseDialog{
      *
      */
     public AboutDialog() {
-        super(new IGlobalsImpl().uiConstants().about(),
-            new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().about(),
+            new GlobalsImpl());
 
         setWidth(ABOUT_WIDTH);
         setMinWidth(ABOUT_WIDTH);

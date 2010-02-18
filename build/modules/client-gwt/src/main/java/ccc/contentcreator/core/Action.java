@@ -38,7 +38,7 @@ import ccc.contentcreator.i18n.UIConstants;
 public interface Action {
 
     /** GLOBALS : IGlobals. */
-    IGlobals GLOBALS = new IGlobalsImpl();
+    Globals GLOBALS = new GlobalsImpl();
 
     /** USER_ACTIONS : ActionNameConstants. */
     ActionNameConstants USER_ACTIONS = GLOBALS.userActions();

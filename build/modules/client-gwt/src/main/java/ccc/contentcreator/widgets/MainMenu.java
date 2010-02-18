@@ -36,8 +36,8 @@ import ccc.contentcreator.actions.OpenUpdateCurrentUserAction;
 import ccc.contentcreator.actions.OpenUpdateFolderAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.presenters.CreateGroupPresenter;
@@ -76,7 +76,7 @@ public class MainMenu
 
     private static final String CONTENT = "content";
 
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
     private final UserDto _user;
 
@@ -87,7 +87,7 @@ public class MainMenu
      */
     public MainMenu(final UserDto user) {
         _user = user;
-        if (_user.hasPermission(IGlobals.ADMINISTRATOR)) {
+        if (_user.hasPermission(Globals.ADMINISTRATOR)) {
             addMenu(
                 "users-menu",
                 _constants.users(),
@@ -106,8 +106,8 @@ public class MainMenu
                     }));
         }
 
-        if (_user.hasPermission(IGlobals.ADMINISTRATOR)
-                || _user.hasPermission(IGlobals.SITE_BUILDER)) {
+        if (_user.hasPermission(Globals.ADMINISTRATOR)
+                || _user.hasPermission(Globals.SITE_BUILDER)) {
             createContentRootMenu(CONTENT, _constants.contentRoot());
         }
 
@@ -192,7 +192,7 @@ public class MainMenu
                 new LockAction(ssm)));
         } else {
             if (root.getLockedBy().equals(_user.getUsername())
-                    || _user.hasPermission(IGlobals.ADMINISTRATOR)) {
+                    || _user.hasPermission(Globals.ADMINISTRATOR)) {
 
                 rootMenu.add(createMenuItem(
                     "unlock-root-"+name,

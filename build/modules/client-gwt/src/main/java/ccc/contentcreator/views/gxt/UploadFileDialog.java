@@ -13,8 +13,8 @@ package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GwtJson;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.core.RemoteException;
 import ccc.contentcreator.core.SessionTimeoutException;
@@ -67,11 +67,11 @@ public class UploadFileDialog extends AbstractEditDialog {
      */
     public UploadFileDialog(final ResourceSummaryModelData parentFolder,
                             final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().uploadFileTo()
-            +": "+parentFolder.getName(), new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().uploadFileTo()
+            +": "+parentFolder.getName(), new GlobalsImpl());
 
         _parent = parentFolder;
-        setHeight(IGlobals.DEFAULT_UPLOAD_HEIGHT);
+        setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
         getPanel().setAction("upload");

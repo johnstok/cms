@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.CreateAliasAction;
 import ccc.contentcreator.validation.Validate;
@@ -70,8 +70,8 @@ public class CreateAliasDialog extends AbstractEditDialog {
      */
     public CreateAliasDialog(final SingleSelectionModel ssm,
                              final ResourceSummary root) {
-        super(new IGlobalsImpl().uiConstants().createAlias(),
-              new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().createAlias(),
+              new GlobalsImpl());
         setPanelId("AliasPanel");
 
         _ssm = ssm;

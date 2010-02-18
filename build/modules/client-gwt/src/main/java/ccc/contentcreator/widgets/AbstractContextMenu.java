@@ -28,8 +28,8 @@
 package ccc.contentcreator.widgets;
 
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.menu.Menu;
@@ -45,7 +45,7 @@ public class AbstractContextMenu
     extends
         Menu {
 
-    private final IGlobals _globals = new IGlobalsImpl();
+    private final Globals _globals = new GlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
 
 
@@ -54,7 +54,7 @@ public class AbstractContextMenu
      *
      * @return Returns the globals.
      */
-    public IGlobals getGlobals() {
+    public Globals getGlobals() {
         return _globals;
     }
 

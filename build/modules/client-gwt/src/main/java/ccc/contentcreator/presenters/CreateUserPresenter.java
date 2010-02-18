@@ -28,7 +28,7 @@ package ccc.contentcreator.presenters;
 
 import static ccc.contentcreator.validation.Validations.*;
 import ccc.contentcreator.core.EditController;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.remoting.CreateUserAction;
 import ccc.contentcreator.remoting.UniqueUsernameAction;
@@ -49,7 +49,7 @@ public class CreateUserPresenter implements EditController {
 
     private final UIMessages _messages;
     private final CreateUser _dialog;
-    private final IGlobals   _globals;
+    private final Globals   _globals;
 
     /**
      * Constructor.
@@ -58,7 +58,7 @@ public class CreateUserPresenter implements EditController {
      * @param globals The globals factory for this controller.
      */
     public CreateUserPresenter(final CreateUser dialog,
-                                final IGlobals globals) {
+                                final Globals globals) {
         _dialog      = dialog;
         _globals     = globals;
         _messages    = _globals.uiMessages();
@@ -95,7 +95,7 @@ public class CreateUserPresenter implements EditController {
             .check(notEmpty(_dialog.getPassword2()))
             .stopIfInError()
             .check(minLength(
-                _dialog.getUsername(), IGlobals.MIN_USER_NAME_LENGTH))
+                _dialog.getUsername(), Globals.MIN_USER_NAME_LENGTH))
             .check(notValidUserName(_dialog.getUsername()))
             .check(notValidEmail(_dialog.getEmail()))
             .check(matchingPasswords(

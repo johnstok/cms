@@ -34,8 +34,8 @@ import java.util.Map;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.UpdateMetadataAction;
 import ccc.contentcreator.validation.Validate;
@@ -99,7 +99,7 @@ public class MetadataDialog extends AbstractEditDialog {
     public MetadataDialog(final ResourceSummaryModelData resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
-        super(new IGlobalsImpl().uiConstants().metadata(), new IGlobalsImpl());
+        super(new GlobalsImpl().uiConstants().metadata(), new GlobalsImpl());
 
         _ssm = ssm;
         _resource = resource;
@@ -109,8 +109,8 @@ public class MetadataDialog extends AbstractEditDialog {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
                 final int height =
-                    be.getHeight() - (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT);
-                if (height > (IGlobals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
+                    be.getHeight() - (Globals.DEFAULT_HEIGHT - GRID_HEIGHT);
+                if (height > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
                     _grid.setHeight(height);
                 }
             }

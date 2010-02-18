@@ -27,7 +27,7 @@
 
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.i18n.ActionNameConstants;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.i18n.UIMessages;
@@ -61,7 +61,7 @@ public abstract class AbstractBaseDialog
     /** PERCENT_70 : float. */
     public static final float PERCENT_70 = .7f;
 
-    private final IGlobals _globals;
+    private final Globals _globals;
     private final UIConstants _constants;
     private final UIMessages  _messages;
     private final UIConstants _uiConstants;
@@ -75,7 +75,7 @@ public abstract class AbstractBaseDialog
      * @param title The title of the dialog.
      * @param globals The globals for this dialog.
      */
-    public AbstractBaseDialog(final String title, final IGlobals globals) {
+    public AbstractBaseDialog(final String title, final Globals globals) {
         super();
 
         _globals = globals;
@@ -87,9 +87,9 @@ public abstract class AbstractBaseDialog
         _cancel = cancelButton();
 
         setHeading(title);
-        setWidth(IGlobals.DEFAULT_WIDTH);
-        setMinWidth(IGlobals.MIN_WIDTH);
-        setHeight(IGlobals.DEFAULT_HEIGHT);
+        setWidth(Globals.DEFAULT_WIDTH);
+        setMinWidth(Globals.MIN_WIDTH);
+        setHeight(Globals.DEFAULT_HEIGHT);
         setLayout(new FitLayout());
         setBodyStyle("backgroundColor: white;");
         setMaximizable(true);
@@ -101,7 +101,7 @@ public abstract class AbstractBaseDialog
      *
      * @return Returns the globals.
      */
-    public IGlobals getGlobals() {
+    public Globals getGlobals() {
         return _globals;
     }
 

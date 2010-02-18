@@ -26,8 +26,8 @@
  */
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.core.IGlobals;
-import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.ActionNameConstants;
 import ccc.contentcreator.i18n.UIConstants;
 
@@ -42,7 +42,7 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 public abstract class TablePanel extends ContentPanel {
 
     /** GLOBALS : IGlobals. */
-    protected static final IGlobals GLOBALS = new IGlobalsImpl();
+    protected static final Globals GLOBALS = new GlobalsImpl();
 
     /** USER_ACTIONS : ActionNameConstants. */
     protected static final ActionNameConstants USER_ACTIONS =

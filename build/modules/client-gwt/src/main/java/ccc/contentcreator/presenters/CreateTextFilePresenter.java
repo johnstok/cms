@@ -31,7 +31,7 @@ import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.events.ResourceCreatedEvent;
 import ccc.contentcreator.remoting.CreateTextFileAction;
 import ccc.contentcreator.views.CreateTextFile;
@@ -59,7 +59,7 @@ CommandResponseHandler<ResourceSummaryModelData> {
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateTextFilePresenter(final IGlobals globals,
+    public CreateTextFilePresenter(final Globals globals,
                                  final EventBus bus,
                                  final CreateTextFile view,
                                  final ResourceSummaryModelData model) {

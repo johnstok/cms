@@ -33,7 +33,7 @@ import java.util.UUID;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.remoting.GetChildrenAction;
 import ccc.rest.dto.ResourceSummary;
 
@@ -48,7 +48,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class ResourceTree extends AbstractResourceTree {
 
-    private final IGlobals _globals;
+    private final Globals _globals;
     private final ResourceSummary _root;
 
     /**
@@ -57,7 +57,7 @@ public class ResourceTree extends AbstractResourceTree {
      * @param root The root of the tree.
      * @param globals IGlobals implementation.
      */
-    public ResourceTree(final ResourceSummary root, final IGlobals globals) {
+    public ResourceTree(final ResourceSummary root, final Globals globals) {
 
         _root = root;
         _globals = globals;
