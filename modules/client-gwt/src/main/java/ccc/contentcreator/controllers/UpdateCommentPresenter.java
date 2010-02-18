@@ -32,7 +32,8 @@ import ccc.contentcreator.client.AbstractPresenter;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
 import ccc.contentcreator.client.ValidationResult;
-import ccc.contentcreator.views.CommentView;
+import ccc.contentcreator.events.CommentUpdatedEvent;
+import ccc.contentcreator.views.gxt.CommentView;
 import ccc.rest.dto.CommentDto;
 
 import com.google.gwt.http.client.Response;

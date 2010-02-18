@@ -38,7 +38,7 @@ import ccc.types.DBC;
 
 
 /**
- * TODO: Add a description for this type.
+ * DTO for a user group.
  *
  * @author Civic Computing Ltd.
  */

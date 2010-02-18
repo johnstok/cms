@@ -1693,6 +1693,14 @@ public interface UIConstants extends Constants {
     String selectUsers();
 
     /**
+     * "Create group".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Create group")
+    String createGroup();
+
+    /**
      * "Comment not valid".
      *
      * @return The constant, in the appropriate locale.
@@ -1707,4 +1715,20 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Web site address is not valid.")
     String websiteAddressNotValid();
+
+    /**
+     * "Permissions".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Permissions")
+    String permissions();
+
+    /**
+     * "Update group".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Update group")
+    String updateGroup();
 }

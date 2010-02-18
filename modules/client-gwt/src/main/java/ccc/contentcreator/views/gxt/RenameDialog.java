@@ -132,7 +132,8 @@ public class RenameDialog
 
     /** {@inheritDoc} */
     @Override
-    public void setPresenter(final Editable presenter) {
+    public void show(final Editable presenter) {
         _presenter = presenter;
+        super.show();
     }
 }

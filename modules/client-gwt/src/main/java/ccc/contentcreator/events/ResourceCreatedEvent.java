@@ -24,55 +24,59 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.client;
+package ccc.contentcreator.events;
 
-import ccc.contentcreator.events.ResourceCreatedEvent;
-import ccc.contentcreator.events.ResourceUpdatedEvent;
-import ccc.types.DBC;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
+import ccc.contentcreator.client.Event;
 
 
 /**
- * This is an interim implementation of the event bus that simply wraps a
- * single selection model.
+ * An event indicating a new resource was created.
  *
  * @author Civic Computing Ltd.
  */
-public class SelectionModelEventBus
-    implements
-        EventBus {
+public class ResourceCreatedEvent implements Event {
 
-    private final SingleSelectionModel _ssm;
+    private final ResourceSummaryModelData _resource;
+    private final ResourceSummaryModelData _parentFolder;
 
 
     /**
      * Constructor.
      *
-     * @param ssm The selection model to wrap.
+     * @param resource The newly created resource.
+     * @param parentFolder The parent folder for the resource.
      */
-    public SelectionModelEventBus(final SingleSelectionModel ssm) {
-        _ssm = ssm;
+    public ResourceCreatedEvent(final ResourceSummaryModelData resource,
+                                final ResourceSummaryModelData parentFolder) {
+        _resource = resource;
+        _parentFolder = parentFolder;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void put(final Event event) {
-        DBC.require().notNull(event);
+    public Type getType() {
+        return Event.Type.RESOURCE_CREATED;
+    }
 
-        switch (event.getType()) {
-            case RESOURCE_UPDATED:
-                final ResourceUpdatedEvent rue = (ResourceUpdatedEvent) event;
-                _ssm.update(rue.getResource());
-                break;
 
-            case RESOURCE_CREATED:
-                final ResourceCreatedEvent rce = (ResourceCreatedEvent) event;
-                _ssm.create(rce.getResource(), rce.getParentFolder());
-                break;
+    /**
+     * Accessor.
+     *
+     * @return Returns the resource.
+     */
+    public ResourceSummaryModelData getResource() {
+        return _resource;
+    }
 
-            default:
-                throw new IllegalArgumentException(
-                    "Unsupported event type: "+event);
-        }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the parentFolder.
+     */
+    public ResourceSummaryModelData getParentFolder() {
+        return _parentFolder;
     }
 }

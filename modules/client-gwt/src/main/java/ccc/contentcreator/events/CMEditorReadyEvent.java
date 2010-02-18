@@ -9,7 +9,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controllers;
+package ccc.contentcreator.events;
 
 import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.client.Event;

@@ -35,6 +35,7 @@ import ccc.contentcreator.client.CommandResponseHandler;
 import ccc.contentcreator.client.Editable;
 import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobals;
+import ccc.contentcreator.events.ResourceUpdatedEvent;
 import ccc.contentcreator.views.ChangeResourceTemplate;
 import ccc.rest.dto.TemplateSummary;
 
@@ -70,10 +71,9 @@ public class ChangeResourceTemplatePresenter
                                final ResourceSummaryModelData model,
                                final Collection<TemplateSummary> templates) {
         super(globals, bus, view, model);
-        getView().setPresenter(this);
         getView().setTemplates(templates);
         getView().setSelectedTemplate(getModel().getTemplateId());
-        getView().show();
+        getView().show(this);
     }
 
 

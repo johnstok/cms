@@ -32,6 +32,7 @@ package ccc.contentcreator.client;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public interface EventBus {
 
     /**

@@ -45,14 +45,8 @@ public interface View<T> {
 
     /**
      * Show the view.
-     */
-    void show();
-
-
-    /**
-     * Set the presenter for the view.
      *
      * @param presenter The presenter to set.
      */
-    void setPresenter(T presenter);
+    void show(T presenter);
 }

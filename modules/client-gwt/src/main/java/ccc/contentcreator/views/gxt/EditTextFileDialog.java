@@ -33,8 +33,8 @@ import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.ValidationResult;
 import ccc.contentcreator.client.Event.Type;
-import ccc.contentcreator.controllers.CMEditorReadyEvent;
 import ccc.contentcreator.dialogs.AbstractEditDialog;
+import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.validation.Validations2;
 import ccc.contentcreator.views.EditTextFile;
 
@@ -144,8 +144,9 @@ public class EditTextFileDialog
 
     /** {@inheritDoc} */
     @Override
-    public void setPresenter(final Editable presenter) {
+    public void show(final Editable presenter) {
         _presenter = presenter;
+        super.show();
     }
 
     /**

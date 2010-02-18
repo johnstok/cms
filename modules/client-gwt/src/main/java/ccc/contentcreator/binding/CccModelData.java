@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,45 +24,26 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controllers;
+package ccc.contentcreator.binding;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.Event;
+import java.util.UUID;
+
+import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * An event indicating a resource was updated.
+ * Base class for CCC model data.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceUpdatedEvent implements Event {
-
-    private final ResourceSummaryModelData _resource;
-
-
-    /**
-     * Constructor.
-     *
-     * @param resource The updated resource.
-     */
-    public ResourceUpdatedEvent(final ResourceSummaryModelData resource) {
-        _resource = resource;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Type getType() {
-        return Event.Type.RESOURCE_UPDATED;
-    }
-
+public abstract class CccModelData
+    implements
+        ModelData {
 
     /**
-     * Accessor.
+     * Return the ID for this data.
      *
-     * @return Returns the resource.
+     * @return The ID as a UUID.
      */
-    public ResourceSummaryModelData getResource() {
-        return _resource;
-    }
+    public abstract UUID getId();
 }

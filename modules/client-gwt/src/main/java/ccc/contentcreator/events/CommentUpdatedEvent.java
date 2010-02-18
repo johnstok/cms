@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.controllers;
+package ccc.contentcreator.events;
 
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.client.Event;

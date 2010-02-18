@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.binding.CommentModelData;
+import ccc.contentcreator.binding.CccModelData;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -35,23 +35,24 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
 /**
- * Renderer for the contextual menu icon for comment table.
+ * Renderer for a table's contextual menu icon for comment table.
  *
  * @author Civic Computing Ltd.
  */
-public class CommentContextRenderer implements
-    GridCellRenderer<CommentModelData> {
+public class ContextMenuRenderer<T extends CccModelData>
+    implements
+        GridCellRenderer<T> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Object render(final CommentModelData model,
+    public Object render(final T model,
                          final String property,
                          final ColumnData d,
                          final int rowIndex,
                          final int colIndex,
-                         final ListStore<CommentModelData> store,
-                         final Grid<CommentModelData> grid) {
+                         final ListStore<T> store,
+                         final Grid<T> grid) {
 
         d.cellAttr = "rowspan='2'";
         final StringBuilder html = new StringBuilder();

@@ -39,7 +39,7 @@ import ccc.contentcreator.client.EventBus;
 import ccc.contentcreator.client.IGlobalsImpl;
 import ccc.contentcreator.client.SingleSelectionModel;
 import ccc.contentcreator.client.Event.Type;
-import ccc.contentcreator.controllers.CMEditorReadyEvent;
+import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;

@@ -64,8 +64,7 @@ CommandResponseHandler<Void> {
                                  final TextFileDelta model) {
 
         super(globals, bus, view, model);
-        getView().setPresenter(this);
-        getView().show();
+        getView().show(this);
         getView().setText(model.getContent());
         getView().setPrimaryMime(model.getMimeType().getPrimaryType());
         getView().setSubMime(model.getMimeType().getSubType());
