@@ -31,10 +31,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.remote.GetChildrenAction;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;
+import ccc.contentcreator.remoting.GetChildrenAction;
 import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;

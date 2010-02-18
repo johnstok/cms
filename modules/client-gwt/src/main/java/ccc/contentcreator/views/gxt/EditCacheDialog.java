@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.actions.remote.UpdateCacheDurationAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobalsImpl;
+import ccc.contentcreator.remoting.UpdateCacheDurationAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.types.Duration;

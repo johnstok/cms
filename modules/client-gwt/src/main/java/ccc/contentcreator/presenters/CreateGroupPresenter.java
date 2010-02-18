@@ -27,10 +27,10 @@
 package ccc.contentcreator.presenters;
 
 
-import ccc.contentcreator.actions.remote.CreateGroupAction;
 import ccc.contentcreator.client.ContentCreator;
 import ccc.contentcreator.events.GroupCreated;
 import ccc.contentcreator.events.GroupCreated.GroupCreatedHandler;
+import ccc.contentcreator.remoting.CreateGroupAction;
 import ccc.rest.dto.GroupDto;
 
 

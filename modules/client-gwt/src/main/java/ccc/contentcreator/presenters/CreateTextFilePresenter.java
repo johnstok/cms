@@ -26,7 +26,6 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.remote.CreateTextFileAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
@@ -34,6 +33,7 @@ import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.events.ResourceCreatedEvent;
+import ccc.contentcreator.remoting.CreateTextFileAction;
 import ccc.contentcreator.views.CreateTextFile;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDto;

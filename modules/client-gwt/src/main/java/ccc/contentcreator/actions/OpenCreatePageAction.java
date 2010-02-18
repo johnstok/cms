@@ -28,10 +28,10 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
-import ccc.contentcreator.actions.remote.GetTemplatesAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.remoting.GetTemplatesAction;
 import ccc.contentcreator.views.gxt.CreatePageDialog;
 import ccc.rest.dto.TemplateSummary;
 

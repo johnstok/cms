@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.actions;
 
-import ccc.contentcreator.actions.remote.GetAbsolutePathAction;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.core.Action;
+import ccc.contentcreator.remoting.GetAbsolutePathAction;
 import ccc.contentcreator.views.gxt.HistoryDialog;
 
 import com.google.gwt.user.client.Window;

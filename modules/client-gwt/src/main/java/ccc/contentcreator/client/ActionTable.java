@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.remote.ListCompletedActionsAction;
-import ccc.contentcreator.actions.remote.ListPendingActionsAction;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.remoting.ListCompletedActionsAction;
+import ccc.contentcreator.remoting.ListPendingActionsAction;
 import ccc.rest.dto.ActionSummary;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
