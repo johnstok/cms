@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.ResourceNameExistsAction;
-import ccc.contentcreator.actions.ValidateFieldAction;
+import ccc.contentcreator.actions.remote.ResourceNameExistsAction;
+import ccc.contentcreator.actions.remote.ValidateFieldAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;

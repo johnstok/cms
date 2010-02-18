@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.UpdateWorkingCopyAction;
+import ccc.contentcreator.actions.remote.UpdateWorkingCopyAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.EditPagePanel;
 import ccc.contentcreator.client.PageElement;

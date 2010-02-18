@@ -27,8 +27,8 @@
 package ccc.contentcreator.client;
 
 
-import ccc.contentcreator.actions.GetPropertyAction;
-import ccc.contentcreator.actions.IsLoggedInAction;
+import ccc.contentcreator.actions.remote.GetPropertyAction;
+import ccc.contentcreator.actions.remote.IsLoggedInAction;
 import ccc.contentcreator.core.IGlobalsImpl;
 
 import com.google.gwt.core.client.EntryPoint;

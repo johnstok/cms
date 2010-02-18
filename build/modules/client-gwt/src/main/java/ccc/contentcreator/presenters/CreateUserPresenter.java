@@ -27,8 +27,8 @@
 package ccc.contentcreator.presenters;
 
 import static ccc.contentcreator.validation.Validations.*;
-import ccc.contentcreator.actions.CreateUserAction;
-import ccc.contentcreator.actions.UniqueUsernameAction;
+import ccc.contentcreator.actions.remote.CreateUserAction;
+import ccc.contentcreator.actions.remote.UniqueUsernameAction;
 import ccc.contentcreator.core.EditController;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.i18n.UIMessages;

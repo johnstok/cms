@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 
 import static ccc.contentcreator.validation.Validations.*;
-import ccc.contentcreator.actions.UpdateUserPasswordAction;
+import ccc.contentcreator.actions.remote.UpdateUserPasswordAction;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.validation.Validate;

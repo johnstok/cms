@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.EditTextFileAction;
+import ccc.contentcreator.actions.remote.EditTextFileAction;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;

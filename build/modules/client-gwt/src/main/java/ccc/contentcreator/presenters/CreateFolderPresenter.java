@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.CreateFolderAction;
+import ccc.contentcreator.actions.remote.CreateFolderAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;

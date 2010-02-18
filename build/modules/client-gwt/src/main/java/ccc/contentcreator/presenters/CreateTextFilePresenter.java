@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
-import ccc.contentcreator.actions.CreateTextFileAction;
+import ccc.contentcreator.actions.remote.CreateTextFileAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.CommandResponseHandler;

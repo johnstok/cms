@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.contentcreator.actions.ListCompletedActionsAction;
-import ccc.contentcreator.actions.ListPendingActionsAction;
+import ccc.contentcreator.actions.remote.ListCompletedActionsAction;
+import ccc.contentcreator.actions.remote.ListPendingActionsAction;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.rest.dto.ActionSummary;

@@ -29,9 +29,9 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
-import ccc.contentcreator.actions.CreateTemplateAction;
-import ccc.contentcreator.actions.TemplateNameExistsAction;
-import ccc.contentcreator.actions.UpdateTemplateAction;
+import ccc.contentcreator.actions.remote.CreateTemplateAction;
+import ccc.contentcreator.actions.remote.TemplateNameExistsAction;
+import ccc.contentcreator.actions.remote.UpdateTemplateAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.core.DialogMode;

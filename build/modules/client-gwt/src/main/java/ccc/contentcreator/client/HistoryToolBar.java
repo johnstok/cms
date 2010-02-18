@@ -26,8 +26,8 @@
  */
 package ccc.contentcreator.client;
 
-import ccc.contentcreator.actions.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.contentcreator.actions.PreviewHistoricalAction;
+import ccc.contentcreator.actions.remote.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.views.gxt.HistoryDialog;

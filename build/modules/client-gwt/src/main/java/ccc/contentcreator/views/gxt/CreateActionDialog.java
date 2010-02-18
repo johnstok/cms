@@ -29,7 +29,7 @@ package ccc.contentcreator.views.gxt;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.contentcreator.actions.CreateActionAction;
+import ccc.contentcreator.actions.remote.CreateActionAction;
 import ccc.contentcreator.client.CreateActionPanel;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;

@@ -28,7 +28,7 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Map;
 
-import ccc.contentcreator.actions.GetPropertyAction;
+import ccc.contentcreator.actions.remote.GetPropertyAction;
 import ccc.contentcreator.core.IGlobalsImpl;
 
 import com.google.gwt.http.client.Response;
