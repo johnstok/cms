@@ -34,8 +34,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import ccc.contentcreator.client.ContentCreator;
 import ccc.contentcreator.overlays.FailureOverlay;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;

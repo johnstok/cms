@@ -36,12 +36,12 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
-import ccc.contentcreator.client.ResourceTypeRendererFactory;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.GetChildrenAction;
 import ccc.contentcreator.remoting.UpdateFolderAction;
+import ccc.contentcreator.widgets.ResourceTypeRendererFactory;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ResourceType;
 

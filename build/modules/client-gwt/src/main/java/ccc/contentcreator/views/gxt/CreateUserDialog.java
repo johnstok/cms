@@ -27,11 +27,11 @@
 package ccc.contentcreator.views.gxt;
 
 
-import ccc.contentcreator.client.SubmitControllerSelectionListener;
 import ccc.contentcreator.core.IGlobals;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.presenters.CreateUserPresenter;
 import ccc.contentcreator.views.CreateUser;
+import ccc.contentcreator.widgets.SubmitControllerSelectionListener;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

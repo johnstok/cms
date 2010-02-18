@@ -26,7 +26,6 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import ccc.contentcreator.client.CodeMirrorEditor;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Event;
 import ccc.contentcreator.core.EventBus;
@@ -36,6 +35,7 @@ import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.core.Event.Type;
 import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.views.EditTextFile;
+import ccc.contentcreator.widgets.CodeMirrorEditor;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

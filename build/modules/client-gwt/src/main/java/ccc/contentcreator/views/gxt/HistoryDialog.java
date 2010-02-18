@@ -34,9 +34,9 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.client.HistoryToolBar;
 import ccc.contentcreator.core.IGlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.widgets.HistoryToolBar;
 import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
 

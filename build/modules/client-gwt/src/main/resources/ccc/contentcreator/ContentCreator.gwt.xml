@@ -48,12 +48,12 @@
     -->
 
 	<!-- Specify the app entry point class. -->
-	<entry-point class="ccc.contentcreator.client.ContentCreator" />
+	<entry-point class="ccc.contentcreator.widgets.ContentCreator" />
 
 	<source path="actions" />
 	<source path="i18n" />
 	<source path="binding" />
-	<source path="client" />
+	<source path="widgets" />
 	<source path="validation" />
 	<source path="presenters" />
 	<source path="views" />
