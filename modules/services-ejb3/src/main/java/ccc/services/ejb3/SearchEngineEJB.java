@@ -50,6 +50,7 @@ import org.apache.log4j.Logger;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Page;
+import ccc.domain.Resource;
 import ccc.domain.Scheduler;
 import ccc.domain.Setting;
 import ccc.persistence.DataRepository;
@@ -58,7 +59,7 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
-import ccc.search.lucene.SimpleLucene;
+import ccc.search.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
 
 
@@ -178,9 +179,7 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private void indexFiles(final SimpleLucene lucene) {
         final List<File> files = _resources.files();
         for (final File f : files) {
-            if (f.isVisible() && !f.isSecure()) {
-                lucene.indexFile(f);
-            }
+            if (canIndex(f)) { lucene.indexFile(f); }
         }
     }
 
@@ -188,10 +187,13 @@ public class SearchEngineEJB  implements SearchEngine, Scheduler {
     private void indexPages(final SimpleLucene lucene) {
         final List<Page> pages = _resources.pages();
         for (final Page p : pages) {
-            if (p.isVisible() && !p.isSecure()) {
-                lucene.indexPage(p);
-            }
+            if (canIndex(p)) { lucene.indexPage(p); }
         }
+    }
+
+
+    private boolean canIndex(final Resource r) {
+        return r.isVisible() && !r.isSecure() && r.isIndexable();
     }
 
 

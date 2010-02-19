@@ -45,6 +45,7 @@ import ccc.persistence.DataRepository;
 import ccc.rest.SearchResult;
 import ccc.search.AbstractIndexer;
 import ccc.search.SearchException;
+import ccc.search.SimpleLucene;
 
 
 /**
