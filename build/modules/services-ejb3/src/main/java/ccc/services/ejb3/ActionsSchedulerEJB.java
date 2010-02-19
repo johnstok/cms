@@ -43,9 +43,9 @@ import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.Scheduler;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
+import ccc.rest.Scheduler;
 
 
 /**

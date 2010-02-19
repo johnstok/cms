@@ -37,7 +37,6 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -51,7 +50,6 @@ import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.Scheduler;
 import ccc.domain.Setting;
 import ccc.persistence.DataRepository;
 import ccc.persistence.RepositoryFactory;
@@ -70,10 +68,9 @@ import ccc.search.lucene.SimpleLuceneFS;
  */
 @Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Scheduler.class)
 @Local(SearchEngine.class)
 @RolesAllowed({ADMINISTRATOR})
-public class SearchEngineEJB  implements SearchEngine, Scheduler {
+public class SearchEngineEJB  implements SearchEngine {
 
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
     private static final int INITIAL_DELAY_SECS = 1;

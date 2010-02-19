@@ -50,7 +50,7 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @Consumes("application/json")
-@Produces("application/json")
+@Produces({"application/json", "text/html"})
 public class BooleanProvider
     extends
         AbstractProvider
@@ -64,7 +64,9 @@ public class BooleanProvider
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return Boolean.class.equals(clazz);
+        return
+            Boolean.TYPE.equals(clazz)
+            || Boolean.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
@@ -116,7 +118,15 @@ public class BooleanProvider
                         final MultivaluedMap<String, Object> arg5,
                         final OutputStream outputStream) {
         final PrintWriter pw = createWriter(outputStream);
-        pw.print(arg0);
+
+        if (MediaType.TEXT_HTML_TYPE.equals(arg4)) {
+            pw.print("<h2>");
+            pw.print(arg0);
+            pw.print("</h2>");
+        } else {
+            pw.print(arg0);
+        }
+
         pw.flush();
     }
 }

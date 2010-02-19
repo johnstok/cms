@@ -26,13 +26,22 @@
  */
 package ccc.rest;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 
 /**
  * The search API.
  *
  * @author Civic Computing Ltd.
  */
-public interface SearchEngine {
+@Produces("application/json")
+@Consumes("application/json")
+public interface SearchEngine extends Scheduler {
 
     /** NAME : String. */
     String NAME = "Search";
@@ -45,6 +54,7 @@ public interface SearchEngine {
      * @param page The page of results to return (first page has index of 0).
      * @return The SearchResult object with set entities and total count.
      */
+    @GET @Path("/find") @NoCache
     SearchResult find(final String searchTerms,
                       int noOfResultsPerPage,
                       int page);
@@ -52,5 +62,6 @@ public interface SearchEngine {
     /**
      * Rebuild the search index.
      */
+    @GET @Path("/index") @NoCache
     void index();
 }

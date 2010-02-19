@@ -30,8 +30,8 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.domain.Scheduler;
 import ccc.migration.ServiceLookup;
+import ccc.rest.Scheduler;
 
 /**
  * Command line management of Action executor.
