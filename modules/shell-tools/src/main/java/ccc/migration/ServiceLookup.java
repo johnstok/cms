@@ -28,7 +28,6 @@ package ccc.migration;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.domain.Scheduler;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
@@ -38,6 +37,7 @@ import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.Scheduler;
 import ccc.rest.SearchEngine;
 import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
@@ -135,16 +135,6 @@ public class ServiceLookup implements ServiceLocator {
      */
     public Scheduler lookupActionScheduler() {
         return _registry.<Scheduler>get(jndiPath(ActionScheduler.NAME));
-    }
-
-
-    /**
-     * Look up the search scheduler.
-     *
-     * @return A search scheduler.
-     */
-    public Scheduler lookupSearchScheduler() {
-        return _registry.<Scheduler>get(jndiPath(SearchEngine.NAME));
     }
 
 

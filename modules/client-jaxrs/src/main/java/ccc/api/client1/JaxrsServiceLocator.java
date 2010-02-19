@@ -120,17 +120,18 @@ public class JaxrsServiceLocator implements ServiceLocator {
         pFactory.addStringConverter(UUIDProvider.class);
     }
 
-    private Resources _commands;
-    private Users _users;
-    private Actions _actions;
-    private Folders _folders;
-    private Pages _pages;
-    private Security _security;
-    private Templates _templates;
-    private Comments  _comments;
-    private Files _files;
-    private Aliases _aliases;
-    private Groups _groups;
+    private final Resources _commands;
+    private final Users _users;
+    private final Actions _actions;
+    private final Folders _folders;
+    private final Pages _pages;
+    private final Security _security;
+    private final Templates _templates;
+    private final Comments  _comments;
+    private final Files _files;
+    private final Aliases _aliases;
+    private final Groups _groups;
+    private final SearchEngine _search;
 
     private final String     _secure;
     private final String     _public;
@@ -162,6 +163,8 @@ public class JaxrsServiceLocator implements ServiceLocator {
         _groups    = ProxyFactory.create(Groups.class, _secure, _http);
         _aliases =
             ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
+        _search    =
+            ProxyFactory.create(SearchEngine.class, _secure+"/search", _http);
     }
 
 
@@ -199,9 +202,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
 
     /** {@inheritDoc} */
     @Override
-    public SearchEngine getSearch() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
+    public SearchEngine getSearch() { return _search; }
 
     /** {@inheritDoc} */
     @Override
