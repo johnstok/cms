@@ -42,6 +42,7 @@ import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.rendering.TextProcessor;
+import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Comments;
@@ -249,39 +250,39 @@ public class VelocityProcessorTest extends TestCase {
         // ASSERT
         assertEquals(expectedMessage, html);
     }
-    
+
     /**
      * Test.
      */
     public void testSecurityBlockedClassName() {
-        
+
         // ARRANGE
         final String template = "$uuid.Class.Name";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
-        
+
         // ACT
         final String html = _vp.render(template, ctxt);
-        
+
         // ASSERT
         assertEquals(template, html);
     }
-    
+
     /**
      * Test.
      */
     public void testSecurityBlockedClassMethods() {
-        
+
         // ARRANGE
         final String template = "$uuid.Class.Methods";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
-        
+
         // ACT
         final String html = _vp.render(template, ctxt);
-        
+
         // ASSERT
         assertEquals(template, html);
     }
@@ -290,38 +291,38 @@ public class VelocityProcessorTest extends TestCase {
      * Test.
      */
     public void testSecurityBlockedClassClassLoader() {
-        
+
         // ARRANGE
         final String template = "$uuid.Class.Methods";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
-        
+
         // ACT
         final String html = _vp.render(template, ctxt);
-        
+
         // ASSERT
         assertEquals(template, html);
     }
-    
+
     /**
      * Test.
      */
     public void testSecurityBlockedNewInstance() {
-        
+
         // ARRANGE
         final String template = "$uuid.Class.ClassLoader.loadClass('java.util.HashMap').newInstance().size()";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
-        
+
         // ACT
         final String html = _vp.render(template, ctxt);
-        
+
         // ASSERT
         assertEquals(template, html);
     }
-    
+
 
     /** {@inheritDoc} */
     @Override
@@ -410,6 +411,12 @@ public class VelocityProcessorTest extends TestCase {
         /** {@inheritDoc} */
         @Override
         public Groups getGroups() {
+            throw new UnsupportedOperationException();
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public ActionScheduler lookupActionScheduler() {
             throw new UnsupportedOperationException();
         }
     }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -17,29 +17,50 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev: 1762 $
- * Modified by   $Author: keith $
- * Modified on   $Date: 2009-09-01 15:17:03 +0100 (Tue, 01 Sep 2009) $
+ * Revision      $Rev$
+ * Modified by   $Author$
+ * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.impl;
 
-import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+
+import ccc.rest.ActionScheduler;
+import ccc.rest.SearchEngine;
 
 
 /**
- * API for a action scheduler.
+ * JAX-RS implementation of the {@link SearchEngine} interface.
  *
  * @author Civic Computing Ltd.
  */
-@Produces("application/json")
-@Consumes("application/json")
-public interface ActionScheduler extends Scheduler {
+@Path("/secure/actions")
+@Produces({"text/html", "application/json"})
+public class ActionSchedulerImpl
+    extends
+        JaxrsCollection
+    implements
+        ActionScheduler {
 
-    /** NAME : String. */
-    String NAME = "ActionScheduler";
+    /** {@inheritDoc} */
+    @Override
+    public boolean isRunning() {
+        return lookupActionScheduler().isRunning();
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public void start() {
+        lookupActionScheduler().start();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void stop() {
+        lookupActionScheduler().stop();
+    }
 }

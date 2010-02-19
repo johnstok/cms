@@ -32,6 +32,7 @@ import javax.ws.rs.core.Context;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Comments;
@@ -68,6 +69,7 @@ abstract class JaxrsCollection
     private FoldersExt _foldersExt;
     private Users _userCommands;
     private Actions _actions;
+    private ActionScheduler _actionscheduler;
     private Files _files;
     private SearchEngine _search;
     private Aliases _aliases;
@@ -129,8 +131,19 @@ abstract class JaxrsCollection
     public final Actions getActions() {
         return
         (null==_actions)
-        ? (Actions) _reg.get(getAppName()+"/"+Actions.NAME+"/remote")
+            ? (Actions) _reg.get(getAppName()+"/"+Actions.NAME+"/remote")
             : _actions;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public final ActionScheduler lookupActionScheduler() {
+        return
+            (null==_actionscheduler)
+                ? (ActionScheduler)
+                    _reg.get(getAppName()+"/"+ActionScheduler.NAME+"/local")
+                : _actionscheduler;
     }
 
     /** {@inheritDoc} */
@@ -138,7 +151,7 @@ abstract class JaxrsCollection
     public final PagesExt getPages() {
         return
         (null==_pagesExt)
-        ? (PagesExt) _reg.get(getAppName()+"/"+Pages.NAME+"/remote")
+            ? (PagesExt) _reg.get(getAppName()+"/"+Pages.NAME+"/remote")
             : _pagesExt;
     }
 
@@ -147,7 +160,7 @@ abstract class JaxrsCollection
     public final FoldersExt getFolders() {
         return
         (null==_foldersExt)
-        ? (FoldersExt) _reg.get(getAppName()+"/"+Folders.NAME+"/remote")
+            ? (FoldersExt) _reg.get(getAppName()+"/"+Folders.NAME+"/remote")
             : _foldersExt;
     }
 
@@ -156,7 +169,7 @@ abstract class JaxrsCollection
     public final Users getUsers() {
         return
         (null==_userCommands)
-        ? (Users) _reg.get(getAppName()+"/"+Users.NAME+"/remote")
+            ? (Users) _reg.get(getAppName()+"/"+Users.NAME+"/remote")
             : _userCommands;
     }
 
@@ -165,7 +178,7 @@ abstract class JaxrsCollection
     public final Files getFiles() {
         return
         (null==_files)
-        ? (Files) _reg.get(getAppName()+"/"+Files.NAME+"/local")
+            ? (Files) _reg.get(getAppName()+"/"+Files.NAME+"/local")
             : _files;
     }
 
@@ -174,7 +187,7 @@ abstract class JaxrsCollection
     public final SearchEngine getSearch() {
         return
         (null==_search)
-        ? (SearchEngine) _reg.get(getAppName()+"/"+SearchEngine.NAME+"/local")
+            ? (SearchEngine) _reg.get(getAppName()+"/"+SearchEngine.NAME+"/local")
             : _search;
     }
 
@@ -201,7 +214,7 @@ abstract class JaxrsCollection
     public Groups getGroups() {
         return
         (null==_groups)
-        ? (Groups) _reg.get(getAppName()+"/"+Groups.NAME+"/remote")
+            ? (Groups) _reg.get(getAppName()+"/"+Groups.NAME+"/remote")
             : _groups;
     }
 

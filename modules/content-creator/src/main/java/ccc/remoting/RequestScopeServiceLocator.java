@@ -29,6 +29,7 @@ package ccc.remoting;
 import javax.servlet.ServletRequest;
 
 import ccc.remoting.actions.SessionKeys;
+import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Comments;
@@ -146,5 +147,12 @@ public class RequestScopeServiceLocator
     @Override
     public Groups getGroups() {
         return (Groups) _request.getAttribute(SessionKeys.GROUPS_KEY);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionScheduler lookupActionScheduler() {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 }

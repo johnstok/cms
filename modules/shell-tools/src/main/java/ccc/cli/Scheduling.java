@@ -30,8 +30,9 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.migration.ServiceLookup;
-import ccc.rest.Scheduler;
+import ccc.api.client1.JaxrsServiceLocator;
+import ccc.rest.ActionScheduler;
+import ccc.rest.ServiceLocator;
 
 /**
  * Command line management of Action executor.
@@ -40,7 +41,7 @@ public final class Scheduling extends CccApp {
     private static final Logger LOG = Logger.getLogger(Scheduling.class);
 
     private static Options options;
-    private static ServiceLookup services;
+    private static ServiceLocator services;
 
     private Scheduling() { super(); }
 
@@ -55,11 +56,12 @@ public final class Scheduling extends CccApp {
 
         options  = parseOptions(args, Options.class);
 
-        login(options.getUsername(), options.getPassword());
+        services = new JaxrsServiceLocator(options.getBaseUrl());
 
-        services = new ServiceLookup(options.getApp(), options._providerURL);
+        services.getSecurity().login(
+            options.getUsername(), options.getPassword());
 
-        final Scheduler s = services.lookupActionScheduler();
+        final ActionScheduler s = services.lookupActionScheduler();
 
         if ("start".equals(options.getAction())) {
             s.start();
@@ -77,7 +79,7 @@ public final class Scheduling extends CccApp {
             LOG.error("Invalid command.");
         }
 
-        logout();
+        services.getSecurity().logout();
 
         report("Finished in ");
     }
@@ -97,18 +99,12 @@ public final class Scheduling extends CccApp {
         private String _password;
 
         @Option(
-            name="-a", required=true, usage="App name.")
-        private String _app;
+            name="-b", required=true, usage="Base URL for the application.")
+        private String _baseUrl;
 
         @Option(
-            name="-c", required=true, usage="Action.")
+            name="-c", required=true, usage="Action to perform.")
         private String _action;
-
-        @Option(
-            name="-jn",
-            required=false,
-            usage="optional JNDI provider URL, defaults to localhost")
-            private String _providerURL;
 
 
         /**
@@ -134,10 +130,10 @@ public final class Scheduling extends CccApp {
         /**
          * Accessor.
          *
-         * @return Returns the app.
+         * @return Returns the base URL for the app.
          */
-        String getApp() {
-            return _app;
+        String getBaseUrl() {
+            return _baseUrl;
         }
 
 
@@ -148,16 +144,6 @@ public final class Scheduling extends CccApp {
          */
         String getAction() {
             return _action;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the JNDI provider URL.
-         */
-        String getProviderURL() {
-            return _providerURL;
         }
     }
 }

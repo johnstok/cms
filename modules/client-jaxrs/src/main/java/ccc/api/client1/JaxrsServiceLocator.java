@@ -32,6 +32,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
+import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Comments;
@@ -123,6 +124,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
     private final Resources _commands;
     private final Users _users;
     private final Actions _actions;
+    private final ActionScheduler _actionScheduler;
     private final Folders _folders;
     private final Pages _pages;
     private final Security _security;
@@ -165,6 +167,8 @@ public class JaxrsServiceLocator implements ServiceLocator {
             ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
         _search    =
             ProxyFactory.create(SearchEngine.class, _secure+"/search", _http);
+        _actionScheduler =
+            ProxyFactory.create(ActionScheduler.class, _secure+"/actions", _http);
     }
 
 
@@ -175,6 +179,10 @@ public class JaxrsServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Actions getActions() { return _actions; }
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionScheduler lookupActionScheduler() { return _actionScheduler; }
 
     /** {@inheritDoc} */
     @Override
