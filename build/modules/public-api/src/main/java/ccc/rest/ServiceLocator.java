@@ -67,6 +67,13 @@ public interface ServiceLocator {
     /**
      * Accessor.
      *
+     * @return Returns the action scheduler service.
+     */
+    ActionScheduler lookupActionScheduler();
+
+    /**
+     * Accessor.
+     *
      * @return Returns the pages service.
      */
     Pages getPages();

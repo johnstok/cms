@@ -37,7 +37,6 @@ import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
-import ccc.rest.Scheduler;
 import ccc.rest.SearchEngine;
 import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
@@ -128,13 +127,10 @@ public class ServiceLookup implements ServiceLocator {
     }
 
 
-    /**
-     * Look up the action scheduler.
-     *
-     * @return An action scheduler.
-     */
-    public Scheduler lookupActionScheduler() {
-        return _registry.<Scheduler>get(jndiPath(ActionScheduler.NAME));
+    /** {@inheritDoc} */
+    @Override
+    public ActionScheduler lookupActionScheduler() {
+        throw new UnsupportedOperationException("Method not implemented.");
     }
 
 

@@ -35,7 +35,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBContext;
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
@@ -45,7 +44,6 @@ import org.apache.log4j.Logger;
 
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
-import ccc.rest.Scheduler;
 
 
 /**
@@ -55,13 +53,11 @@ import ccc.rest.Scheduler;
  */
 @Stateless(name=ActionScheduler.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Scheduler.class)
 @Local(ActionScheduler.class)
 @RolesAllowed({ADMINISTRATOR})
 public class ActionsSchedulerEJB
     implements
-        Scheduler {
-    @EJB(name = Actions.NAME)      private transient Actions      _action;
+        ActionScheduler {
 
     private static final int TIMEOUT_DELAY_SECS = 60*1000;
     private static final int INITIAL_DELAY_SECS = 30*1000;
@@ -69,8 +65,10 @@ public class ActionsSchedulerEJB
     private static final Logger LOG =
         Logger.getLogger(ActionsSchedulerEJB.class.getName());
 
-
+    @EJB(name = Actions.NAME)  private transient Actions _action;
     @javax.annotation.Resource private EJBContext _context;
+
+
     /** Constructor. */
     public ActionsSchedulerEJB() { super(); }
 
