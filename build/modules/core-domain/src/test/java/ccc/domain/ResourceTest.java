@@ -41,6 +41,58 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
+     */
+    public void testResourceNotIndexableByDefault() {
+
+        // ARRANGE
+        final Resource r = new Page();
+
+        // ACT
+
+        // ASSERT
+        assertFalse(r.isIndexable());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testResourceIndexingEnabledViaMetadata() {
+
+        // ARRANGE
+        final Resource r = new Page();
+
+        // ACT
+        r.addMetadatum("searchable", "true");
+
+        // ASSERT
+        assertTrue(r.isIndexable());
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testChildrenCanOverrideIndexing() throws Exception {
+
+        // ARRANGE
+        final Folder f = new Folder();
+        f.addMetadatum("searchable", "true");
+        final Resource r = new Page();
+        f.add(r);
+
+        // ACT
+        r.addMetadatum("searchable", "other");
+
+        // ASSERT
+        assertFalse(r.isIndexable());
+    }
+
+
+    /**
+     * Test.
      *
      * @throws Exception If the test fails.
      */
@@ -1403,7 +1455,7 @@ public final class ResourceTest extends TestCase {
             resource.getTitle().equals(bad.toString()));
         assertEquals("before–middle’end†", resource.getTitle());
     }
-    
+
 
     /**
      * Test.

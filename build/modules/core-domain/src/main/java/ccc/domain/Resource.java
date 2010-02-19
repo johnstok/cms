@@ -46,8 +46,8 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.CommandType;
-import ccc.types.Permission;
 import ccc.types.Duration;
+import ccc.types.Permission;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
@@ -511,7 +511,15 @@ public abstract class Resource
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * Calculate the resource's metadatum for a given key.
+     * <p>If this resource has no value for the key its parents will be checked
+     * recursively.
+     *
+     * @param key The key to the metadatum.
+     *
+     * @return The metadatum's value.
+     */
     public String getMetadatum(final String key) {
         String datum = _metadata.get(key);
         if (null==datum && null!=_parent) {
@@ -896,5 +904,15 @@ public abstract class Resource
         dto.setTitle(getTitle());
         dto.setType(type());
         dto.setVisible(isVisible());
+    }
+
+
+    /**
+     * Determine whether a resource can be indexed by the search engine.
+     *
+     * @return True if the resource can be indexed; false otherwise.
+     */
+    public boolean isIndexable() {
+        return Boolean.valueOf(getMetadatum("searchable")).booleanValue();
     }
 }
