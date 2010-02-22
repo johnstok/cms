@@ -39,6 +39,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -80,13 +81,14 @@ public interface Folders {
      * @throws RestException If the method fails
      */
     @GET @Path("/{id}/children-paged")
-    Collection<ResourceSummary> getChildrenPaged(
+    DtoCollection<ResourceSummary> getChildrenPaged(
         @PathParam("id") UUID folderId,
         @QueryParam("sort") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize)
          throws RestException;
+
 
     /**
      * List all of the children of the specified folder.

@@ -48,6 +48,7 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.rest.Folders;
 import ccc.rest.RestException;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -292,11 +293,10 @@ public class FoldersEJB
     }
 
 
-
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getChildrenPaged(
+    public DtoCollection<ResourceSummary> getChildrenPaged(
                                                     final UUID folderId,
                                                     final String sort,
                                                     final SortOrder sortOrder,
@@ -305,8 +305,10 @@ public class FoldersEJB
                                                     throws RestException {
         try {
             final Folder f = getResources().find(Folder.class, folderId);
-            return
-                mapResources(
+
+            final DtoCollection<ResourceSummary> dtoc =
+                new DtoCollection<ResourceSummary>(
+                    f.entries().size(), mapResources(
                     getResources().list(
                         f,
                         null,
@@ -315,10 +317,11 @@ public class FoldersEJB
                         sort,
                         sortOrder,
                         pageNo,
-                        pageSize));
-
+                        pageSize)));
+            return dtoc;
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
     }
+
 }

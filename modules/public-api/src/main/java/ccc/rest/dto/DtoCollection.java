@@ -26,6 +26,7 @@
  */
 package ccc.rest.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import ccc.serialization.Json;
@@ -40,7 +41,8 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class DtoCollection<T extends Jsonable> implements Jsonable {
+public class DtoCollection<T extends Jsonable>
+    implements Serializable, Jsonable {
 
     private final long _totalCount;
     private final List<T> _elements;
