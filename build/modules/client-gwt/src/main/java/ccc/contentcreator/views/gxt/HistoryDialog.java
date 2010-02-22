@@ -40,6 +40,7 @@ import ccc.contentcreator.widgets.HistoryToolBar;
 import ccc.rest.dto.RevisionDto;
 import ccc.types.CommandType;
 
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -84,6 +85,8 @@ public class HistoryDialog
         _toolBar.disable();
         setTopComponent(_toolBar);
         getDataStore().add(DataBinding.bindLogEntrySummary(getData()));
+        getDataStore().sort(
+            LogEntrySummaryModelData.Property.HAPPENED_ON.name(), SortDir.DESC);
         getGrid().setAutoExpandColumn(LogEntrySummaryModelData.EXPAND_PROPERTY);
         getGrid().addListener(
             Events.RowClick,
