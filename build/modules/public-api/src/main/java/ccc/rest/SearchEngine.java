@@ -31,8 +31,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 
 /**
  * The search API.
@@ -54,7 +52,7 @@ public interface SearchEngine extends Scheduler {
      * @param page The page of results to return (first page has index of 0).
      * @return The SearchResult object with set entities and total count.
      */
-    @GET @Path("/find") @NoCache
+    @GET @Path("/find")
     SearchResult find(final String searchTerms,
                       int noOfResultsPerPage,
                       int page);
@@ -62,6 +60,6 @@ public interface SearchEngine extends Scheduler {
     /**
      * Rebuild the search index.
      */
-    @GET @Path("/index") @NoCache
+    @GET @Path("/index")
     void index();
 }

@@ -32,6 +32,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.Pages;
 import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
@@ -45,9 +47,10 @@ import ccc.serialization.Json;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure")
+@Path("/secure/pages")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class PagesImpl
     extends
         JaxrsCollection

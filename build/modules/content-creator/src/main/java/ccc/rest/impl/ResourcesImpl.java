@@ -35,6 +35,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
@@ -45,8 +47,6 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.serialization.Json;
 import ccc.types.Duration;
-import ccc.types.Failure;
-import ccc.types.FailureCode;
 import ccc.types.SortOrder;
 
 
@@ -55,9 +55,10 @@ import ccc.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure")
+@Path("/secure/resources")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class ResourcesImpl
     extends
         JaxrsCollection
@@ -274,13 +275,6 @@ public class ResourcesImpl
     public void deleteCacheDuration(final UUID id)
     throws RestException {
         getResources().updateCacheDuration(id, (Duration) null);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fail() throws RestException {
-        throw new RestException(new Failure(FailureCode.PRIVILEGES));
     }
 
 

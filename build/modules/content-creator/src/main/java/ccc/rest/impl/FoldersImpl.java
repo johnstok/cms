@@ -33,6 +33,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.FolderDelta;
@@ -46,9 +48,10 @@ import ccc.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure")
+@Path("/secure/folders")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class FoldersImpl
     extends
         JaxrsCollection
@@ -66,8 +69,8 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId)
-    throws RestException {
+    public Collection<ResourceSummary> getAccessibleChildren(
+        final UUID folderId) throws RestException {
         return getFolders().getAccessibleChildren(folderId);
     }
 
@@ -123,11 +126,12 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildrenPaged(final UUID folderId,
-                                                        final String sort,
-                                                        final SortOrder sortOrder,
-                                                        final int offset,
-                                                        final int limit) throws RestException {
+    public Collection<ResourceSummary> getChildrenPaged(
+                                        final UUID folderId,
+                                        final String sort,
+                                        final SortOrder sortOrder,
+                                        final int offset,
+                                        final int limit) throws RestException {
         return getFolders().getChildrenPaged(folderId,
                                              sort,
                                              sortOrder,

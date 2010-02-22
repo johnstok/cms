@@ -74,7 +74,7 @@ public abstract class GetRootsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/roots";
+        return "/folders/roots";
     }
 
 

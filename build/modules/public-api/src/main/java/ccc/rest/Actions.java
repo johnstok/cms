@@ -36,8 +36,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
@@ -62,7 +60,7 @@ public interface Actions {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/actions/{id}/cancel")
+    @POST @Path("/{id}/cancel")
     void cancelAction(
         @PathParam("id") UUID actionId) throws RestException;
 
@@ -75,7 +73,7 @@ public interface Actions {
      *
      * @return A summary of the new action.
      */
-    @POST @Path("/actions")
+    @POST
     ActionSummary createAction(ActionDto action) throws RestException;
 
 
@@ -84,7 +82,7 @@ public interface Actions {
      *
      * @return A collection of action summaries, one per outstanding action.
      */
-    @GET @Path("/actions/pending") @NoCache
+    @GET @Path("/pending")
     Collection<ActionSummary> listPendingActions();
 
 
@@ -93,14 +91,14 @@ public interface Actions {
      *
      * @return A collection of action summaries, one per completed action.
      */
-    @GET @Path("/actions/completed") @NoCache
+    @GET @Path("/completed")
     Collection<ActionSummary> listCompletedActions();
 
 
     /**
      * Executes all available actions whose 'execute after' date is in the past.
      */
-    @POST @Path("/actions/all")
+    @POST @Path("/all")
     void executeAll();
 
 
@@ -113,7 +111,7 @@ public interface Actions {
      *
      * @return A summary of the action.
      */
-    @GET @Path("/actions/{id}")
+    @GET @Path("/{id}")
     ActionSummary findAction(
          @PathParam("id") UUID actionId) throws RestException;
 }

@@ -669,13 +669,6 @@ public class ResourcesEJB
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void fail() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
 
     /* ====================================================================
      * Queries API.

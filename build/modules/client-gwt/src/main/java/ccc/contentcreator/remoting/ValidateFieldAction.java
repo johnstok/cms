@@ -65,7 +65,7 @@ public class ValidateFieldAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/page-validator";
+        return "/pages/validator";
     }
 
 

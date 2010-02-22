@@ -36,8 +36,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -62,7 +60,7 @@ public interface Users {
      * @throws RestException If the method fails
      * @return The corresponding delta.
      */
-    @GET @Path("/users/{id}/delta") @NoCache
+    @GET @Path("/{id}/delta")
     UserDto userDelta(@PathParam("id") UUID userId) throws RestException;
 
     /**
@@ -71,7 +69,7 @@ public interface Users {
 
      * @return UserDTO
      */
-    @GET @Path("/users/me") @NoCache
+    @GET @Path("/me")
     UserDto loggedInUser();
 
     /**
@@ -79,7 +77,7 @@ public interface Users {
      *
      * @return Returns list of users.
      */
-    @GET @Path("/users") @NoCache
+    @GET
     Collection<UserDto> listUsers();
 
     /**
@@ -88,7 +86,7 @@ public interface Users {
      * @param role The role as a string.
      * @return Returns list of users.
      */
-    @GET @Path("/users/role/{role}") @NoCache
+    @GET @Path("/role/{role}")
     Collection<UserDto> listUsersWithRole(
         @PathParam("role") String role);
 
@@ -98,7 +96,7 @@ public interface Users {
      * @param username The username.
      * @return Returns list of users.
      */
-    @GET @Path("/users/username/{uname}") @NoCache
+    @GET @Path("/username/{uname}")
     Collection<UserDto> listUsersWithUsername(
         @PathParam("uname") Username username);
 
@@ -108,7 +106,7 @@ public interface Users {
      * @param username The username to check
      * @return True if the username is in use, false otherwise.
      */
-    @GET @Path("/users/{uname}/exists") @NoCache
+    @GET @Path("/{uname}/exists")
     Boolean usernameExists(@PathParam("uname") Username username);
 
     /**
@@ -117,7 +115,7 @@ public interface Users {
      * @param email The email as a string.
      * @return Returns list of users.
      */
-    @GET @Path("/users/email/{email}") @NoCache
+    @GET @Path("/email/{email}")
     Collection<UserDto> listUsersWithEmail(
         @PathParam("email") String email);
 
@@ -131,7 +129,7 @@ public interface Users {
      *
      * @return A user summary describing the new user.
      */
-    @POST @Path("/users")
+    @POST
     UserDto createUser(UserDto delta)
     throws RestException;
 
@@ -144,7 +142,7 @@ public interface Users {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/users/{id}")
+    @POST @Path("/{id}")
     void updateUser(@PathParam("id") UUID userId, UserDto delta)
     throws RestException;
 
@@ -157,7 +155,7 @@ public interface Users {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/users/{id}/password")
+    @POST @Path("/{id}/password")
     void updateUserPassword(@PathParam("id") UUID userId, UserDto user)
     throws RestException;
 
@@ -169,7 +167,7 @@ public interface Users {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/users/{id}/currentuser")
+    @POST @Path("/{id}/currentuser")
     void updateYourUser(@PathParam("id") UUID userId, UserDto user)
     throws RestException;
 
@@ -181,9 +179,7 @@ public interface Users {
      * @throws RestException If the method fails
      * @return A summary of the corresponding user.
      */
-    @GET
-    @Path("/user-by-legacy-id/{id}")
-    @NoCache
+    @GET @Path("/by-legacy-id/{id}")
     UserDto userByLegacyId(@PathParam("id") String legacyId)
     throws RestException;
 
@@ -193,7 +189,7 @@ public interface Users {
      * @param key The key as a string.
      * @return Returns list of users.
      */
-    @GET @Path("/users/metadata/{key}") @NoCache
+    @GET @Path("/metadata/{key}")
     Collection<String> listUserMetadataValuesWithKey(
         @PathParam("key") String key);
 }

@@ -33,6 +33,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
@@ -46,9 +48,10 @@ import ccc.rest.dto.TemplateSummary;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure")
+@Path("/secure/templates")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class TemplatesImpl
     extends
         JaxrsCollection

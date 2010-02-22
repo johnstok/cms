@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -54,7 +54,7 @@ import ccc.rest.dto.ResourceSummary;
  */
 @Stateless(name=Aliases.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Aliases.class)
+@Local(Aliases.class)
 @RolesAllowed({})
 public class AliasesEJB
     extends

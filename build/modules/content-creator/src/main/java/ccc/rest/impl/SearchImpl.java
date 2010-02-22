@@ -29,6 +29,8 @@ package ccc.rest.impl;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
 
@@ -40,6 +42,7 @@ import ccc.rest.SearchResult;
  */
 @Path("/secure/search")
 @Produces({"text/html", "application/json"})
+@NoCache
 public class SearchImpl
     extends
         JaxrsCollection

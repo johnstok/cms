@@ -37,8 +37,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
@@ -67,9 +65,7 @@ public interface Files {
      * @return The list of images.
      * @throws RestException If an error occurs updating the file.
      */
-    @GET
-    @Path("/images/{id}")
-    @NoCache
+    @GET @Path("/images/{id}")
     DtoCollection<FileDto> getPagedImages(
         @PathParam("id") UUID folderId,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -112,7 +108,6 @@ public interface Files {
      * @return A resource summary describing the new text file.
      */
     @POST
-    @Path("")
     ResourceSummary createTextFile(TextFileDto textFile)
     throws RestException;
 

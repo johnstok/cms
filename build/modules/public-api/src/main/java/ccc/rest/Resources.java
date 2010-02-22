@@ -40,8 +40,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
@@ -78,7 +76,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @GET @Path("/resources")
+    @GET
     Collection<ResourceSummary> list(
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
@@ -98,9 +96,7 @@ public interface Resources {
      * @return A summary of the resource.
      * @throws UnauthorizedException If the user does not have right to access.
      */
-    @GET
-    @Path("/resources/{id}")
-    @NoCache
+    @GET @Path("/{id}")
     ResourceSummary resource(@PathParam("id") UUID resourceId)
     throws RestException, UnauthorizedException;
 
@@ -112,8 +108,7 @@ public interface Resources {
      * @throws RestException If the method fails.
      */
     @POST // Should be DELETE but hard to support from the browser.
-    @Path("/resources/{id}/delete")
-    @NoCache
+    @Path("/{id}/delete")
     void deleteResource(@PathParam("id") UUID resourceId) throws RestException;
 
 
@@ -124,9 +119,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return The absolute path as a string.
      */
-    @GET
-    @Path("/resources/{id}/path")
-    @NoCache
+    @GET @Path("/{id}/path")
     String getAbsolutePath(@PathParam("id") UUID resourceId)
     throws RestException;
 
@@ -136,9 +129,7 @@ public interface Resources {
      *
      * @return The list of resources.
      */
-    @GET
-    @Path("/resources/locked")
-    @NoCache
+    @GET @Path("/locked")
     Collection<ResourceSummary> locked();
 
 
@@ -149,9 +140,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return The list of resources.
      */
-    @GET
-    @Path("/resources/{id}/revisions")
-    @NoCache
+    @GET @Path("/{id}/revisions")
     Collection<RevisionDto> history(@PathParam("id") UUID resourceId)
     throws RestException;
 
@@ -163,9 +152,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return The metadata in a hashmap.
      */
-    @GET
-    @Path("/resources/{id}/metadata")
-    @NoCache
+    @GET @Path("/{id}/metadata")
     Map<String, String> metadata(@PathParam("id") UUID resourceId)
     throws RestException;
 
@@ -177,9 +164,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return The access control list for the specified resource.
      */
-    @GET
-    @Path("/resources/{id}/roles")
-    @NoCache
+    @GET @Path("/{id}/roles")
     AclDto roles(@PathParam("id") UUID resourceId)
     throws RestException;
 
@@ -191,9 +176,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return Duration.
      */
-    @GET
-    @Path("/resources/{id}/duration")
-    @NoCache
+    @GET @Path("/{id}/duration")
     Duration cacheDuration(@PathParam("id") UUID resourceId)
     throws RestException;
 
@@ -205,9 +188,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return TemplateSummary.
      */
-    @GET
-    @Path("/resources/{id}/template")
-    @NoCache
+    @GET @Path("/{id}/template")
     TemplateSummary computeTemplate(@PathParam("id") UUID resourceId)
     throws RestException;
 
@@ -219,9 +200,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return A summary of the corresponding resource.
      */
-    @GET
-    @Path("/resources-by-path{path:.*}")
-    @NoCache
+    @GET @Path("/by-path{path:.*}")
     ResourceSummary resourceForPath(@PathParam("path") String path)
     throws RestException;
 
@@ -233,9 +212,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return A summary of the corresponding resource.
      */
-    @GET
-    @Path("/resources-by-legacy-id/{id}")
-    @NoCache
+    @GET @Path("/by-legacy-id/{id}")
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId)
     throws RestException;
 
@@ -246,9 +223,7 @@ public interface Resources {
      * @throws RestException If the method fails
      * @return A summary of the corresponding resource.
      */
-    @GET
-    @Path("/resources-by-metadata-key/{id}")
-    @NoCache
+    @GET @Path("/by-metadata-key/{id}")
     Collection<ResourceSummary> resourceForMetadataKey(
         @PathParam("id") String key)
     throws RestException;
@@ -262,7 +237,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/duration")
+    @POST @Path("/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
         ResourceDto duration) throws RestException;
@@ -277,7 +252,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/lock")
+    @POST @Path("/{id}/lock")
     void lock(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -289,7 +264,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/wc-apply")
+    @POST @Path("/{id}/wc-apply")
     void applyWorkingCopy(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -302,7 +277,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/template")
+    @POST @Path("/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
         ResourceDto template) throws RestException;
@@ -316,7 +291,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/unlock")
+    @POST @Path("/{id}/unlock")
     void unlock(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -328,7 +303,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/unpublish")
+    @POST @Path("/{id}/unpublish")
     void unpublish(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -340,7 +315,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/publish")
+    @POST @Path("/{id}/publish")
     void publish(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -354,7 +329,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/parent")
+    @POST @Path("/{id}/parent")
     void move(
         @PathParam("id") UUID resourceId,
         UUID newParentId) throws RestException;
@@ -368,7 +343,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/name")
+    @POST @Path("/{id}/name")
     void rename(
         @PathParam("id") final UUID resourceId,
         final String name) throws RestException;
@@ -382,7 +357,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/roles")
+    @POST @Path("/{id}/roles")
     void changeRoles(
         @PathParam("id") UUID resourceId,
         AclDto acl) throws RestException;
@@ -395,7 +370,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/exclude-mm")
+    @POST @Path("/{id}/exclude-mm")
     void excludeFromMainMenu(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -407,7 +382,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/include-mm")
+    @POST @Path("/{id}/include-mm")
     void includeInMainMenu(
         @PathParam("id") UUID resourceId) throws RestException;
 
@@ -420,7 +395,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/metadata")
+    @POST @Path("/{id}/metadata")
     void updateMetadata(
         @PathParam("id") UUID resourceId,
         Json json) throws RestException;
@@ -433,7 +408,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/wc-clear")
+    @POST @Path("/{id}/wc-clear")
     void clearWorkingCopy(
         @PathParam("id") UUID pageId) throws RestException;
 
@@ -447,7 +422,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/wc-create")
+    @POST @Path("/{id}/wc-create")
     void createWorkingCopy(
         @PathParam("id") UUID resourceId,
         ResourceDto dto) throws RestException;
@@ -460,18 +435,10 @@ public interface Resources {
      *
      * @throws RestException If the update fails.
      */
-    @DELETE  @Path("/resources/{id}/duration")
+    @DELETE @Path("/{id}/duration")
     void deleteCacheDuration(
         @PathParam("id") UUID id) throws RestException;
 
-
-    /**
-     * For testing: always throws a {@link RestException}.
-     *
-     * @throws RestException Always.
-     */
-    @GET @Path("/fail")
-    void fail() throws RestException;
 
     /**
      * Create a new log entry for the resource.
@@ -482,7 +449,7 @@ public interface Resources {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/resources/{id}/logentry-create")
+    @POST @Path("/{id}/logentry-create")
     void createLogEntry(
         @PathParam("id") UUID resourceId,
         String action,
@@ -496,9 +463,7 @@ public interface Resources {
      * @throws RestException If the method fails.
      * @throws UnauthorizedException If the user does not have right to access.
      */
-    @GET
-    @Path("/siblings/{id}")
-    @NoCache
+    @GET @Path("/{id}/siblings")
     Collection<ResourceSummary> getSiblings(@PathParam("id") UUID resourceId)
     throws RestException, UnauthorizedException;
 }
