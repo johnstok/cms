@@ -51,6 +51,12 @@ public class RuntimeExceptionMapper
     @Override
     public Response toResponse(final RuntimeException e) {
 
+        if (e instanceof org.jboss.resteasy.spi.Failure) {
+            final org.jboss.resteasy.spi.Failure restEasyFailure =
+                (org.jboss.resteasy.spi.Failure) e;
+            return restEasyFailure.getResponse();
+        }
+
         final Failure f = new Failure(FailureCode.UNEXPECTED);
         LOG.warn("Error invoking API via JAX-RS: "+f.getExceptionId(), e);
 
