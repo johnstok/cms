@@ -72,7 +72,7 @@ public class CreateAliasDialog extends AbstractEditDialog {
                              final ResourceSummary root) {
         super(new GlobalsImpl().uiConstants().createAlias(),
               new GlobalsImpl());
-        setPanelId("AliasPanel");
+        setHeight(200);
 
         _ssm = ssm;
 
