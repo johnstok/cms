@@ -36,8 +36,8 @@ import java.util.UUID;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
-import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.GlobalsImpl;
+import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.ComputeTemplateAction;
 import ccc.contentcreator.remoting.CreatePageAction;
@@ -52,6 +52,7 @@ import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -162,6 +163,8 @@ public class CreatePageDialog
         _templateGrid.addListener(Events.RowClick, gridEventlistener);
 
         _templatesStore.add(DataBinding.bindTemplateDelta(list));
+        _templatesStore.sort(
+            TemplateSummaryModelData.Property.NAME.name(), SortDir.ASC);
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());

@@ -38,6 +38,7 @@ import ccc.contentcreator.views.ChangeResourceTemplate;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.ResourceName;
 
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -133,8 +134,9 @@ public class ChooseTemplateDialog
     /** {@inheritDoc} */
     @Override
     public void setTemplates(final Collection<TemplateSummary> templates) {
-        _store.add(DataBinding.bindTemplateDelta(templates));
         _store.add(_none);
+        _store.add(DataBinding.bindTemplateDelta(templates));
+        _store.sort(TemplateSummaryModelData.Property.NAME.name(), SortDir.ASC);
         _selectedTemplate.setStore(_store);
     }
 
