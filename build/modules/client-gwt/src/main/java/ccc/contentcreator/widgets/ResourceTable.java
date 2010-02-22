@@ -175,13 +175,14 @@ public class ResourceTable
 
                         /** {@inheritDoc} */
                         @Override protected void execute(
-                                 final Collection<ResourceSummary> children) {
+                                 final Collection<ResourceSummary> children,
+                                 final int totalCount) {
                             final List<ResourceSummaryModelData> results =
                                 DataBinding.bindResourceSummary(children);
 
                             final PagingLoadResult<ResourceSummaryModelData> plr =
                                 new BasePagingLoadResult<ResourceSummaryModelData>
-                            (results, config.getOffset(), folder.getChildCount());
+                            (results, config.getOffset(), totalCount);
                             callback.onSuccess(plr);
                         }
                     }.execute();

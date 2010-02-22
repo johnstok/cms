@@ -341,9 +341,9 @@ abstract class AbstractEJB {
      * @param resources The collection of resources to map.
      * @return The corresponding collection of ResourceSummary.
      */
-    protected Collection<ResourceSummary> mapResources(
+    protected List<ResourceSummary> mapResources(
                                final Collection<? extends Resource> resources) {
-        final Collection<ResourceSummary> mapped =
+        final List<ResourceSummary> mapped =
             new ArrayList<ResourceSummary>();
         for (final Resource r : resources) {
             mapped.add(mapResource(r));

@@ -33,9 +33,11 @@ import java.util.UUID;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.rest.dto.ResourceSummary;
+import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -87,21 +89,29 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+
+        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+
+        final int totalCount =
+            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
+        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
+
         final Collection<ResourceSummary> children =
             new ArrayList<ResourceSummary>();
         for (int i=0; i<result.size(); i++) {
-            children.add(
-                new ResourceSummary(new GwtJson(result.get(i).isObject())));
+            children.add(new ResourceSummary(new GwtJson(result.get(i).isObject())));
         }
 
-        execute(children);
+        execute(children, totalCount);
     }
 
     /**
      * Handle the result of a successful call.
      *
      * @param children The collection of folder children.
+     * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<ResourceSummary> children);
+    protected abstract void execute(Collection<ResourceSummary> children,
+                                    int totalCount);
 }
