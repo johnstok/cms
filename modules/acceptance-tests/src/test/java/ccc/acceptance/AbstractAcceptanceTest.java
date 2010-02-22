@@ -475,7 +475,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary resourceForPath(final String path) {
 
         final ClientRequest request =
-            new ClientRequest(_secure+"/resources-by-path"+path, _http);
+            new ClientRequest(_secure+"/resources/by-path"+path, _http);
 
         try {
             final ClientResponse<ResourceSummary> response =

@@ -29,8 +29,6 @@ package ccc.rest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 
 
 
@@ -44,13 +42,13 @@ public interface Scheduler {
     /**
      * Start the scheduler running.
      */
-    @GET @Path("/start") @NoCache
+    @GET @Path("/start")
     void start();
 
     /**
      * Stop the scheduler running.
      */
-    @GET @Path("/stop") @NoCache
+    @GET @Path("/stop")
     void stop();
 
     /**
@@ -58,6 +56,6 @@ public interface Scheduler {
      *
      * @return True if the scheduler is running; false otherwise.
      */
-    @GET @Path("/running") @NoCache
+    @GET @Path("/running")
     boolean isRunning();
 }

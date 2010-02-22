@@ -39,8 +39,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -66,9 +64,7 @@ public interface Folders {
      * @throws RestException If the method fails
      * @return The list of child folders.
      */
-    @GET
-    @Path("/folders/{id}/folder-children")
-    @NoCache
+    @GET @Path("/{id}/folder-children")
     Collection<ResourceSummary> getFolderChildren(
         @PathParam("id") UUID folderId) throws RestException;
 
@@ -83,9 +79,7 @@ public interface Folders {
      * @return The list of child resource for paging.
      * @throws RestException If the method fails
      */
-    @GET
-    @Path("/folders/{id}/children-paged")
-    @NoCache
+    @GET @Path("/{id}/children-paged")
     Collection<ResourceSummary> getChildrenPaged(
         @PathParam("id") UUID folderId,
         @QueryParam("sort") String sort,
@@ -101,9 +95,7 @@ public interface Folders {
      * @throws RestException If the method fails
      * @return The folder's of children.
      */
-    @GET
-    @Path("/folders/{id}/children")
-    @NoCache
+    @GET @Path("/{id}/children")
     Collection<ResourceSummary> getChildren(
         @PathParam("id") UUID folderId) throws RestException;
 
@@ -115,9 +107,7 @@ public interface Folders {
      * @throws RestException If the method fails
      * @return The folder's of children.
      */
-    @GET
-    @Path("/folders/{id}/accessible-children")
-    @NoCache
+    @GET @Path("/{id}/accessible-children")
     Collection<ResourceSummary> getAccessibleChildren(
         @PathParam("id") UUID folderId) throws RestException;
 
@@ -128,9 +118,7 @@ public interface Folders {
      * @throws RestException If the method fails
      * @return The folder's of children.
      */
-    @GET
-    @Path("/folders/{id}/children-manual-order")
-    @NoCache
+    @GET @Path("/{id}/children-manual-order")
     Collection<ResourceSummary> getChildrenManualOrder(
         @PathParam("id") UUID folderId)
     throws RestException;
@@ -144,9 +132,7 @@ public interface Folders {
      * @return Returns true in case folder has a resource with given name,
      *  false otherwise.
      */
-    @GET
-    @Path("/folders/{id}/{name}/exists")
-    @NoCache
+    @GET @Path("/{id}/{name}/exists")
     Boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
                                @PathParam("name") final String name)
     throws RestException;
@@ -156,9 +142,7 @@ public interface Folders {
      *
      * @return A collection of resource summaries - one for each root folder.
      */
-    @GET
-    @Path("/roots")
-    @NoCache
+    @GET @Path("/roots")
     Collection<ResourceSummary> roots();
 
     /**
@@ -171,7 +155,6 @@ public interface Folders {
      * @return A resource summary describing the new folder.
      */
     @POST
-    @Path("/folders")
     ResourceSummary createFolder(FolderDto folder) throws RestException;
 
     /**
@@ -182,8 +165,7 @@ public interface Folders {
      *
      * @throws RestException If the method fails.
      */
-    @POST
-    @Path("/folders/{id}")
+    @POST @Path("/{id}")
     void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta)
         throws RestException;
 }

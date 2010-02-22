@@ -153,16 +153,26 @@ public class JaxrsServiceLocator implements ServiceLocator {
         LOG.debug("Public URL: "+_public);
         LOG.debug("Upload URL: "+_upload);
 
-        _commands  = ProxyFactory.create(Resources.class, _secure, _http);
-        _users     = ProxyFactory.create(Users.class, _secure, _http);
-        _actions   = ProxyFactory.create(Actions.class, _secure, _http);
-        _folders   = ProxyFactory.create(Folders.class, _secure, _http);
-        _pages     = ProxyFactory.create(Pages.class, _secure, _http);
-        _security  = ProxyFactory.create(Security.class, _public, _http);
-        _templates = ProxyFactory.create(Templates.class, _secure, _http);
-        _comments  = ProxyFactory.create(Comments.class, _secure, _http);
-        _files     = ProxyFactory.create(Files.class, _secure+"/files", _http);
-        _groups    = ProxyFactory.create(Groups.class, _secure, _http);
+        _commands  =
+            ProxyFactory.create(Resources.class, _secure+"/resources", _http);
+        _users     =
+            ProxyFactory.create(Users.class, _secure+"/users", _http);
+        _actions   =
+            ProxyFactory.create(Actions.class, _secure+"/actions", _http);
+        _folders   =
+            ProxyFactory.create(Folders.class, _secure+"/folders", _http);
+        _pages     =
+            ProxyFactory.create(Pages.class, _secure+"/pages", _http);
+        _security  =
+            ProxyFactory.create(Security.class, _public, _http);
+        _templates =
+            ProxyFactory.create(Templates.class, _secure+"/templates", _http);
+        _comments  =
+            ProxyFactory.create(Comments.class, _secure+"/comments", _http);
+        _files     =
+            ProxyFactory.create(Files.class, _secure+"/files", _http);
+        _groups    =
+            ProxyFactory.create(Groups.class, _secure+"/groups", _http);
         _aliases =
             ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
         _search    =

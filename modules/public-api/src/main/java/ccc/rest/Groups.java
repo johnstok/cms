@@ -37,8 +37,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.GroupDto;
 
 
@@ -62,7 +60,7 @@ public interface Groups {
      *
      * @return Returns list of groups.
      */
-    @GET @Path("/groups") @NoCache
+    @GET
     Collection<GroupDto> list(@QueryParam("name") String name);
 
 
@@ -75,7 +73,7 @@ public interface Groups {
      *
      * @return Returns the corresponding group.
      */
-    @GET @Path("/groups/{id}") @NoCache
+    @GET @Path("/{id}")
     GroupDto find(@PathParam("id") UUID id) throws RestException;
 
 
@@ -86,7 +84,7 @@ public interface Groups {
      *
      * @return A DTO describing the new group.
      */
-    @POST @Path("/groups") @NoCache
+    @POST
     GroupDto create(GroupDto group);
 
 
@@ -100,7 +98,7 @@ public interface Groups {
      *
      * @return A DTO describing the updated group.
      */
-    @POST @Path("/groups/{id}") @NoCache
+    @POST @Path("/{id}")
     GroupDto update(@PathParam("id") UUID id, GroupDto group)
     throws RestException;
 }

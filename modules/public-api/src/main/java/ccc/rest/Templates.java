@@ -36,8 +36,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
@@ -63,8 +61,6 @@ public interface Templates {
      * @return A list of templates.
      */
     @GET
-    @Path("/templates")
-    @NoCache
     Collection<TemplateSummary> templates();
 
 
@@ -74,9 +70,7 @@ public interface Templates {
      * @param templateName The name to look up.
      * @return True if name exists.
      */
-    @GET
-    @Path("/templates/{name}/exists")
-    @NoCache
+    @GET @Path("/{name}/exists")
     Boolean templateNameExists(@PathParam("name") final String templateName);
 
 
@@ -87,9 +81,7 @@ public interface Templates {
      * @throws RestException If the method fails
      * @return The corresponding delta.
      */
-    @GET
-    @Path("/templates/{id}/delta")
-    @NoCache
+    @GET @Path("/{id}/delta")
     TemplateDelta templateDelta(@PathParam("id") UUID templateId)
     throws RestException;
 
@@ -101,8 +93,7 @@ public interface Templates {
      *
      * @throws RestException If the method fails.
      */
-    @POST
-    @Path("/templates/{id}")
+    @POST @Path("/{id}")
     void updateTemplate(
         @PathParam("id") UUID templateId,
         TemplateDelta delta) throws RestException;
@@ -117,7 +108,6 @@ public interface Templates {
      * @return A resource summary describing the new template.
      */
     @POST
-    @Path("/templates")
     ResourceSummary createTemplate(TemplateDto template)
     throws RestException;
 }

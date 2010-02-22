@@ -36,8 +36,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -63,8 +61,7 @@ public interface Pages {
      *
      * @return A list of errors, as strings.
      */
-    @POST
-    @Path("/page-validator")
+    @POST @Path("/validator")
     String validateFields(Json json);
 
 
@@ -75,9 +72,7 @@ public interface Pages {
      * @throws RestException If the method fails
      * @return The corresponding delta.
      */
-    @GET
-    @Path("/pages/{id}/delta")
-    @NoCache
+    @GET @Path("/{id}/delta")
     PageDelta pageDelta(@PathParam("id") UUID pageId) throws RestException;
 
 
@@ -89,8 +84,7 @@ public interface Pages {
      *
      * @throws RestException If the method fails.
      */
-    @POST
-    @Path("/pages/{id}")
+    @POST @Path("/{id}")
     void updatePage(@PathParam("id") UUID pageId, Json delta)
     throws RestException;
 
@@ -103,8 +97,7 @@ public interface Pages {
      *
      * @throws RestException If the method fails.
      */
-    @POST
-    @Path("/pages/{id}/wc")
+    @POST @Path("/{id}/wc")
     void updateWorkingCopy(@PathParam("id") UUID pageId, PageDelta delta)
     throws RestException;
 
@@ -119,7 +112,6 @@ public interface Pages {
      * @return A resource summary describing the new page.
      */
     @POST
-    @Path("/pages")
     ResourceSummary createPage(PageDto page) throws RestException;
 
 }

@@ -66,7 +66,7 @@ public interface Comments {
      *
      * @return Return the newly created comment.
      */
-    @POST @Path("/comments")
+    @POST
     CommentDto create(CommentDto comment) throws RestException;
 
 
@@ -79,7 +79,7 @@ public interface Comments {
      *
      * @return Return the corresponding comment.
      */
-    @GET @Path("/comments/{id}")
+    @GET @Path("/{id}")
     CommentDto retrieve(@PathParam("id") UUID commentId) throws RestException;
 
 
@@ -91,7 +91,7 @@ public interface Comments {
      *
      * @throws RestException If the method fails.
      */
-    @POST @Path("/comments/{id}")
+    @POST @Path("/{id}")
     void update(@PathParam("id") UUID commentId,
                 CommentDto comment) throws RestException;
 
@@ -103,7 +103,7 @@ public interface Comments {
      *
      * @throws RestException If the method fails.
      */
-    @DELETE @Path("/comments/{id}")
+    @DELETE @Path("/{id}")
     void delete(@PathParam("id") UUID commentId) throws RestException;
 
 
@@ -121,7 +121,7 @@ public interface Comments {
      *
      * @throws RestException If the method fails.
      */
-    @GET @Path("/comments")
+    @GET
     DtoCollection<CommentDto> list(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,

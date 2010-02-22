@@ -35,8 +35,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.jboss.resteasy.annotations.cache.NoCache;
-
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
@@ -64,9 +62,7 @@ public interface Aliases {
      *
      * @return The corresponding target name.
      */
-    @GET
-    @Path("/{id}/targetname")
-    @NoCache
+    @GET @Path("/{id}/targetname")
     String aliasTargetName(@PathParam("id") UUID aliasId) throws RestException;
 
 
@@ -79,7 +75,7 @@ public interface Aliases {
      *
      * @return A resource summary describing the new alias.
      */
-    @POST @Path("")
+    @POST
     ResourceSummary createAlias(AliasDto alias) throws RestException;
 
 

@@ -33,8 +33,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.Actions;
 import ccc.rest.RestException;
+import ccc.rest.Scheduler;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 
@@ -44,14 +47,16 @@ import ccc.rest.dto.ActionSummary;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure")
+@Path("/secure/actions")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class ActionsImpl
     extends
         JaxrsCollection
     implements
-        Actions {
+        Actions,
+        Scheduler {
 
 
     /** {@inheritDoc} */
@@ -95,5 +100,26 @@ public class ActionsImpl
     @Override
     public ActionSummary findAction(final UUID actionId) throws RestException {
         return getActions().findAction(actionId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Produces({"text/html", "application/json"})
+    public boolean isRunning() {
+        return lookupActionScheduler().isRunning();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Produces({"text/html", "application/json"})
+    public void start() {
+        lookupActionScheduler().start();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Produces({"text/html", "application/json"})
+    public void stop() {
+        lookupActionScheduler().stop();
     }
 }

@@ -32,6 +32,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.annotations.cache.NoCache;
+
 import ccc.rest.Aliases;
 import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
@@ -47,6 +49,7 @@ import ccc.rest.dto.ResourceSummary;
 @Path("/secure/aliases")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class AliasesImpl
     extends
         JaxrsCollection

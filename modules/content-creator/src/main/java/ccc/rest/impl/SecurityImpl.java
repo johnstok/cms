@@ -37,6 +37,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
 import org.apache.log4j.Logger;
+import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
@@ -52,6 +53,7 @@ import ccc.serialization.JsonImpl;
 @Path("/public")
 @Consumes("application/json")
 @Produces("application/json")
+@NoCache
 public class SecurityImpl
     extends
         JaxrsCollection

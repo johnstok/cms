@@ -196,7 +196,7 @@ abstract class JaxrsCollection
     public final Aliases getAliases() {
         return
             (null==_aliases)
-                ? (Aliases) _reg.get(getAppName()+"/"+Aliases.NAME+"/remote")
+                ? (Aliases) _reg.get(getAppName()+"/"+Aliases.NAME+"/local")
                 : _aliases;
     }
 
