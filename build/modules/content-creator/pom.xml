@@ -60,6 +60,11 @@
             <artifactId>core-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>CCC7</groupId>
+            <artifactId>client-jaxrs</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>commons-fileupload</groupId>

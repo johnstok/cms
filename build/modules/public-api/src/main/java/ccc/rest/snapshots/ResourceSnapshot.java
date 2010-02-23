@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.rest.entities.IResource;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
@@ -45,7 +44,7 @@ import ccc.types.ResourceType;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSnapshot implements IResource, Serializable {
+public class ResourceSnapshot implements Serializable {
 
     private String              _absolutePath;
     private Duration            _cacheDuration;
@@ -70,141 +69,204 @@ public class ResourceSnapshot implements IResource, Serializable {
     private ResourceType        _type;
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Compute the template for this resource.
+     *
+     * @return The selected template.
+     */
     public final UUID getTemplate() {
         return _template;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Is the resource visible.
+     *
+     * @return True if the resource is visible, false otherwise.
+     */
     public final boolean isVisible() {
         return _isVisible;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The resource's type.
+     */
     public final ResourceType getType() {
         return _type;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for the file's description.
+     *
+     * @return The description as a string.
+     */
     public final String getDescription() {
         return _description;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for name.
+     *
+     * @return The name for this resource, as a {@link ResourceName}.
+     */
     public final ResourceName getName() {
         return _name;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Compute the cache duration for this resource.
+     *
+     * @return The computed duration.
+     */
     public final Duration getCacheDuration() {
         return _cacheDuration;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for the date the resource last changed.
+     *
+     * @return The date the resource last changed.
+     */
     public final Date getDateChanged() {
         return _dateChanged;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for the date the resource was created.
+     *
+     * @return The date of creation.
+     */
     public final Date getDateCreated() {
         return _dateCreated;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Retrieve metadata for this resource.
+     *
+     * @param key The key with which the datum was stored.
+     * @return The value of the datum. NULL if the datum doesn't exist.
+     */
     public final String getMetadatum(final String key) {
         return _metadata.get(key);
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The resource's id.
+     */
     public final UUID getId() {
         return _id;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for 'include in main menu' property.
+     *
+     * @return True if the resource should be included, false otherwise.
+     */
     public final boolean isInMainMenu() {
         return _inMainMenu;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return True if the resource is locked, false otherwise.
+     */
     public final boolean isLocked() {
         return _isLocked;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return True if the resource is published, false otherwise.
+     */
     public final boolean isPublished() {
         return _isPublished;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The user that locked the resource or false if the resource is not
+     *  locked.
+     */
     public final UUID getLockedBy() {
         return _lockedBy;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The resource's metadata, as a map.
+     */
     public final Map<String, String> getMetadata() {
         return _metadata;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The parent folder for the resource.
+     */
     public final UUID getParent() {
         return _parent;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The user that published the resource or null if the resource
+     *  isn't published.
+     */
     public final UUID getPublishedBy() {
         return _publishedBy;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for a resource's tags.
+     *
+     * @return The tags for this resource as a list.
+     */
     public final Set<String> getTags() {
         return _tags;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor for the title.
+     *
+     * @return The content's title, as a string.
+     */
     public final String getTitle() {
         return _title;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The absolute path to the resource.
+     */
     public final String getAbsolutePath() {
         return _absolutePath;
     }
@@ -270,8 +332,12 @@ public class ResourceSnapshot implements IResource, Serializable {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return True if the resource requires security privileges to access;
+     *  false otherwise.
+     */
     public boolean isSecure() {
         return _isSecure;
     }

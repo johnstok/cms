@@ -31,7 +31,6 @@ import static ccc.serialization.JsonKeys.*;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.rest.entities.IFile;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
@@ -48,8 +47,7 @@ public final class FileDto
     extends
         ResourceSnapshot
     implements
-        Jsonable,
-        IFile {
+        Jsonable {
 
     private MimeType            _mimeType;
     private String              _path;
@@ -148,43 +146,61 @@ public final class FileDto
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return The character set for the file or NULL if charset is available.
+     */
     public String getCharset() {
         return _charset;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return Returns the data.
+     */
     public UUID getData() {
         return _dataId;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Accessor.
+     *
+     * @return Returns the size.
+     */
     public int getSize() {
         return _size;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Query if this file is an image.
+     *
+     * @return True if the file is an image, false otherwise.
+     */
     public boolean isImage() {
         return _isImage;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Query if this file is executable.
+     *
+     * @return True if the file is executable, false otherwise.
+     */
     public boolean isExecutable() {
         return _isExecutable;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Query if this file is an text.
+     *
+     * @return True if the file is a text, false otherwise.
+     */
     public boolean isText() {
         return _isText;
     }
