@@ -18,7 +18,7 @@ insert into group_permissions (permission, group_id) select 'SITE_BUILDER', id f
 insert into group_permissions (permission, group_id) select 'ADMINISTRATOR', id from groups where name='ADMINISTRATOR';
 
 alter table user_roles add group_id varchar(36);
-update user_roles set group_id=(SELECT g.id FROM groups g WHERE g.NAME=role);
+update user_roles set group_id=(SELECT g.id FROM groups g WHERE g.name=role);
 ALTER TABLE user_roles ALTER COLUMN group_id varchar(36) not null;
 DECLARE @VALUE VARCHAR(52); SET @VALUE=(select name from sysobjects where xtype='PK' and parent_obj=object_id('user_roles')); EXECUTE ('ALTER TABLE user_roles DROP CONSTRAINT '+@VALUE);
 ALTER TABLE user_roles DROP COLUMN role;
@@ -26,7 +26,7 @@ ALTER TABLE user_roles ADD CONSTRAINT pk_user_roles PRIMARY KEY (user_id, group_
 alter table user_roles add constraint FK_USERROLES_GROUP_ID foreign key (group_id) references groups;
 
 alter table resource_roles add group_id varchar(36);
-update resource_roles set group_id=(SELECT g.id FROM groups g WHERE g.NAME=role);
+update resource_roles set group_id=(SELECT g.id FROM groups g WHERE g.name=role);
 ALTER TABLE resource_roles ALTER COLUMN group_id varchar(36) not null;
 DECLARE @VALUE VARCHAR(52); SET @VALUE=(select name from sysobjects where xtype='PK' and parent_obj=object_id('resource_roles')); EXECUTE ('ALTER TABLE resource_roles DROP CONSTRAINT '+@VALUE);
 ALTER TABLE resource_roles DROP COLUMN role;
