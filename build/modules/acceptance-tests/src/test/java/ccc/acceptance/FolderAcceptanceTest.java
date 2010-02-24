@@ -164,7 +164,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary template =
             dummyTemplate(resourceForPath(""));
         final ResourceSummary page1 = tempPage(f.getId(), template.getId());
+        pause(1000);
         final ResourceSummary page2 = tempPage(f.getId(), template.getId());
+        pause(1000);
         final ResourceSummary page3 = tempPage(f.getId(), template.getId());
 
         // ACT
@@ -268,5 +270,18 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals(1, roots.size());
         assertEquals(PredefinedResourceNames.CONTENT, roots.get(0).getName());
 
+    }
+
+
+    /**
+     * Simple delay to overcome MySQL timestamp one second accuracy.
+     * @param i
+     */
+    private void pause(final int i) {
+        try {
+            Thread.sleep(i);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
