@@ -90,7 +90,7 @@ public class NewDBQueries {
             ps.executeUpdate();
 
             final PreparedStatement gs = _connection.prepareStatement(
-                "select ID from groups where name in "
+                "select id from groups where name in "
                 + "('ADMINISTRATOR', 'SITE_BUILDER', 'CONTENT_CREATOR')");
             final ResultSet groups = gs.executeQuery();
 

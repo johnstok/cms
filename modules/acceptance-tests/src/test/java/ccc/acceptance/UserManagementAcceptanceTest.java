@@ -189,6 +189,40 @@ public class UserManagementAcceptanceTest
         // TODO: Test metadata set correctly.
     }
 
+
+    /**
+     * Test.
+     *
+     * @throws RestException If the test fails.
+     */
+    public void testUsernamesSupportNonAsciiChars() throws RestException {
+
+        final Username username =
+            new Username(UUID.randomUUID().toString().substring(0, 8)+"ЊЋЌ");
+        final String email = "foo@abc.def";
+        final String name = "testuser";
+        final GroupDto siteBuilder =
+            getGroups().list("SITE_BUILDER").iterator().next();
+
+        // Create the user
+        final UserDto u =
+            new UserDto()
+        .setEmail(email)
+        .setUsername(username)
+        .setName(name)
+        .setRoles(Collections.singleton(siteBuilder.getId()))
+        .setMetadata(Collections.singletonMap("key", "value"))
+        .setPassword("Testtest00-");
+        final UserDto us = getUsers().createUser(u);
+
+
+        assertEquals(username, us.getUsername());
+        assertEquals(email, us.getEmail());
+        assertEquals(1, us.getRoles().size());
+        assertEquals(siteBuilder.getId(), us.getRoles().iterator().next());
+        // TODO: Test metadata set correctly.
+    }
+
     /**
      * Test.
      *
@@ -285,7 +319,7 @@ public class UserManagementAcceptanceTest
         assertFalse("Username should not exists", exists.booleanValue());
     }
 
-    
+
     /**
      * Test.
      */
