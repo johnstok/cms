@@ -54,6 +54,8 @@ import ccc.domain.CCCException;
 import ccc.migration.MigrationException;
 import ccc.migration.UserNamePasswordHandler;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+
 
 /**
  * Helper methods for the CCC command line tools.
@@ -234,6 +236,34 @@ class CccApp {
         } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
         } catch (final SQLException e) {
+            throw new MigrationException(e);
+        }
+    }
+
+    /**
+     * Create an MS SQL server datasource.
+     *
+     * @param url The JDBC connection string.
+     * @param username The DB username.
+     * @param password The DB password.
+     *
+     * @return A new oracle datasource.
+     */
+    static DataSource getSQLServerDatasource(final String url,
+                                          final String username,
+                                          final String password) {
+        try {
+            // Load the JDBC driver
+            final String driverName =
+                DatabaseVendor.forConnectionString(url).driverClassName();
+            Class.forName(driverName);
+            // Create a connection to the database
+            final SQLServerDataSource ds = new SQLServerDataSource();
+            ds.setUser(username);
+            ds.setPassword(password);
+            ds.setURL(url);
+            return ds;
+        } catch (final ClassNotFoundException e) {
             throw new MigrationException(e);
         }
     }
