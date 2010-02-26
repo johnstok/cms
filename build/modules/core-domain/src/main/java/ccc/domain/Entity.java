@@ -47,8 +47,10 @@ public abstract class Entity implements Serializable, Jsonable {
     private long  _version = -1;
     private UUID  _id      = UUID.randomUUID();
 
+
     /** Constructor: for persistence only. */
     protected Entity() { super(); }
+
 
     /**
      * Constructor.
@@ -62,6 +64,7 @@ public abstract class Entity implements Serializable, Jsonable {
         _version = version;
     }
 
+
     /**
      * Accessor for the id field.
      *
@@ -70,6 +73,7 @@ public abstract class Entity implements Serializable, Jsonable {
     public UUID id() {
         return _id;
     }
+
 
     /**
      * Set this entity's id.
@@ -81,6 +85,7 @@ public abstract class Entity implements Serializable, Jsonable {
         _id = id;
     }
 
+
     /**
      * Accessor for the version field.
      *
@@ -89,6 +94,7 @@ public abstract class Entity implements Serializable, Jsonable {
     public long version() {
         return _version;
     }
+
 
     /**
      * {@inheritDoc}
@@ -101,6 +107,7 @@ public abstract class Entity implements Serializable, Jsonable {
         result = prime * result + ((_id == null) ? 0 : _id.hashCode());
         return result;
     }
+
 
     /**
      * {@inheritDoc}
@@ -128,14 +135,17 @@ public abstract class Entity implements Serializable, Jsonable {
         return true;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public String toString() {
         return new JsonImpl(this).getDetail();
     }
 
+
     /** {@inheritDoc} */
     @Override
+    @Deprecated
     public void toJson(final Json json) {
         json.set(JsonKeys.ID, id().toString());
         json.set(JsonKeys.VERSION, Long.valueOf(version()));

@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.rest.dto.GroupDto;
+import ccc.serialization.Json;
 import ccc.types.DBC;
 
 
@@ -150,5 +151,12 @@ public class Group
             mapped.add(g.createDto());
         }
         return mapped;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        throw new UnsupportedOperationException("Method deprecated.");
     }
 }

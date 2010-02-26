@@ -129,7 +129,7 @@ public class UserMigration {
 
     static Set<UUID> migrateGroups(final Collection<String> roles,
                                    final Map<String, GroupDto> cachedGroups,
-                                   final Groups groups) {
+                                   final Groups groups) throws RestException {
 
         final Set<UUID> groupList = new HashSet<UUID>();
 

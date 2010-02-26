@@ -26,11 +26,13 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CommandType.*;
 import static ccc.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -42,11 +44,13 @@ import javax.ejb.TransactionAttribute;
 import ccc.commands.InvalidCommandException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Comment;
+import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.rest.Comments;
 import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.DtoCollection;
+import ccc.serialization.JsonImpl;
 import ccc.types.CommentStatus;
 import ccc.types.EmailAddress;
 import ccc.types.SortOrder;
@@ -89,7 +93,17 @@ public class CommentsEJB
 
             getComments().create(c);
 
-            return c.createDto();
+            final CommentDto result = c.createDto();
+
+            getAuditLog().record(
+                new LogEntry(
+                    currentUser(),
+                    COMMENT_CREATE,
+                    new Date(),
+                    c.id(),
+                    new JsonImpl(result).getDetail()));
+
+            return result;
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -133,6 +147,14 @@ public class CommentsEJB
                      ? null
                      : new EmailAddress(comment.getEmail()));
 
+            getAuditLog().record(
+                new LogEntry(
+                    currentUser(),
+                    COMMENT_UPDATE,
+                    new Date(),
+                    commentId,
+                    new JsonImpl(c.createDto()).getDetail()));
+
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
@@ -144,6 +166,15 @@ public class CommentsEJB
     public void delete(final UUID commentId) throws RestException {
         try {
             getComments().delete(commentId);
+
+            getAuditLog().record(
+                new LogEntry(
+                    currentUser(),
+                    COMMENT_DELETE,
+                    new Date(),
+                    commentId,
+                    new JsonImpl().getDetail()));
+
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
