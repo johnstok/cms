@@ -144,4 +144,31 @@ public class NewDBQueries {
             DbUtils.closeQuietly(ps);
         }
     }
+
+    /**
+     * Update file store and lucene paths in the setting table.
+     *
+     * @param path The new path.
+     */
+    public void updateSettingPaths(final String path) {
+        PreparedStatement ps = null;
+
+        try {
+            // update file store path
+            ps = _connection.prepareStatement(
+                "UPDATE settings SET value=? WHERE name = 'FILE_STORE_PATH'");
+            ps.setString(1, path+"filestore");
+            ps.executeUpdate();
+            ps = _connection.prepareStatement(
+            "UPDATE settings SET value=? WHERE name = 'LUCENE_INDEX_PATH'");
+            ps.setString(1, path+"lucene");
+            ps.executeUpdate();
+            _connection.commit();
+
+        } catch (final SQLException e) {
+            throw new CCCException(e);
+        } finally {
+            DbUtils.closeQuietly(ps);
+        }
+    }
 }
