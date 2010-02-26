@@ -202,6 +202,7 @@ public class CodeMirrorEditor extends Composite {
             path: baseUrl+"js/",
             continuousScanning: 1000,
             textWrapping: false,
+            lineNumbers: true,
             tabMode: "spaces",
             content: " ",
             initCallback: initCMCallback
