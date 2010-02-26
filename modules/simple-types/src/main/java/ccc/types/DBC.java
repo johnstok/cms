@@ -101,9 +101,18 @@ public final class DBC {
      * @param condition The condition to check.
      */
     public void toBeTrue(final boolean condition) {
+        toBeTrue(condition, "Specified expression must be true.");
+    }
+
+    /**
+     * Assert that the specified condition is true.
+     *
+     * @param condition The condition to check.
+     * @param message   The error message.
+     */
+    public void toBeTrue(final boolean condition, final String message) {
         if (!condition) {
-            throw new IllegalArgumentException(
-                "Specified expression must be true.");
+            throw new IllegalArgumentException(message);
         }
     }
 

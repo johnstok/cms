@@ -127,7 +127,7 @@ public class UserManagementAcceptanceTest
     public void testUpdateUser() throws RestException {
 
         // ARRANGE
-        final Username username = new Username(UUID.randomUUID().toString());
+        final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
         final GroupDto siteBuilder =
@@ -164,7 +164,7 @@ public class UserManagementAcceptanceTest
      */
     public void testCreateUser() throws RestException {
 
-        final Username username = new Username(UUID.randomUUID().toString());
+        final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
         final GroupDto siteBuilder =
@@ -265,7 +265,7 @@ public class UserManagementAcceptanceTest
     public void testUsernameExists() throws RestException {
 
         // ARRANGE
-        final Username username = new Username(UUID.randomUUID().toString());
+        final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
 
@@ -295,7 +295,7 @@ public class UserManagementAcceptanceTest
     public void testUsernameSensitiveExists() throws RestException {
 
         // ARRANGE
-        final String uuid = UUID.randomUUID().toString();
+        final String uuid = UUID.randomUUID().toString().substring(0, 8);
         final Username originalUsername = new Username(uuid+"A");
         final Username testUsername = new Username(uuid+"a");
         final String email = originalUsername+"@abc.def";

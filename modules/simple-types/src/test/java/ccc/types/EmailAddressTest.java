@@ -38,6 +38,22 @@ public class EmailAddressTest
     extends
         TestCase {
 
+//    /**
+//     * Test.
+//     */
+//    public void testCanValidateLongEmail() {
+//
+//        // ARRANGE
+//        final EmailAddress longEmail =
+//            new EmailAddress("ea8322fd-eac3-4f24-a0f1-bd05e10fda53@abc.def");
+//
+//        // ACT
+//        final boolean isValid = longEmail.isValid();
+//
+//        // ASSERT
+//        assertTrue(isValid);
+//    }
+
     /**
      * Test.
      */
@@ -97,20 +113,52 @@ public class EmailAddressTest
             quotedEmail.toString());
     }
 
+
     /**
      * Test.
      */
     public void testSupportsApostrophe() {
 
         // ARRANGE
-        final EmailAddress a =
-            new EmailAddress("Steven D'Arcy <steven.d'arcy@foo.com>");
 
         // ACT
-        final boolean valid = a.isValid();
+        final boolean valid =
+            EmailAddress.isValidText("Steven D'Arcy <steven.d'arcy@foo.com>");
 
         // ASSERT
         assertTrue(valid);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testZlsIsInvalid() {
+
+        // ARRANGE
+
+        // ACT
+        final boolean valid =
+            EmailAddress.isValidText("");
+
+        // ASSERT
+        assertFalse(valid);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testWhitespaceIsInvalid() {
+
+        // ARRANGE
+
+        // ACT
+        final boolean valid =
+            EmailAddress.isValidText("   ");
+
+        // ASSERT
+        assertFalse(valid);
     }
 
 }

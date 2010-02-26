@@ -166,7 +166,7 @@ public class EmailAddress implements Serializable {
      * Constructor.
      */
     protected EmailAddress() {
-        super();
+        setText("unknown@example.com");
     }
 
 
@@ -176,9 +176,7 @@ public class EmailAddress implements Serializable {
      * @param newText The text representation of the email address.
      */
     public EmailAddress(final String newText) {
-        super();
         setText(newText);
-//      DBC.require().toBeTrue(isValid());
     }
 
 
@@ -199,20 +197,8 @@ public class EmailAddress implements Serializable {
      * @param text The text representation.
      */
     public void setText(final String text) {
-        DBC.require().notNull(text);
+        DBC.require().toBeTrue(isValidText(text), "Invalid email: "+text);
         _text = text;
-    }
-
-
-    /**
-     * Returns whether or not the text represented by this object instance is
-     * valid according to the <tt>RFC 2822</tt> rules.
-     *
-     * @return true if the text represented by this instance is valid according
-     *         to RFC 2822, false otherwise.
-     */
-    public boolean isValid() {
-        return isValidText(getText());
     }
 
 
