@@ -43,7 +43,6 @@ import java.util.Map.Entry;
 
 import ccc.rest.dto.UserDto;
 import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
@@ -358,12 +357,7 @@ public class User extends Entity {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.USERNAME, username().toString());
-        json.set(JsonKeys.NAME, name());
-        json.set(JsonKeys.EMAIL, (null==email()) ? null : email().toString());
-        json.set(JsonKeys.ROLES, roles());
-        json.set(JsonKeys.METADATA, metadata());
+        toDto().toJson(json);
     }
 
     /**

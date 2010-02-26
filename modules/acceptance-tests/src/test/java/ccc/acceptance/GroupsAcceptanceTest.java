@@ -45,8 +45,10 @@ public class GroupsAcceptanceTest
 
     /**
      * Test.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testCreateGroup() {
+    public void testCreateGroup() throws Exception {
 
         // ARRANGE
         final UUID name = UUID.randomUUID();

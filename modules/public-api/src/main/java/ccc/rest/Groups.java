@@ -82,10 +82,12 @@ public interface Groups {
      *
      * @param group The new group details.
      *
+     * @throws RestException If the method fails.
+     *
      * @return A DTO describing the new group.
      */
     @POST
-    GroupDto create(GroupDto group);
+    GroupDto create(GroupDto group) throws RestException;
 
 
     /**

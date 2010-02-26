@@ -58,7 +58,7 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto create(final GroupDto delta) {
+    public GroupDto create(final GroupDto delta) throws RestException {
         return getGroups().create(delta);
     }
 

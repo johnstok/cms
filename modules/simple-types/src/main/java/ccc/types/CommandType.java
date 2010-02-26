@@ -110,7 +110,19 @@ public enum CommandType {
     /** ACTION_CANCEL : CommandType. */
     ACTION_CANCEL,
     /** ACTION_CREATE : CommandType. */
-    ACTION_CREATE;
+    ACTION_CREATE,
+
+    /** GROUP_CREATE : CommandType. */
+    GROUP_CREATE,
+    /** GROUP_UPDATE : CommandType. */
+    GROUP_UPDATE,
+
+    /** COMMENT_CREATE : CommandType. */
+    COMMENT_CREATE,
+    /** COMMENT_UPDATE : CommandType. */
+    COMMENT_UPDATE,
+    /** COMMENT_DELETE : CommandType. */
+    COMMENT_DELETE;
 
     /**
      * Get the name of the name in 'camel case'.

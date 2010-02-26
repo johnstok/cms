@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import ccc.rest.dto.CommentDto;
+import ccc.serialization.Json;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;
@@ -57,8 +58,10 @@ public class Comment
     private final Date _timestamp = new Date();
     private CommentStatus _status = CommentStatus.PENDING;
 
+
     /** Constructor: for persistence only. */
     protected Comment() { super(); }
+
 
     /**
      * Constructor.
@@ -144,7 +147,7 @@ public class Comment
      *
      * @return The comment's timestamp, as a date.
      */
-    public Date getTimestamp() { return _timestamp; }
+    public Date getTimestamp() { return new Date(_timestamp.getTime()); }
 
 
     /**
@@ -208,6 +211,7 @@ public class Comment
         return dto;
     }
 
+
     /**
      * Map a list of comments to a list of comment DTOs.
      *
@@ -220,5 +224,12 @@ public class Comment
             mapped.add(c.createDto());
         }
         return mapped;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        throw new UnsupportedOperationException("Method deprecated.");
     }
 }

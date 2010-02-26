@@ -26,9 +26,11 @@
  */
 package ccc.services.ejb3;
 
+import static ccc.types.CommandType.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -38,9 +40,11 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.domain.CccCheckedException;
 import ccc.domain.Group;
+import ccc.domain.LogEntry;
 import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.dto.GroupDto;
+import ccc.serialization.JsonImpl;
 
 
 /**
@@ -62,13 +66,28 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({"ADMINISTRATOR"})
-    public GroupDto create(final GroupDto comment) {
+    public GroupDto create(final GroupDto comment) throws RestException {
+        try {
             final Group g = new Group(comment.getName());
             g.setPermissions(comment.getPermissions());
 
             getGroups().create(g);
 
-            return g.createDto();
+            final GroupDto result = g.createDto();
+
+            getAuditLog().record(
+                new LogEntry(
+                    currentUser(),
+                    GROUP_CREATE,
+                    new Date(),
+                    g.id(),
+                    new JsonImpl(result).getDetail()));
+
+            return result;
+
+        } catch (final CccCheckedException e) {
+            throw fail(e);
+        }
     }
 
     /** {@inheritDoc} */
@@ -102,7 +121,17 @@ public class GroupsEJB
             g.setName(group.getName());
             g.setPermissions(group.getPermissions());
 
-            return g.createDto();
+            final GroupDto result = g.createDto();
+
+            getAuditLog().record(
+                new LogEntry(
+                    currentUser(),
+                    GROUP_UPDATE,
+                    new Date(),
+                    g.id(),
+                    new JsonImpl(result).getDetail()));
+
+            return result;
 
         } catch (final CccCheckedException e) {
             throw fail(e);
