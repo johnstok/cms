@@ -51,6 +51,7 @@ import ccc.types.Username;
 
 /**
  * A user of the CCC system.
+ * FIXME: email should never be NULL.
  *
  * @author Civic Computing Ltd.
  */
@@ -87,8 +88,8 @@ public class User extends Entity {
                 final String name,
                 final String passwordString) {
         DBC.require().notNull(username);
-        DBC.require().notNull(name);
         DBC.require().notEmpty(username.toString());
+        DBC.require().notEmpty(name);
         _username = username;
         _name = name;
         _hash = hash(passwordString, id().toString());

@@ -40,6 +40,7 @@ import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
+import ccc.types.EmailAddress;
 
 
 /**
@@ -106,6 +107,8 @@ public class UserMigration {
                         +" has password with less than 6 characters.");
                 }
 
+                correctEmail(ud);
+
                 _userCommands.createUser(ud);
             } catch (final RuntimeException e) {
                 log.warn(
@@ -113,6 +116,14 @@ public class UserMigration {
             }
         }
         log.info("Migrated users.");
+    }
+
+
+    private void correctEmail(final UserDto ud) {
+        if (!EmailAddress.isValidText(ud.getEmail())) {
+            log.warn("Correcting invalid email: "+ud.getEmail());
+            ud.setEmail("unknown@example.com");
+        }
     }
 
 

@@ -325,7 +325,7 @@ public abstract class AbstractAcceptanceTest
      */
     protected UserDto tempUser() throws RestException {
 
-        final Username username = new Username(UUID.randomUUID().toString());
+        final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
         final GroupDto contentCreator =
@@ -461,6 +461,16 @@ public abstract class AbstractAcceptanceTest
         } finally {
             postMethod.releaseConnection();
         }
+    }
+
+
+    /**
+     * Create a dummy username for use during testing.
+     *
+     * @return A new unique username.
+     */
+    protected Username dummyUsername() {
+        return new Username(UUID.randomUUID().toString().substring(0, 8));
     }
 
 

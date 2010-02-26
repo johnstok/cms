@@ -107,6 +107,7 @@ public class Group
      */
     public final void setPermissions(final Set<String> permissions) {
         DBC.require().notNull(permissions);
+        // TODO: Check for NULL & ZLS.
         _permissions = permissions;
     }
 

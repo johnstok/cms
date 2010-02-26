@@ -28,6 +28,7 @@ package ccc.domain;
 
 import java.util.Date;
 
+import ccc.types.DBC;
 
 
 /**
@@ -57,6 +58,9 @@ public abstract class Revision<T> extends Entity {
                        final User actor,
                        final boolean majorChange,
                        final String comment) {
+        DBC.require().notNull(timestamp);
+        DBC.require().notNull(actor);
+
         _timestamp = timestamp;
         _actor = actor;
         _majorChange = majorChange;

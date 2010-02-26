@@ -36,9 +36,9 @@ import ccc.types.DBC;
  */
 public class Setting extends Entity {
 
-
     private Name _name;
     private String _value;
+
 
     /** Constructor: for persistence only. */
     protected Setting() { super(); }
@@ -79,7 +79,7 @@ public class Setting extends Entity {
      * @param value The new value for this setting.
      */
     public final void value(final String value) {
-        DBC.require().notNull(value);
+        DBC.require().notEmpty(value);
         _value = value;
     }
 

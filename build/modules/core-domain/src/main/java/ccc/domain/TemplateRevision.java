@@ -69,8 +69,8 @@ public class TemplateRevision
                      final MimeType mimeType) {
         super(timestamp, actor, majorChange, comment);
 
-        DBC.require().notNull(body);
-        DBC.require().notNull(definition);
+        DBC.require().notEmpty(body);
+        DBC.require().notEmpty(definition);
         DBC.require().notNull(mimeType);
 
         _body = body;

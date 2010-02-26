@@ -101,8 +101,6 @@ public abstract class Resource
      */
     protected Resource(final ResourceName name,
                        final String title) {
-        require().notNull(name);
-        require().containsNoBrackets(title);
         name(name);
         title(title);
     }
@@ -116,7 +114,6 @@ public abstract class Resource
      * @param title The title of this resource, as a string.
      */
     public Resource(final String title) {
-        require().containsNoBrackets(title);
         title(title);
         name(ResourceName.escape(title));
     }

@@ -39,6 +39,7 @@ import ccc.types.EmailAddress;
 
 /**
  * A user comment.
+ * FIXME: email can be NULL.
  *
  * @author Civic Computing Ltd.
  */
@@ -47,8 +48,8 @@ public class Comment
         Entity {
 
     private String _body;
-    private String _author;
-    private URL _url;
+    private String _author;      // ZLS allowed.
+    private URL _url;            // NULL allowed.
     private EmailAddress _email;
 
     private Resource _resource;
@@ -70,11 +71,10 @@ public class Comment
                    final String body,
                    final String author) {
         DBC.require().notNull(resource);
-        DBC.require().notEmpty(author);
+        _resource = resource;
 
         setBody(body);
-        _resource = resource;
-        _author = author;
+        setAuthor(author);
     }
 
 
@@ -92,7 +92,7 @@ public class Comment
      * @param body The body to set.
      */
     public final void setBody(final String body) {
-        DBC.require().notNull(body);
+        DBC.require().notEmpty(body);
         _body = body;
     }
 
@@ -110,7 +110,7 @@ public class Comment
      *
      * @return The comment's author.
      */
-    public String getAuthor() { return _author; }
+    public String getAuthor() { return (null==_author) ? "" : _author; }
 
 
     /**
