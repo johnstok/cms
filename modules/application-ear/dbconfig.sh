@@ -71,7 +71,7 @@ case "$dbtype" in
 esac
 
 $SED -i 's/<service>[a-zA-Z0-9]*-ds.xml<\/service>/<service>'"$ds"'<\/service>/' META-INF/jboss-app.xml
-$SED -i 's/<property name=\"hibernate.dialect\" value=\"[a-zA-Z0-9\.]*\"/<property name=\"hibernate.dialect\" value=\"'"$dialect"'\$
+$SED -i 's/<property name=\"hibernate.dialect\" value=\"[a-zA-Z0-9\.]*\"/<property name=\"hibernate.dialect\" value=\"'"$dialect"'\"/' services-ejb3.jar/META-INF/persistence.xml
 
 function replace_db_config {
 $SED -i 's#<connection-url>[^<]*</connection-url>#<connection-url>'"$DB_URL"'</connection-url>#'g $1
