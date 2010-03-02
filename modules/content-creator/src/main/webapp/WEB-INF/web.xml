@@ -70,6 +70,7 @@
             ccc.rest.providers.AclReader,
             ccc.rest.providers.UuidCollectionWriter,
             ccc.rest.providers.TextFileDtoReader,
+            ccc.rest.providers.SearchResultWriter,
         </param-value>
     </context-param>
     <context-param>
