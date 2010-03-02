@@ -42,7 +42,7 @@ public final class OpenHelpAction
 
     /** {@inheritDoc} */
     public void execute() {
-        Window.open("static/manual/CCC7_UserManual.htm",
+        Window.open(GLOBALS.appURL()+"static/manual/CCC7_UserManual.htm",
           "_blank",
           "height=480,width=640,"
           + "menubar=no,toolbar=no,location=no,"
