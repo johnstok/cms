@@ -54,7 +54,8 @@ public class RuntimeExceptionMapper
         if (e instanceof org.jboss.resteasy.spi.Failure) {
             final org.jboss.resteasy.spi.Failure restEasyFailure =
                 (org.jboss.resteasy.spi.Failure) e;
-            return restEasyFailure.getResponse();
+            final Response failureResponse = restEasyFailure.getResponse();
+            if (null!=failureResponse) { return failureResponse; }
         }
 
         final Failure f = new Failure(FailureCode.UNEXPECTED);
