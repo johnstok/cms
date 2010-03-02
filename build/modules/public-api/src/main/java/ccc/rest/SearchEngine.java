@@ -27,9 +27,11 @@
 package ccc.rest;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 
 /**
@@ -53,9 +55,10 @@ public interface SearchEngine extends Scheduler {
      * @return The SearchResult object with set entities and total count.
      */
     @GET @Path("/find")
-    SearchResult find(final String searchTerms,
-                      int noOfResultsPerPage,
-                      int page);
+    SearchResult find(
+              @QueryParam("terms") final String searchTerms,
+              @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
+              @QueryParam("page") @DefaultValue("1") int page);
 
     /**
      * Rebuild the search index.
