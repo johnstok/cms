@@ -39,6 +39,8 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 
 import ccc.commons.Exceptions;
 import ccc.persistence.DataRepository;
@@ -59,6 +61,7 @@ public class SimpleLuceneFS
     implements
         SimpleLucene {
 
+    private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
 
@@ -80,11 +83,10 @@ public class SimpleLuceneFS
 
 
     private IndexWriter createWriter() throws IOException {
-        final java.io.File f = new java.io.File(_indexPath);
         final IndexWriter writer =
             new IndexWriter(
-                f,
-                new StandardAnalyzer(),
+                FSDirectory.open(new java.io.File(_indexPath)),
+                new StandardAnalyzer(LUCENE_VERSION),
                 IndexWriter.MaxFieldLength.UNLIMITED);
         return writer;
     }
@@ -128,13 +130,16 @@ public class SimpleLuceneFS
         IndexSearcher searcher = null;
         try {
             searcher =
-                new IndexSearcher(_indexPath);
+                new IndexSearcher(
+                    FSDirectory.open(new java.io.File(_indexPath)));
 
             final TopDocs docs =
                 searcher.search(
                     new QueryParser(
+                        LUCENE_VERSION,
                         field,
-                        new StandardAnalyzer()).parse(searchTerms),
+                        new StandardAnalyzer(LUCENE_VERSION))
+                    .parse(searchTerms),
                         maxHits);
 
             sh.handle(searcher, docs);
@@ -163,8 +168,9 @@ public class SimpleLuceneFS
     private void clearIndex() throws IOException, ParseException {
         _writer.deleteDocuments(
             new QueryParser(
+                LUCENE_VERSION,
                 "*",
-                new StandardAnalyzer())
+                new StandardAnalyzer(LUCENE_VERSION))
             .parse("*"));
         _writer.expungeDeletes();
         LOG.info("Deleted all existing documents.");

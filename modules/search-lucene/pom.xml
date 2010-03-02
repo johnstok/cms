@@ -18,9 +18,9 @@
         </dependency>
         
         <dependency>
-            <groupId>org.compass-project</groupId>
-            <artifactId>compass</artifactId>
-            <version>${lib.version.compass}</version>
+        	<groupId>org.apache.lucene</groupId>
+        	<artifactId>lucene-core</artifactId>
+        	<version>${lib.version.lucene}</version>
         </dependency>
     </dependencies>
 

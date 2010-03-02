@@ -18,7 +18,7 @@
         <lib.version.args4j>2.0.12</lib.version.args4j>
         <lib.version.httpclient>3.1</lib.version.httpclient>
         <lib.version.dbutils>1.1</lib.version.dbutils>
-        <lib.version.compass>2.1.1</lib.version.compass>
+        <lib.version.lucene>3.0.0</lib.version.lucene>
         <lib.version.pdfbox>0.7.3</lib.version.pdfbox>
         <lib.version.poi>3.0.1-FINAL</lib.version.poi>
         <lib.version.tmextractors>1.0</lib.version.tmextractors>
