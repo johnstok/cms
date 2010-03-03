@@ -76,7 +76,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public ResourceSummary createPage(final UUID parentId,
                                       final PageDelta delta,
                                       final String name,
@@ -118,7 +118,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed(PAGE_CREATE)
     public ResourceSummary createPage(final PageDto page)
                                                  throws RestException {
         try {
@@ -142,7 +142,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(PAGE_UPDATE)
     public void updatePage(final UUID pageId, final Json json)
                                                  throws RestException {
         try {
@@ -167,7 +167,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void updatePage(final UUID pageId,
                            final PageDelta delta,
                            final String comment,
@@ -195,7 +195,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
                                   final PageDelta delta)
                                                  throws RestException {
@@ -215,7 +215,7 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(PAGE_UPDATE)
     public String validateFields(final Json json) {
         final String def = json.getString(JsonKeys.DEFINITION);
         final Set<Paragraph> p = new HashSet<Paragraph>();

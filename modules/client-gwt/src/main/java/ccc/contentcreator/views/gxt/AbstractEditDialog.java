@@ -30,6 +30,7 @@ package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.core.Globals;
 
+import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -67,6 +68,7 @@ public abstract class AbstractEditDialog
         _panel.setBorders(false);
         _panel.setBodyBorder(false);
         _panel.setHeaderVisible(false);
+        _panel.setScrollMode(Scroll.AUTOY);
         add(_panel);
 
         addButton(getCancel());

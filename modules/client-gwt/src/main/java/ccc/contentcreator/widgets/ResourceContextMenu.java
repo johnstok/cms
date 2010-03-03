@@ -40,7 +40,6 @@ import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.core.GwtJson;
-import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.remoting.ApplyWorkingCopyAction;
 import ccc.contentcreator.remoting.ClearWorkingCopyAction;
 import ccc.contentcreator.remoting.ComputeTemplateAction;
@@ -66,6 +65,7 @@ import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.UserDto;
+import ccc.types.Permission;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.event.Events;
@@ -179,7 +179,7 @@ public class ResourceContextMenu
             addLockResource();
         } else {
             if (item.getLocked().equals(user.getUsername())
-                 || user.hasPermission(Globals.ADMINISTRATOR)) {
+                 || user.hasPermission(Permission.RESOURCE_UNLOCK)) {
                 addUnlockResource();
             }
             if (item.getLocked().equals(user.getUsername())) {
@@ -221,12 +221,13 @@ public class ResourceContextMenu
                 }
                 addMove();
                 addRename();
-                addUpdateRolesAction();
+                if (user.hasPermission(Permission.RESOURCE_ACL_UPDATE)) {
+                    addUpdateRolesAction();
+                }
                 addUpdateMetadata();
                 addCreateAlias();
                 addCreateAction();
-                if (user.hasPermission(Globals.ADMINISTRATOR)
-                    || user.hasPermission(Globals.SITE_BUILDER)) {
+                if (user.hasPermission(Permission.RESOURCE_CACHE_UPDATE)) {
                     addEditCache();
                 }
 

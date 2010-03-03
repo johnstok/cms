@@ -40,7 +40,6 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.rest.dto.UserDto;
-import ccc.types.Permission;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
 
@@ -145,12 +144,12 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         expect(_repository.uniquify(QueryNames.USERS_WITH_ROLE,
                             User.class,
-                            Permission.ADMINISTRATOR))
+                            "ADMINISTRATOR"))
             .andReturn(new ArrayList<User>());
         replayAll();
 
         // ACT
-        _um.listUsersWithRole(Permission.ADMINISTRATOR);
+        _um.listUsersWithRole("ADMINISTRATOR");
 
         // ASSERT
         verifyAll();

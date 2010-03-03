@@ -26,7 +26,6 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.CommandType.*;
 import static ccc.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
@@ -35,7 +34,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -74,7 +72,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
+    @RolesAllowed({COMMENT_CREATE})
     public CommentDto create(final CommentDto comment) throws RestException {
         try {
             final Resource r =
@@ -112,7 +110,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({COMMENT_READ})
     public CommentDto retrieve(final UUID commentId) throws RestException {
         try {
             return getComments().retrieve(commentId).createDto();
@@ -123,7 +121,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({COMMENT_UPDATE})
     public void update(final UUID commentId,
                        final CommentDto comment) throws RestException {
         try {
@@ -162,7 +160,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({COMMENT_DELETE})
     public void delete(final UUID commentId) throws RestException {
         try {
             getComments().delete(commentId);
@@ -182,7 +180,7 @@ public class CommentsEJB
 
     /** {@inheritDoc} */
     @Override
-    @PermitAll
+    @RolesAllowed({COMMENT_READ})
     public DtoCollection<CommentDto> list(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,

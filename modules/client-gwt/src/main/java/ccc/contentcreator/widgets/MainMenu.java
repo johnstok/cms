@@ -56,6 +56,7 @@ import ccc.contentcreator.views.gxt.GroupViewImpl;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
+import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -87,7 +88,7 @@ public class MainMenu
      */
     public MainMenu(final UserDto user) {
         _user = user;
-        if (_user.hasPermission(Globals.ADMINISTRATOR)) {
+        if (_user.hasPermission(Permission.USER_CREATE)) {
             addMenu(
                 "users-menu",
                 _constants.users(),
@@ -106,10 +107,10 @@ public class MainMenu
                     }));
         }
 
-        if (_user.hasPermission(Globals.ADMINISTRATOR)
-                || _user.hasPermission(Globals.SITE_BUILDER)) {
+//        if (_user.hasPermission(Globals.ADMINISTRATOR)
+//                || _user.hasPermission(Globals.SITE_BUILDER)) {
             createContentRootMenu(CONTENT, _constants.contentRoot());
-        }
+//        }
 
         addMenu(
             "tools-menu",
@@ -192,7 +193,7 @@ public class MainMenu
                 new LockAction(ssm)));
         } else {
             if (root.getLockedBy().equals(_user.getUsername())
-                    || _user.hasPermission(Globals.ADMINISTRATOR)) {
+                    || _user.hasPermission(Permission.RESOURCE_UNLOCK)) {
 
                 rootMenu.add(createMenuItem(
                     "unlock-root-"+name,

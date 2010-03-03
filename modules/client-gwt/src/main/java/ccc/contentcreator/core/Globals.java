@@ -174,13 +174,6 @@ public interface Globals {
     /** MIN_USER_NAME_LENGTH : int. */
     int MIN_USER_NAME_LENGTH = 4;
 
-    /** ADMINISTRATOR : String. */
-    String ADMINISTRATOR = "ADMINISTRATOR";
-    /** SITE_BUILDER : String. */
-    String SITE_BUILDER = "SITE_BUILDER";
-    /** CONTENT_CREATOR : String. */
-    String CONTENT_CREATOR = "CONTENT_CREATOR";
-
     /**
      * Retrieve an instance of the action status constants.
      *

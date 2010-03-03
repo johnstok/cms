@@ -34,6 +34,7 @@ import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
+import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -76,13 +77,6 @@ public class ResourceNavigator extends ContentPanel {
         setHeading("Navigator");
 
         for (final ResourceSummary root : roots) {
-            if ("assets".equals(root.getName())) {
-                if (!user.hasPermission(Globals.ADMINISTRATOR)
-                    && !user.hasPermission(Globals.SITE_BUILDER)) {
-                    continue;
-                }
-            }
-
             final EnhancedResourceTree enhancedResourceTree =
                 new EnhancedResourceTree(root, _view, user, _globals);
             _rootTrees.add(enhancedResourceTree);
@@ -105,7 +99,7 @@ public class ResourceNavigator extends ContentPanel {
         }
 
         _usersTree = new UserTree(_view);
-        if (user.hasPermission(Globals.ADMINISTRATOR)) {
+        if (user.hasPermission(Permission.USER_READ)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
                 "Users", _usersTree);

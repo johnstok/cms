@@ -45,6 +45,7 @@ import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.dto.GroupDto;
 import ccc.serialization.JsonImpl;
+import ccc.types.Permission;
 
 
 /**
@@ -65,7 +66,7 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed(Permission.GROUP_CREATE)
     public GroupDto create(final GroupDto comment) throws RestException {
         try {
             final Group g = new Group(comment.getName());
@@ -92,7 +93,7 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed(Permission.GROUP_READ)
     public GroupDto find(final UUID id) throws RestException {
         try {
             return getGroups().find(id).createDto();
@@ -104,7 +105,7 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed(Permission.GROUP_READ)
     public Collection<GroupDto> list(final String name) {
         final Collection<Group> groups = getGroups().list(name);
         return Group.map(groups);
@@ -113,7 +114,7 @@ public class GroupsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({"ADMINISTRATOR"})
+    @RolesAllowed(Permission.GROUP_UPDATE)
     public GroupDto update(final UUID id, final GroupDto group)
     throws RestException {
         try {

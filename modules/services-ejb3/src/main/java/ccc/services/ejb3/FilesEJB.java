@@ -81,7 +81,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({FILE_READ})
     public DtoCollection<FileDto> getPagedImages(final UUID folderId,
         final int pageNo,
         final int pageSize)
@@ -99,7 +99,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed({FILE_CREATE})
     public ResourceSummary createFile(final UUID parentFolder,
                                       final FileDelta file,
                                       final String resourceName,
@@ -148,7 +148,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({FILE_UPDATE})
     public void updateFile(final UUID fileId,
                            final FileDelta fileDelta,
                            final String comment,
@@ -178,7 +178,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({FILE_UPDATE})
     public void update(final UUID id, final TextFileDelta file)
     throws RestException {
         byte[] bytes;
@@ -205,7 +205,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({FILE_CREATE})
     public ResourceSummary createTextFile(final TextFileDto file)
     throws RestException {
         byte[] bytes;

@@ -31,11 +31,11 @@ import ccc.contentcreator.actions.OpenCreateFolderAction;
 import ccc.contentcreator.actions.OpenCreatePageAction;
 import ccc.contentcreator.actions.OpenCreateTemplateAction;
 import ccc.contentcreator.actions.OpenCreateTextFileAction;
-import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.rest.dto.UserDto;
+import ccc.types.Permission;
 
 
 /**
@@ -72,8 +72,7 @@ public class FolderToolBar
             _constants.createPage(),
             new OpenCreatePageAction(ssm));
         addSeparator();
-        if (user.hasPermission(Globals.ADMINISTRATOR)
-                || user.hasPermission(Globals.SITE_BUILDER)) {
+        if (user.hasPermission(Permission.TEMPLATE_CREATE)) {
             addButton(
                 "Create template",
                 _constants.createTemplate(),

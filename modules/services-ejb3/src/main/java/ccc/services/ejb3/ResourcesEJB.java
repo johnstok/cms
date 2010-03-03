@@ -98,7 +98,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @TransactionAttribute(REQUIRES_NEW)
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(ACTION_EXECUTE)
     public void executeAction(final UUID actionId)
     throws RestException {
         try {
@@ -180,7 +180,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed(RESOURCE_LOCK)
     public void lock(final UUID resourceId) throws RestException {
         execute(
             commands().lockResourceCommand(resourceId));
@@ -189,7 +189,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void lock(final UUID resourceId,
                      final UUID actorId,
                      final Date happenedOn) throws RestException {
@@ -200,7 +200,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_MOVE)
     public void move(final UUID resourceId,
                      final UUID newParentId) throws RestException {
         try {
@@ -218,7 +218,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_PUBLISH)
     public void publish(final UUID resourceId) throws RestException {
         execute(
             commands().publishResource(resourceId));
@@ -227,7 +227,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(MIGRATE)
     public void publish(final UUID resourceId,
                         final UUID userId,
                         final Date date) throws RestException {
@@ -238,7 +238,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_RENAME)
     public void rename(final UUID resourceId,
                        final String name) throws RestException {
             try {
@@ -259,7 +259,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed(RESOURCE_UNLOCK)
     public void unlock(final UUID resourceId) throws RestException {
         try {
             unlock(resourceId, currentUserId(), new Date());
@@ -272,7 +272,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void unlock(final UUID resourceId,
                        final UUID actorId,
                        final Date happenedOn) throws RestException {
@@ -283,7 +283,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UNPUBLISH)
     public void unpublish(final UUID resourceId) throws RestException {
         execute(
             commands().unpublishResourceCommand(resourceId));
@@ -292,7 +292,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(MIGRATE)
     public void unpublish(final UUID resourceId,
                           final UUID userId,
                           final Date publishDate) throws RestException {
@@ -305,7 +305,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void createWorkingCopy(final UUID resourceId,
                                   final long index) throws RestException {
         try {
@@ -324,7 +324,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu) throws RestException {
         createWorkingCopy(resourceId, pu.getRevision().longValue());
@@ -333,7 +333,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId)
                                                  throws RestException {
@@ -349,7 +349,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu)
     throws RestException {
@@ -359,7 +359,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId,
                                        final UUID actorId,
@@ -382,7 +382,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include)
                                                  throws RestException {
@@ -397,7 +397,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId) throws RestException {
         includeInMainMenu(resourceId, true);
     }
@@ -405,7 +405,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_MM)
     public void excludeFromMainMenu(final UUID resourceId)
     throws RestException {
         includeInMainMenu(resourceId, false);
@@ -414,7 +414,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include,
                                   final UUID actorId,
@@ -433,7 +433,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void updateMetadata(final UUID resourceId,
                                final Json json) throws RestException {
 
@@ -448,7 +448,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void updateMetadata(final UUID resourceId,
                                    final String title,
                                    final String description,
@@ -478,7 +478,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void updateMetadata(final UUID resourceId,
                                final String title,
                                final String description,
@@ -506,7 +506,8 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(SEARCH_CREATE)
+    // FIXME: Move to SearchEngineEJB
     public ResourceSummary createSearch(final UUID parentId,
                                         final String title)
                                                  throws RestException {
@@ -526,7 +527,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_ACL_UPDATE)
     public void changeRoles(final UUID resourceId,
                             final AclDto acl) throws RestException {
         try {
@@ -541,7 +542,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public void changeRoles(final UUID resourceId,
                             final AclDto acl,
                             final UUID actorId,
@@ -567,7 +568,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void applyWorkingCopy(final UUID resourceId)
                                                  throws RestException {
         try {
@@ -589,7 +590,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(MIGRATE)
     public void applyWorkingCopy(final UUID resourceId,
                                  final UUID userId,
                                  final Date happenedOn,
@@ -615,7 +616,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SITE_BUILDER})
+    @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
                                     final Duration duration)
                                                  throws RestException {
@@ -637,7 +638,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SITE_BUILDER})
+    @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu)
     throws RestException {
@@ -647,7 +648,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(RESOURCE_UPDATE)
     public void clearWorkingCopy(final UUID resourceId)
                                                  throws RestException {
         try {
@@ -662,7 +663,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({SITE_BUILDER})
+    @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void deleteCacheDuration(final UUID id)
     throws RestException {
         updateCacheDuration(id, (Duration) null);
@@ -676,7 +677,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_READ)
     public Collection<RevisionDto> history(final UUID resourceId)
     throws RestException {
         try {
@@ -690,7 +691,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_READ)
     public Collection<ResourceSummary> locked() {
         return mapResources(getResources().locked());
     }
@@ -698,7 +699,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_READ)
     public AclDto roles(final UUID resourceId)
     throws RestException {
         try {
@@ -718,7 +719,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_READ)
     public Duration cacheDuration(final UUID resourceId) throws RestException {
         try {
             final Resource r =
@@ -733,7 +734,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_READ)
     public TemplateSummary computeTemplate(final UUID resourceId)
     throws RestException {
         try {
@@ -750,7 +751,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @RolesAllowed(RESOURCE_READ)
     public ResourceSummary resourceForPath(final String rootPath)
     throws RestException {
         try {
@@ -774,7 +775,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_READ)
     public ResourceSummary resourceForLegacyId(final String legacyId)
     throws RestException {
         try {
@@ -788,7 +789,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(RESOURCE_DELETE)
     public void deleteResource(final UUID resourceId) throws RestException {
         execute(commands().createDeleteResourceCmd(resourceId));
     }
@@ -796,7 +797,7 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(MIGRATE)
     public void deleteResource(final UUID resourceId,
                                final UUID actorId,
                                final Date happenedOn) throws RestException {
