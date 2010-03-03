@@ -43,6 +43,7 @@ import org.jboss.web.tomcat.security.login.WebAuthentication;
 import ccc.commons.CCCProperties;
 import ccc.rest.Security;
 import ccc.serialization.JsonImpl;
+import ccc.types.Permission;
 
 
 /**
@@ -85,9 +86,7 @@ public class SecurityImpl
         }
 
         // Has necessary roles.
-        if (_request.isUserInRole("ADMINISTRATOR")
-            || _request.isUserInRole("CONTENT_CREATOR")
-            || _request.isUserInRole("SITE_BUILDER")) {
+        if (_request.isUserInRole(Permission.API_ACCESS)) {
             logSuccesfulLogin(
                 username,
                 _request.getRemoteAddr(),

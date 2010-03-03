@@ -70,7 +70,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(USER_CREATE)
     public UserDto createUser(final UserDto delta) throws RestException {
         try {
             return
@@ -86,7 +86,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(USER_UPDATE)
     public void updateUser(final UUID userId, final UserDto delta)
     throws RestException {
         try {
@@ -108,7 +108,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(USER_UPDATE)
     public void updateUserPassword(final UUID userId, final UserDto user)
     throws RestException {
         try {
@@ -126,7 +126,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed(SELF_UPDATE)
     public void updateYourUser(final UUID userId,
                                final UserDto user)
                                                  throws RestException {
@@ -147,7 +147,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(USER_READ)
     public Boolean usernameExists(final Username username) {
         return
             Boolean.valueOf(getUsers().usernameExists(username.toString()));
@@ -156,7 +156,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsers() {
         return User.map(getUsers().listUsers());
     }
@@ -164,7 +164,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsersWithEmail(final String email) {
         return User.map(getUsers().listUsersWithEmail(email));
     }
@@ -172,7 +172,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsersWithRole(final String role) {
         return User.map(getUsers().listUsersWithRole(role));
     }
@@ -180,7 +180,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsersWithUsername(
                                                     final Username username) {
         return User.map(getUsers().listUsersWithUsername(username.toString()));
@@ -189,7 +189,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @RolesAllowed(USER_READ)
     public UserDto userDelta(final UUID userId) throws RestException {
         try {
             return getUsers().find(userId).toDto();
@@ -202,7 +202,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(USER_READ)
     public UserDto userByLegacyId(final String legacyId) throws RestException {
         try {
             return getUsers().userByLegacyId(legacyId).toDto();
@@ -215,7 +215,7 @@ public class UsersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @RolesAllowed(USER_READ)
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
         return getUsers().listMetadataValuesWithKey(key);
     }

@@ -76,7 +76,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed(FOLDER_CREATE)
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
         return createFolder(
@@ -87,7 +87,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed(FOLDER_CREATE)
     public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
@@ -110,7 +110,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(MIGRATE)
     public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
@@ -141,7 +141,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR})
+    @RolesAllowed(ROOT_CREATE)
     public ResourceSummary createRoot(final String name)
                                                  throws RestException {
         try {
@@ -159,7 +159,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(FOLDER_UPDATE)
     public void updateFolder(final UUID folderId,
                              final FolderDelta delta)
                                                  throws RestException {
@@ -189,7 +189,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                         final UUID folderId)
     throws RestException {
@@ -210,7 +210,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @RolesAllowed(FOLDER_READ)
     public Boolean nameExistsInFolder(final UUID folderId, final String name)
     throws RestException {
         try {
@@ -229,7 +229,7 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> roots() {
         return mapResources(getResources().roots());
     }

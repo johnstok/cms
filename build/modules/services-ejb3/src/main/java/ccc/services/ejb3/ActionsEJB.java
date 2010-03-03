@@ -65,8 +65,8 @@ import ccc.types.FailureCode;
 @Stateless(name=Actions.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Actions.class)
-@RolesAllowed({ADMINISTRATOR})
-@RunAs(CONTENT_CREATOR)
+@RolesAllowed({})
+@RunAs(ACTION_EXECUTE)
 public class ActionsEJB
     extends
         AbstractEJB
@@ -85,6 +85,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({ACTION_EXECUTE})
     public void executeAll() {
         LOG.debug("Executing scheduled actions.");
 
@@ -109,17 +110,9 @@ public class ActionsEJB
     }
 
 
-    private void fail(final Action action, final RestException e) {
-        action.fail(e.getFailure());
-        LOG.info(
-            "Failed action: "+action.id()
-            +" [CommandFailedException was "
-            +e.getFailure().getExceptionId()+"]");
-    }
-
-
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({ACTION_LIST})
     public Collection<ActionSummary> listPendingActions() {
         return mapActions(getActions().pending());
     }
@@ -127,6 +120,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({ACTION_LIST})
     public Collection<ActionSummary> listCompletedActions() {
         return mapActions(getActions().completed());
     }
@@ -134,7 +128,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({ACTION_CANCEL})
     public void cancelAction(final UUID actionId) throws RestException {
         try {
             new CancelActionCommand(getActions(), getAuditLog()).execute(
@@ -147,7 +141,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @RolesAllowed({ACTION_CREATE})
     public ActionSummary createAction(final ActionDto action)
     throws RestException {
         try {
@@ -172,6 +166,7 @@ public class ActionsEJB
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({ACTION_LIST})
     public ActionSummary findAction(final UUID actionId) throws RestException {
         try {
             return mapAction(getActions().find(actionId));
@@ -179,5 +174,14 @@ public class ActionsEJB
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
+    }
+
+
+    private void fail(final Action action, final RestException e) {
+        action.fail(e.getFailure());
+        LOG.info(
+            "Failed action: "+action.id()
+            +" [CommandFailedException was "
+            +e.getFailure().getExceptionId()+"]");
     }
 }

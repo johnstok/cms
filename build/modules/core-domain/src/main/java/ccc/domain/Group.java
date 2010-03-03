@@ -157,6 +157,6 @@ public class Group
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        throw new UnsupportedOperationException("Method deprecated.");
+        createDto().toJson(json);
     }
 }

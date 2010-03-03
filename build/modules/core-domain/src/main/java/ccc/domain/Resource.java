@@ -323,7 +323,7 @@ public abstract class Resource
      */
     public boolean canUnlock(final User user) {
         return user.equals(lockedBy())
-        || user.hasPermission(Permission.ADMINISTRATOR);
+        || user.hasPermission(Permission.RESOURCE_UNLOCK);
     }
 
 

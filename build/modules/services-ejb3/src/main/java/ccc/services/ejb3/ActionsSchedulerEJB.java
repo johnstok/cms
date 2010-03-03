@@ -44,6 +44,7 @@ import org.apache.log4j.Logger;
 
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
+import ccc.rest.Scheduler;
 
 
 /**
@@ -54,7 +55,7 @@ import ccc.rest.Actions;
 @Stateless(name=ActionScheduler.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(ActionScheduler.class)
-@RolesAllowed({ADMINISTRATOR})
+@RolesAllowed({ACTION_SCHEDULE})
 public class ActionsSchedulerEJB
     implements
         ActionScheduler {
@@ -71,11 +72,6 @@ public class ActionsSchedulerEJB
 
     /** Constructor. */
     public ActionsSchedulerEJB() { super(); }
-
-
-    /* ====================================================================
-     * Scheduling implementation.
-     * ================================================================== */
 
 
     /** {@inheritDoc} */
@@ -126,5 +122,4 @@ public class ActionsSchedulerEJB
     public void run(@SuppressWarnings("unused") final Timer timer) {
         _action.executeAll();
     }
-
 }

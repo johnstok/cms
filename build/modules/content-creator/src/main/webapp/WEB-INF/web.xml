@@ -270,9 +270,7 @@
             <!-- Constrain all HTTP Methods -->
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ADMINISTRATOR</role-name>
-            <role-name>CONTENT_CREATOR</role-name>
-            <role-name>SITE_BUILDER</role-name>
+            <role-name>API_ACCESS</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -293,15 +291,6 @@
     </login-config>
 
     <security-role>
-        <role-name>ADMINISTRATOR</role-name>
-    </security-role>
-    <security-role>
-        <role-name>CONTENT_CREATOR</role-name>
-    </security-role>
-    <security-role>
-        <role-name>SITE_BUILDER</role-name>
-    </security-role>
-    <security-role>
-        <role-name>API_USER</role-name>
+        <role-name>API_ACCESS</role-name>
     </security-role>
 </web-app>

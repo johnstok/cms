@@ -59,7 +59,7 @@ import ccc.rest.dto.TemplateSummary;
 @Stateless(name=Templates.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(Templates.class)
-@RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+@RolesAllowed({})
 public final class TemplatesEJB
     extends
         AbstractEJB
@@ -75,7 +75,7 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(TEMPLATE_READ)
     public Boolean templateNameExists(final String templateName) {
         try {
             getResources().template(templateName);
@@ -88,7 +88,7 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed(TEMPLATE_READ)
     public Collection<TemplateSummary> templates() {
         return mapTemplates(getResources().templates());
     }
@@ -96,7 +96,7 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(TEMPLATE_CREATE)
     public ResourceSummary createTemplate(final TemplateDto template)
                                                  throws RestException {
         try {
@@ -113,7 +113,7 @@ public final class TemplatesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed(TEMPLATE_UPDATE)
     public void updateTemplate(final UUID templateId,
                                final TemplateDelta delta)
                                                  throws RestException {

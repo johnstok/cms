@@ -69,7 +69,7 @@ import ccc.search.lucene.SimpleLuceneFS;
 @Stateless(name=SearchEngine.NAME)
 @TransactionAttribute(REQUIRED)
 @Local(SearchEngine.class)
-@RolesAllowed({ADMINISTRATOR})
+@RolesAllowed({})
 public class SearchEngineEJB  implements SearchEngine {
 
     private static final int TIMEOUT_DELAY_SECS = 60*60*1000;
@@ -109,6 +109,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({SEARCH_REINDEX})
     public void index() {
         final SimpleLucene lucene = createLucene();
         try {
@@ -136,6 +137,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({SEARCH_SCHEDULE})
     public void start() {
         LOG.debug("Starting indexer.");
         _context.getTimerService().createTimer(
@@ -146,6 +148,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({SEARCH_SCHEDULE})
     @SuppressWarnings("unchecked")
     public void stop() {
         LOG.debug("Stopping indexer.");
@@ -161,6 +164,7 @@ public class SearchEngineEJB  implements SearchEngine {
 
     /** {@inheritDoc} */
     @Override
+    @RolesAllowed({SEARCH_SCHEDULE})
     @SuppressWarnings("unchecked")
     public boolean isRunning() {
         final Collection<Timer> c = _context.getTimerService().getTimers();

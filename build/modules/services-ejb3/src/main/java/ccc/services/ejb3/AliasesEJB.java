@@ -65,7 +65,7 @@ public class AliasesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({ALIAS_UPDATE})
     public void updateAlias(final UUID aliasId,
                             final AliasDelta delta)
                                                  throws RestException {
@@ -87,7 +87,7 @@ public class AliasesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR})
+    @RolesAllowed({ALIAS_CREATE})
     public ResourceSummary createAlias(final AliasDto alias)
                                                  throws RestException {
         try {
@@ -103,7 +103,7 @@ public class AliasesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER})
+    @RolesAllowed({ALIAS_READ})
     public String aliasTargetName(final UUID aliasId) throws RestException {
         try {
             final Alias alias = getResources().find(Alias.class, aliasId);

@@ -46,7 +46,6 @@ import ccc.commons.MapRegistry;
 import ccc.commons.Registry;
 import ccc.domain.Group;
 import ccc.domain.User;
-import ccc.types.Permission;
 import ccc.types.Username;
 
 
@@ -188,17 +187,17 @@ public class JdbcDatabaseTest
 
         // ARRANGE
         final User u = new User(new Username("user"), "password");
-        u.addRole(new Group(Permission.ADMINISTRATOR));
-        u.addRole(new Group(Permission.CONTENT_CREATOR));
+        u.addRole(new Group("ADMINISTRATOR"));
+        u.addRole(new Group("CONTENT_CREATOR"));
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("y")).andReturn(_s);
         _s.setString(1, u.id().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(Permission.ADMINISTRATOR);
+        expect(_rs.getString(1)).andReturn("ADMINISTRATOR");
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(Permission.CONTENT_CREATOR);
+        expect(_rs.getString(1)).andReturn("CONTENT_CREATOR");
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
         _rs.close();
         _s.close();
@@ -214,8 +213,8 @@ public class JdbcDatabaseTest
         verifyAll();
         assertEquals(
             new HashSet<String>(){{
-                add(Permission.ADMINISTRATOR);
-                add(Permission.CONTENT_CREATOR);
+                add("ADMINISTRATOR");
+                add("CONTENT_CREATOR");
             }},
             result);
     }

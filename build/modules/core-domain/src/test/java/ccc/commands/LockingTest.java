@@ -275,7 +275,7 @@ public class LockingTest
     private final User _adminUser =
         new User(new Username("admin"), "password"){{
        addRole(
-           new Group(Permission.ADMINISTRATOR, Permission.ADMINISTRATOR));
+           new Group("ADMINISTRATOR", Permission.RESOURCE_UNLOCK));
     }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");

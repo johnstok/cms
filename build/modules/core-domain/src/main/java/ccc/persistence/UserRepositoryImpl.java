@@ -97,6 +97,7 @@ class UserRepositoryImpl implements UserRepository {
 
     /** {@inheritDoc} */
     @Override
+    // FIXME: Is this method searching by permission or group name?
     public Collection<User> listUsersWithRole(final String role) {
         return _repository.uniquify(USERS_WITH_ROLE, User.class, role);
     }
