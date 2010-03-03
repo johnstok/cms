@@ -116,6 +116,4 @@
     </class>
     
     <query name="latest_action">FROM ccc.domain.Action a WHERE a._status='SCHEDULED' AND a._executeAfter &lt; ? ORDER BY a._executeAfter asc</query>
-    <query name="executed">FROM ccc.domain.Action a WHERE a._status!='SCHEDULED'</query>
-    <query name="pending">FROM ccc.domain.Action a WHERE a._status='SCHEDULED'</query>
 </hibernate-mapping>

@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import ccc.domain.Action;
 import ccc.domain.EntityNotFoundException;
+import ccc.types.SortOrder;
 
 
 /**
@@ -52,18 +53,50 @@ public interface ActionRepository {
     List<Action> latest(Date until);
 
     /**
-     * Retrieve all actions in the status SCHEDULED.
+     * Retrieve subset of actions in the status SCHEDULED.
+     *
+     * @param sort The field to sort on.
+     * @param sortOrder The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      *
      * @return A list of actions.
      */
-    List<Action> pending();
+    List<Action> pending(String sort,
+        SortOrder sortOrder,
+        int pageNo,
+        int pageSize);
 
     /**
-     * Retrieve all actions not in the status SCHEDULED.
+     * Retrieve subset of actions not in the status SCHEDULED.
+     *
+     * @param sort The field to sort on.
+     * @param sortOrder The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      *
      * @return A list of actions.
      */
-    List<Action> completed();
+    List<Action> completed(String sort,
+        SortOrder sortOrder,
+        int pageNo,
+        int pageSize);
+
+
+    /**
+     * Count all actions not in the status SCHEDULED.
+     *
+     * @return The number of actions.
+     */
+    long countCompleted();
+
+
+    /**
+     * Count all actions in the status SCHEDULED.
+     *
+     * @return The number of actions.
+     */
+    long countPending();
 
     /**
      * Find an action from its ID.

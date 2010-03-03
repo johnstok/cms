@@ -94,7 +94,7 @@ public abstract class AbstractAcceptanceTest
 
     private ServiceLocator _sl;
 
-    private final String _hostUrl       = "http://localhost:8080/cc7";
+    private final String _hostUrl       = "http://localhost:8080/vce";
     private final String _secure        = _hostUrl+"/ccc/api/secure";
     private final String _public        = _hostUrl+"/ccc/api/public";
     private final String _createFileUrl = _hostUrl+"/ccc/upload";
@@ -507,7 +507,7 @@ public abstract class AbstractAcceptanceTest
     protected void setUp() {
         _http = new HttpClient();
         _sl   = new JaxrsServiceLocator(_http, _hostUrl);
-        getSecurity().login("super", "sup3r2008");
+        getSecurity().login("migration", "migration");
     }
 
 

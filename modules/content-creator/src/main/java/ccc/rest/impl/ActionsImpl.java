@@ -26,7 +26,6 @@
  */
 package ccc.rest.impl;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,6 +39,8 @@ import ccc.rest.RestException;
 import ccc.rest.Scheduler;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.DtoCollection;
+import ccc.types.SortOrder;
 
 
 /**
@@ -61,15 +62,27 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ActionSummary> listCompletedActions() {
-        return getActions().listCompletedActions();
+    public DtoCollection<ActionSummary> listCompletedActions(final String sort,
+        final SortOrder sortOrder,
+        final int pageNo,
+        final int pageSize) {
+        return getActions().listCompletedActions(sort,
+            sortOrder,
+            pageNo,
+            pageSize);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ActionSummary> listPendingActions() {
-        return getActions().listPendingActions();
+    public DtoCollection<ActionSummary> listPendingActions(final String sort,
+        final SortOrder sortOrder,
+        final int pageNo,
+        final int pageSize) {
+        return getActions().listPendingActions(sort,
+            sortOrder,
+            pageNo,
+            pageSize);
     }
 
 

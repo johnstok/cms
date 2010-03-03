@@ -570,9 +570,9 @@ abstract class AbstractEJB {
      * @param actions The actions.
      * @return The corresponding summaries.
      */
-    protected Collection<ActionSummary> mapActions(
+    protected List<ActionSummary> mapActions(
                                              final Collection<Action> actions) {
-        final Collection<ActionSummary> summaries =
+        final List<ActionSummary> summaries =
             new ArrayList<ActionSummary>();
         for (final Action a : actions) {
             summaries.add(mapAction(a));

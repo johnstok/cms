@@ -26,6 +26,7 @@
  */
 package ccc.persistence;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +35,9 @@ import javax.persistence.EntityManager;
 
 import ccc.domain.Action;
 import ccc.domain.EntityNotFoundException;
+import ccc.serialization.JsonKeys;
 import ccc.types.DBC;
+import ccc.types.SortOrder;
 
 
 /**
@@ -78,20 +81,6 @@ class ActionRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<Action> pending() {
-        return _repo.list(QueryNames.PENDING, Action.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public List<Action> completed() {
-        return _repo.list(QueryNames.EXECUTED, Action.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Action find(final UUID actionId) throws EntityNotFoundException {
         return _repo.find(Action.class, actionId);
     }
@@ -102,4 +91,90 @@ class ActionRepositoryImpl
     public void create(final Action action) {
         _repo.create(action);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Action> completed(final String sort,
+                                  final SortOrder sortOrder,
+                                  final int pageNo,
+                                  final int pageSize) {
+
+        final StringBuffer query = new StringBuffer();
+        final List<Object> params = new ArrayList<Object>();
+
+        query.append("from ccc.domain.Action a WHERE a._status!='SCHEDULED'");
+        query.append(" order by a.");
+        query.append(mapSortColumn(sort));
+        query.append(" ");
+        query.append(sortOrder.name());
+
+        return
+            _repo.listDyn(
+                query.toString(),
+                Action.class,
+                pageNo,
+                pageSize,
+                params.toArray());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long countCompleted() {
+        final List<Object> params = new ArrayList<Object>();
+        final String query = "select count(*) from ccc.domain.Action a "
+        		+ " WHERE a._status!='SCHEDULED'";
+        return _repo.scalarLong(query, params.toArray());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long countPending() {
+        final List<Object> params = new ArrayList<Object>();
+        final String query = "select count(*) from ccc.domain.Action a "
+                + " WHERE a._status='SCHEDULED'";
+        return _repo.scalarLong(query, params.toArray());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Action> pending(final String sort,
+                                final SortOrder sortOrder,
+                                final int pageNo,
+                                final int pageSize) {
+
+        final StringBuffer query = new StringBuffer();
+        final List<Object> params = new ArrayList<Object>();
+
+        query.append("from ccc.domain.Action a WHERE a._status='SCHEDULED'");
+        query.append(" order by a.");
+        query.append(mapSortColumn(sort));
+        query.append(" ");
+        query.append(sortOrder.name());
+
+        return
+            _repo.listDyn(
+                query.toString(),
+                Action.class,
+                pageNo,
+                pageSize,
+                params.toArray());
+    }
+
+    private String mapSortColumn(final String sort) {
+        if (JsonKeys.USERNAME.equals(sort)) {
+            return "_actor";
+        } else if (JsonKeys.TYPE.equals(sort)) {
+            return "_type";
+        } else if (JsonKeys.STATUS.equals(sort)) {
+            return "_status";
+        } else if (JsonKeys.CODE.equals(sort)) {
+            return "_code";
+        }
+        return "_executeAfter";
+    }
+
 }

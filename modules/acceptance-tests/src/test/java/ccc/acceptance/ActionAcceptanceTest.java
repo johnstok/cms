@@ -26,16 +26,17 @@
  */
 package ccc.acceptance;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
+import ccc.types.SortOrder;
 
 
 /**
@@ -67,12 +68,12 @@ public class ActionAcceptanceTest
                 CommandType.RESOURCE_PUBLISH,
                 new Date(24*60*60*1000),
                 new HashMap<String, String>()));
-        final Collection<ActionSummary> pending =
-            getActions().listPendingActions();
+        final DtoCollection<ActionSummary> pending =
+            getActions().listPendingActions("", SortOrder.ASC,1,20);
 
         // ASSERT
-        assertEquals(1, pending.size());
-        final ActionSummary actual = pending.iterator().next();
+        assertEquals(1, pending.getTotalCount());
+        final ActionSummary actual = pending.getElements().iterator().next();
         assertEquals(rs.getAbsolutePath(), actual.getSubjectPath());
     }
 

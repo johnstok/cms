@@ -26,13 +26,20 @@
  */
 package ccc.contentcreator.remoting;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.contentcreator.widgets.ActionTable;
 import ccc.rest.dto.ActionSummary;
+import ccc.serialization.JsonKeys;
+import ccc.types.DBC;
+import ccc.types.SortOrder;
 
 import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -40,30 +47,73 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public class ListCompletedActionsAction
+public abstract class ListCompletedActionsAction
     extends
         RemotingAction {
 
-    private final ActionTable _actionTable;
+    private int           _page;
+    private int           _count;
+    private SortOrder     _order;
+    private String        _sort;
 
     /**
      * Constructor.
      *
-     * @param actionTable The table to update.
+     * @param page The page of results to return.
+     * @param count The number of results in a page.
+     * @param sort The field to sort on.
+     * @param sortOrder The order results be sorted in.
      */
-    public ListCompletedActionsAction(final ActionTable actionTable) {
+    public ListCompletedActionsAction(final int page,
+                                      final int count,
+                                      final String sort,
+                                      final SortOrder order) {
         super(USER_ACTIONS.viewActions());
-        _actionTable = actionTable;
+        DBC.require().toBeTrue(page>0);
+        DBC.require().toBeTrue(count>0);
+
+        _page = page;
+        _count = count;
+        _sort = sort;
+        _order = order;
     }
 
     /** {@inheritDoc} */
-    @Override protected String getPath() { return "/actions/completed"; }
+    @Override
+    protected String getPath() {
+        final String path =
+            "/actions/completed"
+            + "?page="+_page
+            + "&count="+_count
+            + ((null==_order) ? "" : "&order="+_order.name())
+            + ((null==_sort) ? "" : "&sort="+_sort);
+        return path;
+    }
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
+        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+
+        final int totalCount =
+            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
+        final JSONArray result = obj.get(JsonKeys.ELEMENTS).isArray();
         final Collection<ActionSummary> actions =
-            parseActionSummaryCollection(response);
-        _actionTable.updatePagingModel(actions);
+            new ArrayList<ActionSummary>();
+        for (int i=0; i<result.size(); i++) {
+            actions.add(new ActionSummary(
+                new GwtJson(result.get(i).isObject())));
+        }
+        execute(actions, totalCount);
     }
+
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param actions The page of actions returned.
+     * @param totalCount The total actions available on the server.
+     */
+    protected abstract void execute(Collection<ActionSummary> actions,
+                                    int totalCount);
 }

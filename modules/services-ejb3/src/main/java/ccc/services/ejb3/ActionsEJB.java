@@ -29,7 +29,6 @@ package ccc.services.ejb3;
 import static ccc.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -52,9 +51,11 @@ import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
+import ccc.types.SortOrder;
 
 
 /**
@@ -113,16 +114,30 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public Collection<ActionSummary> listPendingActions() {
-        return mapActions(getActions().pending());
+    public DtoCollection<ActionSummary> listPendingActions(final String sort,
+        final SortOrder sortOrder,
+        final int pageNo,
+        final int pageSize) {
+        final DtoCollection<ActionSummary> dc =
+            new DtoCollection<ActionSummary>(getActions().countPending(),
+                mapActions(getActions().pending(
+                    sort, sortOrder, pageNo, pageSize)));
+        return dc;
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public Collection<ActionSummary> listCompletedActions() {
-        return mapActions(getActions().completed());
+    public DtoCollection<ActionSummary> listCompletedActions(final String sort,
+        final SortOrder sortOrder,
+        final int pageNo,
+        final int pageSize) {
+        final DtoCollection<ActionSummary> dc =
+            new DtoCollection<ActionSummary>(getActions().countCompleted(),
+                mapActions(getActions().completed(
+                    sort, sortOrder, pageNo, pageSize)));
+        return dc;
     }
 
 
