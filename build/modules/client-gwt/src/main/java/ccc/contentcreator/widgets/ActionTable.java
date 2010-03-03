@@ -35,11 +35,18 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.remoting.ListCompletedActionsAction;
 import ccc.contentcreator.remoting.ListPendingActionsAction;
 import ccc.rest.dto.ActionSummary;
+import ccc.serialization.JsonKeys;
+import ccc.types.SortOrder;
 
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -47,6 +54,7 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -91,37 +99,36 @@ public class ActionTable extends TablePanel {
     }
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
-
         addColumn(
             configs,
-            ActionSummaryModelData.Property.LOCALISED_TYPE.name(),
+            JsonKeys.TYPE,
             UI_CONSTANTS.action(),
             TYPE_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.USERNAME.name(),
+            JsonKeys.USERNAME,
             UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.EXECUTE_AFTER.name(),
+            JsonKeys.EXECUTE_AFTER,
             UI_CONSTANTS.scheduledFor(),
             SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
-            ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
+            JsonKeys.STATUS,
             UI_CONSTANTS.status(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.FAILURE_CODE.name(),
+            JsonKeys.CODE,
             UI_CONSTANTS.failureCode(),
             SMALL_COLUMN);
 
         final ColumnConfig subjectTypeColumn = addColumn(
             configs,
-            ActionSummaryModelData.Property.SUBJECT_TYPE.name(),
+            JsonKeys.SUBJECT_TYPE,
             UI_CONSTANTS.resourceType(),
             SMALL_COLUMN);
         subjectTypeColumn.setRenderer(
@@ -129,7 +136,7 @@ public class ActionTable extends TablePanel {
 
         addColumn(
             configs,
-            ActionSummaryModelData.Property.PATH.name(),
+            JsonKeys.SUBJECT_PATH,
             UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
     }
@@ -149,38 +156,118 @@ public class ActionTable extends TablePanel {
     /**
      * Change the action data that is to be displayed.
      *
-     * @param selectedItem The tree item selection.
+     * @param selected The tree item selection.
      */
-    public void displayActionsFor(final ModelData selectedItem) {
+    public void displayActionsFor(final ModelData selected) {
         _actionStore.removeAll();
-        
-        if (ActionTree.PENDING.equals(selectedItem.get("id"))) {
-            displayPendingActions();
-        } else if (ActionTree.COMPLETED.equals(selectedItem.get("id"))){
-            displayCompletedActions();
-        }
+
+        final DataProxy<PagingLoadResult<ActionSummaryModelData>> proxy =
+            new RpcProxy<PagingLoadResult<ActionSummaryModelData>>() {
+
+                @Override
+                protected void load(final Object loadConfig,
+                                    final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback) {
+
+                    if (null==loadConfig
+                        || !(loadConfig instanceof BasePagingLoadConfig)) {
+                        final PagingLoadResult<ActionSummaryModelData> plr =
+                           new BasePagingLoadResult<ActionSummaryModelData>(null);
+                        callback.onSuccess(plr);
+
+                    } else {
+                        final BasePagingLoadConfig config =
+                            (BasePagingLoadConfig) loadConfig;
+
+                        final int page =
+                            config.getOffset()/ config.getLimit()+1;
+                        final SortOrder order =
+                            (Style.SortDir.ASC==config.getSortDir())
+                                ? SortOrder.ASC
+                                : SortOrder.DESC;
+                        if (ActionTree.PENDING.equals(selected.get("id"))) {
+                            getPendingActions(callback, config, page, order)
+                                .execute();
+                        } else if (ActionTree.COMPLETED.equals(selected.get("id"))){
+                            getCompletedActions(callback, config, page, order)
+                                .execute();
+                        }
+                    }
+                }
+            };
+
+        updatePager(proxy);
     }
 
-    private void displayCompletedActions() {
-        new ListCompletedActionsAction(this).execute();
+
+    private ListCompletedActionsAction getCompletedActions(
+       final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback,
+       final BasePagingLoadConfig config,
+       final int page,
+       final SortOrder order) {
+
+        return new ListCompletedActionsAction(page,
+                         config.getLimit(),
+                         config.getSortField(),
+                         order) {
+
+            /** {@inheritDoc} */
+            @Override
+            protected void onFailure(final Throwable t) {
+                callback.onFailure(t);
+            }
+
+            @Override
+            protected void execute(
+                       final Collection<ActionSummary> comments,
+                       final int totalCount) {
+
+                final List<ActionSummaryModelData> results =
+                    DataBinding.bindActionSummary(comments);
+
+                final PagingLoadResult<ActionSummaryModelData> plr =
+                    new BasePagingLoadResult<ActionSummaryModelData>
+                (results, config.getOffset(), totalCount);
+                callback.onSuccess(plr);
+            }
+        };
     }
 
-    private void displayPendingActions() {
-        new ListPendingActionsAction(this).execute();
+    private ListPendingActionsAction getPendingActions(
+         final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback,
+         final BasePagingLoadConfig config,
+         final int page,
+         final SortOrder order) {
+
+        return new ListPendingActionsAction(page,
+            config.getLimit(),
+            config.getSortField(),
+            order) {
+
+            /** {@inheritDoc} */
+            @Override
+            protected void onFailure(final Throwable t) {
+                callback.onFailure(t);
+            }
+
+            @Override
+            protected void execute(
+                                   final Collection<ActionSummary> comments,
+                                   final int totalCount) {
+
+                final List<ActionSummaryModelData> results =
+                    DataBinding.bindActionSummary(comments);
+
+                final PagingLoadResult<ActionSummaryModelData> plr =
+                    new BasePagingLoadResult<ActionSummaryModelData>
+                (results, config.getOffset(), totalCount);
+                callback.onSuccess(plr);
+            }
+        };
     }
 
-    /**
-     * Update the data display by the table.
-     *
-     * @param actions The actions to display.
-     */
+
     @SuppressWarnings("unchecked")
-    public void updatePagingModel(final Collection<ActionSummary> actions) {
-
-        final List<ActionSummaryModelData> data =
-            DataBinding.bindActionSummary(actions);
-
-        final PagingModelMemoryProxy proxy = new PagingModelMemoryProxy(data);
+    private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _actionStore = new ListStore<ActionSummaryModelData>(loader);

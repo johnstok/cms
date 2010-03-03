@@ -26,18 +26,21 @@
  */
 package ccc.rest;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.DtoCollection;
+import ccc.types.SortOrder;
 
 
 /**
@@ -80,19 +83,35 @@ public interface Actions {
     /**
      * List all CCC actions that haven't yet been executed.
      *
+     * @param sort The field to sort on.
+     * @param sortOrder The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      * @return A collection of action summaries, one per outstanding action.
      */
     @GET @Path("/pending")
-    Collection<ActionSummary> listPendingActions();
+    DtoCollection<ActionSummary> listPendingActions(
+        @QueryParam("sort") @DefaultValue("status") String sort,
+        @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 
 
     /**
      * List all CCC actions that have been executed.
      *
+     * @param sort The field to sort on.
+     * @param sortOrder The order results be sorted in.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      * @return A collection of action summaries, one per completed action.
      */
     @GET @Path("/completed")
-    Collection<ActionSummary> listCompletedActions();
+    DtoCollection<ActionSummary> listCompletedActions(
+        @QueryParam("sort") @DefaultValue("status") String sort,
+        @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 
 
     /**
