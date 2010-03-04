@@ -98,7 +98,7 @@ public class CommentsEJB
                     currentUser(),
                     COMMENT_CREATE,
                     new Date(),
-                    c.id(),
+                    c.getId(),
                     new JsonImpl(result).getDetail()));
 
             return result;

@@ -86,9 +86,9 @@ public class UpdateResourceMetadataCommand {
         final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);
 
-        r.title(title);
-        r.description(description);
-        r.tags(tags);
+        r.setTitle(title);
+        r.setDescription(description);
+        r.setTags(tags);
 
         r.clearMetadata();
         for (final Map.Entry<String, String> metadatum: metadata.entrySet()) {

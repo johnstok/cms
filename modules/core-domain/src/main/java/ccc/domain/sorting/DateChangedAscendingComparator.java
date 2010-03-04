@@ -48,6 +48,6 @@ public final class DateChangedAscendingComparator
     public int compare(final Resource o1, final Resource o2) {
         DBC.require().notNull(o1);
         DBC.require().notNull(o2);
-        return o1.dateChanged().compareTo(o2.dateChanged());
+        return o1.getDateChanged().compareTo(o2.getDateChanged());
     }
 }

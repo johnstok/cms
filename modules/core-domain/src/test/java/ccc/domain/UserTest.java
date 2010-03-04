@@ -73,7 +73,7 @@ public class UserTest
         final User u = new User(new Username("dummy"), password);
 
         // ACT
-        final byte[] hash = User.hash(password, u.id().toString());
+        final byte[] hash = User.hash(password, u.getId().toString());
 
         // ASSERT
         assertEquals(SHA_HASH_LENGTH, hash.length);
@@ -92,7 +92,7 @@ public class UserTest
 
         // ACT
         u.password("newPass");
-        final byte[] hash = User.hash(password, u.id().toString());
+        final byte[] hash = User.hash(password, u.getId().toString());
 
         // ASSERT
         assertEquals(SHA_HASH_LENGTH, hash.length);
@@ -382,7 +382,7 @@ public class UserTest
             // Prepare
             final MessageDigest digest = MessageDigest.getInstance("SHA-256");
             final Charset utf8 = Charset.forName("UTF-8");
-            final byte[] salt = u.id().toString().getBytes(utf8);
+            final byte[] salt = u.getId().toString().getBytes(utf8);
             final byte[] password = passwordString.getBytes(utf8);
 
             // Compute

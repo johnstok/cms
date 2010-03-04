@@ -58,7 +58,7 @@ public class Search
 
     /** {@inheritDoc} */
     @Override
-    public ResourceType type() {
+    public ResourceType getType() {
         return ResourceType.SEARCH;
     }
 

@@ -97,7 +97,7 @@ public class UpdateFileCommand
         f.confirmLock(actor);
 
         final Data d = getData().create(_dataStream, _fileDelta.getSize());
-        _fileDelta.setData(d.id());
+        _fileDelta.setData(d.getId());
 
         if ("image".equals(_fileDelta.getMimeType().getPrimaryType())) {
             new FileHelper().extractImageMetadata(

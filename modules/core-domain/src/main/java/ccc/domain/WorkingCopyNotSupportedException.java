@@ -69,9 +69,9 @@ public class WorkingCopyNotSupportedException
     public String getMessage() {
         return
             "Resource "
-            + _resource.id()
+            + _resource.getId()
             + ", of type "
-            + _resource.type()
+            + _resource.getType()
             + " is not working copy aware.";
     }
 

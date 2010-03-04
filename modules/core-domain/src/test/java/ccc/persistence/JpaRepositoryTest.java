@@ -91,13 +91,13 @@ public class JpaRepositoryTest
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, _r.id())).andReturn(_r);
+        expect(em.find(Resource.class, _r.getId())).andReturn(_r);
         replay(em);
 
         final JpaRepository qs = new JpaRepository(em);
 
         // ACT
-        qs.find(Resource.class, _r.id());
+        qs.find(Resource.class, _r.getId());
 
         // ASSERT
         verify(q, em);

@@ -72,14 +72,14 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         replayAll();
 
         _r.lock(_anotherUser);
 
         // ACT
         try {
-            new UnlockResourceCommand(_rdao, _al, _r.id()).execute(
+            new UnlockResourceCommand(_rdao, _al, _r.getId()).execute(
                 _regularUser, new Date());
             fail("Should fail.");
 
@@ -90,7 +90,7 @@ public class LockingTest
                 +CommandType.RESOURCE_UNLOCK,
                 e.getMessage());
         }
-        assertEquals(_anotherUser, _r.lockedBy());
+        assertEquals(_anotherUser, _r.getLockedBy());
         verifyAll();
     }
 
@@ -102,14 +102,14 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         _r.lock(_regularUser);
 
         // ACT
-        new UnlockResourceCommand(_rdao, _al, _r.id()).execute(
+        new UnlockResourceCommand(_rdao, _al, _r.getId()).execute(
             _adminUser, new Date());
 
         // ASSERT
@@ -125,16 +125,16 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new LockResourceCommand(_rdao, _al, _r.id()).execute(
+        new LockResourceCommand(_rdao, _al, _r.getId()).execute(
             _regularUser, new Date());
 
         // ASSERT
-        assertEquals(_regularUser, _r.lockedBy());
+        assertEquals(_regularUser, _r.getLockedBy());
         verifyAll();
     }
 
@@ -146,19 +146,19 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         replayAll();
         _r.lock(_anotherUser);
 
         // ACT
         try {
-            new LockResourceCommand(_rdao, _al, _r.id()).execute(
+            new LockResourceCommand(_rdao, _al, _r.getId()).execute(
                 _regularUser, new Date());
             fail("Lock should fail.");
 
         // ASSERT
         } catch (final LockMismatchException e) {
-            assertEquals(_r, e.resource());
+            assertEquals(_r, e.getResource());
         }
         verifyAll();
     }
@@ -174,17 +174,17 @@ public class LockingTest
         _r.lock(_regularUser);
         _r.publish(_regularUser);
 
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new UnpublishResourceCommand(_rdao, _al, _r.id()).execute(
+        new UnpublishResourceCommand(_rdao, _al, _r.getId()).execute(
             _regularUser, new Date());
 
         // ASSERT
         verifyAll();
-        assertEquals(null, _r.publishedBy());
+        assertEquals(null, _r.getPublishedBy());
     }
 
 
@@ -197,17 +197,17 @@ public class LockingTest
         // ARRANGE
         _r.lock(_regularUser);
 
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new PublishCommand(_rdao, _al, _r.id())
+        new PublishCommand(_rdao, _al, _r.getId())
         .execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();
-        assertEquals(_regularUser, _r.publishedBy());
+        assertEquals(_regularUser, _r.getPublishedBy());
     }
 
 
@@ -219,14 +219,14 @@ public class LockingTest
     throws CccCheckedException {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         _r.lock(_regularUser);
 
         // ACT
-        new UnlockResourceCommand(_rdao, _al, _r.id()).execute(
+        new UnlockResourceCommand(_rdao, _al, _r.getId()).execute(
             _regularUser, new Date());
 
         // ASSERT

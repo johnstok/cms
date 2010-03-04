@@ -59,9 +59,9 @@ public class SorterTest
         Sorter.sort(resources, ResourceOrder.NAME_ALPHANUM_ASC);
 
         // ASSERT
-        assertEquals("a", resources.get(0).name().toString());
-        assertEquals("k", resources.get(1).name().toString());
-        assertEquals("z", resources.get(2).name().toString());
+        assertEquals("a", resources.get(0).getName().toString());
+        assertEquals("k", resources.get(1).getName().toString());
+        assertEquals("z", resources.get(2).getName().toString());
     }
 
     /**
@@ -79,7 +79,7 @@ public class SorterTest
         Sorter.sort(resources, ResourceOrder.MANUAL);
 
         // ASSERT
-        assertEquals("z", resources.get(0).name().toString());
+        assertEquals("z", resources.get(0).getName().toString());
     }
 
     /**
@@ -97,7 +97,7 @@ public class SorterTest
         Sorter.sort(resources, ResourceOrder.DATE_CHANGED_ASC);
 
         // ASSERT
-        assertEquals("z", resources.get(0).name().toString());
+        assertEquals("z", resources.get(0).getName().toString());
 
     }
     /**
@@ -115,7 +115,7 @@ public class SorterTest
         Sorter.sort(resources, ResourceOrder.DATE_CHANGED_DESC);
 
         // ASSERT
-        assertEquals("a", resources.get(0).name().toString());
+        assertEquals("a", resources.get(0).getName().toString());
 
     }
 }

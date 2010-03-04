@@ -49,16 +49,16 @@ public final class FolderTest extends TestCase {
         // ACT
 
         // ASSERT
-        assertEquals("k", f.entries(3, 1, "MANUAL").get(0).getTitle());
-        assertEquals("a", f.entries(3, 1, "MANUAL").get(1).getTitle());
-        assertEquals("z", f.entries(3, 1, "MANUAL").get(2).getTitle());
+        assertEquals("k", f.getEntries(3, 1, "MANUAL").get(0).getTitle());
+        assertEquals("a", f.getEntries(3, 1, "MANUAL").get(1).getTitle());
+        assertEquals("z", f.getEntries(3, 1, "MANUAL").get(2).getTitle());
 
         assertEquals(
-            "a", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(0).getTitle());
+            "a", f.getEntries(3, 1, "NAME_ALPHANUM_ASC").get(0).getTitle());
         assertEquals(
-            "k", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(1).getTitle());
+            "k", f.getEntries(3, 1, "NAME_ALPHANUM_ASC").get(1).getTitle());
         assertEquals(
-            "z", f.entries(3, 1, "NAME_ALPHANUM_ASC").get(2).getTitle());
+            "z", f.getEntries(3, 1, "NAME_ALPHANUM_ASC").get(2).getTitle());
 
     }
 
@@ -80,12 +80,12 @@ public final class FolderTest extends TestCase {
         // ACT
 
         // ASSERT
-        assertEquals(1,   f.entries(1, 1, "MANUAL").size());
-        assertEquals(5,   f.entries(9, 1, "MANUAL").size());
-        assertEquals(1,   f.entries(4, 2, "MANUAL").size());
-        assertEquals(0,   f.entries(5, 2, "MANUAL").size());
-        assertEquals("a", f.entries(1, 1, "MANUAL").get(0).getTitle());
-        assertEquals("e", f.entries(5, 1, "MANUAL").get(4).getTitle());
+        assertEquals(1,   f.getEntries(1, 1, "MANUAL").size());
+        assertEquals(5,   f.getEntries(9, 1, "MANUAL").size());
+        assertEquals(1,   f.getEntries(4, 2, "MANUAL").size());
+        assertEquals(0,   f.getEntries(5, 2, "MANUAL").size());
+        assertEquals("a", f.getEntries(1, 1, "MANUAL").get(0).getTitle());
+        assertEquals("e", f.getEntries(5, 1, "MANUAL").get(4).getTitle());
 
     }
 
@@ -186,13 +186,13 @@ public final class FolderTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        assertEquals(ResourceOrder.MANUAL, f.sortOrder());
+        assertEquals(ResourceOrder.MANUAL, f.getSortOrder());
 
         // ACT
-        f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
+        f.setSortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
 
         // ASSERT
-        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, f.sortOrder());
+        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, f.getSortOrder());
 
     }
 
@@ -206,7 +206,7 @@ public final class FolderTest extends TestCase {
 
         // ASSERT
         assertEquals("foo", actual.getTitle());
-        assertEquals(new ResourceName("foo"), actual.name());
+        assertEquals(new ResourceName("foo"), actual.getName());
     }
 
     /**
@@ -233,7 +233,7 @@ public final class FolderTest extends TestCase {
             f.add(r);
 
             // ACT
-            final List<Folder> actual = f.folders();
+            final List<Folder> actual = f.getFolders();
 
             // ASSERT
             assertEquals(2, actual.size());
@@ -265,7 +265,7 @@ public final class FolderTest extends TestCase {
             f.add(r);
 
             // ACT
-            final List<Page> actual = f.pages();
+            final List<Page> actual = f.getPages();
 
             // ASSERT
             assertEquals(2, actual.size());
@@ -296,10 +296,10 @@ public final class FolderTest extends TestCase {
             f.add(a);
             f.add(r);
 
-            f.sortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
+            f.setSortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
 
             // ACT
-            final List<Page> actual = f.pages();
+            final List<Page> actual = f.getPages();
 
             // ASSERT
             assertEquals(2, actual.size());
@@ -322,7 +322,7 @@ public final class FolderTest extends TestCase {
         pages.add(cd);
 
         // ACT
-        final Page firstChild = pages.firstPage();
+        final Page firstChild = pages.getFirstPage();
 
         // ASSERT
         assertEquals(ab, firstChild);
@@ -368,11 +368,11 @@ public final class FolderTest extends TestCase {
         content.add(ab);
 
         // ACT
-        final List<Page> pages = content.entries(Page.class);
+        final List<Page> pages = content.getEntries(Page.class);
 
         // ASSERT
         assertEquals(2, pages.size());
-        assertEquals(content.entries(), pages);
+        assertEquals(content.getEntries(), pages);
     }
 
     /**
@@ -390,7 +390,7 @@ public final class FolderTest extends TestCase {
         content.add(ab);
 
         // ACT
-        final int folderCount = content.folderCount();
+        final int folderCount = content.getFolderCount();
 
         // ASSERT
         assertEquals(1, folderCount);
@@ -427,7 +427,7 @@ public final class FolderTest extends TestCase {
         final Resource resource = new Folder("foo");
 
         // ASSERT
-        assertEquals(ResourceType.FOLDER, resource.type());
+        assertEquals(ResourceType.FOLDER, resource.getType());
     }
 
     /**
@@ -470,8 +470,8 @@ public final class FolderTest extends TestCase {
 
         // ASSERT
         assertEquals(1, folder.size());
-        assertEquals(Collections.singletonList(page), folder.entries());
-        assertEquals(folder, page.parent());
+        assertEquals(Collections.singletonList(page), folder.getEntries());
+        assertEquals(folder, page.getParent());
     }
 
     /**
@@ -491,8 +491,8 @@ public final class FolderTest extends TestCase {
 
         // ASSERT
         assertEquals(0, folder.size());
-        assertEquals(Collections.emptyList(), folder.entries());
-        assertNull("Should be null.", page.parent());
+        assertEquals(Collections.emptyList(), folder.getEntries());
+        assertNull("Should be null.", page.getParent());
     }
 
     /**
@@ -511,8 +511,8 @@ public final class FolderTest extends TestCase {
 
         // ASSERT
         assertEquals(1, folder.size());
-        assertEquals(Collections.singletonList(entry), folder.entries());
-        assertEquals(folder, entry.parent());
+        assertEquals(Collections.singletonList(entry), folder.getEntries());
+        assertEquals(folder, entry.getParent());
     }
 
     /**
@@ -524,10 +524,10 @@ public final class FolderTest extends TestCase {
         final Folder foo = new Folder("foo");
 
         // ACT
-        foo.entries().add(new Page("bar", _rm));
+        foo.getEntries().add(new Page("bar", _rm));
 
          // ASSERT
-        assertEquals(0, foo.entries().size());
+        assertEquals(0, foo.getEntries().size());
     }
 
     /**
@@ -543,7 +543,7 @@ public final class FolderTest extends TestCase {
         foo.add(bar);
 
         // ACT
-        final Resource expected = foo.findEntryByName(new ResourceName("bar"));
+        final Resource expected = foo.getEntryWithName2(new ResourceName("bar"));
 
         // ASSERT
         assertSame(expected, bar);
@@ -707,7 +707,7 @@ public final class FolderTest extends TestCase {
         pages.add(cd);
 
         // ACT
-        final Alias firstChild = pages.firstAlias();
+        final Alias firstChild = pages.getFirstAlias();
 
         // ASSERT
         assertEquals(cd, firstChild);
@@ -730,10 +730,10 @@ public final class FolderTest extends TestCase {
         f.add(baz);
 
         // ACT
-        f.reorder(f.entries());
+        f.reorder(f.getEntries());
 
         // ASSERT
-        final List<Resource> pages = f.entries();
+        final List<Resource> pages = f.getEntries();
         assertEquals(foo, pages.get(0));
         assertEquals(bar, pages.get(1));
         assertEquals(baz, pages.get(2));
@@ -764,7 +764,7 @@ public final class FolderTest extends TestCase {
         f.reorder(newOrder);
 
         // ASSERT
-        final List<Resource> pages = f.entries();
+        final List<Resource> pages = f.getEntries();
         assertEquals(bar, pages.get(0));
         assertEquals(baz, pages.get(1));
         assertEquals(foo, pages.get(2));
@@ -786,10 +786,10 @@ public final class FolderTest extends TestCase {
         f.add(foo);
 
         // ACT
-        f.indexPage(foo);
+        f.setIndexPage(foo);
 
         // ASSERT
-        assertEquals(foo, f.indexPage());
+        assertEquals(foo, f.getIndexPage());
     }
 
     private final RevisionMetadata _rm =

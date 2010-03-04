@@ -110,7 +110,7 @@ public final class ResourceTest extends TestCase {
         final Folder f = new Folder();
         f.setUserAcl(Arrays.asList(new User[]{tom, harry}));
         final Page p = new Page();
-        p.roles(Arrays.asList(new Group[]{FOO, BAR}));
+        p.setRoles(Arrays.asList(new Group[]{FOO, BAR}));
         f.add(p);
 
         // ACT
@@ -175,7 +175,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.roles(Collections.singleton(FOO));
+        p.setRoles(Collections.singleton(FOO));
         p.setUserAcl(Collections.singleton(_jill));
 
         // ACT
@@ -212,7 +212,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.roles(Collections.singleton(FOO));
+        p.setRoles(Collections.singleton(FOO));
 
         // ACT
         final boolean isAccessible = p.isAccessibleTo(null);
@@ -232,7 +232,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final Folder f = new Folder();
         final Page p = new Page();
-        p.roles(Arrays.asList(FOO));
+        p.setRoles(Arrays.asList(FOO));
         f.add(p);
 
         // ACT
@@ -252,9 +252,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList(FOO));
+        f.setRoles(Arrays.asList(FOO));
         final Page p = new Page();
-        p.roles(Arrays.asList(BAR));
+        p.setRoles(Arrays.asList(BAR));
         f.add(p);
 
         // ACT
@@ -274,7 +274,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList(FOO));
+        f.setRoles(Arrays.asList(FOO));
         final Page p = new Page();
         f.add(p);
 
@@ -313,7 +313,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.roles(Collections.singleton(FOO));
+        p.setRoles(Collections.singleton(FOO));
 
         // ACT
         final boolean secure = p.isSecure();
@@ -348,9 +348,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList(BAR));
+        f.setRoles(Arrays.asList(BAR));
         final Resource r = new Page();
-        r.roles(Arrays.asList(FOO));
+        r.setRoles(Arrays.asList(FOO));
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
@@ -370,7 +370,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList(new Group[]{}));
+        r.setRoles(Arrays.asList(new Group[]{}));
         final User tom = new User(new Username("paul"), "password");
 
         // ACT
@@ -387,7 +387,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList(FOO));
+        r.setRoles(Arrays.asList(FOO));
         final User tom = new User(new Username("paul"), "password");
         tom.addRole(FOO);
 
@@ -405,7 +405,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList(FOO, BAR));
+        r.setRoles(Arrays.asList(FOO, BAR));
         final User tom = new User(new Username("paul"), "password");
         tom.addRole(FOO);
 
@@ -424,9 +424,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList(BAR, BAZ));
+        f.setRoles(Arrays.asList(BAR, BAZ));
         final Resource r = new Page();
-        r.roles(Arrays.asList(FOO, FOZ));
+        r.setRoles(Arrays.asList(FOO, FOZ));
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
@@ -447,7 +447,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.roles(Arrays.asList(FOO));
+        r.setRoles(Arrays.asList(FOO));
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(_jack);
@@ -464,9 +464,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.roles(Arrays.asList(FOO));
+        f.setRoles(Arrays.asList(FOO));
         final Page r = new Page();
-        r.roles(Arrays.asList(BAR));
+        r.setRoles(Arrays.asList(BAR));
         f.add(r);
 
 
@@ -488,12 +488,12 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
 
         // ACT
-        r.roles(Arrays.asList(FOO, BAR));
+        r.setRoles(Arrays.asList(FOO, BAR));
 
         // ASSERT
-        assertEquals(2, r.roles().size());
-        assertTrue(r.roles().contains(FOO));
-        assertTrue(r.roles().contains(BAR));
+        assertEquals(2, r.getRoles().size());
+        assertTrue(r.getRoles().contains(FOO));
+        assertTrue(r.getRoles().contains(BAR));
     }
 
     /**
@@ -509,8 +509,8 @@ public final class ResourceTest extends TestCase {
         final Date after = new Date();
 
         // ASSERT
-        assertTrue(before.getTime()<=r.dateCreated().getTime());
-        assertTrue(after.getTime()>=r.dateCreated().getTime());
+        assertTrue(before.getTime()<=r.getDateCreated().getTime());
+        assertTrue(after.getTime()>=r.getDateCreated().getTime());
     }
 
     /**
@@ -524,7 +524,7 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
 
         // ASSERT
-        assertEquals(r.dateCreated(), r.dateChanged());
+        assertEquals(r.getDateCreated(), r.getDateChanged());
     }
 
     /**
@@ -538,10 +538,10 @@ public final class ResourceTest extends TestCase {
         Thread.sleep(WAIT_LENGTH); // Wait
 
         // ACT
-        r.dateChanged(new Date(), new User());
+        r.setDateChanged(new Date(), new User());
 
         // ASSERT
-        assertTrue(r.dateChanged().after(r.dateCreated()));
+        assertTrue(r.getDateChanged().after(r.getDateCreated()));
     }
 
     /**
@@ -683,7 +683,7 @@ public final class ResourceTest extends TestCase {
         root.add(child);
 
         // ACT
-        final Resource actual = child.root();
+        final Resource actual = child.getRoot();
 
         // ASSERT
         assertEquals(root, actual);
@@ -698,7 +698,7 @@ public final class ResourceTest extends TestCase {
         final Resource root = new Page();
 
         // ACT
-        final Resource actual = root.root();
+        final Resource actual = root.getRoot();
 
         // ASSERT
         assertEquals(root, actual);
@@ -713,11 +713,11 @@ public final class ResourceTest extends TestCase {
         final Resource p = new Page();
 
         // ACT
-        assertEquals(false, p.includeInMainMenu());
-        p.includeInMainMenu(true);
+        assertEquals(false, p.isIncludedInMainMenu());
+        p.setIncludedInMainMenu(true);
 
         // ASSERT
-        assertEquals(true, p.includeInMainMenu());
+        assertEquals(true, p.isIncludedInMainMenu());
 
     }
 
@@ -738,7 +738,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final LockMismatchException e) {
-            assertEquals(p, e.resource());
+            assertEquals(p, e.getResource());
         }
     }
 
@@ -851,7 +851,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final LockMismatchException e) {
-            assertEquals(p, e.resource());
+            assertEquals(p, e.getResource());
         }
     }
 
@@ -865,10 +865,10 @@ public final class ResourceTest extends TestCase {
         final Resource p = new Page();
 
         // ACT
-        p.tags(tagString);
+        p.setTags(tagString);
 
         // ASSERT
-        final Set<String> tags = p.tags();
+        final Set<String> tags = p.getTags();
         assertEquals(3, tags.size());
         assertTrue(tags.contains("foo"));
         assertTrue(tags.contains("bar"));
@@ -885,10 +885,10 @@ public final class ResourceTest extends TestCase {
         final Resource p = new Page();
 
         // ACT
-        p.tags(tagString);
+        p.setTags(tagString);
 
         // ASSERT
-        final Set<String> tags = p.tags();
+        final Set<String> tags = p.getTags();
         assertEquals(3, tags.size());
         assertTrue(tags.contains("foo"));
         assertTrue(tags.contains("bar"));
@@ -905,10 +905,10 @@ public final class ResourceTest extends TestCase {
         final Resource p = new Page();
 
         // ACT
-        p.tags(tagString);
+        p.setTags(tagString);
 
         // ASSERT
-        final Set<String> tags = p.tags();
+        final Set<String> tags = p.getTags();
         assertEquals(0, tags.size());
     }
 
@@ -922,10 +922,10 @@ public final class ResourceTest extends TestCase {
         final Resource p = new Page();
 
         // ACT
-        p.tags(tagString);
+        p.setTags(tagString);
 
         // ASSERT
-        final Set<String> tags = p.tags();
+        final Set<String> tags = p.getTags();
         assertEquals(2, tags.size());
         assertTrue(tags.contains("foo"));
         assertTrue(tags.contains("baz"));
@@ -939,7 +939,7 @@ public final class ResourceTest extends TestCase {
         // ACT
         try {
             final Resource p = new Page();
-            p.tags(null);
+            p.setTags(null);
             fail("Null should be rejected.");
 
         // ASSERT
@@ -1033,7 +1033,7 @@ public final class ResourceTest extends TestCase {
         r.lock(u);
 
         // ASSERT
-        assertEquals(u, r.lockedBy());
+        assertEquals(u, r.getLockedBy());
     }
 
     /**
@@ -1043,7 +1043,7 @@ public final class ResourceTest extends TestCase {
         // ACT
         try {
             final Resource r = new Page();
-            r.name((ResourceName) null);
+            r.setName((ResourceName) null);
             fail("Null should be rejected.");
 
         // ASSERT
@@ -1084,7 +1084,7 @@ public final class ResourceTest extends TestCase {
         // ACT
         try {
             final Resource r = new Page();
-            r.title(tooLongTitle);
+            r.setTitle(tooLongTitle);
             fail("Title should be rejected - too long.");
 
         // ASSERT
@@ -1104,7 +1104,7 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Folder("foo?");
 
         // ASSERT
-        assertEquals(new ResourceName("foo_"), r.name());
+        assertEquals(new ResourceName("foo_"), r.getName());
         assertEquals("foo?", r.getTitle());
     }
 
@@ -1136,7 +1136,7 @@ public final class ResourceTest extends TestCase {
         f.add(p);
 
         // ACT
-        final ResourcePath actual = p.absolutePath();
+        final ResourcePath actual = p.getAbsolutePath();
 
         // ASSERT
         assertEquals(new ResourcePath("/foo/bar"), actual);
@@ -1178,11 +1178,11 @@ public final class ResourceTest extends TestCase {
         final Template t3 = new Template();
 
         final Folder f1 = new Folder();
-        f1.template(t1);
+        f1.setTemplate(t1);
         final Folder f2 = new Folder();
-        f2.template(t2);
+        f2.setTemplate(t2);
         final Resource r = new Page();
-        r.template(t3);
+        r.setTemplate(t3);
 
         f2.add(f1);
         f1.add(r);
@@ -1208,7 +1208,7 @@ public final class ResourceTest extends TestCase {
         final Folder f2 = new Folder();
         f2.add(f1);
         f1.add(r);
-        f2.template(t);
+        f2.setTemplate(t);
 
         // ACT
         final Template actual = r.computeTemplate(_default);
@@ -1226,13 +1226,13 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
         final Folder f1 = new Folder();
         final Folder f2 = new Folder();
-        r.parent(f1);
+        r.setParent(f1);
 
         // ACT
-        r.parent(f2);
+        r.setParent(f2);
 
         // ASSERT
-        assertEquals(f2, r.parent());
+        assertEquals(f2, r.getParent());
     }
 
     /**
@@ -1243,13 +1243,13 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final Resource r = new Page();
         final Folder f = new Folder();
-        r.parent(f);
+        r.setParent(f);
 
         // ACT
-        r.parent(null);
+        r.setParent(null);
 
         // ASSERT
-        assertNull("Should be null.", r.parent());
+        assertNull("Should be null.", r.getParent());
     }
 
 
@@ -1263,10 +1263,10 @@ public final class ResourceTest extends TestCase {
         final Folder expected = new Folder();
 
         // ACT
-        r.parent(expected);
+        r.setParent(expected);
 
         // ASSERT
-        assertEquals(expected, r.parent());
+        assertEquals(expected, r.getParent());
     }
 
     /**
@@ -1278,7 +1278,7 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
 
         // ACT
-        final Folder actual = r.parent();
+        final Folder actual = r.getParent();
 
         // ASSERT
         assertNull("Should be null.", actual);
@@ -1419,7 +1419,7 @@ public final class ResourceTest extends TestCase {
 
         final Resource r = new Page();
         final Resource r2 = new Page();
-        r2.cache(d2);
+        r2.setCacheDuration(d2);
 
         final Folder f1 = new Folder();
         final Folder f2 = new Folder();
@@ -1427,7 +1427,7 @@ public final class ResourceTest extends TestCase {
         f1.add(r);
         f1.add(r2);
 
-        f2.cache(d);
+        f2.setCacheDuration(d);
         // ACT
         final Duration actual = r.computeCache();
         final Duration actual2 = r2.computeCache();
@@ -1448,7 +1448,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         final Resource resource = new Page();
-        resource.title(bad.toString());
+        resource.setTitle(bad.toString());
 
         // ASSERT
         assertFalse("Title must no contain bad characters",

@@ -60,7 +60,7 @@ public class CommentTest
         assertEquals("Foo", dto.getBody());
         assertEquals("http://www.google.com", dto.getUrl());
         assertEquals("keith", dto.getAuthor());
-        assertEquals(P.id(), dto.getResourceId());
+        assertEquals(P.getId(), dto.getResourceId());
     }
 
     /**

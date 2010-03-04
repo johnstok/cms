@@ -80,7 +80,7 @@ public class MoveResourceCommand {
         resource.confirmLock(actor);
 
         final Folder newParent = _repository.find(Folder.class, newParentId);
-        resource.parent().remove(resource);
+        resource.getParent().remove(resource);
         newParent.add(resource);
 
         final LogEntry le =

@@ -95,15 +95,15 @@ public class UpdateFolderCommand
         if (_indexPageId != null) {
             p = getRepository().find(Page.class, _indexPageId);
         }
-        f.indexPage(p);
-        f.sortOrder(_order);
+        f.setIndexPage(p);
+        f.setSortOrder(_order);
 
         if (_orderList != null && !_orderList.isEmpty()) {
             final List<Resource> newOrder = new ArrayList<Resource>();
-            final List<Resource> currentOrder = f.entries();
+            final List<Resource> currentOrder = f.getEntries();
             for (final UUID resourceId : _orderList) {
                 for (final Resource r : currentOrder) {
-                    if (r.id().equals(resourceId)) {
+                    if (r.getId().equals(resourceId)) {
                         newOrder.add(r);
                     }
                 }
@@ -111,7 +111,7 @@ public class UpdateFolderCommand
             f.reorder(newOrder);
         }
 
-        f.dateChanged(happenedOn, actor);
+        f.setDateChanged(happenedOn, actor);
 
         final LogEntry le =
             new LogEntry(

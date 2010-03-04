@@ -305,7 +305,7 @@ abstract class AbstractEJB {
      * @return The currently logged in user's ID.
      */
     protected UUID currentUserId() throws EntityNotFoundException {
-        return currentUser().id();
+        return currentUser().getId();
     }
 
 
@@ -432,44 +432,44 @@ abstract class AbstractEJB {
         String sortOrder = null;
         UUID indexPage = null;
         boolean hasWorkingCopy = false;
-        if (r.type() == ResourceType.FOLDER) {
-            childCount = r.as(Folder.class).entries().size();
-            folderCount = r.as(Folder.class).folders().size();
-            sortOrder = r.as(Folder.class).sortOrder().name();
-            indexPage = (null==r.as(Folder.class).indexPage())
-                ? null : r.as(Folder.class).indexPage().id();
-        } else if (r.type() == ResourceType.PAGE) {
+        if (r.getType() == ResourceType.FOLDER) {
+            childCount = r.as(Folder.class).getEntries().size();
+            folderCount = r.as(Folder.class).getFolders().size();
+            sortOrder = r.as(Folder.class).getSortOrder().name();
+            indexPage = (null==r.as(Folder.class).getIndexPage())
+                ? null : r.as(Folder.class).getIndexPage().getId();
+        } else if (r.getType() == ResourceType.PAGE) {
             hasWorkingCopy = (r.as(Page.class).hasWorkingCopy());
-        } else if (r.type() == ResourceType.FILE) {
+        } else if (r.getType() == ResourceType.FILE) {
             hasWorkingCopy = (r.as(File.class).hasWorkingCopy());
         }
 
         final ResourceSummary rs =
             new ResourceSummary(
-                r.id(),
-                (null==r.parent()) ? null : r.parent().id(),
-                r.name().toString(),
+                r.getId(),
+                (null==r.getParent()) ? null : r.getParent().getId(),
+                r.getName().toString(),
                 (r.isPublished())
-                    ? r.publishedBy().username() : null,
+                    ? r.getPublishedBy().username() : null,
                 r.getTitle(),
-                (r.isLocked()) ? r.lockedBy().username() : null,
-                r.type(),
+                (r.isLocked()) ? r.getLockedBy().username() : null,
+                r.getType(),
                 childCount,
                 folderCount,
-                r.includeInMainMenu(),
+                r.isIncludedInMainMenu(),
                 sortOrder,
                 hasWorkingCopy,
-                r.dateCreated(),
-                r.dateChanged(),
-                (null==r.template()) ? null : r.template().id(),
-                r.tagString(),
-                r.absolutePath().removeTop().toString(),
+                r.getDateCreated(),
+                r.getDateChanged(),
+                (null==r.getTemplate()) ? null : r.getTemplate().getId(),
+                r.getTagString(),
+                r.getAbsolutePath().removeTop().toString(),
                 indexPage,
-                r.description(),
-                (r.createdBy() != null)
-                    ? r.createdBy().username() : null,
-                (r.changedBy() != null)
-                    ? r.changedBy().username() : null
+                r.getDescription(),
+                (r.getCreatedBy() != null)
+                    ? r.getCreatedBy().username() : null,
+                (r.getChangedBy() != null)
+                    ? r.getChangedBy().username() : null
             );
         return rs;
     }
@@ -485,10 +485,10 @@ abstract class AbstractEJB {
 
         final TextFileDelta fs =
             new TextFileDelta(
-                file.id(),
+                file.getId(),
                 (!file.isText())
                     ? null : ReadToStringAction.read(_dm, file),
-                file.mimeType(),
+                file.getMimeType(),
                 file.currentRevision().isMajorChange(),
                 file.currentRevision().getComment());
         return fs;
@@ -590,13 +590,13 @@ abstract class AbstractEJB {
     protected ActionSummary mapAction(final Action a) {
         final ActionSummary summary =
             new ActionSummary(
-                a.id(),
-                a.type(),
-                a.actor().username(),
-                a.executeAfter(),
-                a.subject().type(),
-                a.subject().absolutePath().removeTop().toString(),
-                a.status(),
+                a.getId(),
+                a.getType(),
+                a.getActor().username(),
+                a.getExecuteAfter(),
+                a.getSubject().getType(),
+                a.getSubject().getAbsolutePath().removeTop().toString(),
+                a.getStatus(),
                 (null==a.getCode()) ? null : a.getCode());
         return summary;
     }

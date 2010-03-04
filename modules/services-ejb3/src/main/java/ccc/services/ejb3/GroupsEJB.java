@@ -81,7 +81,7 @@ public class GroupsEJB
                     currentUser(),
                     GROUP_CREATE,
                     new Date(),
-                    g.id(),
+                    g.getId(),
                     new JsonImpl(result).getDetail()));
 
             return result;
@@ -129,7 +129,7 @@ public class GroupsEJB
                     currentUser(),
                     GROUP_UPDATE,
                     new Date(),
-                    g.id(),
+                    g.getId(),
                     new JsonImpl(result).getDetail()));
 
             return result;

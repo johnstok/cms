@@ -48,7 +48,7 @@ public final class AlphaNumericAscendingNameComparator
     public int compare(final Resource o1, final Resource o2) {
         DBC.require().notNull(o1);
         DBC.require().notNull(o2);
-        return o1.name().toString().compareTo(o2.name().toString());
+        return o1.getName().toString().compareTo(o2.getName().toString());
     }
 
 }

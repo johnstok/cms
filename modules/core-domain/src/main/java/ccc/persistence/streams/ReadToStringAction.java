@@ -85,7 +85,7 @@ public final class ReadToStringAction
     public static String read(final DataRepository dm, final File file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
-            file.data(), new ReadToStringAction(sb, file.charset()));
+            file.getData(), new ReadToStringAction(sb, file.getCharset()));
         return sb.toString();
     }
 

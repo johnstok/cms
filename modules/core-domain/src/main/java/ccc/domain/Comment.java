@@ -201,10 +201,10 @@ public class Comment
         final CommentDto dto = new CommentDto(
             getAuthor(),
             getBody(),
-            getResource().id(),
+            getResource().getId(),
             getTimestamp(),
             getUrl()==null ? null : getUrl().toExternalForm());
-        dto.setId(id());
+        dto.setId(getId());
         dto.setStatus(getStatus());
         dto.setEmail(getEmail().getText());
 

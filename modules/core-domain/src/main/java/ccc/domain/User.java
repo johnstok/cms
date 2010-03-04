@@ -91,7 +91,7 @@ public class User extends Entity {
         DBC.require().notEmpty(name);
         _username = username;
         _name = name;
-        _hash = hash(passwordString, id().toString());
+        _hash = hash(passwordString, getId().toString());
     }
 
     /**
@@ -106,7 +106,7 @@ public class User extends Entity {
         DBC.require().notEmpty(username.toString());
         _username = username;
         _name = username.toString();
-        _hash = hash(passwordString, id().toString());
+        _hash = hash(passwordString, getId().toString());
     }
 
     /**
@@ -286,7 +286,7 @@ public class User extends Entity {
      * @param passwordString The new password.
      */
     public void password(final String passwordString) {
-        _hash = hash(passwordString, id().toString());
+        _hash = hash(passwordString, getId().toString());
     }
 
 
@@ -297,7 +297,7 @@ public class User extends Entity {
      * @return True if passwordString's hash matches.
      */
     public boolean matches(final String passwordString) {
-        return Arrays.equals(hash(passwordString, id().toString()), _hash);
+        return Arrays.equals(hash(passwordString, getId().toString()), _hash);
     }
 
 
@@ -368,7 +368,7 @@ public class User extends Entity {
     public Set<UUID> groupIds() {
         final Set<UUID> groupIds = new HashSet<UUID>();
         for (final Group g : roles()) {
-            groupIds.add(g.id());
+            groupIds.add(g.getId());
         }
         return groupIds;
     }
@@ -388,7 +388,7 @@ public class User extends Entity {
     public UserDto toDto() {
         final UserDto dto = new UserDto();
         dto.setEmail(email().getText());
-        dto.setId(id());
+        dto.setId(getId());
         dto.setUsername(username());
         dto.setName(name());
         dto.setRoles(groupIds());

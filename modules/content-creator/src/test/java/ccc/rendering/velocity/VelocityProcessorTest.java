@@ -155,7 +155,7 @@ public class VelocityProcessorTest extends TestCase {
                 null,
                 _rm,
                 Paragraph.fromText("bar", "baz"));
-        final String template = "Hello $resource.id()";
+        final String template = "Hello $resource.getId()";
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
@@ -164,7 +164,7 @@ public class VelocityProcessorTest extends TestCase {
         final String html = _vp.render(template, ctxt);
 
         // ASSERT
-        assertEquals("Hello "+foo.id(), html);
+        assertEquals("Hello "+foo.getId(), html);
     }
 
     /**

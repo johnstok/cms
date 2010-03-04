@@ -82,12 +82,12 @@ public final class TemplateTest extends TestCase {
             _rm);
 
         // ASSERT
-        assertEquals(new ResourceName("foo_"), t.name());
+        assertEquals(new ResourceName("foo_"), t.getName());
         assertEquals("foo!", t.getTitle());
-        assertEquals("bar", t.description());
+        assertEquals("bar", t.getDescription());
         assertEquals("Hello world", t.body());
         assertEquals("<fields/>", t.definition());
-        assertEquals(ResourceType.TEMPLATE, t.type());
+        assertEquals(ResourceType.TEMPLATE, t.getType());
     }
 
     /**
@@ -107,12 +107,12 @@ public final class TemplateTest extends TestCase {
             _rm);
 
         // ASSERT
-        assertEquals(new ResourceName("testName"), t.name());
+        assertEquals(new ResourceName("testName"), t.getName());
         assertEquals("foo!", t.getTitle());
-        assertEquals("bar", t.description());
+        assertEquals("bar", t.getDescription());
         assertEquals("Hello world", t.body());
         assertEquals("<fields/>", t.definition());
-        assertEquals(ResourceType.TEMPLATE, t.type());
+        assertEquals(ResourceType.TEMPLATE, t.getType());
     }
 
     private final RevisionMetadata _rm =

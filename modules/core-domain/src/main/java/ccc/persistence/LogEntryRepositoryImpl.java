@@ -78,8 +78,8 @@ class LogEntryRepositoryImpl
 
     private void log(final LogEntry le) {
         LOG.info(
-            "Action: " + le.action()
-            + " for " + le.subjectId()
-            + " by " + le.actor().username());
+            "Action: " + le.getAction()
+            + " for " + le.getSubjectId()
+            + " by " + le.getActor().username());
     }
 }

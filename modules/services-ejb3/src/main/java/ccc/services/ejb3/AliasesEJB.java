@@ -108,7 +108,7 @@ public class AliasesEJB
         try {
             final Alias alias = getResources().find(Alias.class, aliasId);
             if (alias != null) {
-                return alias.target().name().toString();
+                return alias.target().getName().toString();
             }
             return null;
 

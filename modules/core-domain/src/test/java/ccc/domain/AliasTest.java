@@ -59,7 +59,7 @@ public class AliasTest extends TestCase {
         a.toJson(json);
 
         // ASSERT
-        assertEquals(p.id(), json.getId(JsonKeys.TARGET_ID));
+        assertEquals(p.getId(), json.getId(JsonKeys.TARGET_ID));
     }
 
 
@@ -158,7 +158,7 @@ public class AliasTest extends TestCase {
         final AliasDelta o = alias.createSnapshot();
 
         // ASSERT
-        assertEquals(p.id(), o.getTargetId());
+        assertEquals(p.getId(), o.getTargetId());
     }
 
     /**
@@ -176,7 +176,7 @@ public class AliasTest extends TestCase {
         // ASSERT
         assertEquals(p, alias.target());
         assertEquals("bar", alias.getTitle());
-        assertEquals(new ResourceName("bar"), alias.name());
+        assertEquals(new ResourceName("bar"), alias.getName());
     }
 
     /**
@@ -185,7 +185,7 @@ public class AliasTest extends TestCase {
     public void testTypeReturnsAlias() {
 
         // ACT
-        final ResourceType t = new Alias().type();
+        final ResourceType t = new Alias().getType();
 
         // ASSERT
         assertEquals(ResourceType.ALIAS, t);

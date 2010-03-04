@@ -53,7 +53,7 @@ public class Group
 
     /** Constructor: for persistence only. */
     protected Group() {
-        setName(id().toString());
+        setName(getId().toString());
         setPermissions(new HashSet<String>());
     }
 
@@ -132,7 +132,7 @@ public class Group
      */
     public GroupDto createDto() {
         final GroupDto dto = new GroupDto();
-        dto.setId(id());
+        dto.setId(getId());
         dto.setName(getName());
         dto.setPermissions(getPermissions());
         return dto;

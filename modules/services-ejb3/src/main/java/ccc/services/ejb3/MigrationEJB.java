@@ -91,7 +91,7 @@ public class MigrationEJB
 
             if (publish) {
                 f.lock(u);
-                commands().publishResource(f.id()).execute(u, happenedOn);
+                commands().publishResource(f.getId()).execute(u, happenedOn);
                 f.unlock(u);
             }
 
@@ -132,7 +132,7 @@ public class MigrationEJB
 
             if (publish) {
                 p.lock(u);
-                commands().publishResource(p.id()).execute(u, happenedOn);
+                commands().publishResource(p.getId()).execute(u, happenedOn);
                 p.unlock(u);
             }
 

@@ -59,14 +59,14 @@ public class LockMismatchException
      *
      * @return The resource.
      */
-    public Resource resource() {
+    public Resource getResource() {
         return _resource;
     }
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return "Mismatch confirming lock on "+_resource.id()+".";
+        return "Mismatch confirming lock on "+_resource.getId()+".";
     }
 
     /** {@inheritDoc} */

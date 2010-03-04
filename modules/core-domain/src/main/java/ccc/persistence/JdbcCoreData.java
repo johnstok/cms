@@ -76,7 +76,7 @@ class JdbcCoreData implements CoreData {
                     c.prepareStatement(CREATE_STATEMENT);
 
                 try {
-                    ps.setString(1, data.id().toString());
+                    ps.setString(1, data.getId().toString());
                     ps.setInt(2, 0);
                     ps.setBinaryStream(STREAM_POSITION_CREATE,
                                        dataStream,
@@ -115,7 +115,7 @@ class JdbcCoreData implements CoreData {
                     c.prepareStatement(RETRIEVE_STATEMENT);
 
                 try {
-                    ps.setString(1, data.id().toString());
+                    ps.setString(1, data.getId().toString());
                     final ResultSet rs = ps.executeQuery();
 
                     try {

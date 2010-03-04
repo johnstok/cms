@@ -96,8 +96,8 @@ public class ActionsEJB
         for (final Action action : actions) {
             try {
                 _resourcesExt
-                    .executeAction(action.id()); // Executes in nested txn.
-                LOG.info("Completed action: "+action.id());
+                    .executeAction(action.getId()); // Executes in nested txn.
+                LOG.info("Completed action: "+action.getId());
 
             } catch (final RestException e) {
                 fail(action, e);
@@ -195,7 +195,7 @@ public class ActionsEJB
     private void fail(final Action action, final RestException e) {
         action.fail(e.getFailure());
         LOG.info(
-            "Failed action: "+action.id()
+            "Failed action: "+action.getId()
             +" [CommandFailedException was "
             +e.getFailure().getExceptionId()+"]");
     }

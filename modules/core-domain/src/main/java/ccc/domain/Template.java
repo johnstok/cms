@@ -95,7 +95,7 @@ public class Template
         super(name, title);
         DBC.require().notNull(description);
 
-        description(description);
+        setDescription(description);
         update(
             new TemplateDelta(body, definiton, mimeType),
             metadata);
@@ -105,7 +105,7 @@ public class Template
      * {@inheritDoc}
      */
     @Override
-    public final ResourceType type() {
+    public final ResourceType getType() {
         return ResourceType.TEMPLATE;
     }
 
@@ -193,10 +193,10 @@ public class Template
     public TemplateSummary mapTemplate() {
         final TemplateSummary dto =
             new TemplateSummary(
-                id(),
-                name(),
+                getId(),
+                getName(),
                 getTitle(),
-                description(),
+                getDescription(),
                 body(),
                 definition());
         setDtoProps(dto);

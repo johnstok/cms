@@ -197,7 +197,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
         // Exclude the trash root.
         for (final Folder root : list(QueryNames.ROOTS, Folder.class)) {
-            if (!PredefinedResourceNames.TRASH.equals(root.name().toString())) {
+            if (!PredefinedResourceNames.TRASH.equals(root.getName().toString())) {
                 roots.add(root);
             }
         }
@@ -255,7 +255,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     private <T extends Resource> T discardDeleted(final T resource)
     throws EntityNotFoundException {
         if (resource.isDeleted()) {
-            throw new EntityNotFoundException(resource.id());
+            throw new EntityNotFoundException(resource.getId());
         }
         return resource;
     }

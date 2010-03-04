@@ -76,14 +76,14 @@ public class UpdateCachingCommand
         final Resource r = getRepository().find(Resource.class, _resourceId);
         r.confirmLock(actor);
 
-        r.cache(_duration);
+        r.setCacheDuration(_duration);
 
         final LogEntry le =
             new LogEntry(
                 actor,
                 getType(),
                 happenedOn,
-                r.id(),
+                r.getId(),
                 new JsonImpl(r).getDetail());
         getAudit().record(le);
 

@@ -204,12 +204,12 @@ public class UserManagerImplTest extends TestCase {
 
         // ARRANGE
         final Date now = new Date();
-        expect(_repository.find(User.class, _u.id())).andReturn(_u);
+        expect(_repository.find(User.class, _u.getId())).andReturn(_u);
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
         final UpdateUserCommand uu =
-            new UpdateUserCommand(_um, _audit, _groups, _u.id(), _uDelta);
+            new UpdateUserCommand(_um, _audit, _groups, _u.getId(), _uDelta);
 
         // ACT
         uu.execute(_u, now);
@@ -229,7 +229,7 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         final Date now = new Date();
 
-        expect(_repository.find(User.class, _u.id())).andReturn(_u);
+        expect(_repository.find(User.class, _u.getId())).andReturn(_u);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -237,7 +237,7 @@ public class UserManagerImplTest extends TestCase {
             new UpdatePasswordAction(_um, _audit);
 
         // ACT
-        up.execute(_u, now, _u.id(), "newPass");
+        up.execute(_u, now, _u.getId(), "newPass");
 
         // ASSERT
         verifyAll();

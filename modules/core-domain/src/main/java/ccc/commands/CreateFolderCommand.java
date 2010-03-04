@@ -75,7 +75,7 @@ class CreateFolderCommand extends CreateResourceCommand<Folder> {
     public Folder doExecute(final User actor,
                             final Date happenedOn) throws CccCheckedException {
         final Folder f = new Folder(_name);
-        f.title((null==_title)?_name:_title);
+        f.setTitle((null==_title)?_name:_title);
 
         create(actor, happenedOn, _parentFolder, f);
 

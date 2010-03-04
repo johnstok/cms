@@ -84,7 +84,7 @@ public class ChangeTemplateForResourceCommand {
                 ? null
                 : _repository.find(Template.class, templateId);
 
-        r.template(t);
+        r.setTemplate(t);
 
         final LogEntry le =
             new LogEntry(

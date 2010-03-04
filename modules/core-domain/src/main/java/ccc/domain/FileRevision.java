@@ -148,7 +148,7 @@ public class FileRevision
     public FileDelta delta() {
         return new FileDelta(
             _mimeType,
-            _data.id(),
+            _data.getId(),
             _size,
             _properties);
     }

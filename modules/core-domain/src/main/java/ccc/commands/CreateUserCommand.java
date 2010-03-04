@@ -94,7 +94,7 @@ public class CreateUserCommand {
                 actor,
                 CommandType.USER_CREATE,
                 happenedOn,
-                user.id(),
+                user.getId(),
                 new JsonImpl(user).getDetail()));
 
         return user;

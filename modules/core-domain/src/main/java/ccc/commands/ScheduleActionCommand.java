@@ -77,7 +77,7 @@ public class ScheduleActionCommand {
                 actor,
                 CommandType.ACTION_CREATE,
                 happenedOn,
-                action.id(),
+                action.getId(),
                 new JsonImpl(action).getDetail()));
     }
 }

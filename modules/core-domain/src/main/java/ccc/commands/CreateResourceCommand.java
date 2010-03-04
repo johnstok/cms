@@ -77,8 +77,8 @@ abstract class CreateResourceCommand<T>
                           final UUID folderId,
                           final Resource newResource)
                                                 throws CccCheckedException {
-        newResource.dateCreated(happenedOn, actor);
-        newResource.dateChanged(happenedOn, actor);
+        newResource.setDateCreated(happenedOn, actor);
+        newResource.setDateChanged(happenedOn, actor);
 
         final Folder folder = getRepository().find(Folder.class, folderId);
         if (null==folder) {
@@ -109,7 +109,7 @@ abstract class CreateResourceCommand<T>
                 actor,
                 getType(),
                 happenedOn,
-                resource.id(),
+                resource.getId(),
                 ss.getDetail());
 
         getAudit().record(le);
