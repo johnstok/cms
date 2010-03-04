@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.serialization.Json;
-import ccc.serialization.Jsonable;
+import ccc.serialization.Jsonable2;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;
@@ -46,7 +46,7 @@ import ccc.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public final class ActionSummary implements Serializable, Jsonable {
+public final class ActionSummary implements Serializable, Jsonable2 {
 
     private UUID _id;
     private CommandType _type;
@@ -57,7 +57,10 @@ public final class ActionSummary implements Serializable, Jsonable {
     private ActionStatus _status;
     private FailureCode _fCode;
 
-    @SuppressWarnings("unused") private ActionSummary() { super(); }
+    /**
+     * Constructor.
+     */
+    public ActionSummary() { super(); }
 
     /**
      * Constructor.
@@ -96,17 +99,7 @@ public final class ActionSummary implements Serializable, Jsonable {
      * @param json The JSON representation of an action summary.
      */
     public ActionSummary(final Json json) {
-        this(
-            json.getId(ID),
-            CommandType.valueOf(json.getString(TYPE)),
-            new Username(json.getString(USERNAME)),
-            json.getDate(EXECUTE_AFTER),
-            ResourceType.valueOf(json.getString(SUBJECT_TYPE)),
-            json.getString(SUBJECT_PATH),
-            ActionStatus.valueOf(json.getString(STATUS)),
-            (null==json.getString(CODE))
-                ?null : FailureCode.valueOf(json.getString(CODE))
-        );
+        fromJson(json);
     }
 
     /**
@@ -199,6 +192,76 @@ public final class ActionSummary implements Serializable, Jsonable {
     }
 
 
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    private void setId(final UUID id) {
+        _id = id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param type The type to set.
+     */
+    private void setType(final CommandType type) {
+        _type = type;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param actorUsername The actorUsername to set.
+     */
+    private void setActorUsername(final Username actorUsername) {
+        _actorUsername = actorUsername;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param executeAfter The executeAfter to set.
+     */
+    private void setExecuteAfter(final Date executeAfter) {
+        _executeAfter = executeAfter;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param subjectType The subjectType to set.
+     */
+    private void setSubjectType(final ResourceType subjectType) {
+        _subjectType = subjectType;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param subjectPath The subjectPath to set.
+     */
+    private void setSubjectPath(final String subjectPath) {
+        _subjectPath = subjectPath;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param code The fCode to set.
+     */
+    private void setFCode(final FailureCode code) {
+        _fCode = code;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
@@ -210,5 +273,21 @@ public final class ActionSummary implements Serializable, Jsonable {
         json.set(SUBJECT_PATH, getSubjectPath());
         json.set(STATUS, getStatus().name());
         json.set(CODE, (null==_fCode)?null:_fCode.name());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setId(json.getId(ID));
+        setType(CommandType.valueOf(json.getString(TYPE)));
+        setActorUsername(new Username(json.getString(USERNAME)));
+        setExecuteAfter(json.getDate(EXECUTE_AFTER));
+        setSubjectType(ResourceType.valueOf(json.getString(SUBJECT_TYPE)));
+        setSubjectPath(json.getString(SUBJECT_PATH));
+        setStatus(ActionStatus.valueOf(json.getString(STATUS)));
+        setFCode(
+            (null==json.getString(CODE))
+                ? null
+                : FailureCode.valueOf(json.getString(CODE)));
     }
 }

@@ -69,7 +69,7 @@ public class ActionAcceptanceTest
                 new Date(24*60*60*1000),
                 new HashMap<String, String>()));
         final DtoCollection<ActionSummary> pending =
-            getActions().listPendingActions("", SortOrder.ASC,1,20);
+            getActions().listPendingActions("", SortOrder.ASC, 1, 20);
 
         // ASSERT
         assertEquals(1, pending.getTotalCount());
