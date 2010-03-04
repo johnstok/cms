@@ -43,9 +43,8 @@ import ccc.rest.Users;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.services.Migration;
 import ccc.types.CommandType;
 import ccc.types.Paragraph;
 
@@ -64,7 +63,6 @@ public class MhtsFileMigration extends BaseMigrations {
 
     private final ResourceSummary _templateFolder;
 
-    private FoldersExt _foldersExt;
     private String _username;
     private IFileUploader _fu;
     private String _filePath;
@@ -85,8 +83,7 @@ public class MhtsFileMigration extends BaseMigrations {
     public MhtsFileMigration(final LegacyDBQueries legacyDBQueries,
                              final Actions actions,
                              final ResourcesExt resourcesExt,
-                             final PagesExt pagesExt,
-                             final FoldersExt foldersExt,
+                             final Migration pagesExt,
                              final Groups groups,
                              final Users users,
                              final Templates templates,
@@ -101,7 +98,6 @@ public class MhtsFileMigration extends BaseMigrations {
             new TemplateMigration(legacyDBQueries, templates),
             "/"+options.getApp()+"/");
         _actions = actions;
-        _foldersExt = foldersExt;
         _username = options.getUsername();
         _filePath = options.getLocalPath();
         _fu = fileUploader;
@@ -189,7 +185,7 @@ public class MhtsFileMigration extends BaseMigrations {
             resourceBean.name().substring(0, lastIndexOf);
         final String folderTitle = resourceBean.title();
         final ResourceSummary folderResourceSummary =
-            _foldersExt.createFolder(parentFolderId,
+            getMigrations().createFolder(parentFolderId,
                                      resourceBeanName,
                                      folderTitle,
                                      DONT_PUBLISH,
@@ -202,14 +198,14 @@ public class MhtsFileMigration extends BaseMigrations {
                             final Date happenedOn,
                             final UUID folderId) throws RestException {
 
-        getResources().lock(folderId, logEntryBeanId, happenedOn);
+        getMigrations().lock(folderId, logEntryBeanId, happenedOn);
     }
 
     private void unlockFolder(final UUID logEntryBeanId,
                               final Date happenedOn,
                               final UUID folderId) throws RestException {
 
-        getResources().unlock(folderId, logEntryBeanId, happenedOn);
+        getMigrations().unlock(folderId, logEntryBeanId, happenedOn);
     }
 
     private void createDeleteOnExpiryAction(
@@ -254,11 +250,11 @@ public class MhtsFileMigration extends BaseMigrations {
         final ResourceSummary pageRs =
             createPage(folderRs.getId(), pageBean, 0, le, delta);
 
-        getResources().lock(pageRs.getId(),
+        getMigrations().lock(pageRs.getId(),
                 le.getUser().getId(),
                 le.getHappenedOn());
         publish(pageBean, pageRs, le);
-        getResources().unlock(
+        getMigrations().unlock(
             pageRs.getId(), le.getUser().getId(), le.getHappenedOn());
 
         for (final Paragraph para : delta.getParagraphs()) {
@@ -292,7 +288,7 @@ public class MhtsFileMigration extends BaseMigrations {
             "CREATED FOLDER",
             _username);
 
-        final ResourceSummary rs = _foldersExt.createFolder(
+        final ResourceSummary rs = getMigrations().createFolder(
             parentFolder.getId(),
             legacyFileFolder.name(),
             legacyFileFolder.title(),
@@ -301,7 +297,7 @@ public class MhtsFileMigration extends BaseMigrations {
             le.getHappenedOn());
 
         log.debug("Created folder: "+legacyFileFolder.contentId());
-        getResources().lock(
+        getMigrations().lock(
             UUID.fromString(
                 rs.getId().toString()),
                 le.getUser().getId(),
@@ -309,7 +305,7 @@ public class MhtsFileMigration extends BaseMigrations {
         setTemplateForResource(legacyFileFolder, rs, le, _templateFolder);
         publish(legacyFileFolder, rs, le);
 
-        getResources().unlock(
+        getMigrations().unlock(
             rs.getId(), le.getUser().getId(), le.getHappenedOn());
         return rs.getId();
     }

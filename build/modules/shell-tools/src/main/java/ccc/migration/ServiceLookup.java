@@ -43,8 +43,8 @@ import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.services.Migration;
 
 
 /**
@@ -96,34 +96,44 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public ResourcesExt getResources() {
-        return _registry.<ResourcesExt>get(jndiPath(Resources.NAME));
+        return _registry.<ResourcesExt>get(remotePath(Resources.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public PagesExt getPages() {
-        return _registry.<PagesExt>get(jndiPath(Pages.NAME));
+    public Pages getPages() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /**
+     * Retrieve the migration specific API.
+     *
+     * @return An implementation of the migration API.
+     */
+    public Migration getMigrations() {
+        return _registry.<Migration>get(remotePath(Migration.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public FoldersExt getFolders() {
-        return _registry.<FoldersExt>get(jndiPath(Folders.NAME));
+        return _registry.<FoldersExt>get(remotePath(Folders.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Users getUsers() {
-        return _registry.<Users>get(jndiPath(Users.NAME));
+        return _registry.<Users>get(remotePath(Users.NAME));
     }
 
     /** {@inheritDoc} */
     @Override
     public SearchEngine getSearch() {
-        return _registry.<SearchEngine>get(jndiPath(SearchEngine.NAME));
+        return _registry.<SearchEngine>get(remotePath(SearchEngine.NAME));
     }
 
 
@@ -137,21 +147,21 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Templates getTemplates() {
-        return _registry.<Templates>get(jndiPath(Templates.NAME));
+        return _registry.<Templates>get(remotePath(Templates.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        return _registry.<Actions>get(jndiPath(Actions.NAME));
+        return _registry.<Actions>get(remotePath(Actions.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Groups getGroups() {
-        return _registry.<Groups>get(jndiPath(Groups.NAME));
+        return _registry.<Groups>get(remotePath(Groups.NAME));
     }
 
 
@@ -183,7 +193,7 @@ public class ServiceLookup implements ServiceLocator {
     }
 
 
-    private String jndiPath(final String serviceName) {
+    private String remotePath(final String serviceName) {
         return _appName+"/"+serviceName+"/remote";
     }
 }

@@ -93,7 +93,7 @@ public final class Migrate extends CccApp {
             new Migrations(
                 legacyDBQueries,
                 services.getResources(),
-                services.getPages(),
+                services.getMigrations(),
                 services.getFolders(),
                 services.getUsers(),
                 services.getGroups(),

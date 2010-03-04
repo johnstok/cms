@@ -146,32 +146,39 @@ public class ResourcesEJB
 
 
     private void executeDelete(final Action action) throws RestException {
-        deleteResource(
-            action.subject().id(),
+        sudoExecute(
+            commands().createDeleteResourceCmd(action.subject().id()),
             action.actor().id(),
             new Date());
     }
 
 
     private void executeUpdate(final Action action) throws RestException {
-        applyWorkingCopy(
-            action.subject().id(),
+        sudoExecute(
+            new ApplyWorkingCopyCommand(
+                getResources(),
+                getAuditLog(),
+                action.subject().id(),
+                action.getParams().get("COMMENT"),
+                Boolean
+                    .valueOf(action.getParams().get("MAJOR"))
+                    .booleanValue()),
             action.actor().id(),
-            new Date(),
-            Boolean.valueOf(action.getParams().get("MAJOR")).booleanValue(),
-            action.getParams().get("COMMENT"));
+            new Date());
     }
 
 
     private void executePublish(final Action action) throws RestException {
-        publish(action.subject().id(),
-            action.actor().id(), new Date());
+        sudoExecute(
+            commands().publishResource(action.subject().id()),
+            action.actor().id(),
+            new Date());
     }
 
 
     private void executeUnpublish(final Action action) throws RestException {
-        unpublish(
-            action.subject().id(),
+        sudoExecute(
+            commands().unpublishResourceCommand(action.subject().id()),
             action.actor().id(),
             new Date());
     }
@@ -184,17 +191,6 @@ public class ResourcesEJB
     public void lock(final UUID resourceId) throws RestException {
         execute(
             commands().lockResourceCommand(resourceId));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void lock(final UUID resourceId,
-                     final UUID actorId,
-                     final Date happenedOn) throws RestException {
-        sudoExecute(
-            commands().lockResourceCommand(resourceId), actorId, happenedOn);
     }
 
 
@@ -227,33 +223,15 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(MIGRATE)
-    public void publish(final UUID resourceId,
-                        final UUID userId,
-                        final Date date) throws RestException {
-        sudoExecute(
-            commands().publishResource(resourceId), userId, date);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @RolesAllowed(RESOURCE_RENAME)
     public void rename(final UUID resourceId,
                        final String name) throws RestException {
-            try {
-                new RenameResourceCommand(
-                    getResources(),
-                    getAuditLog(),
-                    resourceId,
-                    name)
-                .execute(
-                    currentUser(),
-                    new Date());
-
-            } catch (final CccCheckedException e) {
-                throw fail(e);
-            }
+        execute(
+            new RenameResourceCommand(
+                getResources(),
+                getAuditLog(),
+                resourceId,
+                name));
     }
 
 
@@ -261,23 +239,8 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UNLOCK)
     public void unlock(final UUID resourceId) throws RestException {
-        try {
-            unlock(resourceId, currentUserId(), new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void unlock(final UUID resourceId,
-                       final UUID actorId,
-                       final Date happenedOn) throws RestException {
-        sudoExecute(
-            commands().unlockResourceCommand(resourceId), actorId, happenedOn);
+        execute(
+            commands().unlockResourceCommand(resourceId));
     }
 
 
@@ -287,19 +250,6 @@ public class ResourcesEJB
     public void unpublish(final UUID resourceId) throws RestException {
         execute(
             commands().unpublishResourceCommand(resourceId));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void unpublish(final UUID resourceId,
-                          final UUID userId,
-                          final Date publishDate) throws RestException {
-        sudoExecute(
-            commands().unpublishResourceCommand(resourceId),
-            userId,
-            publishDate);
     }
 
 
@@ -338,8 +288,12 @@ public class ResourcesEJB
                                        final UUID templateId)
                                                  throws RestException {
         try {
-            updateResourceTemplate(
-                resourceId, templateId, currentUserId(), new Date());
+            new ChangeTemplateForResourceCommand(
+                getResources(), getAuditLog()).execute(
+                    currentUser(),
+                    new Date(),
+                    resourceId,
+                    templateId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -359,35 +313,13 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(MIGRATE)
-    public void updateResourceTemplate(final UUID resourceId,
-                                       final UUID templateId,
-                                       final UUID actorId,
-                                       final Date happenedOn)
-                                                 throws RestException {
-
-        try {
-            new ChangeTemplateForResourceCommand(
-                getResources(), getAuditLog()).execute(
-                    userForId(actorId),
-                    happenedOn,
-                    resourceId,
-                    templateId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId,
-                                  final boolean include)
-                                                 throws RestException {
+                                  final boolean include) throws RestException {
         try {
-            includeInMainMenu(resourceId, include, currentUserId(), new Date());
+            new IncludeInMainMenuCommand(
+                getResources(), getAuditLog()).execute(
+                    currentUser(), new Date(), resourceId, include);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -409,25 +341,6 @@ public class ResourcesEJB
     public void excludeFromMainMenu(final UUID resourceId)
     throws RestException {
         includeInMainMenu(resourceId, false);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void includeInMainMenu(final UUID resourceId,
-                                  final boolean include,
-                                  final UUID actorId,
-                                  final Date happenedOn)
-                                                 throws RestException {
-        try {
-            new IncludeInMainMenuCommand(
-                getResources(), getAuditLog()).execute(
-                    userForId(actorId), happenedOn, resourceId, include);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
     }
 
 
@@ -478,34 +391,6 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(MIGRATE)
-    public void updateMetadata(final UUID resourceId,
-                               final String title,
-                               final String description,
-                               final String tags,
-                               final Map<String, String> metadata,
-                               final UUID actorId,
-                               final Date happenedOn)
-                                                 throws RestException {
-        try {
-            new UpdateResourceMetadataCommand(
-                getResources(), getAuditLog()).execute(
-                    userForId(actorId),
-                    happenedOn,
-                    resourceId,
-                    title,
-                    description,
-                    tags,
-                    metadata);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @RolesAllowed(SEARCH_CREATE)
     // FIXME: Move to SearchEngineEJB
     public ResourceSummary createSearch(final UUID parentId,
@@ -530,87 +415,28 @@ public class ResourcesEJB
     @RolesAllowed(RESOURCE_ACL_UPDATE)
     public void changeRoles(final UUID resourceId,
                             final AclDto acl) throws RestException {
-        try {
-            changeRoles(
-                resourceId, acl, currentUserId(), new Date());
 
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void changeRoles(final UUID resourceId,
-                            final AclDto acl,
-                            final UUID actorId,
-                            final Date happenedOn)
-                                                 throws RestException {
-        try {
-            new UpdateResourceRolesCommand(
+        execute(new UpdateResourceRolesCommand(
                 getResources(),
                 getAuditLog(),
                 getGroups(),
                 getUsers(),
                 resourceId,
-                acl)
-            .execute(
-                userForId(actorId),
-                happenedOn);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                acl));
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void applyWorkingCopy(final UUID resourceId)
-                                                 throws RestException {
-        try {
+    public void applyWorkingCopy(final UUID resourceId) throws RestException {
+        execute(
             new ApplyWorkingCopyCommand(
                 getResources(),
                 getAuditLog(),
                 resourceId,
                 null,
-                false)
-            .execute(
-                currentUser(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void applyWorkingCopy(final UUID resourceId,
-                                 final UUID userId,
-                                 final Date happenedOn,
-                                 final boolean isMajorEdit,
-                                 final String comment)
-                                                 throws RestException {
-        try {
-            new ApplyWorkingCopyCommand(
-                getResources(),
-                getAuditLog(),
-                resourceId,
-                comment,
-                isMajorEdit)
-            .execute(
-                getUsers().find(userId),
-                happenedOn);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                false));
     }
 
 
@@ -620,19 +446,12 @@ public class ResourcesEJB
     public void updateCacheDuration(final UUID resourceId,
                                     final Duration duration)
                                                  throws RestException {
-        try {
+        execute(
             new UpdateCachingCommand(
                 getResources(),
                 getAuditLog(),
                 resourceId,
-                duration)
-            .execute(
-                currentUser(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                duration));
     }
 
 
@@ -667,6 +486,14 @@ public class ResourcesEJB
     public void deleteCacheDuration(final UUID id)
     throws RestException {
         updateCacheDuration(id, (Duration) null);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed(RESOURCE_DELETE)
+    public void deleteResource(final UUID resourceId) throws RestException {
+        execute(commands().createDeleteResourceCmd(resourceId));
     }
 
 
@@ -786,26 +613,6 @@ public class ResourcesEJB
         }
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(RESOURCE_DELETE)
-    public void deleteResource(final UUID resourceId) throws RestException {
-        execute(commands().createDeleteResourceCmd(resourceId));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void deleteResource(final UUID resourceId,
-                               final UUID actorId,
-                               final Date happenedOn) throws RestException {
-        sudoExecute(
-            commands().createDeleteResourceCmd(resourceId),
-            actorId,
-            happenedOn);
-    }
 
 
     /* ====================================================================

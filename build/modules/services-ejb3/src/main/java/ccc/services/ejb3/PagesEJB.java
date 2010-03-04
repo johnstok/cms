@@ -36,7 +36,7 @@ import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -45,13 +45,11 @@ import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
-import ccc.domain.User;
 import ccc.rest.Pages;
 import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.PagesExt;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.Paragraph;
@@ -65,55 +63,13 @@ import ccc.types.ResourceName;
  */
 @Stateless(name=Pages.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(PagesExt.class)
+@Local(Pages.class)
 @RolesAllowed({})
 public class PagesEJB
     extends
         AbstractEJB
     implements
-        PagesExt {
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public ResourceSummary createPage(final UUID parentId,
-                                      final PageDelta delta,
-                                      final String name,
-                                      final boolean publish,
-                                      final UUID templateId,
-                                      final String title,
-                                      final UUID actorId,
-                                      final Date happenedOn,
-                                      final String comment,
-                                      final boolean majorChange)
-                                                 throws RestException {
-        try {
-            final User u = userForId(actorId);
-
-            final Page p =
-                commands().createPageCommand(
-                    parentId,
-                    delta,
-                    ResourceName.escape(name),
-                    title,
-                    templateId,
-                    comment,
-                    majorChange)
-                .execute(u, happenedOn);
-
-            if (publish) {
-                p.lock(u);
-                commands().publishResource(p.id()).execute(u, happenedOn);
-                p.unlock(u);
-            }
-
-            return mapResource(p);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
+        Pages {
 
 
     /** {@inheritDoc} */
@@ -121,22 +77,17 @@ public class PagesEJB
     @RolesAllowed(PAGE_CREATE)
     public ResourceSummary createPage(final PageDto page)
                                                  throws RestException {
-        try {
-            return createPage(
-                page.getParentId(),
-                page.getDelta(),
-                page.getName(),
-                false,
-                page.getTemplateId(),
-                page.getTitle(),
-                currentUserId(),
-                new Date(),
-                page.getComment(),
-                page.getMajorChange());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return
+            mapResource(
+                execute(
+                    commands().createPageCommand(
+                        page.getParentId(),
+                        page.getDelta(),
+                        ResourceName.escape(page.getName()),
+                        page.getTitle(),
+                        page.getTemplateId(),
+                        page.getComment(),
+                        page.getMajorChange())));
     }
 
 
@@ -145,51 +96,19 @@ public class PagesEJB
     @RolesAllowed(PAGE_UPDATE)
     public void updatePage(final UUID pageId, final Json json)
                                                  throws RestException {
-        try {
             final boolean majorEdit =
                 json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
             final String comment = json.getString(JsonKeys.COMMENT);
             final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
 
-            updatePage(
-                pageId,
-                delta,
-                comment,
-                majorEdit,
-                currentUserId(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public void updatePage(final UUID pageId,
-                           final PageDelta delta,
-                           final String comment,
-                           final boolean isMajorEdit,
-                           final UUID actorId,
-                           final Date happenedOn)
-                                                 throws RestException {
-        try {
-            new UpdatePageCommand(
-                getResources(),
-                getAuditLog(),
-                pageId,
-                delta,
-                comment,
-                isMajorEdit)
-            .execute(
-                userForId(actorId),
-                happenedOn);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+            execute(
+                new UpdatePageCommand(
+                    getResources(),
+                    getAuditLog(),
+                    pageId,
+                    delta,
+                    comment,
+                    majorEdit));
     }
 
 
