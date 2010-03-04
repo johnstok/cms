@@ -106,11 +106,11 @@ public class FsCoreDataTest
                 new ByteArrayInputStream(HELLO_WORLD), HELLO_WORLD.length);
 
         // ASSERT
-        final char c0 = d.id().toString().charAt(0);
-        final char c1 = d.id().toString().charAt(1);
-        final char c2 = d.id().toString().charAt(2);
+        final char c0 = d.getId().toString().charAt(0);
+        final char c1 = d.getId().toString().charAt(1);
+        final char c2 = d.getId().toString().charAt(2);
         final File dataFile =
-            new File(FILESTORE, c0+SEP+c1+SEP+c2+SEP+d.id().toString());
+            new File(FILESTORE, c0+SEP+c1+SEP+c2+SEP+d.getId().toString());
 
         assertTrue(dataFile.exists());
         assertEquals(
@@ -129,15 +129,15 @@ public class FsCoreDataTest
         final FsCoreData cd = new FsCoreData(FILESTORE.getAbsolutePath());
         final Data d = new Data();
 
-        final char c0 = d.id().toString().charAt(0);
-        final char c1 = d.id().toString().charAt(1);
-        final char c2 = d.id().toString().charAt(2);
+        final char c0 = d.getId().toString().charAt(0);
+        final char c1 = d.getId().toString().charAt(1);
+        final char c2 = d.getId().toString().charAt(2);
         final File dataFolder =
             new File(FILESTORE, c0+SEP+c1+SEP+c2);
 
         dataFolder.mkdirs();
         final FileOutputStream fos =
-            new FileOutputStream(new File(dataFolder, d.id().toString()));
+            new FileOutputStream(new File(dataFolder, d.getId().toString()));
         fos.write(HELLO_WORLD);
         fos.close();
 

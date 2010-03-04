@@ -134,7 +134,7 @@ public class ResourceDaoImplTest
 
 
         verifyAll();
-        assertEquals(ResourceType.PAGE, resource.type());
+        assertEquals(ResourceType.PAGE, resource.getType());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.currentRevision().getParagraphs().size());
     }
@@ -149,17 +149,17 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new IncludeInMainMenuCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id(), true);
+            _regularUser, new Date(), _r.getId(), true);
 
         // ASSERT
         verifyAll();
-        assertEquals(true, _r.includeInMainMenu());
+        assertEquals(true, _r.isIncludedInMainMenu());
 
     }
 
@@ -173,7 +173,7 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -183,7 +183,7 @@ public class ResourceDaoImplTest
         new UpdateResourceMetadataCommand(_rdao, _al).execute(
             _regularUser,
             new Date(),
-            _r.id(),
+            _r.getId(),
             "newTitle",
             "newDesc",
             "foo,bar",
@@ -193,9 +193,9 @@ public class ResourceDaoImplTest
         verifyAll();
         assertEquals("example", _r.getMetadatum("bodyId"));
         assertEquals("newTitle", _r.getTitle());
-        assertEquals("newDesc", _r.description());
-        assertTrue(_r.tags().contains("foo"));
-        assertTrue(_r.tags().contains("bar"));
+        assertEquals("newDesc", _r.getDescription());
+        assertTrue(_r.getTags().contains("foo"));
+        assertTrue(_r.getTags().contains("bar"));
     }
 
 
@@ -240,20 +240,20 @@ public class ResourceDaoImplTest
                     "Created."));
         _r.lock(_regularUser);
 
-        expect(_repository.find(Resource.class, _r.id()))
+        expect(_repository.find(Resource.class, _r.getId()))
             .andReturn(_r);
-        expect(_repository.find(Template.class, defaultTemplate.id()))
+        expect(_repository.find(Template.class, defaultTemplate.getId()))
             .andReturn(defaultTemplate);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new ChangeTemplateForResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id(), defaultTemplate.id());
+            _regularUser, new Date(), _r.getId(), defaultTemplate.getId());
 
         // ASSERT
         verifyAll();
-        assertEquals(defaultTemplate, _r.template());
+        assertEquals(defaultTemplate, _r.getTemplate());
     }
 
 
@@ -270,20 +270,20 @@ public class ResourceDaoImplTest
         oldParent.add(_r);
         _r.lock(_regularUser);
 
-        expect(_repository.find(Resource.class, _r.id()))
+        expect(_repository.find(Resource.class, _r.getId()))
             .andReturn(_r);
-        expect(_repository.find(Folder.class, newParent.id()))
+        expect(_repository.find(Folder.class, newParent.getId()))
             .andReturn(newParent);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new MoveResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.id(), newParent.id());
+            _regularUser, new Date(), _r.getId(), newParent.getId());
 
         // ASSERT
         verifyAll();
-        assertEquals(newParent, _r.parent());
+        assertEquals(newParent, _r.getParent());
     }
 
 
@@ -296,17 +296,17 @@ public class ResourceDaoImplTest
 
         // ARRANGE
         _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new RenameResourceCommand(_rdao, _al, _r.id(), "baz")
+        new RenameResourceCommand(_rdao, _al, _r.getId(), "baz")
             .execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();
-        assertEquals("baz", _r.name().toString());
+        assertEquals("baz", _r.getName().toString());
     }
 
 
@@ -326,18 +326,18 @@ public class ResourceDaoImplTest
                 _rm,
                 Paragraph.fromText("default", "<H1>Default</H1>"));
 
-        expect(_repository.find(Page.class, bar.id())).andReturn(bar);
+        expect(_repository.find(Page.class, bar.getId())).andReturn(bar);
         replayAll();
 
 
         // ACT
         final Resource resource =
-            _rdao.find(Page.class, bar.id());
+            _rdao.find(Page.class, bar.getId());
 
 
         // ASSERT
         verifyAll();
-        assertEquals(ResourceType.PAGE, resource.type());
+        assertEquals(ResourceType.PAGE, resource.getType());
         final Page page = resource.as(Page.class);
         assertEquals(1, page.currentRevision().getParagraphs().size());
     }
@@ -377,17 +377,17 @@ public class ResourceDaoImplTest
         // ARRANGE
         final int expecteduration = 3727;
         _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.id())).andReturn(_r);
+        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new UpdateCachingCommand(_rdao, _al, _r.id(), new Duration(0, 1, 2, 7))
+        new UpdateCachingCommand(_rdao, _al, _r.getId(), new Duration(0, 1, 2, 7))
             .execute(_regularUser, new Date());
 
         // ASSERT
         verifyAll();
-        assertEquals(expecteduration, _r.cache().time());
+        assertEquals(expecteduration, _r.getCacheDuration().time());
     }
 
 

@@ -103,7 +103,7 @@ public class FoldersEJB
 
             if (publish) {
                 f.lock(u);
-                commands().publishResource(f.id()).execute(u, happenedOn);
+                commands().publishResource(f.getId()).execute(u, happenedOn);
                 f.unlock(u);
             }
 
@@ -173,8 +173,8 @@ public class FoldersEJB
             final Folder f =
                 getResources().find(Folder.class, folderId);
             if (f != null) {
-                f.sortOrder(ResourceOrder.MANUAL);
-                return mapResources(f.entries());
+                f.setSortOrder(ResourceOrder.MANUAL);
+                return mapResources(f.getEntries());
             }
             return mapResources(new ArrayList<Resource>());
 
@@ -223,7 +223,7 @@ public class FoldersEJB
             final Folder f =
                 getResources().find(Folder.class, folderId);
             return mapResources(
-                f != null ? f.folders() : new ArrayList<Folder>());
+                f != null ? f.getFolders() : new ArrayList<Folder>());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -239,7 +239,7 @@ public class FoldersEJB
         try {
             final Folder f = getResources().find(Folder.class, folderId);
             return mapResources(
-                f != null ? f.entries() : new ArrayList<Resource>());
+                f != null ? f.getEntries() : new ArrayList<Resource>());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -256,7 +256,7 @@ public class FoldersEJB
             final Folder f = getResources().find(Folder.class, folderId);
             final List<Resource> filtered = new ArrayList<Resource>();
             final User user = currentUser();
-            for (final Resource r : f.entries()) {
+            for (final Resource r : f.getEntries()) {
                 if (r.isAccessibleTo(user)) {
                     filtered.add(r);
                 }
@@ -284,7 +284,7 @@ public class FoldersEJB
 
             final DtoCollection<ResourceSummary> dtoc =
                 new DtoCollection<ResourceSummary>(
-                    f.entries().size(), mapResources(
+                    f.getEntries().size(), mapResources(
                     getResources().list(
                         f,
                         null,

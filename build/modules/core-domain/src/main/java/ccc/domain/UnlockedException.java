@@ -67,7 +67,7 @@ public class UnlockedException
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return "Resource "+_resource.id()+" is Unlocked.";
+        return "Resource "+_resource.getId()+" is Unlocked.";
     }
 
 

@@ -65,7 +65,7 @@ public class Alias extends Resource {
 
     /** {@inheritDoc} */
     @Override
-    public ResourceType type() {
+    public ResourceType getType() {
         return ResourceType.ALIAS;
     }
 
@@ -110,7 +110,7 @@ public class Alias extends Resource {
     @Override
     public AliasDelta createSnapshot() {
         final AliasDelta delta =
-            new AliasDelta(target().id());
+            new AliasDelta(target().getId());
         return delta;
     }
 
@@ -120,7 +120,7 @@ public class Alias extends Resource {
         super.toJson(json);
         json.set(
             JsonKeys.TARGET_ID,
-            (null==target()) ? null : target().id().toString());
+            (null==target()) ? null : target().getId().toString());
     }
 
 
@@ -151,13 +151,13 @@ public class Alias extends Resource {
     private AliasDto createDto() {
         final AliasDto dto =
             new AliasDto(
-                parent().id(),
-                name(),
-                (null==target())?null:target().id());
+                getParent().getId(),
+                getName(),
+                (null==target())?null:target().getId());
         dto.setTargetPath(
             (null==target())
                 ? null
-                : target().absolutePath().removeTop().toString());
+                : target().getAbsolutePath().removeTop().toString());
         setDtoProps(dto);
         return dto;
     }

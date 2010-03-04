@@ -75,12 +75,12 @@ public class TemplateDaoImplTest
         final TemplateDelta td =
             new TemplateDelta("newBody", "newDefn", MimeType.BINARY_DATA);
 
-        expect(_repository.find(Template.class, foo.id())).andReturn(foo);
+        expect(_repository.find(Template.class, foo.getId())).andReturn(foo);
         _al.record(isA(LogEntry.class));
         replay(_repository, _al);
 
         final UpdateTemplateCommand ut =
-            new UpdateTemplateCommand(_repository, _al, foo.id(), td);
+            new UpdateTemplateCommand(_repository, _al, foo.getId(), td);
 
 
         // ACT

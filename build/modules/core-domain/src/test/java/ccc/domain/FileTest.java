@@ -63,7 +63,7 @@ public class FileTest extends TestCase {
 
 
         // ASSERT
-        assertEquals("UTF-8", f.charset());
+        assertEquals("UTF-8", f.getCharset());
     }
 
     /**
@@ -137,7 +137,7 @@ public class FileTest extends TestCase {
         // ASSERT
         assertEquals(new MimeType("foo", "bar"), o.getMimeType());
         assertEquals(1, o.getSize());
-        assertEquals(data.id(), o.getData());
+        assertEquals(data.getId(), o.getData());
     }
 
     /**
@@ -158,7 +158,7 @@ public class FileTest extends TestCase {
                 _rm);
 
         // ACT
-        final MimeType actual = f.mimeType();
+        final MimeType actual = f.getMimeType();
 
         // ASSERT
         assertEquals(new MimeType("foo", "bar"), actual);

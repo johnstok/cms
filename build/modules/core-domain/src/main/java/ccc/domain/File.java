@@ -104,9 +104,9 @@ public class File
                 final RevisionMetadata metadata) {
         super(name, title);
         DBC.require().notNull(data);
-        description(description);
+        setDescription(description);
         update(
-            new FileDelta(mimeType, data.id(), size, properties),
+            new FileDelta(mimeType, data.getId(), size, properties),
             metadata);
     }
 
@@ -115,7 +115,7 @@ public class File
      * {@inheritDoc}
      */
     @Override
-    public ResourceType type() {
+    public ResourceType getType() {
         return ResourceType.FILE;
     }
 
@@ -136,7 +136,7 @@ public class File
      *
      * @return The mime type.
      */
-    public MimeType mimeType() {
+    public MimeType getMimeType() {
         return currentRevision().getMimeType();
     }
 
@@ -146,7 +146,7 @@ public class File
      *
      * @return The Data instance for this file.
      */
-    public Data data() {
+    public Data getData() {
         return currentRevision().getData();
     }
 
@@ -156,7 +156,7 @@ public class File
      *
      * @return The Data instance for this file.
      */
-    public Map<String, String> properties() {
+    public Map<String, String> getProperties() {
         return currentRevision().getProperties();
     }
 
@@ -166,8 +166,8 @@ public class File
      *
      * @return Property value for charset.
      */
-    public String charset() {
-        return properties().get(CHARSET);
+    public String getCharset() {
+        return getProperties().get(CHARSET);
     }
 
 
@@ -176,8 +176,8 @@ public class File
      *
      * @return Property value for width.
      */
-    public String width() {
-        return properties().get(WIDTH);
+    public String getWidth() {
+        return getProperties().get(WIDTH);
     }
 
 
@@ -186,8 +186,8 @@ public class File
      *
      * @return Property value for height.
      */
-    public String height() {
-        return properties().get(HEIGHT);
+    public String getHeight() {
+        return getProperties().get(HEIGHT);
     }
 
 
@@ -250,10 +250,10 @@ public class File
     public FileDelta createSnapshot() {
         final FileDelta delta =
             new FileDelta(
-                mimeType(),
-                data().id(),
+                getMimeType(),
+                getData().getId(),
                 size(),
-                properties());
+                getProperties());
         return delta;
     }
 
@@ -277,7 +277,7 @@ public class File
         final FileDto dto = mapFile();
         final FileWorkingCopy sn = getWorkingCopy();
         dto.setCharset(sn.getCharset());
-        dto.setDataId(sn.getData().id());
+        dto.setDataId(sn.getData().getId());
         dto.setExecutable(isExecutable());
         dto.setImage(sn.isImage());
         dto.setSize(sn.getSize());
@@ -293,7 +293,7 @@ public class File
         final FileDto dto = mapFile();
         final FileRevision sn = currentRevision();
         dto.setCharset(sn.getCharset());
-        dto.setDataId(sn.getData().id());
+        dto.setDataId(sn.getData().getId());
         dto.setExecutable(isExecutable());
         dto.setImage(sn.isImage());
         dto.setSize(sn.getSize());
@@ -309,7 +309,7 @@ public class File
         final FileDto dto = mapFile();
         final FileRevision sn = revision(revNo);
         dto.setCharset(sn.getCharset());
-        dto.setDataId(sn.getData().id());
+        dto.setDataId(sn.getData().getId());
         dto.setExecutable(isExecutable());
         dto.setImage(sn.isImage());
         dto.setSize(sn.getSize());
@@ -328,12 +328,12 @@ public class File
     public FileDto mapFile() {
         final FileDto fs =
             new FileDto(
-                mimeType(),
-                absolutePath().removeTop().toString(),
-                id(),
-                name(),
+                getMimeType(),
+                getAbsolutePath().removeTop().toString(),
+                getId(),
+                getName(),
                 getTitle(),
-                properties());
+                getProperties());
         setDtoProps(fs);
         return fs;
     }

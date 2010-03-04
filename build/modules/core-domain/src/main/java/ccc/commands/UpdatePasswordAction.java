@@ -83,7 +83,7 @@ public class UpdatePasswordAction {
             actor,
             CommandType.USER_CHANGE_PASSWORD,
             happenedOn,
-            u.id(),
+            u.getId(),
             new JsonImpl(u).getDetail());
         _audit.record(le);
     }

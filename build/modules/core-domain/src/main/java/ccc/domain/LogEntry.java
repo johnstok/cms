@@ -116,7 +116,7 @@ public class LogEntry extends Entity {
      *
      * @return The uuid of the resource upon which the action was performed.
      */
-    public UUID subjectId() {
+    public UUID getSubjectId() {
         return _subjectId;
     }
 
@@ -126,7 +126,7 @@ public class LogEntry extends Entity {
      *
      * @return The user that performed the action.
      */
-    public User actor() {
+    public User getActor() {
         return _actor;
     }
 
@@ -136,7 +136,7 @@ public class LogEntry extends Entity {
      *
      * @return The action that was performed.
      */
-    public String action() {
+    public String getAction() {
         return _action;
     }
 
@@ -146,7 +146,7 @@ public class LogEntry extends Entity {
      *
      * @return The index of the log entry in the audit log.
      */
-    public long index() {
+    public long getIndex() {
         return _index;
     }
 
@@ -156,7 +156,7 @@ public class LogEntry extends Entity {
      *
      * @return The date that the log entry was recorded to the audit log.
      */
-    public Date recordedOn() {
+    public Date getRecordedOn() {
         return (null==_recordedOn) ? null : new Date(_recordedOn.getTime());
     }
 
@@ -166,7 +166,7 @@ public class LogEntry extends Entity {
      *
      * @return The date that the user performed the action.
      */
-    public Date happenedOn() {
+    public Date getHappenedOn() {
         return new Date(_happenedOn.getTime());
     }
 
@@ -176,7 +176,7 @@ public class LogEntry extends Entity {
      *
      * @return Details of the state of the object after the action took place.
      */
-    public String detail() {
+    public String getDetail() {
         return _detail;
     }
 

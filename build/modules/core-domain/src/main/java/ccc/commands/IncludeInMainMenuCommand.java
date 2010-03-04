@@ -78,7 +78,7 @@ public class IncludeInMainMenuCommand {
         final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);
 
-        r.includeInMainMenu(b);
+        r.setIncludedInMainMenu(b);
 
         final CommandType command =
             (b) ? CommandType.RESOURCE_INCLUDE_IN_MM

@@ -70,7 +70,7 @@ public abstract class Entity implements Serializable, Jsonable {
      *
      * @return This entity's id as a {@link UUID}.
      */
-    public UUID id() {
+    public UUID getId() {
         return _id;
     }
 
@@ -80,7 +80,7 @@ public abstract class Entity implements Serializable, Jsonable {
      *
      * @param id The new id.
      */
-    public void id(final UUID id) {
+    public void setId(final UUID id) {
         DBC.require().notNull(id);
         _id = id;
     }
@@ -91,7 +91,7 @@ public abstract class Entity implements Serializable, Jsonable {
      *
      * @return This entity's version as a long.
      */
-    public long version() {
+    public long getVersion() {
         return _version;
     }
 
@@ -147,7 +147,7 @@ public abstract class Entity implements Serializable, Jsonable {
     @Override
     @Deprecated
     public void toJson(final Json json) {
-        json.set(JsonKeys.ID, id().toString());
-        json.set(JsonKeys.VERSION, Long.valueOf(version()));
+        json.set(JsonKeys.ID, getId().toString());
+        json.set(JsonKeys.VERSION, Long.valueOf(getVersion()));
     }
 }

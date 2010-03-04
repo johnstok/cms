@@ -72,7 +72,7 @@ public final class Folder
      * {@inheritDoc}
      */
     @Override
-    public ResourceType type() {
+    public ResourceType getType() {
         return ResourceType.FOLDER;
     }
 
@@ -98,7 +98,7 @@ public final class Folder
     public void add(final Resource resource) throws ResourceExistsException,
                                                     CycleDetectedException {
         DBC.require().notNull(resource);
-        final Resource existingEntry = entryWithName(resource.name());
+        final Resource existingEntry = getEntryWithName(resource.getName());
         if (null!=existingEntry) {
             throw new ResourceExistsException(this, existingEntry);
         }
@@ -110,7 +110,7 @@ public final class Folder
         }
 
         _entries.add(resource);
-        resource.parent(this);
+        resource.setParent(this);
     }
 
     /**
@@ -130,7 +130,7 @@ public final class Folder
             return false;
         } else if (equals(resource)) {
             return true;
-        } else if (isAncestorOf(resource.parent())) {
+        } else if (isAncestorOf(resource.getParent())) {
             return true;
         }
         return false;
@@ -153,7 +153,7 @@ public final class Folder
      *
      * @return A list of all the resources in this folder.
      */
-    public List<Resource> entries() {
+    public List<Resource> getEntries() {
         final List<Resource> entries = new ArrayList<Resource>(_entries);
         Sorter.sort(entries, _order);
         return entries;
@@ -170,7 +170,7 @@ public final class Folder
      *
      * @return A list of all the resources in this folder.
      */
-    public List<Resource> entries(final int count,
+    public List<Resource> getEntries(final int count,
                                   final int page,
                                   final String sortOrder) {
         DBC.require().greaterThan(0, count);
@@ -199,15 +199,15 @@ public final class Folder
 
         for (final ResourceName name : path.elements()) {
 
-            if (ResourceType.FOLDER != currentPosition.type()) {
+            if (ResourceType.FOLDER != currentPosition.getType()) {
                 throw new CCCException(
-                    currentPosition.name()
+                    currentPosition.getName()
                         +" in path "+path
                         +" is not a folder.");
             }
 
             currentPosition =
-                currentPosition.as(Folder.class).findEntryByName(name);
+                currentPosition.as(Folder.class).getEntryWithName2(name);
 
         }
         return currentPosition;
@@ -220,13 +220,13 @@ public final class Folder
      * @param name The name of the resource.
      * @return The resource with the specified name.
      */
-    public Resource findEntryByName(final ResourceName name) {
+    public Resource getEntryWithName2(final ResourceName name) {
         for (final Resource entry : _entries) {
-            if (entry.name().equals(name)) {
+            if (entry.getName().equals(name)) {
                 return entry;
             }
         }
-        throw new CCCException("No entry '"+name+"' in folder '"+name()+"'");
+        throw new CCCException("No entry '"+name+"' in folder '"+getName()+"'");
     }
 
     /**
@@ -236,10 +236,10 @@ public final class Folder
      * @return The number of folders that are children of this folder, as an
      *      integer.
      */
-    public int folderCount() {
+    public int getFolderCount() {
         int count = 0;
         for (final Resource entry : _entries) {
-            if (entry.type()==ResourceType.FOLDER) { count++; }
+            if (entry.getType()==ResourceType.FOLDER) { count++; }
         }
         return count;
     }
@@ -252,7 +252,7 @@ public final class Folder
      */
     public boolean hasEntryWithName(final ResourceName resourceName) {
         for (final Resource entry : _entries) {
-            if (entry.name().equals(resourceName)) {
+            if (entry.getName().equals(resourceName)) {
                 return true;
             }
         }
@@ -266,9 +266,9 @@ public final class Folder
      *
      * @return The corresponding resource of NULL if no such resource exists.
      */
-    public Resource entryWithName(final ResourceName resourceName) {
+    public Resource getEntryWithName(final ResourceName resourceName) {
         for (final Resource entry : _entries) {
-            if (entry.name().equals(resourceName)) {
+            if (entry.getName().equals(resourceName)) {
                 return entry;
             }
         }
@@ -283,10 +283,10 @@ public final class Folder
      * @param <T> The type of the resources in this folder.
      * @return The entries in this folder as a type-safe list.
      */
-    public <T extends Resource> List<T> entries(
+    public <T extends Resource> List<T> getEntries(
                                                 final Class<T> resourceType) {
         final List<T> entries = new ArrayList<T>();
-        for (final Resource entry : entries()) {
+        for (final Resource entry : getEntries()) {
             entries.add(entry.as(resourceType));
         }
         return entries;
@@ -299,7 +299,7 @@ public final class Folder
      */
     public boolean hasPages() {
         for (final Resource r : _entries) {
-            if (r.type().equals(ResourceType.PAGE)) {
+            if (r.getType().equals(ResourceType.PAGE)) {
                 return true;
             }
         }
@@ -311,9 +311,9 @@ public final class Folder
      *
      * @return The first page in the list of entries.
      */
-    public Page firstPage() {
+    public Page getFirstPage() {
         for (final Resource r : _entries) {
-            if (r.type().equals(ResourceType.PAGE)) {
+            if (r.getType().equals(ResourceType.PAGE)) {
                 return r.as(Page.class);
             }
         }
@@ -328,7 +328,7 @@ public final class Folder
     public void remove(final Resource resource) {
         DBC.require().notNull(resource);
         _entries.remove(resource);
-        resource.parent(null);
+        resource.setParent(null);
     }
 
 
@@ -337,56 +337,25 @@ public final class Folder
      *
      * @return A list of pages.
      */
-    public List<Page> pages() {
+    public List<Page> getPages() {
         final List<Page> entries = new ArrayList<Page>();
-        for (final Resource entry : entries()) {
-            if (entry.type()==ResourceType.PAGE) {
+        for (final Resource entry : getEntries()) {
+            if (entry.getType()==ResourceType.PAGE) {
                 entries.add(entry.as(Page.class));
             }
         }
         return entries;
     }
-//
-//    /**
-//     * Retrieve a list of all the pages as snapshots in this folder with sort
-//     * order applied.
-//     *
-//     * @return A list of pages.
-//     */
-//    public List<PageSnapshot> pagesAsSnapshots() {
-//        final List<PageSnapshot> entries = new ArrayList<PageSnapshot>();
-//        for (final Resource entry : entries()) {
-//            if (entry.type()==ResourceType.PAGE) {
-//                entries.add(entry.as(Page.class).forCurrentRevision());
-//            }
-//        }
-//        return entries;
-//    }
-//
-//    /**
-//     * Retrieve a list of all the folders in this folder.
-//     *
-//     * @return A list of folders.
-//     */
-//    public List<FolderSnapshot> foldersAsSnapshots() {
-//        final List<FolderSnapshot> entries = new ArrayList<FolderSnapshot>();
-//        for (final Resource entry : _entries) {
-//            if (entry.type()==ResourceType.FOLDER) {
-//                entries.add(entry.as(Folder.class).forCurrentRevision());
-//            }
-//        }
-//        return entries;
-//    }
 
     /**
      * Retrieve a list of all the folders in this folder.
      *
      * @return A list of folders.
      */
-    public List<Folder> folders() {
+    public List<Folder> getFolders() {
         final List<Folder> entries = new ArrayList<Folder>();
         for (final Resource entry : _entries) {
-            if (entry.type()==ResourceType.FOLDER) {
+            if (entry.getType()==ResourceType.FOLDER) {
                 entries.add(entry.as(Folder.class));
             }
         }
@@ -400,7 +369,7 @@ public final class Folder
      */
     public boolean hasAliases() {
         for (final Resource r : _entries) {
-            if (r.type().equals(ResourceType.ALIAS)) {
+            if (r.getType().equals(ResourceType.ALIAS)) {
                 return true;
             }
         }
@@ -412,9 +381,9 @@ public final class Folder
      *
      * @return The first alias in the list of entries.
      */
-    public Alias firstAlias() {
+    public Alias getFirstAlias() {
         for (final Resource r : _entries) {
-            if (r.type().equals(ResourceType.ALIAS)) {
+            if (r.getType().equals(ResourceType.ALIAS)) {
                 return r.as(Alias.class);
             }
         }
@@ -426,7 +395,7 @@ public final class Folder
      *
      * @return The folder sort order.
      */
-    public ResourceOrder sortOrder() {
+    public ResourceOrder getSortOrder() {
         return _order;
     }
 
@@ -435,7 +404,7 @@ public final class Folder
      *
      * @param order The new sort order.
      */
-    public void sortOrder(final ResourceOrder order) {
+    public void setSortOrder(final ResourceOrder order) {
         DBC.require().notNull(order);
         _order = order;
     }
@@ -456,7 +425,7 @@ public final class Folder
      *
      * @return The index page of this folder.
      */
-    public Page indexPage() {
+    public Page getIndexPage() {
         return _indexPage;
     }
 
@@ -466,15 +435,15 @@ public final class Folder
      *
      * @param indexPage The index page to set.
      */
-    public void indexPage(final Page indexPage) {
+    public void setIndexPage(final Page indexPage) {
         _indexPage = indexPage;
     }
 
     private UUID getDefaultPage() {
-        for (final Resource r : entries()) {
-            if (ResourceType.PAGE.equals(r.type())
+        for (final Resource r : getEntries()) {
+            if (ResourceType.PAGE.equals(r.getType())
                 && r.isPublished()) {
-                return r.id();
+                return r.getId();
             }
         }
         return null;
@@ -484,7 +453,7 @@ public final class Folder
     @Override
     public void delete() {
         super.delete();
-        for (final Resource r : entries()) {  // Recursive deletion.
+        for (final Resource r : getEntries()) {  // Recursive deletion.
             r.delete();
         }
     }
@@ -493,7 +462,7 @@ public final class Folder
     @Override
     public void undelete() {
         super.undelete();
-        for (final Resource r : entries()) {  // Recursive un-deletion.
+        for (final Resource r : getEntries()) {  // Recursive un-deletion.
             r.undelete();
         }
     }
@@ -502,10 +471,10 @@ public final class Folder
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.SORT_ORDER, sortOrder().name());
+        json.set(JsonKeys.SORT_ORDER, getSortOrder().name());
         json.set(
             JsonKeys.INDEX_PAGE_ID,
-            (null==indexPage()) ? null : indexPage().id().toString());
+            (null==getIndexPage()) ? null : getIndexPage().getId().toString());
         // Index folder entries?
     }
 
@@ -526,10 +495,10 @@ public final class Folder
     @Override
     public FolderDto forCurrentRevision() {
         final FolderDto dto = new FolderDto(
-            (null==parent()) ? null : parent().id(),
-                name());
+            (null==getParent()) ? null : getParent().getId(),
+                getName());
         super.setDtoProps(dto);
-        dto.setIndexPage((null==_indexPage) ? null : _indexPage.id());
+        dto.setIndexPage((null==_indexPage) ? null : _indexPage.getId());
         dto.setDefaultPage(getDefaultPage());
         return dto;
     }

@@ -70,12 +70,12 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
                           final Date happenedOn) throws CccCheckedException {
         try {
             final Resource possibleRoot =
-                getRepository().root(_folder.name().toString());
+                getRepository().root(_folder.getName().toString());
             throw new ResourceExistsException(null, possibleRoot);
 
         } catch (final EntityNotFoundException e) {
-            _folder.dateCreated(happenedOn, actor);
-            _folder.dateChanged(happenedOn, actor);
+            _folder.setDateCreated(happenedOn, actor);
+            _folder.setDateChanged(happenedOn, actor);
             getRepository().create(_folder);
 
             audit(_folder, actor, happenedOn);

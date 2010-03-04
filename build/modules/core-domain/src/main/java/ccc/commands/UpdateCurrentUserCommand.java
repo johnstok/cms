@@ -125,7 +125,7 @@ public class UpdateCurrentUserCommand
     @Override
     protected void authorize(final User actor)
                                     throws InsufficientPrivilegesException {
-        if (!actor.id().equals(_userId)) {
+        if (!actor.getId().equals(_userId)) {
             throw new InsufficientPrivilegesException(
                 getType(), actor);
         }

@@ -64,7 +64,7 @@ public class ResourceExistsException
     public String getMessage() {
         return
             "Folder already contains a resource with name '"
-            + _resource.name()
+            + _resource.getName()
             + "'.";
     }
 
@@ -77,6 +77,6 @@ public class ResourceExistsException
                 new Failure(
                     FailureCode.EXISTS,
                     Collections.singletonMap(
-                        "existing_id", _resource.id().toString())));
+                        "existing_id", _resource.getId().toString())));
     }
 }

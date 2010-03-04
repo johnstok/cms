@@ -54,15 +54,15 @@ public class LogEntryTest
 
         // ACT
         final LogEntry le = new LogEntry(_actor, CommandType.RESOURCE_RENAME,
-            _happenedOn, p.id(), new JsonImpl(p).getDetail());
+            _happenedOn, p.getId(), new JsonImpl(p).getDetail());
 
         // ASSERT
-        assertEquals(p.id(), le.subjectId());
-        assertEquals(_happenedOn, le.happenedOn());
-        assertNull("Should be null", le.recordedOn());
-        assertEquals(-1, le.index());
-        assertEquals(_actor, le.actor());
-        assertEquals(CommandType.RESOURCE_RENAME.name(), le.action());
+        assertEquals(p.getId(), le.getSubjectId());
+        assertEquals(_happenedOn, le.getHappenedOn());
+        assertNull("Should be null", le.getRecordedOn());
+        assertEquals(-1, le.getIndex());
+        assertEquals(_actor, le.getActor());
+        assertEquals(CommandType.RESOURCE_RENAME.name(), le.getAction());
     }
 
     /**
@@ -76,15 +76,15 @@ public class LogEntryTest
 
         // ACT
         final LogEntry le = new LogEntry(_actor, actionAsString,
-            _happenedOn, p.id(), new JsonImpl(p).getDetail());
+            _happenedOn, p.getId(), new JsonImpl(p).getDetail());
 
         // ASSERT
-        assertEquals(p.id(), le.subjectId());
-        assertEquals(_happenedOn, le.happenedOn());
-        assertNull("Should be null", le.recordedOn());
-        assertEquals(-1, le.index());
-        assertEquals(_actor, le.actor());
-        assertEquals(actionAsString, le.action());
+        assertEquals(p.getId(), le.getSubjectId());
+        assertEquals(_happenedOn, le.getHappenedOn());
+        assertNull("Should be null", le.getRecordedOn());
+        assertEquals(-1, le.getIndex());
+        assertEquals(_actor, le.getActor());
+        assertEquals(actionAsString, le.getAction());
     }
 
 

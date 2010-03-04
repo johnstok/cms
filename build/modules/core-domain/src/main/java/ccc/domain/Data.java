@@ -47,7 +47,7 @@ public class Data extends Entity {
      * @param id The uuid for this data.
      */
     public Data(final UUID id) {
-        id(id);
+        setId(id);
     }
 
 }

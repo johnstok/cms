@@ -85,7 +85,7 @@ public class Action extends Entity {
      *
      * @return The type of the action.
      */
-    public CommandType type() {
+    public CommandType getType() {
         return _type;
     }
 
@@ -94,7 +94,7 @@ public class Action extends Entity {
      *
      * @return The parameters for this action.
      */
-    public Map<String, String> parameters() {
+    public Map<String, String> getParameters() {
         return _parameters;
     }
 
@@ -103,7 +103,7 @@ public class Action extends Entity {
      *
      * @return The user that scheduled the action.
      */
-    public User actor() {
+    public User getActor() {
         return _actor;
     }
 
@@ -112,7 +112,7 @@ public class Action extends Entity {
      *
      * @return The earliest the action may be executed.
      */
-    public Date executeAfter() {
+    public Date getExecuteAfter() {
         return new Date(_executeAfter.getTime());
     }
 
@@ -129,7 +129,7 @@ public class Action extends Entity {
      *
      * @return The status of the action.
      */
-    public ActionStatus status() {
+    public ActionStatus getStatus() {
         return _status;
     }
 
@@ -187,7 +187,7 @@ public class Action extends Entity {
      *
      * @return The resource the action will operate on.
      */
-    public Resource subject() {
+    public Resource getSubject() {
         return _subject;
     }
 
@@ -201,12 +201,12 @@ public class Action extends Entity {
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.ACTOR_ID, actor().id());
-        json.set(JsonKeys.TYPE, type().name());
-        json.set(JsonKeys.PARAMETERS, parameters());
-        json.set(JsonKeys.SUBJECT_ID, subject().id().toString());
-        json.set(JsonKeys.EXECUTE_AFTER, executeAfter());
-        json.set(JsonKeys.STATUS, status().name());
+        json.set(JsonKeys.ACTOR_ID, getActor().getId());
+        json.set(JsonKeys.TYPE, getType().name());
+        json.set(JsonKeys.PARAMETERS, getParameters());
+        json.set(JsonKeys.SUBJECT_ID, getSubject().getId().toString());
+        json.set(JsonKeys.EXECUTE_AFTER, getExecuteAfter());
+        json.set(JsonKeys.STATUS, getStatus().name());
         json.set(JsonKeys.CODE, (null==_code) ? null : _code.name());
         json.set("failure-params", _params);
     }

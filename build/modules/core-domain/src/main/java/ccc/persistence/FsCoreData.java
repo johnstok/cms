@@ -90,7 +90,7 @@ class FsCoreData
     public Data create(final InputStream dataStream, final int length) {
         final Data d = new Data();
         final File dir = mkdir(d);
-        final File f = new File(dir, d.id().toString());
+        final File f = new File(dir, d.getId().toString());
 
         try {
             final FileOutputStream fos = new FileOutputStream(f);
@@ -122,7 +122,7 @@ class FsCoreData
     @Override
     public void retrieve(final Data data, final StreamAction action) {
         final File dir = dirFor(data);
-        final File f = new File(dir, data.id().toString());
+        final File f = new File(dir, data.getId().toString());
 
         try {
             final FileInputStream fis = new FileInputStream(f);
@@ -175,9 +175,9 @@ class FsCoreData
 
 
     private File dirFor(final Data data) {
-        final char c0 = data.id().toString().charAt(0);
-        final char c1 = data.id().toString().charAt(1);
-        final char c2 = data.id().toString().charAt(2);
+        final char c0 = data.getId().toString().charAt(0);
+        final char c1 = data.getId().toString().charAt(1);
+        final char c2 = data.getId().toString().charAt(2);
         final String sep = File.separator;
         final File dir = new File(_root, c0+sep+c1+sep+c2);
         return dir;

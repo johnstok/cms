@@ -75,14 +75,14 @@ class PublishCommand extends Command<Void> {
         r.confirmLock(publishedBy);
 
         r.publish(publishedBy);
-        r.dateChanged(happenedOn, publishedBy);
+        r.setDateChanged(happenedOn, publishedBy);
 
         final LogEntry le =
             new LogEntry(
                 publishedBy,
                 getType(),
                 happenedOn,
-                r.id(),
+                r.getId(),
                 new JsonImpl(r).getDetail());
         getAudit().record(le);
 

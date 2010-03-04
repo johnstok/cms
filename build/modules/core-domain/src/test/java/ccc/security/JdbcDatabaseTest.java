@@ -89,7 +89,7 @@ public class JdbcDatabaseTest
         _s.setString(1, u.username().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(u.id().toString());
+        expect(_rs.getString(1)).andReturn(u.getId().toString());
         expect(_rs.getBytes(2)).andReturn(new byte[]{0});
         expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
@@ -104,7 +104,7 @@ public class JdbcDatabaseTest
 
         verifyAll();
         assertEquals(3, result.length);
-        assertEquals(u.id().toString(), result[0]);
+        assertEquals(u.getId().toString(), result[0]);
         assertTrue(
             "Arrays should be equal.",
             Arrays.equals(new byte[]{0}, (byte[]) result[1]));
@@ -154,7 +154,7 @@ public class JdbcDatabaseTest
         _s.setString(1, u.username().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
-        expect(_rs.getString(1)).andReturn(u.id().toString());
+        expect(_rs.getString(1)).andReturn(u.getId().toString());
         expect(_rs.getBytes(2)).andReturn(new byte[]{0});
         expect(_rs.getString(3)).andReturn(UUID.randomUUID().toString());
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
@@ -192,7 +192,7 @@ public class JdbcDatabaseTest
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("y")).andReturn(_s);
-        _s.setString(1, u.id().toString());
+        _s.setString(1, u.getId().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn("ADMINISTRATOR");
@@ -207,7 +207,7 @@ public class JdbcDatabaseTest
 
         // ACT
         final Set<String> result =
-            _db.lookupRoles(u.id().toString());
+            _db.lookupRoles(u.getId().toString());
 
         // ASSERT
         verifyAll();

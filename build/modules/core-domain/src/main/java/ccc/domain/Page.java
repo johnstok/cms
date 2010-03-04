@@ -83,7 +83,7 @@ public class Page
                 final RevisionMetadata metadata,
                 final Paragraph... paragraphs) {
         super(name, title);
-        template(template);
+        setTemplate(template);
         update(
             new PageDelta(
                 new HashSet<Paragraph>(Arrays.asList(paragraphs))),
@@ -95,7 +95,7 @@ public class Page
      * {@inheritDoc}
      */
     @Override
-    public ResourceType type() {
+    public ResourceType getType() {
         return ResourceType.PAGE;
     }
 

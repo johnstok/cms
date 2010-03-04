@@ -77,9 +77,9 @@ public class PageDaoImplTest
         page.lock(_u);
         final UpdatePageCommand updatePage =
             new UpdatePageCommand(
-                _repository, _al, page.id(), delta, "comment text", false);
+                _repository, _al, page.getId(), delta, "comment text", false);
 
-        expect(_repository.find(Page.class, page.id())).andReturn(page);
+        expect(_repository.find(Page.class, page.getId())).andReturn(page);
         _al.record(isA(LogEntry.class));
         replayAll();
 

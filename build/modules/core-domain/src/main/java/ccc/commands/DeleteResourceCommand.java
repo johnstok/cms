@@ -83,8 +83,8 @@ public class DeleteResourceCommand extends Command<Void> {
             getRepository().root(PredefinedResourceNames.TRASH);
 
         resource.delete();
-        resource.name(new ResourceName(resource.id().toString()));
-        resource.parent().remove(resource);
+        resource.setName(new ResourceName(resource.getId().toString()));
+        resource.getParent().remove(resource);
         trash.add(resource);
         resource.unlock(actor);
 

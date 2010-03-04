@@ -55,14 +55,14 @@ public class UpdateAliasCommandTest
         final Alias alias = new Alias("alias", foo);
         alias.lock(getUser());
 
-        expect(getRepository().find(Alias.class, alias.id())).andReturn(alias);
-        expect(getRepository().find(Resource.class, bar.id())).andReturn(bar);
+        expect(getRepository().find(Alias.class, alias.getId())).andReturn(alias);
+        expect(getRepository().find(Resource.class, bar.getId())).andReturn(bar);
         getAudit().record(isA(LogEntry.class));
         replayAll();
 
         final UpdateAliasCommand c =
             new UpdateAliasCommand(
-                getRepository(), getAudit(), bar.id(), alias.id());
+                getRepository(), getAudit(), bar.getId(), alias.getId());
 
         // ACT
         c.execute(getUser(), getNow());

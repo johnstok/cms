@@ -68,13 +68,13 @@ public class WorkingCopyManagerTest
         p.lock(_user);
         p.setOrUpdateWorkingCopy(p.createSnapshot());
 
-        expect(_repository.find(Resource.class, p.id())).andReturn(p);
+        expect(_repository.find(Resource.class, p.getId())).andReturn(p);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new ClearWorkingCopyCommand(_repository, _audit).execute(
-            _user, _now, p.id());
+            _user, _now, p.getId());
 
         // ASSERT
         verifyAll();
@@ -99,13 +99,13 @@ public class WorkingCopyManagerTest
         page.lock(_user);
         final PageDelta before = page.createSnapshot();
 
-        expect(_repository.find(Page.class, page.id())).andReturn(page);
+        expect(_repository.find(Page.class, page.getId())).andReturn(page);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new UpdateWorkingCopyCommand(_repository, _audit).execute(
-            _user, _now, page.id(), before);
+            _user, _now, page.getId(), before);
 
         // ASSERT
         verifyAll();

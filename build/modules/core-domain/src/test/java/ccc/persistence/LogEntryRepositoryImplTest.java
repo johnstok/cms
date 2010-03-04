@@ -80,7 +80,7 @@ public class LogEntryRepositoryImplTest
                                         _actor,
                                         CommandType.RESOURCE_RENAME,
                                         _happenedOn,
-                                        p.id(),
+                                        p.getId(),
                                         "");
         _em.create(isA(LogEntry.class));
         // ACT
@@ -89,9 +89,9 @@ public class LogEntryRepositoryImplTest
 
         // ASSERT
         verify(_em);
-        assertEquals(CommandType.RESOURCE_RENAME.toString(), le.action());
-        assertEquals(p.id(), le.subjectId());
-        assertEquals(_actor, le.actor());
+        assertEquals(CommandType.RESOURCE_RENAME.toString(), le.getAction());
+        assertEquals(p.getId(), le.getSubjectId());
+        assertEquals(_actor, le.getActor());
     }
 
 

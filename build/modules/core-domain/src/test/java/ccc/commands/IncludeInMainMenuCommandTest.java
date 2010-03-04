@@ -53,7 +53,7 @@ public class IncludeInMainMenuCommandTest
         final Search s = new Search("foo");
         s.lock(getUser());
 
-        expect(getRepository().find(Resource.class, s.id())).andReturn(s);
+        expect(getRepository().find(Resource.class, s.getId())).andReturn(s);
         getAudit().record(isA(LogEntry.class));
 
         replayAll();
@@ -62,11 +62,11 @@ public class IncludeInMainMenuCommandTest
             new IncludeInMainMenuCommand(getRepository(), getAudit());
 
         // ACT
-        c.execute(getUser(), getNow(), s.id(), true);
+        c.execute(getUser(), getNow(), s.getId(), true);
 
         // ASSERT
         verifyAll();
-        assertTrue(s.includeInMainMenu());
+        assertTrue(s.isIncludedInMainMenu());
     }
 
     /**
@@ -79,7 +79,7 @@ public class IncludeInMainMenuCommandTest
         final Search s = new Search("foo");
         s.lock(getUser());
 
-        expect(getRepository().find(Resource.class, s.id())).andReturn(s);
+        expect(getRepository().find(Resource.class, s.getId())).andReturn(s);
         getAudit().record(isA(LogEntry.class));
 
         replayAll();
@@ -88,10 +88,10 @@ public class IncludeInMainMenuCommandTest
             new IncludeInMainMenuCommand(getRepository(), getAudit());
 
         // ACT
-        c.execute(getUser(), getNow(), s.id(), false);
+        c.execute(getUser(), getNow(), s.getId(), false);
 
         // ASSERT
         verifyAll();
-        assertFalse(s.includeInMainMenu());
+        assertFalse(s.isIncludedInMainMenu());
     }
 }

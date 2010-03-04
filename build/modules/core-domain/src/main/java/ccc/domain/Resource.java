@@ -69,7 +69,7 @@ public abstract class Resource
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
-    private String         _title             = id().toString();
+    private String         _title             = getId().toString();
     private ResourceName   _name              = ResourceName.escape(_title);
     private Template       _template          = null;
     private Folder         _parent            = null;
@@ -101,8 +101,8 @@ public abstract class Resource
      */
     protected Resource(final ResourceName name,
                        final String title) {
-        name(name);
-        title(title);
+        setName(name);
+        setTitle(title);
     }
 
 
@@ -114,8 +114,8 @@ public abstract class Resource
      * @param title The title of this resource, as a string.
      */
     public Resource(final String title) {
-        title(title);
-        name(ResourceName.escape(title));
+        setTitle(title);
+        setName(ResourceName.escape(title));
     }
 
 
@@ -124,7 +124,7 @@ public abstract class Resource
      *
      * @return The ResourceType that describes this resource.
      */
-    public abstract ResourceType type();
+    public abstract ResourceType getType();
 
 
     /**
@@ -150,8 +150,8 @@ public abstract class Resource
      */
     public final Template computeTemplate(final Template def) {
         return
-        (null!=template())
-            ? template()
+        (null!=getTemplate())
+            ? getTemplate()
             : (null!=_parent)
                 ? _parent.computeTemplate(def)
                 : def;
@@ -163,16 +163,16 @@ public abstract class Resource
      *
      * @return The absolute path as a {@link ResourcePath}.
      */
-    public final ResourcePath absolutePath() {
+    public final ResourcePath getAbsolutePath() {
         return
-        (null==parent())
-        ? new ResourcePath(name())
-        : parent().absolutePath().append(name());
+        (null==getParent())
+        ? new ResourcePath(getName())
+        : getParent().getAbsolutePath().append(getName());
     }
 
 
     /** {@inheritDoc} */
-    public ResourceName name() {
+    public ResourceName getName() {
         return _name;
     }
 
@@ -182,7 +182,7 @@ public abstract class Resource
      *
      * @param resourceName The new resource name.
      */
-    public void name(final ResourceName resourceName) {
+    public void setName(final ResourceName resourceName) {
         require().notNull(resourceName);
         _name = resourceName;
     }
@@ -199,7 +199,7 @@ public abstract class Resource
      *
      * @param titleString The new title for this resource.
      */
-    public void title(final String titleString) {
+    public void setTitle(final String titleString) {
         require().notEmpty(titleString);
         require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
         require().containsNoBrackets(titleString);
@@ -213,7 +213,7 @@ public abstract class Resource
      *
      * @return The {@link Template}.
      */
-    public Template template() {
+    public Template getTemplate() {
         if (null==_template) {
             return null;
         } else if (_template.isDeleted()) {
@@ -228,7 +228,7 @@ public abstract class Resource
      *
      * @param template The new template.
      */
-    public void template(final Template template) {
+    public void setTemplate(final Template template) {
         _template = template;
     }
 
@@ -238,7 +238,7 @@ public abstract class Resource
      *
      * @return The folder containing this resource.
      */
-    public Folder parent() {
+    public Folder getParent() {
         return _parent;
     }
 
@@ -249,7 +249,7 @@ public abstract class Resource
      *
      * @param parent The folder containing this resource.
      */
-    void parent(final Folder parent) {
+    void setParent(final Folder parent) {
         _parent = parent;
     }
 
@@ -284,7 +284,7 @@ public abstract class Resource
      *
      * @return The locking user or null if the resource is not locked.
      */
-    public User lockedBy() {
+    public User getLockedBy() {
         return _lockedBy;
     }
 
@@ -322,7 +322,7 @@ public abstract class Resource
      * @return True if the user can unlock the resource, false otherwise.
      */
     public boolean canUnlock(final User user) {
-        return user.equals(lockedBy())
+        return user.equals(getLockedBy())
         || user.hasPermission(Permission.RESOURCE_UNLOCK);
     }
 
@@ -333,7 +333,7 @@ public abstract class Resource
      * @param tagString A string of comma separated values that represents the
      *  tags for this resource.
      */
-    public void tags(final String tagString) {
+    public void setTags(final String tagString) {
         require().notNull(tagString);
         require().containsNoBrackets(tagString);
 
@@ -349,7 +349,7 @@ public abstract class Resource
 
 
     /** {@inheritDoc} */
-    public Set<String> tags() {
+    public Set<String> getTags() {
         return Collections.unmodifiableSet(_tags);
     }
 
@@ -359,9 +359,9 @@ public abstract class Resource
      *
      * @return A string representation of the tags.
      */
-    public String tagString() {
+    public String getTagString() {
         final StringBuilder sb = new StringBuilder();
-        for (final String tag : tags()) {
+        for (final String tag : getTags()) {
             sb.append(tag);
             sb.append(',');
         }
@@ -401,7 +401,7 @@ public abstract class Resource
      *
      * @return The user or null if the resource is unpublished.
      */
-    public User publishedBy() {
+    public User getPublishedBy() {
         return _publishedBy;
     }
 
@@ -438,7 +438,7 @@ public abstract class Resource
     public boolean isSecure() {
         final boolean parentSecure =
             (null==_parent) ? false : _parent.isSecure();
-        return parentSecure || !roles().isEmpty() || !getUserAcl().isEmpty();
+        return parentSecure || !getRoles().isEmpty() || !getUserAcl().isEmpty();
     }
 
 
@@ -456,14 +456,14 @@ public abstract class Resource
         if (!isLocked()) {
             throw new UnlockedException(this);
         }
-        if (!lockedBy().equals(user)) {
+        if (!getLockedBy().equals(user)) {
             throw new LockMismatchException(this);
         }
     }
 
 
     /** {@inheritDoc} */
-    public boolean includeInMainMenu() {
+    public boolean isIncludedInMainMenu() {
         return _includeInMainMenu;
     }
 
@@ -473,7 +473,7 @@ public abstract class Resource
      *
      * @param shouldInclude Should the resource be included?
      */
-    public void includeInMainMenu(final boolean shouldInclude) {
+    public void setIncludedInMainMenu(final boolean shouldInclude) {
             _includeInMainMenu = shouldInclude;
     }
 
@@ -483,11 +483,11 @@ public abstract class Resource
      *
      * @return The root parent of this resource.
      */
-    public Resource root() {
+    public Resource getRoot() {
         if (null == _parent) {
             return this;
         }
-        return _parent.root();
+        return _parent.getRoot();
     }
 
 
@@ -543,7 +543,7 @@ public abstract class Resource
      *
      * @return The metadata as a hash map.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return new HashMap<String, String>(_metadata);
     }
 
@@ -561,7 +561,7 @@ public abstract class Resource
         }
         final HashMap<String, String> metadata =new HashMap<String, String>();
         metadata.putAll(_parent.computeMetadata());
-        metadata.putAll(metadata());
+        metadata.putAll(getMetadata());
         return metadata;
     }
 
@@ -575,7 +575,7 @@ public abstract class Resource
 
 
     /** {@inheritDoc} */
-    public Date dateCreated() {
+    public Date getDateCreated() {
         return new Date(_dateCreated.getTime());
     }
 
@@ -585,7 +585,7 @@ public abstract class Resource
      *
      * @return The creating user.
      */
-    public User createdBy() {
+    public User getCreatedBy() {
         return _createdBy;
     }
 
@@ -596,7 +596,7 @@ public abstract class Resource
      * @param createdOn The date of creation.
      * @param createdBy The user who created.
      */
-    public void dateCreated(final Date createdOn, final User createdBy) {
+    public void setDateCreated(final Date createdOn, final User createdBy) {
         require().notNull(createdOn);
         require().notNull(createdBy);
         _dateCreated = new Date(createdOn.getTime());
@@ -605,7 +605,7 @@ public abstract class Resource
 
 
     /** {@inheritDoc} */
-    public Date dateChanged() {
+    public Date getDateChanged() {
         return new Date(_dateChanged.getTime());
     }
 
@@ -615,7 +615,7 @@ public abstract class Resource
      *
      * @return The last user to change this resource.
      */
-    public User changedBy() {
+    public User getChangedBy() {
         return _changedBy;
     }
 
@@ -626,7 +626,7 @@ public abstract class Resource
      * @param changedOn The date the resource changed.
      * @param changedBy The user who changed the resource.
      */
-    public void dateChanged(final Date changedOn, final User changedBy) {
+    public void setDateChanged(final Date changedOn, final User changedBy) {
         require().notNull(changedOn);
         require().notNull(changedBy);
         _dateChanged = new Date(changedOn.getTime());
@@ -639,7 +639,7 @@ public abstract class Resource
      *
      * @param roles The roles this collection should have.
      */
-    public void roles(final Collection<Group> roles) {
+    public void setRoles(final Collection<Group> roles) {
         _roles.clear();
         _roles.addAll(roles);
     }
@@ -650,7 +650,7 @@ public abstract class Resource
      *
      * @return This resource's roles.
      */
-    public Collection<Group> roles() {
+    public Collection<Group> getRoles() {
         return new HashSet<Group>(_roles);
     }
 
@@ -681,10 +681,10 @@ public abstract class Resource
      *
      * @return The group IDs, as a set.
      */
-    public Set<UUID> groupIds() {
+    public Set<UUID> getGroupIds() {
         final Set<UUID> groupIds = new HashSet<UUID>();
-        for (final Group g : roles()) {
-            groupIds.add(g.id());
+        for (final Group g : getRoles()) {
+            groupIds.add(g.getId());
         }
         return groupIds;
     }
@@ -695,10 +695,10 @@ public abstract class Resource
      *
      * @return The user IDs, as a set.
      */
-    public Collection<UUID> userIds() {
+    public Collection<UUID> getUserIds() {
         final Set<UUID> userIds = new HashSet<UUID>();
         for (final User u : getUserAcl()) {
-            userIds.add(u.id());
+            userIds.add(u.getId());
         }
         return userIds;
     }
@@ -714,11 +714,11 @@ public abstract class Resource
     public Collection<Group> computeRoles() {
         // TODO: Can we make this more efficient?
         if (null==_parent) {
-            return roles();
+            return getRoles();
         }
         final Collection<Group> roles = new ArrayList<Group>();
         roles.addAll(_parent.computeRoles());
-        roles.addAll(roles());
+        roles.addAll(getRoles());
         return roles;
     }
 
@@ -726,9 +726,9 @@ public abstract class Resource
     /** {@inheritDoc} */
     public boolean isAccessibleTo(final User user) {
         final boolean parentIsAccessible =
-            (null==_parent) ? true : parent().isAccessibleTo(user);
+            (null==_parent) ? true : getParent().isAccessibleTo(user);
 
-        if (0==roles().size() && 0==getUserAcl().size()) {
+        if (0==getRoles().size() && 0==getUserAcl().size()) {
             return parentIsAccessible;
         }
 
@@ -736,7 +736,7 @@ public abstract class Resource
             return false;
         }
 
-        for (final Group role : roles()) {
+        for (final Group role : getRoles()) {
             if (user.memberOf(role)) {
                 return parentIsAccessible;
             }
@@ -751,7 +751,7 @@ public abstract class Resource
      *
      * @param cache The cache duration for the resource.
      */
-    public void cache(final Duration cache) {
+    public void setCacheDuration(final Duration cache) {
         _cache = cache;
     }
 
@@ -761,7 +761,7 @@ public abstract class Resource
      *
      * @return This resource's cache duration.
      */
-    public Duration cache() {
+    public Duration getCacheDuration() {
         return _cache;
     }
 
@@ -773,15 +773,15 @@ public abstract class Resource
      *  if cache is not set in hierarchy.
      */
     public Duration computeCache() {
-        if (_cache != null || parent() == null) {
-            return cache();
+        if (_cache != null || getParent() == null) {
+            return getCacheDuration();
         }
-        return parent().computeCache();
+        return getParent().computeCache();
     }
 
 
     /** {@inheritDoc} */
-    public final String description() {
+    public final String getDescription() {
         return _description;
     }
 
@@ -791,7 +791,7 @@ public abstract class Resource
      *
      * @param description The new description as a string.
      */
-    public void description(final String description) {
+    public void setDescription(final String description) {
         _description = (null==description) ? "" : description;
     }
 
@@ -844,31 +844,31 @@ public abstract class Resource
     @Override public void toJson(final Json json) {
         super.toJson(json);
         json.set(JsonKeys.TITLE, getTitle());
-        json.set(JsonKeys.NAME, name().toString());
+        json.set(JsonKeys.NAME, getName().toString());
         json.set(
             JsonKeys.TEMPLATE_ID,
-            (null==template()) ? null : template().id().toString());
+            (null==getTemplate()) ? null : getTemplate().getId().toString());
         json.set(
             JsonKeys.PARENT_ID,
-            (null==parent()) ? null : parent().id().toString());
+            (null==getParent()) ? null : getParent().getId().toString());
         json.set(
             JsonKeys.LOCKED_BY,
-            (null==lockedBy()) ? null : lockedBy().id().toString());
-        json.setStrings(JsonKeys.TAGS, new ArrayList<String>(tags()));
+            (null==getLockedBy()) ? null : getLockedBy().getId().toString());
+        json.setStrings(JsonKeys.TAGS, new ArrayList<String>(getTags()));
         json.set(
             JsonKeys.ACL,
-            new AclDto().setGroups(groupIds()).setUsers(userIds()));
+            new AclDto().setGroups(getGroupIds()).setUsers(getUserIds()));
         json.set(
             JsonKeys.PUBLISHED_BY,
-            (null==publishedBy()) ? null : publishedBy().id().toString());
+            (null==getPublishedBy()) ? null : getPublishedBy().getId().toString());
         json.set(
             JsonKeys.INCLUDE_IN_MAIN_MENU,
-            Boolean.valueOf(includeInMainMenu()));
-        json.set(JsonKeys.DATE_CREATED, dateCreated());
-        json.set(JsonKeys.DATE_CHANGED, dateChanged());
-        json.set(JsonKeys.CACHE_DURATION, cache());
-        json.set(JsonKeys.DESCRIPTION, description());
-        json.set(JsonKeys.TYPE, type().name());
+            Boolean.valueOf(isIncludedInMainMenu()));
+        json.set(JsonKeys.DATE_CREATED, getDateCreated());
+        json.set(JsonKeys.DATE_CHANGED, getDateChanged());
+        json.set(JsonKeys.CACHE_DURATION, getCacheDuration());
+        json.set(JsonKeys.DESCRIPTION, getDescription());
+        json.set(JsonKeys.TYPE, getType().name());
         json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));
     }
 
@@ -880,26 +880,26 @@ public abstract class Resource
      */
     protected void setDtoProps(final ResourceSnapshot dto) {
         /* These methods are in alphabetical order, for simplicity. */
-        dto.setAbsolutePath(absolutePath().removeTop().toString());
+        dto.setAbsolutePath(getAbsolutePath().removeTop().toString());
         dto.setCacheDuration(computeCache());
-        dto.setDateChanged(dateChanged());
-        dto.setDateCreated(dateCreated());
-        dto.setDescription(description());
-        dto.setId(id());
-        dto.setInMainMenu(includeInMainMenu());
+        dto.setDateChanged(getDateChanged());
+        dto.setDateCreated(getDateCreated());
+        dto.setDescription(getDescription());
+        dto.setId(getId());
+        dto.setInMainMenu(isIncludedInMainMenu());
         dto.setLocked(isLocked());
-        dto.setLockedBy((isLocked()) ? lockedBy().id() : null);
+        dto.setLockedBy((isLocked()) ? getLockedBy().getId() : null);
         dto.setMetadata(computeMetadata());
-        dto.setName(name());
-        dto.setParent((null==parent())?null:parent().id());
+        dto.setName(getName());
+        dto.setParent((null==getParent())?null:getParent().getId());
         dto.setPublished(isPublished());
-        dto.setPublishedBy((isPublished()) ? publishedBy().id() : null);
+        dto.setPublishedBy((isPublished()) ? getPublishedBy().getId() : null);
         dto.setSecure(isSecure());
-        dto.setTags(tags());
+        dto.setTags(getTags());
         dto.setTemplate(
-            (null==computeTemplate(null)) ? null : computeTemplate(null).id());
+            (null==computeTemplate(null)) ? null : computeTemplate(null).getId());
         dto.setTitle(getTitle());
-        dto.setType(type());
+        dto.setType(getType());
         dto.setVisible(isVisible());
     }
 

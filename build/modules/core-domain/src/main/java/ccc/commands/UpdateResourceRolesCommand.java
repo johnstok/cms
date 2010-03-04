@@ -108,7 +108,7 @@ public class UpdateResourceRolesCommand
         for (final UUID groupId : _roles.getGroups()) {
             groups.add(_groups.find(groupId));
         }
-        r.roles(groups);
+        r.setRoles(groups);
     }
 
 

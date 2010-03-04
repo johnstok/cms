@@ -104,7 +104,7 @@ public class ResourcesEJB
         try {
             final Action a = getActions().find(actionId);
 
-            if (new Date().before(a.executeAfter())) {
+            if (new Date().before(a.getExecuteAfter())) {
                 return; // Too early.
             }
 
@@ -117,7 +117,7 @@ public class ResourcesEJB
 
     //--
     private void executeAction(final Action action) throws RestException {
-        switch (action.type()) {
+        switch (action.getType()) {
 
             case RESOURCE_UNPUBLISH:
                 executeUnpublish(action);
@@ -137,7 +137,7 @@ public class ResourcesEJB
 
             default:
                 throw new UnsupportedOperationException(
-                    "Unsupported action type: "+action.type());
+                    "Unsupported action type: "+action.getType());
 
         }
 
@@ -147,8 +147,8 @@ public class ResourcesEJB
 
     private void executeDelete(final Action action) throws RestException {
         sudoExecute(
-            commands().createDeleteResourceCmd(action.subject().id()),
-            action.actor().id(),
+            commands().createDeleteResourceCmd(action.getSubject().getId()),
+            action.getActor().getId(),
             new Date());
     }
 
@@ -158,28 +158,28 @@ public class ResourcesEJB
             new ApplyWorkingCopyCommand(
                 getResources(),
                 getAuditLog(),
-                action.subject().id(),
+                action.getSubject().getId(),
                 action.getParams().get("COMMENT"),
                 Boolean
                     .valueOf(action.getParams().get("MAJOR"))
                     .booleanValue()),
-            action.actor().id(),
+            action.getActor().getId(),
             new Date());
     }
 
 
     private void executePublish(final Action action) throws RestException {
         sudoExecute(
-            commands().publishResource(action.subject().id()),
-            action.actor().id(),
+            commands().publishResource(action.getSubject().getId()),
+            action.getActor().getId(),
             new Date());
     }
 
 
     private void executeUnpublish(final Action action) throws RestException {
         sudoExecute(
-            commands().unpublishResourceCommand(action.subject().id()),
-            action.actor().id(),
+            commands().unpublishResourceCommand(action.getSubject().getId()),
+            action.getActor().getId(),
             new Date());
     }
     //--
@@ -534,8 +534,8 @@ public class ResourcesEJB
                 getResources().find(Resource.class, resourceId);
             return
                 new AclDto()
-                    .setGroups(r.groupIds())
-                    .setUsers(r.userIds());
+                    .setGroups(r.getGroupIds())
+                    .setUsers(r.getUserIds());
 
 
         } catch (final CccCheckedException e) {
@@ -551,7 +551,7 @@ public class ResourcesEJB
         try {
             final Resource r =
                 getResources().find(Resource.class, resourceId);
-            return r.cache();
+            return r.getCacheDuration();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -636,7 +636,7 @@ public class ResourcesEJB
         try {
             return
                 getResources().find(Resource.class, resourceId)
-                          .absolutePath()
+                          .getAbsolutePath()
                           .removeTop()
                           .toString();
 
@@ -718,7 +718,7 @@ public class ResourcesEJB
             final File f = (File) r;
             if (f.isText()) {
                 getFiles().retrieve(
-                    f.data(),
+                    f.getData(),
                     new ReadToStringAction(sb, charset)
                 );
             }
@@ -738,8 +738,8 @@ public class ResourcesEJB
                 getResources().find(Resource.class, resourceId);
             checkSecurity(r);
 
-            final Folder f = r.parent().as(Folder.class);
-            for (final Resource item : f.entries()) {
+            final Folder f = r.getParent().as(Folder.class);
+            for (final Resource item : f.getEntries()) {
                 siblings.add(mapResource(item));
             }
 
@@ -758,7 +758,7 @@ public class ResourcesEJB
         try {
             final Resource r =
                 getResources().find(Resource.class, resourceId);
-            return r.metadata();
+            return r.getMetadata();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

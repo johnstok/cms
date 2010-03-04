@@ -66,7 +66,7 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_regularUser);
-        expect(_rdao.find(Folder.class, _f.id()))
+        expect(_rdao.find(Folder.class, _f.getId()))
             .andReturn(_f);
         _al.record(isA(LogEntry.class));
         replayAll();
@@ -75,7 +75,7 @@ public class FolderDaoImplTest
             new UpdateFolderCommand(
                 _rdao,
                 _al,
-                _f.id(),
+                _f.getId(),
                 ResourceOrder.NAME_ALPHANUM_ASC,
                 null,
                 null);
@@ -85,7 +85,7 @@ public class FolderDaoImplTest
 
         // ASSERT
         verifyAll();
-        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, _f.sortOrder());
+        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, _f.getSortOrder());
     }
 
     /**
@@ -103,22 +103,22 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_rdao.find(Folder.class, _f.id()))
+        expect(_rdao.find(Folder.class, _f.getId()))
             .andReturn(_f);
         _al.record(isA(LogEntry.class));
         replayAll();
 
         final List<UUID> order = new ArrayList<UUID>();
-        order.add(baz.id());
-        order.add(foo.id());
-        order.add(bar.id());
+        order.add(baz.getId());
+        order.add(foo.getId());
+        order.add(bar.getId());
 
         // ACT
         final UpdateFolderCommand uf =
             new UpdateFolderCommand(
                 _rdao,
                 _al,
-                _f.id(),
+                _f.getId(),
                 ResourceOrder.MANUAL,
                 null,
                 order);
@@ -127,7 +127,7 @@ public class FolderDaoImplTest
 
         // ASSERT
         verifyAll();
-        final List<Resource> entries = _f.entries();
+        final List<Resource> entries = _f.getEntries();
         assertEquals(3, entries.size());
         assertEquals(baz, entries.get(0));
         assertEquals(foo, entries.get(1));

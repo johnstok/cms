@@ -72,15 +72,15 @@ public abstract class AbstractIndexer
     @Override
     public void indexFile(final ccc.domain.File file) {
         if (!PredefinedResourceNames.CONTENT.equals(
-            file.root().name().toString())) {
+            file.getRoot().getName().toString())) {
             LOG.debug(
                 "Skipped indexing for non content file : "+file.getTitle());
             return;
         }
 
         String content = null;
-        final String primaryType = file.mimeType().getPrimaryType();
-        final String subType = file.mimeType().getSubType();
+        final String primaryType = file.getMimeType().getPrimaryType();
+        final String subType = file.getMimeType().getSubType();
 
         if ("pdf".equalsIgnoreCase(subType)) {
             content = indexPDF(file);
@@ -100,7 +100,7 @@ public abstract class AbstractIndexer
         }
 
         if (null!=content) {
-            createDocument(file.id(), content);
+            createDocument(file.getId(), content);
         }
     }
 
@@ -114,7 +114,7 @@ public abstract class AbstractIndexer
                 sb.append(XHTML.cleanUpContent(p.text()));
             }
         }
-        createDocument(page.id(), sb.toString());
+        createDocument(page.getId(), sb.toString());
         LOG.debug("Indexed page: "+page.getTitle());
     }
 
@@ -134,7 +134,7 @@ public abstract class AbstractIndexer
         PDDocument doc = null;
 
         try {
-            _data.retrieve(file.data(), pdfLoader);
+            _data.retrieve(file.getData(), pdfLoader);
             doc = pdfLoader.getDocument();
             if (doc == null) {
                 return null;
@@ -167,7 +167,7 @@ public abstract class AbstractIndexer
         final WordExtractor we = new WordExtractor();
 
         try {
-            _data.retrieve(file.data(), we);
+            _data.retrieve(file.getData(), we);
             final StringBuilder sb = new StringBuilder(file.getTitle());
             sb.append(" ");
             final String content = we.getExtractor().getText();
@@ -183,7 +183,7 @@ public abstract class AbstractIndexer
 
     private String indexText(final File file) {
         final TxtExtractor te = new TxtExtractor();
-        _data.retrieve(file.data(), te);
+        _data.retrieve(file.getData(), te);
         final StringBuilder sb = new StringBuilder(file.getTitle());
         sb.append(" ");
         final String content = te.getContent();

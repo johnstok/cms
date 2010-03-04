@@ -271,7 +271,7 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         assertEquals("foo", page.getTitle());
-        assertEquals(new ResourceName("foo"), page.name());
+        assertEquals(new ResourceName("foo"), page.getName());
     }
 
     /**

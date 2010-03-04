@@ -82,20 +82,20 @@ public class RenameResourceCommand
 
         final ResourceName newName = new ResourceName(_name);
         final Resource existingResource =
-            resource.parent().entryWithName(newName);
+            resource.getParent().getEntryWithName(newName);
         if (null!=existingResource) {
             throw new ResourceExistsException(
-                resource.parent(), existingResource);
+                resource.getParent(), existingResource);
         }
 
-        resource.name(new ResourceName(_name));
+        resource.setName(new ResourceName(_name));
 
         final LogEntry le =
             new LogEntry(
                 actor,
                 getType(),
                 happenedOn,
-                resource.id(),
+                resource.getId(),
                 new JsonImpl(resource).getDetail());
         getAudit().record(le);
 

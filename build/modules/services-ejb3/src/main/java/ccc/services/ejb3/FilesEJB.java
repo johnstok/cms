@@ -135,7 +135,7 @@ public class FilesEJB
 
             if (publish) {
                 f.lock(u);
-                commands().publishResource(f.id()).execute(u, lastUpdated);
+                commands().publishResource(f.getId()).execute(u, lastUpdated);
                 f.unlock(u);
             }
 
@@ -267,7 +267,7 @@ public class FilesEJB
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f);
-            getFiles().retrieve(f.data(), action);
+            getFiles().retrieve(f.getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
