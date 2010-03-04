@@ -47,7 +47,6 @@ import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
 
 
@@ -63,18 +62,18 @@ abstract class JaxrsCollection
     private final Registry _reg = new JNDI();
     @Context private ServletContext _sContext;
 
-    private Templates _templates;
-    private ResourcesExt _resourcesExt;
-    private PagesExt _pagesExt;
-    private FoldersExt _foldersExt;
-    private Users _userCommands;
-    private Actions _actions;
+    private Templates       _templates;
+    private ResourcesExt    _resourcesExt;
+    private Pages           _pages;
+    private FoldersExt      _foldersExt;
+    private Users           _userCommands;
+    private Actions         _actions;
     private ActionScheduler _actionscheduler;
-    private Files _files;
-    private SearchEngine _search;
-    private Aliases _aliases;
-    private Comments _comments;
-    private Groups _groups;
+    private Files           _files;
+    private SearchEngine    _search;
+    private Aliases         _aliases;
+    private Comments        _comments;
+    private Groups          _groups;
 
 
     /**
@@ -148,11 +147,11 @@ abstract class JaxrsCollection
 
     /** {@inheritDoc} */
     @Override
-    public final PagesExt getPages() {
+    public final Pages getPages() {
         return
-        (null==_pagesExt)
-            ? (PagesExt) _reg.get(getAppName()+"/"+Pages.NAME+"/remote")
-            : _pagesExt;
+        (null==_pages)
+            ? (Pages) _reg.get(getAppName()+"/"+Pages.NAME+"/local")
+            : _pages;
     }
 
     /** {@inheritDoc} */
@@ -187,7 +186,8 @@ abstract class JaxrsCollection
     public final SearchEngine getSearch() {
         return
         (null==_search)
-            ? (SearchEngine) _reg.get(getAppName()+"/"+SearchEngine.NAME+"/local")
+            ? (SearchEngine)
+                _reg.get(getAppName()+"/"+SearchEngine.NAME+"/local")
             : _search;
     }
 
@@ -230,10 +230,10 @@ abstract class JaxrsCollection
     /**
      * Mutator.
      *
-     * @param pagesExt The commands to set.
+     * @param pages The pages implementation to set.
      */
-    public final void setPageCommands(final PagesExt pagesExt) {
-        _pagesExt = pagesExt;
+    public final void setPageCommands(final Pages pages) {
+        _pages = pages;
     }
 
     /**

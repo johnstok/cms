@@ -60,7 +60,6 @@ import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.ResourcePath;
@@ -78,7 +77,7 @@ public class ContentServlet
 
     @EJB(name = SearchEngine.NAME) private transient SearchEngine _search;
     @EJB(name = Users.NAME)        private transient Users        _users;
-    @EJB(name = Pages.NAME)        private transient PagesExt     _pages;
+    @EJB(name = Pages.NAME)        private transient Pages        _pages;
     @EJB(name = Folders.NAME)      private transient FoldersExt   _folders;
     @EJB(name = Files.NAME)        private transient FilesExt     _files;
     @EJB(name = Resources.NAME)    private transient ResourcesExt _resources;

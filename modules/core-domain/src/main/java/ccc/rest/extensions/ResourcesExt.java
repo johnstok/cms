@@ -26,7 +26,6 @@
  */
 package ccc.rest.extensions;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,7 +33,6 @@ import ccc.action.ActionExecutor;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
-import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.Duration;
@@ -98,19 +96,6 @@ public interface ResourcesExt
 
 
     /**
-     * Delete a resource.
-     *
-     * @param resourceId The id of the existing resource.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void deleteResource(UUID resourceId,
-                UUID actorId,
-                Date happenedOn) throws RestException;
-
-    /**
      * Update the specified resource's template on the server.
      *
      * @param resourceId The id of the resource to update.
@@ -121,74 +106,6 @@ public interface ResourcesExt
     void updateResourceTemplate(UUID resourceId, UUID templateId)
     throws RestException;
 
-    /**
-     * Update the specified resource's template on the server.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param templateId The new template to set for the resource.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void updateResourceTemplate(UUID resourceId,
-                                UUID templateId,
-                                UUID actorId,
-                                Date happenedOn)
-    throws RestException;
-
-    /**
-     * Lock the specified resource.
-     * The resource will be locked by the currently logged in user.
-     * If the resource is already locked a CCCException will be thrown.
-     *
-     * @param resourceId The uuid of the resource to lock.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void lock(UUID resourceId, UUID actorId, Date happenedOn)
-    throws RestException;
-
-    /**
-     * Unlock the specified Resource.
-     * If the logged in user does not have privileges to unlock this resource a
-     * CCCException will be thrown.
-     * Unlocking an unlocked resource has no effect.
-     *
-     * @param resourceId The resource to unlock.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void unlock(UUID resourceId, UUID actorId, Date happenedOn)
-    throws RestException;
-
-    /**
-     * Publish the specified resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param userId The id of the publishing user.
-     * @param publishDate The date the resource was published.
-     *
-     * @throws RestException If the method fails.
-     */
-    void publish(UUID resourceId, UUID userId, Date publishDate)
-    throws RestException;
-
-    /**
-     * Unpublish the specified resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param userId The id of the un-publishing user.
-     * @param publishDate The date the resource was un-published.
-     *
-     * @throws RestException If the method fails.
-     */
-    void unpublish(UUID resourceId, UUID userId, Date publishDate)
-                                                  throws RestException;
 
     /**
      * Specify whether a resource should be included in a site's main menu.
@@ -201,43 +118,6 @@ public interface ResourcesExt
     void includeInMainMenu(UUID resourceId, boolean include)
     throws RestException;
 
-    /**
-     * Specify whether a resource should be included in a site's main menu.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param include True if the resource should be included, false otherwise.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void includeInMainMenu(UUID resourceId,
-                           boolean include,
-                           UUID actorId,
-                           Date happenedOn)
-    throws RestException;
-
-    /**
-     * Update metadata of the resource.
-     *
-     * @param resourceId The id of the resource to update.
-     * @param title The new title to set.
-     * @param description The new description to set.
-     * @param tags The new tags to set.
-     * @param metadata The metadata to update.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void updateMetadata(UUID resourceId,
-                        String title,
-                        String description,
-                        String tags,
-                        Map<String, String> metadata,
-                        UUID actorId,
-                        Date happenedOn)
-    throws RestException;
 
     /**
      * Update metadata of the resource.
@@ -281,38 +161,6 @@ public interface ResourcesExt
     void createWorkingCopy(UUID resourceId, long index)
     throws RestException;
 
-    /**
-     * Change the security roles for a resource.
-     *
-     * @param resourceId The resource to update.
-     * @param acl The access control list for this resource.
-     * @param actorId The user id of the actor.
-     * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
-     */
-    void changeRoles(UUID resourceId,
-                     AclDto acl,
-                     UUID actorId,
-                     Date happenedOn)
-    throws RestException;
-
-    /**
-     * Apply a resource's working copy.
-     *
-     * @param resourceId The id of the resource.
-     * @param userId The user applying the working copy.
-     * @param happenedOn When the command happened.
-     * @param isMajorEdit Was this a major change.
-     * @param comment A comment describing the change.
-     *
-     * @throws RestException If the method fails.
-     */
-    void applyWorkingCopy(UUID resourceId,
-                          UUID userId,
-                          Date happenedOn,
-                          boolean isMajorEdit,
-                          String comment) throws RestException;
 
     /**
      * Update the period that a resource should be cached for.
@@ -347,34 +195,4 @@ public interface ResourcesExt
      * @return The contents as a string.
      */
     String fileContentsFromPath(String absolutePath, String charset);
-
-
-/* StatefulReader */
-//    /**
-//     * Look up a resource from its absolute path.
-//     *
-//     * @param absolutePath The absolute path to the resource.
-//     * @return Resource The resource at the specified path, or NULL if it
-//     *  doesn't exist.
-//     */
-//    IResource resourceFromPath(String absolutePath);
-//
-//
-//    /**
-//     * Look up a resource from its UUID.
-//     *
-//     * @param id The id of the resource.
-//     * @return Resource The resource at the specified path, or NULL if it
-//     *  doesn't exist.
-//     */
-//    IResource resourceFromId(String id);
-//
-//
-//    /**
-//     * Create UUID from a String.
-//     *
-//     * @param id The id as a string.
-//     * @return The UUID.
-//     */
-//    UUID uuidFromString(String id);
 }

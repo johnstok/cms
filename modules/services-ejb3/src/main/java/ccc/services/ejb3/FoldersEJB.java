@@ -94,32 +94,8 @@ public class FoldersEJB
                                         final boolean publish)
     throws RestException {
         try {
-            return createFolder(
-                parentId,
-                name,
-                title,
-                publish,
-                currentUserId(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(MIGRATE)
-    public ResourceSummary createFolder(final UUID parentId,
-                                        final String name,
-                                        final String title,
-                                        final boolean publish,
-                                        final UUID actorId,
-                                        final Date happenedOn)
-    throws RestException {
-        try {
-            final User u = userForId(actorId);
+            final User u = currentUser();
+            final Date happenedOn = new Date();
 
             final Folder f =
                 commands().createFolderCommand(parentId, name, title)

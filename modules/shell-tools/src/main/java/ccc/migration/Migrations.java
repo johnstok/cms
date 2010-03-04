@@ -46,8 +46,8 @@ import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.services.Migration;
 import ccc.types.Paragraph;
 
 /**
@@ -95,7 +95,7 @@ public class Migrations extends BaseMigrations {
      */
     public Migrations(final LegacyDBQueries legacyQueries,
                       final ResourcesExt resourcesExt,
-                      final PagesExt pagesExt,
+                      final Migration pagesExt,
                       final FoldersExt foldersExt,
                       final Users userCommands,
                       final Groups groups,
@@ -248,7 +248,7 @@ public class Migrations extends BaseMigrations {
                 "CREATED FOLDER",
                 _userName);
 
-            final ResourceSummary rs = _foldersExt.createFolder(
+            final ResourceSummary rs = getMigrations().createFolder(
                     parentFolderId,
                     r.name(),
                     r.cleanTitle(),
@@ -257,7 +257,7 @@ public class Migrations extends BaseMigrations {
                     le.getHappenedOn());
             log.debug("Created folder: "+r.contentId());
 
-            getResources().lock(
+            getMigrations().lock(
                 UUID.fromString(
                     rs.getId().toString()),
                     le.getUser().getId(),
@@ -267,7 +267,7 @@ public class Migrations extends BaseMigrations {
             showInMainMenu(r, rs, le);
             setMetadata(r, rs, le);
             setResourceRoles(r, rs, le);
-            getResources().unlock(
+            getMigrations().unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             migrateResources(rs.getId(), r.contentId());
@@ -328,7 +328,7 @@ public class Migrations extends BaseMigrations {
                         "UPDATE",
                         _userName);
 
-                    getResources().lock(
+                    getMigrations().lock(
                         UUID.fromString(
                             rs.getId().toString()),
                             le.getUser().getId(),
@@ -340,7 +340,7 @@ public class Migrations extends BaseMigrations {
                         log.warn("Update skipped(inner) for version  "+version
                           +" of page "+resource.contentId()+" "+e.getMessage());
                     }
-                    getResources().unlock(
+                    getMigrations().unlock(
                         rs.getId(), le.getUser().getId(), le.getHappenedOn());
                 } catch (final MigrationException e) {
                     log.warn("Update skipped for version "+version
@@ -348,7 +348,7 @@ public class Migrations extends BaseMigrations {
                 }
             }
 
-            getResources().lock(
+            getMigrations().lock(
                 UUID.fromString(
                     rs.getId().toString()),
                     le.getUser().getId(),
@@ -367,7 +367,7 @@ public class Migrations extends BaseMigrations {
 
             setMetadata(resource, rs, le);
             setResourceRoles(resource, rs, le);
-            getResources().unlock(
+            getMigrations().unlock(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
 
             log.debug("Migrated page "+resource.contentId());
@@ -389,7 +389,7 @@ public class Migrations extends BaseMigrations {
                                 final LogEntryBean le)
                                                  throws RestException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
-            getResources().includeInMainMenu(
+            getMigrations().includeInMainMenu(
                 rs.getId(), true, le.getUser().getId(), le.getHappenedOn());
         }
     }
@@ -448,7 +448,7 @@ public class Migrations extends BaseMigrations {
             isMajorEdit =
                 getLegacyQueries().selectIsMajorEdit(r.contentId(), version);
         }
-        getPages().updatePage(
+        getMigrations().updatePage(
             rs.getId(),
             d,
             userComment,

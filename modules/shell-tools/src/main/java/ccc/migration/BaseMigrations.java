@@ -51,8 +51,8 @@ import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
-import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.services.Migration;
 import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
@@ -68,7 +68,7 @@ public class BaseMigrations {
     private static Logger log = Logger.getLogger(BaseMigrations.class);
 
     private final Users _userCommands;
-    private final PagesExt _pagesExt;
+    private final Migration _pagesExt;
     private final ResourcesExt _resourcesExt;
     private final Groups _groups;
 
@@ -94,7 +94,7 @@ public class BaseMigrations {
      * @param resourcesExt The CCC7 resources API.
      */
     protected BaseMigrations(final Users userCommands,
-                             final PagesExt pagesExt,
+                             final Migration pagesExt,
                              final ResourcesExt resourcesExt,
                              final Groups groups,
                              final LegacyDBQueries legacyQueries,
@@ -265,7 +265,7 @@ public class BaseMigrations {
                     .setGroups(groupList)
                     .setUsers(userList);
 
-            _resourcesExt.changeRoles(
+            _pagesExt.changeRoles(
                 rs.getId(),
                 acl,
                 le.getUser().getId(),
@@ -300,7 +300,7 @@ public class BaseMigrations {
             new ResourceName(templateName),
             templateDescription,
             templateFolder);
-        _resourcesExt.updateResourceTemplate(
+        _pagesExt.updateResourceTemplate(
             rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
     }
 
@@ -318,7 +318,7 @@ public class BaseMigrations {
                            final ResourceSummary rs,
                            final LogEntryBean le) throws RestException {
         if (r.isPublished()) {
-            _resourcesExt.publish(
+            _pagesExt.publish(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
         }
     }
@@ -347,7 +347,7 @@ public class BaseMigrations {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
-        _resourcesExt.updateMetadata(
+        _pagesExt.updateMetadata(
             rs.getId(),
             rs.getTitle(),
             rs.getDescription(),
@@ -467,7 +467,7 @@ public class BaseMigrations {
      *
      * @return Returns the CCC7 pages API.
      */
-    protected final PagesExt getPages() {
+    protected final Migration getMigrations() {
         return _pagesExt;
     }
 
