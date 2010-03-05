@@ -26,11 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -44,16 +40,9 @@ import org.apache.log4j.Logger;
 import ccc.commands.Command;
 import ccc.commands.CommandFactory;
 import ccc.commons.Exceptions;
-import ccc.domain.Action;
-import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
-import ccc.domain.File;
-import ccc.domain.Folder;
-import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.Revision;
-import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ActionRepository;
 import ccc.persistence.CommentRepository;
@@ -63,21 +52,8 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
-import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.TextFileDelta;
-import ccc.types.CommandType;
-import ccc.types.ResourceType;
 
 
 /**
@@ -188,11 +164,10 @@ abstract class AbstractEJB {
 
     /**
      * Accessor.
-     * TODO: Rename.
      *
      * @return Returns the file repository.
      */
-    protected final DataRepository getFiles() {
+    protected final DataRepository getData() {
         return _dm;
     }
 
@@ -327,277 +302,5 @@ abstract class AbstractEJB {
             _context.setRollbackOnly();  // CRITICAL
             throw new UnauthorizedException();
         }
-    }
-
-
-
-    /* ====================================================================
-     * Model translation.
-     * ================================================================== */
-
-    /**
-     * Map a collection of Resource to a collection of ResourceSummary.
-     *
-     * @param resources The collection of resources to map.
-     * @return The corresponding collection of ResourceSummary.
-     */
-    protected List<ResourceSummary> mapResources(
-                               final Collection<? extends Resource> resources) {
-        final List<ResourceSummary> mapped =
-            new ArrayList<ResourceSummary>();
-        for (final Resource r : resources) {
-            mapped.add(mapResource(r));
-        }
-        return mapped;
-    }
-
-
-    /**
-     * Create summaries for a collection of files.
-     *
-     * @param files The files.
-     * @return The corresponding summaries.
-     */
-    protected List<FileDto> mapFiles(final Collection<File> files) {
-        final List<FileDto> mapped = new ArrayList<FileDto>();
-        for (final File f : files) {
-            mapped.add(f.mapFile());
-        }
-        return mapped;
-    }
-
-
-    /**
-     * Create summaries for a collection of log entries.
-     *
-     * @param revisions The revisions.
-     * @return The corresponding summaries.
-     */
-    protected Collection<RevisionDto> mapLogEntries(
-                         final Map<Integer, ? extends Revision<?>> revisions) {
-        final Collection<RevisionDto> mapped =
-            new ArrayList<RevisionDto>();
-        for (final Map.Entry<Integer, ? extends Revision<?>> rev
-            : revisions.entrySet()) {
-            mapped.add(mapLogEntry(rev));
-        }
-        return mapped;
-    }
-
-
-    /**
-     * Create summaries for a collection of templates.
-     *
-     * @param templates The templates.
-     * @return The corresponding summaries.
-     */
-    protected Collection<TemplateSummary> mapTemplates(
-                                               final List<Template> templates) {
-        final Collection<TemplateSummary> mapped =
-            new ArrayList<TemplateSummary>();
-        for (final Template t : templates) {
-            mapped.add(t.summarize()); }
-        return mapped;
-    }
-
-
-    /**
-     * Create a summary for a log entry.
-     *
-     * @param rev The revision.
-     * @return A corresponding summary.
-     */
-    protected RevisionDto mapLogEntry(
-                         final Map.Entry<Integer, ? extends Revision<?>> rev) {
-        return
-            new RevisionDto(
-                CommandType.PAGE_UPDATE,
-                rev.getValue().getActor().getUsername(),
-                rev.getValue().getTimestamp(),
-                rev.getKey().longValue(),
-                rev.getValue().getComment(),
-                rev.getValue().isMajorChange());
-    }
-
-
-    /**
-     * Create a summary for a resource.
-     *
-     * @param r The CCC resource.
-     * @return The corresponding summary.
-     */
-    public ResourceSummary mapResource(final Resource r) {
-        int childCount = 0;
-        int folderCount = 0;
-        String sortOrder = null;
-        UUID indexPage = null;
-        boolean hasWorkingCopy = false;
-        if (r.getType() == ResourceType.FOLDER) {
-            childCount = r.as(Folder.class).getEntries().size();
-            folderCount = r.as(Folder.class).getFolders().size();
-            sortOrder = r.as(Folder.class).getSortOrder().name();
-            indexPage = (null==r.as(Folder.class).getIndexPage())
-                ? null : r.as(Folder.class).getIndexPage().getId();
-        } else if (r.getType() == ResourceType.PAGE) {
-            hasWorkingCopy = (r.as(Page.class).hasWorkingCopy());
-        } else if (r.getType() == ResourceType.FILE) {
-            hasWorkingCopy = (r.as(File.class).hasWorkingCopy());
-        }
-
-        final ResourceSummary rs =
-            new ResourceSummary(
-                r.getId(),
-                (null==r.getParent()) ? null : r.getParent().getId(),
-                r.getName().toString(),
-                (r.isPublished())
-                    ? r.getPublishedBy().getUsername() : null,
-                r.getTitle(),
-                (r.isLocked()) ? r.getLockedBy().getUsername() : null,
-                r.getType(),
-                childCount,
-                folderCount,
-                r.isIncludedInMainMenu(),
-                sortOrder,
-                hasWorkingCopy,
-                r.getDateCreated(),
-                r.getDateChanged(),
-                (null==r.getTemplate()) ? null : r.getTemplate().getId(),
-                r.getTagString(),
-                r.getAbsolutePath().removeTop().toString(),
-                indexPage,
-                r.getDescription(),
-                (r.getCreatedBy() != null)
-                    ? r.getCreatedBy().getUsername() : null,
-                (r.getChangedBy() != null)
-                    ? r.getChangedBy().getUsername() : null
-            );
-        return rs;
-    }
-
-
-    /**
-     * Create a summary of a text file.
-     *
-     * @param file The file to map.
-     * @return The summary of the file.
-     */
-    protected TextFileDelta mapTextFile(final File file) {
-
-        final TextFileDelta fs =
-            new TextFileDelta(
-                file.getId(),
-                (!file.isText())
-                    ? null : ReadToStringAction.read(_dm, file),
-                file.getMimeType(),
-                file.currentRevision().isMajorChange(),
-                file.currentRevision().getComment());
-        return fs;
-    }
-
-
-    /**
-     * Create a delta for a template.
-     *
-     * @param template The template.
-     * @return A corresponding delta.
-     */
-    protected TemplateDelta deltaTemplate(final Template template) {
-        if (null==template) {
-            return null;
-        }
-        final TemplateDelta delta =
-            new TemplateDelta(
-                template.getBody(),
-                template.getDefinition(),
-                template.getMimeType()
-        );
-        return delta;
-    }
-
-
-    /**
-     * Create a delta for an alias.
-     *
-     * @param alias The alias.
-     * @return A corresponding delta.
-     */
-    protected AliasDelta deltaAlias(final Alias alias) {
-        return alias.createSnapshot();
-    }
-
-
-    /**
-     * Create a delta for a file.
-     *
-     * @param file The file.
-     * @return A corresponding delta.
-     */
-    protected FileDelta deltaFile(final File file) {
-        return file.getOrCreateWorkingCopy();
-    }
-
-
-    /**
-     * Create a delta for a page.
-     *
-     * @param page The CCC page.
-     * @return The corresponding delta.
-     */
-    protected PageDelta deltaPage(final Page page) {
-        return page.getOrCreateWorkingCopy();
-    }
-
-
-    /**
-     * Create deltas for a collection of templates.
-     *
-     * @param templates The templates.
-     * @return The corresponding deltas.
-     */
-    protected Collection<TemplateDelta> deltaTemplates(
-                                               final List<Template> templates) {
-        final Collection<TemplateDelta> mapped = new ArrayList<TemplateDelta>();
-        for (final Template t : templates) {
-            mapped.add(deltaTemplate(t));
-        }
-        return mapped;
-    }
-
-
-    /**
-     * Create summaries for a list of actions.
-     *
-     * @param actions The actions.
-     * @return The corresponding summaries.
-     */
-    protected List<ActionSummary> mapActions(
-                                             final Collection<Action> actions) {
-        final List<ActionSummary> summaries =
-            new ArrayList<ActionSummary>();
-        for (final Action a : actions) {
-            summaries.add(mapAction(a));
-        }
-        return summaries;
-    }
-
-
-    /**
-     * Create a summary for an action.
-     *
-     * @param a The action.
-     * @return The corresponding summary.
-     */
-    protected ActionSummary mapAction(final Action a) {
-        final ActionSummary summary =
-            new ActionSummary(
-                a.getId(),
-                a.getType(),
-                a.getActor().getUsername(),
-                a.getExecuteAfter(),
-                a.getSubject().getType(),
-                a.getSubject().getAbsolutePath().removeTop().toString(),
-                a.getStatus(),
-                (null==a.getCode()) ? null : a.getCode());
-        return summary;
     }
 }

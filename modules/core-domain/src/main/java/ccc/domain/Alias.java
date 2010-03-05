@@ -161,4 +161,14 @@ public class Alias extends Resource {
         setDtoProps(dto);
         return dto;
     }
+
+
+    /**
+     * Create a delta for an alias.
+     *
+     * @return A corresponding delta.
+     */
+    public AliasDelta deltaAlias() {
+        return createSnapshot();
+    }
 }

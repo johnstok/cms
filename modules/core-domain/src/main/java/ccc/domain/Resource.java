@@ -35,12 +35,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.commons.WordCharFixer;
 import ccc.rest.dto.AclDto;
+import ccc.rest.dto.ResourceSummary;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
@@ -901,6 +903,77 @@ public abstract class Resource
         dto.setTitle(getTitle());
         dto.setType(getType());
         dto.setVisible(isVisible());
+    }
+
+
+    /**
+     * Map a collection of Resource to a collection of ResourceSummary.
+     *
+     * @param resources The collection of resources to map.
+     * @return The corresponding collection of ResourceSummary.
+     */
+    public static List<ResourceSummary> mapResources(
+                               final Collection<? extends Resource> resources) {
+        final List<ResourceSummary> mapped =
+            new ArrayList<ResourceSummary>();
+        for (final Resource r : resources) {
+            mapped.add(r.mapResource());
+        }
+        return mapped;
+    }
+
+
+    /**
+     * Create a summary for a resource.
+     *
+     * @return The corresponding summary.
+     */
+    public ResourceSummary mapResource() {
+        int childCount = 0;
+        int folderCount = 0;
+        String sortOrder = null;
+        UUID indexPage = null;
+        boolean hasWorkingCopy = false;
+        if (getType() == ResourceType.FOLDER) {
+            childCount = as(Folder.class).getEntries().size();
+            folderCount = as(Folder.class).getFolders().size();
+            sortOrder = as(Folder.class).getSortOrder().name();
+            indexPage = (null==as(Folder.class).getIndexPage())
+                ? null : as(Folder.class).getIndexPage().getId();
+        } else if (getType() == ResourceType.PAGE) {
+            hasWorkingCopy = (as(Page.class).hasWorkingCopy());
+        } else if (getType() == ResourceType.FILE) {
+            hasWorkingCopy = (as(File.class).hasWorkingCopy());
+        }
+
+        final ResourceSummary rs =
+            new ResourceSummary(
+                getId(),
+                (null==getParent()) ? null : getParent().getId(),
+                getName().toString(),
+                (isPublished())
+                    ? getPublishedBy().getUsername() : null,
+                getTitle(),
+                (isLocked()) ? getLockedBy().getUsername() : null,
+                getType(),
+                childCount,
+                folderCount,
+                isIncludedInMainMenu(),
+                sortOrder,
+                hasWorkingCopy,
+                getDateCreated(),
+                getDateChanged(),
+                (null==getTemplate()) ? null : getTemplate().getId(),
+                getTagString(),
+                getAbsolutePath().removeTop().toString(),
+                indexPage,
+                getDescription(),
+                (getCreatedBy() != null)
+                    ? getCreatedBy().getUsername() : null,
+                (getChangedBy() != null)
+                    ? getChangedBy().getUsername() : null
+            );
+        return rs;
     }
 
 

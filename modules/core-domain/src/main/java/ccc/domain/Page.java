@@ -207,4 +207,14 @@ public class Page
         dto.setRevision(revNo);
         return dto;
     }
+
+
+    /**
+     * Create a delta for a page.
+     *
+     * @return The corresponding delta.
+     */
+    public PageDelta deltaPage() {
+        return getOrCreateWorkingCopy();
+    }
 }

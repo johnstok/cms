@@ -26,8 +26,13 @@
  */
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
+import ccc.rest.dto.RevisionDto;
+import ccc.types.CommandType;
 import ccc.types.DBC;
 
 
@@ -113,4 +118,46 @@ public abstract class Revision<T> extends Entity {
      * @return A delta describing this revision's state.
      */
     protected abstract T delta();
+
+
+
+
+
+    /**
+     * Create a DTO for a revision.
+     *
+     * @param index The revision's index.
+     *
+     * @return A corresponding summary.
+     */
+    public RevisionDto mapRevision(final int index) {
+        return
+            new RevisionDto(
+                CommandType.PAGE_UPDATE,
+                getActor().getUsername(),
+                getTimestamp(),
+                index,
+                getComment(),
+                isMajorChange());
+    }
+
+
+
+    /**
+     * Create DTOs for a collection of revisions.
+     *
+     * @param revisions The revisions.
+     *
+     * @return The corresponding summaries.
+     */
+    public static Collection<RevisionDto> mapRevisions(
+                         final Map<Integer, ? extends Revision<?>> revisions) {
+        final Collection<RevisionDto> mapped =
+            new ArrayList<RevisionDto>();
+        for (final Map.Entry<Integer, ? extends Revision<?>> rev
+            : revisions.entrySet()) {
+            mapped.add(rev.getValue().mapRevision(rev.getKey().intValue()));
+        }
+        return mapped;
+    }
 }

@@ -90,7 +90,7 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed(TEMPLATE_READ)
     public Collection<TemplateSummary> templates() {
-        return mapTemplates(getResources().templates());
+        return Template.mapTemplates(getResources().templates());
     }
 
 
@@ -100,9 +100,10 @@ public final class TemplatesEJB
     public ResourceSummary createTemplate(final TemplateDto template)
                                                  throws RestException {
         try {
-            return mapResource(
+            return
                 commands().createTemplateCommand(template)
-                          .execute(currentUser(), new Date()));
+                          .execute(currentUser(), new Date())
+                          .mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -146,7 +147,7 @@ public final class TemplatesEJB
     throws RestException {
         try {
             return
-                deltaTemplate(getResources().find(Template.class, templateId));
+                getResources().find(Template.class, templateId).deltaTemplate();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

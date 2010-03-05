@@ -119,9 +119,10 @@ public class ActionsEJB
         final int pageNo,
         final int pageSize) {
         final DtoCollection<ActionSummary> dc =
-            new DtoCollection<ActionSummary>(getActions().countPending(),
-                mapActions(getActions().pending(
-                    sort, sortOrder, pageNo, pageSize)));
+            new DtoCollection<ActionSummary>(
+                getActions().countPending(),
+                Action.mapActions(
+                    getActions().pending(sort, sortOrder, pageNo, pageSize)));
         return dc;
     }
 
@@ -135,7 +136,7 @@ public class ActionsEJB
         final int pageSize) {
         final DtoCollection<ActionSummary> dc =
             new DtoCollection<ActionSummary>(getActions().countCompleted(),
-                mapActions(getActions().completed(
+                Action.mapActions(getActions().completed(
                     sort, sortOrder, pageNo, pageSize)));
         return dc;
     }
@@ -172,7 +173,7 @@ public class ActionsEJB
             new ScheduleActionCommand(getActions(), getAuditLog()).execute(
                 currentUser(), new Date(), a);
 
-            return mapAction(a);
+            return a.mapAction();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -184,7 +185,7 @@ public class ActionsEJB
     @RolesAllowed({ACTION_LIST})
     public ActionSummary findAction(final UUID actionId) throws RestException {
         try {
-            return mapAction(getActions().find(actionId));
+            return getActions().find(actionId).mapAction();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

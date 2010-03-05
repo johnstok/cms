@@ -107,7 +107,7 @@ public class FoldersEJB
                 f.unlock(u);
             }
 
-            return mapResource(f);
+            return f.mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -125,7 +125,7 @@ public class FoldersEJB
             commands().createRootCommand(f)
                       .execute(currentUser(), new Date());
 
-            return mapResource(f);
+            return f.mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -174,9 +174,9 @@ public class FoldersEJB
                 getResources().find(Folder.class, folderId);
             if (f != null) {
                 f.setSortOrder(ResourceOrder.MANUAL);
-                return mapResources(f.getEntries());
+                return Resource.mapResources(f.getEntries());
             }
-            return mapResources(new ArrayList<Resource>());
+            return Resource.mapResources(new ArrayList<Resource>());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -207,7 +207,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> roots() {
-        return mapResources(getResources().roots());
+        return Resource.mapResources(getResources().roots());
     }
 
     /* ====================================================================
@@ -222,7 +222,7 @@ public class FoldersEJB
         try {
             final Folder f =
                 getResources().find(Folder.class, folderId);
-            return mapResources(
+            return Resource.mapResources(
                 f != null ? f.getFolders() : new ArrayList<Folder>());
 
         } catch (final CccCheckedException e) {
@@ -238,7 +238,7 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f = getResources().find(Folder.class, folderId);
-            return mapResources(
+            return Resource.mapResources(
                 f != null ? f.getEntries() : new ArrayList<Resource>());
 
         } catch (final CccCheckedException e) {
@@ -261,7 +261,7 @@ public class FoldersEJB
                     filtered.add(r);
                 }
             }
-            return mapResources(filtered);
+            return Resource.mapResources(filtered);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -284,7 +284,7 @@ public class FoldersEJB
 
             final DtoCollection<ResourceSummary> dtoc =
                 new DtoCollection<ResourceSummary>(
-                    f.getEntries().size(), mapResources(
+                    f.getEntries().size(), Resource.mapResources(
                     getResources().list(
                         f,
                         null,

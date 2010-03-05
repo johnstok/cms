@@ -91,9 +91,10 @@ public class AliasesEJB
     public ResourceSummary createAlias(final AliasDto alias)
                                                  throws RestException {
         try {
-            return mapResource(
-                commands().createAliasCommand(alias)
-                          .execute(currentUser(), new Date()));
+            return commands()
+                    .createAliasCommand(alias)
+                    .execute(currentUser(), new Date())
+                    .mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
