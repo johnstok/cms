@@ -216,6 +216,6 @@ public class SearchEngineEJB  implements SearchEngine {
         }
         final DataRepository dr =
             new RepositoryFactory(_em).createDataRepository();
-        return new SimpleLuceneFS(dr, indexPath.value());
+        return new SimpleLuceneFS(dr, indexPath.getValue());
     }
 }

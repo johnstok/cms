@@ -114,7 +114,7 @@ public class Template
      *
      * @return The body as a string.
      */
-    public String body() {
+    public String getBody() {
         return currentRevision().getBody();
     }
 
@@ -123,7 +123,7 @@ public class Template
      *
      * @return The definition as a String.
      */
-    public String definition() {
+    public String getDefinition() {
         return currentRevision().getDefinition();
     }
 
@@ -132,7 +132,7 @@ public class Template
      *
      * @return Returns the mimeType.
      */
-    public MimeType mimeType() {
+    public MimeType getMimeType() {
         return currentRevision().getMimeType();
     }
 
@@ -140,9 +140,9 @@ public class Template
     @Override
     public TemplateDelta createSnapshot() {
         return new TemplateDelta(
-            body(),
-            definition(),
-            mimeType());
+            getBody(),
+            getDefinition(),
+            getMimeType());
     }
 
 
@@ -168,21 +168,21 @@ public class Template
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forCurrentRevision() {
-        return mapTemplate();
+        return summarize();
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forSpecificRevision(final int revNo) {
         // TODO: Return correct revision.
-        return mapTemplate();
+        return summarize();
     }
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary forWorkingCopy() {
         // TODO: Return working copy.
-        return mapTemplate();
+        return summarize();
     }
 
     /**
@@ -190,15 +190,15 @@ public class Template
      *
      * @return The corresponding summary.
      */
-    public TemplateSummary mapTemplate() {
+    public TemplateSummary summarize() {
         final TemplateSummary dto =
             new TemplateSummary(
                 getId(),
                 getName(),
                 getTitle(),
                 getDescription(),
-                body(),
-                definition());
+                getBody(),
+                getDefinition());
         setDtoProps(dto);
         dto.setRevision(currentRevisionNo());
         return dto;

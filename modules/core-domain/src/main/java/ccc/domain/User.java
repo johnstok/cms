@@ -114,7 +114,7 @@ public class User extends Entity {
      *
      * @return The username.
      */
-    public Username username() {
+    public Username getUsername() {
         return _username;
     }
 
@@ -123,7 +123,7 @@ public class User extends Entity {
      *
      * @param username The username.
      */
-    public void username(final Username username) {
+    public void setUsername(final Username username) {
         _username = username;
     }
 
@@ -132,7 +132,7 @@ public class User extends Entity {
      *
      * @return The name.
      */
-    public String name() {
+    public String getName() {
         return _name;
     }
 
@@ -141,7 +141,7 @@ public class User extends Entity {
      *
      * @param name The name.
      */
-    public void name(final String name) {
+    public void setName(final String name) {
         _name = name;
     }
 
@@ -151,7 +151,7 @@ public class User extends Entity {
      *
      * @param email The email.
      */
-    public void email(final EmailAddress email) {
+    public void setEmail(final EmailAddress email) {
         DBC.require().notNull(email);
         _email = email;
     }
@@ -161,7 +161,7 @@ public class User extends Entity {
      *
      * @return The email as a string.
      */
-    public EmailAddress email() {
+    public EmailAddress getEmail() {
         return _email;
     }
 
@@ -170,7 +170,7 @@ public class User extends Entity {
      *
      * @param newRole The role to assign.
      */
-    public void addRole(final Group newRole) {
+    public void addGroup(final Group newRole) {
         _roles.add(newRole);
     }
 
@@ -181,7 +181,7 @@ public class User extends Entity {
      * @return True if the user has the permission.
      */
     public boolean hasPermission(final String permission) {
-        for (final Group g : roles()) {
+        for (final Group g : getGroups()) {
             if (g.hasPermission(permission)) { return true; }
         }
         return false;
@@ -193,8 +193,8 @@ public class User extends Entity {
      * @param group The group to check.
      * @return True if the user is a member.
      */
-    public boolean memberOf(final Group group) {
-        return roles().contains(group);
+    public boolean isMemberOf(final Group group) {
+        return getGroups().contains(group);
     }
 
     /**
@@ -202,7 +202,7 @@ public class User extends Entity {
      *
      * @return Roles of the user.
      */
-    public Set<Group> roles() {
+    public Set<Group> getGroups() {
         return new HashSet<Group>(_roles);
     }
 
@@ -252,7 +252,7 @@ public class User extends Entity {
      *
      * @return The metadata as a hash map.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return new HashMap<String, String>(_metadata);
     }
 
@@ -285,7 +285,7 @@ public class User extends Entity {
      *
      * @param passwordString The new password.
      */
-    public void password(final String passwordString) {
+    public void setPassword(final String passwordString) {
         _hash = hash(passwordString, getId().toString());
     }
 
@@ -296,7 +296,7 @@ public class User extends Entity {
      * @param passwordString The unhashed password as a string.
      * @return True if passwordString's hash matches.
      */
-    public boolean matches(final String passwordString) {
+    public boolean hasPassword(final String passwordString) {
         return Arrays.equals(hash(passwordString, getId().toString()), _hash);
     }
 
@@ -365,9 +365,9 @@ public class User extends Entity {
      *
      * @return The group IDs, as a set.
      */
-    public Set<UUID> groupIds() {
+    public Set<UUID> getGroupIds() {
         final Set<UUID> groupIds = new HashSet<UUID>();
-        for (final Group g : roles()) {
+        for (final Group g : getGroups()) {
             groupIds.add(g.getId());
         }
         return groupIds;
@@ -387,12 +387,12 @@ public class User extends Entity {
      */
     public UserDto toDto() {
         final UserDto dto = new UserDto();
-        dto.setEmail(email().getText());
+        dto.setEmail(getEmail().getText());
         dto.setId(getId());
-        dto.setUsername(username());
-        dto.setName(name());
-        dto.setRoles(groupIds());
-        dto.setMetadata(metadata());
+        dto.setUsername(getUsername());
+        dto.setName(getName());
+        dto.setRoles(getGroupIds());
+        dto.setMetadata(getMetadata());
         dto.setPermissions(getPermissions());
         return dto;
     }
@@ -404,7 +404,7 @@ public class User extends Entity {
      */
     public Collection<String> getPermissions() {
         final Set<String> perms = new HashSet<String>();
-        for (final Group g : roles()) { perms.addAll(g.getPermissions()); }
+        for (final Group g : getGroups()) { perms.addAll(g.getPermissions()); }
         return perms;
     }
 

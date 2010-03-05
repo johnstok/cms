@@ -110,8 +110,8 @@ public final class SettingTest extends TestCase {
         final Setting s = new Setting(name, value);
 
         // ASSERT
-        assertEquals(name, s.name());
-        assertEquals(value, s.value());
+        assertEquals(name, s.getName());
+        assertEquals(value, s.getValue());
     }
 
     /**
@@ -125,11 +125,11 @@ public final class SettingTest extends TestCase {
         final Setting s = new Setting(name, value);
 
         // ACT
-        s.value("baz");
+        s.setValue("baz");
 
         // ASSERT
-        assertEquals(name, s.name());
-        assertEquals("baz", s.value());
+        assertEquals(name, s.getName());
+        assertEquals("baz", s.getValue());
     }
 
     /**
@@ -143,7 +143,7 @@ public final class SettingTest extends TestCase {
 
         // ACT
         try {
-            s.value(null);
+            s.setValue(null);
             fail("NULL value should be rejected.");
 
         // ASSERT

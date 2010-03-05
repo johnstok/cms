@@ -66,8 +66,8 @@ public class InsufficientPrivilegesException
     public String getMessage() {
         return
             "User "
-            + _user.username()
-            + _user.roles()
+            + _user.getUsername()
+            + _user.getGroups()
             + " may not perform action: "
             + _action;
     }

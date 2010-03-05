@@ -82,9 +82,9 @@ public class CreateUserCommand {
                         final UserDto delta) throws CccCheckedException {
         final User user =
             new User(delta.getUsername(), delta.getName(), delta.getPassword());
-        user.email(new EmailAddress(delta.getEmail()));
+        user.setEmail(new EmailAddress(delta.getEmail()));
         for (final UUID groupId : delta.getRoles()) {
-            user.addRole(_groups.find(groupId));
+            user.addGroup(_groups.find(groupId));
         }
         user.addMetadata(delta.getMetadata());
         _repository.create(user);

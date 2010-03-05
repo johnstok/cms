@@ -59,7 +59,7 @@ public class UnlockedException
      *
      * @return The unlocked resource.
      */
-    public Resource resource() {
+    public Resource getResource() {
         return _resource;
     }
 

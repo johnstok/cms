@@ -568,7 +568,7 @@ public class ResourcesEJB
             final Resource r =
                 getResources().find(Resource.class, resourceId);
             final Template t = r.computeTemplate(null);
-            return (null==t) ? null : t.mapTemplate();
+            return (null==t) ? null : t.summarize();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

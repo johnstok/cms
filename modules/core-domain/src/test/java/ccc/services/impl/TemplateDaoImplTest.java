@@ -89,9 +89,9 @@ public class TemplateDaoImplTest
 
         // ASSERT
         verify(_repository, _al);
-        assertEquals("newBody", foo.body());
-        assertEquals("newDefn", foo.definition());
-        assertEquals(MimeType.BINARY_DATA, foo.mimeType());
+        assertEquals("newBody", foo.getBody());
+        assertEquals("newDefn", foo.getDefinition());
+        assertEquals(MimeType.BINARY_DATA, foo.getMimeType());
     }
 
 

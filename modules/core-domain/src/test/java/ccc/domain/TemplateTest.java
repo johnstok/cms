@@ -85,8 +85,8 @@ public final class TemplateTest extends TestCase {
         assertEquals(new ResourceName("foo_"), t.getName());
         assertEquals("foo!", t.getTitle());
         assertEquals("bar", t.getDescription());
-        assertEquals("Hello world", t.body());
-        assertEquals("<fields/>", t.definition());
+        assertEquals("Hello world", t.getBody());
+        assertEquals("<fields/>", t.getDefinition());
         assertEquals(ResourceType.TEMPLATE, t.getType());
     }
 
@@ -110,8 +110,8 @@ public final class TemplateTest extends TestCase {
         assertEquals(new ResourceName("testName"), t.getName());
         assertEquals("foo!", t.getTitle());
         assertEquals("bar", t.getDescription());
-        assertEquals("Hello world", t.body());
-        assertEquals("<fields/>", t.definition());
+        assertEquals("Hello world", t.getBody());
+        assertEquals("<fields/>", t.getDefinition());
         assertEquals(ResourceType.TEMPLATE, t.getType());
     }
 

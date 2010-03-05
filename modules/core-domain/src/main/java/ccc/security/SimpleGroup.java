@@ -46,7 +46,6 @@ public class SimpleGroup
     implements
         Group {
 
-    // Should be a set.
     private final Set<Principal> _members = new HashSet<Principal>();
 
     /**

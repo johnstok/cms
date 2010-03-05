@@ -433,7 +433,7 @@ public class ResourceDaoImplTest
         new User(new Username("another"), "password");
     private final User _adminUser =
         new User(new Username("admin"), "password"){{
-       addRole(new Group("ADMINISTRATOR"));
+       addGroup(new Group("ADMINISTRATOR"));
     }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
