@@ -28,12 +28,18 @@ package ccc.domain;
 
 import static ccc.types.FilePropertyNames.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.persistence.DataRepository;
+import ccc.persistence.streams.ReadToStringAction;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
+import ccc.rest.dto.TextFileDelta;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
@@ -336,5 +342,49 @@ public class File
                 getProperties());
         setDtoProps(fs);
         return fs;
+    }
+
+
+    /**
+     * Create a summary of a text file.
+     *
+     * @return The summary of the file.
+     */
+    public TextFileDelta mapTextFile(final DataRepository _dm) {
+
+        final TextFileDelta fs =
+            new TextFileDelta(
+                getId(),
+                (!isText())
+                    ? null : ReadToStringAction.read(_dm, this),
+                getMimeType(),
+                currentRevision().isMajorChange(),
+                currentRevision().getComment());
+        return fs;
+    }
+
+
+    /**
+     * Create summaries for a collection of files.
+     *
+     * @param files The files.
+     * @return The corresponding summaries.
+     */
+    public static List<FileDto> mapFiles(final Collection<File> files) {
+        final List<FileDto> mapped = new ArrayList<FileDto>();
+        for (final File f : files) {
+            mapped.add(f.mapFile());
+        }
+        return mapped;
+    }
+
+
+    /**
+     * Create a delta for a file.
+     *
+     * @return A corresponding delta.
+     */
+    public FileDelta deltaFile() {
+        return getOrCreateWorkingCopy();
     }
 }

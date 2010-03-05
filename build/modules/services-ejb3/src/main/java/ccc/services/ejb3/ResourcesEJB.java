@@ -60,6 +60,7 @@ import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
+import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.streams.ReadToStringAction;
@@ -397,12 +398,12 @@ public class ResourcesEJB
                                         final String title)
                                                  throws RestException {
         try {
-            return mapResource(
+            return
                 commands().createSearchCommand(
                     parentId,
                     title)
                 .execute(currentUser(), new Date())
-            );
+                .mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -508,7 +509,7 @@ public class ResourcesEJB
     public Collection<RevisionDto> history(final UUID resourceId)
     throws RestException {
         try {
-            return mapLogEntries(getResources().history(resourceId));
+            return Revision.mapRevisions(getResources().history(resourceId));
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -520,7 +521,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_READ)
     public Collection<ResourceSummary> locked() {
-        return mapResources(getResources().locked());
+        return Resource.mapResources(getResources().locked());
     }
 
 
@@ -582,8 +583,8 @@ public class ResourcesEJB
     public ResourceSummary resourceForPath(final String rootPath)
     throws RestException {
         try {
-            return mapResource(
-                getResources().lookup(new ResourcePath(rootPath)));
+            return
+                getResources().lookup(new ResourcePath(rootPath)).mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -596,7 +597,7 @@ public class ResourcesEJB
     @PermitAll
     public Collection<ResourceSummary> resourceForMetadataKey(
         final String key) {
-        return mapResources(getResources().lookupWithMetadataKey(key));
+        return Resource.mapResources(getResources().lookupWithMetadataKey(key));
 
     }
 
@@ -606,7 +607,7 @@ public class ResourcesEJB
     public ResourceSummary resourceForLegacyId(final String legacyId)
     throws RestException {
         try {
-            return mapResource(getResources().lookupWithLegacyId(legacyId));
+            return getResources().lookupWithLegacyId(legacyId).mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -717,7 +718,7 @@ public class ResourcesEJB
         if (r instanceof File) {
             final File f = (File) r;
             if (f.isText()) {
-                getFiles().retrieve(
+                getData().retrieve(
                     f.getData(),
                     new ReadToStringAction(sb, charset)
                 );
@@ -740,7 +741,7 @@ public class ResourcesEJB
 
             final Folder f = r.getParent().as(Folder.class);
             for (final Resource item : f.getEntries()) {
-                siblings.add(mapResource(item));
+                siblings.add(item.mapResource());
             }
 
         } catch (final CccCheckedException e) {
@@ -776,7 +777,7 @@ public class ResourcesEJB
             final Resource r = getResources().find(Resource.class, resourceId);
             checkSecurity(r);
             return
-                mapResource(r);
+                r.mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -820,7 +821,7 @@ public class ResourcesEJB
         }
 
         return
-            mapResources(
+            Resource.mapResources(
                 filterAccessibleTo(u,
                     getResources().list(
                         null,

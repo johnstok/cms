@@ -26,6 +26,10 @@
  */
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.DBC;
@@ -185,6 +189,7 @@ public class Template
         return summarize();
     }
 
+
     /**
      * Create a summary for a template.
      *
@@ -202,5 +207,52 @@ public class Template
         setDtoProps(dto);
         dto.setRevision(currentRevisionNo());
         return dto;
+    }
+
+
+    /**
+     * Create a delta for a template.
+     *
+     * @return A corresponding delta.
+     */
+    public TemplateDelta deltaTemplate() {
+        final TemplateDelta delta =
+            new TemplateDelta(
+                getBody(),
+                getDefinition(),
+                getMimeType());
+        return delta;
+    }
+
+
+    /**
+     * Create summaries for a collection of templates.
+     *
+     * @param templates The templates.
+     * @return The corresponding summaries.
+     */
+    public static Collection<TemplateSummary> mapTemplates(
+                                               final List<Template> templates) {
+        final Collection<TemplateSummary> mapped =
+            new ArrayList<TemplateSummary>();
+        for (final Template t : templates) {
+            mapped.add(t.summarize()); }
+        return mapped;
+    }
+
+
+    /**
+     * Create deltas for a collection of templates.
+     *
+     * @param templates The templates.
+     * @return The corresponding deltas.
+     */
+    protected Collection<TemplateDelta> deltaTemplates(
+                                               final List<Template> templates) {
+        final Collection<TemplateDelta> mapped = new ArrayList<TemplateDelta>();
+        for (final Template t : templates) {
+            mapped.add(t.deltaTemplate());
+        }
+        return mapped;
     }
 }

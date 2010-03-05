@@ -26,10 +26,14 @@
  */
 package ccc.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import ccc.rest.dto.ActionSummary;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.types.ActionStatus;
@@ -196,6 +200,45 @@ public class Action extends Entity {
             throw new IllegalStateException("Status is "+_status);
         }
     }
+
+
+
+    /**
+     * Create summaries for a list of actions.
+     *
+     * @param actions The actions.
+     * @return The corresponding summaries.
+     */
+    public static List<ActionSummary> mapActions(
+                                             final Collection<Action> actions) {
+        final List<ActionSummary> summaries =
+            new ArrayList<ActionSummary>();
+        for (final Action a : actions) {
+            summaries.add(a.mapAction());
+        }
+        return summaries;
+    }
+
+
+    /**
+     * Create a summary for an action.
+     *
+     * @return The corresponding summary.
+     */
+    public ActionSummary mapAction() {
+        final ActionSummary summary =
+            new ActionSummary(
+                getId(),
+                getType(),
+                getActor().getUsername(),
+                getExecuteAfter(),
+                getSubject().getType(),
+                getSubject().getAbsolutePath().removeTop().toString(),
+                getStatus(),
+                (null==getCode()) ? null : getCode());
+        return summary;
+    }
+
 
     /** {@inheritDoc} */
     @Override

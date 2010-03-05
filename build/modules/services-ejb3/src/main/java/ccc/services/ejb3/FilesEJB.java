@@ -90,7 +90,7 @@ public class FilesEJB
             final List<File> list =
                 getResources().images(folderId, pageNo, pageSize);
             final long c = getResources().imagesCount(folderId);
-            return new DtoCollection<FileDto>(c, mapFiles(list));
+            return new DtoCollection<FileDto>(c, File.mapFiles(list));
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
@@ -139,7 +139,7 @@ public class FilesEJB
                 f.unlock(u);
             }
 
-            return mapResource(f);
+            return f.mapResource();
         } catch (final CccCheckedException e) {
             throw fail(e);
         }
@@ -160,7 +160,7 @@ public class FilesEJB
             new UpdateFileCommand(
                 getResources(),
                 getAuditLog(),
-                getFiles(),
+                getData(),
                 UUID.fromString(fileId.toString()),
                 fileDelta,
                 comment,
@@ -250,7 +250,9 @@ public class FilesEJB
     public TextFileDelta get(final UUID fileId) throws RestException {
         try {
             // FIXME: check file is accessible to user.
-            return mapTextFile(getResources().find(File.class, fileId));
+            return getResources()
+                    .find(File.class, fileId)
+                    .mapTextFile(getData());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -267,7 +269,7 @@ public class FilesEJB
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f);
-            getFiles().retrieve(f.getData(), action);
+            getData().retrieve(f.getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -285,7 +287,7 @@ public class FilesEJB
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f);
-            getFiles().retrieve(f.revision(revision).getData(), action);
+            getData().retrieve(f.revision(revision).getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -302,7 +304,7 @@ public class FilesEJB
         try {
             final File f = getResources().find(File.class, file);
             checkSecurity(f);
-            getFiles().retrieve(f.getWorkingCopy().getData(), action);
+            getData().retrieve(f.getWorkingCopy().getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

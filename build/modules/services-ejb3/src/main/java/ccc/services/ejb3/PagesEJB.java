@@ -78,16 +78,16 @@ public class PagesEJB
     public ResourceSummary createPage(final PageDto page)
                                                  throws RestException {
         return
-            mapResource(
-                execute(
-                    commands().createPageCommand(
-                        page.getParentId(),
-                        page.getDelta(),
-                        ResourceName.escape(page.getName()),
-                        page.getTitle(),
-                        page.getTemplateId(),
-                        page.getComment(),
-                        page.getMajorChange())));
+            execute(
+                commands().createPageCommand(
+                    page.getParentId(),
+                    page.getDelta(),
+                    ResourceName.escape(page.getName()),
+                    page.getTitle(),
+                    page.getTemplateId(),
+                    page.getComment(),
+                    page.getMajorChange()))
+                .mapResource();
     }
 
 
@@ -154,7 +154,7 @@ public class PagesEJB
     public PageDelta pageDelta(final UUID pageId) throws RestException {
         try {
             return
-                deltaPage(getResources().find(Page.class, pageId));
+                getResources().find(Page.class, pageId).deltaPage();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

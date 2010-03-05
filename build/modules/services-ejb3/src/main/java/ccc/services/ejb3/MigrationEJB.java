@@ -95,7 +95,7 @@ public class MigrationEJB
                 f.unlock(u);
             }
 
-            return mapResource(f);
+            return f.mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -136,7 +136,7 @@ public class MigrationEJB
                 p.unlock(u);
             }
 
-            return mapResource(p);
+            return p.mapResource();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
