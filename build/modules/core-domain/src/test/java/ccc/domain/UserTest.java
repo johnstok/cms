@@ -60,7 +60,7 @@ public class UserTest
         final User u = new User(new Username("dummy"), "password");
 
         // ASSERT
-        assertTrue("Password should match.", u.matches("password"));
+        assertTrue("Password should match.", u.hasPassword("password"));
     }
 
     /**
@@ -91,7 +91,7 @@ public class UserTest
         final User u = new User(new Username("dummy"), "password");
 
         // ACT
-        u.password("newPass");
+        u.setPassword("newPass");
         final byte[] hash = User.hash(password, u.getId().toString());
 
         // ASSERT
@@ -112,7 +112,7 @@ public class UserTest
         final User u = new User(new Username("dummy"), "password");
 
         // ACT
-        final Set<Group> roles = u.roles();
+        final Set<Group> roles = u.getGroups();
 
         // ASSERT
         assertEquals(0, roles.size());
@@ -144,7 +144,7 @@ public class UserTest
         final User u = new User(new Username("dummy"), "password");
 
         // ACT
-        final Username username = u.username();
+        final Username username = u.getUsername();
 
         // ASSERT
         assertEquals(new Username("dummy"), username);
@@ -191,10 +191,10 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.email(new EmailAddress("fooEmail@test.com"));
+        u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
-        final String email = u.email().getText();
+        final String email = u.getEmail().getText();
 
         // ASSERT
         assertEquals("fooEmail@test.com", email);
@@ -214,19 +214,19 @@ public class UserTest
             }};
 
         // ACT
-        u.addRole(CONTENT_CREATOR);
-        u.addRole(SITE_BUILDER);
-        u.addRole(SITE_BUILDER);
+        u.addGroup(CONTENT_CREATOR);
+        u.addGroup(SITE_BUILDER);
+        u.addGroup(SITE_BUILDER);
 
         // ASSERT
-        assertEquals(2, u.roles().size());
-        assertEquals(expected, u.roles());
+        assertEquals(2, u.getGroups().size());
+        assertEquals(expected, u.getGroups());
         assertTrue(
             "Should be site builder",
-            u.memberOf(SITE_BUILDER));
+            u.isMemberOf(SITE_BUILDER));
         assertTrue(
             "Should be content creator",
-            u.memberOf(CONTENT_CREATOR));
+            u.isMemberOf(CONTENT_CREATOR));
     }
 
     /**
@@ -239,7 +239,7 @@ public class UserTest
 
         // ACT
         try {
-            u.email(null);
+            u.setEmail(null);
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -276,11 +276,11 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.email(new EmailAddress("fooEmail@test.com"));
+        u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
-            u.username(null);
+            u.setUsername(null);
         // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals("Specified value may not be NULL.", e.getMessage());
@@ -294,11 +294,11 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.email(new EmailAddress("fooEmail@test.com"));
+        u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
-            u.username(new Username(""));
+            u.setUsername(new Username(""));
             // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
@@ -314,11 +314,11 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.email(new EmailAddress("fooEmail@test.com"));
+        u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
         try {
-            u.username(new Username("blaa blaa"));
+            u.setUsername(new Username("blaa blaa"));
             // ASSERT
         } catch (final IllegalArgumentException e) {
             assertEquals(
@@ -335,13 +335,13 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.email(new EmailAddress("fooEmail@test.com"));
+        u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
-        u.username(new Username("newDummy"));
+        u.setUsername(new Username("newDummy"));
 
         // ASSERT
-        assertEquals("newDummy", u.username().toString());
+        assertEquals("newDummy", u.getUsername().toString());
     }
 
     /**
@@ -351,9 +351,9 @@ public class UserTest
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
-        u.addRole(CONTENT_CREATOR);
-        u.addRole(SITE_BUILDER);
-        u.addRole(SITE_BUILDER);
+        u.addGroup(CONTENT_CREATOR);
+        u.addGroup(SITE_BUILDER);
+        u.addGroup(SITE_BUILDER);
 
         final Set<Group> expected =
             new HashSet<Group>() {{
@@ -363,18 +363,18 @@ public class UserTest
 
         // ACT
         u.clearGroups();
-        u.addRole(ADMINISTRATOR);
-        u.addRole(SITE_BUILDER);
+        u.addGroup(ADMINISTRATOR);
+        u.addGroup(SITE_BUILDER);
 
         // ASSERT
-        assertEquals(2, u.roles().size());
-        assertEquals(expected, u.roles());
+        assertEquals(2, u.getGroups().size());
+        assertEquals(expected, u.getGroups());
         assertTrue(
             "Should be site builder",
-            u.memberOf(SITE_BUILDER));
+            u.isMemberOf(SITE_BUILDER));
         assertTrue(
             "Should be administrator",
-            u.memberOf(ADMINISTRATOR));
+            u.isMemberOf(ADMINISTRATOR));
     }
 
     private byte[] hash(final User u, final String passwordString) {

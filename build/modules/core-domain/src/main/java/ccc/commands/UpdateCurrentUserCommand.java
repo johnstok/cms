@@ -81,7 +81,7 @@ public class UpdateCurrentUserCommand
 
         // TODO: Move to separate command
         if (null != _delta.getPassword()) {
-            current.password(_delta.getPassword());
+            current.setPassword(_delta.getPassword());
             getAudit().record(
                 new LogEntry(
                     actor,
@@ -91,8 +91,8 @@ public class UpdateCurrentUserCommand
                     "{}"));
         }
 
-        current.email(new EmailAddress(_delta.getEmail()));
-        current.name(_delta.getName());
+        current.setEmail(new EmailAddress(_delta.getEmail()));
+        current.setName(_delta.getName());
         current.clearMetadata();
         current.addMetadata(_delta.getMetadata());
 

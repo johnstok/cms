@@ -86,7 +86,7 @@ public class JdbcDatabaseTest
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
             .andReturn(_s);
-        _s.setString(1, u.username().toString());
+        _s.setString(1, u.getUsername().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(u.getId().toString());
@@ -100,7 +100,7 @@ public class JdbcDatabaseTest
         replayAll();
 
         // ACT
-        final Object[] result = _db.lookupUser(u.username());
+        final Object[] result = _db.lookupUser(u.getUsername());
 
         verifyAll();
         assertEquals(3, result.length);
@@ -123,7 +123,7 @@ public class JdbcDatabaseTest
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
         .andReturn(_s);
-        _s.setString(1, u.username().toString());
+        _s.setString(1, u.getUsername().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.FALSE);
         _rs.close();
@@ -133,7 +133,7 @@ public class JdbcDatabaseTest
         replayAll();
 
         // ACT
-        final Object[] result = _db.lookupUser(u.username());
+        final Object[] result = _db.lookupUser(u.getUsername());
 
         verifyAll();
         assertNull("Should be NULL", result);
@@ -151,7 +151,7 @@ public class JdbcDatabaseTest
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x")).andReturn(_s);
-        _s.setString(1, u.username().toString());
+        _s.setString(1, u.getUsername().toString());
         expect(_s.executeQuery()).andReturn(_rs);
         expect(Boolean.valueOf(_rs.next())).andReturn(Boolean.TRUE);
         expect(_rs.getString(1)).andReturn(u.getId().toString());
@@ -167,7 +167,7 @@ public class JdbcDatabaseTest
 
         // ACT
         try {
-            _db.lookupUser(u.username());
+            _db.lookupUser(u.getUsername());
             fail("Should throw exception.");
 
 
@@ -187,8 +187,8 @@ public class JdbcDatabaseTest
 
         // ARRANGE
         final User u = new User(new Username("user"), "password");
-        u.addRole(new Group("ADMINISTRATOR"));
-        u.addRole(new Group("CONTENT_CREATOR"));
+        u.addGroup(new Group("ADMINISTRATOR"));
+        u.addGroup(new Group("CONTENT_CREATOR"));
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("y")).andReturn(_s);

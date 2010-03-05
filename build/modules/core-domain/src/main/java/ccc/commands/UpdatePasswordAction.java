@@ -77,7 +77,7 @@ public class UpdatePasswordAction {
                         final String password) throws CccCheckedException {
         final User u =
                 _repository.find(userId);
-        u.password(password);
+        u.setPassword(password);
 
         final LogEntry le = new LogEntry(
             actor,

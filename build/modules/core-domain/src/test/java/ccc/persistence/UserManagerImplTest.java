@@ -114,7 +114,7 @@ public class UserManagerImplTest extends TestCase {
 
         // ASSERT
         verifyAll();
-        assertEquals("newNameUser", u.username().toString());
+        assertEquals("newNameUser", u.getUsername().toString());
     }
 
     /**
@@ -241,7 +241,7 @@ public class UserManagerImplTest extends TestCase {
 
         // ASSERT
         verifyAll();
-        assertTrue(_u.matches("newPass"));
+        assertTrue(_u.hasPassword("newPass"));
     }
 
     private User _u;
@@ -255,7 +255,7 @@ public class UserManagerImplTest extends TestCase {
     @Override
     protected void setUp() {
         _u = new User(new Username("testUser"), "password");
-        _u.email(new EmailAddress("test@civicuk.com"));
+        _u.setEmail(new EmailAddress("test@civicuk.com"));
 
         _uDelta = new UserDto();
         _uDelta.setEmail("new.email@civicuk.com");

@@ -104,7 +104,7 @@ public class Page
         final Template template = computeTemplate(null);
         if (null != template) {
             final PageHelper pageHelper = new PageHelper();
-            pageHelper.validateFieldsForPage(paras, template.definition());
+            pageHelper.validateFieldsForPage(paras, template.getDefinition());
         }
     }
 

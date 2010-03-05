@@ -52,7 +52,7 @@ public class Setting extends Entity {
     public Setting(final Name name, final String value) {
         DBC.require().notNull(name);
         _name = name;
-        value(value);
+        setValue(value);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Setting extends Entity {
      *
      * @return The name, as a string.
      */
-    public final Name name() {
+    public final Name getName() {
         return _name;
     }
 
@@ -69,7 +69,7 @@ public class Setting extends Entity {
      *
      * @return The value, as a string.
      */
-    public final String value() {
+    public final String getValue() {
         return _value;
     }
 
@@ -78,7 +78,7 @@ public class Setting extends Entity {
      *
      * @param value The new value for this setting.
      */
-    public final void value(final String value) {
+    public final void setValue(final String value) {
         DBC.require().notEmpty(value);
         _value = value;
     }

@@ -101,11 +101,11 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final User tom = new User(new Username("tom"), "password");
-        tom.addRole(BAZ);
+        tom.addGroup(BAZ);
         final User dick = new User(new Username("dick"), "password");
-        dick.addRole(FOO);
+        dick.addGroup(FOO);
         final User harry = new User(new Username("harry"), "password");
-        harry.addRole(FOO);
+        harry.addGroup(FOO);
 
         final Folder f = new Folder();
         f.setUserAcl(Arrays.asList(new User[]{tom, harry}));
@@ -354,7 +354,7 @@ public final class ResourceTest extends TestCase {
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole(FOO);
+        tom.addGroup(FOO);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -389,7 +389,7 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
         r.setRoles(Arrays.asList(FOO));
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole(FOO);
+        tom.addGroup(FOO);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -407,7 +407,7 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
         r.setRoles(Arrays.asList(FOO, BAR));
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole(FOO);
+        tom.addGroup(FOO);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -430,8 +430,8 @@ public final class ResourceTest extends TestCase {
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
-        tom.addRole(FOO);
-        tom.addRole(BAR);
+        tom.addGroup(FOO);
+        tom.addGroup(BAR);
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(tom);
@@ -761,7 +761,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final UnlockedException e) {
-            assertEquals(p, e.resource());
+            assertEquals(p, e.getResource());
         }
 
 
@@ -828,7 +828,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final UnlockedException e) {
-            assertEquals(p, e.resource());
+            assertEquals(p, e.getResource());
         }
     }
 

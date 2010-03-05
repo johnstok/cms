@@ -396,7 +396,7 @@ abstract class AbstractEJB {
         final Collection<TemplateSummary> mapped =
             new ArrayList<TemplateSummary>();
         for (final Template t : templates) {
-            mapped.add(t.mapTemplate()); }
+            mapped.add(t.summarize()); }
         return mapped;
     }
 
@@ -412,7 +412,7 @@ abstract class AbstractEJB {
         return
             new RevisionDto(
                 CommandType.PAGE_UPDATE,
-                rev.getValue().getActor().username(),
+                rev.getValue().getActor().getUsername(),
                 rev.getValue().getTimestamp(),
                 rev.getKey().longValue(),
                 rev.getValue().getComment(),
@@ -450,9 +450,9 @@ abstract class AbstractEJB {
                 (null==r.getParent()) ? null : r.getParent().getId(),
                 r.getName().toString(),
                 (r.isPublished())
-                    ? r.getPublishedBy().username() : null,
+                    ? r.getPublishedBy().getUsername() : null,
                 r.getTitle(),
-                (r.isLocked()) ? r.getLockedBy().username() : null,
+                (r.isLocked()) ? r.getLockedBy().getUsername() : null,
                 r.getType(),
                 childCount,
                 folderCount,
@@ -467,9 +467,9 @@ abstract class AbstractEJB {
                 indexPage,
                 r.getDescription(),
                 (r.getCreatedBy() != null)
-                    ? r.getCreatedBy().username() : null,
+                    ? r.getCreatedBy().getUsername() : null,
                 (r.getChangedBy() != null)
-                    ? r.getChangedBy().username() : null
+                    ? r.getChangedBy().getUsername() : null
             );
         return rs;
     }
@@ -507,9 +507,9 @@ abstract class AbstractEJB {
         }
         final TemplateDelta delta =
             new TemplateDelta(
-                template.body(),
-                template.definition(),
-                template.mimeType()
+                template.getBody(),
+                template.getDefinition(),
+                template.getMimeType()
         );
         return delta;
     }
@@ -592,7 +592,7 @@ abstract class AbstractEJB {
             new ActionSummary(
                 a.getId(),
                 a.getType(),
-                a.getActor().username(),
+                a.getActor().getUsername(),
                 a.getExecuteAfter(),
                 a.getSubject().getType(),
                 a.getSubject().getAbsolutePath().removeTop().toString(),

@@ -80,6 +80,6 @@ class LogEntryRepositoryImpl
         LOG.info(
             "Action: " + le.getAction()
             + " for " + le.getSubjectId()
-            + " by " + le.getActor().username());
+            + " by " + le.getActor().getUsername());
     }
 }

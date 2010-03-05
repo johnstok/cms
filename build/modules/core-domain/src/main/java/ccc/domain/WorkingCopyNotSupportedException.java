@@ -60,7 +60,7 @@ public class WorkingCopyNotSupportedException
      *
      * @return The resource.
      */
-    public Resource resource() {
+    public Resource getResource() {
         return _resource;
     }
 

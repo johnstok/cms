@@ -737,7 +737,7 @@ public abstract class Resource
         }
 
         for (final Group role : getRoles()) {
-            if (user.memberOf(role)) {
+            if (user.isMemberOf(role)) {
                 return parentIsAccessible;
             }
         }
