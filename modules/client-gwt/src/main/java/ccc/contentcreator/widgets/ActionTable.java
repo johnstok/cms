@@ -101,34 +101,34 @@ public class ActionTable extends TablePanel {
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         addColumn(
             configs,
-            JsonKeys.TYPE,
+            ActionSummaryModelData.Property.LOCALISED_TYPE.name(),
             UI_CONSTANTS.action(),
             TYPE_COLUMN);
         addColumn(
             configs,
-            JsonKeys.USERNAME,
+            ActionSummaryModelData.Property.USERNAME.name(),
             UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            JsonKeys.EXECUTE_AFTER,
+            ActionSummaryModelData.Property.EXECUTE_AFTER.name(),
             UI_CONSTANTS.scheduledFor(),
             SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
-            JsonKeys.STATUS,
+            ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
             UI_CONSTANTS.status(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            JsonKeys.CODE,
+            ActionSummaryModelData.Property.FAILURE_CODE.name(),
             UI_CONSTANTS.failureCode(),
             SMALL_COLUMN);
 
         final ColumnConfig subjectTypeColumn = addColumn(
             configs,
-            JsonKeys.SUBJECT_TYPE,
+            ActionSummaryModelData.Property.SUBJECT_TYPE.name(),
             UI_CONSTANTS.resourceType(),
             SMALL_COLUMN);
         subjectTypeColumn.setRenderer(
@@ -136,7 +136,7 @@ public class ActionTable extends TablePanel {
 
         addColumn(
             configs,
-            JsonKeys.SUBJECT_PATH,
+            ActionSummaryModelData.Property.PATH.name(),
             UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
     }
