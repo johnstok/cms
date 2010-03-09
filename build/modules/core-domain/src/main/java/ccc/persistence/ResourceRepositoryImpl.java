@@ -284,7 +284,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final StringBuffer query = new StringBuffer();
         final List<Object> params = new ArrayList<Object>();
 
-        query.append("from ccc.domain.Resource r");
+        if (null != sort && ("locked".equalsIgnoreCase(sort)
+            || "published".equalsIgnoreCase(sort))) {
+            query.append("select r from ccc.domain.Resource r "
+                + "LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
+        } else {
+            query.append("select r from ccc.domain.Resource r ");
+        }
 
         if (null!=resource) {
             query.append(" where r._parent = ?");
