@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -28,39 +28,39 @@ package ccc.rest;
 
 import java.util.UUID;
 
-import ccc.types.DBC;
+import junit.framework.TestCase;
 
 
 /**
- * An exception indicating that access to an entity was denied.
+ * Tests for the {@link UnauthorizedException} class.
  *
  * @author Civic Computing Ltd.
  */
-public class UnauthorizedException
+public class UnauthorizedExceptionTest
     extends
-        Exception {
-
-    private final UUID _target;
-    private final UUID _user;
-
+        TestCase {
 
     /**
-     * Constructor.
-     *
-     * @param target The entity that couldn't be accessed.
-     * @param user   The user trying to access the entity.
+     * Test.
      */
-    public UnauthorizedException(final UUID target, final UUID user) {
-        _target = DBC.require().notNull(target);
-        _user   = user; // NULL indicates anonymous access.
-    }
+    public void testMessagesAreFormedCorrectly() {
 
+        // ARRANGE
+        final UUID user   = UUID.randomUUID();
+        final UUID target = UUID.randomUUID();
 
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return
-            "User " + _user
-            + " isn't authorized to access entity " + _target + ".";
+        // ACT
+        final UnauthorizedException withUser =
+            new UnauthorizedException(target, user);
+        final UnauthorizedException withoutUser =
+            new UnauthorizedException(target, null);
+
+        // ASSERT
+        assertEquals(
+            "User " + user + " isn't authorized to access entity " + target + ".",
+            withUser.getMessage());
+        assertEquals(
+            "User null isn't authorized to access entity " + target + ".",
+            withoutUser.getMessage());
     }
 }

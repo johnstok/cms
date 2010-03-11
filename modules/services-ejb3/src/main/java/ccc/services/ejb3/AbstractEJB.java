@@ -77,6 +77,7 @@ import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.dto.TextFileDelta;
 import ccc.types.CommandType;
+import ccc.types.DBC;
 import ccc.types.ResourceType;
 
 
@@ -317,15 +318,19 @@ abstract class AbstractEJB {
      */
     protected void checkSecurity(final Resource r)
     throws UnauthorizedException {
+
+        DBC.require().notNull(r);
+
         User u = null;
         try {
             u = currentUser();
         } catch (final EntityNotFoundException e) {
             Exceptions.swallow(e); // Leave user as NULL.
         }
+
         if (!r.isAccessibleTo(u)) {
             _context.setRollbackOnly();  // CRITICAL
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(r.id(), (null==u) ? null : u.id());
         }
     }
 

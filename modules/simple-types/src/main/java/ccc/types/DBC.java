@@ -60,11 +60,12 @@ public final class DBC {
      *
      * @param object The object to test for NULL.
      */
-    public void notNull(final Object object) {
+    public <T> T notNull(final T object) {
         if (null==object) {
             throw new IllegalArgumentException(
                 "Specified value may not be NULL."); //$NON-NLS-1$
         }
+        return object;
     }
 
     /**
