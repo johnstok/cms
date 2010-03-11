@@ -90,7 +90,7 @@ public final class ServletRequestStub
 
     @Override
     public String getMethod() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return "GET";
     }
 
     @Override

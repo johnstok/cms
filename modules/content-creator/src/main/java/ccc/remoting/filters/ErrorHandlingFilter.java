@@ -33,6 +33,7 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.remoting.actions.SessionKeys;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
@@ -87,8 +87,14 @@ public class ErrorHandlingFilter
             final String relUri = _loginUri + "?tg=" + e.getTarget();
             dispatchRedirect(req, resp, relUri);
 
-//        } catch (final RuntimeException e) {
-//            dispatchError(req, resp, e);
+        } catch (final RuntimeException e) {
+            dispatchError(req, resp, e);
+
+        } catch (final IOException e) {
+            dispatchError(req, resp, e);
+
+        } catch (final ServletException e) {
+            dispatchError(req, resp, e);
         }
     }
 
@@ -137,59 +143,87 @@ public class ErrorHandlingFilter
 
     /**
      * Dispatch to the error handler.
+     * <p>If there is no handling strategy the exception will be re-thrown.
      *
      * @param request The request.
      * @param response The response.
-     * @param e The exception we encountered
-     * @throws ServletException From servlet API.
-     * @throws IOException From servlet API.
+     * @param requestEx The exception we encountered.
+     * @param <T> The type of exception encountered.
+     *
+     * @throws T The provided exception.
      */
-    protected void dispatchError(final HttpServletRequest request,
-                                 final HttpServletResponse response,
-                                 final Exception e)
-                                          throws ServletException, IOException {
+    protected <T extends Exception> void dispatchError(
+                                             final HttpServletRequest request,
+                                             final HttpServletResponse response,
+                                             final T requestEx) throws T {
+
         final UUID errorId = UUID.randomUUID();
 
-        if(!response.isCommitted()) {
-            response.setStatus(HttpStatusCode.ERROR);
+        if (clientAborted(requestEx)) {
+            LOG.warn("Ignoring ClientAbortException.");
+            return;
+
+        } else if(response.isCommitted()) {
+            try {
+                LOG.warn("Error after response committed: "+errorId, requestEx);
+                final ServletOutputStream os = response.getOutputStream();
+                os.println("An error occurred: "+errorId);
+            } catch (final Exception e1) {
+                LOG.warn("Failed writing error code to request: "+errorId, e1);
+            }
+
+        } else { // Let the container forward to the error handler in web.xml.
+            throw requestEx;
+
         }
 
-        // Set the param's on the request.
-        request.setAttribute(
-            SessionKeys.EXCEPTION_CODE, errorId);
-        request.setAttribute(
-            "javax.servlet.error.request_uri", request.getRequestURI());
-        request.setAttribute(
-            "javax.servlet.error.exception_type", e.getClass());
-        request.setAttribute(
-            "javax.servlet.error.message", e.getMessage());
-        request.setAttribute(
-            "javax.servlet.error.exception", e);
-        request.setAttribute(
-            "javax.servlet.error.status_code",
-            Integer.valueOf(HttpStatusCode.ERROR));
+//        response.setStatus(HttpStatusCode.ERROR);
+//
+//        // Set the param's on the request.
+//        request.setAttribute(
+//            SessionKeys.EXCEPTION_CODE, errorId);
+//        request.setAttribute(
+//            "javax.servlet.error.request_uri", request.getRequestURI());
+//        request.setAttribute(
+//            "javax.servlet.error.exception_type", e.getClass());
+//        request.setAttribute(
+//            "javax.servlet.error.message", e.getMessage());
+//        request.setAttribute(
+//            "javax.servlet.error.exception", e);
+//        request.setAttribute(
+//            "javax.servlet.error.status_code",
+//            Integer.valueOf(HttpStatusCode.ERROR));
+//
+//        LOG.warn(
+//            "Error executing servlet request."
+//            + "\n\t"+SessionKeys.EXCEPTION_CODE + " = " + errorId
+//            + "\n\tresponse.committed = " + response.isCommitted()
+//            + "\n\tjavax.servlet.error.status_code = "
+//                + request.getAttribute("javax.servlet.error.status_code")
+//            + "\n\tjavax.servlet.error.request_uri = "
+//                + request.getAttribute("javax.servlet.error.request_uri")
+//            + "\n\tjavax.servlet.error.servlet_name = "
+//                + request.getAttribute("javax.servlet.error.servlet_name")
+//            + "\n\tjavax.servlet.error.message = "
+//                + request.getAttribute("javax.servlet.error.message")
+//            + "\n\tjavax.servlet.error.exception_type = "
+//                + request.getAttribute("javax.servlet.error.exception_type"),
+//            e);
+//
+//        request.getRequestDispatcher(_errorPath).forward(request, response);
 
-        LOG.warn(
-            "Error executing servlet request."
-            + "\n\t"+SessionKeys.EXCEPTION_CODE + " = " + errorId
-            + "\n\tresponse.committed = " + response.isCommitted()
-            + "\n\tjavax.servlet.error.status_code = "
-                + request.getAttribute("javax.servlet.error.status_code")
-            + "\n\tjavax.servlet.error.request_uri = "
-                + request.getAttribute("javax.servlet.error.request_uri")
-            + "\n\tjavax.servlet.error.servlet_name = "
-                + request.getAttribute("javax.servlet.error.servlet_name")
-            + "\n\tjavax.servlet.error.message = "
-                + request.getAttribute("javax.servlet.error.message")
-            + "\n\tjavax.servlet.error.exception_type = "
-                + request.getAttribute("javax.servlet.error.exception_type"),
-            e);
 
-        if(!response.isCommitted()) {
-            request.getRequestDispatcher(_errorPath).forward(request, response);
+    }
+
+
+    private boolean clientAborted(final Throwable t) {
+        if (t.getClass().getName().endsWith("ClientAbortException")) {
+            return true;
+        } else if (null!=t.getCause()) {
+            return clientAborted(t.getCause());
+        } else {
+            return false;
         }
-
-
     }
 
 
