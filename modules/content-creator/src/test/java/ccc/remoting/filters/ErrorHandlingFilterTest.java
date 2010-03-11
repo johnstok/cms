@@ -154,7 +154,7 @@ public class ErrorHandlingFilterTest
      *
      * @throws Exception If the test fails.
      */
-    public void testExOnCommitedTextResponseWritesErrorMsg() throws Exception {
+    public void testExOnCommitedResponseWritesErrorMsg() throws Exception {
 
         // EXPECT
         final CapturingServletOutputStream sos =
@@ -190,7 +190,45 @@ public class ErrorHandlingFilterTest
      *
      * @throws Exception If the test fails.
      */
-    public void testIrrelevantExceptionsIgnored() throws Exception {
+    public void testExOnUncommitedResponseIsPropagated() throws Exception {
+
+        // EXPECT
+        expect(_response.isCommitted()).andReturn(Boolean.FALSE);
+        replayAll();
+
+        // ARRANGE
+        final RuntimeException rootCause = new RuntimeException();
+        final Filter f = new ErrorHandlingFilter();
+
+        // ACT
+        try {
+            f.doFilter(
+                new ServletRequestStub(
+                    "/context", "/servlet", "/path", new HashMap<String, String>()),
+                    _response,
+                    new FilterChain() {
+                    @Override
+                    public void doFilter(final ServletRequest request,
+                                         final ServletResponse response) {
+                        throw rootCause;
+                    }
+                });
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(e.getMessage().startsWith("Unhandled servlet error: "));
+            assertSame(rootCause, e.getCause());
+        }
+        verifyAll();
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testClientAbortExceptionIsSwallowed() throws Exception {
 
         // EXPECT
         replayAll();

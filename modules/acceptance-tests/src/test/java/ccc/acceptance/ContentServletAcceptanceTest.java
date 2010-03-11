@@ -48,7 +48,7 @@ public class ContentServletAcceptanceTest
      *
      * @throws Exception If the test fails.
      */
-    public void testErrorJspHandlesCommittedResponses() throws Exception {
+    public void testCommittedResponsesHandledDirectly() throws Exception {
 
         // ARRANGE
         final Json metadata = new JsonImpl();
@@ -72,5 +72,42 @@ public class ContentServletAcceptanceTest
 
         // ASSERT
         assertTrue(content.startsWith("foo\nAn error occurred: "));
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testUncommittedResponsesHandledByJsp() throws Exception {
+
+        // ARRANGE
+        final Json metadata = new JsonImpl();
+        metadata.set("title", "fail.js");
+        metadata.set("description", "fail.js");
+        metadata.set("tags", "");
+        metadata.set(
+            "metadata", Collections.singletonMap("executable", "true"));
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary script = createFile(
+            fName,
+            "throw 'foo';",
+            filesFolder);
+        getCommands().lock(script.getId());
+        getCommands().updateMetadata(script.getId(), metadata);
+        getCommands().publish(script.getId());
+
+        // ACT
+        try {
+            previewContent(script, false);
+            fail();
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(
+                e.getMessage().startsWith("500: <!-- An error occurred: "));
+        }
     }
 }
