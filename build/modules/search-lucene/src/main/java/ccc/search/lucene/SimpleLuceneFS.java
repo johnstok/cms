@@ -34,11 +34,16 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similar.MoreLikeThis;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
@@ -56,10 +61,10 @@ import ccc.search.SimpleLucene;
  * @author Civic Computing Ltd.
  */
 public class SimpleLuceneFS
-    extends
-        AbstractIndexer
-    implements
-        SimpleLucene {
+extends
+AbstractIndexer
+implements
+SimpleLucene {
 
     private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
     private static final Logger LOG =
@@ -99,12 +104,12 @@ public class SimpleLuceneFS
                              final int pageNo) {
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return
-                new SearchResult(
-                    new HashSet<UUID>(),
-                    0,
-                    nofOfResultsPerPage,
-                    searchTerms,
-                    pageNo);
+            new SearchResult(
+                new HashSet<UUID>(),
+                0,
+                nofOfResultsPerPage,
+                searchTerms,
+                pageNo);
         }
 
         final String field = "content";
@@ -120,6 +125,27 @@ public class SimpleLuceneFS
             nofOfResultsPerPage,
             searchTerms,
             pageNo);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult similar(final String uuid,
+                                final int nofOfResultsPerPage,
+                                final int pageNo) {
+
+        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+
+        final CapturingHandler capturingHandler =
+            new CapturingHandler(nofOfResultsPerPage, pageNo);
+        similar(uuid, maxHits, capturingHandler);
+
+        return new SearchResult(
+            capturingHandler.getHits(),
+            capturingHandler.getTotalResultsCount(),
+            nofOfResultsPerPage,
+            "uuid",
+            pageNo);
+
     }
 
 
@@ -140,7 +166,7 @@ public class SimpleLuceneFS
                         field,
                         new StandardAnalyzer(LUCENE_VERSION))
                     .parse(searchTerms),
-                        maxHits);
+                    maxHits);
 
             sh.handle(searcher, docs);
         } catch (final IOException e) {
@@ -158,6 +184,67 @@ public class SimpleLuceneFS
         }
     }
 
+
+    private void similar(final String uuid,
+                         final int maxHits,
+                         final CapturingHandler ch) {
+        if(uuid == null) {
+            return;
+        }
+        IndexReader ir = null;
+        IndexSearcher searcher = null;
+        try {
+            ir = IndexReader.open(
+                FSDirectory.open(new java.io.File(_indexPath)));
+            searcher = new IndexSearcher(ir);
+            final int docNum = docNumber(uuid, searcher);
+
+            if (docNum == -1) {
+                return;
+            }
+            final MoreLikeThis mlt = new MoreLikeThis(ir);
+            mlt.setFieldNames(new String[] {"content"});
+            mlt.setMinDocFreq(2);
+            final Query query = mlt.like(docNum);
+            ch.handle(searcher, searcher.search(query, maxHits));
+        } catch (final IOException e) {
+            LOG.warn("Error performing query.", e);
+        } finally {
+            if (searcher != null) {
+                try {
+                    searcher.close();
+                } catch (final IOException e) {
+                    Exceptions.swallow(e);
+                }
+            }
+            if (ir != null) {
+                try {
+                    ir.close();
+                } catch (final IOException e) {
+                    Exceptions.swallow(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Retrieves lucene document for given page.
+     *
+     * @param uuid UUID to search.
+     * @param searcher IndexSearcher object.
+     * @return Document number.
+     * @throws IOException If search fails
+     */
+    private int docNumber(final String uuid, final IndexSearcher searcher)
+    throws IOException {
+        final Query q = new TermQuery(new Term("id", uuid));
+        final TopDocs hits = searcher.search(q, 1);
+
+        if (hits.scoreDocs.length < 1) {
+            return -1;
+        }
+        return hits.scoreDocs[0].doc;
+    }
 
     /**
      * Removes all entries from the lucene index.
@@ -235,7 +322,8 @@ public class SimpleLuceneFS
                     "content",
                     content,
                     Field.Store.NO,
-                    Field.Index.ANALYZED));
+                    Field.Index.ANALYZED,
+                    Field.TermVector.YES));
             _writer.addDocument(d);
             LOG.debug("Added document.");
 

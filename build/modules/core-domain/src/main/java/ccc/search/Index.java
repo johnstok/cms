@@ -45,4 +45,15 @@ public interface Index {
      * @return The SearchResult object with set entities and total count.
      */
     SearchResult find(final String searchTerms, int resultCount, int page);
+
+    /**
+     * Find the results that are similar to the specified page.
+     *
+     * @param uuid The UUID of the page to compare.
+     * @param nofOfResultsPerPage The number of results to return.
+     * @param pageNo The page of results to return (first page has index of 0).
+     * @return The SearchResult object with set entities and total count.
+     */
+    SearchResult similar(String uuid, int nofOfResultsPerPage, int pageNo);
+
 }
