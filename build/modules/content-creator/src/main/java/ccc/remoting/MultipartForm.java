@@ -26,6 +26,7 @@
  */
 package ccc.remoting;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,9 +139,22 @@ public class MultipartForm {
     }
 
     /**
+     * Retrieve form item keys.
+     *
+     * @return List of names.
+     */
+    public List<String> getFormItemNames() {
+        final List<String> keyList = new ArrayList<String>();
+        for (final String key : _formItems.keySet()) {
+            keyList.add(key);
+        }
+        return keyList;
+    }
+
+    /**
      * Retrieve a file item map.
      *
-     * @return The file item identified by the specified name.
+     * @return The file items as a map.
      */
     public Map<String, FileItem> getFileItem() {
         return _fileItem;
