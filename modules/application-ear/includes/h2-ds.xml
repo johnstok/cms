@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
     ========================================================================
     * Copyright (c) 2009 Civic Computing Ltd.
@@ -27,13 +28,16 @@
 -->
 
 <datasources>
-
   <local-tx-datasource>
+  
     <jndi-name>${application.prefix}</jndi-name>
-    <driver-class>org.h2.jdbcx.JdbcDataSource</driver-class>
     <connection-url>${ccc.db.connection.url}</connection-url>
+    <driver-class>org.h2.jdbcx.JdbcDataSource</driver-class>
     <user-name>${application.db-username}</user-name>
     <password>${application.db-password}</password>
+    
+    <max-pool-size>100</max-pool-size>
+    <exception-sorter-class-name></exception-sorter-class-name>
+    
   </local-tx-datasource>
-
 </datasources>
