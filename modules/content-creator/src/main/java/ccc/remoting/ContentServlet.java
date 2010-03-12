@@ -63,6 +63,7 @@ import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.PagesExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.rest.snapshots.ResourceSnapshot;
+import ccc.serialization.JsonImpl;
 import ccc.types.ResourcePath;
 
 
@@ -195,6 +196,11 @@ public class ContentServlet
                 return _resources.revisionForPath(path, version.intValue());
             }
         } catch (final RestException e) {
+            LOG.warn(
+                "Exception retrieving path " + path
+                + " wc=" + workingCopy
+                + ", v=" + version
+                + " " + new JsonImpl(e.getFailure()));
             throw new NotFoundException();
         } catch (final UnauthorizedException e) {
             throw new AuthenticationRequiredException(path);
