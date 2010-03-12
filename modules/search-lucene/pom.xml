@@ -22,6 +22,11 @@
         	<artifactId>lucene-core</artifactId>
         	<version>${lib.version.lucene}</version>
         </dependency>
+        <dependency>
+        	<groupId>org.apache.lucene</groupId>
+        	<artifactId>lucene-queries</artifactId>
+        	<version>${lib.version.lucene}</version>
+        </dependency>
     </dependencies>
 
 </project>

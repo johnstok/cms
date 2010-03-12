@@ -61,6 +61,20 @@ public interface SearchEngine extends Scheduler {
               @QueryParam("page") @DefaultValue("1") int page);
 
     /**
+     * Find the results that are similar to the specified page.
+     *
+     * @param uuid The page to match.
+     * @param noOfResultsPerPage The number of results to return.
+     * @param page The page of results to return (first page has index of 0).
+     * @return The SearchResult object with set entities and total count.
+     */
+    @GET @Path("/similar")
+    SearchResult similar(
+              @QueryParam("uuid") final String uuid,
+              @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
+              @QueryParam("page") @DefaultValue("1") int page);
+
+    /**
      * Rebuild the search index.
      */
     @GET @Path("/index")

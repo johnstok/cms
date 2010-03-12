@@ -218,4 +218,14 @@ public class SearchEngineEJB  implements SearchEngine {
             new RepositoryFactory(_em).createDataRepository();
         return new SimpleLuceneFS(dr, indexPath.getValue());
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public SearchResult similar(final String uuid,
+                                final int noOfResultsPerPage,
+                                final int page) {
+        return createLucene().similar(uuid, noOfResultsPerPage, page);
+    }
 }

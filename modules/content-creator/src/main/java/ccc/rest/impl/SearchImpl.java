@@ -80,4 +80,10 @@ public class SearchImpl
     public void stop() {
         getSearch().stop();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult similar(final String uuid, final int noOfResultsPerPage, final int page) {
+        return getSearch().similar(uuid, noOfResultsPerPage, page);
+    }
 }
