@@ -43,12 +43,38 @@ public final class AlphaNumericAscendingNameComparator
         Serializable,
         Comparator<Resource> {
 
+    private final boolean _caseSensitive;
+
+
+    /**
+     * Constructor.
+     */
+    public AlphaNumericAscendingNameComparator() {
+        this(true);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param caseSensitive Should the sort be case sensitive.
+     */
+    public AlphaNumericAscendingNameComparator(final boolean caseSensitive) {
+        _caseSensitive = caseSensitive;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public int compare(final Resource o1, final Resource o2) {
         DBC.require().notNull(o1);
         DBC.require().notNull(o2);
-        return o1.name().toString().compareTo(o2.name().toString());
+
+        if (_caseSensitive) {
+            return o1.name().toString().compareTo(o2.name().toString());
+        }
+        return String.CASE_INSENSITIVE_ORDER.compare(
+            o1.name().toString(), o2.name().toString());
     }
 
 }

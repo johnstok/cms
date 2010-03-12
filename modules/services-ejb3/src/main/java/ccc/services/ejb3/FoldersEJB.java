@@ -46,6 +46,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.domain.sorting.Sorter;
 import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.DtoCollection;
@@ -244,10 +245,10 @@ public class FoldersEJB
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
     throws RestException {
         try {
-            final Folder f =
-                getResources().find(Folder.class, folderId);
-            return mapResources(
-                f != null ? f.folders() : new ArrayList<Folder>());
+            final Folder f = getResources().find(Folder.class, folderId);
+            final List<Folder> folderChildren = f.folders();
+            Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
+            return mapResources(folderChildren);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
