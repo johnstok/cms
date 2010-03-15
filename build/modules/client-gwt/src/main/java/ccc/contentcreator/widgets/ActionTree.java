@@ -49,15 +49,15 @@ public class ActionTree extends Tree {
     public static final String PENDING = "pending";
     /** COMPLETED : String. */
     public static final String COMPLETED = "completed";
-    
-    /** ACTION_TREE_HEIGHT : int. 
+
+    /** ACTION_TREE_HEIGHT : int.
         TODO read from a properties file */
     private static final int ACTION_TREE_HEIGHT = 300;
-    
+
     private final ActionTable _actionTable = new ActionTable();
     private final UIConstants _uiConstants = new GlobalsImpl().uiConstants();
-    protected final LeftRightPane _view;
-    
+    private final LeftRightPane _view;
+
     /**
      * Constructor.
      *
@@ -65,7 +65,7 @@ public class ActionTree extends Tree {
      */
     public ActionTree(final LeftRightPane view) {
         _view = view;
-        
+
         _tree.setDisplayProperty("name");
         _tree.setHeight(ACTION_TREE_HEIGHT);
         _tree.setIconProvider(new ModelIconProviderImplementation());
@@ -73,19 +73,19 @@ public class ActionTree extends Tree {
         _tree.setStyleAttribute(BACKGROUND_ATTRIBUTE, BACKGROUND_COLOUR);
         _tree.getSelectionModel().addSelectionChangedListener(
             new ActionSelectedListener());
-        
+
         final ModelData actions = getNewItem(_uiConstants.actions(), ACTIONS);
         _store.add(actions, ADD_ALL_CHILDREN);
         _tree.setLeaf(actions, IS_NOT_LEAF);
         _tree.setExpanded(actions, EXPANDED);
-        
-        final ModelData pending = 
+
+        final ModelData pending =
             getNewItem(_uiConstants.pending(), PENDING, ImagePaths.HOURGLASS);
         _store.add(actions, pending, ADD_ALL_CHILDREN);
         _tree.setLeaf(pending, IS_LEAF);
         _tree.setExpanded(pending, NOT_EXPANDED);
-        
-        final ModelData completed = 
+
+        final ModelData completed =
             getNewItem(_uiConstants.completed(), COMPLETED, ImagePaths.ACCEPT);
         _store.add(actions, completed, ADD_ALL_CHILDREN);
         _tree.setLeaf(completed, IS_LEAF);
@@ -103,7 +103,7 @@ public class ActionTree extends Tree {
 
         /** {@inheritDoc} */
         @Override
-        public void selectionChanged(final SelectionChangedEvent<ModelData> 
+        public void selectionChanged(final SelectionChangedEvent<ModelData>
                                      selectionChangedEvent) {
             final ModelData selectedItem =
                 selectionChangedEvent.getSelectedItem();
@@ -114,6 +114,7 @@ public class ActionTree extends Tree {
     /**
      * Notify the split pane that the tree's table should be displayed.
      */
+    @Override
     public void showTable() {
         _view.setRightHandPane(_actionTable);
     }

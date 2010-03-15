@@ -35,7 +35,6 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.remoting.ListCompletedActionsAction;
 import ccc.contentcreator.remoting.ListPendingActionsAction;
 import ccc.rest.dto.ActionSummary;
-import ccc.serialization.JsonKeys;
 import ccc.types.SortOrder;
 
 import com.extjs.gxt.ui.client.Style;
@@ -253,7 +252,6 @@ public class ActionTable extends TablePanel {
             protected void execute(
                                    final Collection<ActionSummary> comments,
                                    final int totalCount) {
-
                 final List<ActionSummaryModelData> results =
                     DataBinding.bindActionSummary(comments);
 
