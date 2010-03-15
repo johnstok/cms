@@ -46,7 +46,8 @@ import org.hibernate.usertype.UserType;
  * @author Civic Computing Ltd.
  */
 public class EnumUserType<T extends Enum<T>> implements UserType,
-                                                        ParameterizedType {
+                                                        ParameterizedType, 
+                                                        Serializable {
 
     private Class<T> _enumClass;
 
