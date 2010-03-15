@@ -39,6 +39,7 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
  * Renderer for a table's contextual menu icon for comment table.
  *
  * @author Civic Computing Ltd.
+ * @param <T> The model.
  */
 public class ContextMenuRenderer<T extends CccModelData>
     implements
