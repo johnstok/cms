@@ -130,8 +130,10 @@ public class ContentServlet
         final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
 
         if (null == resource) {
+            LOG.warn("No resource for path "+contentPath);
             throw new NotFoundException();
         } else if (_respectVisibility && !resource.isVisible()) {
+            LOG.warn("Resource at path "+contentPath+" isn't published.");
             throw new NotFoundException();
         }
 
@@ -203,6 +205,7 @@ public class ContentServlet
                 + " " + new JsonImpl(e.getFailure()));
             throw new NotFoundException();
         } catch (final UnauthorizedException e) {
+            LOG.warn(e.getMessage());
             throw new AuthenticationRequiredException(path);
         }
     }
