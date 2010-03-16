@@ -31,7 +31,7 @@ import java.util.Map;
 
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.SingleSelectionModel;
-import ccc.contentcreator.views.gxt.MetadataDialog;
+import ccc.contentcreator.views.gxt.ResourceMetadataDialog;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
@@ -77,7 +77,7 @@ public final class OpenUpdateMetadataAction
             metadata.put(key, result.get(key).isString().stringValue());
         }
 
-        new MetadataDialog(
+        new ResourceMetadataDialog(
             _selectionModel.tableSelection(),
             metadata.entrySet(),
             _selectionModel)
