@@ -235,4 +235,17 @@
         <connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
         <developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
     </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>civic</id>
+            <name>civic local repo</name>
+            <url>http://apollo-vm226:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>civic</id>
+            <name>civic local repo</name>
+            <url>http://apollo-vm226:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

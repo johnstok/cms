@@ -1,0 +1,47 @@
+<settings
+    xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <mirrors>
+        <mirror>
+            <id>apollo</id>
+            <mirrorOf>*</mirrorOf>
+            <url>http://apollo-vm226:8081/nexus/content/groups/public</url>
+        </mirror>
+    </mirrors>
+
+    <servers>
+        <server>
+            <id>civic</id>
+            <username>[username]</username>
+            <password>[password]</password>
+        </server>
+    </servers>
+  
+    <profiles>
+        <profile>
+            <activation><activeByDefault>true</activeByDefault></activation>
+            
+            <properties>
+            
+                <!-- Application properties -->
+                <application.prefix>cc7</application.prefix>
+                <application.name>${application.prefix}</application.name>
+                
+                
+                <!-- Database properties -->
+                <ccc.db.connection.url>jdbc:[specify your database]</ccc.db.connection.url>
+                <application.db-dialect>[specify your dialect]</application.db-dialect>
+                <application.db-datasource>[specify your datasource]</application.db-datasource>
+                <application.db-username>[specify your user]</application.db-username>
+                <application.db-password>[specify your password]</application.db-password>
+                
+                <application.mail.host>[specify your mail host]</application.mail.host>
+                <application.mail.username>[specify your username]</application.mail.username>
+                <application.mail.password>[specify your password]</application.mail.password>
+                <application.mail.debug>false</application.mail.debug>
+
+            </properties>
+        </profile>
+    </profiles>
+</settings>
