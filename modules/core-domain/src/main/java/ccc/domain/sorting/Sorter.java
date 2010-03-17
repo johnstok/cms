@@ -54,6 +54,8 @@ public final class Sorter {
         switch (order) {
 
             case MANUAL:
+                Collections.sort(
+                    resources, new AscendingIndexComparator());
                 break;
 
             case NAME_ALPHANUM_ASC:

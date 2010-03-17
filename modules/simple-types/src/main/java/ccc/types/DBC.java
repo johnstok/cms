@@ -201,6 +201,20 @@ public final class DBC {
     /**
      * Assert that the specified value is greater than the criteria.
      *
+     * @param valueToTest The value to test.
+     * @param minimum The minimum acceptable value.
+     */
+    public void minValue(final long valueToTest, final long minimum) {
+        if (valueToTest < minimum) {
+            throw new IllegalArgumentException(
+                "Specified value must be above " + minimum + ".");
+        }
+    }
+
+
+    /**
+     * Assert that the specified value is greater than the criteria.
+     *
      * @param criteria The lower bound.
      * @param value    The value to test.
      */

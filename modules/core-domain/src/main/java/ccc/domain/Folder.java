@@ -110,7 +110,7 @@ public final class Folder
         }
 
         _entries.add(resource);
-        resource.parent(this);
+        resource.parent(this, Integer.valueOf(_entries.indexOf(resource)));
     }
 
     /**
@@ -136,17 +136,6 @@ public final class Folder
         return false;
     }
 
-    /**
-     * Re-order the folder's children.
-     *
-     * @param resources The children of this folder in a new order.
-     */
-    public void reorder(final List<Resource> resources) {
-        DBC.require().notNull(resources);
-        DBC.require().toBeTrue(_entries.size() == resources.size());
-
-        _entries = resources;
-    }
 
     /**
      * Accessor for entries.
@@ -328,7 +317,7 @@ public final class Folder
     public void remove(final Resource resource) {
         DBC.require().notNull(resource);
         _entries.remove(resource);
-        resource.parent(null);
+        resource.parent(null, null);
     }
 
 
@@ -346,37 +335,7 @@ public final class Folder
         }
         return entries;
     }
-//
-//    /**
-//     * Retrieve a list of all the pages as snapshots in this folder with sort
-//     * order applied.
-//     *
-//     * @return A list of pages.
-//     */
-//    public List<PageSnapshot> pagesAsSnapshots() {
-//        final List<PageSnapshot> entries = new ArrayList<PageSnapshot>();
-//        for (final Resource entry : entries()) {
-//            if (entry.type()==ResourceType.PAGE) {
-//                entries.add(entry.as(Page.class).forCurrentRevision());
-//            }
-//        }
-//        return entries;
-//    }
-//
-//    /**
-//     * Retrieve a list of all the folders in this folder.
-//     *
-//     * @return A list of folders.
-//     */
-//    public List<FolderSnapshot> foldersAsSnapshots() {
-//        final List<FolderSnapshot> entries = new ArrayList<FolderSnapshot>();
-//        for (final Resource entry : _entries) {
-//            if (entry.type()==ResourceType.FOLDER) {
-//                entries.add(entry.as(Folder.class).forCurrentRevision());
-//            }
-//        }
-//        return entries;
-//    }
+
 
     /**
      * Retrieve a list of all the folders in this folder.
@@ -507,6 +466,21 @@ public final class Folder
             JsonKeys.INDEX_PAGE_ID,
             (null==indexPage()) ? null : indexPage().id().toString());
         // Index folder entries?
+    }
+
+
+    /**
+     * Get a child element via its ID.
+     *
+     * @param id The child's ID.
+     *
+     * @return The child or NULL if no child exists for the specified ID.
+     */
+    public Resource getChild(final UUID id) {
+        for (final Resource r : _entries) {
+            if (r.id().equals(id)) { return r; }
+        }
+        return null;
     }
 
 

@@ -46,6 +46,7 @@ import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;
 import ccc.types.CommandType;
+import ccc.types.DBC;
 import ccc.types.Duration;
 import ccc.types.Permission;
 import ccc.types.ResourceName;
@@ -73,6 +74,7 @@ public abstract class Resource
     private ResourceName   _name              = ResourceName.escape(_title);
     private Template       _template          = null;
     private Folder         _parent            = null;
+    private Integer        _parentIndex       = null;
     private User           _lockedBy          = null;
     private Set<String>    _tags              = new HashSet<String>();
     private Set<Group>     _roles             = new HashSet<Group>();
@@ -249,8 +251,13 @@ public abstract class Resource
      *
      * @param parent The folder containing this resource.
      */
-    void parent(final Folder parent) {
+    void parent(final Folder parent, final Integer index) {
         _parent = parent;
+        if (null!=parent) {
+            _parentIndex = require().notNull(index);
+        } else {
+            _parentIndex = null;
+        }
     }
 
 
@@ -912,4 +919,23 @@ public abstract class Resource
     public boolean isIndexable() {
         return Boolean.valueOf(getMetadatum("searchable")).booleanValue();
     }
+
+
+    /**
+     * Set the index value for this resource.
+     *
+     * @param index The index value.
+     */
+    public void setIndexPosition(final int index) {
+        DBC.require().minValue(index, 0);
+        _parentIndex = Integer.valueOf(index);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The resource's index in its parent folder.
+     */
+    public Integer getIndex() { return _parentIndex; }
 }

@@ -1220,16 +1220,16 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testParentCanBeChanged() {
+    public void testParentCanBeChanged() { // FIXME: Test parent index field.
 
         // ARRANGE
         final Resource r = new Page();
         final Folder f1 = new Folder();
         final Folder f2 = new Folder();
-        r.parent(f1);
+        r.parent(f1, Integer.valueOf(0));
 
         // ACT
-        r.parent(f2);
+        r.parent(f2, Integer.valueOf(0));
 
         // ASSERT
         assertEquals(f2, r.parent());
@@ -1238,15 +1238,15 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testParentCanBeCleared() {
+    public void testParentCanBeCleared() { // FIXME: Test parent index field.
 
         // ARRANGE
         final Resource r = new Page();
         final Folder f = new Folder();
-        r.parent(f);
+        r.parent(f, Integer.valueOf(0));
 
         // ACT
-        r.parent(null);
+        r.parent(null, null);
 
         // ASSERT
         assertNull("Should be null.", r.parent());
@@ -1256,14 +1256,14 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testParentMutator() {
+    public void testParentMutator() { // FIXME: Test parent index field.
 
         // ARRANGE
         final Resource r = new Page();
         final Folder expected = new Folder();
 
         // ACT
-        r.parent(expected);
+        r.parent(expected, Integer.valueOf(0));
 
         // ASSERT
         assertEquals(expected, r.parent());

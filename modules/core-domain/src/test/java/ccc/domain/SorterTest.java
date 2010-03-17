@@ -27,6 +27,7 @@
 package ccc.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -70,10 +71,11 @@ public class SorterTest
     public void testManualOrdering() {
 
         // ARRANGE
-        final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Folder("z"));
-            add(new Folder("a"));
-        }};
+        final Resource z = new Folder("z");
+        z.setIndexPosition(0);
+        final Resource a = new Folder("a");
+        a.setIndexPosition(1);
+        final List<Resource> resources = Arrays.asList(a, z);
 
         // ACT
         Sorter.sort(resources, ResourceOrder.MANUAL);
