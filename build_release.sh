@@ -1,1 +1,1 @@
-mvn -s settings-release.xml clean deploy
+mvn -s settings-release.xml clean deploy -P assemble
