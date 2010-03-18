@@ -6,7 +6,9 @@
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ccc.cli.MigrateMhtsFiles"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-a mhts&#10; -cu http://localhost:8080/mhts/creator&#10; -lu mhts_ccc7&#10; -lp d3mhts_ccc7&#10; -lc jdbc:oracle:thin:@poseidon:1521:DEV&#10; -l /home/petteri/mhts/secure_files/&#10; -o http://localhost:81/&#10; -p migration&#10; -u migration"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="shell-tools"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
 </launchConfiguration>
