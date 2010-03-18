@@ -3,7 +3,7 @@
     
     <parent>
         <artifactId>build</artifactId>
-        <groupId>CCC7</groupId>
+        <groupId>com.civicuk.cc</groupId>
         <version>7.2.0-SNAPSHOT</version>
     </parent>
     
@@ -38,7 +38,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>CCC7</groupId>
+                                    <groupId>${project.groupId}</groupId>
                                     <artifactId>client-gwt</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
@@ -56,12 +56,12 @@
     
     <dependencies>
         <dependency>
-            <groupId>CCC7</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>core-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>CCC7</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>client-jaxrs</artifactId>
             <version>${project.version}</version>
         </dependency>
