@@ -34,6 +34,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
 import ccc.domain.User;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
@@ -53,13 +54,12 @@ public class ChangeTemplateForResourceCommand {
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
      */
-    public ChangeTemplateForResourceCommand(final ResourceRepository repository,
-                                            final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+    public ChangeTemplateForResourceCommand(
+                                        final IRepositoryFactory repoFactory) {
+        _repository = repoFactory.createResourceRepository();
+        _audit = repoFactory.createLogEntryRepo();
     }
 
     /**

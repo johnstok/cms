@@ -37,8 +37,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.ResourceOrder;
@@ -61,21 +60,19 @@ public class UpdateFolderCommand
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
+     * @param repoFactory The repository factory for this command.
      * @param folderId The folder to update.
      * @param order The new sort order.
      * @param indexPageId The index page.
      * @param orderList The manual order of the resources in the specified
      *  folder.
      */
-    public UpdateFolderCommand(final ResourceRepository repository,
-                               final LogEntryRepository audit,
+    public UpdateFolderCommand(final IRepositoryFactory repoFactory,
                                final UUID folderId,
                                final ResourceOrder order,
                                final UUID indexPageId,
                                final List<UUID> orderList) {
-        super(repository, audit, null);
+        super(repoFactory);
         _folderId = folderId;
         _order = order;
         _indexPageId = indexPageId;

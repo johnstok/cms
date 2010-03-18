@@ -30,18 +30,15 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import junit.framework.TestCase;
+import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.MimeType;
-import ccc.types.Username;
 
 
 /**
@@ -51,7 +48,7 @@ import ccc.types.Username;
  */
 public class TemplateDaoImplTest
     extends
-        TestCase {
+        AbstractCommandTest {
 
     /**
      * Test.
@@ -76,11 +73,11 @@ public class TemplateDaoImplTest
             new TemplateDelta("newBody", "newDefn", MimeType.BINARY_DATA);
 
         expect(_repository.find(Template.class, foo.getId())).andReturn(foo);
-        _al.record(isA(LogEntry.class));
-        replay(_repository, _al);
+        _audit.record(isA(LogEntry.class));
+        replayAll();
 
         final UpdateTemplateCommand ut =
-            new UpdateTemplateCommand(_repository, _al, foo.getId(), td);
+            new UpdateTemplateCommand(_repoFactory, foo.getId(), td);
 
 
         // ACT
@@ -88,29 +85,9 @@ public class TemplateDaoImplTest
 
 
         // ASSERT
-        verify(_repository, _al);
+        verifyAll();
         assertEquals("newBody", foo.getBody());
         assertEquals("newDefn", foo.getDefinition());
         assertEquals(MimeType.BINARY_DATA, foo.getMimeType());
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() {
-        _repository = createStrictMock(ResourceRepository.class);
-        _al = createStrictMock(LogEntryRepository.class);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
-        _al = null;
-        _repository = null;
-    }
-
-    private ResourceRepository _repository;
-    private LogEntryRepository _al;
-    private final Date _now = new Date();
-    private final User _user = new User(new Username("user"), "password");
 }

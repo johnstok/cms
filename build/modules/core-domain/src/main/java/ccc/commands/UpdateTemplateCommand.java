@@ -33,8 +33,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 
@@ -55,16 +54,14 @@ public class UpdateTemplateCommand
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
+     * @param repoFactory The repository factory for this command.
      * @param templateId The id of the template to update.
      * @param delta The changes to the template.
      */
-    public UpdateTemplateCommand(final ResourceRepository repository,
-                                 final LogEntryRepository audit,
+    public UpdateTemplateCommand(final IRepositoryFactory repoFactory,
                                  final UUID templateId,
                                  final TemplateDelta delta) {
-        super(repository, audit, null);
+        super(repoFactory);
         _templateId = templateId;
         _delta = delta;
     }

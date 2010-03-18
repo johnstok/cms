@@ -32,9 +32,14 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.persistence.GroupRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.persistence.UserRepository;
+import ccc.services.impl.SimpleRepositoryFactory;
+import ccc.types.EmailAddress;
 import ccc.types.Username;
 
 
@@ -47,16 +52,26 @@ public abstract class AbstractCommandTest
     extends
         TestCase {
 
-    private final User _user =
+    protected final User _user =
         new User(new Username("currentUser"), "password");
-    private final Date _now = new Date();
+    protected final Date _now = new Date();
 
-    private ResourceRepository _repository;
-    private LogEntryRepository _audit;
+    protected final RevisionMetadata _rm =
+        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+    protected SimpleRepositoryFactory _repoFactory =
+        new SimpleRepositoryFactory();
+
+    protected ResourceRepository _repository;
+    protected LogEntryRepository _audit;
+    protected GroupRepository _groups;
+    protected UserRepository _um;
 
 
     /** Constructor. */
-    public AbstractCommandTest() { super(); }
+    public AbstractCommandTest() {
+        super();
+        _user.setEmail(new EmailAddress("test@civicuk.com"));
+    }
 
 
     /**
@@ -100,16 +115,26 @@ public abstract class AbstractCommandTest
 
 
     /** {@inheritDoc} */
-    @Override
-    protected void setUp() {
+    @Override protected void setUp() throws Exception {
         _repository = createStrictMock(ResourceRepository.class);
         _audit = createStrictMock(LogEntryRepository.class);
+        _groups = createStrictMock(GroupRepository.class);
+        _um = createStrictMock(UserRepository.class);
+        _repoFactory.setResourceRepo(_repository);
+        _repoFactory.setLogEntryRepo(_audit);
+        _repoFactory.setGroupRepo(_groups);
+        _repoFactory.setUserRepo(_um);
     }
 
 
     /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
+    @Override protected void tearDown() throws Exception {
+        _repoFactory.setUserRepo(null);
+        _repoFactory.setGroupRepo(null);
+        _repoFactory.setLogEntryRepo(null);
+        _repoFactory.setResourceRepo(null);
+        _um = null;
+        _groups = null;
         _audit = null;
         _repository = null;
     }
@@ -117,12 +142,12 @@ public abstract class AbstractCommandTest
 
     /** Verify all mocks. */
     protected void verifyAll() {
-        verify(_repository, _audit);
+        verify(_repository, _audit, _groups, _um);
     }
 
 
     /** Replay all mocks. */
     protected void replayAll() {
-        replay(_repository, _audit);
+        replay(_repository, _audit, _groups, _um);
     }
 }

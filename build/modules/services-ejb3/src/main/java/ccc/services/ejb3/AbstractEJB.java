@@ -48,8 +48,8 @@ import ccc.persistence.ActionRepository;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
 import ccc.persistence.GroupRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
-import ccc.persistence.RepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.rest.RestException;
@@ -75,20 +75,32 @@ abstract class AbstractEJB {
     private DataRepository     _dm;
     private ActionRepository   _actions;
     private CommentRepository  _comments;
+
     private CommandFactory     _cFactory;
+    private IRepositoryFactory _rf;
 
 
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
-        final RepositoryFactory rf = new RepositoryFactory(_em);
-        _audit = rf.createLogEntryRepo();
-        _comments = rf.createCommentRepo();
-        _users = rf.createUserRepo();
-        _groups = rf.createGroupRepo();
-        _resources = rf.createResourceRepository();
-        _dm = rf.createDataRepository();
-        _actions = rf.createActionRepository();
+        _rf = IRepositoryFactory.DEFAULT.create(_em);
+        _audit = _rf.createLogEntryRepo();
+        _comments = _rf.createCommentRepo();
+        _users = _rf.createUserRepo();
+        _groups = _rf.createGroupRepo();
+        _resources = _rf.createResourceRepository();
+        _dm = _rf.createDataRepository();
+        _actions = _rf.createActionRepository();
         _cFactory = new CommandFactory(_resources, _audit, _dm);
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the repository factory.
+     */
+    protected IRepositoryFactory getRepoFactory() {
+        return _rf;
     }
 
 
@@ -109,76 +121,6 @@ abstract class AbstractEJB {
      */
     protected final TimerService getTimerService() {
         return _context.getTimerService();
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the group repository.
-     */
-    protected final GroupRepository getGroups() {
-        return _groups;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the user repository.
-     */
-    protected final UserRepository getUsers() {
-        return _users;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the comment repository.
-     */
-    protected final CommentRepository getComments() {
-        return _comments;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the resource repository.
-     */
-    protected final ResourceRepository getResources() {
-        return _resources;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the log entry repository.
-     */
-    protected final LogEntryRepository getAuditLog() {
-        return _audit;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the file repository.
-     */
-    protected final DataRepository getData() {
-        return _dm;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the action repository.
-     */
-    protected final ActionRepository getActions() {
-        return _actions;
     }
 
 
@@ -215,7 +157,7 @@ abstract class AbstractEJB {
                                       final Date happenedOn)
                                                         throws RestException {
         try {
-            return command.execute(getUsers().find(actorId), happenedOn);
+            return command.execute(_users.find(actorId), happenedOn);
         } catch (final CccCheckedException e) {
             throw fail(e);
         }

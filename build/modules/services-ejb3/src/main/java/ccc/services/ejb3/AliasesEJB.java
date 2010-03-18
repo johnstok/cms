@@ -71,8 +71,7 @@ public class AliasesEJB
                                                  throws RestException {
         try {
             new UpdateAliasCommand(
-                getResources(),
-                getAuditLog(),
+                getRepoFactory(),
                 delta.getTargetId(),
                 aliasId)
             .execute(
@@ -107,7 +106,10 @@ public class AliasesEJB
     @RolesAllowed({ALIAS_READ})
     public String aliasTargetName(final UUID aliasId) throws RestException {
         try {
-            final Alias alias = getResources().find(Alias.class, aliasId);
+            final Alias alias =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Alias.class, aliasId);
             if (alias != null) {
                 return alias.target().getName().toString();
             }

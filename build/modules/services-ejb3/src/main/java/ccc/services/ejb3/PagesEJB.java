@@ -103,8 +103,7 @@ public class PagesEJB
 
             execute(
                 new UpdatePageCommand(
-                    getResources(),
-                    getAuditLog(),
+                    getRepoFactory(),
                     pageId,
                     delta,
                     comment,
@@ -119,8 +118,8 @@ public class PagesEJB
                                   final PageDelta delta)
                                                  throws RestException {
         try {
-            new UpdateWorkingCopyCommand(
-                getResources(), getAuditLog()).execute(
+            new UpdateWorkingCopyCommand(getRepoFactory())
+                .execute(
                     currentUser(),
                     new Date(),
                     pageId,
@@ -154,7 +153,9 @@ public class PagesEJB
     public PageDelta pageDelta(final UUID pageId) throws RestException {
         try {
             return
-                getResources().find(Page.class, pageId).deltaPage();
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Page.class, pageId).deltaPage();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

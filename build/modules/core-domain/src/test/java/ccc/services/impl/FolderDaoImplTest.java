@@ -33,20 +33,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import junit.framework.TestCase;
+import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
-import ccc.types.Username;
 
 
 /**
@@ -56,7 +51,7 @@ import ccc.types.Username;
  */
 public class FolderDaoImplTest
     extends
-        TestCase {
+        AbstractCommandTest {
 
     /**
      * Test.
@@ -65,23 +60,22 @@ public class FolderDaoImplTest
     public void testUpdateSortOrder() throws Exception {
 
         // ARRANGE
-        _f.lock(_regularUser);
-        expect(_rdao.find(Folder.class, _f.getId()))
+        _f.lock(_user);
+        expect(_repository.find(Folder.class, _f.getId()))
             .andReturn(_f);
-        _al.record(isA(LogEntry.class));
+        _audit.record(isA(LogEntry.class));
         replayAll();
 
         final UpdateFolderCommand uf =
             new UpdateFolderCommand(
-                _rdao,
-                _al,
+                _repoFactory,
                 _f.getId(),
                 ResourceOrder.NAME_ALPHANUM_ASC,
                 null,
                 null);
 
         // ACT
-        uf.execute(_regularUser, new Date());
+        uf.execute(_user, new Date());
 
         // ASSERT
         verifyAll();
@@ -95,7 +89,7 @@ public class FolderDaoImplTest
     public void testReorder() throws CccCheckedException {
 
         // ARRANGE
-        _f.lock(_regularUser);
+        _f.lock(_user);
         final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final Page bar = new Page(new ResourceName("bar"), "bar", null, _rm);
         final Page baz = new Page(new ResourceName("baz"), "baz", null, _rm);
@@ -103,9 +97,9 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
-        expect(_rdao.find(Folder.class, _f.getId()))
+        expect(_repository.find(Folder.class, _f.getId()))
             .andReturn(_f);
-        _al.record(isA(LogEntry.class));
+        _audit.record(isA(LogEntry.class));
         replayAll();
 
         final List<UUID> order = new ArrayList<UUID>();
@@ -116,14 +110,13 @@ public class FolderDaoImplTest
         // ACT
         final UpdateFolderCommand uf =
             new UpdateFolderCommand(
-                _rdao,
-                _al,
+                _repoFactory,
                 _f.getId(),
                 ResourceOrder.MANUAL,
                 null,
                 order);
 
-        uf.execute(_regularUser, new Date());
+        uf.execute(_user, new Date());
 
         // ASSERT
         verifyAll();
@@ -135,36 +128,20 @@ public class FolderDaoImplTest
 
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() {
-        _al = createStrictMock(LogEntryRepository.class);
-        _rdao = createStrictMock(ResourceRepository.class);
 
+    /** {@inheritDoc} */
+    @Override protected void setUp() throws Exception {
+        super.setUp();
         _f = new Folder("foo");
     }
 
+
     /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
-        _rdao = null;
-        _al = null;
+    @Override protected void tearDown() throws Exception {
+        super.tearDown();
+        _f = null;
     }
 
-    private void replayAll() {
-        replay(_rdao, _al);
-    }
-
-    private void verifyAll() {
-        verify(_rdao, _al);
-    }
-    private final User _regularUser =
-        new User(new Username("regular"), "password");
 
     private Folder _f;
-
-    private LogEntryRepository _al;
-    private ResourceRepository _rdao;
-    private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

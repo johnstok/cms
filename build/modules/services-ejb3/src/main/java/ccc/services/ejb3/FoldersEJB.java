@@ -147,8 +147,7 @@ public class FoldersEJB
             }
 
             new UpdateFolderCommand(
-                getResources(),
-                getAuditLog(),
+                getRepoFactory(),
                 folderId,
                 ResourceOrder.valueOf(delta.getSortOrder()),
                 delta.getIndexPage(),
@@ -171,7 +170,9 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f =
-                getResources().find(Folder.class, folderId);
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, folderId);
             if (f != null) {
                 f.setSortOrder(ResourceOrder.MANUAL);
                 return Resource.mapResources(f.getEntries());
@@ -193,7 +194,8 @@ public class FoldersEJB
             // TODO: handle null folderId? (for root folders)
             return
                 Boolean.valueOf(
-                    getResources()
+                    getRepoFactory()
+                        .createResourceRepository()
                         .find(Folder.class, folderId)
                         .hasEntryWithName(new ResourceName(name)));
 
@@ -207,7 +209,11 @@ public class FoldersEJB
     @Override
     @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> roots() {
-        return Resource.mapResources(getResources().roots());
+        return
+            Resource.mapResources(
+                getRepoFactory()
+                    .createResourceRepository()
+                    .roots());
     }
 
     /* ====================================================================
@@ -221,7 +227,9 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f =
-                getResources().find(Folder.class, folderId);
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, folderId);
             return Resource.mapResources(
                 f != null ? f.getFolders() : new ArrayList<Folder>());
 
@@ -237,7 +245,10 @@ public class FoldersEJB
     public Collection<ResourceSummary> getChildren(final UUID folderId)
     throws RestException {
         try {
-            final Folder f = getResources().find(Folder.class, folderId);
+            final Folder f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, folderId);
             return Resource.mapResources(
                 f != null ? f.getEntries() : new ArrayList<Resource>());
 
@@ -253,7 +264,10 @@ public class FoldersEJB
     public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId)
     throws RestException {
         try {
-            final Folder f = getResources().find(Folder.class, folderId);
+            final Folder f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, folderId);
             final List<Resource> filtered = new ArrayList<Resource>();
             final User user = currentUser();
             for (final Resource r : f.getEntries()) {
@@ -280,20 +294,25 @@ public class FoldersEJB
                                                     final int pageSize)
                                                     throws RestException {
         try {
-            final Folder f = getResources().find(Folder.class, folderId);
+            final Folder f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, folderId);
 
             final DtoCollection<ResourceSummary> dtoc =
                 new DtoCollection<ResourceSummary>(
                     f.getEntries().size(), Resource.mapResources(
-                    getResources().list(
-                        f,
-                        null,
-                        null,
-                        null,
-                        sort,
-                        sortOrder,
-                        pageNo,
-                        pageSize)));
+                        getRepoFactory()
+                            .createResourceRepository()
+                            .list(
+                                f,
+                                null,
+                                null,
+                                null,
+                                sort,
+                                sortOrder,
+                                pageNo,
+                                pageSize)));
             return dtoc;
         } catch (final CccCheckedException e) {
             throw fail(e);

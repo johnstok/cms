@@ -74,7 +74,7 @@ public class UsersEJB
     public UserDto createUser(final UserDto delta) throws RestException {
         try {
             return
-                new CreateUserCommand(getUsers(), getGroups(), getAuditLog())
+                new CreateUserCommand(getRepoFactory())
                 .execute(currentUser(), new Date(), delta)
                 .toDto();
 
@@ -91,9 +91,7 @@ public class UsersEJB
     throws RestException {
         try {
             new UpdateUserCommand(
-                getUsers(),
-                getAuditLog(),
-                getGroups(),
+                getRepoFactory(),
                 userId,
                 delta)
             .execute(
@@ -112,7 +110,7 @@ public class UsersEJB
     public void updateUserPassword(final UUID userId, final UserDto user)
     throws RestException {
         try {
-            new UpdatePasswordAction(getUsers(), getAuditLog()).execute(
+            new UpdatePasswordAction(getRepoFactory()).execute(
                 currentUser(),
                 new Date(),
                 userId,
@@ -130,18 +128,11 @@ public class UsersEJB
     public void updateYourUser(final UUID userId,
                                final UserDto user)
                                                  throws RestException {
-        try {
+        execute(
             new UpdateCurrentUserCommand(
-                getUsers(),
-                getAuditLog(),
+                getRepoFactory(),
                 userId,
-                user)
-            .execute(
-                currentUser(),
-                new Date());
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                user));
     }
 
 
@@ -150,7 +141,10 @@ public class UsersEJB
     @RolesAllowed(USER_READ)
     public Boolean usernameExists(final Username username) {
         return
-            Boolean.valueOf(getUsers().usernameExists(username.toString()));
+            Boolean.valueOf(
+                getRepoFactory()
+                .createUserRepo()
+                .usernameExists(username.toString()));
     }
 
 
@@ -158,7 +152,11 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsers() {
-        return User.map(getUsers().listUsers());
+        return
+            User.map(
+                getRepoFactory()
+                    .createUserRepo()
+                    .listUsers());
     }
 
 
@@ -166,7 +164,11 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsersWithEmail(final String email) {
-        return User.map(getUsers().listUsersWithEmail(email));
+        return
+            User.map(
+                getRepoFactory()
+                    .createUserRepo()
+                    .listUsersWithEmail(email));
     }
 
 
@@ -174,7 +176,11 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsersWithRole(final String role) {
-        return User.map(getUsers().listUsersWithRole(role));
+        return
+            User.map(
+                getRepoFactory()
+                    .createUserRepo()
+                    .listUsersWithRole(role));
     }
 
 
@@ -183,7 +189,11 @@ public class UsersEJB
     @RolesAllowed(USER_READ)
     public Collection<UserDto> listUsersWithUsername(
                                                     final Username username) {
-        return User.map(getUsers().listUsersWithUsername(username.toString()));
+        return
+            User.map(
+                getRepoFactory()
+                    .createUserRepo()
+                    .listUsersWithUsername(username.toString()));
     }
 
 
@@ -192,7 +202,11 @@ public class UsersEJB
     @RolesAllowed(USER_READ)
     public UserDto userDelta(final UUID userId) throws RestException {
         try {
-            return getUsers().find(userId).toDto();
+            return
+                getRepoFactory()
+                    .createUserRepo()
+                    .find(userId)
+                    .toDto();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -205,7 +219,10 @@ public class UsersEJB
     @RolesAllowed(USER_READ)
     public UserDto userByLegacyId(final String legacyId) throws RestException {
         try {
-            return getUsers().userByLegacyId(legacyId).toDto();
+            return
+                getRepoFactory()
+                    .createUserRepo()
+                    .userByLegacyId(legacyId).toDto();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -217,7 +234,10 @@ public class UsersEJB
     @Override
     @RolesAllowed(USER_READ)
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
-        return getUsers().listMetadataValuesWithKey(key);
+        return
+            getRepoFactory()
+                .createUserRepo()
+                .listMetadataValuesWithKey(key);
     }
 
 

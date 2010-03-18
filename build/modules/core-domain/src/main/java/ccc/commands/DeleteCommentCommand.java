@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,7 +21,7 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.commands;
@@ -33,70 +33,55 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
-import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
-import ccc.types.EmailAddress;
 
 
 /**
- * Command: update a user.
+ * Command used to delete a comment.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateUserCommand
+public class DeleteCommentCommand
     extends
-        Command<User> {
+        Command<Void> {
 
-    private final UUID _userId;
-    private final UserDto _delta;
+    private final UUID _commentId;
 
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
-     * @param userId The id of the user to update.
-     * @param delta The changes to apply.
+     * @param commentId The ID of the comment to delete.
      */
-    public UpdateUserCommand(final IRepositoryFactory repoFactory,
-                             final UUID userId,
-                             final UserDto delta) {
+    public DeleteCommentCommand(final IRepositoryFactory repoFactory,
+                                final UUID commentId) {
         super(repoFactory);
-        _userId = userId;
-        _delta = delta;
+        _commentId = commentId;
     }
+
 
     /** {@inheritDoc} */
     @Override
-    public User doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+    protected Void doExecute(final User actor,
+                             final Date happenedOn) throws CccCheckedException {
 
-        final User current = getUsers().find(_userId);
-
-        // current.username(delta.getUsername().toString()); #571
-        current.setEmail(new EmailAddress(_delta.getEmail()));
-        current.setName(_delta.getName());
-        current.clearGroups();
-        for (final UUID groupId : _delta.getRoles()) {
-            current.addGroup(getGroups().find(groupId));
-        }
-        current.clearMetadata();
-        current.addMetadata(_delta.getMetadata());
+        getComments().delete(_commentId);
 
         getAudit().record(
             new LogEntry(
                 actor,
                 getType(),
                 happenedOn,
-                _userId,
-                new JsonImpl(current).getDetail()));
+                _commentId,
+                new JsonImpl().getDetail()));
 
-        return current;
+        return null;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected CommandType getType() { return CommandType.USER_UPDATE; }
+    protected CommandType getType() { return CommandType.COMMENT_DELETE; }
 }

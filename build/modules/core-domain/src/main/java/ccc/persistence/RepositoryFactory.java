@@ -36,9 +36,12 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public class RepositoryFactory {
+class RepositoryFactory
+    implements
+        IRepositoryFactory {
 
     private final EntityManager _em;
+
 
     /**
      * Constructor.
@@ -50,66 +53,45 @@ public class RepositoryFactory {
         _em = em;
     }
 
-    /**
-     * Create an instance of the {@link LogEntryRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public LogEntryRepository createLogEntryRepo() {
+
+    /** {@inheritDoc} */
+    @Override public LogEntryRepository createLogEntryRepo() {
         return new LogEntryRepositoryImpl(_em);
     }
 
-    /**
-     * Create an instance of the {@link UserRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public UserRepository createUserRepo() {
+
+    /** {@inheritDoc} */
+    @Override public UserRepository createUserRepo() {
         return new UserRepositoryImpl(_em);
     }
 
-    /**
-     * Create an instance of the {@link ResourceRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public ResourceRepository createResourceRepository() {
+
+    /** {@inheritDoc} */
+    @Override public ResourceRepository createResourceRepository() {
         return new ResourceRepositoryImpl(_em);
     }
 
-    /**
-     * Create an instance of the {@link DataRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public DataRepository createDataRepository() {
+
+    /** {@inheritDoc} */
+    @Override public DataRepository createDataRepository() {
         return DataRepositoryImpl.onFileSystem(_em);
     }
 
-    /**
-     * Create an instance of the {@link ActionRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public ActionRepository createActionRepository() {
+
+    /** {@inheritDoc} */
+    @Override public ActionRepository createActionRepository() {
         return new ActionRepositoryImpl(_em);
     }
 
-    /**
-     * Create an instance of the {@link CommentRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public CommentRepository createCommentRepo() {
+
+    /** {@inheritDoc} */
+    @Override public CommentRepository createCommentRepo() {
         return new CommentRepositoryImpl(_em);
     }
 
-    /**
-     * Create an instance of the {@link GroupRepository} interface.
-     *
-     * @return A repository instance.
-     */
-    public GroupRepository createGroupRepo() {
+
+    /** {@inheritDoc} */
+    @Override public GroupRepository createGroupRepo() {
         return new GroupRepositoryImpl(_em);
     }
 }

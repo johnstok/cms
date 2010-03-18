@@ -36,6 +36,7 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
@@ -56,13 +57,11 @@ public class UpdateWorkingCopyCommand {
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
      */
-    public UpdateWorkingCopyCommand(final ResourceRepository repository,
-                                    final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+    public UpdateWorkingCopyCommand(final IRepositoryFactory repoFactory) {
+        _repository = repoFactory.createResourceRepository();
+        _audit = repoFactory.createLogEntryRepo();
     }
 
     /**

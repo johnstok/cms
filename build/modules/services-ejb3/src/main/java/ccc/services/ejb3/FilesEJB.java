@@ -88,8 +88,13 @@ public class FilesEJB
         throws RestException {
         try {
             final List<File> list =
-                getResources().images(folderId, pageNo, pageSize);
-            final long c = getResources().imagesCount(folderId);
+                getRepoFactory()
+                    .createResourceRepository()
+                    .images(folderId, pageNo, pageSize);
+            final long c =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .imagesCount(folderId);
             return new DtoCollection<FileDto>(c, File.mapFiles(list));
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -158,9 +163,7 @@ public class FilesEJB
 
         try {
             new UpdateFileCommand(
-                getResources(),
-                getAuditLog(),
-                getData(),
+                getRepoFactory(),
                 UUID.fromString(fileId.toString()),
                 fileDelta,
                 comment,
@@ -250,9 +253,11 @@ public class FilesEJB
     public TextFileDelta get(final UUID fileId) throws RestException {
         try {
             // FIXME: check file is accessible to user.
-            return getResources()
-                    .find(File.class, fileId)
-                    .mapTextFile(getData());
+            return
+            getRepoFactory()
+                .createResourceRepository()
+                .find(File.class, fileId)
+                .mapTextFile(getRepoFactory().createDataRepository());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -267,9 +272,15 @@ public class FilesEJB
                          final StreamAction action)
     throws RestException, UnauthorizedException {
         try {
-            final File f = getResources().find(File.class, file);
+            final File f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(File.class, file);
             checkSecurity(f);
-            getData().retrieve(f.getData(), action);
+
+            getRepoFactory()
+                .createDataRepository()
+                .retrieve(f.getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -285,9 +296,15 @@ public class FilesEJB
                                  final StreamAction action)
     throws RestException, UnauthorizedException {
         try {
-            final File f = getResources().find(File.class, file);
+            final File f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(File.class, file);
             checkSecurity(f);
-            getData().retrieve(f.revision(revision).getData(), action);
+
+            getRepoFactory()
+                .createDataRepository()
+                .retrieve(f.revision(revision).getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -302,9 +319,15 @@ public class FilesEJB
                                     final StreamAction action)
     throws RestException, UnauthorizedException {
         try {
-            final File f = getResources().find(File.class, file);
+            final File f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(File.class, file);
             checkSecurity(f);
-            getData().retrieve(f.getWorkingCopy().getData(), action);
+
+            getRepoFactory()
+                .createDataRepository()
+                .retrieve(f.getWorkingCopy().getData(), action);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

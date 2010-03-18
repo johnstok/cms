@@ -36,7 +36,10 @@ import ccc.commons.ScriptRunner;
 import ccc.domain.CccCheckedException;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.User;
+import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
+import ccc.persistence.GroupRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
@@ -56,6 +59,8 @@ public abstract class Command<T> {
     private final LogEntryRepository _audit;
     private final UserRepository _userRepo;
     private final DataRepository _data;
+    private final GroupRepository _groups;
+    private final CommentRepository _comments;
 
 
     /**
@@ -75,6 +80,22 @@ public abstract class Command<T> {
         _audit = audit;
         _userRepo = userRepo;
         _data = data;
+        _groups = null;
+        _comments = null;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param repoFactory The repository factory for this command.
+     */
+    public Command(final IRepositoryFactory repoFactory) {
+        _repository = repoFactory.createResourceRepository();
+        _audit      = repoFactory.createLogEntryRepo();
+        _userRepo   = repoFactory.createUserRepo();
+        _data       = repoFactory.createDataRepository();
+        _groups     = repoFactory.createGroupRepo();
+        _comments   = repoFactory.createCommentRepo();
     }
 
     /**
@@ -233,6 +254,27 @@ public abstract class Command<T> {
     public DataRepository getData() {
         return _data;
     }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the groups repository.
+     */
+    protected GroupRepository getGroups() {
+        return _groups;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Return the comments repository.
+     */
+    protected CommentRepository getComments() {
+        return _comments;
+    }
+
 
     /**
      * Execute the command.

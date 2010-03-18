@@ -33,6 +33,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.GroupRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
 import ccc.rest.dto.UserDto;
@@ -55,15 +56,12 @@ public class CreateUserCommand {
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
      */
-    public CreateUserCommand(final UserRepository repository,
-                             final GroupRepository groups,
-                             final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
-        _groups = groups;
+    public CreateUserCommand(final IRepositoryFactory repoFactory) {
+        _repository = repoFactory.createUserRepo();
+        _audit = repoFactory.createLogEntryRepo();
+        _groups = repoFactory.createGroupRepo();
     }
 
     /**

@@ -32,6 +32,7 @@ import java.util.UUID;
 import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
 import ccc.serialization.JsonImpl;
@@ -51,13 +52,11 @@ public class UpdatePasswordAction {
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
      */
-    public UpdatePasswordAction(final UserRepository repository,
-                                final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+    public UpdatePasswordAction(final IRepositoryFactory repoFactory) {
+        _repository = repoFactory.createUserRepo();
+        _audit = repoFactory.createLogEntryRepo();
     }
 
 

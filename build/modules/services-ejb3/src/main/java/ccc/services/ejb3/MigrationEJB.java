@@ -154,8 +154,7 @@ public class MigrationEJB
                            final Date happenedOn) throws RestException {
         sudoExecute(
             new UpdatePageCommand(
-                getResources(),
-                getAuditLog(),
+                getRepoFactory(),
                 pageId,
                 delta,
                 comment,
@@ -220,8 +219,8 @@ public class MigrationEJB
                                        final Date happenedOn)
                                                  throws RestException {
         try {
-            new ChangeTemplateForResourceCommand(
-                getResources(), getAuditLog()).execute(
+            new ChangeTemplateForResourceCommand(getRepoFactory())
+                .execute(
                     userForId(actorId),
                     happenedOn,
                     resourceId,
@@ -239,12 +238,10 @@ public class MigrationEJB
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include,
                                   final UUID actorId,
-                                  final Date happenedOn)
-                                                 throws RestException {
+                                  final Date happenedOn) throws RestException {
         try {
-            new IncludeInMainMenuCommand(
-                getResources(), getAuditLog()).execute(
-                    userForId(actorId), happenedOn, resourceId, include);
+            new IncludeInMainMenuCommand(getRepoFactory())
+                .execute(userForId(actorId), happenedOn, resourceId, include);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -261,11 +258,10 @@ public class MigrationEJB
                                final String tags,
                                final Map<String, String> metadata,
                                final UUID actorId,
-                               final Date happenedOn)
-                                                 throws RestException {
+                               final Date happenedOn) throws RestException {
         try {
-            new UpdateResourceMetadataCommand(
-                getResources(), getAuditLog()).execute(
+            new UpdateResourceMetadataCommand(getRepoFactory())
+                .execute(
                     userForId(actorId),
                     happenedOn,
                     resourceId,
@@ -286,14 +282,10 @@ public class MigrationEJB
     public void changeRoles(final UUID resourceId,
                             final AclDto acl,
                             final UUID actorId,
-                            final Date happenedOn)
-                                                 throws RestException {
+                            final Date happenedOn) throws RestException {
         sudoExecute(
             new UpdateResourceRolesCommand(
-                getResources(),
-                getAuditLog(),
-                getGroups(),
-                getUsers(),
+                getRepoFactory(),
                 resourceId,
                 acl),
             actorId,
@@ -308,22 +300,15 @@ public class MigrationEJB
                                  final UUID userId,
                                  final Date happenedOn,
                                  final boolean isMajorEdit,
-                                 final String comment)
-                                                 throws RestException {
-        try {
+                                 final String comment) throws RestException {
+        sudoExecute(
             new ApplyWorkingCopyCommand(
-                getResources(),
-                getAuditLog(),
+                getRepoFactory(),
                 resourceId,
                 comment,
-                isMajorEdit)
-            .execute(
-                getUsers().find(userId),
-                happenedOn);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                isMajorEdit),
+            userId,
+            happenedOn);
     }
 
 

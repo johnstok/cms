@@ -30,7 +30,6 @@ import static ccc.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -78,7 +77,9 @@ public final class TemplatesEJB
     @RolesAllowed(TEMPLATE_READ)
     public Boolean templateNameExists(final String templateName) {
         try {
-            getResources().template(templateName);
+            getRepoFactory()
+                .createResourceRepository()
+                .template(templateName);
             return Boolean.TRUE;
         } catch (final EntityNotFoundException e) {
             return Boolean.FALSE;
@@ -90,7 +91,11 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed(TEMPLATE_READ)
     public Collection<TemplateSummary> templates() {
-        return Template.mapTemplates(getResources().templates());
+        return
+            Template.mapTemplates(
+                getRepoFactory()
+                    .createResourceRepository()
+                    .templates());
     }
 
 
@@ -99,16 +104,9 @@ public final class TemplatesEJB
     @RolesAllowed(TEMPLATE_CREATE)
     public ResourceSummary createTemplate(final TemplateDto template)
                                                  throws RestException {
-        try {
-            return
-                commands().createTemplateCommand(template)
-                          .execute(currentUser(), new Date())
-                          .mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
-
+        return
+            execute(commands().createTemplateCommand(template))
+            .mapResource();
     }
 
 
@@ -118,19 +116,11 @@ public final class TemplatesEJB
     public void updateTemplate(final UUID templateId,
                                final TemplateDelta delta)
                                                  throws RestException {
-        try {
+        execute(
             new UpdateTemplateCommand(
-                getResources(),
-                getAuditLog(),
+                getRepoFactory(),
                 templateId,
-                delta)
-            .execute(
-                currentUser(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                delta));
     }
 
 
@@ -147,7 +137,9 @@ public final class TemplatesEJB
     throws RestException {
         try {
             return
-                getResources().find(Template.class, templateId).deltaTemplate();
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Template.class, templateId).deltaTemplate();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
