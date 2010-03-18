@@ -28,7 +28,9 @@
 package ccc.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.sorting.Sorter;
@@ -52,7 +54,7 @@ public final class Folder
     extends
         Resource {
 
-    private List<Resource> _entries = new ArrayList<Resource>();
+    private Set<Resource> _entries = new HashSet<Resource>();
     private ResourceOrder  _order = ResourceOrder.MANUAL;
     private Page _indexPage = null;
 
@@ -109,8 +111,21 @@ public final class Folder
             }
         }
 
+        int nextIndex = maxIndex(_entries)+1;
         _entries.add(resource);
-        resource.parent(this, Integer.valueOf(_entries.indexOf(resource)));
+        resource.parent(this, Integer.valueOf(nextIndex));
+    }
+
+    private int maxIndex(Set<Resource> entries) {
+        int nextIndex = 0;
+        for (Resource r : entries) {
+            Integer index = r.getIndex();
+            if (null==index) { continue; }
+            if (index.intValue()>nextIndex) {
+                nextIndex = index.intValue();
+            }
+        }
+        return nextIndex;
     }
 
     /**
@@ -301,7 +316,7 @@ public final class Folder
      * @return The first page in the list of entries.
      */
     public Page firstPage() {
-        for (final Resource r : _entries) {
+        for (final Resource r : entries()) {
             if (r.type().equals(ResourceType.PAGE)) {
                 return r.as(Page.class);
             }
@@ -344,7 +359,7 @@ public final class Folder
      */
     public List<Folder> folders() {
         final List<Folder> entries = new ArrayList<Folder>();
-        for (final Resource entry : _entries) {
+        for (final Resource entry : entries()) {
             if (entry.type()==ResourceType.FOLDER) {
                 entries.add(entry.as(Folder.class));
             }
@@ -372,7 +387,7 @@ public final class Folder
      * @return The first alias in the list of entries.
      */
     public Alias firstAlias() {
-        for (final Resource r : _entries) {
+        for (final Resource r : entries()) {
             if (r.type().equals(ResourceType.ALIAS)) {
                 return r.as(Alias.class);
             }

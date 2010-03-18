@@ -702,8 +702,10 @@ public final class FolderTest extends TestCase {
         final Folder pages = new Folder("content");
         final Page ab = new Page("ab", _rm);
         final Alias cd = new Alias("cd", ab);
+        final Alias de = new Alias("de", ab);
         pages.add(ab);
         pages.add(cd);
+        pages.add(de);
 
         // ACT
         final Alias firstChild = pages.firstAlias();
