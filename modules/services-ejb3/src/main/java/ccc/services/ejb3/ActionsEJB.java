@@ -46,6 +46,8 @@ import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.CccCheckedException;
+import ccc.domain.Resource;
+import ccc.persistence.ActionRepository;
 import ccc.rest.Actions;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
@@ -90,7 +92,8 @@ public class ActionsEJB
     public void executeAll() {
         LOG.debug("Executing scheduled actions.");
 
-        final List<Action> actions = getActions().latest(new Date());
+        final List<Action> actions =
+            getRepoFactory().createActionRepository().latest(new Date());
         LOG.debug("Actions to execute: "+actions.size());
 
         for (final Action action : actions) {
@@ -114,15 +117,17 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public DtoCollection<ActionSummary> listPendingActions(final String sort,
-        final SortOrder sortOrder,
-        final int pageNo,
-        final int pageSize) {
+    public DtoCollection<ActionSummary> listPendingActions(
+                                                    final String sort,
+                                                    final SortOrder sortOrder,
+                                                    final int pageNo,
+                                                    final int pageSize) {
+        final ActionRepository actions = getRepoFactory().createActionRepository();
         final DtoCollection<ActionSummary> dc =
             new DtoCollection<ActionSummary>(
-                getActions().countPending(),
+                actions.countPending(),
                 Action.mapActions(
-                    getActions().pending(sort, sortOrder, pageNo, pageSize)));
+                    actions.pending(sort, sortOrder, pageNo, pageSize)));
         return dc;
     }
 
@@ -130,13 +135,16 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public DtoCollection<ActionSummary> listCompletedActions(final String sort,
-        final SortOrder sortOrder,
-        final int pageNo,
-        final int pageSize) {
+    public DtoCollection<ActionSummary> listCompletedActions(
+                                                    final String sort,
+                                                    final SortOrder sortOrder,
+                                                    final int pageNo,
+                                                    final int pageSize) {
+        final ActionRepository actions = getRepoFactory().createActionRepository();
         final DtoCollection<ActionSummary> dc =
-            new DtoCollection<ActionSummary>(getActions().countCompleted(),
-                Action.mapActions(getActions().completed(
+            new DtoCollection<ActionSummary>(
+                actions.countCompleted(),
+                Action.mapActions(actions.completed(
                     sort, sortOrder, pageNo, pageSize)));
         return dc;
     }
@@ -147,8 +155,8 @@ public class ActionsEJB
     @RolesAllowed({ACTION_CANCEL})
     public void cancelAction(final UUID actionId) throws RestException {
         try {
-            new CancelActionCommand(getActions(), getAuditLog()).execute(
-                currentUser(), new Date(), actionId);
+            new CancelActionCommand(getRepoFactory())
+                .execute(currentUser(), new Date(), actionId);
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -166,12 +174,13 @@ public class ActionsEJB
                     action.getCommand(),
                     action.getExecuteAfter(),
                     currentUser(),
-                    getResources().find(
-                        ccc.domain.Resource.class, action.getResourceId()),
+                    getRepoFactory()
+                        .createResourceRepository()
+                        .find(Resource.class, action.getResourceId()),
                     action.getParameters());
 
-            new ScheduleActionCommand(getActions(), getAuditLog()).execute(
-                currentUser(), new Date(), a);
+            new ScheduleActionCommand(getRepoFactory())
+                .execute(currentUser(), new Date(), a);
 
             return a.mapAction();
 
@@ -185,7 +194,10 @@ public class ActionsEJB
     @RolesAllowed({ACTION_LIST})
     public ActionSummary findAction(final UUID actionId) throws RestException {
         try {
-            return getActions().find(actionId).mapAction();
+            return
+                getRepoFactory()
+                    .createActionRepository()
+                    .find(actionId).mapAction();
 
         } catch (final CccCheckedException e) {
             throw fail(e);

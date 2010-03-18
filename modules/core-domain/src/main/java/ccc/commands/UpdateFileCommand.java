@@ -36,9 +36,7 @@ import ccc.domain.File;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.DataRepository;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.rest.dto.FileDelta;
 import ccc.types.CommandType;
 
@@ -61,9 +59,7 @@ public class UpdateFileCommand
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
-     * @param data The data manager to use for reading / writing the file data.
+     * @param repoFactory The repository factory for this command.
      * @param fileId The id of the file to update.
      * @param dataStream The input stream from which the bytes for the new file
      *        should be read.
@@ -71,15 +67,13 @@ public class UpdateFileCommand
      * @param comment Comment describing the change.
      * @param isMajorEdit Is this a major change.
      */
-    public UpdateFileCommand(final ResourceRepository repository,
-                             final LogEntryRepository audit,
-                             final DataRepository data,
+    public UpdateFileCommand(final IRepositoryFactory repoFactory,
                              final UUID fileId,
                              final FileDelta fileDelta,
                              final String comment,
                              final boolean isMajorEdit,
                              final InputStream dataStream) {
-        super(repository, audit, data);
+        super(repoFactory);
         _fileId = fileId;
         _fileDelta = fileDelta;
         _comment = comment;

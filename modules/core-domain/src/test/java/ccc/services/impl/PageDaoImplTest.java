@@ -29,21 +29,15 @@ package ccc.services.impl;
 import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
-import java.util.Date;
 
-import junit.framework.TestCase;
+import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
-import ccc.types.Username;
 
 
 /**
@@ -54,7 +48,7 @@ import ccc.types.Username;
  */
 public class PageDaoImplTest
     extends
-        TestCase {
+        AbstractCommandTest {
 
 
     /**
@@ -74,18 +68,18 @@ public class PageDaoImplTest
         final PageDelta delta =
             new PageDelta(
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
-        page.lock(_u);
+        page.lock(_user);
         final UpdatePageCommand updatePage =
             new UpdatePageCommand(
-                _repository, _al, page.getId(), delta, "comment text", false);
+                _repoFactory, page.getId(), delta, "comment text", false);
 
         expect(_repository.find(Page.class, page.getId())).andReturn(page);
-        _al.record(isA(LogEntry.class));
+        _audit.record(isA(LogEntry.class));
         replayAll();
 
 
         // ACT
-        updatePage.execute(_u, _now);
+        updatePage.execute(_user, _now);
 
 
         // ASSERT
@@ -99,34 +93,4 @@ public class PageDaoImplTest
             page.currentRevision().getParagraph("foo").text());
         assertFalse("Page must not have working copy", page.hasWorkingCopy());
     }
-
-
-    private void verifyAll() {
-        verify(_repository, _al);
-    }
-
-    private void replayAll() {
-        replay(_repository, _al);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() {
-        _repository = createStrictMock(ResourceRepository.class);
-        _al = createStrictMock(LogEntryRepository.class);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
-        _al = null;
-        _repository = null;
-    }
-
-    private ResourceRepository _repository;
-    private LogEntryRepository _al;
-    private final Date _now = new Date();
-    private final User _u = new User(new Username("user"), "password");
-    private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

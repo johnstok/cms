@@ -33,8 +33,7 @@ import ccc.domain.Alias;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.types.CommandType;
 
 
@@ -53,16 +52,14 @@ public class UpdateAliasCommand
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
+     * @param repoFactory The repository factory for this command.
      * @param targetId The new target for the alias.
      * @param aliasId The alias to update.
      */
-    public UpdateAliasCommand(final ResourceRepository repository,
-                              final LogEntryRepository audit,
+    public UpdateAliasCommand(final IRepositoryFactory repoFactory,
                               final UUID targetId,
                               final UUID aliasId) {
-        super(repository, audit, null);
+        super(repoFactory);
         _targetId = targetId;
         _aliasId = aliasId;
     }

@@ -30,14 +30,8 @@ package ccc.persistence;
 import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.commands.CreateUserCommand;
-import ccc.commands.UpdatePasswordAction;
-import ccc.commands.UpdateUserCommand;
-import ccc.domain.CccCheckedException;
-import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.rest.dto.UserDto;
 import ccc.types.EmailAddress;
@@ -93,29 +87,6 @@ public class UserManagerImplTest extends TestCase {
         verifyAll();
     }
 
-    /**
-     * Test.
-     *
-     * @throws CccCheckedException If the test fails.
-     */
-    public void testCreateUser() throws CccCheckedException {
-
-        // ARRANGE
-        final Date now = new Date();
-        _repository.create(isA(User.class));
-        _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
-        replayAll();
-
-        final CreateUserCommand cu =
-            new CreateUserCommand(_um, _groups, _audit);
-
-        // ACT
-        final User u = cu.execute(_u, now, _uDelta);
-
-        // ASSERT
-        verifyAll();
-        assertEquals("newNameUser", u.getUsername().toString());
-    }
 
     /**
      * Test.
@@ -143,8 +114,8 @@ public class UserManagerImplTest extends TestCase {
 
         // ARRANGE
         expect(_repository.uniquify(QueryNames.USERS_WITH_ROLE,
-                            User.class,
-                            "ADMINISTRATOR"))
+                                    User.class,
+                                    "ADMINISTRATOR"))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -194,59 +165,8 @@ public class UserManagerImplTest extends TestCase {
 
     }
 
-    /**
-     * Test.
-     * TODO: Test the actual values of the created user.
-     *
-     * @throws Exception If the test fails.
-     */
-    public void testUpdateUser() throws Exception {
-
-        // ARRANGE
-        final Date now = new Date();
-        expect(_repository.find(User.class, _u.getId())).andReturn(_u);
-        _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
-        replayAll();
-
-        final UpdateUserCommand uu =
-            new UpdateUserCommand(_um, _audit, _groups, _u.getId(), _uDelta);
-
-        // ACT
-        uu.execute(_u, now);
-
-        // ASSERT
-        verifyAll();
-
-    }
-
-    /**
-     * Test.
-     *
-     * @throws Exception If the test fails.
-     */
-    public void testUpdateUserPassword() throws Exception {
-
-        // ARRANGE
-        final Date now = new Date();
-
-        expect(_repository.find(User.class, _u.getId())).andReturn(_u);
-        _audit.record(isA(LogEntry.class));
-        replayAll();
-
-        final UpdatePasswordAction up =
-            new UpdatePasswordAction(_um, _audit);
-
-        // ACT
-        up.execute(_u, now, _u.getId(), "newPass");
-
-        // ASSERT
-        verifyAll();
-        assertTrue(_u.hasPassword("newPass"));
-    }
 
     private User _u;
-    private LogEntryRepository _audit;
-    private GroupRepository _groups;
     private UserDto _uDelta;
     private Repository _repository;
     private UserRepositoryImpl _um;
@@ -264,27 +184,23 @@ public class UserManagerImplTest extends TestCase {
         _uDelta.setPassword("foopass");
 
         _repository = createStrictMock(Repository.class);
-        _audit = createStrictMock(LogEntryRepository.class);
-        _groups = createStrictMock(GroupRepository.class);
         _um = new UserRepositoryImpl(_repository);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void tearDown() {
-        _audit = null;
         _u = null;
         _uDelta = null;
         _repository = null;
         _um = null;
-        _groups = null;
     }
 
     private void verifyAll() {
-        verify(_repository, _audit, _groups);
+        verify(_repository);
     }
 
     private void replayAll() {
-        replay(_repository, _audit, _groups);
+        replay(_repository);
     }
 }

@@ -27,24 +27,16 @@
 package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
-
-import java.util.Date;
-
-import junit.framework.TestCase;
+import ccc.commands.AbstractCommandTest;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
 import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
-import ccc.types.Username;
 
 
 /**
@@ -54,7 +46,7 @@ import ccc.types.Username;
  */
 public class WorkingCopyManagerTest
     extends
-        TestCase {
+        AbstractCommandTest {
 
 
     /**
@@ -104,7 +96,7 @@ public class WorkingCopyManagerTest
         replayAll();
 
         // ACT
-        new UpdateWorkingCopyCommand(_repository, _audit).execute(
+        new UpdateWorkingCopyCommand(_repoFactory).execute(
             _user, _now, page.getId(), before);
 
         // ASSERT
@@ -112,35 +104,4 @@ public class WorkingCopyManagerTest
         assertNotNull(
             "Page must have a working copy", page.getOrCreateWorkingCopy());
     }
-
-
-    private void verifyAll() {
-        verify(_repository, _audit);
-    }
-
-    private void replayAll() {
-        replay(_repository, _audit);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void setUp() {
-        _repository = createStrictMock(ResourceRepository.class);
-        _audit = createStrictMock(LogEntryRepository.class);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
-        _repository = null;
-        _audit = null;
-    }
-
-    private ResourceRepository _repository;
-    private LogEntryRepository _audit;
-    private final User _user =
-        new User(new Username("currentUser"), "password");
-    private final Date _now = new Date();
-    private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

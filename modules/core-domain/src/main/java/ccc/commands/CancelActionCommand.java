@@ -34,6 +34,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.ActionRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -52,13 +53,11 @@ public class CancelActionCommand {
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
      */
-    public CancelActionCommand(final ActionRepository repository,
-                               final LogEntryRepository audit) {
-        _repository = repository;
-        _audit = audit;
+    public CancelActionCommand(final IRepositoryFactory repoFactory) {
+        _repository = repoFactory.createActionRepository();
+        _audit = repoFactory.createLogEntryRepo();
     }
 
 

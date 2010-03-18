@@ -72,11 +72,11 @@ public class GroupsEJB
             final Group g = new Group(comment.getName());
             g.setPermissions(comment.getPermissions());
 
-            getGroups().create(g);
+            getRepoFactory().createGroupRepo().create(g);
 
             final GroupDto result = g.createDto();
 
-            getAuditLog().record(
+            getRepoFactory().createLogEntryRepo().record(
                 new LogEntry(
                     currentUser(),
                     GROUP_CREATE,
@@ -96,7 +96,7 @@ public class GroupsEJB
     @RolesAllowed(Permission.GROUP_READ)
     public GroupDto find(final UUID id) throws RestException {
         try {
-            return getGroups().find(id).createDto();
+            return getRepoFactory().createGroupRepo().find(id).createDto();
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -107,7 +107,8 @@ public class GroupsEJB
     @Override
     @RolesAllowed(Permission.GROUP_READ)
     public Collection<GroupDto> list(final String name) {
-        final Collection<Group> groups = getGroups().list(name);
+        final Collection<Group> groups =
+            getRepoFactory().createGroupRepo().list(name);
         return Group.map(groups);
     }
 
@@ -118,13 +119,13 @@ public class GroupsEJB
     public GroupDto update(final UUID id, final GroupDto group)
     throws RestException {
         try {
-            final Group g = getGroups().find(id);
+            final Group g = getRepoFactory().createGroupRepo().find(id);
             g.setName(group.getName());
             g.setPermissions(group.getPermissions());
 
             final GroupDto result = g.createDto();
 
-            getAuditLog().record(
+            getRepoFactory().createLogEntryRepo().record(
                 new LogEntry(
                     currentUser(),
                     GROUP_UPDATE,

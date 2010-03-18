@@ -35,8 +35,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.domain.WorkingCopyNotSupportedException;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.types.CommandType;
 
 
@@ -57,18 +56,16 @@ public class ApplyWorkingCopyCommand
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
+     * @param repoFactory The repository factory for this command.
      * @param id The resource's id.
      * @param comment The comment for the page edit.
      * @param isMajorEdit A boolean for major edit.
      */
-    public ApplyWorkingCopyCommand(final ResourceRepository repository,
-                                   final LogEntryRepository audit,
+    public ApplyWorkingCopyCommand(final IRepositoryFactory repoFactory,
                                    final UUID id,
                                    final String comment,
                                    final boolean isMajorEdit) {
-        super(repository, audit, null);
+        super(repoFactory);
         _id = id;
         _comment = comment;
         _isMajorEdit = isMajorEdit;

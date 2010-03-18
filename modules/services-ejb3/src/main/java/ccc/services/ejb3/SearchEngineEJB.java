@@ -52,7 +52,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Setting;
 import ccc.persistence.DataRepository;
-import ccc.persistence.RepositoryFactory;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
 import ccc.rest.SearchEngine;
@@ -201,7 +201,7 @@ public class SearchEngineEJB  implements SearchEngine {
     @PostConstruct @SuppressWarnings("unused")
     private void configureCoreData() {
         _resources =
-            new RepositoryFactory(_em).createResourceRepository();
+            IRepositoryFactory.DEFAULT.create(_em).createResourceRepository();
     }
 
 
@@ -215,7 +215,7 @@ public class SearchEngineEJB  implements SearchEngine {
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
         final DataRepository dr =
-            new RepositoryFactory(_em).createDataRepository();
+            IRepositoryFactory.DEFAULT.create(_em).createDataRepository();
         return new SimpleLuceneFS(dr, indexPath.getValue());
     }
 

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,82 +21,87 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.commands;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
-import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
+import ccc.domain.Comment;
 import ccc.domain.LogEntry;
+import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
-import ccc.rest.dto.UserDto;
+import ccc.rest.dto.CommentDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 
 
 /**
- * Command: update a user.
+ * Command used for creating a comment.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateUserCommand
+public class CreateCommentCommand
     extends
-        Command<User> {
+        Command<Comment> {
 
-    private final UUID _userId;
-    private final UserDto _delta;
+    private final CommentDto _comment;
 
 
     /**
      * Constructor.
      *
      * @param repoFactory The repository factory for this command.
-     * @param userId The id of the user to update.
-     * @param delta The changes to apply.
+     * @param comment Details of the comment to create.
      */
-    public UpdateUserCommand(final IRepositoryFactory repoFactory,
-                             final UUID userId,
-                             final UserDto delta) {
+    public CreateCommentCommand(final IRepositoryFactory repoFactory,
+                                final CommentDto comment) {
         super(repoFactory);
-        _userId = userId;
-        _delta = delta;
+        _comment = comment;
     }
+
 
     /** {@inheritDoc} */
     @Override
-    public User doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+    protected Comment doExecute(final User actor,
+                                final Date happenedOn)
+                                                    throws CccCheckedException {
 
-        final User current = getUsers().find(_userId);
+        final Resource r =
+            getRepository().find(Resource.class, _comment.getResourceId());
 
-        // current.username(delta.getUsername().toString()); #571
-        current.setEmail(new EmailAddress(_delta.getEmail()));
-        current.setName(_delta.getName());
-        current.clearGroups();
-        for (final UUID groupId : _delta.getRoles()) {
-            current.addGroup(getGroups().find(groupId));
+        final Comment c =
+            new Comment(r, _comment.getBody(), _comment.getAuthor());
+        if (_comment.getUrl() != null) {
+            try {
+                c.setUrl(new URL(_comment.getUrl()));
+            } catch (final MalformedURLException e) {
+                throw new InvalidCommandException();
+            }
         }
-        current.clearMetadata();
-        current.addMetadata(_delta.getMetadata());
+        c.setEmail(new EmailAddress(_comment.getEmail()));
+
+        getComments().create(c);
 
         getAudit().record(
             new LogEntry(
                 actor,
                 getType(),
                 happenedOn,
-                _userId,
-                new JsonImpl(current).getDetail()));
+                c.getId(),
+                new JsonImpl(c).getDetail()));
 
-        return current;
+        return c;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected CommandType getType() { return CommandType.USER_UPDATE; }
+    protected CommandType getType() { return CommandType.COMMENT_CREATE; }
 }

@@ -32,6 +32,7 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.DataRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.serialization.JsonImpl;
@@ -59,6 +60,16 @@ abstract class UpdateResourceCommand<T>
                                  final LogEntryRepository audit,
                                  final DataRepository data) {
         super(repository, audit, null, data);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param repoFactory The repository factory for this command.
+     */
+    public UpdateResourceCommand(final IRepositoryFactory repoFactory) {
+        super(repoFactory);
     }
 
 

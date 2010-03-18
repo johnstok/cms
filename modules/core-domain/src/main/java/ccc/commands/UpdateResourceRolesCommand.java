@@ -37,10 +37,7 @@ import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.GroupRepository;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
-import ccc.persistence.UserRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.rest.dto.AclDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -57,27 +54,21 @@ public class UpdateResourceRolesCommand
 
     private final UUID _id;
     private final AclDto _roles;
-    private final GroupRepository _groups;
 
 
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @@param repoFactory The repository factory for this command.
      * @param id The id of the resource to update.
      * @param acl The new access control list.
      */
-    public UpdateResourceRolesCommand(final ResourceRepository repository,
-                                      final LogEntryRepository audit,
-                                      final GroupRepository group,
-                                      final UserRepository users,
+    public UpdateResourceRolesCommand(final IRepositoryFactory repoFactory,
                                       final UUID id,
                                       final AclDto acl) {
-        super(repository, audit, users, null);
+        super(repoFactory);
         _id = id;
         _roles = acl;
-        _groups = group;
     }
 
     /** {@inheritDoc} */
@@ -106,7 +97,7 @@ public class UpdateResourceRolesCommand
     private void lookupGroups(final Resource r) throws EntityNotFoundException {
         final Set<Group> groups = new HashSet<Group>();
         for (final UUID groupId : _roles.getGroups()) {
-            groups.add(_groups.find(groupId));
+            groups.add(getGroups().find(groupId));
         }
         r.setRoles(groups);
     }

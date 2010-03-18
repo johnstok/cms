@@ -33,8 +33,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.UserRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -57,16 +56,14 @@ public class UpdateCurrentUserCommand
     /**
      * Constructor.
      *
-     * @param repository The ResourceDao used for CRUD operations, etc.
-     * @param audit The audit logger, for logging business actions.
+     * @param repoFactory The repository factory for this command.
      * @param userId The user's id.
      * @param delta The changes to apply.
      */
-    public UpdateCurrentUserCommand(final UserRepository repository,
-                                    final LogEntryRepository audit,
+    public UpdateCurrentUserCommand(final IRepositoryFactory repoFactory,
                                     final UUID userId,
                                     final UserDto delta) {
-        super(null, audit, repository, null);
+        super(repoFactory);
         _userId = userId;
         _delta = delta;
     }

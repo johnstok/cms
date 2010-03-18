@@ -30,35 +30,21 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
-import ccc.commands.ChangeTemplateForResourceCommand;
-import ccc.commands.IncludeInMainMenuCommand;
-import ccc.commands.MoveResourceCommand;
-import ccc.commands.RenameResourceCommand;
-import ccc.commands.UpdateCachingCommand;
-import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
-import ccc.domain.Group;
-import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.types.Duration;
-import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
-import ccc.types.Username;
 
 
 /**
@@ -71,7 +57,6 @@ import ccc.types.Username;
 public class ResourceDaoImplTest
     extends
         TestCase {
-
 
     /**
      * Test.
@@ -142,65 +127,6 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testIncludeInMainMenu()
-    throws CccCheckedException {
-
-        // ARRANGE
-        _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new IncludeInMainMenuCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.getId(), true);
-
-        // ASSERT
-        verifyAll();
-        assertEquals(true, _r.isIncludedInMainMenu());
-
-    }
-
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testUpdateFullMetadata()
-    throws CccCheckedException {
-
-        // ARRANGE
-        _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        final Map<String, String> props = new HashMap<String, String>();
-        props.put("bodyId", "example");
-        new UpdateResourceMetadataCommand(_rdao, _al).execute(
-            _regularUser,
-            new Date(),
-            _r.getId(),
-            "newTitle",
-            "newDesc",
-            "foo,bar",
-            props);
-
-        // ASSERT
-        verifyAll();
-        assertEquals("example", _r.getMetadatum("bodyId"));
-        assertEquals("newTitle", _r.getTitle());
-        assertEquals("newDesc", _r.getDescription());
-        assertTrue(_r.getTags().contains("foo"));
-        assertTrue(_r.getTags().contains("bar"));
-    }
-
-
-    /**
-     * Test.
      */
     public void testQueryAllLockedResources() {
 
@@ -215,98 +141,6 @@ public class ResourceDaoImplTest
         // ASSERT
         assertNotNull("Shouldn't be null.", locked);
         verifyAll();
-    }
-
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testSetDefaultTemplate()
-    throws CccCheckedException {
-
-        // ARRANGE
-        final Template defaultTemplate =
-            new Template(
-                "foo",
-                "bar",
-                "baz",
-                "<fields/>",
-                MimeType.HTML,
-                new RevisionMetadata(
-                    new Date(),
-                    User.SYSTEM_USER,
-                    true,
-                    "Created."));
-        _r.lock(_regularUser);
-
-        expect(_repository.find(Resource.class, _r.getId()))
-            .andReturn(_r);
-        expect(_repository.find(Template.class, defaultTemplate.getId()))
-            .andReturn(defaultTemplate);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new ChangeTemplateForResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.getId(), defaultTemplate.getId());
-
-        // ASSERT
-        verifyAll();
-        assertEquals(defaultTemplate, _r.getTemplate());
-    }
-
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testMove()
-    throws CccCheckedException {
-
-        // ARRANGE
-        final Folder oldParent = new Folder("old");
-        final Folder newParent = new Folder("new");
-        oldParent.add(_r);
-        _r.lock(_regularUser);
-
-        expect(_repository.find(Resource.class, _r.getId()))
-            .andReturn(_r);
-        expect(_repository.find(Folder.class, newParent.getId()))
-            .andReturn(newParent);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new MoveResourceCommand(_rdao, _al).execute(
-            _regularUser, new Date(), _r.getId(), newParent.getId());
-
-        // ASSERT
-        verifyAll();
-        assertEquals(newParent, _r.getParent());
-    }
-
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testRename()
-    throws CccCheckedException {
-
-        // ARRANGE
-        _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new RenameResourceCommand(_rdao, _al, _r.getId(), "baz")
-            .execute(_regularUser, new Date());
-
-        // ASSERT
-        verifyAll();
-        assertEquals("baz", _r.getName().toString());
     }
 
 
@@ -343,67 +177,18 @@ public class ResourceDaoImplTest
     }
 
 
-    /**
-     * Test.
-     * TODO: Broken.
-     */
-    public void testPublishWithUser() {
-//
-//        // ARRANGE
-//        _r.lock(_regularUser);
-//
-//        expect(_dao.find(Resource.class, _r.id())).andReturn(_r);
-//        expect(_users.loggedInUser()).andReturn(_regularUser);
-//        expect(_users.find(_regularUser.id())).andReturn(_regularUser);
-//        _al.recordPublish(eq(_r), eq(_regularUser), isA(Date.class));
-//        replayAll();
-//
-//        // ACT
-//        _rdao.publish(_r.id(), _regularUser.id(), new Date());
-//
-//        // ASSERT
-//        verifyAll();
-//        assertEquals(_regularUser, _r.publishedBy());
-    }
-
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the command fails.
-     */
-    public void testUpdateCache()
-    throws CccCheckedException {
-
-        // ARRANGE
-        final int expecteduration = 3727;
-        _r.lock(_regularUser);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
-        _al.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new UpdateCachingCommand(_rdao, _al, _r.getId(), new Duration(0, 1, 2, 7))
-            .execute(_regularUser, new Date());
-
-        // ASSERT
-        verifyAll();
-        assertEquals(expecteduration, _r.getCacheDuration().time());
-    }
-
-
     private void replayAll() {
-        replay(_repository, _al);
+        replay(_repository);
     }
 
     private void verifyAll() {
-        verify(_repository, _al);
+        verify(_repository);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setUp() throws Exception {
         _repository = createStrictMock(Repository.class);
-        _al = createStrictMock(LogEntryRepository.class);
         _rdao = new ResourceRepositoryImpl(_repository);
         _r = new Page(new ResourceName("foo"), "foo", null, _rm);
         _parent = new Folder("parent");
@@ -416,25 +201,15 @@ public class ResourceDaoImplTest
         _parent = null;
         _r      = null;
         _rdao   = null;
-        _al     = null;
         _repository    = null;
     }
 
 
     private Repository _repository;
-    private LogEntryRepository _al;
     private ResourceRepositoryImpl _rdao;
     private Resource _r;
     private Folder _parent;
 
-    private final User _regularUser =
-        new User(new Username("regular"), "password");
-    private final User _anotherUser =
-        new User(new Username("another"), "password");
-    private final User _adminUser =
-        new User(new Username("admin"), "password"){{
-       addGroup(new Group("ADMINISTRATOR"));
-    }};
     private final RevisionMetadata _rm =
         new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

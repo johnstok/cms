@@ -33,8 +33,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.LogEntryRepository;
-import ccc.persistence.ResourceRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.rest.dto.PageDelta;
 import ccc.types.CommandType;
 
@@ -56,20 +55,18 @@ public class UpdatePageCommand
     /**
      * Constructor.
      *
-     * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
+     * @param repoFactory The repository factory for this command.
      * @param id The id of the page to update.
      * @param delta The changes to the page.
      * @param comment Comment describing the change.
      * @param isMajorEdit Is this a major change.
      */
-    public UpdatePageCommand(final ResourceRepository repository,
-                             final LogEntryRepository audit,
+    public UpdatePageCommand(final IRepositoryFactory repoFactory,
                              final UUID id,
                              final PageDelta delta,
                              final String comment,
                              final boolean isMajorEdit) {
-        super(repository, audit, null);
+        super(repoFactory);
         _id = id;
         _delta = delta;
         _comment = comment;

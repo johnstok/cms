@@ -229,7 +229,5 @@ public class Comment
 
     /** {@inheritDoc} */
     @Override
-    public void toJson(final Json json) {
-        throw new UnsupportedOperationException("Method deprecated.");
-    }
+    public void toJson(final Json json) { createDto().toJson(json); }
 }
