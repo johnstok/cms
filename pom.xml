@@ -27,9 +27,22 @@
         <lib.version.velocity>1.6.2</lib.version.velocity>
         <lib.version.velocity-tools>1.4</lib.version.velocity-tools>
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
+        <lib.version.jboss-legacy>4.2.2.GA</lib.version.jboss-legacy>
         <lib.version.slf4j>1.5.8</lib.version.slf4j>
         <lib.version.h2>1.1.118</lib.version.h2>
         <lib.version.selenium>1.0.1</lib.version.selenium>
+        <lib.version.json>20080701</lib.version.json>
+        <lib.version.javamail>1.4</lib.version.javamail>
+        <lib.version.tagsoup>1.2</lib.version.tagsoup>
+        <lib.version.rhino>1.7R2</lib.version.rhino>
+        <lib.version.hibernate>3.3.2.GA</lib.version.hibernate>
+        <lib.version.hibernate-ejb3>1.0.1.GA</lib.version.hibernate-ejb3>
+        <lib.version.commons-beanutils>1.8.1</lib.version.commons-beanutils>
+        <lib.version.servlet-api>2.5</lib.version.servlet-api>
+        <lib.version.commons-io>1.3.2</lib.version.commons-io>
+        <lib.version.commons-fileupload>1.2.1</lib.version.commons-fileupload>
+        <lib.version.gwt-math>2.1</lib.version.gwt-math>
+        <lib.version.resteasy>1.1.GA</lib.version.resteasy>
         
         <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>

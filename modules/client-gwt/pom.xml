@@ -129,7 +129,7 @@
         <dependency>
             <groupId>com.googlecode</groupId>
             <artifactId>gwt-math</artifactId>
-            <version>2.1</version>
+            <version>${lib.version.gwt-math}</version>
         </dependency>
     </dependencies>
 
