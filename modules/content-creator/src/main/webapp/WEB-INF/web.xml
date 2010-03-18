@@ -77,16 +77,12 @@
        <param-value>/ccc/api</param-value>
     </context-param>
     <context-param>
-       <param-name>ccc.base-href</param-name>
-       <param-value>${application.base-href}</param-value>
-    </context-param>
-    <context-param>
        <param-name>ccc.application-name</param-name>
        <param-value>${application.name}</param-value>
     </context-param>
     <context-param>
        <param-name>ccc.context-name</param-name>
-       <param-value>/${application.name}</param-value>
+       <param-value></param-value>
     </context-param>
 
     <listener>
