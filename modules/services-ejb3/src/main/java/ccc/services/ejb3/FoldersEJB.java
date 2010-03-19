@@ -77,9 +77,10 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @PermitAll
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
+        checkPermission(CONTENT_CREATOR, API_USER, CREATE_FOLDER);
         return createFolder(
             folder.getParent(), folder.getName().toString(), null, false);
 
@@ -94,6 +95,7 @@ public class FoldersEJB
                                         final String title,
                                         final boolean publish)
     throws RestException {
+        checkPermission(CONTENT_CREATOR, API_USER, CREATE_FOLDER);
         try {
             return createFolder(
                 parentId,

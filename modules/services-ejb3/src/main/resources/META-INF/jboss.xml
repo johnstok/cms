@@ -27,5 +27,5 @@
 -->
 
 <jboss>
-    <unauthenticated-principal>guest</unauthenticated-principal>
+    <unauthenticated-principal>anonymous</unauthenticated-principal>
 </jboss>

@@ -53,6 +53,9 @@ public final class Permission {
     /** API_USER : String. */
     public static final String API_USER = "API_USER";
 
+    /** CREATE_FOLDER : String. */
+    public static final String CREATE_FOLDER = "CREATE_FOLDER";
+
     /** ALL : Set. */
     public static final Set<String> ALL;
 
@@ -62,6 +65,7 @@ public final class Permission {
         allPerms.add(CONTENT_CREATOR);
         allPerms.add(SITE_BUILDER);
         allPerms.add(ADMINISTRATOR);
+        allPerms.add(CREATE_FOLDER);
 
         ALL = Collections.unmodifiableSortedSet(allPerms);
     }

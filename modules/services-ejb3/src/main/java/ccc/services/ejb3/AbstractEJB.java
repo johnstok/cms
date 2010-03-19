@@ -335,6 +335,25 @@ abstract class AbstractEJB {
     }
 
 
+    /**
+     * Check that the current user has ONE OF the specified permissions.
+     *
+     * @param permissions The permissions to check.
+     */
+    protected void checkPermission(final String... permissions) {
+        try {
+            final User u = currentUser();
+            for (final String permission : permissions) {
+                if (u.hasPermission(permission)) { return; }
+            }
+            throw new RuntimeException("Caller unauthorized.");
+
+        } catch (final EntityNotFoundException e) {
+            throw new RuntimeException("No user available.", e);
+        }
+    }
+
+
 
     /* ====================================================================
      * Model translation.

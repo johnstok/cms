@@ -26,7 +26,6 @@
  */
 package ccc.rest.dto;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.rest.snapshots.ResourceSnapshot;
@@ -45,8 +44,7 @@ public class FolderDto
     extends
         ResourceSnapshot
     implements
-        Jsonable,
-        Serializable {
+        Jsonable {
 
     private UUID _indexPage;
     private UUID _defaultPage;
