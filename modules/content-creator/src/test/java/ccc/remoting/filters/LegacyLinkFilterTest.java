@@ -83,6 +83,72 @@ public class LegacyLinkFilterTest
      *
      * @throws Exception If the test fails.
      */
+    public void testHandlesSimpleNumberedPages() throws Exception {
+
+        // ARRANGE
+        final LegacyLinkFilter f = new LegacyLinkFilter(_resources);
+        final String badPath = "/1234.html";
+
+        // EXPECT
+        expect(_resources.lookupWithLegacyId("1234")).andReturn(RS);
+        replayAll();
+
+
+        // ACT
+        try {
+            f.doFilter(
+                new ServletRequestStub(
+                    "/shc", "", badPath, new HashMap<String, String>()),
+                    null,
+                    null);
+
+        // ASSERT
+        } catch (final RedirectRequiredException rre) {
+            assertTrue(rre.isPermanent());
+            assertEquals(RS.getAbsolutePath(), rre.getTarget());
+        }
+        verifyAll();
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testHandlesComplexNumberedPages() throws Exception {
+
+        // ARRANGE
+        final LegacyLinkFilter f = new LegacyLinkFilter(_resources);
+        final String badPath = "/141.1.81.htm";
+
+        // EXPECT
+        expect(_resources.lookupWithLegacyId("141")).andReturn(RS);
+        replayAll();
+
+
+        // ACT
+        try {
+            f.doFilter(
+                new ServletRequestStub(
+                    "/shc", "", badPath, new HashMap<String, String>()),
+                    null,
+                    null);
+
+            // ASSERT
+        } catch (final RedirectRequiredException rre) {
+            assertTrue(rre.isPermanent());
+            assertEquals(RS.getAbsolutePath(), rre.getTarget());
+        }
+        verifyAll();
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
     public void testHandlesPathsWithSlash() throws Exception {
 
         // ARRANGE
@@ -250,4 +316,26 @@ public class LegacyLinkFilterTest
 
 
     private ResourcesExt _resources;
+    private static final ResourceSummary RS = new ResourceSummary(
+        UUID.randomUUID(),
+        UUID.randomUUID(),
+        "foo",
+        null,
+        "foo",
+        null,
+        ResourceType.PAGE,
+        0,
+        0,
+        false,
+        null,
+        false,
+        new Date(),
+        new Date(),
+        null,
+        "",
+        "/bar/foo",
+        null,
+        "",
+        null,
+        null);
 }

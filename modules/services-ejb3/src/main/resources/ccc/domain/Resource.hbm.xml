@@ -77,6 +77,11 @@
             not-null="false"
             type="string"
             length="1024" />
+        <property
+            name="_parentIndex"
+            column="parent_index"
+            not-null="false"
+            type="integer" />
 
 		<many-to-one
             name="_template"
@@ -119,8 +124,6 @@
             name="_parent"
             not-null="false"
             column="parent_id"
-            insert="false"
-            update="false"
             foreign-key="FK_RESOURCE_FOLDER_PARENT_ID"
         />
 

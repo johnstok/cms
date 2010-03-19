@@ -60,11 +60,12 @@ public final class DBC {
      *
      * @param object The object to test for NULL.
      */
-    public void notNull(final Object object) {
+    public <T> T notNull(final T object) {
         if (null==object) {
             throw new IllegalArgumentException(
                 "Specified value may not be NULL."); //$NON-NLS-1$
         }
+        return object;
     }
 
     /**
@@ -193,6 +194,20 @@ public final class DBC {
             throw new IllegalArgumentException(
                 "Specified value must be under "
                 +maximum+".");
+        }
+    }
+
+
+    /**
+     * Assert that the specified value is greater than the criteria.
+     *
+     * @param valueToTest The value to test.
+     * @param minimum The minimum acceptable value.
+     */
+    public void minValue(final long valueToTest, final long minimum) {
+        if (valueToTest < minimum) {
+            throw new IllegalArgumentException(
+                "Specified value must be above " + minimum + ".");
         }
     }
 

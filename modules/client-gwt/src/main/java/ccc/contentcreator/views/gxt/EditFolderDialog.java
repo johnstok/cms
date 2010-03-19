@@ -127,7 +127,6 @@ AbstractEditDialog {
                           "folder-sort-order",
                           constants().folderSortOrder());
 
-        setCurrentSortValue(currentSortOrder);
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         createColumnConfigs(configs);
@@ -142,6 +141,7 @@ AbstractEditDialog {
         configureDropTarget();
 
         _sortOrder.addSelectionChangedListener(new SortChangeListener());
+        setCurrentSortValue(currentSortOrder);
 
         addListener(Events.Resize,
             new Listener<BoxComponentEvent>() {

@@ -329,7 +329,7 @@ public class UserManagementAcceptanceTest
         final UserDto user = getUsers().loggedInUser();
 
         // ASSERT
-        assertEquals(new Username("super"), user.getUsername());
+        assertEquals(new Username("migration"), user.getUsername());
     }
 
 

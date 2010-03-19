@@ -26,6 +26,7 @@
  */
 package ccc.acceptance;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
@@ -37,6 +38,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.AclDto;
+import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -46,6 +48,7 @@ import ccc.types.Duration;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 import ccc.types.HttpStatusCode;
+import ccc.types.ResourceName;
 
 
 /**
@@ -108,7 +111,36 @@ public class ResourceAcceptanceTest
         assertEquals(assets.getId(), moved.getParent());
     }
 
-
+    /**
+     * Test.
+     * @throws RestException If the test fails.
+     */
+    public void testMoveSecondResourceFromFolder() throws RestException {
+        
+        //ARRANGE
+        final ResourceSummary firstFolder = tempFolder();
+        final ResourceSummary secondFolder = tempFolder();
+        
+        ResourceSummary childFolder1 = getFolders().createFolder(
+            new FolderDto(firstFolder.getId(),
+            new ResourceName(UUID.randomUUID().toString())));
+        getFolders().createFolder(
+            new FolderDto(firstFolder.getId(),
+            new ResourceName(UUID.randomUUID().toString())));
+        
+        // ACT
+        getCommands().lock(childFolder1.getId());
+        getCommands().move(childFolder1.getId(), secondFolder.getId());
+        
+        // ASSERT
+        final ResourceSummary content = resourceForPath("");
+        Collection<ResourceSummary> children = 
+            getFolders().getChildren(content.getId());
+        assertNotNull(children);
+        
+    }
+    
+    
     /**
      * Test.
      * @throws RestException If the test fails.

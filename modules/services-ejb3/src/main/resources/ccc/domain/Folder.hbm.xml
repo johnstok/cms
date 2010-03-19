@@ -50,12 +50,11 @@
             type="SortOrder" 
             length="255" />
         
-        <list name="_entries">
-       		<cache usage="transactional"/>
+        <set name="_entries" inverse="true">
+            <cache usage="transactional"/>
             <key column="parent_id" />
-            <list-index column="parent_index" />
             <one-to-many class="ccc.domain.Resource" />
-        </list>
+        </set>
         
         
         <many-to-one

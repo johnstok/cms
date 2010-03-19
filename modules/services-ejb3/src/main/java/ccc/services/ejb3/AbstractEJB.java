@@ -54,6 +54,19 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.ActionSummary;
+import ccc.rest.dto.AliasDelta;
+import ccc.rest.dto.FileDelta;
+import ccc.rest.dto.FileDto;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.RevisionDto;
+import ccc.rest.dto.TemplateDelta;
+import ccc.rest.dto.TemplateSummary;
+import ccc.rest.dto.TextFileDelta;
+import ccc.types.CommandType;
+import ccc.types.DBC;
+import ccc.types.ResourceType;
 
 
 /**
@@ -234,15 +247,19 @@ abstract class AbstractEJB {
      */
     protected void checkSecurity(final Resource r)
     throws UnauthorizedException {
+
+        DBC.require().notNull(r);
+
         User u = null;
         try {
             u = currentUser();
         } catch (final EntityNotFoundException e) {
             Exceptions.swallow(e); // Leave user as NULL.
         }
+
         if (!r.isAccessibleTo(u)) {
             _context.setRollbackOnly();  // CRITICAL
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(r.getId(), (null==u) ? null : u.getId());
         }
     }
 }

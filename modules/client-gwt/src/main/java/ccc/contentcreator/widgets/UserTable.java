@@ -32,6 +32,7 @@ import java.util.List;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
+import ccc.contentcreator.remoting.GetUserAction;
 import ccc.contentcreator.remoting.ListGroups;
 import ccc.contentcreator.remoting.ListUsers;
 import ccc.contentcreator.remoting.ListUsersWithEmailAction;
@@ -39,6 +40,7 @@ import ccc.contentcreator.remoting.ListUsersWithRoleAction;
 import ccc.contentcreator.remoting.ListUsersWithUsernameAction;
 import ccc.contentcreator.remoting.OpenEditUserDialogAction;
 import ccc.contentcreator.views.gxt.EditUserPwDialog;
+import ccc.contentcreator.views.gxt.UserMetadataDialog;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 
@@ -127,6 +129,7 @@ public class UserTable extends TablePanel {
 
         contextMenu.add(createEditUserMenu(_grid));
         contextMenu.add(createEditPwMenu(_grid));
+        contextMenu.add(createEditMetadataMenu(_grid));
 
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);
@@ -170,6 +173,26 @@ public class UserTable extends TablePanel {
             }
         });
         return editUserPw;
+    }
+
+    private MenuItem createEditMetadataMenu(
+                         final Grid<UserSummaryModelData> grid) {
+        final MenuItem editUserMeta =
+            new MenuItem(UI_CONSTANTS.editUserMetadata());
+        editUserMeta.setId("editUserMetadataMenu");
+        editUserMeta.addSelectionListener(new SelectionListener<MenuEvent>() {
+            @Override public void componentSelected(final MenuEvent ce) {
+                final UserSummaryModelData modeldata =
+                    grid.getSelectionModel().getSelectedItem();
+                new GetUserAction(modeldata.getId()) {
+                    @Override
+                    protected void execute(final UserDto user) {
+                        new UserMetadataDialog(user).show();
+                    }
+                }.execute();
+            }
+        });
+        return editUserMeta;
     }
 
     private void createToolBar() {

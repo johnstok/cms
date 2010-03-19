@@ -507,7 +507,7 @@ public abstract class AbstractAcceptanceTest
     protected void setUp() {
         _http = new HttpClient();
         _sl   = new JaxrsServiceLocator(_http, _hostUrl);
-        getSecurity().login("super", "sup3r2008");
+        getSecurity().login("migration", "migration");
     }
 
 

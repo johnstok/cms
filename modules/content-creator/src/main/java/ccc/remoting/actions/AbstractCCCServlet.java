@@ -62,11 +62,7 @@ public abstract class AbstractCCCServlet
     protected void dispatchNotFound(final HttpServletRequest request,
                                     final HttpServletResponse response)
                                           throws ServletException, IOException {
-        LOG.info(
-            "Forwarding to /notfound for: "
-            + request.getContextPath()
-            + request.getServletPath()
-            + request.getPathInfo());
+        LOG.info("Forwarding to /notfound for: " + requestPath(request));
         request.getRequestDispatcher("/notfound").forward(request, response);
     }
 
@@ -101,14 +97,21 @@ public abstract class AbstractCCCServlet
                                     final HttpServletResponse response,
                                     final String relUri) throws IOException {
         final String target = request.getContextPath()+relUri;
-        LOG.info(
-            "Redirecting to "
-            + target
-            + " from "
-            + request.getContextPath()
-            + request.getServletPath()
-            + request.getPathInfo());
+        LOG.info("Redirecting to " + target + " from " + requestPath(request));
         response.sendRedirect(target);
+    }
+
+
+    private String requestPath(final HttpServletRequest request) {
+        final String context = request.getContextPath();
+        final String servlet = request.getServletPath();
+        final String info    = request.getPathInfo();
+        final String query   = request.getQueryString();
+        return
+            context
+            + servlet
+            + ((null==info) ? "" : info)
+            + ((null==query) ? "" : query);
     }
 
 

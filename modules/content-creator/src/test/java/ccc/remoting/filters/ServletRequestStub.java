@@ -29,6 +29,8 @@ public final class ServletRequestStub
     private String _servletPath;
     private String _pathInfo;
     private Map<String, String> _queryParams;
+    private final Map<String, Object> _attributes =
+        new HashMap<String, Object>();
 
     /**
      * Constructor.
@@ -90,7 +92,7 @@ public final class ServletRequestStub
 
     @Override
     public String getMethod() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return "GET";
     }
 
     @Override
@@ -175,7 +177,7 @@ public final class ServletRequestStub
 
     @Override
     public Object getAttribute(final String name) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _attributes.get(name);
     }
 
     @Override
@@ -305,12 +307,12 @@ public final class ServletRequestStub
 
     @Override
     public void removeAttribute(final String name) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _attributes.remove(name);
     }
 
     @Override
     public void setAttribute(final String name, final Object o) {
-        throw new UnsupportedOperationException("Method not implemented.");
+        _attributes.put(name, o);
     }
 
     @Override
