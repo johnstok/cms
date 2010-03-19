@@ -198,8 +198,9 @@ public class FoldersEJB
             final Folder f =
                 getResources().find(Folder.class, folderId);
             if (f != null) {
-                f.sortOrder(ResourceOrder.MANUAL);
-                return mapResources(f.entries());
+                List<Resource> list = f.entries();
+                Sorter.sort(list, ResourceOrder.MANUAL);
+                return mapResources(list);
             }
             return mapResources(new ArrayList<Resource>());
 
