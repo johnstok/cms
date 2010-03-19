@@ -57,6 +57,7 @@ import ccc.types.ResourcePath;
  * A servlet to redirect old CCC6 URLs to the corresponding CCC7 url.
  * <br>Supports links in the following forms:
  * <br>- /2334.html
+ * <br>- /233.4.63.html
  * <br>- /files/my%20file.txt
  * <br>- /images/my%20image.jpg
  * <br>- /foo?p_service=Content.show&p_applic=CCC&pContentID=557
@@ -212,7 +213,7 @@ public final class LegacyLinkFilter
 
     /** PAGE_PATTERN : Pattern. */
     public static final Pattern PAGE_PATTERN =
-        Pattern.compile("/(\\d++)\\.html");
+        Pattern.compile("/(\\d++)[\\.\\d]*\\.htm[l]?");
 
     /** FILE_PATTERN : Pattern. */
     public static final Pattern FILE_PATTERN =

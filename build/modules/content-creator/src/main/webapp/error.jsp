@@ -1,20 +1,14 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="java.util.UUID" %>
-<%@ page import="org.apache.log4j.Logger" %>
-<%@page isErrorPage="true" %>
-<%
-    if(!response.isCommitted()) {
-        response.reset();
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    }
-    UUID errorId = UUID.randomUUID() ;
+<%@ page import="org.apache.log4j.Logger" %><%@ page isErrorPage="true" %><%
+
     Logger log = Logger.getLogger("error_jsp");
+    String errorId =
+        (String) request.getAttribute(
+            ccc.remoting.actions.SessionKeys.EXCEPTION_CODE);
+
     log.warn(
             "Error executing servlet request."
-            + "\n\t"+ccc.remoting.actions.SessionKeys.EXCEPTION_CODE + " = " + errorId
-            + "\n\tresponse.committed = " + response.isCommitted()
+            + "\n\t"+ccc.remoting.actions.SessionKeys.EXCEPTION_CODE + " = "
+                + errorId
             + "\n\tjavax.servlet.error.status_code = "
                 + request.getAttribute("javax.servlet.error.status_code")
             + "\n\tjavax.servlet.error.request_uri = "
@@ -24,13 +18,12 @@
             + "\n\tjavax.servlet.error.message = "
                 + request.getAttribute("javax.servlet.error.message")
             + "\n\tjavax.servlet.error.exception_type = "
-                + request.getAttribute("javax.servlet.error.exception_type"),
-            exception);
-%>
+                + request.getAttribute("javax.servlet.error.exception_type"));
+            
+%><!-- An error occurred: <%= errorId %> -->
 <html>
 
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Error</title>
     </head>
 

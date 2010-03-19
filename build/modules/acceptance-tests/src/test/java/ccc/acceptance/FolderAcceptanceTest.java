@@ -57,8 +57,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final String cn1 = UUID.randomUUID().toString();
-        final String cn2 = UUID.randomUUID().toString();
+        final String cn1 = "a-"+UUID.randomUUID().toString();
+        final String cn2 = "b-"+UUID.randomUUID().toString();
         final ResourceSummary content = resourceForPath("");
         final ResourceSummary testFolder =
             getFolders().createFolder(

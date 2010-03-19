@@ -26,7 +26,6 @@
  */
 package ccc.commands;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -96,16 +95,19 @@ public class UpdateFolderCommand
         f.setSortOrder(_order);
 
         if (_orderList != null && !_orderList.isEmpty()) {
-            final List<Resource> newOrder = new ArrayList<Resource>();
-            final List<Resource> currentOrder = f.getEntries();
-            for (final UUID resourceId : _orderList) {
-                for (final Resource r : currentOrder) {
-                    if (r.getId().equals(resourceId)) {
-                        newOrder.add(r);
-                    }
-                }
+
+            if (_orderList.size()!=f.getEntries().size()) {
+                throw new RuntimeException("Wrong number of elements.");
             }
-            f.reorder(newOrder);
+
+            for (int i=0; i<_orderList.size(); i++) {
+                final UUID id = _orderList.get(i);
+                final Resource r = f.getChild(id);
+                if (null==r) {
+                    throw new RuntimeException("Not a child of folder: "+id);
+                }
+                r.setIndexPosition(i);
+            }
         }
 
         f.setDateChanged(happenedOn, actor);

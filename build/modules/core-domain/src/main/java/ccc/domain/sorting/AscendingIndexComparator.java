@@ -38,31 +38,10 @@ import ccc.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-public final class AlphaNumericAscendingNameComparator
+public final class AscendingIndexComparator
     implements
         Serializable,
         Comparator<Resource> {
-
-    private final boolean _caseSensitive;
-
-
-    /**
-     * Constructor.
-     */
-    public AlphaNumericAscendingNameComparator() {
-        this(true);
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param caseSensitive Should the sort be case sensitive.
-     */
-    public AlphaNumericAscendingNameComparator(final boolean caseSensitive) {
-        _caseSensitive = caseSensitive;
-    }
-
 
     /** {@inheritDoc} */
     @Override
@@ -70,11 +49,7 @@ public final class AlphaNumericAscendingNameComparator
         DBC.require().notNull(o1);
         DBC.require().notNull(o2);
 
-        if (_caseSensitive) {
-            return o1.getName().toString().compareTo(o2.getName().toString());
-        }
-        return String.CASE_INSENSITIVE_ORDER.compare(
-            o1.getName().toString(), o2.getName().toString());
+        return o1.getIndex().compareTo(o2.getIndex());
     }
 
 }

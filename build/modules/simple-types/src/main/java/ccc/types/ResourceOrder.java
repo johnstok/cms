@@ -40,6 +40,8 @@ public enum ResourceOrder {
     MANUAL,
     /** NAME_ALPHANUM_ASC : ResourceOrder. */
     NAME_ALPHANUM_ASC,
+    /** NAME_ALPHANUM_CI_ASC : ResourceOrder. */
+    NAME_ALPHANUM_CI_ASC,
     /** NAME_ALPHANUM_ASC : ResourceOrder. */
     DATE_CREATED_ASC,
     /** NAME_ALPHANUM_ASC : ResourceOrder. */

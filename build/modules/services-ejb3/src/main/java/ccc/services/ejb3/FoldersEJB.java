@@ -46,6 +46,7 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.User;
+import ccc.domain.sorting.Sorter;
 import ccc.rest.Folders;
 import ccc.rest.RestException;
 import ccc.rest.dto.DtoCollection;
@@ -174,8 +175,9 @@ public class FoldersEJB
                     .createResourceRepository()
                     .find(Folder.class, folderId);
             if (f != null) {
-                f.setSortOrder(ResourceOrder.MANUAL);
-                return Resource.mapResources(f.getEntries());
+                List<Resource> list = f.getEntries();
+                Sorter.sort(list, ResourceOrder.MANUAL);
+                return Resource.mapResources(list);
             }
             return Resource.mapResources(new ArrayList<Resource>());
 
@@ -227,11 +229,12 @@ public class FoldersEJB
     throws RestException {
         try {
             final Folder f =
-                getRepoFactory()
+            getRepoFactory()
                     .createResourceRepository()
                     .find(Folder.class, folderId);
-            return Resource.mapResources(
-                f != null ? f.getFolders() : new ArrayList<Folder>());
+            final List<Folder> folderChildren = f.getFolders();
+            Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
+            return Resource.mapResources(folderChildren);
 
         } catch (final CccCheckedException e) {
             throw fail(e);

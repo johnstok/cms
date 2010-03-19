@@ -12,7 +12,6 @@
 
 package ccc.domain;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -703,71 +702,16 @@ public final class FolderTest extends TestCase {
         final Folder pages = new Folder("content");
         final Page ab = new Page("ab", _rm);
         final Alias cd = new Alias("cd", ab);
+        final Alias de = new Alias("de", ab);
         pages.add(ab);
         pages.add(cd);
+        pages.add(de);
 
         // ACT
         final Alias firstChild = pages.getFirstAlias();
 
         // ASSERT
         assertEquals(cd, firstChild);
-    }
-
-    /**
-     * Test.
-     *
-     * @throws CccCheckedException If the test fails.
-     */
-    public void testReorderWithOriginalOrder() throws CccCheckedException {
-
-        // ARRANGE
-        final Folder f = new Folder("testFolder");
-        final Page foo = new Page("foo", _rm);
-        final Page bar = new Page("bar", _rm);
-        final Page baz = new Page("baz", _rm);
-        f.add(foo);
-        f.add(bar);
-        f.add(baz);
-
-        // ACT
-        f.reorder(f.getEntries());
-
-        // ASSERT
-        final List<Resource> pages = f.getEntries();
-        assertEquals(foo, pages.get(0));
-        assertEquals(bar, pages.get(1));
-        assertEquals(baz, pages.get(2));
-    }
-
-    /**
-     * Test.
-     *
-     * @throws CccCheckedException If the test fails.
-     */
-    public void testReorderWithNewOrder() throws CccCheckedException {
-
-        // ARRANGE
-        final Folder f = new Folder("testFolder");
-        final Page foo = new Page("foo", _rm);
-        final Page bar = new Page("bar", _rm);
-        final Page baz = new Page("baz", _rm);
-        f.add(foo);
-        f.add(bar);
-        f.add(baz);
-
-        final List<Resource> newOrder = new ArrayList<Resource>();
-        newOrder.add(bar);
-        newOrder.add(baz);
-        newOrder.add(foo);
-
-        // ACT
-        f.reorder(newOrder);
-
-        // ASSERT
-        final List<Resource> pages = f.getEntries();
-        assertEquals(bar, pages.get(0));
-        assertEquals(baz, pages.get(1));
-        assertEquals(foo, pages.get(2));
     }
 
 

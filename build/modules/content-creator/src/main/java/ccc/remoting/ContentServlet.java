@@ -62,6 +62,7 @@ import ccc.rest.extensions.FilesExt;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.rest.snapshots.ResourceSnapshot;
+import ccc.serialization.JsonImpl;
 import ccc.types.ResourcePath;
 
 
@@ -128,8 +129,10 @@ public class ContentServlet
         final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
 
         if (null == resource) {
+            LOG.warn("No resource for path "+contentPath);
             throw new NotFoundException();
         } else if (_respectVisibility && !resource.isVisible()) {
+            LOG.warn("Resource at path "+contentPath+" isn't published.");
             throw new NotFoundException();
         }
 
@@ -194,8 +197,14 @@ public class ContentServlet
                 return _resources.revisionForPath(path, version.intValue());
             }
         } catch (final RestException e) {
+            LOG.warn(
+                "Exception retrieving path " + path
+                + " wc=" + workingCopy
+                + ", v=" + version
+                + " " + new JsonImpl(e.getFailure()));
             throw new NotFoundException();
         } catch (final UnauthorizedException e) {
+            LOG.warn(e.getMessage());
             throw new AuthenticationRequiredException(path);
         }
     }

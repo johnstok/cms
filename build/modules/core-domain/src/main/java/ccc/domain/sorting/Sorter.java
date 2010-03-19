@@ -49,16 +49,23 @@ public final class Sorter {
      * @param resources The list to sort.
      * @param order     The order for the list's entries.
      */
-    public static void sort(final List<Resource> resources,
+    public static void sort(final List<? extends Resource> resources,
                             final ResourceOrder  order) {
         switch (order) {
 
             case MANUAL:
+                Collections.sort(
+                    resources, new AscendingIndexComparator());
                 break;
 
             case NAME_ALPHANUM_ASC:
                 Collections.sort(
                     resources, new AlphaNumericAscendingNameComparator());
+                break;
+
+            case NAME_ALPHANUM_CI_ASC:
+                Collections.sort(
+                    resources, new AlphaNumericAscendingNameComparator(false));
                 break;
 
             case DATE_CREATED_ASC:

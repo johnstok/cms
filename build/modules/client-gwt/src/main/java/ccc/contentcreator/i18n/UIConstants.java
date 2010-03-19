@@ -971,6 +971,14 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Edit user password")
     String editUserPw();
+    
+    /**
+     * "Edit user metadata".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Edit user metadata")
+    String editUserMetadata();
 
     /**
      * "Content root".

@@ -58,7 +58,7 @@
         <property name="mail.smtp.port" value="25"/>
         <property name="mail.smtp.auth" value="true"/>
         
-        <property name="mail.debug" value="false"/>
+        <property name="mail.debug" value="${application.mail.debug}"/>
       </configuration>
     </attribute>
     

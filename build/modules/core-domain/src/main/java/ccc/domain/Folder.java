@@ -28,7 +28,9 @@
 package ccc.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.sorting.Sorter;
@@ -52,7 +54,7 @@ public final class Folder
     extends
         Resource {
 
-    private List<Resource> _entries = new ArrayList<Resource>();
+    private Set<Resource> _entries = new HashSet<Resource>();
     private ResourceOrder  _order = ResourceOrder.MANUAL;
     private Page _indexPage = null;
 
@@ -109,8 +111,21 @@ public final class Folder
             }
         }
 
+        int nextIndex = maxIndex(_entries)+1;
         _entries.add(resource);
-        resource.setParent(this);
+        resource.setParent(this, Integer.valueOf(nextIndex));
+    }
+
+    private int maxIndex(Set<Resource> entries) {
+        int nextIndex = 0;
+        for (Resource r : entries) {
+            Integer index = r.getIndex();
+            if (null==index) { continue; }
+            if (index.intValue()>nextIndex) {
+                nextIndex = index.intValue();
+            }
+        }
+        return nextIndex;
     }
 
     /**
@@ -136,17 +151,6 @@ public final class Folder
         return false;
     }
 
-    /**
-     * Re-order the folder's children.
-     *
-     * @param resources The children of this folder in a new order.
-     */
-    public void reorder(final List<Resource> resources) {
-        DBC.require().notNull(resources);
-        DBC.require().toBeTrue(_entries.size() == resources.size());
-
-        _entries = resources;
-    }
 
     /**
      * Accessor for entries.
@@ -312,7 +316,7 @@ public final class Folder
      * @return The first page in the list of entries.
      */
     public Page getFirstPage() {
-        for (final Resource r : _entries) {
+        for (final Resource r : getEntries()) {
             if (r.getType().equals(ResourceType.PAGE)) {
                 return r.as(Page.class);
             }
@@ -328,7 +332,7 @@ public final class Folder
     public void remove(final Resource resource) {
         DBC.require().notNull(resource);
         _entries.remove(resource);
-        resource.setParent(null);
+        resource.setParent(null, null);
     }
 
 
@@ -347,6 +351,7 @@ public final class Folder
         return entries;
     }
 
+
     /**
      * Retrieve a list of all the folders in this folder.
      *
@@ -354,7 +359,7 @@ public final class Folder
      */
     public List<Folder> getFolders() {
         final List<Folder> entries = new ArrayList<Folder>();
-        for (final Resource entry : _entries) {
+        for (final Resource entry : getEntries()) {
             if (entry.getType()==ResourceType.FOLDER) {
                 entries.add(entry.as(Folder.class));
             }
@@ -382,7 +387,7 @@ public final class Folder
      * @return The first alias in the list of entries.
      */
     public Alias getFirstAlias() {
-        for (final Resource r : _entries) {
+        for (final Resource r : getEntries()) {
             if (r.getType().equals(ResourceType.ALIAS)) {
                 return r.as(Alias.class);
             }
@@ -476,6 +481,21 @@ public final class Folder
             JsonKeys.INDEX_PAGE_ID,
             (null==getIndexPage()) ? null : getIndexPage().getId().toString());
         // Index folder entries?
+    }
+
+
+    /**
+     * Get a child element via its ID.
+     *
+     * @param id The child's ID.
+     *
+     * @return The child or NULL if no child exists for the specified ID.
+     */
+    public Resource getChild(final UUID id) {
+        for (final Resource r : _entries) {
+            if (r.getId().equals(id)) { return r; }
+        }
+        return null;
     }
 
 
