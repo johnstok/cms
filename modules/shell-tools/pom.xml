@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>build</artifactId>
 		<groupId>CCC7</groupId>
-		<version>7.1.4</version>
+		<version>7.1.5-SNAPSHOT</version>
 	</parent>
     
 	<artifactId>shell-tools</artifactId>
