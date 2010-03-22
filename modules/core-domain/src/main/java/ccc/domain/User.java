@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -416,8 +417,8 @@ public class User extends Entity {
      * @param users The users.
      * @return The corresponding summaries.
      */
-    public static Collection<UserDto> map(final Collection<User> users) {
-        final Collection<UserDto> mapped = new ArrayList<UserDto>();
+    public static List<UserDto> map(final Collection<User> users) {
+        final List<UserDto> mapped = new ArrayList<UserDto>();
         for (final User u : users) { mapped.add(u.toDto()); }
         return mapped;
     }

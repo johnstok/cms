@@ -67,21 +67,9 @@ final class QueryNames {
     /** LATEST_ACTION : String. */
     public static final String LATEST_ACTION = "latest_action";
 
-    /** USERS : String. */
-    public static final String USERS = "users";
-
-    /** USERS_WITH_USERNAME : String. */
-    public static final String USERS_WITH_USERNAME = "usersWithUsername";
-
     /** USER_WITH_MATCHING_USERNAME : String. Case sensitive! */
     public static final String USER_WITH_MATCHING_USERNAME =
         "userWithMatchingUsername";
-
-    /** USERS_WITH_EMAIL : String. */
-    public static final String USERS_WITH_EMAIL = "usersWithEmail";
-
-    /** USERS_WITH_ROLE : String. */
-    public static final String USERS_WITH_ROLE = "usersWithRole";
 
     /** USERS_WITH_LEGACY_ID : String. */
     public static final String USERS_WITH_LEGACY_ID = "usersWithLegacyId";

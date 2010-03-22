@@ -30,12 +30,15 @@ import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -66,39 +69,26 @@ public interface Users {
     /**
      * Returns currently logged in user.
      *
-
      * @return UserDTO
      */
     @GET @Path("/me")
     UserDto loggedInUser();
 
     /**
-     * Query all users.
+     * Query  users.
      *
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
      * @return Returns list of users.
      */
     @GET
-    Collection<UserDto> listUsers();
+   DtoCollection<UserDto> listUsers(
+        @QueryParam("username") String username,
+        @QueryParam("email") String email,
+        @QueryParam("groups") String groups,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 
-    /**
-     * Query users with specified role.
-     *
-     * @param role The role as a string.
-     * @return Returns list of users.
-     */
-    @GET @Path("/role/{role}")
-    Collection<UserDto> listUsersWithRole(
-        @PathParam("role") String role);
-
-    /**
-     * Query users with specified username.
-     *
-     * @param username The username.
-     * @return Returns list of users.
-     */
-    @GET @Path("/username/{uname}")
-    Collection<UserDto> listUsersWithUsername(
-        @PathParam("uname") Username username);
 
     /**
      * Query whether the specified username is in use.
@@ -108,16 +98,6 @@ public interface Users {
      */
     @GET @Path("/{uname}/exists")
     Boolean usernameExists(@PathParam("uname") Username username);
-
-    /**
-     * Query users with specified email.
-     *
-     * @param email The email as a string.
-     * @return Returns list of users.
-     */
-    @GET @Path("/email/{email}")
-    Collection<UserDto> listUsersWithEmail(
-        @PathParam("email") String email);
 
 
     /**

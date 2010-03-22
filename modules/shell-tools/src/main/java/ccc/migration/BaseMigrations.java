@@ -27,7 +27,6 @@
 package ccc.migration;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,7 +56,6 @@ import ccc.types.FailureCode;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 import ccc.types.ResourceName;
-import ccc.types.Username;
 
 /**
  * TODO: Add a description for this type.
@@ -120,8 +118,8 @@ public class BaseMigrations {
 
         if (null==le && version == 0) {
             final LogEntryBean fe = new LogEntryBean(0, new Date());
-            final List<UserDto> users = new ArrayList(
-                _userCommands.listUsersWithUsername(new Username(username)));
+            final List<UserDto> users =
+              _userCommands.listUsers(username, null, null, 1, 1).getElements();
             fe.setUser(users.get(0));
             return fe;
         } else if (null == le) {

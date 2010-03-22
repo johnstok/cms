@@ -31,10 +31,13 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.rest.dto.UserCriteria;
 import ccc.rest.dto.UserDto;
+import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -43,46 +46,76 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListUsersWithUsernameAction
+public abstract class ListUsersAction
     extends
         RemotingAction {
 
-    private final String _username;
+    private UserCriteria _uc;
+    private int _pageNo;
+    private int _pageSize;
 
     /**
      * Constructor.
-     *
-     * @param username The username to search on.
+     * @param order
+     * @param string
      */
-    public ListUsersWithUsernameAction(final String username) {
+    public ListUsersAction(final UserCriteria uc,
+                     final int pageNo,
+                     final int pageSize,
+                     final String string,
+                     final String order) {
         super(USER_ACTIONS.viewUsers());
-        _username = username;
+        _uc = uc;
+        _pageNo = pageNo;
+        _pageSize = pageSize;
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            "/users/username/"
-            + encode(_username);
+        final StringBuilder path = new StringBuilder();
+        path.append("/users?page="+_pageNo
+        +"&count="+_pageSize);
+        if (null != _uc) {
+            if (null != _uc.getEmail()) {
+                path.append("&email="+encode(_uc.getEmail()));
+            }
+            if (null != _uc.getUsername()) {
+                path.append("&username="+encode(_uc.getUsername()));
+            }
+            if (null != _uc.getGroups()) {
+                path.append("&groups="+encode(_uc.getGroups()));
+            }
+        }
+        return path.toString();
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<UserDto> users = new ArrayList<UserDto>();
+
+        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+
+        final int totalCount =
+            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
+        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
+
+        final Collection<UserDto> children =
+            new ArrayList<UserDto>();
         for (int i=0; i<result.size(); i++) {
-            users.add(new UserDto(new GwtJson(result.get(i).isObject())));
+            children.add(new UserDto(new GwtJson(result.get(i).isObject())));
         }
 
-        execute(users);
+        execute(children, totalCount);
     }
+
 
     /**
      * Handle the result of a successful call.
      *
-     * @param users The collection of users returned from the server.
+     * @param users The collection of users returned.
      */
-    protected abstract void execute(final Collection<UserDto> users);
+    protected abstract void execute(Collection<UserDto> users, int totalCount);
 }

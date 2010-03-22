@@ -37,6 +37,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.RestException;
 import ccc.rest.Users;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -61,34 +62,6 @@ public class UsersImpl
     @Override
     public UserDto loggedInUser() {
         return getUsers().loggedInUser();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserDto> listUsers() {
-        return getUsers().listUsers();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserDto> listUsersWithEmail(final String email) {
-        return getUsers().listUsersWithEmail(email);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserDto> listUsersWithRole(final String role) {
-        return getUsers().listUsersWithRole(role);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Collection<UserDto> listUsersWithUsername(final Username username) {
-        return getUsers().listUsersWithUsername(username);
     }
 
 
@@ -151,4 +124,17 @@ public class UsersImpl
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
         return getUsers().listUserMetadataValuesWithKey(key);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public DtoCollection<UserDto> listUsers(final String username,
+                                            final String email,
+                                            final String groups,
+                                            final int pageNo,
+                                            final int pageSize) {
+
+        return getUsers().listUsers(username, email, groups, pageNo, pageSize);
+    }
+
 }

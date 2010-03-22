@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
+import ccc.rest.dto.UserCriteria;
 
 /**
  * API for user repositories.
@@ -44,27 +45,21 @@ public interface UserRepository {
     /**
      * List all users.
      *
+     * @param uc User criteria.
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
      * @return List of users.
      */
-    Collection<User> listUsers();
-
-
-    /**
-     * List all users with the specified role.
-     *
-     * @param role The role to filter on.
-     * @return The users with the specified role.
-     */
-    Collection<User> listUsersWithRole(String role);
-
+    Collection<User> listUsers(UserCriteria uc, final int pageNo,
+        final int pageSize);
 
     /**
-     * List all users with matching username.
+     * Total amount of the matching users.
      *
-     * @param username The username to filter on.
-     * @return The users with the specified username.
+     * @param uc User criteria.
+     * @return
      */
-    Collection<User> listUsersWithUsername(String username);
+    long countUsers(UserCriteria uc);
 
 
     /**
@@ -74,15 +69,6 @@ public interface UserRepository {
      * @return True if such a user exists, false otherwise.
      */
     boolean usernameExists(String username);
-
-
-    /**
-     * List all users with matching email.
-     *
-     * @param email The email to filter on.
-     * @return The users with the specified email.
-     */
-    Collection<User> listUsersWithEmail(String email);
 
 
     /**

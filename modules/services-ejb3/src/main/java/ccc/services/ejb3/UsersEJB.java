@@ -46,8 +46,11 @@ import ccc.commands.UpdateUserCommand;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
+import ccc.persistence.UserRepository;
 import ccc.rest.RestException;
 import ccc.rest.Users;
+import ccc.rest.dto.DtoCollection;
+import ccc.rest.dto.UserCriteria;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
@@ -151,49 +154,17 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public Collection<UserDto> listUsers() {
+    public DtoCollection<UserDto> listUsers(
+        final String username,
+        final String email,
+        final String groups,
+        final int pageNo,
+        final int pageSize) {
+        final UserRepository userrepo = getRepoFactory().createUserRepo();
+        final UserCriteria uc = new UserCriteria(username, email, groups);
         return
-            User.map(
-                getRepoFactory()
-                    .createUserRepo()
-                    .listUsers());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(USER_READ)
-    public Collection<UserDto> listUsersWithEmail(final String email) {
-        return
-            User.map(
-                getRepoFactory()
-                    .createUserRepo()
-                    .listUsersWithEmail(email));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(USER_READ)
-    public Collection<UserDto> listUsersWithRole(final String role) {
-        return
-            User.map(
-                getRepoFactory()
-                    .createUserRepo()
-                    .listUsersWithRole(role));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(USER_READ)
-    public Collection<UserDto> listUsersWithUsername(
-                                                    final Username username) {
-        return
-            User.map(
-                getRepoFactory()
-                    .createUserRepo()
-                    .listUsersWithUsername(username.toString()));
+            new DtoCollection<UserDto>(userrepo.countUsers(uc), User.map(
+                userrepo.listUsers(uc, pageNo, pageSize)));
     }
 
 
@@ -257,4 +228,5 @@ public class UsersEJB
             return null;
         }
     }
+
 }

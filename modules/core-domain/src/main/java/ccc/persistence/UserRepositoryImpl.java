@@ -29,9 +29,9 @@ package ccc.persistence;
 import static ccc.persistence.QueryNames.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -39,6 +39,7 @@ import javax.persistence.Query;
 
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
+import ccc.rest.dto.UserCriteria;
 
 
 /**
@@ -75,32 +76,58 @@ class UserRepositoryImpl implements UserRepository {
 
     /** {@inheritDoc} */
     @Override
-    public Collection<User> listUsers() {
-        return _repository.uniquify(USERS, User.class);
+    public Collection<User> listUsers(final UserCriteria uc,
+        final int pageNo,
+        final int pageSize) {
+
+        final List<Object> params = new ArrayList<Object>();
+
+        final StringBuffer query = new StringBuffer();
+        query.append("select distinct u");
+        createUserQuery(query, uc, params);
+
+        return _repository.listDyn(
+            query.toString(),
+            User.class,
+            pageNo,
+            pageSize,
+            params.toArray());
     }
+
 
     /** {@inheritDoc} */
     @Override
-    public Collection<User> listUsersWithUsername(final String username) {
-        final String searchParam =
-            (null==username) ? "" : username.toLowerCase(Locale.US);
-        return _repository.list(USERS_WITH_USERNAME, User.class, searchParam);
+    public long countUsers(final UserCriteria uc) {
+        final List<Object> params = new ArrayList<Object>();
+        final StringBuffer query = new StringBuffer();
+        query.append("select count(distinct u) ");
+        createUserQuery(query, uc, params);
+        return _repository.scalarLong(query.toString(), params.toArray());
+//        return 20;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Collection<User> listUsersWithEmail(final String email) {
-        final String searchParam =
-            (null==email) ? "" : email.toLowerCase(Locale.US);
-        return _repository.list(USERS_WITH_EMAIL, User.class, searchParam);
+    private void createUserQuery(final StringBuffer query,
+                                 final UserCriteria uc,
+                                 final List<Object> params) {
+
+        query.append(
+            " from ccc.domain.User as u left join u._roles as r");
+        if (null!=uc.getEmail()) {
+            query.append(" where lower(u._email._text) like lower(?)");
+            params.add(uc.getEmail());
+        }
+        if (null!=uc.getUsername()) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" lower(u._username._value) like lower(?)");
+            params.add(uc.getUsername());
+        }
+        if (null!=uc.getGroups()) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" r._name like ?");
+            params.add(uc.getGroups());
+        }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    // FIXME: Is this method searching by permission or group name?
-    public Collection<User> listUsersWithRole(final String role) {
-        return _repository.uniquify(USERS_WITH_ROLE, User.class, role);
-    }
 
     /** {@inheritDoc} */
     @Override
