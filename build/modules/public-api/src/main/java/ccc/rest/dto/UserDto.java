@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.serialization.Json;
-import ccc.serialization.Jsonable;
+import ccc.serialization.Jsonable2;
 import ccc.types.DBC;
 import ccc.types.Username;
 
@@ -50,7 +50,7 @@ import ccc.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserDto implements Serializable, Jsonable {
+public final class UserDto implements Serializable, Jsonable2 {
 
     private String _email;
     private String _name;
@@ -273,7 +273,9 @@ public final class UserDto implements Serializable, Jsonable {
     }
 
 
-    private void fromJson(final Json json) {
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
         setId(json.getId(ID));
         setEmail(json.getString(EMAIL));
         setName(json.getString(NAME));

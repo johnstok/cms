@@ -26,12 +26,13 @@
  */
 package ccc.acceptance;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import ccc.rest.RestException;
+import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
@@ -82,8 +83,9 @@ public class UserManagementAcceptanceTest
         final UserDto us = tempUser();
 
         // ACT
-        final Collection<UserDto> ul =
-            getUsers().listUsersWithUsername(us.getUsername());
+        final List<UserDto> ul =
+            getUsers().listUsers(
+                us.getUsername().toString(), null, null, 1, 20).getElements();
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -106,12 +108,12 @@ public class UserManagementAcceptanceTest
         final UserDto us = tempUser();
 
         // ACT
-        final Collection<UserDto> ul =
-            getUsers().listUsersWithEmail(us.getEmail());
+        final DtoCollection<UserDto> ul = getUsers().listUsers(
+                null, us.getEmail(), null, 1, 20);
 
         // ASSERT
-        assertEquals(1, ul.size());
-        final UserDto uq = ul.iterator().next();
+        assertEquals(1, ul.getTotalCount());
+        final UserDto uq = ul.getElements().iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getRoles().size());

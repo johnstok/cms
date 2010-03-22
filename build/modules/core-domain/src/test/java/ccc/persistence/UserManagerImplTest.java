@@ -30,9 +30,11 @@ package ccc.persistence;
 import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 import ccc.domain.User;
+import ccc.rest.dto.UserCriteria;
 import ccc.rest.dto.UserDto;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
@@ -94,13 +96,20 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsers() {
 
         // ARRANGE
-        expect(_repository.uniquify(QueryNames.USERS, User.class))
+        final List<Object> params = new ArrayList<Object>();
+        expect(_repository.listDyn(
+            "select distinct u from ccc.domain.User as u left join u._roles as r",
+            User.class,
+            1,
+            1,
+            params.toArray()))
             .andReturn(new ArrayList<User>());
         replayAll();
 
 
         // ACT
-        _um.listUsers();
+        final UserCriteria uc = new UserCriteria(null, null, null);
+        _um.listUsers(uc, 1, 1);
 
         // ASSERT
         verifyAll();
@@ -113,14 +122,21 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithRole() {
 
         // ARRANGE
-        expect(_repository.uniquify(QueryNames.USERS_WITH_ROLE,
-                                    User.class,
-                                    "ADMINISTRATOR"))
+        final List<Object> params = new ArrayList<Object>();
+        params.add("ADMINISTRATOR");
+        expect(_repository.listDyn(
+            "select distinct u from ccc.domain.User as u left join u._roles as r"
+            + " where r._name like ?",
+            User.class,
+            1,
+            1,
+            params.toArray()))
             .andReturn(new ArrayList<User>());
         replayAll();
 
         // ACT
-        _um.listUsersWithRole("ADMINISTRATOR");
+        final UserCriteria uc = new UserCriteria(null, null, "ADMINISTRATOR");
+        _um.listUsers(uc, 1, 1);
 
         // ASSERT
         verifyAll();
@@ -133,13 +149,21 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        expect(_repository.list(QueryNames.USERS_WITH_USERNAME,
-            User.class, "testname"))
+        final List<Object> params = new ArrayList<Object>();
+        params.add("testname");
+        expect(_repository.listDyn(
+            "select distinct u from ccc.domain.User as u left join u._roles as r"
+            + " where lower(u._username._value) like lower(?)",
+            User.class,
+            1,
+            1,
+            params.toArray()))
             .andReturn(new ArrayList<User>());
         replayAll();
 
         // ACT
-        _um.listUsersWithUsername("testname");
+        final UserCriteria uc = new UserCriteria("testname", null, null);
+        _um.listUsers(uc, 1, 1);
 
         // ASSERT
         verifyAll();
@@ -152,13 +176,22 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        expect(_repository.list(QueryNames.USERS_WITH_EMAIL,
-            User.class, "test@civicuk.com"))
+        final List<Object> params = new ArrayList<Object>();
+        params.add("test@civicuk.com");
+        expect(_repository.listDyn(
+            "select distinct u from ccc.domain.User as u left join u._roles as r"
+            + " where lower(u._email._text) like lower(?)",
+            User.class,
+            1,
+            1,
+            params.toArray()))
             .andReturn(new ArrayList<User>());
         replayAll();
 
         // ACT
-        _um.listUsersWithEmail("test@civicuk.com");
+        final UserCriteria uc =
+            new UserCriteria(null, "test@civicuk.com", null);
+        _um.listUsers(uc, 1, 1);
 
         // ASSERT
         verifyAll();

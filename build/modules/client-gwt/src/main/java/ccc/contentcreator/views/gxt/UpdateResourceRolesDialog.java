@@ -34,7 +34,7 @@ import java.util.UUID;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetUserAction;
-import ccc.contentcreator.remoting.ListUsers;
+import ccc.contentcreator.remoting.ListUsersAction;
 import ccc.contentcreator.remoting.UpdateResourceRolesAction;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.GroupDto;
@@ -311,10 +311,10 @@ public class UpdateResourceRolesDialog
         final Button add = new Button(constants().add());
         add.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                new ListUsers() {
+                new ListUsersAction(null, 1, 99, "","") { // FIXME
 
                     @Override
-                    protected void execute(final Collection<UserDto> users) {
+                    protected void execute(final Collection<UserDto> users, final int total) {
                         new UserACLSelector(
                             _userStore,
                             users,

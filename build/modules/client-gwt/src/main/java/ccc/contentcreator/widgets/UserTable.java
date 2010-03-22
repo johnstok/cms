@@ -34,20 +34,22 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.remoting.GetUserAction;
 import ccc.contentcreator.remoting.ListGroups;
-import ccc.contentcreator.remoting.ListUsers;
-import ccc.contentcreator.remoting.ListUsersWithEmailAction;
-import ccc.contentcreator.remoting.ListUsersWithRoleAction;
-import ccc.contentcreator.remoting.ListUsersWithUsernameAction;
+import ccc.contentcreator.remoting.ListUsersAction;
 import ccc.contentcreator.remoting.OpenEditUserDialogAction;
 import ccc.contentcreator.views.gxt.EditUserPwDialog;
 import ccc.contentcreator.views.gxt.UserMetadataDialog;
 import ccc.rest.dto.GroupDto;
+import ccc.rest.dto.UserCriteria;
 import ccc.rest.dto.UserDto;
 
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -67,6 +69,7 @@ import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 /**
@@ -254,35 +257,18 @@ public class UserTable extends TablePanel {
         }
 
         if (UserTree.ALL.equals(selectedItem.get("id"))) {
-            new ListUsers(){
-                @Override protected void execute(
-                                             final Collection<UserDto> users) {
-                    updatePager(users);
-                }
-            }.execute();
+            updatePager(null);
         } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
-            new ListUsersWithRoleAction("CONTENT_CREATOR"){
-                @Override protected void execute(
-                                             final Collection<UserDto> users) {
-                    updatePager(users);
-                }
-            }.execute();
+            final UserCriteria uc = new UserCriteria(null, null, "CONTENT_CREATOR");
+            updatePager(uc);
         } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
-            new ListUsersWithRoleAction("SITE_BUILDER"){
-                @Override protected void execute(
-                                             final Collection<UserDto> users) {
-                    updatePager(users);
-                }
-            }.execute();
+            final UserCriteria uc = new UserCriteria(null, null, "SITE_BUILDER");
+            updatePager(uc);
         } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
-            new ListUsersWithRoleAction("ADMINISTRATOR"){
-                @Override protected void execute(
-                                             final Collection<UserDto> users) {
-                    updatePager(users);
-                }
-            }.execute();
+            final UserCriteria uc = new UserCriteria(null, null, "ADMINISTRATOR");
+            updatePager(uc);
         } else {
-            updatePager(new ArrayList<UserDto>());
+           //FIXME updatePager(new ArrayList<UserDto>());
         }
 
     }
@@ -310,29 +296,64 @@ public class UserTable extends TablePanel {
             }
             _detailsStore.removeAll();
             if (_radioGroup.getValue() == _usernameRadio) {
-                new ListUsersWithUsernameAction(
-                    _searchString.getValue().replace('*', '%')){
-                        @Override protected void execute(
-                                             final Collection<UserDto> users) {
-                            updatePager(users);
-                        }
-                }.execute();
+                final UserCriteria uc = new UserCriteria( _searchString.getValue().replace('*', '%'), null, null);
+                updatePager(uc);
             } else if (_radioGroup.getValue() == _emailRadio) {
-                new ListUsersWithEmailAction(
-                    _searchString.getValue().replace('*', '%')) {
-                        @Override protected void execute(
-                                             final Collection<UserDto> users) {
-                            updatePager(users);
-                        }
-                }.execute();
+                final UserCriteria uc = new UserCriteria(null, _searchString.getValue().replace('*', '%'), null);
+                updatePager(uc);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void updatePager(final Collection<UserDto> data){
-        final PagingModelMemoryProxy proxy =
-            new PagingModelMemoryProxy(DataBinding.bindUserSummary(data));
+    private void updatePager(final UserCriteria uc){
+
+        final RpcProxy<PagingLoadResult<UserSummaryModelData>> proxy =
+            new RpcProxy<PagingLoadResult<UserSummaryModelData>>() {
+
+            @Override
+            protected void load(final Object loadConfig,
+                                final AsyncCallback<PagingLoadResult
+                                <UserSummaryModelData>> callback) {
+                if (null==loadConfig
+                    || !(loadConfig instanceof BasePagingLoadConfig)) {
+                    final PagingLoadResult<UserSummaryModelData> plr =
+                       new BasePagingLoadResult<UserSummaryModelData>(null);
+                    callback.onSuccess(plr);
+                } else {
+                    final BasePagingLoadConfig config =
+                        (BasePagingLoadConfig) loadConfig;
+
+                    final int page =  config.getOffset()/ config.getLimit()+1;
+                    final String order = (
+                        config.getSortDir() == Style.SortDir.ASC
+                        ? "ASC" : "DESC");
+
+                    new ListUsersAction(
+                        uc,
+                        page,
+                        config.getLimit(),
+                        config.getSortField(),
+                        order) {
+
+                            @Override
+                            protected void execute(final Collection<UserDto> users,
+                                                   final int totalCount) {
+                                final List<UserSummaryModelData> results =
+                                    DataBinding.bindUserSummary(users);
+
+                                final PagingLoadResult<UserSummaryModelData> plr =
+                                    new BasePagingLoadResult<UserSummaryModelData>(results, config.getOffset(), totalCount);
+                                callback.onSuccess(plr);
+                            }
+
+                    }.execute();
+                }
+            }
+
+        };
+
+
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);
         _detailsStore = new ListStore<UserSummaryModelData>(loader);
