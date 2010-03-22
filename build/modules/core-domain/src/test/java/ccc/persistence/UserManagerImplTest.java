@@ -42,7 +42,6 @@ import ccc.types.Username;
 
 /**
  * Tests for the {@link UserRepositoryImpl} class.
- * TODO: Test users who belong to groups.
  *
  * @author Civic Computing Ltd.
  */
@@ -98,7 +97,8 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         final List<Object> params = new ArrayList<Object>();
         expect(_repository.listDyn(
-            "select distinct u from ccc.domain.User as u left join u._roles as r",
+            "select distinct u "
+            + "from ccc.domain.User as u left join u._roles as r",
             User.class,
             1,
             1,
@@ -119,13 +119,14 @@ public class UserManagerImplTest extends TestCase {
     /**
      * Test.
      */
-    public void testListUsersWithRole() {
+    public void testListUsersWithGroup() {
 
         // ARRANGE
         final List<Object> params = new ArrayList<Object>();
         params.add("ADMINISTRATOR");
         expect(_repository.listDyn(
-            "select distinct u from ccc.domain.User as u left join u._roles as r"
+            "select distinct u"
+            + " from ccc.domain.User as u left join u._roles as r"
             + " where r._name like ?",
             User.class,
             1,
@@ -152,7 +153,8 @@ public class UserManagerImplTest extends TestCase {
         final List<Object> params = new ArrayList<Object>();
         params.add("testname");
         expect(_repository.listDyn(
-            "select distinct u from ccc.domain.User as u left join u._roles as r"
+            "select distinct u"
+            +" from ccc.domain.User as u left join u._roles as r"
             + " where lower(u._username._value) like lower(?)",
             User.class,
             1,
@@ -179,7 +181,8 @@ public class UserManagerImplTest extends TestCase {
         final List<Object> params = new ArrayList<Object>();
         params.add("test@civicuk.com");
         expect(_repository.listDyn(
-            "select distinct u from ccc.domain.User as u left join u._roles as r"
+            "select distinct u"
+            + " from ccc.domain.User as u left join u._roles as r"
             + " where lower(u._email._text) like lower(?)",
             User.class,
             1,

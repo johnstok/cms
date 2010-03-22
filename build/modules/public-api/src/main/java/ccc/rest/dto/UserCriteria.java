@@ -2,6 +2,21 @@
  * Copyright (c) 2010 Civic Computing Ltd.
  * All rights reserved.
  *
+ * This file is part of Content Control.
+ *
+ * Content Control is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Content Control is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Content Control.  If not, see http://www.gnu.org/licenses/.
+ *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
@@ -19,7 +34,7 @@ import ccc.serialization.Jsonable;
 
 
 /**
- * FIXME: move to persistence
+ * TODO: move to ccc.persistence
  * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
@@ -33,16 +48,16 @@ public final class UserCriteria implements Jsonable, Serializable {
     /**
      * Constructor.
      *
-     * @param username
-     * @param email
-     * @param group
+     * @param username Username criteria.
+     * @param email Email criteria.
+     * @param groups Groups criteria.
      */
     public UserCriteria(final String username,
                         final String email,
-                        final String group) {
+                        final String groups) {
         _username = username;
         _email = email;
-        _groups = group;
+        _groups = groups;
     }
 
     /** {@inheritDoc} */
@@ -58,7 +73,7 @@ public final class UserCriteria implements Jsonable, Serializable {
      *
      * @return Returns the username.
      */
-    public final String getUsername() {
+    public String getUsername() {
 
         return _username;
     }
@@ -68,7 +83,7 @@ public final class UserCriteria implements Jsonable, Serializable {
      *
      * @return Returns the role.
      */
-    public final String getGroups() {
+    public String getGroups() {
 
         return _groups;
     }
@@ -78,7 +93,7 @@ public final class UserCriteria implements Jsonable, Serializable {
      *
      * @return Returns the email.
      */
-    public final String getEmail() {
+    public String getEmail() {
 
         return _email;
     }

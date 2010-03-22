@@ -77,6 +77,9 @@ public interface Users {
     /**
      * Query  users.
      *
+     * @param username The username criteria.
+     * @param email The email criteria.
+     * @param groups The groups criteria.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      * @return Returns list of users.
