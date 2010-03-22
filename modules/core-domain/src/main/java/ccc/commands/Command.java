@@ -32,6 +32,7 @@ import java.util.Properties;
 
 import ccc.commons.Context;
 import ccc.commons.Resources;
+import ccc.commons.Script;
 import ccc.commons.ScriptRunner;
 import ccc.domain.CccCheckedException;
 import ccc.domain.InsufficientPrivilegesException;
@@ -144,7 +145,10 @@ public abstract class Command<T> {
         context.add("command", this);
         context.add("result", result);
 
-        new ScriptRunner().eval(script, context, new PrintWriter(System.out));
+        new ScriptRunner().eval(
+            new Script(script, "after_"+getType()),
+            context,
+            new PrintWriter(System.out));
     }
 
 
@@ -167,7 +171,10 @@ public abstract class Command<T> {
         context.add("happenedOn", happenedOn);
         context.add("command", this);
 
-        new ScriptRunner().eval(script, context, new PrintWriter(System.out));
+        new ScriptRunner().eval(
+            new Script(script, "before_"+getType()),
+            context,
+            new PrintWriter(System.out));
     }
 
 

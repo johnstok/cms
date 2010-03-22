@@ -25,11 +25,10 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.rendering;
+package ccc.commons;
 
 import java.io.Writer;
 
-import ccc.commons.Context;
 
 
 /**
@@ -51,7 +50,7 @@ public interface TextProcessor {
      *
      * @return The html rendering as a string.
      */
-    String render(final String template,
+    String render(final Script template,
                   final Context context);
 
     /**
@@ -64,7 +63,7 @@ public interface TextProcessor {
      *  output is complete. The writer will not be closed.
      * @param context Additional values that are passed to the template.
      */
-    void render(final String template,
+    void render(final Script template,
                 final Writer output,
                 final Context context);
 

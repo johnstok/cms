@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Resources;
+import ccc.commons.Script;
 import ccc.types.Duration;
 import ccc.types.MimeType;
 
@@ -176,10 +177,12 @@ public class ResponseTest
         // ARRANGE
         final Body expected =
             new PageBody(
-                Resources.readIntoString(
-                    PageBody.class.getResource(
-                    "/ccc/content/server/default-page-template.txt"),
-                Charset.forName("UTF-8")));
+                new Script(
+                    Resources.readIntoString(
+                        PageBody.class.getResource(
+                        "/ccc/content/server/default-page-template.txt"),
+                        Charset.forName("UTF-8")),
+                "test"));
         final Response r = new Response(expected);
 
         // ACT

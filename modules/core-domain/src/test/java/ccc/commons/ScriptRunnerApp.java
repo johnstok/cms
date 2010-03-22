@@ -55,7 +55,9 @@ public final class ScriptRunnerApp {
         final ScriptRunner sr = new ScriptRunner();
 
         sr.eval(
-            script, new Context(), new OutputStreamWriter(System.out, utf8));
+            new Script(script, "test"),
+            new Context(),
+            new OutputStreamWriter(System.out, utf8));
     }
 
 }

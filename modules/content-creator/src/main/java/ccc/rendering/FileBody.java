@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import ccc.commons.Context;
+import ccc.commons.TextProcessor;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.ThumbAction;
 import ccc.rest.RestException;

@@ -29,6 +29,7 @@ package ccc.commons;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ import org.mozilla.javascript.ScriptableObject;
  *
  * @author Civic Computing Ltd.
  */
-public class ScriptRunner {
+public class ScriptRunner implements TextProcessor {
 
     /** OUT : String. */
     public static final String OUT = "ccc.scriptrunner.out";
@@ -80,7 +81,7 @@ public class ScriptRunner {
      * @param context The script context.
      * @param out The writer the script will write to.
      */
-    public void eval(final String script,
+    public void eval(final Script script,
                      final Context context,
                      final Writer out) {
 
@@ -97,7 +98,12 @@ public class ScriptRunner {
                 cx.setClassShutter(new CccClassShutter(_allowedClasses));
             }
 
-            cx.evaluateReader(scope, new StringReader(script), "ccc", 1, null);
+            cx.evaluateReader(
+                scope,
+                new StringReader(script.getBody()),
+                script.getTitle(),
+                1,
+                null);
 
         } catch (final IOException e) {
             throw new RuntimeException("Error invoking script.", e);
@@ -131,5 +137,23 @@ public class ScriptRunner {
         final Object jsValue =
             org.mozilla.javascript.Context.javaToJS(value, scope);
         ScriptableObject.putProperty(scope, key, jsValue);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String render(final Script template, final Context context) {
+        final StringWriter renderedOutput = new StringWriter();
+        render(template, renderedOutput, context);
+        return renderedOutput.toString();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void render(final Script template,
+                       final Writer output,
+                       final Context context) {
+        eval(template, context, output);
     }
 }

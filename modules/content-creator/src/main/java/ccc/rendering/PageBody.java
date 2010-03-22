@@ -34,6 +34,8 @@ import java.util.Date;
 
 import ccc.commons.Context;
 import ccc.commons.Resources;
+import ccc.commons.Script;
+import ccc.commons.TextProcessor;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -51,7 +53,7 @@ public class PageBody
     implements
         Body {
 
-    private final String _template;
+    private final Script _template;
 
 
     /**
@@ -59,7 +61,7 @@ public class PageBody
      *
      * @param t The template to use for this body.
      */
-    public PageBody(final String t) {
+    public PageBody(final Script t) {
         DBC.require().notNull(t);
         _template = t;
     }
@@ -70,7 +72,7 @@ public class PageBody
                       final Charset charset,
                       final Context context,
                       final TextProcessor processor) {
-        final String t = _template;
+        final Script t = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
         processor.render(t, w, context);
