@@ -80,7 +80,8 @@ public class FoldersEJB
     @PermitAll
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
-        checkPermission(CONTENT_CREATOR, API_USER, CREATE_FOLDER);
+        checkPermission(CONTENT_CREATOR, API_USER, FOLDER_CREATE);
+
         return createFolder(
             folder.getParent(), folder.getName().toString(), null, false);
 
@@ -95,7 +96,8 @@ public class FoldersEJB
                                         final String title,
                                         final boolean publish)
     throws RestException {
-        checkPermission(CONTENT_CREATOR, API_USER, CREATE_FOLDER);
+        checkPermission(CONTENT_CREATOR, API_USER, FOLDER_CREATE);
+
         try {
             return createFolder(
                 parentId,
@@ -200,7 +202,7 @@ public class FoldersEJB
             final Folder f =
                 getResources().find(Folder.class, folderId);
             if (f != null) {
-                List<Resource> list = f.entries();
+                final List<Resource> list = f.entries();
                 Sorter.sort(list, ResourceOrder.MANUAL);
                 return mapResources(list);
             }
@@ -214,9 +216,12 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER})
+    @PermitAll
     public Boolean nameExistsInFolder(final UUID folderId, final String name)
     throws RestException {
+        checkPermission(
+            ADMINISTRATOR, CONTENT_CREATOR, SITE_BUILDER, API_USER, FOLDER_READ);
+
         try {
             // TODO: handle null folderId? (for root folders)
             return

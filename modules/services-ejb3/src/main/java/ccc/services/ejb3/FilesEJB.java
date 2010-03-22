@@ -99,7 +99,7 @@ public class FilesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed({CONTENT_CREATOR, API_USER})
+    @PermitAll
     public ResourceSummary createFile(final UUID parentFolder,
                                       final FileDelta file,
                                       final String resourceName,
@@ -111,6 +111,7 @@ public class FilesEJB
                                       final String comment,
                                       final boolean isMajorEdit)
                                                  throws RestException {
+        checkPermission(CONTENT_CREATOR, API_USER, FILE_CREATE);
         try {
             final User u = currentUser();
 

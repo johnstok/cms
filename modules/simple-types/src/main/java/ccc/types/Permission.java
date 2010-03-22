@@ -53,8 +53,20 @@ public final class Permission {
     /** API_USER : String. */
     public static final String API_USER = "API_USER";
 
-    /** CREATE_FOLDER : String. */
-    public static final String CREATE_FOLDER = "CREATE_FOLDER";
+    /** RESOURCE_PUBLISH : String. */
+    public static final String RESOURCE_PUBLISH = "RESOURCE_PUBLISH";
+    /** RESOURCE_LOCK : String. */
+    public static final String RESOURCE_LOCK = "RESOURCE_LOCK";
+    /** RESOURCE_UNLOCK : String. */
+    public static final String RESOURCE_UNLOCK = "RESOURCE_UNLOCK";
+    /** FILE_CREATE : String. */
+    public static final String FILE_CREATE = "FILE_CREATE";
+    /** FOLDER_CREATE : String. */
+    public static final String FOLDER_CREATE = "FOLDER_CREATE";
+    /** FOLDER_READ : String. */
+    public static final String FOLDER_READ = "FOLDER_READ";
+    /** PAGE_CREATE : String. */
+    public static final String PAGE_CREATE = "PAGE_CREATE";
 
     /** ALL : Set. */
     public static final Set<String> ALL;
@@ -65,7 +77,14 @@ public final class Permission {
         allPerms.add(CONTENT_CREATOR);
         allPerms.add(SITE_BUILDER);
         allPerms.add(ADMINISTRATOR);
-        allPerms.add(CREATE_FOLDER);
+
+        allPerms.add(RESOURCE_PUBLISH);
+        allPerms.add(RESOURCE_LOCK);
+        allPerms.add(RESOURCE_UNLOCK);
+        allPerms.add(FILE_CREATE);
+        allPerms.add(FOLDER_CREATE);
+        allPerms.add(FOLDER_READ);
+        allPerms.add(PAGE_CREATE);
 
         ALL = Collections.unmodifiableSortedSet(allPerms);
     }
