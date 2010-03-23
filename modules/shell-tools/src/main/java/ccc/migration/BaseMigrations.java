@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 
 import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
-import ccc.domain.CCCException;
 import ccc.rest.Groups;
 import ccc.rest.RestException;
 import ccc.rest.Users;
@@ -183,7 +182,7 @@ public class BaseMigrations {
                     break;
 
                 default:
-                    throw new CCCException("Unsupported paragraph type: "+type);
+                    throw new RuntimeException("Unsupported paragraph type: "+type);
             }
         }
 

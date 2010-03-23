@@ -65,7 +65,8 @@ public class PageHelper {
                                       final String t) {
         final String errors = validateFields(delta, t);
         if (!errors.isEmpty()) {
-            throw new CCCException("Field validation failed: " + errors);
+            throw new RuntimeException(
+                "Field validation failed: " + errors);
         }
     }
 
@@ -108,11 +109,11 @@ public class PageHelper {
                 }
             }
         } catch (final ParserConfigurationException e) {
-            throw new CCCException("Error with XML parsing ", e);
+            throw new RuntimeException("Error with XML parsing ", e);
         } catch (final SAXException e) {
-            throw new CCCException("Error with XML parsing ", e);
+            throw new RuntimeException("Error with XML parsing ", e);
         } catch (final IOException e) {
-            throw new CCCException("Error with XML parsing ", e);
+            throw new RuntimeException("Error with XML parsing ", e);
         }
         return errors.toString();
     }

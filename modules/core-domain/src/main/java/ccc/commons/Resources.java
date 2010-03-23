@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import ccc.domain.CCCException;
 import ccc.types.DBC;
 
 
@@ -66,7 +65,7 @@ public final class Resources {
         try {
             return readIntoString(url.openStream(), charset);
         } catch (final IOException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -95,7 +94,7 @@ public final class Resources {
             isr.close();
             return sb.toString();
         } catch (final IOException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } finally {
             if (null!=isr) {
                 try {
@@ -126,7 +125,7 @@ public final class Resources {
             try {
                 p.load(is);
             } catch (final IOException e) {
-                throw new CCCException(e);
+                throw new RuntimeException(e);
             } finally {
                 try {
                     is.close();
@@ -163,7 +162,7 @@ public final class Resources {
                         strings.add(l);
                     }
                 } catch (final IOException e) {
-                    throw new CCCException(e);
+                    throw new RuntimeException(e);
                 } finally {
                     try {
                         if (r != null) {

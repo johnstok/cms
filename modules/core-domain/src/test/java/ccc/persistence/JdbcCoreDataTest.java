@@ -41,7 +41,6 @@ import junit.framework.TestCase;
 
 import org.h2.jdbcx.JdbcDataSource;
 
-import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.serialization.IO;
 
@@ -134,7 +133,7 @@ public class JdbcCoreDataTest
         try {
             Class.forName("org.h2.Driver");
         } catch (final ClassNotFoundException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 

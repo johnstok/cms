@@ -35,7 +35,6 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
-import ccc.domain.CCCException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -117,7 +116,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final Folder root = root(PredefinedResourceNames.CONTENT);
         try {
             return root.navigateTo(path);
-        } catch (final CCCException e) { // TODO: Dodgy?
+        } catch (final RuntimeException e) { // TODO: Dodgy?
             throw new EntityNotFoundException(null);
         }
     }

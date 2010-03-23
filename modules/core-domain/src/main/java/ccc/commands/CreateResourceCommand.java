@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CCCException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -82,7 +81,7 @@ abstract class CreateResourceCommand<T>
 
         final Folder folder = getRepository().find(Folder.class, folderId);
         if (null==folder) {
-            throw new CCCException("No folder exists with id: "+folderId);
+            throw new RuntimeException("No folder exists with id: "+folderId);
         }
         folder.add(newResource);
         getRepository().create(newResource);

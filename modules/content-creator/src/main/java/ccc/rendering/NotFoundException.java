@@ -26,7 +26,6 @@
  */
 package ccc.rendering;
 
-import ccc.domain.CCCException;
 
 
 
@@ -37,7 +36,7 @@ import ccc.domain.CCCException;
  */
 public class NotFoundException
     extends
-        CCCException {
+        RuntimeException {
 
     /**
      * Constructor.

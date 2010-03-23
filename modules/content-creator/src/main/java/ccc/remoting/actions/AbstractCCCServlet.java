@@ -35,8 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.CCCException;
-
 
 
 /**
@@ -125,11 +123,11 @@ public abstract class AbstractCCCServlet
     protected Exception getException(final HttpServletRequest request) {
         final Object o = request.getAttribute(SessionKeys.EXCEPTION_KEY);
         if (null==o) {
-            return new CCCException(
+            return new RuntimeException(
                 "No exception was found at the expected location: "
                 +SessionKeys.EXCEPTION_KEY);
         } else if (!(o instanceof Exception)) {
-            return new CCCException(
+            return new RuntimeException(
                 "Object at location: "
                 +SessionKeys.EXCEPTION_KEY
                 +" was not an exception.");

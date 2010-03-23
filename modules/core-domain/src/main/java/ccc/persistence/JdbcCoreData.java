@@ -36,7 +36,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
 import ccc.types.DBC;
@@ -97,7 +96,7 @@ class JdbcCoreData implements CoreData {
                 }
             }
         } catch (final SQLException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
 
         return data;
@@ -148,9 +147,9 @@ class JdbcCoreData implements CoreData {
             }
 
         } catch (final SQLException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final Exception e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 

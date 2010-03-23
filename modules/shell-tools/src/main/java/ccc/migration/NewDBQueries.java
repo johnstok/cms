@@ -37,7 +37,6 @@ import java.util.UUID;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import ccc.domain.CCCException;
 import ccc.domain.User;
 
 /**
@@ -109,7 +108,7 @@ public class NewDBQueries {
 
             _connection.commit();
         } catch (final SQLException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } finally {
             DbUtils.closeQuietly(ps);
         }
@@ -139,7 +138,7 @@ public class NewDBQueries {
             _connection.commit();
 
         } catch (final SQLException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } finally {
             DbUtils.closeQuietly(ps);
         }
@@ -166,7 +165,7 @@ public class NewDBQueries {
             _connection.commit();
 
         } catch (final SQLException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } finally {
             DbUtils.closeQuietly(ps);
         }
