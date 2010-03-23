@@ -33,14 +33,18 @@ import java.util.List;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.i18n.UIConstants;
+import ccc.contentcreator.remoting.ListUsersAction;
 import ccc.rest.dto.UserDto;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
-import com.extjs.gxt.ui.client.data.PagingModelMemoryProxy;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -53,6 +57,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * A simple user selector used by resource Access control.
@@ -78,11 +83,9 @@ public class UserACLSelector extends Window {
      * Constructor.
      *
      * @param store The parent store.
-     * @param allUsers All users.
      * @param constants UI Constants.
      */
     public UserACLSelector(final ListStore<UserSummaryModelData> store,
-                        final Collection<UserDto> allUsers,
                         final UIConstants constants) {
         _store = store;
         _constants = constants;
@@ -94,8 +97,8 @@ public class UserACLSelector extends Window {
         setHeading(_constants.selectUsers());
 
 
-        final PagingModelMemoryProxy proxy =
-            new PagingModelMemoryProxy(DataBinding.bindUserSummary(allUsers));
+        final RpcProxy<PagingLoadResult<UserSummaryModelData>> proxy =
+            createProxy();
 
         final PagingLoader<PagingLoadResult<UserSummaryModelData>> loader =
             new BasePagingLoader<PagingLoadResult
@@ -139,6 +142,53 @@ public class UserACLSelector extends Window {
         }));
         panel.setBottomComponent(_pagerBar);
         add(panel);
+    }
+
+
+    private RpcProxy<PagingLoadResult<UserSummaryModelData>> createProxy() {
+        return new RpcProxy<PagingLoadResult<UserSummaryModelData>>() {
+
+            @Override
+            protected void load(final Object loadConfig,
+                                final AsyncCallback<PagingLoadResult
+                                <UserSummaryModelData>> callback) {
+                if (null==loadConfig
+                    || !(loadConfig instanceof BasePagingLoadConfig)) {
+                    final PagingLoadResult<UserSummaryModelData> plr =
+                        new BasePagingLoadResult<UserSummaryModelData>(null);
+                    callback.onSuccess(plr);
+                } else {
+                    final BasePagingLoadConfig config =
+                        (BasePagingLoadConfig) loadConfig;
+
+                    final int page =  config.getOffset()/ config.getLimit()+1;
+                    final String order = (
+                        config.getSortDir() == Style.SortDir.ASC
+                        ? "ASC" : "DESC");
+
+                    new ListUsersAction(
+                        null,
+                        page,
+                        config.getLimit(),
+                        config.getSortField(),
+                        order) {
+
+                        @Override
+                        protected void execute(final Collection<UserDto> users,
+                                               final int totalCount) {
+                            final List<UserSummaryModelData> results =
+                                DataBinding.bindUserSummary(users);
+
+                            final PagingLoadResult<UserSummaryModelData> plr =
+                                new BasePagingLoadResult<UserSummaryModelData>(results, config.getOffset(), totalCount);
+                            callback.onSuccess(plr);
+                        }
+
+                    }.execute();
+                }
+            }
+
+        };
     }
 
     private ColumnModel defineAddUserCM() {
