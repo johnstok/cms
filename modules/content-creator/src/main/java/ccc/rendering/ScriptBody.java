@@ -26,7 +26,6 @@
  */
 package ccc.rendering;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -38,7 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.Context;
 import ccc.commons.Resources;
+import ccc.commons.Script;
 import ccc.commons.ScriptRunner;
+import ccc.commons.TextProcessor;
 
 
 /**
@@ -50,7 +51,7 @@ public class ScriptBody
     implements
         Body {
 
-    private final String _script;
+    private final Script _script;
 
 
     /**
@@ -58,7 +59,7 @@ public class ScriptBody
      *
      * @param script The script to invoke.
      */
-    public ScriptBody(final String script) {
+    public ScriptBody(final Script script) {
         _script = script;
     }
 
@@ -69,7 +70,7 @@ public class ScriptBody
     public void write(final OutputStream os,
                       final Charset charset,
                       final Context context,
-                      final TextProcessor processor) throws IOException {
+                      final TextProcessor processor) {
 
         final HttpServletResponse resp =
             context.get("response", HttpServletResponse.class);

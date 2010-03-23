@@ -17,19 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 2564 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2010-03-22 14:09:24 +0000 (Mon, 22 Mar 2010) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
 
-package ccc.rendering;
+package ccc.commons;
 
 import java.io.Writer;
 
-import ccc.commons.Context;
 
 
 /**
@@ -51,7 +50,7 @@ public interface TextProcessor {
      *
      * @return The html rendering as a string.
      */
-    String render(final String template,
+    String render(final Script template,
                   final Context context);
 
     /**
@@ -64,7 +63,7 @@ public interface TextProcessor {
      *  output is complete. The writer will not be closed.
      * @param context Additional values that are passed to the template.
      */
-    void render(final String template,
+    void render(final Script template,
                 final Writer output,
                 final Context context);
 

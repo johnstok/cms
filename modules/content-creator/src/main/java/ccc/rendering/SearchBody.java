@@ -36,6 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import ccc.commons.Context;
 import ccc.commons.Exceptions;
+import ccc.commons.Script;
+import ccc.commons.TextProcessor;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -59,7 +61,7 @@ public class SearchBody
     private static final int DEFAULT_FIRST_PAGE = 0;
     private static final int DEFAULT_MINIMUM_SEARCH_RESULTS = 10;
 
-    private final String _template;
+    private final Script _template;
 
 
     /**
@@ -67,7 +69,7 @@ public class SearchBody
      *
      * @param t The template to use for this body.
      */
-    public SearchBody(final String t) {
+    public SearchBody(final Script t) {
         DBC.require().notNull(t);
         _template = t;
     }
@@ -103,7 +105,7 @@ public class SearchBody
             searchEngine.find(searchQuery, noOfResultsPerPage, pageNumber);
         context.add("result", result);
 
-        final String templateString = _template;
+        final Script templateString = _template;
         final Writer w = new OutputStreamWriter(os, charset);
 
         processor.render(templateString, w, context);

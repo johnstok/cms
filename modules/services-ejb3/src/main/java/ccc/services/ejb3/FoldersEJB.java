@@ -77,9 +77,11 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(FOLDER_CREATE)
+    @PermitAll
     public ResourceSummary createFolder(final FolderDto folder)
     throws RestException {
+        checkPermission(FOLDER_CREATE);
+
         return createFolder(
             folder.getParent(), folder.getName().toString(), null, false);
 
@@ -88,12 +90,14 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(FOLDER_CREATE)
+    @PermitAll
     public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
                                         final boolean publish)
     throws RestException {
+        checkPermission(FOLDER_CREATE);
+
         try {
             final User u = currentUser();
             final Date happenedOn = new Date();
@@ -189,9 +193,11 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(FOLDER_READ)
+    @PermitAll
     public Boolean nameExistsInFolder(final UUID folderId, final String name)
     throws RestException {
+        checkPermission(FOLDER_READ);
+
         try {
             // TODO: handle null folderId? (for root folders)
             return

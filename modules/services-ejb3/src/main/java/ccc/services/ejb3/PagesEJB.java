@@ -74,9 +74,10 @@ public class PagesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(PAGE_CREATE)
+    @PermitAll
     public ResourceSummary createPage(final PageDto page)
                                                  throws RestException {
+        checkPermission(PAGE_CREATE);
         return
             execute(
                 commands().createPageCommand(

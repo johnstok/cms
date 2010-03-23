@@ -59,6 +59,9 @@ public final class DBC {
      * Assert that the specified value is not null.
      *
      * @param object The object to test for NULL.
+     * @param <T> The type object to be checked.
+     *
+     * @return Returns the specified object.
      */
     public <T> T notNull(final T object) {
         if (null==object) {
@@ -75,13 +78,16 @@ public final class DBC {
      * <br>2. It has a length of 0.
      *
      * @param string The string that may not be empty.
+     *
+     * @return Returns the specified string.
      */
-    public void notEmpty(final String string) {
+    public String notEmpty(final String string) {
         notNull(string);
         if (string.trim().length() < 1) {
             throw new IllegalArgumentException(
                 "Specified string must have length > 0."); //$NON-NLS-1$
         }
+        return string;
     }
 
     /**

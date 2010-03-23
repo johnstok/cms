@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Context;
+import ccc.commons.TextProcessor;
 import ccc.rendering.Body;
 import ccc.rendering.Response;
-import ccc.rendering.TextProcessor;
 import ccc.rendering.velocity.VelocityProcessor;
 
 /**

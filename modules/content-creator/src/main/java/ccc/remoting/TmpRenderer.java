@@ -28,6 +28,7 @@ package ccc.remoting;
 
 import java.util.UUID;
 
+import ccc.commons.Script;
 import ccc.rendering.FileBody;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.PageBody;
@@ -109,7 +110,10 @@ public class TmpRenderer {
         try {
             final UUID tId = s.getTemplate();
             final TemplateDelta t = _templates.templateDelta(tId);
-            final Response r = new Response(new SearchBody(t.getBody()));
+            final Response r =
+                new Response(
+                    new SearchBody(
+                        new Script(t.getBody(), tId.toString())));
             r.setCharSet("UTF-8");
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
@@ -127,7 +131,8 @@ public class TmpRenderer {
             final TextFileDelta tf = _files.get(f.getId());
             return
                 new Response(
-                    new ScriptBody(tf.getContent()));
+                    new ScriptBody(
+                        new Script(tf.getContent(), tf.getId().toString())));
         } catch (final RestException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
@@ -139,7 +144,10 @@ public class TmpRenderer {
         try {
             final UUID tId = s.getTemplate();
             final TemplateDelta t = _templates.templateDelta(tId);
-            final Response r = new Response(new PageBody(t.getBody()));
+            final Response r =
+                new Response(
+                    new PageBody(
+                        new Script(t.getBody(), tId.toString())));
             r.setCharSet("UTF-8");
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
