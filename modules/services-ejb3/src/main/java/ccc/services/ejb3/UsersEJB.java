@@ -52,6 +52,7 @@ import ccc.rest.Users;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserCriteria;
 import ccc.rest.dto.UserDto;
+import ccc.types.SortOrder;
 import ccc.types.Username;
 
 
@@ -158,13 +159,15 @@ public class UsersEJB
         final String username,
         final String email,
         final String groups,
+        final String sort,
+        final SortOrder order,
         final int pageNo,
         final int pageSize) {
         final UserRepository userrepo = getRepoFactory().createUserRepo();
         final UserCriteria uc = new UserCriteria(username, email, groups);
         return
             new DtoCollection<UserDto>(userrepo.countUsers(uc), User.map(
-                userrepo.listUsers(uc, pageNo, pageSize)));
+                userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
     }
 
 

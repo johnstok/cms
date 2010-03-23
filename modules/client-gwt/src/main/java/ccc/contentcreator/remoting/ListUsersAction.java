@@ -53,21 +53,29 @@ public abstract class ListUsersAction
     private UserCriteria _uc;
     private int _pageNo;
     private int _pageSize;
+    private String _sort;
+    private String _order;
 
     /**
      * Constructor.
-     * @param order
-     * @param string
+     *
+     * @param uc The UserCriteria object.
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
+     * @param sort The column to sort.
+     * @param order The sort order (ASC/DESC).
      */
     public ListUsersAction(final UserCriteria uc,
                      final int pageNo,
                      final int pageSize,
-                     final String string,
+                     final String sort,
                      final String order) {
         super(USER_ACTIONS.viewUsers());
         _uc = uc;
         _pageNo = pageNo;
         _pageSize = pageSize;
+        _sort = sort;
+        _order = order;
     }
 
     /** {@inheritDoc} */
@@ -75,7 +83,7 @@ public abstract class ListUsersAction
     protected String getPath() {
         final StringBuilder path = new StringBuilder();
         path.append("/users?page="+_pageNo
-        +"&count="+_pageSize);
+        +"&count="+_pageSize+"&sort="+_sort+"&order="+_order);
         if (null != _uc) {
             if (null != _uc.getEmail()) {
                 path.append("&email="+encode(_uc.getEmail()));
@@ -116,6 +124,7 @@ public abstract class ListUsersAction
      * Handle the result of a successful call.
      *
      * @param users The collection of users returned.
+     * @param totalCount The total comments available on the server.
      */
     protected abstract void execute(Collection<UserDto> users, int totalCount);
 }

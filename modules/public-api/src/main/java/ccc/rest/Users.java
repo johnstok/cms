@@ -40,6 +40,7 @@ import javax.ws.rs.QueryParam;
 
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserDto;
+import ccc.types.SortOrder;
 import ccc.types.Username;
 
 
@@ -80,6 +81,8 @@ public interface Users {
      * @param username The username criteria.
      * @param email The email criteria.
      * @param groups The groups criteria.
+     * @param sort The column to sort.
+     * @param order The sort order (ASC/DESC).
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      * @return Returns list of users.
@@ -89,6 +92,8 @@ public interface Users {
         @QueryParam("username") String username,
         @QueryParam("email") String email,
         @QueryParam("groups") String groups,
+        @QueryParam("sort") String sort,
+        @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
 

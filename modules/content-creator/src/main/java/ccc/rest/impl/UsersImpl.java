@@ -39,6 +39,7 @@ import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserDto;
+import ccc.types.SortOrder;
 import ccc.types.Username;
 
 
@@ -131,10 +132,13 @@ public class UsersImpl
     public DtoCollection<UserDto> listUsers(final String username,
                                             final String email,
                                             final String groups,
+                                            final String sort,
+                                            final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
 
-        return getUsers().listUsers(username, email, groups, pageNo, pageSize);
+        return getUsers().listUsers(
+            username, email, groups, sort, order, pageNo, pageSize);
     }
 
 }
