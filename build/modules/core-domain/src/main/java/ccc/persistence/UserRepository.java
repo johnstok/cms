@@ -34,6 +34,7 @@ import java.util.UUID;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
 import ccc.rest.dto.UserCriteria;
+import ccc.types.SortOrder;
 
 /**
  * API for user repositories.
@@ -48,16 +49,21 @@ public interface UserRepository {
      * @param uc User criteria.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
+     * @param sort The column to sort.
+     * @param order The sort order (ASC/DESC).
      * @return List of users.
      */
-    Collection<User> listUsers(UserCriteria uc, final int pageNo,
+    Collection<User> listUsers(UserCriteria uc,
+        String sort,
+        SortOrder order,
+        final int pageNo,
         final int pageSize);
 
     /**
      * Total amount of the matching users.
      *
      * @param uc User criteria.
-     * @return
+     * @return Number of users.
      */
     long countUsers(UserCriteria uc);
 

@@ -85,7 +85,7 @@ public class UserManagementAcceptanceTest
         // ACT
         final List<UserDto> ul =
             getUsers().listUsers(
-                us.getUsername().toString(), null, null, 1, 20).getElements();
+                us.getUsername().toString(), null, null,null, null, 1, 20).getElements();
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -109,7 +109,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
         final DtoCollection<UserDto> ul = getUsers().listUsers(
-                null, us.getEmail(), null, 1, 20);
+                null, us.getEmail(), null,null, null, 1, 20);
 
         // ASSERT
         assertEquals(1, ul.getTotalCount());

@@ -97,8 +97,8 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         final List<Object> params = new ArrayList<Object>();
         expect(_repository.listDyn(
-            "select distinct u "
-            + "from ccc.domain.User as u left join u._roles as r",
+            "select u "
+            + "from ccc.domain.User as u",
             User.class,
             1,
             1,
@@ -109,7 +109,7 @@ public class UserManagerImplTest extends TestCase {
 
         // ACT
         final UserCriteria uc = new UserCriteria(null, null, null);
-        _um.listUsers(uc, 1, 1);
+        _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
         verifyAll();
@@ -125,9 +125,10 @@ public class UserManagerImplTest extends TestCase {
         final List<Object> params = new ArrayList<Object>();
         params.add("ADMINISTRATOR");
         expect(_repository.listDyn(
-            "select distinct u"
-            + " from ccc.domain.User as u left join u._roles as r"
-            + " where r._name like ?",
+            "select u from ccc.domain.User as u where ? in ("
+            + "select r._name "
+            + "from ccc.domain.User as u2 left join u2._roles as r "
+            + "where u=u2) ",
             User.class,
             1,
             1,
@@ -137,7 +138,7 @@ public class UserManagerImplTest extends TestCase {
 
         // ACT
         final UserCriteria uc = new UserCriteria(null, null, "ADMINISTRATOR");
-        _um.listUsers(uc, 1, 1);
+        _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
         verifyAll();
@@ -153,8 +154,8 @@ public class UserManagerImplTest extends TestCase {
         final List<Object> params = new ArrayList<Object>();
         params.add("testname");
         expect(_repository.listDyn(
-            "select distinct u"
-            +" from ccc.domain.User as u left join u._roles as r"
+            "select u"
+            +" from ccc.domain.User as u"
             + " where lower(u._username._value) like lower(?)",
             User.class,
             1,
@@ -165,7 +166,7 @@ public class UserManagerImplTest extends TestCase {
 
         // ACT
         final UserCriteria uc = new UserCriteria("testname", null, null);
-        _um.listUsers(uc, 1, 1);
+        _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
         verifyAll();
@@ -181,8 +182,8 @@ public class UserManagerImplTest extends TestCase {
         final List<Object> params = new ArrayList<Object>();
         params.add("test@civicuk.com");
         expect(_repository.listDyn(
-            "select distinct u"
-            + " from ccc.domain.User as u left join u._roles as r"
+            "select u"
+            + " from ccc.domain.User as u"
             + " where lower(u._email._text) like lower(?)",
             User.class,
             1,
@@ -194,7 +195,7 @@ public class UserManagerImplTest extends TestCase {
         // ACT
         final UserCriteria uc =
             new UserCriteria(null, "test@civicuk.com", null);
-        _um.listUsers(uc, 1, 1);
+        _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
         verifyAll();

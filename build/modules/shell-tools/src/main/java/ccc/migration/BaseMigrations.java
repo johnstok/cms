@@ -119,7 +119,8 @@ public class BaseMigrations {
         if (null==le && version == 0) {
             final LogEntryBean fe = new LogEntryBean(0, new Date());
             final List<UserDto> users =
-              _userCommands.listUsers(username, null, null, 1, 1).getElements();
+              _userCommands.listUsers(
+                  username, null, null,null, null, 1, 1).getElements();
             fe.setUser(users.get(0));
             return fe;
         } else if (null == le) {

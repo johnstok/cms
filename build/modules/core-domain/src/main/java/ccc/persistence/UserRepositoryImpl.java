@@ -40,6 +40,7 @@ import javax.persistence.Query;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
 import ccc.rest.dto.UserCriteria;
+import ccc.types.SortOrder;
 
 
 /**
@@ -77,14 +78,30 @@ class UserRepositoryImpl implements UserRepository {
     /** {@inheritDoc} */
     @Override
     public Collection<User> listUsers(final UserCriteria uc,
+        final String sort,
+        final SortOrder order,
         final int pageNo,
         final int pageSize) {
 
         final List<Object> params = new ArrayList<Object>();
 
         final StringBuffer query = new StringBuffer();
-        query.append("select distinct u");
+        query.append("select u");
         createUserQuery(query, uc, params);
+
+        if (null != sort) {
+            boolean knownSort = true;
+            if ("email".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(u._email._text) ");
+            } else if ("username".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(u._username._value) ");
+            } else {
+                knownSort = false;
+            }
+            if (knownSort) {
+                query.append(order.name());
+            }
+        }
 
         return _repository.listDyn(
             query.toString(),
@@ -100,10 +117,9 @@ class UserRepositoryImpl implements UserRepository {
     public long countUsers(final UserCriteria uc) {
         final List<Object> params = new ArrayList<Object>();
         final StringBuffer query = new StringBuffer();
-        query.append("select count(distinct u) ");
+        query.append("select count(u) ");
         createUserQuery(query, uc, params);
         return _repository.scalarLong(query.toString(), params.toArray());
-//        return 20;
     }
 
     private void createUserQuery(final StringBuffer query,
@@ -111,7 +127,7 @@ class UserRepositoryImpl implements UserRepository {
                                  final List<Object> params) {
 
         query.append(
-            " from ccc.domain.User as u left join u._roles as r");
+            " from ccc.domain.User as u");
         if (null!=uc.getEmail()) {
             query.append(" where lower(u._email._text) like lower(?)");
             params.add(uc.getEmail());
@@ -123,7 +139,9 @@ class UserRepositoryImpl implements UserRepository {
         }
         if (null!=uc.getGroups()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" r._name like ?");
+            query.append(" ? in (select r._name "
+                + "from ccc.domain.User as u2 left join u2._roles as r "
+                + "where u=u2) ");
             params.add(uc.getGroups());
         }
     }
