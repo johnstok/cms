@@ -123,8 +123,7 @@ public class UpdateCurrentUserCommand
     protected void authorize(final User actor)
                                     throws InsufficientPrivilegesException {
         if (!actor.getId().equals(_userId)) {
-            throw new InsufficientPrivilegesException(
-                getType(), actor);
+            throw new InsufficientPrivilegesException(getType(), actor);
         }
     }
 
