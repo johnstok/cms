@@ -45,7 +45,7 @@
                         <version>4.2</version><!-- Left at 4.2 due to http://jira.codehaus.org/browse/MEAR-105 -->
                         <security-domain>java:/jaas/${application.prefix}</security-domain>
                         <data-sources>
-                            <data-source>${application.db-datasource}</data-source>
+                            <data-source>database-ds.xml</data-source>
                             <data-source>mail-service.xml</data-source>
                             <data-source>auth-service.xml</data-source>
                         </data-sources>
