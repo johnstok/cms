@@ -27,7 +27,6 @@
 package ccc.rendering.velocity;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.InetAddress;
@@ -50,10 +49,11 @@ import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
 import ccc.commons.Context;
+import ccc.commons.Script;
+import ccc.commons.TextProcessor;
 import ccc.commons.XHTML;
-import ccc.domain.CCCException;
-import ccc.rendering.TextProcessor;
 import ccc.rest.ServiceLocator;
+import ccc.types.DBC;
 
 
 /**
@@ -64,13 +64,22 @@ import ccc.rest.ServiceLocator;
 public class VelocityProcessor implements TextProcessor {
 
     private static final String HOSTNAME = getHostname();
+
     /**
-     * TODO: Add a description for this type.
+     * Velocity tools for helping with Java5 enum's.
      *
      * @author Civic Computing Ltd.
      */
     public static final class EnumTools {
 
+        /**
+         * Retrieve an enum constant.
+         *
+         * @param className The enum's class.
+         * @param value The enum's name.
+         *
+         * @return The corresponding enum.
+         */
         @SuppressWarnings("unchecked")
         public Object of(final String className, final String value) {
             try {
@@ -88,26 +97,18 @@ public class VelocityProcessor implements TextProcessor {
 
     /*
      * resource.manager.logwhenfound = true
-     * input.encoding = UTF-8
      * velocimacro.arguments.strict = true
      * velocimacro.permissions.allow.inline.to.replace.global = false
      * velocimacro.permissions.allow.inline = true
      * velocimacro.library.autoreload = false
      */
-    private static final String VELOCITY_CONFIG =
-        "input.encoding = UTF-8\n"
-        + "resource.loader = ccc\n"
-        + "ccc.resource.loader.class = "
-            + CCCResourceLoader.class.getName() + "\n"
-        + "ccc.resource.loader.description = CCC resource loader\n"
-        + "ccc.resource.loader.cache = true\n"
-        + "ccc.resource.loader.modificationCheckInterval = -1\n";
+
 
     private final Random _random = new Random();
 
 
     /** {@inheritDoc} */
-    public String render(final String template,
+    public String render(final Script template,
                          final Context context) {
         final StringWriter renderedOutput = new StringWriter();
         render(template, renderedOutput, context);
@@ -116,24 +117,43 @@ public class VelocityProcessor implements TextProcessor {
 
 
     /** {@inheritDoc} */
-    public void render(final String template,
+    public void render(final Script template,
                        final Writer output,
                        final Context ctxt) {
 
+        DBC.require().notNull(template);
+        DBC.require().notNull(output);
+        DBC.require().notNull(ctxt);
+
         final Properties velocityProperties = new Properties();
-        try {
-            velocityProperties.load(new StringReader(VELOCITY_CONFIG));
-        } catch (final IOException e1) {
-            throw new CCCException(e1);
-        }
+        velocityProperties.setProperty(
+            "input.encoding",
+            "UTF-8");
+        velocityProperties.setProperty(
+            "resource.loader",
+            "ccc");
+        velocityProperties.setProperty(
+            "ccc.resource.loader.class",
+            CCCResourceLoader.class.getName());
+        velocityProperties.setProperty(
+            "ccc.resource.loader.description",
+            "CCC resource loader");
+        velocityProperties.setProperty(
+            "ccc.resource.loader.cache",
+            "true");
+        velocityProperties.setProperty(
+            "ccc.resource.loader.modificationCheckInterval",
+            "-1");
         velocityProperties.setProperty(
             RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
             "org.apache.velocity.runtime.log.Log4JLogChute");
         velocityProperties.setProperty(
             "runtime.log.logsystem.log4j.logger",
             "ccc.rendering.velocity.Template");
-        velocityProperties.setProperty("runtime.introspector.uberspect",
+        velocityProperties.setProperty(
+            "runtime.introspector.uberspect",
             "org.apache.velocity.util.introspection.SecureUberspector");
+
         try {
             final VelocityContext context = new VelocityContext();
 
@@ -149,7 +169,6 @@ public class VelocityProcessor implements TextProcessor {
             context.put("uuid", UUID.class);
             context.put("enums", new EnumTools());
             context.put("hostname", HOSTNAME);
-
             context.put("dateTool", new DateTool());
             context.put("sortTool", new SortTool());
 
@@ -158,26 +177,30 @@ public class VelocityProcessor implements TextProcessor {
             ve.setApplicationAttribute("ccc-reader", sl.getResources());
             ve.init();
 
-            ve.evaluate(context, output, "VelocityProcessor", template);
+            ve.evaluate(
+                context,
+                output,
+                template.getTitle(),
+                template.getBody());
 
             output.flush();
 
         } catch (final ParseErrorException e) {
-            handleException(e);
+            handleException(e, template.getTitle());
         } catch (final MethodInvocationException e) {
-            handleException(e);
+            handleException(e, template.getTitle());
         } catch (final ResourceNotFoundException e) {
-            handleException(e);
+            handleException(e, template.getTitle());
         } catch (final IOException e) {
-            handleException(e);
+            handleException(e, template.getTitle());
         } catch (final Exception e) {
-            handleException(e);
+            handleException(e, template.getTitle());
         }
     }
 
-    private void handleException(final Exception e) {
-        LOG.warn("Error in template: "+e.getMessage());
-        throw new RuntimeException("Error in template.", e);
+    private void handleException(final Exception e, final String title) {
+//        LOG.warn("Error in template '"+title+"': "+e.getMessage());
+        throw new RuntimeException("Error in template '"+title+"'.", e);
     }
 
     private static String getHostname() {

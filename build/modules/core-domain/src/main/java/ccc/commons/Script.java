@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -17,40 +17,57 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev: 1072 $
+ * Revision      $Rev: 2564 $
  * Modified by   $Author: keith $
- * Modified on   $Date: 2009-04-13 10:29:52 +0100 (Mon, 13 Apr 2009) $
+ * Modified on   $Date: 2010-03-22 14:09:24 +0000 (Mon, 22 Mar 2010) $
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rendering;
+package ccc.commons;
 
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-
-import ccc.commons.Context;
-import ccc.commons.TextProcessor;
-
-
+import ccc.types.DBC;
 
 
 /**
- * An empty body.
+ * A text-based script executed by a {@link TextProcessor}.
  *
  * @author Civic Computing Ltd.
  */
-public class EmptyBody
-    implements
-        Body {
+public class Script {
 
-    /** {@inheritDoc} */
-    @Override
-    public void write(final OutputStream os,
-                      final Charset charset,
-                      final Context context,
-                      final TextProcessor processor) {
-        // No Op
+    private final String _body;
+    private final String _title;
+
+
+    /**
+     * Constructor.
+     *
+     * @param body The script's body.
+     * @param title The script's title.
+     */
+    public Script(final String body, final String title) {
+        _body = DBC.require().notNull(body);
+        _title = DBC.require().notEmpty(title);
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the body.
+     */
+    public final String getBody() {
+        return _body;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the title.
+     */
+    public final String getTitle() {
+        return _title;
+    }
 }

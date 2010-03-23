@@ -37,11 +37,12 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 
 import ccc.commons.Context;
+import ccc.commons.Script;
 import ccc.commons.Testing;
+import ccc.commons.TextProcessor;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.rendering.TextProcessor;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
@@ -82,7 +83,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", new TestServiceLocator());
 
         // ACT
-        final String actual = vp.render("#parse('/a/b/c')\n#foo()", ctxt);
+        final String actual =
+            vp.render(new Script("#parse('/a/b/c')\n#foo()", "test"), ctxt);
 
         // ASSERT
         verify(_reader);
@@ -104,7 +106,8 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services",  new TestServiceLocator());
 
         // ACT
-        final String actual = vp.render("#include('/a/b/c')\n#foo()", ctxt);
+        final String actual =
+            vp.render(new Script("#include('/a/b/c')\n#foo()", "test"), ctxt);
 
         // ASSERT
         verify(_reader);
@@ -121,7 +124,7 @@ public class VelocityProcessorTest extends TestCase {
         final Context ctxt = new Context();
         ctxt.add("services", Testing.stub(ServiceLocator.class));
         // ACT
-        _vp.render("foo", output, ctxt);
+        _vp.render(new Script("foo", "test"), output, ctxt);
 
         // ASSERT
         assertEquals("foo", output.toString());
@@ -136,7 +139,7 @@ public class VelocityProcessorTest extends TestCase {
         final Context ctxt = new Context();
         ctxt.add("services", Testing.stub(ServiceLocator.class));
         // ACT
-        final String output = _vp.render("foo", ctxt);
+        final String output = _vp.render(new Script("foo", "test"), ctxt);
 
         // ASSERT
         assertEquals("foo", output);
@@ -161,7 +164,7 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(template, ctxt);
+        final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
         assertEquals("Hello "+foo.getId(), html);
@@ -176,7 +179,7 @@ public class VelocityProcessorTest extends TestCase {
         final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
         final String template = "#macro failthis #end";
         final String expectedMessage = "A macro declaration requires at least "
-            + "a name argumentVelocityProcessor[line 1, column 1]";
+            + "a name argumenttest[line 1, column 1]";
         final StringWriter renderedOutput = new StringWriter();
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
@@ -185,7 +188,7 @@ public class VelocityProcessorTest extends TestCase {
         // ACT
         try {
             _vp.render(
-                template,
+                new Script(template, "test"),
                 renderedOutput,
                 ctxt);
             fail();
@@ -210,7 +213,7 @@ public class VelocityProcessorTest extends TestCase {
             "Invocation of method 'failingMethod' in  "
             + "class ccc.rendering.velocity.VelocityProcessorTest "
             + "threw exception java.lang.RuntimeException: Fail. "
-            + "at VelocityProcessor[line 1, column 11]";
+            + "at test[line 1, column 11]";
         final StringWriter renderedOutput = new StringWriter();
         final Context ctxt = new Context();
         ctxt.add("resource", this);
@@ -219,7 +222,7 @@ public class VelocityProcessorTest extends TestCase {
         // ACT
         try {
             _vp.render(
-                template,
+                new Script(template, "test"),
                 renderedOutput,
                 ctxt);
 
@@ -237,7 +240,8 @@ public class VelocityProcessorTest extends TestCase {
     public void testSecurityPass() {
 
         // ARRANGE
-        final String template = "$uuid.fromString(\"f7627735-6276-45b1-a516-aa8a1f9f28f2\")";
+        final String template =
+            "$uuid.fromString(\"f7627735-6276-45b1-a516-aa8a1f9f28f2\")";
         final String expectedMessage =
             "f7627735-6276-45b1-a516-aa8a1f9f28f2";
         final Context ctxt = new Context();
@@ -245,7 +249,7 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(template, ctxt);
+        final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
         assertEquals(expectedMessage, html);
@@ -263,7 +267,7 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(template, ctxt);
+        final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
         assertEquals(template, html);
@@ -281,7 +285,7 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(template, ctxt);
+        final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
         assertEquals(template, html);
@@ -299,7 +303,7 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(template, ctxt);
+        final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
         assertEquals(template, html);
@@ -317,7 +321,7 @@ public class VelocityProcessorTest extends TestCase {
         ctxt.add("services", Testing.stub(ServiceLocator.class));
 
         // ACT
-        final String html = _vp.render(template, ctxt);
+        final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
         assertEquals(template, html);

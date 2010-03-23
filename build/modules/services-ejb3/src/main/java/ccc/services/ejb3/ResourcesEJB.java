@@ -189,8 +189,10 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_LOCK)
+    @PermitAll
     public void lock(final UUID resourceId) throws RestException {
+        checkPermission(RESOURCE_LOCK);
+
         execute(
             commands().lockResourceCommand(resourceId));
     }
@@ -219,8 +221,10 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_PUBLISH)
+    @PermitAll
     public void publish(final UUID resourceId) throws RestException {
+        checkPermission(RESOURCE_PUBLISH);
+
         execute(
             commands().publishResource(resourceId));
     }
@@ -242,8 +246,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_UNLOCK)
+    @PermitAll
     public void unlock(final UUID resourceId) throws RestException {
+        checkPermission(RESOURCE_UNLOCK);
         execute(
             commands().unlockResourceCommand(resourceId));
     }

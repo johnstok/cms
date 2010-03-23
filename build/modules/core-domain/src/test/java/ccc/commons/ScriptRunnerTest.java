@@ -53,7 +53,7 @@ public class ScriptRunnerTest
 
         // ACT
         runner.eval(
-            "print('foo', 'bar');",
+            new Script("print('foo', 'bar');", "test"),
             new Context(),
             out);
 
@@ -72,7 +72,7 @@ public class ScriptRunnerTest
 
         // ACT
         runner.eval(
-            "out.write('foo');",
+            new Script("out.write('foo');", "test"),
             new Context().add("out", out),
             new PrintWriter(out));
 
@@ -92,7 +92,9 @@ public class ScriptRunnerTest
         // ACT
         try {
             runner.eval(
-                "throw new java.lang.RuntimeException('Error message');",
+                new Script(
+                    "throw new java.lang.RuntimeException('Error message');",
+                    "test"),
                 new Context(),
                 new PrintWriter(out));
             fail();
@@ -100,7 +102,7 @@ public class ScriptRunnerTest
         // ASSERT
         } catch (final RuntimeException e) {
             assertEquals(
-                "java.lang.RuntimeException: Error message (ccc#1)",
+                "java.lang.RuntimeException: Error message (test#1)",
                 e.getMessage());
         }
     }
@@ -117,7 +119,7 @@ public class ScriptRunnerTest
         // ACT
         try {
             runner.eval(
-                "java.lang.System.exit(1)",
+                new Script("java.lang.System.exit(1)", "test"),
                 new Context(),
                 new PrintWriter(System.out));
 
@@ -141,7 +143,10 @@ public class ScriptRunnerTest
         // ACT
         try {
             runner.eval(
-                "o.getClass().forName('ccc.commons.MapRegistry').newInstance()",
+                new Script(
+                    "o.getClass().forName('ccc.commons.MapRegistry')"
+                        + ".newInstance()",
+                    "test"),
                 new Context().add("o", new Object()),
                 new PrintWriter(System.out));
 
@@ -165,7 +170,8 @@ public class ScriptRunnerTest
         // ACT
         try {
             runner.eval(
-                "print(new Packages.ccc.commons.MapRegistry());",
+                new Script(
+                    "print(new Packages.ccc.commons.MapRegistry());", "test"),
                 new Context(),
                 new PrintWriter(System.out));
 
@@ -190,7 +196,8 @@ public class ScriptRunnerTest
 
         // ACT
         runner.eval(
-            "print(new Packages.ccc.commons.MapRegistry());",
+            new Script(
+                "print(new Packages.ccc.commons.MapRegistry());", "test"),
             new Context(),
             out);
 
