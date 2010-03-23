@@ -19,9 +19,9 @@
     * You should have received a copy of the GNU General Public License
     * along with Content Control.  If not, see http://www.gnu.org/licenses/.
     *
-    * Revision      $Rev$
-    * Modified by   $Author$
-    * Modified on   $Date$
+    * Revision      $Rev: 1811 $
+    * Modified by   $Author: petteri $
+    * Modified on   $Date: 2009-09-09 11:25:35 +0100 (Wed, 09 Sep 2009) $
     *
     * Changes: See Subversion log.
     ========================================================================
@@ -32,12 +32,12 @@
   
     <jndi-name>${application.prefix}</jndi-name>
     <connection-url>${ccc.db.connection.url}</connection-url>
-    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+    <driver-class>${ccc.db.driver}</driver-class>
     <user-name>${application.db-username}</user-name>
     <password>${application.db-password}</password>
     
     <max-pool-size>100</max-pool-size>
-    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+    <exception-sorter-class-name>${ccc.db.exc-sorter}</exception-sorter-class-name>
     
   </local-tx-datasource>
 </datasources>

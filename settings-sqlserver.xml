@@ -22,10 +22,11 @@
                 
                 <!-- Database properties -->
                 <ccc.db.connection.url>jdbc:sqlserver://hestia:1260;DatabaseName=CCC</ccc.db.connection.url>
+                <ccc.db.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</ccc.db.driver>
                 <application.db-dialect>org.hibernate.dialect.SQLServerDialect</application.db-dialect>
-                <application.db-datasource>mssql-ds.xml</application.db-datasource>
                 <application.db-username>ci</application.db-username>
                 <application.db-password>17c8a25fb9bf</application.db-password>
+                <ccc.db.exc-sorter></ccc.db.exc-sorter>
 
             </properties>
         </profile>
