@@ -34,7 +34,6 @@ import java.util.UUID;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetUserAction;
-import ccc.contentcreator.remoting.ListUsersAction;
 import ccc.contentcreator.remoting.UpdateResourceRolesAction;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.GroupDto;
@@ -75,7 +74,7 @@ public class UpdateResourceRolesDialog
         AbstractEditDialog {
 
     private CheckBoxSelectionModel<ModelData> _groupSM;
-    final ListStore<ModelData> _groupStore = new ListStore<ModelData>();
+    private final ListStore<ModelData> _groupStore = new ListStore<ModelData>();
     private Grid<ModelData> _groupGrid;
     private final ContentPanel _groupGridPanel = new ContentPanel();
 
@@ -311,17 +310,7 @@ public class UpdateResourceRolesDialog
         final Button add = new Button(constants().add());
         add.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                new ListUsersAction(null, 1, 99, "","") { // FIXME
-
-                    @Override
-                    protected void execute(final Collection<UserDto> users, final int total) {
-                        new UserACLSelector(
-                            _userStore,
-                            users,
-                            getConstants()).show();
-                    }
-
-                }.execute();
+                new UserACLSelector(_userStore, getConstants()).show();
             }
         });
         toolBar.add(add);
