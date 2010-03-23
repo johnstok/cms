@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Alias;
-import ccc.domain.CCCException;
 import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -80,7 +79,7 @@ class CreateAliasCommand
                            final Date happenedOn) throws CccCheckedException {
         final Resource target = getRepository().find(Resource.class, _targetId);
         if (target == null) {
-            throw new CCCException("Target does not exists.");
+            throw new RuntimeException("Target does not exists.");
         }
         final Alias a = new Alias(_title.toString(), target);
 

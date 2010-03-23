@@ -26,7 +26,6 @@
  */
 package ccc.rendering;
 
-import ccc.domain.CCCException;
 import ccc.types.DBC;
 
 
@@ -38,7 +37,7 @@ import ccc.types.DBC;
  */
 public class AuthenticationRequiredException
     extends
-        CCCException {
+        RuntimeException {
 
     private final String _resource;
 

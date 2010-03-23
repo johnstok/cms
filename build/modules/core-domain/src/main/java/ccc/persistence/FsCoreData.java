@@ -36,7 +36,6 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.CCCException;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
 import ccc.serialization.IO;
@@ -107,11 +106,11 @@ class FsCoreData
 
         } catch (final FileNotFoundException e) {
             LOG.error("Failed to open file "+f.getAbsolutePath(), e);
-            throw new CCCException(e);
+            throw new RuntimeException(e);
 
         } catch (final Exception e) {
             attemptDelete(f);
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
 
         return d;
@@ -136,11 +135,11 @@ class FsCoreData
 
         } catch (final FileNotFoundException e) {
             LOG.error("Failed to open file "+f.getAbsolutePath(), e);
-            throw new CCCException(e);
+            throw new RuntimeException(e);
 
         } catch (final Exception e) {
             LOG.error("Error processing file "+f.getAbsolutePath(), e);
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 

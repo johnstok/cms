@@ -67,7 +67,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-import ccc.domain.CCCException;
 import ccc.types.DBC;
 
 /**
@@ -199,11 +198,11 @@ public final class XHTML {
             parser.parse(page);
             return errorHandler.errors().size() == 0;
         } catch (final ParserConfigurationException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final SAXException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final IOException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -227,7 +226,7 @@ public final class XHTML {
             return (String) result;
 
         } catch (final XPathExpressionException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -251,7 +250,7 @@ public final class XHTML {
             return (NodeList) result;
 
         } catch (final XPathExpressionException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -263,11 +262,11 @@ public final class XHTML {
             return builder.parse(page);
 
         } catch (final ParserConfigurationException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final SAXException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final IOException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -298,11 +297,11 @@ public final class XHTML {
                 out.println(error);
             }
         } catch (final ParserConfigurationException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final SAXException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         } catch (final IOException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 

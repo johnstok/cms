@@ -111,15 +111,15 @@ public final class Folder
             }
         }
 
-        int nextIndex = maxIndex(_entries)+1;
+        final int nextIndex = maxIndex(_entries)+1;
         _entries.add(resource);
         resource.setParent(this, Integer.valueOf(nextIndex));
     }
 
-    private int maxIndex(Set<Resource> entries) {
+    private int maxIndex(final Set<Resource> entries) {
         int nextIndex = 0;
-        for (Resource r : entries) {
-            Integer index = r.getIndex();
+        for (final Resource r : entries) {
+            final Integer index = r.getIndex();
             if (null==index) { continue; }
             if (index.intValue()>nextIndex) {
                 nextIndex = index.intValue();
@@ -204,7 +204,7 @@ public final class Folder
         for (final ResourceName name : path.elements()) {
 
             if (ResourceType.FOLDER != currentPosition.getType()) {
-                throw new CCCException(
+                throw new RuntimeException(
                     currentPosition.getName()
                         +" in path "+path
                         +" is not a folder.");
@@ -230,7 +230,8 @@ public final class Folder
                 return entry;
             }
         }
-        throw new CCCException("No entry '"+name+"' in folder '"+getName()+"'");
+        throw new RuntimeException(
+            "No entry '"+name+"' in folder '"+getName()+"'");
     }
 
     /**
@@ -321,7 +322,7 @@ public final class Folder
                 return r.as(Page.class);
             }
         }
-        throw new CCCException("No pages in this folder.");
+        throw new RuntimeException("No pages in this folder.");
     }
 
     /**
@@ -392,7 +393,7 @@ public final class Folder
                 return r.as(Alias.class);
             }
         }
-        throw new CCCException("No aliases in this folder.");
+        throw new RuntimeException("No aliases in this folder.");
     }
 
     /**

@@ -84,6 +84,6 @@ public class PageWorkingCopy
                 return p;
             }
         }
-        throw new CCCException("No paragraph with name: "+name);
+        throw new RuntimeException("No paragraph with name: "+name);
     }
 }

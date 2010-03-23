@@ -334,7 +334,7 @@ public class User extends Entity {
             return hash;
 
         } catch (final NoSuchAlgorithmException e) {
-            throw new CCCException("Failed to compute password digest.", e);
+            throw new RuntimeException("Failed to compute password digest.", e);
         }
     }
 

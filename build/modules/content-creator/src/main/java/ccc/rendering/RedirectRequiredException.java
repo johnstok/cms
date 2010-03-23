@@ -26,7 +26,6 @@
  */
 package ccc.rendering;
 
-import ccc.domain.CCCException;
 import ccc.types.DBC;
 
 
@@ -37,7 +36,7 @@ import ccc.types.DBC;
  */
 public class RedirectRequiredException
     extends
-        CCCException {
+        RuntimeException {
 
     private final String _target;
     private final boolean _isPermanent;

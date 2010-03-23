@@ -50,7 +50,6 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
-import ccc.domain.CCCException;
 import ccc.migration.MigrationException;
 import ccc.migration.UserNamePasswordHandler;
 
@@ -104,7 +103,7 @@ class CccApp {
                     new UserNamePasswordHandler(username, password));
             ctx.login();
         } catch (final LoginException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
         LOG.info("Logged in.");
     }
@@ -117,7 +116,7 @@ class CccApp {
         try {
             ctx.logout();
         } catch (final LoginException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
         LOG.info("Logged out.");
     }
@@ -157,7 +156,7 @@ class CccApp {
                 LOG.debug(e.getKey()+"\t\t=\t"+e.getValue());
             }
         } catch (final IOException e) {
-            throw new CCCException(e);
+            throw new RuntimeException(e);
         }
     }
 

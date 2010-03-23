@@ -38,7 +38,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import ccc.domain.CCCException;
 import ccc.types.DBC;
 
 
@@ -72,7 +71,8 @@ public class MultipartForm {
             if (item.isFormField()) {
                 final String fn = item.getFieldName();
                 if (_formItems.containsKey(fn)) {
-                    throw new CCCException("Duplicate field name on form: "+fn);
+                    throw new RuntimeException(
+                        "Duplicate field name on form: "+fn);
                 }
                 _formItems.put(fn, item);
             } else {
@@ -106,7 +106,7 @@ public class MultipartForm {
         final boolean isMultipart =
             ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
-            throw new CCCException("Not a multipart");
+            throw new RuntimeException("Not a multipart");
         }
 
         // Create a factory for disk-based file items
@@ -124,7 +124,7 @@ public class MultipartForm {
         try {
             return upload.parseRequest(request);
         } catch (final FileUploadException e) {
-            throw new CCCException("Failed to parse multipart request.", e);
+            throw new RuntimeException("Failed to parse multipart request.", e);
         }
     }
 
