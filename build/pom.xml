@@ -43,6 +43,7 @@
         <lib.version.commons-fileupload>1.2.1</lib.version.commons-fileupload>
         <lib.version.gwt-math>2.1</lib.version.gwt-math>
         <lib.version.resteasy>1.1.GA</lib.version.resteasy>
+        <lib.version.javax-txn>1.1</lib.version.javax-txn>
         
         <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>

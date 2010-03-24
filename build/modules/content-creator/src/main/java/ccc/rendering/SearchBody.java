@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,14 +37,10 @@ import ccc.commons.Context;
 import ccc.commons.Exceptions;
 import ccc.commons.Script;
 import ccc.commons.TextProcessor;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
 import ccc.rest.ServiceLocator;
 import ccc.types.DBC;
-import ccc.types.MimeType;
 
 
 /**
@@ -125,21 +120,21 @@ public class SearchBody
     }
 
 
-    /** BUILT_IN_SEARCH_TEMPLATE : Template. */
-    public static final Template BUILT_IN_SEARCH_TEMPLATE =
-        new Template(
-            "BUILT_IN_SEARCH_TEMPLATE",
-            "BUILT_IN_SEARCH_TEMPLATE",
-            "<form name=\"search\" action=\"$resource.name()\">"
-            +"<input name=\"q\" autocomplete=\"off\"/>"
-            +"<input type=\"submit\" value=\"Search\"  name=\"go\"/>"
-            +"</form>Shown Hits: $!result.hits().size() - "
-            +"Total: $!result.totalResults()",
-            "<fields/>",
-            MimeType.HTML,
-            new RevisionMetadata(
-                new Date(),
-                User.SYSTEM_USER,
-                true,
-                "Created."));
+//    /** BUILT_IN_SEARCH_TEMPLATE : Template. */
+//    public static final Template BUILT_IN_SEARCH_TEMPLATE =
+//        new Template(
+//            "BUILT_IN_SEARCH_TEMPLATE",
+//            "BUILT_IN_SEARCH_TEMPLATE",
+//            "<form name=\"search\" action=\"$resource.name()\">"
+//            +"<input name=\"q\" autocomplete=\"off\"/>"
+//            +"<input type=\"submit\" value=\"Search\"  name=\"go\"/>"
+//            +"</form>Shown Hits: $!result.hits().size() - "
+//            +"Total: $!result.totalResults()",
+//            "<fields/>",
+//            MimeType.HTML,
+//            new RevisionMetadata(
+//                new Date(),
+//                User.SYSTEM_USER,
+//                true,
+//                "Created."));
 }

@@ -10,39 +10,14 @@
     <artifactId>core-domain</artifactId>
     <name>core-domain</name>
 
-    <build>
-        <plugins>
-              <plugin>
-                  <groupId>org.codehaus.mojo</groupId>
-                  <artifactId>buildnumber-maven-plugin</artifactId>
-                  <executions>
-                      <execution>
-                          <phase>validate</phase>
-                          <goals>
-                              <goal>create</goal>
-                          </goals>
-                      </execution>
-                  </executions>
-                  <configuration>
-                      <doCheck>false</doCheck>
-                      <doUpdate>false</doUpdate>
-                  </configuration>
-              </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>api-rest</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>domain-support</artifactId>
             <version>${project.version}</version>
         </dependency>
         
+        <!-- JEE dependencies -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
@@ -53,12 +28,10 @@
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
             <version>${lib.version.hibernate-ejb3}</version>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${lib.version.hibernate}</version>
-        </dependency>
+        
+        <!-- Vendor specific dependencies -->
         <dependency>
             <groupId>pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
@@ -74,16 +47,6 @@
             <artifactId>tm-extractors</artifactId>
             <version>${lib.version.tmextractors}</version>
        </dependency>
-        <dependency>
-        	<groupId>rhino</groupId>
-        	<artifactId>js</artifactId>
-        	<version>${lib.version.rhino}</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.ccil.cowan.tagsoup</groupId>
-        	<artifactId>tagsoup</artifactId>
-        	<version>${lib.version.tagsoup}</version>
-        </dependency>
     </dependencies>
     
 </project>

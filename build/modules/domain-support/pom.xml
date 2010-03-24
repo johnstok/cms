@@ -9,12 +9,49 @@
     
     <artifactId>domain-support</artifactId>
     <name>domain-support</name>
+    
+    <build>
+        <plugins>
+              <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>buildnumber-maven-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <phase>validate</phase>
+                          <goals>
+                              <goal>create</goal>
+                          </goals>
+                      </execution>
+                  </executions>
+                  <configuration>
+                      <doCheck>false</doCheck>
+                      <doUpdate>false</doUpdate>
+                  </configuration>
+              </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>simple-types</artifactId>
+            <artifactId>api-rest</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+            <version>${lib.version.rhino}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ccil.cowan.tagsoup</groupId>
+            <artifactId>tagsoup</artifactId>
+            <version>${lib.version.tagsoup}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${lib.version.json}</version>
         </dependency>
     </dependencies>
     

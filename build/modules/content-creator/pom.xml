@@ -57,12 +57,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>client-jaxrs</artifactId>
+            <artifactId>domain-support</artifactId>
             <version>${project.version}</version>
         </dependency>
         
@@ -95,12 +90,6 @@
         <!-- JEE Libraries -->
         <dependency>
             <groupId>jboss</groupId>
-            <artifactId>jbossweb-service</artifactId>
-            <version>${lib.version.jboss-legacy}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>jboss</groupId>
             <artifactId>jboss-ejb3x</artifactId>
             <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
@@ -109,6 +98,20 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>${lib.version.servlet-api}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>${lib.version.javax-txn}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- Vendor specific libraries -->
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jbossweb-service</artifactId>
+            <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

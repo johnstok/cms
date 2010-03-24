@@ -26,15 +26,9 @@
  */
 package ccc.remoting;
 
-import java.util.Date;
-
 import junit.framework.TestCase;
 import ccc.commons.Testing;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
-import ccc.persistence.DataRepository;
 import ccc.rest.SearchEngine;
-import ccc.types.Username;
 
 
 /**
@@ -464,9 +458,5 @@ public class DefaultRendererTest
 
 
 //    private DefaultRenderer _renderer;
-    private final DataRepository _dm = Testing.dummy(DataRepository.class);
     private final SearchEngine _se = Testing.dummy(SearchEngine.class);
-    private final User _user = new User(new Username("fooo"), "password");
-    private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
 }

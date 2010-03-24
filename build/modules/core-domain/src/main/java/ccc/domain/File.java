@@ -356,7 +356,7 @@ public class File
             new TextFileDelta(
                 getId(),
                 (!isText())
-                    ? null : ReadToStringAction.read(_dm, this),
+                    ? null : read(_dm, this),
                 getMimeType(),
                 currentRevision().isMajorChange(),
                 currentRevision().getComment());
@@ -386,5 +386,43 @@ public class File
      */
     public FileDelta deltaFile() {
         return getOrCreateWorkingCopy();
+    }
+
+
+    /* ====================================================================
+     * Helper methods.
+     * ================================================================== */
+
+    /**
+     * Helper method that reads a file's contents into a string.
+     *
+     * @param dm The file repository.
+     * @param file The file to read.
+     *
+     * @return The file's contents as a string.
+     */
+    public static String read(final DataRepository dm, final File file) {
+        final StringBuilder sb = new StringBuilder();
+        dm.retrieve(
+            file.getData(), new ReadToStringAction(sb, file.getCharset()));
+        return sb.toString();
+    }
+
+    /**
+     * Helper method that reads a file's contents into a string.
+     * TODO: Move to the File class?
+     *
+     * @param dm The file repository.
+     * @param file The file to read.
+     *
+     * @return The file's contents as a string.
+     */
+    public static String read(final DataRepository dm,
+                              final FileDto file) {
+        final StringBuilder sb = new StringBuilder();
+        dm.retrieve(
+            new Data(file.getData()),
+            new ReadToStringAction(sb, file.getCharset()));
+        return sb.toString();
     }
 }
