@@ -159,14 +159,20 @@ public class UsersEJB
         final String username,
         final String email,
         final String groups,
+        final String metadataKey,
+        final String metadataValue,
         final String sort,
         final SortOrder order,
         final int pageNo,
         final int pageSize) {
         final UserRepository userrepo = getRepoFactory().createUserRepo();
-        final UserCriteria uc = new UserCriteria(username, email, groups);
-        return
-            new DtoCollection<UserDto>(userrepo.countUsers(uc), User.map(
+        final UserCriteria uc = new UserCriteria(
+            username,
+            email,
+            groups,
+            metadataKey,
+            metadataValue);
+        return new DtoCollection<UserDto>(userrepo.countUsers(uc), User.map(
                 userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
     }
 

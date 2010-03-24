@@ -108,7 +108,7 @@ public class UserManagerImplTest extends TestCase {
 
 
         // ACT
-        final UserCriteria uc = new UserCriteria(null, null, null);
+        final UserCriteria uc = new UserCriteria();
         _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
@@ -137,7 +137,8 @@ public class UserManagerImplTest extends TestCase {
         replayAll();
 
         // ACT
-        final UserCriteria uc = new UserCriteria(null, null, "ADMINISTRATOR");
+        final UserCriteria uc = new UserCriteria();
+        uc.setGroups("ADMINISTRATOR");
         _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
@@ -165,7 +166,8 @@ public class UserManagerImplTest extends TestCase {
         replayAll();
 
         // ACT
-        final UserCriteria uc = new UserCriteria("testname", null, null);
+        final UserCriteria uc = new UserCriteria();
+        uc.setUsername("testname");
         _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT
@@ -193,8 +195,8 @@ public class UserManagerImplTest extends TestCase {
         replayAll();
 
         // ACT
-        final UserCriteria uc =
-            new UserCriteria(null, "test@civicuk.com", null);
+        final UserCriteria uc = new UserCriteria();
+        uc.setEmail("test@civicuk.com");
         _um.listUsers(uc, null, null, 1, 1);
 
         // ASSERT

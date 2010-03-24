@@ -144,6 +144,16 @@ class UserRepositoryImpl implements UserRepository {
                 + "where u=u2) ");
             params.add(uc.getGroups());
         }
+        if (null!=uc.getMetadataKey() &&  null==uc.getMetadataValue()) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" u._metadata[?] is not null");
+            params.add(uc.getMetadataKey());
+        } else if (null!=uc.getMetadataKey() && null!=uc.getMetadataValue()) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" u._metadata[?] = ? ");
+            params.add(uc.getMetadataKey());
+            params.add(uc.getMetadataValue());
+        }
     }
 
 

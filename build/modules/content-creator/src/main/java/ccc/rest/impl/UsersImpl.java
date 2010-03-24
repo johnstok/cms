@@ -132,13 +132,22 @@ public class UsersImpl
     public DtoCollection<UserDto> listUsers(final String username,
                                             final String email,
                                             final String groups,
+                                            final String metadataKey,
+                                            final String metadataValue,
                                             final String sort,
                                             final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
 
-        return getUsers().listUsers(
-            username, email, groups, sort, order, pageNo, pageSize);
+        return getUsers().listUsers(username,
+            email,
+            groups,
+            metadataKey,
+            metadataValue,
+            sort,
+            order,
+            pageNo,
+            pageSize);
     }
 
 }

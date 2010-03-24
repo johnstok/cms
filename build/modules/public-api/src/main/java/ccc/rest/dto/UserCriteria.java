@@ -28,10 +28,6 @@ package ccc.rest.dto;
 
 import java.io.Serializable;
 
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable;
-
 
 /**
  * TODO: move to ccc.persistence
@@ -39,11 +35,21 @@ import ccc.serialization.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserCriteria implements Jsonable, Serializable {
+public final class UserCriteria implements Serializable {
 
-    private String _username;
-    private String _groups;
-    private String _email;
+    private String _username = null;
+    private String _groups = null;
+    private String _email = null;
+    private String _metadataKey = null;
+    private String _metadataValue = null;
+
+    /**
+     * Constructor.
+     *
+     */
+    public UserCriteria() {
+        super();
+    }
 
     /**
      * Constructor.
@@ -51,21 +57,19 @@ public final class UserCriteria implements Jsonable, Serializable {
      * @param username Username criteria.
      * @param email Email criteria.
      * @param groups Groups criteria.
+     * @param metadataKey Metadata key criteria.
+     * @param metadataValue Metadata value criteria.
      */
     public UserCriteria(final String username,
                         final String email,
-                        final String groups) {
+                        final String groups,
+                        final String metadataKey,
+                        final String metadataValue) {
         _username = username;
         _email = email;
         _groups = groups;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.USERNAME, _username);
-        json.set(JsonKeys.EMAIL, _email);
-        json.set(JsonKeys.GROUPS, _groups);
+        _metadataKey = metadataKey;
+        _metadataValue = metadataValue;
     }
 
     /**
@@ -94,8 +98,81 @@ public final class UserCriteria implements Jsonable, Serializable {
      * @return Returns the email.
      */
     public String getEmail() {
-
         return _email;
     }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the metadata key.
+     */
+    public String getMetadataKey() {
+        return _metadataKey;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the metadata value.
+     */
+    public String getMetadataValue() {
+        return _metadataValue;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param username The username to set.
+     */
+    public final void setUsername(final String username) {
+
+        _username = username;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param groups The groups to set.
+     */
+    public final void setGroups(final String groups) {
+
+        _groups = groups;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param email The email to set.
+     */
+    public final void setEmail(final String email) {
+
+        _email = email;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param metadataKey The metadataKey to set.
+     */
+    public final void setMetadataKey(final String metadataKey) {
+
+        _metadataKey = metadataKey;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param metadataValue The metadataValue to set.
+     */
+    public final void setMetadataValue(final String metadataValue) {
+
+        _metadataValue = metadataValue;
+    }
+
 
 }
