@@ -18,8 +18,12 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <!-- TODO: Should only depend on api-rest -->
-            <artifactId>core-domain</artifactId>
+            <artifactId>domain-support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>api-rest</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -37,6 +37,11 @@
             <artifactId>api-rest</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>domain-support</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>javax.mail</groupId>
