@@ -28,9 +28,13 @@ package ccc.contentcreator.remoting;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.events.UserCreated;
 import ccc.rest.dto.UserDto;
 
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -38,7 +42,7 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CreateUserAction
+public class CreateUserAction
     extends
         RemotingAction {
 
@@ -66,5 +70,15 @@ public abstract class CreateUserAction
         final GwtJson json = new GwtJson();
         _userDelta.toJson(json);
         return json.toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final UserDto newUser =
+            new UserDto(
+                new GwtJson(JSONParser.parse(response.getText()).isObject()));
+        final GwtEvent<?> event = new UserCreated(newUser);
+        fireEvent(event);
     }
 }

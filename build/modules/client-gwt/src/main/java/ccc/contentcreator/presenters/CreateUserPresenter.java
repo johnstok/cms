@@ -26,52 +26,69 @@
  */
 package ccc.contentcreator.presenters;
 
-import static ccc.contentcreator.validation.Validations.*;
-import ccc.contentcreator.core.EditController;
+import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.ValidationResult;
+import ccc.contentcreator.events.UserCreated;
+import ccc.contentcreator.events.UserCreated.UserCreatedHandler;
 import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.remoting.CreateUserAction;
-import ccc.contentcreator.remoting.UniqueUsernameAction;
-import ccc.contentcreator.validation.Validate;
-import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.views.CreateUser;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
-import com.google.gwt.http.client.Response;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * A controller for user creation.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateUserPresenter implements EditController {
+public class CreateUserPresenter implements Editable, UserCreatedHandler {
+
+    private final CreateUser _view;
+    private HandlerRegistration _hReg;
 
     private final UIMessages _messages;
-    private final CreateUser _dialog;
     private final Globals   _globals;
 
     /**
      * Constructor.
      *
-     * @param dialog The create user dialog this controller will manage.
+     * @param view The create user dialog this controller will manage.
      * @param globals The globals factory for this controller.
      */
-    public CreateUserPresenter(final CreateUser dialog,
+    public CreateUserPresenter(final CreateUser view,
                                 final Globals globals) {
-        _dialog      = dialog;
+        _view = view;
         _globals     = globals;
         _messages    = _globals.uiMessages();
+        render(ContentCreator.EVENT_BUS.addHandler(UserCreated.TYPE, this));
     }
 
+    /**
+     * Render this presenter.
+     *
+     * @param hReg The registration of the success event handler.
+     */
+    protected final void render(final HandlerRegistration hReg) {
+        _hReg = hReg;
+        _view.show(this);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final void cancel() {
+        dispose();
+    }
 
     /**
-     * Accessor.
-     *
-     * @return Returns the dialog.
+     * Dispose of this presenter.
      */
-    CreateUser getDialog() {
-        return _dialog;
+    protected final void dispose() {
+        _hReg.removeHandler();
+        _view.hide();
     }
 
 
@@ -84,74 +101,51 @@ public class CreateUserPresenter implements EditController {
         return _messages;
     }
 
-
     /** {@inheritDoc} */
     @Override
-    public void submit() {
-        Validate.callTo(createUser())
-            .check(notEmpty(_dialog.getUsername()))
-            .check(notEmpty(_dialog.getEmail()))
-            .check(notEmpty(_dialog.getPassword1()))
-            .check(notEmpty(_dialog.getPassword2()))
-            .stopIfInError()
-            .check(minLength(
-                _dialog.getUsername(), Globals.MIN_USER_NAME_LENGTH))
-            .check(notValidUserName(_dialog.getUsername()))
-            .check(notValidEmail(_dialog.getEmail()))
-            .check(matchingPasswords(
-                _dialog.getPassword1().getValue(),
-                _dialog.getPassword2().getValue()))
-            .check(passwordStrength(_dialog.getPassword1().getValue()))
-            .check(uniqueUsername(
-                new Username(_dialog.getUsername().getValue())))
-            .callMethodOr(reportErrors());
+    public void save() {
+        if (valid()) {
+            final UserDto user = new UserDto();
+            unbind(user);
+            new CreateUserAction(user).execute();
+        }
     }
 
 
     /**
-     * Factory method for username validators.
+     * Check that the data in the view is valid.
      *
-     * @param username The username to check.
-     * @return A new instance of the username validator.
+     * @return True if the data is valid; false otherwise.
      */
-    private Validator uniqueUsername(final Username username) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                new UniqueUsernameAction(username){
-                    @Override
-                    protected void execute(final boolean usernameExists) {
-                        if (usernameExists) {
-                            validate.addMessage(
-                                getMessages().userWithUsernameAlreadyExists(
-                                    username)
-                            );
-                        }
-                        validate.next();
-                    }
-                }.execute();
-            }
-        };
+    protected final boolean valid() {
+        final ValidationResult vr = _view.getValidationResult();
+        if (!vr.isValid()) {
+            _view.alert(vr.getErrorText());
+        }
+        return vr.isValid();
     }
 
 
-    private Runnable createUser() {
-        return new Runnable() {
-            public void run() {
-
-                final UserDto d = new UserDto();
-                d.setEmail(getDialog().getEmail().getValue());
-                d.setUsername(
-                    new Username(getDialog().getUsername().getValue()));
-                d.setName(getDialog().getName().getValue());
-                d.setPassword(getDialog().getPassword1().getValue());
-
-                new CreateUserAction(d){
-                    @Override protected void onOK(final Response response) {
-                        // TODO: Refresh the main window.
-                        getDialog().close();
-                    }
-                }.execute();
-            }
-        };
+    /**
+     * Extract data from the view into a DTO.
+     *
+     * @param dto The DTO that will receive the view's data.
+     */
+    protected final void unbind(final UserDto dto) {
+        dto.setEmail(_view.getEmail());
+        dto.setUsername(new Username(_view.getUsername()));
+        dto.setName(_view.getName());
+        dto.setPassword(_view.getPassword1());
+        dto.setRoles(_view.getGroups());
     }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onCreate(final UserCreated event) {
+        dispose();
+    }
+
+
 }

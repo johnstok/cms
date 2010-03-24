@@ -29,16 +29,15 @@ package ccc.contentcreator.views.gxt;
 
 import static ccc.contentcreator.validation.Validations.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateUserAction;
 import ccc.contentcreator.validation.Validate;
+import ccc.contentcreator.widgets.GroupListField;
 import ccc.contentcreator.widgets.UserTable;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
@@ -46,7 +45,6 @@ import ccc.rest.dto.UserDto;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;
@@ -62,15 +60,12 @@ public class EditUserDialog extends AbstractEditDialog {
     private final TextField<String> _username = new TextField<String>();
     private final TextField<String> _name = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
-    private final ListField<BaseModelData> _groups =
-        new ListField<BaseModelData>();
+    private final ListField<BaseModelData> _groups;
+
 
     private final UUID          _userId;
     private final UserDto _userDTO;
     private final UserTable   _userTable;
-
-    /** ROLE_HEIGHT : int. */
-    private static final int ROLE_HEIGHT = 200;
 
     /**
      * Constructor.
@@ -78,6 +73,7 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param userId The UUID of the selected user.
      * @param userDTO The userDTO of the selected user.
      * @param userTable The user table.
+     * @param allGroups The list of all groups.
      */
     public EditUserDialog(final UUID userId,
                           final UserDto userDTO,
@@ -107,23 +103,8 @@ public class EditUserDialog extends AbstractEditDialog {
         _email.setValue(_userDTO.getEmail());
         addField(_email);
 
-        final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
-        final List<BaseModelData> selected = new ArrayList<BaseModelData>();
-        for (final GroupDto g : allGroups) {
-            final BaseModelData d = new BaseModelData();
-            d.set("name", g.getName());
-            d.set("id", g.getId());
-            gData.add(d);
-            if (_userDTO.getRoles().contains((g.getId()))) { selected.add(d); }
-        }
-
-        _groups.setFieldLabel(getUiConstants().roles());
-        _groups.setHeight(ROLE_HEIGHT);
-        _groups.setStore(gData);
-        _groups.setSelection(selected);
-        _groups.setDisplayField("name");
+        _groups = new GroupListField(allGroups, _userDTO.getRoles());
         addField(_groups);
-
 
         setPanelId("UserPanel");
     }
