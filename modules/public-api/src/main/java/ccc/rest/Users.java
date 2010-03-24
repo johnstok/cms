@@ -81,6 +81,8 @@ public interface Users {
      * @param username The username criteria.
      * @param email The email criteria.
      * @param groups The groups criteria.
+     * @param metadataKey The metadata key criteria.
+     * @param metadataValue The metadata value criteria.
      * @param sort The column to sort.
      * @param order The sort order (ASC/DESC).
      * @param pageNo The page to display.
@@ -92,6 +94,8 @@ public interface Users {
         @QueryParam("username") String username,
         @QueryParam("email") String email,
         @QueryParam("groups") String groups,
+        @QueryParam("metadataKey") String metadataKey,
+        @QueryParam("metadataValue") String metadataValue,
         @QueryParam("sort") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -180,4 +184,5 @@ public interface Users {
     @GET @Path("/metadata/{key}")
     Collection<String> listUserMetadataValuesWithKey(
         @PathParam("key") String key);
+
 }

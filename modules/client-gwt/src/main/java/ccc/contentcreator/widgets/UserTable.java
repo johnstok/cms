@@ -259,21 +259,18 @@ public class UserTable extends TablePanel {
         if (UserTree.ALL.equals(selectedItem.get("id"))) {
             updatePager(null);
         } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
-            final UserCriteria uc =
-                new UserCriteria(null, null, "CONTENT_CREATOR");
+            final UserCriteria uc = new UserCriteria();
+            uc.setGroups("CONTENT_CREATOR");
             updatePager(uc);
         } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
-            final UserCriteria uc =
-                new UserCriteria(null, null, "SITE_BUILDER");
+            final UserCriteria uc = new UserCriteria();
+            uc.setGroups("SITE_BUILDER");
             updatePager(uc);
         } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
-            final UserCriteria uc =
-                new UserCriteria(null, null, "ADMINISTRATOR");
+            final UserCriteria uc = new UserCriteria();
+            uc.setGroups("ADMINISTRATOR");
             updatePager(uc);
-        } else {
-           //FIXME updatePager(new ArrayList<UserDto>());
         }
-
     }
 
     /**
@@ -299,12 +296,12 @@ public class UserTable extends TablePanel {
             }
             _detailsStore.removeAll();
             if (_radioGroup.getValue() == _usernameRadio) {
-                final UserCriteria uc = new UserCriteria(
-                    _searchString.getValue().replace('*', '%'), null, null);
+                final UserCriteria uc = new UserCriteria();
+                uc.setUsername(_searchString.getValue().replace('*', '%'));
                 updatePager(uc);
             } else if (_radioGroup.getValue() == _emailRadio) {
-                final UserCriteria uc = new UserCriteria(null,
-                    _searchString.getValue().replace('*', '%'), null);
+                final UserCriteria uc = new UserCriteria();
+                uc.setEmail(_searchString.getValue().replace('*', '%'));
                 updatePager(uc);
             }
         }
