@@ -29,7 +29,7 @@ package ccc.rendering.velocity;
 import static org.easymock.EasyMock.*;
 
 import java.io.StringWriter;
-import java.util.Date;
+import java.util.Collections;
 
 import junit.framework.TestCase;
 
@@ -40,9 +40,6 @@ import ccc.commons.Context;
 import ccc.commons.Script;
 import ccc.commons.Testing;
 import ccc.commons.TextProcessor;
-import ccc.domain.Page;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
@@ -57,9 +54,10 @@ import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
+import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.PageDto;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Paragraph;
-import ccc.types.ResourceName;
 
 
 /**
@@ -151,14 +149,17 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderResource() {
 
         // ARRANGE
-        final Page foo =
-            new Page(
-                new ResourceName("foo"),
+        final PageDto foo =
+            new PageDto(
+                null,
+                new PageDelta(
+                    Collections.singleton(Paragraph.fromText("bar", "baz"))),
                 "foo",
                 null,
-                _rm,
-                Paragraph.fromText("bar", "baz"));
-        final String template = "Hello $resource.getId()";
+                "foo",
+                "",
+                false);
+        final String template = "Hello $resource.getName()";
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
@@ -167,7 +168,7 @@ public class VelocityProcessorTest extends TestCase {
         final String html = _vp.render(new Script(template, "test"), ctxt);
 
         // ASSERT
-        assertEquals("Hello "+foo.getId(), html);
+        assertEquals("Hello "+foo.getName(), html);
     }
 
     /**
@@ -176,7 +177,16 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderVelocityError() {
 
         // ARRANGE
-        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
+        final PageDto foo =
+            new PageDto(
+                null,
+                new PageDelta(
+                    Collections.singleton(Paragraph.fromText("bar", "baz"))),
+                "foo",
+                null,
+                "foo",
+                "",
+                false);
         final String template = "#macro failthis #end";
         final String expectedMessage = "A macro declaration requires at least "
             + "a name argumenttest[line 1, column 1]";
@@ -350,8 +360,6 @@ public class VelocityProcessorTest extends TestCase {
     }
 
     private TextProcessor _vp;
-    private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
     private ResourcesExt _reader;
 
 

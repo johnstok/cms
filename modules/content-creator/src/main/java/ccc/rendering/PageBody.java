@@ -30,17 +30,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.Date;
 
 import ccc.commons.Context;
-import ccc.commons.Resources;
 import ccc.commons.Script;
 import ccc.commons.TextProcessor;
-import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
 import ccc.types.DBC;
-import ccc.types.MimeType;
 
 
 /**
@@ -79,20 +73,20 @@ public class PageBody
     }
 
 
-    /** BUILT_IN_PAGE_TEMPLATE : Template. */
-    public static final Template BUILT_IN_PAGE_TEMPLATE =
-        new Template(
-            "BUILT_IN_PAGE_TEMPLATE",
-            "BUILT_IN_PAGE_TEMPLATE",
-            Resources.readIntoString(
-                PageBody.class.getResource(
-                    "/ccc/content/server/default-page-template.txt"),
-                Charset.forName("UTF-8")),
-            "<fields/>",
-            MimeType.HTML,
-            new RevisionMetadata(
-                new Date(),
-                User.SYSTEM_USER,
-                true,
-                "Created."));
+//    /** BUILT_IN_PAGE_TEMPLATE : Template. */
+//    public static final Template BUILT_IN_PAGE_TEMPLATE =
+//        new Template(
+//            "BUILT_IN_PAGE_TEMPLATE",
+//            "BUILT_IN_PAGE_TEMPLATE",
+//            Resources.readIntoString(
+//                PageBody.class.getResource(
+//                    "/ccc/content/server/default-page-template.txt"),
+//                Charset.forName("UTF-8")),
+//            "<fields/>",
+//            MimeType.HTML,
+//            new RevisionMetadata(
+//                new Date(),
+//                User.SYSTEM_USER,
+//                true,
+//                "Created."));
 }

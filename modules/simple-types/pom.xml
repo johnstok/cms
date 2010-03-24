@@ -10,12 +10,6 @@
     <artifactId>simple-types</artifactId>
     <name>simple-types</name>
     
-    <dependencies>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>${lib.version.json}</version>
-        </dependency>
-    </dependencies>
+    <dependencies />
 
 </project>

@@ -45,17 +45,24 @@ public final class CCCProperties {
     private CCCProperties() { super(); }
 
     static {
-        try {
             final InputStream in =
                 CCCProperties.class.getResourceAsStream("/build.properties");
-            try {
-                PROPS.load(in);
-            } finally {
-                in.close();
+
+            if (null==in) {
+                LOG.error("Missing build.properties file.");
+
+            } else {
+                try {
+                    try {
+                        PROPS.load(in);
+                    } finally {
+                        in.close();
+                    }
+                } catch (final IOException e) {
+                    LOG.error("Error loading ccc properties.", e);
+                }
             }
-        } catch (final IOException e) {
-            LOG.error("Error loading ccc properties.", e);
-        }
+
     }
 
     /**
@@ -64,7 +71,7 @@ public final class CCCProperties {
      * @return The build number as a string.
      */
     public static String buildNumber() {
-        return PROPS.getProperty("buildNumber");
+        return PROPS.getProperty("buildNumber", "-1");
     }
 
     /**
@@ -73,7 +80,7 @@ public final class CCCProperties {
      * @return The version, as a string.
      */
     public static String version() {
-        return PROPS.getProperty("ccc-version");
+        return PROPS.getProperty("ccc-version", "unknown");
     }
 
     /**
@@ -82,6 +89,6 @@ public final class CCCProperties {
      * @return The timestamp, as a string.
      */
     public static String timestamp() {
-        return PROPS.getProperty("timestamp");
+        return PROPS.getProperty("timestamp", "unknown");
     }
 }
