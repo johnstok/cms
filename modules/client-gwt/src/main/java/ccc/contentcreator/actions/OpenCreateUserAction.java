@@ -26,8 +26,13 @@
  */
 package ccc.contentcreator.actions;
 
+import java.util.Collection;
+
 import ccc.contentcreator.core.Action;
+import ccc.contentcreator.presenters.CreateUserPresenter;
+import ccc.contentcreator.remoting.ListGroups;
 import ccc.contentcreator.views.gxt.CreateUserDialog;
+import ccc.rest.dto.GroupDto;
 
 
 /**
@@ -40,5 +45,12 @@ public final class OpenCreateUserAction
         Action {
 
     /** {@inheritDoc} */
-    @Override public void execute() { new CreateUserDialog().show(); }
+    @Override public void execute() {
+        new ListGroups() {
+            @Override
+            protected void execute(final Collection<GroupDto> g) {
+                new CreateUserPresenter(
+                    new CreateUserDialog(g), GLOBALS);
+            }}.execute();
+        }
 }

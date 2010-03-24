@@ -27,9 +27,12 @@
 
 package ccc.contentcreator.views;
 
-import ccc.contentcreator.core.Closeable;
+import java.util.Set;
+import java.util.UUID;
 
-import com.extjs.gxt.ui.client.widget.form.TextField;
+import ccc.contentcreator.core.Editable;
+import ccc.contentcreator.core.Validatable;
+import ccc.contentcreator.core.View;
 
 
 /**
@@ -37,41 +40,56 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  *
  * @author Civic Computing Ltd.
  */
-public interface CreateUser extends Closeable {
+public interface CreateUser extends View<Editable>, Validatable {
 
     /**
      * Accessor.
      *
      * @return Returns the username.
      */
-    TextField<String> getUsername();
+    String getUsername();
 
     /**
      * Accessor.
      *
      * @return Returns the full name.
      */
-    TextField<String> getName();
+    String getName();
 
     /**
      * Accessor.
      *
      * @return Returns the password1.
      */
-    TextField<String> getPassword1();
+    String getPassword1();
 
     /**
      * Accessor.
      *
      * @return Returns the password2.
      */
-    TextField<String> getPassword2();
+    String getPassword2();
 
     /**
      * Accessor.
      *
      * @return Returns the email.
      */
-    TextField<String> getEmail();
+    String getEmail();
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the groups.
+     */
+    Set<UUID> getGroups();
+
+
+    /**
+     * Display an alert with the specified message.
+     *
+     * @param message The message to display.
+     */
+    void alert(String message);
 
 }
