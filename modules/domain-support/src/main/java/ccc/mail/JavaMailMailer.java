@@ -69,8 +69,6 @@ public class JavaMailMailer
     }
 
 
-
-
     /** {@inheritDoc} */
     @Override
     public boolean send(final EmailAddress toAddress,
@@ -112,5 +110,15 @@ public class JavaMailMailer
             LOG.warn("Failed to send email.", e);
             return false;
         }
+    }
+
+
+    /**
+     * Enable debugging for this mailer.
+     *
+     * @param debug True if debugging should be enabled; false otherwise.
+     */
+    public void setDebug(final boolean debug) {
+        _session.setDebug(debug);
     }
 }

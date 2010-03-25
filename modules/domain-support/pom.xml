@@ -59,6 +59,12 @@
             <version>${lib.version.javamail}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+        	<groupId>org.jvnet.mock-javamail</groupId>
+        	<artifactId>mock-javamail</artifactId>
+        	<version>1.7</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
 </project>

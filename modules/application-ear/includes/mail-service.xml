@@ -56,7 +56,7 @@
         <property name="mail.transport.protocol" value="smtp"/>
         <property name="mail.smtp.host" value="mail.${application.mail.host}"/>
         <property name="mail.smtp.port" value="25"/>
-        <property name="mail.smtp.auth" value="true"/>
+        <property name="mail.smtp.auth" value="${application.mail.auth}"/>
         
         <property name="mail.debug" value="${application.mail.debug}"/>
       </configuration>
