@@ -44,26 +44,21 @@ import ccc.commons.Registry;
 
 
 /**
- * A helper class for sending email messages.
+ * JavaMail implementation of the {@link IMailer} interface.
  *
  * @author Civic Computing Ltd.
  */
 public class Mailer
     extends
-        Authenticator {
+        Authenticator
+    implements
+        IMailer {
+
     private static final Logger LOG = Logger.getLogger(Mailer.class);
 
 
-    /**
-     * Sends a plain text message to the specified recipient.
-     *
-     * @param location The location in registry, for example java:/mail/appname
-     * @param toAddress The address to which the email will be sent.
-     * @param subject The email's subject.
-     * @param message The email's body.
-     *
-     * @return True if the mail was sent successfully, false otherwise.
-     */
+    /** {@inheritDoc} */
+    @Override
     public boolean send(final String location,
                         final String toAddress,
                         final String subject,
