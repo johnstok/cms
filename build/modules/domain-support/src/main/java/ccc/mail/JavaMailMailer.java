@@ -39,8 +39,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
+import ccc.types.DBC;
+import ccc.types.EmailAddress;
 
 
 /**
@@ -48,41 +48,60 @@ import ccc.commons.Registry;
  *
  * @author Civic Computing Ltd.
  */
-public class Mailer
+public class JavaMailMailer
     extends
         Authenticator
     implements
         IMailer {
 
-    private static final Logger LOG = Logger.getLogger(Mailer.class);
+    private static final Logger LOG = Logger.getLogger(JavaMailMailer.class);
+
+    private final Session _session;
+
+
+    /**
+     * Constructor.
+     *
+     * @param session The JavaMail session to use.
+     */
+    public JavaMailMailer(final Session session) {
+        _session = DBC.require().notNull(session);
+    }
+
+
 
 
     /** {@inheritDoc} */
     @Override
-    public boolean send(final String location,
-                        final String toAddress,
+    public boolean send(final EmailAddress toAddress,
+                        final EmailAddress fromAddress,
                         final String subject,
                         final String message) {
         try {
 
-            // Create the session.
-            final Registry r = new JNDI();
-            final Session session = r.get(location);
-
             // Create the message.
-            final Message msg = new MimeMessage(session);
+            final Message msg = new MimeMessage(_session);
 
             // Set the to / from addresses.
             msg.setRecipient(
-                Message.RecipientType.TO, new InternetAddress(toAddress));
+                Message.RecipientType.TO,
+                new InternetAddress(toAddress.getText()));
+            msg.setFrom(
+                new InternetAddress(fromAddress.getText()));
 
             // Set the content.
             msg.setSentDate(new Date());
-            msg.setFrom();
             msg.setSubject(subject);
             msg.setContent(message, "text/plain");
 
             Transport.send(msg);
+
+            LOG.info(
+                "Sent mail."
+                + "\n\tto: "+toAddress.getText()
+                + "\n\tfrom: "+fromAddress.getText()
+                + "\n\tsubject: "+subject
+                + "\n\tmessage: "+message);
 
             return true;
 

@@ -27,6 +27,8 @@
 
 package ccc.mail;
 
+import ccc.types.EmailAddress;
+
 /**
  * API for sending email.
  *
@@ -34,18 +36,20 @@ package ccc.mail;
  */
 public interface IMailer {
 
+    String NAME = "imailer";
+
     /**
      * Sends a plain text message to the specified recipient.
      *
-     * @param location The location in registry, for example java:/mail/appname
      * @param toAddress The address to which the email will be sent.
+     * @param fromAddress The address from which the email will be sent.
      * @param subject The email's subject.
      * @param message The email's body.
      *
      * @return True if the mail was sent successfully, false otherwise.
      */
-    boolean send(final String location,
-                 final String toAddress,
+    boolean send(final EmailAddress toAddress,
+                 final EmailAddress fromAddress,
                  final String subject,
                  final String message);
 

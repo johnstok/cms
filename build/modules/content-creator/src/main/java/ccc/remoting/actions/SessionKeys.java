@@ -75,4 +75,7 @@ public final class SessionKeys {
 
     /** GROUPS_KEY : String. */
     public static final String GROUPS_KEY = "ccc.groups";
+
+    /** MAIL_KEY : String. */
+    public static final String MAIL_KEY = "ccc.mail";
 }

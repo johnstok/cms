@@ -106,6 +106,12 @@
             <version>${lib.version.javax-txn}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${lib.version.javamail}</version>
+            <scope>provided</scope>
+        </dependency>
         
         <!-- Vendor specific libraries -->
         <dependency>
