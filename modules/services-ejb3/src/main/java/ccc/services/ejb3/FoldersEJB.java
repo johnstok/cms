@@ -179,7 +179,7 @@ public class FoldersEJB
                     .createResourceRepository()
                     .find(Folder.class, folderId);
             if (f != null) {
-                List<Resource> list = f.getEntries();
+                final List<Resource> list = f.getEntries();
                 Sorter.sort(list, ResourceOrder.MANUAL);
                 return Resource.mapResources(list);
             }
@@ -233,6 +233,8 @@ public class FoldersEJB
     @PermitAll
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
     throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final Folder f =
             getRepoFactory()
@@ -253,6 +255,8 @@ public class FoldersEJB
     @PermitAll
     public Collection<ResourceSummary> getChildren(final UUID folderId)
     throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final Folder f =
                 getRepoFactory()
@@ -272,6 +276,8 @@ public class FoldersEJB
     @PermitAll
     public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId)
     throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final Folder f =
                 getRepoFactory()
@@ -302,6 +308,8 @@ public class FoldersEJB
                                                     final int pageNo,
                                                     final int pageSize)
                                                     throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final Folder f =
                 getRepoFactory()

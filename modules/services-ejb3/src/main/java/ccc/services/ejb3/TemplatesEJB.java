@@ -135,6 +135,8 @@ public final class TemplatesEJB
     @PermitAll
     public TemplateDelta templateDelta(final UUID templateId)
     throws RestException {
+        checkPermission(TEMPLATE_READ);
+
         try {
             return
                 getRepoFactory()

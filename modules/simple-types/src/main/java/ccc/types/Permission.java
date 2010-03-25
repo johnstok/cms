@@ -155,6 +155,9 @@ public final class Permission {
     /** SELF_UPDATE : String. */
     public static final String SELF_UPDATE = "SELF_UPDATE";
 
+    /** LOG_ENTRY_CREATE : String. */
+    public static final String LOG_ENTRY_CREATE = "LOG_ENTRY_CREATE";
+
 
     /** MIGRATE : String. */
     public static final String MIGRATE = "MIGRATE";
@@ -217,6 +220,7 @@ public final class Permission {
         allPerms.add(USER_UPDATE);
         allPerms.add(USER_READ);
         allPerms.add(SELF_UPDATE);
+        allPerms.add(LOG_ENTRY_CREATE);
         allPerms.add(API_ACCESS);
 
         ALL = Collections.unmodifiableSortedSet(allPerms);

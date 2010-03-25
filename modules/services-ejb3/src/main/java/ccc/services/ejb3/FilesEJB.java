@@ -252,6 +252,8 @@ public class FilesEJB
     @Override
     @PermitAll
     public TextFileDelta get(final UUID fileId) throws RestException {
+        checkPermission(FILE_READ);
+
         try {
             // FIXME: check file is accessible to user.
             return
@@ -272,6 +274,8 @@ public class FilesEJB
     public void retrieve(final UUID file,
                          final StreamAction action)
     throws RestException, UnauthorizedException {
+        checkPermission(FILE_READ);
+
         try {
             final File f =
                 getRepoFactory()
@@ -296,6 +300,8 @@ public class FilesEJB
                                  final int revision,
                                  final StreamAction action)
     throws RestException, UnauthorizedException {
+        checkPermission(FILE_READ);
+
         try {
             final File f =
                 getRepoFactory()
@@ -319,6 +325,8 @@ public class FilesEJB
     public void retrieveWorkingCopy(final UUID file,
                                     final StreamAction action)
     throws RestException, UnauthorizedException {
+        checkPermission(FILE_READ);
+
         try {
             final File f =
                 getRepoFactory()
