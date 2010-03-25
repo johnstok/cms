@@ -238,6 +238,14 @@
         <servlet-name>login-error-page</servlet-name>
         <url-pattern>/ccc/static/LoginError.html</url-pattern>
     </servlet-mapping>
+
+    <resource-ref>
+        <res-ref-name>imailer</res-ref-name>
+        <res-type>javax.mail.Session</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Unshareable</res-sharing-scope>
+        <mapped-name>java:/mail/${application.prefix}</mapped-name>
+    </resource-ref> 
     
     
     <!--

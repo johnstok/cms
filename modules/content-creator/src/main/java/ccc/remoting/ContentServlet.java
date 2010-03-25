@@ -31,7 +31,9 @@ import static ccc.commons.Strings.*;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.mail.Session;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.commons.Context;
+import ccc.mail.IMailer;
+import ccc.mail.JavaMailMailer;
 import ccc.remoting.actions.SessionKeys;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.NotFoundException;
@@ -86,6 +90,7 @@ public class ContentServlet
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
     @EJB(name = Comments.NAME)     private transient Comments     _comments;
     @EJB(name = Groups.NAME)       private transient Groups       _groups;
+    @Resource(name = IMailer.NAME) private transient Session      _session;
 
     private boolean _respectVisibility = true;
 
@@ -227,6 +232,7 @@ public class ContentServlet
         context.add("response", response);
         context.add("services", new RequestScopeServiceLocator(request));
         context.add("resource", rs);
+        context.add("mail", new JavaMailMailer(_session));
         return context;
     }
 
@@ -247,5 +253,6 @@ public class ContentServlet
         req.setAttribute(SessionKeys.SEARCH_KEY,    _search);
         req.setAttribute(SessionKeys.COMMENTS_KEY,  _comments);
         req.setAttribute(SessionKeys.GROUPS_KEY,    _groups);
+        req.setAttribute(SessionKeys.MAIL_KEY,      _session);
     }
 }
