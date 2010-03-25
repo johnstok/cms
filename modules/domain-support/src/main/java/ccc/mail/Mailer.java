@@ -34,7 +34,7 @@ import ccc.types.EmailAddress;
  *
  * @author Civic Computing Ltd.
  */
-public interface IMailer {
+public interface Mailer {
 
     String NAME = "imailer";
 

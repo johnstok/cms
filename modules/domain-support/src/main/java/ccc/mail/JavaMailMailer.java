@@ -44,7 +44,7 @@ import ccc.types.EmailAddress;
 
 
 /**
- * JavaMail implementation of the {@link IMailer} interface.
+ * JavaMail implementation of the {@link Mailer} interface.
  *
  * @author Civic Computing Ltd.
  */
@@ -52,7 +52,7 @@ public class JavaMailMailer
     extends
         Authenticator
     implements
-        IMailer {
+        Mailer {
 
     private static final Logger LOG = Logger.getLogger(JavaMailMailer.class);
 
