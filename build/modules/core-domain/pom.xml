@@ -19,12 +19,6 @@
         
         <!-- JEE dependencies -->
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${lib.version.javamail}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
             <version>${lib.version.hibernate-ejb3}</version>
