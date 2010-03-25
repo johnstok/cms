@@ -53,6 +53,12 @@
             <artifactId>json</artifactId>
             <version>${lib.version.json}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${lib.version.javamail}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     
 </project>
