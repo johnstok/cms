@@ -152,6 +152,8 @@ public class PagesEJB
     @Override
     @PermitAll
     public PageDelta pageDelta(final UUID pageId) throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             return
                 getRepoFactory()

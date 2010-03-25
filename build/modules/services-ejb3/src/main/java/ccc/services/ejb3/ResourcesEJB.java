@@ -603,6 +603,8 @@ public class ResourcesEJB
     @PermitAll
     public Collection<ResourceSummary> resourceForMetadataKey(
         final String key) {
+        checkPermission(RESOURCE_READ);
+
         return Resource.mapResources(getResources().lookupWithMetadataKey(key));
 
     }
@@ -633,6 +635,8 @@ public class ResourcesEJB
     @Deprecated
     public ResourceSummary lookupWithLegacyId(final String legacyId)
     throws RestException {
+        checkPermission(RESOURCE_READ);
+
         return resourceForLegacyId(legacyId);
     }
 
@@ -640,6 +644,8 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public String getAbsolutePath(final UUID resourceId) throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             return
                 getResources().find(Resource.class, resourceId)
@@ -658,6 +664,8 @@ public class ResourcesEJB
     @PermitAll
     public ResourceSnapshot resourceForPathSecure(final String rootPath)
     throws RestException, UnauthorizedException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
@@ -676,6 +684,8 @@ public class ResourcesEJB
     @PermitAll
     public ResourceSnapshot workingCopyForPath(final String rootPath)
     throws RestException, UnauthorizedException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
@@ -695,6 +705,8 @@ public class ResourcesEJB
     public ResourceSnapshot revisionForPath(final String path,
                                             final int version)
     throws RestException, UnauthorizedException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =
@@ -713,6 +725,8 @@ public class ResourcesEJB
     @PermitAll
     public String fileContentsFromPath(final String absolutePath,
                                        final String charset) {
+        checkPermission(RESOURCE_READ);
+
         final StringBuilder sb = new StringBuilder();
         final ResourcePath rp = new ResourcePath(absolutePath);
         Resource r;
@@ -739,6 +753,8 @@ public class ResourcesEJB
     @PermitAll
     public Collection<ResourceSummary> getSiblings(final UUID resourceId)
     throws UnauthorizedException {
+        checkPermission(RESOURCE_READ);
+
         final List<ResourceSummary> siblings = new ArrayList<ResourceSummary>();
         try {
             final Resource r =
@@ -762,6 +778,8 @@ public class ResourcesEJB
     @PermitAll
     public Map<String, String> metadata(final UUID resourceId)
     throws RestException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final Resource r =
                 getResources().find(Resource.class, resourceId);
@@ -779,6 +797,8 @@ public class ResourcesEJB
     @PermitAll
     public ResourceSummary resource(final UUID resourceId)
     throws RestException, UnauthorizedException {
+        checkPermission(RESOURCE_READ);
+
         try {
             final Resource r = getResources().find(Resource.class, resourceId);
             checkSecurity(r);
@@ -797,6 +817,8 @@ public class ResourcesEJB
                                final String action,
                                final String detail)
         throws RestException {
+        checkPermission(LOG_ENTRY_CREATE);
+
         try {
             final LogEntry le = new LogEntry(currentUser(),
                                             action,
@@ -819,6 +841,8 @@ public class ResourcesEJB
                                             final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
+        checkPermission(RESOURCE_READ);
+
         User u = null;
         try {
             u = currentUser();
