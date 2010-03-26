@@ -80,7 +80,7 @@ public class PageWorkingCopy
     // TODO: Duplicated in PageRevision
     public Paragraph getParagraph(final String name) {
         for (final Paragraph p : _wcContent) {
-            if (p.name().equals(name)) {
+            if (p.getName().equals(name)) {
                 return p;
             }
         }

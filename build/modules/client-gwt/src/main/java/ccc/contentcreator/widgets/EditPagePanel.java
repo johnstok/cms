@@ -123,13 +123,13 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
         for (final PageElement c : pageElements()) {
             for (final Paragraph para : resourceSummary.getParagraphs()) {
-                if (c.id().equals(para.name())) {
+                if (c.id().equals(para.getName())) {
                     if (FieldType.TEXT == c.fieldType()) {
                         final Field<String> f = c.field();
-                        f.setValue(para.text());
+                        f.setValue(para.getText());
                     } else if (FieldType.DATE == c.fieldType()) {
                         final DateField f = c.dateField();
-                        f.setValue(para.date());
+                        f.setValue(para.getDate());
                     } else if (FieldType.HTML == c.fieldType()) {
                         populateHtml(c, para);
                     } else if (FieldType.CHECKBOX == c.fieldType()) {
@@ -144,7 +144,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         populateImage(c, para);
                     } else if (FieldType.NUMBER == c.fieldType()) {
                         final NumberField f = c.number();
-                        f.setValue(para.number());
+                        f.setValue(para.getNumber());
                     }
                 }
             }
@@ -155,7 +155,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final int editorIndex = indexOf(c.editor());
         remove(c.editor());
         final FCKEditor fck =
-            new FCKEditor(para.text(), "250px");
+            new FCKEditor(para.getText(), "250px");
         insert(fck, editorIndex, new FormData("95%"));
         c.editor(fck);
     }
@@ -164,7 +164,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                   final Paragraph para) {
 
         final CheckBoxGroup cbg = c.checkBoxGroup();
-        final List<String> valueList = para.list();
+        final List<String> valueList = para.getList();
 
         for (final Field<?> f : cbg.getAll()) {
             if (f instanceof CheckBox) {
@@ -183,7 +183,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void populateRadio(final PageElement c, final Paragraph para) {
 
         final RadioGroup rg = c.radioGroup();
-        final String value = para.text();
+        final String value = para.getText();
 
         for (final Field<?> f : rg.getAll()) {
             if (f instanceof Radio) {
@@ -201,7 +201,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                   final Paragraph para) {
 
         final ComboBox<BaseModelData> cb = c.combobox();
-        final String value = para.text();
+        final String value = para.getText();
 
         final ListStore<BaseModelData> store = cb.getStore();
         for (final BaseModelData model : store.getModels()) {
@@ -214,7 +214,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void populateList(final PageElement c, final Paragraph para) {
 
         final ListField<BaseModelData> list = c.list();
-        final List<String> valueList = para.list();
+        final List<String> valueList = para.getList();
         final List<BaseModelData> selection =
             new ArrayList<BaseModelData>();
 
@@ -236,7 +236,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private void populateImage(final PageElement c, final Paragraph para) {
 
         final ImageTriggerField image = c.image();
-        final String id = para.text();
+        final String id = para.getText();
         if (id != null && !id.trim().equals("")) {
             final UUID resourceId = UUID.fromString(id);
 

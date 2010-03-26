@@ -80,7 +80,7 @@ public class PageRevision
     /** {@inheritDoc} */
     public Paragraph getParagraph(final String name) {
         for (final Paragraph p : _content) {
-            if (p.name().equals(name)) {
+            if (p.getName().equals(name)) {
                 return p;
             }
         }

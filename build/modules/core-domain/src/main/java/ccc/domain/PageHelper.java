@@ -96,13 +96,13 @@ public class PageHelper {
                 final Node name = nnm.getNamedItem("name");
                 if (regexp != null && name != null) {
                     for (final Paragraph para : delta) {
-                        if (name.getNodeValue().equals(para.name())
-                            && !para.text().matches(regexp.getNodeValue())
-                            && (para.type() == ParagraphType.TEXT)) {
+                        if (name.getNodeValue().equals(para.getName())
+                            && !para.getText().matches(regexp.getNodeValue())
+                            && (para.getType() == ParagraphType.TEXT)) {
                             if (errors.length() > 0) {
                                 errors.append("\n");
                             }
-                            errors.append(para.name()
+                            errors.append(para.getName()
                                 +", regexp: "+regexp.getNodeValue());
                         }
                     }

@@ -105,7 +105,7 @@ public final class PageDelta
      */
     public Paragraph getParagraph(final String name) {
         for (final Paragraph p : _paragraphs) {
-            if (p.name().equals(name)) {
+            if (p.getName().equals(name)) {
                 return p;
             }
         }

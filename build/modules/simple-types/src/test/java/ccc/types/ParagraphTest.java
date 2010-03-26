@@ -45,9 +45,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromList("foo", strings);
 
         // ASSERT
-        assertEquals("one,two,three", p.text());
-        assertEquals(strings, p.list());
-        assertEquals(ParagraphType.LIST, p.type());
+        assertEquals("one,two,three", p.getText());
+        assertEquals(strings, p.getList());
+        assertEquals(ParagraphType.LIST, p.getType());
     }
 
     /**
@@ -130,11 +130,11 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         verify(_json);
-        assertEquals("bar", p.name());
-        assertEquals(ParagraphType.TEXT, p.type());
-        assertEquals("foo", p.text());
-        assertNull(p.date());
-        assertNull(p.bool());
+        assertEquals("bar", p.getName());
+        assertEquals(ParagraphType.TEXT, p.getType());
+        assertEquals("foo", p.getText());
+        assertNull(p.getDate());
+        assertNull(p.getBoolean());
     }
 
     /**
@@ -154,12 +154,12 @@ public final class ParagraphTest extends TestCase {
 
         // ASSERT
         verify(_json);
-        assertEquals("bar", p.name());
-        assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals(new BigDecimal("123.456"), p.number());
-        assertEquals("123.456", p.text());
-        assertNull(p.date());
-        assertNull(p.bool());
+        assertEquals("bar", p.getName());
+        assertEquals(ParagraphType.NUMBER, p.getType());
+        assertEquals(new BigDecimal("123.456"), p.getNumber());
+        assertEquals("123.456", p.getText());
+        assertNull(p.getDate());
+        assertNull(p.getBoolean());
     }
 
     /**
@@ -212,9 +212,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromText("foo", "Hello world");
 
         // ASSERT
-        assertEquals(ParagraphType.TEXT, p.type());
-        assertEquals("Hello world", p.text());
-        assertEquals("foo", p.name());
+        assertEquals(ParagraphType.TEXT, p.getType());
+        assertEquals("Hello world", p.getText());
+        assertEquals("foo", p.getName());
     }
 
     /**
@@ -226,9 +226,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromNumber("foo", 0);
 
         // ASSERT
-        assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals("0", p.number().toString());
-        assertEquals("foo", p.name());
+        assertEquals(ParagraphType.NUMBER, p.getType());
+        assertEquals("0", p.getNumber().toString());
+        assertEquals("foo", p.getName());
     }
 
     /**
@@ -240,9 +240,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromNumber("foo", 0.1d);
 
         // ASSERT
-        assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals(String.valueOf(0.1d), p.number().toString());
-        assertEquals("foo", p.name());
+        assertEquals(ParagraphType.NUMBER, p.getType());
+        assertEquals(String.valueOf(0.1d), p.getNumber().toString());
+        assertEquals("foo", p.getName());
     }
 
     /**
@@ -255,9 +255,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromNumber("foo", bd);
 
         // ASSERT
-        assertEquals(ParagraphType.NUMBER, p.type());
-        assertEquals("-1234.54", p.number().toString());
-        assertEquals("foo", p.name());
+        assertEquals(ParagraphType.NUMBER, p.getType());
+        assertEquals("-1234.54", p.getNumber().toString());
+        assertEquals("foo", p.getName());
     }
 
     /**
@@ -269,9 +269,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromBoolean("foo", Boolean.TRUE);
 
         // ASSERT
-        assertEquals(ParagraphType.BOOLEAN, p.type());
-        assertEquals(Boolean.TRUE, p.bool());
-        assertEquals("foo", p.name());
+        assertEquals(ParagraphType.BOOLEAN, p.getType());
+        assertEquals(Boolean.TRUE, p.getBoolean());
+        assertEquals("foo", p.getName());
     }
 
     /**
@@ -286,9 +286,9 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromDate("foo", now);
 
         // ASSERT
-        assertEquals(ParagraphType.DATE, p.type());
-        assertEquals(now, p.date());
-        assertEquals("foo", p.name());
+        assertEquals(ParagraphType.DATE, p.getType());
+        assertEquals(now, p.getDate());
+        assertEquals("foo", p.getName());
     }
 
     /**
@@ -300,8 +300,8 @@ public final class ParagraphTest extends TestCase {
         final Paragraph p = Paragraph.fromText("foo", null);
 
         // ASSERT
-        assertEquals("foo", p.name());
-        assertEquals("", p.text());
+        assertEquals("foo", p.getName());
+        assertEquals("", p.getText());
     }
 
     /**
@@ -324,8 +324,8 @@ public final class ParagraphTest extends TestCase {
 
 
         final Paragraph p2 = new Paragraph(_json);
-        assertNull(p.bool());
-        assertEquals(p2.bool(), new Boolean(true));
+        assertNull(p.getBoolean());
+        assertEquals(p2.getBoolean(), new Boolean(true));
 
     }
 
@@ -349,7 +349,7 @@ public final class ParagraphTest extends TestCase {
         p.toJson(_json);
 
         final Paragraph p2 = new Paragraph(_json);
-        assertEquals(p2.date(), testDate);
+        assertEquals(p2.getDate(), testDate);
 
     }
 

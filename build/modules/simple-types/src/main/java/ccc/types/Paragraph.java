@@ -138,7 +138,7 @@ public final class Paragraph implements Serializable, Jsonable {
     public static Paragraph fromText(final String name, final String text) {
         final Paragraph p = new Paragraph();
         p.name(name);
-        p.text((text == null) ?"" : text);
+        p.text((text == null) ? "" : text);
 
         return p;
     }
@@ -246,7 +246,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The numerical representation of this paragraph.
      */
-    public BigDecimal number() {
+    public BigDecimal getNumber() {
         return new BigDecimal(_text);
     }
 
@@ -255,7 +255,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The string representation of this paragraph.
      */
-    public String text() {
+    public String getText() {
         return _text;
     }
 
@@ -264,7 +264,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The type of this paragraph.
      */
-    public ParagraphType type() {
+    public ParagraphType getType() {
         return _type;
     }
 
@@ -273,7 +273,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The boolean representation of this paragraph.
      */
-    public Boolean bool() {
+    public Boolean getBoolean() {
         return _boolean;
     }
 
@@ -282,7 +282,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The date representation of this paragraph.
      */
-    public Date date() {
+    public Date getDate() {
         return (null==_date) ? null : new Date(_date.getTime());
     }
 
@@ -291,8 +291,8 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The list representation of this paragraph.
      */
-    public List<String> list() {
-        return textToList(text());
+    public List<String> getList() {
+        return textToList(getText());
     }
 
     /**
@@ -300,7 +300,7 @@ public final class Paragraph implements Serializable, Jsonable {
      *
      * @return The paragraph's name.
      */
-    public String name() {
+    public String getName() {
         return _name;
     }
 
@@ -349,11 +349,11 @@ public final class Paragraph implements Serializable, Jsonable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.NAME, name());
+        json.set(JsonKeys.NAME, getName());
         json.set(JsonKeys.TYPE, _type.name());
-        json.set(JsonKeys.TEXT, text());
-        json.set(JsonKeys.BOOLEAN, bool());
-        json.set(JsonKeys.DATE, date());
+        json.set(JsonKeys.TEXT, getText());
+        json.set(JsonKeys.BOOLEAN, getBoolean());
+        json.set(JsonKeys.DATE, getDate());
     }
 
 

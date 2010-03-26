@@ -80,7 +80,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
         // ASSERT
         final PageDelta pd = getPages().pageDelta(ps.getId());
-        assertEquals(hw, pd.getParagraph("test").text());
+        assertEquals(hw, pd.getParagraph("test").getText());
     }
 
     /**
@@ -187,7 +187,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final String name = UUID.randomUUID().toString();
 
         final TemplateDelta newTemplate =
-            new TemplateDelta("$resource.getParagraph(\"foo\").text()",
+            new TemplateDelta("$resource.getParagraph(\"foo\").getText()",
                 "<fields><field name=\"foo\" type=\"html\"/></fields>",
                 MimeType.HTML);
 

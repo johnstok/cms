@@ -358,10 +358,10 @@ public class Migrations extends BaseMigrations {
             showInMainMenu(resource, rs, le);
 
             for (final Paragraph paragraph : delta.getParagraphs()) {
-                if ("Description_Custom".equals(paragraph.name())) {
-                    rs.setDescription(paragraph.text());
-                } else if ("Keywords_Custom".equals(paragraph.name())) {
-                    rs.setTags(paragraph.text());
+                if ("Description_Custom".equals(paragraph.getName())) {
+                    rs.setDescription(paragraph.getText());
+                } else if ("Keywords_Custom".equals(paragraph.getName())) {
+                    rs.setTags(paragraph.getText());
                 }
             }
 

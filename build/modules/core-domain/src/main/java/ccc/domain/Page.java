@@ -112,10 +112,10 @@ public class Page
     private HashSet<Paragraph> cleanParagraphs(final PageDelta delta) {
         final HashSet<Paragraph> paras = new HashSet<Paragraph>();
         for (final Paragraph para : delta.getParagraphs()) {
-            if (ParagraphType.TEXT == para.type()) {
+            if (ParagraphType.TEXT == para.getType()) {
                 final WordCharFixer fixer = new WordCharFixer();
                 final Paragraph p =
-                    Paragraph.fromText(para.name(), fixer.fix(para.text()));
+                    Paragraph.fromText(para.getName(), fixer.fix(para.getText()));
                 paras.add(p);
             } else {
                 paras.add(para);
