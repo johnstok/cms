@@ -109,9 +109,9 @@ public abstract class AbstractIndexer
     public void indexPage(final Page page) {
         final StringBuilder sb = new StringBuilder(page.getTitle());
         for (final Paragraph p : page.currentRevision().getParagraphs()) {
-            if (ParagraphType.TEXT == p.type() && p.text() != null) {
+            if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
                 sb.append(" ");
-                sb.append(XHTML.cleanUpContent(p.text()));
+                sb.append(XHTML.cleanUpContent(p.getText()));
             }
         }
         createDocument(page.getId(), sb.toString());

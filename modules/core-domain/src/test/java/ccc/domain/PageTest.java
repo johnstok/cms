@@ -73,10 +73,10 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         assertEquals(1, rev0.getParagraphs().size());
-        assertEquals("Header", rev0.getParagraphs().iterator().next().text());
+        assertEquals("Header", rev0.getParagraphs().iterator().next().getText());
         assertEquals(1, rev1.getParagraphs().size());
         assertEquals(
-            Boolean.TRUE, rev1.getParagraphs().iterator().next().bool());
+            Boolean.TRUE, rev1.getParagraphs().iterator().next().getBoolean());
     }
 
     /**
@@ -98,7 +98,7 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         assertEquals(1, rev.getParagraphs().size());
-        assertEquals("Header", rev.getParagraphs().iterator().next().text());
+        assertEquals("Header", rev.getParagraphs().iterator().next().getText());
     }
 
 
@@ -134,10 +134,10 @@ public final class PageTest extends TestCase {
         assertEquals(2, page.currentRevision().getParagraphs().size());
         assertEquals(
             Boolean.TRUE,
-            page.currentRevision().getParagraph("A boolean").bool());
+            page.currentRevision().getParagraph("A boolean").getBoolean());
         final Date now = new Date();
         assertTrue(
-            page.currentRevision().getParagraph("A date").date().compareTo(now)
+            page.currentRevision().getParagraph("A date").getDate().compareTo(now)
             <= 0);
     }
 
@@ -193,8 +193,8 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         assertEquals(1, s.getParagraphs().size());
-        assertEquals("header", s.getParagraphs().iterator().next().name());
-        assertEquals("Header", s.getParagraphs().iterator().next().text());
+        assertEquals("header", s.getParagraphs().iterator().next().getName());
+        assertEquals("Header", s.getParagraphs().iterator().next().getText());
     }
 
     /**
@@ -232,7 +232,7 @@ public final class PageTest extends TestCase {
         final Paragraph p = page.currentRevision().getParagraph("header");
 
         // ASSERT
-        assertEquals(header.text(), p.text());
+        assertEquals(header.getText(), p.getText());
         assertEquals(header, p);
     }
 

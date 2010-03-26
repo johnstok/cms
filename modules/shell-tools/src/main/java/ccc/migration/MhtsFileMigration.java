@@ -258,8 +258,8 @@ public class MhtsFileMigration extends BaseMigrations {
             pageRs.getId(), le.getUser().getId(), le.getHappenedOn());
 
         for (final Paragraph para : delta.getParagraphs()) {
-            if (para.name().startsWith("Document")) {
-                final String filename = para.text();
+            if (para.getName().startsWith("Document")) {
+                final String filename = para.getText();
                 final File file = new File(_filePath+filename);
 
                 _fu.uploadFile(folderRs.getId(),
