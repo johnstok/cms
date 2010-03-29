@@ -1,5 +1,15 @@
 UPDATE settings SET value='2' WHERE name='DATABASE_VERSION';
 
+INSERT INTO groups (id, vn, name) SELECT UUID(), 0, 'Site Reader';
+INSERT INTO users (id, email, username, vn, hash, name) VALUES (UUID(), 'support@civicuk.com', 'anonymous', 0, x'00', 'Anonymous User');
+INSERT INTO user_roles (user_id, group_id) VALUES ((SELECT id FROM users WHERE username='anonymous'), (SELECT id FROM groups WHERE name='Site Reader'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_READ', (SELECT id FROM groups WHERE name='Site Reader'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('ALIAS_READ', (SELECT id FROM groups WHERE name='Site Reader'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('COMMENT_READ', (SELECT id FROM groups WHERE name='Site Reader'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('FILE_READ', (SELECT id FROM groups WHERE name='Site Reader'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('FOLDER_READ', (SELECT id FROM groups WHERE name='Site Reader'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('TEMPLATE_READ', (SELECT id FROM groups WHERE name='Site Reader'));
+
 DELETE FROM group_permissions WHERE permission='CONTENT_CREATOR';
 DELETE FROM group_permissions WHERE permission='SITE_BUILDER';
 DELETE FROM group_permissions WHERE permission='ADMINISTRATOR';

@@ -1,5 +1,15 @@
 UPDATE settings SET value='2' WHERE name='DATABASE_VERSION';
 
+INSERT INTO groups (id, vn, name) SELECT lower(NEWID()), 0, 'Site Reader';
+INSERT INTO users (id, email, username, vn, hash, name) VALUES (lower(NEWID()), 'support@civicuk.com', 'anonymous', 0, 0x00, 'Anonymous User');
+INSERT INTO user_roles (user_id, group_id) SELECT u.id, g.id FROM users u, groups g WHERE u.username='anonymous'and g.name='Site Reader';
+INSERT INTO group_permissions (permission, group_id) SELECT 'RESOURCE_READ', id FROM groups WHERE name='Site Reader';
+INSERT INTO group_permissions (permission, group_id) SELECT 'ALIAS_READ',    id FROM groups WHERE name='Site Reader';
+INSERT INTO group_permissions (permission, group_id) SELECT 'COMMENT_READ',  id FROM groups WHERE name='Site Reader';
+INSERT INTO group_permissions (permission, group_id) SELECT 'FILE_READ',     id FROM groups WHERE name='Site Reader';
+INSERT INTO group_permissions (permission, group_id) SELECT 'FOLDER_READ',   id FROM groups WHERE name='Site Reader';
+INSERT INTO group_permissions (permission, group_id) SELECT 'TEMPLATE_READ', id FROM groups WHERE name='Site Reader';
+
 DELETE FROM group_permissions WHERE permission='CONTENT_CREATOR';
 DELETE FROM group_permissions WHERE permission='SITE_BUILDER';
 DELETE FROM group_permissions WHERE permission='ADMINISTRATOR';
