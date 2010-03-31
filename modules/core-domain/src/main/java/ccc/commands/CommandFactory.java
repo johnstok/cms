@@ -29,6 +29,7 @@ package ccc.commands;
 import java.io.InputStream;
 import java.util.UUID;
 
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -177,12 +178,17 @@ public class CommandFactory {
                                               final String name,
                                               final String title) {
 
-        return new CreateFolderCommand(
-            _repository,
-            _audit,
-            parentId,
-            name,
-            title);
+        try {
+            return new CreateFolderCommand(
+                _repository,
+                _audit,
+                parentId,
+                name,
+                title);
+        } catch (final EntityNotFoundException e) {
+            // FIXME
+            throw new RuntimeException(e);
+        }
     }
 
 

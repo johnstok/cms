@@ -24,48 +24,60 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.providers;
+package ccc.rest.impl;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import org.apache.log4j.Logger;
 
+import ccc.rest.RestException;
+import ccc.rest.UnauthorizedException;
+import ccc.rest.providers.CommandFailedExceptionMapper;
+import ccc.rest.providers.UnauthorizedExceptionMapper;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 import ccc.types.HttpStatusCode;
 
 
 /**
- * An mapper for runtime exceptions.
+ * An mapper for EJB exceptions.
  *
  * @author Civic Computing Ltd.
  */
-public class RuntimeExceptionMapper
+public class EjbExceptionMapper
     implements
-        ExceptionMapper<RuntimeException> {
+        ExceptionMapper<EJBException> {
     private static final Logger LOG =
-        Logger.getLogger(RuntimeExceptionMapper.class);
+        Logger.getLogger(EjbExceptionMapper.class);
 
     /** {@inheritDoc} */
     @Override
-    public Response toResponse(final RuntimeException e) {
+    public Response toResponse(final EJBException e) {
 
-        if (e instanceof org.jboss.resteasy.spi.Failure) {
-            final org.jboss.resteasy.spi.Failure restEasyFailure =
-                (org.jboss.resteasy.spi.Failure) e;
-            final Response failureResponse = restEasyFailure.getResponse();
-            if (null!=failureResponse) { return failureResponse; }
+        final Exception cause = e.getCausedByException();
+
+        if (cause instanceof UnauthorizedException) {
+            return
+                new UnauthorizedExceptionMapper()
+                    .toResponse((UnauthorizedException) cause);
+
+        } else if (cause instanceof RestException) {
+            return
+                new CommandFailedExceptionMapper()
+                    .toResponse((RestException) cause);
+
+        } else {
+            final Failure f = new Failure(FailureCode.UNEXPECTED);
+            LOG.warn(
+                "EJBException invoking API via JAX-RS: "+f.getExceptionId(), e);
+            return
+                Response
+                    .status(HttpStatusCode.ERROR)
+                    .type("application/json")
+                    .entity(f)
+                    .build();
         }
-
-        final Failure f = new Failure(FailureCode.UNEXPECTED);
-        LOG.warn("Error invoking API via JAX-RS: "+f.getExceptionId(), e);
-
-        return
-            Response
-                .status(HttpStatusCode.ERROR)
-                .type("application/json")
-                .entity(f)
-                .build();
     }
 }

@@ -143,7 +143,7 @@ public class FoldersEJB
     @RolesAllowed(FOLDER_UPDATE)
     public void updateFolder(final UUID folderId,
                              final FolderDelta delta)
-                                                 throws RestException {
+                                   throws RestException {
         try {
             final List<UUID> list = new ArrayList<UUID>();
 
@@ -178,6 +178,9 @@ public class FoldersEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(Folder.class, folderId);
+
+            checkRead(f);
+
             if (f != null) {
                 final List<Resource> list = f.getEntries();
                 Sorter.sort(list, ResourceOrder.MANUAL);
@@ -200,6 +203,8 @@ public class FoldersEJB
 
         try {
             // TODO: handle null folderId? (for root folders)
+            // FIXME checkRead(f); ?
+
             return
                 Boolean.valueOf(
                     getRepoFactory()
@@ -237,9 +242,12 @@ public class FoldersEJB
 
         try {
             final Folder f =
-            getRepoFactory()
+                getRepoFactory()
                     .createResourceRepository()
                     .find(Folder.class, folderId);
+
+            checkRead(f);
+
             final List<Folder> folderChildren = f.getFolders();
             Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
             return Resource.mapResources(folderChildren);
@@ -262,8 +270,10 @@ public class FoldersEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(Folder.class, folderId);
-            return Resource.mapResources(
-                f != null ? f.getEntries() : new ArrayList<Resource>());
+
+            checkRead(f);
+
+            return Resource.mapResources(f.getEntries());
 
         } catch (final CccCheckedException e) {
             throw fail(e);
@@ -283,10 +293,13 @@ public class FoldersEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(Folder.class, folderId);
+
+            checkRead(f);
+
             final List<Resource> filtered = new ArrayList<Resource>();
             final User user = currentUser();
             for (final Resource r : f.getEntries()) {
-                if (r.isAccessibleTo(user)) {
+                if (r.isReadableBy(user)) {
                     filtered.add(r);
                 }
             }
@@ -307,7 +320,7 @@ public class FoldersEJB
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize)
-                                                    throws RestException {
+                                                          throws RestException {
         checkPermission(RESOURCE_READ);
 
         try {
@@ -315,6 +328,8 @@ public class FoldersEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(Folder.class, folderId);
+
+            checkRead(f);
 
             final DtoCollection<ResourceSummary> dtoc =
                 new DtoCollection<ResourceSummary>(

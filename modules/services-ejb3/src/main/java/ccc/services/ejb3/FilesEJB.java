@@ -281,7 +281,7 @@ public class FilesEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(File.class, file);
-            checkSecurity(f);
+            checkRead(f);
 
             getRepoFactory()
                 .createDataRepository()
@@ -307,7 +307,7 @@ public class FilesEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(File.class, file);
-            checkSecurity(f);
+            checkRead(f);
 
             getRepoFactory()
                 .createDataRepository()
@@ -332,7 +332,7 @@ public class FilesEJB
                 getRepoFactory()
                     .createResourceRepository()
                     .find(File.class, file);
-            checkSecurity(f);
+            checkRead(f);
 
             getRepoFactory()
                 .createDataRepository()

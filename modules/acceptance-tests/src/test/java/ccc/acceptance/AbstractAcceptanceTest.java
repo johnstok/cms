@@ -48,6 +48,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.client1.JaxrsServiceLocator;
 import ccc.rest.Actions;
@@ -62,6 +63,7 @@ import ccc.rest.RestException;
 import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.Users;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FolderDto;
@@ -498,6 +500,30 @@ public abstract class AbstractAcceptanceTest
         }
 
         throw new RuntimeException("Request failed.");
+    }
+
+
+    /**
+     * Convert a RestEasy exception to a CC API exception.
+     *
+     * @param <T> The type of exception that should be returned.
+     * @param ex The RestEasy exception.
+     *
+     * @return The converted exception.
+     */
+    @SuppressWarnings("unchecked")
+    protected <T extends Exception> T convertException(
+                                             final ClientResponseFailure ex) {
+        final ClientResponse<byte[]> r = ex.getResponse();
+
+        switch (r.getStatus()) {
+
+            case HttpStatusCode.UNAUTHORIZED:
+                return (T) r.getEntity(UnauthorizedException.class);
+
+            default:
+                return (T) ex;
+        }
     }
 
 

@@ -44,29 +44,14 @@ import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.persistence.ActionRepository;
-import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
-import ccc.persistence.GroupRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.TextFileDelta;
-import ccc.types.CommandType;
 import ccc.types.DBC;
-import ccc.types.ResourceType;
 
 
 /**
@@ -82,12 +67,9 @@ abstract class AbstractEJB {
     @PersistenceContext        private EntityManager   _em;
 
     private UserRepository     _users;
-    private GroupRepository    _groups;
     private ResourceRepository _resources;
     private LogEntryRepository _audit;
     private DataRepository     _dm;
-    private ActionRepository   _actions;
-    private CommentRepository  _comments;
 
     private CommandFactory     _cFactory;
     private IRepositoryFactory _rf;
@@ -97,12 +79,9 @@ abstract class AbstractEJB {
     private void configureCoreData() {
         _rf = IRepositoryFactory.DEFAULT.create(_em);
         _audit = _rf.createLogEntryRepo();
-        _comments = _rf.createCommentRepo();
         _users = _rf.createUserRepo();
-        _groups = _rf.createGroupRepo();
         _resources = _rf.createResourceRepository();
         _dm = _rf.createDataRepository();
-        _actions = _rf.createActionRepository();
         _cFactory = new CommandFactory(_resources, _audit, _dm);
     }
 
@@ -145,12 +124,18 @@ abstract class AbstractEJB {
      * @return The corresponding application exception.
      */
     protected RestException fail(final CccCheckedException e) {
-        _context.setRollbackOnly();  // CRITICAL
+        guaranteeRollback(); // CRITICAL
         final RestException cfe = e.toRemoteException();
         log.debug(
             "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
         return cfe;
     }
+
+
+    /**
+     * Ensure the transaction is rolled back.
+     */
+    protected void guaranteeRollback() { _context.setRollbackOnly(); }
 
 
     /**
@@ -168,11 +153,14 @@ abstract class AbstractEJB {
     protected final <T> T sudoExecute(final Command<T> command,
                                       final UUID actorId,
                                       final Date happenedOn)
-                                                        throws RestException {
+                                   throws RestException, UnauthorizedException {
         try {
             return command.execute(_users.find(actorId), happenedOn);
         } catch (final CccCheckedException e) {
             throw fail(e);
+        } catch (final UnauthorizedException e) {
+            guaranteeRollback();
+            throw e;
         }
     }
 
@@ -188,11 +176,14 @@ abstract class AbstractEJB {
      * @throws RestException If execution fails.
      */
     protected final <T> T execute(final Command<T> command)
-                                                        throws RestException {
+                                   throws RestException, UnauthorizedException {
         try {
             return command.execute(currentUser(), new Date());
         } catch (final CccCheckedException e) {
             throw fail(e);
+        } catch (final UnauthorizedException e) {
+            guaranteeRollback();
+            throw e;
         }
     }
 
@@ -240,13 +231,12 @@ abstract class AbstractEJB {
 
 
     /**
-     * Check that a resource is accessible to a user.
+     * Check that a resource is readable by a user.
      *
      * @param r The resource to check.
-     * @throws UnauthorizedException If the resource cannot be accessed.
+     * @throws UnauthorizedException If the resource cannot be read.
      */
-    protected void checkSecurity(final Resource r)
-    throws UnauthorizedException {
+    protected void checkRead(final Resource r) throws UnauthorizedException {
 
         DBC.require().notNull(r);
 
@@ -257,13 +247,39 @@ abstract class AbstractEJB {
             Exceptions.swallow(e); // Leave user as NULL.
         }
 
-        if (!r.isAccessibleTo(u)) {
-            _context.setRollbackOnly();  // CRITICAL
-            throw new UnauthorizedException(r.getId(), (null==u) ? null : u.getId());
+        if (!r.isReadableBy(u)) {
+            guaranteeRollback(); // CRITICAL
+            throw new UnauthorizedException(
+                r.getId(), (null==u) ? null : u.getId());
         }
     }
 
-    
+
+    /**
+     * Check that a resource is write-able by a user.
+     *
+     * @param r The resource to check.
+     * @throws UnauthorizedException If the resource cannot be written.
+     */
+    protected void checkWrite(final Resource r) throws UnauthorizedException {
+
+        DBC.require().notNull(r);
+
+        User u = null;
+        try {
+            u = currentUser();
+        } catch (final EntityNotFoundException e) {
+            Exceptions.swallow(e); // Leave user as NULL.
+        }
+
+        if (!r.isWriteableBy(u)) {
+            guaranteeRollback();
+            throw new UnauthorizedException(
+                r.getId(), (null==u) ? null : u.getId());
+        }
+    }
+
+
     /**
      * Check that the current user has ONE OF the specified permissions.
      *

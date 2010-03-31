@@ -33,13 +33,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.types.FilePropertyNames;
 
@@ -102,7 +102,7 @@ public class UpdateFileServlet extends MultipartServlet {
                                     dataStream);
             response.getWriter().write("NULL");
 
-        } catch (final RestException e) {
+        } catch (final EJBException e) {
             handleException(response, e);
 
         } finally {

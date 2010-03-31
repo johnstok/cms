@@ -696,9 +696,9 @@ public abstract class Resource
 
 
     /** {@inheritDoc} */
-    public boolean isAccessibleTo(final User user) {
+    public boolean isReadableBy(final User user) {
         final boolean parentIsAccessible =
-            (null==_parent) ? true : getParent().isAccessibleTo(user);
+            (null==_parent) ? true : getParent().isReadableBy(user);
 
         if (0==_roles.size() && 0==_userAcl.size()) {
             return parentIsAccessible;
@@ -715,6 +715,33 @@ public abstract class Resource
         for (final AccessPermission p : _userAcl) {
             if (p.allowsRead(user)) {
                 return parentIsAccessible;
+            }
+        }
+
+        return false;
+    }
+
+
+    /** {@inheritDoc} */
+    public boolean isWriteableBy(final User user) {
+        final boolean parentIsWriteable =
+            (null==_parent) ? true : getParent().isWriteableBy(user);
+
+        if (0==_roles.size() && 0==_userAcl.size()) {
+            return parentIsWriteable;
+        }
+
+        if (null==user) { return false; }
+
+        for (final AccessPermission p : _roles) {
+            if (p.allowsWrite(user)) {
+                return parentIsWriteable;
+            }
+        }
+
+        for (final AccessPermission p : _userAcl) {
+            if (p.allowsWrite(user)) {
+                return parentIsWriteable;
             }
         }
 
@@ -994,8 +1021,7 @@ public abstract class Resource
 
 
     /**
-     * TODO: Add a description for this method.
-     *
+     * Remove all group permissions.
      */
     public void clearGroupAcl() {
         _roles.clear();
@@ -1003,8 +1029,7 @@ public abstract class Resource
 
 
     /**
-     * TODO: Add a description for this method.
-     *
+     * Remove all user permissions.
      */
     public void clearUserAcl() {
         _userAcl.clear();

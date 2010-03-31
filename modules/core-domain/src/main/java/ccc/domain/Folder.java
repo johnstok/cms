@@ -58,8 +58,10 @@ public final class Folder
     private ResourceOrder  _order = ResourceOrder.MANUAL;
     private Page _indexPage = null;
 
+
     /** Constructor: for persistence only. */
     protected Folder() { super(); }
+
 
     /**
      * Constructor.
@@ -70,6 +72,7 @@ public final class Folder
         super(title);
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -77,6 +80,7 @@ public final class Folder
     public ResourceType getType() {
         return ResourceType.FOLDER;
     }
+
 
     /**
      * Accessor for size.
@@ -86,6 +90,7 @@ public final class Folder
     public int size() {
         return _entries.size();
     }
+
 
     /**
      * Add a resource to this folder.
@@ -116,6 +121,7 @@ public final class Folder
         resource.setParent(this, Integer.valueOf(nextIndex));
     }
 
+
     private int maxIndex(final Set<Resource> entries) {
         int nextIndex = 0;
         for (final Resource r : entries) {
@@ -127,6 +133,7 @@ public final class Folder
         }
         return nextIndex;
     }
+
 
     /**
      * Determine if this folder is an ancestor of the specified resource.
@@ -163,6 +170,7 @@ public final class Folder
         return entries;
     }
 
+
     /**
      * Accessor for entries.
      * <p>For example, calling entries(10, 3) will return the resources with
@@ -189,6 +197,7 @@ public final class Folder
 
         return entries.subList(from, to);
     }
+
 
     /**
      * Navigate from this folder to another resource described by the
@@ -217,6 +226,7 @@ public final class Folder
         return currentPosition;
     }
 
+
     /**
      * Find the entry in this folder with the specified name.
      * Throws a CCCException if no resource exists with the specified name.
@@ -234,6 +244,7 @@ public final class Folder
             "No entry '"+name+"' in folder '"+getName()+"'");
     }
 
+
     /**
      * Query method - returns the number of folders that are children of this
      * folder.
@@ -248,6 +259,7 @@ public final class Folder
         }
         return count;
     }
+
 
     /**
      * Query whether this folder has an entry with the specified name.
@@ -264,6 +276,7 @@ public final class Folder
         return false;
     }
 
+
     /**
      * Retrieve an entry from this folder.
      *
@@ -279,6 +292,7 @@ public final class Folder
         }
         return null;
     }
+
 
     /**
      * Retrieve the entries in this folder in a type-safe list.
@@ -297,6 +311,7 @@ public final class Folder
         return entries;
     }
 
+
     /**
      * Query method to determine if this folder contains any pages.
      *
@@ -311,6 +326,7 @@ public final class Folder
         return false;
     }
 
+
     /**
      * Accessor method for the first page in this folder.
      *
@@ -324,6 +340,7 @@ public final class Folder
         }
         throw new RuntimeException("No pages in this folder.");
     }
+
 
     /**
      * Remove a resource from this folder.
@@ -368,6 +385,7 @@ public final class Folder
         return entries;
     }
 
+
     /**
      * Query method to determine if this folder contains any aliases.
      *
@@ -381,6 +399,7 @@ public final class Folder
         }
         return false;
     }
+
 
     /**
      * Accessor method for the first alias in this folder.
@@ -396,6 +415,7 @@ public final class Folder
         throw new RuntimeException("No aliases in this folder.");
     }
 
+
     /**
      * Accessor for the sort order property.
      *
@@ -404,6 +424,7 @@ public final class Folder
     public ResourceOrder getSortOrder() {
         return _order;
     }
+
 
     /**
      * Mutator for the sort order property.
@@ -415,6 +436,7 @@ public final class Folder
         _order = order;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public Jsonable createSnapshot() {
@@ -425,6 +447,7 @@ public final class Folder
             }
         };
     }
+
 
     /**
      * Accessor for the index page.
@@ -445,6 +468,7 @@ public final class Folder
         _indexPage = indexPage;
     }
 
+
     private UUID getDefaultPage() {
         for (final Resource r : getEntries()) {
             if (ResourceType.PAGE.equals(r.getType())
@@ -455,6 +479,7 @@ public final class Folder
         return null;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void delete() {
@@ -464,6 +489,7 @@ public final class Folder
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void undelete() {
@@ -472,6 +498,7 @@ public final class Folder
             r.undelete();
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -506,11 +533,13 @@ public final class Folder
      * Snapshot support.
      * ================================================================== */
 
+
     /** {@inheritDoc} */
     @Override
     public FolderDto forWorkingCopy() {
         return forCurrentRevision();
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -523,6 +552,7 @@ public final class Folder
         dto.setDefaultPage(getDefaultPage());
         return dto;
     }
+
 
     /** {@inheritDoc} */
     @Override

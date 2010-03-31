@@ -30,10 +30,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
-import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -120,10 +120,9 @@ public class UpdateCurrentUserCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void authorize(final User actor)
-                                    throws InsufficientPrivilegesException {
+    protected void authorize(final User actor) {
         if (!actor.getId().equals(_userId)) {
-            throw new InsufficientPrivilegesException(getType(), actor);
+            throw new UnauthorizedException(_userId, actor.getId());
         }
     }
 

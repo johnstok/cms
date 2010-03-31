@@ -19,13 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.rest.RestException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.types.FilePropertyNames;
@@ -120,7 +120,7 @@ public class CreateFileServlet
                     isMajorEdit);
             response.getWriter().write(toJSON(rs));
 
-        } catch (final RestException e) {
+        } catch (final EJBException e) {
             handleException(response, e);
 
         } finally {

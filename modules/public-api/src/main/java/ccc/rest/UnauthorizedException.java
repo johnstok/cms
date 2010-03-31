@@ -28,7 +28,11 @@ package ccc.rest;
 
 import java.util.UUID;
 
+import ccc.serialization.Json;
+import ccc.serialization.Jsonable2;
 import ccc.types.DBC;
+import ccc.types.Failure;
+import ccc.types.FailureCode;
 
 
 /**
@@ -38,10 +42,12 @@ import ccc.types.DBC;
  */
 public class UnauthorizedException
     extends
-        Exception {
+        RestException
+    implements
+        Jsonable2 {
 
-    private final UUID _target;
-    private final UUID _user;
+    private UUID _target;
+    private UUID _user;
 
 
     /**
@@ -51,8 +57,20 @@ public class UnauthorizedException
      * @param user   The user trying to access the entity.
      */
     public UnauthorizedException(final UUID target, final UUID user) {
+        super(new Failure(FailureCode.PRIVILEGES));
         _target = DBC.require().notNull(target);
         _user   = user; // NULL indicates anonymous access.
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of this exception.
+     */
+    public UnauthorizedException(final Json json) {
+        super(new Failure(FailureCode.PRIVILEGES));
+        fromJson(json);
     }
 
 
@@ -62,5 +80,41 @@ public class UnauthorizedException
         return
             "User " + _user
             + " isn't authorized to access entity " + _target + ".";
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the target.
+     */
+    public UUID getTarget() {
+        return _target;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user.
+     */
+    public UUID getUser() {
+        return _user;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        _target = json.getId("target");
+        _user = json.getId("user");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("target", _target);
+        json.set("user", _user);
     }
 }

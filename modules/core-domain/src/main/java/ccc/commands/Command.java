@@ -35,7 +35,6 @@ import ccc.commons.Resources;
 import ccc.commons.Script;
 import ccc.commons.ScriptRunner;
 import ccc.domain.CccCheckedException;
-import ccc.domain.InsufficientPrivilegesException;
 import ccc.domain.User;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
@@ -137,12 +136,9 @@ public abstract class Command<T> {
      * <p>The default implementation allows any actor to execute the command.
      *
      * @param actor The actor performing the command.
-     *
-     * @throws InsufficientPrivilegesException If the actor is not authorized.
      */
     @SuppressWarnings("unused")
-    protected void authorize(final User actor)
-                        throws InsufficientPrivilegesException { /* NO OP */ }
+    protected void authorize(final User actor) { /* NO OP */ }
 
     /**
      * Event handler that executes after the command has executed successfully.

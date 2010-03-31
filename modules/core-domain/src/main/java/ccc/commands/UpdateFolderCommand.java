@@ -31,12 +31,14 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.CccCheckedException;
+import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.UnauthorizedException;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.ResourceOrder;
@@ -52,6 +54,7 @@ public class UpdateFolderCommand
         UpdateResourceCommand<Void> {
 
     private final UUID _folderId;
+    private final Folder _folder;
     private final ResourceOrder _order;
     private final UUID _indexPageId;
     private final List<UUID> _orderList;
@@ -65,14 +68,17 @@ public class UpdateFolderCommand
      * @param indexPageId The index page.
      * @param orderList The manual order of the resources in the specified
      *  folder.
+     * @throws EntityNotFoundException If the folder to update doesn't exist.
      */
     public UpdateFolderCommand(final IRepositoryFactory repoFactory,
                                final UUID folderId,
                                final ResourceOrder order,
                                final UUID indexPageId,
-                               final List<UUID> orderList) {
+                               final List<UUID> orderList)
+                                                throws EntityNotFoundException {
         super(repoFactory);
         _folderId = folderId;
+        _folder = getRepository().find(Folder.class, folderId);
         _order = order;
         _indexPageId = indexPageId;
         _orderList = orderList;
@@ -122,6 +128,15 @@ public class UpdateFolderCommand
         getAudit().record(le);
 
         return null;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void authorize(final User actor) throws UnauthorizedException {
+        if (!_folder.isWriteableBy(actor)) {
+            throw new UnauthorizedException(_folderId, actor.getId());
+        }
     }
 
 

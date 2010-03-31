@@ -63,6 +63,8 @@ public class FolderDaoImplTest
         _f.lock(_user);
         expect(_repository.find(Folder.class, _f.getId()))
             .andReturn(_f);
+        expect(_repository.find(Folder.class, _f.getId()))
+            .andReturn(_f);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -97,6 +99,8 @@ public class FolderDaoImplTest
         _f.add(bar);
         _f.add(baz);
 
+        expect(_repository.find(Folder.class, _f.getId()))
+            .andReturn(_f);
         expect(_repository.find(Folder.class, _f.getId()))
             .andReturn(_f);
         _audit.record(isA(LogEntry.class));

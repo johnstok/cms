@@ -67,6 +67,7 @@ import ccc.rest.providers.RevisionSummaryCollectionReader;
 import ccc.rest.providers.StringCollectionWriter;
 import ccc.rest.providers.TemplateDeltaReader;
 import ccc.rest.providers.UUIDProvider;
+import ccc.rest.providers.UnauthorizedExceptionReader;
 import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
 import ccc.rest.providers.UuidCollectionWriter;
@@ -118,6 +119,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(AclReader.class);
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);
         pFactory.addMessageBodyReader(DtoCollectionReader.class);
+        pFactory.addMessageBodyReader(UnauthorizedExceptionReader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);
