@@ -223,10 +223,10 @@ public class UserTest
         assertEquals(expected, u.getGroups());
         assertTrue(
             "Should be site builder",
-            u.isMemberOf(SITE_BUILDER));
+            SITE_BUILDER.includes(u));
         assertTrue(
             "Should be content creator",
-            u.isMemberOf(CONTENT_CREATOR));
+            CONTENT_CREATOR.includes(u));
     }
 
     /**
@@ -371,10 +371,10 @@ public class UserTest
         assertEquals(expected, u.getGroups());
         assertTrue(
             "Should be site builder",
-            u.isMemberOf(SITE_BUILDER));
+            SITE_BUILDER.includes(u));
         assertTrue(
             "Should be administrator",
-            u.isMemberOf(ADMINISTRATOR));
+            ADMINISTRATOR.includes(u));
     }
 
     private byte[] hash(final User u, final String passwordString) {

@@ -55,7 +55,9 @@ import ccc.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-public class User extends Entity {
+public class User
+    extends
+        Principal {
 
     /** SYSTEM_USER : User. */
     public static final User SYSTEM_USER =
@@ -65,17 +67,18 @@ public class User extends Entity {
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
     private Username _username;
-    private String _name;
     private EmailAddress _email;
     private byte[] _hash;
     private Set<Group> _roles = new HashSet<Group>();
     private Map<String, String> _metadata = new HashMap<String, String>();
+
 
     /**
      * Constructor.
      * N.B. This constructor should only be used for persistence.
      */
     protected User() { super(); }
+
 
     /**
      * Constructor.
@@ -91,9 +94,10 @@ public class User extends Entity {
         DBC.require().notEmpty(username.toString());
         DBC.require().notEmpty(name);
         _username = username;
-        _name = name;
+        setName(name);
         _hash = hash(passwordString, getId().toString());
     }
+
 
     /**
      * Constructor.
@@ -106,9 +110,10 @@ public class User extends Entity {
         DBC.require().notNull(username);
         DBC.require().notEmpty(username.toString());
         _username = username;
-        _name = username.toString();
+        setName(username.toString());
         _hash = hash(passwordString, getId().toString());
     }
+
 
     /**
      * Accessor for the username property.
@@ -119,6 +124,7 @@ public class User extends Entity {
         return _username;
     }
 
+
     /**
      * Mutator for the username.
      *
@@ -126,24 +132,6 @@ public class User extends Entity {
      */
     public void setUsername(final Username username) {
         _username = username;
-    }
-
-    /**
-     * Accessor for the name property.
-     *
-     * @return The name.
-     */
-    public String getName() {
-        return _name;
-    }
-
-    /**
-     * Mutator for the name.
-     *
-     * @param name The name.
-     */
-    public void setName(final String name) {
-        _name = name;
     }
 
 
@@ -157,6 +145,7 @@ public class User extends Entity {
         _email = email;
     }
 
+
     /**
      * Accessor for the email property.
      *
@@ -166,6 +155,7 @@ public class User extends Entity {
         return _email;
     }
 
+
     /**
      * Assigns role to the user.
      *
@@ -174,6 +164,7 @@ public class User extends Entity {
     public void addGroup(final Group newRole) {
         _roles.add(newRole);
     }
+
 
     /**
      * Helper method to check if the user has the specified permission.
@@ -188,15 +179,6 @@ public class User extends Entity {
         return false;
     }
 
-    /**
-     * Helper method to check if the user is a member of a specified group.
-     *
-     * @param group The group to check.
-     * @return True if the user is a member.
-     */
-    public boolean isMemberOf(final Group group) {
-        return getGroups().contains(group);
-    }
 
     /**
      * Accessor for user roles.
@@ -228,6 +210,7 @@ public class User extends Entity {
         }
     }
 
+
     /**
      * Retrieve metadata for this resource.
      *
@@ -237,6 +220,7 @@ public class User extends Entity {
     public String getMetadatum(final String key) {
         return _metadata.get(key);
     }
+
 
     /**
      * Remove the metadatum with the specified key.
@@ -248,6 +232,7 @@ public class User extends Entity {
         _metadata.remove(key);
     }
 
+
     /**
      * Accessor for all metadata.
      *
@@ -256,6 +241,7 @@ public class User extends Entity {
     public Map<String, String> getMetadata() {
         return new HashMap<String, String>(_metadata);
     }
+
 
     /**
      * Remove all metadata for this resource.
@@ -361,6 +347,7 @@ public class User extends Entity {
         toDto().toJson(json);
     }
 
+
     /**
      * Query - return the IDs for all groups this user is a member of.
      *
@@ -374,12 +361,14 @@ public class User extends Entity {
         return groupIds;
     }
 
+
     /**
      * Mutator - clear all groups for this user.
      */
     public void clearGroups() {
         _roles.clear();
     }
+
 
     /**
      * Convert a user to a DTO.
@@ -398,6 +387,7 @@ public class User extends Entity {
         return dto;
     }
 
+
     /**
      * Query - determines all permissions available to this user.
      *
@@ -408,7 +398,6 @@ public class User extends Entity {
         for (final Group g : getGroups()) { perms.addAll(g.getPermissions()); }
         return perms;
     }
-
 
 
     /**
@@ -422,4 +411,9 @@ public class User extends Entity {
         for (final User u : users) { mapped.add(u.toDto()); }
         return mapped;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean includes(final User user) { return equals(user); }
 }

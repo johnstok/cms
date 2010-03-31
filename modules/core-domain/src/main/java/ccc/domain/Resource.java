@@ -43,6 +43,7 @@ import java.util.UUID;
 import ccc.commons.WordCharFixer;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
@@ -79,8 +80,8 @@ public abstract class Resource
     private Integer        _parentIndex       = null;
     private User           _lockedBy          = null;
     private Set<String>    _tags              = new HashSet<String>();
-    private Set<Group>     _roles             = new HashSet<Group>();
-    private Set<User>      _userAcl           = new HashSet<User>();
+    private Set<AccessPermission> _roles      = new HashSet<AccessPermission>();
+    private Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
@@ -447,7 +448,10 @@ public abstract class Resource
     public boolean isSecure() {
         final boolean parentSecure =
             (null==_parent) ? false : _parent.isSecure();
-        return parentSecure || !getRoles().isEmpty() || !getUserAcl().isEmpty();
+        return
+            parentSecure
+            || !getGroupAcl().isEmpty()
+            || !getUserAcl().isEmpty();
     }
 
 
@@ -646,11 +650,10 @@ public abstract class Resource
     /**
      * Mutator.
      *
-     * @param roles The roles this collection should have.
+     * @param p The permission to add.
      */
-    public void setRoles(final Collection<Group> roles) {
-        _roles.clear();
-        _roles.addAll(roles);
+    public void addGroupPermission(final AccessPermission p) {
+        _roles.add(p);
     }
 
 
@@ -659,19 +662,22 @@ public abstract class Resource
      *
      * @return This resource's roles.
      */
-    public Collection<Group> getRoles() {
-        return new HashSet<Group>(_roles);
+    public Collection<Entry> getGroupAcl() {
+        final Set<Entry> acl = new HashSet<Entry>();
+        for (final AccessPermission p : _roles) {
+            acl.add(p.createEntry());
+        }
+        return acl;
     }
 
 
     /**
      * Mutator.
      *
-     * @param users The users allowed to access this resource.
+     * @param p The permission to add.
      */
-    public void setUserAcl(final Collection<User> users) {
-        _userAcl.clear();
-        _userAcl.addAll(users);
+    public void addUserPermission(final AccessPermission p) {
+        _userAcl.add(p);
     }
 
 
@@ -680,55 +686,12 @@ public abstract class Resource
      *
      * @return The users allowed to access this resource.
      */
-    public Collection<User> getUserAcl() {
-        return new HashSet<User>(_userAcl);
-    }
-
-
-    /**
-     * Query - return the IDs for all groups this resource is accessible to.
-     *
-     * @return The group IDs, as a set.
-     */
-    public Set<UUID> getGroupIds() {
-        final Set<UUID> groupIds = new HashSet<UUID>();
-        for (final Group g : getRoles()) {
-            groupIds.add(g.getId());
+    public Collection<Entry> getUserAcl() {
+        final Set<Entry> acl = new HashSet<Entry>();
+        for (final AccessPermission p : _userAcl) {
+            acl.add(p.createEntry());
         }
-        return groupIds;
-    }
-
-
-    /**
-     * Query - return the IDs for all users this resource is accessible to.
-     *
-     * @return The user IDs, as a set.
-     */
-    public Collection<UUID> getUserIds() {
-        final Set<UUID> userIds = new HashSet<UUID>();
-        for (final User u : getUserAcl()) {
-            userIds.add(u.getId());
-        }
-        return userIds;
-    }
-
-
-    /**
-     * Compute the complete set of roles for this resource.
-     * This method recursively queries all parents to determine the complete
-     * set of roles this resource requires.
-     *
-     * @return The roles as a collection.
-     */
-    public Collection<Group> computeRoles() {
-        // TODO: Can we make this more efficient?
-        if (null==_parent) {
-            return getRoles();
-        }
-        final Collection<Group> roles = new ArrayList<Group>();
-        roles.addAll(_parent.computeRoles());
-        roles.addAll(getRoles());
-        return roles;
+        return acl;
     }
 
 
@@ -737,21 +700,25 @@ public abstract class Resource
         final boolean parentIsAccessible =
             (null==_parent) ? true : getParent().isAccessibleTo(user);
 
-        if (0==getRoles().size() && 0==getUserAcl().size()) {
+        if (0==_roles.size() && 0==_userAcl.size()) {
             return parentIsAccessible;
         }
 
-        if (null==user) {
-            return false;
-        }
+        if (null==user) { return false; }
 
-        for (final Group role : getRoles()) {
-            if (user.isMemberOf(role)) {
+        for (final AccessPermission p : _roles) {
+            if (p.allowsRead(user)) {
                 return parentIsAccessible;
             }
         }
 
-        return getUserAcl().contains(user);
+        for (final AccessPermission p : _userAcl) {
+            if (p.allowsRead(user)) {
+                return parentIsAccessible;
+            }
+        }
+
+        return false;
     }
 
 
@@ -866,7 +833,7 @@ public abstract class Resource
         json.setStrings(JsonKeys.TAGS, new ArrayList<String>(getTags()));
         json.set(
             JsonKeys.ACL,
-            new AclDto().setGroups(getGroupIds()).setUsers(getUserIds()));
+            getAcl());
         json.set(
             JsonKeys.PUBLISHED_BY,
             (null==getPublishedBy()) ? null : getPublishedBy().getId().toString());
@@ -879,6 +846,19 @@ public abstract class Resource
         json.set(JsonKeys.DESCRIPTION, getDescription());
         json.set(JsonKeys.TYPE, getType().name());
         json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return An ACL for this resource.
+     */
+    public AclDto getAcl() {
+        final AclDto acl = new AclDto();
+        acl.setGroups(getGroupAcl());
+        acl.setUsers(getUserAcl());
+        return acl;
     }
 
 
@@ -1011,4 +991,22 @@ public abstract class Resource
      * @return The resource's index in its parent folder.
      */
     public Integer getIndex() { return _parentIndex; }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     */
+    public void clearGroupAcl() {
+        _roles.clear();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     */
+    public void clearUserAcl() {
+        _userAcl.clear();
+    }
 }

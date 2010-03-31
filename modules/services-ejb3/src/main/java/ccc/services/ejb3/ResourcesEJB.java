@@ -537,13 +537,9 @@ public class ResourcesEJB
     public AclDto roles(final UUID resourceId)
     throws RestException {
         try {
-            final Resource r =
-                getResources().find(Resource.class, resourceId);
-            return
-                new AclDto()
-                    .setGroups(r.getGroupIds())
-                    .setUsers(r.getUserIds());
-
+            final AclDto acl =
+                getResources().find(Resource.class, resourceId).getAcl();
+            return acl;
 
         } catch (final CccCheckedException e) {
             throw fail(e);

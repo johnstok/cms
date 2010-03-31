@@ -11,9 +11,6 @@
  */
 package ccc.domain;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -108,9 +105,12 @@ public final class ResourceTest extends TestCase {
         harry.addGroup(FOO);
 
         final Folder f = new Folder();
-        f.setUserAcl(Arrays.asList(new User[]{tom, harry}));
+        f.addUserPermission(new AccessPermission(true, true, tom));
+        f.addUserPermission(new AccessPermission(true, true, harry));
+
         final Page p = new Page();
-        p.setRoles(Arrays.asList(new Group[]{FOO, BAR}));
+        p.addGroupPermission(new AccessPermission(true, true, FOO));
+        p.addGroupPermission(new AccessPermission(true, true, BAR));
         f.add(p);
 
         // ACT
@@ -133,7 +133,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.setUserAcl(Collections.singleton(_jill));
+        f.addUserPermission(new AccessPermission(true, true, _jill));
         final Page p = new Page();
         f.add(p);
 
@@ -155,7 +155,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.setUserAcl(Collections.singleton(_jill));
+        p.addUserPermission(new AccessPermission(true, true, _jill));
 
         // ACT
         final boolean isAccessible = p.isAccessibleTo(_jill);
@@ -175,8 +175,8 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.setRoles(Collections.singleton(FOO));
-        p.setUserAcl(Collections.singleton(_jill));
+        p.addGroupPermission(new AccessPermission(true, true, FOO));
+        p.addUserPermission(new AccessPermission(true, true, _jill));
 
         // ACT
         final boolean isAccessible = p.isAccessibleTo(_jill);
@@ -212,7 +212,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.setRoles(Collections.singleton(FOO));
+        p.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
         final boolean isAccessible = p.isAccessibleTo(null);
@@ -232,7 +232,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final Folder f = new Folder();
         final Page p = new Page();
-        p.setRoles(Arrays.asList(FOO));
+        p.addGroupPermission(new AccessPermission(true, true, FOO));
         f.add(p);
 
         // ACT
@@ -252,9 +252,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.setRoles(Arrays.asList(FOO));
+        f.addGroupPermission(new AccessPermission(true, true, FOO));
         final Page p = new Page();
-        p.setRoles(Arrays.asList(BAR));
+        p.addGroupPermission(new AccessPermission(true, true, BAR));
         f.add(p);
 
         // ACT
@@ -274,7 +274,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.setRoles(Arrays.asList(FOO));
+        f.addGroupPermission(new AccessPermission(true, true, FOO));
         final Page p = new Page();
         f.add(p);
 
@@ -313,7 +313,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Page p = new Page();
-        p.setRoles(Collections.singleton(FOO));
+        p.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
         final boolean secure = p.isSecure();
@@ -348,9 +348,9 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.setRoles(Arrays.asList(BAR));
+        f.addGroupPermission(new AccessPermission(true, true, BAR));
         final Resource r = new Page();
-        r.setRoles(Arrays.asList(FOO));
+        r.addGroupPermission(new AccessPermission(true, true, FOO));
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
@@ -370,7 +370,8 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.setRoles(Arrays.asList(new Group[]{}));
+        r.clearGroupAcl();
+        r.clearUserAcl();
         final User tom = new User(new Username("paul"), "password");
 
         // ACT
@@ -387,7 +388,7 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.setRoles(Arrays.asList(FOO));
+        r.addGroupPermission(new AccessPermission(true, true, FOO));
         final User tom = new User(new Username("paul"), "password");
         tom.addGroup(FOO);
 
@@ -405,7 +406,8 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.setRoles(Arrays.asList(FOO, BAR));
+        r.addGroupPermission(new AccessPermission(true, true, FOO));
+        r.addGroupPermission(new AccessPermission(true, true, BAR));
         final User tom = new User(new Username("paul"), "password");
         tom.addGroup(FOO);
 
@@ -424,9 +426,11 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Folder f = new Folder();
-        f.setRoles(Arrays.asList(BAR, BAZ));
+        f.addGroupPermission(new AccessPermission(true, true, BAR));
+        f.addGroupPermission(new AccessPermission(true, true, BAZ));
         final Resource r = new Page();
-        r.setRoles(Arrays.asList(FOO, FOZ));
+        r.addGroupPermission(new AccessPermission(true, true, FOO));
+        r.addGroupPermission(new AccessPermission(true, true, FOZ));
         f.add(r);
 
         final User tom = new User(new Username("paul"), "password");
@@ -447,36 +451,13 @@ public final class ResourceTest extends TestCase {
 
         // ARRANGE
         final Resource r = new Page();
-        r.setRoles(Arrays.asList(FOO));
+        r.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
         final boolean isAccessible = r.isAccessibleTo(_jack);
 
         // ASSERT
         assertFalse(isAccessible);
-    }
-
-    /**
-     * Test.
-     * @throws CccCheckedException If the test fails.
-     */
-    public void testComputeRoles() throws CccCheckedException {
-
-        // ARRANGE
-        final Folder f = new Folder();
-        f.setRoles(Arrays.asList(FOO));
-        final Page r = new Page();
-        r.setRoles(Arrays.asList(BAR));
-        f.add(r);
-
-
-        // ACT
-        final Collection<Group> roles = r.computeRoles();
-
-        // ASSERT
-        assertEquals(2, roles.size());
-        assertTrue(roles.contains(FOO));
-        assertTrue(roles.contains(BAR));
     }
 
     /**
@@ -488,12 +469,13 @@ public final class ResourceTest extends TestCase {
         final Resource r = new Page();
 
         // ACT
-        r.setRoles(Arrays.asList(FOO, BAR));
+        r.addGroupPermission(new AccessPermission(true, true, FOO));
+        r.addGroupPermission(new AccessPermission(true, true, BAR));
 
         // ASSERT
-        assertEquals(2, r.getRoles().size());
-        assertTrue(r.getRoles().contains(FOO));
-        assertTrue(r.getRoles().contains(BAR));
+        assertEquals(2, r.getGroupAcl().size());
+//        assertTrue(r.getGroupAcl().contains(FOO));
+//        assertTrue(r.getGroupAcl().contains(BAR));
     }
 
     /**

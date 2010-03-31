@@ -49,6 +49,7 @@ import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
+import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 import ccc.types.FailureCode;
@@ -250,17 +251,29 @@ public class BaseMigrations {
                 _legacyQueries.selectRolesForResource(r.contentId());
             final Set<UUID> groupList =
                 UserMigration.migrateGroups(roles, _cachedGroups, _groups);
+            final Set<Entry> groupEntries = new HashSet<Entry>();
+            for (final UUID gId : groupList) {
+                final Entry e = new Entry(); // FIXME: Read perm's from cc6?
+                e._canRead = true;
+                e._canWrite = true;
+                e._principal = gId;
+                groupEntries.add(e);
+            }
 
             final Collection<Integer> users =
                 _legacyQueries.selectUsersForResource(r.contentId());
-            final Set<UUID> userList = new HashSet<UUID>();
+            final Set<Entry> userList = new HashSet<Entry>();
             for (final Integer user : users) {
-                userList.add(userForLegacyId(user.intValue()).getId());
+                final Entry e = new Entry(); // FIXME: Read perm's from cc6?
+                e._canRead = true;
+                e._canWrite = true;
+                e._principal = userForLegacyId(user.intValue()).getId();
+                userList.add(e);
             }
 
             final AclDto acl =
                 new AclDto()
-                    .setGroups(groupList)
+                    .setGroups(groupEntries)
                     .setUsers(userList);
 
             _pagesExt.changeRoles(
