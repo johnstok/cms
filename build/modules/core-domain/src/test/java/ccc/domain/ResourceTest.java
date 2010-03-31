@@ -117,9 +117,9 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertTrue(p.isSecure());
-        assertTrue(p.isAccessibleTo(harry));
-        assertFalse(p.isAccessibleTo(tom)); // Doesn't have FOO or BAR.
-        assertFalse(p.isAccessibleTo(dick)); // Isn't tom or harry.
+        assertTrue(p.isReadableBy(harry));
+        assertFalse(p.isReadableBy(tom)); // Doesn't have FOO or BAR.
+        assertFalse(p.isReadableBy(dick)); // Isn't tom or harry.
     }
 
 
@@ -138,8 +138,8 @@ public final class ResourceTest extends TestCase {
         f.add(p);
 
         // ACT
-        final boolean isAccessible = p.isAccessibleTo(_jill);
-        final boolean isNotAccessible = p.isAccessibleTo(_jack);
+        final boolean isAccessible = p.isReadableBy(_jill);
+        final boolean isNotAccessible = p.isReadableBy(_jack);
 
         // ASSERT
         assertTrue(p.isSecure());
@@ -158,8 +158,8 @@ public final class ResourceTest extends TestCase {
         p.addUserPermission(new AccessPermission(true, true, _jill));
 
         // ACT
-        final boolean isAccessible = p.isAccessibleTo(_jill);
-        final boolean isNotAccessible = p.isAccessibleTo(_jack);
+        final boolean isAccessible = p.isReadableBy(_jill);
+        final boolean isNotAccessible = p.isReadableBy(_jack);
 
         // ASSERT
         assertTrue(p.isSecure());
@@ -179,8 +179,8 @@ public final class ResourceTest extends TestCase {
         p.addUserPermission(new AccessPermission(true, true, _jill));
 
         // ACT
-        final boolean isAccessible = p.isAccessibleTo(_jill);
-        final boolean isNotAccessible = p.isAccessibleTo(_jack);
+        final boolean isAccessible = p.isReadableBy(_jill);
+        final boolean isNotAccessible = p.isReadableBy(_jack);
 
         // ASSERT
         assertTrue(p.isSecure());
@@ -198,7 +198,7 @@ public final class ResourceTest extends TestCase {
         final Page p = new Page();
 
         // ACT
-        final boolean isAccessible = p.isAccessibleTo(null);
+        final boolean isAccessible = p.isReadableBy(null);
 
         // ASSERT
         assertTrue(isAccessible);
@@ -215,7 +215,7 @@ public final class ResourceTest extends TestCase {
         p.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
-        final boolean isAccessible = p.isAccessibleTo(null);
+        final boolean isAccessible = p.isReadableBy(null);
 
         // ASSERT
         assertFalse(isAccessible);
@@ -357,7 +357,7 @@ public final class ResourceTest extends TestCase {
         tom.addGroup(FOO);
 
         // ACT
-        final boolean isAccessible = r.isAccessibleTo(tom);
+        final boolean isAccessible = r.isReadableBy(tom);
 
         // ASSERT
         assertFalse(isAccessible);
@@ -375,7 +375,7 @@ public final class ResourceTest extends TestCase {
         final User tom = new User(new Username("paul"), "password");
 
         // ACT
-        final boolean isAccessible = r.isAccessibleTo(tom);
+        final boolean isAccessible = r.isReadableBy(tom);
 
         // ASSERT
         assertTrue(isAccessible);
@@ -393,7 +393,7 @@ public final class ResourceTest extends TestCase {
         tom.addGroup(FOO);
 
         // ACT
-        final boolean isAccessible = r.isAccessibleTo(tom);
+        final boolean isAccessible = r.isReadableBy(tom);
 
         // ASSERT
         assertTrue(isAccessible);
@@ -412,7 +412,7 @@ public final class ResourceTest extends TestCase {
         tom.addGroup(FOO);
 
         // ACT
-        final boolean isAccessible = r.isAccessibleTo(tom);
+        final boolean isAccessible = r.isReadableBy(tom);
 
         // ASSERT
         assertTrue(isAccessible);
@@ -438,7 +438,7 @@ public final class ResourceTest extends TestCase {
         tom.addGroup(BAR);
 
         // ACT
-        final boolean isAccessible = r.isAccessibleTo(tom);
+        final boolean isAccessible = r.isReadableBy(tom);
 
         // ASSERT
         assertTrue(isAccessible);
@@ -454,7 +454,7 @@ public final class ResourceTest extends TestCase {
         r.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
-        final boolean isAccessible = r.isAccessibleTo(_jack);
+        final boolean isAccessible = r.isReadableBy(_jack);
 
         // ASSERT
         assertFalse(isAccessible);

@@ -115,9 +115,9 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testMoveSecondResourceFromFolder() throws RestException {
+    public void testMoveSecondResourceFromFolder() throws Exception {
 
         //ARRANGE
         final ResourceSummary firstFolder = tempFolder();
@@ -145,7 +145,7 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
     public void testUpdateResourceMetadata() throws Exception  {
 

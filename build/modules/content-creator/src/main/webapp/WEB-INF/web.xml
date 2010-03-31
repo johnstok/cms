@@ -42,7 +42,8 @@
         <param-name>resteasy.providers</param-name>
         <param-value>
             ccc.rest.providers.CommandFailedExceptionMapper,
-            ccc.rest.providers.RuntimeExceptionMapper,
+            ccc.rest.impl.EjbExceptionMapper,
+            ccc.rest.providers.UnauthorizedExceptionMapper,
             ccc.rest.providers.DurationReader,
             ccc.rest.providers.FailureWriter,
             ccc.rest.providers.UUIDProvider,

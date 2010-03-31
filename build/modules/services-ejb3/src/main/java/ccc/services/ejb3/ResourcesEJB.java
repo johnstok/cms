@@ -666,7 +666,7 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
                 getResources().lookup(rp);
-            checkSecurity(r);
+            checkRead(r);
             return r.forCurrentRevision();
 
         } catch (final CccCheckedException e) {
@@ -686,7 +686,7 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(rootPath);
             final Resource r =
                 getResources().lookup(rp);
-            checkSecurity(r);
+            checkRead(r);
             return r.forWorkingCopy();
 
         } catch (final CccCheckedException e) {
@@ -707,7 +707,7 @@ public class ResourcesEJB
             final ResourcePath rp = new ResourcePath(path);
             final Resource r =
                 getResources().lookup(rp);
-            checkSecurity(r);
+            checkRead(r);
             return r.forSpecificRevision(version);
 
         } catch (final CccCheckedException e) {
@@ -755,7 +755,7 @@ public class ResourcesEJB
         try {
             final Resource r =
                 getResources().find(Resource.class, resourceId);
-            checkSecurity(r);
+            checkRead(r);
 
             final Folder f = r.getParent().as(Folder.class);
             for (final Resource item : f.getEntries()) {
@@ -797,7 +797,7 @@ public class ResourcesEJB
 
         try {
             final Resource r = getResources().find(Resource.class, resourceId);
-            checkSecurity(r);
+            checkRead(r);
             return
                 r.mapResource();
 
@@ -866,7 +866,7 @@ public class ResourcesEJB
                                             final List<Resource> resources) {
         final List<Resource> accessible = new ArrayList<Resource>();
         for (final Resource r : resources) {
-            if (r.isAccessibleTo(u)) { accessible.add(r); }
+            if (r.isReadableBy(u)) { accessible.add(r); }
         }
         return accessible;
     }

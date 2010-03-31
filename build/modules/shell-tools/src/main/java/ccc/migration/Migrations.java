@@ -165,7 +165,7 @@ public class Migrations extends BaseMigrations {
             if (_migrateHomepage) {
                 migrateHomepages();
             }
-        } catch (final RestException e) {
+        } catch (final RuntimeException e) {
             log.error("Catastrophic failure.", e);
         }
     }
@@ -190,8 +190,7 @@ public class Migrations extends BaseMigrations {
 
 
     // TODO: Move under command-resourceDao?
-    private void publishRecursive(final ResourceSummary resource)
-                                                 throws RestException {
+    private void publishRecursive(final ResourceSummary resource) {
         getResources().lock(UUID.fromString(resource.getId().toString()));
         getResources().publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {

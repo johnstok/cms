@@ -51,6 +51,10 @@ public final class HttpStatusCode {
     public static final int ERROR = 500;
 
 
+    /** UNAUTHORIZED : int. */
+    public static final int UNAUTHORIZED = 401;
+
+
     /**
      * Constructor.
      */

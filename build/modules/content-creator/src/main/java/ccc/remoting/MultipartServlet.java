@@ -31,6 +31,7 @@ import java.io.IOException;
 
 import javax.activation.MimeTypeParseException;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
@@ -106,10 +107,11 @@ public abstract class MultipartServlet
      * @throws IOException If writing to the response fails.
      */
     protected void handleException(final HttpServletResponse response,
-                                   final RestException e)
-    throws IOException {
+                                   final EJBException e)
+    throws IOException { // FIXME Shouldn't assume RestException.
+        final RestException re = (RestException) e.getCausedByException();
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        response.getWriter().write(new JsonImpl(e.getFailure()).getDetail());
+        response.getWriter().write(new JsonImpl(re.getFailure()).getDetail());
     }
 
 

@@ -28,14 +28,20 @@ package ccc.acceptance;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.jboss.resteasy.client.ClientResponseFailure;
+
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
+import ccc.rest.dto.AclDto;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.dto.UserDto;
+import ccc.rest.dto.AclDto.Entry;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
@@ -108,9 +114,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testGetChildrenManualOrder() throws RestException, UnauthorizedException  {
+    public void testGetChildrenManualOrder() throws Exception {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -155,9 +161,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testGetChildren() throws RestException, UnauthorizedException  {
+    public void testGetChildren() throws Exception {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -199,9 +205,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testChangeFolderIndexPage() throws RestException, UnauthorizedException  {
+    public void testChangeFolderIndexPage() throws Exception {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -226,16 +232,49 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         assertEquals(ResourceOrder.MANUAL.name(), updated.getSortOrder());
         assertEquals(page.getId(), updated.getIndexPageId());
         assertEquals(1, updated.getChildCount());
-
     }
 
 
     /**
      * Test.
      *
-     * @throws RestException If the test fails.
+     * @throws Exception If the test fails.
      */
-    public void testChangeFolderSortOrder() throws RestException, UnauthorizedException  {
+    public void testSecurityBlocksFolderRead() throws Exception {
+
+        // ARRANGE
+        final ResourceSummary folder = tempFolder();
+        final UserDto user = tempUser();
+        final UserDto me = getUsers().loggedInUser();
+        final AclDto acl = new AclDto();
+        final Entry e = new Entry();
+        e._canRead = true;
+        e._canWrite = true;
+        e._principal = user.getId();
+        acl.setUsers(Collections.singleton(e));
+        getCommands().lock(folder.getId());
+        getCommands().changeRoles(folder.getId(), acl);
+
+        // ACT
+        try {
+            getFolders().getChildren(folder.getId());
+            fail();
+
+        // ASSERT
+        } catch (final ClientResponseFailure ex) {
+            final UnauthorizedException ue = convertException(ex);
+            assertEquals(folder.getId(), ue.getTarget());
+            assertEquals(me.getId(), ue.getUser());
+        }
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws Exception If the test fails.
+     */
+    public void testChangeFolderSortOrder() throws Exception {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();

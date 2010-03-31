@@ -24,53 +24,32 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.providers;
 
-import ccc.types.Failure;
-import ccc.types.FailureCode;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
 
-
+import ccc.rest.UnauthorizedException;
+import ccc.types.HttpStatusCode;
 
 
 /**
- * An exception representing the failure of a CCC command.
+ * A mapper for unauthorized exceptions.
  *
  * @author Civic Computing Ltd.
  */
-public class RestException
-    extends
-        RuntimeException {
+public class UnauthorizedExceptionMapper
+    implements
+        ExceptionMapper<UnauthorizedException> {
 
-    private Failure _failure;
-
-    @SuppressWarnings("unused") private RestException() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param failure The failure.
-     */
-    public RestException(final Failure failure) {
-        super("CCC Error: "+failure.getExceptionId());
-        _failure = failure;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The failure's code.
-     */
-    public FailureCode getCode() {
-        return _failure.getCode();
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The failure.
-     */
-    public Failure getFailure() {
-        return _failure;
+    /** {@inheritDoc} */
+    @Override
+    public Response toResponse(final UnauthorizedException e) {
+        return
+            Response
+                .status(HttpStatusCode.UNAUTHORIZED)
+                .type("application/json")
+                .entity(e)
+                .build();
     }
 }

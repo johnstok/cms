@@ -57,7 +57,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>domain-support</artifactId>
+            <artifactId>client-jaxrs</artifactId>
             <version>${project.version}</version>
         </dependency>
         
@@ -110,6 +110,12 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>${lib.version.javamail}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-j2ee</artifactId>
+            <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
         </dependency>
         

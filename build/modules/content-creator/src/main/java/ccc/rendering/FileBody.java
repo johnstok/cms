@@ -97,11 +97,11 @@ public class FileBody
                         _file.getId(), _file.getRevision(), new CopyAction(os));
                 }
             }
-        } catch (final RestException e) {
-            throw new RuntimeException(e);
         } catch (final UnauthorizedException e) {
             throw new AuthenticationRequiredException(
                 _file.getAbsolutePath());
+        } catch (final RestException e) {
+            throw new RuntimeException(e);
         }
     }
 }

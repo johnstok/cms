@@ -201,6 +201,9 @@ public class ContentServlet
                 LOG.debug("Retrieving revision: "+version+".");
                 return _resources.revisionForPath(path, version.intValue());
             }
+        } catch (final UnauthorizedException e) {
+            LOG.warn(e.getMessage());
+            throw new AuthenticationRequiredException(path);
         } catch (final RestException e) {
             LOG.warn(
                 "Exception retrieving path " + path
@@ -208,9 +211,6 @@ public class ContentServlet
                 + ", v=" + version
                 + " " + new JsonImpl(e.getFailure()));
             throw new NotFoundException();
-        } catch (final UnauthorizedException e) {
-            LOG.warn(e.getMessage());
-            throw new AuthenticationRequiredException(path);
         }
     }
 
