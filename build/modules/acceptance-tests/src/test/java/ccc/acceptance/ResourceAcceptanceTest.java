@@ -42,6 +42,7 @@ import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
+import ccc.rest.dto.AclDto.Entry;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
@@ -93,9 +94,10 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
+     *
+     * @throws Exception If the test fails.
      */
-    public void testMoveResource() throws Exception  {
+    public void testMoveResource() throws Exception {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -116,31 +118,31 @@ public class ResourceAcceptanceTest
      * @throws RestException If the test fails.
      */
     public void testMoveSecondResourceFromFolder() throws RestException {
-        
+
         //ARRANGE
         final ResourceSummary firstFolder = tempFolder();
         final ResourceSummary secondFolder = tempFolder();
-        
-        ResourceSummary childFolder1 = getFolders().createFolder(
+
+        final ResourceSummary childFolder1 = getFolders().createFolder(
             new FolderDto(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
         getFolders().createFolder(
             new FolderDto(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
-        
+
         // ACT
         getCommands().lock(childFolder1.getId());
         getCommands().move(childFolder1.getId(), secondFolder.getId());
-        
+
         // ASSERT
         final ResourceSummary content = resourceForPath("");
-        Collection<ResourceSummary> children = 
+        final Collection<ResourceSummary> children =
             getFolders().getChildren(content.getId());
         assertNotNull(children);
-        
+
     }
-    
-    
+
+
     /**
      * Test.
      * @throws RestException If the test fails.
@@ -192,9 +194,13 @@ public class ResourceAcceptanceTest
         final ResourceSummary folder = tempFolder();
         final UserDto user = tempUser();
         final AclDto acl = new AclDto();
+        final Entry e = new Entry();
+        e._canRead = true;
+        e._canWrite = true;
+        e._principal = user.getId();
 
         // ACT
-        acl.setUsers(Collections.singleton(user.getId()));
+        acl.setUsers(Collections.singleton(e));
         getCommands().lock(folder.getId());
         getCommands().changeRoles(folder.getId(), acl);
 
@@ -202,7 +208,8 @@ public class ResourceAcceptanceTest
         final AclDto actual = getCommands().roles(folder.getId());
         assertEquals(0, actual.getGroups().size());
         assertEquals(1, actual.getUsers().size());
-        assertTrue(acl.getUsers().contains(user.getId()));
+        assertEquals(
+            user.getId(), actual.getUsers().iterator().next()._principal);
     }
 
 
@@ -217,10 +224,15 @@ public class ResourceAcceptanceTest
         final ResourceSummary folder = tempFolder();
         final AclDto origRoles =
             getCommands().roles(folder.getId());
+        final Entry e = new Entry();
+        e._canRead = true;
+        e._canWrite = true;
+        e._name = "SITE_BUILDER";
+        e._principal =
+            getGroups().list("SITE_BUILDER").iterator().next().getId();
         final AclDto roles =
             new AclDto()
-                .setGroups(Collections.singleton(getGroups()
-                    .list("SITE_BUILDER").iterator().next().getId()));
+                .setGroups(Collections.singleton(e));
 
         // ACT
         getCommands().lock(folder.getId());

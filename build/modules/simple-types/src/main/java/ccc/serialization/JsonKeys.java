@@ -191,4 +191,6 @@ public final class JsonKeys {
     public static final String GROUPS = "groups";
     /** ACL : String. */
     public static final String ACL = "acl";
+    /** PRINCIPAL : String. */
+    public static final String PRINCIPAL = "principal";
 }

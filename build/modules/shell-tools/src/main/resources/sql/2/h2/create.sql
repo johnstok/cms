@@ -1,5 +1,10 @@
 UPDATE settings SET value='2' WHERE name='DATABASE_VERSION';
 
+ALTER TABLE resource_users ADD can_read bit DEFAULT 1 NOT NULL;
+ALTER TABLE resource_users ADD can_write bit DEFAULT 1 NOT NULL;
+ALTER TABLE resource_roles ADD can_read bit DEFAULT 1 NOT NULL;
+ALTER TABLE resource_roles ADD can_write bit DEFAULT 1 NOT NULL;
+
 INSERT INTO groups (id, vn, name) SELECT RANDOM_UUID(), 0, 'Site Reader';
 INSERT INTO users (id, email, username, vn, hash, name) VALUES (RANDOM_UUID(), 'support@civicuk.com', 'anonymous', 0, X'00', 'Anonymous User');
 INSERT INTO user_roles (user_id, group_id) VALUES ((SELECT id FROM users WHERE username='anonymous'), (SELECT id FROM groups WHERE name='Site Reader'));

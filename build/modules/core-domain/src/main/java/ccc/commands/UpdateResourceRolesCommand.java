@@ -27,18 +27,17 @@
 package ccc.commands;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
+import ccc.domain.AccessPermission;
 import ccc.domain.CccCheckedException;
 import ccc.domain.EntityNotFoundException;
-import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
 import ccc.rest.dto.AclDto;
+import ccc.rest.dto.AclDto.Entry;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -95,20 +94,22 @@ public class UpdateResourceRolesCommand
 
 
     private void lookupGroups(final Resource r) throws EntityNotFoundException {
-        final Set<Group> groups = new HashSet<Group>();
-        for (final UUID groupId : _roles.getGroups()) {
-            groups.add(getGroups().find(groupId));
+        r.clearGroupAcl();
+        for (final Entry e : _roles.getGroups()) {
+            r.addGroupPermission(
+                new AccessPermission(
+                    e._canRead, e._canWrite, getGroups().find(e._principal)));
         }
-        r.setRoles(groups);
     }
 
 
     private void lookupUsers(final Resource r) throws EntityNotFoundException {
-        final Set<User> users = new HashSet<User>();
-        for (final UUID userId : _roles.getUsers()) {
-            users.add(getUsers().find(userId));
+        r.clearUserAcl();
+        for (final Entry e : _roles.getUsers()) {
+            r.addUserPermission(
+                new AccessPermission(
+                    e._canRead, e._canWrite, getUsers().find(e._principal)));
         }
-        r.setUserAcl(users);
     }
 
 

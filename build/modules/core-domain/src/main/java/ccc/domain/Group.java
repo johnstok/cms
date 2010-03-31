@@ -45,17 +45,13 @@ import ccc.types.DBC;
  */
 public class Group
     extends
-        Entity {
+        Principal {
 
-    private String _name;
-    private Set<String> _permissions;
+    private Set<String> _permissions = new HashSet<String>();
 
 
     /** Constructor: for persistence only. */
-    protected Group() {
-        setName(getId().toString());
-        setPermissions(new HashSet<String>());
-    }
+    protected Group() { super(); }
 
 
     /**
@@ -67,27 +63,6 @@ public class Group
     public Group(final String name, final String... permissions) {
         setName(name);
         setPermissions(new HashSet<String>(Arrays.asList(permissions)));
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public final String getName() {
-        return _name;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param name The name to set.
-     */
-    public final void setName(final String name) {
-        DBC.require().notEmpty(name);
-        _name = name;
     }
 
 
@@ -158,5 +133,12 @@ public class Group
     @Override
     public void toJson(final Json json) {
         createDto().toJson(json);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean includes(final User user) {
+        return (null==user) ? false : user.getGroups().contains(this);
     }
 }

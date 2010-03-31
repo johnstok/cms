@@ -146,17 +146,45 @@
         <set name="_roles" table="resource_roles">
             <cache usage="transactional"/>
             <key column="resource_id" not-null="true" foreign-key="FK_RESROLES_RESOURCE_ID"/>
-            <many-to-many
-                class="ccc.domain.Group"
-                column="group_id" />
+            <composite-element class="ccc.domain.AccessPermission">
+                <property
+                    name="_canRead"
+                    column="can_read"
+                    not-null="true"
+                    type="boolean" />
+                <property
+                    name="_canWrite"
+                    column="can_write"
+                    not-null="true"
+                    type="boolean" />
+                <many-to-one
+                    name="_principal"
+                    column="group_id" 
+                    not-null="true"
+                    class="ccc.domain.Group" />
+            </composite-element>
         </set>
 
         <set name="_userAcl" table="resource_users">
             <cache usage="transactional"/>
             <key column="resource_id" not-null="true" foreign-key="FK_RESUSERS_RESOURCE_ID"/>
-            <many-to-many
-                class="ccc.domain.User"
-                column="user_id" />
+            <composite-element class="ccc.domain.AccessPermission">
+                <property
+                    name="_canRead"
+                    column="can_read"
+                    not-null="true"
+                    type="boolean" />
+                <property
+                    name="_canWrite"
+                    column="can_write"
+                    not-null="true"
+                    type="boolean" />
+                <many-to-one
+                    name="_principal"
+                    column="user_id" 
+                    not-null="true"
+                    class="ccc.domain.User" />
+            </composite-element>
         </set>
         
         <map name="_metadata" table="resource_metadata">

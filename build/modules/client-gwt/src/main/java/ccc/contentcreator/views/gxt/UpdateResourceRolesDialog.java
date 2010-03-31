@@ -38,6 +38,7 @@ import ccc.contentcreator.remoting.UpdateResourceRolesAction;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
+import ccc.rest.dto.AclDto.Entry;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -125,8 +126,8 @@ public class UpdateResourceRolesDialog
 
         final List<UserSummaryModelData> uData =
             new ArrayList<UserSummaryModelData>();
-        for (final UUID u : _acl.getUsers()) {
-            new GetUserAction(u) {
+        for (final Entry e : _acl.getUsers()) {
+            new GetUserAction(e._principal) { // FIXME: remove these calls.
                 @Override
                 protected void execute(final UserDto user) {
                     final UserSummaryModelData d =
@@ -245,13 +246,21 @@ public class UpdateResourceRolesDialog
             @Override
             public void componentSelected(final ButtonEvent ce) {
 
-                final List<UUID> newGroups = new ArrayList<UUID>();
+                final List<Entry> newGroups = new ArrayList<Entry>();
                 for (final ModelData selected : _groupStore.getModels()) {
-                    newGroups.add(selected.<UUID>get("id"));
+                    final Entry e = new Entry();
+                    e._canRead = true;
+                    e._canWrite = true;
+                    e._principal = selected.<UUID>get("id");
+                    newGroups.add(e);
                 }
-                final List<UUID> newUsers = new ArrayList<UUID>();
+                final List<Entry> newUsers = new ArrayList<Entry>();
                 for (final UserSummaryModelData um : _userStore.getModels()) {
-                    newUsers.add(um.getId());
+                    final Entry e = new Entry();
+                    e._canRead = true;
+                    e._canWrite = true;
+                    e._principal = um.getId();
+                    newUsers.add(e);
                 }
 
                 final AclDto acl =
