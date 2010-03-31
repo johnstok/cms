@@ -176,3 +176,5 @@ sanitize
 sanitization
 antisamy
 gxt
+mapper
+unauthorized
