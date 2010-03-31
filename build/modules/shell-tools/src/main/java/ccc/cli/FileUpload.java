@@ -33,10 +33,10 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.client1.JaxrsServiceLocator;
+import ccc.api.client1.ProxyServiceLocator;
+import ccc.api.client1.RegistryServiceLocator;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
-import ccc.migration.ServiceLookup;
 import ccc.rest.RestException;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
@@ -56,7 +56,7 @@ public class FileUpload extends CccApp {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
     private static Server        server;
-    private static ServiceLookup services;
+    private static RegistryServiceLocator services;
 
     private static void recurse(final UUID parentId,
                                 final File localFolder,
@@ -95,9 +95,9 @@ public class FileUpload extends CccApp {
         final Options o = parseOptions(args, Options.class);
 
         services =
-            new ServiceLookup(o._appName, o._providerURL);
-        final JaxrsServiceLocator sl =
-            new JaxrsServiceLocator(o._uploadUrl);
+            new RegistryServiceLocator(o._appName, o._providerURL);
+        final ProxyServiceLocator sl =
+            new ProxyServiceLocator(o._uploadUrl);
 
         final ResourcesExt resources = services.getResources();
         final FoldersExt foldersExt = services.getFolders();

@@ -30,8 +30,7 @@ package ccc.rest.impl;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
+import ccc.api.client1.RegistryServiceLocator;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
@@ -46,8 +45,6 @@ import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
-import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
 
 
 /**
@@ -55,25 +52,33 @@ import ccc.rest.extensions.ResourcesExt;
  *
  * @author Civic Computing Ltd.
  */
-abstract class JaxrsCollection
-    implements
-        ServiceLocator {
+abstract class JaxrsCollection {
 
-    private final Registry _reg = new JNDI();
+    private          ServiceLocator _locator;
     @Context private ServletContext _sContext;
 
-    private Templates       _templates;
-    private ResourcesExt    _resourcesExt;
-    private Pages           _pages;
-    private FoldersExt      _foldersExt;
-    private Users           _userCommands;
-    private Actions         _actions;
-    private ActionScheduler _actionscheduler;
-    private Files           _files;
-    private SearchEngine    _search;
-    private Aliases         _aliases;
-    private Comments        _comments;
-    private Groups          _groups;
+
+    /**
+     * Mutator.
+     *
+     * @param sl The service locator to set.
+     */
+    void setServiceLocator(final ServiceLocator sl) {
+        _locator = sl;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The current service locator.
+     */
+    ServiceLocator getServiceLocator() {
+        return
+            (null!=_locator)
+                ? _locator
+                : new RegistryServiceLocator(getAppName());
+    }
 
 
     /**
@@ -96,186 +101,67 @@ abstract class JaxrsCollection
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public final Templates getTemplates() {
-        return
-            (null==_templates)
-                ? (Templates)
-                        _reg.get(getAppName()+"/"+Templates.NAME+"/remote")
-                : _templates;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param queries The templates to set.
-     */
-    public final void setQueries(final Templates queries) {
-        _templates = queries;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final ResourcesExt getResources() {
-        return
-            (null==_resourcesExt)
-                ? (ResourcesExt) _reg.get(
-                    getAppName()+"/"+Resources.NAME+"/remote")
-                : _resourcesExt;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final Actions getActions() {
-        return
-        (null==_actions)
-            ? (Actions) _reg.get(getAppName()+"/"+Actions.NAME+"/remote")
-            : _actions;
+    public Actions getActions() {
+        return getServiceLocator().getActions();
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public final ActionScheduler lookupActionScheduler() {
-        return
-            (null==_actionscheduler)
-                ? (ActionScheduler)
-                    _reg.get(getAppName()+"/"+ActionScheduler.NAME+"/local")
-                : _actionscheduler;
+    public Aliases getAliases() {
+        return getServiceLocator().getAliases();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public final Pages getPages() {
-        return
-        (null==_pages)
-            ? (Pages) _reg.get(getAppName()+"/"+Pages.NAME+"/local")
-            : _pages;
-    }
 
-    /** {@inheritDoc} */
-    @Override
-    public final FoldersExt getFolders() {
-        return
-        (null==_foldersExt)
-            ? (FoldersExt) _reg.get(getAppName()+"/"+Folders.NAME+"/remote")
-            : _foldersExt;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final Users getUsers() {
-        return
-        (null==_userCommands)
-            ? (Users) _reg.get(getAppName()+"/"+Users.NAME+"/remote")
-            : _userCommands;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final Files getFiles() {
-        return
-        (null==_files)
-            ? (Files) _reg.get(getAppName()+"/"+Files.NAME+"/local")
-            : _files;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final SearchEngine getSearch() {
-        return
-        (null==_search)
-            ? (SearchEngine)
-                _reg.get(getAppName()+"/"+SearchEngine.NAME+"/local")
-            : _search;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public final Aliases getAliases() {
-        return
-            (null==_aliases)
-                ? (Aliases) _reg.get(getAppName()+"/"+Aliases.NAME+"/local")
-                : _aliases;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Comments getComments() {
-        return
-        (null==_comments)
-            ? (Comments) _reg.get(getAppName()+"/"+Comments.NAME+"/local")
-            : _comments;
+        return getServiceLocator().getComments();
     }
 
-    /** {@inheritDoc} */
-    @Override
+
+    public Files getFiles() {
+        return getServiceLocator().getFiles();
+    }
+
+
+    public Folders getFolders() {
+        return getServiceLocator().getFolders();
+    }
+
+
     public Groups getGroups() {
-        return
-        (null==_groups)
-            ? (Groups) _reg.get(getAppName()+"/"+Groups.NAME+"/remote")
-            : _groups;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param resourcesExt The commands to set.
-     */
-    public final void setCommands(final ResourcesExt resourcesExt) {
-        _resourcesExt = resourcesExt;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param pages The pages implementation to set.
-     */
-    public final void setPageCommands(final Pages pages) {
-        _pages = pages;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param foldersExt The commands to set.
-     */
-    public final void setFolderCommands(final FoldersExt foldersExt) {
-        _foldersExt = foldersExt;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param userCommands The commands to set.
-     */
-    public final void setUserCommands(final Users userCommands) {
-        _userCommands = userCommands;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param files The files to set.
-     */
-    public final void setFiles(final Files files) {
-        _files = files;
-    }
-
-    /**
-     * Mutator.
-     *
-     * @param aliases The aliases to set.
-     */
-    public final void setAliases(final Aliases aliases) {
-        _aliases = aliases;
+        return getServiceLocator().getGroups();
     }
 
 
-    /** {@inheritDoc} */
-    @Override
+    public Pages getPages() {
+        return getServiceLocator().getPages();
+    }
+
+
+    public Resources getResources() {
+        return getServiceLocator().getResources();
+    }
+
+
+    public SearchEngine getSearch() {
+        return getServiceLocator().getSearch();
+    }
+
+
     public Security getSecurity() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return getServiceLocator().getSecurity();
+    }
+
+
+    public Templates getTemplates() {
+        return getServiceLocator().getTemplates();
+    }
+
+
+    public Users getUsers() {
+        return getServiceLocator().getUsers();
+    }
+
+
+    public ActionScheduler lookupActionScheduler() {
+        return getServiceLocator().lookupActionScheduler();
     }
 }

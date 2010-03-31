@@ -36,24 +36,12 @@ import junit.framework.TestCase;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 
+import ccc.api.client1.MemoryServiceLocator;
 import ccc.commons.Context;
 import ccc.commons.Script;
 import ccc.commons.Testing;
 import ccc.commons.TextProcessor;
-import ccc.rest.ActionScheduler;
-import ccc.rest.Actions;
-import ccc.rest.Aliases;
-import ccc.rest.Comments;
-import ccc.rest.Files;
-import ccc.rest.Folders;
-import ccc.rest.Groups;
-import ccc.rest.Pages;
-import ccc.rest.Resources;
-import ccc.rest.SearchEngine;
-import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
-import ccc.rest.Templates;
-import ccc.rest.Users;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.extensions.ResourcesExt;
@@ -78,7 +66,7 @@ public class VelocityProcessorTest extends TestCase {
         replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
         final Context ctxt = new Context();
-        ctxt.add("services", new TestServiceLocator());
+        ctxt.add("services", _sl);
 
         // ACT
         final String actual =
@@ -101,7 +89,7 @@ public class VelocityProcessorTest extends TestCase {
         replay(_reader);
         final TextProcessor vp = new VelocityProcessor();
         final Context ctxt = new Context();
-        ctxt.add("services",  new TestServiceLocator());
+        ctxt.add("services",  _sl);
 
         // ACT
         final String actual =
@@ -325,7 +313,9 @@ public class VelocityProcessorTest extends TestCase {
     public void testSecurityBlockedNewInstance() {
 
         // ARRANGE
-        final String template = "$uuid.Class.ClassLoader.loadClass('java.util.HashMap').newInstance().size()";
+        final String template =
+            "$uuid.Class.ClassLoader.loadClass('java.util.HashMap')"
+            + ".newInstance().size()";
         final Context ctxt = new Context();
         ctxt.add("resource", this);
         ctxt.add("services", Testing.stub(ServiceLocator.class));
@@ -343,6 +333,7 @@ public class VelocityProcessorTest extends TestCase {
     protected void setUp() {
         _vp = new VelocityProcessor();
         _reader = createStrictMock(ResourcesExt.class);
+        _sl.setCommands(_reader);
     }
 
     /** {@inheritDoc} */
@@ -361,75 +352,5 @@ public class VelocityProcessorTest extends TestCase {
 
     private TextProcessor _vp;
     private ResourcesExt _reader;
-
-
-    private class TestServiceLocator implements ServiceLocator {
-        @Override
-        public Actions getActions() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Files getFiles() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Folders getFolders() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Pages getPages() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Resources getResources() { return _reader; }
-
-        @Override
-        public Templates getTemplates() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Users getUsers() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public SearchEngine getSearch() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public Aliases getAliases() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public Security getSecurity() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public Comments getComments() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public Groups getGroups() {
-            throw new UnsupportedOperationException();
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public ActionScheduler lookupActionScheduler() {
-            throw new UnsupportedOperationException();
-        }
-    }
+    private MemoryServiceLocator _sl = new MemoryServiceLocator();
 }

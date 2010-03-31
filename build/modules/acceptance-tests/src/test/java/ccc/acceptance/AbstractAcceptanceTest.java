@@ -50,7 +50,7 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.client1.JaxrsServiceLocator;
+import ccc.api.client1.ProxyServiceLocator;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Comments;
@@ -532,7 +532,7 @@ public abstract class AbstractAcceptanceTest
     @Override
     protected void setUp() {
         _http = new HttpClient();
-        _sl   = new JaxrsServiceLocator(_http, _hostUrl);
+        _sl   = new ProxyServiceLocator(_http, _hostUrl);
         getSecurity().login("migration", "migration");
     }
 

@@ -274,7 +274,7 @@ public class ResourcesImpl
     @Override
     public void deleteCacheDuration(final UUID id)
     throws RestException {
-        getResources().updateCacheDuration(id, (Duration) null);
+        getResources().deleteCacheDuration(id);
     }
 
 
