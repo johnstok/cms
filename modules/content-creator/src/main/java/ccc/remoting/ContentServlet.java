@@ -41,10 +41,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.client1.MemoryServiceLocator;
 import ccc.commons.Context;
 import ccc.mail.JavaMailMailer;
 import ccc.mail.Mailer;
-import ccc.remoting.actions.SessionKeys;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.Response;
@@ -58,6 +58,7 @@ import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.SearchEngine;
+import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.UnauthorizedException;
 import ccc.rest.Users;
@@ -90,7 +91,7 @@ public class ContentServlet
     @EJB(name = Templates.NAME)    private transient Templates    _templates;
     @EJB(name = Comments.NAME)     private transient Comments     _comments;
     @EJB(name = Groups.NAME)       private transient Groups       _groups;
-    @Resource(name = Mailer.NAME)  private transient Session      _session;
+    @Resource(name = Mailer.NAME)  private transient Session      _mail;
 
     private boolean _respectVisibility = true;
 
@@ -123,8 +124,6 @@ public class ContentServlet
             + req.getContextPath()
             + req.getServletPath()
             + req.getPathInfo());
-
-        bindServices(req);
 
         final String contentPath = determineResourcePath(req);
         final boolean wc = req.getParameterMap().keySet().contains("wc");
@@ -227,32 +226,33 @@ public class ContentServlet
                                   final HttpServletResponse response,
                                   final ResourceSnapshot rs) {
         final Context context = new Context();
+
         context.add("user", loggedInUser());
         context.add("request",  request);
         context.add("response", response);
-        context.add("services", new RequestScopeServiceLocator(request));
+        context.add("services", createServiceLocator());
         context.add("resource", rs);
-        context.add("mail", new JavaMailMailer(_session));
+        context.add("mail", new JavaMailMailer(_mail));
         return context;
+    }
+
+
+    private ServiceLocator createServiceLocator() {
+        final MemoryServiceLocator sl = new MemoryServiceLocator();
+        sl.setUserCommands(_users);
+        sl.setFiles(_files);
+        sl.setPageCommands(_pages);
+        sl.setCommands(_resources);
+        sl.setFolderCommands(_folders);
+        sl.setActions(_actions);
+        sl.setSearch(_search);
+        sl.setComments(_comments);
+        sl.setGroups(_groups);
+        return sl;
     }
 
 
     private UserDto loggedInUser() {
         return _users.loggedInUser();
-    }
-
-
-    private void bindServices(final HttpServletRequest req) {
-        // TODO: Wrap the 'Ext' objects to remove access to their methods.
-        req.setAttribute(SessionKeys.USERS_KEY,     _users);
-        req.setAttribute(SessionKeys.FILES_KEY,     _files);
-        req.setAttribute(SessionKeys.PAGES_KEY,     _pages);
-        req.setAttribute(SessionKeys.RESOURCES_KEY, _resources);
-        req.setAttribute(SessionKeys.FOLDERS_KEY,   _folders);
-        req.setAttribute(SessionKeys.ACTIONS_KEY,   _actions);
-        req.setAttribute(SessionKeys.SEARCH_KEY,    _search);
-        req.setAttribute(SessionKeys.COMMENTS_KEY,  _comments);
-        req.setAttribute(SessionKeys.GROUPS_KEY,    _groups);
-        req.setAttribute(SessionKeys.MAIL_KEY,      _session);
     }
 }

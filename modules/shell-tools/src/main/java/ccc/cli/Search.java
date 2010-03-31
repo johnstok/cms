@@ -30,7 +30,7 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.client1.JaxrsServiceLocator;
+import ccc.api.client1.ProxyServiceLocator;
 import ccc.rest.SearchEngine;
 import ccc.rest.ServiceLocator;
 
@@ -56,7 +56,7 @@ public final class Search extends CccApp {
 
         options  = parseOptions(args, Options.class);
 
-        services = new JaxrsServiceLocator(options.getBaseUrl());
+        services = new ProxyServiceLocator(options.getBaseUrl());
 
         services.getSecurity().login(
             options.getUsername(), options.getPassword());

@@ -78,10 +78,10 @@ import ccc.rest.providers.UuidCollectionWriter;
  *
  * @author Civic Computing Ltd.
  */
-public class JaxrsServiceLocator implements ServiceLocator {
+public class ProxyServiceLocator implements ServiceLocator {
 
     private static final Logger LOG =
-        Logger.getLogger(JaxrsServiceLocator.class);
+        Logger.getLogger(ProxyServiceLocator.class);
 
     static {
         final ResteasyProviderFactory pFactory =
@@ -146,7 +146,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
     private final HttpClient _httpClient;
 
 
-    public JaxrsServiceLocator(final HttpClient _http, final String hostUrl) {
+    public ProxyServiceLocator(final HttpClient _http, final String hostUrl) {
         _httpClient = _http;
         _hostUrl = hostUrl;
         _secure = _hostUrl+"/ccc/api/secure";
@@ -186,7 +186,7 @@ public class JaxrsServiceLocator implements ServiceLocator {
     }
 
 
-    public JaxrsServiceLocator(final String hostUrl) {
+    public ProxyServiceLocator(final String hostUrl) {
         this(new HttpClient(), hostUrl);
     }
 

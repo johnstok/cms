@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.migration;
+package ccc.api.client1;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
@@ -44,7 +44,6 @@ import ccc.rest.Templates;
 import ccc.rest.Users;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
-import ccc.services.Migration;
 
 
 /**
@@ -52,7 +51,7 @@ import ccc.services.Migration;
  *
  * @author Civic Computing Ltd.
  */
-public class ServiceLookup implements ServiceLocator {
+public class RegistryServiceLocator implements ServiceLocator {
 
     private final Registry _registry;
     private final String _appName;
@@ -64,7 +63,8 @@ public class ServiceLookup implements ServiceLocator {
      * @param appName The name of the application.
      * @param registry The registry to use for look up.
      */
-    public ServiceLookup(final String appName, final Registry registry) {
+    public RegistryServiceLocator(final String appName,
+                                  final Registry registry) {
         _appName = appName;
         _registry = registry;
     }
@@ -75,7 +75,7 @@ public class ServiceLookup implements ServiceLocator {
      *
      * @param appName The name of the application.
      */
-    public ServiceLookup(final String appName) {
+    public RegistryServiceLocator(final String appName) {
         this(appName, new JNDI());
     }
 
@@ -86,7 +86,8 @@ public class ServiceLookup implements ServiceLocator {
      * @param appName The name of the application.
      * @param providerUrl The java naming provider URL
      */
-    public ServiceLookup(final String appName, final String providerUrl) {
+    public RegistryServiceLocator(final String appName,
+                                  final String providerUrl) {
         final Registry registry = new JNDI(providerUrl);
         _appName = appName;
         _registry = registry;
@@ -103,17 +104,7 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Pages getPages() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
-    /**
-     * Retrieve the migration specific API.
-     *
-     * @return An implementation of the migration API.
-     */
-    public Migration getMigrations() {
-        return _registry.<Migration>get(remotePath(Migration.NAME));
+        return _registry.<Pages>get(localPath(Pages.NAME));
     }
 
 
@@ -133,14 +124,14 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public SearchEngine getSearch() {
-        return _registry.<SearchEngine>get(remotePath(SearchEngine.NAME));
+        return _registry.<SearchEngine>get(localPath(SearchEngine.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ActionScheduler lookupActionScheduler() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _registry.<ActionScheduler>get(localPath(ActionScheduler.NAME));
     }
 
 
@@ -168,14 +159,14 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Files getFiles() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _registry.<Files>get(localPath(Files.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Aliases getAliases() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _registry.<Aliases>get(localPath(Aliases.NAME));
     }
 
 
@@ -189,11 +180,16 @@ public class ServiceLookup implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Comments getComments() {
-        throw new UnsupportedOperationException("Method not implemented.");
+        return _registry.<Comments>get(localPath(Comments.NAME));
     }
 
 
     private String remotePath(final String serviceName) {
         return _appName+"/"+serviceName+"/remote";
+    }
+
+
+    private String localPath(final String serviceName) {
+        return _appName+"/"+serviceName+"/local";
     }
 }

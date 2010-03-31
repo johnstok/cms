@@ -33,7 +33,7 @@ import static ccc.types.PredefinedResourceNames.*;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.migration.ServiceLookup;
+import ccc.api.client1.RegistryServiceLocator;
 import ccc.rest.RestException;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
@@ -48,7 +48,7 @@ public final class Create extends CccApp {
     private static final Logger LOG = Logger.getLogger(Create.class);
 
     private static Options options;
-    private static ServiceLookup services;
+    private static RegistryServiceLocator services;
 
     private Create() { /* NO-OP */ }
 
@@ -66,7 +66,7 @@ public final class Create extends CccApp {
         login(options.getUsername(), options.getPassword());
 
         services =
-            new ServiceLookup(options.getApp(), options.getProviderURL());
+            new RegistryServiceLocator(options.getApp(), options.getProviderURL());
 
         createSchemaStructure();
 

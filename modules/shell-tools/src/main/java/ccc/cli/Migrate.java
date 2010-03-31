@@ -32,11 +32,16 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.client1.JaxrsServiceLocator;
+import ccc.api.client1.ProxyServiceLocator;
+import ccc.api.client1.RegistryServiceLocator;
+import ccc.commons.JNDI;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.Migrations;
-import ccc.migration.ServiceLookup;
+import ccc.rest.ServiceLocator;
+import ccc.rest.extensions.FoldersExt;
+import ccc.rest.extensions.ResourcesExt;
+import ccc.services.Migration;
 
 /**
  * Entry class for the migration application.
@@ -44,8 +49,8 @@ import ccc.migration.ServiceLookup;
 public final class Migrate extends CccApp {
     private static final Logger LOG = Logger.getLogger(Migrate.class);
     private static LegacyDBQueries legacyDBQueries;
-    private static ServiceLookup services;
-    private static JaxrsServiceLocator sl;
+    private static ServiceLocator services;
+    private static ProxyServiceLocator sl;
     private static Options options;
 
     private Migrate() { /* NO-OP */ }
@@ -62,8 +67,8 @@ public final class Migrate extends CccApp {
         options  = parseOptions(args, Options.class);
 
         services =
-            new ServiceLookup(options.getApp(), options.getProviderURL());
-        sl = new JaxrsServiceLocator(options._ccURL);
+            new RegistryServiceLocator(options.getApp(), options.getProviderURL());
+        sl = new ProxyServiceLocator(options._ccURL);
 
         login(options.getUsername(), options.getPassword());
         sl.getSecurity().login(options.getUsername(), options.getPassword());
@@ -92,15 +97,22 @@ public final class Migrate extends CccApp {
         final Migrations migrations =
             new Migrations(
                 legacyDBQueries,
-                services.getResources(),
-                services.getMigrations(),
-                services.getFolders(),
+                (ResourcesExt) services.getResources(),
+                getMigrations(),
+                (FoldersExt) services.getFolders(),
                 services.getUsers(),
                 services.getGroups(),
                 sl.getFileUploader(),
                 services.getTemplates(),
                 options);
         migrations.migrate();
+    }
+
+
+    private static Migration getMigrations() { // FIXME: Move to service locator.
+        return
+            new JNDI(options.getProviderURL())
+                .<Migration>get(options.getApp()+"/"+Migration.NAME+"/remote");
     }
 
     /**
