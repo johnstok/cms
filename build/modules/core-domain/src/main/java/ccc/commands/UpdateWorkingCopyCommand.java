@@ -29,16 +29,15 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
-import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.domain.WorkingCopySupport;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.rest.WorkingCopyNotSupportedException;
 import ccc.rest.dto.PageDelta;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -71,14 +70,11 @@ public class UpdateWorkingCopyCommand {
      * @param resourceId The page's id.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final PageDelta delta)
-                               throws CccCheckedException {
+                        final PageDelta delta) {
         final Page r = _repository.find(Page.class, resourceId);
         r.confirmLock(actor);
 
@@ -101,13 +97,11 @@ public class UpdateWorkingCopyCommand {
      * @param happenedOn When the command was performed.
      * @param revisionNo The revision that the working copy will be created
      *  from.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final long revisionNo) throws CccCheckedException {
+                        final long revisionNo) {
         final Resource r =
             _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
@@ -125,7 +119,7 @@ public class UpdateWorkingCopyCommand {
                     resourceId,
                     new JsonImpl(r).getDetail()));
         } else {
-            throw new WorkingCopyNotSupportedException(r);
+            throw new WorkingCopyNotSupportedException(r.getId());
         }
     }
 }

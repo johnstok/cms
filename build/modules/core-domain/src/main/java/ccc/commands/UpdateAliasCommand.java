@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Alias;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
@@ -68,7 +67,7 @@ public class UpdateAliasCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Alias alias = getRepository().find(Alias.class, _aliasId);
         alias.confirmLock(actor);

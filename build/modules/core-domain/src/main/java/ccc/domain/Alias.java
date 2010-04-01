@@ -26,6 +26,7 @@
  */
 package ccc.domain;
 
+import ccc.rest.CycleDetectedException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.serialization.Json;

@@ -41,6 +41,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.commons.WordCharFixer;
+import ccc.rest.InsufficientPrivilegesException;
+import ccc.rest.LockMismatchException;
+import ccc.rest.UnlockedException;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.AclDto.Entry;
@@ -283,7 +286,7 @@ public abstract class Resource
     public void lock(final User u) throws LockMismatchException {
         require().notNull(u);
         if (isLocked()) {
-            throw new LockMismatchException(this);
+            throw new LockMismatchException(getId());
         }
         _lockedBy = u;
     }
@@ -313,12 +316,12 @@ public abstract class Resource
                                                UnlockedException {
 
         if (!isLocked()) {
-            throw new UnlockedException(this);
+            throw new UnlockedException(getId());
         }
 
         if (!canUnlock(user)) {
             throw new InsufficientPrivilegesException(
-                CommandType.RESOURCE_UNLOCK, user);
+                CommandType.RESOURCE_UNLOCK, user.getId());
         }
 
         _lockedBy = null;
@@ -467,10 +470,10 @@ public abstract class Resource
     public void confirmLock(final User user) throws UnlockedException,
                                                     LockMismatchException {
         if (!isLocked()) {
-            throw new UnlockedException(this);
+            throw new UnlockedException(getId());
         }
         if (!getLockedBy().equals(user)) {
-            throw new LockMismatchException(this);
+            throw new LockMismatchException(getId());
         }
     }
 

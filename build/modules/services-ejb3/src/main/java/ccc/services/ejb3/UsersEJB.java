@@ -43,11 +43,9 @@ import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
 import ccc.persistence.UserRepository;
-import ccc.rest.RestException;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.Users;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserCriteria;
@@ -75,63 +73,44 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_CREATE)
-    public UserDto createUser(final UserDto delta) throws RestException {
-        try {
-            return
-                new CreateUserCommand(getRepoFactory())
-                .execute(currentUser(), new Date(), delta)
-                .toDto();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public UserDto createUser(final UserDto delta) {
+        return
+            new CreateUserCommand(getRepoFactory())
+            .execute(currentUser(), new Date(), delta)
+            .toDto();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_UPDATE)
-    public void updateUser(final UUID userId, final UserDto delta)
-    throws RestException {
-        try {
-            new UpdateUserCommand(
-                getRepoFactory(),
-                userId,
-                delta)
-            .execute(
-                currentUser(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public void updateUser(final UUID userId, final UserDto delta) {
+        new UpdateUserCommand(
+            getRepoFactory(),
+            userId,
+            delta)
+        .execute(
+            currentUser(),
+            new Date());
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_UPDATE)
-    public void updateUserPassword(final UUID userId, final UserDto user)
-    throws RestException {
-        try {
-            new UpdatePasswordAction(getRepoFactory()).execute(
-                currentUser(),
-                new Date(),
-                userId,
-                user.getPassword());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public void updateUserPassword(final UUID userId, final UserDto user) {
+        new UpdatePasswordAction(getRepoFactory()).execute(
+            currentUser(),
+            new Date(),
+            userId,
+            user.getPassword());
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(SELF_UPDATE)
-    public void updateYourUser(final UUID userId,
-                               final UserDto user)
-                                                 throws RestException {
+    public void updateYourUser(final UUID userId, final UserDto user) {
         execute(
             new UpdateCurrentUserCommand(
                 getRepoFactory(),
@@ -180,33 +159,23 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public UserDto userDelta(final UUID userId) throws RestException {
-        try {
-            return
-                getRepoFactory()
-                    .createUserRepo()
-                    .find(userId)
-                    .toDto();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public UserDto userDelta(final UUID userId) {
+        return
+            getRepoFactory()
+                .createUserRepo()
+                .find(userId)
+                .toDto();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public UserDto userByLegacyId(final String legacyId) throws RestException {
-        try {
-            return
-                getRepoFactory()
-                    .createUserRepo()
-                    .userByLegacyId(legacyId).toDto();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public UserDto userByLegacyId(final String legacyId) {
+        return
+            getRepoFactory()
+                .createUserRepo()
+                .userByLegacyId(legacyId).toDto();
     }
 
 

@@ -29,13 +29,12 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.domain.WCAware;
-import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.WorkingCopyNotSupportedException;
 import ccc.types.CommandType;
 
 
@@ -75,7 +74,7 @@ public class ApplyWorkingCopyCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Resource r = getRepository().find(Resource.class, _id);
         r.confirmLock(actor);
@@ -86,7 +85,7 @@ public class ApplyWorkingCopyCommand
                 new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
             wcAware.applyWorkingCopy(rm);
         } else {
-            throw new WorkingCopyNotSupportedException(r);
+            throw new WorkingCopyNotSupportedException(r.getId());
         }
 
         update(r, actor, happenedOn);

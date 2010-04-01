@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -70,7 +69,7 @@ public class UpdateTemplateCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Template template =
             getRepository().find(Template.class, _templateId);

@@ -28,6 +28,7 @@ package ccc.rest.impl;
 
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +36,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Files;
-import ccc.rest.RestException;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
@@ -61,31 +61,44 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TextFileDelta get(final UUID fileId) throws RestException {
-        return getFiles().get(fileId);
+    public TextFileDelta get(final UUID fileId) {
+        try {
+            return getFiles().get(fileId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID id, final TextFileDelta file)
-    throws RestException {
-        getFiles().update(id, file);
+    public void update(final UUID id, final TextFileDelta file) {
+        try {
+            getFiles().update(id, file);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTextFile(final TextFileDto textFile)
-    throws RestException {
-        return getFiles().createTextFile(textFile);
+    public ResourceSummary createTextFile(final TextFileDto textFile) {
+        try {
+            return getFiles().createTextFile(textFile);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public DtoCollection<FileDto> getPagedImages(final UUID folderId,
-                                              final int pageNo,
-                                              final int pageSize)
-                                              throws RestException {
-        return getFiles().getPagedImages(folderId, pageNo, pageSize);
+                                                 final int pageNo,
+                                                 final int pageSize) {
+        try {
+            return getFiles().getPagedImages(folderId, pageNo, pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 }

@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -56,10 +55,8 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testIncludeInMainMenu()
-    throws CccCheckedException {
+    public void testIncludeInMainMenu() {
 
         // ARRANGE
         _r.lock(_user);
@@ -80,10 +77,8 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdateFullMetadata()
-    throws CccCheckedException {
+    public void testUpdateFullMetadata() {
 
         // ARRANGE
         _r.lock(_user);
@@ -115,10 +110,8 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testSetDefaultTemplate()
-    throws CccCheckedException {
+    public void testSetDefaultTemplate() {
 
         // ARRANGE
         final Template defaultTemplate =
@@ -154,10 +147,8 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testMove()
-    throws CccCheckedException {
+    public void testMove() {
 
         // ARRANGE
         final Folder oldParent = new Folder("old");
@@ -184,10 +175,8 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testRename()
-    throws CccCheckedException {
+    public void testRename() {
 
         // ARRANGE
         _r.lock(_user);
@@ -233,8 +222,7 @@ public class ResourceCommandsTest
      * Test.
      * @throws CccCheckedException If the command fails.
      */
-    public void testUpdateCache()
-    throws CccCheckedException {
+    public void testUpdateCache() {
 
         // ARRANGE
         final int expecteduration = 3727;

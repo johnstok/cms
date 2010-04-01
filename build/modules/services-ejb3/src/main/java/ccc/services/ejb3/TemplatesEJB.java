@@ -39,10 +39,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateTemplateCommand;
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Template;
-import ccc.rest.RestException;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -102,8 +100,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(TEMPLATE_CREATE)
-    public ResourceSummary createTemplate(final TemplateDto template)
-                                                 throws RestException {
+    public ResourceSummary createTemplate(final TemplateDto template) {
         return
             execute(commands().createTemplateCommand(template))
             .mapResource();
@@ -114,8 +111,7 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed(TEMPLATE_UPDATE)
     public void updateTemplate(final UUID templateId,
-                               final TemplateDelta delta)
-                                                 throws RestException {
+                               final TemplateDelta delta) {
         execute(
             new UpdateTemplateCommand(
                 getRepoFactory(),
@@ -133,18 +129,11 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public TemplateDelta templateDelta(final UUID templateId)
-    throws RestException {
+    public TemplateDelta templateDelta(final UUID templateId) {
         checkPermission(TEMPLATE_READ);
-
-        try {
-            return
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Template.class, templateId).deltaTemplate();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Template.class, templateId).deltaTemplate();
     }
 }

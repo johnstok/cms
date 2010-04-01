@@ -29,13 +29,13 @@ package ccc.rest.impl;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserDto;
@@ -58,72 +58,129 @@ public class UsersImpl
     implements
         Users {
 
+    private Users _delegate;
 
-    /** {@inheritDoc} */
-    @Override
-    public UserDto loggedInUser() {
-        return getUsers().loggedInUser();
+
+    public Users getUsers() {
+        return (null==_delegate) ? defaultUsers() : _delegate;
+    }
+
+
+    public void setUsers(final Users users) {
+        _delegate = users;
+    }
+
+
+    /**
+     * Decorate an exiting users implementation with a new {@link UsersImpl}.
+     *
+     * @param users The implementation to decorate.
+     *
+     * @return The decorated implementation.
+     */
+    public static UsersImpl decorate(final Users users) {
+        final UsersImpl ui = new UsersImpl();
+        ui.setUsers(users);
+        return ui;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public UserDto userDelta(final UUID userId) throws RestException {
-        return getUsers().userDelta(userId);
+    public UserDto loggedInUser() {
+        try {
+            return getUsers().loggedInUser();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public UserDto userDelta(final UUID userId) {
+        try {
+            return getUsers().userDelta(userId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean usernameExists(final Username username) {
-        return getUsers().usernameExists(username);
+        try {
+            return getUsers().usernameExists(username);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public UserDto createUser(final UserDto user)
-    throws RestException {
-        return getUsers().createUser(user);
+    public UserDto createUser(final UserDto user) {
+        try {
+            return getUsers().createUser(user);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateUserPassword(final UUID userId,
-                                   final UserDto pu)
-    throws RestException {
-        getUsers().updateUserPassword(userId, pu);
+    public void updateUserPassword(final UUID userId, final UserDto pu) {
+        try {
+            getUsers().updateUserPassword(userId, pu);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final UUID userId, final UserDto user)
-    throws RestException {
-        getUsers().updateYourUser(userId, user);
+    public void updateYourUser(final UUID userId, final UserDto user) {
+        try {
+            getUsers().updateYourUser(userId, user);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final UUID userId, final UserDto delta)
-    throws RestException {
-        getUsers().updateUser(userId, delta);
+    public void updateUser(final UUID userId, final UserDto delta) {
+        try {
+            getUsers().updateUser(userId, delta);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public UserDto userByLegacyId(final String legacyId) throws RestException {
-        return getUsers().userByLegacyId(legacyId);
+    public UserDto userByLegacyId(final String legacyId) {
+        try {
+            return getUsers().userByLegacyId(legacyId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
-        return getUsers().listUserMetadataValuesWithKey(key);
+        try {
+            return getUsers().listUserMetadataValuesWithKey(key);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
@@ -138,16 +195,19 @@ public class UsersImpl
                                             final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
-
-        return getUsers().listUsers(username,
-            email,
-            groups,
-            metadataKey,
-            metadataValue,
-            sort,
-            order,
-            pageNo,
-            pageSize);
+        try {
+            return getUsers().listUsers(username,
+                email,
+                groups,
+                metadataKey,
+                metadataValue,
+                sort,
+                order,
+                pageNo,
+                pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 }

@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -69,13 +68,11 @@ public class MoveResourceCommand {
      * @param newParentId The id of the new parent.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final UUID newParentId) throws CccCheckedException {
+                        final UUID newParentId) {
         final Resource resource = _repository.find(Resource.class, resourceId);
         resource.confirmLock(actor);
 

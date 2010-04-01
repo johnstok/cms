@@ -28,6 +28,7 @@ package ccc.rest.impl;
 
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +36,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Aliases;
-import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
@@ -59,23 +59,33 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public String aliasTargetName(final UUID aliasId) throws RestException {
-        return getAliases().aliasTargetName(aliasId);
+    public String aliasTargetName(final UUID aliasId) {
+        try {
+            return getAliases().aliasTargetName(aliasId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final UUID aliasId, final AliasDelta delta)
-    throws RestException {
-        getAliases().updateAlias(aliasId, delta);
+    public void updateAlias(final UUID aliasId, final AliasDelta delta) {
+        try {
+            getAliases().updateAlias(aliasId, delta);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final AliasDto alias)
-    throws RestException {
-        return getAliases().createAlias(alias);
+    public ResourceSummary createAlias(final AliasDto alias) {
+        try {
+            return getAliases().createAlias(alias);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

@@ -29,13 +29,12 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.rest.ResourceExistsException;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.ResourceName;
@@ -74,7 +73,7 @@ public class RenameResourceCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Resource resource =
             getRepository().find(Resource.class, _resourceId);
@@ -85,7 +84,7 @@ public class RenameResourceCommand
             resource.getParent().getEntryWithName(newName);
         if (null!=existingResource) {
             throw new ResourceExistsException(
-                resource.getParent(), existingResource);
+                existingResource.getId(), existingResource.getName());
         }
 
         resource.setName(new ResourceName(_name));

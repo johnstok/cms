@@ -54,8 +54,6 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.commons.Exceptions;
 import ccc.domain.Action;
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
@@ -65,6 +63,7 @@ import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.streams.ReadToStringAction;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.Resources;
 import ccc.rest.RestException;
 import ccc.rest.UnauthorizedException;
@@ -101,9 +100,7 @@ public class ResourcesEJB
     @Override
     @TransactionAttribute(REQUIRES_NEW)
     @RolesAllowed(ACTION_EXECUTE)
-    public void executeAction(final UUID actionId)
-    throws RestException {
-        try {
+    public void executeAction(final UUID actionId) {
             final Action a =
                 getRepoFactory().createActionRepository().find(actionId);
 
@@ -112,14 +109,10 @@ public class ResourcesEJB
             }
 
             executeAction(a);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
     }
 
-    //--
-    private void executeAction(final Action action) throws RestException {
+
+    private void executeAction(final Action action) {
         switch (action.getType()) {
 
             case RESOURCE_UNPUBLISH:
@@ -148,7 +141,7 @@ public class ResourcesEJB
     }
 
 
-    private void executeDelete(final Action action) throws RestException {
+    private void executeDelete(final Action action) {
         sudoExecute(
             commands().createDeleteResourceCmd(action.getSubject().getId()),
             action.getActor().getId(),
@@ -156,7 +149,7 @@ public class ResourcesEJB
     }
 
 
-    private void executeUpdate(final Action action) throws RestException {
+    private void executeUpdate(final Action action) {
         sudoExecute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
@@ -170,7 +163,7 @@ public class ResourcesEJB
     }
 
 
-    private void executePublish(final Action action) throws RestException {
+    private void executePublish(final Action action) {
         sudoExecute(
             commands().publishResource(action.getSubject().getId()),
             action.getActor().getId(),
@@ -178,19 +171,18 @@ public class ResourcesEJB
     }
 
 
-    private void executeUnpublish(final Action action) throws RestException {
+    private void executeUnpublish(final Action action) {
         sudoExecute(
             commands().unpublishResourceCommand(action.getSubject().getId()),
             action.getActor().getId(),
             new Date());
     }
-    //--
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public void lock(final UUID resourceId) throws RestException {
+    public void lock(final UUID resourceId) {
         checkPermission(RESOURCE_LOCK);
 
         execute(
@@ -201,28 +193,22 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_MOVE)
-    public void move(final UUID resourceId,
-                     final UUID newParentId) throws RestException {
-        try {
-            new MoveResourceCommand(
-                getRepoFactory().createResourceRepository(),
-                getRepoFactory().createLogEntryRepo())
-            .execute(
-                currentUser(),
-                new Date(),
-                resourceId,
-                newParentId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public void move(final UUID resourceId, final UUID newParentId) {
+        new MoveResourceCommand(
+            getRepoFactory().createResourceRepository(),
+            getRepoFactory().createLogEntryRepo())
+        .execute(
+            currentUser(),
+            new Date(),
+            resourceId,
+            newParentId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public void publish(final UUID resourceId) throws RestException {
+    public void publish(final UUID resourceId) {
         checkPermission(RESOURCE_PUBLISH);
 
         execute(
@@ -233,8 +219,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_RENAME)
-    public void rename(final UUID resourceId,
-                       final String name) throws RestException {
+    public void rename(final UUID resourceId, final String name) {
         execute(
             new RenameResourceCommand(
                 getRepoFactory().createResourceRepository(),
@@ -247,7 +232,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public void unlock(final UUID resourceId) throws RestException {
+    public void unlock(final UUID resourceId) {
         checkPermission(RESOURCE_UNLOCK);
         execute(
             commands().unlockResourceCommand(resourceId));
@@ -257,7 +242,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UNPUBLISH)
-    public void unpublish(final UUID resourceId) throws RestException {
+    public void unpublish(final UUID resourceId) {
         execute(
             commands().unpublishResourceCommand(resourceId));
     }
@@ -266,27 +251,20 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void createWorkingCopy(final UUID resourceId,
-                                  final long index) throws RestException {
-        try {
-            new UpdateWorkingCopyCommand(getRepoFactory())
-                .execute(
-                    currentUser(),
-                    new Date(),
-                    resourceId,
-                    index);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public void createWorkingCopy(final UUID resourceId, final long index) {
+        new UpdateWorkingCopyCommand(getRepoFactory())
+            .execute(
+                currentUser(),
+                new Date(),
+                resourceId,
+                index);
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceDto pu) throws RestException {
+    public void createWorkingCopy(final UUID resourceId, final ResourceDto pu) {
         createWorkingCopy(resourceId, pu.getRevision().longValue());
     }
 
@@ -295,18 +273,12 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
-                                       final UUID templateId)
-                                                 throws RestException {
-        try {
-            new ChangeTemplateForResourceCommand(getRepoFactory()).execute(
-                    currentUser(),
-                    new Date(),
-                    resourceId,
-                    templateId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                       final UUID templateId) {
+        new ChangeTemplateForResourceCommand(getRepoFactory()).execute(
+                currentUser(),
+                new Date(),
+                resourceId,
+                templateId);
     }
 
 
@@ -314,8 +286,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceDto pu)
-    throws RestException {
+                                       final ResourceDto pu) {
         updateResourceTemplate(resourceId, pu.getTemplateId());
     }
 
@@ -324,21 +295,16 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_MM)
     public void includeInMainMenu(final UUID resourceId,
-                                  final boolean include) throws RestException {
-        try {
-            new IncludeInMainMenuCommand(getRepoFactory()).execute(
-                    currentUser(), new Date(), resourceId, include);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                  final boolean include) {
+        new IncludeInMainMenuCommand(getRepoFactory()).execute(
+                currentUser(), new Date(), resourceId, include);
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_MM)
-    public void includeInMainMenu(final UUID resourceId) throws RestException {
+    public void includeInMainMenu(final UUID resourceId) {
         includeInMainMenu(resourceId, true);
     }
 
@@ -346,8 +312,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_MM)
-    public void excludeFromMainMenu(final UUID resourceId)
-    throws RestException {
+    public void excludeFromMainMenu(final UUID resourceId) {
         includeInMainMenu(resourceId, false);
     }
 
@@ -355,8 +320,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void updateMetadata(final UUID resourceId,
-                               final Json json) throws RestException {
+    public void updateMetadata(final UUID resourceId, final Json json) {
 
         final String title = json.getString("title");
         final String description = json.getString("description");
@@ -374,25 +338,19 @@ public class ResourcesEJB
                                    final String title,
                                    final String description,
                                    final String tags,
-                                   final Map<String, String> metadata)
-    throws RestException {
+                                   final Map<String, String> metadata) {
 
-        try {
-            final Date happenedOn = new Date();
-            final UUID actorId = currentUserId();
+        final Date happenedOn = new Date();
+        final UUID actorId = currentUserId();
 
-            new UpdateResourceMetadataCommand(getRepoFactory()).execute(
-                    userForId(actorId),
-                    happenedOn,
-                    resourceId,
-                    title,
-                    description,
-                    tags,
-                    metadata);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        new UpdateResourceMetadataCommand(getRepoFactory()).execute(
+                userForId(actorId),
+                happenedOn,
+                resourceId,
+                title,
+                description,
+                tags,
+                metadata);
     }
 
 
@@ -401,28 +359,20 @@ public class ResourcesEJB
     @RolesAllowed(SEARCH_CREATE)
     // FIXME: Move to SearchEngineEJB
     public ResourceSummary createSearch(final UUID parentId,
-                                        final String title)
-                                                 throws RestException {
-        try {
-            return
-                commands().createSearchCommand(
-                    parentId,
-                    title)
-                .execute(currentUser(), new Date())
-                .mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                        final String title) {
+        return
+            commands().createSearchCommand(
+                parentId,
+                title)
+            .execute(currentUser(), new Date())
+            .mapResource();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_ACL_UPDATE)
-    public void changeRoles(final UUID resourceId,
-                            final AclDto acl) throws RestException {
-
+    public void changeRoles(final UUID resourceId, final AclDto acl) {
         execute(
             new UpdateResourceRolesCommand(getRepoFactory(), resourceId, acl));
     }
@@ -431,7 +381,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void applyWorkingCopy(final UUID resourceId) throws RestException {
+    public void applyWorkingCopy(final UUID resourceId) {
         execute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
@@ -445,8 +395,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
-                                    final Duration duration)
-                                                 throws RestException {
+                                    final Duration duration) {
         execute(
             new UpdateCachingCommand(
                 getRepoFactory().createResourceRepository(),
@@ -469,18 +418,12 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void clearWorkingCopy(final UUID resourceId)
-                                                 throws RestException {
-        try {
-            new ClearWorkingCopyCommand(
-                getRepoFactory().createResourceRepository(),
-                getRepoFactory().createLogEntryRepo())
-            .execute(
-                currentUser(), new Date(), resourceId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public void clearWorkingCopy(final UUID resourceId) {
+        new ClearWorkingCopyCommand(
+            getRepoFactory().createResourceRepository(),
+            getRepoFactory().createLogEntryRepo())
+        .execute(
+            currentUser(), new Date(), resourceId);
     }
 
 
@@ -496,7 +439,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_DELETE)
-    public void deleteResource(final UUID resourceId) throws RestException {
+    public void deleteResource(final UUID resourceId) {
         execute(commands().createDeleteResourceCmd(resourceId));
     }
 
@@ -509,17 +452,11 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public Collection<RevisionDto> history(final UUID resourceId)
-    throws RestException {
-        try {
-            return Revision.mapRevisions(
-                getRepoFactory()
-                .createResourceRepository()
-                .history(resourceId));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public Collection<RevisionDto> history(final UUID resourceId) {
+        return Revision.mapRevisions(
+            getRepoFactory()
+            .createResourceRepository()
+            .history(resourceId));
     }
 
 
@@ -534,63 +471,40 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public AclDto roles(final UUID resourceId)
-    throws RestException {
-        try {
-            final AclDto acl =
-                getResources().find(Resource.class, resourceId).getAcl();
-            return acl;
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public AclDto roles(final UUID resourceId) {
+        final AclDto acl =
+            getResources().find(Resource.class, resourceId).getAcl();
+        return acl;
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public Duration cacheDuration(final UUID resourceId) throws RestException {
-        try {
-            final Resource r =
-                getResources().find(Resource.class, resourceId);
-            return r.getCacheDuration();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public Duration cacheDuration(final UUID resourceId) {
+        final Resource r =
+            getResources().find(Resource.class, resourceId);
+        return r.getCacheDuration();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public TemplateSummary computeTemplate(final UUID resourceId)
-    throws RestException {
-        try {
-            final Resource r =
-                getResources().find(Resource.class, resourceId);
-            final Template t = r.computeTemplate(null);
-            return (null==t) ? null : t.summarize();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public TemplateSummary computeTemplate(final UUID resourceId) {
+        final Resource r =
+            getResources().find(Resource.class, resourceId);
+        final Template t = r.computeTemplate(null);
+        return (null==t) ? null : t.summarize();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public ResourceSummary resourceForPath(final String rootPath)
-    throws RestException {
-        try {
-            return
-                getResources().lookup(new ResourcePath(rootPath)).mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public ResourceSummary resourceForPath(final String rootPath) {
+        return
+            getResources().lookup(new ResourcePath(rootPath)).mapResource();
     }
 
 
@@ -600,22 +514,14 @@ public class ResourcesEJB
     public Collection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         checkPermission(RESOURCE_READ);
-
         return Resource.mapResources(getResources().lookupWithMetadataKey(key));
-
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public ResourceSummary resourceForLegacyId(final String legacyId)
-    throws RestException {
-        try {
-            return getResources().lookupWithLegacyId(legacyId).mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public ResourceSummary resourceForLegacyId(final String legacyId) {
+        return getResources().lookupWithLegacyId(legacyId).mapResource();
     }
 
 
@@ -629,69 +535,48 @@ public class ResourcesEJB
     @Override
     @PermitAll
     @Deprecated
-    public ResourceSummary lookupWithLegacyId(final String legacyId)
-    throws RestException {
+    public ResourceSummary lookupWithLegacyId(final String legacyId) {
         checkPermission(RESOURCE_READ);
-
         return resourceForLegacyId(legacyId);
     }
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public String getAbsolutePath(final UUID resourceId) throws RestException {
+    public String getAbsolutePath(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
-
-        try {
-            return
-                getResources().find(Resource.class, resourceId)
-                          .getAbsolutePath()
-                          .removeTop()
-                          .toString();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return
+            getResources().find(Resource.class, resourceId)
+                      .getAbsolutePath()
+                      .removeTop()
+                      .toString();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSnapshot resourceForPathSecure(final String rootPath)
-    throws RestException, UnauthorizedException {
+    public ResourceSnapshot resourceForPathSecure(final String rootPath) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final ResourcePath rp = new ResourcePath(rootPath);
-            final Resource r =
-                getResources().lookup(rp);
-            checkRead(r);
-            return r.forCurrentRevision();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final ResourcePath rp = new ResourcePath(rootPath);
+        final Resource r = getResources().lookup(rp);
+        checkRead(r);
+        return r.forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSnapshot workingCopyForPath(final String rootPath)
-    throws RestException, UnauthorizedException {
+    public ResourceSnapshot workingCopyForPath(final String rootPath) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final ResourcePath rp = new ResourcePath(rootPath);
-            final Resource r =
-                getResources().lookup(rp);
-            checkRead(r);
-            return r.forWorkingCopy();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final ResourcePath rp = new ResourcePath(rootPath);
+        final Resource r =
+            getResources().lookup(rp);
+        checkRead(r);
+        return r.forWorkingCopy();
     }
 
 
@@ -699,20 +584,14 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public ResourceSnapshot revisionForPath(final String path,
-                                            final int version)
-    throws RestException, UnauthorizedException {
+                                            final int version) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final ResourcePath rp = new ResourcePath(path);
-            final Resource r =
-                getResources().lookup(rp);
-            checkRead(r);
-            return r.forSpecificRevision(version);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final ResourcePath rp = new ResourcePath(path);
+        final Resource r =
+            getResources().lookup(rp);
+        checkRead(r);
+        return r.forSpecificRevision(version);
     }
 
 
@@ -747,23 +626,16 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getSiblings(final UUID resourceId)
-    throws UnauthorizedException {
+    public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
+        final Resource r = getResources().find(Resource.class, resourceId);
+        checkRead(r);
+
         final List<ResourceSummary> siblings = new ArrayList<ResourceSummary>();
-        try {
-            final Resource r =
-                getResources().find(Resource.class, resourceId);
-            checkRead(r);
-
-            final Folder f = r.getParent().as(Folder.class);
-            for (final Resource item : f.getEntries()) {
-                siblings.add(item.mapResource());
-            }
-
-        } catch (final CccCheckedException e) {
-            fail(e);
+        final Folder f = r.getParent().as(Folder.class);
+        for (final Resource item : f.getEntries()) {
+            siblings.add(item.mapResource());
         }
         return siblings;
     }
@@ -772,18 +644,11 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Map<String, String> metadata(final UUID resourceId)
-    throws RestException {
+    public Map<String, String> metadata(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final Resource r =
-                getResources().find(Resource.class, resourceId);
-            return r.getMetadata();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final Resource r = getResources().find(Resource.class, resourceId);
+        return r.getMetadata();
     }
 
 
@@ -791,19 +656,13 @@ public class ResourcesEJB
      * @throws UnauthorizedException */
     @Override
     @PermitAll
-    public ResourceSummary resource(final UUID resourceId)
-    throws RestException, UnauthorizedException {
+    public ResourceSummary resource(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final Resource r = getResources().find(Resource.class, resourceId);
-            checkRead(r);
-            return
-                r.mapResource();
+        final Resource r = getResources().find(Resource.class, resourceId);
+        checkRead(r);
 
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return r.mapResource();
     }
 
     /** {@inheritDoc} */
@@ -811,20 +670,15 @@ public class ResourcesEJB
     @PermitAll
     public void createLogEntry(final UUID resourceId,
                                final String action,
-                               final String detail)
-        throws RestException {
+                               final String detail) {
         checkPermission(LOG_ENTRY_CREATE);
 
-        try {
-            final LogEntry le = new LogEntry(currentUser(),
-                                            action,
-                                            new Date(),
-                                            resourceId,
-                                            detail);
-            getRepoFactory().createLogEntryRepo().record(le);
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final LogEntry le = new LogEntry(currentUser(),
+                                        action,
+                                        new Date(),
+                                        resourceId,
+                                        detail);
+        getRepoFactory().createLogEntryRepo().record(le);
     }
 
     /** {@inheritDoc} */

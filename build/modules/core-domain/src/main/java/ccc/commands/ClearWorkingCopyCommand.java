@@ -29,14 +29,13 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.domain.WCAware;
-import ccc.domain.WorkingCopyNotSupportedException;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.rest.WorkingCopyNotSupportedException;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
@@ -69,12 +68,10 @@ public class ClearWorkingCopyCommand {
      * @param resourceId The resource's id.
      * @param actor The user that executed the command.
      * @param happenedOn The date the command was executed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
-                        final UUID resourceId) throws CccCheckedException {
+                        final UUID resourceId) {
         final Resource r = _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
 
@@ -82,7 +79,7 @@ public class ClearWorkingCopyCommand {
             final WCAware<?> wcAware = (WCAware<?>) r;
             wcAware.clearWorkingCopy();
         } else {
-            throw new WorkingCopyNotSupportedException(r);
+            throw new WorkingCopyNotSupportedException(r.getId());
         }
 
         _audit.record(

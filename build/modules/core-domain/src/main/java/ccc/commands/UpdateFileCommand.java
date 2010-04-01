@@ -30,7 +30,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
@@ -85,7 +84,7 @@ public class UpdateFileCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final File f = getRepository().find(File.class, _fileId);
         f.confirmLock(actor);

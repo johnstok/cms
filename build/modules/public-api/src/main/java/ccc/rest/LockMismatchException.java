@@ -24,28 +24,50 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import java.util.Date;
+import java.util.UUID;
 
+import ccc.types.DBC;
+import ccc.types.Failure;
+import ccc.types.FailureCode;
 
 
 /**
- * A command that can be executed using a CCC action.
- *
- * @param <T> The return type of the command.
+ * An exception used to indicate that a resource is locked by another user.
  *
  * @author Civic Computing Ltd.
  */
-public interface Command<T> {
+public class LockMismatchException
+    extends
+        InvalidException {
+
+    private final UUID _resource;
+
 
     /**
-     * Execute the command.
+     * Constructor.
      *
-     * @param action The action that supplies the command parameters.
-     * @param happenedOn When the command took place.
-     * @return A command specific result of type T.
-     * @throws CccCheckedException If the command fails.
+     * @param resource The resource.
      */
-    T execute(Action action, Date happenedOn) throws CccCheckedException;
+    public LockMismatchException(final UUID resource) {
+        super(new Failure(FailureCode.LOCK_MISMATCH));
+        DBC.require().notNull(resource);
+        _resource = resource;
+    }
+
+    /**
+     * Accessor for the resource.
+     *
+     * @return The resource.
+     */
+    public UUID getResource() {
+        return _resource;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getMessage() {
+        return "Mismatch confirming lock on "+_resource+".";
+    }
 }

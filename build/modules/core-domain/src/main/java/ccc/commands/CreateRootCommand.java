@@ -28,14 +28,13 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
-import ccc.domain.ResourceExistsException;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.rest.EntityNotFoundException;
+import ccc.rest.ResourceExistsException;
 import ccc.types.CommandType;
 
 
@@ -67,11 +66,12 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
         try {
             final Resource possibleRoot =
                 getRepository().root(_folder.getName().toString());
-            throw new ResourceExistsException(null, possibleRoot);
+            throw new ResourceExistsException(
+                possibleRoot.getId(), possibleRoot.getName());
 
         } catch (final EntityNotFoundException e) {
             _folder.setDateCreated(happenedOn, actor);

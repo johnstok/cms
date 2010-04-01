@@ -29,6 +29,7 @@ package ccc.rest.impl;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -36,7 +37,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Folders;
-import ccc.rest.RestException;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
@@ -59,84 +59,125 @@ public class FoldersImpl
     implements
         Folders {
 
+    private Folders _delegate;
+
+
+    public Folders getFolders() {
+        return (null==_delegate) ? defaultFolders() : _delegate;
+    }
+
+
+    public void setFolders(final Folders users) {
+        _delegate = users;
+    }
+
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final UUID folderId)
-    throws RestException {
-        return getFolders().getChildren(folderId);
+    public Collection<ResourceSummary> getChildren(final UUID folderId) {
+        try {
+            return getFolders().getChildren(folderId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getAccessibleChildren(
-        final UUID folderId) throws RestException {
-        return getFolders().getAccessibleChildren(folderId);
+                                                          final UUID folderId) {
+        try {
+            return getFolders().getAccessibleChildren(folderId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                        final UUID folderId)
-    throws RestException {
-        return getFolders().getChildrenManualOrder(folderId);
+                                                        final UUID folderId) {
+        try {
+            return getFolders().getChildrenManualOrder(folderId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
-    throws RestException {
-        return getFolders().getFolderChildren(folderId);
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
+        try {
+            return getFolders().getFolderChildren(folderId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Boolean nameExistsInFolder(final UUID folderId, final String name)
-    throws RestException {
-        return getFolders().nameExistsInFolder(folderId, name);
+    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
+        try {
+            return getFolders().nameExistsInFolder(folderId, name);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return getFolders().roots();
+        try {
+            return getFolders().roots();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final FolderDto folder)
-    throws RestException {
-        return getFolders().createFolder(folder);
+    public ResourceSummary createFolder(final FolderDto folder) {
+        try {
+            return getFolders().createFolder(folder);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolder(final UUID folderId, final FolderDelta delta)
-    throws RestException {
-        getFolders().updateFolder(folderId, delta);
+    public void updateFolder(final UUID folderId, final FolderDelta delta) {
+        try {
+            getFolders().updateFolder(folderId, delta);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public DtoCollection<ResourceSummary> getChildrenPaged(
-                                        final UUID folderId,
-                                        final String sort,
-                                        final SortOrder sortOrder,
-                                        final int offset,
-                                        final int limit) throws RestException {
-        return getFolders().getChildrenPaged(folderId,
-                                             sort,
-                                             sortOrder,
-                                             offset,
-                                             limit);
+                                                    final UUID folderId,
+                                                    final String sort,
+                                                    final SortOrder sortOrder,
+                                                    final int offset,
+                                                    final int limit) {
+        try {
+            return getFolders().getChildrenPaged(folderId,
+                                                 sort,
+                                                 sortOrder,
+                                                 offset,
+                                                 limit);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
-
 }

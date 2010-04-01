@@ -29,13 +29,13 @@ package ccc.rest.impl;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
@@ -61,38 +61,56 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta templateDelta(final UUID templateId)
-    throws RestException {
-        return getTemplates().templateDelta(templateId);
+    public TemplateDelta templateDelta(final UUID templateId) {
+        try {
+            return getTemplates().templateDelta(templateId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean templateNameExists(final String templateName) {
-        return getTemplates().templateNameExists(templateName);
+        try {
+            return getTemplates().templateNameExists(templateName);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateSummary> templates() {
-        return getTemplates().templates();
+        try {
+            return getTemplates().templates();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateTemplate(final UUID templateId, final TemplateDelta delta)
-    throws RestException {
-        getTemplates().updateTemplate(templateId, delta);
+    public void updateTemplate(final UUID templateId,
+                               final TemplateDelta delta) {
+        try {
+            getTemplates().updateTemplate(templateId, delta);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final TemplateDto template)
-    throws RestException {
-        return getTemplates().createTemplate(template);
+    public ResourceSummary createTemplate(final TemplateDto template) {
+        try {
+            return getTemplates().createTemplate(template);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

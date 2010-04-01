@@ -27,7 +27,6 @@
 package ccc.commands;
 
 import static org.easymock.EasyMock.*;
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Search;
@@ -45,9 +44,8 @@ public class IncludeInMainMenuCommandTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testIncludeInMainMenu() throws CccCheckedException {
+    public void testIncludeInMainMenu() {
 
         // ARRANGE
         final Search s = new Search("foo");
@@ -71,9 +69,8 @@ public class IncludeInMainMenuCommandTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testRemoveFromMainMenu() throws CccCheckedException {
+    public void testRemoveFromMainMenu() {
 
         // ARRANGE
         final Search s = new Search("foo");

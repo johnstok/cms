@@ -66,6 +66,8 @@ import ccc.rest.dto.UserDto;
 import ccc.rest.extensions.FilesExt;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
+import ccc.rest.impl.FoldersImpl;
+import ccc.rest.impl.UsersImpl;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.JsonImpl;
 import ccc.types.ResourcePath;
@@ -239,11 +241,17 @@ public class ContentServlet
 
     private ServiceLocator createServiceLocator() {
         final MemoryServiceLocator sl = new MemoryServiceLocator();
-        sl.setUserCommands(_users);
+
+
+        sl.setUserCommands(UsersImpl.decorate(_users));
+
+        final FoldersImpl fi = new FoldersImpl();
+        fi.setFolders(_folders);
+        sl.setFolderCommands(fi);
+
         sl.setFiles(_files);
         sl.setPageCommands(_pages);
         sl.setCommands(_resources);
-        sl.setFolderCommands(_folders);
         sl.setActions(_actions);
         sl.setSearch(_search);
         sl.setComments(_comments);

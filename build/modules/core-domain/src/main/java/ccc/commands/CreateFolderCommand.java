@@ -29,12 +29,11 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.UnauthorizedException;
 import ccc.types.CommandType;
 
@@ -80,7 +79,7 @@ class CreateFolderCommand extends CreateResourceCommand<Folder> {
     /** {@inheritDoc} */
     @Override
     public Folder doExecute(final User actor,
-                            final Date happenedOn) throws CccCheckedException {
+                            final Date happenedOn) {
         final Folder f = new Folder(_name);
         f.setTitle((null==_title)?_name:_title);
 

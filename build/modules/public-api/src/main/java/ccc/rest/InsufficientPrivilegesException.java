@@ -24,61 +24,68 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
+import java.util.UUID;
+
+import ccc.types.CommandType;
 import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
+
 /**
- * This exception is thrown when a working copy command is attempted for a
- * resource that doesn't support working copies.
+ * This exception indicates that a user attempted to perform an operation
+ * without sufficient privileges.
  *
  * @author Civic Computing Ltd.
  */
-public class WorkingCopyNotSupportedException
+public class InsufficientPrivilegesException
     extends
-        CccCheckedException {
+        RestException {
 
-    private final Resource _resource;
-
+    private final CommandType _action;
+    private final UUID _user;
 
     /**
      * Constructor.
      *
-     * @param resource The resource.
+     * @param action The action that was disallowed.
+     * @param user The user attempting to perform the action.
      */
-    public WorkingCopyNotSupportedException(final Resource resource) {
-        DBC.require().notNull(resource);
-        _resource = resource;
-    }
-
-    /**
-     * Accessor for the resource.
-     *
-     * @return The resource.
-     */
-    public Resource getResource() {
-        return _resource;
+    public InsufficientPrivilegesException(final CommandType action,
+                                           final UUID user) {
+        super(new Failure(FailureCode.PRIVILEGES));
+        DBC.require().notNull(action);
+        DBC.require().notNull(user);
+        _action = action;
+        _user = user;
     }
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return
-            "Resource "
-            + _resource.getId()
-            + ", of type "
-            + _resource.getType()
-            + " is not working copy aware.";
+            "User "
+            + _user
+            + " may not perform action: "
+            + _action;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public RestException toRemoteException() {
-        return new RestException(
-            new Failure(FailureCode.WC_UNSUPPORTED));
-    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the action.
+     */
+    public CommandType getAction() { return _action; }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user.
+     */
+    public UUID getUser() { return _user; }
 }

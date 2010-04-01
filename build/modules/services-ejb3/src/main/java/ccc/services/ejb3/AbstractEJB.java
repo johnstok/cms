@@ -40,8 +40,6 @@ import org.apache.log4j.Logger;
 import ccc.commands.Command;
 import ccc.commands.CommandFactory;
 import ccc.commons.Exceptions;
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.DataRepository;
@@ -49,7 +47,7 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
-import ccc.rest.RestException;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.UnauthorizedException;
 import ccc.types.DBC;
 
@@ -117,28 +115,6 @@ abstract class AbstractEJB {
 
 
     /**
-     * Fail a method throwing an application exception.
-     *
-     * @param e The checked exception to convert.
-     *
-     * @return The corresponding application exception.
-     */
-    protected RestException fail(final CccCheckedException e) {
-        guaranteeRollback(); // CRITICAL
-        final RestException cfe = e.toRemoteException();
-        log.debug(
-            "Handled local exception: "+cfe.getFailure().getExceptionId(), e);
-        return cfe;
-    }
-
-
-    /**
-     * Ensure the transaction is rolled back.
-     */
-    protected void guaranteeRollback() { _context.setRollbackOnly(); }
-
-
-    /**
      * Execute a command on behalf of another user.
      *
      * @param <T> The command's return type.
@@ -147,21 +123,11 @@ abstract class AbstractEJB {
      * @param happenedOn When the command was executed.
      *
      * @return The command's return value.
-     *
-     * @throws RestException If execution fails.
      */
     protected final <T> T sudoExecute(final Command<T> command,
                                       final UUID actorId,
-                                      final Date happenedOn)
-                                   throws RestException, UnauthorizedException {
-        try {
-            return command.execute(_users.find(actorId), happenedOn);
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        } catch (final UnauthorizedException e) {
-            guaranteeRollback();
-            throw e;
-        }
+                                      final Date happenedOn) {
+        return command.execute(_users.find(actorId), happenedOn);
     }
 
 
@@ -172,19 +138,9 @@ abstract class AbstractEJB {
      * @param command The command to execute.
      *
      * @return The command's return value.
-     *
-     * @throws RestException If execution fails.
      */
-    protected final <T> T execute(final Command<T> command)
-                                   throws RestException, UnauthorizedException {
-        try {
-            return command.execute(currentUser(), new Date());
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        } catch (final UnauthorizedException e) {
-            guaranteeRollback();
-            throw e;
-        }
+    protected final <T> T execute(final Command<T> command) {
+        return command.execute(currentUser(), new Date());
     }
 
 
@@ -234,9 +190,8 @@ abstract class AbstractEJB {
      * Check that a resource is readable by a user.
      *
      * @param r The resource to check.
-     * @throws UnauthorizedException If the resource cannot be read.
      */
-    protected void checkRead(final Resource r) throws UnauthorizedException {
+    protected void checkRead(final Resource r) {
 
         DBC.require().notNull(r);
 
@@ -248,7 +203,6 @@ abstract class AbstractEJB {
         }
 
         if (!r.isReadableBy(u)) {
-            guaranteeRollback(); // CRITICAL
             throw new UnauthorizedException(
                 r.getId(), (null==u) ? null : u.getId());
         }
@@ -259,9 +213,8 @@ abstract class AbstractEJB {
      * Check that a resource is write-able by a user.
      *
      * @param r The resource to check.
-     * @throws UnauthorizedException If the resource cannot be written.
      */
-    protected void checkWrite(final Resource r) throws UnauthorizedException {
+    protected void checkWrite(final Resource r) {
 
         DBC.require().notNull(r);
 
@@ -273,7 +226,6 @@ abstract class AbstractEJB {
         }
 
         if (!r.isWriteableBy(u)) {
-            guaranteeRollback();
             throw new UnauthorizedException(
                 r.getId(), (null==u) ? null : u.getId());
         }

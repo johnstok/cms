@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Template;
@@ -69,13 +68,11 @@ public class ChangeTemplateForResourceCommand {
      * @param templateId The id of template to set (NULL is allowed).
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final UUID templateId) throws CccCheckedException {
+                        final UUID templateId) {
         final Resource r = _repository.find(Resource.class, resourceId);
         r.confirmLock(actor);
 

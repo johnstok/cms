@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -68,14 +67,11 @@ abstract class CreateResourceCommand<T>
      * @param happenedOn The date the command was executed.
      * @param folderId The folder in which the resource will be created.
      * @param newResource The new resource.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     protected void create(final User actor,
                           final Date happenedOn,
                           final UUID folderId,
-                          final Resource newResource)
-                                                throws CccCheckedException {
+                          final Resource newResource) {
         newResource.setDateCreated(happenedOn, actor);
         newResource.setDateChanged(happenedOn, actor);
 

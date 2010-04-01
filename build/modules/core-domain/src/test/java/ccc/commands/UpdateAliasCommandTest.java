@@ -28,7 +28,6 @@ package ccc.commands;
 
 import static org.easymock.EasyMock.*;
 import ccc.domain.Alias;
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Search;
@@ -45,9 +44,8 @@ public class UpdateAliasCommandTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testUpdateAlias() throws CccCheckedException {
+    public void testUpdateAlias() {
 
         // ARRANGE
         final Search foo = new Search("foo");
@@ -55,8 +53,10 @@ public class UpdateAliasCommandTest
         final Alias alias = new Alias("alias", foo);
         alias.lock(getUser());
 
-        expect(getRepository().find(Alias.class, alias.getId())).andReturn(alias);
-        expect(getRepository().find(Resource.class, bar.getId())).andReturn(bar);
+        expect(getRepository().find(Alias.class, alias.getId()))
+            .andReturn(alias);
+        expect(getRepository().find(Resource.class, bar.getId()))
+            .andReturn(bar);
         getAudit().record(isA(LogEntry.class));
         replayAll();
 

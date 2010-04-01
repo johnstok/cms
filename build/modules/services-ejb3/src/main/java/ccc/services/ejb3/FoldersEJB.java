@@ -42,13 +42,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateFolderCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.domain.sorting.Sorter;
 import ccc.rest.Folders;
-import ccc.rest.RestException;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
@@ -78,8 +76,7 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createFolder(final FolderDto folder)
-    throws RestException {
+    public ResourceSummary createFolder(final FolderDto folder) {
         checkPermission(FOLDER_CREATE);
 
         return createFolder(
@@ -94,47 +91,34 @@ public class FoldersEJB
     public ResourceSummary createFolder(final UUID parentId,
                                         final String name,
                                         final String title,
-                                        final boolean publish)
-    throws RestException {
+                                        final boolean publish) {
         checkPermission(FOLDER_CREATE);
 
-        try {
-            final User u = currentUser();
-            final Date happenedOn = new Date();
+        final User u = currentUser();
+        final Date happenedOn = new Date();
 
-            final Folder f =
-                commands().createFolderCommand(parentId, name, title)
-                .execute(u, happenedOn);
+        final Folder f =
+            commands().createFolderCommand(parentId, name, title)
+            .execute(u, happenedOn);
 
-            if (publish) {
-                f.lock(u);
-                commands().publishResource(f.getId()).execute(u, happenedOn);
-                f.unlock(u);
-            }
-
-            return f.mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        if (publish) {
+            f.lock(u);
+            commands().publishResource(f.getId()).execute(u, happenedOn);
+            f.unlock(u);
         }
+
+        return f.mapResource();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(ROOT_CREATE)
-    public ResourceSummary createRoot(final String name)
-                                                 throws RestException {
-        try {
-            final Folder f = new Folder(name);
-            commands().createRootCommand(f)
-                      .execute(currentUser(), new Date());
-
-            return f.mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public ResourceSummary createRoot(final String name) {
+        final Folder f = new Folder(name);
+        commands().createRootCommand(f)
+                  .execute(currentUser(), new Date());
+        return f.mapResource();
     }
 
 
@@ -142,28 +126,22 @@ public class FoldersEJB
     @Override
     @RolesAllowed(FOLDER_UPDATE)
     public void updateFolder(final UUID folderId,
-                             final FolderDelta delta)
-                                   throws RestException {
-        try {
-            final List<UUID> list = new ArrayList<UUID>();
+                             final FolderDelta delta) {
+        final List<UUID> list = new ArrayList<UUID>();
 
-            for (final String item : delta.getSortList()) {
-                list.add(UUID.fromString(item));
-            }
-
-            new UpdateFolderCommand(
-                getRepoFactory(),
-                folderId,
-                ResourceOrder.valueOf(delta.getSortOrder()),
-                delta.getIndexPage(),
-                list)
-            .execute(
-                currentUser(),
-                 new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        for (final String item : delta.getSortList()) {
+            list.add(UUID.fromString(item));
         }
+
+        new UpdateFolderCommand(
+            getRepoFactory(),
+            folderId,
+            ResourceOrder.valueOf(delta.getSortOrder()),
+            delta.getIndexPage(),
+            list)
+        .execute(
+            currentUser(),
+             new Date());
     }
 
 
@@ -171,50 +149,38 @@ public class FoldersEJB
     @Override
     @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> getChildrenManualOrder(
-                                                        final UUID folderId)
-    throws RestException {
-        try {
-            final Folder f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Folder.class, folderId);
+                                                        final UUID folderId) {
+        final Folder f =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Folder.class, folderId);
 
-            checkRead(f);
+        checkRead(f);
 
-            if (f != null) {
-                final List<Resource> list = f.getEntries();
-                Sorter.sort(list, ResourceOrder.MANUAL);
-                return Resource.mapResources(list);
-            }
-            return Resource.mapResources(new ArrayList<Resource>());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        if (f != null) {
+            final List<Resource> list = f.getEntries();
+            Sorter.sort(list, ResourceOrder.MANUAL);
+            return Resource.mapResources(list);
         }
+        return Resource.mapResources(new ArrayList<Resource>());
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Boolean nameExistsInFolder(final UUID folderId, final String name)
-    throws RestException {
+    public Boolean nameExistsInFolder(final UUID folderId, final String name) {
         checkPermission(FOLDER_READ);
 
-        try {
-            // TODO: handle null folderId? (for root folders)
-            // FIXME checkRead(f); ?
+        // TODO: handle null folderId? (for root folders)
+        // FIXME checkRead(f); ?
 
-            return
-                Boolean.valueOf(
-                    getRepoFactory()
-                        .createResourceRepository()
-                        .find(Folder.class, folderId)
-                        .hasEntryWithName(new ResourceName(name)));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return
+            Boolean.valueOf(
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, folderId)
+                    .hasEntryWithName(new ResourceName(name)));
     }
 
 
@@ -236,78 +202,60 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId)
-    throws RestException {
+    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final Folder f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Folder.class, folderId);
+        final Folder f =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Folder.class, folderId);
 
-            checkRead(f);
+        checkRead(f);
 
-            final List<Folder> folderChildren = f.getFolders();
-            Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
-            return Resource.mapResources(folderChildren);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final List<Folder> folderChildren = f.getFolders();
+        Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
+        return Resource.mapResources(folderChildren);
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getChildren(final UUID folderId)
-    throws RestException {
+    public Collection<ResourceSummary> getChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final Folder f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Folder.class, folderId);
+        final Folder f =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Folder.class, folderId);
 
-            checkRead(f);
+        checkRead(f);
 
-            return Resource.mapResources(f.getEntries());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return Resource.mapResources(f.getEntries());
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId)
-    throws RestException {
+    public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final Folder f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Folder.class, folderId);
+        final Folder f =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Folder.class, folderId);
 
-            checkRead(f);
+        checkRead(f);
 
-            final List<Resource> filtered = new ArrayList<Resource>();
-            final User user = currentUser();
-            for (final Resource r : f.getEntries()) {
-                if (r.isReadableBy(user)) {
-                    filtered.add(r);
-                }
+        final List<Resource> filtered = new ArrayList<Resource>();
+        final User user = currentUser();
+        for (final Resource r : f.getEntries()) {
+            if (r.isReadableBy(user)) {
+                filtered.add(r);
             }
-            return Resource.mapResources(filtered);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
         }
+        return Resource.mapResources(filtered);
     }
 
 
@@ -319,36 +267,31 @@ public class FoldersEJB
                                                     final String sort,
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
-                                                    final int pageSize)
-                                                          throws RestException {
+                                                    final int pageSize) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            final Folder f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Folder.class, folderId);
+        final Folder f =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Folder.class, folderId);
 
-            checkRead(f);
+        checkRead(f);
 
-            final DtoCollection<ResourceSummary> dtoc =
-                new DtoCollection<ResourceSummary>(
-                    f.getEntries().size(), Resource.mapResources(
-                        getRepoFactory()
-                            .createResourceRepository()
-                            .list(
-                                f,
-                                null,
-                                null,
-                                null,
-                                sort,
-                                sortOrder,
-                                pageNo,
-                                pageSize)));
-            return dtoc;
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        final DtoCollection<ResourceSummary> dtoc =
+            new DtoCollection<ResourceSummary>(
+                f.getEntries().size(), Resource.mapResources(
+                    getRepoFactory()
+                        .createResourceRepository()
+                        .list(
+                            f,
+                            null,
+                            null,
+                            null,
+                            sort,
+                            sortOrder,
+                            pageNo,
+                            pageSize)));
+        return dtoc;
     }
 
 }

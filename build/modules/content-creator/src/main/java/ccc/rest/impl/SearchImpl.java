@@ -26,6 +26,7 @@
  */
 package ccc.rest.impl;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -54,36 +55,62 @@ public class SearchImpl
     public SearchResult find(final String searchTerms,
                              final int noOfResultsPerPage,
                              final int page) {
-        return getSearch().find(searchTerms, noOfResultsPerPage, page);
+        try {
+            return getSearch().find(searchTerms, noOfResultsPerPage, page);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void index() {
-        getSearch().index();
+        try {
+            getSearch().index();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isRunning() {
-        return getSearch().isRunning();
+        try {
+            return getSearch().isRunning();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void start() {
-        getSearch().start();
+        try {
+            getSearch().start();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void stop() {
-        getSearch().stop();
+        try {
+            getSearch().stop();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public SearchResult similar(final String uuid, final int noOfResultsPerPage, final int page) {
-        return getSearch().similar(uuid, noOfResultsPerPage, page);
+    public SearchResult similar(final String uuid,
+                                final int noOfResultsPerPage,
+                                final int page) {
+        try {
+            return getSearch().similar(uuid, noOfResultsPerPage, page);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

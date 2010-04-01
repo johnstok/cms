@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.GroupRepository;
@@ -71,13 +70,11 @@ public class CreateUserCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      *
-     * @throws CccCheckedException If the command fails.
-     *
      * @return Persisted user.
      */
     public User execute(final User actor,
                         final Date happenedOn,
-                        final UserDto delta) throws CccCheckedException {
+                        final UserDto delta) {
         final User user =
             new User(delta.getUsername(), delta.getName(), delta.getPassword());
         user.setEmail(new EmailAddress(delta.getEmail()));

@@ -106,6 +106,7 @@ public class UnauthorizedException
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
         _target = json.getId("target");
         _user = json.getId("user");
     }
@@ -114,6 +115,7 @@ public class UnauthorizedException
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set("target", _target);
         json.set("user", _user);
     }

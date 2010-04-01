@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
@@ -65,7 +64,7 @@ public class DeleteCommentCommand
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final User actor,
-                             final Date happenedOn) throws CccCheckedException {
+                             final Date happenedOn) {
 
         getComments().delete(_commentId);
 

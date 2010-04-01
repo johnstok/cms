@@ -35,7 +35,6 @@ import java.util.UUID;
 
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateFolderCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -86,9 +85,8 @@ public class FolderDaoImplTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testReorder() throws CccCheckedException {
+    public void testReorder() {
 
         // ARRANGE
         _f.lock(_user);

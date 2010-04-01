@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -80,8 +79,7 @@ public class UpdateResourceMetadataCommand {
                         final String title,
                         final String description,
                         final String tags,
-                        final Map<String, String> metadata)
-                               throws CccCheckedException {
+                        final Map<String, String> metadata) {
         final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);
 

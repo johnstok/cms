@@ -24,57 +24,54 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
-import ccc.types.CommandType;
-import ccc.types.DBC;
+import java.util.Collections;
+import java.util.UUID;
+
 import ccc.types.Failure;
 import ccc.types.FailureCode;
-
+import ccc.types.ResourceName;
 
 
 /**
- * This exception indicates that a user attempted to perform an operation
- * without sufficient privileges.
+ * Exception thrown when a resource cannot be created because an existing
+ * resource already has the same absolute path.
  *
  * @author Civic Computing Ltd.
  */
-public class InsufficientPrivilegesException
+public class ResourceExistsException
     extends
-        CccCheckedException {
+        ConflictException {
 
-    private final CommandType _action;
-    private final User _user;
+    private ResourceName _resourceName;
+    private UUID         _resourceId;
+
 
     /**
      * Constructor.
      *
-     * @param action The action that was disallowed.
-     * @param user The user attempting to perform the action.
+     * @param resourceId   The ID of the existing resource.
+     * @param resourceName The name of the existing resource.
      */
-    public InsufficientPrivilegesException(final CommandType action,
-                                           final User user) {
-        DBC.require().notNull(action);
-        DBC.require().notNull(user);
-        _action = action;
-        _user = user;
+    public ResourceExistsException(final UUID resourceId,
+                                   final ResourceName resourceName) {
+        super(
+            new Failure(
+                FailureCode.EXISTS,
+                Collections.singletonMap(
+                    "existing_id", resourceId.toString())));
+        _resourceId = resourceId;
+        _resourceName = resourceName;
     }
+
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return
-            "User "
-            + _user.getUsername()
-            + _user.getGroups()
-            + " may not perform action: "
-            + _action;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RestException toRemoteException() {
-        return new RestException(new Failure(FailureCode.PRIVILEGES));
+            "Folder already contains a resource with name '"
+            + _resourceName
+            + "'.";
     }
 }

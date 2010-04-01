@@ -32,9 +32,9 @@ import java.io.InputStream;
 import javax.persistence.EntityManager;
 
 import ccc.domain.Data;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Setting;
 import ccc.persistence.streams.CoreData;
+import ccc.rest.EntityNotFoundException;
 import ccc.types.DBC;
 
 

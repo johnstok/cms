@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
@@ -76,8 +75,7 @@ public class UpdatePageCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+    public Void doExecute(final User actor, final Date happenedOn) {
 
         final Page page = getRepository().find(Page.class, _id);
         page.confirmLock(actor);

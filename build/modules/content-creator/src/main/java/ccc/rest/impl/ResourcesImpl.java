@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,8 +39,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Resources;
-import ccc.rest.RestException;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
@@ -68,220 +67,312 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Duration cacheDuration(final UUID resourceId) throws RestException {
-        return getResources().cacheDuration(resourceId);
+    public Duration cacheDuration(final UUID resourceId) {
+        try {
+            return getResources().cacheDuration(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary computeTemplate(final UUID resourceId)
-    throws RestException {
-        return getResources().computeTemplate(resourceId);
+    public TemplateSummary computeTemplate(final UUID resourceId) {
+        try {
+            return getResources().computeTemplate(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public String getAbsolutePath(final UUID resourceId) throws RestException {
-        return getResources().getAbsolutePath(resourceId);
+    public String getAbsolutePath(final UUID resourceId) {
+        try {
+            return getResources().getAbsolutePath(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<RevisionDto> history(final UUID resourceId)
-    throws RestException {
-        return getResources().history(resourceId);
+    public Collection<RevisionDto> history(final UUID resourceId) {
+        try {
+            return getResources().history(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> locked() {
-        return getResources().locked();
+        try {
+            return getResources().locked();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> metadata(final UUID resourceId)
-    throws RestException {
-        return getResources().metadata(resourceId);
+    public Map<String, String> metadata(final UUID resourceId) {
+        try {
+            return getResources().metadata(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resource(final UUID resourceId)
-    throws RestException, UnauthorizedException {
-        return getResources().resource(resourceId);
+    public ResourceSummary resource(final UUID resourceId) {
+        try {
+            return getResources().resource(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resourceForLegacyId(final String legacyId)
-    throws RestException {
-        return getResources().resourceForLegacyId(legacyId);
+    public ResourceSummary resourceForLegacyId(final String legacyId) {
+        try {
+            return getResources().resourceForLegacyId(legacyId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> resourceForMetadataKey(final String key)
-    throws RestException {
-        return getResources().resourceForMetadataKey(key);
+    public Collection<ResourceSummary> resourceForMetadataKey(
+                                                            final String key) {
+        try {
+            return getResources().resourceForMetadataKey(key);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resourceForPath(final String path)
-    throws RestException {
-        return getResources().resourceForPath(path);
+    public ResourceSummary resourceForPath(final String path) {
+        try {
+            return getResources().resourceForPath(path);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public AclDto roles(final UUID resourceId)
-    throws RestException {
-        return getResources().roles(resourceId);
+    public AclDto roles(final UUID resourceId) {
+        try {
+            return getResources().roles(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceDto pu)
-    throws RestException {
-        getResources().updateCacheDuration(resourceId, pu);
+                                    final ResourceDto pu) {
+        try {
+            getResources().updateCacheDuration(resourceId, pu);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void lock(final UUID resourceId) throws RestException {
-        getResources().lock(resourceId);
+    public void lock(final UUID resourceId) {
+        try {
+            getResources().lock(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void applyWorkingCopy(final UUID resourceId)
-    throws RestException {
-        getResources().applyWorkingCopy(resourceId);
+    public void applyWorkingCopy(final UUID resourceId) {
+        try {
+            getResources().applyWorkingCopy(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceDto pu)
-    throws RestException {
-        getResources().updateResourceTemplate(resourceId, pu);
+                                       final ResourceDto pu) {
+        try {
+            getResources().updateResourceTemplate(resourceId, pu);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final UUID resourceId,
-                            final AclDto roles)
-    throws RestException {
-        getResources().changeRoles(resourceId, roles);
+    public void changeRoles(final UUID resourceId, final AclDto roles) {
+        try {
+            getResources().changeRoles(resourceId, roles);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void move(final UUID resourceId, final UUID newParentId)
-    throws RestException {
-        getResources().move(resourceId, newParentId);
+    public void move(final UUID resourceId, final UUID newParentId) {
+        try {
+            getResources().move(resourceId, newParentId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void publish(final UUID resourceId) throws RestException {
-        getResources().publish(resourceId);
+    public void publish(final UUID resourceId) {
+        try {
+            getResources().publish(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void rename(final UUID resourceId, final String name)
-    throws RestException {
-        getResources().rename(resourceId, name);
+    public void rename(final UUID resourceId, final String name) {
+        try {
+            getResources().rename(resourceId, name);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unlock(final UUID resourceId) throws RestException {
-        getResources().unlock(resourceId);
+    public void unlock(final UUID resourceId) {
+        try {
+            getResources().unlock(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void unpublish(final UUID resourceId) throws RestException {
-        getResources().unpublish(resourceId);
+    public void unpublish(final UUID resourceId) {
+        try {
+            getResources().unpublish(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void excludeFromMainMenu(final UUID resourceId)
-    throws RestException {
-        getResources().excludeFromMainMenu(resourceId);
+    public void excludeFromMainMenu(final UUID resourceId) {
+        try {
+            getResources().excludeFromMainMenu(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void includeInMainMenu(final UUID resourceId)
-    throws RestException {
-        getResources().includeInMainMenu(resourceId);
+    public void includeInMainMenu(final UUID resourceId) {
+        try {
+            getResources().includeInMainMenu(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final UUID resourceId, final Json json)
-    throws RestException {
-        getResources().updateMetadata(resourceId, json);
+    public void updateMetadata(final UUID resourceId, final Json json) {
+        try {
+            getResources().updateMetadata(resourceId, json);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void clearWorkingCopy(final UUID pageId)
-    throws RestException {
-        getResources().clearWorkingCopy(pageId);
+    public void clearWorkingCopy(final UUID pageId) {
+        try {
+            getResources().clearWorkingCopy(pageId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceDto pu)
-    throws RestException {
-        getResources().createWorkingCopy(resourceId, pu);
+                                  final ResourceDto pu) {
+        try {
+            getResources().createWorkingCopy(resourceId, pu);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void deleteCacheDuration(final UUID id)
-    throws RestException {
-        getResources().deleteCacheDuration(id);
+    public void deleteCacheDuration(final UUID id) {
+        try {
+            getResources().deleteCacheDuration(id);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void deleteResource(final UUID resourceId) throws RestException {
-        getResources().deleteResource(resourceId);
+    public void deleteResource(final UUID resourceId) {
+        try {
+            getResources().deleteResource(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
@@ -289,17 +380,23 @@ public class ResourcesImpl
     @Override
     public void createLogEntry(final UUID resourceId,
                                final String action,
-                               final String detail)
-    throws RestException {
-        getResources().createLogEntry(resourceId, action, detail);
+                               final String detail) {
+        try {
+            getResources().createLogEntry(resourceId, action, detail);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getSiblings(final UUID resourceId)
-        throws RestException, UnauthorizedException {
-        return getResources().getSiblings(resourceId);
+    public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
+        try {
+            return getResources().getSiblings(resourceId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
@@ -312,8 +409,12 @@ public class ResourcesImpl
                                       final String sort,
                                       final SortOrder order,
                                       final int pageNo,
-                                      final int pageSize) throws RestException {
-        return getResources().list(
-            tag, before, after, sort, order, pageNo, pageSize);
+                                      final int pageSize) {
+        try {
+            return getResources().list(
+                tag, before, after, sort, order, pageNo, pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

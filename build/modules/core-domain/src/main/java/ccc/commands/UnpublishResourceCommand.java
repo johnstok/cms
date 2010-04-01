@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
@@ -68,7 +67,7 @@ class UnpublishResourceCommand extends Command<Void> {
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final User actor,
-                             final Date happenedOn) throws CccCheckedException {
+                             final Date happenedOn) {
         final Resource r = getRepository().find(Resource.class, _resourceId);
         r.confirmLock(actor);
 

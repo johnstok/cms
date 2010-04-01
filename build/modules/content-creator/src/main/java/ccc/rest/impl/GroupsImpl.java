@@ -29,6 +29,7 @@ package ccc.rest.impl;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -36,7 +37,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Groups;
-import ccc.rest.RestException;
 import ccc.rest.dto.GroupDto;
 
 
@@ -58,29 +58,44 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto create(final GroupDto delta) throws RestException {
-        return getGroups().create(delta);
+    public GroupDto create(final GroupDto delta) {
+        try {
+            return getGroups().create(delta);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto find(final UUID id) throws RestException {
-        return getGroups().find(id);
+    public GroupDto find(final UUID id) {
+        try {
+            return getGroups().find(id);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<GroupDto> list(final String name) {
-        return getGroups().list(name);
+        try {
+            return getGroups().list(name);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto update(final UUID id, final GroupDto group)
-    throws RestException {
-        return getGroups().update(id, group);
+    public GroupDto update(final UUID id, final GroupDto group) {
+        try {
+            return getGroups().update(id, group);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

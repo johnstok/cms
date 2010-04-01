@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
@@ -73,7 +72,7 @@ public class UpdatePasswordAction {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID userId,
-                        final String password) throws CccCheckedException {
+                        final String password) {
         final User u =
                 _repository.find(userId);
         u.setPassword(password);

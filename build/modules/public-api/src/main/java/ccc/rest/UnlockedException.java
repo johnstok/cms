@@ -24,36 +24,51 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
+import java.util.UUID;
+
+import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
 /**
- * Wrapper class for converting third party exceptions to use
- * {@link CccCheckedException}.
+ * An exception used to indicate that a resource is unlocked.
  *
  * @author Civic Computing Ltd.
  */
-public class UnexpectedException
+public class UnlockedException
     extends
-        CccCheckedException {
+        InvalidException {
+
+    private final UUID _resource;
 
     /**
      * Constructor.
      *
-     * @param e The third party exception.
+     * @param resource The unlocked resource.
      */
-    public UnexpectedException(final Exception e) {
-        super("Unexpected exception.", e);
+    public UnlockedException(final UUID resource) {
+        super(new Failure(FailureCode.UNLOCKED));
+        DBC.require().notNull(resource);
+        _resource = resource;
     }
+
+
+    /**
+     * Accessor for the unlocked resource.
+     *
+     * @return The unlocked resource.
+     */
+    public UUID getResource() {
+        return _resource;
+    }
+
 
     /** {@inheritDoc} */
     @Override
-    public RestException toRemoteException() {
-        return new RestException(
-            new Failure(FailureCode.UNEXPECTED));
+    public String getMessage() {
+        return "Resource "+_resource+" is Unlocked.";
     }
 }

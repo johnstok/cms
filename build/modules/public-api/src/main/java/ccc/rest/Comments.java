@@ -62,12 +62,10 @@ public interface Comments {
      *
      * @param comment The comment to create.
      *
-     * @throws RestException If the method fails.
-     *
      * @return Return the newly created comment.
      */
     @POST
-    CommentDto create(CommentDto comment) throws RestException;
+    CommentDto create(CommentDto comment);
 
 
     /**
@@ -75,12 +73,10 @@ public interface Comments {
      *
      * @param commentId The comment's ID.
      *
-     * @throws RestException If the method fails.
-     *
      * @return Return the corresponding comment.
      */
     @GET @Path("/{id}")
-    CommentDto retrieve(@PathParam("id") UUID commentId) throws RestException;
+    CommentDto retrieve(@PathParam("id") UUID commentId);
 
 
     /**
@@ -88,23 +84,18 @@ public interface Comments {
      *
      * @param commentId The comment's ID.
      * @param comment The updated comment.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}")
-    void update(@PathParam("id") UUID commentId,
-                CommentDto comment) throws RestException;
+    void update(@PathParam("id") UUID commentId, CommentDto comment);
 
 
     /**
      * Delete an existing comment.
      *
      * @param commentId The comment's ID.
-     *
-     * @throws RestException If the method fails.
      */
     @DELETE @Path("/{id}")
-    void delete(@PathParam("id") UUID commentId) throws RestException;
+    void delete(@PathParam("id") UUID commentId);
 
 
     /**
@@ -118,8 +109,6 @@ public interface Comments {
      * @param pageSize The number of results in a page.
      *
      * @return A list of comments.
-     *
-     * @throws RestException If the method fails.
      */
     @GET
     DtoCollection<CommentDto> list(
@@ -128,6 +117,5 @@ public interface Comments {
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,
-        @QueryParam("count") @DefaultValue("20") int pageSize)
-    throws RestException;
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 }

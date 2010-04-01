@@ -32,7 +32,6 @@ import java.util.Collections;
 
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdatePageCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.rest.dto.PageDelta;
@@ -53,9 +52,8 @@ public class PageDaoImplTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdatePage() throws CccCheckedException {
+    public void testUpdatePage() {
 
         // ARRANGE
         final Page page =

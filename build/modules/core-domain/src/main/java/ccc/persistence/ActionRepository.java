@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Action;
-import ccc.domain.EntityNotFoundException;
+import ccc.rest.EntityNotFoundException;
 import ccc.types.SortOrder;
 
 

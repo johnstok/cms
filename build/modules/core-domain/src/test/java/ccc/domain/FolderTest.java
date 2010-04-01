@@ -18,6 +18,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
+import ccc.rest.CycleDetectedException;
+import ccc.rest.ResourceExistsException;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
@@ -34,10 +36,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testEntrySorting() throws CccCheckedException {
+    public void testEntrySorting() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -63,10 +63,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testEntryPaging() throws CccCheckedException {
+    public void testEntryPaging() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -90,9 +88,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testIsAncestorOrThis() throws CccCheckedException {
+    public void testIsAncestorOrThis() {
 
         // ARRANGE
         final Folder a = new Folder();
@@ -114,9 +111,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testDirectCircularDependency() throws CccCheckedException {
+    public void testDirectCircularDependency() {
 
         // ARRANGE
         final Folder p = new Folder();
@@ -136,9 +132,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testIndirectCircularDependency() throws CccCheckedException {
+    public void testIndirectCircularDependency() {
 
         // ARRANGE
         final Folder a = new Folder();
@@ -160,9 +155,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testCantAddFolderToSelf() throws CccCheckedException {
+    public void testCantAddFolderToSelf() {
 
         // ARRANGE
         final Folder a = new Folder();
@@ -210,10 +204,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testFolders() throws CccCheckedException {
+    public void testFolders() {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -242,10 +234,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testPages() throws CccCheckedException {
+    public void testPages() {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -274,10 +264,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testPagesRespectSortOrder() throws CccCheckedException {
+    public void testPagesRespectSortOrder() {
 
             // ARRANGE
             final Folder f = new Folder("f");
@@ -308,10 +296,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testFirstPage() throws CccCheckedException {
+    public void testFirstPage() {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -329,10 +315,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testHasPages() throws CccCheckedException {
+    public void testHasPages() {
 
         // ARRANGE
         final Folder noPages = new Folder("content");
@@ -354,10 +338,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testTypedEntries() throws CccCheckedException {
+    public void testTypedEntries() {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -376,10 +358,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testFolderCount() throws CccCheckedException {
+    public void testFolderCount() {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -397,11 +377,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testNullContentCannotBeAddedToFolders()
-    throws CccCheckedException {
+    public void testNullContentCannotBeAddedToFolders() {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -455,10 +432,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testAddPageToFolder() throws CccCheckedException {
+    public void testAddPageToFolder() {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -475,10 +450,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testRemovePageFromFolder() throws CccCheckedException {
+    public void testRemovePageFromFolder() {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -496,10 +469,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testAddFolderToFolder() throws CccCheckedException {
+    public void testAddFolderToFolder() {
 
         // ARRANGE
         final Folder folder = new Folder("foo");
@@ -531,10 +502,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testFindEntryByUrl() throws CccCheckedException {
+    public void testFindEntryByUrl() {
 
         // ARRANGE
         final Folder foo = new Folder("foo");
@@ -550,10 +519,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testNavigateToContent() throws CccCheckedException {
+    public void testNavigateToContent() {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -572,10 +539,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testNavigateToFolder() throws CccCheckedException {
+    public void testNavigateToFolder() {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -594,10 +559,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testNavigateToEmptyPath() throws CccCheckedException {
+    public void testNavigateToEmptyPath() {
 
         // ARRANGE
         final Folder content = new Folder("content");
@@ -616,10 +579,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testHasEntryWithName() throws CccCheckedException {
+    public void testHasEntryWithName() {
 
         // ARRANGE
         final Page p = new Page("page", _rm);
@@ -643,11 +604,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testAddRejectsResourcesWithExistingNames()
-    throws CccCheckedException {
+    public void testAddRejectsResourcesWithExistingNames() {
 
         // ARRANGE
         final Page p = new Page("page", _rm);
@@ -660,7 +618,7 @@ public final class FolderTest extends TestCase {
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
-        } catch (final CccCheckedException e) {
+        } catch (final ResourceExistsException e) {
             assertEquals(
                 "Folder already contains a resource with name 'page'.",
                 e.getMessage());
@@ -669,10 +627,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testHasAliases() throws CccCheckedException {
+    public void testHasAliases() {
 
         // ARRANGE
         final Folder noAliases = new Folder("content");
@@ -693,10 +649,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testFirstAlias() throws CccCheckedException {
+    public void testFirstAlias() {
 
         // ARRANGE
         final Folder pages = new Folder("content");
@@ -717,10 +671,8 @@ public final class FolderTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testIndexPage() throws CccCheckedException {
+    public void testIndexPage() {
         // ARRANGE
         final Folder f = new Folder("testFolder");
         final Page baz = new Page("baz", _rm);
