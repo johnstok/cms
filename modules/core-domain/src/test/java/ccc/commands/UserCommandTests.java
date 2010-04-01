@@ -30,7 +30,6 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.rest.dto.UserDto;
@@ -49,9 +48,8 @@ public class UserCommandTests
     /**
      * Test.
      *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testCreateUser() throws CccCheckedException {
+    public void testCreateUser() {
 
         // ARRANGE
         final Date now = new Date();

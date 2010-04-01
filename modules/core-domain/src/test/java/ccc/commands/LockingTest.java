@@ -31,11 +31,8 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Group;
-import ccc.domain.InsufficientPrivilegesException;
-import ccc.domain.LockMismatchException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -43,6 +40,8 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
+import ccc.rest.InsufficientPrivilegesException;
+import ccc.rest.LockMismatchException;
 import ccc.types.CommandType;
 import ccc.types.Permission;
 import ccc.types.ResourceName;
@@ -66,10 +65,8 @@ public class LockingTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testResourceCannotBeUnlockedByNonlockerNonAdmin()
-    throws CccCheckedException {
+    public void testResourceCannotBeUnlockedByNonlockerNonAdmin() {
 
         // ARRANGE
         expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
@@ -85,10 +82,8 @@ public class LockingTest
 
         // ASSERT
         } catch (final InsufficientPrivilegesException e) {
-            assertEquals(
-                "User regular[] may not perform action: "
-                +CommandType.RESOURCE_UNLOCK,
-                e.getMessage());
+            assertEquals(CommandType.RESOURCE_UNLOCK, e.getAction());
+            assertEquals(_regularUser.getId(), e.getUser());
         }
         assertEquals(_anotherUser, _r.getLockedBy());
         verifyAll();
@@ -96,10 +91,8 @@ public class LockingTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testResourceCanBeUnlockedByNonlockerAdmin()
-    throws CccCheckedException {
+    public void testResourceCanBeUnlockedByNonlockerAdmin() {
 
         // ARRANGE
         expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
@@ -119,10 +112,8 @@ public class LockingTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testUnlockedResourceCanBeLocked()
-    throws CccCheckedException {
+    public void testUnlockedResourceCanBeLocked() {
 
         // ARRANGE
         expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
@@ -140,10 +131,8 @@ public class LockingTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testLockedResourceCannotBeRelockedBySomeoneElse()
-    throws CccCheckedException {
+    public void testLockedResourceCannotBeRelockedBySomeoneElse() {
 
         // ARRANGE
         expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
@@ -158,17 +147,15 @@ public class LockingTest
 
         // ASSERT
         } catch (final LockMismatchException e) {
-            assertEquals(_r, e.getResource());
+            assertEquals(_r.getId(), e.getResource());
         }
         verifyAll();
     }
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testUnpublishWithUser()
-    throws CccCheckedException {
+    public void testUnpublishWithUser() {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -190,9 +177,8 @@ public class LockingTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testPublish() throws CccCheckedException {
+    public void testPublish() {
 
         // ARRANGE
         _r.lock(_regularUser);
@@ -213,10 +199,8 @@ public class LockingTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testResourceCanBeUnlockedByLockerNonadmin()
-    throws CccCheckedException {
+    public void testResourceCanBeUnlockedByLockerNonadmin() {
 
         // ARRANGE
         expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);

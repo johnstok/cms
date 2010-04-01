@@ -45,7 +45,6 @@ import org.apache.log4j.Logger;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.persistence.ActionRepository;
 import ccc.rest.Actions;
@@ -122,7 +121,8 @@ public class ActionsEJB
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
-        final ActionRepository actions = getRepoFactory().createActionRepository();
+        final ActionRepository actions =
+            getRepoFactory().createActionRepository();
         final DtoCollection<ActionSummary> dc =
             new DtoCollection<ActionSummary>(
                 actions.countPending(),
@@ -140,7 +140,8 @@ public class ActionsEJB
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
-        final ActionRepository actions = getRepoFactory().createActionRepository();
+        final ActionRepository actions =
+            getRepoFactory().createActionRepository();
         final DtoCollection<ActionSummary> dc =
             new DtoCollection<ActionSummary>(
                 actions.countCompleted(),
@@ -153,55 +154,39 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_CANCEL})
-    public void cancelAction(final UUID actionId) throws RestException {
-        try {
-            new CancelActionCommand(getRepoFactory())
-                .execute(currentUser(), new Date(), actionId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public void cancelAction(final UUID actionId) {
+        new CancelActionCommand(getRepoFactory())
+            .execute(currentUser(), new Date(), actionId);
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_CREATE})
-    public ActionSummary createAction(final ActionDto action)
-    throws RestException {
-        try {
-            final Action a =
-                new Action(
-                    action.getCommand(),
-                    action.getExecuteAfter(),
-                    currentUser(),
-                    getRepoFactory()
-                        .createResourceRepository()
-                        .find(Resource.class, action.getResourceId()),
-                    action.getParameters());
+    public ActionSummary createAction(final ActionDto action) {
+        final Action a =
+            new Action(
+                action.getCommand(),
+                action.getExecuteAfter(),
+                currentUser(),
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Resource.class, action.getResourceId()),
+                action.getParameters());
 
-            new ScheduleActionCommand(getRepoFactory())
-                .execute(currentUser(), new Date(), a);
+        new ScheduleActionCommand(getRepoFactory())
+            .execute(currentUser(), new Date(), a);
 
-            return a.mapAction();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return a.mapAction();
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public ActionSummary findAction(final UUID actionId) throws RestException {
-        try {
-            return
-                getRepoFactory()
-                    .createActionRepository()
-                    .find(actionId).mapAction();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public ActionSummary findAction(final UUID actionId) {
+        return
+            getRepoFactory()
+                .createActionRepository()
+                .find(actionId).mapAction();
     }
 
 

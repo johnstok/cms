@@ -33,13 +33,12 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
+import ccc.rest.EntityNotFoundException;
 import ccc.types.Paragraph;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
@@ -88,9 +87,8 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testLookup() throws CccCheckedException {
+    public void testLookup() {
 
         // ARRANGE
         final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);

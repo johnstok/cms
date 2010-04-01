@@ -29,8 +29,8 @@ package ccc.persistence;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Group;
+import ccc.rest.EntityNotFoundException;
 
 /**
  * API for group repositories.

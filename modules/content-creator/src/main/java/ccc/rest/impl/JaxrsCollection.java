@@ -27,6 +27,7 @@
 
 package ccc.rest.impl;
 
+import javax.ejb.EJBException;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 
@@ -40,6 +41,7 @@ import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
+import ccc.rest.RestException;
 import ccc.rest.SearchEngine;
 import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
@@ -54,30 +56,11 @@ import ccc.rest.Users;
  */
 abstract class JaxrsCollection {
 
-    private          ServiceLocator _locator;
     @Context private ServletContext _sContext;
 
 
-    /**
-     * Mutator.
-     *
-     * @param sl The service locator to set.
-     */
-    void setServiceLocator(final ServiceLocator sl) {
-        _locator = sl;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return The current service locator.
-     */
-    ServiceLocator getServiceLocator() {
-        return
-            (null!=_locator)
-                ? _locator
-                : new RegistryServiceLocator(getAppName());
+    private ServiceLocator getServiceLocator() {
+        return new RegistryServiceLocator(getAppName());
     }
 
 
@@ -101,6 +84,22 @@ abstract class JaxrsCollection {
     }
 
 
+    /**
+     * Convert an EJB exception to a native CC exception.
+     *
+     * @param e The exception to convert.
+     *
+     * @return The corresponding CC exception.
+     */
+    protected RuntimeException convertToNative(final EJBException e) {
+        final Exception cause = e.getCausedByException();
+        if (cause instanceof RestException) {
+            return (RestException) cause;
+        }
+        return e;
+    }
+
+
     public Actions getActions() {
         return getServiceLocator().getActions();
     }
@@ -121,7 +120,7 @@ abstract class JaxrsCollection {
     }
 
 
-    public Folders getFolders() {
+    protected Folders defaultFolders() {
         return getServiceLocator().getFolders();
     }
 
@@ -156,7 +155,7 @@ abstract class JaxrsCollection {
     }
 
 
-    public Users getUsers() {
+    protected Users defaultUsers() {
         return getServiceLocator().getUsers();
     }
 

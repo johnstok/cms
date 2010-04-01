@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Search;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -69,7 +68,7 @@ class CreateSearchCommand
     /** {@inheritDoc} */
     @Override
     public Search doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
         final Search s = new Search(_title);
 
         create(actor, happenedOn, _parentFolder, s);

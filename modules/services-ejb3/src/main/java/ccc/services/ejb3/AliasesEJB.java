@@ -39,9 +39,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateAliasCommand;
 import ccc.domain.Alias;
-import ccc.domain.CccCheckedException;
 import ccc.rest.Aliases;
-import ccc.rest.RestException;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
@@ -67,9 +65,7 @@ public class AliasesEJB
     @Override
     @RolesAllowed({ALIAS_UPDATE})
     public void updateAlias(final UUID aliasId,
-                            final AliasDelta delta)
-                                                 throws RestException {
-        try {
+                            final AliasDelta delta) {
             new UpdateAliasCommand(
                 getRepoFactory(),
                 delta.getTargetId(),
@@ -77,46 +73,31 @@ public class AliasesEJB
             .execute(
                 currentUser(),
                 new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ALIAS_CREATE})
-    public ResourceSummary createAlias(final AliasDto alias)
-                                                 throws RestException {
-        try {
-            return commands()
-                    .createAliasCommand(alias)
-                    .execute(currentUser(), new Date())
-                    .mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public ResourceSummary createAlias(final AliasDto alias) {
+        return commands()
+            .createAliasCommand(alias)
+            .execute(currentUser(), new Date())
+            .mapResource();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ALIAS_READ})
-    public String aliasTargetName(final UUID aliasId) throws RestException {
-        try {
-            final Alias alias =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Alias.class, aliasId);
-            if (alias != null) {
-                return alias.target().getName().toString();
-            }
-            return null;
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+    public String aliasTargetName(final UUID aliasId) {
+        final Alias alias =
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Alias.class, aliasId);
+        if (alias != null) {
+            return alias.target().getName().toString();
         }
+        return null;
     }
 }

@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.Alias;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
@@ -76,7 +75,7 @@ class CreateAliasCommand
     /** {@inheritDoc} */
     @Override
     public Alias doExecute(final User actor,
-                           final Date happenedOn) throws CccCheckedException {
+                           final Date happenedOn) {
         final Resource target = getRepository().find(Resource.class, _targetId);
         if (target == null) {
             throw new RuntimeException("Target does not exists.");

@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
@@ -95,7 +94,7 @@ class CreatePageCommand extends CreateResourceCommand<Page> {
     /** {@inheritDoc} */
     @Override
     public Page doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Template template =
             (null==_templateId)

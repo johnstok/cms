@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,58 +21,46 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
-import ccc.types.DBC;
+import java.util.UUID;
+
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
 /**
- * An exception used to indicate that a resource is locked by another user.
+ * Exception indicating that the look up of an entity failed.
  *
  * @author Civic Computing Ltd.
  */
-public class LockMismatchException
+public class EntityNotFoundException
     extends
-        CccCheckedException {
+        RestException {
 
-    private final Resource _resource;
+    private final UUID _id;
 
 
     /**
      * Constructor.
      *
-     * @param resource The resource.
+     * @param id The entity's id.
      */
-    public LockMismatchException(final Resource resource) {
-        DBC.require().notNull(resource);
-        _resource = resource;
+    public EntityNotFoundException(final UUID id) {
+        super(new Failure(FailureCode.NOT_FOUND));
+        _id = id;
     }
+
 
     /**
-     * Accessor for the resource.
+     * Accessor.
      *
-     * @return The resource.
+     * @return Returns the id.
      */
-    public Resource getResource() {
-        return _resource;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return "Mismatch confirming lock on "+_resource.getId()+".";
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RestException toRemoteException() {
-        return new RestException(
-            new Failure(FailureCode.LOCK_MISMATCH));
+    public UUID getId() {
+        return _id;
     }
 }

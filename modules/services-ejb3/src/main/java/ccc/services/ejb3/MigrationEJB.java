@@ -44,11 +44,9 @@ import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.User;
-import ccc.rest.RestException;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -80,26 +78,20 @@ public class MigrationEJB
                                         final String title,
                                         final boolean publish,
                                         final UUID actorId,
-                                        final Date happenedOn)
-    throws RestException {
-        try {
-            final User u = userForId(actorId);
+                                        final Date happenedOn) {
+        final User u = userForId(actorId);
 
-            final Folder f =
-                commands().createFolderCommand(parentId, name, title)
-                .execute(u, happenedOn);
+        final Folder f =
+            commands().createFolderCommand(parentId, name, title)
+            .execute(u, happenedOn);
 
-            if (publish) {
-                f.lock(u);
-                commands().publishResource(f.getId()).execute(u, happenedOn);
-                f.unlock(u);
-            }
-
-            return f.mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        if (publish) {
+            f.lock(u);
+            commands().publishResource(f.getId()).execute(u, happenedOn);
+            f.unlock(u);
         }
+
+        return f.mapResource();
     }
 
 
@@ -114,33 +106,27 @@ public class MigrationEJB
                                       final UUID actorId,
                                       final Date happenedOn,
                                       final String comment,
-                                      final boolean majorChange)
-                                                 throws RestException {
-        try {
-            final User u = userForId(actorId);
+                                      final boolean majorChange) {
+        final User u = userForId(actorId);
 
-            final Page p =
-                commands().createPageCommand(
-                    parentId,
-                    delta,
-                    ResourceName.escape(name),
-                    title,
-                    templateId,
-                    comment,
-                    majorChange)
-                .execute(u, happenedOn);
+        final Page p =
+            commands().createPageCommand(
+                parentId,
+                delta,
+                ResourceName.escape(name),
+                title,
+                templateId,
+                comment,
+                majorChange)
+            .execute(u, happenedOn);
 
-            if (publish) {
-                p.lock(u);
-                commands().publishResource(p.getId()).execute(u, happenedOn);
-                p.unlock(u);
-            }
-
-            return p.mapResource();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        if (publish) {
+            p.lock(u);
+            commands().publishResource(p.getId()).execute(u, happenedOn);
+            p.unlock(u);
         }
+
+        return p.mapResource();
     }
 
 
@@ -151,7 +137,7 @@ public class MigrationEJB
                            final String comment,
                            final boolean isMajorEdit,
                            final UUID actorId,
-                           final Date happenedOn) throws RestException {
+                           final Date happenedOn) {
         sudoExecute(
             new UpdatePageCommand(
                 getRepoFactory(),
@@ -169,7 +155,7 @@ public class MigrationEJB
     @Override
     public void lock(final UUID resourceId,
                      final UUID actorId,
-                     final Date happenedOn) throws RestException {
+                     final Date happenedOn) {
         sudoExecute(
             commands().lockResourceCommand(resourceId), actorId, happenedOn);
     }
@@ -180,7 +166,7 @@ public class MigrationEJB
     @Override
     public void publish(final UUID resourceId,
                         final UUID userId,
-                        final Date date) throws RestException {
+                        final Date date) {
         sudoExecute(
             commands().publishResource(resourceId), userId, date);
     }
@@ -191,7 +177,7 @@ public class MigrationEJB
     @Override
     public void unlock(final UUID resourceId,
                        final UUID actorId,
-                       final Date happenedOn) throws RestException {
+                       final Date happenedOn) {
         sudoExecute(
             commands().unlockResourceCommand(resourceId), actorId, happenedOn);
     }
@@ -202,7 +188,7 @@ public class MigrationEJB
     @Override
     public void unpublish(final UUID resourceId,
                           final UUID userId,
-                          final Date publishDate) throws RestException {
+                          final Date publishDate) {
         sudoExecute(
             commands().unpublishResourceCommand(resourceId),
             userId,
@@ -216,19 +202,13 @@ public class MigrationEJB
     public void updateResourceTemplate(final UUID resourceId,
                                        final UUID templateId,
                                        final UUID actorId,
-                                       final Date happenedOn)
-                                                 throws RestException {
-        try {
-            new ChangeTemplateForResourceCommand(getRepoFactory())
-                .execute(
-                    userForId(actorId),
-                    happenedOn,
-                    resourceId,
-                    templateId);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                       final Date happenedOn) {
+        new ChangeTemplateForResourceCommand(getRepoFactory())
+            .execute(
+                userForId(actorId),
+                happenedOn,
+                resourceId,
+                templateId);
     }
 
 
@@ -238,14 +218,9 @@ public class MigrationEJB
     public void includeInMainMenu(final UUID resourceId,
                                   final boolean include,
                                   final UUID actorId,
-                                  final Date happenedOn) throws RestException {
-        try {
-            new IncludeInMainMenuCommand(getRepoFactory())
-                .execute(userForId(actorId), happenedOn, resourceId, include);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                  final Date happenedOn) {
+        new IncludeInMainMenuCommand(getRepoFactory())
+            .execute(userForId(actorId), happenedOn, resourceId, include);
     }
 
 
@@ -258,21 +233,16 @@ public class MigrationEJB
                                final String tags,
                                final Map<String, String> metadata,
                                final UUID actorId,
-                               final Date happenedOn) throws RestException {
-        try {
-            new UpdateResourceMetadataCommand(getRepoFactory())
-                .execute(
-                    userForId(actorId),
-                    happenedOn,
-                    resourceId,
-                    title,
-                    description,
-                    tags,
-                    metadata);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                               final Date happenedOn) {
+        new UpdateResourceMetadataCommand(getRepoFactory())
+            .execute(
+                userForId(actorId),
+                happenedOn,
+                resourceId,
+                title,
+                description,
+                tags,
+                metadata);
     }
 
 
@@ -282,7 +252,7 @@ public class MigrationEJB
     public void changeRoles(final UUID resourceId,
                             final AclDto acl,
                             final UUID actorId,
-                            final Date happenedOn) throws RestException {
+                            final Date happenedOn) {
         sudoExecute(
             new UpdateResourceRolesCommand(
                 getRepoFactory(),
@@ -300,7 +270,7 @@ public class MigrationEJB
                                  final UUID userId,
                                  final Date happenedOn,
                                  final boolean isMajorEdit,
-                                 final String comment) throws RestException {
+                                 final String comment) {
         sudoExecute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
@@ -317,7 +287,7 @@ public class MigrationEJB
     @Override
     public void deleteResource(final UUID resourceId,
                                final UUID actorId,
-                               final Date happenedOn) throws RestException {
+                               final Date happenedOn) {
         sudoExecute(
             commands().createDeleteResourceCmd(resourceId),
             actorId,

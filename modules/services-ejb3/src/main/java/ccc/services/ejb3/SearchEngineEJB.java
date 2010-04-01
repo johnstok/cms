@@ -46,7 +46,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -55,6 +54,7 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
 import ccc.search.SimpleLucene;

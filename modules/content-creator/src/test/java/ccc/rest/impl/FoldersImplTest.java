@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import ccc.api.client1.MemoryServiceLocator;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.extensions.FoldersExt;
 
@@ -69,10 +68,8 @@ public class FoldersImplTest
     @Override
     protected void setUp() {
         _foldersExt = createStrictMock(FoldersExt.class);
-        final MemoryServiceLocator sl = new MemoryServiceLocator();
-        sl.setFolderCommands(_foldersExt);
         _unit = new FoldersImpl();
-        _unit.setServiceLocator(sl);
+        _unit.setFolders(_foldersExt);
     }
 
     /** {@inheritDoc} */

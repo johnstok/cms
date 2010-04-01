@@ -33,8 +33,8 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import ccc.domain.Comment;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Resource;
+import ccc.rest.EntityNotFoundException;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;

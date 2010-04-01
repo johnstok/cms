@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -84,8 +83,7 @@ class CreateTemplateCommand extends CreateResourceCommand<Template> {
     /** {@inheritDoc} */
     @Override
     public Template doExecute(final User actor,
-                              final Date happenedOn)
-                                                throws CccCheckedException {
+                              final Date happenedOn) {
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Created.");
 

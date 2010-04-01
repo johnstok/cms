@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,27 +24,27 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commands;
+package ccc.rest;
 
-import ccc.domain.CccCheckedException;
-import ccc.rest.RestException;
 import ccc.types.Failure;
-import ccc.types.FailureCode;
 
 
 /**
- * Indicates a command was invoked with invalid arguments.
+ * An API call failed due to a conflict with the current state of the resource.
  *
  * @author Civic Computing Ltd.
  */
-public class InvalidCommandException
+public class ConflictException
     extends
-        CccCheckedException {
+        RestException {
 
-    /** {@inheritDoc} */
-    @Override
-    public RestException toRemoteException() {
-        return new RestException(new Failure(FailureCode.INVALID));
+    /**
+     * Constructor.
+     *
+     * @param failure Details of the failure.
+     */
+    public ConflictException(final Failure failure) {
+        super(failure);
     }
 
 }

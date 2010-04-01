@@ -32,7 +32,6 @@ import java.util.Date;
 
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
@@ -52,9 +51,8 @@ public class TemplateDaoImplTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdateTemplates() throws CccCheckedException {
+    public void testUpdateTemplates() {
 
         // ARRANGE
         final Template foo = new Template(

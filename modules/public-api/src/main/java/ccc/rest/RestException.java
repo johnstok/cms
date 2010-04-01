@@ -26,6 +26,9 @@
  */
 package ccc.rest;
 
+import ccc.serialization.Json;
+import ccc.serialization.JsonKeys;
+import ccc.serialization.Jsonable2;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
@@ -39,7 +42,9 @@ import ccc.types.FailureCode;
  */
 public class RestException
     extends
-        RuntimeException {
+        RuntimeException
+    implements
+        Jsonable2 {
 
     private Failure _failure;
 
@@ -72,5 +77,19 @@ public class RestException
      */
     public Failure getFailure() {
         return _failure;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        _failure = new Failure(json.getJson(JsonKeys.FAILURE));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(JsonKeys.FAILURE, _failure);
     }
 }

@@ -31,11 +31,11 @@ import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Comment;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.InvalidException;
 import ccc.rest.dto.CommentDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -74,8 +74,7 @@ public class UpdateCommentCommand
     /** {@inheritDoc} */
     @Override
     protected Comment doExecute(final User actor,
-                                final Date happenedOn)
-                                                    throws CccCheckedException {
+                                final Date happenedOn) {
 
         final Comment c = getComments().retrieve(_commentId);
 
@@ -88,7 +87,7 @@ public class UpdateCommentCommand
             try {
                 c.setUrl(new URL(_comment.getUrl()));
             } catch (final MalformedURLException e) {
-                throw new InvalidCommandException();
+                throw new InvalidException();
             }
         }
 

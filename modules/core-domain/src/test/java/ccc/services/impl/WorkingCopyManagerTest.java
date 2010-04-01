@@ -30,7 +30,6 @@ import static org.easymock.EasyMock.*;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -51,9 +50,8 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testClearWorkingCopy() throws CccCheckedException {
+    public void testClearWorkingCopy() {
 
         // ARRANGE
         final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
@@ -76,9 +74,8 @@ public class WorkingCopyManagerTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
-    public void testUpdateWorkingCopy() throws CccCheckedException {
+    public void testUpdateWorkingCopy() {
 
         // ARRANGE
         final Page page =

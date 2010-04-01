@@ -30,12 +30,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Comment;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.InvalidException;
 import ccc.rest.dto.CommentDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
@@ -70,8 +70,7 @@ public class CreateCommentCommand
     /** {@inheritDoc} */
     @Override
     protected Comment doExecute(final User actor,
-                                final Date happenedOn)
-                                                    throws CccCheckedException {
+                                final Date happenedOn) {
 
         final Resource r =
             getRepository().find(Resource.class, _comment.getResourceId());
@@ -82,7 +81,7 @@ public class CreateCommentCommand
             try {
                 c.setUrl(new URL(_comment.getUrl()));
             } catch (final MalformedURLException e) {
-                throw new InvalidCommandException();
+                throw new InvalidException();
             }
         }
         c.setEmail(new EmailAddress(_comment.getEmail()));

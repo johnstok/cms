@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
@@ -70,7 +69,7 @@ public class DeleteResourceCommand extends Command<Void> {
     /** {@inheritDoc} */
     @Override
     protected Void doExecute(final User actor,
-                             final Date happenedOn) throws CccCheckedException {
+                             final Date happenedOn) {
         final Resource resource =
             getRepository().find(Resource.class, _resourceId);
         resource.confirmLock(actor);

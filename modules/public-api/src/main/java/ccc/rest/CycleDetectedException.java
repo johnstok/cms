@@ -24,58 +24,29 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
-
+import ccc.types.Failure;
+import ccc.types.FailureCode;
 
 
 /**
- * Abstract base class for CCC exceptions.
+ * This exception indicates that a cycle was detected where a resource refers to
+ * itself, either directly or indirectly.
+ * <p>Examples would be an alias whose target points to itself or a folder that
+ * contains itself.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CccCheckedException extends Exception {
+public class CycleDetectedException
+    extends
+        InvalidException {
 
     /**
      * Constructor.
      */
-    public CccCheckedException() {
-        super();
+    public CycleDetectedException() {
+        super(new Failure(FailureCode.CYCLE));
     }
 
-    /**
-     * Constructor.
-     *
-     * @param message The exception message.
-     * @param cause The exception cause.
-     */
-    public CccCheckedException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param message The exception message.
-     */
-    public CccCheckedException(final String message) {
-        super(message);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param cause The exception cause.
-     */
-    public CccCheckedException(final Throwable cause) {
-        super(cause);
-    }
-
-    /**
-     * Convert a local exception to a remote exception.
-     *
-     * @return The corresponding remote exception.
-     */
-    public abstract RestException toRemoteException();
 }

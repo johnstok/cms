@@ -27,7 +27,6 @@
 package ccc.commands;
 
 import static org.easymock.EasyMock.*;
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.Search;
@@ -44,10 +43,8 @@ public class UnpublishResourceCommandTest
 
     /**
      * Test.
-     *
-     * @throws CccCheckedException If the test fails.
      */
-    public void testUnpublishResource() throws CccCheckedException {
+    public void testUnpublishResource() {
 
         // ARRANGE
         final Search s = new Search("foo");

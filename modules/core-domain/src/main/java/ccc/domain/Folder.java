@@ -34,6 +34,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.sorting.Sorter;
+import ccc.rest.CycleDetectedException;
+import ccc.rest.ResourceExistsException;
 import ccc.rest.dto.FolderDto;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
@@ -96,18 +98,13 @@ public final class Folder
      * Add a resource to this folder.
      *
      * @param resource The resource to add.
-     *
-     * @throws ResourceExistsException If a resource already exists in this
-     *  folder with the same name.
-     * @throws CycleDetectedException If the specified resource is a parent of
-     *  this resource.
      */
-    public void add(final Resource resource) throws ResourceExistsException,
-                                                    CycleDetectedException {
+    public void add(final Resource resource) {
         DBC.require().notNull(resource);
         final Resource existingEntry = getEntryWithName(resource.getName());
         if (null!=existingEntry) {
-            throw new ResourceExistsException(this, existingEntry);
+            throw new ResourceExistsException(
+                existingEntry.getId(), existingEntry.getName());
         }
         if (resource instanceof Folder) {
             final Folder folder = (Folder) resource;

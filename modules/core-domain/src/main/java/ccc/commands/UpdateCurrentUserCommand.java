@@ -29,10 +29,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.InvalidException;
 import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonImpl;
@@ -72,7 +72,7 @@ public class UpdateCurrentUserCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final User current = getUsers().find(_userId);
 
@@ -107,13 +107,13 @@ public class UpdateCurrentUserCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void validate() throws InvalidCommandException {
+    protected void validate() {
         if ((null!=_delta.getPassword()
                 && !Password.isStrong(_delta.getPassword()))
             || null==_delta.getName()
             || null==_delta.getEmail()
             || !EmailAddress.isValidText(_delta.getEmail())) {
-            throw new InvalidCommandException();
+            throw new InvalidException();
         }
     }
 

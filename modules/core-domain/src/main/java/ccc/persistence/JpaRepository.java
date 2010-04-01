@@ -36,7 +36,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import ccc.domain.Entity;
-import ccc.domain.EntityNotFoundException;
+import ccc.rest.EntityNotFoundException;
 import ccc.types.DBC;
 
 

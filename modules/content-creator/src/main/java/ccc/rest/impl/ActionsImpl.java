@@ -28,6 +28,7 @@ package ccc.rest.impl;
 
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +36,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Actions;
-import ccc.rest.RestException;
 import ccc.rest.Scheduler;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
@@ -62,77 +62,113 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<ActionSummary> listCompletedActions(final String sort,
-        final SortOrder sortOrder,
-        final int pageNo,
-        final int pageSize) {
-        return getActions().listCompletedActions(sort,
-            sortOrder,
-            pageNo,
-            pageSize);
+    public DtoCollection<ActionSummary> listCompletedActions(
+                                                    final String sort,
+                                                    final SortOrder sortOrder,
+                                                    final int pageNo,
+                                                    final int pageSize) {
+        try {
+            return getActions().listCompletedActions(sort,
+                sortOrder,
+                pageNo,
+                pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<ActionSummary> listPendingActions(final String sort,
-        final SortOrder sortOrder,
-        final int pageNo,
-        final int pageSize) {
-        return getActions().listPendingActions(sort,
-            sortOrder,
-            pageNo,
-            pageSize);
+    public DtoCollection<ActionSummary> listPendingActions(
+                                                    final String sort,
+                                                    final SortOrder sortOrder,
+                                                    final int pageNo,
+                                                    final int pageSize) {
+        try {
+            return getActions().listPendingActions(sort,
+                sortOrder,
+                pageNo,
+                pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary createAction(final ActionDto action)
-    throws RestException {
-        return getActions().createAction(action);
+    public ActionSummary createAction(final ActionDto action) {
+        try {
+            return getActions().createAction(action);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final UUID actionId)
-    throws RestException {
-        getActions().cancelAction(actionId);
+    public void cancelAction(final UUID actionId) {
+        try {
+            getActions().cancelAction(actionId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void executeAll() {
-        getActions().executeAll();
+        try {
+            getActions().executeAll();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary findAction(final UUID actionId) throws RestException {
-        return getActions().findAction(actionId);
+    public ActionSummary findAction(final UUID actionId) {
+        try {
+            return getActions().findAction(actionId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public boolean isRunning() {
-        return lookupActionScheduler().isRunning();
+        try {
+            return lookupActionScheduler().isRunning();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public void start() {
-        lookupActionScheduler().start();
+        try {
+            lookupActionScheduler().start();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public void stop() {
-        lookupActionScheduler().stop();
+        try {
+            lookupActionScheduler().stop();
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

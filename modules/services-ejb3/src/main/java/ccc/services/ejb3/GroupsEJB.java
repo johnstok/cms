@@ -38,11 +38,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.rest.Groups;
-import ccc.rest.RestException;
 import ccc.rest.dto.GroupDto;
 import ccc.serialization.JsonImpl;
 import ccc.types.Permission;
@@ -67,40 +65,30 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_CREATE)
-    public GroupDto create(final GroupDto comment) throws RestException {
-        try {
-            final Group g = new Group(comment.getName());
-            g.setPermissions(comment.getPermissions());
+    public GroupDto create(final GroupDto comment) {
+        final Group g = new Group(comment.getName());
+        g.setPermissions(comment.getPermissions());
 
-            getRepoFactory().createGroupRepo().create(g);
+        getRepoFactory().createGroupRepo().create(g);
 
-            final GroupDto result = g.createDto();
+        final GroupDto result = g.createDto();
 
-            getRepoFactory().createLogEntryRepo().record(
-                new LogEntry(
-                    currentUser(),
-                    GROUP_CREATE,
-                    new Date(),
-                    g.getId(),
-                    new JsonImpl(result).getDetail()));
+        getRepoFactory().createLogEntryRepo().record(
+            new LogEntry(
+                currentUser(),
+                GROUP_CREATE,
+                new Date(),
+                g.getId(),
+                new JsonImpl(result).getDetail()));
 
-            return result;
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return result;
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_READ)
-    public GroupDto find(final UUID id) throws RestException {
-        try {
-            return getRepoFactory().createGroupRepo().find(id).createDto();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public GroupDto find(final UUID id) {
+        return getRepoFactory().createGroupRepo().find(id).createDto();
     }
 
     /** {@inheritDoc} */
@@ -116,27 +104,21 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_UPDATE)
-    public GroupDto update(final UUID id, final GroupDto group)
-    throws RestException {
-        try {
-            final Group g = getRepoFactory().createGroupRepo().find(id);
-            g.setName(group.getName());
-            g.setPermissions(group.getPermissions());
+    public GroupDto update(final UUID id, final GroupDto group) {
+        final Group g = getRepoFactory().createGroupRepo().find(id);
+        g.setName(group.getName());
+        g.setPermissions(group.getPermissions());
 
-            final GroupDto result = g.createDto();
+        final GroupDto result = g.createDto();
 
-            getRepoFactory().createLogEntryRepo().record(
-                new LogEntry(
-                    currentUser(),
-                    GROUP_UPDATE,
-                    new Date(),
-                    g.getId(),
-                    new JsonImpl(result).getDetail()));
+        getRepoFactory().createLogEntryRepo().record(
+            new LogEntry(
+                currentUser(),
+                GROUP_UPDATE,
+                new Date(),
+                g.getId(),
+                new JsonImpl(result).getDetail()));
 
-            return result;
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return result;
     }
 }

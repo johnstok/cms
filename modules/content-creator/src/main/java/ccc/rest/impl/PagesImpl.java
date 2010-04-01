@@ -28,6 +28,7 @@ package ccc.rest.impl;
 
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +36,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Pages;
-import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -60,38 +60,55 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta pageDelta(final UUID pageId) throws RestException {
-        return getPages().pageDelta(pageId);
+    public PageDelta pageDelta(final UUID pageId) {
+        try {
+            return getPages().pageDelta(pageId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createPage(final PageDto page)
-    throws RestException {
-        return getPages().createPage(page);
+    public ResourceSummary createPage(final PageDto page) {
+        try {
+            return getPages().createPage(page);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String validateFields(final Json json) {
-        return getPages().validateFields(json);
+        try {
+            return getPages().validateFields(json);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final UUID pageId, final PageDelta delta)
-    throws RestException {
-        getPages().updateWorkingCopy(pageId, delta);
+    public void updateWorkingCopy(final UUID pageId, final PageDelta delta) {
+        try {
+            getPages().updateWorkingCopy(pageId, delta);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final UUID pageId, final Json json)
-    throws RestException {
-        getPages().updatePage(pageId, json);
+    public void updatePage(final UUID pageId, final Json json) {
+        try {
+            getPages().updatePage(pageId, json);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

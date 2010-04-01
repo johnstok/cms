@@ -39,11 +39,9 @@ import javax.ejb.TransactionAttribute;
 import ccc.commands.CreateCommentCommand;
 import ccc.commands.DeleteCommentCommand;
 import ccc.commands.UpdateCommentCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Comment;
 import ccc.domain.Resource;
 import ccc.rest.Comments;
-import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.DtoCollection;
 import ccc.types.CommentStatus;
@@ -68,7 +66,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_CREATE})
-    public CommentDto create(final CommentDto comment) throws RestException {
+    public CommentDto create(final CommentDto comment) {
         return
             execute(
                 new CreateCommentCommand(getRepoFactory(), comment))
@@ -79,23 +77,18 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_READ})
-    public CommentDto retrieve(final UUID commentId) throws RestException {
-        try {
-            return
-                getRepoFactory()
-                    .createCommentRepo()
-                    .retrieve(commentId).createDto();
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public CommentDto retrieve(final UUID commentId) {
+        return
+            getRepoFactory()
+                .createCommentRepo()
+                .retrieve(commentId).createDto();
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_UPDATE})
-    public void update(final UUID commentId,
-                       final CommentDto comment) throws RestException {
+    public void update(final UUID commentId, final CommentDto comment) {
         execute(new UpdateCommentCommand(getRepoFactory(), commentId, comment));
     }
 
@@ -103,7 +96,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_DELETE})
-    public void delete(final UUID commentId) throws RestException {
+    public void delete(final UUID commentId) {
         execute(new DeleteCommentCommand(getRepoFactory(), commentId));
     }
 
@@ -116,26 +109,20 @@ public class CommentsEJB
                                           final String sort,
                                           final SortOrder sortOrder,
                                           final int pageNo,
-                                          final int pageSize)
-                                                          throws RestException {
-        try {
-            final Resource r =
-                (null==resourceId)
-                    ? null
-                    : getRepoFactory()
-                        .createResourceRepository()
-                        .find(Resource.class, resourceId);
-            return
-                new DtoCollection<CommentDto>(
-                    getRepoFactory().createCommentRepo().count(r, status),
-                    Comment.map(
-                        getRepoFactory()
-                            .createCommentRepo()
-                            .list(
-                                r, status, sort, sortOrder, pageNo, pageSize)));
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                          final int pageSize) {
+        final Resource r =
+            (null==resourceId)
+                ? null
+                : getRepoFactory()
+                    .createResourceRepository()
+                    .find(Resource.class, resourceId);
+        return
+            new DtoCollection<CommentDto>(
+                getRepoFactory().createCommentRepo().count(r, status),
+                Comment.map(
+                    getRepoFactory()
+                        .createCommentRepo()
+                        .list(
+                            r, status, sort, sortOrder, pageNo, pageSize)));
     }
 }

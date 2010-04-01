@@ -44,14 +44,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateFileCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.StreamAction;
 import ccc.rest.Files;
-import ccc.rest.RestException;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
@@ -82,23 +79,17 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_READ})
-    public DtoCollection<FileDto> getPagedImages(final UUID folderId,
-        final int pageNo,
-        final int pageSize)
-        throws RestException {
-        try {
-            final List<File> list =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .images(folderId, pageNo, pageSize);
-            final long c =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .imagesCount(folderId);
-            return new DtoCollection<FileDto>(c, File.mapFiles(list));
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+    public DtoCollection<FileDto> getPagedImages(
+            final UUID folderId, final int pageNo, final int pageSize) {
+        final List<File> list =
+            getRepoFactory()
+                .createResourceRepository()
+                .images(folderId, pageNo, pageSize);
+        final long c =
+            getRepoFactory()
+                .createResourceRepository()
+                .imagesCount(folderId);
+        return new DtoCollection<FileDto>(c, File.mapFiles(list));
     }
 
 
@@ -114,41 +105,37 @@ public class FilesEJB
                                       final Date lastUpdated,
                                       final boolean publish,
                                       final String comment,
-                                      final boolean isMajorEdit)
-                                                 throws RestException {
+                                      final boolean isMajorEdit) {
         checkPermission(FILE_CREATE);
-        try {
-            final User u = currentUser();
 
-            final RevisionMetadata rm =
-                new RevisionMetadata(
-                    lastUpdated,
-                    u,
-                    isMajorEdit,
-                    comment == null || comment.isEmpty() ? "Created." : comment
-                );
+        final User u = currentUser();
 
-            final File f =
-                commands().createFileCommand(
-                    parentFolder,
-                    file,
-                    title,
-                    description,
-                    new ResourceName(resourceName),
-                    rm,
-                    dataStream)
-                .execute(u, lastUpdated);
+        final RevisionMetadata rm =
+            new RevisionMetadata(
+                lastUpdated,
+                u,
+                isMajorEdit,
+                comment == null || comment.isEmpty() ? "Created." : comment
+            );
 
-            if (publish) {
-                f.lock(u);
-                commands().publishResource(f.getId()).execute(u, lastUpdated);
-                f.unlock(u);
-            }
+        final File f =
+            commands().createFileCommand(
+                parentFolder,
+                file,
+                title,
+                description,
+                new ResourceName(resourceName),
+                rm,
+                dataStream)
+            .execute(u, lastUpdated);
 
-            return f.mapResource();
-        } catch (final CccCheckedException e) {
-            throw fail(e);
+        if (publish) {
+            f.lock(u);
+            commands().publishResource(f.getId()).execute(u, lastUpdated);
+            f.unlock(u);
         }
+
+        return f.mapResource();
     }
 
 
@@ -159,32 +146,24 @@ public class FilesEJB
                            final FileDelta fileDelta,
                            final String comment,
                            final boolean isMajorEdit,
-                           final InputStream dataStream)
-                                                 throws RestException {
-
-        try {
-            new UpdateFileCommand(
-                getRepoFactory(),
-                UUID.fromString(fileId.toString()),
-                fileDelta,
-                comment,
-                isMajorEdit,
-                dataStream)
-            .execute(
-                currentUser(),
-                new Date());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                           final InputStream dataStream) {
+        new UpdateFileCommand(
+            getRepoFactory(),
+            UUID.fromString(fileId.toString()),
+            fileDelta,
+            comment,
+            isMajorEdit,
+            dataStream)
+        .execute(
+            currentUser(),
+            new Date());
     }
 
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_UPDATE})
-    public void update(final UUID id, final TextFileDelta file)
-    throws RestException {
+    public void update(final UUID id, final TextFileDelta file) {
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -210,8 +189,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_CREATE})
-    public ResourceSummary createTextFile(final TextFileDto file)
-    throws RestException {
+    public ResourceSummary createTextFile(final TextFileDto file) {
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -251,20 +229,15 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public TextFileDelta get(final UUID fileId) throws RestException {
+    public TextFileDelta get(final UUID fileId) {
         checkPermission(FILE_READ);
 
-        try {
-            // FIXME: check file is accessible to user.
-            return
+        // FIXME: check file is accessible to user.
+        return
             getRepoFactory()
                 .createResourceRepository()
                 .find(File.class, fileId)
                 .mapTextFile(getRepoFactory().createDataRepository());
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
     }
 
 
@@ -272,24 +245,18 @@ public class FilesEJB
     @Override
     @PermitAll
     public void retrieve(final UUID file,
-                         final StreamAction action)
-    throws RestException, UnauthorizedException {
+                         final StreamAction action) {
         checkPermission(FILE_READ);
 
-        try {
-            final File f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(File.class, file);
-            checkRead(f);
-
+        final File f =
             getRepoFactory()
-                .createDataRepository()
-                .retrieve(f.getData(), action);
+                .createResourceRepository()
+                .find(File.class, file);
+        checkRead(f);
 
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        getRepoFactory()
+            .createDataRepository()
+            .retrieve(f.getData(), action);
     }
 
 
@@ -298,24 +265,18 @@ public class FilesEJB
     @PermitAll
     public void retrieveRevision(final UUID file,
                                  final int revision,
-                                 final StreamAction action)
-    throws RestException, UnauthorizedException {
+                                 final StreamAction action) {
         checkPermission(FILE_READ);
 
-        try {
-            final File f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(File.class, file);
-            checkRead(f);
-
+        final File f =
             getRepoFactory()
-                .createDataRepository()
-                .retrieve(f.revision(revision).getData(), action);
+                .createResourceRepository()
+                .find(File.class, file);
+        checkRead(f);
 
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        getRepoFactory()
+            .createDataRepository()
+            .retrieve(f.revision(revision).getData(), action);
     }
 
 
@@ -323,24 +284,18 @@ public class FilesEJB
     @Override
     @PermitAll
     public void retrieveWorkingCopy(final UUID file,
-                                    final StreamAction action)
-    throws RestException, UnauthorizedException {
+                                    final StreamAction action) {
         checkPermission(FILE_READ);
 
-        try {
-            final File f =
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(File.class, file);
-            checkRead(f);
-
+        final File f =
             getRepoFactory()
-                .createDataRepository()
-                .retrieve(f.getWorkingCopy().getData(), action);
+                .createResourceRepository()
+                .find(File.class, file);
+        checkRead(f);
 
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        getRepoFactory()
+            .createDataRepository()
+            .retrieve(f.getWorkingCopy().getData(), action);
     }
 
 }

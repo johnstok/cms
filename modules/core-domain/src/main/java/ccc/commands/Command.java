@@ -34,7 +34,6 @@ import ccc.commons.Context;
 import ccc.commons.Resources;
 import ccc.commons.Script;
 import ccc.commons.ScriptRunner;
-import ccc.domain.CccCheckedException;
 import ccc.domain.User;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
@@ -105,11 +104,8 @@ public abstract class Command<T> {
      * @param happenedOn When the command was performed.
      *
      * @return The result of the command, of type T.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    public final T execute(final User actor,
-                           final Date happenedOn) throws CccCheckedException {
+    public final T execute(final User actor, final Date happenedOn) {
         validate();
         authorize(actor);
         beforeExecute(actor, happenedOn);
@@ -123,12 +119,9 @@ public abstract class Command<T> {
 
 
     /**
-     * Validate the command.
-     *
-     * @throws InvalidCommandException If the delta is invalid.
+     * Validate the command's inputs.
      */
-    @SuppressWarnings("unused")
-    protected void validate() throws InvalidCommandException { /* NO OP */ }
+    protected void validate() { /* NO OP */ }
 
 
     /**
@@ -286,12 +279,8 @@ public abstract class Command<T> {
      * @param happenedOn When the command was performed.
      *
      * @return The result of the command, of type T.
-     *
-     * @throws CccCheckedException If the command fails.
      */
-    protected abstract T doExecute(final User actor,
-                                   final Date happenedOn)
-                                                    throws CccCheckedException;
+    protected abstract T doExecute(final User actor, final Date happenedOn);
 
 
     /**

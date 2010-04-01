@@ -30,12 +30,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.domain.AccessPermission;
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.AclDto.Entry;
 import ccc.serialization.JsonImpl;
@@ -73,7 +72,7 @@ public class UpdateResourceRolesCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Resource r = getRepository().find(Resource.class, _id);
         r.confirmLock(actor);

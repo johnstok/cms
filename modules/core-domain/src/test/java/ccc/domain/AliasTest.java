@@ -28,6 +28,7 @@ package ccc.domain;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
+import ccc.rest.CycleDetectedException;
 import ccc.rest.dto.AliasDelta;
 import ccc.serialization.Json;
 import ccc.serialization.JsonImpl;

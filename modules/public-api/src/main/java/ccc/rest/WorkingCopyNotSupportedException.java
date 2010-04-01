@@ -24,42 +24,46 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
+import java.util.UUID;
+
 import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
 /**
- * An exception used to indicate that a resource is unlocked.
+ * This exception is thrown when a working copy command is attempted for a
+ * resource that doesn't support working copies.
  *
  * @author Civic Computing Ltd.
  */
-public class UnlockedException
+public class WorkingCopyNotSupportedException
     extends
-        CccCheckedException {
+        InvalidException {
 
-    private final Resource _resource;
+    private final UUID _resource;
+
 
     /**
      * Constructor.
      *
-     * @param resource The unlocked resource.
+     * @param resource The resource.
      */
-    public UnlockedException(final Resource resource) {
+    public WorkingCopyNotSupportedException(final UUID resource) {
+        super(new Failure(FailureCode.WC_UNSUPPORTED));
         DBC.require().notNull(resource);
         _resource = resource;
     }
 
 
     /**
-     * Accessor for the unlocked resource.
+     * Accessor for the resource.
      *
-     * @return The unlocked resource.
+     * @return The resource.
      */
-    public Resource getResource() {
+    public UUID getResource() {
         return _resource;
     }
 
@@ -67,14 +71,9 @@ public class UnlockedException
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return "Resource "+_resource.getId()+" is Unlocked.";
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public RestException toRemoteException() {
-        return new RestException(
-            new Failure(FailureCode.UNLOCKED));
+        return
+            "Resource "
+            + _resource
+            + " is not working copy aware.";
     }
 }

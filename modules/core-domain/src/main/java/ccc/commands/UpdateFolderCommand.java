@@ -30,8 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -68,14 +66,12 @@ public class UpdateFolderCommand
      * @param indexPageId The index page.
      * @param orderList The manual order of the resources in the specified
      *  folder.
-     * @throws EntityNotFoundException If the folder to update doesn't exist.
      */
     public UpdateFolderCommand(final IRepositoryFactory repoFactory,
                                final UUID folderId,
                                final ResourceOrder order,
                                final UUID indexPageId,
-                               final List<UUID> orderList)
-                                                throws EntityNotFoundException {
+                               final List<UUID> orderList) {
         super(repoFactory);
         _folderId = folderId;
         _folder = getRepository().find(Folder.class, folderId);
@@ -88,7 +84,7 @@ public class UpdateFolderCommand
     /** {@inheritDoc} */
     @Override
     public Void doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
 
         final Folder f = getRepository().find(Folder.class, _folderId);
         f.confirmLock(actor);

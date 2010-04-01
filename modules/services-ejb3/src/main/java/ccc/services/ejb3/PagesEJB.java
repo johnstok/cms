@@ -42,11 +42,9 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.domain.CccCheckedException;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.rest.Pages;
-import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
@@ -75,8 +73,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createPage(final PageDto page)
-                                                 throws RestException {
+    public ResourceSummary createPage(final PageDto page) {
         checkPermission(PAGE_CREATE);
         return
             execute(
@@ -95,8 +92,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public void updatePage(final UUID pageId, final Json json)
-                                                 throws RestException {
+    public void updatePage(final UUID pageId, final Json json) {
             final boolean majorEdit =
                 json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
             final String comment = json.getString(JsonKeys.COMMENT);
@@ -116,19 +112,13 @@ public class PagesEJB
     @Override
     @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
-                                  final PageDelta delta)
-                                                 throws RestException {
-        try {
-            new UpdateWorkingCopyCommand(getRepoFactory())
-                .execute(
-                    currentUser(),
-                    new Date(),
-                    pageId,
-                    delta);
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+                                  final PageDelta delta) {
+        new UpdateWorkingCopyCommand(getRepoFactory())
+            .execute(
+                currentUser(),
+                new Date(),
+                pageId,
+                delta);
     }
 
 
@@ -144,24 +134,16 @@ public class PagesEJB
         return new PageHelper().validateFields(p, def);
     }
 
-    /* ====================================================================
-     * UNSAFE METHODS.
-     * ================================================================== */
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public PageDelta pageDelta(final UUID pageId) throws RestException {
+    public PageDelta pageDelta(final UUID pageId) {
         checkPermission(RESOURCE_READ);
 
-        try {
-            return
-                getRepoFactory()
-                    .createResourceRepository()
-                    .find(Page.class, pageId).deltaPage();
-
-        } catch (final CccCheckedException e) {
-            throw fail(e);
-        }
+        return
+            getRepoFactory()
+                .createResourceRepository()
+                .find(Page.class, pageId).deltaPage();
     }
 }

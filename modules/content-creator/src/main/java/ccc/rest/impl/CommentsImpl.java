@@ -28,6 +28,7 @@ package ccc.rest.impl;
 
 import java.util.UUID;
 
+import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +36,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Comments;
-import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.DtoCollection;
 import ccc.types.CommentStatus;
@@ -59,28 +59,42 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public CommentDto create(final CommentDto comment)
-    throws RestException {
-        return getComments().create(comment);
+    public CommentDto create(final CommentDto comment) {
+        try {
+            return getComments().create(comment);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public CommentDto retrieve(final UUID commentId) throws RestException {
-        return getComments().retrieve(commentId);
+    public CommentDto retrieve(final UUID commentId) {
+        try {
+            return getComments().retrieve(commentId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID commentId,
-                       final CommentDto comment) throws RestException {
-        getComments().update(commentId, comment);
+    public void update(final UUID commentId, final CommentDto comment) {
+        try {
+            getComments().update(commentId, comment);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void delete(final UUID commentId) throws RestException {
-        getComments().delete(commentId);
+    public void delete(final UUID commentId) {
+        try {
+            getComments().delete(commentId);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 
     /** {@inheritDoc} */
@@ -90,9 +104,12 @@ public class CommentsImpl
                                           final String sort,
                                           final SortOrder sortOrder,
                                           final int pageNo,
-                                          final int pageSize)
-    throws RestException {
-        return getComments().list(
-            resourceId, status, sort, sortOrder, pageNo, pageSize);
+                                          final int pageSize) {
+        try {
+            return getComments().list(
+                resourceId, status, sort, sortOrder, pageNo, pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
     }
 }

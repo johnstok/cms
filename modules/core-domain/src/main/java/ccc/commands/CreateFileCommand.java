@@ -30,7 +30,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.CccCheckedException;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
@@ -101,7 +100,7 @@ class CreateFileCommand extends CreateResourceCommand<File> {
     /** {@inheritDoc} */
     @Override
     public File doExecute(final User actor,
-                          final Date happenedOn) throws CccCheckedException {
+                          final Date happenedOn) {
         final Data data = _data.create(_dataStream, _file.getSize());
 
         if ("image".equals(_file.getMimeType().getPrimaryType())) {

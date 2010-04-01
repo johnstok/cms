@@ -17,6 +17,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
+import ccc.rest.InsufficientPrivilegesException;
+import ccc.rest.LockMismatchException;
+import ccc.rest.UnlockedException;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
@@ -69,10 +72,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testChildrenCanOverrideIndexing() throws Exception {
+    public void testChildrenCanOverrideIndexing() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -90,11 +91,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testAccessibilityCheckRespectsAclCombinations()
-    throws Exception {
+    public void testAccessibilityCheckRespectsAclCombinations() {
 
         // ARRANGE
         final User tom = new User(new Username("tom"), "password");
@@ -126,10 +124,8 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      *
-     * @throws Exception If the test fails.
      */
-    public void testAccessibilityCheckRespectsAclUsersFromParent()
-    throws Exception {
+    public void testAccessibilityCheckRespectsAclUsersFromParent() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -224,10 +220,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testSecureResourcesWithInsecureParentsAreSecure()
-    throws Exception {
+    public void testSecureResourcesWithInsecureParentsAreSecure() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -245,10 +239,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testSecureResourcesWithSecureParentsAreSecure()
-    throws Exception {
+    public void testSecureResourcesWithSecureParentsAreSecure() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -267,10 +259,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testInsecureResourcesWithSecureParentsAreSecure()
-    throws Exception {
+    public void testInsecureResourcesWithSecureParentsAreSecure() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -288,10 +278,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testInsecureResourcesWithInsecureParentsAreInsecure()
-    throws Exception {
+    public void testInsecureResourcesWithInsecureParentsAreInsecure() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -341,10 +329,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testResourceAccessibilityRespectsParentalRoles()
-    throws CccCheckedException {
+    public void testResourceAccessibilityRespectsParentalRoles() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -420,9 +406,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testRolesOnParentUseAndLogic() throws CccCheckedException {
+    public void testRolesOnParentUseAndLogic() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -544,10 +529,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testClearingMetadataDoesNotAffectParents()
-    throws CccCheckedException {
+    public void testClearingMetadataDoesNotAffectParents() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -614,10 +597,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testMetadataIsInheritedFromParents()
-    throws CccCheckedException {
+    public void testMetadataIsInheritedFromParents() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -633,10 +614,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testLocalMetadataIsChosenOverParentMetadata()
-    throws CccCheckedException {
+    public void testLocalMetadataIsChosenOverParentMetadata() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -654,10 +633,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testRootAccessorReturnParent()
-    throws CccCheckedException {
+    public void testRootAccessorReturnParent() {
 
         // ARRANGE
         final Folder root = new Folder("root");
@@ -705,9 +682,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void testLockFailsWhenAlreadyLocked() throws LockMismatchException {
+    public void testLockFailsWhenAlreadyLocked() {
 
         // ARRANGE
         final Resource p = new Page();
@@ -720,17 +696,15 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final LockMismatchException e) {
-            assertEquals(p, e.getResource());
+            assertEquals(p.getId(), e.getResource());
         }
     }
 
     /**
      * Test.
-     * @throws InsufficientPrivilegesException If user is not allowed to perform
      *  the operation.
      */
-    public void testUnlockFailsWhenNotLocked()
-    throws InsufficientPrivilegesException {
+    public void testUnlockFailsWhenNotLocked() {
 
         // ARRANGE
         final Resource p = new Page();
@@ -743,7 +717,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final UnlockedException e) {
-            assertEquals(p, e.getResource());
+            assertEquals(p.getId(), e.getResource());
         }
 
 
@@ -751,11 +725,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is not locked.
      */
-    public void testUnlockFailsWhenUserCannotUnlock()
-    throws LockMismatchException, UnlockedException {
+    public void testUnlockFailsWhenUserCannotUnlock() {
 
         // ARRANGE
         final Resource p = new Page();
@@ -768,10 +739,8 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final InsufficientPrivilegesException e) {
-            assertEquals(
-                "User jill[] may not perform action: "
-                + CommandType.RESOURCE_UNLOCK,
-                e.getMessage());
+            assertEquals(CommandType.RESOURCE_UNLOCK, e.getAction());
+            assertEquals(_jill.getId(), e.getUser());
         }
 
 
@@ -779,11 +748,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is not locked.
      */
-    public void testConfirmLockDoesNothingWithCorrectUser()
-    throws LockMismatchException, UnlockedException {
+    public void testConfirmLockDoesNothingWithCorrectUser() {
 
         // ARRANGE
         final Resource p = new Page();
@@ -795,10 +761,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void testConfirmLockThrowsUnlockedException()
-    throws LockMismatchException {
+    public void testConfirmLockThrowsUnlockedException() {
 
         // ARRANGE
         final Resource p = new Page();
@@ -810,17 +774,14 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final UnlockedException e) {
-            assertEquals(p, e.getResource());
+            assertEquals(p.getId(), e.getResource());
         }
     }
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is not locked.
      */
-    public void testConfirmLockThrowsLockMismatchException()
-    throws LockMismatchException, UnlockedException {
+    public void testConfirmLockThrowsLockMismatchException() {
 
         // ARRANGE
         final Resource p = new Page();
@@ -833,7 +794,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         } catch (final LockMismatchException e) {
-            assertEquals(p, e.getResource());
+            assertEquals(p.getId(), e.getResource());
         }
     }
 
@@ -947,9 +908,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void testLockResource() throws LockMismatchException {
+    public void testLockResource() {
 
         //ARRANGE
         final User u = new User(new Username("blat"), "password");
@@ -964,9 +924,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void testLockResourceRejectsNull() throws LockMismatchException {
+    public void testLockResourceRejectsNull() {
         // ACT
         try {
             final Resource r = new Page();
@@ -981,14 +940,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
-     * @throws UnlockedException If the resource is not locked.
-     * @throws InsufficientPrivilegesException If user is not allowed to perform
-     *  the operation.
      */
-    public void testUnlockResource() throws LockMismatchException,
-                                            InsufficientPrivilegesException,
-                                            UnlockedException {
+    public void testUnlockResource() {
 
         //ARRANGE
         final Resource r = new Page();
@@ -1003,9 +956,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void testQueryForLockedByUser() throws LockMismatchException {
+    public void testQueryForLockedByUser() {
 
         //ARRANGE
         final User u = new User(new Username("blat"), "password");
@@ -1108,9 +1060,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testAbsolutePath() throws CccCheckedException {
+    public void testAbsolutePath() {
 
         // ARRANGE
         final Folder f = new Folder("foo");
@@ -1126,10 +1077,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound()
-    throws CccCheckedException {
+    public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound() {
 
         // ARRANGE
         final Folder f1 = new Folder();
@@ -1149,10 +1098,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeTemplateLooksInCalleeFirst()
-    throws CccCheckedException {
+    public void testComputeTemplateLooksInCalleeFirst() {
 
         // ARRANGE
         final Template t1 = new Template();
@@ -1178,10 +1125,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeTemplateRecursesToParent()
-    throws CccCheckedException {
+    public void testComputeTemplateRecursesToParent() {
 
         // ARRANGE
         final Template t = new Template();
@@ -1334,9 +1279,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testIsVisibleTrue() throws CccCheckedException {
+    public void testIsVisibleTrue() {
 
         //ARRANGE
         final User u = new User(new Username("user"), "password");
@@ -1363,9 +1307,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testIsVisibleFalse() throws CccCheckedException {
+    public void testIsVisibleFalse() {
 
         //ARRANGE
         final User u = new User(new Username("user"), "password");
@@ -1391,9 +1334,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeCache() throws CccCheckedException {
+    public void testComputeCache() {
 
         // ARRANGE
         final Duration d = new Duration(650);
@@ -1441,9 +1383,8 @@ public final class ResourceTest extends TestCase {
 
     /**
      * Test.
-     * @throws CccCheckedException If the test fails.
      */
-    public void testComputeMetadata() throws CccCheckedException {
+    public void testComputeMetadata() {
 
         // ARRANGE
         final Folder f = new Folder();

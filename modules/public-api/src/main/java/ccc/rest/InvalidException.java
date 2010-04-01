@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,31 +21,39 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.domain;
+package ccc.rest;
 
-import ccc.rest.RestException;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
 /**
- * This exception indicates that a cycle was detected where a resource refers to
- * itself, either directly or indirectly.
- * <p>Examples would be an alias whose target points to itself or a folder that
- * contains itself.
+ * This request indicates that an API method was invoked with incorrect inputs.
  *
  * @author Civic Computing Ltd.
  */
-public class CycleDetectedException
+public class InvalidException
     extends
-        CccCheckedException {
+        RestException {
 
-    /** {@inheritDoc} */
-    @Override
-    public RestException toRemoteException() {
-        return new RestException(new Failure(FailureCode.CYCLE));
+
+    /**
+     * Constructor.
+     */
+    public InvalidException() {
+        super(new Failure(FailureCode.INVALID));
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param failure Details of the failure.
+     */
+    public InvalidException(final Failure failure) {
+        super(failure);
     }
 }

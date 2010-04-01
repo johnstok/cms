@@ -40,8 +40,6 @@ import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
-import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
 
 /**
  * Service locator that stores references to services in memory.
@@ -53,9 +51,9 @@ public class MemoryServiceLocator
         ServiceLocator {
 
     private Templates       _templates;
-    private ResourcesExt    _resourcesExt;
+    private Resources       _resources;
     private Pages           _pages;
-    private FoldersExt      _foldersExt;
+    private Folders         _folders;
     private Users           _userCommands;
     private Actions         _actions;
     private ActionScheduler _actionscheduler;
@@ -78,7 +76,7 @@ public class MemoryServiceLocator
 
     /** {@inheritDoc} */
     @Override
-    public Folders getFolders() { return _foldersExt; }
+    public Folders getFolders() { return _folders; }
 
 
     /** {@inheritDoc} */
@@ -88,7 +86,7 @@ public class MemoryServiceLocator
 
     /** {@inheritDoc} */
     @Override
-    public Resources getResources() { return _resourcesExt; }
+    public Resources getResources() { return _resources; }
 
 
     /** {@inheritDoc} */
@@ -144,10 +142,10 @@ public class MemoryServiceLocator
     /**
      * Mutator.
      *
-     * @param resourcesExt The commands to set.
+     * @param resources The resources to set.
      */
-    public final void setCommands(final ResourcesExt resourcesExt) {
-        _resourcesExt = resourcesExt;
+    public final void setCommands(final Resources resources) {
+        _resources = resources;
     }
 
 
@@ -164,10 +162,10 @@ public class MemoryServiceLocator
     /**
      * Mutator.
      *
-     * @param foldersExt The commands to set.
+     * @param folders The folders to set.
      */
-    public final void setFolderCommands(final FoldersExt foldersExt) {
-        _foldersExt = foldersExt;
+    public final void setFolderCommands(final Folders folders) {
+        _folders = folders;
     }
 
 

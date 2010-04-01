@@ -37,8 +37,8 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import ccc.domain.EntityNotFoundException;
 import ccc.domain.User;
+import ccc.rest.EntityNotFoundException;
 import ccc.rest.dto.UserCriteria;
 import ccc.types.SortOrder;
 
