@@ -68,7 +68,7 @@ public class SelectionModelEventBus
 
             case RESOURCE_CREATED:
                 final ResourceCreatedEvent rce = (ResourceCreatedEvent) event;
-                _ssm.create(rce.getResource(), rce.getParentFolder());
+                _ssm.create(rce.getResource());
                 break;
 
             default:

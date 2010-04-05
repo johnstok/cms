@@ -53,7 +53,7 @@ public class SessionTimeoutException
      *
      * @return True if the session has expired, false otherwise.
      */
-    public static boolean isTimeoutMessage(final String message) {
+    public static boolean isTimedout(final String message) {
         return
             // For async HTTP requests.
             message.startsWith("<!-- LOGIN_REQUIRED -->")

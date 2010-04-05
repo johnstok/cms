@@ -28,6 +28,8 @@ package ccc.rest;
 
 import java.util.UUID;
 
+import ccc.rest.exceptions.UnauthorizedException;
+
 import junit.framework.TestCase;
 
 

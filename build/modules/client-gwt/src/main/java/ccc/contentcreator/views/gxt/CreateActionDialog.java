@@ -42,7 +42,6 @@ import com.extjs.gxt.ui.client.widget.form.Time;
 import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -67,6 +66,8 @@ public class CreateActionDialog
     public CreateActionDialog(final UUID resourceId) {
         super(new GlobalsImpl().uiConstants().createAction(),
               new GlobalsImpl());
+
+        // FIXME Add event handler to hide(); dialog onSuccess();
 
         _resourceId = resourceId;
 
@@ -96,12 +97,8 @@ public class CreateActionDialog
                     _resourceId,
                     _createAction.commandType(),
                     _dtPicker.getDate(),
-                    _createAction.getParameters()) {
-                        /** {@inheritDoc} */
-                        @Override protected void onOK(final Response r) {
-                            hide();
-                        }
-                }.execute();
+                    _createAction.getParameters())
+                .execute();
             }
         };
     }

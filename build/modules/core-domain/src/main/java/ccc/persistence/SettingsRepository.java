@@ -29,7 +29,7 @@ package ccc.persistence;
 import javax.persistence.EntityManager;
 
 import ccc.domain.Setting;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 
 
 /**

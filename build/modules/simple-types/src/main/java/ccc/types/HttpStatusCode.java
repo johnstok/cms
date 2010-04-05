@@ -34,25 +34,29 @@ package ccc.types;
  */
 public final class HttpStatusCode {
 
-
     /** OK : int. */
     public static final int OK = 200;
 
-
-    /** IM_A_TEAPOT : int. */
-    public static final int IM_A_TEAPOT = 418;
-
+    /** NO_CONTENT : int. */
+    public static final int NO_CONTENT = 204;
 
     /** NOT_FOUND : int. */
     public static final int NOT_FOUND = 404;
 
-
     /** ERROR : int. */
     public static final int ERROR = 500;
 
-
     /** UNAUTHORIZED : int. */
     public static final int UNAUTHORIZED = 401;
+
+    /** CONFLICT : int. */
+    public static final int CONFLICT = 409;
+
+    /** BAD_REQUEST : int. */
+    public static final int BAD_REQUEST = 400;
+
+    /** MS_IE6_1223 : int. */
+    public static final int MS_IE6_1223 = 1223;
 
 
     /**

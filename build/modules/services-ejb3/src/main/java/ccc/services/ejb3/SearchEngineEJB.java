@@ -54,9 +54,9 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
-import ccc.rest.EntityNotFoundException;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.search.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
 

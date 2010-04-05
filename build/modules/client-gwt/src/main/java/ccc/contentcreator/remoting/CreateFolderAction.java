@@ -28,13 +28,9 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
-import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.JsonKeys;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
+import ccc.contentcreator.core.Request;
 
 
 /**
@@ -42,7 +38,7 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CreateFolderAction
+public final class CreateFolderAction
     extends
         RemotingAction {
 
@@ -56,37 +52,14 @@ public abstract class CreateFolderAction
      * @param parentFolder The folder's parent folder.
      */
     public CreateFolderAction(final UUID parentFolder, final String name) {
-        super(GLOBALS.uiConstants().createFolder(), RequestBuilder.POST);
         _parentFolder = parentFolder;
         _name = name;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return "/folders";
-    }
 
     /** {@inheritDoc} */
     @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, _parentFolder);
-        json.set(JsonKeys.NAME, _name);
-        return json.toString();
+    protected Request getRequest() {
+        return ResourceSummaryModelData.createFolder(_name, _parentFolder);
     }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final ResourceSummary rs = parseResourceSummary(response);
-        execute(rs);
-    }
-
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param folder The folder returned.
-     */
-    protected abstract void execute(ResourceSummary folder);
 }

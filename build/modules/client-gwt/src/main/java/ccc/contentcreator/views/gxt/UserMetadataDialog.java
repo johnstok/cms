@@ -41,7 +41,6 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Text;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -104,11 +103,10 @@ public class UserMetadataDialog extends AbstractEditDialog {
                     _metadataPanel.currentMetadata();
                 _user.setMetadata(metadata);
                 new UpdateUserAction(_user.getId(), _user) {
-                        /** {@inheritDoc} */
-                        @Override protected void onNoContent(
-                                                     final Response response) {
-                            UserMetadataDialog.this.hide();
-                        }
+                    /** {@inheritDoc} */
+                    @Override protected void done() {
+                        UserMetadataDialog.this.hide();
+                    }
                 }.execute();
             }
         };

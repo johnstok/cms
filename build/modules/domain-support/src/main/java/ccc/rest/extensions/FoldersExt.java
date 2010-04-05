@@ -29,8 +29,8 @@ package ccc.rest.extensions;
 import java.util.UUID;
 
 import ccc.rest.Folders;
-import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
 
 
 /**

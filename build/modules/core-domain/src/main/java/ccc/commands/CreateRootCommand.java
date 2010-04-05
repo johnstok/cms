@@ -33,8 +33,8 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.EntityNotFoundException;
 import ccc.rest.ResourceExistsException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.CommandType;
 
 

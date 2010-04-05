@@ -72,7 +72,7 @@ public class UsersImpl
 
 
     /**
-     * Decorate an exiting users implementation with a new {@link UsersImpl}.
+     * Decorate an exiting users object with a new {@link UsersImpl}.
      *
      * @param users The implementation to decorate.
      *

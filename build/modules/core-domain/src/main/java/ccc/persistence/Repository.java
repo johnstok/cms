@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.Entity;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 
 
 /**

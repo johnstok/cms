@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,34 +21,54 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.providers;
+package ccc.rest;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-
-import ccc.rest.RestException;
-import ccc.types.HttpStatusCode;
+import ccc.rest.exceptions.RestException;
+import ccc.serialization.Json;
+import ccc.types.Failure;
+import ccc.types.FailureCode;
 
 
 /**
- * An mapper for 'command failed' exceptions.
+ * Indicates an unexpected internal CC error.
+ * FIXME Rename to avoid collision with JRE exception.
  *
  * @author Civic Computing Ltd.
  */
-public class CommandFailedExceptionMapper
-    implements
-        ExceptionMapper<RestException> {
+public class InternalError
+    extends
+        RestException {
 
-    /** {@inheritDoc} */
-    @Override
-    public Response toResponse(final RestException e) {
-        return
-            Response.status(HttpStatusCode.IM_A_TEAPOT)
-                    .type("application/json")
-                    .entity(e.getFailure())
-                    .build();
+
+    /**
+     * Constructor.
+     *
+     * @param failure
+     */
+    public InternalError() {
+        super(new Failure(FailureCode.UNEXPECTED));
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of this exception.
+     */
+    public InternalError(final Json json) {
+        super(json);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param failure The failure that caused this exception.
+     */
+    public InternalError(final Failure failure) {
+        super(failure);
     }
 }

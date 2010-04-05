@@ -38,7 +38,6 @@ import ccc.rendering.ScriptBody;
 import ccc.rendering.SearchBody;
 import ccc.rest.Files;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
 import ccc.rest.Templates;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FileDto;
@@ -46,6 +45,7 @@ import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TextFileDelta;
+import ccc.rest.exceptions.RestException;
 import ccc.rest.snapshots.ResourceSnapshot;
 
 

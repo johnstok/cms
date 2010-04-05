@@ -28,7 +28,15 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
+import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
+import ccc.rest.dto.TemplateSummary;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -41,6 +49,7 @@ public abstract class ComputeTemplateAction
         RemotingAction {
 
     private final UUID _id;
+    private final String _name;
 
     /**
      * Constructor.
@@ -49,11 +58,38 @@ public abstract class ComputeTemplateAction
      * @param id The id of the resource.
      */
     public ComputeTemplateAction(final String actionName, final UUID id) {
-        super(actionName);
+        _name = actionName;
         _id = id;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { return "/resources/"+_id+"/template"; }
+    protected Request getRequest() {
+        return new Request(
+            RequestBuilder.GET,
+            "api/secure/resources/"+_id+"/template",
+            "", new ResponseHandlerAdapter(_name) {
+
+                /** {@inheritDoc} */
+                @Override
+                public void onNoContent(final Response response) {
+                    noTemplate();
+                }
+
+                /** {@inheritDoc} */
+                @Override
+                public void onOK(final Response response) {
+                    final TemplateSummary ts =
+                        new TemplateSummary(
+                            new GwtJson(
+                                JSONParser.parse(
+                                    response.getText()).isObject()));
+                    template(ts);
+                }
+
+            });
+    }
+
+    protected abstract void noTemplate();
+    protected abstract void template(TemplateSummary t);
 }

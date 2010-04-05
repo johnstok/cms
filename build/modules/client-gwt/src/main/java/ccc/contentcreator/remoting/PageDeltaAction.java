@@ -30,15 +30,18 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.PageDelta;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Retrieve a template's delta.
  *
  * @author Civic Computing Ltd.
  */
@@ -47,6 +50,8 @@ public abstract class PageDeltaAction
         RemotingAction {
 
     private final UUID _id;
+    private final String _name;
+
 
     /**
      * Constructor.
@@ -55,24 +60,37 @@ public abstract class PageDeltaAction
      * @param id The UUID.
      */
     public PageDeltaAction(final String actionName, final UUID id) {
-        super(actionName);
+        _name = actionName;
         _id = id;
     }
 
-    /** {@inheritDoc} */
+
     @Override
     protected String getPath() {
-        return "/pages/" + _id + "/delta";
+        return "api/secure/pages/" + _id + "/delta";
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
-        final PageDelta delta = new PageDelta(new GwtJson(result));
-        execute(delta);
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                getPath(),
+                "",
+                new ResponseHandlerAdapter(_name) {
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        final JSONObject result =
+                            JSONParser.parse(response.getText()).isObject();
+                        final PageDelta delta = new PageDelta(new GwtJson(result));
+                        execute(delta);
+                    }
+                });
     }
+
 
     /**
      * Handle a successful execution.

@@ -302,8 +302,7 @@ public class EditTemplateDialog extends AbstractWizardDialog
                                 @Override protected void execute(
                                              final ResourceSummary template) {
                                     _ssm.create(
-                                        new ResourceSummaryModelData(template),
-                                        _ssm.treeSelection());
+                                        new ResourceSummaryModelData(template));
                                     hide();
                                 }
                             }.execute();

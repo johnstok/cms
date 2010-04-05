@@ -30,8 +30,11 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.UserDto;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -53,19 +56,31 @@ public abstract class GetUserAction
      * @param id The user id.
      */
     public GetUserAction(final UUID id) {
-        super(GLOBALS.userActions().internalAction());
         _id = id;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject result =
-            JSONParser.parse(response.getText()).isObject();
-        final UserDto user = new UserDto(new GwtJson(result));
-        execute(user);
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                "api/secure/users/"+_id+"/delta",
+                "",
+                new ResponseHandlerAdapter(GLOBALS.userActions().internalAction()) {
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        final JSONObject result =
+                            JSONParser.parse(response.getText()).isObject();
+                        final UserDto user = new UserDto(new GwtJson(result));
+                        execute(user);
+                    }
+                });
     }
+
 
     /**
      * Handle the result of a successful call.
@@ -73,11 +88,4 @@ public abstract class GetUserAction
      * @param user The user returned.
      */
     protected abstract void execute(UserDto user);
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return "/users/"+_id+"/delta";
-    }
 }

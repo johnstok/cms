@@ -31,11 +31,14 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.ActionSummary;
 import ccc.serialization.JsonKeys;
 import ccc.types.DBC;
 import ccc.types.SortOrder;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -62,13 +65,12 @@ public abstract class ListCompletedActionsAction
      * @param page The page of results to return.
      * @param count The number of results in a page.
      * @param sort The field to sort on.
-     * @param sortOrder The order results be sorted in.
+     * @param order The order results be sorted in.
      */
     public ListCompletedActionsAction(final int page,
                                       final int count,
                                       final String sort,
                                       final SortOrder order) {
-        super(USER_ACTIONS.viewActions());
         DBC.require().toBeTrue(page>0);
         DBC.require().toBeTrue(count>0);
 
@@ -78,11 +80,10 @@ public abstract class ListCompletedActionsAction
         _order = order;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected String getPath() {
         final String path =
-            "/actions/completed"
+            "api/secure/actions/completed"
             + "?page="+_page
             + "&count="+_count
             + ((null==_order) ? "" : "&order="+_order.name())
@@ -90,22 +91,34 @@ public abstract class ListCompletedActionsAction
         return path;
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                getPath(),
+                "",
+                new ResponseHandlerAdapter(USER_ACTIONS.viewActions()) {
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-        final int totalCount =
-            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+                        final int totalCount =
+                            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
 
-        final JSONArray result = obj.get(JsonKeys.ELEMENTS).isArray();
-        final Collection<ActionSummary> actions =
-            new ArrayList<ActionSummary>();
-        for (int i=0; i<result.size(); i++) {
-            actions.add(new ActionSummary(
-                new GwtJson(result.get(i).isObject())));
-        }
-        execute(actions, totalCount);
+                        final JSONArray result = obj.get(JsonKeys.ELEMENTS).isArray();
+                        final Collection<ActionSummary> actions =
+                            new ArrayList<ActionSummary>();
+                        for (int i=0; i<result.size(); i++) {
+                            actions.add(new ActionSummary(
+                                new GwtJson(result.get(i).isObject())));
+                        }
+                        execute(actions, totalCount);
+                    }
+                });
     }
 
     /**

@@ -27,23 +27,19 @@
 
 package ccc.contentcreator.core;
 
-import static com.google.gwt.http.client.Response.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.Json;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
@@ -64,11 +60,16 @@ public abstract class RemotingAction
     implements
         Action {
 
-    private final String _actionName;
-    private final Method _method;
-    private final boolean _isSecure;
-    private static final int MS_IE6_1223 = 1223;
-    private static final int SC_IM_A_TEAPOT = 418;
+    private String  _actionName;
+    private Method  _method;
+    private boolean _isSecure;
+
+
+    /**
+     * Constructor.
+     */
+    public RemotingAction() { super(); }
+
 
     /**
      * Constructor.
@@ -81,6 +82,7 @@ public abstract class RemotingAction
         _isSecure = true;
     }
 
+
     /**
      * Constructor.
      *
@@ -92,6 +94,7 @@ public abstract class RemotingAction
         _method = method;
         _isSecure = true;
     }
+
 
     /**
      * Constructor.
@@ -108,55 +111,62 @@ public abstract class RemotingAction
         _isSecure = isSecure;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void execute() {
+
         if (!beforeExecute()) { return; }
 
-        final String url = GLOBALS.apiURL(_isSecure) + getPath();
-        final RequestBuilder builder = new RequestBuilder(_method, url);
+        final Request request = getRequest();
+        final ResponseHandler handler = request.getCallback();
+
+        final String url = GLOBALS.appURL() + request.getPath();
+        final RequestBuilder builder =
+            new RequestBuilder(request.getMethod(), url);
         builder.setHeader("Accept", "application/json");
-        if (RequestBuilder.POST.equals(_method)) {
+        if (RequestBuilder.POST.equals(request.getMethod())) {
             builder.setHeader("Content-Type", "application/json");
-            final String body = getBody();
-            builder.setRequestData(body);
+            builder.setRequestData(request.getBody());
         }
-        builder.setCallback(new RequestCallback() {
-
-            public void onError(final Request request,
-                                final Throwable exception) {
-                onFailure(exception);
-            }
-
-            public void onResponseReceived(final Request request,
-                                           final Response response) {
-                if (SessionTimeoutException
-                                        .isTimeoutMessage(response.getText())) {
-                    onFailure(
-                        new SessionTimeoutException(response.getText()));
-                } else if (SC_IM_A_TEAPOT == response.getStatusCode()) {
-                    onCccException(response);
-                } else if (SC_OK == response.getStatusCode()) {
-                    onOK(response);
-                } else if (SC_NO_CONTENT == response.getStatusCode()
-                           || MS_IE6_1223 == response.getStatusCode()) {
-                    onNoContent(response);
-                } else {
-                    onFailure(
-                        new Exception(// TODO: Use a subclass of exception.
-                            "Invalid response: "
-                            + response.getStatusCode()+" "
-                            + response.getStatusText()));
-                }
-            }
-
-        });
+        builder.setCallback(new RequestCallbackAdapter(handler));
 
         try {
             builder.send();
+            GWT.log("Sent request: "+request.getMethod()+" "+url, null);
         } catch (final RequestException e) {
-            GLOBALS.unexpectedError(e, getActionName());
+            handler.onFailed(e);
         }
+    }
+
+    /**
+     * Get the HTTP request for this action.
+     *
+     * @return The request for this remote action.
+     */
+    protected Request getRequest() {
+        return
+            new Request(
+                _method,
+                Globals.API_URL
+                + ((_isSecure) ? "/secure" : "/public")+getPath(),
+                getBody(),
+                new ResponseHandlerAdapter(_actionName) {
+
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onNoContent(final Response response) {
+                        RemotingAction.this.onNoContent(response);
+                    }
+
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        RemotingAction.this.onOK(response);
+                    }
+                });
     }
 
 
@@ -171,7 +181,6 @@ public abstract class RemotingAction
     protected boolean beforeExecute() {
         return true;
     }
-
 
     /**
      * Handle failure.
@@ -192,12 +201,6 @@ public abstract class RemotingAction
     }
 
 
-    private void onCccException(final Response response) {
-        onFailure(
-            new RemoteException(FailureOverlay.fromJson(response.getText())));
-    }
-
-
     /**
      * Provide a body for this method.
      * <p><i>Only called for POST requests</i>.
@@ -205,6 +208,7 @@ public abstract class RemotingAction
      * @return The request body, as a string.
      */
     protected String getBody() { return ""; }
+
 
     /**
      * Accessor.
@@ -219,7 +223,10 @@ public abstract class RemotingAction
      *
      * @return The server path for the resource.
      */
-    protected abstract String getPath();
+    protected String getPath() {
+        throw new UnsupportedOperationException("You must override getPath().");
+    }
+
 
     /**
      * Handle a '204 NO CONTENT' response from the remote server.
@@ -230,6 +237,7 @@ public abstract class RemotingAction
         onUnsupported(response);
     }
 
+
     /**
      * Handle a '200 OK' response from the remote server.
      *
@@ -238,6 +246,7 @@ public abstract class RemotingAction
     protected void onOK(final Response response) {
         onUnsupported(response);
     }
+
 
     /**
      * URL encode a string.
@@ -249,14 +258,6 @@ public abstract class RemotingAction
     protected String encode(final String string) {
         return URL.encodeComponent(string);
     }
-
-
-    // 405 Method Not Allowed
-    // protected abstract void onMethodNotAllowed(final Response response);
-
-
-    // 400 Bad Request
-    // protected abstract void onBadRequest(final Response response);
 
 
     /**
@@ -320,6 +321,7 @@ public abstract class RemotingAction
         }
         return actions;
     }
+
 
     /**
      * Parse the response as a map.

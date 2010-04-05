@@ -94,6 +94,7 @@ public class GlobalsImpl
 
     /** {@inheritDoc} */
     @Override
+    @Deprecated
     public String apiURL(final boolean secure) {
         return
             GWT.getHostPageBaseURL()
@@ -181,6 +182,7 @@ public class GlobalsImpl
     /** {@inheritDoc} */
     @Override
     public void unexpectedError(final Throwable e, final String action) {
+        // FIXME Convert type comparison to multiple methods.
         if (e instanceof RemoteException) {
             final RemoteException re = (RemoteException) e;
             new ErrorDialog(re, action, this).show();

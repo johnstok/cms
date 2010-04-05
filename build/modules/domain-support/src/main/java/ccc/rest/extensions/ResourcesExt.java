@@ -31,9 +31,9 @@ import java.util.UUID;
 
 import ccc.action.ActionExecutor;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.Duration;
 

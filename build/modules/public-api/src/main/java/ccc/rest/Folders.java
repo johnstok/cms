@@ -43,6 +43,7 @@ import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
 import ccc.types.SortOrder;
 
 

@@ -26,16 +26,23 @@
  */
 package ccc.contentcreator.presenters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
-import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.Globals;
-import ccc.contentcreator.events.ResourceCreatedEvent;
+import ccc.contentcreator.events.FolderCreated;
+import ccc.contentcreator.events.FolderCreated.FolderCreatedHandler;
 import ccc.contentcreator.remoting.CreateFolderAction;
 import ccc.contentcreator.views.CreateFolder;
-import ccc.rest.dto.ResourceSummary;
+import ccc.contentcreator.widgets.ContentCreator;
+
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 
 /**
@@ -48,7 +55,10 @@ public class CreateFolderPresenter
         AbstractPresenter<CreateFolder, ResourceSummaryModelData>
     implements
         Editable,
-        CommandResponseHandler<ResourceSummaryModelData> {
+        FolderCreatedHandler {
+
+    private final List<HandlerRegistration> _handlers =
+        new ArrayList<HandlerRegistration>();
 
 
 
@@ -65,8 +75,31 @@ public class CreateFolderPresenter
                                  final CreateFolder view,
                                  final ResourceSummaryModelData model) {
         super(globals, bus, view, model);
+        addHandler(FolderCreated.TYPE, this);
         getView().show(this);
     }
+
+
+    private <T extends EventHandler> void addHandler(
+                                                 final GwtEvent.Type<T> event,
+                                                 final T handler) {
+        _handlers.add(ContentCreator.EVENT_BUS.addHandler(event, handler));
+    }
+
+
+    private void hide() {
+        clearHandlers();
+        getView().hide();
+    }
+
+
+    private void clearHandlers() {
+        for (final HandlerRegistration hr : _handlers) {
+            hr.removeHandler();
+        }
+        _handlers.clear();
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -80,25 +113,16 @@ public class CreateFolderPresenter
         if (getView().getValidationResult().isValid()) {
             new CreateFolderAction(
                 getModel().getId(),
-                getView().getName()){
-                @Override protected void execute(final ResourceSummary folder) {
-                    final ResourceSummaryModelData newFolder =
-                        new ResourceSummaryModelData(folder);
-                    onSuccess(newFolder);
-                }
-            }.execute();
+                getView().getName())
+            .execute();
         } else {
             getGlobals().alert(
                 getGlobals().uiConstants().resourceNameIsInvalid());
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final ResourceSummaryModelData newFolder) {
-        getBus().put(
-            new ResourceCreatedEvent(newFolder, getModel()));
-        getView().hide();
-    }
-
+    public void onCreate(final FolderCreated event) { hide(); }
 }

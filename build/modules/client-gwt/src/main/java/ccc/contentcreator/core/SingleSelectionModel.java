@@ -76,10 +76,8 @@ public interface SingleSelectionModel {
      * Create a new model resource.
      *
      * @param model The model to create.
-     * @param newParent The model's parent folder.
      */
-    void create(ResourceSummaryModelData model,
-                ResourceSummaryModelData newParent);
+    void create(ResourceSummaryModelData model);
 
 
     /**

@@ -28,11 +28,9 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
-import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.serialization.JsonKeys;
-
-import com.google.gwt.http.client.RequestBuilder;
+import ccc.contentcreator.core.Request;
 
 
 /**
@@ -40,13 +38,14 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateAliasAction
+public final class CreateAliasAction
     extends
         RemotingAction {
 
     private final UUID _parentId;
     private final String _aliasName;
     private final UUID _targetId;
+
 
     /**
      * Constructor.
@@ -58,25 +57,16 @@ public class CreateAliasAction
     public CreateAliasAction(final UUID parentId,
                               final String aliasName,
                               final UUID targetId) {
-        super(UI_CONSTANTS.createAlias(), RequestBuilder.POST);
         _parentId = parentId;
         _aliasName = aliasName;
         _targetId = targetId;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return "/aliases";
-    }
 
     /** {@inheritDoc} */
     @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, _parentId);
-        json.set(JsonKeys.NAME, _aliasName);
-        json.set(JsonKeys.TARGET_ID, _targetId);
-        return json.toString();
+    protected Request getRequest() {
+        return ResourceSummaryModelData.createAlias(
+            _parentId, _aliasName, _targetId);
     }
 }

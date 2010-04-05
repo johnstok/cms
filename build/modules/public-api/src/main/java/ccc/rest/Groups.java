@@ -38,6 +38,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.rest.dto.GroupDto;
+import ccc.rest.exceptions.RestException;
 
 
 /**

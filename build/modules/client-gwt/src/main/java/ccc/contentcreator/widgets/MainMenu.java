@@ -275,8 +275,7 @@ public class MainMenu
                 private final ResourceSummaryModelData _md =
                     new ResourceSummaryModelData(root);
 
-                    public void create(final ResourceSummaryModelData model,
-                                       final ResourceSummaryModelData parent) {
+                    public void create(final ResourceSummaryModelData model) {
                         /* No-op */
                     }
                     public void delete(final ResourceSummaryModelData model) {

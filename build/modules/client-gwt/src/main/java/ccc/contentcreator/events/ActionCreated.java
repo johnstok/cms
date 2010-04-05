@@ -24,27 +24,53 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.contentcreator.events;
 
-import ccc.types.Failure;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 
 
 /**
- * An API call failed due to a conflict with the current state of the resource.
+ * An event indicating a working copy was applied to a resource.
  *
  * @author Civic Computing Ltd.
  */
-public class ConflictException
+public class ActionCreated
     extends
-        RestException {
+        GwtEvent<ActionCreated.ActionCreatedHandler> {
 
-    /**
-     * Constructor.
-     *
-     * @param failure Details of the failure.
-     */
-    public ConflictException(final Failure failure) {
-        super(failure);
+
+    /** {@inheritDoc} */
+    @Override
+    protected void dispatch(
+                        final ActionCreated.ActionCreatedHandler handler) {
+        handler.onCreate(this);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public Type<ActionCreatedHandler> getAssociatedType() { return TYPE; }
+
+
+    /**
+     * Handler for 'group created' events.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static interface ActionCreatedHandler extends EventHandler {
+
+
+        /**
+         * Handle a 'WC applied' event.
+         *
+         * @param event The event to handle.
+         */
+        void onCreate(ActionCreated event);
+    }
+
+
+    /** TYPE : Type. */
+    public static final Type<ActionCreatedHandler> TYPE =
+        new Type<ActionCreatedHandler>();
 }

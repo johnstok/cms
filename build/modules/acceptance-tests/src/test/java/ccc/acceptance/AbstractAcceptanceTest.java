@@ -30,6 +30,7 @@ package ccc.acceptance;
 import static ccc.types.HttpStatusCode.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashSet;
@@ -59,11 +60,9 @@ import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
 import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.Users;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FolderDto;
@@ -74,8 +73,9 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
 import ccc.rest.dto.UserDto;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.providers.RestExceptionMapper;
 import ccc.serialization.JsonImpl;
-import ccc.types.Failure;
 import ccc.types.HttpStatusCode;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
@@ -377,11 +377,12 @@ public abstract class AbstractAcceptanceTest
 
         _http.executeMethod(postMethod);
 
+        final int status = postMethod.getStatusCode();
         final String body = postMethod.getResponseBodyAsString();
-        if (OK==postMethod.getStatusCode()) {
+        if (OK==status) {
             return body;
         }
-        throw new RestException(new Failure(new JsonImpl(body)));
+        throw new RestExceptionMapper().fromResponse(status, body);
     }
 
 
@@ -428,12 +429,11 @@ public abstract class AbstractAcceptanceTest
      * @return The summary of the newly created file.
      *
      * @throws IOException If creation fails on the client.
-     * @throws RestException If creation fails on the server.
      */
     protected ResourceSummary createFile(final String fName,
                                          final String fText,
                                          final ResourceSummary filesFolder)
-    throws IOException, RestException {
+    throws IOException {
 
         final PostMethod postMethod = new PostMethod(_createFileUrl);
 
@@ -458,7 +458,7 @@ public abstract class AbstractAcceptanceTest
             if (OK==status) {
                 return new ResourceSummary(new JsonImpl(body));
             }
-            throw new RestException(new Failure(new JsonImpl(body)));
+            throw new RestExceptionMapper().fromResponse(status, body);
 
         } finally {
             postMethod.releaseConnection();
@@ -511,18 +511,15 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The converted exception.
      */
-    @SuppressWarnings("unchecked")
-    protected <T extends Exception> T convertException(
+    protected <T extends RestException> T convertException(
                                              final ClientResponseFailure ex) {
-        final ClientResponse<byte[]> r = ex.getResponse();
-
-        switch (r.getStatus()) {
-
-            case HttpStatusCode.UNAUTHORIZED:
-                return (T) r.getEntity(UnauthorizedException.class);
-
-            default:
-                return (T) ex;
+        try {
+            final ClientResponse<byte[]> r = ex.getResponse();
+            final String body = new String(r.getEntity(), "UTF-8");
+            return
+                new RestExceptionMapper().<T>fromResponse(r.getStatus(), body);
+        } catch (final UnsupportedEncodingException e) {
+            throw new RuntimeException("Unsupported encoding", e);
         }
     }
 

@@ -34,9 +34,9 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.client1.RegistryServiceLocator;
-import ccc.rest.RestException;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourceName;

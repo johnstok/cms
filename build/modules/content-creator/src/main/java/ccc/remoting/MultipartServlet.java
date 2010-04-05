@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.rest.Files;
-import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.FilesExt;
 import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;

@@ -31,10 +31,13 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.UserCriteria;
 import ccc.rest.dto.UserDto;
 import ccc.serialization.JsonKeys;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -42,7 +45,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * List available users.
  *
  * @author Civic Computing Ltd.
  */
@@ -70,7 +73,6 @@ public abstract class ListUsersAction
                      final int pageSize,
                      final String sort,
                      final String order) {
-        super(USER_ACTIONS.viewUsers());
         _uc = uc;
         _pageNo = pageNo;
         _pageSize = pageSize;
@@ -78,11 +80,10 @@ public abstract class ListUsersAction
         _order = order;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected String getPath() {
         final StringBuilder path = new StringBuilder();
-        path.append("/users?page="+_pageNo
+        path.append("api/secure/users?page="+_pageNo
         +"&count="+_pageSize+"&sort="+_sort+"&order="+_order);
         if (null != _uc) {
             if (null != _uc.getEmail()) {
@@ -101,24 +102,33 @@ public abstract class ListUsersAction
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                getPath(),
+                "",
+                new ResponseHandlerAdapter(USER_ACTIONS.viewUsers()) {
+                    /** {@inheritDoc} */
+                    @Override public void onOK(final Response response) {
 
-        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+                        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-        final int totalCount =
-            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+                        final int totalCount =
+                            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
 
-        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
+                        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
 
-        final Collection<UserDto> children =
-            new ArrayList<UserDto>();
-        for (int i=0; i<result.size(); i++) {
-            children.add(new UserDto(new GwtJson(result.get(i).isObject())));
-        }
+                        final Collection<UserDto> children =
+                            new ArrayList<UserDto>();
+                        for (int i=0; i<result.size(); i++) {
+                            children.add(new UserDto(new GwtJson(result.get(i).isObject())));
+                        }
 
-        execute(children, totalCount);
+                        execute(children, totalCount);
+                    }
+                });
     }
-
 
     /**
      * Handle the result of a successful call.

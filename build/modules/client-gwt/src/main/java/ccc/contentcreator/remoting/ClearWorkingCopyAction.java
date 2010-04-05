@@ -26,12 +26,9 @@
  */
 package ccc.contentcreator.remoting;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.SingleSelectionModel;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 /**
  * Publish a resource.
@@ -51,24 +48,13 @@ public class ClearWorkingCopyAction
      * @param selectionModel The selection model for this action.
      */
     public ClearWorkingCopyAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.deleteWorkingCopy(), RequestBuilder.POST);
         _selectionModel = selectionModel;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return
-            "/resources/"+_selectionModel.tableSelection().getId()+"/wc-clear";
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onNoContent(final Response response) {
-        final ResourceSummaryModelData page = _selectionModel.tableSelection();
-        _selectionModel.tableSelection().setWorkingCopy(false);
-        _selectionModel.update(page);
+    protected Request getRequest() {
+        return _selectionModel.tableSelection().clearWorkingCopy();
     }
 }

@@ -32,27 +32,28 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.rest.UnauthorizedException;
-import ccc.serialization.Json;
+import ccc.serialization.Jsonable2;
 
 
 /**
- * A reader for unauthorized exceptions.
+ * A {@link MessageBodyReader} for jsonable objects.
+ * FIXME Merge into {@link JsonableWriter}.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Consumes("application/json")
-public class UnauthorizedExceptionReader
+public class Jsonable2Reader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<UnauthorizedException> {
+        MessageBodyReader<Jsonable2> {
 
     /** {@inheritDoc} */
     @Override
@@ -60,19 +61,26 @@ public class UnauthorizedExceptionReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return UnauthorizedException.class.equals(clazz);
+        return Jsonable2.class.isAssignableFrom(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public UnauthorizedException readFrom(
-                            final Class<UnauthorizedException> clazz,
-                            final Type type,
-                            final Annotation[] annotations,
-                            final MediaType mimetype,
-                            final MultivaluedMap<String, String> httpHeaders,
-                            final InputStream is) throws IOException {
-        final Json json = readJson(mimetype, is);
-        return new UnauthorizedException(json);
+    public Jsonable2 readFrom(final Class<Jsonable2> clazz,
+                              final Type type,
+                              final Annotation[] annotations,
+                              final MediaType mimetype,
+                              final MultivaluedMap<String, String> httpHeaders,
+                              final InputStream is) throws IOException {
+        try {
+            final Jsonable2 object = clazz.newInstance();
+            object.fromJson(readJson(mimetype, is));
+            return object;
+
+        } catch (final InstantiationException e) {
+            throw new WebApplicationException(e);
+        } catch (final IllegalAccessException e) {
+            throw new WebApplicationException(e);
+        }
     }
 }

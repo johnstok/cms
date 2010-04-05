@@ -34,7 +34,6 @@ import javax.persistence.EntityManager;
 
 import ccc.domain.Comment;
 import ccc.domain.Resource;
-import ccc.rest.EntityNotFoundException;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
@@ -82,15 +81,14 @@ public class CommentRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public void delete(final UUID commentId) throws EntityNotFoundException {
+    public void delete(final UUID commentId) {
         _repo.delete(retrieve(commentId));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Comment retrieve(final UUID commentId)
-    throws EntityNotFoundException {
+    public Comment retrieve(final UUID commentId) {
         return _repo.find(Comment.class, commentId);
     }
 

@@ -32,9 +32,12 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.FileDto;
 import ccc.serialization.JsonKeys;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -53,6 +56,7 @@ public abstract class GetImagesPagedAction
     private final UUID _parentId;
     private int _pageNo;
     private int _pageSize;
+    private final String _name;
 
     /**
      * Constructor.
@@ -66,36 +70,48 @@ public abstract class GetImagesPagedAction
                                   final UUID parentId,
                                   final int pageNo,
                                   final int pageSize) {
-        super(actionName);
+        _name = actionName;
         _parentId = parentId;
         _pageNo = pageNo;
         _pageSize = pageSize;
 
     }
 
-    /** {@inheritDoc} */
-    @Override protected String getPath() {
-        return "/files/images/"+_parentId+"/?page="+_pageNo+"&count="+_pageSize;
-    }
 
+    @Override
+    protected String getPath() {
+        return "api/secure/files/images/"+_parentId+"/?page="+_pageNo+"&count="+_pageSize;
+    }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                getPath(),
+                "",
+                new ResponseHandlerAdapter(_name) {
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-        final int totalCount =
-            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+                        final int totalCount =
+                            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
 
-        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
-        final Collection<FileDto> files = new ArrayList<FileDto>();
-        for (int i=0; i<result.size(); i++) {
-            files.add(new FileDto(new GwtJson(result.get(i).isObject())));
-        }
+                        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
+                        final Collection<FileDto> files = new ArrayList<FileDto>();
+                        for (int i=0; i<result.size(); i++) {
+                            files.add(new FileDto(new GwtJson(result.get(i).isObject())));
+                        }
 
-        execute(files, totalCount);
+                        execute(files, totalCount);
+                    }
+                });
     }
+
 
     /**
      * Handle the data returned from the server.

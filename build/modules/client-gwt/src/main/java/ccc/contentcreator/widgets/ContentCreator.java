@@ -28,6 +28,7 @@ package ccc.contentcreator.widgets;
 
 
 import ccc.contentcreator.core.GlobalsImpl;
+import ccc.contentcreator.events.Error;
 import ccc.contentcreator.remoting.GetPropertyAction;
 import ccc.contentcreator.remoting.IsLoggedInAction;
 
@@ -52,6 +53,11 @@ public final class ContentCreator implements EntryPoint {
      */
     public void onModuleLoad() {
         _globals.installUnexpectedExceptionHandler();
+        EVENT_BUS.addHandler(Error.TYPE, new Error.ErrorHandler() {
+            @Override public void onError(final Error event) {
+                _globals.unexpectedError(event.getException(), event.getName());
+            }
+        });
         loadSettings();
         new IsLoggedInAction().execute();
     }

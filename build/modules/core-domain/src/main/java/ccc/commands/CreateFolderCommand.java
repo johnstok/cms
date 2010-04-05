@@ -33,8 +33,8 @@ import ccc.domain.Folder;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.EntityNotFoundException;
-import ccc.rest.UnauthorizedException;
+import ccc.rest.exceptions.EntityNotFoundException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.CommandType;
 
 

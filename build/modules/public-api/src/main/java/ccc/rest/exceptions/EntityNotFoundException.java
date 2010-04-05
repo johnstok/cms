@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,75 +21,61 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
+
+import java.util.Collections;
+import java.util.UUID;
 
 import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable2;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
-
-
 /**
- * An exception representing the failure of a CCC command.
+ * Exception indicating that the look up of an entity failed.
  *
  * @author Civic Computing Ltd.
  */
-public class RestException
+public class EntityNotFoundException
     extends
-        RuntimeException
-    implements
-        Jsonable2 {
+        RestException {
 
-    private Failure _failure;
-
-    @SuppressWarnings("unused") private RestException() { super(); }
+    /**
+     * Constructor.
+     *
+     * @param id The entity's id.
+     */
+    public EntityNotFoundException(final UUID id) {
+        super(
+            new Failure(
+                FailureCode.NOT_FOUND,
+                Collections.singletonMap(
+                    "id", (null==id) ? null : id.toString())));
+    }
 
 
     /**
      * Constructor.
      *
-     * @param failure The failure.
+     * @param json The JSON representation of this exception.
      */
-    public RestException(final Failure failure) {
-        super("CCC Error: "+failure.getExceptionId());
-        _failure = failure;
+    public EntityNotFoundException(final Json json) {
+        super(json);
     }
+
 
     /**
      * Accessor.
      *
-     * @return The failure's code.
+     * @return Returns the id.
      */
-    public FailureCode getCode() {
-        return _failure.getCode();
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The failure.
-     */
-    public Failure getFailure() {
-        return _failure;
+    public UUID getId() {
+        final String idString = getFailure().getParams().get("id");
+        return (null==idString) ? null : UUID.fromString(idString);
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        _failure = new Failure(json.getJson(JsonKeys.FAILURE));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.FAILURE, _failure);
-    }
 }

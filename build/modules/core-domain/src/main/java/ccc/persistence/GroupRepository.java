@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.domain.Group;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 
 /**
  * API for group repositories.

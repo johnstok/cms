@@ -46,8 +46,8 @@ import org.apache.log4j.Logger;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.RedirectRequiredException;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourcePath;
 

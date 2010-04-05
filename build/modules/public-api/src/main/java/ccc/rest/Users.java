@@ -40,6 +40,7 @@ import javax.ws.rs.QueryParam;
 
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.UserDto;
+import ccc.rest.exceptions.RestException;
 import ccc.types.SortOrder;
 import ccc.types.Username;
 

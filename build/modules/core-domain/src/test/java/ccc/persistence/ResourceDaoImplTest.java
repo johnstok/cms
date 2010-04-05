@@ -31,6 +31,7 @@ import static org.easymock.EasyMock.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.domain.Folder;
@@ -38,7 +39,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.Paragraph;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
@@ -70,7 +71,7 @@ public class ResourceDaoImplTest
                 QueryNames.ROOT_BY_NAME,
                 Folder.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
-            .andThrow(new EntityNotFoundException(null));
+            .andThrow(new EntityNotFoundException((UUID) null));
         replayAll();
 
         // ACT

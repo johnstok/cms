@@ -40,6 +40,7 @@ import javax.ws.rs.QueryParam;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.DtoCollection;
+import ccc.rest.exceptions.RestException;
 import ccc.types.SortOrder;
 
 

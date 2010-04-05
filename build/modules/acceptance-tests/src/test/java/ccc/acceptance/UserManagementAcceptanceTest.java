@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import ccc.rest.RestException;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
+import ccc.rest.exceptions.RestException;
 import ccc.types.Username;
 
 

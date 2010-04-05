@@ -42,6 +42,7 @@ import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.TextFileDto;
+import ccc.rest.exceptions.RestException;
 
 
 /**

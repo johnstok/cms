@@ -41,12 +41,12 @@ import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
 import ccc.rest.SearchEngine;
 import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
+import ccc.rest.exceptions.RestException;
 
 
 /**

@@ -37,7 +37,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.ResourcePath;
 import ccc.types.SortOrder;
 

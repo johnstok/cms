@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,45 +21,43 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
-
-import java.util.UUID;
+package ccc.rest.exceptions;
 
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable2;
-import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
+
+
 /**
- * An exception indicating that access to an entity was denied.
+ * An exception representing the failure of a CCC command.
  *
  * @author Civic Computing Ltd.
  */
-public class UnauthorizedException
+public abstract class RestException
     extends
-        RestException
+        RuntimeException
     implements
         Jsonable2 {
 
-    private UUID _target;
-    private UUID _user;
+    private Failure _failure;
+
+    @SuppressWarnings("unused") private RestException() { super(); }
 
 
     /**
      * Constructor.
      *
-     * @param target The entity that couldn't be accessed.
-     * @param user   The user trying to access the entity.
+     * @param failure The failure.
      */
-    public UnauthorizedException(final UUID target, final UUID user) {
-        super(new Failure(FailureCode.PRIVILEGES));
-        _target = DBC.require().notNull(target);
-        _user   = user; // NULL indicates anonymous access.
+    public RestException(final Failure failure) {
+        super("CCC Error: "+failure.getExceptionId());
+        _failure = failure;
     }
 
 
@@ -68,55 +66,39 @@ public class UnauthorizedException
      *
      * @param json The JSON representation of this exception.
      */
-    public UnauthorizedException(final Json json) {
-        super(new Failure(FailureCode.PRIVILEGES));
+    public RestException(final Json json) {
         fromJson(json);
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return
-            "User " + _user
-            + " isn't authorized to access entity " + _target + ".";
+    /**
+     * Accessor.
+     *
+     * @return The failure's code.
+     */
+    public FailureCode getCode() {
+        return _failure.getCode();
     }
-
 
     /**
      * Accessor.
      *
-     * @return Returns the target.
+     * @return The failure.
      */
-    public UUID getTarget() {
-        return _target;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the user.
-     */
-    public UUID getUser() {
-        return _user;
+    public Failure getFailure() {
+        return _failure;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
-        super.fromJson(json);
-        _target = json.getId("target");
-        _user = json.getId("user");
+        _failure = new Failure(json);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        super.toJson(json);
-        json.set("target", _target);
-        json.set("user", _user);
+        _failure.toJson(json);
     }
 }

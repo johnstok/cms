@@ -26,6 +26,7 @@
  */
 package ccc.rest;
 
+import ccc.rest.exceptions.InvalidException;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 

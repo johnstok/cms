@@ -37,7 +37,7 @@ import ccc.api.client1.ProxyServiceLocator;
 import ccc.api.client1.RegistryServiceLocator;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
-import ccc.rest.RestException;
+import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourcePath;

@@ -31,10 +31,13 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.HistoryDialog;
 import ccc.rest.dto.RevisionDto;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
@@ -56,28 +59,33 @@ public final class ViewHistoryAction
      * @param selectionModel The selection model.
      */
     public ViewHistoryAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.viewHistory());
         _selectionModel = selectionModel;
     }
 
-    /** {@inheritDoc} */
-    @Override protected String getPath() {
-        return _selectionModel.tableSelection().revisionsPath();
-
-    }
 
     /** {@inheritDoc} */
-    @Override protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<RevisionDto> history =
-            new ArrayList<RevisionDto>();
-        for (int i=0; i<result.size(); i++) {
-            history.add(
-                new RevisionDto(new GwtJson(result.get(i).isObject())));
-        }
+    @Override
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                "api/secure"+_selectionModel.tableSelection().revisionsPath(),
+                "",
+                new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()){
+                    /** {@inheritDoc} */
+                    @Override public void onOK(final Response response) {
+                        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+                        final Collection<RevisionDto> history =
+                            new ArrayList<RevisionDto>();
+                        for (int i=0; i<result.size(); i++) {
+                            history.add(
+                                new RevisionDto(new GwtJson(result.get(i).isObject())));
+                        }
 
-        new HistoryDialog(
-            history, _selectionModel.tableSelection().getId(), _selectionModel)
-        .show();
+                        new HistoryDialog(
+                            history, _selectionModel.tableSelection().getId(), _selectionModel)
+                        .show();
+                    }
+                });
     }
 }

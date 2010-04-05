@@ -27,8 +27,11 @@
 package ccc.contentcreator.remoting;
 
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.types.Username;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 
@@ -49,25 +52,37 @@ public abstract class UniqueUsernameAction
      * @param username The username to check.
      */
     public UniqueUsernameAction(final Username username) {
-        super(GLOBALS.userActions().checkUniqueUsername());
         _username = username;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            "/users/"
-            + encode(_username.toString())
-            + "/exists";
+        return "api/secure/users/" + encode(_username.toString()) + "/exists";
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final boolean exists =
-            JSONParser.parse(response.getText()).isBoolean().booleanValue();
-        execute(exists);
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                getPath(),
+                "",
+                new ResponseHandlerAdapter(
+                    GLOBALS.userActions().checkUniqueUsername()) {
+
+                    /** {@inheritDoc} */
+                    @Override public void onOK(final Response response) {
+                        final boolean exists =
+                            JSONParser
+                                .parse(response.getText())
+                                .isBoolean()
+                                .booleanValue();
+                        execute(exists);
+                    }
+                });
+
     }
 
     /**

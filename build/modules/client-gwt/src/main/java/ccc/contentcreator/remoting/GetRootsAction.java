@@ -31,8 +31,11 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.ResourceSummary;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
@@ -47,34 +50,39 @@ public abstract class GetRootsAction
     extends
         RemotingAction {
 
-    /**
-     * Constructor.
-     */
-    public GetRootsAction() {
-        super(GLOBALS.userActions().internalAction());
-    }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final JSONArray results =
-            JSONParser.parse(response.getText()).isArray();
-        final Collection<ResourceSummary> roots =
-            new ArrayList<ResourceSummary>();
-        for (int i=0; i<results.size(); i++) {
-            roots.add(
-                new ResourceSummary(
-                    new GwtJson(results.get(i).isObject())));
-        }
-        onSuccess(roots);
-    }
-
-
-    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/folders/roots";
+        return "api/secure/folders/roots";
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Request getRequest() {
+
+        return
+            new Request(
+                RequestBuilder.GET,
+                getPath(),
+                "",
+                new ResponseHandlerAdapter(GLOBALS.userActions().internalAction()) {
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        final JSONArray results =
+                            JSONParser.parse(response.getText()).isArray();
+                        final Collection<ResourceSummary> roots =
+                            new ArrayList<ResourceSummary>();
+                        for (int i=0; i<results.size(); i++) {
+                            roots.add(
+                                new ResourceSummary(
+                                    new GwtJson(results.get(i).isObject())));
+                        }
+                        onSuccess(roots);
+                    }
+                });
     }
 
 

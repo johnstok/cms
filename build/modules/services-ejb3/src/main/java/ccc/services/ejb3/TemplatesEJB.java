@@ -40,12 +40,12 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.Template;
-import ccc.rest.EntityNotFoundException;
 import ccc.rest.Templates;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
 import ccc.rest.dto.TemplateSummary;
+import ccc.rest.exceptions.EntityNotFoundException;
 
 
 /**
