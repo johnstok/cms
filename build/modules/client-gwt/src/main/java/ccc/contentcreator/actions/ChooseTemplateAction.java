@@ -30,7 +30,6 @@ import java.util.Collection;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.SelectionModelEventBus;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.ChangeResourceTemplatePresenter;
 import ccc.contentcreator.remoting.GetTemplatesAction;
@@ -76,7 +75,6 @@ public final class ChooseTemplateAction
                                  final Collection<TemplateSummary> templates) {
                     new ChangeResourceTemplatePresenter(
                         GLOBALS,
-                        new SelectionModelEventBus(_selectionModel),
                         new ChooseTemplateDialog(),
                         item,
                         templates);

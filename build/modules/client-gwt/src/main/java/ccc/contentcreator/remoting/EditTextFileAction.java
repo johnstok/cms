@@ -28,9 +28,12 @@ package ccc.contentcreator.remoting;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.events.TextFileUpdated;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -66,5 +69,11 @@ public class EditTextFileAction
         final GwtJson json = new GwtJson();
         _dto.toJson(json);
         return json.toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        ContentCreator.EVENT_BUS.fireEvent(new TextFileUpdated());
     }
 }

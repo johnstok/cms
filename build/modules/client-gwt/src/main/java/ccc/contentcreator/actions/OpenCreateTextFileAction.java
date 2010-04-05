@@ -28,7 +28,6 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.SelectionModelEventBus;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.CreateTextFilePresenter;
 import ccc.contentcreator.views.gxt.CreateTextFileDialog;
@@ -61,7 +60,6 @@ public final class OpenCreateTextFileAction
         } else {
             new CreateTextFilePresenter(
                 GLOBALS,
-                new SelectionModelEventBus(_selectionModel),
                 new CreateTextFileDialog(),
                 item);
         }

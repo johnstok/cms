@@ -57,6 +57,7 @@ public interface SingleSelectionModel {
      *
      * @param model The model to update
      */
+    @Deprecated
     void update(ResourceSummaryModelData model);
 
 
@@ -67,6 +68,7 @@ public interface SingleSelectionModel {
      * @param newParent The new parent.
      * @param oldParent The old parent.
      */
+    @Deprecated
     void move(ResourceSummaryModelData model,
               ResourceSummaryModelData newParent,
               ResourceSummaryModelData oldParent);
@@ -77,13 +79,6 @@ public interface SingleSelectionModel {
      *
      * @param model The model to create.
      */
+    @Deprecated
     void create(ResourceSummaryModelData model);
-
-
-    /**
-     * Remove a model resource.
-     *
-     * @param item The model to remove.
-     */
-    void delete(ResourceSummaryModelData item);
 }

@@ -27,15 +27,13 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.Event;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
-import ccc.contentcreator.core.Event.Type;
-import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.views.EditTextFile;
 import ccc.contentcreator.widgets.CodeMirrorEditor;
+import ccc.contentcreator.widgets.CodeMirrorEditor.EditorListener;
+import ccc.contentcreator.widgets.CodeMirrorEditor.Type;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -56,7 +54,8 @@ public class EditTextFileDialog
     extends
         AbstractEditDialog
     implements
-        EditTextFile, EventBus {
+        EditTextFile,
+        EditorListener {
 
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 620;
@@ -204,15 +203,12 @@ public class EditTextFileDialog
         _mimeSubType.setValue(sub);
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void put(final Event event) {
-        if (Type.CM_EDITOR_READY==event.getType()) {
-            final CodeMirrorEditor cme =
-                ((CMEditorReadyEvent) event).getCodeMirrorEditor();
-            if (_text != null) {
-                cme.setEditorCode(_text);
-            }
+    public void onInitialized(final Type type, final CodeMirrorEditor editor) {
+        if (_text != null) {
+            editor.setEditorCode(_text);
         }
     }
 }

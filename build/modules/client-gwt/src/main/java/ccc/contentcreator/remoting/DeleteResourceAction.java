@@ -29,6 +29,8 @@ package ccc.contentcreator.remoting;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.events.ResourceDeleted;
+import ccc.contentcreator.widgets.ContentCreator;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -68,7 +70,7 @@ public class DeleteResourceAction
     @Override
     protected void onNoContent(final Response response) {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        _selectionModel.delete(item);
+        ContentCreator.EVENT_BUS.fireEvent(new ResourceDeleted(item.getId()));
     }
 
 

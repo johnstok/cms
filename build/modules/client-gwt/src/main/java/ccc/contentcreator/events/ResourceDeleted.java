@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -26,7 +26,8 @@
  */
 package ccc.contentcreator.events;
 
-import ccc.rest.dto.CommentDto;
+import java.util.UUID;
+
 import ccc.types.DBC;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -34,66 +35,66 @@ import com.google.gwt.event.shared.GwtEvent;
 
 
 /**
- * An event indicating a comment was updated.
+ * An event indicating a new resource was deleted.
  *
  * @author Civic Computing Ltd.
  */
-public class CommentUpdatedEvent
+public class ResourceDeleted
     extends
-        GwtEvent<CommentUpdatedEvent.CommentUpdatedHandler> {
+        GwtEvent<ResourceDeleted.ResourceDeletedHandler> {
 
-    private final CommentDto _comment;
+    private final UUID _resource;
 
 
     /**
      * Constructor.
      *
-     * @param resource The updated comment.
+     * @param resource The deleted resource's ID.
      */
-    public CommentUpdatedEvent(final CommentDto resource) {
-        _comment = DBC.require().notNull(resource);
+    public ResourceDeleted(final UUID resource) {
+        _resource = DBC.require().notNull(resource);
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the comment.
+     * @return Returns the deleted resource's ID.
      */
-    public CommentDto getComment() { return _comment; }
+    public UUID getResource() { return _resource; }
 
 
     /** {@inheritDoc} */
     @Override
     protected void dispatch(
-                        final CommentUpdatedHandler handler) {
-        handler.onUpdate(this);
+                        final ResourceDeleted.ResourceDeletedHandler handler) {
+        handler.onDelete(this);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Type<CommentUpdatedHandler> getAssociatedType() { return TYPE; }
+    public Type<ResourceDeletedHandler> getAssociatedType() { return TYPE; }
 
 
     /**
-     * Handler for 'comment updated' events.
+     * Handler for 'resource deleted' events.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface CommentUpdatedHandler extends EventHandler {
+    public static interface ResourceDeletedHandler extends EventHandler {
 
 
         /**
-         * Handle a 'comment updated' event.
+         * Handle a 'resource deleted' event.
          *
          * @param event The event to handle.
          */
-        void onUpdate(CommentUpdatedEvent event);
+        void onDelete(ResourceDeleted event);
     }
 
 
     /** TYPE : Type. */
-    public static final Type<CommentUpdatedHandler> TYPE =
-        new Type<CommentUpdatedHandler>();
+    public static final Type<ResourceDeletedHandler> TYPE =
+        new Type<ResourceDeletedHandler>();
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,21 +24,52 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.contentcreator.core;
+package ccc.contentcreator.events;
+
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 
 
 /**
- * An event bus for asynchronous collaboration between UI components.
+ * An event indicating a text file was updated.
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated
-public interface EventBus {
+public class TextFileUpdated
+    extends
+        GwtEvent<TextFileUpdated.UpdatedHandler> {
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void dispatch(final TextFileUpdated.UpdatedHandler handler) {
+        handler.onUpdated(this);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Type<UpdatedHandler> getAssociatedType() { return TYPE; }
+
 
     /**
-     * Put a new event onto the bus.
+     * Handler for 'text file updated' events.
      *
-     * @param event The event to put.
+     * @author Civic Computing Ltd.
      */
-    void put(Event event);
+    public static interface UpdatedHandler extends EventHandler {
+
+
+        /**
+         * Handle a 'text file updated' event.
+         *
+         * @param event The event to handle.
+         */
+        void onUpdated(TextFileUpdated event);
+    }
+
+
+    /** TYPE : Type. */
+    public static final Type<UpdatedHandler> TYPE =
+        new Type<UpdatedHandler>();
 }

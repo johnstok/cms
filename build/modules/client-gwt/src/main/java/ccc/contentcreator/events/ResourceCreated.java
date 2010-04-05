@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -26,8 +26,10 @@
  */
 package ccc.contentcreator.events;
 
-import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.Event;
+import ccc.rest.dto.ResourceSummary;
+
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 
 
 /**
@@ -35,48 +37,62 @@ import ccc.contentcreator.core.Event;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceCreatedEvent implements Event {
+public class ResourceCreated
+    extends
+        GwtEvent<ResourceCreated.ResourceCreatedHandler> {
 
-    private final ResourceSummaryModelData _resource;
-    private final ResourceSummaryModelData _parentFolder;
+    private final ResourceSummary _resource;
 
 
     /**
      * Constructor.
      *
      * @param resource The newly created resource.
-     * @param parentFolder The parent folder for the resource.
      */
-    public ResourceCreatedEvent(final ResourceSummaryModelData resource,
-                                final ResourceSummaryModelData parentFolder) {
+    public ResourceCreated(final ResourceSummary resource) {
         _resource = resource;
-        _parentFolder = parentFolder;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the new resource.
+     */
+    public ResourceSummary getResource() { return _resource; }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void dispatch(
+                        final ResourceCreated.ResourceCreatedHandler handler) {
+        handler.onCreate(this);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Type getType() {
-        return Event.Type.RESOURCE_CREATED;
-    }
+    public Type<ResourceCreatedHandler> getAssociatedType() { return TYPE; }
 
 
     /**
-     * Accessor.
+     * Handler for 'resource created' events.
      *
-     * @return Returns the resource.
+     * @author Civic Computing Ltd.
      */
-    public ResourceSummaryModelData getResource() {
-        return _resource;
+    public static interface ResourceCreatedHandler extends EventHandler {
+
+
+        /**
+         * Handle a 'resource created' event.
+         *
+         * @param event The event to handle.
+         */
+        void onCreate(ResourceCreated event);
     }
 
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the parentFolder.
-     */
-    public ResourceSummaryModelData getParentFolder() {
-        return _parentFolder;
-    }
+    /** TYPE : Type. */
+    public static final Type<ResourceCreatedHandler> TYPE =
+        new Type<ResourceCreatedHandler>();
 }

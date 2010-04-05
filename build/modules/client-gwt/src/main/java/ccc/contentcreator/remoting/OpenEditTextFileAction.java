@@ -29,7 +29,6 @@ package ccc.contentcreator.remoting;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.contentcreator.core.SelectionModelEventBus;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.EditTextFilePresenter;
 import ccc.contentcreator.views.gxt.EditTextFileDialog;
@@ -81,7 +80,6 @@ extends
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 GLOBALS,
-                new SelectionModelEventBus(_selectionModel),
                 new EditTextFileDialog(),
                 dto);
         } else {

@@ -27,15 +27,13 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.Event;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
-import ccc.contentcreator.core.Event.Type;
-import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.views.CreateTextFile;
 import ccc.contentcreator.widgets.CodeMirrorEditor;
+import ccc.contentcreator.widgets.CodeMirrorEditor.EditorListener;
+import ccc.contentcreator.widgets.CodeMirrorEditor.Type;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -56,7 +54,8 @@ public class CreateTextFileDialog
     extends
         AbstractEditDialog
     implements
-        CreateTextFile, EventBus {
+        CreateTextFile,
+        EditorListener {
 
     private final TextField<String> _fileName = new TextField<String>();
     private final TextField<String> _mimePrimaryType = new TextField<String>();
@@ -218,11 +217,10 @@ public class CreateTextFileDialog
         return _majorEdit.getValue().booleanValue();
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void put(final Event event) {
-        if (Type.CM_EDITOR_READY==event.getType()) {
-            ((CMEditorReadyEvent) event).getCodeMirrorEditor();
-        }
+    public void onInitialized(final Type type, final CodeMirrorEditor editor) {
+        /* NO OP */
     }
 }

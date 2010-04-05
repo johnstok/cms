@@ -26,6 +26,15 @@
  */
 package ccc.contentcreator.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ccc.contentcreator.widgets.ContentCreator;
+
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
+
 
 
 /**
@@ -39,27 +48,40 @@ package ccc.contentcreator.core;
 public abstract class AbstractPresenter<T, U> {
 
     private final Globals _globals;
-    private final EventBus _bus;
     private final T _view;
     private final U _model;
+    private final List<HandlerRegistration> _handlers =
+        new ArrayList<HandlerRegistration>();
 
 
     /**
      * Constructor.
      *
      * @param globals Implementation of the Globals API.
-     * @param bus Implementation of the Event Bus API.
      * @param view View implementation.
      * @param model Model implementation.
      */
     public AbstractPresenter(final Globals globals,
-                             final EventBus bus,
                              final T view,
                              final U model) {
         _globals = globals;
-        _bus = bus;
         _view = view;
         _model = model;
+    }
+
+
+    protected <R extends EventHandler> void addHandler(
+                                                 final GwtEvent.Type<R> event,
+                                                 final R handler) {
+        _handlers.add(ContentCreator.EVENT_BUS.addHandler(event, handler));
+    }
+
+
+    protected void clearHandlers() {
+        for (final HandlerRegistration hr : _handlers) {
+            hr.removeHandler();
+        }
+        _handlers.clear();
     }
 
 
@@ -70,16 +92,6 @@ public abstract class AbstractPresenter<T, U> {
      */
     public Globals getGlobals() {
         return _globals;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the bus.
-     */
-    public EventBus getBus() {
-        return _bus;
     }
 
 

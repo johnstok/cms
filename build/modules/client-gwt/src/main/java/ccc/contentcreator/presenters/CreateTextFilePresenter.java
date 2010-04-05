@@ -28,14 +28,12 @@ package ccc.contentcreator.presenters;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
-import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.Globals;
-import ccc.contentcreator.events.ResourceCreatedEvent;
+import ccc.contentcreator.events.ResourceCreated;
+import ccc.contentcreator.events.ResourceCreated.ResourceCreatedHandler;
 import ccc.contentcreator.remoting.CreateTextFileAction;
 import ccc.contentcreator.views.CreateTextFile;
-import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDto;
 import ccc.types.MimeType;
 
@@ -45,48 +43,42 @@ import ccc.types.MimeType;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateTextFilePresenter extends
-AbstractPresenter<CreateTextFile, ResourceSummaryModelData>
-implements
-Editable,
-CommandResponseHandler<ResourceSummaryModelData> {
+public class CreateTextFilePresenter
+    extends
+        AbstractPresenter<CreateTextFile, ResourceSummaryModelData>
+    implements
+        Editable,
+        ResourceCreatedHandler {
+
 
     /**
      * Constructor.
      *
      * @param globals Implementation of the Globals API.
-     * @param bus Implementation of the Event Bus API.
      * @param view View implementation.
      * @param model Model implementation.
      */
     public CreateTextFilePresenter(final Globals globals,
-                                 final EventBus bus,
-                                 final CreateTextFile view,
-                                 final ResourceSummaryModelData model) {
-
-        super(globals, bus, view, model);
+                                   final CreateTextFile view,
+                                   final ResourceSummaryModelData model) {
+        super(globals, view, model);
+        addHandler(ResourceCreated.TYPE, this);
         getView().show(this);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void onSuccess(final ResourceSummaryModelData newFolder) {
-        getBus().put(
-            new ResourceCreatedEvent(newFolder, getModel()));
-        getView().hide();
-    }
 
     /** {@inheritDoc} */
     @Override
     public void cancel() {
-
         throw new UnsupportedOperationException("Method not implemented.");
     }
+
 
     /** {@inheritDoc} */
     @Override
     public void save() {
         final CreateTextFile view = getView();
+
         if (view.getValidationResult().isValid()) {
             final TextFileDto dto = new TextFileDto(
                 getModel().getId(),
@@ -95,17 +87,19 @@ CommandResponseHandler<ResourceSummaryModelData> {
                 view.isMajorEdit(),
                 view.getComment(),
                 view.getText());
+            new CreateTextFileAction(dto).execute();
 
-            new CreateTextFileAction(dto){
-                @Override protected void execute(final ResourceSummary folder) {
-                    final ResourceSummaryModelData newFolder =
-                        new ResourceSummaryModelData(folder);
-                    onSuccess(newFolder);
-                }
-            }.execute();
         } else {
             getGlobals().alert(
                 view.getValidationResult().getErrorText());
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onCreate(final ResourceCreated event) {
+        clearHandlers();
+        getView().hide();
     }
 }

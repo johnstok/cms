@@ -28,7 +28,6 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.SelectionModelEventBus;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.CreateFolderPresenter;
 import ccc.contentcreator.views.gxt.CreateFolderDialog;
@@ -61,7 +60,6 @@ public final class OpenCreateFolderAction
         } else {
             new CreateFolderPresenter(
                 GLOBALS,
-                new SelectionModelEventBus(_selectionModel),
                 new CreateFolderDialog(),
                 item);
         }

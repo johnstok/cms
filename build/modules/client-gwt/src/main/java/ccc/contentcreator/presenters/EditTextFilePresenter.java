@@ -27,16 +27,14 @@
 package ccc.contentcreator.presenters;
 
 import ccc.contentcreator.core.AbstractPresenter;
-import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.events.TextFileUpdated;
+import ccc.contentcreator.events.TextFileUpdated.UpdatedHandler;
 import ccc.contentcreator.remoting.EditTextFileAction;
 import ccc.contentcreator.views.EditTextFile;
 import ccc.rest.dto.TextFileDelta;
 import ccc.types.MimeType;
-
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -44,36 +42,31 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public class EditTextFilePresenter extends
-AbstractPresenter<EditTextFile, TextFileDelta>
-implements
-Editable,
-CommandResponseHandler<Void> {
+public class EditTextFilePresenter
+    extends
+        AbstractPresenter<EditTextFile, TextFileDelta>
+    implements
+        Editable,
+        UpdatedHandler {
 
     /**
      * Constructor.
      *
      * @param globals Implementation of the Globals API.
-     * @param bus Implementation of the Event Bus API.
      * @param view View implementation.
      * @param model Model implementation.
      */
     public EditTextFilePresenter(final Globals globals,
-                                 final EventBus bus,
                                  final EditTextFile view,
                                  final TextFileDelta model) {
+        super(globals, view, model);
 
-        super(globals, bus, view, model);
+        addHandler(TextFileUpdated.TYPE, this);
+
         getView().show(this);
         getView().setText(model.getContent());
         getView().setPrimaryMime(model.getMimeType().getPrimaryType());
         getView().setSubMime(model.getMimeType().getSubType());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void onSuccess(final Void result) {
-        getView().hide();
     }
 
 
@@ -89,23 +82,24 @@ CommandResponseHandler<Void> {
     @Override
     public void save() {
         final EditTextFile view = getView();
+
         if (view.getValidationResult().isValid()) {
             final TextFileDelta dto = new TextFileDelta(getModel().getId(),
                 view.getText(),
                 new MimeType(view.getPrimaryMime(), view.getSubMime()),
                 view.isMajorEdit(),
                 view.getComment());
-            new EditTextFileAction(dto) {
-                /** {@inheritDoc} */
-                @Override
-                protected void onNoContent(final Response response) {
-                    getView().hide();
-                }
+            new EditTextFileAction(dto).execute();
 
-            }.execute();
         } else {
             getGlobals().alert(
                 getView().getValidationResult().getErrorText());
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void onUpdated(final TextFileUpdated event) {
+        getView().hide();
     }
 }

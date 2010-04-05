@@ -28,15 +28,13 @@ package ccc.contentcreator.presenters;
 
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.core.AbstractPresenter;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.events.CommentUpdatedEvent;
+import ccc.contentcreator.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.contentcreator.remoting.UpdateCommentAction;
 import ccc.contentcreator.views.gxt.CommentView;
 import ccc.rest.dto.CommentDto;
-
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -46,22 +44,24 @@ import com.google.gwt.http.client.Response;
  */
 public class UpdateCommentPresenter
     extends
-        AbstractPresenter<CommentView, CommentModelData> {
+        AbstractPresenter<CommentView, CommentModelData>
+    implements
+        CommentUpdatedHandler {
 
 
     /**
      * Constructor.
      *
      * @param globals Implementation of the Globals API.
-     * @param bus Implementation of the Event Bus API.
      * @param view View implementation.
      * @param model Model implementation.
      */
     public UpdateCommentPresenter(final Globals globals,
-                                  final EventBus bus,
                                   final CommentView view,
                                   final CommentModelData model) {
-        super(globals, bus, view, model);
+        super(globals, view, model);
+
+        addHandler(CommentUpdatedEvent.TYPE, this);
 
         getView().setPresenter(this);
 
@@ -90,18 +90,17 @@ public class UpdateCommentPresenter
             updated.setStatus(getView().getStatus());
             updated.setEmail(getModel().getEmail());
 
-            new UpdateCommentAction(updated) {
+            new UpdateCommentAction(updated).execute();
 
-                /** {@inheritDoc} */
-                @Override protected void onNoContent(final Response response) {
-                    getModel().setDelegate(updated);
-                    getView().hide();
-                    getBus().put(new CommentUpdatedEvent(getModel()));
-                }
-
-            }.execute();
         } else {
             getGlobals().alert(result.getErrors().get(0));
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onUpdate(final CommentUpdatedEvent event) {
+        getView().hide();
     }
 }
