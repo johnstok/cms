@@ -38,8 +38,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import ccc.domain.User;
-import ccc.rest.EntityNotFoundException;
 import ccc.rest.dto.UserCriteria;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.SortOrder;
 
 

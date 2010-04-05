@@ -36,7 +36,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import ccc.domain.Entity;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 
 
@@ -62,8 +62,7 @@ class JpaRepository implements Repository {
 
     /** {@inheritDoc} */
     @Override
-    public <T extends Entity> T find(final Class<T> type, final UUID id)
-    throws EntityNotFoundException {
+    public <T extends Entity> T find(final Class<T> type, final UUID id) {
         DBC.require().notNull(id);
         final T entity = _em.find(type, id);
         if (null==entity) {
@@ -129,7 +128,7 @@ class JpaRepository implements Repository {
         try { // Should we handle the possibility of multiple results?
             return (T) q.getSingleResult();
         } catch (final NoResultException e) {
-            throw new EntityNotFoundException(null);
+            throw new EntityNotFoundException((UUID) null);
         }
     }
 

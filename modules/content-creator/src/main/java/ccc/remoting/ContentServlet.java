@@ -56,13 +56,13 @@ import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
 import ccc.rest.SearchEngine;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.Users;
 import ccc.rest.dto.UserDto;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.rest.extensions.FilesExt;
 import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
@@ -241,14 +241,8 @@ public class ContentServlet
 
     private ServiceLocator createServiceLocator() {
         final MemoryServiceLocator sl = new MemoryServiceLocator();
-
-
         sl.setUserCommands(UsersImpl.decorate(_users));
-
-        final FoldersImpl fi = new FoldersImpl();
-        fi.setFolders(_folders);
-        sl.setFolderCommands(fi);
-
+        sl.setFolderCommands(FoldersImpl.decorate(_folders));
         sl.setFiles(_files);
         sl.setPageCommands(_pages);
         sl.setCommands(_resources);

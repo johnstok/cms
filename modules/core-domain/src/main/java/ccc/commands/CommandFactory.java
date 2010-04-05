@@ -38,11 +38,11 @@ import ccc.domain.Search;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.EntityNotFoundException;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.TemplateDto;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 

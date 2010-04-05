@@ -37,10 +37,10 @@ import ccc.commons.Context;
 import ccc.commons.TextProcessor;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.ThumbAction;
-import ccc.rest.RestException;
 import ccc.rest.ServiceLocator;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.FileDto;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.rest.extensions.FilesExt;
 import ccc.types.DBC;
 

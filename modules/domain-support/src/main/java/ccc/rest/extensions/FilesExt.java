@@ -32,10 +32,10 @@ import java.util.UUID;
 
 import ccc.persistence.StreamAction;
 import ccc.rest.Files;
-import ccc.rest.RestException;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnauthorizedException;
 
 
 /**

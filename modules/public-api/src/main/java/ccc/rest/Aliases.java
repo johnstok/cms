@@ -38,6 +38,7 @@ import javax.ws.rs.Produces;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.RestException;
 
 
 /**

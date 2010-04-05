@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,43 +24,38 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
-import java.util.UUID;
-
+import ccc.serialization.Json;
 import ccc.types.Failure;
-import ccc.types.FailureCode;
 
 
 /**
- * Exception indicating that the look up of an entity failed.
+ * An API call failed due to a conflict with the current state of the resource.
  *
  * @author Civic Computing Ltd.
  */
-public class EntityNotFoundException
+public class ConflictException
     extends
         RestException {
 
-    private final UUID _id;
+    /**
+     * Constructor.
+     *
+     * @param failure Details of the failure.
+     */
+    public ConflictException(final Failure failure) {
+        super(failure);
+    }
 
 
     /**
      * Constructor.
      *
-     * @param id The entity's id.
+     * @param json The JSON representation of this exception.
      */
-    public EntityNotFoundException(final UUID id) {
-        super(new Failure(FailureCode.NOT_FOUND));
-        _id = id;
+    public ConflictException(final Json json) {
+        super(json);
     }
 
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the id.
-     */
-    public UUID getId() {
-        return _id;
-    }
 }

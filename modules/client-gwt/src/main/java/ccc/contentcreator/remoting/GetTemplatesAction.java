@@ -31,8 +31,11 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.TemplateSummary;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
@@ -47,37 +50,48 @@ public abstract class GetTemplatesAction
     extends
         RemotingAction {
 
+    private final String _name;
+
     /**
      * Constructor.
      *
      * @param actionName Local-specific name for the action.
      */
     public GetTemplatesAction(final String actionName) {
-        super(actionName);
+        _name = actionName;
     }
+
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() { return "/templates"; }
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                "api/secure/templates",
+                "",
+                new ResponseHandlerAdapter(_name) {
 
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<TemplateSummary> templates =
-            new ArrayList<TemplateSummary>();
-        for (int i=0; i<result.size(); i++) {
-            templates.add(
-                new TemplateSummary(new GwtJson(result.get(i).isObject())));
-        }
-
-        execute(templates);
+                    /** {@inheritDoc} */
+                    @Override public void onOK(final Response response) {
+                        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+                        final Collection<TemplateSummary> templates =
+                            new ArrayList<TemplateSummary>();
+                        for (int i=0; i<result.size(); i++) {
+                            templates.add(
+                                new TemplateSummary(new GwtJson(result.get(i).isObject())));
+                        }
+                        execute(templates);
+                    }
+                });
     }
+
 
     /**
      * Handle the data returned from the server.
      *
      * @param templates The available templates.
      */
+    @Deprecated
     protected abstract void execute(Collection<TemplateSummary> templates);
 }

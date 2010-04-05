@@ -27,6 +27,7 @@
 package ccc.contentcreator.binding;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,13 +36,24 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
+import ccc.contentcreator.events.ActionCancelled;
+import ccc.contentcreator.events.ActionCreated;
 import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.ActionSummary;
+import ccc.serialization.JsonKeys;
 import ccc.types.ActionStatus;
+import ccc.types.CommandType;
 import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -240,5 +252,100 @@ public class ActionSummaryModelData
      */
     public void setStatus(final ActionStatus status) {
         _as.setStatus(status);
+    }
+
+    /**
+     * Cancel an action.
+     *
+     * @return The HTTP request to cancel this action.
+     */
+    public Request cancel() {
+        final String path = "api/secure/actions/"+getId()+"/cancel";
+        return
+            new Request(
+                RequestBuilder.POST,
+                path,
+                "",
+                new ActionCancelledCallback(this));
+    }
+
+    /**
+     * Create a new action.
+     *
+     * @param subject The action's subject.
+     * @param command The command to apply.
+     * @param executeAfter The earliest the command can execute.
+     * @param params The command's parameters.
+     *
+     * @return The HTTP request to create the action.
+     */
+    public static Request createAction(final UUID subject,
+                                       final CommandType command,
+                                       final Date executeAfter,
+                                       final Map<String, String> params) {
+        final Globals g = new GlobalsImpl();
+        final String path = "api/secure/actions";
+
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.SUBJECT_ID, subject);
+        json.set(JsonKeys.COMMAND, command.name());
+        json.set(JsonKeys.EXECUTE_AFTER, executeAfter);
+        json.set(JsonKeys.PARAMETERS, params);
+
+        return
+            new Request(
+                RequestBuilder.POST,
+                path,
+                json.toString(),
+                new ActionCreatedCallback());
+    }
+
+
+    /**
+     * Callback handler for applying a working copy.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class ActionCancelledCallback extends ResponseHandlerAdapter {
+
+        private final ActionCancelled _event;
+
+        /**
+         * Constructor.
+         *
+         * @param action The resource whose WC has been applied.
+         */
+        public ActionCancelledCallback(final ActionSummaryModelData action) {
+            super(new GlobalsImpl().uiConstants().cancel());
+            _event = new ActionCancelled(action);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onNoContent(final Response response) {
+            ContentCreator.EVENT_BUS.fireEvent(_event);
+        }
+    }
+
+
+    /**
+     * Callback handler for applying a working copy.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class ActionCreatedCallback extends ResponseHandlerAdapter {
+
+        /**
+         * Constructor.
+         */
+        public ActionCreatedCallback() {
+            super(new GlobalsImpl().uiConstants().createAction());
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onOK(final Response response) {
+            ContentCreator.EVENT_BUS.fireEvent(new ActionCreated());
+        }
     }
 }

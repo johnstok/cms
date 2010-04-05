@@ -28,11 +28,9 @@ package ccc.contentcreator.remoting;
 
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
 import ccc.contentcreator.widgets.ActionTable;
 import ccc.types.ActionStatus;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -53,38 +51,27 @@ public class CancelActionAction
      * @param table The action table to work with.
      */
     public CancelActionAction(final ActionTable table) {
-        super(UI_CONSTANTS.cancel(), RequestBuilder.POST);
         _table = table;
     }
 
 
     /** {@inheritDoc} */
-    @Override public void execute() {
+    @Override protected boolean beforeExecute() {
         final ActionSummaryModelData action = _table.getSelectedItem();
         if (null==action) {
             GLOBALS.alert(UI_CONSTANTS.pleaseChooseAnAction());
-            return;
+            return false;
         } else if (ActionStatus.SCHEDULED!=action.getStatus()) {
             GLOBALS.alert(UI_CONSTANTS.thisActionHasAlreadyCompleted());
-            return;
-        } else {
-            super.execute();
+            return false;
         }
+        return true;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return "/actions/"+_table.getSelectedItem().getId()+"/cancel";
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onNoContent(final Response response) {
-        final ActionSummaryModelData action = _table.getSelectedItem();
-        action.setStatus(ActionStatus.CANCELLED);
-        _table.update(action);
+    protected Request getRequest() {
+        return _table.getSelectedItem().cancel();
     }
 }

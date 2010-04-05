@@ -41,6 +41,7 @@ public interface ActionNameConstants extends Constants {
      * @return The constant, in the appropriate locale.
      */
     @DefaultStringValue("Unknown action")
+    @Deprecated
     String unknownAction();
 
     /**
@@ -104,6 +105,7 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
+    @Deprecated
     @DefaultStringValue("Internal action")
     String internalAction();
 

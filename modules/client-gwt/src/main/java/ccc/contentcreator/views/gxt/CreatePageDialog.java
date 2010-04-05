@@ -37,8 +37,9 @@ import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
-import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.events.PageCreated;
+import ccc.contentcreator.events.PageCreated.PageCreatedHandler;
 import ccc.contentcreator.remoting.ComputeTemplateAction;
 import ccc.contentcreator.remoting.CreatePageAction;
 import ccc.contentcreator.validation.Validate;
@@ -46,7 +47,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.widgets.EditPagePanel;
 import ccc.contentcreator.widgets.PageElement;
 import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateSummary;
 import ccc.types.Paragraph;
 
@@ -74,8 +74,6 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -85,7 +83,9 @@ import com.google.gwt.json.client.JSONParser;
  */
 public class CreatePageDialog
     extends
-        AbstractWizardDialog {
+        AbstractWizardDialog
+    implements
+        PageCreatedHandler {
 
     private static final int SCROLLBAR_WIDTH = 20;
     private static final int DEFAULT_MARGIN = 5;
@@ -135,6 +135,8 @@ public class CreatePageDialog
               new GlobalsImpl());
         _ssm = ssm;
         _parent = parent;
+
+        // FIXME Add event handler to hide(); dialog onSuccess();
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -228,7 +230,7 @@ public class CreatePageDialog
 
             /** {@inheritDoc} */
             @Override
-            protected void onNoContent(final Response response) {
+            protected void noTemplate() {
                 cb.setValue(Boolean.FALSE);
                 cb.disable();
                 _templateGrid.enable();
@@ -236,16 +238,11 @@ public class CreatePageDialog
             }
 
             /** {@inheritDoc} */
-            @Override protected void onOK(final Response response) {
-            final TemplateSummary ts =
-                new TemplateSummary(
-                  new GwtJson(
-                      JSONParser.parse(
-                          response.getText()).isObject()));
+            @Override protected void template(final TemplateSummary t) {
                 cb.setValue(Boolean.TRUE);
                 _templateGrid.disable();
                 _templateGrid.getSelectionModel().deselectAll();
-                updateSecondPage(ts.getDefinition(), ts.getDescription());
+                updateSecondPage(t.getDefinition(), t.getDescription());
             }
 
         }.execute();
@@ -258,23 +255,18 @@ public class CreatePageDialog
 
                         /** {@inheritDoc} */
                         @Override
-                        protected void onNoContent(final Response response) {
+                        protected void noTemplate() {
                             cb.disable();
                             _templateGrid.enable();
                             _description.setText("");
                         }
 
                         /** {@inheritDoc} */
-                        @Override protected void onOK(final Response response) {
-                            final TemplateSummary ts =
-                                new TemplateSummary(
-                                    new GwtJson(
-                                        JSONParser.parse(
-                                            response.getText()).isObject()));
+                        @Override protected void template(final TemplateSummary t) {
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            updateSecondPage(ts.getDefinition(),
-                                ts.getDescription());
+                            updateSecondPage(
+                                t.getDefinition(), t.getDescription());
                         }
 
                     }.execute();
@@ -335,15 +327,8 @@ public class CreatePageDialog
                     template,
                     _secondWizardPage.name().getValue(), // Title
                     _comment.getValue(),
-                    _majorEdit.getValue().booleanValue()
-                ){
-                    @Override protected void execute(final ResourceSummary rs) {
-                        _ssm.create(
-                            new ResourceSummaryModelData(rs),
-                            _parent);
-                        hide();
-                    }
-                }.execute();
+                    _majorEdit.getValue().booleanValue())
+                .execute();
             }
         };
     }
@@ -394,4 +379,7 @@ public class CreatePageDialog
         _description.setText(description);
         refresh();
     }
+
+    /** {@inheritDoc} */
+    @Override public void onCreate(final PageCreated event) { hide(); }
 }

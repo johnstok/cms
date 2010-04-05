@@ -32,9 +32,12 @@ import java.util.List;
 
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
+import ccc.contentcreator.events.ActionCancelled;
+import ccc.contentcreator.events.ActionCancelled.ActionCancelledHandler;
 import ccc.contentcreator.remoting.ListCompletedActionsAction;
 import ccc.contentcreator.remoting.ListPendingActionsAction;
 import ccc.rest.dto.ActionSummary;
+import ccc.types.ActionStatus;
 import ccc.types.SortOrder;
 
 import com.extjs.gxt.ui.client.Style;
@@ -61,7 +64,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionTable extends TablePanel {
+public class ActionTable
+    extends
+        TablePanel
+    implements
+        ActionCancelledHandler {
 
     private static final int MEDIUM_COLUMN = 200;
     private static final int TYPE_COLUMN = 150;
@@ -293,4 +300,11 @@ public class ActionTable extends TablePanel {
         _actionStore.update(action);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void onCancel(final ActionCancelled event) {
+        final ActionSummaryModelData action = event.getAction();
+        action.setStatus(ActionStatus.CANCELLED);
+        update(action);
+    }
 }

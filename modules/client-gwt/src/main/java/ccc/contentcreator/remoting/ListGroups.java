@@ -31,8 +31,11 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.GroupDto;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
@@ -49,39 +52,31 @@ public abstract class ListGroups
 
 
     /**
-     * Constructor.
-     *
-     */
-    public ListGroups() {
-        super(USER_ACTIONS.unknownAction());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        final String path = "/groups";
-        return path;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<GroupDto> groups = new ArrayList<GroupDto>();
-        for (int i=0; i<result.size(); i++) {
-            groups.add(new GroupDto(new GwtJson(result.get(i).isObject())));
-        }
-
-        execute(groups);
-    }
-
-
-    /**
      * Handle the result of a successful call.
      *
      * @param groups The groups returned.
      */
     protected abstract void execute(Collection<GroupDto> groups);
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Request getRequest() {
+        return new Request(
+            RequestBuilder.GET,
+            "api/secure/groups",
+            "",
+            new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
+                /** {@inheritDoc} */
+                @Override
+                public void onOK(final Response response) {
+                    final JSONArray result = JSONParser.parse(response.getText()).isArray();
+                    final Collection<GroupDto> groups = new ArrayList<GroupDto>();
+                    for (int i=0; i<result.size(); i++) {
+                        groups.add(new GroupDto(new GwtJson(result.get(i).isObject())));
+                    }
+                    execute(groups);
+                }
+            });
+    }
 }

@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.domain.User;
-import ccc.rest.EntityNotFoundException;
 import ccc.rest.dto.UserCriteria;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.SortOrder;
 
 /**

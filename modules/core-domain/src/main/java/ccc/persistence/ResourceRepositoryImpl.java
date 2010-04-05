@@ -42,7 +42,7 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
@@ -117,7 +117,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         try {
             return root.navigateTo(path);
         } catch (final RuntimeException e) { // TODO: Dodgy?
-            throw new EntityNotFoundException(null);
+            throw new EntityNotFoundException((UUID) null);
         }
     }
 

@@ -34,11 +34,27 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.contentcreator.core.Globals;
+import ccc.contentcreator.core.GlobalsImpl;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
+import ccc.contentcreator.events.AliasCreated;
+import ccc.contentcreator.events.FolderCreated;
+import ccc.contentcreator.events.PageCreated;
+import ccc.contentcreator.events.WorkingCopyApplied;
+import ccc.contentcreator.events.WorkingCopyCleared;
+import ccc.contentcreator.widgets.ContentCreator;
+import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
+import ccc.serialization.JsonKeys;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -53,6 +69,7 @@ public class ResourceSummaryModelData
     public static final String DISPLAY_PROPERTY = Property.NAME.name();
 
     private ResourceSummary _rs;
+    final Globals g = new GlobalsImpl();
 
     /**
      * Constructor.
@@ -494,5 +511,283 @@ public class ResourceSummaryModelData
      */
     public void decrementFolderCount() {
         _rs.setFolderCount(_rs.getFolderCount()-1);
+    }
+
+
+    /**
+     * Parse the response as a resource summary.
+     *
+     * @param response The response to parse.
+     *
+     * @return The resource summary.
+     */
+    @Deprecated
+    // FIXME Remove this method.
+    protected static ResourceSummary parseResourceSummary(final Response response) {
+        return new ResourceSummary(
+            new GwtJson(JSONParser.parse(response.getText()).isObject()));
+    }
+
+
+    /**
+     * Create a request to apply the resource's working copy.
+     *
+     * @return A HTTP request.
+     */
+    public Request applyWorkingCopy() {
+        final String path = "api/secure/resources/"+getId()+"/wc-apply";
+
+        return new Request(
+            RequestBuilder.POST,
+            path,
+            "",
+            new WCAppliedCallback(g.uiConstants().applyWorkingCopy(), this));
+    }
+
+    /**
+     * Create a request to clear the resource's working copy.
+     *
+     * @return A HTTP request.
+     */
+    public Request clearWorkingCopy() {
+        final String path = "api/secure/resources/"+getId()+"/wc-clear";
+
+        return new Request(
+            RequestBuilder.POST,
+            path,
+            "",
+            new WCClearedCallback(g.uiConstants().deleteWorkingCopy(), this));
+    }
+
+
+    /**
+     * Create a new alias.
+     *
+     * @param parentId
+     * @param aliasName
+     * @param targetId
+     *
+     * @return The HTTP request to create an alias.
+     */
+    public static Request createAlias(final UUID parentId,
+                                      final String aliasName,
+                                      final UUID targetId) {
+        final String path = "api/secure/aliases";
+
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PARENT_ID, parentId);
+        json.set(JsonKeys.NAME, aliasName);
+        json.set(JsonKeys.TARGET_ID, targetId);
+
+        return
+            new Request(
+                RequestBuilder.POST,
+                path,
+                json.toString(),
+                new AliasCreatedCallback(
+                    new GlobalsImpl().uiConstants().createAlias()));
+    }
+
+
+    /**
+     * Create a new folder.
+     *
+     * @param name
+     * @param parentFolder
+     *
+     * @return The HTTP request to create a folder.
+     */
+    public static Request createFolder(final String name,
+                                       final UUID parentFolder) {
+        final String path = "api/secure/folders";
+
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PARENT_ID, parentFolder);
+        json.set(JsonKeys.NAME, name);
+
+        return
+            new Request(
+                RequestBuilder.POST,
+                path,
+                json.toString(),
+                new FolderCreatedCallback(
+                    new GlobalsImpl().uiConstants().createFolder()));
+    }
+
+
+    /**
+     * Create a new page.
+     *
+     * @param parentFolder
+     * @param page
+     * @param name
+     * @param template
+     * @param title
+     * @param comment
+     * @param majorChange
+     *
+     * @return The HTTP request to create a folder.
+     */
+    public static Request createPage(final UUID parentFolder,
+                                     final PageDelta page,
+                                     final String name,
+                                     final UUID template,
+                                     final String title,
+                                     final String comment,
+                                     final boolean majorChange) {
+        final String path =  "api/secure/pages";
+
+        final GwtJson json = new GwtJson();
+        json.set(JsonKeys.PARENT_ID, parentFolder);
+        json.set(JsonKeys.DELTA, page);
+        json.set(JsonKeys.NAME, name);
+        json.set(JsonKeys.TEMPLATE_ID, template);
+        json.set(JsonKeys.TITLE, title);
+        json.set(JsonKeys.COMMENT, comment);
+        json.set(JsonKeys.MAJOR_CHANGE, majorChange);
+
+        return
+            new Request(
+                RequestBuilder.POST,
+                path,
+                json.toString(),
+                new PageCreatedCallback(
+                    new GlobalsImpl().uiConstants().createPage()));
+    }
+
+
+    /**
+     * Callback handler for creating a page.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class PageCreatedCallback extends ResponseHandlerAdapter {
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         */
+        public PageCreatedCallback(final String name) {
+            super(name);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onOK(final Response response) {
+            final ResourceSummaryModelData rs =
+                new ResourceSummaryModelData(parseResourceSummary(response));
+            ContentCreator.EVENT_BUS.fireEvent(new PageCreated(rs));
+        }
+    }
+
+
+    /**
+     * Callback handler for creating a folder.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class FolderCreatedCallback extends ResponseHandlerAdapter {
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         */
+        public FolderCreatedCallback(final String name) {
+            super(name);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onOK(final Response response) {
+            final ResourceSummaryModelData rs =
+                new ResourceSummaryModelData(parseResourceSummary(response));
+            ContentCreator.EVENT_BUS.fireEvent(new FolderCreated(rs));
+        }
+    }
+
+
+    /**
+     * Callback handler for creating an alias.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class AliasCreatedCallback extends ResponseHandlerAdapter {
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         */
+        public AliasCreatedCallback(final String name) {
+            super(name);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onOK(final Response response) {
+            final ResourceSummaryModelData newAlias =
+                new ResourceSummaryModelData(parseResourceSummary(response));
+            ContentCreator.EVENT_BUS.fireEvent(new AliasCreated(newAlias));
+        }
+    }
+
+
+    /**
+     * Callback handler for applying a working copy.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class WCAppliedCallback extends ResponseHandlerAdapter {
+
+        private final WorkingCopyApplied _event;
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         * @param resource The resource whose WC has been applied.
+         */
+        public WCAppliedCallback(final String name,
+                                 final ResourceSummaryModelData resource) {
+            super(name);
+            _event = new WorkingCopyApplied(resource);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onNoContent(final Response response) {
+            ContentCreator.EVENT_BUS.fireEvent(_event);
+        }
+    }
+
+
+    /**
+     * Callback handler for clearing a working copy.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static class WCClearedCallback extends ResponseHandlerAdapter {
+
+        private final WorkingCopyCleared _event;
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         * @param resource The resource whose WC has been applied.
+         */
+        public WCClearedCallback(final String name,
+                                 final ResourceSummaryModelData resource) {
+            super(name);
+            _event = new WorkingCopyCleared(resource);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onNoContent(final Response response) {
+            ContentCreator.EVENT_BUS.fireEvent(_event);
+        }
     }
 }

@@ -30,9 +30,12 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -40,7 +43,7 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateUserAction
+public abstract class UpdateUserAction
     extends
         RemotingAction {
 
@@ -54,24 +57,41 @@ public class UpdateUserAction
      * @param userId The user's id.
      */
     public UpdateUserAction(final UUID userId, final UserDto userDetails) {
-        super(UI_CONSTANTS.editUser(), RequestBuilder.POST);
         _userId = userId;
         _userDetails = userDetails;
     }
 
 
-    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users/"+_userId;
+        return "api/secure/users/"+_userId;
     }
 
 
-    /** {@inheritDoc} */
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
         _userDetails.toJson(json);
         return json.toString();
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected Request getRequest() {
+
+        return
+            new Request(
+                RequestBuilder.POST,
+                getPath(),
+                getBody(),
+                new ResponseHandlerAdapter(UI_CONSTANTS.editUser()) {
+                    /** {@inheritDoc} */
+                    @Override public void onNoContent(final Response response) {
+                        done();
+                    }
+                });
+    }
+
+    protected abstract void done();
 }

@@ -34,7 +34,7 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import ccc.domain.Group;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 
 

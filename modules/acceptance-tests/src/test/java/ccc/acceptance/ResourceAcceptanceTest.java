@@ -35,20 +35,18 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.rest.RestException;
-import ccc.rest.UnauthorizedException;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.rest.dto.AclDto.Entry;
+import ccc.rest.exceptions.EntityNotFoundException;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
-import ccc.types.Failure;
-import ccc.types.FailureCode;
-import ccc.types.HttpStatusCode;
 import ccc.types.ResourceName;
 
 
@@ -492,12 +490,8 @@ public class ResourceAcceptanceTest
             getCommands().resource(f.getId());
             fail();
         } catch (final ClientResponseFailure e) {
-            assertEquals(
-                HttpStatusCode.IM_A_TEAPOT,
-                e.getResponse().getStatus());
-            assertEquals(
-                FailureCode.NOT_FOUND,
-                e.getResponse().getEntity(Failure.class).getCode());
+            final EntityNotFoundException enf = convertException(e);
+            assertEquals(f.getId(), enf.getId());
         }
     }
 

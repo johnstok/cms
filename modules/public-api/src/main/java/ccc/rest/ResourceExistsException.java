@@ -29,6 +29,7 @@ package ccc.rest;
 import java.util.Collections;
 import java.util.UUID;
 
+import ccc.rest.exceptions.ConflictException;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 import ccc.types.ResourceName;

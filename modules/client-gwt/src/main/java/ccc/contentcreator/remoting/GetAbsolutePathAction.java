@@ -29,12 +29,15 @@ package ccc.contentcreator.remoting;
 import java.util.UUID;
 
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 
 
 /**
- * TODO: Add a description for this type.
+ * Retrieves the absolute path for a resource.
  *
  * @author Civic Computing Ltd.
  */
@@ -43,6 +46,8 @@ public abstract class GetAbsolutePathAction
         RemotingAction {
 
     private final UUID _resourceId;
+    private final String _name;
+
 
     /**
      * Constructor.
@@ -52,27 +57,36 @@ public abstract class GetAbsolutePathAction
      */
     public GetAbsolutePathAction(final String actionName,
                                  final UUID resourceId) {
-        super(actionName);
+        _name = actionName;
         _resourceId = resourceId;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return "/resources/"+_resourceId+"/path";
-    }
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final String path = response.getText();
-        execute(path);
+    protected Request getRequest() {
+        return
+            new Request(
+                RequestBuilder.GET,
+                "api/secure/resources/"+_resourceId+"/path",
+                "",
+                new ResponseHandlerAdapter(_name) {
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public void onOK(final Response response) {
+                        final String path = response.getText();
+                        execute(path);
+                    }
+                });
     }
+
 
     /**
      * Handle the result of a successful call.
      *
      * @param path The path returned.
      */
+    @Deprecated
     protected abstract void execute(String path);
 }

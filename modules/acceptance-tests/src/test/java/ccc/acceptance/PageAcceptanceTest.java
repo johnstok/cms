@@ -32,12 +32,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.rest.RestException;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
+import ccc.rest.exceptions.RestException;
 import ccc.serialization.Json;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;

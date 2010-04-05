@@ -28,6 +28,7 @@ package ccc.rest;
 
 import java.util.UUID;
 
+import ccc.rest.exceptions.InvalidException;
 import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;

@@ -45,6 +45,8 @@ import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
+import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.SortOrder;

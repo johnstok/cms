@@ -30,11 +30,10 @@ import java.util.Date;
 
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.rest.RestException;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.dto.ResourceSummary;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.CommentStatus;
-import ccc.types.HttpStatusCode;
 
 
 /**
@@ -49,10 +48,8 @@ public class CommentsAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testCreateComment() throws RestException {
+    public void testCreateComment() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -81,10 +78,8 @@ public class CommentsAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testDeleteComment() throws RestException {
+    public void testDeleteComment() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -107,18 +102,16 @@ public class CommentsAcceptanceTest
             getComments().retrieve(c.getId());
             fail();
         } catch (final ClientResponseFailure e) {
-            assertEquals(
-                HttpStatusCode.IM_A_TEAPOT, e.getResponse().getStatus());
+            final EntityNotFoundException enf = convertException(e);
+            assertEquals(c.getId(), enf.getId());
         }
     }
 
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdateComment() throws RestException {
+    public void testUpdateComment() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();

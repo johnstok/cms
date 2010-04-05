@@ -31,7 +31,7 @@ import java.util.UUID;
 
 import ccc.domain.Comment;
 import ccc.domain.Resource;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 

@@ -58,6 +58,7 @@ import ccc.rest.providers.FailureWriter;
 import ccc.rest.providers.GroupCollectionReader;
 import ccc.rest.providers.GroupReader;
 import ccc.rest.providers.JsonReader;
+import ccc.rest.providers.Jsonable2Reader;
 import ccc.rest.providers.JsonableWriter;
 import ccc.rest.providers.MetadataWriter;
 import ccc.rest.providers.PageDeltaReader;
@@ -67,7 +68,6 @@ import ccc.rest.providers.RevisionSummaryCollectionReader;
 import ccc.rest.providers.StringCollectionWriter;
 import ccc.rest.providers.TemplateDeltaReader;
 import ccc.rest.providers.UUIDProvider;
-import ccc.rest.providers.UnauthorizedExceptionReader;
 import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
 import ccc.rest.providers.UuidCollectionWriter;
@@ -119,7 +119,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(AclReader.class);
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);
         pFactory.addMessageBodyReader(DtoCollectionReader.class);
-        pFactory.addMessageBodyReader(UnauthorizedExceptionReader.class);
+        pFactory.addMessageBodyReader(Jsonable2Reader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);

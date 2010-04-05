@@ -12,9 +12,9 @@
 package ccc.contentcreator.views.gxt;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
-import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
+import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.core.RemoteException;
 import ccc.contentcreator.core.SessionTimeoutException;
@@ -110,7 +110,7 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (SessionTimeoutException.isTimeoutMessage(
+                    if (SessionTimeoutException.isTimedout(
                             be.getResultHtml())) {
                         getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
@@ -132,8 +132,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                                 JSONParser.parse(be.getResultHtml()).isObject();
                             final ResourceSummary rs =
                                 new ResourceSummary(new GwtJson(json));
-                            ssm.create(
-                                new ResourceSummaryModelData(rs), _parent);
+                            ssm.create(new ResourceSummaryModelData(rs));
                         }
                     }
                 }

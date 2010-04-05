@@ -47,7 +47,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -146,8 +145,7 @@ public class EditUserDialog extends AbstractEditDialog {
                     _userDTO
                 ){
                     /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                                     final Response response) {
+                    @Override protected void done() {
                         // TODO: Just update the edited row model data.
                         _userTable.refreshUsers();
                         hide();

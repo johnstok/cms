@@ -28,14 +28,10 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
-import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
 import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.JsonKeys;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -43,7 +39,7 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CreatePageAction
+public final class CreatePageAction
     extends
         RemotingAction {
 
@@ -75,7 +71,6 @@ public abstract class CreatePageAction
                              final String title,
                              final String comment,
                              final boolean majorChange) {
-        super(GLOBALS.uiConstants().createPage(), RequestBuilder.POST);
         _parentFolder = parentFolder;
         _page = page;
         _name = name;
@@ -88,38 +83,14 @@ public abstract class CreatePageAction
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return "/pages";
+    protected Request getRequest() {
+        return ResourceSummaryModelData.createPage(
+            _parentFolder,
+            _page,
+            _name,
+            _template,
+            _title,
+            _comment,
+            _majorChange);
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final ResourceSummary rs = parseResourceSummary(response);
-        execute(rs);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, _parentFolder);
-        json.set(JsonKeys.DELTA, _page);
-        json.set(JsonKeys.NAME, _name);
-        json.set(JsonKeys.TEMPLATE_ID, _template);
-        json.set(JsonKeys.TITLE, _title);
-        json.set(JsonKeys.COMMENT, _comment);
-        json.set(JsonKeys.MAJOR_CHANGE, _majorChange);
-        return json.toString();
-    }
-
-
-    /**
-     * Handle the summary returned when a page is successfully created.
-     *
-     * @param rs The page summary.
-     */
-    protected abstract void execute(ResourceSummary rs);
 }

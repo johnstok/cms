@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
 import ccc.domain.Data;
 import ccc.domain.Setting;
 import ccc.persistence.streams.CoreData;
-import ccc.rest.EntityNotFoundException;
+import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 
 

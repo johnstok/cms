@@ -33,6 +33,16 @@ import java.util.List;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.SingleSelectionModel;
+import ccc.contentcreator.events.AliasCreated;
+import ccc.contentcreator.events.FolderCreated;
+import ccc.contentcreator.events.PageCreated;
+import ccc.contentcreator.events.WorkingCopyApplied;
+import ccc.contentcreator.events.WorkingCopyCleared;
+import ccc.contentcreator.events.AliasCreated.AliasCreatedHandler;
+import ccc.contentcreator.events.FolderCreated.FolderCreatedHandler;
+import ccc.contentcreator.events.PageCreated.PageCreatedHandler;
+import ccc.contentcreator.events.WorkingCopyApplied.WCAppliedHandler;
+import ccc.contentcreator.events.WorkingCopyCleared.WCClearedHandler;
 import ccc.contentcreator.remoting.GetChildrenPagedAction;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
@@ -71,7 +81,12 @@ public class ResourceTable
     extends
         TablePanel
     implements
-        SingleSelectionModel {
+        SingleSelectionModel,
+        PageCreatedHandler,
+        FolderCreatedHandler,
+        AliasCreatedHandler,
+        WCClearedHandler,
+        WCAppliedHandler {
 
     private ListStore<ResourceSummaryModelData> _detailsStore =
         new ListStore<ResourceSummaryModelData>();
@@ -92,6 +107,12 @@ public class ResourceTable
     ResourceTable(final ResourceSummary root,
         final FolderResourceTree tree,
         final UserDto user) {
+
+        ContentCreator.EVENT_BUS.addHandler(PageCreated.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(FolderCreated.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(AliasCreated.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(WorkingCopyCleared.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(WorkingCopyApplied.TYPE, this);
 
         _root = root;
         _tree = tree;
@@ -350,12 +371,11 @@ public class ResourceTable
 
 
     /** {@inheritDoc} */
-    public void create(final ResourceSummaryModelData model,
-                       final ResourceSummaryModelData newParent) {
+    public void create(final ResourceSummaryModelData model) {
         final ResourceSummaryModelData np =
             _tree.store().findModel(
                 ResourceSummaryModelData.Property.UUID.name(),
-                newParent.getId());
+                model.getParent());
         if (null!=np) { // May not exist in the store
             if (model.getType() == ResourceType.FOLDER) {
                 // Add to the left-hand tree
@@ -364,7 +384,7 @@ public class ResourceTable
                 final String uuidPropertyName =
                     ResourceSummaryModelData.Property.UUID.name();
                 final ResourceSummaryModelData destinationFolder =
-                    store.findModel(uuidPropertyName, newParent.getId());
+                    store.findModel(uuidPropertyName, model.getParent());
                 destinationFolder.incrementFolderCount();
                 _tree.store().update(model);
                 _tree.store().update(destinationFolder);
@@ -402,5 +422,44 @@ public class ResourceTable
                 store.add(destinationFolder, model, false);
             }
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onApply(final WorkingCopyApplied event) {
+        final ResourceSummaryModelData item = event.getResource();
+        item.setWorkingCopy(false);
+        update(item);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onClear(final WorkingCopyCleared event) {
+        final ResourceSummaryModelData item = event.getResource();
+        item.setWorkingCopy(false);
+        update(item);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onCreate(final AliasCreated event) {
+        create(event.getResource());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onCreate(final FolderCreated event) {
+        create(event.getResource());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onCreate(final PageCreated event) {
+        create(event.getResource());
     }
 }

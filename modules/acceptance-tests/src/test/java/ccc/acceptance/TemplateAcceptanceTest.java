@@ -28,10 +28,10 @@ package ccc.acceptance;
 
 import java.util.UUID;
 
-import ccc.rest.RestException;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TemplateDto;
+import ccc.rest.exceptions.RestException;
 import ccc.types.MimeType;
 
 

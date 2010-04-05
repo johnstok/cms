@@ -72,6 +72,20 @@ public class FoldersImpl
     }
 
 
+    /**
+     * Decorate an exiting folders object with a new {@link FoldersImpl}.
+     *
+     * @param folders The implementation to decorate.
+     *
+     * @return The decorated implementation.
+     */
+    public static FoldersImpl decorate(final Folders folders) {
+        final FoldersImpl fi = new FoldersImpl();
+        fi.setFolders(folders);
+        return fi;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildren(final UUID folderId) {

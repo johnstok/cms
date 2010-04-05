@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,35 +21,50 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.providers;
+package ccc.rest.exceptions;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-
-import ccc.rest.UnauthorizedException;
-import ccc.types.HttpStatusCode;
+import ccc.serialization.Json;
+import ccc.types.Failure;
+import ccc.types.FailureCode;
 
 
 /**
- * A mapper for unauthorized exceptions.
+ * This request indicates that an API method was invoked with incorrect inputs.
  *
  * @author Civic Computing Ltd.
  */
-public class UnauthorizedExceptionMapper
-    implements
-        ExceptionMapper<UnauthorizedException> {
+public class InvalidException
+    extends
+        RestException {
 
-    /** {@inheritDoc} */
-    @Override
-    public Response toResponse(final UnauthorizedException e) {
-        return
-            Response
-                .status(HttpStatusCode.UNAUTHORIZED)
-                .type("application/json")
-                .entity(e)
-                .build();
+
+    /**
+     * Constructor.
+     */
+    public InvalidException() {
+        super(new Failure(FailureCode.INVALID));
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param failure Details of the failure.
+     */
+    public InvalidException(final Failure failure) {
+        super(failure);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param json The JSON representation of this exception.
+     */
+    public InvalidException(final Json json) {
+        super(json);
     }
 }

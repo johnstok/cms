@@ -44,7 +44,6 @@ import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -70,6 +69,9 @@ public class CreateAliasDialog extends AbstractEditDialog {
      */
     public CreateAliasDialog(final SingleSelectionModel ssm,
                              final ResourceSummary root) {
+
+        // FIXME Add event handler to hide(); dialog onSuccess();
+
         super(new GlobalsImpl().uiConstants().createAlias(),
               new GlobalsImpl());
         setHeight(200);
@@ -137,18 +139,8 @@ public class CreateAliasDialog extends AbstractEditDialog {
                 new CreateAliasAction(
                     _parent.getId(),
                     _aliasName.getValue(),
-                    _ssm.tableSelection().getId()
-                ){
-                    /** {@inheritDoc} */
-                    @Override protected void onOK(final Response response) {
-                        final ResourceSummary rs =
-                            parseResourceSummary(response);
-                        final ResourceSummaryModelData newAlias =
-                            new ResourceSummaryModelData(rs);
-                        _ssm.create(newAlias, _parent);
-                        hide();
-                    }
-                }.execute();
+                    _ssm.tableSelection().getId())
+                .execute();
             }
         };
     }

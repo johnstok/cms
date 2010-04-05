@@ -47,8 +47,8 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
-import ccc.rest.EntityNotFoundException;
-import ccc.rest.UnauthorizedException;
+import ccc.rest.exceptions.EntityNotFoundException;
+import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.DBC;
 
 

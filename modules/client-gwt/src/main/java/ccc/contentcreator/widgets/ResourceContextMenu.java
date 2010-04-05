@@ -39,7 +39,6 @@ import ccc.contentcreator.actions.OpenUpdateFolderAction;
 import ccc.contentcreator.actions.PreviewAction;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.remoting.ApplyWorkingCopyAction;
 import ccc.contentcreator.remoting.ClearWorkingCopyAction;
 import ccc.contentcreator.remoting.ComputeTemplateAction;
@@ -74,8 +73,6 @@ import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
@@ -453,19 +450,13 @@ public class ResourceContextMenu
 
             /** {@inheritDoc} */
             @Override
-            protected void onNoContent(final Response response) {
+            protected void noTemplate() {
                 getGlobals().alert(getConstants().noTemplateFound());
             }
 
             /** {@inheritDoc} */
             // Get a delta to edit.
-            @Override protected void onOK(final Response response) {
-            final TemplateSummary ts =
-                new TemplateSummary(
-                  new GwtJson(
-                      JSONParser.parse(
-                          response.getText()).isObject()));
-
+            @Override protected void template(final TemplateSummary ts) {
                 new PageDeltaAction(
                     getConstants().updateContent(), item.getId()){
                     @Override

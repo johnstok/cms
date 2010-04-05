@@ -26,14 +26,9 @@
  */
 package ccc.contentcreator.remoting;
 
-import java.util.UUID;
-
-import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.SingleSelectionModel;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -52,27 +47,13 @@ public class ApplyWorkingCopyAction
      *
      * @param selectionModel The selection model.
      */
-    public ApplyWorkingCopyAction(
-          final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.applyWorkingCopy(), RequestBuilder.POST);
+    public ApplyWorkingCopyAction(final SingleSelectionModel selectionModel) {
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        final UUID id = _selectionModel.tableSelection().getId();
-        return
-            "/resources/"
-            +id
-            +"/wc-apply";
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onNoContent(final Response response) {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        item.setWorkingCopy(false);
-        _selectionModel.update(item);
+    protected Request getRequest() {
+        return _selectionModel.tableSelection().applyWorkingCopy();
     }
 }

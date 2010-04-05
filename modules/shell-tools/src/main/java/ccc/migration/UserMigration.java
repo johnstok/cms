@@ -36,10 +36,10 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.rest.Groups;
-import ccc.rest.RestException;
 import ccc.rest.Users;
 import ccc.rest.dto.GroupDto;
 import ccc.rest.dto.UserDto;
+import ccc.rest.exceptions.RestException;
 import ccc.types.EmailAddress;
 
 

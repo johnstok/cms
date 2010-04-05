@@ -48,11 +48,12 @@ import ccc.domain.Action;
 import ccc.domain.Resource;
 import ccc.persistence.ActionRepository;
 import ccc.rest.Actions;
+import ccc.rest.InternalError;
 import ccc.rest.Resources;
-import ccc.rest.RestException;
 import ccc.rest.dto.ActionDto;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.DtoCollection;
+import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
@@ -107,7 +108,7 @@ public class ActionsEJB
             } catch (final RuntimeException e) {
                 final Failure f = new Failure(FailureCode.UNEXPECTED);
                 LOG.warn("Error executing action: "+f.getExceptionId(), e);
-                fail(action, new RestException(f));
+                fail(action, new InternalError(f));
             }
         }
     }

@@ -30,12 +30,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.serialization.JsonKeys;
+import ccc.contentcreator.core.Request;
 import ccc.types.CommandType;
-
-import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
@@ -43,7 +41,7 @@ import com.google.gwt.http.client.RequestBuilder;
  *
  * @author Civic Computing Ltd.
  */
-public class CreateActionAction
+public final class CreateActionAction
     extends
         RemotingAction {
 
@@ -61,10 +59,9 @@ public class CreateActionAction
      * @param resourceId The resource the action will operate on.
      */
     public CreateActionAction(final UUID resourceId,
-                               final CommandType command,
-                               final Date executeAfter,
-                               final Map<String, String> actionParameters) {
-        super(UI_CONSTANTS.createAction(), RequestBuilder.POST);
+                              final CommandType command,
+                              final Date executeAfter,
+                              final Map<String, String> actionParameters) {
         _resourceId = resourceId;
         _command = command;
         _executeAfter = executeAfter;
@@ -74,19 +71,8 @@ public class CreateActionAction
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return "/actions";
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        json.set(JsonKeys.SUBJECT_ID, _resourceId);
-        json.set(JsonKeys.COMMAND, _command.name());
-        json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
-        json.set(JsonKeys.PARAMETERS, _actionParameters);
-        return json.toString();
+    protected Request getRequest() {
+        return ActionSummaryModelData.createAction(
+            _resourceId, _command, _executeAfter, _actionParameters);
     }
 }
