@@ -11,8 +11,6 @@
  */
 package ccc.contentcreator.widgets;
 
-import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.event.Events;
@@ -40,7 +38,7 @@ public class CodeMirrorEditor extends Composite {
     private JavaScriptObject _editor;
     private final RadioGroup _radioGroup = new RadioGroup();
     private boolean _ready = false;
-    private EventBus _bus;
+    private EditorListener _bus;
     private Type _type;
 
     /**
@@ -51,7 +49,7 @@ public class CodeMirrorEditor extends Composite {
      * @param type The of the editor.
      */
     public CodeMirrorEditor(final String id,
-                            final EventBus bus,
+                            final EditorListener bus,
                             final Type type) {
         super();
         _id = id;
@@ -161,7 +159,7 @@ public class CodeMirrorEditor extends Composite {
     public void onInitialized() {
         _ready = true;
         _radioGroup.setEnabled(true);
-        _bus.put(new CMEditorReadyEvent(this));
+        _bus.onInitialized(_type, this);
     }
 
     /**
@@ -253,4 +251,19 @@ public class CodeMirrorEditor extends Composite {
         }
     }-*/;
 
+    /**
+     * Listener for editor events.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static interface EditorListener {
+
+        /**
+         * Indicates that an editor is ready.
+         *
+         * @param type The type of the editor.
+         * @param editor The editor object.
+         */
+        void onInitialized(CodeMirrorEditor.Type type, CodeMirrorEditor editor);
+    }
 }

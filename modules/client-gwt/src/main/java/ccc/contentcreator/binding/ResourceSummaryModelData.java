@@ -42,12 +42,14 @@ import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.contentcreator.events.AliasCreated;
 import ccc.contentcreator.events.FolderCreated;
 import ccc.contentcreator.events.PageCreated;
+import ccc.contentcreator.events.ResourceRenamed;
 import ccc.contentcreator.events.WorkingCopyApplied;
 import ccc.contentcreator.events.WorkingCopyCleared;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.serialization.JsonKeys;
+import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
 import ccc.types.Username;
 
@@ -653,6 +655,66 @@ public class ResourceSummaryModelData
                 json.toString(),
                 new PageCreatedCallback(
                     new GlobalsImpl().uiConstants().createPage()));
+    }
+
+
+    /**
+     * Rename a resource.
+     *
+     * @param name
+     * @param id
+     * @param newPath
+     *
+     * @return The HTTP request to rename a resource.
+     */
+    public static Request rename(final String name,
+                                 final UUID id,
+                                 final ResourcePath newPath) {
+        final String path = "api/secure/resources/"+id+"/name";
+
+        return
+            new Request(
+                RequestBuilder.POST,
+                path,
+                name,
+                new ResourceRenamedCallback(
+                    new GlobalsImpl().uiConstants().rename(),
+                    name,
+                    id,
+                    newPath));
+    }
+
+
+    /**
+     * Callback handler for renaming a resource.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class ResourceRenamedCallback extends ResponseHandlerAdapter {
+
+        private final ResourceRenamed _event;
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         * @param newPath The resource's new path.
+         * @param id The resource's ID.
+         * @param rName The resource's new name.
+         */
+        public ResourceRenamedCallback(final String name,
+                                       final String rName,
+                                       final UUID id,
+                                       final ResourcePath newPath) {
+            super(name);
+            _event = new ResourceRenamed(rName, newPath.toString(), id);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onNoContent(final Response response) {
+            ContentCreator.EVENT_BUS.fireEvent(_event);
+        }
     }
 
 

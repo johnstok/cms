@@ -29,6 +29,7 @@ package ccc.contentcreator.widgets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -36,11 +37,19 @@ import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.events.AliasCreated;
 import ccc.contentcreator.events.FolderCreated;
 import ccc.contentcreator.events.PageCreated;
+import ccc.contentcreator.events.ResourceCreated;
+import ccc.contentcreator.events.ResourceDeleted;
+import ccc.contentcreator.events.ResourceRenamed;
+import ccc.contentcreator.events.ResourceTemplateChanged;
 import ccc.contentcreator.events.WorkingCopyApplied;
 import ccc.contentcreator.events.WorkingCopyCleared;
 import ccc.contentcreator.events.AliasCreated.AliasCreatedHandler;
 import ccc.contentcreator.events.FolderCreated.FolderCreatedHandler;
 import ccc.contentcreator.events.PageCreated.PageCreatedHandler;
+import ccc.contentcreator.events.ResourceCreated.ResourceCreatedHandler;
+import ccc.contentcreator.events.ResourceDeleted.ResourceDeletedHandler;
+import ccc.contentcreator.events.ResourceRenamed.RenamedHandler;
+import ccc.contentcreator.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.contentcreator.events.WorkingCopyApplied.WCAppliedHandler;
 import ccc.contentcreator.events.WorkingCopyCleared.WCClearedHandler;
 import ccc.contentcreator.remoting.GetChildrenPagedAction;
@@ -82,6 +91,10 @@ public class ResourceTable
         TablePanel
     implements
         SingleSelectionModel,
+        ResourceDeletedHandler,
+        ResourceCreatedHandler,
+        ResTemChangedHandler,
+        RenamedHandler,
         PageCreatedHandler,
         FolderCreatedHandler,
         AliasCreatedHandler,
@@ -108,11 +121,15 @@ public class ResourceTable
         final FolderResourceTree tree,
         final UserDto user) {
 
+        ContentCreator.EVENT_BUS.addHandler(ResourceDeleted.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(ResourceCreated.TYPE, this);
         ContentCreator.EVENT_BUS.addHandler(PageCreated.TYPE, this);
         ContentCreator.EVENT_BUS.addHandler(FolderCreated.TYPE, this);
         ContentCreator.EVENT_BUS.addHandler(AliasCreated.TYPE, this);
         ContentCreator.EVENT_BUS.addHandler(WorkingCopyCleared.TYPE, this);
         ContentCreator.EVENT_BUS.addHandler(WorkingCopyApplied.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(ResourceRenamed.TYPE, this);
+        ContentCreator.EVENT_BUS.addHandler(ResourceTemplateChanged.TYPE, this);
 
         _root = root;
         _tree = tree;
@@ -346,31 +363,48 @@ public class ResourceTable
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void delete(final ResourceSummaryModelData item) {
+    /**
+     * Remove a resource from the data store.
+     *
+     * @param item The model to remove.
+     */
+    public void delete(final UUID item) {
         final String uuidPropertyName =
             ResourceSummaryModelData.Property.UUID.name();
-        final ResourceSummaryModelData parent =
-            _tree.store().findModel(uuidPropertyName, item.getParent());
-        if (null!=parent && ResourceType.FOLDER==item.getType()) {
-            parent.decrementFolderCount();
-        }
-        _detailsStore.remove(item);
-        _tree.store().remove(item);
-        if (null!=parent) {
-            _tree.treePanel().setExpanded(parent, false);
-            if (parent.getFolderCount()<1) {
-                _tree.treePanel().setLeaf(parent, true);
-            } else {
-                _tree.treePanel().setExpanded(parent, true);
+
+        // Handle tree
+        final ResourceSummaryModelData treeData =
+            _tree.store().findModel(uuidPropertyName, item);
+        if (null!=treeData) {
+            final ResourceSummaryModelData parent =
+                _tree.store().findModel(uuidPropertyName, treeData.getParent());
+            _tree.store().remove(treeData);
+
+            if (null!=parent) {
+                if (ResourceType.FOLDER==treeData.getType()) {
+                    parent.decrementFolderCount();
+                }
+                _tree.treePanel().setExpanded(parent, false);
+                if (parent.getFolderCount()<1) {
+                    _tree.treePanel().setLeaf(parent, true);
+                } else {
+                    _tree.treePanel().setExpanded(parent, true);
+                }
             }
+            _tree.store().update(parent);
         }
-        _tree.store().update(parent);
+
+        // Handle table
+        final ResourceSummaryModelData tableData =
+            _detailsStore.findModel(uuidPropertyName, item);
+        if (null!=tableData) {
+            _detailsStore.remove(tableData);
+        }
     }
 
 
     /** {@inheritDoc} */
+    @Override
     public void create(final ResourceSummaryModelData model) {
         final ResourceSummaryModelData np =
             _tree.store().findModel(
@@ -461,5 +495,42 @@ public class ResourceTable
     @Override
     public void onCreate(final PageCreated event) {
         create(event.getResource());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onRename(final ResourceRenamed event) {
+        final ResourceSummaryModelData md =
+            _detailsStore.findModel("id", event.getId());
+        md.setAbsolutePath(event.getPath());
+        md.setName(event.getName());
+        update(md);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onTemlateChanged(final ResourceTemplateChanged event) {
+        final ResourceSummaryModelData md =
+            _detailsStore.findModel("id", event.getResource());
+        md.setTemplateId(event.getNewTemplate());
+        update(md);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onCreate(final ResourceCreated event) {
+        final ResourceSummaryModelData resourceModelData =
+            new ResourceSummaryModelData(event.getResource());
+        create(resourceModelData);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void onDelete(final ResourceDeleted event) {
+        delete(event.getResource());
     }
 }

@@ -32,10 +32,8 @@ import java.util.List;
 
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.binding.DataBinding;
-import ccc.contentcreator.core.Event;
-import ccc.contentcreator.core.EventBus;
-import ccc.contentcreator.core.Event.Type;
 import ccc.contentcreator.events.CommentUpdatedEvent;
+import ccc.contentcreator.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.contentcreator.presenters.UpdateCommentPresenter;
 import ccc.contentcreator.remoting.ListComments;
 import ccc.contentcreator.views.gxt.CommentView;
@@ -71,7 +69,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  *
  * @author Civic Computing Ltd.
  */
-public class CommentTable extends TablePanel implements EventBus {
+public class CommentTable
+    extends
+        TablePanel
+    implements
+        CommentUpdatedHandler {
 
     private ListStore<CommentModelData> _detailsStore =
         new ListStore<CommentModelData>();
@@ -86,6 +88,9 @@ public class CommentTable extends TablePanel implements EventBus {
      * Constructor.
      */
     CommentTable() {
+
+        ContentCreator.EVENT_BUS.addHandler(CommentUpdatedEvent.TYPE, this);
+
         setHeading(UI_CONSTANTS.commentDetails());
         setLayout(new FitLayout());
 
@@ -122,7 +127,6 @@ public class CommentTable extends TablePanel implements EventBus {
 
                     new UpdateCommentPresenter(
                         GLOBALS,
-                        CommentTable.this,
                         new CommentView(
                             UI_CONSTANTS.updateComment(), GLOBALS),
                         commentModel);
@@ -249,10 +253,11 @@ public class CommentTable extends TablePanel implements EventBus {
 
     /** {@inheritDoc} */
     @Override
-    public void put(final Event event) {
-        if (Type.COMMENT_UPDATED==event.getType()) {
-            _detailsStore.update(
-                ((CommentUpdatedEvent) event).getComment());
-        }
+    public void onUpdate(final CommentUpdatedEvent event) {
+        final CommentDto updatedComment = event.getComment();
+        final CommentModelData commentBinding =
+            _detailsStore.findModel("id", updatedComment.getId());
+        commentBinding.setDelegate(updatedComment);
+        _detailsStore.update(commentBinding);
     }
 }

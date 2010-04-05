@@ -28,7 +28,6 @@ package ccc.contentcreator.actions;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
-import ccc.contentcreator.core.SelectionModelEventBus;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.RenameResourcePresenter;
 import ccc.contentcreator.views.gxt.RenameDialog;
@@ -56,10 +55,6 @@ public final class OpenRenameAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        new RenameResourcePresenter(
-            GLOBALS,
-            new SelectionModelEventBus(_selectionModel),
-            new RenameDialog(),
-            item);
+        new RenameResourcePresenter(GLOBALS, new RenameDialog(), item);
     }
 }

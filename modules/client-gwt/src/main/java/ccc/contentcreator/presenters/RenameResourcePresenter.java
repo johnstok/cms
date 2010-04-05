@@ -28,11 +28,10 @@ package ccc.contentcreator.presenters;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
-import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.Globals;
-import ccc.contentcreator.events.ResourceUpdatedEvent;
+import ccc.contentcreator.events.ResourceRenamed;
+import ccc.contentcreator.events.ResourceRenamed.RenamedHandler;
 import ccc.contentcreator.remoting.RenameAction;
 import ccc.contentcreator.views.RenameResource;
 import ccc.types.ResourceName;
@@ -49,22 +48,23 @@ public class RenameResourcePresenter
         AbstractPresenter<RenameResource, ResourceSummaryModelData>
     implements
         Editable,
-        CommandResponseHandler<Void> {
+        RenamedHandler {
 
 
     /**
      * Constructor.
      *
      * @param globals Implementation of the Globals API.
-     * @param bus Implementation of the Event Bus API.
      * @param view View implementation.
      * @param model Model implementation.
      */
     public RenameResourcePresenter(final Globals globals,
-                                   final EventBus bus,
                                    final RenameResource view,
                                    final ResourceSummaryModelData model) {
-        super(globals, bus, view, model);
+        super(globals, view, model);
+
+        addHandler(ResourceRenamed.TYPE, this);
+
         getView().setName(getModel().getName());
         getView().show(this);
     }
@@ -81,9 +81,17 @@ public class RenameResourcePresenter
     @Override
     public void save() {
         if (getView().getValidationResult().isValid()) {
+
+            final ResourcePath p =
+                new ResourcePath(getModel().getAbsolutePath());
+            final ResourcePath newPath =
+                p.parent().append(new ResourceName(getView().getName()));
+
             new RenameAction(getModel().getId(),
                              getView().getName(),
-                             this).execute();
+                             newPath)
+            .execute();
+
         } else {
             getGlobals().alert(
                 getGlobals().uiConstants().resourceNameIsInvalid());
@@ -93,13 +101,7 @@ public class RenameResourcePresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Void result) {
-        getModel().setName(getView().getName());
-        final ResourcePath p = new ResourcePath(getModel().getAbsolutePath());
-        final ResourcePath newPath =
-            p.parent().append(new ResourceName(getView().getName()));
-        getModel().setAbsolutePath(newPath.toString());
-        getBus().put(new ResourceUpdatedEvent(getModel()));
+    public void onRename(final ResourceRenamed event) {
         getView().hide();
     }
 }

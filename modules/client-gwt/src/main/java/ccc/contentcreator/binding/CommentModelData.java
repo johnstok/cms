@@ -32,9 +32,19 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.contentcreator.core.GlobalsImpl;
+import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.core.Request;
+import ccc.contentcreator.core.ResponseHandlerAdapter;
+import ccc.contentcreator.events.CommentUpdatedEvent;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.CommentDto;
 import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
+import ccc.types.DBC;
+
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 
@@ -64,7 +74,9 @@ public final class CommentModelData
     @SuppressWarnings("unchecked")
     @Override
     public <X> X get(final String property) {
-        if (property.equals(JsonKeys.URL)) {
+        if (property.equals(JsonKeys.ID)) {
+            return (X) _delegate.getId();
+        } else if (property.equals(JsonKeys.URL)) {
             return (X) _delegate.getUrl();
         } else if (property.equals(JsonKeys.DATE_CREATED)) {
             return (X) _delegate.getTimestamp();
@@ -90,6 +102,7 @@ public final class CommentModelData
     public Collection<String> getPropertyNames() {
         return
             Arrays.asList(
+                JsonKeys.ID,
                 JsonKeys.URL,
                 JsonKeys.DATE_CREATED,
                 JsonKeys.AUTHOR,
@@ -155,5 +168,59 @@ public final class CommentModelData
 
     public void setDelegate(final CommentDto updated) {
         _delegate = updated;
+    }
+
+
+    /**
+     * Update this comment.
+     *
+     * @param comment The new comment data.
+     *
+     * @return The HTTP request to perform the update.
+     */
+    public static Request update(final CommentDto comment) {
+        final String path = "api/secure/comments/"+comment.getId();
+
+        final GwtJson json = new GwtJson();
+        comment.toJson(json);
+
+        return new Request(
+            RequestBuilder.POST,
+            path,
+            json.toString(),
+            new CommentUpdatedCallback(
+                new GlobalsImpl().uiConstants().updateComment(),
+                comment));
+    }
+
+
+
+    /**
+     * Callback handler for updating a comment.
+     *
+     * @author Civic Computing Ltd.
+     */
+    public static class CommentUpdatedCallback extends ResponseHandlerAdapter {
+
+        private final CommentDto _comment;
+
+        /**
+         * Constructor.
+         *
+         * @param name The action name.
+         * @param comment The updated comment.
+         */
+        public CommentUpdatedCallback(final String name,
+                                      final CommentDto comment) {
+            super(name);
+            _comment = DBC.require().notNull(comment);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onNoContent(final Response response) {
+            ContentCreator.EVENT_BUS.fireEvent(
+                new CommentUpdatedEvent(_comment));
+        }
     }
 }

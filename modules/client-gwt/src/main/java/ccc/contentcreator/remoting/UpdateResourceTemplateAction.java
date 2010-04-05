@@ -30,10 +30,13 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.events.ResourceTemplateChanged;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
 
 
 /**
@@ -77,5 +80,13 @@ public class UpdateResourceTemplateAction
         json.set(JsonKeys.CACHE_DURATION, (String) null);
         json.set(JsonKeys.TEMPLATE_ID, _templateId);
         return json.toString();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onNoContent(final Response response) {
+        ContentCreator.EVENT_BUS.fireEvent(
+            new ResourceTemplateChanged(_resourceId, _templateId));
     }
 }

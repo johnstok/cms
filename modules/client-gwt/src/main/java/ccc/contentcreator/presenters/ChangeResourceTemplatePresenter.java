@@ -30,16 +30,13 @@ import java.util.Collection;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
-import ccc.contentcreator.core.CommandResponseHandler;
 import ccc.contentcreator.core.Editable;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.Globals;
-import ccc.contentcreator.events.ResourceUpdatedEvent;
+import ccc.contentcreator.events.ResourceTemplateChanged;
+import ccc.contentcreator.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.contentcreator.remoting.UpdateResourceTemplateAction;
 import ccc.contentcreator.views.ChangeResourceTemplate;
 import ccc.rest.dto.TemplateSummary;
-
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -52,25 +49,26 @@ public class ChangeResourceTemplatePresenter
         AbstractPresenter<ChangeResourceTemplate, ResourceSummaryModelData>
     implements
         Editable,
-        CommandResponseHandler<Void> {
+        ResTemChangedHandler {
 
 
     /**
      * Constructor.
      *
      * @param globals Implementation of the Globals API.
-     * @param bus Implementation of the Event Bus API.
      * @param view View implementation.
      * @param model Model implementation.
      * @param templates The templates to choose from.
      */
     public ChangeResourceTemplatePresenter(
                                final Globals globals,
-                               final EventBus bus,
                                final ChangeResourceTemplate view,
                                final ResourceSummaryModelData model,
                                final Collection<TemplateSummary> templates) {
-        super(globals, bus, view, model);
+        super(globals, view, model);
+
+        addHandler(ResourceTemplateChanged.TYPE, this);
+
         getView().setTemplates(templates);
         getView().setSelectedTemplate(getModel().getTemplateId());
         getView().show(this);
@@ -88,20 +86,16 @@ public class ChangeResourceTemplatePresenter
     @Override
     public void save() {
         new UpdateResourceTemplateAction(
-            getModel().getId(), getView().getSelectedTemplate()) {
-                /** {@inheritDoc} */ // TODO Pull method up up into superclass.
-                @Override protected void onNoContent(final Response r) {
-                    onSuccess(null);
-                }
-        }.execute();
+            getModel().getId(),
+            getView().getSelectedTemplate())
+        .execute();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void onSuccess(final Void result) {
+    public void onTemlateChanged(final ResourceTemplateChanged event) {
+        clearHandlers();
         getView().hide();
-        getModel().setTemplateId(getView().getSelectedTemplate());
-        getBus().put(new ResourceUpdatedEvent(getModel()));
     }
 }

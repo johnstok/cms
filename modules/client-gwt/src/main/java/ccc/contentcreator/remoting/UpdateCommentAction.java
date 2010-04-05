@@ -26,11 +26,11 @@
  */
 package ccc.contentcreator.remoting;
 
-import ccc.contentcreator.core.GwtJson;
+import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.core.Request;
 import ccc.rest.dto.CommentDto;
-
-import com.google.gwt.http.client.RequestBuilder;
+import ccc.types.DBC;
 
 
 /**
@@ -51,23 +51,13 @@ public class UpdateCommentAction
      * @param comment The updated comment.
      */
     public UpdateCommentAction(final CommentDto comment) {
-        super(UI_CONSTANTS.updateComment(), RequestBuilder.POST);
-        _comment = comment;
+        _comment = DBC.require().notNull(comment);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return "/comments/"+_comment.getId();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        _comment.toJson(json);
-        return json.toString();
+    protected Request getRequest() {
+        return CommentModelData.update(_comment);
     }
 }

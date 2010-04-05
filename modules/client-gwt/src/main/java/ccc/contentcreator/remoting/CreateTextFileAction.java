@@ -28,6 +28,8 @@ package ccc.contentcreator.remoting;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.contentcreator.events.ResourceCreated;
+import ccc.contentcreator.widgets.ContentCreator;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDto;
 import ccc.serialization.JsonKeys;
@@ -37,11 +39,12 @@ import com.google.gwt.http.client.Response;
 
 
 /**
- * TODO: Add a description for this type.
+ * Action creating a text file on the server.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CreateTextFileAction  extends
+public final class CreateTextFileAction
+    extends
         RemotingAction {
 
 
@@ -53,7 +56,6 @@ public abstract class CreateTextFileAction  extends
      */
     public CreateTextFileAction(final TextFileDto dto) {
         super(GLOBALS.uiConstants().createTextFile(), RequestBuilder.POST);
-
         _dto = dto;
     }
 
@@ -83,14 +85,6 @@ public abstract class CreateTextFileAction  extends
     @Override
     protected void onOK(final Response response) {
         final ResourceSummary rs = parseResourceSummary(response);
-        execute(rs);
+        ContentCreator.EVENT_BUS.fireEvent(new ResourceCreated(rs));
     }
-
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param folder The folder returned.
-     */
-    protected abstract void execute(ResourceSummary folder);
-
 }

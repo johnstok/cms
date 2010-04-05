@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -26,7 +26,8 @@
  */
 package ccc.contentcreator.events;
 
-import ccc.rest.dto.CommentDto;
+import java.util.UUID;
+
 import ccc.types.DBC;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -34,66 +35,95 @@ import com.google.gwt.event.shared.GwtEvent;
 
 
 /**
- * An event indicating a comment was updated.
+ * An event indicating a resource was renamed.
  *
  * @author Civic Computing Ltd.
  */
-public class CommentUpdatedEvent
+public class ResourceRenamed
     extends
-        GwtEvent<CommentUpdatedEvent.CommentUpdatedHandler> {
+        GwtEvent<ResourceRenamed.RenamedHandler> {
 
-    private final CommentDto _comment;
+    private String _name;
+    private String _path;
+    private UUID   _id;
 
 
     /**
      * Constructor.
      *
-     * @param resource The updated comment.
+     * @param name The updated name.
+     * @param path The updated absolute path.
+     * @param id The resource's ID.
      */
-    public CommentUpdatedEvent(final CommentDto resource) {
-        _comment = DBC.require().notNull(resource);
+    public ResourceRenamed(final String name,
+                           final String path,
+                           final UUID id) {
+        _name = DBC.require().notEmpty(name);
+        _path = DBC.require().notEmpty(path);
+        _id   = DBC.require().notNull(id);
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the comment.
+     * @return Returns the name.
      */
-    public CommentDto getComment() { return _comment; }
+    public String getName() {
+        return _name;
+    }
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected void dispatch(
-                        final CommentUpdatedHandler handler) {
-        handler.onUpdate(this);
+    /**
+     * Accessor.
+     *
+     * @return Returns the path.
+     */
+    public String getPath() {
+        return _path;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the id.
+     */
+    public UUID getId() {
+        return _id;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Type<CommentUpdatedHandler> getAssociatedType() { return TYPE; }
+    protected void dispatch(final ResourceRenamed.RenamedHandler handler) {
+        handler.onRename(this);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Type<RenamedHandler> getAssociatedType() { return TYPE; }
 
 
     /**
-     * Handler for 'comment updated' events.
+     * Handler for 'resource renamed' events.
      *
      * @author Civic Computing Ltd.
      */
-    public static interface CommentUpdatedHandler extends EventHandler {
+    public static interface RenamedHandler extends EventHandler {
 
 
         /**
-         * Handle a 'comment updated' event.
+         * Handle a 'resource renamed' event.
          *
          * @param event The event to handle.
          */
-        void onUpdate(CommentUpdatedEvent event);
+        void onRename(ResourceRenamed event);
     }
 
 
     /** TYPE : Type. */
-    public static final Type<CommentUpdatedHandler> TYPE =
-        new Type<CommentUpdatedHandler>();
+    public static final Type<RenamedHandler> TYPE =
+        new Type<RenamedHandler>();
 }

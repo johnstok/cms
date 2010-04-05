@@ -31,12 +31,8 @@ import java.util.UUID;
 
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.DialogMode;
-import ccc.contentcreator.core.Event;
-import ccc.contentcreator.core.EventBus;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
-import ccc.contentcreator.core.Event.Type;
-import ccc.contentcreator.events.CMEditorReadyEvent;
 import ccc.contentcreator.remoting.CreateTemplateAction;
 import ccc.contentcreator.remoting.TemplateNameExistsAction;
 import ccc.contentcreator.remoting.UpdateTemplateAction;
@@ -44,6 +40,8 @@ import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.widgets.CodeMirrorEditor;
+import ccc.contentcreator.widgets.CodeMirrorEditor.EditorListener;
+import ccc.contentcreator.widgets.CodeMirrorEditor.Type;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TemplateDelta;
 import ccc.types.MimeType;
@@ -65,8 +63,11 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public class EditTemplateDialog extends AbstractWizardDialog
-    implements EventBus {
+public class EditTemplateDialog
+    extends
+        AbstractWizardDialog
+    implements
+        EditorListener {
 
     /** DEFAULT_WIDTH : int. */
     protected static final int DEFAULT_WIDTH = 640;
@@ -324,17 +325,16 @@ public class EditTemplateDialog extends AbstractWizardDialog
             }
         };
     }
+
+
     /** {@inheritDoc} */
     @Override
-    public void put(final Event event) {
-        if (Type.CM_EDITOR_READY==event.getType()) {
-            final CodeMirrorEditor cme =
-                ((CMEditorReadyEvent) event).getCodeMirrorEditor();
-            if (cme.getType() == CodeMirrorEditor.Type.BODY) {
-                cme.setEditorCode(_bodyString);
-            } else if (cme.getType() == CodeMirrorEditor.Type.DEFINITION) {
-                cme.setEditorCode(_definitionString);
-            }
+    public void onInitialized(final Type type, final CodeMirrorEditor editor) {
+        // FIXME: Dodgy.
+        if (CodeMirrorEditor.Type.BODY == type) {
+            editor.setEditorCode(_bodyString);
+        } else if (CodeMirrorEditor.Type.DEFINITION == type) {
+            editor.setEditorCode(_definitionString);
         }
     }
 
