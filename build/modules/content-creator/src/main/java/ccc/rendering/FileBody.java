@@ -37,11 +37,11 @@ import ccc.commons.Context;
 import ccc.commons.TextProcessor;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.ThumbAction;
+import ccc.rest.Files;
 import ccc.rest.ServiceLocator;
 import ccc.rest.dto.FileDto;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.exceptions.UnauthorizedException;
-import ccc.rest.extensions.FilesExt;
 import ccc.types.DBC;
 
 
@@ -74,7 +74,7 @@ public class FileBody
                       final Context context,
                       final TextProcessor processor) {
         final ServiceLocator sl = context.get("services", ServiceLocator.class);
-        final FilesExt files = (FilesExt) sl.getFiles();
+        final Files files = sl.getFiles();
         final HttpServletRequest r =
             context.get("request", HttpServletRequest.class);
 

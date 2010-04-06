@@ -41,10 +41,10 @@ import ccc.commons.Context;
 import ccc.commons.Script;
 import ccc.commons.Testing;
 import ccc.commons.TextProcessor;
+import ccc.rest.Resources;
 import ccc.rest.ServiceLocator;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Paragraph;
 
 
@@ -332,7 +332,7 @@ public class VelocityProcessorTest extends TestCase {
     @Override
     protected void setUp() {
         _vp = new VelocityProcessor();
-        _reader = createStrictMock(ResourcesExt.class);
+        _reader = createStrictMock(Resources.class);
         _sl.setCommands(_reader);
     }
 
@@ -351,6 +351,6 @@ public class VelocityProcessorTest extends TestCase {
     }
 
     private TextProcessor _vp;
-    private ResourcesExt _reader;
+    private Resources _reader;
     private MemoryServiceLocator _sl = new MemoryServiceLocator();
 }

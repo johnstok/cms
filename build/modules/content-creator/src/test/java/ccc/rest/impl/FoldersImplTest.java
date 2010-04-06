@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.FoldersExt;
 
 
 /**
@@ -67,7 +67,7 @@ public class FoldersImplTest
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _foldersExt = createStrictMock(FoldersExt.class);
+        _foldersExt = createStrictMock(Folders.class);
         _unit = new FoldersImpl();
         _unit.setFolders(_foldersExt);
     }
@@ -79,7 +79,7 @@ public class FoldersImplTest
         _unit = null;
     }
 
-    private FoldersExt _foldersExt;
+    private Folders _foldersExt;
     private FoldersImpl _unit;
     private Collection<ResourceSummary> _rs = new ArrayList<ResourceSummary>();
 }

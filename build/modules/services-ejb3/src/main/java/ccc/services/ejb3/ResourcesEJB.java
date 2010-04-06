@@ -38,6 +38,7 @@ import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -88,11 +89,13 @@ import ccc.types.SortOrder;
 @Stateless(name=Resources.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(ResourcesExt.class)
+@Local(Resources.class)
 @RolesAllowed({})
 public class ResourcesEJB
     extends
         AbstractEJB
     implements
+        Resources,
         ResourcesExt {
 
 
@@ -519,8 +522,9 @@ public class ResourcesEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(RESOURCE_READ)
+    @PermitAll
     public ResourceSummary resourceForLegacyId(final String legacyId) {
+        checkPermission(RESOURCE_READ);
         return getResources().lookupWithLegacyId(legacyId).mapResource();
     }
 
@@ -529,16 +533,6 @@ public class ResourcesEJB
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */
-
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
-    @Deprecated
-    public ResourceSummary lookupWithLegacyId(final String legacyId) {
-        checkPermission(RESOURCE_READ);
-        return resourceForLegacyId(legacyId);
-    }
 
     /** {@inheritDoc} */
     @Override

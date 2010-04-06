@@ -44,6 +44,7 @@ import ccc.rest.dto.ResourceDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.SortOrder;
@@ -413,6 +414,52 @@ public class ResourcesImpl
         try {
             return getResources().list(
                 tag, before, after, sort, order, pageNo, pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String fileContentsFromPath(final String absolutePath,
+                                       final String charset) {
+        try {
+            return getResources().fileContentsFromPath(absolutePath, charset);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSnapshot resourceForPathSecure(final String path) {
+        try {
+            return getResources().resourceForPathSecure(path);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSnapshot revisionForPath(final String path,
+                                            final int version) {
+        try {
+            return getResources().revisionForPath(path, version);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSnapshot workingCopyForPath(final String path) {
+        try {
+            return getResources().workingCopyForPath(path);
         } catch (final EJBException e) {
             throw convertToNative(e);
         }

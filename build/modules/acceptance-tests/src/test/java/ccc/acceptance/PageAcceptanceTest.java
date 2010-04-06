@@ -93,7 +93,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath(""));
+            dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
@@ -113,7 +113,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath(""));
+            dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         final Set<Paragraph> paras = new HashSet<Paragraph>();
@@ -183,7 +183,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final ResourceSummary templateFolder =
-            resourceForPath("/assets/templates");
+            getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
         final TemplateDelta newTemplate =

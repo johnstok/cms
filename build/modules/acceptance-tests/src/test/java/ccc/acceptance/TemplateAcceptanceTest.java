@@ -51,7 +51,7 @@ public class TemplateAcceptanceTest extends
 
         // ARRANGE
         final ResourceSummary templateFolder =
-            resourceForPath("/assets/templates");
+            getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
         final TemplateDelta newTemplate =

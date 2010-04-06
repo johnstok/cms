@@ -58,7 +58,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("");
+        final ResourceSummary content =
+            getCommands().resourceForPath("");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         getCommands().lock(file.getId());
@@ -83,7 +84,7 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("");
+        final ResourceSummary content = getCommands().resourceForPath("");
         final ResourceSummary file = createFile(fName, "Hello!", content);
 
         // History for first revision
@@ -136,7 +137,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
 
         // ACT
         final ResourceSummary rs =
@@ -160,7 +162,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
 
@@ -189,7 +192,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
         getCommands().lock(rs.getId());
@@ -213,7 +217,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
         getCommands().lock(rs.getId());
@@ -243,7 +248,8 @@ public class FileUploadAcceptanceTest
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             createFile(fName, "Hello!", filesFolder);
 

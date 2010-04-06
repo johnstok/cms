@@ -35,7 +35,7 @@ import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -61,7 +61,7 @@ import ccc.types.Username;
  */
 @Stateless(name=Users.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Users.class)
+@Local(Users.class)
 @RolesAllowed({})
 public class UsersEJB
     extends

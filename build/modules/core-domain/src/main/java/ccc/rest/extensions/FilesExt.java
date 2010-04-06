@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,25 +21,18 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
+package ccc.rest.extensions;
 
-package ccc.persistence;
 
-import java.io.InputStream;
 
 /**
- * An action to perform on an {@link InputStream}.
+ * Additional API methods for operating on files.
  *
  * @author Civic Computing Ltd.
  */
-public interface StreamAction {
-    /**
-     * Execute the action.
-     *
-     * @param is The input stream to operate on.
-     * @throws Exception If the action fails.
-     */
-    void execute(InputStream is) throws Exception;
+public interface FilesExt {
+    /* NO OP */
 }

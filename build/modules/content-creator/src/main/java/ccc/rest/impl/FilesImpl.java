@@ -26,6 +26,8 @@
  */
 package ccc.rest.impl;
 
+import java.io.InputStream;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.ejb.EJBException;
@@ -36,7 +38,9 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.rest.Files;
+import ccc.rest.StreamAction;
 import ccc.rest.dto.DtoCollection;
+import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDelta;
@@ -96,6 +100,83 @@ public class FilesImpl
                                                  final int pageSize) {
         try {
             return getFiles().getPagedImages(folderId, pageNo, pageSize);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFile(final UUID parentFolder,
+                                      final FileDelta file,
+                                      final String resourceName,
+                                      final InputStream dataStream,
+                                      final String title,
+                                      final String description,
+                                      final Date lastUpdated,
+                                      final boolean publish,
+                                      final String comment,
+                                      final boolean isMajorEdit) {
+        try {
+            return getFiles().createFile(
+                parentFolder,
+                file,
+                resourceName,
+                dataStream,
+                title,
+                description,
+                lastUpdated,
+                publish,
+                comment,
+                isMajorEdit);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void retrieve(final UUID file, final StreamAction action) {
+        try {
+            getFiles().retrieve(file, action);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void retrieveRevision(final UUID file,
+                                 final int revision,
+                                 final StreamAction action) {
+        try {
+            getFiles().retrieveRevision(file, revision, action);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void retrieveWorkingCopy(final UUID file,
+                                    final StreamAction action) {
+        try {
+            getFiles().retrieveWorkingCopy(file, action);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void updateFile(final UUID fileId,
+                           final FileDelta fileDelta,
+                           final String comment,
+                           final boolean isMajorEdit,
+                           final InputStream dataStream) {
+        try {
+            getFiles().updateFile(
+                fileId, fileDelta, comment, isMajorEdit, dataStream);
         } catch (final EJBException e) {
             throw convertToNative(e);
         }

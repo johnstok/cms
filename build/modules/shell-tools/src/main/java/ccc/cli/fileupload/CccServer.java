@@ -33,10 +33,10 @@ import org.apache.log4j.Logger;
 
 import ccc.api.client1.IFileUploader;
 import ccc.cli.FileUpload;
+import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.FailureCode;
 import ccc.types.ResourcePath;
 
@@ -49,10 +49,10 @@ import ccc.types.ResourcePath;
 public class CccServer implements Server {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
-    private ResourcePath _rootPath;
-    private IFileUploader _uploader;
-    private FoldersExt _foldersExt;
-    private ResourcesExt _resources;
+    private final ResourcePath _rootPath;
+    private final IFileUploader _uploader;
+    private final Resources _resources;
+    private final FoldersExt _foldersExt;
 
 
 
@@ -68,7 +68,7 @@ public class CccServer implements Server {
     public CccServer(final ResourcePath rootPath,
                      final IFileUploader uploader,
                      final FoldersExt foldersExt,
-                     final ResourcesExt resources) {
+                     final Resources resources) {
         _rootPath = rootPath;
         _uploader = uploader;
         _foldersExt = foldersExt;
@@ -90,12 +90,15 @@ public class CccServer implements Server {
     @Override
     public UUID createFolder(final UUID parentFolder,
                              final String name,
-                             final boolean publish)
-                                                 throws RestException {
+                             final boolean publish) {
 
         try {
-            final ResourceSummary rs = _foldersExt.createFolder(
-                UUID.fromString(parentFolder.toString()), name, name, publish);
+            final ResourceSummary rs =
+                _foldersExt.createFolder(
+                    UUID.fromString(parentFolder.toString()),
+                    name,
+                    name,
+                    publish);
             return UUID.fromString(rs.getId().toString());
         } catch (final RestException e) {
             if (FailureCode.EXISTS==e.getCode()) {

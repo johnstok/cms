@@ -36,7 +36,7 @@ import java.util.UUID;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -67,7 +67,7 @@ import ccc.types.SortOrder;
  */
 @Stateless(name=Actions.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Actions.class)
+@Local(Actions.class)
 @RolesAllowed({})
 @RunAs(ACTION_EXECUTE)
 public class ActionsEJB

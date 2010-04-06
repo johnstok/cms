@@ -38,9 +38,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.client1.IFileUploader;
 import ccc.cli.Migrate.Options;
-import ccc.rest.Groups;
-import ccc.rest.Templates;
-import ccc.rest.Users;
+import ccc.rest.ServiceLocator;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
@@ -67,16 +65,7 @@ public class Migrations extends BaseMigrations {
 
     private Set<Integer>    _menuItems;
 
-
-    private final FoldersExt _foldersExt;
-
-    private final boolean _migrateHomepage;
-    private final boolean _migrateIsMajorEdit;
-    private final boolean _migrateVersions;
-
-    private final String _userName;
-
-    private final List<String> _ignoreList;
+    private final Options _options;
 
     private final FileMigrator _fm;
     private final UserMigration _um;
@@ -90,40 +79,24 @@ public class Migrations extends BaseMigrations {
      * @param fu The file up-loader to use.
      * @param pagesExt Pages API implementation.
      * @param foldersExt Folders API implementation.
-     * @param userCommands Templates API implementation.
-     * @param templates Templates API implementation.
      */
-    public Migrations(final LegacyDBQueries legacyQueries,
+    public Migrations(final ServiceLocator service,
+                      final LegacyDBQueries legacyQueries,
                       final ResourcesExt resourcesExt,
                       final Migration pagesExt,
                       final FoldersExt foldersExt,
-                      final Users userCommands,
-                      final Groups groups,
                       final IFileUploader fu,
-                      final Templates templates,
                       final Options options) {
         super(
-            userCommands,
+            service,
             pagesExt,
             resourcesExt,
-            groups,
+            foldersExt,
             legacyQueries,
-            new TemplateMigration(legacyQueries, templates),
+            new TemplateMigration(legacyQueries, service.getTemplates()),
             "/"+options.getApp()+"/");
 
-        _foldersExt = foldersExt;
-        _migrateHomepage = options.isMigrateHomepage();
-        _migrateIsMajorEdit = options.isMigrateIsMajorEdit();
-        _migrateVersions = options.isMigrateVersions();
-        _userName = options.getUsername();
-        _ignoreList = new ArrayList<String>();
-
-        final String ignore = options.getIgnorePaths();
-        if (ignore != null && !ignore.trim().isEmpty()) {
-            for (final String item : ignore.split(";")) {
-                _ignoreList.add(item);
-            }
-        }
+        _options = options;
 
         try {
             _contentRoot = getResources().resourceForPath("");
@@ -162,7 +135,7 @@ public class Migrations extends BaseMigrations {
             publishRecursive(_assetsImagesFolder);
             publishRecursive(_filesFolder);
             publishRecursive(_contentImagesFolder);
-            if (_migrateHomepage) {
+            if (_options.isMigrateHomepage()) {
                 migrateHomepages();
             }
         } catch (final RuntimeException e) {
@@ -179,7 +152,7 @@ public class Migrations extends BaseMigrations {
                 getResources().resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
                 getResources().lock(UUID.fromString(f.getId().toString()));
-                _foldersExt.updateFolder(
+                getFolders().updateFolder(
                     f.getId(),
                     new FolderDelta(f.getSortOrder(), hp.getId(), null));
                 getResources().unlock(f.getId());
@@ -195,7 +168,7 @@ public class Migrations extends BaseMigrations {
         getResources().publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
             final Collection<ResourceSummary> children =
-                _foldersExt.getChildren(resource.getId());
+                getFolders().getChildren(resource.getId());
             for (final ResourceSummary child : children) {
                 publishRecursive(child);
             }
@@ -214,13 +187,14 @@ public class Migrations extends BaseMigrations {
 
         final List<ResourceBean> resources =
             getLegacyQueries().selectResources(parent);
+        final List<String> ignoreList = _options.getIgnorePaths();
 
         for (final ResourceBean r : resources) {
             if (r.name() == null || r.name().trim().equals("")) {
                 log.warn("Ignoring resource with missing name: "+r.contentId());
                 continue;
             }
-            if (_ignoreList.contains(""+r.contentId())) {
+            if (ignoreList.contains(""+r.contentId())) {
                 log.warn("Ignoring resource as requested: "+r.contentId()
                     + " "+r.name());
                 continue;
@@ -245,7 +219,7 @@ public class Migrations extends BaseMigrations {
                 r.contentId(),
                 r.legacyVersion(),
                 "CREATED FOLDER",
-                _userName);
+                _options.getUsername());
 
             final ResourceSummary rs = getMigrations().createFolder(
                     parentFolderId,
@@ -303,7 +277,7 @@ public class Migrations extends BaseMigrations {
                     le = logEntryForVersion(
                         resource.contentId(),
                         createVersion, "CREATED PAGE",
-                        _userName);
+                        _options.getUsername());
                 } catch (final MigrationException e) {
                     log.warn("Skipped version "+createVersion+" of page "
                         +resource.contentId()+" "+e.getMessage());
@@ -325,7 +299,7 @@ public class Migrations extends BaseMigrations {
                         resource.contentId(),
                         version,
                         "UPDATE",
-                        _userName);
+                        _options.getUsername());
 
                     getMigrations().lock(
                         UUID.fromString(
@@ -371,14 +345,14 @@ public class Migrations extends BaseMigrations {
 
             log.debug("Migrated page "+resource.contentId());
 
-        } catch (final RestException exception) {
+        } catch (final RestException e) {
             log.warn(
                 logMigrationError(
-                    "Error migrating page ", resource, exception));
-        } catch (final RuntimeException exception) {
+                    "Error migrating page ", resource, e), e);
+        } catch (final RuntimeException e) {
             log.warn(
                 logMigrationError(
-                    "Error migrating page ", resource, exception));
+                    "Error migrating page ", resource, e), e);
         }
     }
 
@@ -398,7 +372,7 @@ public class Migrations extends BaseMigrations {
         final List<Integer> only0 = new ArrayList<Integer>();
         only0.add(Integer.valueOf(0));
 
-        if (!_migrateVersions) {
+        if (!_options.isMigrateVersions()) {
             return only0;
         }
 
@@ -437,13 +411,13 @@ public class Migrations extends BaseMigrations {
                             final ResourceSummary rs,
                             final int version,
                             final LogEntryBean le,
-                            final PageDelta d) throws RestException {
+                            final PageDelta d) {
 
         final String userComment =
             getLegacyQueries().selectUserComment(r.contentId(), version);
 
         Boolean isMajorEdit = Boolean.valueOf(false);
-        if (_migrateIsMajorEdit) {
+        if (_options.isMigrateIsMajorEdit()) {
             isMajorEdit =
                 getLegacyQueries().selectIsMajorEdit(r.contentId(), version);
         }

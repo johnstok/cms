@@ -28,7 +28,6 @@ package ccc.rest.extensions;
 
 import java.util.UUID;
 
-import ccc.rest.Folders;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
 
@@ -38,7 +37,8 @@ import ccc.rest.exceptions.RestException;
  *
  * @author Civic Computing Ltd.
  */
-public interface FoldersExt extends Folders {
+@Deprecated
+public interface FoldersExt {
 
     /**
      * Create a folder with the specified name and title.

@@ -39,7 +39,6 @@ import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourcePath;
 
 
@@ -99,8 +98,7 @@ public class FileUpload extends CccApp {
         final ProxyServiceLocator sl =
             new ProxyServiceLocator(o._uploadUrl);
 
-        final ResourcesExt resources = services.getResources();
-        final FoldersExt foldersExt = services.getFolders();
+        final FoldersExt foldersExt = (FoldersExt) services.getFolders();
 
         login(o.getUsername(), o.getPassword());
         sl.getSecurity().login(o.getUsername(), o.getPassword());
@@ -109,7 +107,7 @@ public class FileUpload extends CccApp {
             new ResourcePath(o.getRemotePath()),
             sl.getFileUploader(),
             foldersExt,
-            resources);
+            sl.getResources());
 
         try {
             recurse(

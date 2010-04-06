@@ -27,21 +27,19 @@
 package ccc.cli;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.client1.ProxyServiceLocator;
-import ccc.api.client1.RegistryServiceLocator;
-import ccc.commons.JNDI;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.LegacyDBQueries;
+import ccc.migration.MigrationServiceLocator;
 import ccc.migration.Migrations;
-import ccc.rest.ServiceLocator;
-import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
-import ccc.services.Migration;
 
 /**
  * Entry class for the migration application.
@@ -49,7 +47,7 @@ import ccc.services.Migration;
 public final class Migrate extends CccApp {
     private static final Logger LOG = Logger.getLogger(Migrate.class);
     private static LegacyDBQueries legacyDBQueries;
-    private static ServiceLocator services;
+    private static MigrationServiceLocator services;
     private static ProxyServiceLocator sl;
     private static Options options;
 
@@ -67,7 +65,8 @@ public final class Migrate extends CccApp {
         options  = parseOptions(args, Options.class);
 
         services =
-            new RegistryServiceLocator(options.getApp(), options.getProviderURL());
+            new MigrationServiceLocator(
+                options.getApp(), options.getProviderURL());
         sl = new ProxyServiceLocator(options._ccURL);
 
         login(options.getUsername(), options.getPassword());
@@ -96,24 +95,16 @@ public final class Migrate extends CccApp {
         // TODO: pass options instead of 8 parameters?
         final Migrations migrations =
             new Migrations(
+                sl,
                 legacyDBQueries,
-                (ResourcesExt) services.getResources(),
-                getMigrations(),
-                (FoldersExt) services.getFolders(),
-                services.getUsers(),
-                services.getGroups(),
+                services.getResourcesExt(),
+                services.getMigration(),
+                services.getFoldersExt(),
                 sl.getFileUploader(),
-                services.getTemplates(),
                 options);
         migrations.migrate();
     }
 
-
-    private static Migration getMigrations() { // FIXME: Move to service locator.
-        return
-            new JNDI(options.getProviderURL())
-                .<Migration>get(options.getApp()+"/"+Migration.NAME+"/remote");
-    }
 
     /**
      * Options for the migration tool.
@@ -288,10 +279,16 @@ public final class Migrate extends CccApp {
         /**
          * Accessor.
          *
-         * @return Returns the JNDI provider URL.
+         * @return Returns a list of paths to ignore during migration.
          */
-        public String getIgnorePaths() {
-            return _ignorePaths;
+        public List<String> getIgnorePaths() {
+            final List<String> ignoreList = new ArrayList<String>();
+            if (_ignorePaths != null && !_ignorePaths.trim().isEmpty()) {
+                for (final String item : _ignorePaths.split(";")) {
+                    ignoreList.add(item);
+                }
+            }
+            return ignoreList;
         }
     }
 }

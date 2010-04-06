@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
+import ccc.rest.StreamAction;
 import ccc.serialization.IO;
 import ccc.types.DBC;
 

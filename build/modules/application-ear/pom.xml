@@ -279,6 +279,8 @@
                                             <arg value="migration" />
                                             <arg value="-a" />
                                             <arg value="${application.prefix}" />
+                                            <arg value="-o" />
+                                            <arg value="http://localhost:8080/${application.prefix}" />
                                         </java>
                                     </tasks>
                                 </configuration>

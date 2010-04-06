@@ -32,7 +32,7 @@ import java.io.InputStream;
 import org.apache.log4j.Logger;
 import org.pdfbox.pdmodel.PDDocument;
 
-import ccc.persistence.StreamAction;
+import ccc.rest.StreamAction;
 
 /**
  * A StreamAction that can load a PDF file into memory.

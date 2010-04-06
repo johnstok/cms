@@ -48,7 +48,6 @@ import ccc.rendering.RedirectRequiredException;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourcePath;
 
 
@@ -69,7 +68,7 @@ public final class LegacyLinkFilter
         Filter {
     private static final Logger LOG = Logger.getLogger(LegacyLinkFilter.class);
 
-    @EJB(name = Resources.NAME) private transient ResourcesExt _resources;
+    @EJB(name = Resources.NAME) private transient Resources _resources;
 
 
     /**
@@ -83,7 +82,7 @@ public final class LegacyLinkFilter
      *
      * @param resources The resource API for this filter.
      */
-    public LegacyLinkFilter(final ResourcesExt resources) {
+    public LegacyLinkFilter(final Resources resources) {
         _resources = resources;
     }
 
@@ -188,7 +187,7 @@ public final class LegacyLinkFilter
             + req.getPathInfo());
 
         try {
-            final ResourceSummary r = _resources.lookupWithLegacyId(legacyId);
+            final ResourceSummary r = _resources.resourceForLegacyId(legacyId);
             final String resourcePath = r.getAbsolutePath();
             LOG.debug("Fixed to path: "+resourcePath);
 

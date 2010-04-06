@@ -35,7 +35,7 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import ccc.rest.extensions.ResourcesExt;
+import ccc.rest.Resources;
 
 
 /**
@@ -57,8 +57,8 @@ public class CCCResourceLoader
     /** {@inheritDoc} */
     @Override
     public InputStream getResourceStream(final String absolutePath) {
-        final ResourcesExt resources =
-            (ResourcesExt) rsvc.getApplicationAttribute("ccc-reader");
+        final Resources resources =
+            (Resources) rsvc.getApplicationAttribute("ccc-reader");
 
         if (null==resources) {
             return new ByteArrayInputStream(new byte[0]);

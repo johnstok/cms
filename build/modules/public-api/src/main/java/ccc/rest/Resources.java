@@ -47,6 +47,7 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.exceptions.UnauthorizedException;
+import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.SortOrder;
@@ -461,11 +462,67 @@ public interface Resources {
      * Returns siblings of the resource, the resource included.
      *
      * @param resourceId The id of the resource to create log entry for.
+     *
      * @return The list of siblings.
-     * @throws RestException If the method fails.
-     * @throws UnauthorizedException If the user does not have right to access.
      */
     @GET @Path("/{id}/siblings")
-    Collection<ResourceSummary> getSiblings(@PathParam("id") UUID resourceId)
+    Collection<ResourceSummary> getSiblings(@PathParam("id") UUID resourceId);
+
+
+    /**
+     * Look up the contents of a file as a String.
+     * FIXME: Move to files.
+     *
+     * @param absolutePath The absolute path to the resource.
+     * @param charset The character set for the file.
+     *
+     * @return The contents as a string.
+     */
+    @GET @Path("/text-content{path:.*}")
+    String fileContentsFromPath(@PathParam("path") String absolutePath,
+                                @DefaultValue("UTF-8") String charset);
+
+
+    /**
+     * Look up the resource for a specified path.
+     *
+     * @param path The absolute path.
+     *
+     * @return A summary of the corresponding resource.
+     */
+    @GET @Path("/by-path-secure{path:.*}")
+    @Deprecated() // FIXME Use resourceForPath() or lookup by ID.
+    ResourceSnapshot resourceForPathSecure(@PathParam("path") String path);
+
+
+    /**
+     * Look up the resource for a specified path.
+     *
+     * @param path The absolute path.
+     * @param version The version number of the resource to retrieve.
+     *
+     * @return A summary of the corresponding resource.
+     */
+    @GET @Path("/by-path-secure{path:.*}")
+    @Deprecated // FIXME: Lookup by ID.
+    ResourceSnapshot revisionForPath(
+                 @PathParam("path") final String path,
+                 @QueryParam("version") @DefaultValue("0") final int version);
+
+
+    /**
+     * Look up the working copy for a specified path.
+     *
+     * @param path The absolute path.
+     *
+     * @throws RestException If the method fails
+     * @throws UnauthorizedException If the resource is not accessible to the
+     *  current user.
+     *
+     * @return A summary of the corresponding resource.
+     */
+    @GET @Path("/by-path-wc{path:.*}")
+    @Deprecated // FIXME: Lookup by ID.
+    ResourceSnapshot workingCopyForPath(@PathParam("path") final String path)
     throws RestException, UnauthorizedException;
 }

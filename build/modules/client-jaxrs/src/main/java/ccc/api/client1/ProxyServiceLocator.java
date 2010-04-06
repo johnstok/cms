@@ -67,6 +67,7 @@ import ccc.rest.providers.ResourceSummaryCollectionReader;
 import ccc.rest.providers.RevisionSummaryCollectionReader;
 import ccc.rest.providers.StringCollectionWriter;
 import ccc.rest.providers.TemplateDeltaReader;
+import ccc.rest.providers.TemplateSummaryCollectionReader;
 import ccc.rest.providers.UUIDProvider;
 import ccc.rest.providers.UserSummaryCollectionReader;
 import ccc.rest.providers.UserSummaryReader;
@@ -120,6 +121,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);
         pFactory.addMessageBodyReader(DtoCollectionReader.class);
         pFactory.addMessageBodyReader(Jsonable2Reader.class);
+        pFactory.addMessageBodyReader(TemplateSummaryCollectionReader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);
@@ -146,8 +148,8 @@ public class ProxyServiceLocator implements ServiceLocator {
     private final HttpClient _httpClient;
 
 
-    public ProxyServiceLocator(final HttpClient _http, final String hostUrl) {
-        _httpClient = _http;
+    public ProxyServiceLocator(final HttpClient http, final String hostUrl) {
+        _httpClient = http;
         _hostUrl = hostUrl;
         _secure = _hostUrl+"/ccc/api/secure";
         _public = _hostUrl+"/ccc/api/public";
@@ -158,31 +160,36 @@ public class ProxyServiceLocator implements ServiceLocator {
         LOG.debug("Upload URL: "+_upload);
 
         _commands  =
-            ProxyFactory.create(Resources.class, _secure+"/resources", _http);
+            new ResourcesDecorator(
+                ProxyFactory.create(
+                    Resources.class, _secure+"/resources", http),
+                    _secure,
+                    http);
         _users     =
-            ProxyFactory.create(Users.class, _secure+"/users", _http);
+            ProxyFactory.create(Users.class, _secure+"/users", http);
         _actions   =
-            ProxyFactory.create(Actions.class, _secure+"/actions", _http);
+            ProxyFactory.create(Actions.class, _secure+"/actions", http);
         _folders   =
-            ProxyFactory.create(Folders.class, _secure+"/folders", _http);
+            ProxyFactory.create(Folders.class, _secure+"/folders", http);
         _pages     =
-            ProxyFactory.create(Pages.class, _secure+"/pages", _http);
+            ProxyFactory.create(Pages.class, _secure+"/pages", http);
         _security  =
-            ProxyFactory.create(Security.class, _public, _http);
+            ProxyFactory.create(Security.class, _public, http);
         _templates =
-            ProxyFactory.create(Templates.class, _secure+"/templates", _http);
+            ProxyFactory.create(Templates.class, _secure+"/templates", http);
         _comments  =
-            ProxyFactory.create(Comments.class, _secure+"/comments", _http);
+            ProxyFactory.create(Comments.class, _secure+"/comments", http);
         _files     =
-            ProxyFactory.create(Files.class, _secure+"/files", _http);
+            ProxyFactory.create(Files.class, _secure+"/files", http);
         _groups    =
-            ProxyFactory.create(Groups.class, _secure+"/groups", _http);
+            ProxyFactory.create(Groups.class, _secure+"/groups", http);
         _aliases =
-            ProxyFactory.create(Aliases.class, _secure+"/aliases", _http);
+            ProxyFactory.create(Aliases.class, _secure+"/aliases", http);
         _search    =
-            ProxyFactory.create(SearchEngine.class, _secure+"/search", _http);
+            ProxyFactory.create(SearchEngine.class, _secure+"/search", http);
         _actionScheduler =
-            ProxyFactory.create(ActionScheduler.class, _secure+"/actions", _http);
+            ProxyFactory.create(
+                ActionScheduler.class, _secure+"/actions", http);
     }
 
 

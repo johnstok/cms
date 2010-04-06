@@ -37,11 +37,16 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.ejb.EJBException;
+
 import org.apache.log4j.Logger;
 
-import ccc.commons.Resources;
 import ccc.commons.WordCharFixer;
+import ccc.rest.Folders;
 import ccc.rest.Groups;
+import ccc.rest.ResourceExistsException;
+import ccc.rest.Resources;
+import ccc.rest.ServiceLocator;
 import ccc.rest.Users;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.GroupDto;
@@ -50,9 +55,10 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.exceptions.RestException;
+import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
-import ccc.types.FailureCode;
+import ccc.types.DBC;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 import ccc.types.ResourceName;
@@ -65,10 +71,11 @@ import ccc.types.ResourceName;
 public class BaseMigrations {
     private static Logger log = Logger.getLogger(BaseMigrations.class);
 
-    private final Users _userCommands;
-    private final Migration _pagesExt;
+    private final ServiceLocator _services;
+
+    private final Migration _migration;
     private final ResourcesExt _resourcesExt;
-    private final Groups _groups;
+    private final FoldersExt _foldersExt;
 
     private final LegacyDBQueries _legacyQueries;
     private final TemplateMigration _tm;
@@ -78,7 +85,7 @@ public class BaseMigrations {
         new HashMap<String, GroupDto>();
 
     private final Properties _paragraphTypes =
-        Resources.readIntoProps("paragraph-types.properties");
+        ccc.commons.Resources.readIntoProps("paragraph-types.properties");
 
 
 
@@ -86,29 +93,24 @@ public class BaseMigrations {
 
     /**
      * Constructor.
-     *
-     * @param userCommands The CCC7 users API.
-     * @param pagesExt The CCC7 pages API.
-     * @param resourcesExt The CCC7 resources API.
      */
-    protected BaseMigrations(final Users userCommands,
+    protected BaseMigrations(final ServiceLocator service,
                              final Migration pagesExt,
                              final ResourcesExt resourcesExt,
-                             final Groups groups,
+                             final FoldersExt foldersExt,
                              final LegacyDBQueries legacyQueries,
                              final TemplateMigration tm,
                              final String linkPrefix) {
-        _userCommands = userCommands;
-        _pagesExt = pagesExt;
-        _resourcesExt = resourcesExt;
-        _legacyQueries = legacyQueries;
-        _tm = tm;
-        _linkPrefix = linkPrefix;
-        _groups = groups;
+        _services      = DBC.require().notNull(service);
+        _migration      = DBC.require().notNull(pagesExt);
+        _resourcesExt  = DBC.require().notNull(resourcesExt);
+        _foldersExt    = DBC.require().notNull(foldersExt);
+        _legacyQueries = DBC.require().notNull(legacyQueries);
+        _tm            = DBC.require().notNull(tm);
+        _linkPrefix    = DBC.require().notNull(linkPrefix);
     }
 
 
-    @SuppressWarnings("unchecked")
     protected LogEntryBean logEntryForVersion(final int id,
                                               final int version,
                                               final String action,
@@ -119,8 +121,9 @@ public class BaseMigrations {
         if (null==le && version == 0) {
             final LogEntryBean fe = new LogEntryBean(0, new Date());
             final List<UserDto> users =
-              _userCommands.listUsers(
-                  username, null, null,null, null, null, null, 1, 1).getElements();
+              getUsers()
+                  .listUsers(username, null, null, null, null, null, null, 1, 1)
+                  .getElements();
             fe.setUser(users.get(0));
             return fe;
         } else if (null == le) {
@@ -143,7 +146,7 @@ public class BaseMigrations {
 
     private UserDto userForLegacyId(final int ccc6UserId) {
         try {
-            return _userCommands.userByLegacyId(""+ccc6UserId);
+            return getUsers().userByLegacyId(""+ccc6UserId);
         } catch (final RestException e) {
             throw new RuntimeException(
                 "User fetching failed with legacyID "+ccc6UserId, e);
@@ -183,7 +186,8 @@ public class BaseMigrations {
                     break;
 
                 default:
-                    throw new RuntimeException("Unsupported paragraph type: "+type);
+                    throw new RuntimeException(
+                        "Unsupported paragraph type: "+type);
             }
         }
 
@@ -194,17 +198,16 @@ public class BaseMigrations {
 
 
     protected ResourceSummary createPage(final UUID parentFolderId,
-                                       final ResourceBean r,
-                                       final Integer version,
-                                       final LogEntryBean le,
-                                       final PageDelta delta)
-                                                 throws RestException {
+                                         final ResourceBean r,
+                                         final Integer version,
+                                         final LogEntryBean le,
+                                         final PageDelta delta) {
 
         final String pageTitle = r.cleanTitle();
 
         ResourceSummary rs;
         try {
-            rs = _pagesExt.createPage(
+            rs = _migration.createPage(
                 parentFolderId,
                 delta,
                 r.name(),
@@ -215,9 +218,9 @@ public class BaseMigrations {
                 le.getHappenedOn(),
                 null,
                 true);
-        } catch (final RestException e) {
-            if (FailureCode.EXISTS ==e.getCode()) {
-                rs = _pagesExt.createPage(
+        } catch (final EJBException e) {
+            if (e.getCausedByException() instanceof ResourceExistsException) {
+                rs = _migration.createPage(
                     parentFolderId,
                     delta,
                     r.name()+"1",
@@ -240,8 +243,7 @@ public class BaseMigrations {
 
     protected void setResourceRoles(final ResourceBean r,
                                     final ResourceSummary rs,
-                                    final LogEntryBean le)
-                                                 throws RestException {
+                                    final LogEntryBean le) {
         if (r.isSecure()) {
             log.info(
                 "Resource has security constraints "
@@ -250,7 +252,7 @@ public class BaseMigrations {
             final Collection<String> roles =
                 _legacyQueries.selectRolesForResource(r.contentId());
             final Set<UUID> groupList =
-                UserMigration.migrateGroups(roles, _cachedGroups, _groups);
+                UserMigration.migrateGroups(roles, _cachedGroups, getGroups());
             final Set<Entry> groupEntries = new HashSet<Entry>();
             for (final UUID gId : groupList) {
                 final Entry e = new Entry(); // FIXME: Read perm's from cc6?
@@ -276,7 +278,7 @@ public class BaseMigrations {
                     .setGroups(groupEntries)
                     .setUsers(userList);
 
-            _pagesExt.changeRoles(
+            _migration.changeRoles(
                 rs.getId(),
                 acl,
                 le.getUser().getId(),
@@ -292,14 +294,12 @@ public class BaseMigrations {
      * @param r The CCC6 resource.
      * @param rs The equivalent CCC7 resource.
      * @param le Audit details for the metadata change.
-     *
-     * @throws RestException If the update fails.
      */
-    protected void setTemplateForResource(final ResourceBean r,
-                                          final ResourceSummary rs,
-                                          final LogEntryBean le,
-                                          final ResourceSummary templateFolder)
-                                                 throws RestException {
+    protected void setTemplateForResource(
+                                      final ResourceBean r,
+                                      final ResourceSummary rs,
+                                      final LogEntryBean le,
+                                      final ResourceSummary templateFolder) {
         final String templateName = r.displayTemplate();
         final String templateDescription = r.templateDescription();
 
@@ -311,7 +311,7 @@ public class BaseMigrations {
             new ResourceName(templateName),
             templateDescription,
             templateFolder);
-        _pagesExt.updateResourceTemplate(
+        _migration.updateResourceTemplate(
             rs.getId(), templateId, le.getUser().getId(), le.getHappenedOn());
     }
 
@@ -322,14 +322,12 @@ public class BaseMigrations {
      * @param r The CCC6 resource.
      * @param rs The equivalent CCC7 resource.
      * @param le Audit details for the metadata change.
-     *
-     * @throws RestException If the update fails.
      */
     protected void publish(final ResourceBean r,
                            final ResourceSummary rs,
-                           final LogEntryBean le) throws RestException {
+                           final LogEntryBean le) {
         if (r.isPublished()) {
-            _pagesExt.publish(
+            _migration.publish(
                 rs.getId(), le.getUser().getId(), le.getHappenedOn());
         }
     }
@@ -341,13 +339,10 @@ public class BaseMigrations {
      * @param r The CCC6 resource.
      * @param rs The equivalent CCC7 resource.
      * @param le Audit details for the metadata change.
-     *
-     * @throws RestException If the update fails.
      */
     protected void setMetadata(final ResourceBean r,
                                final ResourceSummary rs,
-                               final LogEntryBean le)
-                                                 throws RestException {
+                               final LogEntryBean le) {
 
         final Map<String, String> metadata =
             new HashMap<String, String>();
@@ -358,7 +353,7 @@ public class BaseMigrations {
             metadata.put("useInIndex", ""+r.useInIndex());
         }
 
-        _pagesExt.updateMetadata(
+        _migration.updateMetadata(
             rs.getId(),
             rs.getTitle(),
             rs.getDescription(),
@@ -385,7 +380,7 @@ public class BaseMigrations {
             _legacyQueries.selectParagraphs(pageId, version);
 
         for (final ParagraphBean p : paragraphs) {
-            if (p.text() == null || p.text().equals("")) { // ignore empty/null texts
+            if (isEmpty(p)) { // ignore empty/null texts
                 log.debug("Ignoring empty part for paragraph "+p.key());
 
             } else if (map.containsKey(p.key())) { // merge
@@ -406,6 +401,11 @@ public class BaseMigrations {
         checkDuplicateKeys(map);
 
         return map;
+    }
+
+
+    private boolean isEmpty(final ParagraphBean p) {
+        return p.text() == null || p.text().equals("");
     }
 
 
@@ -469,7 +469,7 @@ public class BaseMigrations {
      * @return Returns the CCC7 users API.
      */
     protected final Users getUsers() {
-        return _userCommands;
+        return _services.getUsers();
     }
 
 
@@ -479,7 +479,7 @@ public class BaseMigrations {
      * @return Returns the CCC7 pages API.
      */
     protected final Migration getMigrations() {
-        return _pagesExt;
+        return _migration;
     }
 
 
@@ -488,8 +488,38 @@ public class BaseMigrations {
      *
      * @return Returns the CCC7 resources API.
      */
-    protected final ResourcesExt getResources() {
+    protected final Resources getResources() {
+        return _services.getResources();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the CCC7 folders API.
+     */
+    protected final Folders getFolders() {
+        return _services.getFolders();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the extended CCC7 resources API.
+     */
+    protected final ResourcesExt getResourcesExt() {
         return _resourcesExt;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the extended CCC7 folders API.
+     */
+    protected final FoldersExt getFoldersExt() {
+        return _foldersExt;
     }
 
 
@@ -499,7 +529,7 @@ public class BaseMigrations {
      * @return Returns the CCC7 groups API.
      */
     protected Groups getGroups() {
-        return _groups;
+        return _services.getGroups();
     }
 
 

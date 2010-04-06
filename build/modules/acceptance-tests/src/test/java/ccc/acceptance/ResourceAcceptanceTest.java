@@ -43,7 +43,6 @@ import ccc.rest.dto.UserDto;
 import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.serialization.JsonImpl;
 import ccc.serialization.JsonKeys;
 import ccc.types.Duration;
@@ -67,8 +66,6 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
-     * @throws UnauthorizedException
      */
     public void testUnlockResource() throws Exception {
 
@@ -99,7 +96,8 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final ResourceSummary assets = resourceForPath("/assets");
+        final ResourceSummary assets =
+            getCommands().resourceForPath("/assets");
 
         // ACT
         getCommands().lock(folder.getId());
@@ -133,7 +131,7 @@ public class ResourceAcceptanceTest
         getCommands().move(childFolder1.getId(), secondFolder.getId());
 
         // ASSERT
-        final ResourceSummary content = resourceForPath("");
+        final ResourceSummary content = getCommands().resourceForPath("");
         final Collection<ResourceSummary> children =
             getFolders().getChildren(content.getId());
         assertNotNull(children);
@@ -257,7 +255,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
 
         // ACT
-        final ResourceSummary contentRoot = resourceForPath("");
+        final ResourceSummary contentRoot = getCommands().resourceForPath("");
 
         // ASSERT
         assertEquals("content", contentRoot.getName());
@@ -274,7 +272,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
 
-        final ResourceSummary contentRoot = resourceForPath("");
+        final ResourceSummary contentRoot = getCommands().resourceForPath("");
 
         // ACT
         getCommands().lock(contentRoot.getId());
@@ -297,7 +295,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
 
-        final ResourceSummary folder = resourceForPath("");
+        final ResourceSummary folder = getCommands().resourceForPath("");
         final ResourceSummary ts = dummyTemplate(folder);
         getCommands().lock(folder.getId());
 

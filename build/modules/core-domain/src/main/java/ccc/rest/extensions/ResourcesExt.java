@@ -30,11 +30,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.action.ActionExecutor;
-import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.exceptions.UnauthorizedException;
-import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.types.Duration;
 
 
@@ -43,56 +40,10 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated
 public interface ResourcesExt
     extends
-        Resources,
         ActionExecutor {
-
-
-    /**
-     * Look up the resource for a specified path.
-     *
-     * @param path The absolute path.
-     *
-     * @throws RestException If the method fails
-     * @throws UnauthorizedException If the resource is not accessible to the
-     *  current user.
-     *
-     * @return A summary of the corresponding resource.
-     */
-    ResourceSnapshot resourceForPathSecure(String path)
-    throws RestException, UnauthorizedException;
-
-
-    /**
-     * Look up the resource for a specified path.
-     *
-     * @param path The absolute path.
-     * @param version The version number of the resource to retrieve.
-     *
-     * @throws RestException If the method fails
-     * @throws UnauthorizedException If the resource is not accessible to the
-     *  current user.
-     *
-     * @return A summary of the corresponding resource.
-     */
-    ResourceSnapshot revisionForPath(final String path, final int version)
-    throws RestException, UnauthorizedException;
-
-
-    /**
-     * Look up the working copy for a specified path.
-     *
-     * @param path The absolute path.
-     *
-     * @throws RestException If the method fails
-     * @throws UnauthorizedException If the resource is not accessible to the
-     *  current user.
-     *
-     * @return A summary of the corresponding resource.
-     */
-    ResourceSnapshot workingCopyForPath(final String path)
-    throws RestException, UnauthorizedException;
 
 
     /**
@@ -172,27 +123,4 @@ public interface ResourcesExt
      */
     void updateCacheDuration(UUID resourceId, Duration duration)
     throws RestException;
-
-
-    /**
-     * Look up the resource corresponding to a CCC6 ID.
-     *
-     * @param legacyId The CCC6 ID.
-     *
-     * @return The corresponding resource.
-     *
-     * @throws RestException If the method fails.
-     */
-    ResourceSummary lookupWithLegacyId(String legacyId) throws RestException;
-
-
-    /**
-     * Look up the contents of a file as a String.
-     *
-     * @param absolutePath The absolute path to the resource.
-     * @param charset The character set for the file.
-     *
-     * @return The contents as a string.
-     */
-    String fileContentsFromPath(String absolutePath, String charset);
 }

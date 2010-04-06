@@ -29,7 +29,7 @@ package ccc.search;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import ccc.persistence.StreamAction;
+import ccc.rest.StreamAction;
 import ccc.serialization.IO;
 
 /**

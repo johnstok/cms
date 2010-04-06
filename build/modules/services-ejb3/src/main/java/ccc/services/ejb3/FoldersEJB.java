@@ -37,6 +37,7 @@ import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -65,11 +66,13 @@ import ccc.types.SortOrder;
 @Stateless(name=Folders.NAME)
 @TransactionAttribute(REQUIRED)
 @Remote(FoldersExt.class)
+@Local(Folders.class)
 @RolesAllowed({})
 public class FoldersEJB
     extends
         AbstractEJB
     implements
+        Folders,
         FoldersExt {
 
 

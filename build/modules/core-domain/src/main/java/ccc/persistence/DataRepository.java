@@ -30,6 +30,7 @@ package ccc.persistence;
 import java.io.InputStream;
 
 import ccc.domain.Data;
+import ccc.rest.StreamAction;
 
 
 /**
