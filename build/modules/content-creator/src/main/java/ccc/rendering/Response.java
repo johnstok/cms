@@ -39,8 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.Context;
-import ccc.commons.TextProcessor;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.TextProcessor;
 import ccc.types.DBC;
 import ccc.types.Duration;
 import ccc.types.MimeType;

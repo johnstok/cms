@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting;
 
 import ccc.types.DBC;
 

@@ -30,10 +30,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 
-import ccc.commons.Context;
 import ccc.commons.Resources;
-import ccc.commons.Script;
-import ccc.commons.ScriptRunner;
 import ccc.domain.User;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
@@ -42,6 +39,9 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.rhino.ScriptRunner;
 import ccc.types.CommandType;
 
 

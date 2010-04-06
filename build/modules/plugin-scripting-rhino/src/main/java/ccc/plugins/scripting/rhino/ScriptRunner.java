@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting.rhino;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,6 +37,10 @@ import java.util.Map;
 
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
+
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.TextProcessor;
 
 
 /**

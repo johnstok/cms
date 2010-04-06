@@ -35,11 +35,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.commons.Context;
 import ccc.commons.Resources;
-import ccc.commons.Script;
-import ccc.commons.ScriptRunner;
-import ccc.commons.TextProcessor;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.TextProcessor;
+import ccc.plugins.scripting.rhino.ScriptRunner;
 
 
 /**

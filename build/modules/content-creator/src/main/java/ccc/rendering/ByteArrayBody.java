@@ -31,8 +31,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import ccc.commons.Context;
-import ccc.commons.TextProcessor;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.TextProcessor;
 
 
 
