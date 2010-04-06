@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>domain-support</artifactId>
+            <artifactId>api-plugins</artifactId>
             <version>${project.version}</version>
         </dependency>
 

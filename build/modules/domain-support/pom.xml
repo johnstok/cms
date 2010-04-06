@@ -7,8 +7,8 @@
         <version>7.2.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>domain-support</artifactId>
-    <name>domain-support</name>
+    <artifactId>api-plugins</artifactId>
+    <name>api-plugins</name>
     
     <build>
         <plugins>
@@ -34,7 +34,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-rest</artifactId>
+            <artifactId>api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         

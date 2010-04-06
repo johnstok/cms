@@ -31,13 +31,13 @@
                     <modules>
                         <webModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>content-creator</artifactId>
+                            <artifactId>application-war</artifactId>
                             <bundleFileName>content-creator.war</bundleFileName>
                             <contextRoot>/${application.prefix}</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>services-ejb3</artifactId>
+                            <artifactId>core-ejb3</artifactId>
                             <bundleFileName>services-ejb3.jar</bundleFileName>
                         </ejbModule>
                     </modules>
@@ -64,13 +64,13 @@
         <!-- Modules -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>content-creator</artifactId>
+            <artifactId>application-war</artifactId>
             <type>war</type>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>services-ejb3</artifactId>
+            <artifactId>core-ejb3</artifactId>
             <type>ejb</type>
             <version>${project.version}</version>
         </dependency>
@@ -140,7 +140,7 @@
             </exclusions>
         </dependency>
 
-        <!-- For content-creator -->
+        <!-- For application-war -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
@@ -175,7 +175,7 @@
         <!-- Not required in the EAR. -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>shell-tools</artifactId>
+            <artifactId>client-shell</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

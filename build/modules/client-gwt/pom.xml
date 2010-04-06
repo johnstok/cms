@@ -101,7 +101,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-rest</artifactId>
+            <artifactId>api-core</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>

@@ -7,13 +7,13 @@
         <version>7.2.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>api-rest</artifactId>
-    <name>api-rest</name>
+    <artifactId>api-core</artifactId>
+    <name>api-core</name>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>simple-types</artifactId>
+            <artifactId>api-types</artifactId>
             <version>${project.version}</version>
         </dependency>
         

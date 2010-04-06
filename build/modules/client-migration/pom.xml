@@ -14,12 +14,12 @@
         <!-- TODO: Should be public API!! -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>services-ejb3</artifactId>
+			<artifactId>core-ejb3</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>shell-tools</artifactId>
+			<artifactId>client-shell</artifactId>
 			<version>${project.version}</version>
 		</dependency>
         
