@@ -32,16 +32,10 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import javax.security.auth.login.AppConfigurationEntry;
-import javax.security.auth.login.Configuration;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
-import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.sql.DataSource;
 
 import oracle.jdbc.pool.OracleDataSource;
@@ -49,9 +43,6 @@ import oracle.jdbc.pool.OracleDataSource;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
-
-import ccc.migration.MigrationException;
-import ccc.migration.UserNamePasswordHandler;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 
@@ -67,59 +58,8 @@ class CccApp {
     private static final long START_TIME = new Date().getTime();
     private static final long MILLISECS_PER_SEC = 1000;
 
-    private static LoginContext ctx;
-
     /** Constructor. */
     protected CccApp() { super(); }
-
-
-    /**
-     * Login to the server.
-     *
-     * @param username The username for login.
-     * @param password The password for login.
-     */
-    static void login(final String username,
-                      final String password) {
-
-        Configuration.setConfiguration(
-            new Configuration() {
-                @Override public AppConfigurationEntry[]
-                                   getAppConfigurationEntry(final String name) {
-                    final AppConfigurationEntry jBoss =
-                        new AppConfigurationEntry(
-                            "org.jboss.security.ClientLoginModule",
-                            LoginModuleControlFlag.REQUIRED,
-                            Collections.<String, Object> emptyMap());
-                    return new AppConfigurationEntry[] {jBoss};
-                }
-            }
-        );
-
-        try {
-            ctx =
-                new LoginContext(
-                    "ccc",
-                    new UserNamePasswordHandler(username, password));
-            ctx.login();
-        } catch (final LoginException e) {
-            throw new RuntimeException(e);
-        }
-        LOG.info("Logged in.");
-    }
-
-
-    /**
-     * Logout from the server.
-     */
-    static void logout() {
-        try {
-            ctx.logout();
-        } catch (final LoginException e) {
-            throw new RuntimeException(e);
-        }
-        LOG.info("Logged out.");
-    }
 
 
     /**
@@ -199,9 +139,9 @@ class CccApp {
             LOG.debug("Connected to "+connectionString);
             return connection;
         } catch (final ClassNotFoundException e) {
-            throw new MigrationException(e);
+            throw new RuntimeException(e);
         } catch (final SQLException e) {
-            throw new MigrationException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -233,9 +173,9 @@ class CccApp {
             ods.setURL(url);
             return ods;
         } catch (final ClassNotFoundException e) {
-            throw new MigrationException(e);
+            throw new RuntimeException(e);
         } catch (final SQLException e) {
-            throw new MigrationException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -263,7 +203,7 @@ class CccApp {
             ds.setURL(url);
             return ds;
         } catch (final ClassNotFoundException e) {
-            throw new MigrationException(e);
+            throw new RuntimeException(e);
         }
     }
 

@@ -14,12 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>search-lucene</artifactId>
+            <artifactId>domain-support</artifactId>
             <version>${project.version}</version>
         </dependency>
         
@@ -36,8 +31,14 @@
             <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>ejb3-persistence</artifactId>
+            <version>${lib.version.hibernate-ejb3}</version>
+            <scope>provided</scope>
+        </dependency>
 
-        <!-- Vendor specific libraries -->
+        <!-- jBoss specific libraries -->
         <dependency>
             <groupId>jboss</groupId>
             <artifactId>jboss-annotations-ejb3</artifactId>
@@ -50,6 +51,34 @@
             <version>${lib.version.hibernate}</version>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- Third party libraries -->
+        <dependency>
+            <groupId>pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${lib.version.pdfbox}</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${lib.version.poi}</version>
+       </dependency>
+        <dependency>
+            <groupId>org.textmining</groupId>
+            <artifactId>tm-extractors</artifactId>
+            <version>${lib.version.tmextractors}</version>
+       </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lib.version.lucene}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queries</artifactId>
+            <version>${lib.version.lucene}</version>
+        </dependency>
+        
     </dependencies>
     
     <profiles>

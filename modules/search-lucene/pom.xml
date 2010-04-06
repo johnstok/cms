@@ -10,23 +10,6 @@
     <artifactId>search-lucene</artifactId>
     <name>search-lucene</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>core-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>org.apache.lucene</groupId>
-        	<artifactId>lucene-core</artifactId>
-        	<version>${lib.version.lucene}</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.lucene</groupId>
-        	<artifactId>lucene-queries</artifactId>
-        	<version>${lib.version.lucene}</version>
-        </dependency>
-    </dependencies>
+    <dependencies />
 
 </project>
