@@ -99,7 +99,6 @@ public final class Migrate extends LegacyApp {
                 legacyDBQueries,
                 services.getResourcesExt(),
                 services.getMigration(),
-                services.getFoldersExt(),
                 sl.getFileUploader(),
                 options);
         migrations.migrate();

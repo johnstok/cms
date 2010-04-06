@@ -26,11 +26,9 @@
  */
 package ccc.domain;
 
+import static ccc.commons.Encryption.*;
 import static ccc.types.DBC.*;
 
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -62,7 +60,6 @@ public class User
     /** SYSTEM_USER : User. */
     public static final User SYSTEM_USER =
         new User(new Username("SYSTEM"), "SYSTEM", "SYSTEM");
-    private static final int HASH_REPETITIONS = 1000;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
@@ -289,43 +286,6 @@ public class User
 
 
     /**
-     * Hash a password.
-     *
-     * @param passwordString A string representing the password to hash.
-     * @param saltString A string representing the salt to use for hashing.
-     * @return The hashed password as a byte array.
-     */
-    public static byte[] hash(final String passwordString,
-                              final String saltString) {
-
-        try {
-            // Prepare
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            final Charset utf8 = Charset.forName("UTF-8");
-            final byte[] salt = saltString.getBytes(utf8);
-            final byte[] password = passwordString.getBytes(utf8);
-
-            // Compute initial hash
-            digest.reset();
-            digest.update(salt);
-            digest.update(password);
-            byte[] hash = digest.digest();
-
-            // Perform 1000 repetitions
-            for (int i = 0; i < HASH_REPETITIONS; i++) {
-                digest.reset();
-                hash = digest.digest(hash);
-            }
-
-            return hash;
-
-        } catch (final NoSuchAlgorithmException e) {
-            throw new RuntimeException("Failed to compute password digest.", e);
-        }
-    }
-
-
-    /**
      * Test whether a hash matches the specified password.
      *
      * @param expected The expected hash.
@@ -416,4 +376,12 @@ public class User
     /** {@inheritDoc} */
     @Override
     public boolean includes(final User user) { return equals(user); }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The user's password.
+     */
+    public byte[] getPassword() { return Arrays.copyOf(_hash, _hash.length); }
 }

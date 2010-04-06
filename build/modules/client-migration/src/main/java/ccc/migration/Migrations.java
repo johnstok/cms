@@ -43,7 +43,6 @@ import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 import ccc.types.Paragraph;
@@ -84,14 +83,12 @@ public class Migrations extends BaseMigrations {
                       final LegacyDBQueries legacyQueries,
                       final ResourcesExt resourcesExt,
                       final Migration pagesExt,
-                      final FoldersExt foldersExt,
                       final IFileUploader fu,
                       final Options options) {
         super(
             service,
             pagesExt,
             resourcesExt,
-            foldersExt,
             legacyQueries,
             new TemplateMigration(legacyQueries, service.getTemplates()),
             "/"+options.getApp()+"/");

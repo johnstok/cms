@@ -19,14 +19,17 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>client-jaxrs</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>shell-tools</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        
+        <dependency>
+            <groupId>org.jboss.jbossas</groupId>
+            <artifactId>jboss-as-client</artifactId>
+            <type>pom</type>
+            <version>${lib.version.jboss}</version>
+        </dependency>
+        
     </dependencies>
 
     <build>

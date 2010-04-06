@@ -38,7 +38,6 @@ import java.util.UUID;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -52,7 +51,6 @@ import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FolderDelta;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.FoldersExt;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;
 import ccc.types.SortOrder;
@@ -65,15 +63,13 @@ import ccc.types.SortOrder;
  */
 @Stateless(name=Folders.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(FoldersExt.class)
 @Local(Folders.class)
 @RolesAllowed({})
 public class FoldersEJB
     extends
         AbstractEJB
     implements
-        Folders,
-        FoldersExt {
+        Folders {
 
 
     /** {@inheritDoc} */
