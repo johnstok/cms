@@ -44,7 +44,7 @@ import ccc.migration.Migrations;
 /**
  * Entry class for the migration application.
  */
-public final class Migrate extends CccApp {
+public final class Migrate extends LegacyApp {
     private static final Logger LOG = Logger.getLogger(Migrate.class);
     private static LegacyDBQueries legacyDBQueries;
     private static MigrationServiceLocator services;

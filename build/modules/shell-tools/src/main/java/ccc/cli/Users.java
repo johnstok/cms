@@ -33,7 +33,6 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.migration.NewDBQueries;
 
 
 /**

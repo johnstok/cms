@@ -24,7 +24,7 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.migration;
+package ccc.cli;
 
 import static ccc.types.DBC.*;
 
@@ -44,7 +44,7 @@ import ccc.domain.User;
  *
  * @author Civic Computing Ltd
  */
-public class NewDBQueries {
+class NewDBQueries {
 
     private final Connection _connection;
 

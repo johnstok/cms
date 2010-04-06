@@ -10,37 +10,6 @@
     <artifactId>core-domain</artifactId>
     <name>core-domain</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>domain-support</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <!-- JEE dependencies -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>ejb3-persistence</artifactId>
-            <version>${lib.version.hibernate-ejb3}</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <!-- Vendor specific dependencies -->
-        <dependency>
-            <groupId>pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>${lib.version.pdfbox}</version>
-        </dependency> 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${lib.version.poi}</version>
-       </dependency>
-        <dependency>
-            <groupId>org.textmining</groupId>
-            <artifactId>tm-extractors</artifactId>
-            <version>${lib.version.tmextractors}</version>
-       </dependency>
-    </dependencies>
-    
+    <dependencies />
+
 </project>

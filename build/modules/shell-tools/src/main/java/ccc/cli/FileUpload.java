@@ -51,7 +51,7 @@ import ccc.types.ResourcePath;
  *
  * @author Civic Computing Ltd.
  */
-public class FileUpload extends CccApp {
+public class FileUpload extends LegacyApp {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
     private static Server        server;

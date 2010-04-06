@@ -26,7 +26,6 @@
  */
 package ccc.cli;
 
-import ccc.migration.MigrationException;
 
 
 /**
@@ -105,7 +104,7 @@ public enum DatabaseVendor {
         } else if (conString.startsWith("jdbc:h2")) {
             return DatabaseVendor.H2;
         } else {
-            throw new MigrationException("Unsupported database");
+            throw new RuntimeException("Unsupported database");
         }
 
     }

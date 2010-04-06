@@ -47,7 +47,7 @@ import ccc.types.ResourceName;
 /**
  * Entry class for the 'create' application.
  */
-public final class Create extends CccApp {
+public final class Create extends LegacyApp {
     private static final Logger LOG = Logger.getLogger(Create.class);
 
     private static Options options;
