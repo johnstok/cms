@@ -43,10 +43,10 @@ import ccc.rest.dto.AliasDto;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.PageDelta;
+import ccc.rest.dto.ResourceSnapshot;
 import ccc.rest.dto.TemplateDelta;
 import ccc.rest.dto.TextFileDelta;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.snapshots.ResourceSnapshot;
 
 
 /**

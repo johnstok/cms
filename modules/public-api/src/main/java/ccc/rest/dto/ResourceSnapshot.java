@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.snapshots;
+package ccc.rest.dto;
 
 import java.io.Serializable;
 import java.util.Date;
