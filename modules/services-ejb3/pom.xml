@@ -7,14 +7,14 @@
         <version>7.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>services-ejb3</artifactId>
-    <name>services-ejb3</name>
+    <artifactId>core-ejb3</artifactId>
+    <name>core-ejb3</name>
     <packaging>ejb</packaging>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>domain-support</artifactId>
+            <artifactId>api-plugins</artifactId>
             <version>${project.version}</version>
         </dependency>
         

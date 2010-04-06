@@ -7,8 +7,8 @@
 		<version>7.2.0-SNAPSHOT</version>
 	</parent>
     
-	<artifactId>shell-tools</artifactId>
-	<name>shell-tools</name>
+	<artifactId>client-shell</artifactId>
+	<name>client-shell</name>
     
 	<dependencies>
 		<dependency>
@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>domain-support</artifactId>
+			<artifactId>api-plugins</artifactId>
 			<version>${project.version}</version>
 		</dependency>
         
