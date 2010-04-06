@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.commons.Resources;
-import ccc.commons.Script;
+import ccc.plugins.scripting.Script;
 import ccc.types.Duration;
 import ccc.types.MimeType;
 

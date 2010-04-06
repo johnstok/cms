@@ -105,6 +105,7 @@
         <module>modules/content-creator</module>
         <module>modules/application-ear</module>
         <module>modules/acceptance-tests</module>
+        <module>modules/plugin-scripting-rhino</module>
     </modules>
 
     <build>

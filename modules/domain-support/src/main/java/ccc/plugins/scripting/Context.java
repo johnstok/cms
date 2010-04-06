@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting;
 
 import java.util.HashMap;
 import java.util.Map;

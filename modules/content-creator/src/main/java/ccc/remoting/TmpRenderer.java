@@ -28,7 +28,7 @@ package ccc.remoting;
 
 import java.util.UUID;
 
-import ccc.commons.Script;
+import ccc.plugins.scripting.Script;
 import ccc.rendering.FileBody;
 import ccc.rendering.NotFoundException;
 import ccc.rendering.PageBody;

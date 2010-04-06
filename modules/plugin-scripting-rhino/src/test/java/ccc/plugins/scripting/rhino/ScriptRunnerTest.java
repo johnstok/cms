@@ -24,11 +24,15 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting.rhino;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
+
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.rhino.ScriptRunner;
 
 import junit.framework.TestCase;
 

@@ -24,10 +24,15 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting.rhino;
 
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+
+import ccc.commons.Resources;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.rhino.ScriptRunner;
 
 
 /**

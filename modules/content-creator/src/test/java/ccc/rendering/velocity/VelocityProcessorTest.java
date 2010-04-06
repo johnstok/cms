@@ -37,10 +37,10 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 
 import ccc.api.client1.MemoryServiceLocator;
-import ccc.commons.Context;
-import ccc.commons.Script;
 import ccc.commons.Testing;
-import ccc.commons.TextProcessor;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.TextProcessor;
 import ccc.rest.Resources;
 import ccc.rest.ServiceLocator;
 import ccc.rest.dto.PageDelta;

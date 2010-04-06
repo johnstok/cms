@@ -24,7 +24,7 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting.rhino;
 
 import java.util.List;
 

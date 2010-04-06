@@ -48,10 +48,10 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
-import ccc.commons.Context;
-import ccc.commons.Script;
-import ccc.commons.TextProcessor;
 import ccc.commons.XHTML;
+import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.Script;
+import ccc.plugins.scripting.TextProcessor;
 import ccc.rest.ServiceLocator;
 import ccc.types.DBC;
 

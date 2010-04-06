@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.scripting.rhino;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -40,7 +40,7 @@ import org.mozilla.javascript.Scriptable;
  *
  * @author Civic Computing Ltd.
  */
-public final class RhinoGlobalFunctions {
+final class RhinoGlobalFunctions {
 
     private static final Logger LOG =
         Logger.getLogger(RhinoGlobalFunctions.class);
