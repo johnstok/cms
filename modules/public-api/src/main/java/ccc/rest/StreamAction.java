@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,36 +24,22 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+
+package ccc.rest;
 
 import java.io.InputStream;
 
-import org.textmining.extraction.TextExtractor;
-import org.textmining.extraction.word.WordTextExtractorFactory;
-
-import ccc.rest.StreamAction;
-
 /**
- * A stream action that interprets a stream as a MS Word document.
+ * An action to perform on an {@link InputStream}.
  *
  * @author Civic Computing Ltd.
  */
-public class WordExtractor implements StreamAction {
-    private final WordTextExtractorFactory _factory =
-        new WordTextExtractorFactory();
-    private TextExtractor _extractor;
-
-    /** {@inheritDoc} */
-    @Override public void execute(final InputStream is) throws Exception {
-        _extractor = _factory.textExtractor(is);
-    }
-
+public interface StreamAction {
     /**
-     * Accessor.
+     * Execute the action.
      *
-     * @return The text from a MS Word document, as a text extractor.
+     * @param is The input stream to operate on.
+     * @throws Exception If the action fails.
      */
-    public TextExtractor getExtractor() {
-        return _extractor;
-    }
+    void execute(InputStream is) throws Exception;
 }

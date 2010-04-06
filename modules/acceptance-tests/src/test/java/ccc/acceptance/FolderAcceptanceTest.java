@@ -65,7 +65,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final String fName = UUID.randomUUID().toString();
         final String cn1 = "a-"+UUID.randomUUID().toString();
         final String cn2 = "b-"+UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("");
+        final ResourceSummary content =
+            getCommands().resourceForPath("");
         final ResourceSummary testFolder =
             getFolders().createFolder(
                 new FolderDto(content.getId(), new ResourceName(fName)));
@@ -97,7 +98,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath(""));
+            dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
@@ -121,7 +122,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath(""));
+            dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page1 =
             tempPage(folder.getId(), template.getId());
         final ResourceSummary page2 =
@@ -168,7 +169,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath(""));
+            dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page1 = tempPage(f.getId(), template.getId());
         pause(1000);
         final ResourceSummary page2 = tempPage(f.getId(), template.getId());
@@ -212,7 +213,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final ResourceSummary template =
-            dummyTemplate(resourceForPath(""));
+            dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page = tempPage(folder.getId(), template.getId());
 
         // ACT

@@ -47,15 +47,14 @@ import ccc.commands.UpdateFileCommand;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.persistence.StreamAction;
 import ccc.rest.Files;
+import ccc.rest.StreamAction;
 import ccc.rest.dto.DtoCollection;
 import ccc.rest.dto.FileDelta;
 import ccc.rest.dto.FileDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDelta;
 import ccc.rest.dto.TextFileDto;
-import ccc.rest.extensions.FilesExt;
 import ccc.types.FilePropertyNames;
 import ccc.types.ResourceName;
 
@@ -67,13 +66,13 @@ import ccc.types.ResourceName;
  */
 @Stateless(name=Files.NAME)
 @TransactionAttribute(REQUIRED)
-@Local(FilesExt.class)
+@Local(Files.class)
 @RolesAllowed({})
 public class FilesEJB
     extends
         AbstractEJB
     implements
-        FilesExt {
+        Files {
 
 
     /** {@inheritDoc} */

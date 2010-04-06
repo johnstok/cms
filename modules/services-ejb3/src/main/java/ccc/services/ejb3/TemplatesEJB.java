@@ -34,7 +34,7 @@ import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -55,7 +55,7 @@ import ccc.rest.exceptions.EntityNotFoundException;
  */
 @Stateless(name=Templates.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Templates.class)
+@Local(Templates.class)
 @RolesAllowed({})
 public final class TemplatesEJB
     extends

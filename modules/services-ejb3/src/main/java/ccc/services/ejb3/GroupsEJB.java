@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
@@ -53,7 +53,7 @@ import ccc.types.Permission;
  */
 @Stateless(name=Groups.NAME)
 @TransactionAttribute(REQUIRED)
-@Remote(Groups.class)
+@Local(Groups.class)
 @RolesAllowed({})
 public class GroupsEJB
     extends

@@ -58,7 +58,8 @@ public class ContentServletAcceptanceTest
         metadata.set(
             "metadata", Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
         final ResourceSummary script = createFile(
             fName,
             "print('foo\\n'); response.flushBuffer(); throw 'foo';",
@@ -90,7 +91,8 @@ public class ContentServletAcceptanceTest
         metadata.set(
             "metadata", Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary filesFolder = resourceForPath("/files");
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
         final ResourceSummary script = createFile(
             fName,
             "throw 'foo';",

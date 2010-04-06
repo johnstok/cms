@@ -35,6 +35,7 @@ import junit.framework.TestCase;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
 import ccc.rest.SearchEngine;
+import ccc.rest.StreamAction;
 
 
 /**

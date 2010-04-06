@@ -42,8 +42,6 @@ import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
-import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
 
 
 /**
@@ -84,7 +82,7 @@ public class RegistryServiceLocator implements ServiceLocator {
      * Constructor.
      *
      * @param appName The name of the application.
-     * @param providerUrl The java naming provider URL
+     * @param providerUrl The java naming provider URL.
      */
     public RegistryServiceLocator(final String appName,
                                   final String providerUrl) {
@@ -96,8 +94,8 @@ public class RegistryServiceLocator implements ServiceLocator {
 
     /** {@inheritDoc} */
     @Override
-    public ResourcesExt getResources() {
-        return _registry.<ResourcesExt>get(remotePath(Resources.NAME));
+    public Resources getResources() {
+        return _registry.<Resources>get(localPath(Resources.NAME));
     }
 
 
@@ -110,15 +108,15 @@ public class RegistryServiceLocator implements ServiceLocator {
 
     /** {@inheritDoc} */
     @Override
-    public FoldersExt getFolders() {
-        return _registry.<FoldersExt>get(remotePath(Folders.NAME));
+    public Folders getFolders() {
+        return _registry.<Folders>get(localPath(Folders.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Users getUsers() {
-        return _registry.<Users>get(remotePath(Users.NAME));
+        return _registry.<Users>get(localPath(Users.NAME));
     }
 
     /** {@inheritDoc} */
@@ -138,21 +136,21 @@ public class RegistryServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Templates getTemplates() {
-        return _registry.<Templates>get(remotePath(Templates.NAME));
+        return _registry.<Templates>get(localPath(Templates.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Actions getActions() {
-        return _registry.<Actions>get(remotePath(Actions.NAME));
+        return _registry.<Actions>get(localPath(Actions.NAME));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Groups getGroups() {
-        return _registry.<Groups>get(remotePath(Groups.NAME));
+        return _registry.<Groups>get(localPath(Groups.NAME));
     }
 
 
@@ -184,12 +182,17 @@ public class RegistryServiceLocator implements ServiceLocator {
     }
 
 
-    private String remotePath(final String serviceName) {
+    protected Registry getRegistry() {
+        return _registry;
+    }
+
+
+    protected String remotePath(final String serviceName) {
         return _appName+"/"+serviceName+"/remote";
     }
 
 
-    private String localPath(final String serviceName) {
+    protected String localPath(final String serviceName) {
         return _appName+"/"+serviceName+"/local";
     }
 }

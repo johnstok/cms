@@ -47,7 +47,6 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
-import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
@@ -76,7 +75,6 @@ import ccc.rest.dto.UserDto;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.providers.RestExceptionMapper;
 import ccc.serialization.JsonImpl;
-import ccc.types.HttpStatusCode;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
@@ -295,7 +293,7 @@ public abstract class AbstractAcceptanceTest
      */
     protected ResourceSummary tempFolder() throws RestException {
         final String fName = UUID.randomUUID().toString();
-        final ResourceSummary content = resourceForPath("");
+        final ResourceSummary content = getCommands().resourceForPath("");
         return getFolders().createFolder(
             new FolderDto(content.getId(), new ResourceName(fName)));
     }
@@ -310,7 +308,7 @@ public abstract class AbstractAcceptanceTest
      */
     protected ResourceSummary tempAlias() throws RestException {
         final String name = UUID.randomUUID().toString();
-        final ResourceSummary folder = resourceForPath("");
+        final ResourceSummary folder = getCommands().resourceForPath("");
         final AliasDto alias =
             new AliasDto(
                 folder.getId(), new ResourceName(name), folder.getId());
@@ -473,33 +471,6 @@ public abstract class AbstractAcceptanceTest
      */
     protected Username dummyUsername() {
         return new Username(UUID.randomUUID().toString().substring(0, 8));
-    }
-
-
-    /**
-     * Look up the resource for a path.
-     * <p><i>This method works around an encoding issue in REST-EASY 1.1</i>.
-     *
-     * @param path The resource's fully qualified path.
-     *
-     * @return The corresponding resource summary.
-     */
-    protected ResourceSummary resourceForPath(final String path) {
-
-        final ClientRequest request =
-            new ClientRequest(_secure+"/resources/by-path"+path, _http);
-
-        try {
-            final ClientResponse<ResourceSummary> response =
-                request.get(ResourceSummary.class);
-            if (response.getStatus() == HttpStatusCode.OK) {
-                return response.getEntity();
-            }
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        throw new RuntimeException("Request failed.");
     }
 
 

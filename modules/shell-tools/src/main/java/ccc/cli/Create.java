@@ -33,7 +33,10 @@ import static ccc.types.PredefinedResourceNames.*;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.client1.RegistryServiceLocator;
+import ccc.api.client1.ProxyServiceLocator;
+import ccc.migration.MigrationServiceLocator;
+import ccc.rest.Folders;
+import ccc.rest.Resources;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
@@ -48,7 +51,7 @@ public final class Create extends CccApp {
     private static final Logger LOG = Logger.getLogger(Create.class);
 
     private static Options options;
-    private static RegistryServiceLocator services;
+    private static MigrationServiceLocator services;
 
     private Create() { /* NO-OP */ }
 
@@ -63,49 +66,56 @@ public final class Create extends CccApp {
 
         options  = parseOptions(args, Options.class);
 
-        login(options.getUsername(), options.getPassword());
-
         services =
-            new RegistryServiceLocator(options.getApp(), options.getProviderURL());
+            new MigrationServiceLocator(
+                options.getApp(), options.getProviderURL());
+        final ProxyServiceLocator sl =
+            new ProxyServiceLocator(options.getUploadUrl());
 
-        createSchemaStructure();
+        login(options.getUsername(), options.getPassword());
+        sl.getSecurity().login(options.getUsername(), options.getPassword());
+
+        createSchemaStructure(sl);
 
         logout();
 
         report("Finished in ");
     }
 
-    private static void createSchemaStructure() {
+    private static void createSchemaStructure(final ProxyServiceLocator sl) {
         try {
-            final ResourcesExt resourcesExt = services.getResources();
-            final FoldersExt foldersExt = services.getFolders();
+            final ResourcesExt resourcesExt = services.getResourcesExt();
+            final FoldersExt foldersExt = services.getFoldersExt();
+
+            final Folders folders = sl.getFolders();
+            final Resources resources = sl.getResources();
 
             final ResourceSummary content = foldersExt.createRoot(CONTENT);
             foldersExt.createRoot(TRASH);
 
-            final ResourceSummary assets = foldersExt.createFolder(
+            final ResourceSummary assets = folders.createFolder(
                 new FolderDto(content.getId(), new ResourceName(ASSETS)));
 
-            foldersExt.createFolder(
+            folders.createFolder(
                 new FolderDto(assets.getId(), new ResourceName(TEMPLATES)));
-            foldersExt.createFolder(
+            folders.createFolder(
                 new FolderDto(assets.getId(), new ResourceName(CSS)));
-            foldersExt.createFolder(
+            folders.createFolder(
                 new FolderDto(assets.getId(), new ResourceName(IMAGES)));
 
-            foldersExt.createFolder(
+            folders.createFolder(
                 new FolderDto(content.getId(), new ResourceName(FILES)));
-            foldersExt.createFolder(
+            folders.createFolder(
                 new FolderDto(content.getId(), new ResourceName(IMAGES)));
             resourcesExt.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI
-            resourcesExt.lock(content.getId());
-            resourcesExt.publish(content.getId());
-            resourcesExt.unlock(content.getId());
-            resourcesExt.lock(assets.getId());
-            resourcesExt.publish(assets.getId());
-            resourcesExt.unlock(assets.getId());
+            resources.lock(content.getId());
+            resources.publish(content.getId());
+            resources.unlock(content.getId());
+            resources.lock(assets.getId());
+            resources.publish(assets.getId());
+            resources.unlock(assets.getId());
 
             LOG.info("Created default folder structure.");
         } catch (final RestException e) {
@@ -130,6 +140,10 @@ public final class Create extends CccApp {
         @Option(
             name="-a", required=true, usage="App name.")
         private String _app;
+
+        @Option(
+            name="-o", required=true, usage="The URL for file upload.")
+        private String _uploadUrl;
 
         @Option(
             name="-jn",
@@ -175,6 +189,16 @@ public final class Create extends CccApp {
          */
         String getProviderURL() {
             return _providerURL;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the uploadUrl.
+         */
+        public String getUploadUrl() {
+            return _uploadUrl;
         }
     }
 }

@@ -40,8 +40,8 @@ import javax.servlet.FilterChain;
 import junit.framework.TestCase;
 import ccc.commons.Testing;
 import ccc.rendering.RedirectRequiredException;
+import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourceType;
 
 
@@ -90,7 +90,7 @@ public class LegacyLinkFilterTest
         final String badPath = "/1234.html";
 
         // EXPECT
-        expect(_resources.lookupWithLegacyId("1234")).andReturn(RS);
+        expect(_resources.resourceForLegacyId("1234")).andReturn(RS);
         replayAll();
 
 
@@ -123,7 +123,7 @@ public class LegacyLinkFilterTest
         final String badPath = "/141.1.81.htm";
 
         // EXPECT
-        expect(_resources.lookupWithLegacyId("141")).andReturn(RS);
+        expect(_resources.resourceForLegacyId("141")).andReturn(RS);
         replayAll();
 
 
@@ -236,7 +236,7 @@ public class LegacyLinkFilterTest
     public void testHandlesControllerStyleUrls() throws Exception {
 
         // ARRANGE
-        expect(_resources.lookupWithLegacyId("415")).andStubReturn(
+        expect(_resources.resourceForLegacyId("415")).andStubReturn(
             new ResourceSummary(
                 UUID.randomUUID(),
                 null,
@@ -291,7 +291,7 @@ public class LegacyLinkFilterTest
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        _resources = createStrictMock(ResourcesExt.class);
+        _resources = createStrictMock(Resources.class);
     }
 
 
@@ -315,7 +315,7 @@ public class LegacyLinkFilterTest
     }
 
 
-    private ResourcesExt _resources;
+    private Resources _resources;
     private static final ResourceSummary RS = new ResourceSummary(
         UUID.randomUUID(),
         UUID.randomUUID(),
