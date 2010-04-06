@@ -55,7 +55,6 @@ import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.UserDto;
 import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 import ccc.types.DBC;
@@ -75,7 +74,6 @@ public class BaseMigrations {
 
     private final Migration _migration;
     private final ResourcesExt _resourcesExt;
-    private final FoldersExt _foldersExt;
 
     private final LegacyDBQueries _legacyQueries;
     private final TemplateMigration _tm;
@@ -97,14 +95,12 @@ public class BaseMigrations {
     protected BaseMigrations(final ServiceLocator service,
                              final Migration pagesExt,
                              final ResourcesExt resourcesExt,
-                             final FoldersExt foldersExt,
                              final LegacyDBQueries legacyQueries,
                              final TemplateMigration tm,
                              final String linkPrefix) {
         _services      = DBC.require().notNull(service);
         _migration      = DBC.require().notNull(pagesExt);
         _resourcesExt  = DBC.require().notNull(resourcesExt);
-        _foldersExt    = DBC.require().notNull(foldersExt);
         _legacyQueries = DBC.require().notNull(legacyQueries);
         _tm            = DBC.require().notNull(tm);
         _linkPrefix    = DBC.require().notNull(linkPrefix);
@@ -510,16 +506,6 @@ public class BaseMigrations {
      */
     protected final ResourcesExt getResourcesExt() {
         return _resourcesExt;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the extended CCC7 folders API.
-     */
-    protected final FoldersExt getFoldersExt() {
-        return _foldersExt;
     }
 
 

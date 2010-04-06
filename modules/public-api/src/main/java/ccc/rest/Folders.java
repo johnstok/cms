@@ -171,4 +171,34 @@ public interface Folders {
     @POST @Path("/{id}")
     void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta)
         throws RestException;
+
+
+    /**
+     * Create a folder with the specified name and title.
+     *
+     * @param parentId The folder in which the new folder should be created.
+     * @param name The name of the new folder.
+     * @param title The title of the folder.
+     * @param publish True if the title should be published, false otherwise.
+     *
+     * @return A resource summary describing the new folder.
+     */
+    @POST @Path("/deprecated")
+    @Deprecated
+    ResourceSummary createFolder(UUID parentId,
+                                 String name,
+                                 String title,
+                                 boolean publish);
+
+
+    /**
+     * Create a root folder with the specified name.
+     *
+     * @param name The name of the root folder.
+     *
+     * @return A resource summary describing the new root.
+     */
+    @POST @Path("/roots/{name}")
+    // FIXME Post a 'folder' DTO.
+    ResourceSummary createRoot(@PathParam("name") String name);
 }

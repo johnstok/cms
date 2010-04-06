@@ -32,7 +32,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 import ccc.commons.Testing;
 import ccc.rest.ServiceLocator;
-import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 
@@ -57,7 +56,6 @@ public class BaseMigrationsTest
                 Testing.dummy(ServiceLocator.class),
                 Testing.dummy(Migration.class),
                 Testing.dummy(ResourcesExt.class),
-                Testing.dummy(FoldersExt.class),
                 new LegacyDBQueries(Testing.dummy(DB.class)),
                 new TemplateMigration(null, null),
                 "/");

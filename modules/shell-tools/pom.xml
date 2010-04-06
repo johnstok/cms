@@ -11,24 +11,22 @@
 	<name>shell-tools</name>
     
 	<dependencies>
-        <!-- TODO: Should be public API!! -->
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>services-ejb3</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>client-jaxrs</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        
 		<dependency>
-			<groupId>org.jboss.jbossas</groupId>
-			<artifactId>jboss-as-client</artifactId>
-            <type>pom</type>
-			<version>${lib.version.jboss}</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>domain-support</artifactId>
+			<version>${project.version}</version>
 		</dependency>
+        
+        <dependency>
+            <groupId>args4j</groupId>
+            <artifactId>args4j</artifactId>
+            <version>${lib.version.args4j}</version>
+        </dependency>
 		<dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
@@ -55,11 +53,6 @@
             <groupId>com.microsoft</groupId>
             <artifactId>sqlserver-jdbc4</artifactId>
             <version>${lib.version.sqlserver}</version>
-        </dependency>
-        <dependency>
-        	<groupId>args4j</groupId>
-        	<artifactId>args4j</artifactId>
-        	<version>${lib.version.args4j}</version>
         </dependency>
 	</dependencies>
 

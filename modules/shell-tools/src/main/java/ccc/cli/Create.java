@@ -34,24 +34,20 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.client1.ProxyServiceLocator;
-import ccc.migration.MigrationServiceLocator;
 import ccc.rest.Folders;
 import ccc.rest.Resources;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.extensions.FoldersExt;
-import ccc.rest.extensions.ResourcesExt;
 import ccc.types.ResourceName;
 
 /**
  * Entry class for the 'create' application.
  */
-public final class Create extends LegacyApp {
+public final class Create extends CccApp {
     private static final Logger LOG = Logger.getLogger(Create.class);
 
     private static Options options;
-    private static MigrationServiceLocator services;
 
     private Create() { /* NO-OP */ }
 
@@ -66,32 +62,24 @@ public final class Create extends LegacyApp {
 
         options  = parseOptions(args, Options.class);
 
-        services =
-            new MigrationServiceLocator(
-                options.getApp(), options.getProviderURL());
         final ProxyServiceLocator sl =
             new ProxyServiceLocator(options.getUploadUrl());
 
-        login(options.getUsername(), options.getPassword());
         sl.getSecurity().login(options.getUsername(), options.getPassword());
 
         createSchemaStructure(sl);
-
-        logout();
 
         report("Finished in ");
     }
 
     private static void createSchemaStructure(final ProxyServiceLocator sl) {
         try {
-            final ResourcesExt resourcesExt = services.getResourcesExt();
-            final FoldersExt foldersExt = services.getFoldersExt();
 
             final Folders folders = sl.getFolders();
             final Resources resources = sl.getResources();
 
-            final ResourceSummary content = foldersExt.createRoot(CONTENT);
-            foldersExt.createRoot(TRASH);
+            final ResourceSummary content = folders.createRoot(CONTENT);
+            folders.createRoot(TRASH);
 
             final ResourceSummary assets = folders.createFolder(
                 new FolderDto(content.getId(), new ResourceName(ASSETS)));
@@ -107,7 +95,7 @@ public final class Create extends LegacyApp {
                 new FolderDto(content.getId(), new ResourceName(FILES)));
             folders.createFolder(
                 new FolderDto(content.getId(), new ResourceName(IMAGES)));
-            resourcesExt.createSearch(content.getId(), "search");
+            resources.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI
             resources.lock(content.getId());

@@ -28,9 +28,7 @@ package ccc.migration;
 
 import ccc.api.client1.RegistryServiceLocator;
 import ccc.commons.Registry;
-import ccc.rest.Folders;
 import ccc.rest.Resources;
-import ccc.rest.extensions.FoldersExt;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 
@@ -83,11 +81,6 @@ public class MigrationServiceLocator
 
     public ResourcesExt getResourcesExt() {
         return getRegistry().<ResourcesExt>get(remotePath(Resources.NAME));
-    }
-
-
-    public FoldersExt getFoldersExt() {
-        return getRegistry().<FoldersExt>get(remotePath(Folders.NAME));
     }
 
 

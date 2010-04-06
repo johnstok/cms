@@ -26,9 +26,8 @@
  */
 package ccc.domain;
 
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import static ccc.commons.Encryption.*;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,6 +48,7 @@ public class UserTest
     extends
         TestCase {
 
+
     /**
      * Test.
      */
@@ -63,24 +63,6 @@ public class UserTest
         assertTrue("Password should match.", u.hasPassword("password"));
     }
 
-    /**
-     * Test.
-     */
-    public void testHash() {
-
-        // ARRANGE
-        final String password = "password";
-        final User u = new User(new Username("dummy"), password);
-
-        // ACT
-        final byte[] hash = User.hash(password, u.getId().toString());
-
-        // ASSERT
-        assertEquals(SHA_HASH_LENGTH, hash.length);
-        assertTrue(
-            "Hashes should be equal.",
-            Arrays.equals(hash(u, "password"), hash));
-    }
 
     /**
      * Test.
@@ -92,16 +74,16 @@ public class UserTest
 
         // ACT
         u.setPassword("newPass");
-        final byte[] hash = User.hash(password, u.getId().toString());
 
         // ASSERT
-        assertEquals(SHA_HASH_LENGTH, hash.length);
+        assertEquals(SHA_HASH_LENGTH, u.getPassword().length);
         assertTrue(
             "Hashes should be equal.",
-            Arrays.equals(hash(u, password), hash));
+            Arrays.equals(
+                hash(password, u.getId().toString()),
+                u.getPassword()));
     }
 
-    private static final int SHA_HASH_LENGTH = 32;
 
     /**
      * Test.
@@ -117,6 +99,7 @@ public class UserTest
         // ASSERT
         assertEquals(0, roles.size());
     }
+
 
     /**
      * Test.
@@ -135,6 +118,7 @@ public class UserTest
 
     }
 
+
     /**
      * Test.
      */
@@ -149,6 +133,7 @@ public class UserTest
         // ASSERT
         assertEquals(new Username("dummy"), username);
     }
+
 
     /**
      * Test.
@@ -168,6 +153,7 @@ public class UserTest
         }
     }
 
+
     /**
      * Test.
      */
@@ -184,6 +170,7 @@ public class UserTest
         }
     }
 
+
     /**
      * Test.
      */
@@ -199,6 +186,7 @@ public class UserTest
         // ASSERT
         assertEquals("fooEmail@test.com", email);
     }
+
 
     /**
      * Test.
@@ -229,6 +217,7 @@ public class UserTest
             CONTENT_CREATOR.includes(u));
     }
 
+
     /**
      * Test.
      */
@@ -247,6 +236,7 @@ public class UserTest
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
+
 
     /**
      * Test.
@@ -269,6 +259,7 @@ public class UserTest
 //        }
     }
 
+
     /**
      * Test.
      */
@@ -286,6 +277,7 @@ public class UserTest
             assertEquals("Specified value may not be NULL.", e.getMessage());
         }
     }
+
 
     /**
      * Test.
@@ -306,6 +298,7 @@ public class UserTest
                 e.getMessage());
         }
     }
+
 
     /**
      * Test.
@@ -344,6 +337,7 @@ public class UserTest
         assertEquals("newDummy", u.getUsername().toString());
     }
 
+
     /**
      * Test.
      */
@@ -377,32 +371,6 @@ public class UserTest
             ADMINISTRATOR.includes(u));
     }
 
-    private byte[] hash(final User u, final String passwordString) {
-        try {
-            // Prepare
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            final Charset utf8 = Charset.forName("UTF-8");
-            final byte[] salt = u.getId().toString().getBytes(utf8);
-            final byte[] password = passwordString.getBytes(utf8);
-
-            // Compute
-            digest.reset();
-            digest.update(salt);
-            digest.update(password);
-            byte[] hash = digest.digest();
-
-            final int hashRepetitions = 1000;
-            for (int i = 0; i < hashRepetitions; i++) {
-                digest.reset();
-                hash = digest.digest(hash);
-            }
-
-            return hash;
-
-        } catch (final NoSuchAlgorithmException e) {
-            throw new RuntimeException("Failed to compute password digest.", e);
-        }
-    }
 
     private static final Group SITE_BUILDER =
         new Group("SITE_BUILDER");

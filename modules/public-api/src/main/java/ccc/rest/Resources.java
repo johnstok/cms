@@ -525,4 +525,19 @@ public interface Resources {
     @Deprecated // FIXME: Lookup by ID.
     ResourceSnapshot workingCopyForPath(@PathParam("path") final String path)
     throws RestException, UnauthorizedException;
+
+
+    /**
+     * Creates a new search.
+     *
+     * @param parentId The parent folder where the search should be created.
+     * @param title The title of the search.
+     *
+     * @return A summary of the newly created search.
+     */
+    @POST @Path("/search/{id}/{title}")
+    // FIXME Should post a 'search' object.
+    // FIXME Should be part of the 'search' API.
+    ResourceSummary createSearch(@PathParam("id")    UUID parentId,
+                                 @PathParam("title") String title);
 }

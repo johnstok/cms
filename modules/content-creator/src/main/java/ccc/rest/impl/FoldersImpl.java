@@ -194,4 +194,29 @@ public class FoldersImpl
             throw convertToNative(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFolder(final UUID parentId,
+                                        final String name,
+                                        final String title,
+                                        final boolean publish) {
+        try {
+            return getFolders().createFolder(parentId, name, title, publish);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createRoot(final String name) {
+        try {
+            return getFolders().createRoot(name);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
 }

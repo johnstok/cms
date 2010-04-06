@@ -34,11 +34,9 @@ import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.client1.ProxyServiceLocator;
-import ccc.api.client1.RegistryServiceLocator;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.extensions.FoldersExt;
 import ccc.types.ResourcePath;
 
 
@@ -51,11 +49,10 @@ import ccc.types.ResourcePath;
  *
  * @author Civic Computing Ltd.
  */
-public class FileUpload extends LegacyApp {
+public class FileUpload extends CccApp {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
     private static Server        server;
-    private static RegistryServiceLocator services;
 
     private static void recurse(final UUID parentId,
                                 final File localFolder,
@@ -93,20 +90,15 @@ public class FileUpload extends LegacyApp {
 
         final Options o = parseOptions(args, Options.class);
 
-        services =
-            new RegistryServiceLocator(o._appName, o._providerURL);
         final ProxyServiceLocator sl =
             new ProxyServiceLocator(o._uploadUrl);
 
-        final FoldersExt foldersExt = (FoldersExt) services.getFolders();
-
-        login(o.getUsername(), o.getPassword());
         sl.getSecurity().login(o.getUsername(), o.getPassword());
 
         server = new CccServer(
             new ResourcePath(o.getRemotePath()),
             sl.getFileUploader(),
-            foldersExt,
+            sl.getFolders(),
             sl.getResources());
 
         try {
@@ -118,8 +110,6 @@ public class FileUpload extends LegacyApp {
         } catch (final RestException e) {
             System.err.print("Root folder does not exist.");
         }
-
-        logout();
 
         report("Upload finished in ");
     }

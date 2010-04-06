@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.action.ActionExecutor;
-import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
 import ccc.types.Duration;
 
@@ -40,7 +39,7 @@ import ccc.types.Duration;
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated
+@Deprecated // FIXME: Move any still used methods to the Migration API.
 public interface ResourcesExt
     extends
         ActionExecutor {
@@ -87,18 +86,6 @@ public interface ResourcesExt
                         Map<String, String> metadata)
     throws RestException;
 
-    /**
-     * Creates a new search.
-     *
-     * @param parentId The parent folder where the search should be created.
-     * @param title The title of the search.
-     *
-     * @return A summary of the newly created search.
-     *
-     * @throws RestException If the method fails.
-     */
-    ResourceSummary createSearch(UUID parentId, String title)
-    throws RestException;
 
     /**
      * Create a working copy for the specified resource, using the specified log

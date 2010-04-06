@@ -33,10 +33,10 @@ import org.apache.log4j.Logger;
 
 import ccc.api.client1.IFileUploader;
 import ccc.cli.FileUpload;
+import ccc.rest.Folders;
 import ccc.rest.Resources;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
-import ccc.rest.extensions.FoldersExt;
 import ccc.types.FailureCode;
 import ccc.types.ResourcePath;
 
@@ -52,7 +52,7 @@ public class CccServer implements Server {
     private final ResourcePath _rootPath;
     private final IFileUploader _uploader;
     private final Resources _resources;
-    private final FoldersExt _foldersExt;
+    private final Folders _folders;
 
 
 
@@ -62,16 +62,16 @@ public class CccServer implements Server {
      * @param rootPath The absolute path to the folder where files will be
      *  uploaded.
      * @param uploader The file up-loader to use.
-     * @param foldersExt The folders API.
+     * @param folders The folders API.
      * @param resources The resources API.
      */
     public CccServer(final ResourcePath rootPath,
                      final IFileUploader uploader,
-                     final FoldersExt foldersExt,
+                     final Folders folders,
                      final Resources resources) {
         _rootPath = rootPath;
         _uploader = uploader;
-        _foldersExt = foldersExt;
+        _folders = folders;
         _resources = resources;
     }
 
@@ -94,7 +94,7 @@ public class CccServer implements Server {
 
         try {
             final ResourceSummary rs =
-                _foldersExt.createFolder(
+                _folders.createFolder(
                     UUID.fromString(parentFolder.toString()),
                     name,
                     name,
@@ -113,7 +113,7 @@ public class CccServer implements Server {
 
     /** {@inheritDoc} */
     @Override
-    public UUID getRoot() throws RestException {
+    public UUID getRoot() {
         final ResourceSummary rs =
             _resources.resourceForPath(_rootPath.toString());
         return UUID.fromString(rs.getId().toString());

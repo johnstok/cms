@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,15 +24,46 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest.extensions;
+package ccc.commons;
 
+import static ccc.commons.Encryption.*;
+
+import java.util.Arrays;
+
+import junit.framework.TestCase;
 
 
 /**
- * Additional API methods for operating on files.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public interface FilesExt {
-    /* NO OP */
+public class EncryptionTest
+    extends
+        TestCase {
+
+
+    /**
+     * Test.
+     */
+    public void testHash() {
+
+        // ARRANGE
+        final String password = "password";
+        final String salt     = "salt";
+
+        // ACT
+        final byte[] hash = hash(password, salt);
+
+        // ASSERT
+        assertEquals(SHA_HASH_LENGTH, hash.length);
+        assertTrue("Hashes should be equal.", Arrays.equals(EXPECTED, hash));
+    }
+
+    private static final byte[] EXPECTED = new byte[] {
+        -91,   81, -57,  -78,   -7, -82, -64,   15,  52, -49,
+         76, -113,  40,  104, -122, -46, -60, -114,  15, 106,
+         12,   51,  40, -101,  -92,  85,  38,    4, -50,  26,
+        -38,   87
+    };
 }

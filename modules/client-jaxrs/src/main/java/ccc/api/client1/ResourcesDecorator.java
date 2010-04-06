@@ -518,6 +518,14 @@ public class ResourcesDecorator
     }
 
 
+    /**
+     * @param parentId
+     * @param title
+     * @return
+     * @see ccc.rest.Resources#createSearch(java.util.UUID, java.lang.String)
+     */
+    public ResourceSummary createSearch(final UUID parentId, final String title) {
 
-
+        return _delegate.createSearch(parentId, title);
+    }
 }

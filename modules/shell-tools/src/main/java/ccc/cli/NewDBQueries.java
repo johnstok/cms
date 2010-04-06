@@ -37,7 +37,7 @@ import java.util.UUID;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import ccc.domain.User;
+import ccc.commons.Encryption;
 
 /**
  * Queries for data migration.
@@ -71,7 +71,7 @@ class NewDBQueries {
                                     final String email,
                                     final String password) {
         final UUID uid = UUID.randomUUID();
-        final byte[] hash = User.hash(password, uid.toString());
+        final byte[] hash = Encryption.hash(password, uid.toString());
 
         PreparedStatement ps = null;
 
@@ -124,7 +124,7 @@ class NewDBQueries {
 
         final UUID pwId = UUID.randomUUID();
         final byte[] hash =
-            User.hash(""+new Date().getTime(), pwId.toString());
+            Encryption.hash(""+new Date().getTime(), pwId.toString());
 
         PreparedStatement ps = null;
 

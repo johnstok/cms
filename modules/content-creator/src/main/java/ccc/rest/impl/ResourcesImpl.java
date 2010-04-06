@@ -464,4 +464,16 @@ public class ResourcesImpl
             throw convertToNative(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createSearch(final UUID parentId,
+                                        final String title) {
+        try {
+            return getResources().createSearch(parentId, title);
+        } catch (final EJBException e) {
+            throw convertToNative(e);
+        }
+    }
 }
