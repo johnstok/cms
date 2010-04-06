@@ -29,7 +29,6 @@ package ccc.rest.dto;
 import java.io.Serializable;
 import java.util.UUID;
 
-import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;

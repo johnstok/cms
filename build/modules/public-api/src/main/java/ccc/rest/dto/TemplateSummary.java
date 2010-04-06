@@ -31,7 +31,6 @@ import static ccc.serialization.JsonKeys.*;
 import java.io.Serializable;
 import java.util.UUID;
 
-import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.Jsonable;
 import ccc.types.ResourceName;

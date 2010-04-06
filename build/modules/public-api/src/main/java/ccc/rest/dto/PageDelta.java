@@ -30,7 +30,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;

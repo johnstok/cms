@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import ccc.rest.snapshots.ResourceSnapshot;
+import ccc.rest.dto.ResourceSnapshot;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;

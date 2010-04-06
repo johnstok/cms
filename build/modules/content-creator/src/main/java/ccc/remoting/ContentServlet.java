@@ -60,12 +60,12 @@ import ccc.rest.SearchEngine;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
+import ccc.rest.dto.ResourceSnapshot;
 import ccc.rest.dto.UserDto;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.exceptions.UnauthorizedException;
 import ccc.rest.impl.FoldersImpl;
 import ccc.rest.impl.UsersImpl;
-import ccc.rest.snapshots.ResourceSnapshot;
 import ccc.serialization.JsonImpl;
 import ccc.types.ResourcePath;
 
