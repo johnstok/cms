@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.types.HttpStatusCode;
-import ccc.web.actions.SessionKeys;
+import ccc.web.SessionKeys;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.RedirectRequiredException;
