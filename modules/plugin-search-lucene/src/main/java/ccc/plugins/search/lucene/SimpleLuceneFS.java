@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search.lucene;
+package ccc.plugins.search.lucene;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -51,10 +51,6 @@ import ccc.commons.Exceptions;
 import ccc.plugins.search.SearchException;
 import ccc.plugins.search.TextExtractor;
 import ccc.rest.SearchResult;
-import ccc.search.PdfLoader;
-import ccc.search.SimpleLucene;
-import ccc.search.TxtExtractor;
-import ccc.search.WordExtractor;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 

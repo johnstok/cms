@@ -24,24 +24,26 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+package ccc.plugins.search.lucene;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.log4j.Logger;
-import org.textmining.extraction.word.WordTextExtractorFactory;
+import org.pdfbox.pdmodel.PDDocument;
+import org.pdfbox.util.PDFTextStripper;
 
 import ccc.plugins.search.TextExtractor;
 
 /**
- * A text extractor for MS Word documents.
+ * A text extractor for PDF files.
  *
  * @author Civic Computing Ltd.
  */
-public class WordExtractor
+public class PdfLoader
     implements
         TextExtractor {
-    private static final Logger LOG = Logger.getLogger(WordExtractor.class);
+    private static final Logger LOG = Logger.getLogger(PdfLoader.class);
 
     private String _text = "";
 
@@ -49,14 +51,32 @@ public class WordExtractor
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) {
         try {
-            final WordTextExtractorFactory factory =
-                new WordTextExtractorFactory();
-            final org.textmining.extraction.TextExtractor extractor =
-                factory.textExtractor(is);
-            _text = extractor.getText();
+            final PDDocument doc = PDDocument.load(is);
+            if (doc == null) { return; }
+            extractText(doc);
 
         } catch (final Throwable e) {
-            LOG.warn("Word document extraction failed: "+e.getMessage());
+            LOG.warn("PDF file extraction failed: "+e.getMessage());
+        }
+    }
+
+
+    private void extractText(final PDDocument doc) throws IOException {
+        try {
+            final PDFTextStripper stripper = new PDFTextStripper();
+            stripper.setEndPage(MAX_PAGES_TO_INDEX);
+            _text = stripper.getText(doc);
+        } finally {
+            safelyClose(doc);
+        }
+    }
+
+
+    private void safelyClose(final PDDocument doc) {
+        try {
+            if (null!=doc) { doc.close(); }
+        } catch (final IOException e) {
+            LOG.debug("Closing PDF Document failed.", e);
         }
     }
 
