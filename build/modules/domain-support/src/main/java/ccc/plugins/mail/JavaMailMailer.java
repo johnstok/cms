@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.mail;
+package ccc.plugins.mail;
 
 import java.util.Date;
 

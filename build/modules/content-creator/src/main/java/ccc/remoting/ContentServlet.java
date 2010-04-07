@@ -42,8 +42,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import ccc.api.client1.MemoryServiceLocator;
-import ccc.mail.JavaMailMailer;
-import ccc.mail.Mailer;
+import ccc.plugins.mail.JavaMailMailer;
+import ccc.plugins.mail.Mailer;
 import ccc.plugins.scripting.Context;
 import ccc.rendering.AuthenticationRequiredException;
 import ccc.rendering.NotFoundException;

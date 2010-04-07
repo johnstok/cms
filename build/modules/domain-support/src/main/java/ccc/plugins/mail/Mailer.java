@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.mail;
+package ccc.plugins.mail;
 
 import ccc.types.EmailAddress;
 
