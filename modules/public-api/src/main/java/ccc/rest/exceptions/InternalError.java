@@ -24,9 +24,8 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
-import ccc.rest.exceptions.RestException;
 import ccc.serialization.Json;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
