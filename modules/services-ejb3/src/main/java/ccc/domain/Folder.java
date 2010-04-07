@@ -34,9 +34,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.sorting.Sorter;
-import ccc.rest.CycleDetectedException;
-import ccc.rest.ResourceExistsException;
 import ccc.rest.dto.FolderDto;
+import ccc.rest.exceptions.CycleDetectedException;
+import ccc.rest.exceptions.ResourceExistsException;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;

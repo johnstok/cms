@@ -34,7 +34,7 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.persistence.IRepositoryFactory;
-import ccc.rest.WorkingCopyNotSupportedException;
+import ccc.rest.exceptions.WorkingCopyNotSupportedException;
 import ccc.types.CommandType;
 
 

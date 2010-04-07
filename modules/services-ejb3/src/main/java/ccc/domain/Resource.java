@@ -41,13 +41,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.commons.WordCharFixer;
-import ccc.rest.InsufficientPrivilegesException;
-import ccc.rest.LockMismatchException;
-import ccc.rest.UnlockedException;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceSnapshot;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.AclDto.Entry;
+import ccc.rest.exceptions.InsufficientPrivilegesException;
+import ccc.rest.exceptions.LockMismatchException;
+import ccc.rest.exceptions.UnlockedException;
 import ccc.serialization.Json;
 import ccc.serialization.JsonKeys;
 import ccc.serialization.Jsonable;

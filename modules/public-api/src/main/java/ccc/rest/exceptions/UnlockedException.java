@@ -24,69 +24,51 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
 import java.util.UUID;
 
-import ccc.rest.exceptions.RestException;
-import ccc.types.CommandType;
 import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
-
 /**
- * This exception indicates that a user attempted to perform an operation
- * without sufficient privileges.
+ * An exception used to indicate that a resource is unlocked.
  *
  * @author Civic Computing Ltd.
  */
-public class InsufficientPrivilegesException
+public class UnlockedException
     extends
-        RestException {
+        InvalidException {
 
-    private final CommandType _action;
-    private final UUID _user;
+    private final UUID _resource;
 
     /**
      * Constructor.
      *
-     * @param action The action that was disallowed.
-     * @param user The user attempting to perform the action.
+     * @param resource The unlocked resource.
      */
-    public InsufficientPrivilegesException(final CommandType action,
-                                           final UUID user) {
-        super(new Failure(FailureCode.PRIVILEGES));
-        DBC.require().notNull(action);
-        DBC.require().notNull(user);
-        _action = action;
-        _user = user;
+    public UnlockedException(final UUID resource) {
+        super(new Failure(FailureCode.UNLOCKED));
+        DBC.require().notNull(resource);
+        _resource = resource;
     }
+
+
+    /**
+     * Accessor for the unlocked resource.
+     *
+     * @return The unlocked resource.
+     */
+    public UUID getResource() {
+        return _resource;
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return
-            "User "
-            + _user
-            + " may not perform action: "
-            + _action;
+        return "Resource "+_resource+" is Unlocked.";
     }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the action.
-     */
-    public CommandType getAction() { return _action; }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the user.
-     */
-    public UUID getUser() { return _user; }
 }

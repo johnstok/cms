@@ -24,52 +24,54 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
+import java.util.Collections;
 import java.util.UUID;
 
-import ccc.rest.exceptions.InvalidException;
-import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
+import ccc.types.ResourceName;
 
 
 /**
- * An exception used to indicate that a resource is unlocked.
+ * Exception thrown when a resource cannot be created because an existing
+ * resource already has the same absolute path.
  *
  * @author Civic Computing Ltd.
  */
-public class UnlockedException
+public class ResourceExistsException
     extends
-        InvalidException {
+        ConflictException {
 
-    private final UUID _resource;
+    private ResourceName _resourceName;
+    private UUID         _resourceId;
+
 
     /**
      * Constructor.
      *
-     * @param resource The unlocked resource.
+     * @param resourceId   The ID of the existing resource.
+     * @param resourceName The name of the existing resource.
      */
-    public UnlockedException(final UUID resource) {
-        super(new Failure(FailureCode.UNLOCKED));
-        DBC.require().notNull(resource);
-        _resource = resource;
-    }
-
-
-    /**
-     * Accessor for the unlocked resource.
-     *
-     * @return The unlocked resource.
-     */
-    public UUID getResource() {
-        return _resource;
+    public ResourceExistsException(final UUID resourceId,
+                                   final ResourceName resourceName) {
+        super(
+            new Failure(
+                FailureCode.EXISTS,
+                Collections.singletonMap(
+                    "existing_id", resourceId.toString())));
+        _resourceId = resourceId;
+        _resourceName = resourceName;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return "Resource "+_resource+" is Unlocked.";
+        return
+            "Folder already contains a resource with name '"
+            + _resourceName
+            + "'.";
     }
 }

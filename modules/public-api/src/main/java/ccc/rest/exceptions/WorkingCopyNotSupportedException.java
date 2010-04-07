@@ -24,46 +24,47 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
-import java.util.Collections;
 import java.util.UUID;
 
-import ccc.rest.exceptions.ConflictException;
+import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
-import ccc.types.ResourceName;
 
 
 /**
- * Exception thrown when a resource cannot be created because an existing
- * resource already has the same absolute path.
+ * This exception is thrown when a working copy command is attempted for a
+ * resource that doesn't support working copies.
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceExistsException
+public class WorkingCopyNotSupportedException
     extends
-        ConflictException {
+        InvalidException {
 
-    private ResourceName _resourceName;
-    private UUID         _resourceId;
+    private final UUID _resource;
 
 
     /**
      * Constructor.
      *
-     * @param resourceId   The ID of the existing resource.
-     * @param resourceName The name of the existing resource.
+     * @param resource The resource.
      */
-    public ResourceExistsException(final UUID resourceId,
-                                   final ResourceName resourceName) {
-        super(
-            new Failure(
-                FailureCode.EXISTS,
-                Collections.singletonMap(
-                    "existing_id", resourceId.toString())));
-        _resourceId = resourceId;
-        _resourceName = resourceName;
+    public WorkingCopyNotSupportedException(final UUID resource) {
+        super(new Failure(FailureCode.WC_UNSUPPORTED));
+        DBC.require().notNull(resource);
+        _resource = resource;
+    }
+
+
+    /**
+     * Accessor for the resource.
+     *
+     * @return The resource.
+     */
+    public UUID getResource() {
+        return _resource;
     }
 
 
@@ -71,8 +72,8 @@ public class ResourceExistsException
     @Override
     public String getMessage() {
         return
-            "Folder already contains a resource with name '"
-            + _resourceName
-            + "'.";
+            "Resource "
+            + _resource
+            + " is not working copy aware.";
     }
 }

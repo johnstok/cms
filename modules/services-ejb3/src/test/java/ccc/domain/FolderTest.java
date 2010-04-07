@@ -18,8 +18,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
-import ccc.rest.CycleDetectedException;
-import ccc.rest.ResourceExistsException;
+import ccc.rest.exceptions.CycleDetectedException;
+import ccc.rest.exceptions.ResourceExistsException;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;

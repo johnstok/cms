@@ -24,51 +24,29 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
-import java.util.UUID;
-
-import ccc.rest.exceptions.InvalidException;
-import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
 /**
- * An exception used to indicate that a resource is locked by another user.
+ * This exception indicates that a cycle was detected where a resource refers to
+ * itself, either directly or indirectly.
+ * <p>Examples would be an alias whose target points to itself or a folder that
+ * contains itself.
  *
  * @author Civic Computing Ltd.
  */
-public class LockMismatchException
+public class CycleDetectedException
     extends
         InvalidException {
 
-    private final UUID _resource;
-
-
     /**
      * Constructor.
-     *
-     * @param resource The resource.
      */
-    public LockMismatchException(final UUID resource) {
-        super(new Failure(FailureCode.LOCK_MISMATCH));
-        DBC.require().notNull(resource);
-        _resource = resource;
+    public CycleDetectedException() {
+        super(new Failure(FailureCode.CYCLE));
     }
 
-    /**
-     * Accessor for the resource.
-     *
-     * @return The resource.
-     */
-    public UUID getResource() {
-        return _resource;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return "Mismatch confirming lock on "+_resource+".";
-    }
 }
