@@ -107,6 +107,7 @@
         <module>modules/acceptance-tests</module>
         <module>modules/plugin-scripting-rhino</module>
         <module>modules/plugin-scripting-velocity</module>
+        <module>modules/plugin-search-lucene</module>
     </modules>
 
     <build>

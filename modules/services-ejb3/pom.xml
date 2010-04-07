@@ -24,6 +24,11 @@
             <artifactId>plugins-scripting-rhino</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugins-search-lucene</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <!-- JEE dependencies -->
         <dependency>
@@ -57,33 +62,6 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${lib.version.hibernate}</version>
             <scope>provided</scope>
-        </dependency>
-        
-        <!-- Third party libraries -->
-        <dependency>
-            <groupId>pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>${lib.version.pdfbox}</version>
-        </dependency> 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${lib.version.poi}</version>
-       </dependency>
-        <dependency>
-            <groupId>org.textmining</groupId>
-            <artifactId>tm-extractors</artifactId>
-            <version>${lib.version.tmextractors}</version>
-       </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>${lib.version.lucene}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-queries</artifactId>
-            <version>${lib.version.lucene}</version>
         </dependency>
         
     </dependencies>
