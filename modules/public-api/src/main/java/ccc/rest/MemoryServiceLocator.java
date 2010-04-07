@@ -24,22 +24,8 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.client1;
+package ccc.rest;
 
-import ccc.rest.ActionScheduler;
-import ccc.rest.Actions;
-import ccc.rest.Aliases;
-import ccc.rest.Comments;
-import ccc.rest.Files;
-import ccc.rest.Folders;
-import ccc.rest.Groups;
-import ccc.rest.Pages;
-import ccc.rest.Resources;
-import ccc.rest.SearchEngine;
-import ccc.rest.Security;
-import ccc.rest.ServiceLocator;
-import ccc.rest.Templates;
-import ccc.rest.Users;
 
 /**
  * Service locator that stores references to services in memory.
