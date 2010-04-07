@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.web.actions;
+package ccc.web;
 
 import java.io.IOException;
 
