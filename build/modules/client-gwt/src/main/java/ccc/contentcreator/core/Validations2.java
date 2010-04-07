@@ -27,6 +27,7 @@
 package ccc.contentcreator.core;
 
 import ccc.contentcreator.validation.Validations;
+import ccc.types.EmailAddress;
 import ccc.types.Password;
 
 import com.google.gwt.xml.client.Document;
@@ -114,7 +115,7 @@ public final class Validations2 {
      * @return True if the input is valid, false otherwise.
      */
     public static boolean notValidEmail(final String email) {
-        return email.matches(Validations.VALID_EMAIL);
+        return EmailAddress.isValidText(email);
     }
 
     /**
