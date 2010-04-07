@@ -27,6 +27,6 @@
 -->
 
 <module>
-    <source path="types" excludes="EmailAddress.java Failure.java" />
+    <source path="types" />
     <source path="serialization" />
 </module>

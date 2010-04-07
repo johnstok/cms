@@ -37,9 +37,11 @@ package java.util;
  * @author Civic Computing Ltd.
  */
 public final class UUID
-implements java.io.Serializable {
+    implements
+        java.io.Serializable {
 
     private final String _uuid;
+
 
     /**
      * Constructor.
@@ -49,6 +51,7 @@ implements java.io.Serializable {
     public UUID(final String uuid) {
         _uuid = uuid;
     }
+
 
     /**
      * Creates a <tt>UUID</tt> from the string standard representation as
@@ -62,26 +65,27 @@ implements java.io.Serializable {
         return new UUID(uuid);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public String toString() {
-    return _uuid;
+        return _uuid;
     }
+
 
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-
         final int prime = 31;
         int result = 1;
         result = prime * result + ((_uuid == null) ? 0 : _uuid.hashCode());
         return result;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
-
         if (this == obj) { return true; }
         if (obj == null) { return false; }
         if (getClass() != obj.getClass()) { return false; }
@@ -93,4 +97,15 @@ implements java.io.Serializable {
     }
 
 
+    /**
+     * Static factory to retrieve a type 4 (pseudo randomly generated) UUID.
+     *
+     * The <code>UUID</code> is generated using a cryptographically strong
+     * pseudo random number generator.
+     *
+     * @return  a randomly generated <tt>UUID</tt>.
+     */
+    public static UUID randomUUID() {
+        throw new UnsupportedOperationException("Random UUIDs not supported.");
+    }
 }

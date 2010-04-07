@@ -43,7 +43,7 @@ import ccc.serialization.Jsonable;
  */
 public class Failure implements Jsonable, Serializable {
 
-    private UUID                _id          = UUID.randomUUID();
+    private UUID                _id;
     private FailureCode         _code        = FailureCode.UNEXPECTED;
     private Map<String, String> _params      = new HashMap<String, String>();
 
@@ -58,6 +58,7 @@ public class Failure implements Jsonable, Serializable {
      */
     public Failure(final FailureCode code) {
         _code = code;
+        _id   = UUID.randomUUID();
     }
 
 
@@ -69,7 +70,7 @@ public class Failure implements Jsonable, Serializable {
      */
     public Failure(final FailureCode code,
                    final Map<String, String> params) {
-        _code = code;
+        this(code);
         _params.putAll(params);
     }
 

@@ -38,32 +38,31 @@ public class EmailAddressTest
     extends
         TestCase {
 
-//    /**
-//     * Test.
-//     */
-//    public void testCanValidateLongEmail() {
-//
-//        // ARRANGE
-//        final EmailAddress longEmail =
-//            new EmailAddress("ea8322fd-eac3-4f24-a0f1-bd05e10fda53@abc.def");
-//
-//        // ACT
-//        final boolean isValid = longEmail.isValid();
-//
-//        // ASSERT
-//        assertTrue(isValid);
-//    }
+    /**
+     * Test.
+     */
+    public void testCanValidateLongEmail() {
+
+        // ARRANGE
+        final String longEmail = "ea8322fd-eac3-4f24-a0f1-bd05e10fda53@abc.def";
+
+        // ACT
+        final boolean isValid = EmailAddress.isValidText(longEmail);
+
+        // ASSERT
+        assertTrue(isValid);
+    }
 
     /**
      * Test.
      */
-    public void testEmailEqualityIsLiteral() {
+    public void testEmailEquality() {
 
         // ARRANGE
         final EmailAddress simpleEmail =
             new EmailAddress("john.smith@somewhere.com");
         final EmailAddress quotedEmail =
-            new EmailAddress("\"John Smith\" <john.smith@somewhere.com>");
+            new EmailAddress("jack.smith@somewhere.com");
 
         // ACT
 
@@ -98,19 +97,11 @@ public class EmailAddressTest
 
         // ARRANGE
         final EmailAddress simpleEmail = new EmailAddress("abc@def.com");
-        final EmailAddress domainEmail =
-            new EmailAddress("someone@[192.168.1.100]");
-        final EmailAddress quotedEmail =
-            new EmailAddress("\"John Smith\" <john.smith@somewhere.com>");
 
         // ACT
 
         // ASSERT
         assertEquals("abc@def.com", simpleEmail.toString());
-        assertEquals("someone@[192.168.1.100]", domainEmail.toString());
-        assertEquals(
-            "\"John Smith\" <john.smith@somewhere.com>",
-            quotedEmail.toString());
     }
 
 
@@ -123,7 +114,7 @@ public class EmailAddressTest
 
         // ACT
         final boolean valid =
-            EmailAddress.isValidText("Steven D'Arcy <steven.d'arcy@foo.com>");
+            EmailAddress.isValidText("steven.d'arcy@foo.com");
 
         // ASSERT
         assertTrue(valid);
