@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.web.rendering.velocity;
+package ccc.plugins.scripting.velocity;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

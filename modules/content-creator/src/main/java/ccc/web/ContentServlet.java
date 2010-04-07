@@ -47,6 +47,7 @@ import ccc.api.jaxrs.UsersImpl;
 import ccc.plugins.mail.JavaMailMailer;
 import ccc.plugins.mail.Mailer;
 import ccc.plugins.scripting.Context;
+import ccc.plugins.scripting.velocity.VelocityProcessor;
 import ccc.rest.Actions;
 import ccc.rest.Comments;
 import ccc.rest.Files;
@@ -67,7 +68,6 @@ import ccc.types.ResourcePath;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.Response;
-import ccc.web.rendering.velocity.VelocityProcessor;
 
 
 /**

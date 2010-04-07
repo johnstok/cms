@@ -10,7 +10,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.web.actions;
+package ccc.web.rendering;
 
 import static org.easymock.EasyMock.*;
 
@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.TextProcessor;
+import ccc.plugins.scripting.velocity.VelocityProcessor;
 import ccc.web.rendering.Body;
 import ccc.web.rendering.Response;
-import ccc.web.rendering.velocity.VelocityProcessor;
 
 /**
  * Tests for the {@link RenderResourceAction} class.
