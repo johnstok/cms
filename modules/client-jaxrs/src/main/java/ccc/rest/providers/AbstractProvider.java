@@ -42,7 +42,7 @@ import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
-import ccc.serialization.IO;
+import ccc.commons.IO;
 import ccc.serialization.Json;
 import ccc.serialization.JsonImpl;
 

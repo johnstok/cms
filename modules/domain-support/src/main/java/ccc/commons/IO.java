@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.serialization;
+package ccc.commons;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

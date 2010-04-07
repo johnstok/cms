@@ -29,8 +29,8 @@ package ccc.search;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import ccc.commons.IO;
 import ccc.rest.StreamAction;
-import ccc.serialization.IO;
 
 /**
  * A stream action that reads a input stream into a string.

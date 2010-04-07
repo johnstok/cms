@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.action;
+package ccc.rest.extensions;
 
 import java.util.UUID;
 
