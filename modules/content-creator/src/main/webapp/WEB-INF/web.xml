@@ -94,15 +94,15 @@
     
     <filter>
         <filter-name>txn-filter</filter-name>
-        <filter-class>ccc.remoting.filters.ReadWriteTxFilter</filter-class>
+        <filter-class>ccc.web.filters.ReadWriteTxFilter</filter-class>
     </filter>
     <filter>
         <filter-name>err-filter</filter-name>
-        <filter-class>ccc.remoting.filters.ErrorHandlingFilter</filter-class>
+        <filter-class>ccc.web.filters.ErrorHandlingFilter</filter-class>
     </filter>
     <filter>
         <filter-name>ccc6-filter</filter-name>
-        <filter-class>ccc.remoting.filters.LegacyLinkFilter</filter-class>
+        <filter-class>ccc.web.filters.LegacyLinkFilter</filter-class>
     </filter>
 
     <servlet>
@@ -114,18 +114,18 @@
     <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>
-            ccc.remoting.CreateFileServlet
+            ccc.web.CreateFileServlet
         </servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateFileServlet</servlet-name>
         <servlet-class>
-            ccc.remoting.UpdateFileServlet
+            ccc.web.UpdateFileServlet
         </servlet-class>
     </servlet>
     <servlet>
         <servlet-name>preview-content</servlet-name>
-        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
+        <servlet-class>ccc.web.ContentServlet</servlet-class>
         <init-param>
             <param-name>respect_visibility</param-name>
             <param-value>false</param-value>
@@ -133,15 +133,15 @@
     </servlet>
     <servlet>
         <servlet-name>content</servlet-name>
-        <servlet-class>ccc.remoting.ContentServlet</servlet-class>
+        <servlet-class>ccc.web.ContentServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>login</servlet-name>
-        <servlet-class>ccc.remoting.LoginServlet</servlet-class>
+        <servlet-class>ccc.web.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>logout</servlet-name>
-        <servlet-class>ccc.remoting.LogoutServlet</servlet-class>
+        <servlet-class>ccc.web.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>error</servlet-name>
