@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.client1.MemoryServiceLocator;
 import ccc.api.jaxrs.FoldersImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.plugins.mail.JavaMailMailer;
@@ -53,6 +52,7 @@ import ccc.rest.Comments;
 import ccc.rest.Files;
 import ccc.rest.Folders;
 import ccc.rest.Groups;
+import ccc.rest.MemoryServiceLocator;
 import ccc.rest.Pages;
 import ccc.rest.Resources;
 import ccc.rest.SearchEngine;

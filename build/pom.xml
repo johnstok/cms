@@ -106,6 +106,7 @@
         <module>modules/application-ear</module>
         <module>modules/acceptance-tests</module>
         <module>modules/plugin-scripting-rhino</module>
+        <module>modules/plugin-scripting-velocity</module>
     </modules>
 
     <build>

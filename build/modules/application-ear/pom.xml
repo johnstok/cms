@@ -152,19 +152,9 @@
             <version>${lib.version.commons-io}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>${lib.version.velocity}</version>
-        </dependency>
-        <dependency>
-            <groupId>velocity-tools</groupId>
-            <artifactId>velocity-tools-generic</artifactId>
-            <version>${lib.version.velocity-tools}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${lib.version.commons-beanutils}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugins-scripting-velocity</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
