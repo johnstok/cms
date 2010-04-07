@@ -28,32 +28,40 @@ package ccc.search;
 
 import java.io.InputStream;
 
-import org.textmining.extraction.TextExtractor;
+import org.apache.log4j.Logger;
 import org.textmining.extraction.word.WordTextExtractorFactory;
 
-import ccc.rest.StreamAction;
+import ccc.plugins.search.TextExtractor;
 
 /**
- * A stream action that interprets a stream as a MS Word document.
+ * A text extractor for MS Word documents.
  *
  * @author Civic Computing Ltd.
  */
-public class WordExtractor implements StreamAction {
-    private final WordTextExtractorFactory _factory =
-        new WordTextExtractorFactory();
-    private TextExtractor _extractor;
+public class WordExtractor
+    implements
+        TextExtractor {
+    private static final Logger LOG = Logger.getLogger(WordExtractor.class);
+
+    private String _text = "";
+
 
     /** {@inheritDoc} */
-    @Override public void execute(final InputStream is) throws Exception {
-        _extractor = _factory.textExtractor(is);
+    @Override public void execute(final InputStream is) {
+        try {
+            final WordTextExtractorFactory factory =
+                new WordTextExtractorFactory();
+            final org.textmining.extraction.TextExtractor extractor =
+                factory.textExtractor(is);
+            _text = extractor.getText();
+
+        } catch (final Throwable e) {
+            LOG.warn("Word document extraction failed: "+e.getMessage());
+        }
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The text from a MS Word document, as a text extractor.
-     */
-    public TextExtractor getExtractor() {
-        return _extractor;
-    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getText() { return _text; }
 }

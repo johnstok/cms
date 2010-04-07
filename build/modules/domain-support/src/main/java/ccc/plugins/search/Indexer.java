@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,22 +21,51 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
 
-import ccc.plugins.search.Index;
-import ccc.plugins.search.Indexer;
+package ccc.plugins.search;
 
+import java.util.UUID;
 
+import ccc.types.MimeType;
 
 
 /**
- * Lucene implementation of the search API.
+ * API for rebuilding a search index.
  *
  * @author Civic Computing Ltd.
  */
-public interface SimpleLucene extends Indexer, Index {
-    // No additional methods.
+public interface Indexer {
+
+    /**
+     * Start a transaction.
+     *
+     * @throws SearchException If starting the transaction fails.
+     */
+    void startUpdate() throws SearchException;
+
+
+    /**
+     * Commit a transaction.
+     */
+    void commitUpdate();
+
+
+    /**
+     * Roll back a transaction.
+     */
+    void rollbackUpdate();
+
+
+    /**
+     * Add a document to the lucene index.
+     *
+     * @param id      The document's id.
+     * @param content The document's content.
+     */
+    void createDocument(final UUID id, final String content);
+
+    TextExtractor createExtractor(MimeType mimeType);
 }

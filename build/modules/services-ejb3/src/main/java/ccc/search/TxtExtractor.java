@@ -29,30 +29,38 @@ package ccc.search;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
+
 import ccc.commons.IO;
-import ccc.rest.StreamAction;
+import ccc.plugins.search.TextExtractor;
 
 /**
- * A stream action that reads a input stream into a string.
+ * A text extractor for plain text files.
  *
  * @author Civic Computing Ltd.
  */
-public class TxtExtractor implements StreamAction {
+public class TxtExtractor
+    implements
+        TextExtractor {
+    private static final Logger LOG = Logger.getLogger(TxtExtractor.class);
 
-    private String _content;
+    private String _text = "";
+
 
     /** {@inheritDoc} */
-    @Override public void execute(final InputStream is) throws Exception {
-        // Assume files have come from windows.
-        _content = IO.toString(is, Charset.forName("windows-1252"));
+    @Override public void execute(final InputStream is) {
+        try {
+            // Assume files are UTF-8.
+            // TODO Add icu4j character-set conversion
+            _text = IO.toString(is, Charset.forName("UTF-8"));
+
+        } catch (final Throwable e) {
+            LOG.warn("Text file extraction failed: "+e.getMessage());
+        }
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The contents of the stream, as a string.
-     */
-    public String getContent() {
-        return _content;
-    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getText() { return _text; }
 }

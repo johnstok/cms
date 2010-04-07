@@ -46,6 +46,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.commons.XHTML;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -54,11 +55,15 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
+import ccc.plugins.search.TextExtractor;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
 import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.search.SimpleLucene;
 import ccc.search.lucene.SimpleLuceneFS;
+import ccc.types.Paragraph;
+import ccc.types.ParagraphType;
+import ccc.types.PredefinedResourceNames;
 
 
 /**
@@ -82,6 +87,7 @@ public class SearchEngineEJB  implements SearchEngine {
     @PersistenceContext private EntityManager _em;
 
     private ResourceRepository _resources;
+    private DataRepository     _dr;
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
@@ -180,7 +186,23 @@ public class SearchEngineEJB  implements SearchEngine {
     private void indexFiles(final SimpleLucene lucene) {
         final List<File> files = _resources.files();
         for (final File f : files) {
-            if (canIndex(f)) { lucene.indexFile(f); }
+            if (canIndex(f)) {
+                if (!PredefinedResourceNames.CONTENT.equals(
+                    f.getRoot().getName().toString())) {
+                    LOG.debug(
+                        "Skipped indexing for non content file : "
+                        +f.getTitle());
+                    continue;
+                }
+
+                final TextExtractor extractor =
+                    lucene.createExtractor(f.getMimeType());
+                _dr.retrieve(f.getData(), extractor);
+                final String content =
+                    XHTML.cleanUpContent(extractor.getText());
+                lucene.createDocument(f.getId(), content);
+                LOG.debug("Indexed file: "+f.getTitle());
+            }
         }
     }
 
@@ -188,8 +210,23 @@ public class SearchEngineEJB  implements SearchEngine {
     private void indexPages(final SimpleLucene lucene) {
         final List<Page> pages = _resources.pages();
         for (final Page p : pages) {
-            if (canIndex(p)) { lucene.indexPage(p); }
+            if (canIndex(p)) {
+                lucene.createDocument(p.getId(), extractContent(p));
+                LOG.debug("Indexed page: "+p.getTitle());
+            }
         }
+    }
+
+
+    private String extractContent(final Page page) {
+        final StringBuilder sb = new StringBuilder(page.getTitle());
+        for (final Paragraph p : page.currentRevision().getParagraphs()) {
+            if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
+                sb.append(" ");
+                sb.append(XHTML.cleanUpContent(p.getText()));
+            }
+        }
+        return sb.toString();
     }
 
 
@@ -202,6 +239,7 @@ public class SearchEngineEJB  implements SearchEngine {
     private void configureCoreData() {
         _resources =
             IRepositoryFactory.DEFAULT.create(_em).createResourceRepository();
+        _dr = IRepositoryFactory.DEFAULT.create(_em).createDataRepository();
     }
 
 
@@ -214,9 +252,8 @@ public class SearchEngineEJB  implements SearchEngine {
             throw new RuntimeException(
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
-        final DataRepository dr =
-            IRepositoryFactory.DEFAULT.create(_em).createDataRepository();
-        return new SimpleLuceneFS(dr, indexPath.getValue());
+
+        return new SimpleLuceneFS(indexPath.getValue());
     }
 
 
