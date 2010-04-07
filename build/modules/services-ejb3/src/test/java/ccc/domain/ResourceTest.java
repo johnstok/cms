@@ -17,9 +17,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import ccc.commons.Testing;
-import ccc.rest.InsufficientPrivilegesException;
-import ccc.rest.LockMismatchException;
-import ccc.rest.UnlockedException;
+import ccc.rest.exceptions.InsufficientPrivilegesException;
+import ccc.rest.exceptions.LockMismatchException;
+import ccc.rest.exceptions.UnlockedException;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ResourceName;

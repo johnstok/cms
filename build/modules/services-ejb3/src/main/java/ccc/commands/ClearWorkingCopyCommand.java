@@ -35,7 +35,7 @@ import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.WorkingCopyNotSupportedException;
+import ccc.rest.exceptions.WorkingCopyNotSupportedException;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 

@@ -24,23 +24,21 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.rest;
+package ccc.rest.exceptions;
 
 import java.util.UUID;
 
-import ccc.rest.exceptions.InvalidException;
 import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 
 
 /**
- * This exception is thrown when a working copy command is attempted for a
- * resource that doesn't support working copies.
+ * An exception used to indicate that a resource is locked by another user.
  *
  * @author Civic Computing Ltd.
  */
-public class WorkingCopyNotSupportedException
+public class LockMismatchException
     extends
         InvalidException {
 
@@ -52,12 +50,11 @@ public class WorkingCopyNotSupportedException
      *
      * @param resource The resource.
      */
-    public WorkingCopyNotSupportedException(final UUID resource) {
-        super(new Failure(FailureCode.WC_UNSUPPORTED));
+    public LockMismatchException(final UUID resource) {
+        super(new Failure(FailureCode.LOCK_MISMATCH));
         DBC.require().notNull(resource);
         _resource = resource;
     }
-
 
     /**
      * Accessor for the resource.
@@ -68,13 +65,9 @@ public class WorkingCopyNotSupportedException
         return _resource;
     }
 
-
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return
-            "Resource "
-            + _resource
-            + " is not working copy aware.";
+        return "Mismatch confirming lock on "+_resource+".";
     }
 }

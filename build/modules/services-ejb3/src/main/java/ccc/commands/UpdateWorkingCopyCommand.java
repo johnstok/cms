@@ -37,8 +37,8 @@ import ccc.domain.WorkingCopySupport;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.WorkingCopyNotSupportedException;
 import ccc.rest.dto.PageDelta;
+import ccc.rest.exceptions.WorkingCopyNotSupportedException;
 import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 

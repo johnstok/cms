@@ -27,8 +27,8 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.rest.UnlockedException;
 import ccc.rest.exceptions.RestException;
+import ccc.rest.exceptions.UnlockedException;
 import ccc.types.ActionStatus;
 import ccc.types.FailureCode;
 
