@@ -48,11 +48,15 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import ccc.commons.Exceptions;
-import ccc.persistence.DataRepository;
+import ccc.plugins.search.SearchException;
+import ccc.plugins.search.TextExtractor;
 import ccc.rest.SearchResult;
-import ccc.search.AbstractIndexer;
-import ccc.search.SearchException;
+import ccc.search.PdfLoader;
 import ccc.search.SimpleLucene;
+import ccc.search.TxtExtractor;
+import ccc.search.WordExtractor;
+import ccc.types.DBC;
+import ccc.types.MimeType;
 
 
 /**
@@ -61,10 +65,8 @@ import ccc.search.SimpleLucene;
  * @author Civic Computing Ltd.
  */
 public class SimpleLuceneFS
-extends
-AbstractIndexer
-implements
-SimpleLucene {
+    implements
+        SimpleLucene {
 
     private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
     private static final Logger LOG =
@@ -77,12 +79,9 @@ SimpleLucene {
     /**
      * Constructor.
      *
-     * @param dm The file repository used to read file resources.
      * @param indexPath The path to the index file on disk.
      */
-    public SimpleLuceneFS(final DataRepository dm,
-                          final String indexPath)  {
-        super(dm);
+    public SimpleLuceneFS(final String indexPath)  {
         _indexPath = indexPath;
     }
 
@@ -308,7 +307,7 @@ SimpleLucene {
 
     /** {@inheritDoc} */
     @Override
-    protected void createDocument(final UUID id, final String content) {
+    public void createDocument(final UUID id, final String content) {
         try {
             final Document d = new Document();
             d.add(
@@ -329,6 +328,30 @@ SimpleLucene {
 
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public TextExtractor createExtractor(final MimeType mimeType) {
+        DBC.require().notNull(mimeType);
+
+        final String primaryType = mimeType.getPrimaryType();
+        final String subType     = mimeType.getSubType();
+
+        if ("pdf".equalsIgnoreCase(subType)) {
+            return new PdfLoader();
+
+        } else if ("msword".equalsIgnoreCase(subType)) {//no MS2007 support
+            return new WordExtractor();
+
+        } else if ("text".equalsIgnoreCase(primaryType)) {
+            return new TxtExtractor();
+
+        } else {
+            return null;
+
         }
     }
 }

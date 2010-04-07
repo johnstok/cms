@@ -31,44 +31,57 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 import org.pdfbox.pdmodel.PDDocument;
+import org.pdfbox.util.PDFTextStripper;
 
-import ccc.rest.StreamAction;
+import ccc.plugins.search.TextExtractor;
 
 /**
- * A StreamAction that can load a PDF file into memory.
+ * A text extractor for PDF files.
  *
  * @author Civic Computing Ltd.
  */
-public class PdfLoader implements StreamAction {
+public class PdfLoader
+    implements
+        TextExtractor {
     private static final Logger LOG = Logger.getLogger(PdfLoader.class);
 
-    private PDDocument   _document;
-    private final String _fileName;
+    private String _text = "";
 
-    /**
-     * Constructor.
-     *
-     * @param fileName The name of the PDF file.
-     */
-    public PdfLoader(final String fileName) {
-        _fileName = fileName;
-    }
 
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) {
         try {
-            _document = PDDocument.load(is);
-        } catch (final IOException e) {
-            LOG.error("PDF loading failed for file: "+_fileName);
+            final PDDocument doc = PDDocument.load(is);
+            if (doc == null) { return; }
+            extractText(doc);
+
+        } catch (final Throwable e) {
+            LOG.warn("PDF file extraction failed: "+e.getMessage());
         }
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The loaded document.
-     */
-    public PDDocument getDocument() {
-        return _document;
+
+    private void extractText(final PDDocument doc) throws IOException {
+        try {
+            final PDFTextStripper stripper = new PDFTextStripper();
+            stripper.setEndPage(MAX_PAGES_TO_INDEX);
+            _text = stripper.getText(doc);
+        } finally {
+            safelyClose(doc);
+        }
     }
+
+
+    private void safelyClose(final PDDocument doc) {
+        try {
+            if (null!=doc) { doc.close(); }
+        } catch (final IOException e) {
+            LOG.debug("Closing PDF Document failed.", e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getText() { return _text; }
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,22 +21,25 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+package ccc.plugins.search;
 
-import ccc.plugins.search.Index;
-import ccc.plugins.search.Indexer;
-
-
+import ccc.rest.StreamAction;
 
 
 /**
- * Lucene implementation of the search API.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public interface SimpleLucene extends Indexer, Index {
-    // No additional methods.
+public interface TextExtractor
+    extends
+        StreamAction {
+
+    /** MAX_PAGES_TO_INDEX : int. */
+    int MAX_PAGES_TO_INDEX = 10;
+
+    String getText();
 }

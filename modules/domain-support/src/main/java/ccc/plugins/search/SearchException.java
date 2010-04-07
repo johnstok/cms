@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,22 +21,57 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
-
-import ccc.plugins.search.Index;
-import ccc.plugins.search.Indexer;
-
-
+package ccc.plugins.search;
 
 
 /**
- * Lucene implementation of the search API.
+ * Exceptional condition for the search engine.
  *
  * @author Civic Computing Ltd.
  */
-public interface SimpleLucene extends Indexer, Index {
-    // No additional methods.
+public class SearchException
+    extends
+        Exception {
+
+
+    /**
+     * Constructor.
+     */
+    public SearchException() {
+        super();
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param message The message describing this exception.
+     * @param cause The root cause of the exception.
+     */
+    public SearchException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param message The message describing this exception.
+     */
+    public SearchException(final String message) {
+        super(message);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param cause The root cause of the exception.
+     */
+    public SearchException(final Throwable cause) {
+        super(cause);
+    }
 }
