@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.ejb3;
+package ccc.plugins.search.lucene;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -35,7 +35,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
-import ccc.search.lucene.CapturingHandler;
+import ccc.plugins.search.lucene.CapturingHandler;
 
 
 

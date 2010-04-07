@@ -24,26 +24,25 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+package ccc.plugins.search.lucene;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
-import org.pdfbox.pdmodel.PDDocument;
-import org.pdfbox.util.PDFTextStripper;
 
+import ccc.commons.IO;
 import ccc.plugins.search.TextExtractor;
 
 /**
- * A text extractor for PDF files.
+ * A text extractor for plain text files.
  *
  * @author Civic Computing Ltd.
  */
-public class PdfLoader
+public class TxtExtractor
     implements
         TextExtractor {
-    private static final Logger LOG = Logger.getLogger(PdfLoader.class);
+    private static final Logger LOG = Logger.getLogger(TxtExtractor.class);
 
     private String _text = "";
 
@@ -51,32 +50,12 @@ public class PdfLoader
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) {
         try {
-            final PDDocument doc = PDDocument.load(is);
-            if (doc == null) { return; }
-            extractText(doc);
+            // Assume files are UTF-8.
+            // TODO Add icu4j character-set conversion
+            _text = IO.toString(is, Charset.forName("UTF-8"));
 
         } catch (final Throwable e) {
-            LOG.warn("PDF file extraction failed: "+e.getMessage());
-        }
-    }
-
-
-    private void extractText(final PDDocument doc) throws IOException {
-        try {
-            final PDFTextStripper stripper = new PDFTextStripper();
-            stripper.setEndPage(MAX_PAGES_TO_INDEX);
-            _text = stripper.getText(doc);
-        } finally {
-            safelyClose(doc);
-        }
-    }
-
-
-    private void safelyClose(final PDDocument doc) {
-        try {
-            if (null!=doc) { doc.close(); }
-        } catch (final IOException e) {
-            LOG.debug("Closing PDF Document failed.", e);
+            LOG.warn("Text file extraction failed: "+e.getMessage());
         }
     }
 

@@ -24,25 +24,24 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+package ccc.plugins.search.lucene;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
+import org.textmining.extraction.word.WordTextExtractorFactory;
 
-import ccc.commons.IO;
 import ccc.plugins.search.TextExtractor;
 
 /**
- * A text extractor for plain text files.
+ * A text extractor for MS Word documents.
  *
  * @author Civic Computing Ltd.
  */
-public class TxtExtractor
+public class WordExtractor
     implements
         TextExtractor {
-    private static final Logger LOG = Logger.getLogger(TxtExtractor.class);
+    private static final Logger LOG = Logger.getLogger(WordExtractor.class);
 
     private String _text = "";
 
@@ -50,12 +49,14 @@ public class TxtExtractor
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) {
         try {
-            // Assume files are UTF-8.
-            // TODO Add icu4j character-set conversion
-            _text = IO.toString(is, Charset.forName("UTF-8"));
+            final WordTextExtractorFactory factory =
+                new WordTextExtractorFactory();
+            final org.textmining.extraction.TextExtractor extractor =
+                factory.textExtractor(is);
+            _text = extractor.getText();
 
         } catch (final Throwable e) {
-            LOG.warn("Text file extraction failed: "+e.getMessage());
+            LOG.warn("Word document extraction failed: "+e.getMessage());
         }
     }
 

@@ -55,12 +55,13 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
+import ccc.plugins.search.Index;
+import ccc.plugins.search.Indexer;
 import ccc.plugins.search.TextExtractor;
+import ccc.plugins.search.lucene.SimpleLuceneFS;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
 import ccc.rest.exceptions.EntityNotFoundException;
-import ccc.search.SimpleLucene;
-import ccc.search.lucene.SimpleLuceneFS;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 import ccc.types.PredefinedResourceNames;
@@ -109,7 +110,7 @@ public class SearchEngineEJB  implements SearchEngine {
     public SearchResult find(final String searchTerms,
                              final int resultCount,
                              final int page) {
-        return createLucene().find(searchTerms, resultCount, page);
+        return createIndex().find(searchTerms, resultCount, page);
     }
 
 
@@ -117,7 +118,7 @@ public class SearchEngineEJB  implements SearchEngine {
     @Override
     @RolesAllowed({SEARCH_REINDEX})
     public void index() {
-        final SimpleLucene lucene = createLucene();
+        final Indexer lucene = createIndexer();
         try {
             lucene.startUpdate();
             indexPages(lucene);
@@ -183,7 +184,17 @@ public class SearchEngineEJB  implements SearchEngine {
     }
 
 
-    private void indexFiles(final SimpleLucene lucene) {
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public SearchResult similar(final String uuid,
+                                final int noOfResultsPerPage,
+                                final int page) {
+        return createIndex().similar(uuid, noOfResultsPerPage, page);
+    }
+
+
+    private void indexFiles(final Indexer lucene) {
         final List<File> files = _resources.files();
         for (final File f : files) {
             if (canIndex(f)) {
@@ -207,7 +218,7 @@ public class SearchEngineEJB  implements SearchEngine {
     }
 
 
-    private void indexPages(final SimpleLucene lucene) {
+    private void indexPages(final Indexer lucene) {
         final List<Page> pages = _resources.pages();
         for (final Page p : pages) {
             if (canIndex(p)) {
@@ -243,7 +254,18 @@ public class SearchEngineEJB  implements SearchEngine {
     }
 
 
-    private SimpleLucene createLucene() {
+    private Indexer createIndexer() {
+        return new SimpleLuceneFS(getIndexPath());
+    }
+
+
+    private Index createIndex() {
+        return new SimpleLuceneFS(getIndexPath());
+    }
+
+
+    private String getIndexPath() {
+
         final SettingsRepository settings = new SettingsRepository(_em);
         Setting indexPath;
         try {
@@ -252,17 +274,7 @@ public class SearchEngineEJB  implements SearchEngine {
             throw new RuntimeException(
                 "No setting for "+Setting.Name.LUCENE_INDEX_PATH, e);
         }
-
-        return new SimpleLuceneFS(indexPath.getValue());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
-    public SearchResult similar(final String uuid,
-                                final int noOfResultsPerPage,
-                                final int page) {
-        return createLucene().similar(uuid, noOfResultsPerPage, page);
+        final String indexPathValue = indexPath.getValue();
+        return indexPathValue;
     }
 }

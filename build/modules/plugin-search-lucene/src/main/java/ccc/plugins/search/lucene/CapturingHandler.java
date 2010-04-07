@@ -24,7 +24,7 @@
  * Changes: See subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search.lucene;
+package ccc.plugins.search.lucene;
 
 import java.io.IOException;
 import java.util.HashSet;

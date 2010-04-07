@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.search;
+package ccc.plugins.search.lucene;
 
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
