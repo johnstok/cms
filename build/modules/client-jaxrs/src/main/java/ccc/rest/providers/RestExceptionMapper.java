@@ -29,9 +29,9 @@ package ccc.rest.providers;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import ccc.rest.InternalError;
 import ccc.rest.exceptions.ConflictException;
 import ccc.rest.exceptions.EntityNotFoundException;
+import ccc.rest.exceptions.InternalError;
 import ccc.rest.exceptions.InvalidException;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.exceptions.UnauthorizedException;
