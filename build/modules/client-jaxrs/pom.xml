@@ -64,10 +64,6 @@
                         <artifactId>sjsxp</artifactId>
                     </exclusion>
                     <exclusion>
-                        <groupId>commons-httpclient</groupId>
-                        <artifactId>commons-httpclient</artifactId>
-                    </exclusion>
-                    <exclusion>
                         <groupId>org.codehaus.jettison</groupId>
                         <artifactId>jettison</artifactId>
                     </exclusion>
@@ -80,11 +76,6 @@
                         <artifactId>slf4j-simple</artifactId>
                     </exclusion>
                 </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${lib.version.httpclient}</version>
         </dependency>
     </dependencies>
 
