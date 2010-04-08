@@ -24,7 +24,10 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.markup;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
@@ -34,32 +37,38 @@ import org.xml.sax.SAXException;
 
 /**
  * A SAX content handler that only operates on white-listed elements.
- * FIXME: Ignore all children of a blacklisted element? Stax may be a better
- * option in this case? Or count element depth and a 'mode' -> DISCARD,
- * BLOCK, ECHO, etc.
+ *
  * FIXME: Check how tag soup selects a charset (potential UTF-7 bug).
+ * FIXME: Don't render closing tags for elements such as 'br'.
  *
  * @author Civic Computing Ltd.
  */
-final class EchoContentHandler
+final class WhitelistContentHandler
     implements
         ContentHandler {
 
     private static final Logger LOG =
-        Logger.getLogger(EchoContentHandler.class);
+        Logger.getLogger(WhitelistContentHandler.class);
 
     private final StringBuffer _sb = new StringBuffer();
+    private Set<String> _allowed = new HashSet<String>();
+    private Set<String> _ignored = new HashSet<String>();
     private int _elementDepth = 0;
+    private int _blockTo = Integer.MAX_VALUE;
 
 
     /** {@inheritDoc} */
     @Override public void characters(final char[] ch,
                                      final int start,
                                      final int length) {
+        if (blocking()) {
+            return;
+        }
+
+        /* TODO: Handle multi-char code points. How?! */
         for (int i=start; i<(start+length); i++) {
             _sb.append(XHTML.escape(ch[i]));
         }
-        LOG.debug(new String(ch, start, length));
     }
 
 
@@ -74,13 +83,14 @@ final class EchoContentHandler
                                      final String localName,
                                      final String name) {
         _elementDepth--;
-        _sb.append("</"+name+">");
-        LOG.debug("End element: "+name);
-    }
 
-
-    private void indent() {
-        for (int i=0; i<_elementDepth; i++) {_sb.append("  "); }
+        if (atBlockDepth()) {
+            unBlock();
+        } else if (blocking()) {
+            return;
+        }else if (isAllowed(name)) {
+            _sb.append("</"+name+">");
+        }
     }
 
 
@@ -102,7 +112,7 @@ final class EchoContentHandler
     /** {@inheritDoc} */
     @Override public void processingInstruction(final String target,
                                                 final String data) {
-        LOG.debug("Processing instruction: "+target);
+        LOG.debug("Ignoring processing instruction: "+target);
     }
 
 
@@ -130,10 +140,19 @@ final class EchoContentHandler
                                        final String localName,
                                        final String name,
                                        final Attributes atts) {
-        _sb.append('\n');
-        indent();
-        _sb.append("<"+name+">");
-        LOG.debug("Start element: "+name);
+        if (blocking()) {
+            _elementDepth++;
+            return;
+        }
+
+        if (isAllowed(name)) {
+            _sb.append("<"+name+">");
+        } else if (isBlocked(name)) {
+            LOG.debug("Blocking element: "+name);
+            block();
+        } else {
+            LOG.debug("Ignoring element: "+name);
+        }
         _elementDepth++;
     }
 
@@ -152,4 +171,64 @@ final class EchoContentHandler
      */
     StringBuffer buffer() { return _sb; }
 
+
+    /**
+     * Specify the element names allowed by this handler.
+     *
+     * @param elements An array of allowed element names.
+     */
+    public void setAllowedElements(final String... elements) {
+        _allowed.clear();
+        for (final String element : elements) {
+            _allowed.add(element.toLowerCase());
+        }
+    }
+
+
+    /**
+     * Specify the element names ignored by this handler.
+     *
+     * @param ignored An array of ignored element names.
+     */
+    public void setIgnoredElements(final String... ignored) {
+        _ignored.clear();
+        for (final String element : ignored) {
+            _ignored.add(element.toLowerCase());
+        }
+    }
+
+
+    private boolean isIgnored(final String name) {
+        return _ignored.contains(name.toLowerCase());
+    }
+
+
+    private boolean isAllowed(final String name) {
+        return _allowed.contains(name.toLowerCase());
+    }
+
+
+    private boolean blocking() {
+        return _blockTo < _elementDepth;
+    }
+
+
+    private void block() {
+        _blockTo = _elementDepth;
+    }
+
+
+    private boolean isBlocked(final String name) {
+        return !(isIgnored(name) || isAllowed(name));
+    }
+
+
+    private void unBlock() {
+        _blockTo = Integer.MAX_VALUE;
+    }
+
+
+    private boolean atBlockDepth() {
+        return _blockTo == _elementDepth;
+    }
 }

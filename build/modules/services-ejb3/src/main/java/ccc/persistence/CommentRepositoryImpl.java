@@ -34,7 +34,7 @@ import javax.persistence.EntityManager;
 
 import ccc.domain.Comment;
 import ccc.domain.Resource;
-import ccc.serialization.JsonKeys;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 import ccc.types.SortOrder;

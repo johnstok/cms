@@ -36,8 +36,8 @@ import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.exceptions.UnauthorizedException;
-import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.ResourceOrder;
 

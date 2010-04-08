@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.serialization.Json;
-import ccc.serialization.Jsonable;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.Jsonable;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;

@@ -37,10 +37,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.Files;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.exceptions.RestException;
-import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
 
 

@@ -34,29 +34,42 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Fixes bad (non-printing) characters in strings.
- * <p>These often arise when text has been pasted from applications using the
- * windows-1252 character set.
+ * Converts (non-printing) characters in strings to Unicode equivalents.
+ * <p>These often arise when text has arrived via operating systems using
+ * non-Unicode character sets (such as windows-1252).
  *
  * @author Civic Computing Ltd.
  */
-public class WordCharFixer {
-    private static final Logger  LOG = Logger.getLogger(WordCharFixer.class);
+public class CharConversion {
+    private static final Logger  LOG = Logger.getLogger(CharConversion.class);
     private static final Pattern CP_1252_BAD =
         Pattern.compile("[\\x7F-\\x9F]{1}");
+
 
     /**
      * Corrects values in a hashmap.
      *
      * @param map The hashmap to correct.
      */
-    public void warn(final Map<String, StringBuffer> map) {
+    public void fix(final Map<String, StringBuffer> map) {
         for (final Map.Entry<String, StringBuffer> para : map.entrySet()) {
             final StringBuffer uncorrectedPara = para.getValue();
             final StringBuffer correctedPara = correct(uncorrectedPara);
             para.setValue(correctedPara);
         }
     }
+
+
+    /**
+     * Fix all the bad characters in a string.
+     *
+     * @param badString The string to correct.
+     * @return The corrected string.
+     */
+    public String fix(final String badString) {
+        return correct(new StringBuffer(badString)).toString();
+    }
+
 
     /**
      * Performs character correction for char's \\x7F-\\x9F based on their
@@ -192,15 +205,5 @@ public class WordCharFixer {
         }
         hrefMatcher.appendTail(correctedPara);
         return correctedPara;
-    }
-
-    /**
-     * Fix all the bad characters in a string.
-     *
-     * @param badString The string to correct.
-     * @return The corrected string.
-     */
-    public String fix(final String badString) {
-        return correct(new StringBuffer(badString)).toString();
     }
 }

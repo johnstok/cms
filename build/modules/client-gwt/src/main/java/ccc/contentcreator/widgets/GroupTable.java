@@ -37,8 +37,8 @@ import ccc.contentcreator.events.GroupUpdated.GroupUpdatedHandler;
 import ccc.contentcreator.presenters.UpdateGroupPresenter;
 import ccc.contentcreator.remoting.ListGroups;
 import ccc.contentcreator.views.gxt.GroupViewImpl;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.GroupDto;
-import ccc.serialization.JsonKeys;
 import ccc.types.SortOrder;
 
 import com.extjs.gxt.ui.client.Style;

@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.serialization;
+package ccc.plugins.s11n;
 
 
 /**

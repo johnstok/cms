@@ -29,7 +29,7 @@ package ccc.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.serialization.Jsonable;
+import ccc.plugins.s11n.Jsonable;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 

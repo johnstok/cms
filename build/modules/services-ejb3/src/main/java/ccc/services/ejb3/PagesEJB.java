@@ -44,12 +44,12 @@ import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.Pages;
 import ccc.rest.dto.PageDelta;
 import ccc.rest.dto.PageDto;
 import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

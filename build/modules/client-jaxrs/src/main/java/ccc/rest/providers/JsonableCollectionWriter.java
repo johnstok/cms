@@ -38,8 +38,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.serialization.JsonImpl;
-import ccc.serialization.Jsonable;
+import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**

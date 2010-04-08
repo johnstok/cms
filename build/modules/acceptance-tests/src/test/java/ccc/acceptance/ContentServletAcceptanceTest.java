@@ -29,9 +29,9 @@ package ccc.acceptance;
 import java.util.Collections;
 import java.util.UUID;
 
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.Json;
-import ccc.serialization.JsonImpl;
 
 
 /**

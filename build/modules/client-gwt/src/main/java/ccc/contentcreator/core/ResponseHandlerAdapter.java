@@ -28,7 +28,7 @@ package ccc.contentcreator.core;
 
 import ccc.contentcreator.events.Error;
 import ccc.contentcreator.widgets.ContentCreator;
-import ccc.serialization.Json;
+import ccc.plugins.s11n.Json;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

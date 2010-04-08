@@ -34,8 +34,8 @@ import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.ResponseHandlerAdapter;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.FileDto;
-import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

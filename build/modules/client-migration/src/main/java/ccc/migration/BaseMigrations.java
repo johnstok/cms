@@ -41,7 +41,7 @@ import javax.ejb.EJBException;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.WordCharFixer;
+import ccc.commons.CharConversion;
 import ccc.rest.Folders;
 import ccc.rest.Groups;
 import ccc.rest.Resources;
@@ -392,7 +392,7 @@ public class BaseMigrations {
         log.debug("Assembly done.");
 
         new LinkFixer(_linkPrefix, String.valueOf(pageId)).extractURLs(map);
-        new WordCharFixer().warn(map);
+        new CharConversion().fix(map);
 
         checkDuplicateKeys(map);
 

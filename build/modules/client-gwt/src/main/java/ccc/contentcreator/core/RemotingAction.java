@@ -33,9 +33,9 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.contentcreator.widgets.ContentCreator;
+import ccc.plugins.s11n.Json;
 import ccc.rest.dto.ActionSummary;
 import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.Json;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;

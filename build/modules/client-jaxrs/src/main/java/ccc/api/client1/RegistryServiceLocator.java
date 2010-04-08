@@ -26,7 +26,6 @@
  */
 package ccc.api.client1;
 
-import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
@@ -42,6 +41,7 @@ import ccc.rest.Security;
 import ccc.rest.ServiceLocator;
 import ccc.rest.Templates;
 import ccc.rest.Users;
+import ccc.types.DBC;
 
 
 /**
@@ -63,32 +63,8 @@ public class RegistryServiceLocator implements ServiceLocator {
      */
     public RegistryServiceLocator(final String appName,
                                   final Registry registry) {
-        _appName = appName;
-        _registry = registry;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param appName The name of the application.
-     */
-    public RegistryServiceLocator(final String appName) {
-        this(appName, new JNDI());
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param appName The name of the application.
-     * @param providerUrl The java naming provider URL.
-     */
-    public RegistryServiceLocator(final String appName,
-                                  final String providerUrl) {
-        final Registry registry = new JNDI(providerUrl);
-        _appName = appName;
-        _registry = registry;
+        _appName =  DBC.require().notEmpty(appName);
+        _registry = DBC.require().notNull(registry);
     }
 
 

@@ -22,8 +22,8 @@ import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.overlays.FailureOverlay;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.ResourceSummary;
-import ccc.serialization.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;

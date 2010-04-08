@@ -30,7 +30,7 @@ package ccc.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import ccc.commons.WordCharFixer;
+import ccc.commons.CharConversion;
 import ccc.rest.dto.PageDelta;
 import ccc.types.DBC;
 import ccc.types.Paragraph;
@@ -113,7 +113,7 @@ public class Page
         final HashSet<Paragraph> paras = new HashSet<Paragraph>();
         for (final Paragraph para : delta.getParagraphs()) {
             if (ParagraphType.TEXT == para.getType()) {
-                final WordCharFixer fixer = new WordCharFixer();
+                final CharConversion fixer = new CharConversion();
                 final Paragraph p =
                     Paragraph.fromText(para.getName(), fixer.fix(para.getText()));
                 paras.add(p);

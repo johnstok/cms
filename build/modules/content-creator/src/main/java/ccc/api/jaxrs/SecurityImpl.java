@@ -41,8 +41,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.commons.CCCProperties;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.Security;
-import ccc.serialization.JsonImpl;
 import ccc.types.Permission;
 
 

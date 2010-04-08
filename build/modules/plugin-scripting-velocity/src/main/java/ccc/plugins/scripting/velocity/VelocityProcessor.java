@@ -49,7 +49,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
-import ccc.commons.XHTML;
+import ccc.plugins.markup.XHTML;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;

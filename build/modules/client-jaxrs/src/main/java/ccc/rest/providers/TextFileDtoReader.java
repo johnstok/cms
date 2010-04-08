@@ -37,9 +37,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.TextFileDto;
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
 import ccc.types.MimeType;
 
 

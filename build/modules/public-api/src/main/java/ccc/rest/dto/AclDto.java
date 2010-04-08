@@ -32,9 +32,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable2;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable2;
 import ccc.types.DBC;
 
 

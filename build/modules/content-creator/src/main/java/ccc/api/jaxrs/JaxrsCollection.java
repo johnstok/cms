@@ -32,6 +32,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 
 import ccc.api.client1.RegistryServiceLocator;
+import ccc.commons.JNDI;
 import ccc.rest.ActionScheduler;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
@@ -60,7 +61,7 @@ abstract class JaxrsCollection {
 
 
     private ServiceLocator getServiceLocator() {
-        return new RegistryServiceLocator(getAppName());
+        return new RegistryServiceLocator(getAppName(), new JNDI());
     }
 
 

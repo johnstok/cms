@@ -29,7 +29,7 @@ package ccc.contentcreator.remoting;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.views.gxt.HistoryDialog;
-import ccc.serialization.JsonKeys;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

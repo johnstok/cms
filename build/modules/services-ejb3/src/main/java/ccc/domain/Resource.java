@@ -40,7 +40,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.commons.WordCharFixer;
+import ccc.commons.CharConversion;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceSnapshot;
 import ccc.rest.dto.ResourceSummary;
@@ -48,9 +51,6 @@ import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.exceptions.InsufficientPrivilegesException;
 import ccc.rest.exceptions.LockMismatchException;
 import ccc.rest.exceptions.UnlockedException;
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable;
 import ccc.types.CommandType;
 import ccc.types.DBC;
 import ccc.types.Duration;
@@ -211,7 +211,7 @@ public abstract class Resource
         require().notEmpty(titleString);
         require().maxLength(titleString, MAXIMUM_TITLE_LENGTH);
         require().containsNoBrackets(titleString);
-        final WordCharFixer fixer = new WordCharFixer();
+        final CharConversion fixer = new CharConversion();
         _title = fixer.fix(titleString);
     }
 

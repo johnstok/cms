@@ -35,9 +35,9 @@ import ccc.domain.Comment;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.dto.CommentDto;
 import ccc.rest.exceptions.InvalidException;
-import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 
