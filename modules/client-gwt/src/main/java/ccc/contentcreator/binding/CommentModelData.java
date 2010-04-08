@@ -38,8 +38,8 @@ import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.contentcreator.events.CommentUpdatedEvent;
 import ccc.contentcreator.widgets.ContentCreator;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.CommentDto;
-import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 

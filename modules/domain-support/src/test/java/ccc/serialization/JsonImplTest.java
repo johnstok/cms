@@ -31,6 +31,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import ccc.plugins.s11n.InvalidSnapshotException;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.json.JsonImpl;
+
 import junit.framework.TestCase;
 
 

@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.plugins.markup;
 
 import java.io.IOException;
 import java.io.StringReader;

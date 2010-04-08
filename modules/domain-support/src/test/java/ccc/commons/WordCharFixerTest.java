@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link WordCharFixer}.
+ * Tests for the {@link CharConversion}.
  *
  * @author Civic Computing Ltd.
  */
@@ -54,7 +54,7 @@ public class WordCharFixerTest
         badMap.put("foo", bad);
 
         // ACT
-        new WordCharFixer().warn(badMap);
+        new CharConversion().fix(badMap);
 
         // ASSERT
         assertEquals("beforemiddleend", badMap.get("foo").toString());
@@ -71,7 +71,7 @@ public class WordCharFixerTest
             new StringBuffer("before\u007fmiddle\u008fend");
 
         // ACT
-        final StringBuffer good = new WordCharFixer().correct(bad);
+        final StringBuffer good = new CharConversion().correct(bad);
 
         // ASSERT
         assertEquals("beforemiddleend", good.toString());
@@ -87,7 +87,7 @@ public class WordCharFixerTest
             new StringBuffer("before\u0096middle\u0092end\u0086");
 
         // ACT
-        final StringBuffer good = new WordCharFixer().correct(bad);
+        final StringBuffer good = new CharConversion().correct(bad);
 
         // ASSERT
         assertEquals("before–middle’end†", good.toString());
@@ -136,7 +136,7 @@ public class WordCharFixerTest
                 .append('\u009f');
 
         // ACT
-        final StringBuffer good = new WordCharFixer().correct(bad);
+        final StringBuffer good = new CharConversion().correct(bad);
 
         // ASSERT
         assertEquals("€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ", good.toString());

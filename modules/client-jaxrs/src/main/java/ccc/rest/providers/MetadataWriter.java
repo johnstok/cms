@@ -47,7 +47,7 @@ import javax.ws.rs.ext.Provider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.serialization.JsonImpl;
+import ccc.plugins.s11n.json.JsonImpl;
 
 
 

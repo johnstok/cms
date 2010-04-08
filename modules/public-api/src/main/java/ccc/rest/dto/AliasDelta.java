@@ -29,9 +29,9 @@ package ccc.rest.dto;
 import java.io.Serializable;
 import java.util.UUID;
 
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable;
 
 
 /**

@@ -30,8 +30,8 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.PageDelta;
-import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 

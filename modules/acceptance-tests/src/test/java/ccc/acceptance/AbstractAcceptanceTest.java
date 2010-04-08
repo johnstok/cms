@@ -51,6 +51,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.client1.ProxyServiceLocator;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.Actions;
 import ccc.rest.Aliases;
 import ccc.rest.Comments;
@@ -74,7 +75,6 @@ import ccc.rest.dto.TemplateDto;
 import ccc.rest.dto.UserDto;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.providers.RestExceptionMapper;
-import ccc.serialization.JsonImpl;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;

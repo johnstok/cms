@@ -34,7 +34,7 @@ import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
-import ccc.serialization.JsonImpl;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.types.CommandType;
 
 

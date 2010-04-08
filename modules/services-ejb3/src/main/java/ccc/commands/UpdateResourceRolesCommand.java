@@ -34,10 +34,10 @@ import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.AclDto.Entry;
 import ccc.rest.exceptions.EntityNotFoundException;
-import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 
 

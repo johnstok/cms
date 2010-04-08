@@ -26,7 +26,7 @@
  */
 package ccc.rest.exceptions;
 
-import ccc.serialization.Json;
+import ccc.plugins.s11n.Json;
 import ccc.types.Failure;
 
 

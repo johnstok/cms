@@ -26,8 +26,8 @@
  */
 package ccc.rest.exceptions;
 
-import ccc.serialization.Json;
-import ccc.serialization.Jsonable2;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.Jsonable2;
 import ccc.types.Failure;
 import ccc.types.FailureCode;
 

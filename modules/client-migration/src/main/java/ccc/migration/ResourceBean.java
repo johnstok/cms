@@ -28,7 +28,7 @@ package ccc.migration;
 
 import java.util.Date;
 
-import ccc.commons.WordCharFixer;
+import ccc.commons.CharConversion;
 
 
 /**
@@ -180,7 +180,7 @@ public class ResourceBean {
     public String cleanTitle() {
         final String cleanTitle =
             (null==title() || title().trim().equals("")) ? name() : title();
-        return new WordCharFixer().fix(cleanTitle);
+        return new CharConversion().fix(cleanTitle);
     }
 
 

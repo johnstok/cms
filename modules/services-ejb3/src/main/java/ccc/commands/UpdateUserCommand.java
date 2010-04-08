@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.dto.UserDto;
-import ccc.serialization.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 

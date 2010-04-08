@@ -38,7 +38,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.serialization.Jsonable2;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**

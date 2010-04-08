@@ -40,8 +40,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
 
+import ccc.plugins.s11n.Json;
 import ccc.rest.dto.UserDto;
-import ccc.serialization.Json;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;
 import ccc.types.Username;

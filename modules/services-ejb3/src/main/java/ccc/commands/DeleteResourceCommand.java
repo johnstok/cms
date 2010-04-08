@@ -35,7 +35,7 @@ import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.serialization.JsonImpl;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;

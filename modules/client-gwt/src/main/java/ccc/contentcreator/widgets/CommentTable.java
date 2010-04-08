@@ -37,8 +37,8 @@ import ccc.contentcreator.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.contentcreator.presenters.UpdateCommentPresenter;
 import ccc.contentcreator.remoting.ListComments;
 import ccc.contentcreator.views.gxt.CommentView;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.CommentDto;
-import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 

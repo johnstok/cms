@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,23 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.serialization;
+package ccc.plugins.s11n;
 
 
 /**
- * API for serializing a class to JSON.
+ * Further methods for serialisation.
+ * FIXME: Merge into Jsonable.
  *
  * @author Civic Computing Ltd.
  */
-public interface Jsonable {
+public interface Jsonable2 extends Jsonable {
 
     /**
-     * Convert to JSON.
+     * Convert from JSON.
      *
-     * @param json The JSON object to write to.
+     * @param json The JSON object to read from.
      */
-    void toJson(Json json);
+    void fromJson(Json json);
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,24 +21,29 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.serialization;
+package ccc.plugins.s11n;
+
 
 
 /**
- * Further methods for serialisation.
- * FIXME: Merge into Jsonable.
+ * Exception indicating an attempt to change a snapshot to an invalid state.
  *
  * @author Civic Computing Ltd.
  */
-public interface Jsonable2 extends Jsonable {
+public class InvalidSnapshotException
+    extends
+        RuntimeException {
 
     /**
-     * Convert from JSON.
+     * Constructor.
      *
-     * @param json The JSON object to read from.
+     * @param cause The cause of the exception.
      */
-    void fromJson(Json json);
+    public InvalidSnapshotException(final Throwable cause) {
+        super("Invalid snapshot", cause);
+    }
+
 }

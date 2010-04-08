@@ -26,14 +26,14 @@
  */
 package ccc.rest.dto;
 
-import static ccc.serialization.JsonKeys.*;
+import static ccc.plugins.s11n.JsonKeys.*;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.serialization.Json;
-import ccc.serialization.Jsonable2;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.Jsonable2;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.FailureCode;

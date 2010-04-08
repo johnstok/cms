@@ -28,5 +28,5 @@
 
 <module>
     <source path="types" />
-    <source path="serialization" />
+    <source path="plugins" />
 </module>

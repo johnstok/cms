@@ -34,12 +34,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.domain.sorting.Sorter;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable;
 import ccc.rest.dto.FolderDto;
 import ccc.rest.exceptions.CycleDetectedException;
 import ccc.rest.exceptions.ResourceExistsException;
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;

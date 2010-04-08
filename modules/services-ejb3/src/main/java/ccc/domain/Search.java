@@ -26,10 +26,10 @@
  */
 package ccc.domain;
 
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable;
 import ccc.rest.dto.ResourceSnapshot;
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
-import ccc.serialization.Jsonable;
 import ccc.types.ResourceType;
 
 

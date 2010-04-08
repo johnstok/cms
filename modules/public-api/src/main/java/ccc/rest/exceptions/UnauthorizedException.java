@@ -28,7 +28,7 @@ package ccc.rest.exceptions;
 
 import java.util.UUID;
 
-import ccc.serialization.Json;
+import ccc.plugins.s11n.Json;
 import ccc.types.DBC;
 import ccc.types.Failure;
 import ccc.types.FailureCode;

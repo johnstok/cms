@@ -28,11 +28,11 @@ package ccc.domain;
 
 import junit.framework.TestCase;
 import ccc.commons.Exceptions;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.dto.AliasDelta;
 import ccc.rest.exceptions.CycleDetectedException;
-import ccc.serialization.Json;
-import ccc.serialization.JsonImpl;
-import ccc.serialization.JsonKeys;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 

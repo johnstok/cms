@@ -27,6 +27,7 @@
 package ccc.migration;
 
 import ccc.api.client1.RegistryServiceLocator;
+import ccc.commons.JNDI;
 import ccc.commons.Registry;
 import ccc.rest.Resources;
 import ccc.rest.extensions.ResourcesExt;
@@ -65,7 +66,7 @@ public class MigrationServiceLocator
      */
     public MigrationServiceLocator(final String appName,
                                    final String providerUrl) {
-        super(appName, providerUrl);
+        super(appName, new JNDI(providerUrl));
     }
 
 
@@ -75,7 +76,7 @@ public class MigrationServiceLocator
      * @param appName The name of the application.
      */
     public MigrationServiceLocator(final String appName) {
-        super(appName);
+        super(appName, new JNDI());
     }
 
 

@@ -46,7 +46,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.XHTML;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -56,6 +55,7 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
 import ccc.plugins.PluginFactory;
+import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
 import ccc.plugins.search.TextExtractor;

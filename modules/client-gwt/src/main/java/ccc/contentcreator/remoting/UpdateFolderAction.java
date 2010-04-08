@@ -31,8 +31,8 @@ import java.util.UUID;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 

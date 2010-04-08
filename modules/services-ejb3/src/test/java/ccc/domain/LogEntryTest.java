@@ -29,7 +29,7 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.serialization.JsonImpl;
+import ccc.plugins.s11n.json.JsonImpl;
 import ccc.types.CommandType;
 import ccc.types.Username;
 

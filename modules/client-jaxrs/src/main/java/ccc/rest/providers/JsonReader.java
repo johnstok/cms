@@ -40,8 +40,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.serialization.Json;
-import ccc.serialization.JsonImpl;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**

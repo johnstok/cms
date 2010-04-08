@@ -34,6 +34,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import ccc.plugins.s11n.Json;
 import ccc.rest.Resources;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
@@ -43,7 +44,6 @@ import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
 import ccc.rest.exceptions.RestException;
 import ccc.rest.exceptions.UnauthorizedException;
-import ccc.serialization.Json;
 import ccc.types.DBC;
 import ccc.types.Duration;
 import ccc.types.HttpStatusCode;
@@ -483,7 +483,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param json
      * @throws RestException
-     * @see ccc.rest.Resources#updateMetadata(java.util.UUID, ccc.serialization.Json)
+     * @see ccc.rest.Resources#updateMetadata(java.util.UUID, ccc.plugins.s11n.Json)
      */
     public void updateMetadata(final UUID resourceId, final Json json) throws RestException {
 

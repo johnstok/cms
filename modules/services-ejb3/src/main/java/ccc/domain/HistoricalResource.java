@@ -29,8 +29,8 @@ package ccc.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.serialization.Json;
-import ccc.serialization.JsonKeys;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 

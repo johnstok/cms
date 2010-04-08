@@ -38,6 +38,7 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.plugins.s11n.Json;
 import ccc.rest.Resources;
 import ccc.rest.dto.AclDto;
 import ccc.rest.dto.ResourceDto;
@@ -45,7 +46,6 @@ import ccc.rest.dto.ResourceSnapshot;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.RevisionDto;
 import ccc.rest.dto.TemplateSummary;
-import ccc.serialization.Json;
 import ccc.types.Duration;
 import ccc.types.SortOrder;
 

@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.CommentDto;
-import ccc.serialization.JsonKeys;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 import ccc.types.SortOrder;

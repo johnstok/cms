@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.serialization;
+package ccc.plugins.s11n;
 
 import java.math.BigDecimal;
 import java.util.Collection;

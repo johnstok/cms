@@ -30,9 +30,9 @@ import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.events.ResourceCreated;
 import ccc.contentcreator.widgets.ContentCreator;
+import ccc.plugins.s11n.JsonKeys;
 import ccc.rest.dto.ResourceSummary;
 import ccc.rest.dto.TextFileDto;
-import ccc.serialization.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
