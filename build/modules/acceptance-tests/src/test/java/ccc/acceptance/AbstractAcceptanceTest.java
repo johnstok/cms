@@ -30,7 +30,6 @@ package ccc.acceptance;
 import static ccc.types.HttpStatusCode.*;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,9 +46,9 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
-import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
+import ccc.api.client1.FoldersDecorator;
 import ccc.api.client1.ProxyServiceLocator;
 import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.Actions;
@@ -474,24 +473,9 @@ public abstract class AbstractAcceptanceTest
     }
 
 
-    /**
-     * Convert a RestEasy exception to a CC API exception.
-     *
-     * @param <T> The type of exception that should be returned.
-     * @param ex The RestEasy exception.
-     *
-     * @return The converted exception.
-     */
     protected <T extends RestException> T convertException(
                                              final ClientResponseFailure ex) {
-        try {
-            final ClientResponse<byte[]> r = ex.getResponse();
-            final String body = new String(r.getEntity(), "UTF-8");
-            return
-                new RestExceptionMapper().<T>fromResponse(r.getStatus(), body);
-        } catch (final UnsupportedEncodingException e) {
-            throw new RuntimeException("Unsupported encoding", e);
-        }
+        return FoldersDecorator.convertException(ex);
     }
 
 
