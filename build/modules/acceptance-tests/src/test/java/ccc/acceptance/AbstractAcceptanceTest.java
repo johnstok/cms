@@ -475,7 +475,7 @@ public abstract class AbstractAcceptanceTest
 
     protected <T extends RestException> T convertException(
                                              final ClientResponseFailure ex) {
-        return FoldersDecorator.convertException(ex);
+        return FoldersDecorator.<T>convertException(ex);
     }
 
 
