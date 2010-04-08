@@ -36,10 +36,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import ccc.commons.Resources;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.plugins.scripting.rhino.ScriptRunner;
 
 
 /**
@@ -81,7 +81,10 @@ public class ScriptBody
         final List<String> whiteList =
             Resources.readIntoList("/scripting_whitelist.txt", Resources.UTF8);
 
-        new ScriptRunner(whiteList).eval(_script, context, pw);
+        final TextProcessor scriptRunner =
+            new PluginFactory().createScripting();
+        scriptRunner.setWhitelist(whiteList);
+        scriptRunner.render(_script, pw, context);
     }
 
 

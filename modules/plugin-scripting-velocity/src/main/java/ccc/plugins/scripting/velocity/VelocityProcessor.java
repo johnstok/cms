@@ -33,6 +33,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -211,5 +212,13 @@ public class VelocityProcessor implements TextProcessor {
             LOG.warn("Failed to determine host address.", e);
             return "<unknown>";
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void setWhitelist(final List<String> allowedClasses) {
+        throw new UnsupportedOperationException(
+            "Whitelists not supported by Velocity plugin.");
     }
 }

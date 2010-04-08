@@ -55,10 +55,10 @@ import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.SettingsRepository;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
 import ccc.plugins.search.TextExtractor;
-import ccc.plugins.search.lucene.SimpleLuceneFS;
 import ccc.rest.SearchEngine;
 import ccc.rest.SearchResult;
 import ccc.rest.exceptions.EntityNotFoundException;
@@ -88,7 +88,6 @@ public class SearchEngineEJB  implements SearchEngine {
     @PersistenceContext private EntityManager _em;
 
     private ResourceRepository _resources;
-    private DataRepository     _dr;
 
     /** Constructor. */
     public SearchEngineEJB() { super(); }
@@ -208,9 +207,18 @@ public class SearchEngineEJB  implements SearchEngine {
 
                 final TextExtractor extractor =
                     lucene.createExtractor(f.getMimeType());
-                _dr.retrieve(f.getData(), extractor);
+                if (null==extractor) {
+                    LOG.debug("No extractor for mime-type: "+f.getMimeType());
+                    continue;
+                }
+
+                // Work around JBAS-6615
+                final DataRepository dr =
+                    IRepositoryFactory.DEFAULT.create(_em)
+                    .createDataRepository();
+                dr.retrieve(f.getData(), extractor);
                 final String content =
-                    XHTML.cleanUpContent(extractor.getText());
+                    XHTML.cleanUpContent(f.getTitle()+" "+extractor.getText());
                 lucene.createDocument(f.getId(), content);
                 LOG.debug("Indexed file: "+f.getTitle());
             }
@@ -250,22 +258,20 @@ public class SearchEngineEJB  implements SearchEngine {
     private void configureCoreData() {
         _resources =
             IRepositoryFactory.DEFAULT.create(_em).createResourceRepository();
-        _dr = IRepositoryFactory.DEFAULT.create(_em).createDataRepository();
     }
 
 
     private Indexer createIndexer() {
-        return new SimpleLuceneFS(getIndexPath());
+        return new PluginFactory().createIndexer(getIndexPath());
     }
 
 
     private Index createIndex() {
-        return new SimpleLuceneFS(getIndexPath());
+        return new PluginFactory().createIndex(getIndexPath());
     }
 
 
     private String getIndexPath() {
-
         final SettingsRepository settings = new SettingsRepository(_em);
         Setting indexPath;
         try {

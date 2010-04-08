@@ -57,25 +57,7 @@ public class ScriptRunner implements TextProcessor {
     /** IN : String. */
     public static final String IN = "ccc.scriptrunner.in";
 
-    private final ArrayList<String> _allowedClasses;
-
-
-    /**
-     * Constructor.
-     *
-     * @param allowedClasses Class white-list for the script environment.
-     */
-    public ScriptRunner(final List<String> allowedClasses) {
-        _allowedClasses = new ArrayList<String>(allowedClasses);
-    }
-
-
-    /**
-     * Constructor.
-     */
-    public ScriptRunner() {
-        _allowedClasses = null;
-    }
+    private ArrayList<String> _allowedClasses = null;
 
 
     /**
@@ -159,5 +141,12 @@ public class ScriptRunner implements TextProcessor {
                        final Writer output,
                        final Context context) {
         eval(template, context, output);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void setWhitelist(final List<String> allowedClasses) {
+        _allowedClasses = new ArrayList<String>(allowedClasses);
     }
 }

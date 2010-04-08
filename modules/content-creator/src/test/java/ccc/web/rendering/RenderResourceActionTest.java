@@ -24,10 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.TextProcessor;
-import ccc.plugins.scripting.velocity.VelocityProcessor;
-import ccc.web.rendering.Body;
-import ccc.web.rendering.Response;
 
 /**
  * Tests for the {@link RenderResourceAction} class.
@@ -45,7 +41,6 @@ public final class RenderResourceActionTest extends TestCase {
     public void testHandleResponseWritesTheBody() throws IOException {
 
         // ARRANGE
-        final TextProcessor tp = new VelocityProcessor();
         final ByteArrayServletOutputStream os =
             new ByteArrayServletOutputStream();
 
@@ -55,11 +50,11 @@ public final class RenderResourceActionTest extends TestCase {
         _response.reset();
         expect(_response.getOutputStream()).andReturn(os);
         expect(_response.getCharacterEncoding()).andReturn("UTF-8");
-        b.write(os, null, new Context(), tp);
+        b.write(os, null, new Context(), null);
         replayAll();
 
         // ACT
-        r.write(_response, new Context(), tp);
+        r.write(_response, new Context(), null);
 
         // ASSERT
         verifyAll();
