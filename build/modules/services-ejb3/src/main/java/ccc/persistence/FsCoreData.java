@@ -121,6 +121,9 @@ class FsCoreData
     /** {@inheritDoc} */
     @Override
     public void retrieve(final Data data, final StreamAction action) {
+        DBC.require().notNull(data);
+        DBC.require().notNull(action);
+
         final File dir = dirFor(data);
         final File f = new File(dir, data.getId().toString());
 

@@ -3,11 +3,11 @@
     Logger log = Logger.getLogger("error_jsp");
     String errorId =
         (String) request.getAttribute(
-            ccc.remoting.actions.SessionKeys.EXCEPTION_CODE);
+            ccc.web.SessionKeys.EXCEPTION_CODE);
 
     log.warn(
             "Error executing servlet request."
-            + "\n\t"+ccc.remoting.actions.SessionKeys.EXCEPTION_CODE + " = "
+            + "\n\t"+ccc.web.SessionKeys.EXCEPTION_CODE + " = "
                 + errorId
             + "\n\tjavax.servlet.error.status_code = "
                 + request.getAttribute("javax.servlet.error.status_code")

@@ -28,6 +28,7 @@
 package ccc.plugins.scripting;
 
 import java.io.Writer;
+import java.util.List;
 
 
 
@@ -51,8 +52,10 @@ public interface TextProcessor {
      *
      * @return The html rendering as a string.
      */
+    // FIXME: Rename to eval().
     String render(final Script template,
                   final Context context);
+
 
     /**
      * Render a resource with the specified template.
@@ -64,8 +67,16 @@ public interface TextProcessor {
      *  output is complete. The writer will not be closed.
      * @param context Additional values that are passed to the template.
      */
+    // FIXME: Rename to eval().
     void render(final Script template,
                 final Writer output,
                 final Context context);
 
+
+    /**
+     * Specify a list of classes accessible to this processor.
+     *
+     * @param allowedClasses The list of classes.
+     */
+    void setWhitelist(final List<String> allowedClasses);
 }

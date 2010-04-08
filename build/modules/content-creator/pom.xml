@@ -61,18 +61,7 @@
             <version>${project.version}</version>
         </dependency>
         
-        <!-- Plugins -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>plugins-scripting-rhino</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>plugins-scripting-velocity</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
+        <!-- Third-party Libraries -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>

@@ -30,11 +30,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
 
+import junit.framework.TestCase;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.rhino.ScriptRunner;
-
-import junit.framework.TestCase;
 
 
 /**
@@ -117,8 +115,8 @@ public class ScriptRunnerTest
     public void testRunnerCanBlockStaticAccess() {
 
         // ARRANGE
-        final ScriptRunner runner =
-            new ScriptRunner(Collections.<String>emptyList());
+        final ScriptRunner runner = new ScriptRunner();
+        runner.setWhitelist(Collections.<String>emptyList());
 
         // ACT
         try {
@@ -141,8 +139,8 @@ public class ScriptRunnerTest
     public void testRunnerCanBlockReflectionAccess() {
 
         // ARRANGE
-        final ScriptRunner runner =
-            new ScriptRunner(Collections.<String>emptyList());
+        final ScriptRunner runner = new ScriptRunner();
+        runner.setWhitelist(Collections.<String>emptyList());
 
         // ACT
         try {
@@ -168,8 +166,8 @@ public class ScriptRunnerTest
     public void testRunnerCanBlockStandardAccess() {
 
         // ARRANGE
-        final ScriptRunner runner =
-            new ScriptRunner(Collections.<String>emptyList());
+        final ScriptRunner runner = new ScriptRunner();
+        runner.setWhitelist(Collections.<String>emptyList());
 
         // ACT
         try {
@@ -193,9 +191,9 @@ public class ScriptRunnerTest
     public void testRunnerAllowsWhitelistedAccess() {
 
         // ARRANGE
-        final ScriptRunner runner =
-            new ScriptRunner(
-                Collections.singletonList("ccc.commons.MapRegistry"));
+        final ScriptRunner runner = new ScriptRunner();
+        runner.setWhitelist(
+            Collections.singletonList("ccc.commons.MapRegistry"));
         final StringWriter out = new StringWriter();
 
         // ACT

@@ -43,10 +43,10 @@ import org.apache.log4j.Logger;
 
 import ccc.api.jaxrs.FoldersImpl;
 import ccc.api.jaxrs.UsersImpl;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.mail.JavaMailMailer;
 import ccc.plugins.mail.Mailer;
 import ccc.plugins.scripting.Context;
-import ccc.plugins.scripting.velocity.VelocityProcessor;
 import ccc.rest.Actions;
 import ccc.rest.Comments;
 import ccc.rest.Files;
@@ -148,7 +148,7 @@ public class ContentServlet
         }
 
         final Context context = createContext(req, resp, resource);
-        r.write(resp, context, new VelocityProcessor());
+        r.write(resp, context, new PluginFactory().createTemplating());
     }
 
 

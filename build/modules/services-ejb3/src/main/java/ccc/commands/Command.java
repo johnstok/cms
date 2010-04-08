@@ -39,9 +39,9 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.rhino.ScriptRunner;
 import ccc.types.CommandType;
 
 
@@ -155,10 +155,10 @@ public abstract class Command<T> {
         context.add("command", this);
         context.add("result", result);
 
-        new ScriptRunner().eval(
+        new PluginFactory().createScripting().render(
             new Script(script, "after_"+getType()),
-            context,
-            new PrintWriter(System.out));
+            new PrintWriter(System.out),
+            context);
     }
 
 
@@ -181,10 +181,10 @@ public abstract class Command<T> {
         context.add("happenedOn", happenedOn);
         context.add("command", this);
 
-        new ScriptRunner().eval(
+        new PluginFactory().createScripting().render(
             new Script(script, "before_"+getType()),
-            context,
-            new PrintWriter(System.out));
+            new PrintWriter(System.out),
+            context);
     }
 
 

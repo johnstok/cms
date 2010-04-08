@@ -88,12 +88,24 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>client-jaxrs</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <!-- Plugins -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>plugins-scripting-velocity</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>client-jaxrs</artifactId>
+            <artifactId>plugins-scripting-rhino</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugins-search-lucene</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -300,25 +312,11 @@
                                             <arg value="migration" />
                                             <arg value="-p" />
                                             <arg value="migration" />
-                                            <arg value="-a" />
-                                            <arg value="${application.prefix}" />
+                                            <arg value="-b" />
+                                            <arg value="http://localhost:8080/${application.prefix}" />
                                             <arg value="-c" />
-                                            <arg value="start" />
+                                            <arg value="index" />
                                         </java>
-                                        
-                                        <sleep seconds="60" />
-
-                                        <java classname="ccc.cli.Search" fork="true" failonerror="true" classpath="${migration_classpath}">
-                                            <arg value="-u" />
-                                            <arg value="migration" />
-                                            <arg value="-p" />
-                                            <arg value="migration" />
-                                            <arg value="-a" />
-                                            <arg value="${application.prefix}" />
-                                            <arg value="-c" />
-                                            <arg value="stop" />
-                                        </java>
-
                                     </tasks>
                                 </configuration>
                                 <goals>
