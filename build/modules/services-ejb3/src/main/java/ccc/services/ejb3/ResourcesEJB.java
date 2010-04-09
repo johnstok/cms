@@ -67,6 +67,7 @@ import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceRolesCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.commons.Exceptions;
+import ccc.commons.streams.ReadToStringAction;
 import ccc.domain.Action;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -76,7 +77,6 @@ import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ResourceRepository;
-import ccc.persistence.streams.ReadToStringAction;
 import ccc.plugins.s11n.Json;
 import ccc.rest.extensions.ResourcesExt;
 

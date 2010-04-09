@@ -45,8 +45,8 @@ import ccc.api.Security;
 import ccc.api.ServiceLocator;
 import ccc.api.Templates;
 import ccc.api.Users;
-import ccc.api.client1.RegistryServiceLocator;
 import ccc.api.exceptions.RestException;
+import ccc.client.http.RegistryServiceLocator;
 import ccc.commons.JNDI;
 
 

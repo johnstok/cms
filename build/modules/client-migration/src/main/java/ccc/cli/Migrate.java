@@ -35,7 +35,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.client1.ProxyServiceLocator;
+import ccc.client.http.ProxyServiceLocator;
 import ccc.migration.DbUtilsDB;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationServiceLocator;

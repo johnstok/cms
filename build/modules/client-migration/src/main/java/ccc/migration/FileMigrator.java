@@ -32,8 +32,8 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.client1.IFileUploader;
 import ccc.api.dto.ResourceSummary;
+import ccc.client.http.IFileUploader;
 
 
 /**

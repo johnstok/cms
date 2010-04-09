@@ -33,12 +33,12 @@ import org.apache.log4j.Logger;
 
 import ccc.api.Folders;
 import ccc.api.Resources;
-import ccc.api.client1.IFileUploader;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
 import ccc.api.types.FailureCode;
 import ccc.api.types.ResourcePath;
 import ccc.cli.FileUpload;
+import ccc.client.http.IFileUploader;
 
 
 /**

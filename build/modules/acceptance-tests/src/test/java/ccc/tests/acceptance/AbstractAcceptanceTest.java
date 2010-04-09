@@ -60,8 +60,6 @@ import ccc.api.Security;
 import ccc.api.ServiceLocator;
 import ccc.api.Templates;
 import ccc.api.Users;
-import ccc.api.client1.FoldersDecorator;
-import ccc.api.client1.ProxyServiceLocator;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.GroupDto;
@@ -72,12 +70,14 @@ import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
+import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
+import ccc.client.http.FoldersDecorator;
+import ccc.client.http.ProxyServiceLocator;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.providers.RestExceptionMapper;
 
 
 /**

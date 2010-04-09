@@ -37,13 +37,13 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import ccc.api.ServiceLocator;
-import ccc.api.client1.IFileUploader;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
 import ccc.api.types.Paragraph;
 import ccc.cli.Migrate.Options;
+import ccc.client.http.IFileUploader;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 
