@@ -32,7 +32,7 @@ import org.kohsuke.args4j.Option;
 
 import ccc.api.ActionScheduler;
 import ccc.api.ServiceLocator;
-import ccc.api.client1.ProxyServiceLocator;
+import ccc.client.http.ProxyServiceLocator;
 
 /**
  * Command line management of Action executor.

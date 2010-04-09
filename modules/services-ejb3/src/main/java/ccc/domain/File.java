@@ -42,8 +42,8 @@ import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
+import ccc.commons.streams.ReadToStringAction;
 import ccc.persistence.DataRepository;
-import ccc.persistence.streams.ReadToStringAction;
 
 /**
  * A file resource. This class encapsulates all file metadata. The raw file data
