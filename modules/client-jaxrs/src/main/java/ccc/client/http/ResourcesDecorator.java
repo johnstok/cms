@@ -55,7 +55,7 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourcesDecorator
+class ResourcesDecorator
     implements
         Resources {
 

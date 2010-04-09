@@ -37,6 +37,7 @@ import java.util.UUID;
  *
  * @author Civic Computing Ltd.
  */
+@Deprecated // FIXME: Use the standard API.
 public interface IFileUploader {
 
     /**

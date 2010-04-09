@@ -473,6 +473,7 @@ public abstract class AbstractAcceptanceTest
     }
 
 
+    @Deprecated // Should be converted in HTTP client.
     protected <T extends RestException> T convertException(
                                              final ClientResponseFailure ex) {
         return FoldersDecorator.<T>convertException(ex);
