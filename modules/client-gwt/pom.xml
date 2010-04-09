@@ -41,7 +41,7 @@
                                     <jvmarg value="-Dgwt.nowarn.legacy.tools" />
                                     <arg value="-out" />
                                     <arg value="${basedir}/target/www" />
-                                    <arg value="ccc.contentcreator.ContentCreator" />
+                                    <arg value="ccc.client.gwt.ContentCreator" />
                                 </java>
 
                             </tasks>
@@ -73,7 +73,7 @@
                             <include>**/*TestCase.java</include>
                             
                             <!-- GWT test suites.
-                            <include>ccc/contentcreator/ContentCreatorGwtTestSuite.java</include>
+                            <include>ccc/client/gwt/ContentCreatorGwtTestSuite.java</include>
                             -->
                         </includes>
                     </configuration>

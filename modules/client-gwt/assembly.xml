@@ -34,9 +34,9 @@
     <includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>target/www/ccc.contentcreator.ContentCreator</directory>
+			<directory>target/www/ccc.client.gwt.ContentCreator</directory>
 			<lineEnding>keep</lineEnding>
-			<outputDirectory>ccc.contentcreator.ContentCreator</outputDirectory>
+			<outputDirectory>ccc.client.gwt.ContentCreator</outputDirectory>
 		</fileSet>
 	</fileSets>
 </assembly>
