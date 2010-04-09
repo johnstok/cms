@@ -31,7 +31,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.mozilla.javascript.ClassShutter;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 /**
  * Class shutter for the Rhino scripting environment.

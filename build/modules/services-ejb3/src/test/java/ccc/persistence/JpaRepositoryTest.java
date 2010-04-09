@@ -35,11 +35,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import junit.framework.TestCase;
+import ccc.api.types.ResourceName;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.types.ResourceName;
 
 
 /**

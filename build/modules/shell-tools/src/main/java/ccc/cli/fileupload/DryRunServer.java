@@ -35,8 +35,8 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
 
 
 /**

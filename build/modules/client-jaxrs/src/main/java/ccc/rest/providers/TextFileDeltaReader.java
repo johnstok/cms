@@ -38,9 +38,9 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.dto.TextFileDelta;
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.MimeType;
 
 
 /**

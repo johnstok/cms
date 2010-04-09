@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.dto.CommentDto;
+import ccc.api.types.CommentStatus;
+import ccc.api.types.DBC;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.Request;
@@ -40,8 +42,6 @@ import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.contentcreator.events.CommentUpdatedEvent;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.CommentStatus;
-import ccc.types.DBC;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

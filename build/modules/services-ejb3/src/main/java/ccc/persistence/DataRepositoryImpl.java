@@ -33,10 +33,10 @@ import javax.persistence.EntityManager;
 
 import ccc.api.StreamAction;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.DBC;
 import ccc.domain.Data;
 import ccc.domain.Setting;
 import ccc.persistence.streams.CoreData;
-import ccc.types.DBC;
 
 
 /**

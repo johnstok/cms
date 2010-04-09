@@ -111,7 +111,7 @@
             not-null="false" 
             foreign-key="FK_RESOURCE_USER_CHANGED_ID"/>
 
-		<component name="_name" class="ccc.types.ResourceName">
+		<component name="_name" class="ccc.api.types.ResourceName">
 			<property
                 name="_representation"
                 not-null="true"
@@ -194,7 +194,7 @@
             <element type="string" column="datum_value" length="1024" not-null="true"/>
         </map>
         
-        <component name="_cache" class="ccc.types.Duration">
+        <component name="_cache" class="ccc.api.types.Duration">
 			<property
                 name="_time"
                 not-null="false"

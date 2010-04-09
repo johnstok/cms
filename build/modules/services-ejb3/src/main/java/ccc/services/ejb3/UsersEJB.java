@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
@@ -44,14 +44,14 @@ import ccc.api.dto.DtoCollection;
 import ccc.api.dto.UserCriteria;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.SortOrder;
+import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.User;
 import ccc.persistence.UserRepository;
-import ccc.types.SortOrder;
-import ccc.types.Username;
 
 
 /**

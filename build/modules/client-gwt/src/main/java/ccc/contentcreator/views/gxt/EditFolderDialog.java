@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.views.gxt;
 
-import static ccc.types.ResourceOrder.*;
+import static ccc.api.types.ResourceOrder.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData.Property;
@@ -43,7 +44,6 @@ import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.remoting.GetChildrenAction;
 import ccc.contentcreator.remoting.UpdateFolderAction;
 import ccc.contentcreator.widgets.ResourceTypeRendererFactory;
-import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;

@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.types.EmailAddress;
+import ccc.api.types.Paragraph;
+import ccc.api.types.Password;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
@@ -37,9 +40,6 @@ import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.remoting.ResourceNameExistsAction;
 import ccc.contentcreator.remoting.ValidateFieldAction;
-import ccc.types.EmailAddress;
-import ccc.types.Paragraph;
-import ccc.types.Password;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.http.client.Response;

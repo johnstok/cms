@@ -40,7 +40,7 @@ import ccc.api.Scheduler;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
-import ccc.types.SortOrder;
+import ccc.api.types.SortOrder;
 
 
 /**

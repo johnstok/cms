@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.types.Username;
+import ccc.api.types.Username;
 
 
 /**

@@ -32,14 +32,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.SortOrder;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.Revision;
 import ccc.domain.Template;
-import ccc.types.ResourcePath;
-import ccc.types.SortOrder;
 
 
 /**

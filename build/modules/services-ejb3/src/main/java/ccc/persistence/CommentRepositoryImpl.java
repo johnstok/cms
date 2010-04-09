@@ -32,12 +32,12 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.types.CommentStatus;
+import ccc.api.types.DBC;
+import ccc.api.types.SortOrder;
 import ccc.domain.Comment;
 import ccc.domain.Resource;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.CommentStatus;
-import ccc.types.DBC;
-import ccc.types.SortOrder;
 
 
 /**

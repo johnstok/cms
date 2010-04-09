@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
@@ -53,6 +53,9 @@ import ccc.api.dto.TemplateSummary;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.types.Duration;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.SortOrder;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.ClearWorkingCopyCommand;
@@ -76,9 +79,6 @@ import ccc.persistence.ResourceRepository;
 import ccc.persistence.streams.ReadToStringAction;
 import ccc.plugins.s11n.Json;
 import ccc.rest.extensions.ResourcesExt;
-import ccc.types.Duration;
-import ccc.types.ResourcePath;
-import ccc.types.SortOrder;
 
 
 /**

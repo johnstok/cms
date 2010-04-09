@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.ByteArrayInputStream;
@@ -51,12 +51,12 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.dto.TextFileDto;
+import ccc.api.types.FilePropertyNames;
+import ccc.api.types.ResourceName;
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.types.FilePropertyNames;
-import ccc.types.ResourceName;
 
 
 /**

@@ -31,6 +31,7 @@ import java.util.Collection;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
+import ccc.api.types.Permission;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.OpenAboutAction;
 import ccc.contentcreator.actions.OpenCreateUserAction;
@@ -56,7 +57,6 @@ import ccc.contentcreator.remoting.UnlockAction;
 import ccc.contentcreator.remoting.UnpublishAction;
 import ccc.contentcreator.remoting.ViewHistoryAction;
 import ccc.contentcreator.views.gxt.GroupViewImpl;
-import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

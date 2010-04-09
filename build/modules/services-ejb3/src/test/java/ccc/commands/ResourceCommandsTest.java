@@ -32,6 +32,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.types.Duration;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
@@ -39,9 +42,6 @@ import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.types.Duration;
-import ccc.types.MimeType;
-import ccc.types.ResourceName;
 
 
 /**

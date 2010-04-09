@@ -33,14 +33,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.types.ResourceName;
-import ccc.types.ResourceOrder;
 
 
 /**

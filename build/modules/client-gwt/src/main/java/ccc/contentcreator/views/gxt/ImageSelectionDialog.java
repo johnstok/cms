@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.views.gxt;
 
+import ccc.api.types.Paragraph;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.widgets.ImageSelectionPanel;
-import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;

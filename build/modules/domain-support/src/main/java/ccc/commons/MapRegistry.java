@@ -28,7 +28,7 @@ package ccc.commons;
 
 import java.util.HashMap;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 
 /**

@@ -29,11 +29,11 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.types.CommandType;
 import ccc.domain.Alias;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
-import ccc.types.CommandType;
 
 
 /**

@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.types.CommandType;
 import ccc.domain.Action;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
@@ -36,7 +37,6 @@ import ccc.persistence.ActionRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.CommandType;
 
 
 /**

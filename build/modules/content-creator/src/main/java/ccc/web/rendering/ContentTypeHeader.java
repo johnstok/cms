@@ -28,7 +28,7 @@ package ccc.web.rendering;
 
 import javax.servlet.http.HttpServletResponse;
 
-import ccc.types.MimeType;
+import ccc.api.types.MimeType;
 
 
 /**

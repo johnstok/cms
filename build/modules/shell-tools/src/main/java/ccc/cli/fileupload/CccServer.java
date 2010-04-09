@@ -36,9 +36,9 @@ import ccc.api.Resources;
 import ccc.api.client1.IFileUploader;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.FailureCode;
+import ccc.api.types.ResourcePath;
 import ccc.cli.FileUpload;
-import ccc.types.FailureCode;
-import ccc.types.ResourcePath;
 
 
 /**

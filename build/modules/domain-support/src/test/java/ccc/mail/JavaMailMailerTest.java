@@ -36,9 +36,9 @@ import junit.framework.TestCase;
 
 import org.jvnet.mock_javamail.Mailbox;
 
+import ccc.api.types.EmailAddress;
 import ccc.plugins.mail.JavaMailMailer;
 import ccc.plugins.mail.Mailer;
-import ccc.types.EmailAddress;
 
 
 /**

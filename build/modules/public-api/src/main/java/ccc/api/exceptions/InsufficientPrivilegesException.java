@@ -28,10 +28,10 @@ package ccc.api.exceptions;
 
 import java.util.UUID;
 
-import ccc.types.CommandType;
-import ccc.types.DBC;
-import ccc.types.Failure;
-import ccc.types.FailureCode;
+import ccc.api.types.CommandType;
+import ccc.api.types.DBC;
+import ccc.api.types.Failure;
+import ccc.api.types.FailureCode;
 
 
 

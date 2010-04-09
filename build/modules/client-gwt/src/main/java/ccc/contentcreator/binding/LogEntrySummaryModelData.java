@@ -34,9 +34,9 @@ import java.util.MissingResourceException;
 import java.util.Set;
 
 import ccc.api.dto.RevisionDto;
+import ccc.api.types.CommandType;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.i18n.CommandTypeConstants;
-import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 

@@ -31,12 +31,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import ccc.api.dto.PageDelta;
+import ccc.api.types.DBC;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceType;
 import ccc.commons.CharConversion;
-import ccc.types.DBC;
-import ccc.types.Paragraph;
-import ccc.types.ParagraphType;
-import ccc.types.ResourceName;
-import ccc.types.ResourceType;
 
 
 /**

@@ -30,12 +30,12 @@ import java.util.Date;
 
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.types.CommandType;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
 
 
 /**

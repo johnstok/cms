@@ -31,10 +31,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
+import ccc.api.types.DBC;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.types.DBC;
 
 
 /**

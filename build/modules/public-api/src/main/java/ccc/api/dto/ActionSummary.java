@@ -32,13 +32,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
+import ccc.api.types.FailureCode;
+import ccc.api.types.ResourceType;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable2;
-import ccc.types.ActionStatus;
-import ccc.types.CommandType;
-import ccc.types.FailureCode;
-import ccc.types.ResourceType;
-import ccc.types.Username;
 
 
 /**

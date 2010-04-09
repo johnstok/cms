@@ -32,9 +32,9 @@ import java.util.List;
 
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
+import ccc.api.types.Permission;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
-import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;

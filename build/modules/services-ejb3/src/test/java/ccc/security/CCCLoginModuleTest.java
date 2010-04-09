@@ -46,8 +46,8 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 
 import junit.framework.TestCase;
+import ccc.api.types.Username;
 import ccc.commons.Encryption;
-import ccc.types.Username;
 
 
 /**

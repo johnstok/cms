@@ -31,15 +31,15 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.PageDelta;
+import ccc.api.types.CommandType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
-import ccc.types.Paragraph;
-import ccc.types.ResourceName;
 
 
 /**

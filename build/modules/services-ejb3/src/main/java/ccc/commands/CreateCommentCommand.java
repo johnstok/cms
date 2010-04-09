@@ -32,14 +32,14 @@ import java.util.Date;
 
 import ccc.api.dto.CommentDto;
 import ccc.api.exceptions.InvalidException;
+import ccc.api.types.CommandType;
+import ccc.api.types.EmailAddress;
 import ccc.domain.Comment;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.CommandType;
-import ccc.types.EmailAddress;
 
 
 /**

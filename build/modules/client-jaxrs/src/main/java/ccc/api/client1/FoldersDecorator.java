@@ -39,8 +39,8 @@ import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.SortOrder;
 import ccc.rest.providers.RestExceptionMapper;
-import ccc.types.SortOrder;
 
 
 /**
@@ -146,7 +146,7 @@ public class FoldersDecorator
      * @param pageSize
      * @return
      * @throws RestException
-     * @see ccc.api.Folders#getChildrenPaged(java.util.UUID, java.lang.String, ccc.types.SortOrder, int, int)
+     * @see ccc.api.Folders#getChildrenPaged(java.util.UUID, java.lang.String, ccc.api.types.SortOrder, int, int)
      */
     public DtoCollection<ResourceSummary> getChildrenPaged(final UUID folderId,
                                                            final String sort,

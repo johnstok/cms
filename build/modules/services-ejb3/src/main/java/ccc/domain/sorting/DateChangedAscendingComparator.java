@@ -30,8 +30,8 @@ package ccc.domain.sorting;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import ccc.api.types.DBC;
 import ccc.domain.Resource;
-import ccc.types.DBC;
 
 /**
  * Sort Resources in Ascending based on date changed.

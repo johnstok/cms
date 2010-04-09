@@ -28,7 +28,7 @@ package ccc.contentcreator.events;
 
 import java.util.UUID;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

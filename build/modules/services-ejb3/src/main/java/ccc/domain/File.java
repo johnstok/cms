@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import static ccc.types.FilePropertyNames.*;
+import static ccc.api.types.FilePropertyNames.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,12 +38,12 @@ import java.util.UUID;
 import ccc.api.dto.FileDelta;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.TextFileDelta;
+import ccc.api.types.DBC;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceType;
 import ccc.persistence.DataRepository;
 import ccc.persistence.streams.ReadToStringAction;
-import ccc.types.DBC;
-import ccc.types.MimeType;
-import ccc.types.ResourceName;
-import ccc.types.ResourceType;
 
 /**
  * A file resource. This class encapsulates all file metadata. The raw file data

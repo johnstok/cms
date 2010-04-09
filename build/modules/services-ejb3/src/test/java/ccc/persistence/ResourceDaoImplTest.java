@@ -35,16 +35,16 @@ import java.util.UUID;
 
 import junit.framework.TestCase;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.Paragraph;
+import ccc.api.types.PredefinedResourceNames;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.types.Paragraph;
-import ccc.types.PredefinedResourceNames;
-import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
-import ccc.types.ResourceType;
 
 
 /**

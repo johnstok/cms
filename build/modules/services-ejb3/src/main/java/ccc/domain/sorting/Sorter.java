@@ -29,8 +29,8 @@ package ccc.domain.sorting;
 import java.util.Collections;
 import java.util.List;
 
+import ccc.api.types.ResourceOrder;
 import ccc.domain.Resource;
-import ccc.types.ResourceOrder;
 
 
 /**

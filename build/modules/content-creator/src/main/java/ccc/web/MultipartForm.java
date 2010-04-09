@@ -38,7 +38,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 
 /**

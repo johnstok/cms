@@ -38,7 +38,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
-import ccc.types.HttpStatusCode;
+import ccc.api.types.HttpStatusCode;
 import ccc.web.filters.ErrorHandlingFilter;
 import ccc.web.rendering.AuthenticationRequiredException;
 import ccc.web.rendering.NotFoundException;

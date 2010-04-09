@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
@@ -46,14 +46,14 @@ import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
+import ccc.api.types.SortOrder;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.domain.sorting.Sorter;
-import ccc.types.ResourceName;
-import ccc.types.ResourceOrder;
-import ccc.types.SortOrder;
 
 
 /**

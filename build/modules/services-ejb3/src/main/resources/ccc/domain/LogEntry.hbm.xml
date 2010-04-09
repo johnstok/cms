@@ -34,7 +34,7 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="ResourceType">
-        <param name="type">ccc.types.ResourceType</param>
+        <param name="type">ccc.api.types.ResourceType</param>
     </typedef>
     
     <class

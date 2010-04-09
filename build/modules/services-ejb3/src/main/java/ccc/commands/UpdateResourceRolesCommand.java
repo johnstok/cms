@@ -32,13 +32,13 @@ import java.util.UUID;
 import ccc.api.dto.AclDto;
 import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
 import ccc.domain.LogEntry;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.CommandType;
 
 
 /**

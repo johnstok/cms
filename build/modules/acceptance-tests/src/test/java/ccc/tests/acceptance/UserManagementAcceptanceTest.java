@@ -35,7 +35,7 @@ import ccc.api.dto.DtoCollection;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
-import ccc.types.Username;
+import ccc.api.types.Username;
 
 
 /**

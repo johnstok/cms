@@ -31,8 +31,8 @@ import static org.easymock.EasyMock.*;
 import java.security.Principal;
 
 import junit.framework.TestCase;
+import ccc.api.types.Username;
 import ccc.domain.User;
-import ccc.types.Username;
 
 
 /**

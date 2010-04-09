@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.core;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 import com.google.gwt.http.client.RequestBuilder.Method;
 

@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import ccc.api.dto.PageDelta;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
+import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -40,7 +41,6 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.CommandType;
 
 
 /**

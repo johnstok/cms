@@ -45,10 +45,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccc.api.types.DBC;
 import ccc.plugins.s11n.InvalidSnapshotException;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.DBC;
 
 
 /**

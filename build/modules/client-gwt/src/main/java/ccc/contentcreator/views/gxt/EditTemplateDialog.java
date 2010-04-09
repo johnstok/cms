@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
+import ccc.api.types.MimeType;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.DialogMode;
 import ccc.contentcreator.core.GlobalsImpl;
@@ -44,7 +45,6 @@ import ccc.contentcreator.validation.Validator;
 import ccc.contentcreator.widgets.CodeMirrorEditor;
 import ccc.contentcreator.widgets.CodeMirrorEditor.EditorListener;
 import ccc.contentcreator.widgets.CodeMirrorEditor.Type;
-import ccc.types.MimeType;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

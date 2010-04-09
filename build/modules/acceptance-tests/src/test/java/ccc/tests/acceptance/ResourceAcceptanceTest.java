@@ -43,10 +43,10 @@ import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.Duration;
+import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.Duration;
-import ccc.types.ResourceName;
 
 
 /**

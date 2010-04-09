@@ -39,9 +39,9 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.dto.ResourceDto;
+import ccc.api.types.Duration;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.Duration;
 
 
 /**

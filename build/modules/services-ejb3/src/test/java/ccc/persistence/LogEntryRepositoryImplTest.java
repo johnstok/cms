@@ -31,13 +31,13 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.Username;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.types.CommandType;
-import ccc.types.ResourceName;
-import ccc.types.Username;
 
 
 /**

@@ -26,9 +26,9 @@
  */
 package ccc.api.exceptions;
 
+import ccc.api.types.Failure;
+import ccc.api.types.FailureCode;
 import ccc.plugins.s11n.Json;
-import ccc.types.Failure;
-import ccc.types.FailureCode;
 
 
 /**

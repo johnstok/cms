@@ -26,11 +26,11 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.types.ActionStatus;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
 import ccc.contentcreator.widgets.ActionTable;
-import ccc.types.ActionStatus;
 
 
 /**

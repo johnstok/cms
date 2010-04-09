@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ccc.api.dto.PageDelta;
-import ccc.types.Paragraph;
+import ccc.api.types.Paragraph;
 
 
 /**

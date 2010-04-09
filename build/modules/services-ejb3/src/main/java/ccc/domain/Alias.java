@@ -29,10 +29,10 @@ package ccc.domain;
 import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.exceptions.CycleDetectedException;
+import ccc.api.types.DBC;
+import ccc.api.types.ResourceType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.DBC;
-import ccc.types.ResourceType;
 
 
 /**

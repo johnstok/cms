@@ -28,10 +28,10 @@ package ccc.contentcreator.remoting;
 
 import java.util.Set;
 
+import ccc.api.types.Paragraph;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.Paragraph;
 
 import com.google.gwt.http.client.RequestBuilder;
 

@@ -31,12 +31,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ccc.api.types.Permission;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.presenters.GroupPresenter.GroupView;
-import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

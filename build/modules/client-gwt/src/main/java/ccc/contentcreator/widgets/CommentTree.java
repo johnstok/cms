@@ -27,10 +27,10 @@
 
 package ccc.contentcreator.widgets;
 
+import ccc.api.types.CommentStatus;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.ImagePaths;
 import ccc.contentcreator.i18n.UIConstants;
-import ccc.types.CommentStatus;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;

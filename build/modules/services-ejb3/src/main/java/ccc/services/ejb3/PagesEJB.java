@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
@@ -44,14 +44,14 @@ import ccc.api.Pages;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.Paragraph;
-import ccc.types.ResourceName;
 
 
 /**

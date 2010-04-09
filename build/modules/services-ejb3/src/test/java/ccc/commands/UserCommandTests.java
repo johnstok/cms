@@ -31,9 +31,9 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import ccc.api.dto.UserDto;
+import ccc.api.types.Username;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
-import ccc.types.Username;
 
 
 /**

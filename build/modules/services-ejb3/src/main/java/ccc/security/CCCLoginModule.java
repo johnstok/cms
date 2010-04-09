@@ -42,8 +42,8 @@ import javax.security.auth.spi.LoginModule;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.types.Username;
 import ccc.domain.User;
-import ccc.types.Username;
 
 
 

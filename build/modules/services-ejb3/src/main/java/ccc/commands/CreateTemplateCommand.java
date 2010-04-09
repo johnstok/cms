@@ -30,13 +30,13 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.dto.TemplateDelta;
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
-import ccc.types.ResourceName;
 
 
 /**

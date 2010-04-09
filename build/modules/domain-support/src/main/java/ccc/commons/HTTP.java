@@ -38,8 +38,8 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import ccc.types.HttpStatusCode;
-import ccc.types.MimeType;
+import ccc.api.types.HttpStatusCode;
+import ccc.api.types.MimeType;
 
 
 /**

@@ -54,13 +54,13 @@ import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.DBC;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
+import ccc.api.types.ResourceName;
 import ccc.commons.CharConversion;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
-import ccc.types.DBC;
-import ccc.types.Paragraph;
-import ccc.types.ParagraphType;
-import ccc.types.ResourceName;
 
 /**
  * TODO: Add a description for this type.

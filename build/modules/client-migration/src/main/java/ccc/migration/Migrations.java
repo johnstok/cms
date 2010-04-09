@@ -42,10 +42,10 @@ import ccc.api.dto.FolderDelta;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.Paragraph;
 import ccc.cli.Migrate.Options;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
-import ccc.types.Paragraph;
 
 /**
  * Data migration from CCC6 to CCC7.

@@ -26,6 +26,8 @@
  */
 package ccc.contentcreator.presenters;
 
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.Editable;
@@ -34,8 +36,6 @@ import ccc.contentcreator.events.ResourceRenamed;
 import ccc.contentcreator.events.ResourceRenamed.RenamedHandler;
 import ccc.contentcreator.remoting.RenameAction;
 import ccc.contentcreator.views.RenameResource;
-import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
 
 
 /**

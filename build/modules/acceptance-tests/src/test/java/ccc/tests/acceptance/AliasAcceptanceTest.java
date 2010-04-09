@@ -32,7 +32,7 @@ import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
-import ccc.types.ResourceName;
+import ccc.api.types.ResourceName;
 
 
 /**

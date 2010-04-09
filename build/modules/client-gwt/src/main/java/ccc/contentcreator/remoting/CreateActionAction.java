@@ -30,10 +30,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.types.CommandType;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
-import ccc.types.CommandType;
 
 
 /**

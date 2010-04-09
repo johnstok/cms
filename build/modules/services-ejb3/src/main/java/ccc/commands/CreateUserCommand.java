@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.dto.UserDto;
+import ccc.api.types.CommandType;
+import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.GroupRepository;
@@ -37,8 +39,6 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.CommandType;
-import ccc.types.EmailAddress;
 
 
 /**

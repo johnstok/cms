@@ -34,9 +34,9 @@ import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
-import ccc.types.ActionStatus;
-import ccc.types.CommandType;
-import ccc.types.SortOrder;
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
+import ccc.api.types.SortOrder;
 
 
 /**

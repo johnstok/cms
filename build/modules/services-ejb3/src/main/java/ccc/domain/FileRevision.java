@@ -31,9 +31,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.dto.FileDelta;
-import ccc.types.DBC;
-import ccc.types.FilePropertyNames;
-import ccc.types.MimeType;
+import ccc.api.types.DBC;
+import ccc.api.types.FilePropertyNames;
+import ccc.api.types.MimeType;
 
 
 /**

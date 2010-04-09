@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.dto.FileDelta;
 import ccc.api.dto.ResourceSummary;
-import ccc.types.FilePropertyNames;
+import ccc.api.types.FilePropertyNames;
 
 
 /**

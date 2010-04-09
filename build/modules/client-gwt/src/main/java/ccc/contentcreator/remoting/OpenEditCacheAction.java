@@ -26,11 +26,11 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.types.Duration;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.EditCacheDialog;
-import ccc.types.Duration;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;

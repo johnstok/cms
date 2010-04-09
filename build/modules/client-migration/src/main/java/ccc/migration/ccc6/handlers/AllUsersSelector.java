@@ -34,9 +34,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ccc.api.dto.UserDto;
+import ccc.api.types.Username;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
-import ccc.types.Username;
 
 /**
  * A SQL query to export all users from CCC6.

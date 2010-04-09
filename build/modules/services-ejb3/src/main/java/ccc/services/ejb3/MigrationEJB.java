@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
@@ -41,6 +41,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.dto.AclDto;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.ResourceName;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
@@ -51,7 +52,6 @@ import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.User;
 import ccc.services.Migration;
-import ccc.types.ResourceName;
 
 
 /**

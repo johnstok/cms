@@ -31,8 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ccc.api.types.ResourceOrder;
 import ccc.domain.sorting.Sorter;
-import ccc.types.ResourceOrder;
 
 
 /**

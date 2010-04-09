@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.UUID;
 
 import junit.framework.TestCase;
-import ccc.types.ResourcePath;
+import ccc.api.types.ResourcePath;
 
 
 /**

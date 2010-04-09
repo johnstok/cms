@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.dto.FileDelta;
-import ccc.types.FilePropertyNames;
-import ccc.types.MimeType;
+import ccc.api.types.FilePropertyNames;
+import ccc.api.types.MimeType;
 
 
 /**

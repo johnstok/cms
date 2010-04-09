@@ -36,8 +36,8 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.exceptions.RestException;
-import ccc.types.FailureCode;
-import ccc.types.MimeType;
+import ccc.api.types.FailureCode;
+import ccc.api.types.MimeType;
 
 
 /**

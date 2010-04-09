@@ -67,7 +67,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 /**
  * Helper methods for working with XHTML.

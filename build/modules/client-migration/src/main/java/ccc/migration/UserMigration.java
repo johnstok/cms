@@ -40,7 +40,7 @@ import ccc.api.Users;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
-import ccc.types.EmailAddress;
+import ccc.api.types.EmailAddress;
 
 
 /**

@@ -33,6 +33,10 @@ import java.util.Date;
 import junit.framework.TestCase;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
+import ccc.api.types.CommandType;
+import ccc.api.types.Permission;
+import ccc.api.types.ResourceName;
+import ccc.api.types.Username;
 import ccc.domain.Folder;
 import ccc.domain.Group;
 import ccc.domain.LogEntry;
@@ -42,10 +46,6 @@ import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
-import ccc.types.Permission;
-import ccc.types.ResourceName;
-import ccc.types.Username;
 
 
 /**

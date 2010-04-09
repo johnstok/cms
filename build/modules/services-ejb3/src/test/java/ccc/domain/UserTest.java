@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.types.EmailAddress;
-import ccc.types.Username;
+import ccc.api.types.EmailAddress;
+import ccc.api.types.Username;
 
 
 /**

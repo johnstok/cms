@@ -27,7 +27,7 @@
 
 package ccc.tests.acceptance;
 
-import static ccc.types.HttpStatusCode.*;
+import static ccc.api.types.HttpStatusCode.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -72,12 +72,12 @@ import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.json.JsonImpl;
 import ccc.rest.providers.RestExceptionMapper;
-import ccc.types.MimeType;
-import ccc.types.Paragraph;
-import ccc.types.ResourceName;
-import ccc.types.Username;
 
 
 /**

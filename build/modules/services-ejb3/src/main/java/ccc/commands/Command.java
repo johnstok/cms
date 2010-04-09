@@ -30,6 +30,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 
+import ccc.api.types.CommandType;
 import ccc.commons.Resources;
 import ccc.domain.User;
 import ccc.persistence.CommentRepository;
@@ -42,7 +43,6 @@ import ccc.persistence.UserRepository;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
-import ccc.types.CommandType;
 
 
 /**

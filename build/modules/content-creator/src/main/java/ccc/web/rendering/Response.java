@@ -39,11 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.types.DBC;
+import ccc.api.types.Duration;
+import ccc.api.types.MimeType;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.types.DBC;
-import ccc.types.Duration;
-import ccc.types.MimeType;
 
 
 /**

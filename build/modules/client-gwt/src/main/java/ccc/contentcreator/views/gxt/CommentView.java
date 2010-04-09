@@ -26,13 +26,13 @@
  */
 package ccc.contentcreator.views.gxt;
 
+import ccc.api.types.CommentStatus;
 import ccc.contentcreator.binding.EnumModelData;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.Validatable;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.presenters.UpdateCommentPresenter;
-import ccc.types.CommentStatus;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

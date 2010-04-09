@@ -27,6 +27,6 @@
 -->
 
 <module>
-    <source path="types" />
+    <source path="api/types" />
     <source path="plugins" />
 </module>

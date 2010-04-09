@@ -31,10 +31,10 @@ import static ccc.plugins.s11n.JsonKeys.*;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.MimeType;
-import ccc.types.ResourceName;
 
 
 /**
