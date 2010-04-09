@@ -32,10 +32,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.types.ResourceType;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.ResourceType;
-import ccc.types.Username;
 
 
 /**

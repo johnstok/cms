@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
@@ -49,15 +49,15 @@ import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
 import ccc.api.exceptions.InternalError;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.Failure;
+import ccc.api.types.FailureCode;
+import ccc.api.types.SortOrder;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.Resource;
 import ccc.persistence.ActionRepository;
 import ccc.rest.extensions.ResourcesExt;
-import ccc.types.Failure;
-import ccc.types.FailureCode;
-import ccc.types.SortOrder;
 
 
 /**

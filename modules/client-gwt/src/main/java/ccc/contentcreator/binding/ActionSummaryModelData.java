@@ -36,6 +36,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.ActionSummary;
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourceType;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.GwtJson;
@@ -47,9 +50,6 @@ import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.ActionStatus;
-import ccc.types.CommandType;
-import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.http.client.RequestBuilder;

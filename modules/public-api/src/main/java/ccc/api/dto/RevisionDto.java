@@ -29,11 +29,11 @@ package ccc.api.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import ccc.api.types.CommandType;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.CommandType;
-import ccc.types.Username;
 
 
 /**

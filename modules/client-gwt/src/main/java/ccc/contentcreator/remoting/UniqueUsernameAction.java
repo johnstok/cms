@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.types.Username;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.ResponseHandlerAdapter;
-import ccc.types.Username;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

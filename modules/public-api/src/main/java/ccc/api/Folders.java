@@ -44,7 +44,7 @@ import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
-import ccc.types.SortOrder;
+import ccc.api.types.SortOrder;
 
 
 /**

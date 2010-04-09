@@ -26,7 +26,7 @@
  */
 package ccc.plugins.scripting;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 
 /**

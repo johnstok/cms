@@ -28,11 +28,11 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
+import ccc.api.types.DBC;
+import ccc.api.types.ResourcePath;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
-import ccc.types.DBC;
-import ccc.types.ResourcePath;
 
 
 /**

@@ -33,7 +33,7 @@
 
 <hibernate-mapping default-access="field">
     <typedef class="ccc.persistence.jpa.EnumUserType" name="CommentStatus">
-        <param name="type">ccc.types.CommentStatus</param>
+        <param name="type">ccc.api.types.CommentStatus</param>
     </typedef>
 
     <class name="ccc.domain.Comment" table="comments">
@@ -81,7 +81,7 @@
             type="ccc.persistence.jpa.URLUserType"
             not-null="false"
             length="1024" />
-        <component name="_email" class="ccc.types.EmailAddress">
+        <component name="_email" class="ccc.api.types.EmailAddress">
             <property name="_text" column="email" not-null="true" type="string" length="512" />
         </component>
         

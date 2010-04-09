@@ -26,7 +26,7 @@
  */
 package ccc.cli;
 
-import static ccc.types.DBC.*;
+import static ccc.api.types.DBC.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

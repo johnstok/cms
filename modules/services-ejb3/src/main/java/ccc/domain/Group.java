@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.api.dto.GroupDto;
+import ccc.api.types.DBC;
 import ccc.plugins.s11n.Json;
-import ccc.types.DBC;
 
 
 /**

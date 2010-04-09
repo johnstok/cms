@@ -30,7 +30,7 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 import ccc.api.dto.CommentDto;
-import ccc.types.EmailAddress;
+import ccc.api.types.EmailAddress;
 
 
 /**

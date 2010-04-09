@@ -35,14 +35,14 @@ import java.util.UUID;
 
 import ccc.api.dto.FileDto;
 import ccc.api.dto.PageDelta;
+import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetAbsolutePathAction;
 import ccc.contentcreator.widgets.PageElement.FieldType;
-import ccc.types.MimeType;
-import ccc.types.Paragraph;
-import ccc.types.ResourceName;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;

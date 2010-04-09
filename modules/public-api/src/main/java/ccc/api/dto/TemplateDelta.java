@@ -28,10 +28,10 @@ package ccc.api.dto;
 
 import java.io.Serializable;
 
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.MimeType;
 
 
 /**

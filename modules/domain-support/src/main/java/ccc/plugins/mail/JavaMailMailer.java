@@ -39,8 +39,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import ccc.types.DBC;
-import ccc.types.EmailAddress;
+import ccc.api.types.DBC;
+import ccc.api.types.EmailAddress;
 
 
 /**

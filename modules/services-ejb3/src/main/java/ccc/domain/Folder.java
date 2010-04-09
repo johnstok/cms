@@ -36,15 +36,15 @@ import java.util.UUID;
 import ccc.api.dto.FolderDto;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.types.DBC;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.domain.sorting.Sorter;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.DBC;
-import ccc.types.ResourceName;
-import ccc.types.ResourceOrder;
-import ccc.types.ResourcePath;
-import ccc.types.ResourceType;
 
 
 /**

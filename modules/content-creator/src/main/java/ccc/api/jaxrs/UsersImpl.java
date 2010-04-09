@@ -39,8 +39,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.Users;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.UserDto;
-import ccc.types.SortOrder;
-import ccc.types.Username;
+import ccc.api.types.SortOrder;
+import ccc.api.types.Username;
 
 
 /**

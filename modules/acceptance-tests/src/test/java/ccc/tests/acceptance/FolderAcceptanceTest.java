@@ -42,9 +42,9 @@ import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
-import ccc.types.PredefinedResourceNames;
-import ccc.types.ResourceName;
-import ccc.types.ResourceOrder;
+import ccc.api.types.PredefinedResourceNames;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
 
 
 /**

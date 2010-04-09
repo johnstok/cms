@@ -1,7 +1,7 @@
 package ccc.contentcreator.core;
 
-import static ccc.types.HttpStatusCode.*;
-import ccc.types.DBC;
+import static ccc.api.types.HttpStatusCode.*;
+import ccc.api.types.DBC;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;

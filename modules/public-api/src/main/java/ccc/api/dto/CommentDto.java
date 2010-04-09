@@ -30,10 +30,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.types.CommentStatus;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.CommentStatus;
 
 
 /**

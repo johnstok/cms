@@ -35,10 +35,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+import ccc.api.types.Duration;
+import ccc.api.types.MimeType;
 import ccc.commons.Resources;
 import ccc.plugins.scripting.Script;
-import ccc.types.Duration;
-import ccc.types.MimeType;
 import ccc.web.rendering.Body;
 import ccc.web.rendering.CharEncodingHeader;
 import ccc.web.rendering.ContentTypeHeader;

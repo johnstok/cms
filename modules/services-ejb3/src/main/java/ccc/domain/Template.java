@@ -32,10 +32,10 @@ import java.util.List;
 
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateSummary;
-import ccc.types.DBC;
-import ccc.types.MimeType;
-import ccc.types.ResourceName;
-import ccc.types.ResourceType;
+import ccc.api.types.DBC;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceType;
 
 
 /**

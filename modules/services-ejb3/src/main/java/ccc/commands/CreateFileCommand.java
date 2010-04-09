@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.dto.FileDelta;
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourceName;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
@@ -39,8 +41,6 @@ import ccc.domain.User;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
-import ccc.types.ResourceName;
 
 
 /**

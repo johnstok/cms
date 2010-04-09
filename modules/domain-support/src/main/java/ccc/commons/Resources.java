@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 
 /**

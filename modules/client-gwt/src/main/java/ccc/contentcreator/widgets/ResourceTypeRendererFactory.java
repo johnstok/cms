@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.widgets;
 
+import ccc.api.types.ResourceType;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.ImagePaths;
-import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;

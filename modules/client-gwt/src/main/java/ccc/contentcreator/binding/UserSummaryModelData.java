@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.UserDto;
-import ccc.types.Username;
+import ccc.api.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 

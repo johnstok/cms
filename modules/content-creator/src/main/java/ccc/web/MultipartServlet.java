@@ -40,8 +40,8 @@ import org.apache.log4j.Logger;
 import ccc.api.Files;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.MimeType;
 
 
 /**

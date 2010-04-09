@@ -30,9 +30,9 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import ccc.api.dto.TemplateDelta;
-import ccc.types.MimeType;
-import ccc.types.ResourceName;
-import ccc.types.ResourceType;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceType;
 
 
 /**

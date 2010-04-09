@@ -27,10 +27,10 @@
 package ccc.contentcreator.remoting;
 
 import ccc.api.dto.GroupDto;
+import ccc.api.types.DBC;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.events.GroupUpdated;
-import ccc.types.DBC;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.http.client.RequestBuilder;

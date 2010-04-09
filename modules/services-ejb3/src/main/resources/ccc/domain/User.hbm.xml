@@ -48,7 +48,7 @@
             type="long"
             unsaved-value="negative" />
         
-        <component name="_username" class="ccc.types.Username">
+        <component name="_username" class="ccc.api.types.Username">
             <property name="_value" 
                 column="username" 
                 unique="true" 
@@ -63,7 +63,7 @@
             not-null="true"
             length="255" />
         
-        <component name="_email" class="ccc.types.EmailAddress">
+        <component name="_email" class="ccc.api.types.EmailAddress">
             <property name="_text" column="email" not-null="true" type="string" length="512" />
         </component>
             

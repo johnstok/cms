@@ -41,11 +41,11 @@ import ccc.api.Resources;
 import ccc.api.ServiceLocator;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
+import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.types.Paragraph;
 
 
 /**

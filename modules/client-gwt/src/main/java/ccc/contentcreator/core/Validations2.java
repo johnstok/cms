@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.core;
 
+import ccc.api.types.EmailAddress;
+import ccc.api.types.Password;
 import ccc.contentcreator.validation.Validations;
-import ccc.types.EmailAddress;
-import ccc.types.Password;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NamedNodeMap;

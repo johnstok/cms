@@ -26,8 +26,8 @@
  */
 package ccc.domain;
 
+import static ccc.api.types.DBC.*;
 import static ccc.commons.Encryption.*;
-import static ccc.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,10 +41,10 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import ccc.api.dto.UserDto;
+import ccc.api.types.DBC;
+import ccc.api.types.EmailAddress;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
-import ccc.types.DBC;
-import ccc.types.EmailAddress;
-import ccc.types.Username;
 
 
 /**

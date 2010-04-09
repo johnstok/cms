@@ -41,7 +41,7 @@ import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
 import ccc.api.exceptions.RestException;
-import ccc.types.SortOrder;
+import ccc.api.types.SortOrder;
 
 
 /**

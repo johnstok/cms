@@ -32,6 +32,8 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.types.EmailAddress;
+import ccc.api.types.Username;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.GroupRepository;
@@ -39,8 +41,6 @@ import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
 import ccc.services.impl.SimpleRepositoryFactory;
-import ccc.types.EmailAddress;
-import ccc.types.Username;
 
 
 /**

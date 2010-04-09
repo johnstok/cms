@@ -43,8 +43,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import ccc.types.Paragraph;
-import ccc.types.ParagraphType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
 
 
 /**

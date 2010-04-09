@@ -32,7 +32,7 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.RestException;
-import ccc.types.MimeType;
+import ccc.api.types.MimeType;
 
 
 /**

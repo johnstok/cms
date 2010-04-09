@@ -30,13 +30,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.dto.ActionSummary;
+import ccc.api.types.DBC;
+import ccc.api.types.SortOrder;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.DBC;
-import ccc.types.SortOrder;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

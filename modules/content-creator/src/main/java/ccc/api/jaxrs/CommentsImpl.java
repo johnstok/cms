@@ -38,8 +38,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.Comments;
 import ccc.api.dto.CommentDto;
 import ccc.api.dto.DtoCollection;
-import ccc.types.CommentStatus;
-import ccc.types.SortOrder;
+import ccc.api.types.CommentStatus;
+import ccc.api.types.SortOrder;
 
 
 /**

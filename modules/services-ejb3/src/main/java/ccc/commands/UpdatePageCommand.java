@@ -30,11 +30,11 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.dto.PageDelta;
+import ccc.api.types.CommandType;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
-import ccc.types.CommandType;
 
 
 /**

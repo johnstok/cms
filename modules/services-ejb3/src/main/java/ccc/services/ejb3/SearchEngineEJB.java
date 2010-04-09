@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
@@ -49,6 +49,9 @@ import org.apache.log4j.Logger;
 import ccc.api.SearchEngine;
 import ccc.api.SearchResult;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
+import ccc.api.types.PredefinedResourceNames;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -62,9 +65,6 @@ import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
 import ccc.plugins.search.TextExtractor;
-import ccc.types.Paragraph;
-import ccc.types.ParagraphType;
-import ccc.types.PredefinedResourceNames;
 
 
 /**

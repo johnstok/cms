@@ -33,7 +33,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import ccc.api.dto.CommentDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.types.CommentStatus;
+import ccc.api.types.CommentStatus;
 
 
 /**

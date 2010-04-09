@@ -29,9 +29,9 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.types.CommandType;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.CommandType;
-import ccc.types.Username;
 
 
 /**

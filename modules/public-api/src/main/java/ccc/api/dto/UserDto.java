@@ -39,10 +39,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.types.DBC;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable2;
-import ccc.types.DBC;
-import ccc.types.Username;
 
 
 /**

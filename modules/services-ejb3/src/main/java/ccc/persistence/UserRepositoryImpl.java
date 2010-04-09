@@ -39,8 +39,8 @@ import javax.persistence.Query;
 
 import ccc.api.dto.UserCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.SortOrder;
 import ccc.domain.User;
-import ccc.types.SortOrder;
 
 
 /**

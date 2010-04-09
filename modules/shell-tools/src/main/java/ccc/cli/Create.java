@@ -28,7 +28,7 @@ package ccc.cli;
 
 
 
-import static ccc.types.PredefinedResourceNames.*;
+import static ccc.api.types.PredefinedResourceNames.*;
 
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
@@ -39,7 +39,7 @@ import ccc.api.client1.ProxyServiceLocator;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
-import ccc.types.ResourceName;
+import ccc.api.types.ResourceName;
 
 /**
  * Entry class for the 'create' application.

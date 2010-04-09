@@ -30,10 +30,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.types.Paragraph;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.Paragraph;
 
 
 

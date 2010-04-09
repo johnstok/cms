@@ -29,7 +29,7 @@ package ccc.plugins.search;
 
 import java.util.UUID;
 
-import ccc.types.MimeType;
+import ccc.api.types.MimeType;
 
 
 /**

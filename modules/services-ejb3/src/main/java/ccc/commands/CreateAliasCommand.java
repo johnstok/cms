@@ -29,13 +29,13 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourceName;
 import ccc.domain.Alias;
 import ccc.domain.Resource;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
-import ccc.types.ResourceName;
 
 
 /**

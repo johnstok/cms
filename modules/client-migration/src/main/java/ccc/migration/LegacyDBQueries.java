@@ -26,7 +26,7 @@
  */
 package ccc.migration;
 
-import static ccc.types.DBC.*;
+import static ccc.api.types.DBC.*;
 
 import java.util.Collection;
 import java.util.List;

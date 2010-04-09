@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.Permission.*;
+import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.UUID;
@@ -39,13 +39,13 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.Comments;
 import ccc.api.dto.CommentDto;
 import ccc.api.dto.DtoCollection;
+import ccc.api.types.CommentStatus;
+import ccc.api.types.SortOrder;
 import ccc.commands.CreateCommentCommand;
 import ccc.commands.DeleteCommentCommand;
 import ccc.commands.UpdateCommentCommand;
 import ccc.domain.Comment;
 import ccc.domain.Resource;
-import ccc.types.CommentStatus;
-import ccc.types.SortOrder;
 
 
 /**

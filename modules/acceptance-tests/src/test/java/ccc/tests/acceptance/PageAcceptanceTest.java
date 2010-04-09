@@ -38,11 +38,11 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.MimeType;
-import ccc.types.Paragraph;
 
 
 /**

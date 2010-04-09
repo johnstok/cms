@@ -31,13 +31,13 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.dto.FileDelta;
+import ccc.api.types.CommandType;
 import ccc.domain.Data;
 import ccc.domain.File;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
-import ccc.types.CommandType;
 
 
 /**

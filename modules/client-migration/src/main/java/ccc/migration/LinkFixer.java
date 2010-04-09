@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 
 /**

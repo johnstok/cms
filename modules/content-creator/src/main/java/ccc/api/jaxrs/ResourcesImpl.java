@@ -45,9 +45,9 @@ import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TemplateSummary;
+import ccc.api.types.Duration;
+import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
-import ccc.types.Duration;
-import ccc.types.SortOrder;
 
 
 /**

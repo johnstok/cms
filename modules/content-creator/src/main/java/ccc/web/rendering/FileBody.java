@@ -38,11 +38,11 @@ import ccc.api.ServiceLocator;
 import ccc.api.dto.FileDto;
 import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.types.DBC;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.ThumbAction;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.types.DBC;
 
 
 /**

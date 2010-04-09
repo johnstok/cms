@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import static ccc.types.FilePropertyNames.*;
+import static ccc.api.types.FilePropertyNames.*;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

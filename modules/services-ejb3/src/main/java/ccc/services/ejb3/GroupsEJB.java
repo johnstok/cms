@@ -26,7 +26,7 @@
  */
 package ccc.services.ejb3;
 
-import static ccc.types.CommandType.*;
+import static ccc.api.types.CommandType.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
@@ -40,10 +40,10 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.Groups;
 import ccc.api.dto.GroupDto;
+import ccc.api.types.Permission;
 import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.Permission;
 
 
 /**

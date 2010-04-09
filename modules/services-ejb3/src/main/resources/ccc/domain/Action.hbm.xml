@@ -34,13 +34,13 @@
 <hibernate-mapping default-access="field">
 
     <typedef class="ccc.persistence.jpa.EnumUserType" name="ActionType">
-        <param name="type">ccc.types.CommandType</param>
+        <param name="type">ccc.api.types.CommandType</param>
     </typedef>
     <typedef class="ccc.persistence.jpa.EnumUserType" name="StatusType">
-        <param name="type">ccc.types.ActionStatus</param>
+        <param name="type">ccc.api.types.ActionStatus</param>
     </typedef>
     <typedef class="ccc.persistence.jpa.EnumUserType" name="FailureCode">
-        <param name="type">ccc.types.FailureCode</param>
+        <param name="type">ccc.api.types.FailureCode</param>
     </typedef>
     
     <class name="ccc.domain.Action" table="actions">

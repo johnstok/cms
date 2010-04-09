@@ -34,6 +34,8 @@ import ccc.api.dto.GroupDto;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.TemplateSummary;
 import ccc.api.dto.UserDto;
+import ccc.api.types.Permission;
+import ccc.api.types.ResourceType;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.OpenCreateActionAction;
 import ccc.contentcreator.actions.OpenCreateAliasAction;
@@ -64,8 +66,6 @@ import ccc.contentcreator.remoting.UnpublishAction;
 import ccc.contentcreator.remoting.ViewHistoryAction;
 import ccc.contentcreator.views.gxt.UpdateFileDialog;
 import ccc.contentcreator.views.gxt.UpdatePageDialog;
-import ccc.types.Permission;
-import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

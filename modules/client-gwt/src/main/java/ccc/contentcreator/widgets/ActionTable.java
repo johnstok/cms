@@ -31,14 +31,14 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.dto.ActionSummary;
+import ccc.api.types.ActionStatus;
+import ccc.api.types.SortOrder;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.events.ActionCancelled;
 import ccc.contentcreator.events.ActionCancelled.ActionCancelledHandler;
 import ccc.contentcreator.remoting.ListCompletedActionsAction;
 import ccc.contentcreator.remoting.ListPendingActionsAction;
-import ccc.types.ActionStatus;
-import ccc.types.SortOrder;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;

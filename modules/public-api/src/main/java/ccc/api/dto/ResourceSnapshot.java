@@ -34,9 +34,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.types.Duration;
-import ccc.types.ResourceName;
-import ccc.types.ResourceType;
+import ccc.api.types.Duration;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceType;
 
 
 /**

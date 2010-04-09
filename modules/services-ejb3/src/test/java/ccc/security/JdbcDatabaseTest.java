@@ -42,11 +42,11 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.sql.DataSource;
 
 import junit.framework.TestCase;
+import ccc.api.types.Username;
 import ccc.commons.MapRegistry;
 import ccc.commons.Registry;
 import ccc.domain.Group;
 import ccc.domain.User;
-import ccc.types.Username;
 
 
 /**

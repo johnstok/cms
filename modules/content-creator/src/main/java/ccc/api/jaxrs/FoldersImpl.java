@@ -41,7 +41,7 @@ import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.types.SortOrder;
+import ccc.api.types.SortOrder;
 
 
 /**

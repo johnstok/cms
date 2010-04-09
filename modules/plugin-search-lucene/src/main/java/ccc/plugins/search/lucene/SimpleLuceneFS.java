@@ -48,11 +48,11 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import ccc.api.SearchResult;
+import ccc.api.types.DBC;
+import ccc.api.types.MimeType;
 import ccc.commons.Exceptions;
 import ccc.plugins.search.SearchException;
 import ccc.plugins.search.TextExtractor;
-import ccc.types.DBC;
-import ccc.types.MimeType;
 
 
 /**

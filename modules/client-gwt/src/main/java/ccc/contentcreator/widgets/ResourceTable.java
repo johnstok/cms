@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
+import ccc.api.types.ResourceType;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.SingleSelectionModel;
@@ -55,7 +56,6 @@ import ccc.contentcreator.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.contentcreator.events.WorkingCopyApplied.WCAppliedHandler;
 import ccc.contentcreator.events.WorkingCopyCleared.WCClearedHandler;
 import ccc.contentcreator.remoting.GetChildrenPagedAction;
-import ccc.types.ResourceType;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.SelectionMode;

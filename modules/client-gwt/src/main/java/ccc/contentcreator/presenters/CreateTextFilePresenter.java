@@ -27,6 +27,7 @@
 package ccc.contentcreator.presenters;
 
 import ccc.api.dto.TextFileDto;
+import ccc.api.types.MimeType;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.Editable;
@@ -35,7 +36,6 @@ import ccc.contentcreator.events.ResourceCreated;
 import ccc.contentcreator.events.ResourceCreated.ResourceCreatedHandler;
 import ccc.contentcreator.remoting.CreateTextFileAction;
 import ccc.contentcreator.views.CreateTextFile;
-import ccc.types.MimeType;
 
 
 /**

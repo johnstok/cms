@@ -40,8 +40,8 @@ import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.CommentDto;
 import ccc.api.dto.DtoCollection;
-import ccc.types.CommentStatus;
-import ccc.types.SortOrder;
+import ccc.api.types.CommentStatus;
+import ccc.api.types.SortOrder;
 
 
 /**

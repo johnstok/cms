@@ -28,14 +28,14 @@ package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 import ccc.api.dto.PageDelta;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
 import ccc.domain.Resource;
-import ccc.types.Paragraph;
-import ccc.types.ResourceName;
 
 
 /**

@@ -43,11 +43,11 @@ import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TemplateSummary;
 import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.types.DBC;
+import ccc.api.types.Duration;
+import ccc.api.types.HttpStatusCode;
+import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
-import ccc.types.DBC;
-import ccc.types.Duration;
-import ccc.types.HttpStatusCode;
-import ccc.types.SortOrder;
 
 
 /**
@@ -263,7 +263,7 @@ public class ResourcesDecorator
      * @param pageSize
      * @return
      * @throws RestException
-     * @see ccc.api.Resources#list(java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, ccc.types.SortOrder, int, int)
+     * @see ccc.api.Resources#list(java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, ccc.api.types.SortOrder, int, int)
      */
     public Collection<ResourceSummary> list(final String tag,
                                             final Long before,

@@ -30,10 +30,10 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
+import ccc.api.types.DBC;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.DBC;
 
 
 /**

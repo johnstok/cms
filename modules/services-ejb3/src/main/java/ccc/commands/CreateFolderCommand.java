@@ -31,11 +31,11 @@ import java.util.UUID;
 
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.types.CommandType;
 import ccc.domain.Folder;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.CommandType;
 
 
 /**

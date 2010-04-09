@@ -19,12 +19,12 @@ import junit.framework.TestCase;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.UnlockedException;
+import ccc.api.types.CommandType;
+import ccc.api.types.Duration;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.Username;
 import ccc.commons.Testing;
-import ccc.types.CommandType;
-import ccc.types.Duration;
-import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
-import ccc.types.Username;
 
 
 /**

@@ -27,7 +27,7 @@
 
 package ccc.domain;
 
-import static ccc.types.DBC.*;
+import static ccc.api.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,17 +47,17 @@ import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.UnlockedException;
+import ccc.api.types.CommandType;
+import ccc.api.types.DBC;
+import ccc.api.types.Duration;
+import ccc.api.types.Permission;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.commons.CharConversion;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.CommandType;
-import ccc.types.DBC;
-import ccc.types.Duration;
-import ccc.types.Permission;
-import ccc.types.ResourceName;
-import ccc.types.ResourcePath;
-import ccc.types.ResourceType;
 
 
 /**

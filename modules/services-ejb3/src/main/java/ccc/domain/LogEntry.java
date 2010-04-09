@@ -26,12 +26,12 @@
  */
 package ccc.domain;
 
-import static ccc.types.DBC.*;
+import static ccc.api.types.DBC.*;
 
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.types.CommandType;
+import ccc.api.types.CommandType;
 
 
 /**

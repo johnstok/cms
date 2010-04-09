@@ -36,11 +36,11 @@ import javax.servlet.http.HttpServletRequest;
 import ccc.api.SearchEngine;
 import ccc.api.SearchResult;
 import ccc.api.ServiceLocator;
+import ccc.api.types.DBC;
 import ccc.commons.Exceptions;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.types.DBC;
 
 
 /**

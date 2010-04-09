@@ -32,13 +32,13 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.dto.RevisionDto;
+import ccc.api.types.CommandType;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.LogEntrySummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.widgets.HistoryToolBar;
-import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.Events;

@@ -35,8 +35,8 @@ import ccc.api.exceptions.InternalError;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.types.HttpStatusCode;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.types.HttpStatusCode;
 
 
 /**

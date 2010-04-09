@@ -38,9 +38,9 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import ccc.api.types.Username;
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
-import ccc.types.Username;
 
 
 /**

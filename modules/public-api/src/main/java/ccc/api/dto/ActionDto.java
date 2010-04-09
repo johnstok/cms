@@ -31,10 +31,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.types.CommandType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.CommandType;
 
 
 /**

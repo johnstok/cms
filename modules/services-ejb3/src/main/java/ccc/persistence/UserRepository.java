@@ -33,8 +33,8 @@ import java.util.UUID;
 
 import ccc.api.dto.UserCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.SortOrder;
 import ccc.domain.User;
-import ccc.types.SortOrder;
 
 /**
  * API for user repositories.

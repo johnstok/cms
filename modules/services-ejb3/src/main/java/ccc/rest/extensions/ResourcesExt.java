@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.exceptions.RestException;
-import ccc.types.Duration;
+import ccc.api.types.Duration;
 
 
 /**

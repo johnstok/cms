@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.core;
 
+import ccc.api.types.DBC;
+import ccc.api.types.FailureCode;
 import ccc.contentcreator.overlays.FailureOverlay;
-import ccc.types.DBC;
-import ccc.types.FailureCode;
 
 
 /**

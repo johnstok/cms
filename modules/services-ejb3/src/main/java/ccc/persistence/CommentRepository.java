@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.CommentStatus;
+import ccc.api.types.SortOrder;
 import ccc.domain.Comment;
 import ccc.domain.Resource;
-import ccc.types.CommentStatus;
-import ccc.types.SortOrder;
 
 
 /**

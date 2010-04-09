@@ -31,9 +31,9 @@ import static ccc.plugins.s11n.JsonKeys.*;
 import java.io.Serializable;
 import java.util.UUID;
 
+import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable;
-import ccc.types.ResourceName;
 
 
 /**

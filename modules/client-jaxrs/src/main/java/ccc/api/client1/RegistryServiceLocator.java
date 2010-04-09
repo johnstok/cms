@@ -40,8 +40,8 @@ import ccc.api.Security;
 import ccc.api.ServiceLocator;
 import ccc.api.Templates;
 import ccc.api.Users;
+import ccc.api.types.DBC;
 import ccc.commons.Registry;
-import ccc.types.DBC;
 
 
 /**

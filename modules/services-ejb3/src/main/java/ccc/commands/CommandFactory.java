@@ -34,6 +34,8 @@ import ccc.api.dto.FileDelta;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.DBC;
+import ccc.api.types.ResourceName;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -43,8 +45,6 @@ import ccc.domain.Search;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.types.DBC;
-import ccc.types.ResourceName;
 
 
 /**

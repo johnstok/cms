@@ -35,9 +35,9 @@ import org.kohsuke.args4j.Option;
 
 import ccc.api.client1.ProxyServiceLocator;
 import ccc.api.exceptions.RestException;
+import ccc.api.types.ResourcePath;
 import ccc.cli.fileupload.CccServer;
 import ccc.cli.fileupload.Server;
-import ccc.types.ResourcePath;
 
 
 

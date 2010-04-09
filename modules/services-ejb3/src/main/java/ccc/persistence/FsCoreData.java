@@ -37,10 +37,10 @@ import java.io.InputStream;
 import org.apache.log4j.Logger;
 
 import ccc.api.StreamAction;
+import ccc.api.types.DBC;
 import ccc.commons.IO;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
-import ccc.types.DBC;
 
 
 /**

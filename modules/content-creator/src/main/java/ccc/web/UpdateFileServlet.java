@@ -41,7 +41,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
 import ccc.api.dto.FileDelta;
-import ccc.types.FilePropertyNames;
+import ccc.api.types.FilePropertyNames;
 
 
 /**

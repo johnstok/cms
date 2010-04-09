@@ -41,8 +41,8 @@ import javax.ws.rs.QueryParam;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
-import ccc.types.SortOrder;
-import ccc.types.Username;
+import ccc.api.types.SortOrder;
+import ccc.api.types.Username;
 
 
 /**

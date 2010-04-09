@@ -30,10 +30,10 @@ package ccc.contentcreator.widgets;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.types.CommandType;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.i18n.UIConstants;
-import ccc.types.CommandType;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SelectionMode;

@@ -27,8 +27,8 @@
 
 package ccc.contentcreator.tests;
 
+import ccc.api.types.FailureCode;
 import ccc.contentcreator.overlays.FailureOverlay;
-import ccc.types.FailureCode;
 
 import com.google.gwt.junit.client.GWTTestCase;
 

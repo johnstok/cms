@@ -31,13 +31,13 @@ import static org.easymock.EasyMock.*;
 import java.util.Date;
 
 import ccc.api.dto.TemplateDelta;
+import ccc.api.types.MimeType;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
-import ccc.types.MimeType;
 
 
 /**

@@ -30,8 +30,8 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.types.DBC;
 import ccc.domain.LogEntry;
-import ccc.types.DBC;
 
 
 /**

@@ -28,7 +28,7 @@ package ccc.persistence;
 
 import javax.persistence.EntityManager;
 
-import ccc.types.DBC;
+import ccc.api.types.DBC;
 
 
 /**

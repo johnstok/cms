@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.GroupDto;
+import ccc.api.types.Username;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
@@ -41,7 +42,6 @@ import ccc.contentcreator.core.Validations2;
 import ccc.contentcreator.remoting.UniqueUsernameAction;
 import ccc.contentcreator.views.CreateUser;
 import ccc.contentcreator.widgets.GroupListField;
-import ccc.types.Username;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

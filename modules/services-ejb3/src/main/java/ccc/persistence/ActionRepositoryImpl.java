@@ -34,10 +34,10 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.DBC;
+import ccc.api.types.SortOrder;
 import ccc.domain.Action;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.types.DBC;
-import ccc.types.SortOrder;
 
 
 /**

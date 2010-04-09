@@ -19,12 +19,12 @@ import java.util.List;
 import junit.framework.TestCase;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.commons.Exceptions;
-import ccc.types.MimeType;
-import ccc.types.ResourceName;
-import ccc.types.ResourceOrder;
-import ccc.types.ResourcePath;
-import ccc.types.ResourceType;
 
 
 /**

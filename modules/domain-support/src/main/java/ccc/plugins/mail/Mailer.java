@@ -27,7 +27,7 @@
 
 package ccc.plugins.mail;
 
-import ccc.types.EmailAddress;
+import ccc.api.types.EmailAddress;
 
 /**
  * API for sending email.
