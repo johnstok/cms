@@ -32,11 +32,24 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     
-    <display-name>CCC Content Management System</display-name>
+    <display-name>Content Control CMS</display-name>
     
     <context-param>
-        <param-name>resteasy.scan.resources</param-name>
-        <param-value>true</param-value>
+        <param-name>resteasy.resources</param-name>
+        <param-value>
+            ccc.api.jaxrs.ActionsImpl,
+            ccc.api.jaxrs.AliasesImpl,
+            ccc.api.jaxrs.CommentsImpl,
+            ccc.api.jaxrs.FilesImpl,
+            ccc.api.jaxrs.FoldersImpl,
+            ccc.api.jaxrs.GroupsImpl,
+            ccc.api.jaxrs.PagesImpl,
+            ccc.api.jaxrs.ResourcesImpl,
+            ccc.api.jaxrs.SearchImpl,
+            ccc.api.jaxrs.SecurityImpl,
+            ccc.api.jaxrs.TemplatesImpl,
+            ccc.api.jaxrs.UsersImpl
+        </param-value>
     </context-param>
     <context-param>
         <param-name>resteasy.providers</param-name>
