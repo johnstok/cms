@@ -49,6 +49,7 @@ import ccc.commons.Registry;
  *
  * @author Civic Computing Ltd.
  */
+// FIXME: This class is not a part of the HTTP client.
 public class RegistryServiceLocator implements ServiceLocator {
 
     private final Registry _registry;

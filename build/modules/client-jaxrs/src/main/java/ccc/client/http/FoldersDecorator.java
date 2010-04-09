@@ -48,6 +48,7 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
+// FIXME: This class shouldn't be public.
 public class FoldersDecorator
     implements
         Folders {

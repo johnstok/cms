@@ -51,7 +51,9 @@ import ccc.api.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-class FileUploader implements IFileUploader {
+class FileUploader
+    implements
+        IFileUploader {
 
     /** CONNECTION_TIMEOUT : int. */
     private static final int CONNECTION_TIMEOUT = 5000;
