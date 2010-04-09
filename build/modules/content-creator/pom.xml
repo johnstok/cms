@@ -20,7 +20,7 @@
                     <webResources>
                         <resource>
                             <directory>
-                                ${basedir}/target/client-gwt/ccc.contentcreator.ContentCreator
+                                ${basedir}/target/client-gwt/ccc.client.gwt.ContentCreator
                             </directory>
                         </resource>
                     </webResources>
