@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.dto.GroupDto;
+import ccc.api.dto.UserCriteria;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.remoting.GetUserAction;
@@ -38,9 +41,6 @@ import ccc.contentcreator.remoting.ListUsersAction;
 import ccc.contentcreator.remoting.OpenEditUserDialogAction;
 import ccc.contentcreator.views.gxt.EditUserPwDialog;
 import ccc.contentcreator.views.gxt.UserMetadataDialog;
-import ccc.rest.dto.GroupDto;
-import ccc.rest.dto.UserCriteria;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;

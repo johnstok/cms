@@ -37,10 +37,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageDto;
 
 
 /**

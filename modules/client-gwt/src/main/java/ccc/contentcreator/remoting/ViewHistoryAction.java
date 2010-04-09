@@ -29,13 +29,13 @@ package ccc.contentcreator.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.dto.RevisionDto;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.HistoryDialog;
-import ccc.rest.dto.RevisionDto;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

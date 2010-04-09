@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import ccc.api.Folders;
+import ccc.api.dto.ResourceSummary;
 import ccc.api.jaxrs.FoldersImpl;
-import ccc.rest.Folders;
-import ccc.rest.dto.ResourceSummary;
 
 
 /**

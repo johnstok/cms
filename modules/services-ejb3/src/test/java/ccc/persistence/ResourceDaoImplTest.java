@@ -34,12 +34,12 @@ import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.Paragraph;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;

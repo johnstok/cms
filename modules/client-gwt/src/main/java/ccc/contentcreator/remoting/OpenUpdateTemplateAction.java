@@ -26,12 +26,12 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.TemplateDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.views.gxt.EditTemplateDialog;
 import ccc.contentcreator.widgets.ResourceTable;
-import ccc.rest.dto.TemplateDelta;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

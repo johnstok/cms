@@ -30,9 +30,9 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
+import ccc.api.dto.UserDto;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
-import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 

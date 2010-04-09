@@ -38,14 +38,14 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.api.Resources;
+import ccc.api.dto.AclDto;
+import ccc.api.dto.ResourceDto;
+import ccc.api.dto.ResourceSnapshot;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.RevisionDto;
+import ccc.api.dto.TemplateSummary;
 import ccc.plugins.s11n.Json;
-import ccc.rest.Resources;
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.ResourceDto;
-import ccc.rest.dto.ResourceSnapshot;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TemplateSummary;
 import ccc.types.Duration;
 import ccc.types.SortOrder;
 

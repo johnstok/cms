@@ -31,8 +31,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import ccc.api.StreamAction;
 import ccc.commons.IO;
-import ccc.rest.StreamAction;
 
 /**
  * A stream action that can read a raw bytes into a string.

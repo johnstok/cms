@@ -26,11 +26,11 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.MoveDialog;
-import ccc.rest.dto.ResourceSummary;
 
 /**
  * Move resource.

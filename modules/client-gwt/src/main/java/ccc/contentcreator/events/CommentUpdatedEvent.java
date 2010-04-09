@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.events;
 
-import ccc.rest.dto.CommentDto;
+import ccc.api.dto.CommentDto;
 import ccc.types.DBC;
 
 import com.google.gwt.event.shared.EventHandler;

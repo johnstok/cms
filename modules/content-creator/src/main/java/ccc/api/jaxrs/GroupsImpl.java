@@ -36,8 +36,8 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.Groups;
-import ccc.rest.dto.GroupDto;
+import ccc.api.Groups;
+import ccc.api.dto.GroupDto;
 
 
 /**

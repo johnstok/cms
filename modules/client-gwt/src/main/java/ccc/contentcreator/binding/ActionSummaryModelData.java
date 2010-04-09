@@ -35,6 +35,7 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.ActionSummary;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.GwtJson;
@@ -46,7 +47,6 @@ import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.ResourceType;

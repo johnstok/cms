@@ -36,8 +36,8 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import ccc.api.StreamAction;
 import ccc.commons.Exceptions;
-import ccc.rest.StreamAction;
 
 /**
  * An action to copy from an input stream to an output stream.

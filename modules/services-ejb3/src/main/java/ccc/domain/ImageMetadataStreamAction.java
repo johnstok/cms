@@ -38,7 +38,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.StreamAction;
+import ccc.api.StreamAction;
 
 /**
  * A stream action used to extract metadata from an image file.

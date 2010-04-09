@@ -29,11 +29,11 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.dto.TemplateDelta;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
-import ccc.rest.dto.TemplateDelta;
 import ccc.types.CommandType;
 
 

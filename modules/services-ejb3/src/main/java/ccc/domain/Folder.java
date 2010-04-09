@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.FolderDto;
+import ccc.api.exceptions.CycleDetectedException;
+import ccc.api.exceptions.ResourceExistsException;
 import ccc.domain.sorting.Sorter;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
-import ccc.rest.dto.FolderDto;
-import ccc.rest.exceptions.CycleDetectedException;
-import ccc.rest.exceptions.ResourceExistsException;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;

@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
 import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.Style.Scroll;

@@ -29,6 +29,7 @@ package ccc.contentcreator.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.i18n.ActionNameConstants;
 import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;
@@ -37,7 +38,6 @@ import ccc.contentcreator.i18n.ErrorResolutions;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.views.gxt.ErrorDialog;
-import ccc.rest.dto.UserDto;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;

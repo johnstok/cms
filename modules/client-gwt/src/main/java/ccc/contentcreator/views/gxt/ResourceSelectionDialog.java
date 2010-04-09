@@ -26,11 +26,11 @@
  */
 package ccc.contentcreator.views.gxt;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.widgets.ResourceTree;
-import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

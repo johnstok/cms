@@ -28,12 +28,12 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
+import ccc.api.dto.PageDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdatePageAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.rest.dto.PageDelta;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

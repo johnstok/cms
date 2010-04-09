@@ -29,7 +29,7 @@ package ccc.domain;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import ccc.rest.dto.CommentDto;
+import ccc.api.dto.CommentDto;
 import ccc.types.EmailAddress;
 
 

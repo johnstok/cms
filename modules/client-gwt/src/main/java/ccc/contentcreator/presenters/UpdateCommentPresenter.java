@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
+import ccc.api.dto.CommentDto;
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.Globals;
@@ -34,7 +35,6 @@ import ccc.contentcreator.events.CommentUpdatedEvent;
 import ccc.contentcreator.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.contentcreator.remoting.UpdateCommentAction;
 import ccc.contentcreator.views.gxt.CommentView;
-import ccc.rest.dto.CommentDto;
 
 
 /**

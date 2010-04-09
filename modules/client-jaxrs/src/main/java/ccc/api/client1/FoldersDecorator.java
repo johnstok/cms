@@ -33,12 +33,12 @@ import java.util.UUID;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.rest.Folders;
-import ccc.rest.dto.DtoCollection;
-import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.exceptions.RestException;
+import ccc.api.Folders;
+import ccc.api.dto.DtoCollection;
+import ccc.api.dto.FolderDelta;
+import ccc.api.dto.FolderDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.RestException;
 import ccc.rest.providers.RestExceptionMapper;
 import ccc.types.SortOrder;
 
@@ -67,7 +67,7 @@ public class FoldersDecorator
      * @param folder
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#createFolder(ccc.rest.dto.FolderDto)
+     * @see ccc.api.Folders#createFolder(ccc.api.dto.FolderDto)
      */
     public ResourceSummary createFolder(final FolderDto folder) throws RestException {
 
@@ -81,7 +81,7 @@ public class FoldersDecorator
      * @param publish
      * @return
      * @deprecated
-     * @see ccc.rest.Folders#createFolder(java.util.UUID, java.lang.String, java.lang.String, boolean)
+     * @see ccc.api.Folders#createFolder(java.util.UUID, java.lang.String, java.lang.String, boolean)
      */
     @Deprecated
     public ResourceSummary createFolder(final UUID parentId,
@@ -95,7 +95,7 @@ public class FoldersDecorator
     /**
      * @param name
      * @return
-     * @see ccc.rest.Folders#createRoot(java.lang.String)
+     * @see ccc.api.Folders#createRoot(java.lang.String)
      */
     public ResourceSummary createRoot(final String name) {
         try {
@@ -109,7 +109,7 @@ public class FoldersDecorator
      * @param folderId
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#getAccessibleChildren(java.util.UUID)
+     * @see ccc.api.Folders#getAccessibleChildren(java.util.UUID)
      */
     public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId) throws RestException {
 
@@ -120,7 +120,7 @@ public class FoldersDecorator
      * @param folderId
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#getChildren(java.util.UUID)
+     * @see ccc.api.Folders#getChildren(java.util.UUID)
      */
     public Collection<ResourceSummary> getChildren(final UUID folderId) throws RestException {
 
@@ -131,7 +131,7 @@ public class FoldersDecorator
      * @param folderId
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#getChildrenManualOrder(java.util.UUID)
+     * @see ccc.api.Folders#getChildrenManualOrder(java.util.UUID)
      */
     public Collection<ResourceSummary> getChildrenManualOrder(final UUID folderId) throws RestException {
 
@@ -146,7 +146,7 @@ public class FoldersDecorator
      * @param pageSize
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#getChildrenPaged(java.util.UUID, java.lang.String, ccc.types.SortOrder, int, int)
+     * @see ccc.api.Folders#getChildrenPaged(java.util.UUID, java.lang.String, ccc.types.SortOrder, int, int)
      */
     public DtoCollection<ResourceSummary> getChildrenPaged(final UUID folderId,
                                                            final String sort,
@@ -161,7 +161,7 @@ public class FoldersDecorator
      * @param folderId
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#getFolderChildren(java.util.UUID)
+     * @see ccc.api.Folders#getFolderChildren(java.util.UUID)
      */
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId) throws RestException {
 
@@ -173,7 +173,7 @@ public class FoldersDecorator
      * @param name
      * @return
      * @throws RestException
-     * @see ccc.rest.Folders#nameExistsInFolder(java.util.UUID, java.lang.String)
+     * @see ccc.api.Folders#nameExistsInFolder(java.util.UUID, java.lang.String)
      */
     public Boolean nameExistsInFolder(final UUID folderId, final String name) throws RestException {
 
@@ -182,7 +182,7 @@ public class FoldersDecorator
 
     /**
      * @return
-     * @see ccc.rest.Folders#roots()
+     * @see ccc.api.Folders#roots()
      */
     public Collection<ResourceSummary> roots() {
 
@@ -193,7 +193,7 @@ public class FoldersDecorator
      * @param folderId
      * @param delta
      * @throws RestException
-     * @see ccc.rest.Folders#updateFolder(java.util.UUID, ccc.rest.dto.FolderDelta)
+     * @see ccc.api.Folders#updateFolder(java.util.UUID, ccc.api.dto.FolderDelta)
      */
     public void updateFolder(final UUID folderId, final FolderDelta delta) throws RestException {
 

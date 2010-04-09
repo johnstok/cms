@@ -28,7 +28,7 @@ package ccc.rest.extensions;
 
 import java.util.UUID;
 
-import ccc.rest.exceptions.RestException;
+import ccc.api.exceptions.RestException;
 
 
 /**

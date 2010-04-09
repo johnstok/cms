@@ -30,11 +30,11 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
 
+import ccc.api.dto.PageDelta;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.Page;
-import ccc.rest.dto.PageDelta;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;
 

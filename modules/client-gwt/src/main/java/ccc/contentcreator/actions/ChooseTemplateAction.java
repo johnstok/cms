@@ -28,13 +28,13 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
+import ccc.api.dto.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.ChangeResourceTemplatePresenter;
 import ccc.contentcreator.remoting.GetTemplatesAction;
 import ccc.contentcreator.views.gxt.ChooseTemplateDialog;
-import ccc.rest.dto.TemplateSummary;
 import ccc.types.ResourceType;
 
 /**

@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateWorkingCopyAction;
@@ -40,8 +42,6 @@ import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.widgets.EditPagePanel;
 import ccc.contentcreator.widgets.PageElement;
 import ccc.contentcreator.widgets.ResourceTable;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.TemplateSummary;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.Style;

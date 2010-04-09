@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.dto.CommentDto;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.Request;
@@ -39,7 +40,6 @@ import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.contentcreator.events.CommentUpdatedEvent;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.CommentDto;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 

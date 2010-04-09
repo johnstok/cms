@@ -36,15 +36,15 @@ import junit.framework.TestCase;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 
+import ccc.api.MemoryServiceLocator;
+import ccc.api.Resources;
+import ccc.api.ServiceLocator;
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.commons.Testing;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.rest.MemoryServiceLocator;
-import ccc.rest.Resources;
-import ccc.rest.ServiceLocator;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageDto;
 import ccc.types.Paragraph;
 
 

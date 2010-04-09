@@ -43,18 +43,18 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.Files;
+import ccc.api.StreamAction;
+import ccc.api.dto.DtoCollection;
+import ccc.api.dto.FileDelta;
+import ccc.api.dto.FileDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TextFileDelta;
+import ccc.api.dto.TextFileDto;
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
-import ccc.rest.Files;
-import ccc.rest.StreamAction;
-import ccc.rest.dto.DtoCollection;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TextFileDelta;
-import ccc.rest.dto.TextFileDto;
 import ccc.types.FilePropertyNames;
 import ccc.types.ResourceName;
 

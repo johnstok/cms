@@ -32,8 +32,8 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.SearchEngine;
-import ccc.rest.SearchResult;
+import ccc.api.SearchEngine;
+import ccc.api.SearchResult;
 
 
 /**

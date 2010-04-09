@@ -35,7 +35,7 @@ import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
-import ccc.rest.Resources;
+import ccc.api.Resources;
 
 
 /**

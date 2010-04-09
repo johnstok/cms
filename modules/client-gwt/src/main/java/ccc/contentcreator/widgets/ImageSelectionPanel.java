@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.dto.FileDto;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
@@ -38,7 +39,6 @@ import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetImagesPagedAction;
 import ccc.contentcreator.views.gxt.FolderSelectionDialog;
-import ccc.rest.dto.FileDto;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;

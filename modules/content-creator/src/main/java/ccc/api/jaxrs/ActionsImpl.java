@@ -35,11 +35,11 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.Actions;
-import ccc.rest.Scheduler;
-import ccc.rest.dto.ActionDto;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.DtoCollection;
+import ccc.api.Actions;
+import ccc.api.Scheduler;
+import ccc.api.dto.ActionDto;
+import ccc.api.dto.ActionSummary;
+import ccc.api.dto.DtoCollection;
 import ccc.types.SortOrder;
 
 

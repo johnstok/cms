@@ -30,13 +30,13 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.PageDelta;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.dto.PageDelta;
 import ccc.types.CommandType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;

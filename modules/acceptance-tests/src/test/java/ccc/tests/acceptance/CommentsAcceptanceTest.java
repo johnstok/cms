@@ -30,9 +30,9 @@ import java.util.Date;
 
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.rest.dto.CommentDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.exceptions.EntityNotFoundException;
+import ccc.api.dto.CommentDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.types.CommentStatus;
 
 

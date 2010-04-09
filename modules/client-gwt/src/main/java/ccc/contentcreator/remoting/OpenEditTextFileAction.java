@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.TextFileDelta;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
@@ -33,7 +34,6 @@ import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.presenters.EditTextFilePresenter;
 import ccc.contentcreator.views.gxt.EditTextFileDialog;
 import ccc.contentcreator.widgets.ResourceTable;
-import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

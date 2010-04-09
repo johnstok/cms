@@ -33,15 +33,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.Files;
+import ccc.api.ServiceLocator;
+import ccc.api.dto.FileDto;
+import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.persistence.streams.CopyAction;
 import ccc.persistence.streams.ThumbAction;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.rest.Files;
-import ccc.rest.ServiceLocator;
-import ccc.rest.dto.FileDto;
-import ccc.rest.exceptions.RestException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.DBC;
 
 

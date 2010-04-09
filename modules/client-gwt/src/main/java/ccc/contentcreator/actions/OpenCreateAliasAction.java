@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.actions;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.CreateAliasDialog;
-import ccc.rest.dto.ResourceSummary;
 
 /**
  * Create an alias.

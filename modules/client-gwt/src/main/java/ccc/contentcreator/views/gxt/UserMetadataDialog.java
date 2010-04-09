@@ -28,12 +28,12 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Map;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateUserAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
 import ccc.contentcreator.widgets.MetadataGrid;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

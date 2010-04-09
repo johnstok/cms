@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.GroupModelData;
 import ccc.contentcreator.events.GroupUpdated;
@@ -38,7 +39,6 @@ import ccc.contentcreator.presenters.UpdateGroupPresenter;
 import ccc.contentcreator.remoting.ListGroups;
 import ccc.contentcreator.views.gxt.GroupViewImpl;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.GroupDto;
 import ccc.types.SortOrder;
 
 import com.extjs.gxt.ui.client.Style;

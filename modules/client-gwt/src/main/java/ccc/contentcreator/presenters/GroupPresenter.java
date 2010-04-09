@@ -29,11 +29,11 @@ package ccc.contentcreator.presenters;
 
 import java.util.Set;
 
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Validatable;
 import ccc.contentcreator.core.ValidationResult;
 import ccc.contentcreator.core.View;
-import ccc.rest.dto.GroupDto;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 

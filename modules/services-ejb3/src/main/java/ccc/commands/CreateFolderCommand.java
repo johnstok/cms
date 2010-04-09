@@ -29,12 +29,12 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.domain.Folder;
 import ccc.domain.User;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.exceptions.EntityNotFoundException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.CommandType;
 
 

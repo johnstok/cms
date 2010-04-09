@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.views.gxt.UpdateAliasDialog;
-import ccc.rest.dto.ResourceSummary;
 
 import com.google.gwt.http.client.Response;
 

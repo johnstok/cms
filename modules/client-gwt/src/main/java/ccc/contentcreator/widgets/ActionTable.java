@@ -30,13 +30,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.dto.ActionSummary;
 import ccc.contentcreator.binding.ActionSummaryModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.events.ActionCancelled;
 import ccc.contentcreator.events.ActionCancelled.ActionCancelledHandler;
 import ccc.contentcreator.remoting.ListCompletedActionsAction;
 import ccc.contentcreator.remoting.ListPendingActionsAction;
-import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.SortOrder;
 

@@ -33,13 +33,13 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ccc.api.SearchEngine;
+import ccc.api.SearchResult;
+import ccc.api.ServiceLocator;
 import ccc.commons.Exceptions;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
 import ccc.plugins.scripting.TextProcessor;
-import ccc.rest.SearchEngine;
-import ccc.rest.SearchResult;
-import ccc.rest.ServiceLocator;
 import ccc.types.DBC;
 
 

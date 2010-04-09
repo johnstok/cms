@@ -35,10 +35,10 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.Aliases;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasDto;
-import ccc.rest.dto.ResourceSummary;
+import ccc.api.Aliases;
+import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
+import ccc.api.dto.ResourceSummary;
 
 
 /**

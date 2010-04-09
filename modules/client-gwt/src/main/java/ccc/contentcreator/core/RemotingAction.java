@@ -32,10 +32,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import ccc.api.dto.ActionSummary;
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.ResourceSummary;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;

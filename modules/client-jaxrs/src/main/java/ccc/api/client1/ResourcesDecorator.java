@@ -34,16 +34,16 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import ccc.api.Resources;
+import ccc.api.dto.AclDto;
+import ccc.api.dto.ResourceDto;
+import ccc.api.dto.ResourceSnapshot;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.RevisionDto;
+import ccc.api.dto.TemplateSummary;
+import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.plugins.s11n.Json;
-import ccc.rest.Resources;
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.ResourceDto;
-import ccc.rest.dto.ResourceSnapshot;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TemplateSummary;
-import ccc.rest.exceptions.RestException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.DBC;
 import ccc.types.Duration;
 import ccc.types.HttpStatusCode;
@@ -83,7 +83,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#applyWorkingCopy(java.util.UUID)
+     * @see ccc.api.Resources#applyWorkingCopy(java.util.UUID)
      */
     public void applyWorkingCopy(final UUID resourceId) throws RestException {
         _delegate.applyWorkingCopy(resourceId);
@@ -94,7 +94,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#cacheDuration(java.util.UUID)
+     * @see ccc.api.Resources#cacheDuration(java.util.UUID)
      */
     public Duration cacheDuration(final UUID resourceId) throws RestException {
 
@@ -106,7 +106,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param acl
      * @throws RestException
-     * @see ccc.rest.Resources#changeRoles(java.util.UUID, ccc.rest.dto.AclDto)
+     * @see ccc.api.Resources#changeRoles(java.util.UUID, ccc.api.dto.AclDto)
      */
     public void changeRoles(final UUID resourceId, final AclDto acl) throws RestException {
 
@@ -117,7 +117,7 @@ public class ResourcesDecorator
     /**
      * @param pageId
      * @throws RestException
-     * @see ccc.rest.Resources#clearWorkingCopy(java.util.UUID)
+     * @see ccc.api.Resources#clearWorkingCopy(java.util.UUID)
      */
     public void clearWorkingCopy(final UUID pageId) throws RestException {
 
@@ -129,7 +129,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#computeTemplate(java.util.UUID)
+     * @see ccc.api.Resources#computeTemplate(java.util.UUID)
      */
     public TemplateSummary computeTemplate(final UUID resourceId) throws RestException {
 
@@ -142,7 +142,7 @@ public class ResourcesDecorator
      * @param action
      * @param detail
      * @throws RestException
-     * @see ccc.rest.Resources#createLogEntry(java.util.UUID, java.lang.String, java.lang.String)
+     * @see ccc.api.Resources#createLogEntry(java.util.UUID, java.lang.String, java.lang.String)
      */
     public void createLogEntry(final UUID resourceId, final String action, final String detail) throws RestException {
 
@@ -154,7 +154,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param dto
      * @throws RestException
-     * @see ccc.rest.Resources#createWorkingCopy(java.util.UUID, ccc.rest.dto.ResourceDto)
+     * @see ccc.api.Resources#createWorkingCopy(java.util.UUID, ccc.api.dto.ResourceDto)
      */
     public void createWorkingCopy(final UUID resourceId, final ResourceDto dto) throws RestException {
 
@@ -165,7 +165,7 @@ public class ResourcesDecorator
     /**
      * @param id
      * @throws RestException
-     * @see ccc.rest.Resources#deleteCacheDuration(java.util.UUID)
+     * @see ccc.api.Resources#deleteCacheDuration(java.util.UUID)
      */
     public void deleteCacheDuration(final UUID id) throws RestException {
 
@@ -176,7 +176,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#deleteResource(java.util.UUID)
+     * @see ccc.api.Resources#deleteResource(java.util.UUID)
      */
     public void deleteResource(final UUID resourceId) throws RestException {
 
@@ -187,7 +187,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#excludeFromMainMenu(java.util.UUID)
+     * @see ccc.api.Resources#excludeFromMainMenu(java.util.UUID)
      */
     public void excludeFromMainMenu(final UUID resourceId) throws RestException {
 
@@ -199,7 +199,7 @@ public class ResourcesDecorator
      * @param absolutePath
      * @param charset
      * @return
-     * @see ccc.rest.Resources#fileContentsFromPath(java.lang.String, java.lang.String)
+     * @see ccc.api.Resources#fileContentsFromPath(java.lang.String, java.lang.String)
      */
     public String fileContentsFromPath(final String absolutePath, final String charset) {
 
@@ -211,7 +211,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#getAbsolutePath(java.util.UUID)
+     * @see ccc.api.Resources#getAbsolutePath(java.util.UUID)
      */
     public String getAbsolutePath(final UUID resourceId) throws RestException {
 
@@ -222,7 +222,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @return
-     * @see ccc.rest.Resources#getSiblings(java.util.UUID)
+     * @see ccc.api.Resources#getSiblings(java.util.UUID)
      */
     public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
 
@@ -234,7 +234,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#history(java.util.UUID)
+     * @see ccc.api.Resources#history(java.util.UUID)
      */
     public Collection<RevisionDto> history(final UUID resourceId) throws RestException {
 
@@ -245,7 +245,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#includeInMainMenu(java.util.UUID)
+     * @see ccc.api.Resources#includeInMainMenu(java.util.UUID)
      */
     public void includeInMainMenu(final UUID resourceId) throws RestException {
 
@@ -263,7 +263,7 @@ public class ResourcesDecorator
      * @param pageSize
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#list(java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, ccc.types.SortOrder, int, int)
+     * @see ccc.api.Resources#list(java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, ccc.types.SortOrder, int, int)
      */
     public Collection<ResourceSummary> list(final String tag,
                                             final Long before,
@@ -280,7 +280,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#lock(java.util.UUID)
+     * @see ccc.api.Resources#lock(java.util.UUID)
      */
     public void lock(final UUID resourceId) throws RestException {
 
@@ -290,7 +290,7 @@ public class ResourcesDecorator
 
     /**
      * @return
-     * @see ccc.rest.Resources#locked()
+     * @see ccc.api.Resources#locked()
      */
     public Collection<ResourceSummary> locked() {
 
@@ -302,7 +302,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#metadata(java.util.UUID)
+     * @see ccc.api.Resources#metadata(java.util.UUID)
      */
     public Map<String, String> metadata(final UUID resourceId) throws RestException {
 
@@ -314,7 +314,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param newParentId
      * @throws RestException
-     * @see ccc.rest.Resources#move(java.util.UUID, java.util.UUID)
+     * @see ccc.api.Resources#move(java.util.UUID, java.util.UUID)
      */
     public void move(final UUID resourceId, final UUID newParentId) throws RestException {
 
@@ -325,7 +325,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#publish(java.util.UUID)
+     * @see ccc.api.Resources#publish(java.util.UUID)
      */
     public void publish(final UUID resourceId) throws RestException {
 
@@ -337,7 +337,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param name
      * @throws RestException
-     * @see ccc.rest.Resources#rename(java.util.UUID, java.lang.String)
+     * @see ccc.api.Resources#rename(java.util.UUID, java.lang.String)
      */
     public void rename(final UUID resourceId, final String name) throws RestException {
 
@@ -350,7 +350,7 @@ public class ResourcesDecorator
      * @return
      * @throws RestException
      * @throws UnauthorizedException
-     * @see ccc.rest.Resources#resource(java.util.UUID)
+     * @see ccc.api.Resources#resource(java.util.UUID)
      */
     public ResourceSummary resource(final UUID resourceId) throws RestException, UnauthorizedException {
 
@@ -362,7 +362,7 @@ public class ResourcesDecorator
      * @param legacyId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#resourceForLegacyId(java.lang.String)
+     * @see ccc.api.Resources#resourceForLegacyId(java.lang.String)
      */
     public ResourceSummary resourceForLegacyId(final String legacyId) throws RestException {
 
@@ -374,7 +374,7 @@ public class ResourcesDecorator
      * @param key
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#resourceForMetadataKey(java.lang.String)
+     * @see ccc.api.Resources#resourceForMetadataKey(java.lang.String)
      */
     public Collection<ResourceSummary> resourceForMetadataKey(final String key) throws RestException {
 
@@ -410,7 +410,7 @@ public class ResourcesDecorator
      * @param path
      * @return
      * @deprecated
-     * @see ccc.rest.Resources#resourceForPathSecure(java.lang.String)
+     * @see ccc.api.Resources#resourceForPathSecure(java.lang.String)
      */
     @Deprecated
     public ResourceSnapshot resourceForPathSecure(final String path) {
@@ -424,7 +424,7 @@ public class ResourcesDecorator
      * @param version
      * @return
      * @deprecated
-     * @see ccc.rest.Resources#revisionForPath(java.lang.String, int)
+     * @see ccc.api.Resources#revisionForPath(java.lang.String, int)
      */
     @Deprecated
     public ResourceSnapshot revisionForPath(final String path, final int version) {
@@ -437,7 +437,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @return
      * @throws RestException
-     * @see ccc.rest.Resources#roles(java.util.UUID)
+     * @see ccc.api.Resources#roles(java.util.UUID)
      */
     public AclDto roles(final UUID resourceId) throws RestException {
 
@@ -448,7 +448,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#unlock(java.util.UUID)
+     * @see ccc.api.Resources#unlock(java.util.UUID)
      */
     public void unlock(final UUID resourceId) throws RestException {
 
@@ -459,7 +459,7 @@ public class ResourcesDecorator
     /**
      * @param resourceId
      * @throws RestException
-     * @see ccc.rest.Resources#unpublish(java.util.UUID)
+     * @see ccc.api.Resources#unpublish(java.util.UUID)
      */
     public void unpublish(final UUID resourceId) throws RestException {
 
@@ -471,7 +471,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param duration
      * @throws RestException
-     * @see ccc.rest.Resources#updateCacheDuration(java.util.UUID, ccc.rest.dto.ResourceDto)
+     * @see ccc.api.Resources#updateCacheDuration(java.util.UUID, ccc.api.dto.ResourceDto)
      */
     public void updateCacheDuration(final UUID resourceId, final ResourceDto duration) throws RestException {
 
@@ -483,7 +483,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param json
      * @throws RestException
-     * @see ccc.rest.Resources#updateMetadata(java.util.UUID, ccc.plugins.s11n.Json)
+     * @see ccc.api.Resources#updateMetadata(java.util.UUID, ccc.plugins.s11n.Json)
      */
     public void updateMetadata(final UUID resourceId, final Json json) throws RestException {
 
@@ -495,7 +495,7 @@ public class ResourcesDecorator
      * @param resourceId
      * @param template
      * @throws RestException
-     * @see ccc.rest.Resources#updateResourceTemplate(java.util.UUID, ccc.rest.dto.ResourceDto)
+     * @see ccc.api.Resources#updateResourceTemplate(java.util.UUID, ccc.api.dto.ResourceDto)
      */
     public void updateResourceTemplate(final UUID resourceId, final ResourceDto template) throws RestException {
 
@@ -509,7 +509,7 @@ public class ResourcesDecorator
      * @throws RestException
      * @throws UnauthorizedException
      * @deprecated
-     * @see ccc.rest.Resources#workingCopyForPath(java.lang.String)
+     * @see ccc.api.Resources#workingCopyForPath(java.lang.String)
      */
     @Deprecated
     public ResourceSnapshot workingCopyForPath(final String path) throws RestException, UnauthorizedException {
@@ -522,7 +522,7 @@ public class ResourcesDecorator
      * @param parentId
      * @param title
      * @return
-     * @see ccc.rest.Resources#createSearch(java.util.UUID, java.lang.String)
+     * @see ccc.api.Resources#createSearch(java.util.UUID, java.lang.String)
      */
     public ResourceSummary createSearch(final UUID parentId, final String title) {
 

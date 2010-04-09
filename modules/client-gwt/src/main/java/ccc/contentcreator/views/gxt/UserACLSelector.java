@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.remoting.ListUsersAction;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.Scroll;

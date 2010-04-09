@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.dto.CommentDto;
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.events.CommentUpdatedEvent;
@@ -38,7 +39,6 @@ import ccc.contentcreator.presenters.UpdateCommentPresenter;
 import ccc.contentcreator.remoting.ListComments;
 import ccc.contentcreator.views.gxt.CommentView;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.CommentDto;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 

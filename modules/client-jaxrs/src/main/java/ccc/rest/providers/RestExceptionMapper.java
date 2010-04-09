@@ -29,13 +29,13 @@ package ccc.rest.providers;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
+import ccc.api.exceptions.ConflictException;
+import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.exceptions.InternalError;
+import ccc.api.exceptions.InvalidException;
+import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.exceptions.ConflictException;
-import ccc.rest.exceptions.EntityNotFoundException;
-import ccc.rest.exceptions.InternalError;
-import ccc.rest.exceptions.InvalidException;
-import ccc.rest.exceptions.RestException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.HttpStatusCode;
 
 

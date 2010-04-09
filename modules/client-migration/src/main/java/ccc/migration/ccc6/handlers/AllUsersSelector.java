@@ -33,9 +33,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.dto.UserDto;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
-import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 /**

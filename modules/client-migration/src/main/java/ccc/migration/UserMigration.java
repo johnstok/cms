@@ -35,11 +35,11 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.Groups;
-import ccc.rest.Users;
-import ccc.rest.dto.GroupDto;
-import ccc.rest.dto.UserDto;
-import ccc.rest.exceptions.RestException;
+import ccc.api.Groups;
+import ccc.api.Users;
+import ccc.api.dto.GroupDto;
+import ccc.api.dto.UserDto;
+import ccc.api.exceptions.RestException;
 import ccc.types.EmailAddress;
 
 

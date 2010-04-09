@@ -27,5 +27,5 @@
 -->
 
 <module>
-    <source path="rest/dto" />
+    <source path="api/dto" />
 </module>

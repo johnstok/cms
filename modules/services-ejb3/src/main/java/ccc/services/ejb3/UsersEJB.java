@@ -39,17 +39,17 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.Users;
+import ccc.api.dto.DtoCollection;
+import ccc.api.dto.UserCriteria;
+import ccc.api.dto.UserDto;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
 import ccc.domain.User;
 import ccc.persistence.UserRepository;
-import ccc.rest.Users;
-import ccc.rest.dto.DtoCollection;
-import ccc.rest.dto.UserCriteria;
-import ccc.rest.dto.UserDto;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.SortOrder;
 import ccc.types.Username;
 

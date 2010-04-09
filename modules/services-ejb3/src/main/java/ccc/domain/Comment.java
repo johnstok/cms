@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ccc.api.dto.CommentDto;
 import ccc.plugins.s11n.Json;
-import ccc.rest.dto.CommentDto;
 import ccc.types.CommentStatus;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;

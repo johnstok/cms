@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.rest.dto.FileDelta;
+import ccc.api.dto.FileDelta;
 import ccc.types.DBC;
 import ccc.types.FilePropertyNames;
 import ccc.types.MimeType;

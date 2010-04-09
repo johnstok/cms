@@ -34,14 +34,14 @@ import java.util.UUID;
 
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.FolderDelta;
-import ccc.rest.dto.FolderDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
-import ccc.rest.dto.AclDto.Entry;
-import ccc.rest.exceptions.RestException;
-import ccc.rest.exceptions.UnauthorizedException;
+import ccc.api.dto.AclDto;
+import ccc.api.dto.FolderDelta;
+import ccc.api.dto.FolderDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.UserDto;
+import ccc.api.dto.AclDto.Entry;
+import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
 import ccc.types.ResourceOrder;

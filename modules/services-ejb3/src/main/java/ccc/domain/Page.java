@@ -30,8 +30,8 @@ package ccc.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import ccc.api.dto.PageDelta;
 import ccc.commons.CharConversion;
-import ccc.rest.dto.PageDelta;
 import ccc.types.DBC;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;

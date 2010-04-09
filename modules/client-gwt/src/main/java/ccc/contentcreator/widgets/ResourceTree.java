@@ -31,11 +31,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.remoting.GetChildrenAction;
-import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;

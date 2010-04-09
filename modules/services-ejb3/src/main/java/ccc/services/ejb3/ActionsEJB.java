@@ -42,18 +42,18 @@ import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.Actions;
+import ccc.api.Resources;
+import ccc.api.dto.ActionDto;
+import ccc.api.dto.ActionSummary;
+import ccc.api.dto.DtoCollection;
+import ccc.api.exceptions.InternalError;
+import ccc.api.exceptions.RestException;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
 import ccc.domain.Action;
 import ccc.domain.Resource;
 import ccc.persistence.ActionRepository;
-import ccc.rest.Actions;
-import ccc.rest.Resources;
-import ccc.rest.dto.ActionDto;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.DtoCollection;
-import ccc.rest.exceptions.InternalError;
-import ccc.rest.exceptions.RestException;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.types.Failure;
 import ccc.types.FailureCode;

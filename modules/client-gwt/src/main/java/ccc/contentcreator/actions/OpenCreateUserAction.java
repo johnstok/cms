@@ -28,11 +28,11 @@ package ccc.contentcreator.actions;
 
 import java.util.Collection;
 
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.core.Action;
 import ccc.contentcreator.presenters.CreateUserPresenter;
 import ccc.contentcreator.remoting.ListGroups;
 import ccc.contentcreator.views.gxt.CreateUserDialog;
-import ccc.rest.dto.GroupDto;
 
 
 /**

@@ -26,11 +26,11 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.TextFileDelta;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.events.TextFileUpdated;
 import ccc.contentcreator.widgets.ContentCreator;
-import ccc.rest.dto.TextFileDelta;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.widgets;
 
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.Globals;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

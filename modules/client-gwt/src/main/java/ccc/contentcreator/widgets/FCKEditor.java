@@ -16,10 +16,10 @@ package ccc.contentcreator.widgets;
 
 import java.util.Collection;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.remoting.GetRootsAction;
 import ccc.contentcreator.views.gxt.ImageSelectionDialog;
 import ccc.contentcreator.views.gxt.LinkSelectionDialog;
-import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;

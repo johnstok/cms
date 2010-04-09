@@ -29,9 +29,9 @@ package ccc.tests.acceptance;
 import java.util.Collections;
 import java.util.UUID;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.dto.ResourceSummary;
 
 
 /**

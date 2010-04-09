@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.views.gxt;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
-import ccc.rest.dto.ResourceSummary;
 import ccc.types.Paragraph;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

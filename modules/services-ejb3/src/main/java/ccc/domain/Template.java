@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateSummary;
+import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateSummary;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
