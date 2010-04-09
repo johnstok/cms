@@ -26,11 +26,11 @@
  */
 package ccc.domain;
 
+import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
+import ccc.api.exceptions.CycleDetectedException;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasDto;
-import ccc.rest.exceptions.CycleDetectedException;
 import ccc.types.DBC;
 import ccc.types.ResourceType;
 

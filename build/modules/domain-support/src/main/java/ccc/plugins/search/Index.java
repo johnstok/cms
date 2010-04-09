@@ -26,7 +26,7 @@
  */
 package ccc.plugins.search;
 
-import ccc.rest.SearchResult;
+import ccc.api.SearchResult;
 
 
 /**

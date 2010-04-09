@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.rest.dto.ResourceSummary;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;

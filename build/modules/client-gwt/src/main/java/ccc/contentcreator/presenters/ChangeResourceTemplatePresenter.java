@@ -28,6 +28,7 @@ package ccc.contentcreator.presenters;
 
 import java.util.Collection;
 
+import ccc.api.dto.TemplateSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.Editable;
@@ -36,7 +37,6 @@ import ccc.contentcreator.events.ResourceTemplateChanged;
 import ccc.contentcreator.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.contentcreator.remoting.UpdateResourceTemplateAction;
 import ccc.contentcreator.views.ChangeResourceTemplate;
-import ccc.rest.dto.TemplateSummary;
 
 
 /**

@@ -35,11 +35,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.dto.FileDelta;
+import ccc.api.dto.FileDto;
+import ccc.api.dto.TextFileDelta;
 import ccc.persistence.DataRepository;
 import ccc.persistence.streams.ReadToStringAction;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.TextFileDelta;
 import ccc.types.DBC;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;

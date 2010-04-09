@@ -31,11 +31,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
 
-import ccc.rest.dto.ResourceDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TextFileDelta;
-import ccc.rest.exceptions.RestException;
+import ccc.api.dto.ResourceDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.RevisionDto;
+import ccc.api.dto.TextFileDelta;
+import ccc.api.exceptions.RestException;
 import ccc.types.FailureCode;
 import ccc.types.MimeType;
 

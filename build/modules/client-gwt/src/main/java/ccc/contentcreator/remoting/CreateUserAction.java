@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.events.UserCreated;
-import ccc.rest.dto.UserDto;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.http.client.RequestBuilder;

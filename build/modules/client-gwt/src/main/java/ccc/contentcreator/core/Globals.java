@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.core;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.i18n.ActionNameConstants;
 import ccc.contentcreator.i18n.ActionStatusConstants;
 import ccc.contentcreator.i18n.CommandTypeConstants;
@@ -33,7 +34,6 @@ import ccc.contentcreator.i18n.ErrorDescriptions;
 import ccc.contentcreator.i18n.ErrorResolutions;
 import ccc.contentcreator.i18n.UIConstants;
 import ccc.contentcreator.i18n.UIMessages;
-import ccc.rest.dto.UserDto;
 
 
 /**

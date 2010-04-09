@@ -28,8 +28,8 @@ package ccc.persistence;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Setting;
-import ccc.rest.exceptions.EntityNotFoundException;
 
 
 /**

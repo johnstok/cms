@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.ValidationResult;
@@ -35,7 +36,6 @@ import ccc.contentcreator.i18n.UIMessages;
 import ccc.contentcreator.remoting.CreateUserAction;
 import ccc.contentcreator.views.CreateUser;
 import ccc.contentcreator.widgets.ContentCreator;
-import ccc.rest.dto.UserDto;
 import ccc.types.Username;
 
 import com.google.gwt.event.shared.HandlerRegistration;

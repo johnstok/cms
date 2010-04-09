@@ -32,12 +32,12 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.rest.Templates;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateDto;
-import ccc.rest.dto.TemplateSummary;
-import ccc.rest.exceptions.RestException;
+import ccc.api.Templates;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
+import ccc.api.dto.TemplateSummary;
+import ccc.api.exceptions.RestException;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;
 

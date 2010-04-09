@@ -35,11 +35,11 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.api.Pages;
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
+import ccc.api.dto.ResourceSummary;
 import ccc.plugins.s11n.Json;
-import ccc.rest.Pages;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageDto;
-import ccc.rest.dto.ResourceSummary;
 
 
 /**

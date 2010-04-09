@@ -29,12 +29,12 @@ package ccc.contentcreator.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.dto.ActionSummary;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
 import ccc.contentcreator.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.ActionSummary;
 import ccc.types.DBC;
 import ccc.types.SortOrder;
 

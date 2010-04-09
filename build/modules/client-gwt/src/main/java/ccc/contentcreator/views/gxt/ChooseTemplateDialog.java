@@ -29,13 +29,13 @@ package ccc.contentcreator.views.gxt;
 import java.util.Collection;
 import java.util.UUID;
 
+import ccc.api.dto.TemplateSummary;
 import ccc.contentcreator.binding.DataBinding;
 import ccc.contentcreator.binding.TemplateSummaryModelData;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.views.ChangeResourceTemplate;
-import ccc.rest.dto.TemplateSummary;
 import ccc.types.ResourceName;
 
 import com.extjs.gxt.ui.client.Style.SortDir;

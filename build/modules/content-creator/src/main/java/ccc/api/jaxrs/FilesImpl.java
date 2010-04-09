@@ -37,14 +37,14 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.Files;
-import ccc.rest.StreamAction;
-import ccc.rest.dto.DtoCollection;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TextFileDelta;
-import ccc.rest.dto.TextFileDto;
+import ccc.api.Files;
+import ccc.api.StreamAction;
+import ccc.api.dto.DtoCollection;
+import ccc.api.dto.FileDelta;
+import ccc.api.dto.FileDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TextFileDelta;
+import ccc.api.dto.TextFileDto;
 
 
 /**

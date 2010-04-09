@@ -26,7 +26,7 @@
  */
 package ccc.contentcreator.events;
 
-import ccc.rest.dto.UserDto;
+import ccc.api.dto.UserDto;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

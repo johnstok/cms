@@ -28,9 +28,9 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.RequestBuilder;
 

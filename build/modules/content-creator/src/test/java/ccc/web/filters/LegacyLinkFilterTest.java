@@ -38,9 +38,9 @@ import java.util.UUID;
 import javax.servlet.FilterChain;
 
 import junit.framework.TestCase;
+import ccc.api.Resources;
+import ccc.api.dto.ResourceSummary;
 import ccc.commons.Testing;
-import ccc.rest.Resources;
-import ccc.rest.dto.ResourceSummary;
 import ccc.types.ResourceType;
 import ccc.web.filters.LegacyLinkFilter;
 import ccc.web.rendering.RedirectRequiredException;

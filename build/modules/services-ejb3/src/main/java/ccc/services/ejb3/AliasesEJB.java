@@ -37,12 +37,12 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.Aliases;
+import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
+import ccc.api.dto.ResourceSummary;
 import ccc.commands.UpdateAliasCommand;
 import ccc.domain.Alias;
-import ccc.rest.Aliases;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasDto;
-import ccc.rest.dto.ResourceSummary;
 
 
 /**

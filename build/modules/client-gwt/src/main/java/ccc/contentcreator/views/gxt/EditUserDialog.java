@@ -34,13 +34,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.GroupDto;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateUserAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.widgets.GroupListField;
 import ccc.contentcreator.widgets.UserTable;
-import ccc.rest.dto.GroupDto;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

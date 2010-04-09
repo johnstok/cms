@@ -28,6 +28,9 @@ package ccc.contentcreator.widgets;
 
 import java.util.Collection;
 
+import ccc.api.dto.GroupDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.actions.ChooseTemplateAction;
 import ccc.contentcreator.actions.OpenAboutAction;
 import ccc.contentcreator.actions.OpenCreateUserAction;
@@ -53,9 +56,6 @@ import ccc.contentcreator.remoting.UnlockAction;
 import ccc.contentcreator.remoting.UnpublishAction;
 import ccc.contentcreator.remoting.ViewHistoryAction;
 import ccc.contentcreator.views.gxt.GroupViewImpl;
-import ccc.rest.dto.GroupDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
 import ccc.types.Permission;
 
 import com.extjs.gxt.ui.client.event.Events;

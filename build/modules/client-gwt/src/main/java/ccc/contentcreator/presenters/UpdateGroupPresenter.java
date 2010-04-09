@@ -28,11 +28,11 @@ package ccc.contentcreator.presenters;
 
 import java.util.UUID;
 
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.events.GroupUpdated;
 import ccc.contentcreator.events.GroupUpdated.GroupUpdatedHandler;
 import ccc.contentcreator.remoting.UpdateGroupAction;
 import ccc.contentcreator.widgets.ContentCreator;
-import ccc.rest.dto.GroupDto;
 
 
 /**

@@ -28,13 +28,13 @@ package ccc.contentcreator.remoting;
 
 import java.util.Collection;
 
+import ccc.api.dto.AclDto;
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.views.gxt.UpdateResourceRolesDialog;
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.GroupDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

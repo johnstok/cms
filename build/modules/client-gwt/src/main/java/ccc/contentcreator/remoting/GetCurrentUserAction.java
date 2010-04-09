@@ -26,9 +26,9 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
-import ccc.rest.dto.UserDto;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;

@@ -31,23 +31,23 @@ import javax.ejb.EJBException;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 
+import ccc.api.ActionScheduler;
+import ccc.api.Actions;
+import ccc.api.Aliases;
+import ccc.api.Comments;
+import ccc.api.Files;
+import ccc.api.Folders;
+import ccc.api.Groups;
+import ccc.api.Pages;
+import ccc.api.Resources;
+import ccc.api.SearchEngine;
+import ccc.api.Security;
+import ccc.api.ServiceLocator;
+import ccc.api.Templates;
+import ccc.api.Users;
 import ccc.api.client1.RegistryServiceLocator;
+import ccc.api.exceptions.RestException;
 import ccc.commons.JNDI;
-import ccc.rest.ActionScheduler;
-import ccc.rest.Actions;
-import ccc.rest.Aliases;
-import ccc.rest.Comments;
-import ccc.rest.Files;
-import ccc.rest.Folders;
-import ccc.rest.Groups;
-import ccc.rest.Pages;
-import ccc.rest.Resources;
-import ccc.rest.SearchEngine;
-import ccc.rest.Security;
-import ccc.rest.ServiceLocator;
-import ccc.rest.Templates;
-import ccc.rest.Users;
-import ccc.rest.exceptions.RestException;
 
 
 /**

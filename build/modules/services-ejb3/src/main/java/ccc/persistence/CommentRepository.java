@@ -29,9 +29,9 @@ package ccc.persistence;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Comment;
 import ccc.domain.Resource;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 

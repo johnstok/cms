@@ -30,13 +30,13 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.UUID;
 
+import ccc.api.dto.AliasDelta;
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.binding.ResourceSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateAliasAction;
 import ccc.contentcreator.validation.Validate;
 import ccc.contentcreator.validation.Validations;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.ResourceSummary;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;

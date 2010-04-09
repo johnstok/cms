@@ -33,9 +33,9 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Action;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 import ccc.types.SortOrder;
 

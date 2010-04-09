@@ -37,10 +37,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateDto;
 
 
 /**

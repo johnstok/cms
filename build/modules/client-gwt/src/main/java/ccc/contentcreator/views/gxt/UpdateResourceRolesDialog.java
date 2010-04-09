@@ -31,14 +31,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.dto.AclDto;
+import ccc.api.dto.GroupDto;
+import ccc.api.dto.UserDto;
+import ccc.api.dto.AclDto.Entry;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetUserAction;
 import ccc.contentcreator.remoting.UpdateResourceRolesAction;
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.GroupDto;
-import ccc.rest.dto.UserDto;
-import ccc.rest.dto.AclDto.Entry;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;

@@ -37,8 +37,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import ccc.api.dto.CommentDto;
 import ccc.plugins.s11n.Json;
-import ccc.rest.dto.CommentDto;
 
 
 /**

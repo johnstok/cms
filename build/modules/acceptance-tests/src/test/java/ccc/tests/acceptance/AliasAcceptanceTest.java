@@ -28,10 +28,10 @@ package ccc.tests.acceptance;
 
 import java.util.UUID;
 
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.dto.AliasDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.exceptions.RestException;
+import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.RestException;
 import ccc.types.ResourceName;
 
 

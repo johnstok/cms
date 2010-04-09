@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ccc.api.dto.UserCriteria;
+import ccc.api.dto.UserDto;
 import ccc.domain.User;
-import ccc.rest.dto.UserCriteria;
-import ccc.rest.dto.UserDto;
 import ccc.types.EmailAddress;
 import ccc.types.Username;
 

@@ -27,12 +27,12 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
+import ccc.api.dto.AliasDelta;
+import ccc.api.exceptions.CycleDetectedException;
 import ccc.commons.Exceptions;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.dto.AliasDelta;
-import ccc.rest.exceptions.CycleDetectedException;
 import ccc.types.ResourceName;
 import ccc.types.ResourceType;
 

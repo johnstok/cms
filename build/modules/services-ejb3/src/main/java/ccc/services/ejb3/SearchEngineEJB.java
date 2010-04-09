@@ -46,6 +46,9 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.SearchEngine;
+import ccc.api.SearchResult;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Page;
 import ccc.domain.Resource;
@@ -59,9 +62,6 @@ import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
 import ccc.plugins.search.TextExtractor;
-import ccc.rest.SearchEngine;
-import ccc.rest.SearchResult;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.Paragraph;
 import ccc.types.ParagraphType;
 import ccc.types.PredefinedResourceNames;

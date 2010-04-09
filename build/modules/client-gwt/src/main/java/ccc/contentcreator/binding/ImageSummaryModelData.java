@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.rest.dto.FileDto;
+import ccc.api.dto.FileDto;
 import ccc.types.FilePropertyNames;
 
 import com.extjs.gxt.ui.client.data.ModelData;

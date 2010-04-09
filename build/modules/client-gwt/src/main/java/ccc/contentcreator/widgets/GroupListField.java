@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
-import ccc.rest.dto.GroupDto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.store.ListStore;

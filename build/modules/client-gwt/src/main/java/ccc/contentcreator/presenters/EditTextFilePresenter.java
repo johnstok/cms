@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.presenters;
 
+import ccc.api.dto.TextFileDelta;
 import ccc.contentcreator.core.AbstractPresenter;
 import ccc.contentcreator.core.Editable;
 import ccc.contentcreator.core.Globals;
@@ -33,7 +34,6 @@ import ccc.contentcreator.events.TextFileUpdated;
 import ccc.contentcreator.events.TextFileUpdated.UpdatedHandler;
 import ccc.contentcreator.remoting.EditTextFileAction;
 import ccc.contentcreator.views.EditTextFile;
-import ccc.rest.dto.TextFileDelta;
 import ccc.types.MimeType;
 
 

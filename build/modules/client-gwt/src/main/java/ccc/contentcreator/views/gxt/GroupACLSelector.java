@@ -28,8 +28,8 @@ package ccc.contentcreator.views.gxt;
 
 import java.util.Collection;
 
+import ccc.api.dto.GroupDto;
 import ccc.contentcreator.i18n.UIConstants;
-import ccc.rest.dto.GroupDto;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;

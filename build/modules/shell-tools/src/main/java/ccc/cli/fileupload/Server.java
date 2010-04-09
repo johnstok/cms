@@ -29,7 +29,7 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.util.UUID;
 
-import ccc.rest.exceptions.RestException;
+import ccc.api.exceptions.RestException;
 
 
 

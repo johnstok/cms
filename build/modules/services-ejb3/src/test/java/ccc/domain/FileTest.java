@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.rest.dto.FileDelta;
+import ccc.api.dto.FileDelta;
 import ccc.types.FilePropertyNames;
 import ccc.types.MimeType;
 import ccc.types.ResourceName;

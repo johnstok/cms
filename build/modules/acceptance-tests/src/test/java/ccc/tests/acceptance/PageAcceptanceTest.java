@@ -32,15 +32,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
+import ccc.api.exceptions.RestException;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.PageDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
-import ccc.rest.dto.TemplateDto;
-import ccc.rest.exceptions.RestException;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 

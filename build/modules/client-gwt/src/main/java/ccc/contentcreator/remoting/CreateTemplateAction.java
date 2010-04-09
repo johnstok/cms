@@ -28,12 +28,12 @@ package ccc.contentcreator.remoting;
 
 import java.util.UUID;
 
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TemplateDelta;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TemplateDelta;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.ResourceSummary;
+import ccc.api.dto.FileDelta;
+import ccc.api.dto.ResourceSummary;
 import ccc.types.FilePropertyNames;
 
 

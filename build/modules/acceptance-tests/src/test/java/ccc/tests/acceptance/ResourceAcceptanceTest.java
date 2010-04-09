@@ -35,16 +35,16 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
+import ccc.api.dto.AclDto;
+import ccc.api.dto.FolderDto;
+import ccc.api.dto.ResourceDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.UserDto;
+import ccc.api.dto.AclDto.Entry;
+import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.exceptions.RestException;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.FolderDto;
-import ccc.rest.dto.ResourceDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.UserDto;
-import ccc.rest.dto.AclDto.Entry;
-import ccc.rest.exceptions.EntityNotFoundException;
-import ccc.rest.exceptions.RestException;
 import ccc.types.Duration;
 import ccc.types.ResourceName;
 

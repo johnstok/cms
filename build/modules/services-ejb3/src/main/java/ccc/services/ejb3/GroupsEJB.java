@@ -38,11 +38,11 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.Groups;
+import ccc.api.dto.GroupDto;
 import ccc.domain.Group;
 import ccc.domain.LogEntry;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.Groups;
-import ccc.rest.dto.GroupDto;
 import ccc.types.Permission;
 
 

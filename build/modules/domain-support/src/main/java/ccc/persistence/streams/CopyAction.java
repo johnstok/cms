@@ -33,8 +33,8 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.StreamAction;
 import ccc.commons.IO;
-import ccc.rest.StreamAction;
 
 /**
  * An action to copy from an input stream to an output stream.

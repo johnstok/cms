@@ -35,9 +35,9 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.rest.Comments;
-import ccc.rest.dto.CommentDto;
-import ccc.rest.dto.DtoCollection;
+import ccc.api.Comments;
+import ccc.api.dto.CommentDto;
+import ccc.api.dto.DtoCollection;
 import ccc.types.CommentStatus;
 import ccc.types.SortOrder;
 

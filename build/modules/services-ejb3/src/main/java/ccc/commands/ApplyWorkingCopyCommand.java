@@ -29,12 +29,12 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.domain.Resource;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.User;
 import ccc.domain.WCAware;
 import ccc.persistence.IRepositoryFactory;
-import ccc.rest.exceptions.WorkingCopyNotSupportedException;
 import ccc.types.CommandType;
 
 

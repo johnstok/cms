@@ -30,8 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Action;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.SortOrder;
 
 

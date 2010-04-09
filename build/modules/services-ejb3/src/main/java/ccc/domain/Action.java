@@ -33,9 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccc.api.dto.ActionSummary;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.ActionSummary;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.Failure;

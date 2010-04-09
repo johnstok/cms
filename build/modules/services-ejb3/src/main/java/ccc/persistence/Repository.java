@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Entity;
-import ccc.rest.exceptions.EntityNotFoundException;
 
 
 /**

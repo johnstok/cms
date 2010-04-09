@@ -26,10 +26,10 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.CommentDto;
 import ccc.contentcreator.binding.CommentModelData;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.core.Request;
-import ccc.rest.dto.CommentDto;
 import ccc.types.DBC;
 
 

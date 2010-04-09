@@ -31,12 +31,12 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.Folders;
+import ccc.api.Resources;
 import ccc.api.client1.IFileUploader;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.RestException;
 import ccc.cli.FileUpload;
-import ccc.rest.Folders;
-import ccc.rest.Resources;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.exceptions.RestException;
 import ccc.types.FailureCode;
 import ccc.types.ResourcePath;
 

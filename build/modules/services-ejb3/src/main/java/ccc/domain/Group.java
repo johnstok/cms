@@ -33,8 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ccc.api.dto.GroupDto;
 import ccc.plugins.s11n.Json;
-import ccc.rest.dto.GroupDto;
 import ccc.types.DBC;
 
 

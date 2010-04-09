@@ -29,6 +29,11 @@ package ccc.commands;
 import java.io.InputStream;
 import java.util.UUID;
 
+import ccc.api.dto.AliasDto;
+import ccc.api.dto.FileDelta;
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.TemplateDto;
+import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.File;
 import ccc.domain.Folder;
 import ccc.domain.Page;
@@ -38,11 +43,6 @@ import ccc.domain.Search;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
-import ccc.rest.dto.AliasDto;
-import ccc.rest.dto.FileDelta;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.TemplateDto;
-import ccc.rest.exceptions.EntityNotFoundException;
 import ccc.types.DBC;
 import ccc.types.ResourceName;
 

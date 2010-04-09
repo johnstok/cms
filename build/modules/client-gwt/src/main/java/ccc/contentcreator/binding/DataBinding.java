@@ -32,16 +32,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import ccc.api.dto.ActionSummary;
+import ccc.api.dto.CommentDto;
+import ccc.api.dto.FileDto;
+import ccc.api.dto.GroupDto;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.RevisionDto;
+import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.CommentDto;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.GroupDto;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.RevisionDto;
-import ccc.rest.dto.TemplateSummary;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;

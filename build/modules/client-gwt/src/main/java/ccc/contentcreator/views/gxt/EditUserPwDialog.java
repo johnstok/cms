@@ -28,11 +28,11 @@ package ccc.contentcreator.views.gxt;
 
 
 import static ccc.contentcreator.validation.Validations.*;
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.binding.UserSummaryModelData;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.UpdateUserPasswordAction;
 import ccc.contentcreator.validation.Validate;
-import ccc.rest.dto.UserDto;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

@@ -26,13 +26,13 @@
  */
 package ccc.contentcreator.remoting;
 
+import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TextFileDto;
 import ccc.contentcreator.core.GwtJson;
 import ccc.contentcreator.core.RemotingAction;
 import ccc.contentcreator.events.ResourceCreated;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.dto.TextFileDto;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;

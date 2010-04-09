@@ -29,11 +29,11 @@ package ccc.tests.acceptance;
 import java.util.Date;
 import java.util.HashMap;
 
-import ccc.rest.dto.ActionDto;
-import ccc.rest.dto.ActionSummary;
-import ccc.rest.dto.DtoCollection;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.exceptions.RestException;
+import ccc.api.dto.ActionDto;
+import ccc.api.dto.ActionSummary;
+import ccc.api.dto.DtoCollection;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.RestException;
 import ccc.types.ActionStatus;
 import ccc.types.CommandType;
 import ccc.types.SortOrder;

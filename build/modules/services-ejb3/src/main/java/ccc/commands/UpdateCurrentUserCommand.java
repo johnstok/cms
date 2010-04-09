@@ -29,13 +29,13 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.dto.UserDto;
+import ccc.api.exceptions.InvalidException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.domain.LogEntry;
 import ccc.domain.User;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
-import ccc.rest.dto.UserDto;
-import ccc.rest.exceptions.InvalidException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.CommandType;
 import ccc.types.EmailAddress;
 import ccc.types.Password;

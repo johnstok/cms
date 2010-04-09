@@ -30,10 +30,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
-import ccc.rest.exceptions.RestException;
+import ccc.api.dto.AclDto;
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.RestException;
 
 
 /**

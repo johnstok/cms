@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.ResourceSummary;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.GwtJson;
@@ -47,8 +49,6 @@ import ccc.contentcreator.events.WorkingCopyApplied;
 import ccc.contentcreator.events.WorkingCopyCleared;
 import ccc.contentcreator.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
 import ccc.types.ResourcePath;
 import ccc.types.ResourceType;
 import ccc.types.Username;

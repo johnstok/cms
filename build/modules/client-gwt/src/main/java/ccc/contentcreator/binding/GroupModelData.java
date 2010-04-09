@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.dto.GroupDto;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.rest.dto.GroupDto;
 
 
 

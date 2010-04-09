@@ -37,6 +37,8 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.exceptions.UnauthorizedException;
 import ccc.commands.Command;
 import ccc.commands.CommandFactory;
 import ccc.commons.Exceptions;
@@ -47,8 +49,6 @@ import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
-import ccc.rest.exceptions.EntityNotFoundException;
-import ccc.rest.exceptions.UnauthorizedException;
 import ccc.types.DBC;
 
 

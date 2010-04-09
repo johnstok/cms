@@ -38,6 +38,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.dto.AclDto;
+import ccc.api.dto.PageDelta;
+import ccc.api.dto.ResourceSummary;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
@@ -47,9 +50,6 @@ import ccc.commands.UpdateResourceRolesCommand;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.User;
-import ccc.rest.dto.AclDto;
-import ccc.rest.dto.PageDelta;
-import ccc.rest.dto.ResourceSummary;
 import ccc.services.Migration;
 import ccc.types.ResourceName;
 

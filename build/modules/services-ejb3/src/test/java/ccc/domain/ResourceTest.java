@@ -16,10 +16,10 @@ import java.util.Map;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import ccc.api.exceptions.InsufficientPrivilegesException;
+import ccc.api.exceptions.LockMismatchException;
+import ccc.api.exceptions.UnlockedException;
 import ccc.commons.Testing;
-import ccc.rest.exceptions.InsufficientPrivilegesException;
-import ccc.rest.exceptions.LockMismatchException;
-import ccc.rest.exceptions.UnlockedException;
 import ccc.types.CommandType;
 import ccc.types.Duration;
 import ccc.types.ResourceName;

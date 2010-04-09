@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.dto.FileDto;
+import ccc.api.dto.PageDelta;
 import ccc.contentcreator.binding.ImageSummaryModelData;
 import ccc.contentcreator.core.Globals;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.remoting.GetAbsolutePathAction;
 import ccc.contentcreator.widgets.PageElement.FieldType;
-import ccc.rest.dto.FileDto;
-import ccc.rest.dto.PageDelta;
 import ccc.types.MimeType;
 import ccc.types.Paragraph;
 import ccc.types.ResourceName;

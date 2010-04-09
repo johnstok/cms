@@ -26,6 +26,7 @@
  */
 package ccc.contentcreator.widgets;
 
+import ccc.api.dto.UserDto;
 import ccc.contentcreator.actions.OpenCreateFileAction;
 import ccc.contentcreator.actions.OpenCreateFolderAction;
 import ccc.contentcreator.actions.OpenCreatePageAction;
@@ -34,7 +35,6 @@ import ccc.contentcreator.actions.OpenCreateTextFileAction;
 import ccc.contentcreator.core.GlobalsImpl;
 import ccc.contentcreator.core.SingleSelectionModel;
 import ccc.contentcreator.i18n.UIConstants;
-import ccc.rest.dto.UserDto;
 import ccc.types.Permission;
 
 
