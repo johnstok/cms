@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.acceptance;
+package ccc.tests.acceptance;
 
 import java.util.ArrayList;
 import java.util.HashSet;

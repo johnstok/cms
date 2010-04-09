@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.acceptance;
+package ccc.tests.acceptance;
 
 import static ccc.types.HttpStatusCode.*;
 

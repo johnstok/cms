@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.acceptance;
+package ccc.tests.acceptance;
 
 import java.util.Collection;
 import java.util.Collections;
