@@ -40,6 +40,7 @@ import ccc.api.jaxrs.FilesImpl;
 import ccc.api.jaxrs.FoldersImpl;
 import ccc.api.jaxrs.GroupsImpl;
 import ccc.api.jaxrs.PagesImpl;
+import ccc.api.jaxrs.RegistryServiceLocator;
 import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.TemplatesImpl;
@@ -74,7 +75,6 @@ import ccc.api.jaxrs.providers.TextFileDtoReader;
 import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UserSummaryReader;
 import ccc.api.jaxrs.providers.UuidCollectionWriter;
-import ccc.client.http.RegistryServiceLocator;
 import ccc.commons.JNDI;
 
 
