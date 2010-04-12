@@ -9,9 +9,9 @@
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
     </properties>
-    <artifactId>client-http</artifactId>
+    <artifactId>impl-http</artifactId>
     <packaging>jar</packaging>
-    <name>client-http</name>
+    <name>impl-http</name>
     
     <build>
         <plugins />
