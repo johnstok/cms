@@ -46,6 +46,8 @@
         
         <!-- CCC properties should be 'ccc.{prop-name}' -->
         <ccc-version>${project.version}</ccc-version>
+        
+        <parent_basedir>${basedir}</parent_basedir>
     </properties>
 
     <repositories>
@@ -219,7 +221,7 @@
                     <effort>Max</effort>
                     <threshold>Low</threshold>
                     <excludeFilterFile>
-                        configuration/findbugs-excludes.xml
+                        ${parent_basedir}/configuration/findbugs-excludes.xml
                     </excludeFilterFile>
                 </configuration>
             </plugin>
@@ -228,7 +230,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
                     <configLocation>
-                        configuration/checkstyle.xml
+                        ${parent_basedir}/configuration/checkstyle.xml
                     </configLocation>
                 </configuration>
             </plugin>

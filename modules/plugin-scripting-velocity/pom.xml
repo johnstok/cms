@@ -6,7 +6,9 @@
         <groupId>com.civicuk.cc</groupId>
         <version>7.2.0-SNAPSHOT</version>
     </parent>
-    
+    <properties>
+        <parent_basedir>${basedir}/../..</parent_basedir>
+    </properties>
     <artifactId>plugins-scripting-velocity</artifactId>
     <name>plugins-scripting-velocity</name>
     

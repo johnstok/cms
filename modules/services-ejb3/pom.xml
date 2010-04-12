@@ -6,7 +6,11 @@
         <groupId>com.civicuk.cc</groupId>
         <version>7.2.0-SNAPSHOT</version>
     </parent>
-
+    
+    <properties>
+        <parent_basedir>${basedir}/../..</parent_basedir>
+    </properties>
+    
     <artifactId>impl-ejb3</artifactId>
     <name>impl-ejb3</name>
     <packaging>ejb</packaging>
