@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.http;
+package ccc.api.http;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.log4j.Logger;

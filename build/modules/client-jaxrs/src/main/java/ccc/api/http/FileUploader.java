@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.http;
+package ccc.api.http;
 
 import java.io.File;
 import java.io.IOException;

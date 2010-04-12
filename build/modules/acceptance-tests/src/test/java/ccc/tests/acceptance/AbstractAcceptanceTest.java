@@ -69,12 +69,12 @@ import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
+import ccc.api.http.ProxyServiceLocator;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
-import ccc.client.http.ProxyServiceLocator;
 import ccc.plugins.s11n.json.JsonImpl;
 
 

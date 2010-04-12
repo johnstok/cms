@@ -38,8 +38,8 @@ import ccc.api.Resources;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.http.ProxyServiceLocator;
 import ccc.api.types.ResourceName;
-import ccc.client.http.ProxyServiceLocator;
 
 /**
  * Entry class for the 'create' application.
