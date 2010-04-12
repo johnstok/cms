@@ -27,14 +27,40 @@
 
 package ccc.api.jaxrs;
 
+import java.io.UnsupportedEncodingException;
+
+import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.ClientResponseFailure;
+
+import ccc.api.exceptions.RestException;
+import ccc.api.jaxrs.providers.RestExceptionMapper;
+
 
 
 /**
- * Helper class for implementing JAX-RS collections.
+ * Abstract base class for JAX-RS implementations of API services.
  *
  * @author Civic Computing Ltd.
  */
-// FIXME: Remove.
 public abstract class JaxrsCollection {
-    /* No Methods. */
+
+    /**
+     * Convert a RestEasy exception to a CC API exception.
+     *
+     * @param <T> The type of exception that should be returned.
+     * @param ex The RestEasy exception.
+     *
+     * @return The converted exception.
+     */
+    public <T extends RestException> T convertException(
+                                             final ClientResponseFailure ex) {
+        try {
+            final ClientResponse<byte[]> r = ex.getResponse();
+            final String body = new String(r.getEntity(), "UTF-8");
+            return
+                new RestExceptionMapper().<T>fromResponse(r.getStatus(), body);
+        } catch (final UnsupportedEncodingException e) {
+            throw new InternalError("Unsupported encoding.");
+        }
+    }
 }

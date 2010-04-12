@@ -46,7 +46,6 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Actions;
 import ccc.api.Aliases;
@@ -75,7 +74,6 @@ import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
-import ccc.client.http.FoldersDecorator;
 import ccc.client.http.ProxyServiceLocator;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -471,14 +469,6 @@ public abstract class AbstractAcceptanceTest
     protected Username dummyUsername() {
         return new Username(UUID.randomUUID().toString().substring(0, 8));
     }
-
-
-    @Deprecated // Should be converted in HTTP client.
-    protected <T extends RestException> T convertException(
-                                             final ClientResponseFailure ex) {
-        return FoldersDecorator.<T>convertException(ex);
-    }
-
 
 
     /** {@inheritDoc} */

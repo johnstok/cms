@@ -33,6 +33,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Pages;
 import ccc.api.dto.PageDelta;
@@ -73,34 +74,54 @@ public class PagesImpl
     /** {@inheritDoc} */
     @Override
     public PageDelta pageDelta(final UUID pageId) {
-        return _pages.pageDelta(pageId);
+        try {
+            return _pages.pageDelta(pageId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final PageDto page) {
-        return _pages.createPage(page);
+        try {
+            return _pages.createPage(page);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String validateFields(final Json json) {
-        return _pages.validateFields(json);
+        try {
+            return _pages.validateFields(json);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final UUID pageId, final PageDelta delta) {
-        _pages.updateWorkingCopy(pageId, delta);
+        try {
+            _pages.updateWorkingCopy(pageId, delta);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updatePage(final UUID pageId, final Json json) {
-        _pages.updatePage(pageId, json);
+        try {
+            _pages.updatePage(pageId, json);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

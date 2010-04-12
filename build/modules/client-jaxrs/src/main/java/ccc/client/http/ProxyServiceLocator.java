@@ -46,6 +46,17 @@ import ccc.api.Security;
 import ccc.api.ServiceLocator;
 import ccc.api.Templates;
 import ccc.api.Users;
+import ccc.api.jaxrs.ActionsImpl;
+import ccc.api.jaxrs.AliasesImpl;
+import ccc.api.jaxrs.CommentsImpl;
+import ccc.api.jaxrs.FilesImpl;
+import ccc.api.jaxrs.FoldersImpl;
+import ccc.api.jaxrs.GroupsImpl;
+import ccc.api.jaxrs.PagesImpl;
+import ccc.api.jaxrs.SearchImpl;
+import ccc.api.jaxrs.SecurityImpl2;
+import ccc.api.jaxrs.TemplatesImpl;
+import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.AclReader;
 import ccc.api.jaxrs.providers.ActionSummaryCollectionReader;
 import ccc.api.jaxrs.providers.ActionSummaryReader;
@@ -129,8 +140,7 @@ public class ProxyServiceLocator implements ServiceLocator {
 
     private final Resources _commands;
     private final Users _users;
-    private final Actions _actions;
-    private final ActionScheduler _actionScheduler;
+    private final ActionsImpl _actions;
     private final Folders _folders;
     private final Pages _pages;
     private final Security _security;
@@ -165,31 +175,51 @@ public class ProxyServiceLocator implements ServiceLocator {
                     Resources.class, _secure+"/resources", http),
                     _secure,
                     http);
-        _users     =
-            ProxyFactory.create(Users.class, _secure+"/users", http);
-        _actions   =
-            ProxyFactory.create(Actions.class, _secure+"/actions", http);
-        _folders   =
-            ProxyFactory.create(Folders.class, _secure+"/folders", http);
-        _pages     =
-            ProxyFactory.create(Pages.class, _secure+"/pages", http);
-        _security  =
-            ProxyFactory.create(Security.class, _public, http);
+        _users =
+            new UsersImpl(
+                ProxyFactory.create(
+                    Users.class, _secure+"/users", http));
+        _actions  =
+            new ActionsImpl(
+                ProxyFactory.create(
+                    Actions.class, _secure+"/actions", http),
+                ProxyFactory.create(
+                    ActionScheduler.class, _secure+"/actions", http));
+        _folders =
+            new FoldersImpl(
+                ProxyFactory.create(
+                    Folders.class, _secure+"/folders", http));
+        _pages =
+            new PagesImpl(
+                ProxyFactory.create(
+                    Pages.class, _secure+"/pages", http));
+        _security =
+            new SecurityImpl2(
+                ProxyFactory.create(
+                    Security.class, _public, http));
         _templates =
-            ProxyFactory.create(Templates.class, _secure+"/templates", http);
-        _comments  =
-            ProxyFactory.create(Comments.class, _secure+"/comments", http);
-        _files     =
-            ProxyFactory.create(Files.class, _secure+"/files", http);
-        _groups    =
-            ProxyFactory.create(Groups.class, _secure+"/groups", http);
+            new TemplatesImpl(
+                ProxyFactory.create(
+                    Templates.class, _secure+"/templates", http));
+        _comments =
+            new CommentsImpl(
+                ProxyFactory.create(Comments.class, _secure+"/comments", http));
+        _files =
+            new FilesImpl(
+                ProxyFactory.create(
+                    Files.class, _secure+"/files", http));
+        _groups =
+            new GroupsImpl(
+                ProxyFactory.create(
+                    Groups.class, _secure+"/groups", http));
         _aliases =
-            ProxyFactory.create(Aliases.class, _secure+"/aliases", http);
-        _search    =
-            ProxyFactory.create(SearchEngine.class, _secure+"/search", http);
-        _actionScheduler =
-            ProxyFactory.create(
-                ActionScheduler.class, _secure+"/actions", http);
+            new AliasesImpl(
+                ProxyFactory.create(
+                    Aliases.class, _secure+"/aliases", http));
+        _search =
+            new SearchImpl(
+                ProxyFactory.create(
+                    SearchEngine.class, _secure+"/search", http));
     }
 
 
@@ -203,7 +233,7 @@ public class ProxyServiceLocator implements ServiceLocator {
 
     /** {@inheritDoc} */
     @Override
-    public ActionScheduler lookupActionScheduler() { return _actionScheduler; }
+    public ActionScheduler lookupActionScheduler() { return _actions; }
 
     /** {@inheritDoc} */
     @Override
@@ -250,6 +280,7 @@ public class ProxyServiceLocator implements ServiceLocator {
     @Override
     public Security getSecurity() { return _security; }
 
+    @Deprecated
     public IFileUploader getFileUploader() {
         return new FileUploader(_httpClient, _upload);
     }
