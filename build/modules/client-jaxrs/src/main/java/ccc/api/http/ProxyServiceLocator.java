@@ -154,78 +154,72 @@ public class ProxyServiceLocator implements ServiceLocator {
     private final String     _secure;
     private final String     _public;
     private final String     _hostUrl;
-    private final String     _upload;
     private final HttpClient _httpClient;
 
 
-    public ProxyServiceLocator(final HttpClient http, final String hostUrl) {
-        _httpClient = http;
+    public ProxyServiceLocator(final String hostUrl) {
+        _httpClient = new HttpClient();
         _hostUrl = hostUrl;
         _secure = _hostUrl+"/ccc/api/secure";
         _public = _hostUrl+"/ccc/api/public";
-        _upload = _hostUrl+"/ccc/upload";
 
         LOG.debug("Secure URL: "+_secure);
         LOG.debug("Public URL: "+_public);
-        LOG.debug("Upload URL: "+_upload);
 
         _commands  =
             new ResourcesDecorator(
                 ProxyFactory.create(
-                    Resources.class, _secure+"/resources", http),
+                    Resources.class, _secure+"/resources", _httpClient),
                     _secure,
-                    http);
+                    _httpClient);
         _users =
             new UsersImpl(
                 ProxyFactory.create(
-                    Users.class, _secure+"/users", http));
+                    Users.class, _secure+"/users", _httpClient));
         _actions  =
             new ActionsImpl(
                 ProxyFactory.create(
-                    Actions.class, _secure+"/actions", http),
+                    Actions.class, _secure+"/actions", _httpClient),
                 ProxyFactory.create(
-                    ActionScheduler.class, _secure+"/actions", http));
+                    ActionScheduler.class, _secure+"/actions", _httpClient));
         _folders =
             new FoldersImpl(
                 ProxyFactory.create(
-                    Folders.class, _secure+"/folders", http));
+                    Folders.class, _secure+"/folders", _httpClient));
         _pages =
             new PagesImpl(
                 ProxyFactory.create(
-                    Pages.class, _secure+"/pages", http));
+                    Pages.class, _secure+"/pages", _httpClient));
         _security =
             new SecurityImpl2(
                 ProxyFactory.create(
-                    Security.class, _public, http));
+                    Security.class, _public, _httpClient));
         _templates =
             new TemplatesImpl(
                 ProxyFactory.create(
-                    Templates.class, _secure+"/templates", http));
+                    Templates.class, _secure+"/templates", _httpClient));
         _comments =
             new CommentsImpl(
-                ProxyFactory.create(Comments.class, _secure+"/comments", http));
+                ProxyFactory.create(
+                    Comments.class, _secure+"/comments", _httpClient));
         _files =
             new FilesImpl(
                 ProxyFactory.create(
-                    Files.class, _secure+"/files", http));
+                    Files.class, _secure+"/files", _httpClient));
         _groups =
             new GroupsImpl(
                 ProxyFactory.create(
-                    Groups.class, _secure+"/groups", http));
+                    Groups.class, _secure+"/groups", _httpClient));
         _aliases =
             new AliasesImpl(
                 ProxyFactory.create(
-                    Aliases.class, _secure+"/aliases", http));
+                    Aliases.class, _secure+"/aliases", _httpClient));
         _search =
             new SearchImpl(
                 ProxyFactory.create(
-                    SearchEngine.class, _secure+"/search", http));
+                    SearchEngine.class, _secure+"/search", _httpClient));
     }
 
-
-    public ProxyServiceLocator(final String hostUrl) {
-        this(new HttpClient(), hostUrl);
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -280,8 +274,22 @@ public class ProxyServiceLocator implements ServiceLocator {
     @Override
     public Security getSecurity() { return _security; }
 
+    /**
+     * Accessor.
+     *
+     * @return A browser for the site.
+     */
+    public SiteBrowser getBrowser() {
+        return new SiteBrowserImpl(_httpClient, _hostUrl);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return A file uploader for the site.
+     */
     @Deprecated
     public IFileUploader getFileUploader() {
-        return new FileUploader(_httpClient, _upload);
+        return new FileUploader(_httpClient, _hostUrl);
     }
 }

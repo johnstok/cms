@@ -60,7 +60,7 @@ public class ContentServletAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script = createFile(
+        final ResourceSummary script = getFileUploader().createFile(
             fName,
             "print('foo\\n'); response.flushBuffer(); throw 'foo';",
             filesFolder);
@@ -69,7 +69,7 @@ public class ContentServletAcceptanceTest
         getCommands().publish(script.getId());
 
         // ACT
-        final String content = previewContent(script, false);
+        final String content = getBrowser().previewContent(script, false);
 
         // ASSERT
         assertTrue(content.startsWith("foo\nAn error occurred: "));
@@ -93,7 +93,7 @@ public class ContentServletAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script = createFile(
+        final ResourceSummary script = getFileUploader().createFile(
             fName,
             "throw 'foo';",
             filesFolder);
@@ -103,7 +103,7 @@ public class ContentServletAcceptanceTest
 
         // ACT
         try {
-            previewContent(script, false);
+            getBrowser().previewContent(script, false);
             fail();
 
         // ASSERT
