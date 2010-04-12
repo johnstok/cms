@@ -60,7 +60,8 @@ public class FileUploadAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content =
             getCommands().resourceForPath("");
-        final ResourceSummary file = createFile(fName, "Hello!", content);
+        final ResourceSummary file =
+            getFileUploader().createFile(fName, "Hello!", content);
 
         getCommands().lock(file.getId());
         getCommands().createWorkingCopy(
@@ -71,7 +72,7 @@ public class FileUploadAcceptanceTest
 
         // ASSERT
         final ResourceSummary fWC = getCommands().resource(file.getId());
-        assertEquals("Hello!", previewContent(file, false));
+        assertEquals("Hello!", getBrowser().previewContent(file, false));
         assertFalse(fWC.isHasWorkingCopy());
     }
 
@@ -85,32 +86,33 @@ public class FileUploadAcceptanceTest
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = getCommands().resourceForPath("");
-        final ResourceSummary file = createFile(fName, "Hello!", content);
+        final ResourceSummary file =
+            getFileUploader().createFile(fName, "Hello!", content);
 
         // History for first revision
         Collection<RevisionDto> revs = getCommands().history(file.getId());
         assertEquals(1, revs.size());
         final RevisionDto rev1 = revs.iterator().next();
         assertEquals(0, rev1.getIndex());
-        assertEquals("Hello!", previewContent(file, false));
+        assertEquals("Hello!", getBrowser().previewContent(file, false));
 
         // Add a second revision
         getCommands().lock(file.getId());
-        updateTextFile("Update!", file);
+        getFileUploader().updateTextFile("Update!", file);
         revs = getCommands().history(file.getId());
         assertEquals(2, revs.size());
         Iterator<RevisionDto> i = revs.iterator();
         i.next();
         final RevisionDto rev2 = i.next();
         assertEquals(1, rev2.getIndex());
-        assertEquals("Update!", previewContent(file, false));
+        assertEquals("Update!", getBrowser().previewContent(file, false));
 
         // Create working copy from rev 0.
         getCommands().createWorkingCopy(
             file.getId(), new ResourceDto(Long.valueOf(0)));
         ResourceSummary fWC = getCommands().resource(file.getId());
-        assertEquals("Update!", previewContent(file, false));
-        assertEquals("Hello!", previewContent(file, true));
+        assertEquals("Update!", getBrowser().previewContent(file, false));
+        assertEquals("Hello!", getBrowser().previewContent(file, true));
         assertTrue(fWC.isHasWorkingCopy());
 
         // Apply working copy
@@ -122,7 +124,7 @@ public class FileUploadAcceptanceTest
         i.next();
         final RevisionDto rev3 = i.next();
         assertEquals(2, rev3.getIndex());
-        assertEquals("Hello!", previewContent(file, false));
+        assertEquals("Hello!", getBrowser().previewContent(file, false));
         fWC = getCommands().resource(file.getId());
         assertFalse(fWC.isHasWorkingCopy());
     }
@@ -142,12 +144,12 @@ public class FileUploadAcceptanceTest
 
         // ACT
         final ResourceSummary rs =
-            createFile(fName, "Hello!", filesFolder);
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
 
         // ASSERT
         assertEquals(fName, rs.getName());
         assertEquals("/files/"+fName, rs.getAbsolutePath());
-        assertEquals("Hello!", previewContent(rs, false));
+        assertEquals("Hello!", getBrowser().previewContent(rs, false));
     }
 
 
@@ -165,11 +167,11 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            createFile(fName, "Hello!", filesFolder);
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
 
         // ACT
         try {
-            createFile(fName, "Hello!", filesFolder);
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
         } catch (final RestException e) {
             assertEquals(FailureCode.EXISTS, e.getCode());
         }
@@ -178,7 +180,7 @@ public class FileUploadAcceptanceTest
         // ASSERT
         assertEquals(fName, rs.getName());
         assertEquals("/files/"+fName, rs.getAbsolutePath());
-        assertEquals("Hello!", previewContent(rs, false));
+        assertEquals("Hello!", getBrowser().previewContent(rs, false));
     }
 
 
@@ -195,15 +197,15 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            createFile(fName, "Hello!", filesFolder);
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
         getCommands().lock(rs.getId());
 
         // ACT
-        final String body = updateTextFile("Update!", rs);
+        final String body = getFileUploader().updateTextFile("Update!", rs);
 
         // ASSERT
         assertEquals("NULL", body);
-        assertEquals("Update!", previewContent(rs, false));
+        assertEquals("Update!", getBrowser().previewContent(rs, false));
     }
 
 
@@ -220,7 +222,7 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            createFile(fName, "Hello!", filesFolder);
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
         getCommands().lock(rs.getId());
 
         // ACT
@@ -233,7 +235,7 @@ public class FileUploadAcceptanceTest
         ));
 
         // ASSERT
-        assertEquals("Update!", previewContent(rs, false));
+        assertEquals("Update!", getBrowser().previewContent(rs, false));
     }
 
 
@@ -251,16 +253,16 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            createFile(fName, "Hello!", filesFolder);
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
 
         // ACT
         try {
-            updateTextFile("Update!", rs);
+            getFileUploader().updateTextFile("Update!", rs);
 
         // ASSERT
         } catch (final RestException e) {
             assertEquals(FailureCode.UNLOCKED, e.getCode());
         }
-        assertEquals("Hello!", previewContent(rs, false));
+        assertEquals("Hello!", getBrowser().previewContent(rs, false));
     }
 }

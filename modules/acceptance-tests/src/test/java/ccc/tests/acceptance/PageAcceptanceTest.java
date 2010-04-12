@@ -226,8 +226,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         getPages().updateWorkingCopy(page.getId(), modified);
 
         // ASSERT
-        final String original = previewContent(page, false);
-        final String wc = previewContent(page, true);
+        final String original = getBrowser().previewContent(page, false);
+        final String wc = getBrowser().previewContent(page, true);
         assertEquals("original", original);
         assertEquals("working copy", wc);
     }

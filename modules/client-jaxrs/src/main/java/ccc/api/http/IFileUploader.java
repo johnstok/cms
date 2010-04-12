@@ -28,17 +28,21 @@
 package ccc.api.http;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.dto.ResourceSummary;
+
 
 /**
- * TODO: Add a description for this type.
+ * API for uploading files.
  *
  * @author Civic Computing Ltd.
  */
 @Deprecated // FIXME: Use the standard API.
 public interface IFileUploader {
+
 
     /**
      * Upload a file.
@@ -59,6 +63,7 @@ public interface IFileUploader {
                     final File file,
                     final boolean publish);
 
+
     /**
      * Upload a file.
      *
@@ -76,4 +81,34 @@ public interface IFileUploader {
                     final Date lastUpdate,
                     final String directory);
 
+
+    /**
+     * Update an existing file to be a text file with the specified text.
+     *
+     * @param fText The text for the file.
+     * @param rs The summary for the file to update.
+     *
+     * @throws IOException If the operation fails sending the data.
+     *
+     * @return The response from the server, as a string.
+     */
+    String updateTextFile(final String fText,
+                          final ResourceSummary rs) throws IOException;
+
+
+    /**
+     * Create a text file on the server.
+     *
+     * @param fName The file's name.
+     * @param fText The file's contents.
+     * @param filesFolder The parent folder for the file.
+     *
+     * @return The summary of the newly created file.
+     *
+     * @throws IOException If creation fails on the client.
+     */
+    ResourceSummary createFile(final String fName,
+                               final String fText,
+                               final ResourceSummary filesFolder)
+                                                            throws IOException;
 }

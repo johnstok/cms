@@ -29,6 +29,7 @@ package ccc.api.http;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.UUID;
 
@@ -37,17 +38,22 @@ import javax.activation.MimetypesFileTypeMap;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 
+import ccc.api.dto.ResourceSummary;
+import ccc.api.jaxrs.providers.RestExceptionMapper;
+import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
+import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
- * Helper class to upload files to the new system.
+ * Implementation of the file uploader API.
  *
  * @author Civic Computing Ltd.
  */
@@ -55,21 +61,26 @@ class FileUploader
     implements
         IFileUploader {
 
-    /** CONNECTION_TIMEOUT : int. */
     private static final int CONNECTION_TIMEOUT = 5000;
-
     private static final Logger LOG = Logger.getLogger(FileUploader.class);
 
     private final HttpClient _client;
-    private final String _targetUploadURL;
+    private final String _createFileUrl;
+    private final String _updateFileUrl;
     private MimetypesFileTypeMap _mimemap;
+
 
     /**
      * Constructor.
+     *
+     * @param httpClient
+     * @param hostUrl
      */
     public FileUploader(final HttpClient httpClient,
-                        final String targetUploadURL) {
-        _targetUploadURL = targetUploadURL;
+                        final String hostUrl) {
+        DBC.require().notEmpty(hostUrl);
+        _createFileUrl = hostUrl+"/ccc/upload";
+        _updateFileUrl = hostUrl+"/ccc/update_file";
         _client          = httpClient;
 
         final InputStream mimes =
@@ -78,6 +89,7 @@ class FileUploader
             getResourceAsStream("ccc7mime.types");
         _mimemap = new MimetypesFileTypeMap(mimes);
     }
+
 
     /** {@inheritDoc} */
     public void uploadFile(final UUID parentId,
@@ -94,7 +106,7 @@ class FileUploader
             }
 
             final PostMethod filePost =
-                new PostMethod(_targetUploadURL);
+                new PostMethod(_createFileUrl);
             LOG.debug("Migrating file: "+fileName);
             final String name =
                 ResourceName.escape(fileName).toString();
@@ -173,6 +185,79 @@ class FileUploader
                 lastUpdate,
                 file,
                 false);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String updateTextFile(final String fText,
+                                    final ResourceSummary rs)
+                                                         throws IOException {
+
+        final PostMethod postMethod = new PostMethod(_updateFileUrl);
+
+        try {
+            final Part[] parts = {
+                new StringPart("id", rs.getId().toString()),
+                new FilePart(
+                    "file",
+                    new ByteArrayPartSource(
+                        rs.getName(),
+                        fText.getBytes(Charset.forName("UTF-8"))),
+                        "text/plain",
+                        "UTF-8")
+                };
+            postMethod.setRequestEntity(
+                new MultipartRequestEntity(parts, postMethod.getParams()));
+
+            _client.executeMethod(postMethod);
+
+            final int status = postMethod.getStatusCode();
+            final String body = postMethod.getResponseBodyAsString();
+            if (HttpStatus.SC_OK == status) { return body; }
+            throw new RestExceptionMapper().fromResponse(status, body);
+
+        } finally {
+            postMethod.releaseConnection();
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceSummary createFile(final String fName,
+                                         final String fText,
+                                         final ResourceSummary filesFolder)
+                                                            throws IOException {
+
+        final PostMethod postMethod = new PostMethod(_createFileUrl);
+
+        try {
+            final Part[] parts = {
+                new StringPart("path",  filesFolder.getId().toString()),
+                new StringPart("fileName", fName),
+                new FilePart(
+                    "file",
+                    new ByteArrayPartSource(
+                        fName,
+                        fText.getBytes(Charset.forName("UTF-8"))),
+                        "text/plain",
+                        "UTF-8")
+                };
+            postMethod.setRequestEntity(
+                new MultipartRequestEntity(parts, postMethod.getParams()));
+
+            final int status = _client.executeMethod(postMethod);
+            final String body = postMethod.getResponseBodyAsString();
+
+            if (HttpStatus.SC_OK == status) {
+                return new ResourceSummary(new JsonImpl(body));
+            }
+            throw new RestExceptionMapper().fromResponse(status, body);
+
+        } finally {
+            postMethod.releaseConnection();
         }
     }
 }
