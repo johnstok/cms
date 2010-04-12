@@ -6,7 +6,9 @@
         <groupId>com.civicuk.cc</groupId>
         <version>7.2.0-SNAPSHOT</version>
     </parent>
-    
+    <properties>
+        <parent_basedir>${basedir}/../..</parent_basedir>
+    </properties>
     <artifactId>api-types</artifactId>
     <name>api-types</name>
     
