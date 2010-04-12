@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.http;
+package ccc.api.jaxrs;
 
 import ccc.api.ActionScheduler;
 import ccc.api.Actions;

@@ -73,7 +73,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>client-jaxrs</artifactId>
+            <artifactId>impl-jaxrs</artifactId>
             <version>${project.version}</version>
         </dependency>
         

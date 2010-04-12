@@ -37,7 +37,7 @@
                         </webModule>
                         <ejbModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>core-ejb3</artifactId>
+                            <artifactId>impl-ejb3</artifactId>
                             <bundleFileName>services-ejb3.jar</bundleFileName>
                         </ejbModule>
                     </modules>
@@ -70,7 +70,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core-ejb3</artifactId>
+            <artifactId>impl-ejb3</artifactId>
             <type>ejb</type>
             <version>${project.version}</version>
         </dependency>
@@ -88,7 +88,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>client-jaxrs</artifactId>
+            <artifactId>impl-jaxrs</artifactId>
             <version>${project.version}</version>
         </dependency>
         

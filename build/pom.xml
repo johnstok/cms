@@ -103,6 +103,7 @@
         <module>modules/shell-tools</module>
         <module>modules/content-creator</module>
         <module>modules/application-ear</module>
+        <module>modules/impl-jaxrs</module>
         <module>modules/acceptance-tests</module>
         <module>modules/plugin-scripting-rhino</module>
         <module>modules/plugin-scripting-velocity</module>
