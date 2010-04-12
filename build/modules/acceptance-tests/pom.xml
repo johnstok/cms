@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>client-http</artifactId>
+            <artifactId>impl-http</artifactId>
             <version>${project.version}</version>
         </dependency>
         
