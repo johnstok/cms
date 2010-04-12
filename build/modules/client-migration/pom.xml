@@ -16,7 +16,7 @@
         <!-- TODO: Should be public API!! -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>core-ejb3</artifactId>
+			<artifactId>impl-ejb3</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

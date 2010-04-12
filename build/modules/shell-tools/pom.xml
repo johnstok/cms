@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>client-jaxrs</artifactId>
+			<artifactId>client-http</artifactId>
 			<version>${project.version}</version>
 		</dependency>
         
