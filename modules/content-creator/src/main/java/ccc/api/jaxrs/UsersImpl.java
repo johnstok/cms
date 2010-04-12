@@ -29,7 +29,6 @@ package ccc.api.jaxrs;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,6 +38,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.Users;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.UserDto;
+import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 
@@ -58,129 +58,79 @@ public class UsersImpl
     implements
         Users {
 
-    private Users _delegate;
-
-
-    public Users getUsers() {
-        return (null==_delegate) ? defaultUsers() : _delegate;
-    }
-
-
-    public void setUsers(final Users users) {
-        _delegate = users;
-    }
+    private final Users _delegate;
 
 
     /**
-     * Decorate an exiting users object with a new {@link UsersImpl}.
+     * Constructor.
      *
-     * @param users The implementation to decorate.
-     *
-     * @return The decorated implementation.
+     * @param users
      */
-    public static UsersImpl decorate(final Users users) {
-        final UsersImpl ui = new UsersImpl();
-        ui.setUsers(users);
-        return ui;
+    public UsersImpl(final Users users) {
+        _delegate = DBC.require().notNull(users);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto loggedInUser() {
-        try {
-            return getUsers().loggedInUser();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.loggedInUser();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto userDelta(final UUID userId) {
-        try {
-            return getUsers().userDelta(userId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.userDelta(userId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean usernameExists(final Username username) {
-        try {
-            return getUsers().usernameExists(username);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.usernameExists(username);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto createUser(final UserDto user) {
-        try {
-            return getUsers().createUser(user);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.createUser(user);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final UUID userId, final UserDto pu) {
-        try {
-            getUsers().updateUserPassword(userId, pu);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateUserPassword(userId, pu);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateYourUser(final UUID userId, final UserDto user) {
-        try {
-            getUsers().updateYourUser(userId, user);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateYourUser(userId, user);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateUser(final UUID userId, final UserDto delta) {
-        try {
-            getUsers().updateUser(userId, delta);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateUser(userId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto userByLegacyId(final String legacyId) {
-        try {
-            return getUsers().userByLegacyId(legacyId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.userByLegacyId(legacyId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
-        try {
-            return getUsers().listUserMetadataValuesWithKey(key);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+            return _delegate.listUserMetadataValuesWithKey(key);
     }
 
 
@@ -195,19 +145,14 @@ public class UsersImpl
                                             final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
-        try {
-            return getUsers().listUsers(username,
-                email,
-                groups,
-                metadataKey,
-                metadataValue,
-                sort,
-                order,
-                pageNo,
-                pageSize);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.listUsers(username,
+            email,
+            groups,
+            metadataKey,
+            metadataValue,
+            sort,
+            order,
+            pageNo,
+            pageSize);
     }
-
 }

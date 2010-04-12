@@ -29,7 +29,6 @@ package ccc.api.jaxrs;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -41,6 +40,7 @@ import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 
 
@@ -59,41 +59,23 @@ public class FoldersImpl
     implements
         Folders {
 
-    private Folders _delegate;
-
-
-    public Folders getFolders() {
-        return (null==_delegate) ? defaultFolders() : _delegate;
-    }
-
-
-    public void setFolders(final Folders users) {
-        _delegate = users;
-    }
+    private final Folders _delegate;
 
 
     /**
-     * Decorate an exiting folders object with a new {@link FoldersImpl}.
+     * Constructor.
      *
-     * @param folders The implementation to decorate.
-     *
-     * @return The decorated implementation.
+     * @param delegate The folders implementation delegated to.
      */
-    public static FoldersImpl decorate(final Folders folders) {
-        final FoldersImpl fi = new FoldersImpl();
-        fi.setFolders(folders);
-        return fi;
+    public FoldersImpl(final Folders delegate) {
+        _delegate = DBC.require().notNull(delegate);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildren(final UUID folderId) {
-        try {
-            return getFolders().getChildren(folderId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getChildren(folderId);
     }
 
 
@@ -101,11 +83,7 @@ public class FoldersImpl
     @Override
     public Collection<ResourceSummary> getAccessibleChildren(
                                                           final UUID folderId) {
-        try {
-            return getFolders().getAccessibleChildren(folderId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getAccessibleChildren(folderId);
     }
 
 
@@ -113,66 +91,42 @@ public class FoldersImpl
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                         final UUID folderId) {
-        try {
-            return getFolders().getChildrenManualOrder(folderId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getChildrenManualOrder(folderId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
-        try {
-            return getFolders().getFolderChildren(folderId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getFolderChildren(folderId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean nameExistsInFolder(final UUID folderId, final String name) {
-        try {
-            return getFolders().nameExistsInFolder(folderId, name);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.nameExistsInFolder(folderId, name);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        try {
-            return getFolders().roots();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.roots();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final FolderDto folder) {
-        try {
-            return getFolders().createFolder(folder);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.createFolder(folder);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateFolder(final UUID folderId, final FolderDelta delta) {
-        try {
-            getFolders().updateFolder(folderId, delta);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateFolder(folderId, delta);
     }
 
 
@@ -184,15 +138,11 @@ public class FoldersImpl
                                                     final SortOrder sortOrder,
                                                     final int offset,
                                                     final int limit) {
-        try {
-            return getFolders().getChildrenPaged(folderId,
-                                                 sort,
-                                                 sortOrder,
-                                                 offset,
-                                                 limit);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getChildrenPaged(folderId,
+                                             sort,
+                                             sortOrder,
+                                             offset,
+                                             limit);
     }
 
 
@@ -202,21 +152,13 @@ public class FoldersImpl
                                         final String name,
                                         final String title,
                                         final boolean publish) {
-        try {
-            return getFolders().createFolder(parentId, name, title, publish);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.createFolder(parentId, name, title, publish);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createRoot(final String name) {
-        try {
-            return getFolders().createRoot(name);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.createRoot(name);
     }
 }

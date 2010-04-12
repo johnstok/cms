@@ -28,18 +28,19 @@ package ccc.api.jaxrs;
 
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
 
+import ccc.api.ActionScheduler;
 import ccc.api.Actions;
 import ccc.api.Scheduler;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
+import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 
 
@@ -59,6 +60,22 @@ public class ActionsImpl
         Actions,
         Scheduler {
 
+    private final Actions _delegate;
+    private final ActionScheduler _schedulerDelegate;
+
+
+    /**
+     * Constructor.
+     *
+     * @param actions
+     * @param actionScheduler
+     */
+    public ActionsImpl(final Actions actions,
+                       final ActionScheduler actionScheduler) {
+        _delegate = DBC.require().notNull(actions);
+        _schedulerDelegate = DBC.require().notNull(actionScheduler);
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -67,14 +84,10 @@ public class ActionsImpl
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
-        try {
-            return getActions().listCompletedActions(sort,
-                sortOrder,
-                pageNo,
-                pageSize);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.listCompletedActions(sort,
+            sortOrder,
+            pageNo,
+            pageSize);
     }
 
 
@@ -85,90 +98,58 @@ public class ActionsImpl
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
-        try {
-            return getActions().listPendingActions(sort,
-                sortOrder,
-                pageNo,
-                pageSize);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.listPendingActions(sort,
+            sortOrder,
+            pageNo,
+            pageSize);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ActionSummary createAction(final ActionDto action) {
-        try {
-            return getActions().createAction(action);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.createAction(action);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void cancelAction(final UUID actionId) {
-        try {
-            getActions().cancelAction(actionId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.cancelAction(actionId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void executeAll() {
-        try {
-            getActions().executeAll();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.executeAll();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ActionSummary findAction(final UUID actionId) {
-        try {
-            return getActions().findAction(actionId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.findAction(actionId);
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public boolean isRunning() {
-        try {
-            return lookupActionScheduler().isRunning();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _schedulerDelegate.isRunning();
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public void start() {
-        try {
-            lookupActionScheduler().start();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _schedulerDelegate.start();
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public void stop() {
-        try {
-            lookupActionScheduler().stop();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _schedulerDelegate.stop();
     }
 }

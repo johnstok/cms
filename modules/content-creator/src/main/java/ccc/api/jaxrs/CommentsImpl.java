@@ -28,7 +28,6 @@ package ccc.api.jaxrs;
 
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,6 +38,7 @@ import ccc.api.Comments;
 import ccc.api.dto.CommentDto;
 import ccc.api.dto.DtoCollection;
 import ccc.api.types.CommentStatus;
+import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 
 
@@ -57,44 +57,41 @@ public class CommentsImpl
     implements
         Comments {
 
+    private final Comments _delegate;
+
+
+    /**
+     * Constructor.
+     *
+     * @param comments The comments implementation delegated to.
+     */
+    public CommentsImpl(final Comments comments) {
+        _delegate = DBC.require().notNull(comments);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public CommentDto create(final CommentDto comment) {
-        try {
-            return getComments().create(comment);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.create(comment);
     }
 
     /** {@inheritDoc} */
     @Override
     public CommentDto retrieve(final UUID commentId) {
-        try {
-            return getComments().retrieve(commentId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.retrieve(commentId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void update(final UUID commentId, final CommentDto comment) {
-        try {
-            getComments().update(commentId, comment);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.update(commentId, comment);
     }
 
     /** {@inheritDoc} */
     @Override
     public void delete(final UUID commentId) {
-        try {
-            getComments().delete(commentId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.delete(commentId);
     }
 
     /** {@inheritDoc} */
@@ -105,11 +102,7 @@ public class CommentsImpl
                                           final SortOrder sortOrder,
                                           final int pageNo,
                                           final int pageSize) {
-        try {
-            return getComments().list(
-                resourceId, status, sort, sortOrder, pageNo, pageSize);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.list(
+            resourceId, status, sort, sortOrder, pageNo, pageSize);
     }
 }

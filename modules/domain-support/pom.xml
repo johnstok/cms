@@ -10,27 +10,6 @@
     <artifactId>api-plugins</artifactId>
     <name>api-plugins</name>
     
-    <build>
-        <plugins>
-              <plugin>
-                  <groupId>org.codehaus.mojo</groupId>
-                  <artifactId>buildnumber-maven-plugin</artifactId>
-                  <executions>
-                      <execution>
-                          <phase>validate</phase>
-                          <goals>
-                              <goal>create</goal>
-                          </goals>
-                      </execution>
-                  </executions>
-                  <configuration>
-                      <doCheck>false</doCheck>
-                      <doUpdate>false</doUpdate>
-                  </configuration>
-              </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

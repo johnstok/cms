@@ -30,7 +30,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -45,6 +44,7 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.dto.TextFileDto;
+import ccc.api.types.DBC;
 
 
 /**
@@ -62,35 +62,35 @@ public class FilesImpl
     implements
         Files {
 
+    private final Files _files;
+
+
+    /**
+     * Constructor.
+     *
+     * @param files The files implementation delegated to.
+     */
+    public FilesImpl(final Files files) {
+        _files = DBC.require().notNull(files);
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public TextFileDelta get(final UUID fileId) {
-        try {
-            return getFiles().get(fileId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _files.get(fileId);
     }
 
     /** {@inheritDoc} */
     @Override
     public void update(final UUID id, final TextFileDelta file) {
-        try {
-            getFiles().update(id, file);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _files.update(id, file);
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTextFile(final TextFileDto textFile) {
-        try {
-            return getFiles().createTextFile(textFile);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _files.createTextFile(textFile);
     }
 
     /** {@inheritDoc} */
@@ -98,11 +98,7 @@ public class FilesImpl
     public DtoCollection<FileDto> getPagedImages(final UUID folderId,
                                                  final int pageNo,
                                                  final int pageSize) {
-        try {
-            return getFiles().getPagedImages(folderId, pageNo, pageSize);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _files.getPagedImages(folderId, pageNo, pageSize);
     }
 
     /** {@inheritDoc} */
@@ -117,31 +113,23 @@ public class FilesImpl
                                       final boolean publish,
                                       final String comment,
                                       final boolean isMajorEdit) {
-        try {
-            return getFiles().createFile(
-                parentFolder,
-                file,
-                resourceName,
-                dataStream,
-                title,
-                description,
-                lastUpdated,
-                publish,
-                comment,
-                isMajorEdit);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _files.createFile(
+            parentFolder,
+            file,
+            resourceName,
+            dataStream,
+            title,
+            description,
+            lastUpdated,
+            publish,
+            comment,
+            isMajorEdit);
     }
 
     /** {@inheritDoc} */
     @Override
     public void retrieve(final UUID file, final StreamAction action) {
-        try {
-            getFiles().retrieve(file, action);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _files.retrieve(file, action);
     }
 
     /** {@inheritDoc} */
@@ -149,22 +137,14 @@ public class FilesImpl
     public void retrieveRevision(final UUID file,
                                  final int revision,
                                  final StreamAction action) {
-        try {
-            getFiles().retrieveRevision(file, revision, action);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _files.retrieveRevision(file, revision, action);
     }
 
     /** {@inheritDoc} */
     @Override
     public void retrieveWorkingCopy(final UUID file,
                                     final StreamAction action) {
-        try {
-            getFiles().retrieveWorkingCopy(file, action);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _files.retrieveWorkingCopy(file, action);
     }
 
     /** {@inheritDoc} */
@@ -174,12 +154,8 @@ public class FilesImpl
                            final String comment,
                            final boolean isMajorEdit,
                            final InputStream dataStream) {
-        try {
-            getFiles().updateFile(
-                fileId, fileDelta, comment, isMajorEdit, dataStream);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _files.updateFile(
+            fileId, fileDelta, comment, isMajorEdit, dataStream);
     }
 
 }

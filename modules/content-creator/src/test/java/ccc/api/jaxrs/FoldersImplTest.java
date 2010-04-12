@@ -34,7 +34,6 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import ccc.api.Folders;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.jaxrs.FoldersImpl;
 
 
 /**
@@ -69,8 +68,7 @@ public class FoldersImplTest
     @Override
     protected void setUp() {
         _foldersExt = createStrictMock(Folders.class);
-        _unit = new FoldersImpl();
-        _unit.setFolders(_foldersExt);
+        _unit = new FoldersImpl(_foldersExt);
     }
 
     /** {@inheritDoc} */

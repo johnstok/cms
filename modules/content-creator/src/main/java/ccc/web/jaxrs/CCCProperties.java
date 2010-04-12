@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.web.jaxrs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,5 +90,24 @@ public final class CCCProperties {
      */
     public static String timestamp() {
         return PROPS.getProperty("timestamp", "unknown");
+    }
+
+    /**
+     * Get the application name.
+     *
+     * @return The name of the app, as a string.
+     */
+    public static String getAppName() {
+        return PROPS.getProperty("ccc.application-name", "");
+    }
+
+
+    /**
+     * Get the application context.
+     *
+     * @return The context of the app, as a string.
+     */
+    public static String getContextName() {
+        return PROPS.getProperty("ccc.context-name", "");
     }
 }

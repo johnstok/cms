@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -26,66 +26,66 @@
  */
 package ccc.api.jaxrs;
 
-import java.util.UUID;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-
-import org.jboss.resteasy.annotations.cache.NoCache;
-
-import ccc.api.Aliases;
-import ccc.api.dto.AliasDelta;
-import ccc.api.dto.AliasDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.Security;
 import ccc.api.types.DBC;
 
 
 /**
- * Implementation of the {@link Aliases} API.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure/aliases")
-@Consumes("application/json")
-@Produces("application/json")
-@NoCache
-public class AliasesImpl
-    extends
-        JaxrsCollection
-    implements
-        Aliases {
+public class SecurityImpl2 {
 
-    private final Aliases _delegate;
-
+    private final Security _delegate;
 
     /**
      * Constructor.
      *
-     * @param delegate The aliases implementation delegated to.
+     * @param delegate
      */
-    public AliasesImpl(final Aliases delegate) {
+    public SecurityImpl2(final Security delegate) {
         _delegate = DBC.require().notNull(delegate);
     }
 
+    /**
+     * @return
+     * @see ccc.api.Security#isLoggedIn()
+     */
+    public Boolean isLoggedIn() {
 
-    /** {@inheritDoc} */
-    @Override
-    public String aliasTargetName(final UUID aliasId) {
-        return _delegate.aliasTargetName(aliasId);
+        return _delegate.isLoggedIn();
+    }
+
+    /**
+     * @param username
+     * @param password
+     * @return
+     * @see ccc.api.Security#login(java.lang.String, java.lang.String)
+     */
+    public Boolean login(final String username, final String password) {
+
+        return _delegate.login(username, password);
+    }
+
+    /**
+     *
+     * @see ccc.api.Security#logout()
+     */
+    public void logout() {
+
+        _delegate.logout();
+    }
+
+    /**
+     * @return
+     * @see ccc.api.Security#readAllProperties()
+     */
+    public String readAllProperties() {
+
+        return _delegate.readAllProperties();
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void updateAlias(final UUID aliasId, final AliasDelta delta) {
-        _delegate.updateAlias(aliasId, delta);
-    }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary createAlias(final AliasDto alias) {
-        return _delegate.createAlias(alias);
-    }
 }

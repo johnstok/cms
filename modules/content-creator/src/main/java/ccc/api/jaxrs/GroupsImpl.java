@@ -29,7 +29,6 @@ package ccc.api.jaxrs;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,6 +37,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.Groups;
 import ccc.api.dto.GroupDto;
+import ccc.api.types.DBC;
 
 
 /**
@@ -55,47 +55,43 @@ public class GroupsImpl
     implements
         Groups {
 
+    private final Groups _groups;
+
+
+    /**
+     * Constructor.
+     *
+     * @param groups The groups implementation delegated to.
+     */
+    public GroupsImpl(final Groups groups) {
+        _groups = DBC.require().notNull(groups);
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public GroupDto create(final GroupDto delta) {
-        try {
-            return getGroups().create(delta);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _groups.create(delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public GroupDto find(final UUID id) {
-        try {
-            return getGroups().find(id);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _groups.find(id);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<GroupDto> list(final String name) {
-        try {
-            return getGroups().list(name);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _groups.list(name);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public GroupDto update(final UUID id, final GroupDto group) {
-        try {
-            return getGroups().update(id, group);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _groups.update(id, group);
     }
 }

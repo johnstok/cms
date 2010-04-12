@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
-import ccc.api.jaxrs.SecurityImpl;
+import ccc.web.jaxrs.SecurityImpl;
 
 
 /**
