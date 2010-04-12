@@ -29,7 +29,6 @@ package ccc.api.jaxrs;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -41,6 +40,7 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.TemplateSummary;
+import ccc.api.types.DBC;
 
 
 /**
@@ -58,37 +58,37 @@ public class TemplatesImpl
     implements
         Templates {
 
+    private final Templates _templates;
+
+
+    /**
+     * Constructor.
+     *
+     * @param templates The templates implementation delegated to.
+     */
+    public TemplatesImpl(final Templates templates) {
+        _templates = DBC.require().notNull(templates);
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public TemplateDelta templateDelta(final UUID templateId) {
-        try {
-            return getTemplates().templateDelta(templateId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _templates.templateDelta(templateId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean templateNameExists(final String templateName) {
-        try {
-            return getTemplates().templateNameExists(templateName);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _templates.templateNameExists(templateName);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateSummary> templates() {
-        try {
-            return getTemplates().templates();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _templates.templates();
     }
 
 
@@ -96,21 +96,13 @@ public class TemplatesImpl
     @Override
     public void updateTemplate(final UUID templateId,
                                final TemplateDelta delta) {
-        try {
-            getTemplates().updateTemplate(templateId, delta);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _templates.updateTemplate(templateId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final TemplateDto template) {
-        try {
-            return getTemplates().createTemplate(template);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _templates.createTemplate(template);
     }
 }

@@ -35,68 +35,12 @@
     <display-name>Content Control CMS</display-name>
     
     <context-param>
-        <param-name>resteasy.resources</param-name>
-        <param-value>
-            ccc.api.jaxrs.ActionsImpl,
-            ccc.api.jaxrs.AliasesImpl,
-            ccc.api.jaxrs.CommentsImpl,
-            ccc.api.jaxrs.FilesImpl,
-            ccc.api.jaxrs.FoldersImpl,
-            ccc.api.jaxrs.GroupsImpl,
-            ccc.api.jaxrs.PagesImpl,
-            ccc.api.jaxrs.ResourcesImpl,
-            ccc.api.jaxrs.SearchImpl,
-            ccc.api.jaxrs.SecurityImpl,
-            ccc.api.jaxrs.TemplatesImpl,
-            ccc.api.jaxrs.UsersImpl
-        </param-value>
-    </context-param>
-    <context-param>
-        <param-name>resteasy.providers</param-name>
-        <param-value>
-            ccc.api.jaxrs.providers.RestExceptionMapper,
-            ccc.api.jaxrs.providers.DurationReader,
-            ccc.api.jaxrs.providers.Jsonable2Reader,
-            ccc.api.jaxrs.providers.FailureWriter,
-            ccc.api.jaxrs.providers.UUIDProvider,
-            ccc.api.jaxrs.providers.AliasDeltaReader,
-            ccc.api.jaxrs.providers.JsonReader,
-            ccc.api.jaxrs.providers.TemplateDeltaReader,
-            ccc.api.jaxrs.providers.PageDeltaReader,
-            ccc.api.jaxrs.providers.BooleanProvider,
-            ccc.api.jaxrs.providers.JsonableWriter,
-            ccc.api.jaxrs.providers.MetadataWriter,
-            ccc.api.jaxrs.providers.JsonableCollectionWriter,
-            ccc.api.jaxrs.providers.ResourceSummaryCollectionReader,
-            ccc.api.jaxrs.providers.StringCollectionWriter,
-            ccc.api.jaxrs.providers.UserSummaryReader,
-            ccc.api.jaxrs.providers.ResourceCacheDurationPUReader,
-            ccc.api.jaxrs.providers.FolderDeltaReader,
-            ccc.api.jaxrs.providers.PageNewReader,
-            ccc.api.jaxrs.providers.ActionNewReader,
-            ccc.api.jaxrs.providers.AliasNewReader,
-            ccc.api.jaxrs.providers.FolderNewReader,
-            ccc.api.jaxrs.providers.TextFileDeltaReader,
-            ccc.api.jaxrs.providers.TemplateNewReader,
-            ccc.api.jaxrs.providers.CommentReader,
-            ccc.api.jaxrs.providers.GroupReader,
-            ccc.api.jaxrs.providers.AclReader,
-            ccc.api.jaxrs.providers.UuidCollectionWriter,
-            ccc.api.jaxrs.providers.TextFileDtoReader,
-            ccc.api.jaxrs.providers.SearchResultWriter,
-        </param-value>
+        <param-name>javax.ws.rs.Application</param-name>
+        <param-value>ccc.web.jaxrs.JaxrsConfiguration</param-value>
     </context-param>
     <context-param>
        <param-name>resteasy.servlet.mapping.prefix</param-name>
        <param-value>/ccc/api</param-value>
-    </context-param>
-    <context-param>
-       <param-name>ccc.application-name</param-name>
-       <param-value>${application.name}</param-value>
-    </context-param>
-    <context-param>
-       <param-name>ccc.context-name</param-name>
-       <param-value></param-value>
     </context-param>
 
     <listener>

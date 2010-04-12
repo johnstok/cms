@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -45,6 +44,7 @@ import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TemplateSummary;
+import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
@@ -65,125 +65,92 @@ public class ResourcesImpl
     implements
         Resources {
 
+    private final Resources _delegate;
+
+    /**
+     * Constructor.
+     *
+     * @param resources The resources implementation delegated to.
+     */
+    public ResourcesImpl(final Resources resources) {
+        _delegate = DBC.require().notNull(resources);
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public Duration cacheDuration(final UUID resourceId) {
-        try {
-            return getResources().cacheDuration(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.cacheDuration(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary computeTemplate(final UUID resourceId) {
-        try {
-            return getResources().computeTemplate(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.computeTemplate(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String getAbsolutePath(final UUID resourceId) {
-        try {
-            return getResources().getAbsolutePath(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getAbsolutePath(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<RevisionDto> history(final UUID resourceId) {
-        try {
-            return getResources().history(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.history(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> locked() {
-        try {
-            return getResources().locked();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.locked();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Map<String, String> metadata(final UUID resourceId) {
-        try {
-            return getResources().metadata(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.metadata(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resource(final UUID resourceId) {
-        try {
-            return getResources().resource(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.resource(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForLegacyId(final String legacyId) {
-        try {
-            return getResources().resourceForLegacyId(legacyId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.resourceForLegacyId(legacyId);
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> resourceForMetadataKey(
                                                             final String key) {
-        try {
-            return getResources().resourceForMetadataKey(key);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.resourceForMetadataKey(key);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForPath(final String path) {
-        try {
-            return getResources().resourceForPath(path);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.resourceForPath(path);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public AclDto roles(final UUID resourceId) {
-        try {
-            return getResources().roles(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.roles(resourceId);
     }
 
 
@@ -191,33 +158,21 @@ public class ResourcesImpl
     @Override
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu) {
-        try {
-            getResources().updateCacheDuration(resourceId, pu);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateCacheDuration(resourceId, pu);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void lock(final UUID resourceId) {
-        try {
-            getResources().lock(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.lock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopy(final UUID resourceId) {
-        try {
-            getResources().applyWorkingCopy(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.applyWorkingCopy(resourceId);
     }
 
 
@@ -225,121 +180,77 @@ public class ResourcesImpl
     @Override
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu) {
-        try {
-            getResources().updateResourceTemplate(resourceId, pu);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateResourceTemplate(resourceId, pu);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final UUID resourceId, final AclDto roles) {
-        try {
-            getResources().changeRoles(resourceId, roles);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.changeRoles(resourceId, roles);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void move(final UUID resourceId, final UUID newParentId) {
-        try {
-            getResources().move(resourceId, newParentId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.move(resourceId, newParentId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void publish(final UUID resourceId) {
-        try {
-            getResources().publish(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.publish(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void rename(final UUID resourceId, final String name) {
-        try {
-            getResources().rename(resourceId, name);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.rename(resourceId, name);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unlock(final UUID resourceId) {
-        try {
-            getResources().unlock(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.unlock(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unpublish(final UUID resourceId) {
-        try {
-            getResources().unpublish(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.unpublish(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void excludeFromMainMenu(final UUID resourceId) {
-        try {
-            getResources().excludeFromMainMenu(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.excludeFromMainMenu(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void includeInMainMenu(final UUID resourceId) {
-        try {
-            getResources().includeInMainMenu(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.includeInMainMenu(resourceId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final UUID resourceId, final Json json) {
-        try {
-            getResources().updateMetadata(resourceId, json);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.updateMetadata(resourceId, json);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final UUID pageId) {
-        try {
-            getResources().clearWorkingCopy(pageId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.clearWorkingCopy(pageId);
     }
 
 
@@ -347,33 +258,21 @@ public class ResourcesImpl
     @Override
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu) {
-        try {
-            getResources().createWorkingCopy(resourceId, pu);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.createWorkingCopy(resourceId, pu);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void deleteCacheDuration(final UUID id) {
-        try {
-            getResources().deleteCacheDuration(id);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.deleteCacheDuration(id);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void deleteResource(final UUID resourceId) {
-        try {
-            getResources().deleteResource(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.deleteResource(resourceId);
     }
 
 
@@ -382,22 +281,14 @@ public class ResourcesImpl
     public void createLogEntry(final UUID resourceId,
                                final String action,
                                final String detail) {
-        try {
-            getResources().createLogEntry(resourceId, action, detail);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.createLogEntry(resourceId, action, detail);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
-        try {
-            return getResources().getSiblings(resourceId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.getSiblings(resourceId);
     }
 
 
@@ -411,12 +302,8 @@ public class ResourcesImpl
                                       final SortOrder order,
                                       final int pageNo,
                                       final int pageSize) {
-        try {
-            return getResources().list(
-                tag, before, after, sort, order, pageNo, pageSize);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.list(
+            tag, before, after, sort, order, pageNo, pageSize);
     }
 
 
@@ -424,22 +311,14 @@ public class ResourcesImpl
     @Override
     public String fileContentsFromPath(final String absolutePath,
                                        final String charset) {
-        try {
-            return getResources().fileContentsFromPath(absolutePath, charset);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.fileContentsFromPath(absolutePath, charset);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSnapshot resourceForPathSecure(final String path) {
-        try {
-            return getResources().resourceForPathSecure(path);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.resourceForPathSecure(path);
     }
 
 
@@ -447,22 +326,14 @@ public class ResourcesImpl
     @Override
     public ResourceSnapshot revisionForPath(final String path,
                                             final int version) {
-        try {
-            return getResources().revisionForPath(path, version);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.revisionForPath(path, version);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSnapshot workingCopyForPath(final String path) {
-        try {
-            return getResources().workingCopyForPath(path);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.workingCopyForPath(path);
     }
 
 
@@ -470,10 +341,6 @@ public class ResourcesImpl
     @Override
     public ResourceSummary createSearch(final UUID parentId,
                                         final String title) {
-        try {
-            return getResources().createSearch(parentId, title);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.createSearch(parentId, title);
     }
 }

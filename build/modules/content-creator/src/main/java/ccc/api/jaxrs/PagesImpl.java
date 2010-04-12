@@ -28,7 +28,6 @@ package ccc.api.jaxrs;
 
 import java.util.UUID;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -39,6 +38,7 @@ import ccc.api.Pages;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.DBC;
 import ccc.plugins.s11n.Json;
 
 
@@ -57,58 +57,50 @@ public class PagesImpl
     implements
         Pages {
 
+    private final Pages _pages;
+
+
+    /**
+     * Constructor.
+     *
+     * @param pages The pages implementation delegated to.
+     */
+    public PagesImpl(final Pages pages) {
+        _pages = DBC.require().notNull(pages);
+    }
+
 
     /** {@inheritDoc} */
     @Override
     public PageDelta pageDelta(final UUID pageId) {
-        try {
-            return getPages().pageDelta(pageId);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _pages.pageDelta(pageId);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final PageDto page) {
-        try {
-            return getPages().createPage(page);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _pages.createPage(page);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String validateFields(final Json json) {
-        try {
-            return getPages().validateFields(json);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _pages.validateFields(json);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateWorkingCopy(final UUID pageId, final PageDelta delta) {
-        try {
-            getPages().updateWorkingCopy(pageId, delta);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _pages.updateWorkingCopy(pageId, delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updatePage(final UUID pageId, final Json json) {
-        try {
-            getPages().updatePage(pageId, json);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _pages.updatePage(pageId, json);
     }
 }

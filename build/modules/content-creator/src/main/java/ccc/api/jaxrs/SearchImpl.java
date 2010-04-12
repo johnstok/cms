@@ -26,7 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import javax.ejb.EJBException;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -34,6 +33,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 
 import ccc.api.SearchEngine;
 import ccc.api.SearchResult;
+import ccc.api.types.DBC;
 
 
 /**
@@ -50,56 +50,49 @@ public class SearchImpl
     implements
         SearchEngine {
 
+    private final SearchEngine _delegate;
+
+
+    /**
+     * Constructor.
+     *
+     * @param search The search implementation delegated too.
+     */
+    public SearchImpl(final SearchEngine search) {
+        _delegate = DBC.require().notNull(search);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public SearchResult find(final String searchTerms,
                              final int noOfResultsPerPage,
                              final int page) {
-        try {
-            return getSearch().find(searchTerms, noOfResultsPerPage, page);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.find(searchTerms, noOfResultsPerPage, page);
     }
 
     /** {@inheritDoc} */
     @Override
     public void index() {
-        try {
-            getSearch().index();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.index();
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isRunning() {
-        try {
-            return getSearch().isRunning();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.isRunning();
     }
 
     /** {@inheritDoc} */
     @Override
     public void start() {
-        try {
-            getSearch().start();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.start();
     }
 
     /** {@inheritDoc} */
     @Override
     public void stop() {
-        try {
-            getSearch().stop();
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        _delegate.stop();
     }
 
     /** {@inheritDoc} */
@@ -107,10 +100,6 @@ public class SearchImpl
     public SearchResult similar(final String uuid,
                                 final int noOfResultsPerPage,
                                 final int page) {
-        try {
-            return getSearch().similar(uuid, noOfResultsPerPage, page);
-        } catch (final EJBException e) {
-            throw convertToNative(e);
-        }
+        return _delegate.similar(uuid, noOfResultsPerPage, page);
     }
 }

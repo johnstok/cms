@@ -57,7 +57,13 @@ import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.jaxrs.CommentsImpl;
+import ccc.api.jaxrs.FilesImpl;
 import ccc.api.jaxrs.FoldersImpl;
+import ccc.api.jaxrs.GroupsImpl;
+import ccc.api.jaxrs.PagesImpl;
+import ccc.api.jaxrs.ResourcesImpl;
+import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.api.types.ResourcePath;
 import ccc.plugins.PluginFactory;
@@ -238,15 +244,15 @@ public class ContentServlet
 
     private ServiceLocator createServiceLocator() {
         final MemoryServiceLocator sl = new MemoryServiceLocator();
-        sl.setUserCommands(UsersImpl.decorate(_users));
-        sl.setFolderCommands(FoldersImpl.decorate(_folders));
-        sl.setFiles(_files);
-        sl.setPageCommands(_pages);
-        sl.setCommands(_resources);
+        sl.setUserCommands(new UsersImpl(_users));
+        sl.setFolderCommands(new FoldersImpl(_folders));
+        sl.setFiles(new FilesImpl(_files));
+        sl.setPageCommands(new PagesImpl(_pages));
+        sl.setCommands(new ResourcesImpl(_resources));
         sl.setActions(_actions);
-        sl.setSearch(_search);
-        sl.setComments(_comments);
-        sl.setGroups(_groups);
+        sl.setSearch(new SearchImpl(_search));
+        sl.setComments(new CommentsImpl(_comments));
+        sl.setGroups(new GroupsImpl(_groups));
         return sl;
     }
 

@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api.jaxrs;
+package ccc.web.jaxrs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +41,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.api.Security;
+import ccc.api.jaxrs.JaxrsCollection;
 import ccc.api.types.Permission;
-import ccc.commons.CCCProperties;
 import ccc.plugins.s11n.json.JsonImpl;
 
 
@@ -113,8 +113,8 @@ public class SecurityImpl
         props.put("buildNumber", CCCProperties.buildNumber());
         props.put("ccc-version", CCCProperties.version());
         props.put("timestamp", CCCProperties.timestamp());
-        props.put("application.name", getAppName());
-        props.put("application.context", getContextName());
+        props.put("application.name", CCCProperties.getAppName());
+        props.put("application.context", CCCProperties.getContextName());
 
         final JsonImpl ss = new JsonImpl();
         ss.set("properties", props);
