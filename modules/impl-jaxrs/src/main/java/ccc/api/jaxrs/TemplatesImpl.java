@@ -34,6 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Templates;
 import ccc.api.dto.ResourceSummary;
@@ -74,21 +75,33 @@ public class TemplatesImpl
     /** {@inheritDoc} */
     @Override
     public TemplateDelta templateDelta(final UUID templateId) {
-        return _templates.templateDelta(templateId);
+        try {
+            return _templates.templateDelta(templateId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean templateNameExists(final String templateName) {
-        return _templates.templateNameExists(templateName);
+        try {
+            return _templates.templateNameExists(templateName);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<TemplateSummary> templates() {
-        return _templates.templates();
+        try {
+            return _templates.templates();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -96,13 +109,21 @@ public class TemplatesImpl
     @Override
     public void updateTemplate(final UUID templateId,
                                final TemplateDelta delta) {
-        _templates.updateTemplate(templateId, delta);
+        try {
+            _templates.updateTemplate(templateId, delta);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTemplate(final TemplateDto template) {
-        return _templates.createTemplate(template);
+        try {
+            return _templates.createTemplate(template);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

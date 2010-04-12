@@ -33,7 +33,6 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.dto.AclDto;
 import ccc.api.dto.FolderDto;
@@ -487,9 +486,8 @@ public class ResourceAcceptanceTest
         try {
             getCommands().resource(f.getId());
             fail();
-        } catch (final ClientResponseFailure e) {
-            final EntityNotFoundException enf = convertException(e);
-            assertEquals(f.getId(), enf.getId());
+        } catch (final EntityNotFoundException e) {
+            assertEquals(f.getId(), e.getId());
         }
     }
 

@@ -32,8 +32,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.jboss.resteasy.client.ClientResponseFailure;
-
 import ccc.api.dto.AclDto;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
@@ -262,10 +260,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             fail();
 
         // ASSERT
-        } catch (final ClientResponseFailure ex) {
-            final UnauthorizedException ue = convertException(ex);
-            assertEquals(folder.getId(), ue.getTarget());
-            assertEquals(me.getId(), ue.getUser());
+        } catch (final UnauthorizedException ex) {
+            assertEquals(folder.getId(), ex.getTarget());
+            assertEquals(me.getId(), ex.getUser());
         }
     }
 

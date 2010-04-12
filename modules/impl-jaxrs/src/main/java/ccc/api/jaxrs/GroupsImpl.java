@@ -34,6 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Groups;
 import ccc.api.dto.GroupDto;
@@ -71,27 +72,44 @@ public class GroupsImpl
     /** {@inheritDoc} */
     @Override
     public GroupDto create(final GroupDto delta) {
-        return _groups.create(delta);
+        try {
+            return _groups.create(delta);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public GroupDto find(final UUID id) {
-        return _groups.find(id);
+        try {
+            return _groups.find(id);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<GroupDto> list(final String name) {
-        return _groups.list(name);
+        try {
+            return _groups.list(name);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public GroupDto update(final UUID id, final GroupDto group) {
-        return _groups.update(id, group);
+        try {
+            return _groups.update(id, group);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
+
     }
 }

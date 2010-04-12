@@ -26,18 +26,25 @@
  */
 package ccc.api.jaxrs;
 
+import org.jboss.resteasy.client.ClientResponseFailure;
+
 import ccc.api.Security;
 import ccc.api.types.DBC;
 
 
 /**
- * TODO: Add a description for this type.
+ * JAX-RS implementation of the security API.
  *
  * @author Civic Computing Ltd.
  */
-public class SecurityImpl2 {
+public class SecurityImpl2
+    extends
+        JaxrsCollection
+    implements
+        Security {
 
     private final Security _delegate;
+
 
     /**
      * Constructor.
@@ -48,44 +55,47 @@ public class SecurityImpl2 {
         _delegate = DBC.require().notNull(delegate);
     }
 
-    /**
-     * @return
-     * @see ccc.api.Security#isLoggedIn()
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public Boolean isLoggedIn() {
-
-        return _delegate.isLoggedIn();
+        try {
+            return _delegate.isLoggedIn();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
-    /**
-     * @param username
-     * @param password
-     * @return
-     * @see ccc.api.Security#login(java.lang.String, java.lang.String)
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public Boolean login(final String username, final String password) {
-
-        return _delegate.login(username, password);
+        try {
+            return _delegate.login(username, password);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
-    /**
-     *
-     * @see ccc.api.Security#logout()
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public void logout() {
-
-        _delegate.logout();
+        try {
+            _delegate.logout();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
-    /**
-     * @return
-     * @see ccc.api.Security#readAllProperties()
-     */
+
+    /** {@inheritDoc} */
+    @Override
     public String readAllProperties() {
-
-        return _delegate.readAllProperties();
+        try {
+            return _delegate.readAllProperties();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
-
-
-
 }

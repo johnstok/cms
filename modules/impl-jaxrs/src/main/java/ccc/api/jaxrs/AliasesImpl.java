@@ -33,6 +33,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Aliases;
 import ccc.api.dto.AliasDelta;
@@ -72,20 +73,32 @@ public class AliasesImpl
     /** {@inheritDoc} */
     @Override
     public String aliasTargetName(final UUID aliasId) {
-        return _delegate.aliasTargetName(aliasId);
+        try {
+            return _delegate.aliasTargetName(aliasId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateAlias(final UUID aliasId, final AliasDelta delta) {
-        _delegate.updateAlias(aliasId, delta);
+        try {
+            _delegate.updateAlias(aliasId, delta);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createAlias(final AliasDto alias) {
-        return _delegate.createAlias(alias);
+        try {
+            return _delegate.createAlias(alias);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

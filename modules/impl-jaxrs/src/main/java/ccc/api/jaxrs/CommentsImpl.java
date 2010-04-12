@@ -33,6 +33,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Comments;
 import ccc.api.dto.CommentDto;
@@ -73,25 +74,41 @@ public class CommentsImpl
     /** {@inheritDoc} */
     @Override
     public CommentDto create(final CommentDto comment) {
-        return _delegate.create(comment);
+        try {
+            return _delegate.create(comment);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public CommentDto retrieve(final UUID commentId) {
-        return _delegate.retrieve(commentId);
+        try {
+            return _delegate.retrieve(commentId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void update(final UUID commentId, final CommentDto comment) {
-        _delegate.update(commentId, comment);
+        try {
+            _delegate.update(commentId, comment);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void delete(final UUID commentId) {
-        _delegate.delete(commentId);
+        try {
+            _delegate.delete(commentId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
@@ -102,7 +119,11 @@ public class CommentsImpl
                                           final SortOrder sortOrder,
                                           final int pageNo,
                                           final int pageSize) {
-        return _delegate.list(
-            resourceId, status, sort, sortOrder, pageNo, pageSize);
+        try {
+            return _delegate.list(
+                resourceId, status, sort, sortOrder, pageNo, pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

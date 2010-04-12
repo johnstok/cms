@@ -33,10 +33,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.ActionScheduler;
 import ccc.api.Actions;
-import ccc.api.Scheduler;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
@@ -58,7 +58,7 @@ public class ActionsImpl
         JaxrsCollection
     implements
         Actions,
-        Scheduler {
+        ActionScheduler {
 
     private final Actions _delegate;
     private final ActionScheduler _schedulerDelegate;
@@ -84,10 +84,15 @@ public class ActionsImpl
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
-        return _delegate.listCompletedActions(sort,
-            sortOrder,
-            pageNo,
-            pageSize);
+        try {
+            return _delegate.listCompletedActions(
+                sort,
+                sortOrder,
+                pageNo,
+                pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -98,58 +103,91 @@ public class ActionsImpl
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
-        return _delegate.listPendingActions(sort,
-            sortOrder,
-            pageNo,
-            pageSize);
+        try {
+            return _delegate.listPendingActions(
+                sort,
+                sortOrder,
+                pageNo,
+                pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ActionSummary createAction(final ActionDto action) {
-        return _delegate.createAction(action);
+        try {
+            return _delegate.createAction(action);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void cancelAction(final UUID actionId) {
-        _delegate.cancelAction(actionId);
+        try {
+             _delegate.cancelAction(actionId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void executeAll() {
-        _delegate.executeAll();
+        try {
+            _delegate.executeAll();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ActionSummary findAction(final UUID actionId) {
-        return _delegate.findAction(actionId);
+        try {
+            return _delegate.findAction(actionId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public boolean isRunning() {
-        return _schedulerDelegate.isRunning();
+        try {
+            return _schedulerDelegate.isRunning();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public void start() {
-        _schedulerDelegate.start();
+        try {
+            _schedulerDelegate.start();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     @Produces({"text/html", "application/json"})
     public void stop() {
-        _schedulerDelegate.stop();
+        try {
+            _schedulerDelegate.stop();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

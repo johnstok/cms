@@ -34,6 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Users;
 import ccc.api.dto.DtoCollection;
@@ -74,63 +75,99 @@ public class UsersImpl
     /** {@inheritDoc} */
     @Override
     public UserDto loggedInUser() {
-        return _delegate.loggedInUser();
+        try {
+            return _delegate.loggedInUser();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto userDelta(final UUID userId) {
-        return _delegate.userDelta(userId);
+        try {
+            return _delegate.userDelta(userId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean usernameExists(final Username username) {
-        return _delegate.usernameExists(username);
+        try {
+            return _delegate.usernameExists(username);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto createUser(final UserDto user) {
-        return _delegate.createUser(user);
+        try {
+            return _delegate.createUser(user);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateUserPassword(final UUID userId, final UserDto pu) {
-        _delegate.updateUserPassword(userId, pu);
+        try {
+            _delegate.updateUserPassword(userId, pu);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateYourUser(final UUID userId, final UserDto user) {
-        _delegate.updateYourUser(userId, user);
+        try {
+            _delegate.updateYourUser(userId, user);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateUser(final UUID userId, final UserDto delta) {
-        _delegate.updateUser(userId, delta);
+        try {
+            _delegate.updateUser(userId, delta);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public UserDto userByLegacyId(final String legacyId) {
-        return _delegate.userByLegacyId(legacyId);
+        try {
+            return _delegate.userByLegacyId(legacyId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
+        try {
             return _delegate.listUserMetadataValuesWithKey(key);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -145,14 +182,19 @@ public class UsersImpl
                                             final SortOrder order,
                                             final int pageNo,
                                             final int pageSize) {
-        return _delegate.listUsers(username,
-            email,
-            groups,
-            metadataKey,
-            metadataValue,
-            sort,
-            order,
-            pageNo,
-            pageSize);
+        try {
+            return _delegate.listUsers(
+                username,
+                email,
+                groups,
+                metadataKey,
+                metadataValue,
+                sort,
+                order,
+                pageNo,
+                pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

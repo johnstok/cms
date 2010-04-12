@@ -37,6 +37,8 @@ import javax.ws.rs.Produces;
  */
 @Produces("application/json")
 @Consumes("application/json")
+@Deprecated
+// FIXME: Remove this class; fold into Actions.
 public interface ActionScheduler extends Scheduler {
 
     /** NAME : String. */

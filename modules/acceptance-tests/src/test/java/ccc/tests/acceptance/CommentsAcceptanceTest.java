@@ -28,8 +28,6 @@ package ccc.tests.acceptance;
 
 import java.util.Date;
 
-import org.jboss.resteasy.client.ClientResponseFailure;
-
 import ccc.api.dto.CommentDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.EntityNotFoundException;
@@ -101,9 +99,8 @@ public class CommentsAcceptanceTest
         try {
             getComments().retrieve(c.getId());
             fail();
-        } catch (final ClientResponseFailure e) {
-            final EntityNotFoundException enf = convertException(e);
-            assertEquals(c.getId(), enf.getId());
+        } catch (final EntityNotFoundException e) {
+            assertEquals(c.getId(), e.getId());
         }
     }
 

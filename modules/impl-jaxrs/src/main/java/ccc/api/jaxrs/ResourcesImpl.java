@@ -36,6 +36,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Resources;
 import ccc.api.dto.AclDto;
@@ -80,77 +81,121 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public Duration cacheDuration(final UUID resourceId) {
-        return _delegate.cacheDuration(resourceId);
+        try {
+            return _delegate.cacheDuration(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public TemplateSummary computeTemplate(final UUID resourceId) {
-        return _delegate.computeTemplate(resourceId);
+        try {
+            return _delegate.computeTemplate(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public String getAbsolutePath(final UUID resourceId) {
-        return _delegate.getAbsolutePath(resourceId);
+        try {
+            return _delegate.getAbsolutePath(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<RevisionDto> history(final UUID resourceId) {
-        return _delegate.history(resourceId);
+        try {
+            return _delegate.history(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> locked() {
-        return _delegate.locked();
+        try {
+            return _delegate.locked();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Map<String, String> metadata(final UUID resourceId) {
-        return _delegate.metadata(resourceId);
+        try {
+            return _delegate.metadata(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resource(final UUID resourceId) {
-        return _delegate.resource(resourceId);
+        try {
+            return _delegate.resource(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForLegacyId(final String legacyId) {
-        return _delegate.resourceForLegacyId(legacyId);
+        try {
+            return _delegate.resourceForLegacyId(legacyId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> resourceForMetadataKey(
                                                             final String key) {
-        return _delegate.resourceForMetadataKey(key);
+        try {
+            return _delegate.resourceForMetadataKey(key);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary resourceForPath(final String path) {
-        return _delegate.resourceForPath(path);
+        try {
+            return _delegate.resourceForPath(path);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public AclDto roles(final UUID resourceId) {
-        return _delegate.roles(resourceId);
+        try {
+            return _delegate.roles(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -158,21 +203,33 @@ public class ResourcesImpl
     @Override
     public void updateCacheDuration(final UUID resourceId,
                                     final ResourceDto pu) {
-        _delegate.updateCacheDuration(resourceId, pu);
+        try {
+            _delegate.updateCacheDuration(resourceId, pu);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void lock(final UUID resourceId) {
-        _delegate.lock(resourceId);
+        try {
+            _delegate.lock(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void applyWorkingCopy(final UUID resourceId) {
-        _delegate.applyWorkingCopy(resourceId);
+        try {
+            _delegate.applyWorkingCopy(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -180,77 +237,121 @@ public class ResourcesImpl
     @Override
     public void updateResourceTemplate(final UUID resourceId,
                                        final ResourceDto pu) {
-        _delegate.updateResourceTemplate(resourceId, pu);
+        try {
+            _delegate.updateResourceTemplate(resourceId, pu);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void changeRoles(final UUID resourceId, final AclDto roles) {
-        _delegate.changeRoles(resourceId, roles);
+        try {
+            _delegate.changeRoles(resourceId, roles);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void move(final UUID resourceId, final UUID newParentId) {
-        _delegate.move(resourceId, newParentId);
+        try {
+            _delegate.move(resourceId, newParentId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void publish(final UUID resourceId) {
-        _delegate.publish(resourceId);
+        try {
+            _delegate.publish(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void rename(final UUID resourceId, final String name) {
-        _delegate.rename(resourceId, name);
+        try {
+            _delegate.rename(resourceId, name);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unlock(final UUID resourceId) {
-        _delegate.unlock(resourceId);
+        try {
+            _delegate.unlock(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void unpublish(final UUID resourceId) {
-        _delegate.unpublish(resourceId);
+        try {
+            _delegate.unpublish(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void excludeFromMainMenu(final UUID resourceId) {
-        _delegate.excludeFromMainMenu(resourceId);
+        try {
+            _delegate.excludeFromMainMenu(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void includeInMainMenu(final UUID resourceId) {
-        _delegate.includeInMainMenu(resourceId);
+        try {
+            _delegate.includeInMainMenu(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final UUID resourceId, final Json json) {
-        _delegate.updateMetadata(resourceId, json);
+        try {
+            _delegate.updateMetadata(resourceId, json);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void clearWorkingCopy(final UUID pageId) {
-        _delegate.clearWorkingCopy(pageId);
+        try {
+            _delegate.clearWorkingCopy(pageId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -258,21 +359,33 @@ public class ResourcesImpl
     @Override
     public void createWorkingCopy(final UUID resourceId,
                                   final ResourceDto pu) {
-        _delegate.createWorkingCopy(resourceId, pu);
+        try {
+            _delegate.createWorkingCopy(resourceId, pu);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void deleteCacheDuration(final UUID id) {
-        _delegate.deleteCacheDuration(id);
+        try {
+            _delegate.deleteCacheDuration(id);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void deleteResource(final UUID resourceId) {
-        _delegate.deleteResource(resourceId);
+        try {
+            _delegate.deleteResource(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -281,14 +394,22 @@ public class ResourcesImpl
     public void createLogEntry(final UUID resourceId,
                                final String action,
                                final String detail) {
-        _delegate.createLogEntry(resourceId, action, detail);
+        try {
+            _delegate.createLogEntry(resourceId, action, detail);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
-        return _delegate.getSiblings(resourceId);
+        try {
+            return _delegate.getSiblings(resourceId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -302,8 +423,12 @@ public class ResourcesImpl
                                       final SortOrder order,
                                       final int pageNo,
                                       final int pageSize) {
-        return _delegate.list(
-            tag, before, after, sort, order, pageNo, pageSize);
+        try {
+            return _delegate.list(
+                tag, before, after, sort, order, pageNo, pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -311,14 +436,22 @@ public class ResourcesImpl
     @Override
     public String fileContentsFromPath(final String absolutePath,
                                        final String charset) {
-        return _delegate.fileContentsFromPath(absolutePath, charset);
+        try {
+            return _delegate.fileContentsFromPath(absolutePath, charset);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSnapshot resourceForPathSecure(final String path) {
-        return _delegate.resourceForPathSecure(path);
+        try {
+            return _delegate.resourceForPathSecure(path);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -326,14 +459,22 @@ public class ResourcesImpl
     @Override
     public ResourceSnapshot revisionForPath(final String path,
                                             final int version) {
-        return _delegate.revisionForPath(path, version);
+        try {
+            return _delegate.revisionForPath(path, version);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSnapshot workingCopyForPath(final String path) {
-        return _delegate.workingCopyForPath(path);
+        try {
+            return _delegate.workingCopyForPath(path);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -341,6 +482,10 @@ public class ResourcesImpl
     @Override
     public ResourceSummary createSearch(final UUID parentId,
                                         final String title) {
-        return _delegate.createSearch(parentId, title);
+        try {
+            return _delegate.createSearch(parentId, title);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

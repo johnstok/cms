@@ -35,6 +35,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Files;
 import ccc.api.StreamAction;
@@ -78,19 +79,31 @@ public class FilesImpl
     /** {@inheritDoc} */
     @Override
     public TextFileDelta get(final UUID fileId) {
-        return _files.get(fileId);
+        try {
+            return _files.get(fileId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void update(final UUID id, final TextFileDelta file) {
-        _files.update(id, file);
+        try {
+            _files.update(id, file);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createTextFile(final TextFileDto textFile) {
-        return _files.createTextFile(textFile);
+        try {
+            return _files.createTextFile(textFile);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
@@ -98,7 +111,11 @@ public class FilesImpl
     public DtoCollection<FileDto> getPagedImages(final UUID folderId,
                                                  final int pageNo,
                                                  final int pageSize) {
-        return _files.getPagedImages(folderId, pageNo, pageSize);
+        try {
+            return _files.getPagedImages(folderId, pageNo, pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
@@ -113,7 +130,8 @@ public class FilesImpl
                                       final boolean publish,
                                       final String comment,
                                       final boolean isMajorEdit) {
-        return _files.createFile(
+        try {
+            return _files.createFile(
             parentFolder,
             file,
             resourceName,
@@ -124,12 +142,19 @@ public class FilesImpl
             publish,
             comment,
             isMajorEdit);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void retrieve(final UUID file, final StreamAction action) {
-        _files.retrieve(file, action);
+        try {
+            _files.retrieve(file, action);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
@@ -137,14 +162,22 @@ public class FilesImpl
     public void retrieveRevision(final UUID file,
                                  final int revision,
                                  final StreamAction action) {
-        _files.retrieveRevision(file, revision, action);
+        try {
+            _files.retrieveRevision(file, revision, action);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void retrieveWorkingCopy(final UUID file,
                                     final StreamAction action) {
-        _files.retrieveWorkingCopy(file, action);
+        try {
+            _files.retrieveWorkingCopy(file, action);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
@@ -154,8 +187,12 @@ public class FilesImpl
                            final String comment,
                            final boolean isMajorEdit,
                            final InputStream dataStream) {
-        _files.updateFile(
-            fileId, fileDelta, comment, isMajorEdit, dataStream);
+        try {
+            _files.updateFile(
+                fileId, fileDelta, comment, isMajorEdit, dataStream);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 }

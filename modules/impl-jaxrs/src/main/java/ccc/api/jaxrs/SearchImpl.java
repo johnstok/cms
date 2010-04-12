@@ -30,6 +30,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.SearchEngine;
 import ccc.api.SearchResult;
@@ -68,31 +69,51 @@ public class SearchImpl
     public SearchResult find(final String searchTerms,
                              final int noOfResultsPerPage,
                              final int page) {
-        return _delegate.find(searchTerms, noOfResultsPerPage, page);
+        try {
+            return _delegate.find(searchTerms, noOfResultsPerPage, page);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void index() {
-        _delegate.index();
+        try {
+            _delegate.index();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean isRunning() {
-        return _delegate.isRunning();
+        try {
+            return _delegate.isRunning();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void start() {
-        _delegate.start();
+        try {
+            _delegate.start();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
     public void stop() {
-        _delegate.stop();
+        try {
+            _delegate.stop();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
     /** {@inheritDoc} */
@@ -100,6 +121,10 @@ public class SearchImpl
     public SearchResult similar(final String uuid,
                                 final int noOfResultsPerPage,
                                 final int page) {
-        return _delegate.similar(uuid, noOfResultsPerPage, page);
+        try {
+            return _delegate.similar(uuid, noOfResultsPerPage, page);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

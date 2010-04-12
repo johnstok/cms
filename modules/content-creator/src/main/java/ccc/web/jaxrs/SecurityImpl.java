@@ -41,7 +41,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.api.Security;
-import ccc.api.jaxrs.JaxrsCollection;
 import ccc.api.types.Permission;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -56,8 +55,6 @@ import ccc.plugins.s11n.json.JsonImpl;
 @Produces("application/json")
 @NoCache
 public class SecurityImpl
-    extends
-        JaxrsCollection
     implements
         Security {
 

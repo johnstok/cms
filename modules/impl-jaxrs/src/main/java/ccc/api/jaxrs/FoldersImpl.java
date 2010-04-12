@@ -34,6 +34,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
+import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Folders;
 import ccc.api.dto.DtoCollection;
@@ -75,7 +76,11 @@ public class FoldersImpl
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getChildren(final UUID folderId) {
-        return _delegate.getChildren(folderId);
+        try {
+            return _delegate.getChildren(folderId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -83,7 +88,11 @@ public class FoldersImpl
     @Override
     public Collection<ResourceSummary> getAccessibleChildren(
                                                           final UUID folderId) {
-        return _delegate.getAccessibleChildren(folderId);
+        try {
+            return _delegate.getAccessibleChildren(folderId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -91,42 +100,66 @@ public class FoldersImpl
     @Override
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                         final UUID folderId) {
-        return _delegate.getChildrenManualOrder(folderId);
+        try {
+            return _delegate.getChildrenManualOrder(folderId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
-        return _delegate.getFolderChildren(folderId);
+        try {
+            return _delegate.getFolderChildren(folderId);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Boolean nameExistsInFolder(final UUID folderId, final String name) {
-        return _delegate.nameExistsInFolder(folderId, name);
+        try {
+            return _delegate.nameExistsInFolder(folderId, name);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public Collection<ResourceSummary> roots() {
-        return _delegate.roots();
+        try {
+            return _delegate.roots();
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFolder(final FolderDto folder) {
-        return _delegate.createFolder(folder);
+        try {
+            return _delegate.createFolder(folder);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void updateFolder(final UUID folderId, final FolderDelta delta) {
-        _delegate.updateFolder(folderId, delta);
+        try {
+            _delegate.updateFolder(folderId, delta);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -138,11 +171,15 @@ public class FoldersImpl
                                                     final SortOrder sortOrder,
                                                     final int offset,
                                                     final int limit) {
-        return _delegate.getChildrenPaged(folderId,
+        try {
+            return _delegate.getChildrenPaged(folderId,
                                              sort,
                                              sortOrder,
                                              offset,
                                              limit);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
@@ -152,13 +189,21 @@ public class FoldersImpl
                                         final String name,
                                         final String title,
                                         final boolean publish) {
-        return _delegate.createFolder(parentId, name, title, publish);
+        try {
+            return _delegate.createFolder(parentId, name, title, publish);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createRoot(final String name) {
-        return _delegate.createRoot(name);
+        try {
+            return _delegate.createRoot(name);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }
