@@ -41,9 +41,9 @@ import ccc.api.dto.FolderDelta;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.http.IFileUploader;
 import ccc.api.types.Paragraph;
 import ccc.cli.Migrate.Options;
-import ccc.client.http.IFileUploader;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
 

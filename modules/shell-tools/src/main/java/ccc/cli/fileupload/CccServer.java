@@ -35,10 +35,10 @@ import ccc.api.Folders;
 import ccc.api.Resources;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
+import ccc.api.http.IFileUploader;
 import ccc.api.types.FailureCode;
 import ccc.api.types.ResourcePath;
 import ccc.cli.FileUpload;
-import ccc.client.http.IFileUploader;
 
 
 /**
