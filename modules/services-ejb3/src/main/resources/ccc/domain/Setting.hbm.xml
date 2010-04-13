@@ -33,7 +33,7 @@
 
 <hibernate-mapping default-access="field">
 
-	<typedef class="ccc.persistence.jpa.EnumUserType" name="settingName">
+	<typedef class="ccc.plugins.persistence.hibernate.EnumUserType" name="settingName">
 	    <param name="type">ccc.domain.Setting$Name</param>
 	</typedef>
 	
@@ -41,7 +41,7 @@
     
         <id name="_id" 
         	column="id" 
-        	type="ccc.persistence.jpa.UUIDUserType"
+        	type="ccc.plugins.persistence.hibernate.UUIDUserType"
         	length="36">
             <generator class="assigned" />
         </id>

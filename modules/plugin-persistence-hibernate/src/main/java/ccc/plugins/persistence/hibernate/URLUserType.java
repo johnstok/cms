@@ -24,9 +24,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.plugins.persistence.hibernate;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,7 +43,7 @@ import org.hibernate.usertype.UserType;
  *
  * @author Civic Computing Ltd.
  */
-public class UUIDUserType implements UserType, Serializable {
+public class URLUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
@@ -58,7 +60,7 @@ public class UUIDUserType implements UserType, Serializable {
     /** {@inheritDoc} */
     @Override
     public Serializable disassemble(final Object value) {
-        return (UUID) value;
+        return (URL) value;
     }
 
     /** {@inheritDoc} */
@@ -69,7 +71,7 @@ public class UUIDUserType implements UserType, Serializable {
         } else if (null==x) { // y is not null
             return false;
         } else {
-            return x.equals(y);
+            return x.equals(y); // FIXME: performs IP resolution.
         }
     }
 
@@ -87,7 +89,7 @@ public class UUIDUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public Object nullSafeGet(final ResultSet rs,
+    public URL nullSafeGet(final ResultSet rs,
                               final String[] names,
                               final Object owner) throws SQLException {
 
@@ -95,7 +97,11 @@ public class UUIDUserType implements UserType, Serializable {
         if (null == value) {
             return null;
         }
-        return UUID.fromString(value);
+        try {
+            return new URL(value);
+        } catch (final MalformedURLException e) {
+            throw new SQLException(e);
+        }
 
     }
 
@@ -107,7 +113,7 @@ public class UUIDUserType implements UserType, Serializable {
         if (value==null) {
             st.setNull(index, Types.VARCHAR);
         } else {
-            st.setString(index, ((UUID) value).toString());
+            st.setString(index, ((URL) value).toString());
         }
     }
 
@@ -121,8 +127,8 @@ public class UUIDUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public Class<UUID> returnedClass() {
-        return UUID.class;
+    public Class<URL> returnedClass() {
+        return URL.class;
     }
 
     /** {@inheritDoc} */

@@ -32,7 +32,7 @@
 -->
 
 <hibernate-mapping default-access="field">
-    <typedef class="ccc.persistence.jpa.EnumUserType" name="SortOrder">
+    <typedef class="ccc.plugins.persistence.hibernate.EnumUserType" name="SortOrder">
         <param name="type">ccc.api.types.ResourceOrder</param>
     </typedef>
     

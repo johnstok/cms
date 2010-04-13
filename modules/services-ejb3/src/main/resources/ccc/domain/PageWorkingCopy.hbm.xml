@@ -33,7 +33,7 @@
 
 <hibernate-mapping default-access="field">
 
-    <typedef class="ccc.persistence.jpa.EnumUserType" name="ParagraphType">
+    <typedef class="ccc.plugins.persistence.hibernate.EnumUserType" name="ParagraphType">
         <param name="type">ccc.api.types.ParagraphType</param>
     </typedef>
     
@@ -45,7 +45,7 @@
         
         <id name="_id" 
             column="id" 
-            type="ccc.persistence.jpa.UUIDUserType"
+            type="ccc.plugins.persistence.hibernate.UUIDUserType"
             length="36">
             <generator class="assigned" />
         </id>

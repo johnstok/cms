@@ -24,26 +24,58 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.plugins.persistence.hibernate;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.UUID;
+import java.util.Properties;
 
+import org.hibernate.HibernateException;
+import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 
 
 /**
- * A hibernate {@link UserType} used to persist {@link UUID} objects.
+ * A hibernate user type that can persist a Java 5 enum.
+ *
+ * @param <T> The type of the enum to persist.
  *
  * @author Civic Computing Ltd.
  */
-public class URLUserType implements UserType, Serializable {
+public class EnumUserType<T extends Enum<T>> implements UserType,
+                                                        ParameterizedType, 
+                                                        Serializable {
+
+    private Class<T> _enumClass;
+
+    /**
+     * Constructor.
+     *
+     * @param enumClass The enum this user type represents.
+     */
+    EnumUserType(final Class<T> enumClass) {
+        _enumClass = enumClass;
+    }
+
+    /**
+     * Constructor.
+     */
+    public EnumUserType() { super(); }
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")  // Class class doesn't support generics
+    @Override
+    public void setParameterValues(final Properties parameters) {
+        final String enumClassName = parameters.getProperty("type");
+        try {
+            _enumClass = (Class<T>) Class.forName(enumClassName);
+        } catch (final ClassNotFoundException cnfe) {
+            throw new HibernateException("Enum class not found.", cnfe);
+        }
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -60,19 +92,13 @@ public class URLUserType implements UserType, Serializable {
     /** {@inheritDoc} */
     @Override
     public Serializable disassemble(final Object value) {
-        return (URL) value;
+        return (Serializable) value;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean equals(final Object x, final Object y) {
-        if (null==x && null==y) {
-            return true;
-        } else if (null==x) { // y is not null
-            return false;
-        } else {
-            return x.equals(y); // FIXME: performs IP resolution.
-        }
+        return x==y;
     }
 
     /** {@inheritDoc} */
@@ -89,7 +115,7 @@ public class URLUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public URL nullSafeGet(final ResultSet rs,
+    public Object nullSafeGet(final ResultSet rs,
                               final String[] names,
                               final Object owner) throws SQLException {
 
@@ -97,11 +123,7 @@ public class URLUserType implements UserType, Serializable {
         if (null == value) {
             return null;
         }
-        try {
-            return new URL(value);
-        } catch (final MalformedURLException e) {
-            throw new SQLException(e);
-        }
+        return Enum.valueOf(this._enumClass, value);
 
     }
 
@@ -113,7 +135,7 @@ public class URLUserType implements UserType, Serializable {
         if (value==null) {
             st.setNull(index, Types.VARCHAR);
         } else {
-            st.setString(index, ((URL) value).toString());
+            st.setString(index, _enumClass.cast(value).name());
         }
     }
 
@@ -127,8 +149,8 @@ public class URLUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
-    public Class<URL> returnedClass() {
-        return URL.class;
+    public Class<T> returnedClass() {
+        return _enumClass;
     }
 
     /** {@inheritDoc} */
@@ -136,4 +158,5 @@ public class URLUserType implements UserType, Serializable {
     public int[] sqlTypes() {
         return new int[] {Types.VARCHAR};
     }
+
 }

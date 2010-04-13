@@ -24,58 +24,24 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.persistence.jpa;
+package ccc.plugins.persistence.hibernate;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Properties;
+import java.util.UUID;
 
-import org.hibernate.HibernateException;
-import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 
 
 /**
- * A hibernate user type that can persist a Java 5 enum.
- *
- * @param <T> The type of the enum to persist.
+ * A hibernate {@link UserType} used to persist {@link UUID} objects.
  *
  * @author Civic Computing Ltd.
  */
-public class EnumUserType<T extends Enum<T>> implements UserType,
-                                                        ParameterizedType, 
-                                                        Serializable {
-
-    private Class<T> _enumClass;
-
-    /**
-     * Constructor.
-     *
-     * @param enumClass The enum this user type represents.
-     */
-    EnumUserType(final Class<T> enumClass) {
-        _enumClass = enumClass;
-    }
-
-    /**
-     * Constructor.
-     */
-    public EnumUserType() { super(); }
-
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")  // Class class doesn't support generics
-    @Override
-    public void setParameterValues(final Properties parameters) {
-        final String enumClassName = parameters.getProperty("type");
-        try {
-            _enumClass = (Class<T>) Class.forName(enumClassName);
-        } catch (final ClassNotFoundException cnfe) {
-            throw new HibernateException("Enum class not found.", cnfe);
-        }
-    }
+public class UUIDUserType implements UserType, Serializable {
 
     /** {@inheritDoc} */
     @Override
@@ -92,13 +58,19 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
     /** {@inheritDoc} */
     @Override
     public Serializable disassemble(final Object value) {
-        return (Serializable) value;
+        return (UUID) value;
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean equals(final Object x, final Object y) {
-        return x==y;
+        if (null==x && null==y) {
+            return true;
+        } else if (null==x) { // y is not null
+            return false;
+        } else {
+            return x.equals(y);
+        }
     }
 
     /** {@inheritDoc} */
@@ -123,7 +95,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
         if (null == value) {
             return null;
         }
-        return Enum.valueOf(this._enumClass, value);
+        return UUID.fromString(value);
 
     }
 
@@ -135,7 +107,7 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
         if (value==null) {
             st.setNull(index, Types.VARCHAR);
         } else {
-            st.setString(index, _enumClass.cast(value).name());
+            st.setString(index, ((UUID) value).toString());
         }
     }
 
@@ -149,8 +121,8 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
 
     /** {@inheritDoc} */
     @Override
-    public Class<T> returnedClass() {
-        return _enumClass;
+    public Class<UUID> returnedClass() {
+        return UUID.class;
     }
 
     /** {@inheritDoc} */
@@ -158,5 +130,4 @@ public class EnumUserType<T extends Enum<T>> implements UserType,
     public int[] sqlTypes() {
         return new int[] {Types.VARCHAR};
     }
-
 }

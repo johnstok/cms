@@ -36,7 +36,7 @@
 		<cache usage="transactional"/>
 		<id name="_id" 
 			column="id" 
-			type="ccc.persistence.jpa.UUIDUserType"
+			type="ccc.plugins.persistence.hibernate.UUIDUserType"
 			length="36">
 			<generator class="assigned" />
 		</id>
