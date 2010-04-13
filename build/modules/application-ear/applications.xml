@@ -34,7 +34,7 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <files>
         <file>
-            <source>../shell-tools/target/shell-tools-${project.version}-jar-with-dependencies.jar</source>
+            <source>../shell-tools/target/client-shell-${project.version}-jar-with-dependencies.jar</source>
         </file>
         <file>
             <source>target/${application.name}.ear</source>
