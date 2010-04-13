@@ -49,12 +49,6 @@
             <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${lib.version.hibernate}</version>
-            <scope>provided</scope>
-        </dependency>
         
     </dependencies>
     

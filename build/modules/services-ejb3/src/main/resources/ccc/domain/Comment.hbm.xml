@@ -32,7 +32,7 @@
 -->
 
 <hibernate-mapping default-access="field">
-    <typedef class="ccc.persistence.jpa.EnumUserType" name="CommentStatus">
+    <typedef class="ccc.plugins.persistence.hibernate.EnumUserType" name="CommentStatus">
         <param name="type">ccc.api.types.CommentStatus</param>
     </typedef>
 
@@ -40,7 +40,7 @@
         
         <id name="_id" 
         	column="id" 
-        	type="ccc.persistence.jpa.UUIDUserType" 
+        	type="ccc.plugins.persistence.hibernate.UUIDUserType" 
         	length="36">
             <generator class="assigned" />
         </id>
@@ -78,7 +78,7 @@
         <property
             name="_url"
             column="url"
-            type="ccc.persistence.jpa.URLUserType"
+            type="ccc.plugins.persistence.hibernate.URLUserType"
             not-null="false"
             length="1024" />
         <component name="_email" class="ccc.api.types.EmailAddress">
