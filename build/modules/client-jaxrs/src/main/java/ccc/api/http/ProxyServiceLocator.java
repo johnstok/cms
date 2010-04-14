@@ -66,6 +66,7 @@ import ccc.api.jaxrs.providers.CommentReader;
 import ccc.api.jaxrs.providers.DtoCollectionReader;
 import ccc.api.jaxrs.providers.DurationReader;
 import ccc.api.jaxrs.providers.FailureWriter;
+import ccc.api.jaxrs.providers.FileReader;
 import ccc.api.jaxrs.providers.GroupCollectionReader;
 import ccc.api.jaxrs.providers.GroupReader;
 import ccc.api.jaxrs.providers.JsonReader;
@@ -107,6 +108,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyWriter(JsonReader.class);
         pFactory.addMessageBodyWriter(UUIDProvider.class);
         pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
+        pFactory.addMessageBodyWriter(FileReader.class);
 
         // Readers
         pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
@@ -203,12 +205,9 @@ public class ProxyServiceLocator implements ServiceLocator {
                 ProxyFactory.create(
                     Comments.class, _secure+"/comments", _httpClient));
         _files =
-            new FilesDecorator(
-                new FilesImpl(
-                    ProxyFactory.create(
-                        Files.class, _secure+"/files", _httpClient)),
-                _hostUrl,
-                _httpClient);
+            new FilesImpl(
+                ProxyFactory.create(
+                    Files.class, _secure+"/files", _httpClient));
         _groups =
             new GroupsImpl(
                 ProxyFactory.create(
@@ -286,13 +285,13 @@ public class ProxyServiceLocator implements ServiceLocator {
         return new SiteBrowserImpl(_httpClient, _hostUrl);
     }
 
+
     /**
      * Accessor.
      *
-     * @return A file uploader for the site.
+     * @return The HTTP client for this service locator.
      */
-    @Deprecated
-    public IFileUploader getFileUploader() {
-        return new FileUploader(_httpClient, _hostUrl);
+    public HttpClient getHttpClient() {
+        return _httpClient;
     }
 }

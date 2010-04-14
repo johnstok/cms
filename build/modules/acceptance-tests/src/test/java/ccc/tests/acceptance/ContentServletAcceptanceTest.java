@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.dto.ResourceSummary;
+import ccc.api.dto.TextFileDto;
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -60,10 +62,15 @@ public class ContentServletAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script = getFileUploader().createFile(
-            fName,
-            "print('foo\\n'); response.flushBuffer(); throw 'foo';",
-            filesFolder);
+        final ResourceSummary script =
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "print('foo\\n'); response.flushBuffer(); throw 'foo';"));
         getCommands().lock(script.getId());
         getCommands().updateMetadata(script.getId(), metadata);
         getCommands().publish(script.getId());
@@ -93,10 +100,15 @@ public class ContentServletAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
-        final ResourceSummary script = getFileUploader().createFile(
-            fName,
-            "throw 'foo';",
-            filesFolder);
+        final ResourceSummary script =
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "throw 'foo';"));
         getCommands().lock(script.getId());
         getCommands().updateMetadata(script.getId(), metadata);
         getCommands().publish(script.getId());

@@ -97,7 +97,7 @@ public class FileUpload extends CccApp {
 
         server = new CccServer(
             new ResourcePath(o.getRemotePath()),
-            sl.getFileUploader(),
+            sl.getFiles(),
             sl.getFolders(),
             sl.getResources());
 

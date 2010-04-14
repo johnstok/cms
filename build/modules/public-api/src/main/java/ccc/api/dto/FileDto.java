@@ -54,7 +54,7 @@ public final class FileDto
     private Map<String, String> _properties;
     private String              _charset;
     private UUID                _dataId;
-    private int                 _size;
+    private long                _size;
     private boolean             _isImage;
     private boolean             _isExecutable;
     private boolean             _isText;
@@ -174,7 +174,7 @@ public final class FileDto
      *
      * @return Returns the size.
      */
-    public int getSize() {
+    public long getSize() {
         return _size;
     }
 
@@ -234,7 +234,7 @@ public final class FileDto
      *
      * @param size The size to set.
      */
-    public void setSize(final int size) {
+    public void setSize(final long size) {
         _size = size;
     }
 

@@ -64,7 +64,7 @@ class JdbcCoreData implements CoreData {
 
     /** {@inheritDoc} */
     @Override
-    public Data create(final InputStream dataStream, final int length) {
+    public Data create(final InputStream dataStream, final long length) {
 
         final Data data = new Data();
 

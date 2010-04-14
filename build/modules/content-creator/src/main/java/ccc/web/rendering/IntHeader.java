@@ -38,7 +38,7 @@ public class IntHeader
     implements
         Header {
 
-    private final int _value;
+    private final long _value;
     private final String _name;
 
     /**
@@ -47,7 +47,7 @@ public class IntHeader
      * @param value The value of the header.
      * @param name The name of the header.
      */
-    public IntHeader(final String name, final int value) {
+    public IntHeader(final String name, final long value) {
         _value = value;
         _name = name;
     }
@@ -56,7 +56,7 @@ public class IntHeader
     /** {@inheritDoc} */
     @Override
     public void writeTo(final HttpServletResponse response) {
-        response.setIntHeader(_name, _value);
+        response.setHeader(_name, String.valueOf(_value));
     }
 
 
@@ -66,7 +66,7 @@ public class IntHeader
         final int prime = 31;
         int result = 1;
         result = prime * result + ((_name == null) ? 0 : _name.hashCode());
-        result = prime * result + _value;
+        result = prime * result + (int) (_value ^ (_value >>> 32));
         return result;
     }
 

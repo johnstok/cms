@@ -55,7 +55,6 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
-import ccc.api.http.IFileUploader;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.types.MimeType;
@@ -197,17 +196,6 @@ public abstract class AbstractAcceptanceTest
      */
     protected SiteBrowser getBrowser() {
         return _sl.getBrowser();
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns a file uploader.
-     */
-    @Deprecated
-    protected IFileUploader getFileUploader() {
-        return _sl.getFileUploader();
     }
 
 

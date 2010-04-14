@@ -210,6 +210,8 @@ public class FilesEJB
         f.setPublished(false);
         f.setMajorEdit(file.isMajorRevision());
         f.setComment(file.getRevisionComment());
+        f.setDateCreated(new Date());
+        f.setDateChanged(f.getDateCreated());
 
         return createFile(f);
     }

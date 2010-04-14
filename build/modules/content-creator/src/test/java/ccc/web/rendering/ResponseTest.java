@@ -39,16 +39,6 @@ import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
 import ccc.commons.Resources;
 import ccc.plugins.scripting.Script;
-import ccc.web.rendering.Body;
-import ccc.web.rendering.CharEncodingHeader;
-import ccc.web.rendering.ContentTypeHeader;
-import ccc.web.rendering.DateHeader;
-import ccc.web.rendering.EmptyBody;
-import ccc.web.rendering.Header;
-import ccc.web.rendering.IntHeader;
-import ccc.web.rendering.PageBody;
-import ccc.web.rendering.Response;
-import ccc.web.rendering.StringHeader;
 
 
 /**
@@ -329,7 +319,7 @@ public class ResponseTest
         final Response r = new Response(new EmptyBody());
         r.setLength(1);
 
-        _response.setIntHeader("Content-Length", 1);
+        _response.setHeader("Content-Length", "1");
         replayAll();
 
         // ACT

@@ -25,14 +25,11 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api.http;
+package ccc.migration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
-
-import ccc.api.dto.ResourceSummary;
 
 
 /**
@@ -80,35 +77,4 @@ public interface IFileUploader {
                     final String description,
                     final Date lastUpdate,
                     final String directory);
-
-
-    /**
-     * Update an existing file to be a text file with the specified text.
-     *
-     * @param fText The text for the file.
-     * @param rs The summary for the file to update.
-     *
-     * @throws IOException If the operation fails sending the data.
-     *
-     * @return A summary of the updated resource.
-     */
-    ResourceSummary updateTextFile(final String fText,
-                                   final ResourceSummary rs) throws IOException;
-
-
-    /**
-     * Create a text file on the server.
-     *
-     * @param fName The file's name.
-     * @param fText The file's contents.
-     * @param filesFolder The parent folder for the file.
-     *
-     * @return The summary of the newly created file.
-     *
-     * @throws IOException If creation fails on the client.
-     */
-    ResourceSummary createFile(final String fName,
-                               final String fText,
-                               final ResourceSummary filesFolder)
-                                                            throws IOException;
 }

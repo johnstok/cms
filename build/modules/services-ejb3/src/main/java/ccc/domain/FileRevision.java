@@ -46,7 +46,7 @@ public class FileRevision
         Revision<FileDelta> {
 
     private Data      _data;
-    private int       _size;
+    private long       _size;
     private MimeType  _mimeType;
     private Map<String, String> _properties;
 
@@ -72,7 +72,7 @@ public class FileRevision
                  final boolean majorChange,
                  final String comment,
                  final Data data,
-                 final int size,
+                 final long size,
                  final MimeType mimeType,
                  final Map<String, String> properties) {
         super(timestamp, actor, majorChange, comment);
@@ -100,7 +100,7 @@ public class FileRevision
      *
      * @return The file revision's size, in bytes.
      */
-    public final int getSize() {
+    public final long getSize() {
         return _size;
     }
 
