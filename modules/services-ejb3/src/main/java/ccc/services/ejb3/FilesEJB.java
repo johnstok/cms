@@ -30,7 +30,6 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Date;
@@ -51,6 +50,7 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.dto.TextFileDto;
+import ccc.api.exceptions.InternalError;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.ResourceName;
 import ccc.commands.UpdateFileCommand;
@@ -95,42 +95,38 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createFile(final UUID parentFolder,
-                                      final FileDelta file,
-                                      final String resourceName,
-                                      final InputStream dataStream,
-                                      final String title,
-                                      final String description,
-                                      final Date lastUpdated,
-                                      final boolean publish,
-                                      final String comment,
-                                      final boolean isMajorEdit) {
+    public ResourceSummary createFile(final FileDto file) {
         checkPermission(FILE_CREATE);
 
         final User u = currentUser();
 
+        final Date dateCreated = file.getDateCreated();
+
         final RevisionMetadata rm =
             new RevisionMetadata(
-                lastUpdated,
+                dateCreated,
                 u,
-                isMajorEdit,
-                comment == null || comment.isEmpty() ? "Created." : comment
-            );
+                file.isMajorEdit(),
+                file.getComment());
 
         final File f =
             commands().createFileCommand(
-                parentFolder,
-                file,
-                title,
-                description,
-                new ResourceName(resourceName),
+                file.getParent(),
+                new FileDelta(
+                    file.getMimeType(),
+                    null,
+                    file.getSize(),
+                    file.getProperties()),
+                file.getTitle(),
+                file.getDescription(),
+                file.getName(),
                 rm,
-                dataStream)
-            .execute(u, lastUpdated);
+                file.getInputStream())
+            .execute(u, dateCreated);
 
-        if (publish) {
+        if (file.isPublished()) {
             f.lock(u);
-            commands().publishResource(f.getId()).execute(u, lastUpdated);
+            commands().publishResource(f.getId()).execute(u, dateCreated);
             f.unlock(u);
         }
 
@@ -141,21 +137,23 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_UPDATE})
-    public void updateFile(final UUID fileId,
-                           final FileDelta fileDelta,
-                           final String comment,
-                           final boolean isMajorEdit,
-                           final InputStream dataStream) {
-        new UpdateFileCommand(
-            getRepoFactory(),
-            UUID.fromString(fileId.toString()),
-            fileDelta,
-            comment,
-            isMajorEdit,
-            dataStream)
-        .execute(
-            currentUser(),
-            new Date());
+    public ResourceSummary updateFile(final UUID fileId, final FileDto file) {
+        return
+            new UpdateFileCommand(
+                getRepoFactory(),
+                fileId,
+                new FileDelta(
+                    file.getMimeType(),
+                    null,
+                    file.getSize(),
+                    file.getProperties()),
+                file.getComment(),
+                file.isMajorEdit(),
+                file.getInputStream())
+            .execute(
+                currentUser(),
+                new Date())
+            .mapResource();
     }
 
 
@@ -167,22 +165,23 @@ public class FilesEJB
         try {
             bytes = file.getContent().getBytes("UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new InternalError(e.getMessage());
         }
 
-        final FileDelta delta =
-            new FileDelta(
-                file.getMimeType(),
-                null, // The command will create the data object
-                bytes.length,
-                Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8"));
-
-        updateFile(
+        final FileDto f = new FileDto(
+            file.getMimeType(),
+            null,
             file.getId(),
-            delta,
-            file.getRevisionComment(),
-            file.isMajorRevision(),
-            new ByteArrayInputStream(bytes));
+            null,
+            null,
+            Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
+        );
+        f.setInputStream(new ByteArrayInputStream(bytes));
+        f.setSize(bytes.length);
+        f.setMajorEdit(file.isMajorRevision());
+        f.setComment(file.getRevisionComment());
+
+        updateFile(f.getId(), f);
     }
 
     /** {@inheritDoc} */
@@ -193,28 +192,26 @@ public class FilesEJB
         try {
             bytes = file.getContent().getBytes("UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new InternalError(e.getMessage());
         }
 
-        final FileDelta delta =
-            new FileDelta(
-                file.getMimeType(),
-                null, // The command will create the data object
-                bytes.length,
-                Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8"));
+        final FileDto f = new FileDto(
+            file.getMimeType(),
+            null,
+            null,
+            new ResourceName(file.getName()),
+            file.getName(),
+            Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
+        );
+        f.setDescription(file.getName());
+        f.setParent(file.getParentId());
+        f.setInputStream(new ByteArrayInputStream(bytes));
+        f.setSize(bytes.length);
+        f.setPublished(false);
+        f.setMajorEdit(file.isMajorRevision());
+        f.setComment(file.getRevisionComment());
 
-        return createFile(
-            file.getParentId(),
-            delta,
-            file.getName(),
-            new ByteArrayInputStream(bytes),
-            file.getName(),
-            "",
-            new Date(),
-            false,
-            file.getRevisionComment(),
-            file.isMajorRevision()
-            );
+        return createFile(f);
     }
 
 

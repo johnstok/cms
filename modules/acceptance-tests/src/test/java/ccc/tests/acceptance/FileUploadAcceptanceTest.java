@@ -26,18 +26,23 @@
  */
 package ccc.tests.acceptance;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
+import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TextFileDelta;
+import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.RestException;
 import ccc.api.types.FailureCode;
 import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 
 
 /**
@@ -131,6 +136,37 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
+     */
+    public void testCreateBinaryFile() {
+
+        // ARRANGE
+        final String fName = "log4j.properties";
+        final ResourceSummary filesFolder = tempFolder();
+        final FileDto f = new FileDto(
+            new MimeType("application", "octet-stream"),
+            null,
+            null,
+            new ResourceName(fName),
+            fName,
+            new HashMap<String, String>()
+        );
+
+        f.setDescription(fName);
+        f.setParent(filesFolder.getId());
+        f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
+        f.setSize(5);
+        f.setPublished(false);
+
+        // ACT
+        final ResourceSummary rs = getFiles().createFile(f);
+
+        // ASSERT
+        assertEquals(fName, rs.getName());
+        assertEquals(filesFolder.getId(), rs.getParent());
+    }
+
+    /**
+     * Test.
      *
      * @throws IOException If the test fails.
      * @throws RestException If the test fails.
@@ -201,10 +237,46 @@ public class FileUploadAcceptanceTest
         getCommands().lock(rs.getId());
 
         // ACT
-        final String body = getFileUploader().updateTextFile("Update!", rs);
+        getFileUploader().updateTextFile("Update!", rs);
 
         // ASSERT
-        assertEquals("NULL", body);
+        assertEquals("Update!", getBrowser().previewContent(rs, false));
+    }
+
+
+    /**
+     * Test.
+     *
+     * @throws IOException If the test fails.
+     */
+    public void testUpdateBinaryFile() throws IOException {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
+        final ResourceSummary rs =
+            getFileUploader().createFile(fName, "Hello!", filesFolder);
+        getCommands().lock(rs.getId());
+        final byte[] updateBytes = "Update!".getBytes("UTF-8");
+        final FileDto f = new FileDto(
+            new MimeType("text", "plain"),
+            null,
+            rs.getId(),
+            new ResourceName(rs.getName()),
+            rs.getTitle(),
+            new HashMap<String, String>()
+        );
+        f.setDescription(rs.getDescription());
+        f.setParent(rs.getParent());
+        f.setInputStream(new ByteArrayInputStream(updateBytes));
+        f.setSize(updateBytes.length);
+        f.setPublished(false);
+
+        // ACT
+        final ResourceSummary fs = getFiles().updateFile(rs.getId(), f);
+
+        // ASSERT
         assertEquals("Update!", getBrowser().previewContent(rs, false));
     }
 
@@ -260,7 +332,7 @@ public class FileUploadAcceptanceTest
             getFileUploader().updateTextFile("Update!", rs);
 
         // ASSERT
-        } catch (final RestException e) {
+        } catch (final InvalidException e) {
             assertEquals(FailureCode.UNLOCKED, e.getCode());
         }
         assertEquals("Hello!", getBrowser().previewContent(rs, false));

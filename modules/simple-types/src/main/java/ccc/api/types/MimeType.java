@@ -163,6 +163,8 @@ public class MimeType implements Serializable, Jsonable {
     /** JPEG : MimeType. */
     public static final MimeType JPEG =
         new MimeType("image", "jpeg");
+    public static final MimeType TEXT =
+        new MimeType("text", "plain");
 
 
     /** {@inheritDoc} */

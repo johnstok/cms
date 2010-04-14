@@ -36,7 +36,7 @@ import junit.framework.TestCase;
 
 import org.apache.commons.fileupload.FileItem;
 
-import ccc.web.MultipartForm;
+import ccc.api.jaxrs.providers.MultipartForm;
 
 
 /**

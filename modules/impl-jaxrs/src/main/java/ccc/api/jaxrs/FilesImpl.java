@@ -26,8 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import java.io.InputStream;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,7 +38,6 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import ccc.api.Files;
 import ccc.api.StreamAction;
 import ccc.api.dto.DtoCollection;
-import ccc.api.dto.FileDelta;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TextFileDelta;
@@ -120,28 +117,9 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFile(final UUID parentFolder,
-                                      final FileDelta file,
-                                      final String resourceName,
-                                      final InputStream dataStream,
-                                      final String title,
-                                      final String description,
-                                      final Date lastUpdated,
-                                      final boolean publish,
-                                      final String comment,
-                                      final boolean isMajorEdit) {
+    public ResourceSummary createFile(final FileDto file) {
         try {
-            return _files.createFile(
-            parentFolder,
-            file,
-            resourceName,
-            dataStream,
-            title,
-            description,
-            lastUpdated,
-            publish,
-            comment,
-            isMajorEdit);
+            return _files.createFile(file);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -182,17 +160,11 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateFile(final UUID fileId,
-                           final FileDelta fileDelta,
-                           final String comment,
-                           final boolean isMajorEdit,
-                           final InputStream dataStream) {
+    public ResourceSummary updateFile(final UUID fileId, final FileDto file) {
         try {
-            _files.updateFile(
-                fileId, fileDelta, comment, isMajorEdit, dataStream);
+            return _files.updateFile(fileId, file);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
     }
-
 }

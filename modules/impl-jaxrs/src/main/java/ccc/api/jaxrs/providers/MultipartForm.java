@@ -24,19 +24,17 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.web;
+package ccc.api.jaxrs.providers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import ccc.api.types.DBC;
 
@@ -84,30 +82,32 @@ public class MultipartForm {
     /**
      * Constructor.
      *
-     * @param request The HTTP request this form represents.
+     * @param context The JAXRS context for the client request.
      */
-    public MultipartForm(final HttpServletRequest request) {
-        this(parseFileItems(request));
+    public MultipartForm(final JaxrsRequestContext context) {
+        this(parseFileItems(context));
     }
 
     /**
      * Parse an HTTP request, extracting the file items.
      *
-     * @param request
-     * @return
+     * @param context The JAXRS context to parse.
+     *
+     * @return A list of file items.
      */
     @SuppressWarnings("unchecked")
     private static List<FileItem> parseFileItems(
-        final HttpServletRequest request) {
+                                            final JaxrsRequestContext context) {
 
-        DBC.require().notNull(request);
+//        DBC.require().notNull(request);
 
         // Check that we have a file upload request
-        final boolean isMultipart =
-            ServletFileUpload.isMultipartContent(request);
-        if (!isMultipart) {
-            throw new RuntimeException("Not a multipart");
-        }
+        // FIXME: Use non Servlet API version.
+//        final boolean isMultipart =
+//            ServletFileUpload.isMultipartContent(request);
+//        if (!isMultipart) {
+//            throw new RuntimeException("Not a multipart");
+//        }
 
         // Create a factory for disk-based file items
         final DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -116,13 +116,13 @@ public class MultipartForm {
         factory.setSizeThreshold(MAX_IN_MEMORY_SIZE);
 
         // Create a new file upload handler
-        final ServletFileUpload upload = new ServletFileUpload(factory);
+        final FileUpload upload = new FileUpload(factory);
 
         // Set overall request size constraint
         upload.setFileSizeMax(MAX_FILE_SIZE);
 
         try {
-            return upload.parseRequest(request);
+            return upload.parseRequest(context);
         } catch (final FileUploadException e) {
             throw new RuntimeException("Failed to parse multipart request.", e);
         }

@@ -90,10 +90,10 @@ public interface IFileUploader {
      *
      * @throws IOException If the operation fails sending the data.
      *
-     * @return The response from the server, as a string.
+     * @return A summary of the updated resource.
      */
-    String updateTextFile(final String fText,
-                          final ResourceSummary rs) throws IOException;
+    ResourceSummary updateTextFile(final String fText,
+                                   final ResourceSummary rs) throws IOException;
 
 
     /**

@@ -203,9 +203,12 @@ public class ProxyServiceLocator implements ServiceLocator {
                 ProxyFactory.create(
                     Comments.class, _secure+"/comments", _httpClient));
         _files =
-            new FilesImpl(
-                ProxyFactory.create(
-                    Files.class, _secure+"/files", _httpClient));
+            new FilesDecorator(
+                new FilesImpl(
+                    ProxyFactory.create(
+                        Files.class, _secure+"/files", _httpClient)),
+                _hostUrl,
+                _httpClient);
         _groups =
             new GroupsImpl(
                 ProxyFactory.create(

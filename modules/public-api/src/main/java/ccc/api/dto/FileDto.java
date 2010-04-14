@@ -28,6 +28,7 @@ package ccc.api.dto;
 
 import static ccc.plugins.s11n.JsonKeys.*;
 
+import java.io.InputStream;
 import java.util.Map;
 import java.util.UUID;
 
@@ -57,6 +58,9 @@ public final class FileDto
     private boolean             _isImage;
     private boolean             _isExecutable;
     private boolean             _isText;
+    private boolean             _isMajorEdit;
+    private String              _comment;
+    private InputStream         _inputStream;
 
 
     @SuppressWarnings("unused") private FileDto() { super(); }
@@ -272,5 +276,65 @@ public final class FileDto
      */
     public void setMimeType(final MimeType mimeType) {
         _mimeType = mimeType;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param comment
+     */
+    public void setComment(final String comment) {
+        _comment = comment;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param isMajorEdit
+     */
+    public void setMajorEdit(final boolean isMajorEdit) {
+        _isMajorEdit = isMajorEdit;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public boolean isMajorEdit() {
+        return _isMajorEdit;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String getComment() {
+        return _comment;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public InputStream getInputStream() {
+        return _inputStream;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param inputStream
+     */
+    public void setInputStream(final InputStream inputStream) {
+        _inputStream = inputStream;
     }
 }

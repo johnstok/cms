@@ -47,7 +47,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateFileCommand
     extends
-        UpdateResourceCommand<Void> {
+        UpdateResourceCommand<File> {
 
     private final UUID        _fileId;
     private final FileDelta   _fileDelta;
@@ -83,7 +83,7 @@ public class UpdateFileCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public File doExecute(final User actor,
                           final Date happenedOn) {
 
         final File f = getRepository().find(File.class, _fileId);
@@ -108,7 +108,7 @@ public class UpdateFileCommand
 
         update(f, actor, happenedOn);
 
-        return null;
+        return f;
     }
 
 
