@@ -70,4 +70,22 @@ public class InternalError
     public InternalError(final Failure failure) {
         super(failure);
     }
+
+
+    /**
+     * Constructor.
+     *
+     * @param string The error message.
+     */
+    public InternalError(final String string) {
+        this();
+        getFailure().getParams().put("msg", string);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getMessage() {
+        return getFailure().getParams().get("msg");
+    }
 }
