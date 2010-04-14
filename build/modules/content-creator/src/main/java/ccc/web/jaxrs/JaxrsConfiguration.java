@@ -53,6 +53,7 @@ import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.CommentReader;
 import ccc.api.jaxrs.providers.DurationReader;
 import ccc.api.jaxrs.providers.FailureWriter;
+import ccc.api.jaxrs.providers.FileReader;
 import ccc.api.jaxrs.providers.FolderDeltaReader;
 import ccc.api.jaxrs.providers.FolderNewReader;
 import ccc.api.jaxrs.providers.GroupReader;
@@ -147,6 +148,7 @@ public class JaxrsConfiguration
         providers.add(UuidCollectionWriter.class);
         providers.add(TextFileDtoReader.class);
         providers.add(SearchResultWriter.class);
+        providers.add(FileReader.class);
         providers.add(SecurityImpl.class);
 
         return providers;

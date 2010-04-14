@@ -69,18 +69,6 @@
         </servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>FileUploadServlet</servlet-name>
-        <servlet-class>
-            ccc.web.CreateFileServlet
-        </servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateFileServlet</servlet-name>
-        <servlet-class>
-            ccc.web.UpdateFileServlet
-        </servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>preview-content</servlet-name>
         <servlet-class>ccc.web.ContentServlet</servlet-class>
         <init-param>
@@ -133,7 +121,6 @@
         <filter-name>txn-filter</filter-name>
         <servlet-name>content</servlet-name>
         <servlet-name>preview-content</servlet-name>
-        <!-- dispatcher>FORWARD</dispatcher -->
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>  
 
@@ -146,14 +133,6 @@
     <servlet-mapping>
         <servlet-name>Resteasy</servlet-name>
         <url-pattern>/ccc/api/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FileUploadServlet</servlet-name>
-        <url-pattern>/ccc/upload</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateFileServlet</servlet-name>
-        <url-pattern>/ccc/update_file</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>content</servlet-name>

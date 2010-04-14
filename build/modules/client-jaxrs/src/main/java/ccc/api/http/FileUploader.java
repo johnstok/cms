@@ -26,30 +26,37 @@
  */
 package ccc.api.http;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.FilePartSource;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.PartSource;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 
+import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.exceptions.InternalError;
+import ccc.api.jaxrs.providers.ResSummaryReader;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
+import ccc.api.types.FilePropertyNames;
+import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -65,8 +72,7 @@ class FileUploader
     private static final Logger LOG = Logger.getLogger(FileUploader.class);
 
     private final HttpClient _client;
-    private final String _createFileUrl;
-    private final String _updateFileUrl;
+    private final String _filesUrl;
     private MimetypesFileTypeMap _mimemap;
 
 
@@ -79,9 +85,8 @@ class FileUploader
     public FileUploader(final HttpClient httpClient,
                         final String hostUrl) {
         DBC.require().notEmpty(hostUrl);
-        _createFileUrl = hostUrl+"/ccc/upload";
-        _updateFileUrl = hostUrl+"/ccc/update_file";
-        _client          = httpClient;
+        _filesUrl = hostUrl+"/ccc/api/secure/files/bin";
+        _client   = httpClient;
 
         final InputStream mimes =
             Thread.currentThread().
@@ -93,41 +98,75 @@ class FileUploader
 
     /** {@inheritDoc} */
     public void uploadFile(final UUID parentId,
-                    final String fileName,
-                    final String originalTitle,
-                    final String originalDescription,
-                    final Date originalLastUpdate,
-                    final File file,
-                    final boolean publish) {
+                           final String fileName,
+                           final String originalTitle,
+                           final String originalDescription,
+                           final Date originalLastUpdate,
+                           final File file,
+                           final boolean publish) {
         try {
             if (file.length() < 1) {
                 LOG.warn("Zero length file : "+fileName);
                 return;
             }
 
-            final PostMethod filePost =
-                new PostMethod(_createFileUrl);
-            LOG.debug("Migrating file: "+fileName);
-            final String name =
-                ResourceName.escape(fileName).toString();
+            final PartSource ps = new FilePartSource(file.getName(), file);
+            uploadFile(
+                _filesUrl,
+                parentId,
+                fileName,
+                originalTitle,
+                originalDescription,
+                originalLastUpdate,
+                ps,
+                _mimemap.getContentType(file),
+                null,
+                publish);
 
-            final String title =
-                (null!=originalTitle) ? originalTitle : fileName;
-
-            final String description =
-                (null!=originalDescription) ? originalDescription : "";
-
-            final String lastUpdate;
-            if (originalLastUpdate == null) {
-                lastUpdate = ""+new Date().getTime();
-            } else {
-                lastUpdate = ""+originalLastUpdate.getTime();
-            }
+        } catch (final RuntimeException e) {
+            LOG.error("Upload failed: "+file.getAbsolutePath(), e);
+        } catch (final IOException e) {
+            LOG.error("Upload failed: "+file.getAbsolutePath(), e);
+        }
+    }
 
 
-            final FilePart fp = new FilePart("file", file.getName(), file);
-            fp.setContentType(_mimemap.getContentType(file));
-            final Part[] parts = {
+    private ResourceSummary uploadFile(
+                           final String hostPath,
+                           final UUID parentId,
+                           final String fileName,
+                           final String originalTitle,
+                           final String originalDescription,
+                           final Date originalLastUpdate,
+                           final PartSource ps,
+                           final String contentType,
+                           final String charset,
+                           final boolean publish) throws IOException {
+
+            final PostMethod filePost = new PostMethod(hostPath);
+
+            try {
+                LOG.debug("Migrating file: "+fileName);
+                final String name =
+                    ResourceName.escape(fileName).toString();
+
+                final String title =
+                    (null!=originalTitle) ? originalTitle : fileName;
+
+                final String description =
+                    (null!=originalDescription) ? originalDescription : "";
+
+                final String lastUpdate;
+                if (originalLastUpdate == null) {
+                    lastUpdate = ""+new Date().getTime();
+                } else {
+                    lastUpdate = ""+originalLastUpdate.getTime();
+                }
+
+                final FilePart fp = new FilePart("file", ps);
+                fp.setContentType(contentType);
+                fp.setCharSet(charset);
+                final Part[] parts = {
                     new StringPart("fileName", name),
                     new StringPart("title", title),
                     new StringPart("description", description),
@@ -135,31 +174,41 @@ class FileUploader
                     new StringPart("path", parentId.toString()),
                     new StringPart("publish", String.valueOf(publish)),
                     fp
-            };
-            filePost.setRequestEntity(
-                new MultipartRequestEntity(parts, filePost.getParams())
-            );
+                };
+                filePost.setRequestEntity(
+                    new MultipartRequestEntity(parts, filePost.getParams())
+                );
 
-            _client.getHttpConnectionManager().
-                getParams().setConnectionTimeout(CONNECTION_TIMEOUT);
+                _client
+                    .getHttpConnectionManager()
+                    .getParams()
+                    .setConnectionTimeout(CONNECTION_TIMEOUT);
 
 
-            final int status = _client.executeMethod(filePost);
-            if (status == HttpStatus.SC_OK) {
-                LOG.debug(
-                    "Upload complete, response="
-                    + filePost.getResponseBodyAsString());
-            } else {
-                throw new RuntimeException(
-                    "Error returned by server: "+status+"\n"
-                    + filePost.getResponseBodyAsString());
+                final int status = _client.executeMethod(filePost);
+                if (status == HttpStatus.SC_OK) {
+                    final String entity = filePost.getResponseBodyAsString();
+                    LOG.debug("Upload complete, response=" + entity);
+
+                    return
+                        new ResSummaryReader().readFrom(
+                            ResourceSummary.class,
+                            ResourceSummary.class,
+                            null,
+                            MediaType.valueOf(
+                                filePost
+                                    .getResponseHeader("Content-Type")
+                                    .getValue()),
+                            null,
+                            filePost.getResponseBodyAsStream());
+                }
+
+                throw new RestExceptionMapper().fromResponse(
+                        status, filePost.getResponseBodyAsString());
+
+            } finally {
+                filePost.releaseConnection();
             }
-
-        } catch (final RuntimeException e) {
-            LOG.error("Upload failed: "+file.getAbsolutePath(), e);
-        } catch (final IOException e) {
-            LOG.error("Upload failed: "+file.getAbsolutePath(), e);
-        }
     }
 
 
@@ -191,73 +240,137 @@ class FileUploader
 
     /** {@inheritDoc} */
     @Override
-    public String updateTextFile(final String fText,
-                                    final ResourceSummary rs)
-                                                         throws IOException {
+    public ResourceSummary updateTextFile(final String fText,
+                                          final ResourceSummary rs)
+                                                            throws IOException {
 
-        final PostMethod postMethod = new PostMethod(_updateFileUrl);
+        final byte[] updateBytes = fText.getBytes("UTF-8");
+        final FileDto f = new FileDto(
+            MimeType.TEXT,
+            null,
+            rs.getId(),
+            new ResourceName(rs.getName()),
+            rs.getTitle(),
+            Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
+        );
+        f.setDescription(rs.getDescription());
+        f.setParent(rs.getParent());
+        f.setInputStream(new ByteArrayInputStream(updateBytes));
+        f.setSize(updateBytes.length);
+        f.setPublished(false);
 
-        try {
-            final Part[] parts = {
-                new StringPart("id", rs.getId().toString()),
-                new FilePart(
-                    "file",
-                    new ByteArrayPartSource(
-                        rs.getName(),
-                        fText.getBytes(Charset.forName("UTF-8"))),
-                        "text/plain",
-                        "UTF-8")
-                };
-            postMethod.setRequestEntity(
-                new MultipartRequestEntity(parts, postMethod.getParams()));
-
-            _client.executeMethod(postMethod);
-
-            final int status = postMethod.getStatusCode();
-            final String body = postMethod.getResponseBodyAsString();
-            if (HttpStatus.SC_OK == status) { return body; }
-            throw new RestExceptionMapper().fromResponse(status, body);
-
-        } finally {
-            postMethod.releaseConnection();
-        }
+        return updateFile(f);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createFile(final String fName,
-                                         final String fText,
-                                         final ResourceSummary filesFolder)
+                                      final String fText,
+                                      final ResourceSummary filesFolder)
                                                             throws IOException {
 
-        final PostMethod postMethod = new PostMethod(_createFileUrl);
+        final byte[] updateBytes = fText.getBytes("UTF-8");
+        final FileDto f = new FileDto(
+            MimeType.TEXT,
+            null,
+            null,
+            new ResourceName(fName),
+            fName,
+            Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
+        );
+        f.setDescription(fName);
+        f.setParent(filesFolder.getId());
+        f.setInputStream(new ByteArrayInputStream(updateBytes));
+        f.setSize(updateBytes.length);
+        f.setPublished(false);
 
+        return createFile(f);
+    }
+
+
+    /**
+     * Create a file.
+     *
+     * @param file The DTO representing the file.
+     *
+     * @return A summary of the newly created file.
+     */
+    ResourceSummary createFile(final FileDto file) {
         try {
-            final Part[] parts = {
-                new StringPart("path",  filesFolder.getId().toString()),
-                new StringPart("fileName", fName),
-                new FilePart(
-                    "file",
-                    new ByteArrayPartSource(
-                        fName,
-                        fText.getBytes(Charset.forName("UTF-8"))),
-                        "text/plain",
-                        "UTF-8")
-                };
-            postMethod.setRequestEntity(
-                new MultipartRequestEntity(parts, postMethod.getParams()));
 
-            final int status = _client.executeMethod(postMethod);
-            final String body = postMethod.getResponseBodyAsString();
+            final PartSource ps = new PartSource() {
 
-            if (HttpStatus.SC_OK == status) {
-                return new ResourceSummary(new JsonImpl(body));
-            }
-            throw new RestExceptionMapper().fromResponse(status, body);
+                @Override public long getLength() {
+                    return file.getSize();
+                }
 
-        } finally {
-            postMethod.releaseConnection();
+                @Override public String getFileName() {
+                    return file.getName().toString();
+                }
+
+                @Override public InputStream createInputStream() {
+                    return file.getInputStream();
+                }
+            };
+
+            return uploadFile(
+                _filesUrl,
+                file.getParent(),
+                file.getName().toString(),
+                file.getTitle(),
+                file.getDescription(),
+                file.getDateCreated(),
+                ps,
+                file.getMimeType().toString(),
+                file.getCharset(),
+                file.isPublished());
+
+        } catch (final IOException e) {
+            throw new InternalError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Update a file.
+     *
+     * @param file The DTO representing the file.
+     *
+     * @return A summary of the newly created file.
+     */
+    ResourceSummary updateFile(final FileDto file) {
+        try {
+
+            final PartSource ps = new PartSource() {
+
+                @Override public long getLength() {
+                    return file.getSize();
+                }
+
+                @Override public String getFileName() {
+                    return file.getName().toString();
+                }
+
+                @Override public InputStream createInputStream() {
+                    return file.getInputStream();
+                }
+            };
+
+            return uploadFile(
+                _filesUrl+"/"+file.getId(),
+                file.getParent(),
+                file.getName().toString(),
+                file.getTitle(),
+                file.getDescription(),
+                file.getDateCreated(),
+                ps,
+                file.getMimeType().toString(),
+                file.getCharset(),
+                file.isPublished());
+
+        } catch (final IOException e) {
+            throw new InternalError(e.getMessage());
         }
     }
 }

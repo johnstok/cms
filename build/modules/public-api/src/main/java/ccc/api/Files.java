@@ -26,8 +26,6 @@
  */
 package ccc.api;
 
-import java.io.InputStream;
-import java.util.Date;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,7 +38,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.DtoCollection;
-import ccc.api.dto.FileDelta;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TextFileDelta;
@@ -111,47 +108,26 @@ public interface Files {
     /**
      * Create a new CCC file.
      *
-     * @param parentFolder The folder in which the file should be created.
-     * @param file The details of the file.
-     * @param resourceName The name of the file.
-     * @param dataStream The content of the file.
-     * @param title The title of the file.
-     * @param description The description of the file.
-     * @param lastUpdated The last updated date of the file.
-     * @param publish Should the file be published.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
+     * @param file The file to create.
      *
      * @return A summary of the newly created file.
      */
     @POST @Path("/bin")
-    ResourceSummary createFile(UUID parentFolder,
-                               FileDelta file,
-                               String resourceName,
-                               InputStream dataStream,
-                               String title,
-                               String description,
-                               Date lastUpdated,
-                               boolean publish,
-                               String comment,
-                               boolean isMajorEdit);
+    @Consumes("multipart/form-data")
+    ResourceSummary createFile(FileDto file);
 
 
     /**
      * Update an existing CCC file.
      *
      * @param fileId The id of the file to update.
-     * @param fileDelta The changes to apply.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
-     * @param dataStream The new content for the file.
+     * @param file   The changes to apply.
+     *
+     * @return A summary of the updated file.
      */
     @POST @Path("/bin/{id}")
-    void updateFile(@PathParam("id") UUID fileId,
-                    FileDelta fileDelta,
-                    String comment,
-                    boolean isMajorEdit,
-                    InputStream dataStream);
+    @Consumes("multipart/form-data")
+    ResourceSummary updateFile(@PathParam("id") UUID fileId, FileDto file);
 
 
     /**

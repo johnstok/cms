@@ -1,12 +1,12 @@
 
 text/html                             html htm shtml
 text/css                              css 
-text/xml                              xml rss 
+text/xml                              xml
 image/gif                             gif 
 image/jpeg                            jpeg jpg 
 application/x-javascript              js 
 
-text/plain                            txt java
+text/plain                            txt java properties
 
 image/png                             png 
 image/tiff                            tif tiff 
@@ -21,9 +21,10 @@ application/postscript                ps eps ai
 application/rtf                       rtf 
 application/vnd.ms-excel              xls 
 application/vnd.ms-powerpoint         ppt 
-application/vnd.wap.xhtml+xml         xhtml 
+application/xhtml+xml                 xhtml 
 application/x-shockwave-flash         swf 
 application/zip                       zip 
+application/rss+xml                   rss
 
 audio/midi                            mid midi kar 
 audio/mpeg                            mp3 
