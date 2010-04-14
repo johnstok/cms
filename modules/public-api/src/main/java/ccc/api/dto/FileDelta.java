@@ -44,7 +44,7 @@ import ccc.plugins.s11n.Jsonable;
  */
 public final class FileDelta implements Serializable, Jsonable {
     private MimeType _mimeType;
-    private int _size;
+    private long _size;
     private UUID _data;
     private Map<String, String> _properties;
 
@@ -60,7 +60,7 @@ public final class FileDelta implements Serializable, Jsonable {
      */
     public FileDelta(final MimeType mimeType,
                      final UUID data,
-                     final int size,
+                     final long size,
                      final Map<String, String> properties) {
         _mimeType = mimeType;
         _data = data;
@@ -98,7 +98,7 @@ public final class FileDelta implements Serializable, Jsonable {
      *
      * @return Returns the size.
      */
-    public int getSize() {
+    public long getSize() {
         return _size;
     }
 

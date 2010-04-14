@@ -27,16 +27,22 @@
 package ccc.cli.fileupload;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.Files;
 import ccc.api.Folders;
 import ccc.api.Resources;
+import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.RestException;
-import ccc.api.http.IFileUploader;
 import ccc.api.types.FailureCode;
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.cli.FileUpload;
 
@@ -50,7 +56,7 @@ public class CccServer implements Server {
     private static final Logger LOG = Logger.getLogger(FileUpload.class);
 
     private final ResourcePath _rootPath;
-    private final IFileUploader _uploader;
+    private final Files _uploader;
     private final Resources _resources;
     private final Folders _folders;
 
@@ -61,16 +67,16 @@ public class CccServer implements Server {
      *
      * @param rootPath The absolute path to the folder where files will be
      *  uploaded.
-     * @param uploader The file up-loader to use.
-     * @param folders The folders API.
+     * @param files     The files API.
+     * @param folders   The folders API.
      * @param resources The resources API.
      */
     public CccServer(final ResourcePath rootPath,
-                     final IFileUploader uploader,
+                     final Files files,
                      final Folders folders,
                      final Resources resources) {
         _rootPath = rootPath;
-        _uploader = uploader;
+        _uploader = files;
         _folders = folders;
         _resources = resources;
     }
@@ -79,10 +85,29 @@ public class CccServer implements Server {
     /** {@inheritDoc} */
     @Override
     public void createFile(final UUID parentFolder,
-                           final File f,
+                           final File localFile,
                            final boolean publish) {
-        _uploader.uploadFile(
-            parentFolder, f.getName(), f.getName(), "", null, f, publish);
+
+        try {
+            final FileDto f = new FileDto(
+                new MimeType("application", "octet-stream"),
+                null,
+                null,
+                ResourceName.escape(localFile.getName()),
+                localFile.getName(),
+                new HashMap<String, String>()
+            );
+
+            f.setDescription(localFile.getName());
+            f.setParent(parentFolder);
+            f.setInputStream(new FileInputStream(localFile));
+            f.setSize(localFile.length());
+            f.setPublished(publish);
+
+            _uploader.createFile(f);
+        } catch (final FileNotFoundException e) {
+            LOG.warn("Failed to upload file: "+localFile.getAbsolutePath(), e);
+        }
     }
 
 

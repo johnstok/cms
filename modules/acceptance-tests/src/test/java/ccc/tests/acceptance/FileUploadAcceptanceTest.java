@@ -38,6 +38,7 @@ import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TextFileDelta;
+import ccc.api.dto.TextFileDto;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.RestException;
 import ccc.api.types.FailureCode;
@@ -66,7 +67,14 @@ public class FileUploadAcceptanceTest
         final ResourceSummary content =
             getCommands().resourceForPath("");
         final ResourceSummary file =
-            getFileUploader().createFile(fName, "Hello!", content);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    content.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
 
         getCommands().lock(file.getId());
         getCommands().createWorkingCopy(
@@ -92,7 +100,14 @@ public class FileUploadAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = getCommands().resourceForPath("");
         final ResourceSummary file =
-            getFileUploader().createFile(fName, "Hello!", content);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    content.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
 
         // History for first revision
         Collection<RevisionDto> revs = getCommands().history(file.getId());
@@ -103,7 +118,10 @@ public class FileUploadAcceptanceTest
 
         // Add a second revision
         getCommands().lock(file.getId());
-        getFileUploader().updateTextFile("Update!", file);
+        getFiles().update(
+            file.getId(),
+            new TextFileDelta(
+                file.getId(), "Update!", MimeType.TEXT, true, ""));
         revs = getCommands().history(file.getId());
         assertEquals(2, revs.size());
         Iterator<RevisionDto> i = revs.iterator();
@@ -180,7 +198,14 @@ public class FileUploadAcceptanceTest
 
         // ACT
         final ResourceSummary rs =
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
 
         // ASSERT
         assertEquals(fName, rs.getName());
@@ -203,11 +228,25 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
 
         // ACT
         try {
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
         } catch (final RestException e) {
             assertEquals(FailureCode.EXISTS, e.getCode());
         }
@@ -233,11 +272,21 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
         getCommands().lock(rs.getId());
 
         // ACT
-        getFileUploader().updateTextFile("Update!", rs);
+        getFiles().update(
+            rs.getId(),
+            new TextFileDelta(
+                rs.getId(), "Update!", MimeType.TEXT, true, ""));
 
         // ASSERT
         assertEquals("Update!", getBrowser().previewContent(rs, false));
@@ -256,7 +305,14 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
         getCommands().lock(rs.getId());
         final byte[] updateBytes = "Update!".getBytes("UTF-8");
         final FileDto f = new FileDto(
@@ -294,7 +350,14 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
         getCommands().lock(rs.getId());
 
         // ACT
@@ -325,11 +388,21 @@ public class FileUploadAcceptanceTest
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
-            getFileUploader().createFile(fName, "Hello!", filesFolder);
+            getFiles().createTextFile(
+                new TextFileDto(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
 
         // ACT
         try {
-            getFileUploader().updateTextFile("Update!", rs);
+            getFiles().update(
+                rs.getId(),
+                new TextFileDelta(
+                    rs.getId(), "Update!", MimeType.TEXT, true, ""));
 
         // ASSERT
         } catch (final InvalidException e) {

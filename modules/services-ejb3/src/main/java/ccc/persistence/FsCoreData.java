@@ -87,7 +87,7 @@ class FsCoreData
 
     /** {@inheritDoc} */
     @Override
-    public Data create(final InputStream dataStream, final int length) {
+    public Data create(final InputStream dataStream, final long length) {
         final Data d = new Data();
         final File dir = mkdir(d);
         final File f = new File(dir, d.getId().toString());

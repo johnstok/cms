@@ -24,13 +24,11 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.http;
+package ccc.migration;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
@@ -48,14 +46,10 @@ import org.apache.commons.httpclient.methods.multipart.PartSource;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 
-import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.InternalError;
 import ccc.api.jaxrs.providers.ResSummaryReader;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
-import ccc.api.types.FilePropertyNames;
-import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
 
@@ -64,7 +58,7 @@ import ccc.api.types.ResourceName;
  *
  * @author Civic Computing Ltd.
  */
-class FileUploader
+public class FileUploader
     implements
         IFileUploader {
 
@@ -238,139 +232,4 @@ class FileUploader
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary updateTextFile(final String fText,
-                                          final ResourceSummary rs)
-                                                            throws IOException {
-
-        final byte[] updateBytes = fText.getBytes("UTF-8");
-        final FileDto f = new FileDto(
-            MimeType.TEXT,
-            null,
-            rs.getId(),
-            new ResourceName(rs.getName()),
-            rs.getTitle(),
-            Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
-        );
-        f.setDescription(rs.getDescription());
-        f.setParent(rs.getParent());
-        f.setInputStream(new ByteArrayInputStream(updateBytes));
-        f.setSize(updateBytes.length);
-        f.setPublished(false);
-
-        return updateFile(f);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceSummary createFile(final String fName,
-                                      final String fText,
-                                      final ResourceSummary filesFolder)
-                                                            throws IOException {
-
-        final byte[] updateBytes = fText.getBytes("UTF-8");
-        final FileDto f = new FileDto(
-            MimeType.TEXT,
-            null,
-            null,
-            new ResourceName(fName),
-            fName,
-            Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
-        );
-        f.setDescription(fName);
-        f.setParent(filesFolder.getId());
-        f.setInputStream(new ByteArrayInputStream(updateBytes));
-        f.setSize(updateBytes.length);
-        f.setPublished(false);
-
-        return createFile(f);
-    }
-
-
-    /**
-     * Create a file.
-     *
-     * @param file The DTO representing the file.
-     *
-     * @return A summary of the newly created file.
-     */
-    ResourceSummary createFile(final FileDto file) {
-        try {
-
-            final PartSource ps = new PartSource() {
-
-                @Override public long getLength() {
-                    return file.getSize();
-                }
-
-                @Override public String getFileName() {
-                    return file.getName().toString();
-                }
-
-                @Override public InputStream createInputStream() {
-                    return file.getInputStream();
-                }
-            };
-
-            return uploadFile(
-                _filesUrl,
-                file.getParent(),
-                file.getName().toString(),
-                file.getTitle(),
-                file.getDescription(),
-                file.getDateCreated(),
-                ps,
-                file.getMimeType().toString(),
-                file.getCharset(),
-                file.isPublished());
-
-        } catch (final IOException e) {
-            throw new InternalError(e.getMessage());
-        }
-    }
-
-
-    /**
-     * Update a file.
-     *
-     * @param file The DTO representing the file.
-     *
-     * @return A summary of the newly created file.
-     */
-    ResourceSummary updateFile(final FileDto file) {
-        try {
-
-            final PartSource ps = new PartSource() {
-
-                @Override public long getLength() {
-                    return file.getSize();
-                }
-
-                @Override public String getFileName() {
-                    return file.getName().toString();
-                }
-
-                @Override public InputStream createInputStream() {
-                    return file.getInputStream();
-                }
-            };
-
-            return uploadFile(
-                _filesUrl+"/"+file.getId(),
-                file.getParent(),
-                file.getName().toString(),
-                file.getTitle(),
-                file.getDescription(),
-                file.getDateCreated(),
-                ps,
-                file.getMimeType().toString(),
-                file.getCharset(),
-                file.isPublished());
-
-        } catch (final IOException e) {
-            throw new InternalError(e.getMessage());
-        }
-    }
 }

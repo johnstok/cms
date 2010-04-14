@@ -49,7 +49,7 @@ public interface DataRepository {
      * @return An instance of {@link Data} that represents the contents of the
      *      stream.
      */
-    Data create(InputStream dataStream, final int length);
+    Data create(InputStream dataStream, final long length);
 
     /**
      * Retrieve an existing item of binary data and write it to an output

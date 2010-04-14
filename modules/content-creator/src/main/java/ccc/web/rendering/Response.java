@@ -89,7 +89,7 @@ public class Response {
      *
      * @param length The size of the response's body, in bytes.
      */
-    public void setLength(final int length) {
+    public void setLength(final long length) {
         _headers.put("Content-Length", new IntHeader("Content-Length", length));
     }
 

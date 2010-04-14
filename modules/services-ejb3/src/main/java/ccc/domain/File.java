@@ -74,7 +74,7 @@ public class File
                 final String title,
                 final String description,
                 final Data data,
-                final int size,
+                final long size,
                 final RevisionMetadata metadata) {
         this(
             name,
@@ -104,7 +104,7 @@ public class File
                 final String title,
                 final String description,
                 final Data data,
-                final int size,
+                final long size,
                 final MimeType mimeType,
                 final Map<String, String> properties,
                 final RevisionMetadata metadata) {
@@ -131,7 +131,7 @@ public class File
      *
      * @return The size of the file in bytes, as a long.
      */
-    public int size() {
+    public long size() {
         return currentRevision().getSize();
     }
 

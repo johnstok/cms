@@ -28,6 +28,7 @@ package ccc.api.jaxrs.providers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -40,9 +41,17 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.PartSource;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
 import ccc.api.dto.FileDelta;
@@ -63,6 +72,7 @@ public class FileReader
     extends
         AbstractProvider
     implements
+        MessageBodyWriter<FileDto>,
         MessageBodyReader<FileDto> {
     private static final Logger LOG = Logger.getLogger(FileReader.class);
 
@@ -72,8 +82,7 @@ public class FileReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        final boolean same = FileDto.class.equals(clazz);
-        return same;
+        return FileDto.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
@@ -201,24 +210,83 @@ public class FileReader
         }
     }
 
-//  final MultipartForm form = new MultipartForm(request);
-//  final UUID fileId = UUID.fromString(form.getFormItem("id").getString());
-//
-//  final FileItem cItem = form.getFormItem("comment");
-//  final String comment = cItem==null ? null : cItem.getString();
-//
-//  final FileItem bItem = form.getFormItem("majorEdit");
-//  final boolean isMajorEdit = bItem == null ? false : true;
-//
-//  final FileItem file = form.getFileItem().get("file");
-//
-//  final Map<String, String> props = new HashMap<String, String>();
-//  props.put(FilePropertyNames.CHARSET, toCharset(file.getContentType()));
-//
-//  final FileDelta delta =
-//      new FileDelta(
-//          toMimeType(file.getContentType()),
-//          null,
-//          (int) file.getSize(),
-//          props);
+    /** {@inheritDoc} */
+    @Override
+    public long getSize(final FileDto t,
+                        final Class<?> type,
+                        final Type genericType,
+                        final Annotation[] annotations,
+                        final MediaType mediaType) {
+        return -1;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isWriteable(final Class<?> type,
+                               final Type genericType,
+                               final Annotation[] annotations,
+                               final MediaType mediaType) {
+        return FileDto.class.equals(type);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(final FileDto t,
+                        final Class<?> type,
+                        final Type genericType,
+                        final Annotation[] annotations,
+                        final MediaType mediaType,
+                        final MultivaluedMap<String, Object> httpHeaders,
+                        final OutputStream entityStream) throws IOException {
+
+        final String name        = t.getName().toString();
+        final String title       = t.getTitle();
+        final String description = t.getDescription();
+        final Date lastUpdate    = t.getDateChanged();
+        final UUID parentId      = t.getParent();
+        final boolean publish    = t.isPublished();
+        final long size          = t.getSize();
+        final String contentType = t.getMimeType().toString();
+        final String charset     = t.getCharset();
+
+        final PartSource ps = new PartSource() {
+
+            @Override public long getLength() {
+                return size;
+            }
+
+            @Override public String getFileName() {
+                return name;
+            }
+
+            @Override public InputStream createInputStream() {
+                return t.getInputStream();
+            }
+        };
+
+        final FilePart fp = new FilePart("file", ps);
+        fp.setContentType(contentType);
+        fp.setCharSet(charset);
+        final Part[] parts = {
+            new StringPart("fileName", name),
+            new StringPart("title", title),
+            new StringPart("description", description),
+            new StringPart(
+                "lastUpdate",
+                String.valueOf(
+                    (null==lastUpdate)
+                        ? new Date().getTime()
+                        : lastUpdate.getTime())),
+            new StringPart("path", parentId.toString()),
+            new StringPart("publish", String.valueOf(publish)),
+            fp
+        };
+
+        final RequestEntity entity =
+            new MultipartRequestEntity(parts, new HttpMethodParams());
+
+        httpHeaders.add("Content-Type", entity.getContentType());
+        entity.writeRequest(entityStream);
+
+    }
 }

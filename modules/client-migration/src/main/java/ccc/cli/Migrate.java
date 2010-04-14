@@ -37,6 +37,7 @@ import org.kohsuke.args4j.Option;
 
 import ccc.api.http.ProxyServiceLocator;
 import ccc.migration.DbUtilsDB;
+import ccc.migration.FileUploader;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationServiceLocator;
 import ccc.migration.Migrations;
@@ -99,7 +100,7 @@ public final class Migrate extends LegacyApp {
                 legacyDBQueries,
                 services.getResourcesExt(),
                 services.getMigration(),
-                sl.getFileUploader(),
+                new FileUploader(sl.getHttpClient(), options._ccURL),
                 options);
         migrations.migrate();
     }

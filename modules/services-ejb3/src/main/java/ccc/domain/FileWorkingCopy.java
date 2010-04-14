@@ -44,7 +44,7 @@ public class FileWorkingCopy
         WorkingCopy<FileDelta> {
 
     private MimeType _mimeType;
-    private int _size;
+    private long _size;
     private Data _data;
     private Map<String, String> _properties;
 
@@ -109,7 +109,7 @@ public class FileWorkingCopy
      *
      * @return The working copy's size, in bytes.
      */
-    public int getSize() {
+    public long getSize() {
         return _size;
     }
 
