@@ -24,9 +24,8 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.jaxrs.providers;
+package ccc.plugins.multipart.apache;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.fileupload.RequestContext;
@@ -35,7 +34,7 @@ import ccc.api.types.DBC;
 
 
 /**
- * TODO: Add a description for this type.
+ * A simple request context for Apache commons file-upload.
  *
  * @author Civic Computing Ltd.
  */
@@ -51,10 +50,10 @@ public class JaxrsRequestContext implements RequestContext {
     /**
      * Constructor.
      *
-     * @param charEncoding
-     * @param contentLength
-     * @param contentType
-     * @param inputStream
+     * @param charEncoding The character encoding of the input stream.
+     * @param contentLength The number of bytes on the input stream.
+     * @param contentType The input stream's media type.
+     * @param inputStream The stream to parse as multipart.
      */
     public JaxrsRequestContext(final String charEncoding,
                                final int contentLength,
@@ -87,7 +86,7 @@ public class JaxrsRequestContext implements RequestContext {
 
     /** {@inheritDoc} */
     @Override
-    public InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() {
         return _inputStream;
     }
 

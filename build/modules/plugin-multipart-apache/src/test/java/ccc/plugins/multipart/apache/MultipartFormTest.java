@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.web;
+package ccc.plugins.multipart.apache;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,8 +35,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.commons.fileupload.FileItem;
-
-import ccc.api.jaxrs.providers.MultipartForm;
 
 
 /**
@@ -60,7 +58,7 @@ public class MultipartFormTest extends TestCase {
         // ACT
         final MultipartForm f = new MultipartForm(items);
 
-        assertSame(foo, f.getFormItem("foo"));
+        assertSame("foo", f.getString("foo"));
 
     }
 
@@ -122,8 +120,7 @@ public class MultipartFormTest extends TestCase {
         }
 
         public String getString() {
-
-            throw new UnsupportedOperationException("Method not implemented.");
+            return _fieldName;
         }
 
         public String getString(final String arg0) {

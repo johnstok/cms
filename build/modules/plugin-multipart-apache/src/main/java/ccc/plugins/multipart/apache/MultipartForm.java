@@ -24,8 +24,10 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.jaxrs.providers;
+package ccc.plugins.multipart.apache;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +39,15 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 import ccc.api.types.DBC;
+import ccc.plugins.multipart.MultipartFormData;
 
 
 /**
- * This class represents a mime encoded multi-part form.
+ * A multi-part form implemented via Apache commons file-upload.
  *
  * @author Civic Computing Ltd.
  */
-public class MultipartForm {
+public class MultipartForm implements MultipartFormData {
 
     private static final long MAX_FILE_SIZE      = 32*1024*1024; //  32mb
     private static final int  MAX_IN_MEMORY_SIZE = 500*1024;     // 500kb
@@ -52,7 +55,6 @@ public class MultipartForm {
     private final Map<String, FileItem> _formItems =
         new HashMap<String, FileItem>();
 
-    private Map<String, FileItem> _fileItem = new HashMap<String, FileItem>();
 
     /**
      * Constructor.
@@ -74,7 +76,7 @@ public class MultipartForm {
                 }
                 _formItems.put(fn, item);
             } else {
-                _fileItem.put(item.getFieldName(), item);
+                _formItems.put(item.getFieldName(), item);
             }
         }
     }
@@ -82,10 +84,19 @@ public class MultipartForm {
     /**
      * Constructor.
      *
-     * @param context The JAXRS context for the client request.
+     * @param charEncoding The character encoding of the input stream.
+     * @param contentLength The number of bytes on the input stream.
+     * @param contentType The input stream's media type.
+     * @param inputStream The stream to parse as multipart.
      */
-    public MultipartForm(final JaxrsRequestContext context) {
-        this(parseFileItems(context));
+    public MultipartForm(final String charEncoding,
+                         final int contentLength,
+                         final String contentType,
+                         final InputStream inputStream) {
+        this(
+            parseFileItems(
+                new JaxrsRequestContext(
+                    charEncoding, contentLength, contentType, inputStream)));
     }
 
     /**
@@ -128,15 +139,11 @@ public class MultipartForm {
         }
     }
 
-    /**
-     * Retrieve a form item by name.
-     *
-     * @param string The name of the item.
-     * @return The form item identified by the specified name.
-     */
-    public FileItem getFormItem(final String string) {
+
+    private FileItem getFormItem(final String string) {
         return _formItems.get(string);
     }
+
 
     /**
      * Retrieve form item keys.
@@ -151,12 +158,31 @@ public class MultipartForm {
         return keyList;
     }
 
-    /**
-     * Retrieve a file item map.
-     *
-     * @return The file items as a map.
-     */
-    public Map<String, FileItem> getFileItem() {
-        return _fileItem;
+
+    /** {@inheritDoc} */
+    @Override
+    public InputStream getInputStream(final String string) throws IOException {
+        return getFormItem(string).getInputStream();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getContentType(final String string) {
+        return getFormItem(string).getContentType();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSize(final String string) {
+        return getFormItem(string).getSize();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getString(final String string) {
+        return getFormItem(string).getString();
     }
 }

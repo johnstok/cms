@@ -26,10 +26,12 @@
  */
 package ccc.plugins;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
@@ -77,6 +79,34 @@ public class PluginFactory {
     }
 
 
+    public MultipartFormData createFormData(final String charEncoding,
+                                            final int contentLength,
+                                            final String contentType,
+                                            final InputStream inputStream) {
+
+        final Class<?>[] types = new Class<?>[] {
+            String.class,
+            int.class,
+            String.class,
+            InputStream.class
+        };
+
+        final Object[] values = new Object[] {
+            charEncoding,
+            Integer.valueOf(contentLength),
+            contentType,
+            inputStream
+        };
+
+        return
+            construct(
+                MultipartFormData.class,
+                "ccc.plugins.multipart.apache.MultipartForm",
+                types,
+                values);
+    }
+
+
     private <T> T create(final Class<T> expectedClass, final String className) {
         try {
             final Class<?> theType = Class.forName(className);
@@ -96,19 +126,33 @@ public class PluginFactory {
 
     public static <T> T construct(final Class<T> expectedClass,
                                   final String className,
-                                  final Object... theArguments) {
+                                  final Object[] theArguments) {
+
+        final List<Class<?>> types = new ArrayList<Class<?>>();
+        for (final Object o : theArguments) {
+            types.add(o.getClass());
+        }
+
+        return
+            construct(
+                expectedClass,
+                className,
+                types.toArray(new Class[] {}),
+                theArguments);
+    }
+
+
+    private static <T> T construct(final Class<T> expectedClass,
+                                   final String className,
+                                   final Class<?>[] types,
+                                   final Object[] theArguments) {
 
         try {
             final Class<?> theType = Class.forName(className);
 
-            final List<Class<?>> types = new ArrayList<Class<?>>();
-            for (final Object o : theArguments) {
-                types.add(o.getClass());
-            }
-
             final Object o =
                 theType
-                    .getConstructor(types.toArray(new Class[] {}))
+                    .getConstructor(types)
                     .newInstance(theArguments);
 
             return expectedClass.cast(o);

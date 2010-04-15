@@ -44,7 +44,6 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
@@ -54,11 +53,12 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
-import ccc.api.dto.FileDelta;
 import ccc.api.dto.FileDto;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.plugins.PluginFactory;
+import ccc.plugins.multipart.MultipartFormData;
 
 
 /**
@@ -76,6 +76,17 @@ public class FileReader
         MessageBodyReader<FileDto> {
     private static final Logger LOG = Logger.getLogger(FileReader.class);
 
+    private static final String FILE        = "file";
+    private static final String FILE_NAME   = "fileName";
+    private static final String TITLE       = "title";
+    private static final String DESCRIPTION = "description";
+    private static final String PATH        = "path";
+    private static final String PUBLISH     = "publish";
+    private static final String LAST_UPDATE = "lastUpdate";
+    private static final String COMMENT     = "comment";
+    private static final String MAJOR_EDIT  = "majorEdit";
+
+
     /** {@inheritDoc} */
     @Override
     public boolean isReadable(final Class<?> clazz,
@@ -85,6 +96,7 @@ public class FileReader
         return FileDto.class.equals(clazz);
     }
 
+
     /** {@inheritDoc} */
     @Override
     public FileDto readFrom(final Class<FileDto> arg0,
@@ -93,68 +105,63 @@ public class FileReader
                              final MediaType arg3,
                              final MultivaluedMap<String, String> arg4,
                              final InputStream arg5) throws IOException {
-        final JaxrsRequestContext rc =
-            new JaxrsRequestContext(
+
+        final MultipartFormData form =
+            new PluginFactory().createFormData(
                 arg3.getParameters().get("charset"),
                 Integer.parseInt(arg4.getFirst("Content-Length")),
                 arg3.toString(),
                 arg5);
 
-        final FileDto f = parse(rc);
+        final FileDto f = parse(form);
 
         return f;
     }
 
-    private FileDto parse(final JaxrsRequestContext rc) throws IOException {
-        final MultipartForm form = new MultipartForm(rc);
 
-        final FileItem file        = form.getFileItem().get("file");
-        final FileItem name        = form.getFormItem("fileName");
-        final FileItem title       = form.getFormItem("title");
-        final FileItem description = form.getFormItem("description");
-        final FileItem path        = form.getFormItem("path");
-        final FileItem publish     = form.getFormItem("publish");
-        final FileItem lastUpdate  = form.getFormItem("lastUpdate");
+    private FileDto parse(final MultipartFormData form) throws IOException {
 
-        final FileItem cItem = form.getFormItem("comment");
-        final String comment = cItem==null ? null : cItem.getString();
+        final InputStream fileIs = form.getInputStream(FILE);
+        final String fileType    = form.getContentType(FILE);
+        final long fileSize      = form.getSize(FILE);
+        final String name        = form.getString(FILE_NAME);
+        final String title       = form.getString(TITLE);
+        final String description = form.getString(DESCRIPTION);
+        final String path        = form.getString(PATH);
+        final String publish     = form.getString(PUBLISH);
+        final String lastUpdate  = form.getString(LAST_UPDATE);
+        final String cItem       = form.getString(COMMENT);
+        final String bItem       = form.getString(MAJOR_EDIT);
 
-        final FileItem bItem = form.getFormItem("majorEdit");
+        final String comment = cItem==null ? null : cItem;
+
         final boolean isMajorEdit = bItem == null ? false : true;
 
-        final UUID parentId = UUID.fromString(path.getString());
+        final UUID parentId = UUID.fromString(path);
         final boolean p =
             (null==publish)
                 ? false
-                : Boolean.parseBoolean(publish.getString());
+                : Boolean.parseBoolean(publish);
 
         final Map<String, String> props = new HashMap<String, String>();
-        props.put(FilePropertyNames.CHARSET, toCharset(file.getContentType()));
+        props.put(FilePropertyNames.CHARSET, toCharset(fileType));
 
-        final FileDelta delta =
-            new FileDelta(
-                toMimeType(file.getContentType()),
-                null,
-                (int) file.getSize(),
-                props);
-
-        final String titleString =
-            (title == null) ? name.getString() : title.getString();
+        final String titleString = (title == null) ? name : title;
 
         final String descriptionString =
-                (description == null) ? "" : description.getString();
+                (description == null) ? "" : description;
 
         Date lastUpdateDate = new Date();
         if (lastUpdate != null) {
             lastUpdateDate = new Date(
-                Long.valueOf(lastUpdate.getString()).longValue());
+                Long.valueOf(lastUpdate).longValue());
         }
 
         final FileDto f = new FileDto(
-            toMimeType(file.getContentType()),
+            toMimeType(fileType),
             null,
             null,
-            new ResourceName(name.getString()),
+            new ResourceName(name),
             titleString,
             props
         );
@@ -166,11 +173,12 @@ public class FileReader
         f.setDescription(descriptionString);
         f.setDateCreated(lastUpdateDate);
         f.setDateChanged(lastUpdateDate);
-        f.setInputStream(file.getInputStream());
-        f.setSize((int) file.getSize());
+        f.setInputStream(fileIs);
+        f.setSize(fileSize);
 
         return f;
     }
+
 
     /**
      * Extract the mime type from the content-type HTTP header.
@@ -210,6 +218,7 @@ public class FileReader
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
     public long getSize(final FileDto t,
@@ -220,6 +229,7 @@ public class FileReader
         return -1;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public boolean isWriteable(final Class<?> type,
@@ -228,6 +238,7 @@ public class FileReader
                                final MediaType mediaType) {
         return FileDto.class.equals(type);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -248,6 +259,8 @@ public class FileReader
         final long size          = t.getSize();
         final String contentType = t.getMimeType().toString();
         final String charset     = t.getCharset();
+        final String comment     = t.getComment();
+        final String majorEdit   = Boolean.valueOf(t.isMajorEdit()).toString();
 
         final PartSource ps = new PartSource() {
 
@@ -264,21 +277,23 @@ public class FileReader
             }
         };
 
-        final FilePart fp = new FilePart("file", ps);
+        final FilePart fp = new FilePart(FILE, ps);
         fp.setContentType(contentType);
         fp.setCharSet(charset);
         final Part[] parts = {
-            new StringPart("fileName", name),
-            new StringPart("title", title),
-            new StringPart("description", description),
+            new StringPart(FILE_NAME, name),
+            new StringPart(TITLE, title),
+            new StringPart(DESCRIPTION, description),
+            new StringPart(COMMENT, comment),
+            new StringPart(MAJOR_EDIT, majorEdit),
             new StringPart(
-                "lastUpdate",
+                LAST_UPDATE,
                 String.valueOf(
                     (null==lastUpdate)
                         ? new Date().getTime()
                         : lastUpdate.getTime())),
-            new StringPart("path", parentId.toString()),
-            new StringPart("publish", String.valueOf(publish)),
+            new StringPart(PATH, parentId.toString()),
+            new StringPart(PUBLISH, String.valueOf(publish)),
             fp
         };
 
