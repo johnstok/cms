@@ -35,6 +35,7 @@ import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.scripting.TextProcessor;
 import ccc.plugins.search.Index;
 import ccc.plugins.search.Indexer;
+import ccc.plugins.security.Sessions;
 
 
 /**
@@ -76,6 +77,14 @@ public class PluginFactory {
                 Indexer.class,
                 "ccc.plugins.search.lucene.SimpleLuceneFS",
                 theArguments);
+    }
+
+
+    public Sessions createSessions() {
+        return
+            create(
+                Sessions.class,
+                "ccc.plugins.security.jboss.JbossSession");
     }
 
 

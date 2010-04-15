@@ -31,8 +31,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jboss.web.tomcat.security.login.WebAuthentication;
-
+import ccc.plugins.PluginFactory;
+import ccc.plugins.security.Sessions;
 import ccc.web.jaxrs.SecurityImpl;
 
 
@@ -68,7 +68,7 @@ public class LoginServlet
                               final String username,
                               final String password) throws IOException {
         req.getSession(true);
-        final WebAuthentication pwl = new WebAuthentication();
+        final Sessions pwl = new PluginFactory().createSessions();
         if(pwl.login(username, password)) {
             SecurityImpl.logSuccesfulLogin(
                 username,

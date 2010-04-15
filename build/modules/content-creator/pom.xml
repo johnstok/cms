@@ -110,13 +110,5 @@
             <version>${lib.version.jboss-legacy}</version>
             <scope>provided</scope>
         </dependency>
-        
-        <!-- Vendor specific libraries -->
-        <dependency>
-            <groupId>jboss</groupId>
-            <artifactId>jbossweb-service</artifactId>
-            <version>${lib.version.jboss-legacy}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 </project>
