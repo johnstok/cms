@@ -112,6 +112,7 @@
         <module>modules/plugin-search-lucene</module>
         <module>modules/plugin-persistence-hibernate</module>
         <module>modules/plugin-multipart-apache</module>
+        <module>modules/plugin-security-jboss</module>
     </modules>
 
     <build>

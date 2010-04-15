@@ -38,11 +38,12 @@ import javax.ws.rs.core.Context;
 
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.web.tomcat.security.login.WebAuthentication;
 
 import ccc.api.Security;
 import ccc.api.types.Permission;
+import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.security.Sessions;
 
 
 /**
@@ -74,7 +75,7 @@ public class SecurityImpl
     @Override
     public Boolean login(final String username, final String password) {
         _request.getSession(true);
-        final WebAuthentication pwl = new WebAuthentication();
+        final Sessions pwl = new PluginFactory().createSessions();
         final boolean authenticated = pwl.login(username, password);
 
         // Credentials are bad.
