@@ -27,11 +27,14 @@
 package ccc.client.gwt.views.gxt;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.Map;
 
+import ccc.api.types.CommandType;
+import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.remoting.CreateActionAction;
+import ccc.client.gwt.views.CreateAction;
 import ccc.client.gwt.widgets.CreateActionPanel;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -51,25 +54,24 @@ import com.extjs.gxt.ui.client.widget.layout.FormLayout;
  */
 public class CreateActionDialog
     extends
-        AbstractWizardDialog {
+        AbstractWizardDialog
+    implements
+        CreateAction {
 
     private final CreateActionPanel _createAction = new CreateActionPanel();
     private final DateTimePicker _dtPicker = new DateTimePicker();
 
-    private final UUID _resourceId;
+    private Editable _presenter;
 
     /**
      * Constructor.
      *
      * @param resourceId The UUID of the resource.
      */
-    public CreateActionDialog(final UUID resourceId) {
+    public CreateActionDialog() {
         super(new GlobalsImpl().uiConstants().createAction(),
               new GlobalsImpl());
 
-        // FIXME Add event handler to hide(); dialog onSuccess();
-
-        _resourceId = resourceId;
 
         addCard(_createAction);
         addCard(_dtPicker);
@@ -83,22 +85,7 @@ public class CreateActionDialog
         return new SelectionListener<ButtonEvent>(){
             @Override
             public void componentSelected(final ButtonEvent ce) {
-
-                if (null==_createAction.commandType()) {
-                    getUiConstants().pleaseChooseAnAction();
-                    return;
-                }
-                if (null==_dtPicker.getDate()) {
-                    getUiConstants().pleaseSpecifyDateAndTime();
-                    return;
-                }
-
-                new CreateActionAction(
-                    _resourceId,
-                    _createAction.commandType(),
-                    _dtPicker.getDate(),
-                    _createAction.getParameters())
-                .execute();
+                getPresenter().save();
             }
         };
     }
@@ -144,5 +131,57 @@ public class CreateActionDialog
             d.setMinutes(t.getMinutes());
             return new Date(d.getTime());
         }
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the presenter.
+     */
+    Editable getPresenter() {
+        return _presenter;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void alert(final String message) { getGlobals().alert(message); }
+
+    /** {@inheritDoc} */
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+        super.show();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
+
+        if (null==_createAction.commandType()) {
+            result.addError(getUiConstants().pleaseChooseAnAction());
+        }
+        if (null==_dtPicker.getDate()) {
+            result.addError(getUiConstants().pleaseSpecifyDateAndTime());
+        }
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<String, String> getActionParameters() {
+        return _createAction.getParameters();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommandType getCommandType() {
+        return _createAction.commandType();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Date getDate() {
+        return _dtPicker.getDate();
     }
 }

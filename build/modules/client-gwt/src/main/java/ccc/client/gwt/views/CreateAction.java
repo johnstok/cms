@@ -21,47 +21,54 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
-import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateActionPresenter;
-import ccc.client.gwt.views.gxt.CreateActionDialog;
+package ccc.client.gwt.views;
+
+import java.util.Date;
+import java.util.Map;
+
+import ccc.api.types.CommandType;
+import ccc.client.gwt.core.Editable;
+import ccc.client.gwt.core.Validatable;
+import ccc.client.gwt.core.View;
+
 
 /**
- * Create an action.
+ * API for create action dialogs.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateActionAction
-    implements
-        Action {
-
-    private SingleSelectionModel _ssm;
+public interface CreateAction extends View<Editable>, Validatable {
 
     /**
-     * Constructor.
+     * Display an alert with the specified message.
      *
-     * @param ssm The selection model.
+     * @param message The message to display.
      */
-    public OpenCreateActionAction(final SingleSelectionModel ssm) {
-        _ssm = ssm;
-    }
+    void alert(String message);
 
-    /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummaryModelData item = _ssm.tableSelection();
-        if (item == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noResourceSelected());
-        } else {
-            new CreateActionPresenter(
-                GLOBALS,
-                new CreateActionDialog(),
-                item);
-        }
-    }
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    CommandType getCommandType();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    Date getDate();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    Map<String, String> getActionParameters();
+
 }

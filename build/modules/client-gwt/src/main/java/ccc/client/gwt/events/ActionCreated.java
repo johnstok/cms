@@ -31,7 +31,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 
 /**
- * An event indicating a working copy was applied to a resource.
+ * An event indicating a new action was created.
  *
  * @author Civic Computing Ltd.
  */
@@ -54,7 +54,7 @@ public class ActionCreated
 
 
     /**
-     * Handler for 'group created' events.
+     * Handler for 'action created' events.
      *
      * @author Civic Computing Ltd.
      */
@@ -62,7 +62,7 @@ public class ActionCreated
 
 
         /**
-         * Handle a 'WC applied' event.
+         * Handle a 'action created' event.
          *
          * @param event The event to handle.
          */
