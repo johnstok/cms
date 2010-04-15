@@ -172,10 +172,12 @@ public class UpdateResourceRolesDialog
         final List<ModelData> gData = new ArrayList<ModelData>();
         for (final GroupDto g : allGroups) {
             final BaseModelData d = new BaseModelData();
-            if (_acl.getGroups().contains((g.getId()))) {
-                d.set("name", g.getName());
-                d.set("id", g.getId());
-                gData.add(d);
+            for (final Entry e : _acl.getGroups()){
+                if (e._principal.equals(g.getId())) {
+                    d.set("name", g.getName());
+                    d.set("id", g.getId());
+                    gData.add(d);
+                }
             }
         }
 
