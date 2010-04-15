@@ -111,6 +111,7 @@
         <module>modules/plugin-scripting-velocity</module>
         <module>modules/plugin-search-lucene</module>
         <module>modules/plugin-persistence-hibernate</module>
+        <module>modules/plugin-multipart-apache</module>
     </modules>
 
     <build>

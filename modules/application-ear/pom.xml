@@ -115,6 +115,11 @@
             <artifactId>plugins-persistence-hibernate</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>plugins-multipart-apache</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Not required in the EAR. -->
         <dependency>

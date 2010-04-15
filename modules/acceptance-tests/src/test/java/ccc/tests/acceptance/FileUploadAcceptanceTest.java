@@ -174,6 +174,7 @@ public class FileUploadAcceptanceTest
         f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
         f.setSize(5);
         f.setPublished(false);
+        f.setComment("Testing 1, 2, 3.");
 
         // ACT
         final ResourceSummary rs = getFiles().createFile(f);
@@ -185,11 +186,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws IOException If the test fails.
-     * @throws RestException If the test fails.
      */
-    public void testCreateFile() throws IOException, RestException {
+    public void testCreateFile() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -216,12 +214,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws IOException If the test fails.
-     * @throws RestException If the test fails.
      */
-    public void testCreateFileRejectsDuplicateNames()
-    throws IOException, RestException {
+    public void testCreateFileRejectsDuplicateNames() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -261,11 +255,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws IOException If the test fails.
-     * @throws RestException If the test fails.
      */
-    public void testUpdateFile() throws IOException, RestException {
+    public void testUpdateFile() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -328,6 +319,7 @@ public class FileUploadAcceptanceTest
         f.setInputStream(new ByteArrayInputStream(updateBytes));
         f.setSize(updateBytes.length);
         f.setPublished(false);
+        f.setComment("Test update.");
 
         // ACT
         final ResourceSummary fs = getFiles().updateFile(rs.getId(), f);
@@ -339,11 +331,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws IOException If the test fails.
-     * @throws RestException If the test fails.
      */
-    public void testUpdateFileViaApi() throws IOException, RestException {
+    public void testUpdateFileViaApi() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -376,12 +365,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws IOException If the test fails.
-     * @throws RestException If the test fails.
      */
-    public void testUpdateFileRequiresLock() throws IOException,
-                                                    RestException {
+    public void testUpdateFileRequiresLock() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
