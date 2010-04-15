@@ -502,7 +502,7 @@ public class ResourceTable
     @Override
     public void onRename(final ResourceRenamed event) {
         final ResourceSummaryModelData md =
-            _detailsStore.findModel("id", event.getId());
+            _detailsStore.findModel("UUID", event.getId());
         md.setAbsolutePath(event.getPath());
         md.setName(event.getName());
         update(md);
@@ -513,7 +513,7 @@ public class ResourceTable
     @Override
     public void onTemlateChanged(final ResourceTemplateChanged event) {
         final ResourceSummaryModelData md =
-            _detailsStore.findModel("id", event.getResource());
+            _detailsStore.findModel("UUID", event.getResource());
         md.setTemplateId(event.getNewTemplate());
         update(md);
     }
