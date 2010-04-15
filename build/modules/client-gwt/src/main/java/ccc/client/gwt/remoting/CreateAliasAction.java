@@ -50,9 +50,9 @@ public final class CreateAliasAction
     /**
      * Constructor.
      *
-     * @param targetId The id of the target resource.
-     * @param aliasName The name of the alias.
      * @param parentId The id of the alias' parent folder.
+     * @param aliasName The name of the alias.
+     * @param targetId The id of the target resource.
      */
     public CreateAliasAction(final UUID parentId,
                               final String aliasName,

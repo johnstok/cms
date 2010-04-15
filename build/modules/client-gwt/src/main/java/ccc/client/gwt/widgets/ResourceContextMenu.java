@@ -123,7 +123,7 @@ public class ResourceContextMenu
         _includeMainMenu = new IncludeInMainMenuAction(_table);
         _removeMainMenu = new RemoveFromMainMenuAction(_table);
         _unpublishAction = new UnpublishAction(_table);
-        _createAliasAction = new OpenCreateAliasAction(_table, _table.root());
+        _createAliasAction = new OpenCreateAliasAction(_table);
         _updateMetadataAction = new OpenUpdateMetadataAction(_table);
         _viewHistory = new ViewHistoryAction(_table);
         _renameAction = new OpenRenameAction(_table);

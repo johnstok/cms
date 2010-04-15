@@ -932,6 +932,14 @@ public interface UIConstants extends Constants {
     String noFolderSelected();
 
     /**
+     * "No resource selected".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No resource selected")
+    String noResourceSelected();
+
+    /**
      * "Search".
      *
      * @return The constant, in the appropriate locale.
@@ -971,7 +979,7 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Edit user password")
     String editUserPw();
-    
+
     /**
      * "Edit user metadata".
      *
