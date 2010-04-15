@@ -63,7 +63,7 @@ public class CreateAliasDialog
 
     private ResourceSummaryModelData _parent = null;
     private Editable _presenter;
-    private final static int DIALOG_HEIGHT = 200;
+    private static final int DIALOG_HEIGHT = 200;
 
     /**
      * Constructor.
@@ -182,7 +182,6 @@ public class CreateAliasDialog
     public UUID getParentId() {
        return (null==_parent) ? null : _parent.getId();
     }
-
 
 
     /** {@inheritDoc} */
