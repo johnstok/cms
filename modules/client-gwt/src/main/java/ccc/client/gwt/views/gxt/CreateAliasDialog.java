@@ -27,13 +27,14 @@
 package ccc.client.gwt.views.gxt;
 
 
-import ccc.api.dto.ResourceSummary;
+import java.util.UUID;
+
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.remoting.CreateAliasAction;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
+import ccc.client.gwt.core.ValidationResult;
+import ccc.client.gwt.core.Validations2;
+import ccc.client.gwt.views.CreateAlias;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -51,35 +52,30 @@ import com.extjs.gxt.ui.client.widget.form.TriggerField;
  *
  * @author Civic Computing Ltd
  */
-public class CreateAliasDialog extends AbstractEditDialog {
+public class CreateAliasDialog
+    extends AbstractEditDialog
+    implements CreateAlias {
 
     private final TextField<String> _targetName = new TextField<String>();
     private final TextField<String> _aliasName = new TextField<String>();
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final SingleSelectionModel _ssm;
     private ResourceSummaryModelData _parent = null;
+    private Editable _presenter;
+    private final static int DIALOG_HEIGHT = 200;
 
     /**
      * Constructor.
      *
-     * @param ssm Selection model.
-     * @param root Resource root for folder selection
      */
-    public CreateAliasDialog(final SingleSelectionModel ssm,
-                             final ResourceSummary root) {
-
-        // FIXME Add event handler to hide(); dialog onSuccess();
+    public CreateAliasDialog() {
 
         super(new GlobalsImpl().uiConstants().createAlias(),
               new GlobalsImpl());
-        setHeight(200);
-
-        _ssm = ssm;
+        setHeight(DIALOG_HEIGHT);
 
         _targetName.setFieldLabel(constants().target());
-        _targetName.setValue(_ssm.tableSelection().getName());
         _targetName.setReadOnly(true);
         _targetName.disable();
         addField(_targetName);
@@ -122,26 +118,74 @@ public class CreateAliasDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(createAlias())
-                    .check(Validations.notEmpty(_aliasName))
-                    .check(Validations.notEmpty(_parentFolder))
-                    .check(Validations.notValidResourceName(_aliasName))
-                    .stopIfInError()
-                    .check(Validations.uniqueResourceName(_parent, _aliasName))
-                    .callMethodOr(Validations.reportErrors());
+                getPresenter().save();
             }
         };
     }
 
-    private Runnable createAlias() {
-        return new Runnable() {
-            public void run() {
-                new CreateAliasAction(
-                    _parent.getId(),
-                    _aliasName.getValue(),
-                    _ssm.tableSelection().getId())
-                .execute();
-            }
-        };
+    /**
+     * Accessor.
+     *
+     * @return Returns the presenter.
+     */
+    Editable getPresenter() {
+        return _presenter;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+        super.show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
+
+        if (!Validations2.notEmpty(_parentFolder.getValue())) {
+            result.addError(
+                _parentFolder.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        }
+        if (!Validations2.notEmpty(_aliasName.getValue())) {
+            result.addError(
+                _aliasName.getFieldLabel()+getUiConstants().cannotBeEmpty());
+        } else if (!Validations2.notValidResourceName(_aliasName.getValue())) {
+            result.addError(getUiConstants().resourceNameIsInvalid());
+        }
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getAliasName() {
+        return _aliasName.getValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getTargetName() {
+        return _targetName.getValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setTargetName(final String targetName) {
+        _targetName.setValue(targetName);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UUID getParentId() {
+       return (null==_parent) ? null : _parent.getId();
+    }
+
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void alert(final String message) { getGlobals().alert(message); }
 }

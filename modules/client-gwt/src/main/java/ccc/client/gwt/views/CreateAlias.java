@@ -21,47 +21,59 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.actions;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
-import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateAliasPresenter;
-import ccc.client.gwt.views.gxt.CreateAliasDialog;
+package ccc.client.gwt.views;
+
+import java.util.UUID;
+
+import ccc.client.gwt.core.Editable;
+import ccc.client.gwt.core.Validatable;
+import ccc.client.gwt.core.View;
+
 
 /**
- * Create an alias.
+ * API for create alias dialogs.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenCreateAliasAction
-    implements
-        Action {
-
-    private final SingleSelectionModel _selectionModel;
+public interface CreateAlias extends View<Editable>, Validatable {
 
     /**
-     * Constructor.
+     * Accessor.
      *
-     * @param selectionModel The selection model.
+     * @return Returns the alias name.
      */
-    public OpenCreateAliasAction(final SingleSelectionModel selectionModel) {
-        _selectionModel = selectionModel;
-    }
+    String getAliasName();
 
-    /** {@inheritDoc} */
-    public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        if (item == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noResourceSelected());
-        } else {
-            new CreateAliasPresenter(
-                GLOBALS,
-                new CreateAliasDialog(),
-                item);
-        }
-    }
+    /**
+     * Accessor.
+     *
+     * @return Returns the target name.
+     */
+    String getTargetName();
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the parent id.
+     */
+    UUID getParentId();
+
+    /**
+     * Mutator.
+     *
+     * @param targetName Sets the target name.
+     */
+    void setTargetName(String targetName);
+
+    /**
+     * Display an alert with the specified message.
+     *
+     * @param message The message to display.
+     */
+    void alert(String message);
+
 }
