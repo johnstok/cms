@@ -120,7 +120,7 @@ public class LoginDialog extends AbstractEditDialog {
      * @return The username as a string.
      */
     public String getUsername() {
-        return (null==_username.getValue()) ? "" : _username.getValue();
+        return (null==_username.getValue()) ? "" : _username.getValue().trim();
     }
 
     /**
@@ -129,6 +129,6 @@ public class LoginDialog extends AbstractEditDialog {
      * @return The password as a string.
      */
     public String getPassword() {
-        return (null==_password.getValue()) ? "" : _password.getValue();
+        return (null==_password.getValue()) ? "" : _password.getValue().trim();
     }
 }

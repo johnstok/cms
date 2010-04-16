@@ -68,6 +68,9 @@ public final class Validations {
     /** VALID_USERNAME_CHARACTERS : String. */
     public static final String  VALID_USERNAME_CHARACTERS = "[\\w]+";
 
+    /** VALID_PASSWORD_CHARACTERS : String. */
+    public static final String  VALID_PASSWORD_CHARACTERS = "[\\S]+";
+
     /** NO_BRACKETS : String. */
     public static final String  NO_BRACKETS = "[^<^>]*";
 

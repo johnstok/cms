@@ -108,6 +108,17 @@ public final class Validations2 {
     }
 
     /**
+     * Validates password. Fails if password contains whitespace chars.
+     *
+     * @param password Password.
+     *
+     * @return True if the input is valid, false otherwise.
+     */
+    public static boolean notValidPassword(final String password) {
+        return password.matches(Validations.VALID_PASSWORD_CHARACTERS);
+    }
+
+    /**
      * Validates email.
      *
      * @param email The email.

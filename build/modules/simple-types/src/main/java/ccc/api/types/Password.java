@@ -39,6 +39,8 @@ public final class Password {
     private static final String STRONG_PW =
         "^(?=.{10,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$";
 
+    private static final String VALID_CHARACTERS = "\\S*";
+
     /**
      * Test that a string is strong enough to be used as a password.
      *
@@ -48,5 +50,16 @@ public final class Password {
      */
     public static boolean isStrong(final String pw) {
         return pw.matches(STRONG_PW);
+    }
+
+    /**
+     * Test that a string has valid characters.
+     *
+     * @param pw The string to test.
+     *
+     * @return True if the string contains only valid chars, false otherwise.
+     */
+    public static boolean hasOnlyValidChars(final String pw) {
+        return pw.matches(VALID_CHARACTERS);
     }
 }

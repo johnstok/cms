@@ -205,6 +205,9 @@ public class CreateUserDialog
             result.addError(constants().username()+" "
                 +constants().isTooShort());
         }
+        if (!Validations2.notValidPassword(getPassword1())) {
+            result.addError(constants().isNotValidPassword());
+        }
         if (!Validations2.notValidUserName(getUsername())) {
             result.addError(constants().isNotValidUserName());
         }
