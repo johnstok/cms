@@ -66,7 +66,6 @@ public class CreateActionDialog
     /**
      * Constructor.
      *
-     * @param resourceId The UUID of the resource.
      */
     public CreateActionDialog() {
         super(new GlobalsImpl().uiConstants().createAction(),

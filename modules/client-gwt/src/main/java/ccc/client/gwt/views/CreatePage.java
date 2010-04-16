@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -27,21 +27,22 @@
 
 package ccc.client.gwt.views;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.Set;
 
-import ccc.api.types.CommandType;
+import ccc.api.types.Paragraph;
+import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Validatable;
 import ccc.client.gwt.core.View;
 
+import com.extjs.gxt.ui.client.widget.form.TextField;
 
 /**
- * API for create action dialogs.
+ * MVP view for creating a page.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreateAction extends View<Editable>, Validatable {
+public interface CreatePage extends View<Editable>, Validatable {
 
     /**
      * Display an alert with the specified message.
@@ -53,22 +54,43 @@ public interface CreateAction extends View<Editable>, Validatable {
     /**
      * Accessor.
      *
-     * @return The command type.
+     * @return The selected template.
      */
-    CommandType getCommandType();
+    TemplateSummaryModelData getSelectedTemplate();
 
     /**
      * Accessor.
      *
-     * @return The date.
+     * @return The definition.
      */
-    Date getDate();
+    String getDefinition();
 
     /**
      * Accessor.
      *
-     * @return The action parameters.
+     * @return The name.
      */
-    Map<String, String> getActionParameters();
+    TextField<String> getName();
+
+    /**
+     * Accessor.
+     *
+     * @return The comment.
+     */
+    String getComment();
+
+    /**
+     * Accessor.
+     *
+     * @return The major edit.
+     */
+    boolean getMajorEdit();
+
+    /**
+     * Accessor.
+     *
+     * @return The paragraphs.
+     */
+    Set<Paragraph> getParagraphs();
 
 }

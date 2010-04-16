@@ -32,6 +32,7 @@ import ccc.api.dto.TemplateSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.gwt.presenters.CreatePagePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
 
@@ -65,9 +66,11 @@ public final class OpenCreatePageAction
         new GetTemplatesAction(UI_CONSTANTS.createPage()){
             @Override protected void execute(
                                  final Collection<TemplateSummary> templates) {
-                new CreatePageDialog(templates, item, _selectionModel).show();
+                new CreatePagePresenter(
+                    GLOBALS,
+                    new CreatePageDialog(templates, item),
+                    item);
             }
-
         }.execute();
     }
 }

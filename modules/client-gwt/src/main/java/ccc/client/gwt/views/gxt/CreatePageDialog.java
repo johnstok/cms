@@ -31,22 +31,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.TemplateSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.binding.TemplateSummaryModelData;
+import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.events.PageCreated;
-import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
+import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
-import ccc.client.gwt.remoting.CreatePageAction;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validations;
+import ccc.client.gwt.views.CreatePage;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 
@@ -65,11 +60,10 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
@@ -85,7 +79,9 @@ public class CreatePageDialog
     extends
         AbstractWizardDialog
     implements
-        PageCreatedHandler {
+        CreatePage {
+
+    private Editable _presenter;
 
     private static final int SCROLLBAR_WIDTH = 20;
     private static final int DEFAULT_MARGIN = 5;
@@ -113,30 +109,26 @@ public class CreatePageDialog
     private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
 
-    private final SingleSelectionModel _ssm;
-    private final ResourceSummaryModelData _parent;
 
     private final Text _description = new Text("");
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
+    private final ResourceSummaryModelData _parent;
+
     /**
      * Constructor.
+     * @param templates
+     * @param item
      *
      * @param list List of templates.
      * @param parent The Folder in which page will created.
-     * @param ssm SingleSelectionModel to update.
      */
-    public CreatePageDialog(
-                    final Collection<TemplateSummary> list,
-                    final ResourceSummaryModelData parent,
-                    final SingleSelectionModel ssm) {
+    public CreatePageDialog(final Collection<TemplateSummary> list,
+                            final ResourceSummaryModelData parent) {
         super(new GlobalsImpl().uiConstants().createPage(),
               new GlobalsImpl());
-        _ssm = ssm;
         _parent = parent;
-
-        // FIXME Add event handler to hide(); dialog onSuccess();
 
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -144,7 +136,6 @@ public class CreatePageDialog
         templateNameColumn.setId(TemplateSummaryModelData.Property.NAME.name());
         templateNameColumn.setHeader(getUiConstants().name());
         templateNameColumn.setWidth(NAME_COLUMN_WIDTH);
-        templateNameColumn.setRenderer(new IdRenderer());
         configs.add(templateNameColumn);
 
         final ColumnModel cm = new ColumnModel(configs);
@@ -170,7 +161,7 @@ public class CreatePageDialog
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());
-        _templatePanel.add(createCheckbox());
+        _templatePanel.add(new DefaultCheckBox());
         _templatePanel.add(_templateGrid);
 
         final BorderLayoutData centerData =
@@ -220,64 +211,58 @@ public class CreatePageDialog
         refresh();
     }
 
-    private CheckBox createCheckbox() {
+    /**
+     * Checkbox for default template.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private class DefaultCheckBox extends CheckBox {
+        private TemplateSummary _t2 = null;
 
-        final CheckBox cb = new CheckBox();
-        cb.setBoxLabel(getUiConstants().useDefaultTemplate());
-        cb.setId(getUiConstants().useDefaultTemplate());
-        new ComputeTemplateAction(
-            getUiConstants().createPage(), _parent.getId()) {
+        DefaultCheckBox() {
+            setBoxLabel(getUiConstants().useDefaultTemplate());
+            setId(getUiConstants().useDefaultTemplate());
 
-            /** {@inheritDoc} */
-            @Override
-            protected void noTemplate() {
-                cb.setValue(Boolean.FALSE);
-                cb.disable();
-                _templateGrid.enable();
-                _description.setText("");
-            }
+            new ComputeTemplateAction(
+                getUiConstants().createPage(), _parent.getId()) {
 
-            /** {@inheritDoc} */
-            @Override protected void template(final TemplateSummary t) {
-                cb.setValue(Boolean.TRUE);
-                _templateGrid.disable();
-                _templateGrid.getSelectionModel().deselectAll();
-                updateSecondPage(t.getDefinition(), t.getDescription());
-            }
-
-        }.execute();
-
-        cb.addListener(Events.Change, new Listener<FieldEvent>() {
-            public void handleEvent(final FieldEvent be) {
-                if (cb.getValue().booleanValue()) {
-                    new ComputeTemplateAction(getUiConstants().createPage(),
-                                              _parent.getId()) {
-
-                        /** {@inheritDoc} */
-                        @Override
-                        protected void noTemplate() {
-                            cb.disable();
-                            _templateGrid.enable();
-                            _description.setText("");
-                        }
-
-                        /** {@inheritDoc} */
-                        @Override protected void template(final TemplateSummary t) {
-                            _templateGrid.disable();
-                            _templateGrid.getSelectionModel().deselectAll();
-                            updateSecondPage(
-                                t.getDefinition(), t.getDescription());
-                        }
-
-                    }.execute();
-                } else {
-                    _secondWizardPage.removeAll();
+                /** {@inheritDoc} */
+                @Override
+                protected void noTemplate() {
+                    setValue(Boolean.FALSE);
+                    disable();
                     _templateGrid.enable();
                     _description.setText("");
                 }
-            }
-        });
-        return cb;
+
+                /** {@inheritDoc} */
+                @Override protected void template(final TemplateSummary t) {
+                    _t2 = t;
+                    setValue(Boolean.TRUE);
+                    _templateGrid.disable();
+                    _templateGrid.getSelectionModel().deselectAll();
+                    updateSecondPage(t.getDefinition(), t.getDescription());
+                }
+
+            }.execute();
+
+            addListener(Events.Change, new Listener<FieldEvent>() {
+                public void handleEvent(final FieldEvent be) {
+                    if (getValue().booleanValue()) {
+                        if (null != _t2) {
+                            _templateGrid.disable();
+                            _templateGrid.getSelectionModel().deselectAll();
+                            updateSecondPage(
+                                _t2.getDefinition(), _t2.getDescription());
+                        }
+                    } else {
+                        _secondWizardPage.removeAll();
+                        _templateGrid.enable();
+                        _description.setText("");
+                    }
+                }
+            });
+        }
     }
 
 
@@ -286,87 +271,9 @@ public class CreatePageDialog
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final List<PageElement> definitions =
-                    _secondWizardPage.pageElements();
-                final Set<Paragraph> paragraphs =
-                    new HashSet<Paragraph>();
-
-                _secondWizardPage.extractValues(definitions, paragraphs);
-
-                Validate.callTo(createPage(paragraphs))
-                    .check(Validations.notEmpty(_secondWizardPage.name()))
-                    .stopIfInError()
-                    .check(Validations.notValidResourceName(
-                        _secondWizardPage.name()))
-                    .stopIfInError()
-                    .check(Validations.uniqueResourceName(
-                        _parent, _secondWizardPage.name()))
-                    .stopIfInError()
-                    .check(Validations.validateFields(paragraphs,
-                        _secondWizardPage.definition()))
-                    .callMethodOr(Validations.reportErrors());
+               getPresenter().save();
             }
         };
-    }
-
-    private Runnable createPage(final Set<Paragraph> paragraphs) {
-        return new Runnable() {
-            public void run() {
-                final PageDelta page = new PageDelta(paragraphs);
-                final UUID template =
-                    (null==_templateGrid.getSelectionModel().getSelectedItem())
-                    ? null
-                    : _templateGrid.getSelectionModel()
-                           .getSelectedItem()
-                           .getId();
-
-                new CreatePageAction(
-                    _parent.getId(),
-                    page,
-                    _secondWizardPage.name().getValue(),
-                    template,
-                    _secondWizardPage.name().getValue(), // Title
-                    _comment.getValue(),
-                    _majorEdit.getValue().booleanValue())
-                .execute();
-            }
-        };
-    }
-
-
-    /**
-     * Renderer for adding resource UUIDs to the grid.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static final class IdRenderer
-        implements
-            GridCellRenderer<TemplateSummaryModelData> {
-
-        /** {@inheritDoc} */
-        @Override
-        public Object render(final TemplateSummaryModelData model,
-                             final String property,
-                             final ColumnData config,
-                             final int rowIndex,
-                             final int colIndex,
-                             final ListStore<TemplateSummaryModelData> store,
-                             final Grid<TemplateSummaryModelData> grid) {
-
-            String value = "";
-
-            if (null != model) {
-            final StringBuilder html = new StringBuilder();
-            html.append("<div id='");
-            // do not use id for id, otherwise acceptance tests fail.
-            html.append(model.getName());
-            html.append("'>");
-            html.append(model.getName());
-            html.append("</div>");
-            value = html.toString();
-            }
-            return value;
-        }
     }
 
     private void updateSecondPage(final String definition,
@@ -381,5 +288,74 @@ public class CreatePageDialog
     }
 
     /** {@inheritDoc} */
-    @Override public void onCreate(final PageCreated event) { hide(); }
+    @Override
+    public void alert(final String message) { getGlobals().alert(message); }
+
+    /** {@inheritDoc} */
+    @Override
+    public void show(final Editable presenter) {
+        _presenter = presenter;
+        super.show();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationResult getValidationResult() {
+        final ValidationResult result = new ValidationResult();
+        return result;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the presenter.
+     */
+    Editable getPresenter() {
+        return _presenter;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TemplateSummaryModelData getSelectedTemplate() {
+        return _templateGrid.getSelectionModel().getSelectedItem();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getDefinition() {
+        return _secondWizardPage.definition();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TextField<String> getName() {
+        return _secondWizardPage.name();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getComment() {
+        return _comment.getValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean getMajorEdit() {
+        return _majorEdit.getValue().booleanValue();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<Paragraph> getParagraphs() {
+
+        final List<PageElement> definitions =
+            _secondWizardPage.pageElements();
+
+        final Set<Paragraph> paragraphs =
+            new HashSet<Paragraph>();
+        _secondWizardPage.extractValues(definitions, paragraphs);
+        return paragraphs;
+    }
+
 }
