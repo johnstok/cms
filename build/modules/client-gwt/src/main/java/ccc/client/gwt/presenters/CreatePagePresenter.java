@@ -26,29 +26,36 @@
  */
 package ccc.client.gwt.presenters;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import ccc.api.dto.PageDelta;
+import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.events.AliasCreated;
-import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
-import ccc.client.gwt.remoting.CreateAliasAction;
-import ccc.client.gwt.remoting.ResourceNameExistsAction;
-import ccc.client.gwt.views.CreateAlias;
+import ccc.client.gwt.events.PageCreated;
+import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
+import ccc.client.gwt.remoting.CreatePageAction;
+import ccc.client.gwt.validation.Validate;
+import ccc.client.gwt.validation.Validations;
+import ccc.client.gwt.views.CreatePage;
 
 
 /**
- * MVP Presenter for creating alias.
+ * MVP Presenter for creating page.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateAliasPresenter
+public class CreatePagePresenter
     extends
-        AbstractPresenter<CreateAlias, ResourceSummaryModelData>
+        AbstractPresenter<CreatePage, ResourceSummaryModelData>
     implements
         Editable,
-        AliasCreatedHandler {
+        PageCreatedHandler {
 
 
     /**
@@ -58,12 +65,11 @@ public class CreateAliasPresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateAliasPresenter(final Globals globals,
-                                 final CreateAlias view,
+    public CreatePagePresenter(final Globals globals,
+                                 final CreatePage view,
                                  final ResourceSummaryModelData model) {
         super(globals, view, model);
-        addHandler(AliasCreated.TYPE, this);
-        getView().setTargetName(model.getName());
+        addHandler(PageCreated.TYPE, this);
         getView().show(this);
     }
 
@@ -85,31 +91,44 @@ public class CreateAliasPresenter
     public void save() {
         final ValidationResult vr = getView().getValidationResult();
         if (vr.isValid()) {
-            new ResourceNameExistsAction(
-                getView().getParentId(), getView().getAliasName()) {
-                @Override protected void execute(final boolean nameExists) {
-                    if (nameExists) {
-                        getGlobals().alert(
-                            getGlobals().uiMessages().
-                            nameExistsInFolder(getView().getAliasName()));
-                    } else {
-                        createAlias().run();
-                    }
 
-                }
-            }.execute();
+            final Set<Paragraph> paragraphs = getView().getParagraphs();
+                new HashSet<Paragraph>();
+
+            Validate.callTo(createPage(paragraphs))
+                .check(Validations.notEmpty(getView().getName()))
+                .stopIfInError()
+                .check(Validations.notValidResourceName(
+                    getView().getName()))
+                .stopIfInError()
+                .check(Validations.uniqueResourceName(
+                    getModel(),  getView().getName()))
+                .stopIfInError()
+                .check(Validations.validateFields(paragraphs,
+                    getView().getDefinition()))
+                .callMethodOr(Validations.reportErrors());
         } else {
             getView().alert(vr.getErrorText());
         }
     }
 
-    private Runnable createAlias() {
+    private Runnable createPage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
-                new CreateAliasAction(
-                    getView().getParentId(),
-                    getView().getAliasName(),
-                    getModel().getId())
+                final PageDelta page = new PageDelta(paragraphs);
+                final UUID template =
+                    (null==getView().getSelectedTemplate())
+                    ? null
+                    :getView().getSelectedTemplate().getId();
+
+                new CreatePageAction(
+                    getModel().getId(),
+                    page,
+                    getView().getName().getValue(),
+                    template,
+                    getView().getName().getValue(), // Title
+                    getView().getComment(),
+                    getView().getMajorEdit())
                 .execute();
             }
         };
@@ -118,5 +137,6 @@ public class CreateAliasPresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final AliasCreated event) { hide(); }
+    public void onCreate(final PageCreated event) { hide(); }
+
 }
