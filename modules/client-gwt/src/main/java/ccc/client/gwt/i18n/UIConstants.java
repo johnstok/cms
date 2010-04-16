@@ -1747,4 +1747,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Update group")
     String updateGroup();
+
+    /**
+     * "Not a valid password, it should not contains spaces.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Not a valid password, it should not contains spaces.")
+    String isNotValidPassword();
 }

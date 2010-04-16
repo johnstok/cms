@@ -43,6 +43,7 @@ import java.util.Map.Entry;
 import ccc.api.dto.UserDto;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
+import ccc.api.types.Password;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 
@@ -90,6 +91,9 @@ public class User
         DBC.require().notNull(username);
         DBC.require().notEmpty(username.toString());
         DBC.require().notEmpty(name);
+        if (null != passwordString && !passwordString.trim().isEmpty()) {
+            DBC.require().toBeTrue(Password.hasOnlyValidChars(passwordString));
+        }
         _username = username;
         setName(name);
         _hash = hash(passwordString, getId().toString());
@@ -106,6 +110,9 @@ public class User
                 final String passwordString) {
         DBC.require().notNull(username);
         DBC.require().notEmpty(username.toString());
+        if (null != passwordString && !passwordString.trim().isEmpty()) {
+            DBC.require().toBeTrue(Password.hasOnlyValidChars(passwordString));
+        }
         _username = username;
         setName(username.toString());
         _hash = hash(passwordString, getId().toString());

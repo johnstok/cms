@@ -26,7 +26,6 @@
  */
 package ccc.api.types;
 
-import ccc.api.types.Password;
 import junit.framework.TestCase;
 
 
@@ -55,5 +54,19 @@ public class PasswordTest
         assertFalse(Password.isStrong("TESTTEST00-")); // No lower case
         assertFalse(Password.isStrong("testtestoo-")); // No digit
         assertFalse(Password.isStrong("testtestooo")); // No non-alphanum char's
+    }
+
+    /**
+     * Test.
+     */
+    public void testPasswordValidCharsTest() {
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertFalse(Password.hasOnlyValidChars("Test test00-"));
+        assertFalse(Password.hasOnlyValidChars(" Testtest00-"));
+        assertTrue(Password.hasOnlyValidChars("Testte00-"));
     }
 }
