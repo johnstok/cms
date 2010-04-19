@@ -40,7 +40,6 @@ import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.UserDto;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 
@@ -62,11 +61,11 @@ public interface Users {
      * Retrieve the delta for a user.
      *
      * @param userId The user's id.
-     * @throws RestException If the method fails
+     *
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    UserDto userDelta(@PathParam("id") UUID userId) throws RestException;
+    UserDto userDelta(@PathParam("id") UUID userId);
 
     /**
      * Returns currently logged in user.
@@ -88,9 +87,10 @@ public interface Users {
      * @param order The sort order (ASC/DESC).
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
+     *
      * @return Returns list of users.
      */
-    @GET
+   @GET
    DtoCollection<UserDto> listUsers(
         @QueryParam("username") String username,
         @QueryParam("email") String email,
@@ -118,13 +118,10 @@ public interface Users {
      *
      * @param delta The new user details.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A user summary describing the new user.
      */
     @POST
-    UserDto createUser(UserDto delta)
-    throws RestException;
+    UserDto createUser(UserDto delta);
 
 
     /**
@@ -132,12 +129,9 @@ public interface Users {
      *
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}")
-    void updateUser(@PathParam("id") UUID userId, UserDto delta)
-    throws RestException;
+    void updateUser(@PathParam("id") UUID userId, UserDto delta);
 
 
     /**
@@ -145,36 +139,29 @@ public interface Users {
      *
      * @param userId The user's id.
      * @param user New details for the user.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}/password")
-    void updateUserPassword(@PathParam("id") UUID userId, UserDto user)
-    throws RestException;
+    void updateUserPassword(@PathParam("id") UUID userId, UserDto user);
 
     /**
      * Update the email and/or password for the current user.
      *
      * @param userId The user's id.
      * @param user New details for the user.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}/currentuser")
-    void updateYourUser(@PathParam("id") UUID userId, UserDto user)
-    throws RestException;
+    void updateYourUser(@PathParam("id") UUID userId, UserDto user);
 
 
     /**
      * Look up the user for a specified legacy id.
      *
      * @param legacyId The legacy id of the user.
-     * @throws RestException If the method fails
+     *
      * @return A summary of the corresponding user.
      */
     @GET @Path("/by-legacy-id/{id}")
-    UserDto userByLegacyId(@PathParam("id") String legacyId)
-    throws RestException;
+    UserDto userByLegacyId(@PathParam("id") String legacyId);
 
     /**
      * Query metadata values with given key.

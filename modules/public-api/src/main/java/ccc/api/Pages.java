@@ -39,7 +39,6 @@ import javax.ws.rs.Produces;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
 import ccc.plugins.s11n.Json;
 
 
@@ -70,11 +69,11 @@ public interface Pages {
      * Retrieve the delta for a page.
      *
      * @param pageId The page's id.
-     * @throws RestException If the method fails
+     *
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    PageDelta pageDelta(@PathParam("id") UUID pageId) throws RestException;
+    PageDelta pageDelta(@PathParam("id") UUID pageId);
 
 
     /**
@@ -82,12 +81,9 @@ public interface Pages {
      *
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}")
-    void updatePage(@PathParam("id") UUID pageId, Json delta)
-    throws RestException;
+    void updatePage(@PathParam("id") UUID pageId, Json delta);
 
 
     /**
@@ -95,12 +91,9 @@ public interface Pages {
      *
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}/wc")
-    void updateWorkingCopy(@PathParam("id") UUID pageId, PageDelta delta)
-    throws RestException;
+    void updateWorkingCopy(@PathParam("id") UUID pageId, PageDelta delta);
 
 
     /**
@@ -108,11 +101,9 @@ public interface Pages {
      *
      * @param page Details of the new page to create.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A resource summary describing the new page.
      */
     @POST
-    ResourceSummary createPage(PageDto page) throws RestException;
+    ResourceSummary createPage(PageDto page);
 
 }

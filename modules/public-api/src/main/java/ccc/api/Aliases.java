@@ -38,7 +38,6 @@ import javax.ws.rs.Produces;
 import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
 
 
 /**
@@ -59,12 +58,10 @@ public interface Aliases {
      *
      * @param aliasId The alias' id.
      *
-     * @throws RestException If the method fails.
-     *
      * @return The corresponding target name.
      */
     @GET @Path("/{id}/targetname")
-    String aliasTargetName(@PathParam("id") UUID aliasId) throws RestException;
+    String aliasTargetName(@PathParam("id") UUID aliasId);
 
 
     /**
@@ -72,12 +69,10 @@ public interface Aliases {
      *
      * @param alias The alias to create.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A resource summary describing the new alias.
      */
     @POST
-    ResourceSummary createAlias(AliasDto alias) throws RestException;
+    ResourceSummary createAlias(AliasDto alias);
 
 
     /**
@@ -85,11 +80,7 @@ public interface Aliases {
      *
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}")
-    void updateAlias(
-        @PathParam("id") UUID aliasId,
-        AliasDelta delta) throws RestException;
+    void updateAlias(@PathParam("id") UUID aliasId, AliasDelta delta);
 }

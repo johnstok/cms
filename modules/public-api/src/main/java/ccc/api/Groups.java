@@ -38,7 +38,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.GroupDto;
-import ccc.api.exceptions.RestException;
 
 
 /**
@@ -70,12 +69,10 @@ public interface Groups {
      *
      * @param id The group ID.
      *
-     * @throws RestException If the method fails.
-     *
      * @return Returns the corresponding group.
      */
     @GET @Path("/{id}")
-    GroupDto find(@PathParam("id") UUID id) throws RestException;
+    GroupDto find(@PathParam("id") UUID id);
 
 
     /**
@@ -83,12 +80,10 @@ public interface Groups {
      *
      * @param group The new group details.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A DTO describing the new group.
      */
     @POST
-    GroupDto create(GroupDto group) throws RestException;
+    GroupDto create(GroupDto group);
 
 
     /**
@@ -97,11 +92,8 @@ public interface Groups {
      * @param group The updated group details.
      * @param id The ID of the group to update.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A DTO describing the updated group.
      */
     @POST @Path("/{id}")
-    GroupDto update(@PathParam("id") UUID id, GroupDto group)
-    throws RestException;
+    GroupDto update(@PathParam("id") UUID id, GroupDto group);
 }

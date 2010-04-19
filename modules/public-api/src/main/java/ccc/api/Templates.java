@@ -40,7 +40,6 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.TemplateSummary;
-import ccc.api.exceptions.RestException;
 
 
 /**
@@ -69,6 +68,7 @@ public interface Templates {
      * Returns true if template name exists in the template folder.
      *
      * @param templateName The name to look up.
+     *
      * @return True if name exists.
      */
     @GET @Path("/{name}/exists")
@@ -79,36 +79,29 @@ public interface Templates {
      * Retrieve the delta for a template.
      *
      * @param templateId The template's id.
-     * @throws RestException If the method fails
+     *
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    TemplateDelta templateDelta(@PathParam("id") UUID templateId)
-    throws RestException;
+    TemplateDelta templateDelta(@PathParam("id") UUID templateId);
 
     /**
      * Update the specified template on the server.
      *
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}")
     void updateTemplate(
-        @PathParam("id") UUID templateId,
-        TemplateDelta delta) throws RestException;
+        @PathParam("id") UUID templateId, TemplateDelta delta);
 
     /**
      * Create a new template in CCC.
      *
      * @param template The template's details.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A resource summary describing the new template.
      */
     @POST
-    ResourceSummary createTemplate(TemplateDto template)
-    throws RestException;
+    ResourceSummary createTemplate(TemplateDto template);
 }
