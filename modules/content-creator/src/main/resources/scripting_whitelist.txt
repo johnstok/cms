@@ -1,7 +1,7 @@
 java.util
 java.text
-ccc.types
-ccc.rest.dto
+ccc.api.types
+ccc.api.dto
 ccc.mail.Mailer
 java.io.FileInputStream
 java.lang.Object
@@ -30,3 +30,5 @@ ccc.domain
 ccc.commands.CreateFolderCommand
 ccc.persistence.ResourceRepositoryImpl
 ccc.persistence.LogEntryRepositoryImpl
+ccc.api.jaxrs.ResourcesImpl
+ccc.api.jaxrs.CommentsImpl
