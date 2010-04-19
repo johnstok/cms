@@ -40,7 +40,6 @@ import javax.ws.rs.QueryParam;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.SortOrder;
 
 
@@ -61,24 +60,20 @@ public interface Actions {
      * Cancel a scheduled action.
      *
      * @param actionId The id of the action to cancel.
-     *
-     * @throws RestException If the method fails.
      */
     @POST @Path("/{id}/cancel")
     void cancelAction(
-        @PathParam("id") UUID actionId) throws RestException;
+        @PathParam("id") UUID actionId);
 
     /**
      * Create a new scheduled action.
      *
      * @param action The action to create.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A summary of the new action.
      */
     @POST
-    ActionSummary createAction(ActionDto action) throws RestException;
+    ActionSummary createAction(ActionDto action);
 
 
     /**
@@ -127,11 +122,8 @@ public interface Actions {
      *
      * @param actionId The action's ID.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A summary of the action.
      */
     @GET @Path("/{id}")
-    ActionSummary findAction(
-         @PathParam("id") UUID actionId) throws RestException;
+    ActionSummary findAction(@PathParam("id") UUID actionId);
 }
