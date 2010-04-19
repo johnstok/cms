@@ -44,7 +44,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 
 
 /**
- * TODO: Add a description for this type.
+ * Dialog for comment editing.
  *
  * @author Civic Computing Ltd.
  */
@@ -55,19 +55,20 @@ public class CommentView
         Validatable {
 
     private final TextField<String> _author = new TextField<String>();
+    private final TextField<String> _email = new TextField<String>();
     private final TextField<String> _url = new TextField<String>();
     private final TextArea _body = new TextArea();
     private final ComboBox<EnumModelData<CommentStatus>> _status =
         new ComboBox<EnumModelData<CommentStatus>>();
 
     private UpdateCommentPresenter _presenter;
-
+    private static final int TEXT_AREA_HEIGHT = 300;
 
     /**
      * Constructor.
      *
-     * @param title
-     * @param globals
+     * @param title The title.
+     * @param globals Globals.
      */
     public CommentView(final String title, final Globals globals) {
         super(title, globals);
@@ -75,6 +76,10 @@ public class CommentView
         _author.setFieldLabel(constants().author());
         _author.setAllowBlank(false);
         addField(_author);
+
+        _email.setFieldLabel(constants().email());
+        _email.setAllowBlank(false);
+        addField(_email);
 
         _url.setFieldLabel(constants().url());
         addField(_url);
@@ -93,43 +98,43 @@ public class CommentView
         addField(_status);
 
         _body.setFieldLabel(constants().body());
-        _body.setHeight(300);
+        _body.setHeight(TEXT_AREA_HEIGHT);
         addField(_body);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param author
+     * @param author The author of the comment.
      */
     public void setAuthor(final String author) {
         _author.setValue(author);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param body
+     * @param body The text of the comment.
      */
     public void setBody2(final String body) {
         _body.setValue(body);
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param status
+     * @param status The status of the comment.
      */
     public void setStatus(final CommentStatus status) {
         _status.setValue(new EnumModelData<CommentStatus>(status));
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      * TODO: This class shouldn't extend ContentPanel; composition not
      *  inheritance.
      *
-     * @param url
+     * @param url The url of the comment.
      */
     public void setUrl2(final String url) {
         _url.setValue(url);
@@ -146,45 +151,45 @@ public class CommentView
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The author of the comment.
      */
     public String getAuthor() {
         return _author.getValue();
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The text of the comment.
      */
     public String getBody2() {
         return _body.getValue();
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The status of the comment.
      */
     public CommentStatus getStatus() {
         return _status.getValue().getValue();
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The URL of the comment.
      */
     public String getUrl2() {
         return _url.getValue();
     }
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param updateCommentPresenter
+     * @param presenter The MVP presenter.
      */
     public void setPresenter(final UpdateCommentPresenter presenter) {
         _presenter = presenter;
@@ -206,7 +211,30 @@ public class CommentView
         if (!Validations2.notEmpty(_author.getValue())) {
             result.addError(constants().commentNotValid());
         }
+        if (!Validations2.notEmpty(_email.getValue())
+            || !Validations2.notValidEmail(_email.getValue())) {
+            result.addError(_email.getFieldLabel()
+            +" "+constants().isNotValid());
+        }
         return result;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param email Email to set.
+     */
+    public void setEmail(final String email) {
+        _email.setValue(email);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Email field value.
+     */
+    public String getEmail() {
+        return _email.getValue();
     }
 
 }
