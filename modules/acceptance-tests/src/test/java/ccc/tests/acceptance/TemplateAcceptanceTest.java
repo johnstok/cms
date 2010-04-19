@@ -31,7 +31,6 @@ import java.util.UUID;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.MimeType;
 
 
@@ -45,9 +44,8 @@ public class TemplateAcceptanceTest extends
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testCreateTemplate() throws RestException {
+    public void testCreateTemplate() {
 
         // ARRANGE
         final ResourceSummary templateFolder =
@@ -76,9 +74,8 @@ public class TemplateAcceptanceTest extends
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testTemplateDelta() throws RestException {
+    public void testTemplateDelta() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -109,9 +106,8 @@ public class TemplateAcceptanceTest extends
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testTemplateNameExists() throws RestException {
+    public void testTemplateNameExists() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -128,9 +124,8 @@ public class TemplateAcceptanceTest extends
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testUpdateTemplate() throws RestException {
+    public void testUpdateTemplate() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();

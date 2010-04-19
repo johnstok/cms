@@ -55,7 +55,7 @@ import ccc.api.Templates;
 import ccc.api.Users;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.UserDto;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.jaxrs.CommentsImpl;
 import ccc.api.jaxrs.FilesImpl;
@@ -208,7 +208,7 @@ public class ContentServlet
         } catch (final UnauthorizedException e) {
             LOG.warn(e.getMessage());
             throw new AuthenticationRequiredException(path);
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             LOG.warn(
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy

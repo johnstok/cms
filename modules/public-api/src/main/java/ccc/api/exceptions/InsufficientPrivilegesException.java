@@ -43,7 +43,7 @@ import ccc.api.types.FailureCode;
  */
 public class InsufficientPrivilegesException
     extends
-        RestException {
+        CCException {
 
     private final CommandType _action;
     private final UUID _user;

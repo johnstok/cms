@@ -37,7 +37,6 @@ import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.plugins.s11n.Json;
@@ -54,10 +53,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testCreatePage() throws RestException {
+    public void testCreatePage() {
 
         // ARRANGE
         final String hw = "Hello World"; // Unicode non-breaking space.
@@ -85,10 +82,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testPageDelta() throws RestException {
+    public void testPageDelta() {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -105,10 +100,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdatePage() throws RestException {
+    public void testUpdatePage() {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -176,10 +169,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testUpdateWorkingCopy() throws Exception {
+    public void testUpdateWorkingCopy() {
 
         // ARRANGE
         final ResourceSummary templateFolder =

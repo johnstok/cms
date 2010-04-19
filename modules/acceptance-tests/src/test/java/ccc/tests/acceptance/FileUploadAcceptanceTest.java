@@ -39,8 +39,8 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.dto.TextFileDto;
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.InvalidException;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.FailureCode;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -57,10 +57,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testCancelWorkingCopy() throws Exception {
+    public void testCancelWorkingCopy() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -91,10 +89,8 @@ public class FileUploadAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testWorkingCopySupport() throws Exception {
+    public void testWorkingCopySupport() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -241,7 +237,7 @@ public class FileUploadAcceptanceTest
                     true,
                     "",
                     "Hello!"));
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             assertEquals(FailureCode.EXISTS, e.getCode());
         }
 
@@ -322,7 +318,7 @@ public class FileUploadAcceptanceTest
         f.setComment("Test update.");
 
         // ACT
-        final ResourceSummary fs = getFiles().updateFile(rs.getId(), f);
+        getFiles().updateFile(rs.getId(), f);
 
         // ASSERT
         assertEquals("Update!", getBrowser().previewContent(rs, false));

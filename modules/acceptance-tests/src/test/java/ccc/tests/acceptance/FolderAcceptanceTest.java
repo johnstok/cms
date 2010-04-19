@@ -38,7 +38,6 @@ import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
-import ccc.api.exceptions.RestException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
@@ -52,12 +51,13 @@ import ccc.api.types.ResourceOrder;
  */
 public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
+    private static final int ONE_SECOND = 1000;
+
+
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testGetFolderChildren() throws RestException {
+    public void testGetFolderChildren() {
 
         // ARRANGE
         final String fName = UUID.randomUUID().toString();
@@ -88,10 +88,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testNameExistsInFolder() throws RestException {
+    public void testNameExistsInFolder() {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -112,10 +110,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testGetChildrenManualOrder() throws Exception {
+    public void testGetChildrenManualOrder() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -159,19 +155,17 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testGetChildren() throws Exception {
+    public void testGetChildren() {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
         final ResourceSummary template =
             dummyTemplate(getCommands().resourceForPath(""));
         final ResourceSummary page1 = tempPage(f.getId(), template.getId());
-        pause(1000);
+        pause(ONE_SECOND);
         final ResourceSummary page2 = tempPage(f.getId(), template.getId());
-        pause(1000);
+        pause(ONE_SECOND);
         final ResourceSummary page3 = tempPage(f.getId(), template.getId());
 
         // ACT
@@ -203,10 +197,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testChangeFolderIndexPage() throws Exception {
+    public void testChangeFolderIndexPage() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -236,10 +228,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testSecurityBlocksFolderRead() throws Exception {
+    public void testSecurityBlocksFolderRead() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -269,10 +259,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testChangeFolderSortOrder() throws Exception {
+    public void testChangeFolderSortOrder() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();

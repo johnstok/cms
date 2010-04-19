@@ -34,7 +34,6 @@ import java.util.UUID;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.Username;
 
 
@@ -48,12 +47,15 @@ public class UserManagementAcceptanceTest
         AbstractAcceptanceTest {
 
 
+    /** PAGE_SIZE : int. */
+    private static final int PAGE_SIZE = 20;
+
+
+
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdatePassword() throws RestException {
+    public void testUpdatePassword() {
 
         // ARRANGE
         final UserDto us = tempUser();
@@ -74,18 +76,26 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testSearchForUsersWithUsername() throws RestException {
+    public void testSearchForUsersWithUsername() {
 
         // ARRANGE
         final UserDto us = tempUser();
 
         // ACT
         final List<UserDto> ul =
-            getUsers().listUsers(
-                us.getUsername().toString(), null, null,null, null, null, null, 1, 20).getElements();
+            getUsers()
+                .listUsers(
+                    us.getUsername().toString(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    1,
+                    PAGE_SIZE)
+                .getElements();
 
         // ASSERT
         assertEquals(1, ul.size());
@@ -99,17 +109,25 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testSearchForUsersWithEmail() throws RestException {
+    public void testSearchForUsersWithEmail() {
 
         // ARRANGE
         final UserDto us = tempUser();
 
         // ACT
-        final DtoCollection<UserDto> ul = getUsers().listUsers(
-                null, us.getEmail(), null,null, null,null, null, 1, 20);
+        final DtoCollection<UserDto> ul =
+            getUsers()
+                .listUsers(
+                    null,
+                    us.getEmail(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    1,
+                    PAGE_SIZE);
 
         // ASSERT
         assertEquals(1, ul.getTotalCount());
@@ -123,10 +141,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdateUser() throws RestException {
+    public void testUpdateUser() {
 
         // ARRANGE
         final Username username = dummyUsername();
@@ -161,10 +177,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testCreateUser() throws RestException {
+    public void testCreateUser() {
 
         final Username username = dummyUsername();
         final String email = username+"@abc.def";
@@ -194,10 +208,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUsernamesSupportNonAsciiChars() throws RestException {
+    public void testUsernamesSupportNonAsciiChars() {
 
         final Username username =
             new Username(UUID.randomUUID().toString().substring(0, 8)+"ЊЋЌ");
@@ -227,10 +239,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdateYourUser() throws RestException {
+    public void testUpdateYourUser() {
 
         // ARRANGE
         UserDto user = tempUser();
@@ -261,10 +271,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUsernameExists() throws RestException {
+    public void testUsernameExists() {
 
         // ARRANGE
         final Username username = dummyUsername();
@@ -291,10 +299,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUsernameSensitiveExists() throws RestException {
+    public void testUsernameSensitiveExists() {
 
         // ARRANGE
         final String uuid = UUID.randomUUID().toString().substring(0, 8);
@@ -338,10 +344,8 @@ public class UserManagementAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testSearchForUsersWithLegacyId() throws RestException {
+    public void testSearchForUsersWithLegacyId() {
 
         // ARRANGE
         final UserDto us = tempUser();

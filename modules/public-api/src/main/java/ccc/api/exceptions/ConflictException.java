@@ -37,7 +37,7 @@ import ccc.plugins.s11n.Json;
  */
 public class ConflictException
     extends
-        RestException {
+        CCException {
 
     /**
      * Constructor.

@@ -37,7 +37,7 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.TemplateSummary;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -95,7 +95,7 @@ public class TemplateMigration {
                     templateDescription,
                     templateName));
 
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             log.error("Failed to create template: "+templateName, e);
         }
     }

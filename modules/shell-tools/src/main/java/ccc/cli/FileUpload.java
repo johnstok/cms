@@ -33,7 +33,7 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.types.ResourcePath;
 import ccc.cli.fileupload.CccServer;
@@ -69,7 +69,7 @@ public class FileUpload extends CccApp {
                         final UUID childFolder = server.createFolder(
                             parentId, child.getName(), publish);
                         recurse(childFolder, child, includeHidden, publish);
-                    } catch (final RestException e) {
+                    } catch (final CCException e) {
                         LOG.warn(
                             "Failed to create folder '"+child.getName()
                             + "' [error code: "+e.getCode()+"].");
@@ -107,7 +107,7 @@ public class FileUpload extends CccApp {
                 new File(o.getLocalPath()).getCanonicalFile(),
                 o.isIncludeHidden(),
                 o.isPublish());
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             System.err.print("Root folder does not exist.");
         }
 

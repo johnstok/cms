@@ -31,7 +31,6 @@ import java.util.UUID;
 import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.ResourceName;
 
 
@@ -46,10 +45,8 @@ public class AliasAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdateAlias() throws RestException {
+    public void testUpdateAlias() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -67,10 +64,8 @@ public class AliasAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testCreateAlias() throws RestException {
+    public void testCreateAlias() {
 
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = tempFolder();

@@ -53,7 +53,7 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.ResourceExistsException;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
@@ -143,7 +143,7 @@ public class BaseMigrations {
     private UserDto userForLegacyId(final int ccc6UserId) {
         try {
             return getUsers().userByLegacyId(""+ccc6UserId);
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             throw new RuntimeException(
                 "User fetching failed with legacyID "+ccc6UserId, e);
         }

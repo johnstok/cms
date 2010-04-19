@@ -51,8 +51,6 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TemplateSummary;
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.api.exceptions.RestException;
-import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
@@ -63,8 +61,8 @@ import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.MoveResourceCommand;
 import ccc.commands.RenameResourceCommand;
 import ccc.commands.UpdateCachingCommand;
-import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceAclCommand;
+import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.commons.Exceptions;
 import ccc.commons.streams.ReadToStringAction;
@@ -412,8 +410,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceDto pu)
-    throws RestException {
+                                    final ResourceDto pu) {
         updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
@@ -433,8 +430,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_CACHE_UPDATE)
-    public void deleteCacheDuration(final UUID id)
-    throws RestException {
+    public void deleteCacheDuration(final UUID id) {
         updateCacheDuration(id, (Duration) null);
     }
 
@@ -646,8 +642,7 @@ public class ResourcesEJB
     }
 
 
-    /** {@inheritDoc}
-     * @throws UnauthorizedException */
+    /** {@inheritDoc} */
     @Override
     @PermitAll
     public ResourceSummary resource(final UUID resourceId) {

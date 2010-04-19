@@ -39,7 +39,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class RestException
+public abstract class CCException
     extends
         RuntimeException
     implements
@@ -47,7 +47,7 @@ public abstract class RestException
 
     private Failure _failure;
 
-    @SuppressWarnings("unused") private RestException() { super(); }
+    @SuppressWarnings("unused") private CCException() { super(); }
 
 
     /**
@@ -55,7 +55,7 @@ public abstract class RestException
      *
      * @param failure The failure.
      */
-    public RestException(final Failure failure) {
+    public CCException(final Failure failure) {
         super("CCC Error: "+failure.getExceptionId());
         _failure = failure;
     }
@@ -66,7 +66,7 @@ public abstract class RestException
      *
      * @param json The JSON representation of this exception.
      */
-    public RestException(final Json json) {
+    public CCException(final Json json) {
         fromJson(json);
     }
 

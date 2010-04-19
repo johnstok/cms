@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Json;
  */
 public class EntityNotFoundException
     extends
-        RestException {
+        CCException {
 
     /**
      * Constructor.

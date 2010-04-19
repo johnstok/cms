@@ -48,7 +48,7 @@ import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
 import ccc.api.exceptions.InternalError;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.Failure;
 import ccc.api.types.FailureCode;
 import ccc.api.types.SortOrder;
@@ -102,7 +102,7 @@ public class ActionsEJB
                     .executeAction(action.getId()); // Executes in nested txn.
                 LOG.info("Completed action: "+action.getId());
 
-            } catch (final RestException e) {
+            } catch (final CCException e) {
                 fail(action, e);
 
             } catch (final RuntimeException e) {
@@ -191,7 +191,7 @@ public class ActionsEJB
     }
 
 
-    private void fail(final Action action, final RestException e) {
+    private void fail(final Action action, final CCException e) {
         action.fail(e.getFailure());
         LOG.info(
             "Failed action: "+action.getId()

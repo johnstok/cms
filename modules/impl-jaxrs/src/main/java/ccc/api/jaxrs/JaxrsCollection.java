@@ -32,7 +32,7 @@ import java.io.UnsupportedEncodingException;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 
 
@@ -52,7 +52,7 @@ public abstract class JaxrsCollection {
      *
      * @return The converted exception.
      */
-    public <T extends RestException> T convertException(
+    public <T extends CCException> T convertException(
                                              final ClientResponseFailure ex) {
         try {
             final ClientResponse<byte[]> r = ex.getResponse();
