@@ -55,6 +55,7 @@ public class CommentView
         Validatable {
 
     private final TextField<String> _author = new TextField<String>();
+    private final TextField<String> _email = new TextField<String>();
     private final TextField<String> _url = new TextField<String>();
     private final TextArea _body = new TextArea();
     private final ComboBox<EnumModelData<CommentStatus>> _status =
@@ -75,6 +76,10 @@ public class CommentView
         _author.setFieldLabel(constants().author());
         _author.setAllowBlank(false);
         addField(_author);
+
+        _email.setFieldLabel(constants().email());
+        _email.setAllowBlank(false);
+        addField(_email);
 
         _url.setFieldLabel(constants().url());
         addField(_url);
@@ -206,7 +211,30 @@ public class CommentView
         if (!Validations2.notEmpty(_author.getValue())) {
             result.addError(constants().commentNotValid());
         }
+        if (!Validations2.notEmpty(_email.getValue())
+            || !Validations2.notValidEmail(_email.getValue())) {
+            result.addError(_email.getFieldLabel()
+                +" "+constants().isNotValid());
+        }
         return result;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param email Email to set.
+     */
+    public void setEmail(final String email) {
+        _email.setValue(email);
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Email field value.
+     */
+    public String getEmail() {
+        return _email.getValue();
     }
 
 }

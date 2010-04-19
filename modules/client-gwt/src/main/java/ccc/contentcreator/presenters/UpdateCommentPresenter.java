@@ -69,6 +69,7 @@ public class UpdateCommentPresenter
         getView().setBody2(model.getBody());
         getView().setStatus(model.getStatus());
         getView().setUrl2(model.getUrl());
+        getView().setEmail(model.getEmail());
 
         getView().show();
     }
@@ -88,7 +89,7 @@ public class UpdateCommentPresenter
                     getView().getUrl2());
             updated.setId(getModel().getId());
             updated.setStatus(getView().getStatus());
-            updated.setEmail(getModel().getEmail());
+            updated.setEmail(getView().getEmail());
 
             new UpdateCommentAction(updated) {
 
