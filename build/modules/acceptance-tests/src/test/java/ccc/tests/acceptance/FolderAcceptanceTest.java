@@ -252,7 +252,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         e._principal = user.getId();
         acl.setUsers(Collections.singleton(e));
         getCommands().lock(folder.getId());
-        getCommands().changeRoles(folder.getId(), acl);
+        getCommands().changeAcl(folder.getId(), acl);
 
         // ACT
         try {

@@ -127,7 +127,7 @@ public class UserManagerImplTest extends TestCase {
         expect(_repository.listDyn(
             "select u from ccc.domain.User as u where ? in ("
             + "select r._name "
-            + "from ccc.domain.User as u2 left join u2._roles as r "
+            + "from ccc.domain.User as u2 left join u2._groups as r "
             + "where u=u2) ",
             User.class,
             1,

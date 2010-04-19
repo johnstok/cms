@@ -190,9 +190,9 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public AclDto roles(final UUID resourceId) {
+    public AclDto acl(final UUID resourceId) {
         try {
-            return _delegate.roles(resourceId);
+            return _delegate.acl(resourceId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -247,9 +247,9 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final UUID resourceId, final AclDto roles) {
+    public void changeAcl(final UUID resourceId, final AclDto acl) {
         try {
-            _delegate.changeRoles(resourceId, roles);
+            _delegate.changeAcl(resourceId, acl);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

@@ -102,7 +102,7 @@ public class EditUserDialog extends AbstractEditDialog {
         _email.setValue(_userDTO.getEmail());
         addField(_email);
 
-        _groups = new GroupListField(allGroups, _userDTO.getRoles());
+        _groups = new GroupListField(allGroups, _userDTO.getGroups());
         addField(_groups);
 
         setPanelId("UserPanel");
@@ -134,11 +134,11 @@ public class EditUserDialog extends AbstractEditDialog {
                 _userDTO.setEmail(_email.getValue());
                 _userDTO.setName(_name.getValue());
 
-                final Set<UUID> validRoles = new HashSet<UUID>();
+                final Set<UUID> validGroups = new HashSet<UUID>();
                 for (final BaseModelData selected : _groups.getSelection()) {
-                    validRoles.add(selected.<UUID>get("id"));
+                    validGroups.add(selected.<UUID>get("id"));
                 }
-                _userDTO.setRoles(validRoles);
+                _userDTO.setGroups(validGroups);
 
                 new UpdateUserAction(
                     _userId,

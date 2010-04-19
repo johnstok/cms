@@ -31,7 +31,6 @@ import java.util.UUID;
 
 import ccc.api.dto.AclDto;
 import ccc.api.dto.AclDto.Entry;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
 import ccc.domain.LogEntry;
@@ -46,12 +45,12 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceRolesCommand
+public class UpdateResourceAclCommand
     extends
         Command<Void> {
 
     private final UUID _id;
-    private final AclDto _roles;
+    private final AclDto _acl;
 
 
     /**
@@ -61,12 +60,12 @@ public class UpdateResourceRolesCommand
      * @param id The id of the resource to update.
      * @param acl The new access control list.
      */
-    public UpdateResourceRolesCommand(final IRepositoryFactory repoFactory,
+    public UpdateResourceAclCommand(final IRepositoryFactory repoFactory,
                                       final UUID id,
                                       final AclDto acl) {
         super(repoFactory);
         _id = id;
-        _roles = acl;
+        _acl = acl;
     }
 
     /** {@inheritDoc} */
@@ -92,9 +91,9 @@ public class UpdateResourceRolesCommand
     }
 
 
-    private void lookupGroups(final Resource r) throws EntityNotFoundException {
+    private void lookupGroups(final Resource r) {
         r.clearGroupAcl();
-        for (final Entry e : _roles.getGroups()) {
+        for (final Entry e : _acl.getGroups()) {
             r.addGroupPermission(
                 new AccessPermission(
                     e._canRead, e._canWrite, getGroups().find(e._principal)));
@@ -102,9 +101,9 @@ public class UpdateResourceRolesCommand
     }
 
 
-    private void lookupUsers(final Resource r) throws EntityNotFoundException {
+    private void lookupUsers(final Resource r) {
         r.clearUserAcl();
-        for (final Entry e : _roles.getUsers()) {
+        for (final Entry e : _acl.getUsers()) {
             r.addUserPermission(
                 new AccessPermission(
                     e._canRead, e._canWrite, getUsers().find(e._principal)));

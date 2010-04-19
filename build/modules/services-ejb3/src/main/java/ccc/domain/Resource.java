@@ -83,7 +83,7 @@ public abstract class Resource
     private Integer        _parentIndex       = null;
     private User           _lockedBy          = null;
     private Set<String>    _tags              = new HashSet<String>();
-    private Set<AccessPermission> _roles      = new HashSet<AccessPermission>();
+    private Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
     private Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
     private User           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
@@ -444,9 +444,10 @@ public abstract class Resource
     /**
      * Query method to determine whether a resource is secure.
      *
-     * A resource is secure if itself or any of its parents have roles.
+     * A resource is secure if itself or any of its parents has access control
+     * entries.
      *
-     * @return True if this resource or any of its parents have roles.
+     * @return True if this resource is secure.
      */
     public boolean isSecure() {
         final boolean parentSecure =
@@ -656,18 +657,18 @@ public abstract class Resource
      * @param p The permission to add.
      */
     public void addGroupPermission(final AccessPermission p) {
-        _roles.add(p);
+        _groupAcl.add(p);
     }
 
 
     /**
      * Accessor.
      *
-     * @return This resource's roles.
+     * @return This resource's groups.
      */
     public Collection<Entry> getGroupAcl() {
         final Set<Entry> acl = new HashSet<Entry>();
-        for (final AccessPermission p : _roles) {
+        for (final AccessPermission p : _groupAcl) {
             acl.add(p.createEntry());
         }
         return acl;
@@ -703,13 +704,13 @@ public abstract class Resource
         final boolean parentIsAccessible =
             (null==_parent) ? true : getParent().isReadableBy(user);
 
-        if (0==_roles.size() && 0==_userAcl.size()) {
+        if (0==_groupAcl.size() && 0==_userAcl.size()) {
             return parentIsAccessible;
         }
 
         if (null==user) { return false; }
 
-        for (final AccessPermission p : _roles) {
+        for (final AccessPermission p : _groupAcl) {
             if (p.allowsRead(user)) {
                 return parentIsAccessible;
             }
@@ -730,13 +731,13 @@ public abstract class Resource
         final boolean parentIsWriteable =
             (null==_parent) ? true : getParent().isWriteableBy(user);
 
-        if (0==_roles.size() && 0==_userAcl.size()) {
+        if (0==_groupAcl.size() && 0==_userAcl.size()) {
             return parentIsWriteable;
         }
 
         if (null==user) { return false; }
 
-        for (final AccessPermission p : _roles) {
+        for (final AccessPermission p : _groupAcl) {
             if (p.allowsWrite(user)) {
                 return parentIsWriteable;
             }
@@ -1027,7 +1028,7 @@ public abstract class Resource
      * Remove all group permissions.
      */
     public void clearGroupAcl() {
-        _roles.clear();
+        _groupAcl.clear();
     }
 
 

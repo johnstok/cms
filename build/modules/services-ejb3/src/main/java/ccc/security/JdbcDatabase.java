@@ -55,7 +55,7 @@ public class JdbcDatabase
     private Registry _r = new JNDI();
     private String _datasource;
     private String _principalQuery;
-    private String _rolesQuery;
+    private String _permissionsQuery;
 
     /**
      * Constructor.
@@ -137,13 +137,13 @@ public class JdbcDatabase
 
     /** {@inheritDoc} */
     @Override
-    public Set<String> lookupRoles(final String userId) throws SQLException {
+    public Set<String> lookupPerms(final String userId) throws SQLException {
         final Set<String> result = new HashSet<String>();
         final DataSource ds = _r.get(_datasource);
         final Connection c = ds.getConnection();
 
         try { // Work with the Connection, close on error.
-            final PreparedStatement s = c.prepareStatement(_rolesQuery);
+            final PreparedStatement s = c.prepareStatement(_permissionsQuery);
 
             try { // Work with the Statement, close on error.
                 s.setString(1, userId);
@@ -185,6 +185,6 @@ public class JdbcDatabase
     public void setOptions(final Map<String, ?> options) {
         _datasource = (String) options.get("dsJndiName");
         _principalQuery = (String) options.get("principalsQuery");
-        _rolesQuery = (String) options.get("rolesQuery");
+        _permissionsQuery = (String) options.get("rolesQuery");
     }
 }

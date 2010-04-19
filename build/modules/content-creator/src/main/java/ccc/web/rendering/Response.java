@@ -48,7 +48,7 @@ import ccc.plugins.scripting.TextProcessor;
 
 /**
  * A CCC response.
- * TODO: Never cache secure resources (i.e. with roles).
+ * TODO: Never cache secure resources (i.e. with an ACL).
  * TODO: The Response#write() method IS NOT THE PLACE for thumbnail code.
  * TODO: _headers should be a set not a map.
  *

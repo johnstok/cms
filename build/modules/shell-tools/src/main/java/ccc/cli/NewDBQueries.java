@@ -93,7 +93,7 @@ class NewDBQueries {
                 + "('ADMINISTRATOR', 'SITE_BUILDER', 'CONTENT_CREATOR')");
             final ResultSet groups = gs.executeQuery();
 
-            // insert role
+            // insert permission
             while (groups.next()) {
                 ps = _connection.prepareStatement(
                     "INSERT INTO user_roles (user_id, group_id) "

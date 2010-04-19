@@ -136,7 +136,7 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
         dto.setUsername(new Username(_view.getUsername()));
         dto.setName(_view.getName());
         dto.setPassword(_view.getPassword1());
-        dto.setRoles(_view.getGroups());
+        dto.setGroups(_view.getGroups());
     }
 
 

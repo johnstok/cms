@@ -74,7 +74,7 @@
             type="string"
             length="255" />
             
-        <set name="_roles" table="user_roles">
+        <set name="_groups" table="user_roles">
             <cache usage="transactional"/>
             <key not-null="true" column="user_id" foreign-key="FK_USERROLES_USER_ID"/>
             <many-to-many

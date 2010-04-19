@@ -67,7 +67,7 @@ public class User
     private Username _username;
     private EmailAddress _email;
     private byte[] _hash;
-    private Set<Group> _roles = new HashSet<Group>();
+    private Set<Group> _groups = new HashSet<Group>();
     private Map<String, String> _metadata = new HashMap<String, String>();
 
 
@@ -161,12 +161,12 @@ public class User
 
 
     /**
-     * Assigns role to the user.
+     * Adds a user to a group.
      *
-     * @param newRole The role to assign.
+     * @param group The group to assign.
      */
-    public void addGroup(final Group newRole) {
-        _roles.add(newRole);
+    public void addGroup(final Group group) {
+        _groups.add(group);
     }
 
 
@@ -185,12 +185,12 @@ public class User
 
 
     /**
-     * Accessor for user roles.
+     * Accessor for user groups.
      *
-     * @return Roles of the user.
+     * @return Groups of the user.
      */
     public Set<Group> getGroups() {
-        return new HashSet<Group>(_roles);
+        return new HashSet<Group>(_groups);
     }
 
 
@@ -333,7 +333,7 @@ public class User
      * Mutator - clear all groups for this user.
      */
     public void clearGroups() {
-        _roles.clear();
+        _groups.clear();
     }
 
 
@@ -348,7 +348,7 @@ public class User
         dto.setId(getId());
         dto.setUsername(getUsername());
         dto.setName(getName());
-        dto.setRoles(getGroupIds());
+        dto.setGroups(getGroupIds());
         dto.setMetadata(getMetadata());
         dto.setPermissions(getPermissions());
         return dto;

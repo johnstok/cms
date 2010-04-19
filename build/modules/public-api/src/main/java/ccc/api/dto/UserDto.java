@@ -56,7 +56,7 @@ public final class UserDto implements Serializable, Jsonable2 {
     private String _name;
     private UUID _id;
     private Username _username;
-    private Set<UUID> _roles = new HashSet<UUID>();
+    private Set<UUID> _groups = new HashSet<UUID>();
     private Set<String> _permissions = new HashSet<String>();
     private Map<String, String> _metadata = new HashMap<String, String>();
     private String _password;
@@ -121,10 +121,10 @@ public final class UserDto implements Serializable, Jsonable2 {
     /**
      * Accessor.
      *
-     * @return Returns the roles.
+     * @return Returns the groups.
      */
-    public Set<UUID> getRoles() {
-        return _roles;
+    public Set<UUID> getGroups() {
+        return _groups;
     }
 
 
@@ -207,13 +207,13 @@ public final class UserDto implements Serializable, Jsonable2 {
     /**
      * Mutator.
      *
-     * @param roles The roles to set.
+     * @param groups The groups to set.
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setRoles(final Set<UUID> roles) {
-        DBC.require().notNull(roles);
-        _roles = new HashSet<UUID>(roles);
+    public UserDto setGroups(final Set<UUID> groups) {
+        DBC.require().notNull(groups);
+        _groups = new HashSet<UUID>(groups);
         return this;
     }
 
@@ -286,7 +286,7 @@ public final class UserDto implements Serializable, Jsonable2 {
         setUsername((null==un) ? null : new Username(un));
 
         final Collection<String> r = json.getStrings(ROLES);
-        setRoles(
+        setGroups(
             (null==r)
                 ? new HashSet<UUID>()
                 : new HashSet<UUID>(mapUuid(r)));
@@ -308,17 +308,17 @@ public final class UserDto implements Serializable, Jsonable2 {
         json.set(NAME, getName());
         json.set(
             USERNAME, (null==getUsername()) ? null : getUsername().toString());
-        json.setStrings(ROLES, mapString(getRoles()));
+        json.setStrings(ROLES, mapString(getGroups()));
         json.set(METADATA, _metadata);
         json.set(PASSWORD, _password);
         json.setStrings(PERMISSIONS, _permissions);
     }
 
 
-    private Set<String> mapString(final Set<UUID> roles) {
+    private Set<String> mapString(final Set<UUID> uuids) {
         final Set<String> strings = new HashSet<String>();
-        for (final UUID role : roles) {
-            strings.add(role.toString());
+        for (final UUID uuid : uuids) {
+            strings.add(uuid.toString());
         }
         return strings;
     }

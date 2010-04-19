@@ -85,10 +85,9 @@ public final class UserCriteria implements Serializable {
     /**
      * Accessor.
      *
-     * @return Returns the role.
+     * @return Returns the group.
      */
     public String getGroups() {
-
         return _groups;
     }
 

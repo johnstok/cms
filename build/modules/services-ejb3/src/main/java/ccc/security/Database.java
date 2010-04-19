@@ -54,13 +54,13 @@ public interface Database {
     Object[] lookupUser(Username username) throws SQLException;
 
     /**
-     * Look up a user's roles from the DB..
+     * Look up a user's permissions from the DB.
      *
-     * @param userId The user id whose roles we will retrieve.
-     * @return A set of roles, represented as strings.
+     * @param userId The user id whose permissions we will retrieve.
+     * @return A set of permissions, represented as strings.
      * @throws SQLException If an error occurs while communicating with the DB.
      */
-    Set<String> lookupRoles(String userId) throws SQLException;
+    Set<String> lookupPerms(String userId) throws SQLException;
 
     /**
      * Specify the options for the database.

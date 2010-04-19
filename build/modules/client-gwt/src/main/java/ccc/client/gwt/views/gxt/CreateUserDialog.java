@@ -150,11 +150,11 @@ public class CreateUserDialog
     /** {@inheritDoc} */
     @Override
     public Set<UUID> getGroups() {
-        final Set<UUID> validRoles = new HashSet<UUID>();
+        final Set<UUID> validGroups = new HashSet<UUID>();
         for (final BaseModelData selected : _groups.getSelection()) {
-            validRoles.add(selected.<UUID>get("id"));
+            validGroups.add(selected.<UUID>get("id"));
         }
-        return validRoles;
+        return validGroups;
     }
 
     /** {@inheritDoc} */

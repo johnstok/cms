@@ -152,14 +152,14 @@ public interface Resources {
 
 
     /**
-     * List the roles for a resource.
+     * Get the access control list for a resource.
      *
      * @param resourceId The resource's id.
      *
      * @return The access control list for the specified resource.
      */
-    @GET @Path("/{id}/roles")
-    AclDto roles(@PathParam("id") UUID resourceId);
+    @GET @Path("/{id}/acl")
+    AclDto acl(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -311,13 +311,13 @@ public interface Resources {
 
 
     /**
-     * Change the security roles for a resource.
+     * Change the access control list for a resource.
      *
      * @param resourceId The resource to update.
      * @param acl The access control list for the specified resource.
      */
-    @POST @Path("/{id}/roles")
-    void changeRoles(@PathParam("id") UUID resourceId, AclDto acl);
+    @POST @Path("/{id}/acl")
+    void changeAcl(@PathParam("id") UUID resourceId, AclDto acl);
 
 
     /**

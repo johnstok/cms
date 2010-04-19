@@ -274,7 +274,7 @@ public class BaseMigrations {
                     .setGroups(groupEntries)
                     .setUsers(userList);
 
-            _migration.changeRoles(
+            _migration.changeAcl(
                 rs.getId(),
                 acl,
                 le.getUser().getId(),

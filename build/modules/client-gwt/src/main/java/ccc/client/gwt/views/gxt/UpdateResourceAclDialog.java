@@ -38,7 +38,7 @@ import ccc.api.dto.AclDto.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetUserAction;
-import ccc.client.gwt.remoting.UpdateResourceRolesAction;
+import ccc.client.gwt.remoting.UpdateResourceAclAction;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -70,7 +70,7 @@ import com.google.gwt.http.client.Response;
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceRolesDialog
+public class UpdateResourceAclDialog
     extends
         AbstractEditDialog {
 
@@ -94,19 +94,19 @@ public class UpdateResourceRolesDialog
     private static final int GRID_WIDTH = 200;
     private static final int GRIDPANEL_WIDTH = 210;
     private static final int DIALOG_HEIGHT = 400;
-    private static final int ROLES_HEIGHT = 300;
+    private static final int GROUPS_HEIGHT = 300;
     private static final int DEFAULT_MARGIN = 5;
 
     /**
      * Constructor.
      *
-     * @param resourceId The resource whose roles will be updated.
+     * @param resourceId The resource whose ACL will be updated.
      * @param acl The access control list for the resource.
      * @param allGroups A list of all groups available in the system.
      */
-    public UpdateResourceRolesDialog(final UUID resourceId,
-                                     final AclDto acl,
-                                     final Collection<GroupDto> allGroups) {
+    public UpdateResourceAclDialog(final UUID resourceId,
+                                   final AclDto acl,
+                                   final Collection<GroupDto> allGroups) {
         super(new GlobalsImpl().uiConstants().updateRoles(),
               new GlobalsImpl());
         _resourceId = resourceId;
@@ -153,7 +153,7 @@ public class UpdateResourceRolesDialog
         _userGrid.setSelectionModel(_userSM);
         _userGrid.addPlugin(_userSM);
         _userGrid.setBorders(false);
-        _userGrid.setHeight(ROLES_HEIGHT);
+        _userGrid.setHeight(GROUPS_HEIGHT);
         _userGrid.setWidth(GRID_WIDTH);
         _userGrid.getSelectionModel().setSelectionMode(SelectionMode.MULTI);
 
@@ -196,7 +196,7 @@ public class UpdateResourceRolesDialog
         _groupGrid.setSelectionModel(_groupSM);
         _groupGrid.addPlugin(_groupSM);
         _groupGrid.setBorders(false);
-        _groupGrid.setHeight(ROLES_HEIGHT);
+        _groupGrid.setHeight(GROUPS_HEIGHT);
         _groupGrid.setWidth(GRID_WIDTH);
         _groupGrid.getSelectionModel().setSelectionMode(SelectionMode.MULTI);
 
@@ -270,7 +270,7 @@ public class UpdateResourceRolesDialog
                         .setGroups(newGroups)
                         .setUsers(newUsers);
 
-                new UpdateResourceRolesAction(_resourceId, acl) {
+                new UpdateResourceAclAction(_resourceId, acl) {
                     /** {@inheritDoc} */
                     @Override
                     protected void onNoContent(final Response response) {

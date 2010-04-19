@@ -34,18 +34,18 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.views.gxt.UpdateResourceRolesDialog;
+import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 /**
- * Action to launch the 'update resource roles' dialog.
+ * Action to launch the 'update resource acl' dialog.
  *
  * @author Civic Computing Ltd.
  */
-public final class OpenUpdateResourceRolesAction
+public final class OpenUpdateResourceAclAction
     extends
         RemotingAction {
 
@@ -59,7 +59,7 @@ public final class OpenUpdateResourceRolesAction
      * @param ssm The selection model to use.
      * @param groups All groups available on the server.
      */
-    public OpenUpdateResourceRolesAction(final SingleSelectionModel ssm,
+    public OpenUpdateResourceAclAction(final SingleSelectionModel ssm,
                                          final Collection<GroupDto> groups) {
         super(UI_CONSTANTS.updateRoles());
         _selectionModel = ssm;
@@ -72,7 +72,7 @@ public final class OpenUpdateResourceRolesAction
         return
             "/resources/"
             + _selectionModel.tableSelection().getId()
-            + "/roles";
+            + "/acl";
     }
 
     /** {@inheritDoc} */
@@ -83,7 +83,7 @@ public final class OpenUpdateResourceRolesAction
         final AclDto acl = new AclDto(new GwtJson(o));
 
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        new UpdateResourceRolesDialog(
+        new UpdateResourceAclDialog(
             item.getId(),
             acl,
             _groups)

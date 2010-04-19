@@ -143,7 +143,7 @@
                 length="255" />
         </set>
 
-        <set name="_roles" table="resource_roles">
+        <set name="_groupAcl" table="resource_roles">
             <cache usage="transactional"/>
             <key column="resource_id" not-null="true" foreign-key="FK_RESROLES_RESOURCE_ID"/>
             <composite-element class="ccc.domain.AccessPermission">

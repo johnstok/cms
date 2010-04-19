@@ -77,7 +77,7 @@ public class CCCLoginModuleTest
                 Encryption.hash("a", pw.toString()),
                 pw.toString()
             });
-        expect(_db.lookupRoles(u.toString())).andReturn(new HashSet<String>());
+        expect(_db.lookupPerms(u.toString())).andReturn(new HashSet<String>());
         replay(_db);
 
         _lm.initialize(
@@ -98,7 +98,7 @@ public class CCCLoginModuleTest
         verify(_db);
         assertTrue("Login should be accepted.", success);
         assertNotNull(_lm.getCallerPrincipal());
-        assertNotNull(_lm.getRoleGroup());
+        assertNotNull(_lm.getPermGroup());
     }
 
     /**
@@ -134,9 +134,9 @@ public class CCCLoginModuleTest
         assertTrue("Should be true.", success);
         assertNull(_lm.getCbHandler());
         assertNull(_lm.getSubject());
-        assertNull(_lm.getRoles());
+        assertNull(_lm.getPermissions());
         assertNull(_lm.getUser());
-        assertNull(_lm.getRoleGroup());
+        assertNull(_lm.getPermGroup());
         assertNull(_lm.getCallerPrincipal());
         assertNotNull(_lm.getDb());
     }
@@ -177,20 +177,20 @@ public class CCCLoginModuleTest
     /**
      * Test.
      */
-    public void testCreateRoles() {
+    public void testCreatePermissions() {
 
         // ARRANGE
         replay(_db);
-        final List<String> roles =
+        final List<String> permissions =
             Arrays.asList(new String[]{"foo", "bar", "baz"});
 
         // ACT
-        final Group roleGroup = _lm.createRoles(roles);
+        final Group permGroup = _lm.createPerms(permissions);
 
         // ASSERT
         verify(_db);
-        assertEquals("Roles", roleGroup.getName());
-        assertEquals(3, Collections.list(roleGroup.members()).size());
+        assertEquals("Roles", permGroup.getName());
+        assertEquals(3, Collections.list(permGroup.members()).size());
     }
 
     private Database _db;

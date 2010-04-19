@@ -197,10 +197,10 @@ public class ResourceAcceptanceTest
         // ACT
         acl.setUsers(Collections.singleton(e));
         getCommands().lock(folder.getId());
-        getCommands().changeRoles(folder.getId(), acl);
+        getCommands().changeAcl(folder.getId(), acl);
 
         // ASSERT
-        final AclDto actual = getCommands().roles(folder.getId());
+        final AclDto actual = getCommands().acl(folder.getId());
         assertEquals(0, actual.getGroups().size());
         assertEquals(1, actual.getUsers().size());
         assertEquals(
@@ -210,39 +210,37 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdateResourceRoles() throws RestException {
+    public void testUpdateResourceAcl() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final AclDto origRoles =
-            getCommands().roles(folder.getId());
+        final AclDto origAcl =
+            getCommands().acl(folder.getId());
         final Entry e = new Entry();
         e._canRead = true;
         e._canWrite = true;
         e._name = "SITE_BUILDER";
         e._principal =
             getGroups().list("SITE_BUILDER").iterator().next().getId();
-        final AclDto roles =
+        final AclDto acl =
             new AclDto()
                 .setGroups(Collections.singleton(e));
 
         // ACT
         getCommands().lock(folder.getId());
-        getCommands().changeRoles(folder.getId(), roles);
-        final AclDto withRoles =
-            getCommands().roles(folder.getId());
+        getCommands().changeAcl(folder.getId(), acl);
+        final AclDto withAcl =
+            getCommands().acl(folder.getId());
 
-        getCommands().changeRoles(folder.getId(), new AclDto());
-        final AclDto noRoles = getCommands().roles(folder.getId());
+        getCommands().changeAcl(folder.getId(), new AclDto());
+        final AclDto noPermsAcl = getCommands().acl(folder.getId());
 
         // ASSERT
-        assertEquals(0, origRoles.getGroups().size());
-        assertEquals(roles.getGroups().size(), withRoles.getGroups().size());
-        assertTrue(roles.getGroups().containsAll(withRoles.getGroups()));
-        assertEquals(0, noRoles.getGroups().size());
+        assertEquals(0, origAcl.getGroups().size());
+        assertEquals(acl.getGroups().size(), withAcl.getGroups().size());
+        assertTrue(acl.getGroups().containsAll(withAcl.getGroups()));
+        assertEquals(0, noPermsAcl.getGroups().size());
     }
 
 

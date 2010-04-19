@@ -88,16 +88,16 @@ public class UserTest
     /**
      * Test.
      */
-    public void testRolesAccessorHandlesNoRoles() {
+    public void testGroupsAccessorHandlesNoGroups() {
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
 
         // ACT
-        final Set<Group> roles = u.getGroups();
+        final Set<Group> groups = u.getGroups();
 
         // ASSERT
-        assertEquals(0, roles.size());
+        assertEquals(0, groups.size());
     }
 
 
@@ -191,7 +191,7 @@ public class UserTest
     /**
      * Test.
      */
-    public void testCreatorRoles() {
+    public void testCreatorGroups() {
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
@@ -341,7 +341,7 @@ public class UserTest
     /**
      * Test.
      */
-    public void testReplaceRoles() {
+    public void testReplaceGroups() {
 
         // ARRANGE
         final User u = new User(new Username("dummy"), "password");
