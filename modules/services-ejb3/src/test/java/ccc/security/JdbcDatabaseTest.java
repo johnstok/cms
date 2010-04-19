@@ -183,7 +183,7 @@ public class JdbcDatabaseTest
      *
      * @throws SQLException Due to JDBC API.
      */
-    public void testLookupRoles() throws SQLException {
+    public void testLookupPerms() throws SQLException {
 
         // ARRANGE
         final User u = new User(new Username("user"), "password");
@@ -207,7 +207,7 @@ public class JdbcDatabaseTest
 
         // ACT
         final Set<String> result =
-            _db.lookupRoles(u.getId().toString());
+            _db.lookupPerms(u.getId().toString());
 
         // ASSERT
         verifyAll();

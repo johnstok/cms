@@ -290,7 +290,7 @@ public abstract class AbstractAcceptanceTest
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
-                .setRoles(Collections.singleton(contentCreator.getId()))
+                .setGroups(Collections.singleton(contentCreator.getId()))
                 .setMetadata(Collections.singletonMap("key", "value"))
                 .setPassword("Testtest00-");
 

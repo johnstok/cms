@@ -47,7 +47,7 @@ import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
-import ccc.commands.UpdateResourceRolesCommand;
+import ccc.commands.UpdateResourceAclCommand;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.User;
@@ -249,12 +249,12 @@ public class MigrationEJB
 
     /** {@inheritDoc} */
     @Override
-    public void changeRoles(final UUID resourceId,
+    public void changeAcl(final UUID resourceId,
                             final AclDto acl,
                             final UUID actorId,
                             final Date happenedOn) {
         sudoExecute(
-            new UpdateResourceRolesCommand(
+            new UpdateResourceAclCommand(
                 getRepoFactory(),
                 resourceId,
                 acl),

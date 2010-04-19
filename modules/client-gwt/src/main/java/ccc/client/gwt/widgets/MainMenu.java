@@ -51,7 +51,7 @@ import ccc.client.gwt.remoting.LockAction;
 import ccc.client.gwt.remoting.LogoutAction;
 import ccc.client.gwt.remoting.OpenEditCacheAction;
 import ccc.client.gwt.remoting.OpenUpdateMetadataAction;
-import ccc.client.gwt.remoting.OpenUpdateResourceRolesAction;
+import ccc.client.gwt.remoting.OpenUpdateResourceAclAction;
 import ccc.client.gwt.remoting.PublishAction;
 import ccc.client.gwt.remoting.UnlockAction;
 import ccc.client.gwt.remoting.UnpublishAction;
@@ -229,7 +229,7 @@ public class MainMenu
                     new ListGroups() {
                         @Override
                         protected void execute(final Collection<GroupDto> g) {
-                            new OpenUpdateResourceRolesAction(ssm, g)
+                            new OpenUpdateResourceAclAction(ssm, g)
                                 .execute();
                         }}));
                 rootMenu.add(createMenuItem(

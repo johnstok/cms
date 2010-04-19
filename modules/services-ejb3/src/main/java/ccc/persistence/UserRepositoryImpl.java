@@ -140,7 +140,7 @@ class UserRepositoryImpl implements UserRepository {
         if (null!=uc.getGroups()) {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" ? in (select r._name "
-                + "from ccc.domain.User as u2 left join u2._roles as r "
+                + "from ccc.domain.User as u2 left join u2._groups as r "
                 + "where u=u2) ");
             params.add(uc.getGroups());
         }

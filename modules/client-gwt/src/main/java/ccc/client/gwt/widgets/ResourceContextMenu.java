@@ -56,7 +56,7 @@ import ccc.client.gwt.remoting.OpenEditCacheAction;
 import ccc.client.gwt.remoting.OpenEditTextFileAction;
 import ccc.client.gwt.remoting.OpenUpdateAliasAction;
 import ccc.client.gwt.remoting.OpenUpdateMetadataAction;
-import ccc.client.gwt.remoting.OpenUpdateResourceRolesAction;
+import ccc.client.gwt.remoting.OpenUpdateResourceAclAction;
 import ccc.client.gwt.remoting.OpenUpdateTemplateAction;
 import ccc.client.gwt.remoting.PageDeltaAction;
 import ccc.client.gwt.remoting.PublishAction;
@@ -104,7 +104,7 @@ public class ResourceContextMenu
     private final Action _previewWorkingCopyAction;
     private final Action _chooseTemplateAction;
     private final Action _createActionAction;
-    private final Action _updateRolesAction;
+    private final Action _updateAclAction;
     private final Action _applyWorkingCopyAction;
     private final Action _editCacheAction;
     private final Action _deleteResourceAction;
@@ -136,10 +136,10 @@ public class ResourceContextMenu
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new OpenCreateActionAction(_table);
-        _updateRolesAction = new ListGroups() {
+        _updateAclAction = new ListGroups() {
             @Override
             protected void execute(final Collection<GroupDto> g) {
-                new OpenUpdateResourceRolesAction(_table, g)
+                new OpenUpdateResourceAclAction(_table, g)
                     .execute();
             }};
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);
@@ -219,7 +219,7 @@ public class ResourceContextMenu
                 addMove();
                 addRename();
                 if (user.hasPermission(Permission.RESOURCE_ACL_UPDATE)) {
-                    addUpdateRolesAction();
+                    addUpdateAclAction();
                 }
                 addUpdateMetadata();
                 addCreateAlias();
@@ -261,11 +261,11 @@ public class ResourceContextMenu
             _deleteResourceAction);
     }
 
-    private void addUpdateRolesAction() {
+    private void addUpdateAclAction() {
         addMenuItem(
             "update-resource-roles",
             getConstants().updateRoles(),
-            _updateRolesAction);
+            _updateAclAction);
     }
 
     private void addCreateAction() {

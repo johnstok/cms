@@ -38,7 +38,7 @@ import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 
 /**
- * Tree for users. Users are grouped based on their roles.
+ * Tree for users. Users are organised based on their group.
  *
  * @author Civic Computing Ltd.
  */

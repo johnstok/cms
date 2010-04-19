@@ -93,7 +93,7 @@ public class UserMigration {
                 final Set<UUID> groupList =
                     migrateGroups(roles, _cachedGroups, _groups);
 
-                ud.setRoles(groupList);
+                ud.setGroups(groupList);
 
                 if (null == ud.getPassword()) {
                     log.warn(

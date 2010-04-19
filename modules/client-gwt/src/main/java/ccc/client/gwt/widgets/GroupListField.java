@@ -48,18 +48,17 @@ import com.extjs.gxt.ui.client.widget.form.ListField;
  */
 public class GroupListField extends ListField<BaseModelData> {
 
-    /** ROLE_HEIGHT : int. */
-    private static final int ROLE_HEIGHT = 200;
+    private static final int GROUP_HEIGHT = 200;
     private final Globals _globals = new GlobalsImpl();
 
     /**
      * Constructor.
      *
      * @param allGroups The list of all groups.
-     * @param selectedRoles UUIDs of selected groups.
+     * @param selectedGroups UUIDs of selected groups.
      */
     public GroupListField(final Collection<GroupDto> allGroups,
-                          final Set<UUID> selectedRoles) {
+                          final Set<UUID> selectedGroups) {
         final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
         final List<BaseModelData> selected = new ArrayList<BaseModelData>();
         for (final GroupDto g : allGroups) {
@@ -67,11 +66,11 @@ public class GroupListField extends ListField<BaseModelData> {
             d.set("name", g.getName());
             d.set("id", g.getId());
             gData.add(d);
-            if (selectedRoles.contains(g.getId())) { selected.add(d); }
+            if (selectedGroups.contains(g.getId())) { selected.add(d); }
         }
 
         setFieldLabel(_globals.uiConstants().roles());
-        setHeight(ROLE_HEIGHT);
+        setHeight(GROUP_HEIGHT);
         setStore(gData);
         setSelection(selected);
         setDisplayField("name");

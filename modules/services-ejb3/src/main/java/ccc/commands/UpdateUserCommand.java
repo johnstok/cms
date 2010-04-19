@@ -77,7 +77,7 @@ public class UpdateUserCommand
         current.setEmail(new EmailAddress(_delta.getEmail()));
         current.setName(_delta.getName());
         current.clearGroups();
-        for (final UUID groupId : _delta.getRoles()) {
+        for (final UUID groupId : _delta.getGroups()) {
             current.addGroup(getGroups().find(groupId));
         }
         current.clearMetadata();

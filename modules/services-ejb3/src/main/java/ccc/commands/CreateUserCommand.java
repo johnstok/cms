@@ -78,7 +78,7 @@ public class CreateUserCommand {
         final User user =
             new User(delta.getUsername(), delta.getName(), delta.getPassword());
         user.setEmail(new EmailAddress(delta.getEmail()));
-        for (final UUID groupId : delta.getRoles()) {
+        for (final UUID groupId : delta.getGroups()) {
             user.addGroup(_groups.find(groupId));
         }
         user.addMetadata(delta.getMetadata());

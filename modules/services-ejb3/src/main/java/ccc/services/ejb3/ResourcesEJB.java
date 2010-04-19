@@ -64,7 +64,7 @@ import ccc.commands.MoveResourceCommand;
 import ccc.commands.RenameResourceCommand;
 import ccc.commands.UpdateCachingCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
-import ccc.commands.UpdateResourceRolesCommand;
+import ccc.commands.UpdateResourceAclCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.commons.Exceptions;
 import ccc.commons.streams.ReadToStringAction;
@@ -375,9 +375,9 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_ACL_UPDATE)
-    public void changeRoles(final UUID resourceId, final AclDto acl) {
+    public void changeAcl(final UUID resourceId, final AclDto acl) {
         execute(
-            new UpdateResourceRolesCommand(getRepoFactory(), resourceId, acl));
+            new UpdateResourceAclCommand(getRepoFactory(), resourceId, acl));
     }
 
 
@@ -474,7 +474,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public AclDto roles(final UUID resourceId) {
+    public AclDto acl(final UUID resourceId) {
         final AclDto acl =
             getResources().find(Resource.class, resourceId).getAcl();
         return acl;

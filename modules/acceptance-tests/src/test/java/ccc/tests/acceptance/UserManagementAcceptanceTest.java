@@ -92,7 +92,7 @@ public class UserManagementAcceptanceTest
         final UserDto uq = ul.iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
-        assertEquals(1, uq.getRoles().size());
+        assertEquals(1, uq.getGroups().size());
         // TODO: Test metadata set correctly.
     }
 
@@ -116,7 +116,7 @@ public class UserManagementAcceptanceTest
         final UserDto uq = ul.getElements().iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
-        assertEquals(1, uq.getRoles().size());
+        assertEquals(1, uq.getGroups().size());
         // TODO: Test metadata set correctly.
     }
 
@@ -145,7 +145,7 @@ public class UserManagementAcceptanceTest
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
-                .setRoles(Collections.singleton(siteBuilder.getId()))
+                .setGroups(Collections.singleton(siteBuilder.getId()))
                 .setMetadata(Collections.singletonMap("key2", "value2")));
 
         // ASSERT
@@ -153,8 +153,8 @@ public class UserManagementAcceptanceTest
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(name, ud.getName());
-        assertEquals(1, ud.getRoles().size());
-        assertEquals(siteBuilder.getId(), ud.getRoles().iterator().next());
+        assertEquals(1, ud.getGroups().size());
+        assertEquals(siteBuilder.getId(), ud.getGroups().iterator().next());
         // TODO: Test metadata set correctly.
     }
 
@@ -178,7 +178,7 @@ public class UserManagementAcceptanceTest
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
-                .setRoles(Collections.singleton(siteBuilder.getId()))
+                .setGroups(Collections.singleton(siteBuilder.getId()))
                 .setMetadata(Collections.singletonMap("key", "value"))
                 .setPassword("Testtest00-");
         final UserDto us = getUsers().createUser(u);
@@ -186,8 +186,8 @@ public class UserManagementAcceptanceTest
 
         assertEquals(username, us.getUsername());
         assertEquals(email, us.getEmail());
-        assertEquals(1, us.getRoles().size());
-        assertEquals(siteBuilder.getId(), us.getRoles().iterator().next());
+        assertEquals(1, us.getGroups().size());
+        assertEquals(siteBuilder.getId(), us.getGroups().iterator().next());
         // TODO: Test metadata set correctly.
     }
 
@@ -212,7 +212,7 @@ public class UserManagementAcceptanceTest
         .setEmail(email)
         .setUsername(username)
         .setName(name)
-        .setRoles(Collections.singleton(siteBuilder.getId()))
+        .setGroups(Collections.singleton(siteBuilder.getId()))
         .setMetadata(Collections.singletonMap("key", "value"))
         .setPassword("Testtest00-");
         final UserDto us = getUsers().createUser(u);
@@ -220,8 +220,8 @@ public class UserManagementAcceptanceTest
 
         assertEquals(username, us.getUsername());
         assertEquals(email, us.getEmail());
-        assertEquals(1, us.getRoles().size());
-        assertEquals(siteBuilder.getId(), us.getRoles().iterator().next());
+        assertEquals(1, us.getGroups().size());
+        assertEquals(siteBuilder.getId(), us.getGroups().iterator().next());
         // TODO: Test metadata set correctly.
     }
 
@@ -364,6 +364,6 @@ public class UserManagementAcceptanceTest
         assertNotNull(ul);
         assertEquals(us.getUsername(), ul.getUsername());
         assertEquals(us.getEmail(), ul.getEmail());
-        assertEquals(0, ul.getRoles().size());
+        assertEquals(0, ul.getGroups().size());
     }
 }

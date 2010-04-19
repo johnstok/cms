@@ -138,20 +138,17 @@ public interface Migration {
 
 
     /**
-     * Change the security roles for a resource.
+     * Change the ACL for a resource.
      *
      * @param resourceId The resource to update.
      * @param acl The access control list for this resource.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
-    void changeRoles(UUID resourceId,
-                     AclDto acl,
-                     UUID actorId,
-                     Date happenedOn)
-    throws RestException;
+    void changeAcl(UUID resourceId,
+                   AclDto acl,
+                   UUID actorId,
+                   Date happenedOn);
 
 
 

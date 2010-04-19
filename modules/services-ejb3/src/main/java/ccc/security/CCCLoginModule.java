@@ -60,8 +60,8 @@ public class CCCLoginModule implements LoginModule {
 
     private CallbackHandler _cbHandler;
     private Object[] _user;
-    private Set<String> _roles;
-    private Group _roleGroup;
+    private Set<String> _permissions;
+    private Group _permGroup;
     private Subject _subject;
     private Group _callerPrincipal;
     private Database _db;
@@ -88,9 +88,9 @@ public class CCCLoginModule implements LoginModule {
     public boolean abort() {
         _cbHandler = null;
         _subject = null;
-        _roles = null;
+        _permissions = null;
         _user = null;
-        _roleGroup = null;
+        _permGroup = null;
         _callerPrincipal = null;
 
         return true;
@@ -100,7 +100,7 @@ public class CCCLoginModule implements LoginModule {
     @Override
     public boolean commit() {
         _subject.getPrincipals().add(_callerPrincipal);
-        _subject.getPrincipals().add(_roleGroup);
+        _subject.getPrincipals().add(_permGroup);
         return true;
     }
 
@@ -138,11 +138,11 @@ public class CCCLoginModule implements LoginModule {
             }
             LOG.debug("Found user in db with username: "+nc.getName());
 
-            _roles = _db.lookupRoles((String) _user[0]);
-            LOG.debug("User "+nc.getName()+" has roles: "+_roles);
+            _permissions = _db.lookupPerms((String) _user[0]);
+            LOG.debug("User "+nc.getName()+" has permissions: "+_permissions);
 
             _callerPrincipal = createCallerPrincipal(nc.getName());
-            _roleGroup = createRoles(_roles);
+            _permGroup = createPerms(_permissions);
 
             final boolean passwordOk =
                 User.matches(
@@ -163,23 +163,23 @@ public class CCCLoginModule implements LoginModule {
     /** {@inheritDoc} */
     @Override
     public boolean logout() {
-        _subject.getPrincipals().remove(_roleGroup);
+        _subject.getPrincipals().remove(_permGroup);
         _subject.getPrincipals().remove(_callerPrincipal);
         return true;
     }
 
     /**
-     * Create a JAAS group representing a user's roles.
+     * Create a JAAS group representing a user's permissions.
      *
-     * @param roles The roles represented as strings.
-     * @return The roles represented as a JAAS group.
+     * @param perms The permissions represented as strings.
+     * @return The permissions represented as a JAAS group.
      */
-    public Group createRoles(final Collection<String> roles) {
-        final Group roleGroup = new SimpleGroup("Roles");
-        for (final String role : roles) {
-            roleGroup.addMember(new SimplePrincipal(role));
+    public Group createPerms(final Collection<String> perms) {
+        final Group permGroup = new SimpleGroup("Roles");
+        for (final String perm : perms) {
+            permGroup.addMember(new SimplePrincipal(perm));
         }
-        return roleGroup;
+        return permGroup;
     }
 
     /**
@@ -217,20 +217,20 @@ public class CCCLoginModule implements LoginModule {
     /**
      * Accessor.
      *
-     * @return Returns the _roles.
+     * @return Returns the permissions.
      */
-    Set<String> getRoles() {
-        return _roles;
+    Set<String> getPermissions() {
+        return _permissions;
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the _roleGroup.
+     * @return Returns the permissions group.
      */
-    Group getRoleGroup() {
-        return _roleGroup;
+    Group getPermGroup() {
+        return _permGroup;
     }
 
 

@@ -297,7 +297,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testResourcesWithRolesAreSecure() {
+    public void testResourcesWithGroupsAreSecure() {
 
         // ARRANGE
         final Page p = new Page();
@@ -314,7 +314,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testResourcesWithoutRolesArentSecure() {
+    public void testResourcesWithoutAclArentSecure() {
 
         // ARRANGE
         final Page p = new Page();
@@ -330,7 +330,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testResourceAccessibilityRespectsParentalRoles() {
+    public void testResourceAccessibilityRespectsParentalAcl() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -352,7 +352,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testResourcesWithNoRolesAreAccessible() {
+    public void testResourcesWithEmptyAclAreAccessible() {
 
         // ARRANGE
         final Resource r = new Page();
@@ -388,7 +388,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testRolesOnResourceUseOrLogic() {
+    public void testGroupsOnResourceUseOrLogic() {
 
         // ARRANGE
         final Resource r = new Page();
@@ -407,7 +407,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testRolesOnParentUseAndLogic() {
+    public void testGroupsOnParentUseAndLogic() {
 
         // ARRANGE
         final Folder f = new Folder();
@@ -448,19 +448,21 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testRolesProperty() {
+    public void testGroupsProperty() {
 
         // ARRANGE
+        final AccessPermission foo = new AccessPermission(true, true, FOO);
+        final AccessPermission bar = new AccessPermission(true, true, BAR);
         final Resource r = new Page();
 
         // ACT
-        r.addGroupPermission(new AccessPermission(true, true, FOO));
-        r.addGroupPermission(new AccessPermission(true, true, BAR));
+        r.addGroupPermission(foo);
+        r.addGroupPermission(bar);
 
         // ASSERT
         assertEquals(2, r.getGroupAcl().size());
-//        assertTrue(r.getGroupAcl().contains(FOO));
-//        assertTrue(r.getGroupAcl().contains(BAR));
+        assertTrue(r.getGroupAcl().contains(foo.createEntry()));
+        assertTrue(r.getGroupAcl().contains(bar.createEntry()));
     }
 
     /**

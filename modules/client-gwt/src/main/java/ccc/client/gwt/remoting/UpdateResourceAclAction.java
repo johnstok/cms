@@ -36,11 +36,11 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * Remote action for resource's roles updating.
+ * Remote action for resource's ACL updating.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceRolesAction
+public class UpdateResourceAclAction
     extends
         RemotingAction {
 
@@ -54,7 +54,7 @@ public class UpdateResourceRolesAction
      * @param resource The resource to update.
      * @param acl The updated access control list.
      */
-    public UpdateResourceRolesAction(final UUID resource,
+    public UpdateResourceAclAction(final UUID resource,
                                      final AclDto acl) {
         super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
         _resource = resource;
@@ -65,7 +65,7 @@ public class UpdateResourceRolesAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/resources/"+_resource+"/roles";
+        return "/resources/"+_resource+"/acl";
     }
 
 
