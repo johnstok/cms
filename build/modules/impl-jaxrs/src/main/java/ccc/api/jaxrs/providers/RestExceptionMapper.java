@@ -33,7 +33,7 @@ import ccc.api.exceptions.ConflictException;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InternalError;
 import ccc.api.exceptions.InvalidException;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.HttpStatusCode;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -46,11 +46,11 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 public class RestExceptionMapper
     implements
-        ExceptionMapper<RestException> {
+        ExceptionMapper<CCException> {
 
     /** {@inheritDoc} */
     @Override
-    public Response toResponse(final RestException e) {
+    public Response toResponse(final CCException e) {
 
         int statusCode = HttpStatusCode.ERROR;
 
@@ -88,7 +88,7 @@ public class RestExceptionMapper
      * @return The corresponding exception.
      */
     @SuppressWarnings("unchecked")
-    public <T extends RestException> T fromResponse(final int statusCode,
+    public <T extends CCException> T fromResponse(final int statusCode,
                                                     final String body) {
         switch (statusCode) {
 

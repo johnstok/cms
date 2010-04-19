@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Json;
  */
 public class UnauthorizedException
     extends
-        RestException {
+        CCException {
 
     private UUID _target;
     private UUID _user;

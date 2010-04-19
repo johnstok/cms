@@ -27,7 +27,7 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnlockedException;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.FailureCode;
@@ -65,7 +65,7 @@ public class ActionTest
         // ARRANGE
         final Page p = new Page();
         final Action a = new Action();
-        final RestException e = new UnlockedException(p.getId());
+        final CCException e = new UnlockedException(p.getId());
 
         // ACT
         a.fail(e.getFailure());

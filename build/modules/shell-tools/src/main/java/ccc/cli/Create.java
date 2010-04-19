@@ -37,7 +37,7 @@ import ccc.api.Folders;
 import ccc.api.Resources;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.types.ResourceName;
 
@@ -106,7 +106,7 @@ public final class Create extends CccApp {
             resources.unlock(assets.getId());
 
             LOG.info("Created default folder structure.");
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             LOG.error("Failed to create app.", e);
         }
     }

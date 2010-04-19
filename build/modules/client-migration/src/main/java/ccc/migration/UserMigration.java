@@ -39,7 +39,7 @@ import ccc.api.Groups;
 import ccc.api.Users;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.EmailAddress;
 
 
@@ -77,9 +77,9 @@ public class UserMigration {
     /**
      * Migrate all users.
      *
-     * @throws RestException If an error occurs during migration.
+     * @throws CCException If an error occurs during migration.
      */
-    void migrateUsers() throws RestException {
+    void migrateUsers() throws CCException {
 
         final Map<Integer, UserDto> mus = _legacyQueries.selectUsers();
 
@@ -129,7 +129,7 @@ public class UserMigration {
 
     static Set<UUID> migrateGroups(final Collection<String> roles,
                                    final Map<String, GroupDto> cachedGroups,
-                                   final Groups groups) throws RestException {
+                                   final Groups groups) throws CCException {
 
         final Set<UUID> groupList = new HashSet<UUID>();
 

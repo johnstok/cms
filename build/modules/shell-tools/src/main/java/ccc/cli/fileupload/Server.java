@@ -29,7 +29,7 @@ package ccc.cli.fileupload;
 import java.io.File;
 import java.util.UUID;
 
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 
 
 
@@ -57,19 +57,19 @@ public interface Server {
      * @param name The name of the folder.
      * @param publish Should the folder be published.
      * @return The id of the newly created folder.
-     * @throws RestException If it wasn't possible to create the
+     * @throws CCException If it wasn't possible to create the
      *  folder.
      */
     UUID createFolder(final UUID parentFolder, String name, boolean publish)
-    throws RestException;
+    throws CCException;
 
     /**
      * Get the id of the root folder in the new system.
      * TODO: Throw a more appropriate exception.
      *
-     * @throws RestException If the root folder doesn't exist.
+     * @throws CCException If the root folder doesn't exist.
      *
      * @return The id of the root folder.
      */
-    UUID getRoot() throws RestException;
+    UUID getRoot() throws CCException;
 }

@@ -39,7 +39,7 @@ import ccc.api.Folders;
 import ccc.api.Resources;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.FailureCode;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -125,7 +125,7 @@ public class CccServer implements Server {
                     name,
                     publish);
             return UUID.fromString(rs.getId().toString());
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             if (FailureCode.EXISTS==e.getCode()) {
                 LOG.warn("Folder already exists: "+name);
                 return UUID.fromString(

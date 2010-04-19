@@ -33,7 +33,6 @@ import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.SortOrder;
@@ -48,15 +47,13 @@ public class ActionAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
-    /** ONE_SECOND : int. */
+    private static final int ONE_DAY = 24*60*60*1000;
     private static final int ONE_SECOND = 1000;
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testCreateAction() throws RestException {
+    public void testCreateAction() {
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
@@ -66,7 +63,7 @@ public class ActionAcceptanceTest
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
-                new Date(24*60*60*1000),
+                new Date(ONE_DAY),
                 new HashMap<String, String>()));
         final DtoCollection<ActionSummary> pending =
             getActions().listPendingActions("", SortOrder.ASC, 1, 20);
@@ -79,9 +76,8 @@ public class ActionAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testCancelAction() throws RestException {
+    public void testCancelAction() {
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
@@ -89,7 +85,7 @@ public class ActionAcceptanceTest
             new ActionDto(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
-                new Date(24*60*60*1000),
+                new Date(ONE_DAY),
                 new HashMap<String, String>()));
 
         // ACT
@@ -102,9 +98,8 @@ public class ActionAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testExecuteAction() throws RestException {
+    public void testExecuteAction() {
         // ARRANGE
         final Date time =  new Date(new Date().getTime()-ONE_SECOND);
         final ResourceSummary rs = tempFolder();
@@ -126,9 +121,8 @@ public class ActionAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testFailingAction() throws RestException {
+    public void testFailingAction() {
         // ARRANGE
         final Date epoch =  new Date(0);
         final ResourceSummary rs = tempFolder();
@@ -149,9 +143,8 @@ public class ActionAcceptanceTest
 
     /**
      * Test.
-     * @throws RestException If the test fails.
      */
-    public void testExecuteDeleteAction() throws RestException {
+    public void testExecuteDeleteAction() {
 
         // ARRANGE
         final Date time =  new Date(0);

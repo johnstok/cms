@@ -29,7 +29,6 @@ package ccc.rest.extensions;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.exceptions.RestException;
 import ccc.api.types.Duration;
 
 
@@ -49,11 +48,8 @@ public interface ResourcesExt
      *
      * @param resourceId The id of the resource to update.
      * @param templateId The new template to set for the resource.
-     *
-     * @throws RestException If the method fails.
      */
-    void updateResourceTemplate(UUID resourceId, UUID templateId)
-    throws RestException;
+    void updateResourceTemplate(UUID resourceId, UUID templateId);
 
 
     /**
@@ -61,11 +57,8 @@ public interface ResourcesExt
      *
      * @param resourceId The id of the resource to update.
      * @param include True if the resource should be included, false otherwise.
-     *
-     * @throws RestException If the method fails.
      */
-    void includeInMainMenu(UUID resourceId, boolean include)
-    throws RestException;
+    void includeInMainMenu(UUID resourceId, boolean include);
 
 
     /**
@@ -76,14 +69,12 @@ public interface ResourcesExt
      * @param description The new description to set.
      * @param tags The new tags to set.
      * @param metadata The metadata to update.
-     * @throws  RestException If the method fails.
      */
     void updateMetadata(UUID resourceId,
                         String title,
                         String description,
                         String tags,
-                        Map<String, String> metadata)
-    throws RestException;
+                        Map<String, String> metadata);
 
 
     /**
@@ -92,11 +83,8 @@ public interface ResourcesExt
      *
      * @param resourceId The id of the resource.
      * @param index The index number of the log entry.
-     *
-     * @throws RestException If the method fails.
      */
-    void createWorkingCopy(UUID resourceId, long index)
-    throws RestException;
+    void createWorkingCopy(UUID resourceId, long index);
 
 
     /**
@@ -104,9 +92,6 @@ public interface ResourcesExt
      *
      * @param resourceId The resource to update.
      * @param duration The cache duration.
-     *
-     * @throws RestException If the method fails.
      */
-    void updateCacheDuration(UUID resourceId, Duration duration)
-    throws RestException;
+    void updateCacheDuration(UUID resourceId, Duration duration);
 }

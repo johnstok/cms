@@ -39,7 +39,7 @@ import ccc.plugins.s11n.Json;
  */
 public class InternalError
     extends
-        RestException {
+        CCException {
 
 
     /**

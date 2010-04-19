@@ -41,7 +41,6 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.api.exceptions.RestException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.JsonKeys;
@@ -66,7 +65,7 @@ public class ResourceAcceptanceTest
     /**
      * Test.
      */
-    public void testUnlockResource() throws Exception {
+    public void testUnlockResource() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -88,10 +87,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testMoveResource() throws Exception {
+    public void testMoveResource() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -110,9 +107,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testMoveSecondResourceFromFolder() throws Exception {
+    public void testMoveSecondResourceFromFolder() {
 
         //ARRANGE
         final ResourceSummary firstFolder = tempFolder();
@@ -140,9 +136,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     * @throws Exception If the test fails.
      */
-    public void testUpdateResourceMetadata() throws Exception  {
+    public void testUpdateResourceMetadata() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -180,10 +175,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testUpdateAclUsers() throws Exception {
+    public void testUpdateAclUsers() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -262,10 +255,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testLockResource() throws Exception  {
+    public void testLockResource() {
 
         // ARRANGE
 
@@ -285,10 +276,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testChangeResourceTemplate() throws Exception  {
+    public void testChangeResourceTemplate() {
 
         // ARRANGE
 
@@ -317,10 +306,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testUpdateCacheDuration() throws RestException {
+    public void testUpdateCacheDuration() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -354,10 +341,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testRename() throws Exception  {
+    public void testRename() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -378,10 +363,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testIncludeInMainMenu() throws Exception  {
+    public void testIncludeInMainMenu() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -407,10 +390,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testPublish() throws Exception  {
+    public void testPublish() {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
@@ -438,10 +419,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws RestException If the test fails.
      */
-    public void testResourceForLegacyId() throws RestException {
+    public void testResourceForLegacyId() {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -468,10 +447,8 @@ public class ResourceAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testSimpleDelete() throws Exception  {
+    public void testSimpleDelete() {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -492,10 +469,8 @@ public class ResourceAcceptanceTest
 
 //    /**
 //     * Test.
-//     *
-//     * @throws RestException If the test fails.
 //     */
-//    public void testComputeTemplate() throws RestException {
+//    public void testComputeTemplate() {
 //
 //        // ARRANGE
 //        final ResourceSummary f = tempFolder();

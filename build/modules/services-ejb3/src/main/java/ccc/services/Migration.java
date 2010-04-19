@@ -33,7 +33,6 @@ import java.util.UUID;
 import ccc.api.dto.AclDto;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
 
 
 /**
@@ -56,8 +55,6 @@ public interface Migration {
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A resource summary describing the new folder.
      */
     ResourceSummary createFolder(UUID parentId,
@@ -65,8 +62,7 @@ public interface Migration {
                                  String title,
                                  boolean publish,
                                  UUID actorId,
-                                 Date happenedOn)
-    throws RestException;
+                                 Date happenedOn);
 
 
     /**
@@ -78,15 +74,13 @@ public interface Migration {
      * @param isMajorEdit Is this a major change.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
     void updatePage(UUID pageId,
                     PageDelta delta,
                     String comment,
                     boolean isMajorEdit,
                     UUID actorId,
-                    Date happenedOn) throws RestException;
+                    Date happenedOn);
 
 
     /**
@@ -103,8 +97,6 @@ public interface Migration {
      * @param comment The comment of the page creation.
      * @param majorChange The boolean for major change.
      *
-     * @throws RestException If the method fails.
-     *
      * @return A resource summary describing the new page.
      */
     ResourceSummary createPage(UUID parentId,
@@ -116,7 +108,7 @@ public interface Migration {
                                UUID actorId,
                                Date happenedOn,
                                String comment,
-                               boolean majorChange) throws RestException;
+                               boolean majorChange);
 
 
     /**
@@ -127,14 +119,12 @@ public interface Migration {
      * @param happenedOn When the command happened.
      * @param isMajorEdit Was this a major change.
      * @param comment A comment describing the change.
-     *
-     * @throws RestException If the method fails.
      */
     void applyWorkingCopy(UUID resourceId,
                           UUID userId,
                           Date happenedOn,
                           boolean isMajorEdit,
-                          String comment) throws RestException;
+                          String comment);
 
 
     /**
@@ -158,12 +148,8 @@ public interface Migration {
      * @param resourceId The id of the existing resource.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
-    void deleteResource(UUID resourceId,
-                UUID actorId,
-                Date happenedOn) throws RestException;
+    void deleteResource(UUID resourceId, UUID actorId, Date happenedOn);
 
 
     /**
@@ -173,14 +159,11 @@ public interface Migration {
      * @param include True if the resource should be included, false otherwise.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
     void includeInMainMenu(UUID resourceId,
                            boolean include,
                            UUID actorId,
-                           Date happenedOn)
-    throws RestException;
+                           Date happenedOn);
 
 
     /**
@@ -191,11 +174,8 @@ public interface Migration {
      * @param resourceId The uuid of the resource to lock.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
-    void lock(UUID resourceId, UUID actorId, Date happenedOn)
-    throws RestException;
+    void lock(UUID resourceId, UUID actorId, Date happenedOn);
 
 
     /**
@@ -204,11 +184,8 @@ public interface Migration {
      * @param resourceId The id of the resource to update.
      * @param userId The id of the publishing user.
      * @param publishDate The date the resource was published.
-     *
-     * @throws RestException If the method fails.
      */
-    void publish(UUID resourceId, UUID userId, Date publishDate)
-    throws RestException;
+    void publish(UUID resourceId, UUID userId, Date publishDate);
 
 
 
@@ -218,11 +195,8 @@ public interface Migration {
      * @param resourceId The id of the resource to update.
      * @param userId The id of the un-publishing user.
      * @param publishDate The date the resource was un-published.
-     *
-     * @throws RestException If the method fails.
      */
-    void unpublish(UUID resourceId, UUID userId, Date publishDate)
-                                                  throws RestException;
+    void unpublish(UUID resourceId, UUID userId, Date publishDate);
 
 
 
@@ -236,8 +210,6 @@ public interface Migration {
      * @param metadata The metadata to update.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
     void updateMetadata(UUID resourceId,
                         String title,
@@ -245,8 +217,7 @@ public interface Migration {
                         String tags,
                         Map<String, String> metadata,
                         UUID actorId,
-                        Date happenedOn)
-    throws RestException;
+                        Date happenedOn);
 
 
     /**
@@ -256,14 +227,11 @@ public interface Migration {
      * @param templateId The new template to set for the resource.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
     void updateResourceTemplate(UUID resourceId,
                                 UUID templateId,
                                 UUID actorId,
-                                Date happenedOn)
-    throws RestException;
+                                Date happenedOn);
 
 
 
@@ -276,11 +244,8 @@ public interface Migration {
      * @param resourceId The resource to unlock.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     *
-     * @throws RestException If the method fails.
      */
-    void unlock(UUID resourceId, UUID actorId, Date happenedOn)
-    throws RestException;
+    void unlock(UUID resourceId, UUID actorId, Date happenedOn);
 
 
 }

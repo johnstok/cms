@@ -28,8 +28,6 @@ package ccc.rest.extensions;
 
 import java.util.UUID;
 
-import ccc.api.exceptions.RestException;
-
 
 /**
  * API for executing CCC actions.
@@ -42,8 +40,6 @@ public interface ActionExecutor {
      * Execute the specified action.
      *
      * @param actionId The action to execute.
-     *
-     * @throws RestException If the action fails.
      */
-    void executeAction(UUID actionId) throws RestException;
+    void executeAction(UUID actionId);
 }

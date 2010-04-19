@@ -40,7 +40,7 @@ import ccc.api.ServiceLocator;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.api.types.Paragraph;
 import ccc.cli.Migrate.Options;
 import ccc.rest.extensions.ResourcesExt;
@@ -105,7 +105,7 @@ public class Migrations extends BaseMigrations {
             _assetsImagesFolder =
                 getResources().resourceForPath("/assets/images");
             _cssFolder = getResources().resourceForPath("/assets/css");
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             throw new MigrationException(
                 "Failed to retrieve default folder structure.", e);
         }
@@ -139,7 +139,7 @@ public class Migrations extends BaseMigrations {
         }
     }
 
-    private void migrateHomepages() throws RestException {
+    private void migrateHomepages() throws CCException {
         final Map<Integer, Integer> map = getLegacyQueries().homepages();
         for (final Entry<Integer, Integer> e : map.entrySet()) {
             final ResourceSummary f =
@@ -341,7 +341,7 @@ public class Migrations extends BaseMigrations {
 
             log.debug("Migrated page "+resource.contentId());
 
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             log.warn(
                 logMigrationError(
                     "Error migrating page ", resource, e), e);
@@ -356,7 +356,7 @@ public class Migrations extends BaseMigrations {
     private void showInMainMenu(final ResourceBean r,
                                 final ResourceSummary rs,
                                 final LogEntryBean le)
-                                                 throws RestException {
+                                                 throws CCException {
         if (_menuItems.contains(Integer.valueOf(r.contentId()))) {
             getMigrations().includeInMainMenu(
                 rs.getId(), true, le.getUser().getId(), le.getHappenedOn());

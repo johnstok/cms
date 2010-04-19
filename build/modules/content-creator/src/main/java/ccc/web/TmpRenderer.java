@@ -38,7 +38,7 @@ import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TextFileDelta;
-import ccc.api.exceptions.RestException;
+import ccc.api.exceptions.CCException;
 import ccc.plugins.scripting.Script;
 import ccc.web.rendering.FileBody;
 import ccc.web.rendering.NotFoundException;
@@ -119,7 +119,7 @@ public class TmpRenderer {
             r.setExpiry(s.getCacheDuration());
             return r;
 
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
@@ -133,7 +133,7 @@ public class TmpRenderer {
                 new Response(
                     new ScriptBody(
                         new Script(tf.getContent(), tf.getId().toString())));
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
@@ -156,7 +156,7 @@ public class TmpRenderer {
             }
             return r;
 
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
@@ -173,7 +173,7 @@ public class TmpRenderer {
                     _resources.getAbsolutePath(s.getDefaultPage()));
             }
 
-        } catch (final RestException e) {
+        } catch (final CCException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
