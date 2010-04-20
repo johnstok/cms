@@ -41,6 +41,8 @@ import org.apache.log4j.Logger;
 
 import ccc.commons.JNDI;
 import ccc.commons.Registry;
+import ccc.types.DBC;
+import ccc.types.EmailAddress;
 
 
 /**
@@ -52,38 +54,46 @@ public class Mailer
     extends
         Authenticator {
     private static final Logger LOG = Logger.getLogger(Mailer.class);
+    private final Session _session;
 
+    /**
+     * Constructor.
+     *
+     * @param location The location in registry, for example java:/mail/appname
+     */
+    public Mailer(final String location) {
+        final Registry r = new JNDI();
+        final Session session = r.get(location);
+        _session = DBC.require().notNull(session);
+    }
 
     /**
      * Sends a plain text message to the specified recipient.
      *
-     * @param location The location in registry, for example java:/mail/appname
+     * @param fromAddress The address from which the email will be sent.
      * @param toAddress The address to which the email will be sent.
      * @param subject The email's subject.
      * @param message The email's body.
      *
      * @return True if the mail was sent successfully, false otherwise.
      */
-    public boolean send(final String location,
-                        final String toAddress,
+    public boolean send(final EmailAddress fromAddress,
+                        final EmailAddress toAddress,
                         final String subject,
                         final String message) {
         try {
 
-            // Create the session.
-            final Registry r = new JNDI();
-            final Session session = r.get(location);
-
             // Create the message.
-            final Message msg = new MimeMessage(session);
+            final Message msg = new MimeMessage(_session);
 
             // Set the to / from addresses.
             msg.setRecipient(
-                Message.RecipientType.TO, new InternetAddress(toAddress));
+                Message.RecipientType.TO,
+                new InternetAddress(toAddress.getText()));
+            msg.setFrom(new InternetAddress(fromAddress.getText()));
 
             // Set the content.
             msg.setSentDate(new Date());
-            msg.setFrom();
             msg.setSubject(subject);
             msg.setContent(message, "text/plain");
 
@@ -99,4 +109,15 @@ public class Mailer
             return false;
         }
     }
+    
+    /**
+     * Enable debugging for this mailer.
+     *
+     * @param debug True if debugging should be enabled; false otherwise.
+     */
+    public void setDebug(final boolean debug) {
+        _session.setDebug(debug);
+    }
+
+    
 }
