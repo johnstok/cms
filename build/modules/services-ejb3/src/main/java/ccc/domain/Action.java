@@ -34,6 +34,14 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.api.dto.ActionSummary;
+import ccc.api.exceptions.CycleDetectedException;
+import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.exceptions.InsufficientPrivilegesException;
+import ccc.api.exceptions.LockMismatchException;
+import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.exceptions.UnlockedException;
+import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Failure;
@@ -172,11 +180,41 @@ public class Action extends Entity {
     public void fail(final Failure f) {
         checkStillScheduled();
         _status = ActionStatus.FAILED;
-        _code = f.getCode();
+        _code = mapCode(f.getCode());
         _params = f.getParams();
         _fId = f.getExceptionId();
     }
 
+
+    @Deprecated // FIXME: Just use exception class names.
+    private FailureCode mapCode(final String code) {
+        try {
+            final Class<?> failureClass = Class.forName(code);
+
+            if (WorkingCopyNotSupportedException.class==failureClass) {
+                return FailureCode.WC_UNSUPPORTED;
+            } else if (UnlockedException.class==failureClass) {
+                return FailureCode.UNLOCKED;
+            } else if (UnauthorizedException.class==failureClass) {
+                return FailureCode.PRIVILEGES;
+            } else if (ResourceExistsException.class==failureClass) {
+                return FailureCode.EXISTS;
+            } else if (LockMismatchException.class==failureClass) {
+                return FailureCode.LOCK_MISMATCH;
+            } else if (InsufficientPrivilegesException.class==failureClass) {
+                return FailureCode.PRIVILEGES;
+            } else if (EntityNotFoundException.class==failureClass) {
+                return FailureCode.NOT_FOUND;
+            } else if (CycleDetectedException.class==failureClass) {
+                return FailureCode.CYCLE;
+            }
+
+            return FailureCode.UNEXPECTED;
+
+        } catch (final ClassNotFoundException e) {
+            return FailureCode.UNEXPECTED;
+        }
+    }
 
     /**
      * Mark the action as cancelled.

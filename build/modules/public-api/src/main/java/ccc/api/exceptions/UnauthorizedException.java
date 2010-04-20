@@ -26,12 +26,10 @@
  */
 package ccc.api.exceptions;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -43,8 +41,12 @@ public class UnauthorizedException
     extends
         CCException {
 
-    private UUID _target;
-    private UUID _user;
+    private static final String TARGET = "target";
+    private static final String USER   = "user";
+
+
+    /** Constructor. */
+    public UnauthorizedException() { super(); }
 
 
     /**
@@ -54,37 +56,16 @@ public class UnauthorizedException
      * @param user   The user trying to access the entity.
      */
     public UnauthorizedException(final UUID target, final UUID user) {
-        super(new Failure(FailureCode.PRIVILEGES));
-        _target = DBC.require().notNull(target);
-        _user   = user; // NULL indicates anonymous access.
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of this exception.
-     */
-    public UnauthorizedException(final Json json) {
-        super(new Failure(FailureCode.PRIVILEGES));
-        fromJson(json);
-    }
-
-
-    /**
-     * Constructor.
-     */
-    public UnauthorizedException() {
-        super(new Failure(FailureCode.PRIVILEGES));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return
-            "User " + _user
-            + " isn't authorized to access entity " + _target + ".";
+        super(
+            "User "
+                + user // NULL indicates anonymous access.
+                + " isn't authorized to access entity "
+                + DBC.require().notNull(target) + ".",
+            null,
+            new HashMap<String, String>() {{
+                put(USER,   (null==user) ? null : user.toString());
+                put(TARGET, target.toString());
+            }});
     }
 
 
@@ -94,7 +75,7 @@ public class UnauthorizedException
      * @return Returns the target.
      */
     public UUID getTarget() {
-        return _target;
+        return UUID.fromString(getParam(TARGET));
     }
 
 
@@ -104,24 +85,7 @@ public class UnauthorizedException
      * @return Returns the user.
      */
     public UUID getUser() {
-        return _user;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _target = json.getId("target");
-        _user = json.getId("user");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set("target", _target);
-        json.set("user", _user);
+        final String user = getParam(USER);
+        return (null==user) ? null : UUID.fromString(user);
     }
 }

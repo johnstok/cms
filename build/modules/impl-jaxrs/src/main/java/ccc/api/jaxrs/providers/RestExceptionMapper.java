@@ -29,12 +29,12 @@ package ccc.api.jaxrs.providers;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ConflictException;
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.api.exceptions.InternalError;
 import ccc.api.exceptions.InvalidException;
-import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.types.Failure;
 import ccc.api.types.HttpStatusCode;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -66,15 +66,12 @@ public class RestExceptionMapper
         } else if (e instanceof InvalidException) {
             statusCode = HttpStatusCode.BAD_REQUEST;
 
-        } else if (e instanceof InternalError) {
-            statusCode = HttpStatusCode.ERROR;
-
         }
 
         return
             Response.status(statusCode)
                     .type("application/json")
-                    .entity(e)
+                    .entity(e.getFailure())
                     .build();
     }
 
@@ -82,34 +79,27 @@ public class RestExceptionMapper
      * Map from a response to the corresponding exception.
      *
      * @param <T> The type of exception expected.
-     * @param statusCode The HTTP status code.
      * @param body The HTTP response body.
      *
      * @return The corresponding exception.
      */
     @SuppressWarnings("unchecked")
-    public <T extends CCException> T fromResponse(final int statusCode,
-                                                    final String body) {
-        switch (statusCode) {
+    public <T extends CCException> T fromResponse(final String body) {
 
-            case HttpStatusCode.UNAUTHORIZED:
-                return (T) new UnauthorizedException(new JsonImpl(body));
+        final Failure f = new Failure(new JsonImpl(body));
 
-            case HttpStatusCode.CONFLICT:
-                return (T) new ConflictException(new JsonImpl(body));
+        try {
+            final T ex = (T) Class.forName(f.getCode()).newInstance();
+            ex.setId(f.getId());
+            ex.setParams(f.getParams());
+            return ex;
 
-            case HttpStatusCode.ERROR:
-                return (T) new InternalError(new JsonImpl(body));
-
-            case HttpStatusCode.NOT_FOUND:
-                return (T) new EntityNotFoundException(new JsonImpl(body));
-
-            case HttpStatusCode.BAD_REQUEST:
-                return (T) new InvalidException(new JsonImpl(body));
-
-            default:
-                return (T) new InternalError(new JsonImpl(body));
-
+        } catch (final InstantiationException e) {
+            throw new CCException(e.getMessage());
+        } catch (final IllegalAccessException e) {
+            throw new CCException(e.getMessage());
+        } catch (final ClassNotFoundException e) {
+            throw new CCException(e.getMessage());
         }
     }
 }

@@ -620,7 +620,9 @@ public final class FolderTest extends TestCase {
         // ASSERT
         } catch (final ResourceExistsException e) {
             assertEquals(
-                "Folder already contains a resource with name 'page'.",
+                "Folder already contains a resource "
+                    + p.getId()
+                    + " with name 'page'.",
                 e.getMessage());
         }
     }

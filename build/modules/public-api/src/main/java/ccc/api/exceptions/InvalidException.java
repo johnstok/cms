@@ -26,9 +26,8 @@
  */
 package ccc.api.exceptions;
 
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
-import ccc.plugins.s11n.Json;
+import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -36,35 +35,35 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class InvalidException
+public abstract class InvalidException
     extends
         CCException {
 
+    protected static final String RESOURCE = "resource";
 
-    /**
-     * Constructor.
-     */
-    public InvalidException() {
-        super(new Failure(FailureCode.INVALID));
-    }
+
+    /** Constructor. */
+    public InvalidException() { super(); }
 
 
     /**
      * Constructor.
      *
-     * @param failure Details of the failure.
+     * @param message Description of the exception.
+     * @param params  Further details describing the exception.
      */
-    public InvalidException(final Failure failure) {
-        super(failure);
+    public InvalidException(final String message,
+                            final Map<String, String> params) {
+        super(message, null, params);
     }
 
 
     /**
-     * Constructor.
+     * Accessor for the resource.
      *
-     * @param json The JSON representation of this exception.
+     * @return The resource.
      */
-    public InvalidException(final Json json) {
-        super(json);
+    public UUID getResource() {
+        return UUID.fromString(getParam(RESOURCE));
     }
 }

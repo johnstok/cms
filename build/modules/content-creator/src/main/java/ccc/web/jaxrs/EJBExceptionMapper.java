@@ -32,7 +32,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.exceptions.InternalError;
 import ccc.api.exceptions.CCException;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 
@@ -58,7 +57,9 @@ public class EJBExceptionMapper
                     (CCException) e.getCausedByException());
         }
 
-        final CCException re = new InternalError();
+        // FIXME: We can do better here.
+        final CCException re =
+            new CCException(e.getCausedByException().getMessage());
         LOG.warn(
             "Converted unexpected EJB exception to error: "
             + re.getFailure().getExceptionId(), e);

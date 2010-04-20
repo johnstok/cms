@@ -198,7 +198,7 @@ public class FileUploader
                 }
 
                 throw new RestExceptionMapper().fromResponse(
-                        status, filePost.getResponseBodyAsString());
+                        filePost.getResponseBodyAsString());
 
             } finally {
                 filePost.releaseConnection();

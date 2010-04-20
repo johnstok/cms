@@ -26,11 +26,10 @@
  */
 package ccc.api.exceptions;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
 
 
 /**
@@ -42,7 +41,9 @@ public class LockMismatchException
     extends
         InvalidException {
 
-    private final UUID _resource;
+
+    /** Constructor. */
+    public LockMismatchException() { super(); }
 
 
     /**
@@ -51,23 +52,10 @@ public class LockMismatchException
      * @param resource The resource.
      */
     public LockMismatchException(final UUID resource) {
-        super(new Failure(FailureCode.LOCK_MISMATCH));
-        DBC.require().notNull(resource);
-        _resource = resource;
-    }
-
-    /**
-     * Accessor for the resource.
-     *
-     * @return The resource.
-     */
-    public UUID getResource() {
-        return _resource;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return "Mismatch confirming lock on "+_resource+".";
+        super(
+            "Mismatch confirming lock on "
+                + DBC.require().notNull(resource)
+                + ".",
+            Collections.singletonMap(RESOURCE, resource.toString()));
     }
 }

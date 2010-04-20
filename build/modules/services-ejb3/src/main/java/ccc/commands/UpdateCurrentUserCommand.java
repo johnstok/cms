@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.dto.UserDto;
-import ccc.api.exceptions.InvalidException;
+import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
@@ -113,7 +113,8 @@ public class UpdateCurrentUserCommand
             || null==_delta.getName()
             || null==_delta.getEmail()
             || !EmailAddress.isValidText(_delta.getEmail())) {
-            throw new InvalidException();
+            // FIXME: Should be an InvalidException.
+            throw new CCException("Bad input data.");
         }
     }
 

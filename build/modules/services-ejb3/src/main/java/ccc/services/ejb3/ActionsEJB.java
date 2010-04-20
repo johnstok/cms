@@ -36,6 +36,7 @@ import java.util.UUID;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -47,10 +48,7 @@ import ccc.api.Resources;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
 import ccc.api.dto.DtoCollection;
-import ccc.api.exceptions.InternalError;
 import ccc.api.exceptions.CCException;
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
 import ccc.api.types.SortOrder;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
@@ -105,10 +103,17 @@ public class ActionsEJB
             } catch (final CCException e) {
                 fail(action, e);
 
+            } catch (final EJBException e) {
+                final Exception cause = e.getCausedByException();
+                if (cause instanceof CCException) {
+                    final CCException cce = (CCException) cause;
+                    fail(action, cce);
+                } else {
+                    fail(action, cause);
+                }
+
             } catch (final RuntimeException e) {
-                final Failure f = new Failure(FailureCode.UNEXPECTED);
-                LOG.warn("Error executing action: "+f.getExceptionId(), e);
-                fail(action, new InternalError(f));
+                fail(action, e);
             }
         }
     }
@@ -194,8 +199,20 @@ public class ActionsEJB
     private void fail(final Action action, final CCException e) {
         action.fail(e.getFailure());
         LOG.info(
-            "Failed action: "+action.getId()
-            +" [CommandFailedException was "
-            +e.getFailure().getExceptionId()+"]");
+            "Failed action: "
+            + action.getId()
+            + " exception was "
+            + e.getFailure().getExceptionId());
+    }
+
+
+    private void fail(final Action action, final Exception e) {
+        final CCException cce =
+            new CCException("Unexpected error.", e);
+        LOG.warn(
+            "Unexpected error executing action: "
+                + cce.getFailure().getExceptionId(),
+            e);
+        fail(action, cce);
     }
 }
