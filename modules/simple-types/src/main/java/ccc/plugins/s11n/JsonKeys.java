@@ -193,4 +193,8 @@ public final class JsonKeys {
     public static final String ACL = "acl";
     /** PRINCIPAL : String. */
     public static final String PRINCIPAL = "principal";
+    /** MESSAGE : String. */
+    public static final String MESSAGE = "message";
+    /** CAUSE : String. */
+    public static final String CAUSE = "cause";
 }

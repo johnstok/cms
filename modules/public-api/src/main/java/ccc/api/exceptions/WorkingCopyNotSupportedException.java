@@ -26,16 +26,14 @@
  */
 package ccc.api.exceptions;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
 
 
 /**
- * This exception is thrown when a working copy command is attempted for a
- * resource that doesn't support working copies.
+ * Indicates that a resource that doesn't support working copies.
  *
  * @author Civic Computing Ltd.
  */
@@ -43,7 +41,9 @@ public class WorkingCopyNotSupportedException
     extends
         InvalidException {
 
-    private final UUID _resource;
+
+    /** Constructor. */
+    public WorkingCopyNotSupportedException() { super(); }
 
 
     /**
@@ -52,28 +52,10 @@ public class WorkingCopyNotSupportedException
      * @param resource The resource.
      */
     public WorkingCopyNotSupportedException(final UUID resource) {
-        super(new Failure(FailureCode.WC_UNSUPPORTED));
-        DBC.require().notNull(resource);
-        _resource = resource;
-    }
-
-
-    /**
-     * Accessor for the resource.
-     *
-     * @return The resource.
-     */
-    public UUID getResource() {
-        return _resource;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return
+        super(
             "Resource "
-            + _resource
-            + " is not working copy aware.";
+                + DBC.require().notNull(resource)
+                + " is not working copy aware.",
+            Collections.singletonMap(RESOURCE, resource.toString()));
     }
 }

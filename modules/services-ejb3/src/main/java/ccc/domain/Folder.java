@@ -109,7 +109,7 @@ public final class Folder
         if (resource instanceof Folder) {
             final Folder folder = (Folder) resource;
             if (folder.isAncestorOf(this)) {
-                throw new CycleDetectedException();
+                throw new CycleDetectedException(getId());
             }
         }
 

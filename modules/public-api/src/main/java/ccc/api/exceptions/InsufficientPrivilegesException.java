@@ -26,12 +26,11 @@
  */
 package ccc.api.exceptions;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
 
 
 
@@ -45,8 +44,13 @@ public class InsufficientPrivilegesException
     extends
         CCException {
 
-    private final CommandType _action;
-    private final UUID _user;
+    private static final String ACTION = "action";
+    private static final String USER   = "user";
+
+
+    /** Constructor. */
+    public InsufficientPrivilegesException() { super(); }
+
 
     /**
      * Constructor.
@@ -56,21 +60,16 @@ public class InsufficientPrivilegesException
      */
     public InsufficientPrivilegesException(final CommandType action,
                                            final UUID user) {
-        super(new Failure(FailureCode.PRIVILEGES));
-        DBC.require().notNull(action);
-        DBC.require().notNull(user);
-        _action = action;
-        _user = user;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return
+        super(
             "User "
-            + _user
-            + " may not perform action: "
-            + _action;
+                + user // NULL indicates anonymous access.
+                + " may not perform action: "
+                + DBC.require().notNull(action) + ".",
+            null,
+            new HashMap<String, String>() {{
+                put(USER,   (null==user) ? null : user.toString());
+                put(ACTION, action.toString());
+            }});
     }
 
 
@@ -79,7 +78,9 @@ public class InsufficientPrivilegesException
      *
      * @return Returns the action.
      */
-    public CommandType getAction() { return _action; }
+    public CommandType getAction() {
+        return CommandType.valueOf(getParam(ACTION));
+    }
 
 
     /**
@@ -87,5 +88,8 @@ public class InsufficientPrivilegesException
      *
      * @return Returns the user.
      */
-    public UUID getUser() { return _user; }
+    public UUID getUser() {
+        final String user = getParam(USER);
+        return (null==user) ? null : UUID.fromString(user);
+    }
 }

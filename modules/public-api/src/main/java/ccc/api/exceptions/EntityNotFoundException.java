@@ -26,12 +26,8 @@
  */
 package ccc.api.exceptions;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.UUID;
-
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -43,27 +39,27 @@ public class EntityNotFoundException
     extends
         CCException {
 
+    private static final String ENTITY   = "id";
+
+
+    /** Constructor. */
+    public EntityNotFoundException() { super(); }
+
+
     /**
      * Constructor.
      *
-     * @param id The entity's id.
+     * @param entity The entity's id.
      */
-    public EntityNotFoundException(final UUID id) {
+    public EntityNotFoundException(final UUID entity) {
         super(
-            new Failure(
-                FailureCode.NOT_FOUND,
-                Collections.singletonMap(
-                    "id", (null==id) ? null : id.toString())));
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of this exception.
-     */
-    public EntityNotFoundException(final Json json) {
-        super(json);
+            "No entity with specified ID: "
+                + entity
+                + ".",
+            null,
+            new HashMap<String, String>() {{
+                put(ENTITY,   (null==entity) ? null : entity.toString());
+            }});
     }
 
 
@@ -73,9 +69,7 @@ public class EntityNotFoundException
      * @return Returns the id.
      */
     public UUID getId() {
-        final String idString = getFailure().getParams().get("id");
-        return (null==idString) ? null : UUID.fromString(idString);
+        final String entity = getParam(ENTITY);
+        return (null==entity) ? null : UUID.fromString(entity);
     }
-
-
 }

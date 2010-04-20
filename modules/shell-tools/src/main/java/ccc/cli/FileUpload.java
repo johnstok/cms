@@ -71,8 +71,10 @@ public class FileUpload extends CccApp {
                         recurse(childFolder, child, includeHidden, publish);
                     } catch (final CCException e) {
                         LOG.warn(
-                            "Failed to create folder '"+child.getName()
-                            + "' [error code: "+e.getCode()+"].");
+                            "Failed to create folder '"
+                            + child.getName()
+                            + ": "
+                            + e.getMessage());
                     }
                 }
             }

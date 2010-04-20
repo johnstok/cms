@@ -26,8 +26,8 @@
  */
 package ccc.api.exceptions;
 
-import ccc.api.types.Failure;
-import ccc.plugins.s11n.Json;
+import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -35,27 +35,42 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class ConflictException
+public abstract class ConflictException
     extends
         CCException {
 
-    /**
-     * Constructor.
-     *
-     * @param failure Details of the failure.
-     */
-    public ConflictException(final Failure failure) {
-        super(failure);
-    }
+    protected static final String RES_NAME = "existing_name";
+    protected static final String RES_ID   = "existing_id";
+
+
+    /** Constructor. */
+    protected ConflictException() { super(); }
 
 
     /**
      * Constructor.
      *
-     * @param json The JSON representation of this exception.
+     * @param message Description of the exception.
+     * @param params  Further details describing the exception.
      */
-    public ConflictException(final Json json) {
-        super(json);
+    public ConflictException(final String message,
+                             final Map<String, String> params) {
+        super(message, null, params);
     }
 
+
+    /**
+     * Accessor for the resource.
+     *
+     * @return The resource.
+     */
+    public UUID getResourceId() { return UUID.fromString(getParam(RES_ID)); }
+
+
+    /**
+     * Accessor for the resource.
+     *
+     * @return The resource.
+     */
+    public String getResourceName() { return getParam(RES_NAME); }
 }

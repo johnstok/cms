@@ -26,10 +26,9 @@
  */
 package ccc.plugins;
 
+import static ccc.commons.Reflection.*;
+
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import ccc.plugins.multipart.MultipartFormData;
 import ccc.plugins.scripting.TextProcessor;
@@ -48,7 +47,7 @@ public class PluginFactory {
 
     public TextProcessor createTemplating() {
         return
-            create(
+            construct(
                 TextProcessor.class,
                 "ccc.plugins.scripting.velocity.VelocityProcessor");
     }
@@ -56,7 +55,7 @@ public class PluginFactory {
 
     public TextProcessor createScripting() {
         return
-            create(
+            construct(
                 TextProcessor.class,
                 "ccc.plugins.scripting.rhino.ScriptRunner");
     }
@@ -82,7 +81,7 @@ public class PluginFactory {
 
     public Sessions createSessions() {
         return
-            create(
+            construct(
                 Sessions.class,
                 "ccc.plugins.security.jboss.JbossSession");
     }
@@ -113,73 +112,5 @@ public class PluginFactory {
                 "ccc.plugins.multipart.apache.MultipartForm",
                 types,
                 values);
-    }
-
-
-    private <T> T create(final Class<T> expectedClass, final String className) {
-        try {
-            final Class<?> theType = Class.forName(className);
-
-            final Object o = theType.newInstance();
-
-            return expectedClass.cast(o);
-
-        } catch (final InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (final IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static <T> T construct(final Class<T> expectedClass,
-                                  final String className,
-                                  final Object[] theArguments) {
-
-        final List<Class<?>> types = new ArrayList<Class<?>>();
-        for (final Object o : theArguments) {
-            types.add(o.getClass());
-        }
-
-        return
-            construct(
-                expectedClass,
-                className,
-                types.toArray(new Class[] {}),
-                theArguments);
-    }
-
-
-    private static <T> T construct(final Class<T> expectedClass,
-                                   final String className,
-                                   final Class<?>[] types,
-                                   final Object[] theArguments) {
-
-        try {
-            final Class<?> theType = Class.forName(className);
-
-            final Object o =
-                theType
-                    .getConstructor(types)
-                    .newInstance(theArguments);
-
-            return expectedClass.cast(o);
-
-        } catch (final IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        } catch (final SecurityException e) {
-            throw new RuntimeException(e);
-        } catch (final InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (final IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (final InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (final NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -26,8 +26,10 @@
  */
 package ccc.api.exceptions;
 
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
+import java.util.Collections;
+import java.util.UUID;
+
+import ccc.api.types.DBC;
 
 
 /**
@@ -42,11 +44,19 @@ public class CycleDetectedException
     extends
         InvalidException {
 
+
+    /** Constructor. */
+    public CycleDetectedException() { super(); }
+
+
     /**
      * Constructor.
      */
-    public CycleDetectedException() {
-        super(new Failure(FailureCode.CYCLE));
+    public CycleDetectedException(final UUID resource) {
+        super(
+            "Cycle detected for "
+                + DBC.require().notNull(resource)
+                + ".",
+            Collections.singletonMap(RESOURCE, resource.toString()));
     }
-
 }

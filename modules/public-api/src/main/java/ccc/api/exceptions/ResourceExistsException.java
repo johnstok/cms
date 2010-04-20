@@ -26,17 +26,16 @@
  */
 package ccc.api.exceptions;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.UUID;
 
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
+import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 
 
 /**
- * Exception thrown when a resource cannot be created because an existing
- * resource already has the same absolute path.
+ * Indicates a resource cannot be created because an existing resource already
+ * has the same absolute path.
  *
  * @author Civic Computing Ltd.
  */
@@ -44,8 +43,9 @@ public class ResourceExistsException
     extends
         ConflictException {
 
-    private ResourceName _resourceName;
-    private UUID         _resourceId;
+
+    /** Constructor. */
+    public ResourceExistsException() { super(); }
 
 
     /**
@@ -57,21 +57,14 @@ public class ResourceExistsException
     public ResourceExistsException(final UUID resourceId,
                                    final ResourceName resourceName) {
         super(
-            new Failure(
-                FailureCode.EXISTS,
-                Collections.singletonMap(
-                    "existing_id", resourceId.toString())));
-        _resourceId = resourceId;
-        _resourceName = resourceName;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return
-            "Folder already contains a resource with name '"
-            + _resourceName
-            + "'.";
+            "Folder already contains a resource "
+                + DBC.require().notNull(resourceId)
+                + " with name '"
+                + DBC.require().notNull(resourceName)
+                + "'.",
+            new HashMap<String, String>(){{
+                put(RES_ID, resourceId.toString());
+                put(RES_NAME, resourceName.toString());
+            }});
     }
 }

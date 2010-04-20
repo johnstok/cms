@@ -39,9 +39,8 @@ import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.dto.TextFileDto;
-import ccc.api.exceptions.CCException;
-import ccc.api.exceptions.InvalidException;
-import ccc.api.types.FailureCode;
+import ccc.api.exceptions.ResourceExistsException;
+import ccc.api.exceptions.UnlockedException;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -237,8 +236,9 @@ public class FileUploadAcceptanceTest
                     true,
                     "",
                     "Hello!"));
-        } catch (final CCException e) {
-            assertEquals(FailureCode.EXISTS, e.getCode());
+        } catch (final ResourceExistsException e) {
+            assertEquals(rs.getId(), e.getResourceId());
+            assertEquals(fName, e.getResourceName());
         }
 
 
@@ -386,8 +386,8 @@ public class FileUploadAcceptanceTest
                     rs.getId(), "Update!", MimeType.TEXT, true, ""));
 
         // ASSERT
-        } catch (final InvalidException e) {
-            assertEquals(FailureCode.UNLOCKED, e.getCode());
+        } catch (final UnlockedException e) {
+            assertEquals(rs.getId(), e.getResource());
         }
         assertEquals("Hello!", getBrowser().previewContent(rs, false));
     }

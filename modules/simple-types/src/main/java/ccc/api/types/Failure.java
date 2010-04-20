@@ -44,7 +44,7 @@ import ccc.plugins.s11n.Jsonable;
 public class Failure implements Jsonable, Serializable {
 
     private UUID                _id;
-    private FailureCode         _code        = FailureCode.UNEXPECTED;
+    private String              _code;
     private Map<String, String> _params      = new HashMap<String, String>();
 
     /** Constructor: for persistence only. */
@@ -54,24 +54,16 @@ public class Failure implements Jsonable, Serializable {
     /**
      * Constructor.
      *
-     * @param code The internal code for this failure.
-     */
-    public Failure(final FailureCode code) {
-        _code = code;
-        _id   = UUID.randomUUID();
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param code The internal code for this failure.
+     * @param id     The failure's ID.
+     * @param code   The internal code for this failure.
      * @param params Further details describing the failure.
      */
-    public Failure(final FailureCode code,
+    public Failure(final UUID id,
+                   final String code,
                    final Map<String, String> params) {
-        this(code);
-        _params.putAll(params);
+        _code = DBC.require().notNull(code);
+        _id   = DBC.require().notNull(id);
+        _params.putAll(DBC.require().notNull(params));
     }
 
 
@@ -81,9 +73,10 @@ public class Failure implements Jsonable, Serializable {
      * @param json JSON representation of a failure.
      */
     public Failure(final Json json) {
-        _id = UUID.fromString(json.getString(JsonKeys.ID));
-        _code = FailureCode.valueOf(json.getString(JsonKeys.CODE));
-        _params = json.getStringMap(JsonKeys.PARAMETERS);
+        this(
+            json.getId(JsonKeys.ID),
+            json.getString(JsonKeys.CODE),
+            json.getStringMap(JsonKeys.PARAMETERS));
     }
 
 
@@ -92,7 +85,7 @@ public class Failure implements Jsonable, Serializable {
      *
      * @return Returns the errorCode.
      */
-    public FailureCode getCode() {
+    public String getCode() {
         return _code;
     }
 
@@ -110,6 +103,16 @@ public class Failure implements Jsonable, Serializable {
     /**
      * Accessor.
      *
+     * @return Returns the failure's ID.
+     */
+    public UUID getId() {
+        return _id;
+    }
+
+
+    /**
+     * Accessor.
+     *
      * @return Returns the parameters.
      */
     public final Map<String, String> getParams() {
@@ -120,7 +123,7 @@ public class Failure implements Jsonable, Serializable {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.CODE, getCode().name());
+        json.set(JsonKeys.CODE, getCode());
         json.set(JsonKeys.ID, getExceptionId());
         json.set(JsonKeys.PARAMETERS, getParams());
     }

@@ -50,7 +50,6 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.dto.TextFileDto;
-import ccc.api.exceptions.InternalError;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.ResourceName;
 import ccc.commands.UpdateFileCommand;

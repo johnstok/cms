@@ -35,7 +35,6 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import ccc.api.dto.ResourceSummary;
-import ccc.api.exceptions.InternalError;
 import ccc.api.types.DBC;
 
 

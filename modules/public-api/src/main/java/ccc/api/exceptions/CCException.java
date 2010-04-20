@@ -26,12 +26,13 @@
  */
 package ccc.api.exceptions;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import ccc.api.types.DBC;
 import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable2;
-
-
+import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -39,45 +40,62 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class CCException
+public class CCException
     extends
-        RuntimeException
-    implements
-        Jsonable2 {
+        RuntimeException {
 
-    private Failure _failure;
-
-    @SuppressWarnings("unused") private CCException() { super(); }
+    private UUID                _id     = UUID.randomUUID();
+    private Map<String, String> _params = new HashMap<String, String>();
 
 
-    /**
-     * Constructor.
-     *
-     * @param failure The failure.
-     */
-    public CCException(final Failure failure) {
-        super("CCC Error: "+failure.getExceptionId());
-        _failure = failure;
-    }
+    /** Constructor. */
+    protected CCException() { this(null, null, new HashMap<String, String>()); }
 
 
     /**
      * Constructor.
      *
-     * @param json The JSON representation of this exception.
+     * @param message Description of the exception.
+     * @param cause   Cause of the exception.
+     * @param params  Further details describing the exception.
      */
-    public CCException(final Json json) {
-        fromJson(json);
+    protected CCException(final String message,
+                          final Throwable cause,
+                          final Map<String, String> params) {
+        super(message, cause);
+        _params.putAll(params);
+        _params.put(JsonKeys.MESSAGE, message); // TODO: Null check?
+        _params.put(JsonKeys.CAUSE, (null==cause) ? null : cause.getMessage());
     }
 
+
     /**
-     * Accessor.
+     * Constructor.
      *
-     * @return The failure's code.
+     * @param message Description of the exception.
      */
-    public FailureCode getCode() {
-        return _failure.getCode();
+    public CCException(final String message) {
+        this(
+            message,
+            null,
+            new HashMap<String, String>());
     }
+
+
+    /**
+     * Constructor.
+     *
+     * @param message Description of the exception.
+     * @param cause   Cause of the exception.
+     */
+    public CCException(final String message,
+                       final Throwable cause) {
+        this(
+            message,
+            cause,
+            new HashMap<String, String>());
+    }
+
 
     /**
      * Accessor.
@@ -85,20 +103,40 @@ public abstract class CCException
      * @return The failure.
      */
     public Failure getFailure() {
-        return _failure;
+        return new Failure(_id, getClass().getName(), _params);
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        _failure = new Failure(json);
+    /**
+     * Accessor.
+     *
+     * @param key The parameter's key.
+     *
+     * @return The parameter's value.
+     */
+    protected String getParam(final String key) {
+        return _params.get(key);
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        _failure.toJson(json);
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setId(final UUID id) {
+        _id = DBC.require().notNull(id);
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param params The params to set.
+     */
+    public void setParams(final Map<String, String> params) {
+        DBC.require().notNull(params);
+        _params.clear();
+        _params.putAll(params);
     }
 }

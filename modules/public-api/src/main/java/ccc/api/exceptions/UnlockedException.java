@@ -26,11 +26,10 @@
  */
 package ccc.api.exceptions;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.api.types.Failure;
-import ccc.api.types.FailureCode;
 
 
 /**
@@ -42,7 +41,10 @@ public class UnlockedException
     extends
         InvalidException {
 
-    private final UUID _resource;
+
+    /** Constructor. */
+    public UnlockedException() { super(); }
+
 
     /**
      * Constructor.
@@ -50,25 +52,10 @@ public class UnlockedException
      * @param resource The unlocked resource.
      */
     public UnlockedException(final UUID resource) {
-        super(new Failure(FailureCode.UNLOCKED));
-        DBC.require().notNull(resource);
-        _resource = resource;
-    }
-
-
-    /**
-     * Accessor for the unlocked resource.
-     *
-     * @return The unlocked resource.
-     */
-    public UUID getResource() {
-        return _resource;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return "Resource "+_resource+" is Unlocked.";
+        super(
+            "Resource "
+                + DBC.require().notNull(resource)
+                + " is Unlocked.",
+            Collections.singletonMap(RESOURCE, resource.toString()));
     }
 }
