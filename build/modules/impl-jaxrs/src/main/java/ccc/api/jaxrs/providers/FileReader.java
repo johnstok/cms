@@ -249,59 +249,67 @@ public class FileReader
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream entityStream) throws IOException {
+        try {
 
-        final String name        = t.getName().toString();
-        final String title       = t.getTitle();
-        final String description = t.getDescription();
-        final Date lastUpdate    = t.getDateChanged();
-        final UUID parentId      = t.getParent();
-        final boolean publish    = t.isPublished();
-        final long size          = t.getSize();
-        final String contentType = t.getMimeType().toString();
-        final String charset     = t.getCharset();
-        final String comment     = t.getComment();
-        final String majorEdit   = Boolean.valueOf(t.isMajorEdit()).toString();
+            final String name        = t.getName().toString();
+            final String title       = t.getTitle();
+            final String description = t.getDescription();
+            final Date lastUpdate    = t.getDateChanged();
+            final UUID parentId      = t.getParent();
+            final boolean publish    = t.isPublished();
+            final long size          = t.getSize();
+            final String contentType = t.getMimeType().toString();
+            final String charset     = t.getCharset();
+            final String comment     = t.getComment();
+            final String majorEdit   = Boolean.valueOf(t.isMajorEdit()).toString();
 
-        final PartSource ps = new PartSource() {
+            final PartSource ps = new PartSource() {
 
-            @Override public long getLength() {
-                return size;
+                @Override public long getLength() {
+                    return size;
+                }
+
+                @Override public String getFileName() {
+                    return name;
+                }
+
+                @Override public InputStream createInputStream() {
+                    return t.getInputStream();
+                }
+            };
+
+            final FilePart fp = new FilePart(FILE, ps);
+            fp.setContentType(contentType);
+            fp.setCharSet(charset);
+            final Part[] parts = {
+                new StringPart(FILE_NAME, name),
+                new StringPart(TITLE, title),
+                new StringPart(DESCRIPTION, description),
+                new StringPart(COMMENT, comment),
+                new StringPart(MAJOR_EDIT, majorEdit),
+                new StringPart(
+                    LAST_UPDATE,
+                    String.valueOf(
+                        (null==lastUpdate)
+                            ? new Date().getTime()
+                            : lastUpdate.getTime())),
+                new StringPart(PATH, parentId.toString()),
+                new StringPart(PUBLISH, String.valueOf(publish)),
+                fp
+            };
+
+            final RequestEntity entity =
+                new MultipartRequestEntity(parts, new HttpMethodParams());
+
+            httpHeaders.add("Content-Type", entity.getContentType());
+            entity.writeRequest(entityStream);
+
+        } finally {
+            try {
+                entityStream.close();
+            } catch (final IOException e) {
+                LOG.warn("Error closing output stream.", e);
             }
-
-            @Override public String getFileName() {
-                return name;
-            }
-
-            @Override public InputStream createInputStream() {
-                return t.getInputStream();
-            }
-        };
-
-        final FilePart fp = new FilePart(FILE, ps);
-        fp.setContentType(contentType);
-        fp.setCharSet(charset);
-        final Part[] parts = {
-            new StringPart(FILE_NAME, name),
-            new StringPart(TITLE, title),
-            new StringPart(DESCRIPTION, description),
-            new StringPart(COMMENT, comment),
-            new StringPart(MAJOR_EDIT, majorEdit),
-            new StringPart(
-                LAST_UPDATE,
-                String.valueOf(
-                    (null==lastUpdate)
-                        ? new Date().getTime()
-                        : lastUpdate.getTime())),
-            new StringPart(PATH, parentId.toString()),
-            new StringPart(PUBLISH, String.valueOf(publish)),
-            fp
-        };
-
-        final RequestEntity entity =
-            new MultipartRequestEntity(parts, new HttpMethodParams());
-
-        httpHeaders.add("Content-Type", entity.getContentType());
-        entity.writeRequest(entityStream);
-
+        }
     }
 }
