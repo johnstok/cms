@@ -28,6 +28,7 @@ package ccc.persistence;
 
 import static ccc.commons.Exceptions.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,6 +39,7 @@ import javax.sql.DataSource;
 
 import ccc.api.StreamAction;
 import ccc.api.types.DBC;
+import ccc.commons.Exceptions;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
 
@@ -98,6 +100,12 @@ class JdbcCoreData implements CoreData {
             }
         } catch (final SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        try {
+            dataStream.close();
+        } catch (final IOException e) {
+            Exceptions.swallow(e);
         }
 
         return data;

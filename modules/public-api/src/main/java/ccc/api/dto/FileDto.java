@@ -49,18 +49,18 @@ public final class FileDto
     implements
         Jsonable {
 
-    private MimeType            _mimeType;
-    private String              _path;
-    private Map<String, String> _properties;
-    private String              _charset;
-    private UUID                _dataId;
-    private long                _size;
-    private boolean             _isImage;
-    private boolean             _isExecutable;
-    private boolean             _isText;
-    private boolean             _isMajorEdit;
-    private String              _comment;
-    private InputStream         _inputStream;
+    private MimeType              _mimeType;
+    private String                _path;
+    private Map<String, String>   _properties;
+    private String                _charset;
+    private UUID                  _dataId;
+    private long                  _size;
+    private boolean               _isImage;
+    private boolean               _isExecutable;
+    private boolean               _isText;
+    private boolean               _isMajorEdit;
+    private String                _comment;
+    private transient InputStream _inputStream;
 
 
     @SuppressWarnings("unused") private FileDto() { super(); }

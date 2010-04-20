@@ -102,6 +102,7 @@ class FsCoreData
                 throw e;
             } finally {
                 attemptClose(f, fos);
+                attemptClose(f, dataStream);
             }
             LOG.debug("Wrote data to file store: "+f.getAbsolutePath());
 
@@ -148,9 +149,9 @@ class FsCoreData
     }
 
 
-    private void attemptClose(final File f, final Closeable fileStream) {
+    private void attemptClose(final File f, final Closeable closeable) {
         try {
-            fileStream.close();
+            closeable.close();
         } catch (final IOException e) {
             LOG.error(
                 "Failed to close stream on "+f.getAbsolutePath(), e);
