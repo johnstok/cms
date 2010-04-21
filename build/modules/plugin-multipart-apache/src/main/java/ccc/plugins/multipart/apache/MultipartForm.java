@@ -35,6 +35,7 @@ import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
@@ -54,6 +55,8 @@ public class MultipartForm implements MultipartFormData {
 
     private final Map<String, FileItem> _formItems =
         new HashMap<String, FileItem>();
+    private final Map<String, FileItem> _files =
+        new HashMap<String, FileItem>();
 
 
     /**
@@ -65,21 +68,21 @@ public class MultipartForm implements MultipartFormData {
         DBC.require().notNull(items);
 
         for (final FileItem item : items) {
-            // #430: IE 6 and IE 7 send two fields with same name.
-            // The other one is with content type 'file' and the other one
-            // is the path of the original file location.
+            final String key = item.getFieldName();
+
             if (item.isFormField()) {
-                final String fn = item.getFieldName();
-                if (_formItems.containsKey(fn)) {
-                    throw new RuntimeException(
-                        "Duplicate field name on form: "+fn);
-                }
-                _formItems.put(fn, item);
+                addItem(_formItems, key, item);
             } else {
-                _formItems.put(item.getFieldName(), item);
+                addItem(_files, key, item);
             }
         }
+        /*
+         *  #430: IE 6 and IE 7 send two fields with same name. One is with
+         *  content type 'file' and the other one is the path of the original
+         *  file location.
+         */
     }
+
 
     /**
      * Constructor.
@@ -99,6 +102,63 @@ public class MultipartForm implements MultipartFormData {
                     charEncoding, contentLength, contentType, inputStream)));
     }
 
+
+    /**
+     * Retrieve form item keys.
+     *
+     * @return List of names.
+     */
+    public List<String> getFormItemNames() {
+        final List<String> keyList = new ArrayList<String>();
+        for (final String key : _formItems.keySet()) {
+            keyList.add(key);
+        }
+        return keyList;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public InputStream getInputStream(final String string) throws IOException {
+        final FileItem item = getFormItem(string);
+        return (null==item) ? null : item.getInputStream();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getContentType(final String string) {
+        final FileItem item = getFormItem(string);
+        return (null==item) ? null : item.getContentType();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSize(final String string) {
+        final FileItem item = getFormItem(string);
+        return (null==item) ? -1 : item.getSize();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getString(final String string) {
+        final FileItem item = getFormItem(string);
+        return (null==item) ? null : item.getString();
+    }
+
+
+    private void addItem(final Map<String, FileItem> items,
+                         final String key,
+                         final FileItem item) {
+        if (items.containsKey(key)) {
+            throw new RuntimeException("Duplicate field on form: "+key);
+        }
+        items.put(key, item);
+    }
+
+
     /**
      * Parse an HTTP request, extracting the file items.
      *
@@ -110,15 +170,14 @@ public class MultipartForm implements MultipartFormData {
     private static List<FileItem> parseFileItems(
                                             final JaxrsRequestContext context) {
 
-//        DBC.require().notNull(request);
+        DBC.require().notNull(context);
 
         // Check that we have a file upload request
-        // FIXME: Use non Servlet API version.
-//        final boolean isMultipart =
-//            ServletFileUpload.isMultipartContent(request);
-//        if (!isMultipart) {
-//            throw new RuntimeException("Not a multipart");
-//        }
+        final boolean isMultipart =
+            FileUploadBase.isMultipartContent(context);
+        if (!isMultipart) {
+            throw new RuntimeException("Not a multipart");
+        }
 
         // Create a factory for disk-based file items
         final DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -140,51 +199,17 @@ public class MultipartForm implements MultipartFormData {
     }
 
 
-    private FileItem getFormItem(final String string) {
-        return _formItems.get(string);
-    }
-
-
     /**
-     * Retrieve form item keys.
+     * Get the file item for a key.
+     * <p>If both a file & simple value exists the file will be returned.
      *
-     * @return List of names.
+     * @param key The key to the file item.
+     *
+     * @return The corresponding file item or NULL if it doesn't exist.
      */
-    public List<String> getFormItemNames() {
-        final List<String> keyList = new ArrayList<String>();
-        for (final String key : _formItems.keySet()) {
-            keyList.add(key);
-        }
-        return keyList;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public InputStream getInputStream(final String string) throws IOException {
-        return getFormItem(string).getInputStream();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getContentType(final String string) {
-        return getFormItem(string).getContentType();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public long getSize(final String string) {
-        return getFormItem(string).getSize();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getString(final String string) {
-        // FIXME: Fix the other methods for NPE deref too.
-        final FileItem item = getFormItem(string);
-        return (null==item) ? null : item.getString();
+    private FileItem getFormItem(final String key) {
+        final FileItem item = _files.get(key);
+        if (null!=item) { return item; }
+        return _formItems.get(key);
     }
 }
