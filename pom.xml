@@ -8,6 +8,8 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
         <!-- Libraries versions should be 'lib.version.{artifactId}' -->
         <lib.version.junit>3.8.1</lib.version.junit>
         <lib.version.easymock>2.4</lib.version.easymock>
