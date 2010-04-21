@@ -283,7 +283,6 @@ public class ActionSummaryModelData
                                        final CommandType command,
                                        final Date executeAfter,
                                        final Map<String, String> params) {
-        final Globals g = new GlobalsImpl();
         final String path = "api/secure/actions";
 
         final GwtJson json = new GwtJson();
