@@ -203,8 +203,6 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure Area</web-resource-name>
-            <url-pattern>/ccc/upload</url-pattern>
-            <url-pattern>/ccc/update_file</url-pattern>
             <url-pattern>/ccc/preview/*</url-pattern>
             <url-pattern>/ccc/api/secure/*</url-pattern>
             <!-- Constrain all HTTP Methods -->

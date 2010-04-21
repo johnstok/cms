@@ -133,15 +133,16 @@ public class FileReader
         final String cItem       = form.getString(COMMENT);
         final String bItem       = form.getString(MAJOR_EDIT);
 
-        final String comment = cItem==null ? null : cItem;
-
-        final boolean isMajorEdit = bItem == null ? false : true;
-
-        final UUID parentId = UUID.fromString(path);
+        final String comment =
+            (cItem==null) ? null : cItem;
+        final boolean isMajorEdit =
+            (bItem == null) ? false : true;
+        final UUID parentId =
+            (null==path) ? null : UUID.fromString(path);
         final boolean p =
-            (null==publish)
-                ? false
-                : Boolean.parseBoolean(publish);
+            (null==publish) ? false : Boolean.parseBoolean(publish);
+        final ResourceName fName =
+            (null==name) ? null : new ResourceName(name);
 
         final Map<String, String> props = new HashMap<String, String>();
         props.put(FilePropertyNames.CHARSET, toCharset(fileType));
@@ -161,12 +162,12 @@ public class FileReader
             toMimeType(fileType),
             null,
             null,
-            new ResourceName(name),
+            fName,
             titleString,
             props
         );
         f.setComment(
-            (comment == null || comment.isEmpty()) ? "Created." : comment);
+            (comment == null || comment.isEmpty()) ? "" : comment);
         f.setMajorEdit(isMajorEdit);
         f.setPublished(p);
         f.setParent(parentId);

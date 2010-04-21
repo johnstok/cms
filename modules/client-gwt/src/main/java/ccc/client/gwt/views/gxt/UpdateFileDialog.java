@@ -36,6 +36,7 @@ import ccc.client.gwt.core.SessionTimeoutException;
 import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -47,6 +48,8 @@ import com.extjs.gxt.ui.client.widget.form.FileUploadField;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Image;
 
 
@@ -65,7 +68,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
-    private static final String UPDATE_OK = "NULL";
+
     /**
      * Constructor.
      *
@@ -76,7 +79,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
-        getPanel().setAction("update_file");
+        getPanel().setAction("api/secure/files/bin/"+fileId);
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 
@@ -107,19 +110,26 @@ public class UpdateFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (be.getResultHtml().equals(UPDATE_OK)) {
-                        hide();
-                    } else if (
-                        SessionTimeoutException.isTimedout(
-                            be.getResultHtml())) {
+                    final String response = be.getResultHtml();
+
+                    if (
+                        SessionTimeoutException.isTimedout(response)) {
                         getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().updateFile());
+
                     } else {
-                        getGlobals().unexpectedError(
-                            new RemoteException(
-                                FailureOverlay.fromJson(be.getResultHtml())),
-                                getUiConstants().updateFile());
+                        final JSONObject o =
+                            JSONParser.parse(response).isObject();
+
+                        if (o.containsKey(JsonKeys.CODE)) { // Error
+                            getGlobals().unexpectedError(
+                                new RemoteException(
+                                    FailureOverlay.fromJson(response)),
+                                getUiConstants().uploadFile());
+                        } else {
+                            hide();
+                        }
                     }
                 }
             }
