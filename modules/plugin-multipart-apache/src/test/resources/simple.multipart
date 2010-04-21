@@ -1,0 +1,28 @@
+Content-Type: multipart/form-data; boundary=---------------------------1145133423187368413760068182
+
+-----------------------------1145133423187368413760068182
+Content-Disposition: form-data; name="fileName"
+
+simple.txt
+-----------------------------1145133423187368413760068182
+Content-Disposition: form-data; name="file"
+
+simple.txt
+-----------------------------1145133423187368413760068182
+Content-Disposition: form-data; name="file"; filename="simple.txt"
+Content-Type: text/plain
+
+Hello world!
+-----------------------------1145133423187368413760068182
+Content-Disposition: form-data; name="path"
+
+4acbac13-679c-4abc-8d51-d6c013db74d2
+-----------------------------1145133423187368413760068182
+Content-Disposition: form-data; name="majorEdit"
+
+
+-----------------------------1145133423187368413760068182
+Content-Disposition: form-data; name="comment"
+
+Created.
+-----------------------------1145133423187368413760068182--

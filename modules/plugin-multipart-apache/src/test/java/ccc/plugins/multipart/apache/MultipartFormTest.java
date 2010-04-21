@@ -47,6 +47,39 @@ public class MultipartFormTest extends TestCase {
     /**
      * Test.
      */
+    public void testParse() {
+
+        // ARRANGE
+        final String charEncoding = null;
+        final int contentLength = 949;
+        final String contentType =
+            "multipart/form-data;boundary=\"---------------------------1145133423187368413760068182\"";
+
+
+        // ACT
+        final MultipartForm f =
+            new MultipartForm(
+                charEncoding,
+                contentLength,
+                contentType,
+                getClass().getResourceAsStream("/simple.multipart"));
+
+        // ASSERT
+        assertEquals(
+            "Created.", f.getString("comment"));
+        assertEquals(
+            "", f.getString("majorEdit"));
+        assertEquals(
+            "4acbac13-679c-4abc-8d51-d6c013db74d2", f.getString("path"));
+        assertEquals(
+            "Hello world!", f.getString("file"));
+        assertEquals(
+            "simple.txt", f.getString("fileName"));
+    }
+
+    /**
+     * Test.
+     */
     public void testContructor() {
 
         // ARRANGE
