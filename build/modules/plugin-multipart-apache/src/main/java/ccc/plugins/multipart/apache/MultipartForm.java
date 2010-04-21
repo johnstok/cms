@@ -183,6 +183,8 @@ public class MultipartForm implements MultipartFormData {
     /** {@inheritDoc} */
     @Override
     public String getString(final String string) {
-        return getFormItem(string).getString();
+        // FIXME: Fix the other methods for NPE deref too.
+        final FileItem item = getFormItem(string);
+        return (null==item) ? null : item.getString();
     }
 }

@@ -47,7 +47,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  * @author Civic Computing Ltd.
  */
 @Provider
-@Produces("application/json")
+@Produces({"application/json", "text/html"})
 public class JsonableWriter
     extends
         AbstractProvider
@@ -84,8 +84,14 @@ public class JsonableWriter
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
         final PrintWriter pw = createWriter(outputStream);
+        if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
+            pw.print("<html><body>");
+        }
         final String entity = new JsonImpl(object).getDetail();
-        pw.println(entity);
+        pw.print(entity);
+        if (MediaType.TEXT_HTML_TYPE.equals(mediaType)) {
+            pw.println("</body></html>");
+        }
         pw.flush();
     }
 }

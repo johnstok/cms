@@ -74,7 +74,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
-        getPanel().setAction("upload");
+        getPanel().setAction("api/secure/files/bin");
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 
@@ -110,22 +110,22 @@ public class UploadFileDialog extends AbstractEditDialog {
             Events.Submit,
             new Listener<FormEvent>() {
                 public void handleEvent(final FormEvent be) {
-                    if (SessionTimeoutException.isTimedout(
-                            be.getResultHtml())) {
+                    final String response = be.getResultHtml();
+
+                    if (SessionTimeoutException.isTimedout(response)) {
                         getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().uploadFile());
-                    } else {
 
+                    } else {
                         final JSONObject o =
                             JSONParser.parse(be.getResultHtml()).isObject();
 
-                        if (o.containsKey(JsonKeys.CODE)) { // CommandFailedEx
+                        if (o.containsKey(JsonKeys.CODE)) { // Error
                             getGlobals().unexpectedError(
                                 new RemoteException(
-                                    FailureOverlay.fromJson(
-                                        be.getResultHtml())),
-                                        getUiConstants().uploadFile());
+                                    FailureOverlay.fromJson(response)),
+                                getUiConstants().uploadFile());
                         } else {
                             hide();
                             final JSONObject json =

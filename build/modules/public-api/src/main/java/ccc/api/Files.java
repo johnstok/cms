@@ -114,6 +114,7 @@ public interface Files {
      */
     @POST @Path("/bin")
     @Consumes("multipart/form-data")
+    @Produces({"application/json", "text/html"})
     ResourceSummary createFile(FileDto file);
 
 
@@ -127,6 +128,7 @@ public interface Files {
      */
     @POST @Path("/bin/{id}")
     @Consumes("multipart/form-data")
+    @Produces({"application/json", "text/html"})
     ResourceSummary updateFile(@PathParam("id") UUID fileId, FileDto file);
 
 
