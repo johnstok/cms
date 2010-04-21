@@ -54,6 +54,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
 import ccc.api.dto.FileDto;
+import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -74,6 +75,7 @@ public class FileReader
     implements
         MessageBodyWriter<FileDto>,
         MessageBodyReader<FileDto> {
+
     private static final Logger LOG = Logger.getLogger(FileReader.class);
 
     private static final String FILE        = "file";
@@ -258,26 +260,13 @@ public class FileReader
             final Date lastUpdate    = t.getDateChanged();
             final UUID parentId      = t.getParent();
             final boolean publish    = t.isPublished();
-            final long size          = t.getSize();
             final String contentType = t.getMimeType().toString();
             final String charset     = t.getCharset();
             final String comment     = t.getComment();
-            final String majorEdit   = Boolean.valueOf(t.isMajorEdit()).toString();
+            final String majorEdit   =
+                Boolean.valueOf(t.isMajorEdit()).toString();
 
-            final PartSource ps = new PartSource() {
-
-                @Override public long getLength() {
-                    return size;
-                }
-
-                @Override public String getFileName() {
-                    return name;
-                }
-
-                @Override public InputStream createInputStream() {
-                    return t.getInputStream();
-                }
-            };
+            final PartSource ps = new SimplePart(t);
 
             final FilePart fp = new FilePart(FILE, ps);
             fp.setContentType(contentType);
@@ -311,6 +300,44 @@ public class FileReader
             } catch (final IOException e) {
                 LOG.warn("Error closing output stream.", e);
             }
+        }
+    }
+
+
+    /**
+     * Simple implementation of http-client's {@link PartSource} interface.
+     *
+     * @author Civic Computing Ltd.
+     */
+    static final class SimplePart
+        implements
+            PartSource {
+
+        private final FileDto _t;
+
+
+        /**
+         * Constructor.
+         *
+         * @param t The file DTO.
+         */
+        SimplePart(final FileDto t) {
+            _t = DBC.require().notNull(t);
+        }
+
+        /** {@inheritDoc} */
+        @Override public long getLength() {
+            return _t.getSize();
+        }
+
+        /** {@inheritDoc} */
+        @Override public String getFileName() {
+            return _t.getName().toString();
+        }
+
+        /** {@inheritDoc} */
+        @Override public InputStream createInputStream() {
+            return _t.getInputStream();
         }
     }
 }
