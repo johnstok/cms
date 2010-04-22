@@ -345,6 +345,7 @@ public interface Resources {
      * @param json JSON representation of the metadata.
      */
     @POST @Path("/{id}/metadata")
+    // FIXME: Replace Json type in signature.
     void updateMetadata(@PathParam("id") UUID resourceId, Json json);
 
 

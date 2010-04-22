@@ -139,4 +139,13 @@ public class CCException
         _params.clear();
         _params.putAll(params);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getMessage() {
+        final String message = _params.get(JsonKeys.MESSAGE);
+        if (null!=message) { return message; }
+        return super.getMessage();
+    }
 }

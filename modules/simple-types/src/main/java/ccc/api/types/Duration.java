@@ -30,7 +30,7 @@ import java.io.Serializable;
 
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 
@@ -39,7 +39,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public final class Duration implements Serializable, Jsonable {
+public final class Duration implements Serializable, Jsonable2 {
 
     private static final long SECONDS_IN_MINUTE = 60;
     private static final long SECONDS_IN_HOUR = 3600;
@@ -47,8 +47,11 @@ public final class Duration implements Serializable, Jsonable {
     private long _time; // time in seconds
 
 
-    /** Constructor: for persistence only. */
-    protected Duration() { super(); }
+    /**
+     * Constructor.
+     */
+    public Duration() { super(); }
+
 
     /**
      * Constructor.
@@ -68,6 +71,7 @@ public final class Duration implements Serializable, Jsonable {
                 + days*SECONDS_IN_DAY;
     }
 
+
     /**
      * Constructor.
      *
@@ -77,14 +81,16 @@ public final class Duration implements Serializable, Jsonable {
         _time = time;
     }
 
+
     /**
      * Constructor.
      *
      * @param json The JSON representation of a duration.
      */
     public Duration(final Json json) {
-        this(json.getLong(JsonKeys.SECONDS).longValue());
+        fromJson(json);
     }
+
 
     /**
      * Accessor for the time.
@@ -95,6 +101,27 @@ public final class Duration implements Serializable, Jsonable {
         return _time;
     }
 
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the time.
+     */
+    public long getTime() {
+        return _time;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param time The time to set.
+     */
+    public void setTime(final long time) {
+        _time = time;
+    }
+
+
     /**
      * Accessor for the second field.
      *
@@ -103,6 +130,7 @@ public final class Duration implements Serializable, Jsonable {
     public long secondField() {
         return _time%SECONDS_IN_MINUTE;
      }
+
 
     /**
      * Accessor for the minute field.
@@ -113,6 +141,7 @@ public final class Duration implements Serializable, Jsonable {
         return ((_time%SECONDS_IN_DAY)%SECONDS_IN_HOUR)/SECONDS_IN_MINUTE;
     }
 
+
     /**
      * Accessor for the hour field.
      *
@@ -122,6 +151,7 @@ public final class Duration implements Serializable, Jsonable {
         return (_time%SECONDS_IN_DAY)/SECONDS_IN_HOUR;
     }
 
+
     /**
      * Accessor for the day field.
      *
@@ -130,6 +160,7 @@ public final class Duration implements Serializable, Jsonable {
     public long dayField() {
         return _time/SECONDS_IN_DAY;
     }
+
 
     /**
      * {@inheritDoc}
@@ -142,6 +173,7 @@ public final class Duration implements Serializable, Jsonable {
         result = prime * result + (int) (_time ^ (_time >>> bitsInAnInt));
         return result;
     }
+
 
     /**
      * {@inheritDoc}
@@ -164,9 +196,17 @@ public final class Duration implements Serializable, Jsonable {
         return true;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.SECONDS, Long.valueOf(_time));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setTime(json.getLong(JsonKeys.SECONDS).longValue());
     }
 }

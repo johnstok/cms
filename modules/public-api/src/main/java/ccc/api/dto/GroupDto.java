@@ -34,7 +34,7 @@ import java.util.UUID;
 import ccc.api.types.DBC;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -44,7 +44,7 @@ import ccc.plugins.s11n.Jsonable;
  */
 public class GroupDto
     implements
-        Jsonable,
+        Jsonable2,
         Serializable {
 
     private String _name;
@@ -138,7 +138,9 @@ public class GroupDto
     }
 
 
-    private void fromJson(final Json json) {
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
         setId(json.getId(JsonKeys.ID));
         setName(
             json.getString(JsonKeys.NAME));
