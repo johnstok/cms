@@ -36,6 +36,7 @@ import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.Failure;
 import ccc.api.types.HttpStatusCode;
+import ccc.plugins.s11n.InvalidSnapshotException;
 import ccc.plugins.s11n.json.JsonImpl;
 
 
@@ -86,10 +87,16 @@ public class RestExceptionMapper
     @SuppressWarnings("unchecked")
     public <T extends CCException> T fromResponse(final String body) {
 
-        final Failure f = new Failure(new JsonImpl(body));
+        Failure f;
+        try {
+            f = new Failure(new JsonImpl(body));
+        } catch (final InvalidSnapshotException e) {
+            throw new CCException(body);
+        }
 
         try {
             final T ex = (T) Class.forName(f.getCode()).newInstance();
+            ex.fillInStackTrace(); // Removes reflection stack entries.
             ex.setId(f.getId());
             ex.setParams(f.getParams());
             return ex;

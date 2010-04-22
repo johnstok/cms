@@ -33,7 +33,7 @@ import java.util.UUID;
 
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class Failure implements Jsonable, Serializable {
+public class Failure implements Jsonable2, Serializable {
 
     private UUID                _id;
     private String              _code;
@@ -73,10 +73,7 @@ public class Failure implements Jsonable, Serializable {
      * @param json JSON representation of a failure.
      */
     public Failure(final Json json) {
-        this(
-            json.getId(JsonKeys.ID),
-            json.getString(JsonKeys.CODE),
-            json.getStringMap(JsonKeys.PARAMETERS));
+        fromJson(json);
     }
 
 
@@ -116,7 +113,37 @@ public class Failure implements Jsonable, Serializable {
      * @return Returns the parameters.
      */
     public final Map<String, String> getParams() {
-        return _params;
+        return new HashMap<String, String>(_params);
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param id The id to set.
+     */
+    public void setId(final UUID id) {
+        _id = id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param code The code to set.
+     */
+    public void setCode(final String code) {
+        _code = code;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param params The params to set.
+     */
+    public void setParams(final Map<String, String> params) {
+        _params = new HashMap<String, String>(params);
     }
 
 
@@ -126,5 +153,14 @@ public class Failure implements Jsonable, Serializable {
         json.set(JsonKeys.CODE, getCode());
         json.set(JsonKeys.ID, getExceptionId());
         json.set(JsonKeys.PARAMETERS, getParams());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setId(json.getId(JsonKeys.ID));
+        setCode(json.getString(JsonKeys.CODE));
+        setParams(json.getStringMap(JsonKeys.PARAMETERS));
     }
 }

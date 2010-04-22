@@ -26,33 +26,41 @@
  */
 package ccc.api.jaxrs.providers;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
- * A {@link MessageBodyWriter} for jsonable objects.
+ * A JAX-RS provider for jsonable objects.
  *
  * @author Civic Computing Ltd.
  */
 @Provider
 @Produces({"application/json", "text/html"})
-public class JsonableWriter
+@Consumes("application/json")
+public class JsonableWriter<T extends Jsonable2>
     extends
         AbstractProvider
     implements
-        MessageBodyWriter<Jsonable> {
+        MessageBodyWriter<Jsonable>,
+        MessageBodyReader<T> {
 
 
     /** {@inheritDoc} */
@@ -65,6 +73,7 @@ public class JsonableWriter
         return -1;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public boolean isWriteable(final Class<?> clazz,
@@ -73,6 +82,7 @@ public class JsonableWriter
                                final MediaType mediaType) {
         return Jsonable.class.isAssignableFrom(clazz);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -93,5 +103,36 @@ public class JsonableWriter
             pw.println("</body></html>");
         }
         pw.flush();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isReadable(final Class<?> clazz,
+                              final Type type,
+                              final Annotation[] annotations,
+                              final MediaType mediaType) {
+        return Jsonable2.class.isAssignableFrom(clazz);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public T readFrom(final Class<T> clazz,
+                      final Type type,
+                      final Annotation[] annotations,
+                      final MediaType mimetype,
+                      final MultivaluedMap<String, String> httpHeaders,
+                      final InputStream is) throws IOException {
+        try {
+            final T object = clazz.newInstance();
+            object.fromJson(readJson(mimetype, is));
+            return object;
+
+        } catch (final InstantiationException e) {
+            throw new WebApplicationException(e);
+        } catch (final IllegalAccessException e) {
+            throw new WebApplicationException(e);
+        }
     }
 }

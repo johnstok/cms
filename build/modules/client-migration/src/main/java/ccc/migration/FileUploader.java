@@ -47,7 +47,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.log4j.Logger;
 
 import ccc.api.dto.ResourceSummary;
-import ccc.api.jaxrs.providers.ResSummaryReader;
+import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
@@ -185,7 +185,7 @@ public class FileUploader
                     LOG.debug("Upload complete, response=" + entity);
 
                     return
-                        new ResSummaryReader().readFrom(
+                        new JsonableWriter<ResourceSummary>().readFrom(
                             ResourceSummary.class,
                             ResourceSummary.class,
                             null,

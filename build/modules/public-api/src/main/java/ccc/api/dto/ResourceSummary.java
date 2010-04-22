@@ -35,16 +35,16 @@ import java.util.UUID;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
  * A summary of a resource.
- * TODO: remove all mutators.
+ * TODO: remove all mutators?
  *
  * @author Civic Computing Ltd.
  */
-public final class ResourceSummary implements Serializable, Jsonable {
+public final class ResourceSummary implements Serializable, Jsonable2 {
 
     private UUID _id;
     private UUID _parent;
@@ -68,7 +68,12 @@ public final class ResourceSummary implements Serializable, Jsonable {
     private UUID _indexPageId;
     private String _description;
 
-    @SuppressWarnings("unused") private ResourceSummary() { super(); }
+
+    /**
+     * Constructor.
+     */
+    public ResourceSummary() { super(); }
+
 
     /**
      * Constructor.
@@ -139,45 +144,14 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _changedBy = changedBy;
     }
 
+
     /**
      * Constructor.
      *
      * @param json The JSON representation of a resource summary.
      */
     public ResourceSummary(final Json json) {
-        _id = json.getId(ID);
-        _parent = json.getId(PARENT_ID);
-        _name = json.getString(NAME);
-        _publishedBy =
-            (null==json.getString(PUBLISHED_BY))
-                ? null
-                : new Username(json.getString(PUBLISHED_BY));
-        _title = json.getString(TITLE);
-        _lockedBy =
-            (null==json.getString(LOCKED_BY))
-                ? null
-                : new Username(json.getString(LOCKED_BY));
-        _type = ResourceType.valueOf(json.getString(TYPE));
-        _childCount = json.getInt(CHILD_COUNT);
-        _folderCount = json.getInt(FOLDER_COUNT);
-        _includeInMainMenu = json.getBool(INCLUDE_IN_MAIN_MENU);
-        _sortOrder = json.getString(SORT_ORDER);
-        _hasWorkingCopy = json.getBool(HAS_WORKING_COPY);
-        _dateCreated = json.getDate(DATE_CREATED);
-        _dateChanged = json.getDate(DATE_CHANGED);
-        _templateId = json.getId(TEMPLATE_ID);
-        _tags = json.getString(TAGS);
-        _absolutePath = json.getString(ABSOLUTE_PATH);
-        _indexPageId = json.getId(INDEX_PAGE_ID);
-        _description = json.getString(DESCRIPTION);
-        _createdBy =
-            (null==json.getString(CREATED_BY))
-                ? null
-                : new Username(json.getString(CREATED_BY));
-        _changedBy =
-            (null==json.getString(CHANGED_BY))
-            ? null
-                : new Username(json.getString(CHANGED_BY));
+        fromJson(json);
     }
 
 
@@ -439,6 +413,7 @@ public final class ResourceSummary implements Serializable, Jsonable {
         _templateId = templateId;
     }
 
+
     /**
      * Mutator.
      *
@@ -447,6 +422,90 @@ public final class ResourceSummary implements Serializable, Jsonable {
     public void setTags(final String tags) {
         _tags = tags;
     }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the absolute path.
+     */
+    public String getAbsolutePath() {
+        return _absolutePath;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param absolutePath The absolutePath to set.
+     */
+    public void setAbsolutePath(final String absolutePath) {
+        _absolutePath = absolutePath;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the indexPageId.
+     */
+    public UUID getIndexPageId() {
+        return _indexPageId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param indexPageId The indexPageId to set.
+     */
+    public void setIndexPageId(final UUID indexPageId) {
+        _indexPageId = indexPageId;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the description.
+     */
+    public String getDescription() {
+        return _description;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param description The description to set.
+     */
+    public void setDescription(final String description) {
+        _description = description;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the name with the first letter capitalised.
+     */
+    public String getCappedName() {
+        final String heading = getName();
+        final String c = heading.substring(0, 1).toUpperCase();
+        final String cappedName = c+heading.substring(1);
+        return cappedName;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param count The folder count.
+     */
+    public void setFolderCount(final int count) {
+        _folderCount = count;
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -475,86 +534,42 @@ public final class ResourceSummary implements Serializable, Jsonable {
         json.set(CHANGED_BY, (null==_changedBy)?null:_changedBy.toString());
     }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the absolute path.
-     */
-    public String getAbsolutePath() {
-        return _absolutePath;
-    }
 
-    /**
-     * Mutator.
-     *
-     * @param absolutePath The absolutePath to set.
-     */
-    public void setAbsolutePath(final String absolutePath) {
-        _absolutePath = absolutePath;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the indexPageId.
-     */
-    public UUID getIndexPageId() {
-
-        return _indexPageId;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param indexPageId The indexPageId to set.
-     */
-    public void setIndexPageId(final UUID indexPageId) {
-
-        _indexPageId = indexPageId;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the description.
-     */
-    public String getDescription() {
-
-        return _description;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param description The description to set.
-     */
-    public void setDescription(final String description) {
-
-        _description = description;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name with the first letter capitalised.
-     */
-    public String getCappedName() {
-        final String heading = getName();
-        final String c = heading.substring(0, 1).toUpperCase();
-        final String cappedName = c+heading.substring(1);
-        return cappedName;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param count The folder count.
-     */
-    public void setFolderCount(final int count) {
-        _folderCount = count;
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        _id = json.getId(ID);
+        _parent = json.getId(PARENT_ID);
+        _name = json.getString(NAME);
+        _publishedBy =
+            (null==json.getString(PUBLISHED_BY))
+                ? null
+                : new Username(json.getString(PUBLISHED_BY));
+        _title = json.getString(TITLE);
+        _lockedBy =
+            (null==json.getString(LOCKED_BY))
+                ? null
+                : new Username(json.getString(LOCKED_BY));
+        _type = ResourceType.valueOf(json.getString(TYPE));
+        _childCount = json.getInt(CHILD_COUNT);
+        _folderCount = json.getInt(FOLDER_COUNT);
+        _includeInMainMenu = json.getBool(INCLUDE_IN_MAIN_MENU);
+        _sortOrder = json.getString(SORT_ORDER);
+        _hasWorkingCopy = json.getBool(HAS_WORKING_COPY);
+        _dateCreated = json.getDate(DATE_CREATED);
+        _dateChanged = json.getDate(DATE_CHANGED);
+        _templateId = json.getId(TEMPLATE_ID);
+        _tags = json.getString(TAGS);
+        _absolutePath = json.getString(ABSOLUTE_PATH);
+        _indexPageId = json.getId(INDEX_PAGE_ID);
+        _description = json.getString(DESCRIPTION);
+        _createdBy =
+            (null==json.getString(CREATED_BY))
+                ? null
+                : new Username(json.getString(CREATED_BY));
+        _changedBy =
+            (null==json.getString(CHANGED_BY))
+            ? null
+                : new Username(json.getString(CHANGED_BY));
     }
 }

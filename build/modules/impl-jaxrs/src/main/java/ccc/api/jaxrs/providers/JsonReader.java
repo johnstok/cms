@@ -51,6 +51,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 @Provider
 @Consumes("application/json")
+@Deprecated
 public class JsonReader
     extends
         AbstractProvider

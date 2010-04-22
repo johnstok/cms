@@ -28,11 +28,12 @@ package ccc.api.http;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.core.BaseClientResponse;
 
 import ccc.api.Resources;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.jaxrs.ResourcesImpl;
+import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
 import ccc.api.types.HttpStatusCode;
 
@@ -67,6 +68,7 @@ class ResourcesDecorator
 
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Override
     public ResourceSummary resourceForPath(final String path) {
         /*
@@ -77,16 +79,20 @@ class ResourcesDecorator
         final ClientRequest request =
             new ClientRequest(_base+"/resources/by-path"+path, _http);
 
+        BaseClientResponse response;
         try {
-            final ClientResponse<ResourceSummary> response =
-                request.get(ResourceSummary.class);
-            if (response.getStatus() == HttpStatusCode.OK) {
-                return response.getEntity();
-            }
+            response = (BaseClientResponse) request.get();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
 
-        throw new RuntimeException("Request failed.");
+        if (response.getStatus() == HttpStatusCode.OK) {
+            return
+            (ResourceSummary) response.getEntity(ResourceSummary.class);
+        }
+        final String errorEntity =
+            (String) response.getEntity(String.class);
+        throw new RestExceptionMapper().fromResponse(errorEntity);
+
     }
 }
