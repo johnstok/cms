@@ -38,7 +38,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Aliases;
-import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.commands.UpdateAliasCommand;
@@ -65,7 +64,7 @@ public class AliasesEJB
     @Override
     @RolesAllowed({ALIAS_UPDATE})
     public void updateAlias(final UUID aliasId,
-                            final AliasDelta delta) {
+                            final AliasDto delta) {
             new UpdateAliasCommand(
                 getRepoFactory(),
                 delta.getTargetId(),

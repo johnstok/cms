@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -46,7 +46,7 @@ public class UpdateAliasAction
         RemotingAction {
 
     private final UUID _alias;
-    private final AliasDelta _details;
+    private final AliasDto _details;
 
 
     /**
@@ -54,7 +54,7 @@ public class UpdateAliasAction
      * @param details The new alias details.
      * @param alias The alias to update.
      */
-    public UpdateAliasAction(final UUID alias, final AliasDelta details) {
+    public UpdateAliasAction(final UUID alias, final AliasDto details) {
         super(UI_CONSTANTS.updateAlias(), RequestBuilder.POST);
         _alias = alias;
         _details = details;

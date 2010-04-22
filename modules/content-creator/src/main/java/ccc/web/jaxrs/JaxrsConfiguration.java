@@ -47,8 +47,6 @@ import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.AclReader;
 import ccc.api.jaxrs.providers.ActionNewReader;
-import ccc.api.jaxrs.providers.AliasDeltaReader;
-import ccc.api.jaxrs.providers.AliasNewReader;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.CommentReader;
 import ccc.api.jaxrs.providers.DurationReader;
@@ -119,7 +117,6 @@ public class JaxrsConfiguration
         providers.add(Jsonable2Reader.class);
         providers.add(FailureWriter.class);
         providers.add(UUIDProvider.class);
-        providers.add(AliasDeltaReader.class);
         providers.add(JsonReader.class);
         providers.add(BooleanProvider.class);
         providers.add(JsonableWriter.class);
@@ -131,7 +128,6 @@ public class JaxrsConfiguration
         providers.add(ResourceCacheDurationPUReader.class);
         providers.add(FolderDeltaReader.class);
         providers.add(ActionNewReader.class);
-        providers.add(AliasNewReader.class);
         providers.add(FolderNewReader.class);
         providers.add(TextFileDeltaReader.class);
         providers.add(CommentReader.class);

@@ -30,7 +30,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.UUID;
 
-import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -135,7 +135,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                new UpdateAliasAction(_aliasId, new AliasDelta(_targetId)){
+                new UpdateAliasAction(_aliasId, new AliasDto(_targetId)){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {
