@@ -27,11 +27,9 @@
 package ccc.commands;
 
 import java.util.Date;
-import java.util.UUID;
 
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.CommandType;
-import ccc.api.types.ResourceName;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
 import ccc.domain.User;
@@ -46,38 +44,21 @@ import ccc.persistence.ResourceRepository;
  */
 class CreateTemplateCommand extends CreateResourceCommand<Template> {
 
-
-    private final UUID _parentFolder;
-    private final TemplateDelta _delta;
-    private final String _title;
-    private final String _description;
-    private final ResourceName _name;
+    private final TemplateDto _template;
 
 
     /**
      * Constructor.
      *
      * @param repository The DAO used for CRUD operations, etc.
-     * @param audit The audit log to record business actions.
-     * @param parentFolder The folder in which the template will be created.
-     * @param delta The template's details.
-     * @param name The name of the template.
-     * @param title The template's title.
-     * @param description The template's description.
+     * @param audit      The audit log to record business actions.
+     * @param template   The template to create.
      */
     public CreateTemplateCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit,
-                                 final UUID parentFolder,
-                                 final TemplateDelta delta,
-                                 final String title,
-                                 final String description,
-                                 final ResourceName name) {
+                                 final TemplateDto template) {
         super(repository, audit);
-        _parentFolder = parentFolder;
-        _delta = delta;
-        _title = title;
-        _description = description;
-        _name = name;
+        _template = template;
     }
 
     /** {@inheritDoc} */
@@ -89,15 +70,15 @@ class CreateTemplateCommand extends CreateResourceCommand<Template> {
 
         final Template t =
             new Template(
-                _name,
-                _title,
-                _description,
-                _delta.getBody(),
-                _delta.getDefinition(),
-                _delta.getMimeType(),
+                _template.getName(),
+                _template.getTitle(),
+                _template.getDescription(),
+                _template.getBody(),
+                _template.getDefinition(),
+                _template.getMimeType(),
                 rm);
 
-        create(actor, happenedOn, _parentFolder, t);
+        create(actor, happenedOn, _template.getParent(), t);
 
         return t;
     }

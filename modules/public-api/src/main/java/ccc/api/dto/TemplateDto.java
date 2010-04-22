@@ -26,12 +26,14 @@
  */
 package ccc.api.dto;
 
-import java.io.Serializable;
+import static ccc.plugins.s11n.JsonKeys.*;
+
 import java.util.UUID;
 
+import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -39,94 +41,131 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateDto implements Jsonable, Serializable {
+public class TemplateDto
+    extends
+        ResourceSnapshot
+    implements
+        Jsonable2 {
 
-    private final UUID            _parentId;
-    private final TemplateDelta _delta;
-    private final String        _title;
-    private final String        _description;
-    private final String        _name;
+    private String   _body;
+    private String   _definition;
+    private MimeType _mimeType;
 
 
     /**
-     * Constructor.
+     * Accessor.
      *
-     * @param parentId    The template's parent.
-     * @param delta       The template's details.
-     * @param title       The template's title.
-     * @param description The template's description.
-     * @param name        The template's name.
+     * @return Returns the body.
      */
-    public TemplateDto(final UUID parentId,
-                       final TemplateDelta delta,
-                       final String title,
-                       final String description,
-                       final String name) {
-        _parentId = parentId;
-        _delta = delta;
-        _title = title;
-        _description = description;
-        _name = name;
+    public String getBody() {
+        return _body;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param body The body to set.
+     */
+    public void setBody(final String body) {
+        _body = body;
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the parentId.
+     * @return Returns the definition.
      */
-    public final UUID getParentId() {
-        return _parentId;
+    public String getDefinition() {
+        return _definition;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param definition The definition to set.
+     */
+    public void setDefinition(final String definition) {
+        _definition = definition;
     }
 
 
     /**
      * Accessor.
      *
-     * @return Returns the delta.
+     * @return Returns the mimeType.
      */
-    public final TemplateDelta getDelta() {
-        return _delta;
+    public MimeType getMimeType() {
+        return _mimeType;
     }
 
 
     /**
-     * Accessor.
+     * Mutator.
      *
-     * @return Returns the title.
+     * @param mimeType The mimeType to set.
      */
-    public final String getTitle() {
-        return _title;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the description.
-     */
-    public final String getDescription() {
-        return _description;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public final String getName() {
-        return _name;
+    public void setMimeType(final MimeType mimeType) {
+        _mimeType = mimeType;
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, _parentId);
-        json.set(JsonKeys.DELTA, _delta);
-        json.set(JsonKeys.TITLE, _title);
-        json.set(JsonKeys.DESCRIPTION, _description);
-        json.set(JsonKeys.NAME, _name);
+        json.set(ID,          getId());
+        json.set(PARENT_ID,   getParent());
+        json.set(DEFINITION,  getDefinition());
+        json.set(BODY,        getBody());
+        json.set(MIME_TYPE,   getMimeType());
+        json.set(TITLE,       getTitle());
+        json.set(DESCRIPTION, getDescription());
+        json.set(NAME,        (null==getName()) ? null : getName().toString());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setId(json.getId(ID));
+        setParent(json.getId(PARENT_ID));
+        setDefinition(json.getString(DEFINITION));
+        setBody(json.getString(BODY));
+        final Json mime = json.getJson(MIME_TYPE);
+        setMimeType((null==mime) ? null : new MimeType(mime));
+        setTitle(json.getString(TITLE));
+        setDescription(json.getString(DESCRIPTION));
+        final String name = json.getString(NAME);
+        setName((null==name) ? null : new ResourceName(name));
+    }
+
+    /**
+     * Create a summary DTO.
+     *
+     * @param id The template's UUID.
+     * @param name The template's name.
+     * @param title The template's title.
+     * @param description The template's description.
+     * @param body The template's body.
+     * @param definition The template's definition.
+     *
+     * @return A template DTO with the appropriate fields set.
+     */
+    public static TemplateDto summary(final UUID id,
+                                      final ResourceName name,
+                                      final String title,
+                                      final String description,
+                                      final String body,
+                                      final String definition) {
+        final TemplateDto t = new TemplateDto();
+        t.setId(id);
+        t.setName(name);
+        t.setTitle(title);
+        t.setDescription(description);
+        t._body = body;
+        t._definition = definition;
+        return t;
     }
 }

@@ -105,11 +105,7 @@ public class CommandFactory {
         return new CreateTemplateCommand(
             _repository,
             _audit,
-            template.getParentId(),
-            template.getDelta(),
-            template.getTitle(),
-            template.getDescription(),
-            new ResourceName(template.getName()));
+            template);
     }
 
 

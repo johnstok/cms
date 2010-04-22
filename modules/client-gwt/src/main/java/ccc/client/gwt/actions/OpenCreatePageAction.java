@@ -28,7 +28,7 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -65,7 +65,7 @@ public final class OpenCreatePageAction
         }
         new GetTemplatesAction(UI_CONSTANTS.createPage()){
             @Override protected void execute(
-                                 final Collection<TemplateSummary> templates) {
+                                 final Collection<TemplateDto> templates) {
                 new CreatePagePresenter(
                     GLOBALS,
                     new CreatePageDialog(templates, item),

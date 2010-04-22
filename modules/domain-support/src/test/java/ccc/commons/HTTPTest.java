@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,44 +24,31 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
+package ccc.commons;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import ccc.api.dto.TemplateDto;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.View;
+import junit.framework.TestCase;
 
 
 /**
- * MVP View for changing a resource's template.
+ * Tests for the {@link HTTP} class.
  *
  * @author Civic Computing Ltd.
  */
-public interface ChangeResourceTemplate
+public class HTTPTest
     extends
-        View<Editable> {
+        TestCase {
 
     /**
-     * Mutator.
-     *
-     * @param templates The list of available templates to choose from.
+     * Test.
      */
-    void setTemplates(Collection<TemplateDto> templates);
+    public void testConstructor() {
 
-    /**
-     * Mutator.
-     *
-     * @param templateId The currently selected template.
-     */
-    void setSelectedTemplate(UUID templateId);
+        // ARRANGE
 
-    /**
-     * Accessor.
-     *
-     * @return The currently selected template.
-     */
-    UUID getSelectedTemplate();
+        // ACT
+        Testing.construct(HTTP.class);
 
+        // ASSERT
+
+    }
 }

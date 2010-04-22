@@ -29,7 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.TemplateSummaryModelData;
@@ -66,7 +66,7 @@ public class ChooseTemplateDialog
 
     private final TemplateSummaryModelData _none =
         new TemplateSummaryModelData(
-            new TemplateSummary(
+            TemplateDto.summary(
                 null,
                 new ResourceName("NONE"),
                 "{none}",
@@ -133,7 +133,7 @@ public class ChooseTemplateDialog
 
     /** {@inheritDoc} */
     @Override
-    public void setTemplates(final Collection<TemplateSummary> templates) {
+    public void setTemplates(final Collection<TemplateDto> templates) {
         _store.add(_none);
         _store.add(DataBinding.bindTemplateDelta(templates));
         _store.sort(TemplateSummaryModelData.Property.NAME.name(), SortDir.ASC);

@@ -43,7 +43,7 @@ import javax.ws.rs.ext.Provider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -59,7 +59,7 @@ public class TemplateSummaryCollectionReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<Collection<TemplateSummary>> {
+        MessageBodyReader<Collection<TemplateDto>> {
 
     /** {@inheritDoc} */
     @Override
@@ -67,13 +67,13 @@ public class TemplateSummaryCollectionReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return isCollectionOfType(TemplateSummary.class, type);
+        return isCollectionOfType(TemplateDto.class, type);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<TemplateSummary> readFrom(
-                              final Class<Collection<TemplateSummary>> clazz,
+    public Collection<TemplateDto> readFrom(
+                              final Class<Collection<TemplateDto>> clazz,
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mimetype,
@@ -83,12 +83,14 @@ public class TemplateSummaryCollectionReader
             final String s = readString(mimetype, is);
 
             final JSONArray result = new JSONArray(s);
-            final Collection<TemplateSummary> rs =
-                new ArrayList<TemplateSummary>();
+            final Collection<TemplateDto> rs =
+                new ArrayList<TemplateDto>();
 
             for (int i=0; i<result.length(); i++) {
                 final Json o = new JsonImpl(result.getJSONObject(i));
-                rs.add(new TemplateSummary(o));
+                final TemplateDto t = new TemplateDto();
+                t.fromJson(o);
+                rs.add(t);
             }
             return rs;
         } catch (final JSONException e) {

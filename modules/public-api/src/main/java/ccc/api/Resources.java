@@ -45,7 +45,7 @@ import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.Duration;
 import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
@@ -181,7 +181,7 @@ public interface Resources {
      * @return TemplateSummary.
      */
     @GET @Path("/{id}/template")
-    TemplateSummary computeTemplate(@PathParam("id") UUID resourceId);
+    TemplateDto computeTemplate(@PathParam("id") UUID resourceId);
 
 
     /**

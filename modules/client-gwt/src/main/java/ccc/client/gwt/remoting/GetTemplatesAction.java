@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -74,12 +74,14 @@ public abstract class GetTemplatesAction
 
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
-                        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-                        final Collection<TemplateSummary> templates =
-                            new ArrayList<TemplateSummary>();
+                        final JSONArray result =
+                            JSONParser.parse(response.getText()).isArray();
+                        final Collection<TemplateDto> templates =
+                            new ArrayList<TemplateDto>();
                         for (int i=0; i<result.size(); i++) {
-                            templates.add(
-                                new TemplateSummary(new GwtJson(result.get(i).isObject())));
+                            final TemplateDto t = new TemplateDto();
+                            t.fromJson(new GwtJson(result.get(i).isObject()));
+                            templates.add(t);
                         }
                         execute(templates);
                     }
@@ -93,5 +95,5 @@ public abstract class GetTemplatesAction
      * @param templates The available templates.
      */
     @Deprecated
-    protected abstract void execute(Collection<TemplateSummary> templates);
+    protected abstract void execute(Collection<TemplateDto> templates);
 }

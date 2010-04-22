@@ -28,7 +28,7 @@ package ccc.domain;
 
 import java.util.Date;
 
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 
@@ -40,7 +40,7 @@ import ccc.api.types.MimeType;
  */
 public class TemplateRevision
     extends
-        Revision<TemplateDelta> {
+        Revision<TemplateDto> {
 
     private String _body;
     private String _definition;
@@ -110,7 +110,11 @@ public class TemplateRevision
 
     /** {@inheritDoc} */
     @Override
-    protected TemplateDelta delta() {
-        return new TemplateDelta(_body, _definition, _mimeType);
+    protected TemplateDto delta() {
+        final TemplateDto t = new TemplateDto();
+        t.setBody(_body);
+        t.setDefinition(_definition);
+        t.setMimeType(_mimeType); // FIXME: Make a copy.
+        return t;
     }
 }

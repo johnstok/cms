@@ -32,7 +32,7 @@ import java.util.Collection;
 
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.PageDelta;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
@@ -456,7 +456,7 @@ public class ResourceContextMenu
 
             /** {@inheritDoc} */
             // Get a delta to edit.
-            @Override protected void template(final TemplateSummary ts) {
+            @Override protected void template(final TemplateDto ts) {
                 new PageDeltaAction(
                     getConstants().updateContent(), item.getId()){
                     @Override

@@ -36,7 +36,7 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.api.dto.TextFileDelta;
 import ccc.api.exceptions.CCException;
 import ccc.plugins.scripting.Script;
@@ -109,7 +109,7 @@ public class TmpRenderer {
     private Response renderSearch(final ResourceSnapshot s) {
         try {
             final UUID tId = s.getTemplate();
-            final TemplateDelta t = _templates.templateDelta(tId);
+            final TemplateDto t = _templates.templateDelta(tId);
             final Response r =
                 new Response(
                     new SearchBody(
@@ -143,7 +143,7 @@ public class TmpRenderer {
     private Response render(final PageDelta s) {
         try {
             final UUID tId = s.getTemplate();
-            final TemplateDelta t = _templates.templateDelta(tId);
+            final TemplateDto t = _templates.templateDelta(tId);
             final Response r =
                 new Response(
                     new PageBody(

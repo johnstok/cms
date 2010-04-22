@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -73,7 +73,8 @@ public class OpenUpdateTemplateAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final TemplateDelta delta = new TemplateDelta(new GwtJson(result));
+        final TemplateDto delta = new TemplateDto();
+        delta.fromJson(new GwtJson(result));
         new EditTemplateDialog(
             delta,
             _template,

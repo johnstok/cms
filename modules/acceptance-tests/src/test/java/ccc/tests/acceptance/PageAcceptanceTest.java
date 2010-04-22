@@ -35,10 +35,10 @@ import java.util.UUID;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -177,19 +177,16 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
-        final TemplateDelta newTemplate =
-            new TemplateDelta("$resource.getParagraph(\"foo\").getText()",
-                "<fields><field name=\"foo\" type=\"html\"/></fields>",
-                MimeType.HTML);
+        final TemplateDto t = new TemplateDto();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("$resource.getParagraph(\"foo\").getText()");
+        t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
+        t.setMimeType(MimeType.HTML);
 
-        final ResourceSummary ts =
-            getTemplates().createTemplate(
-                new TemplateDto(
-                    templateFolder.getId(),
-                    newTemplate,
-                    "t-title",
-                    "t-desc",
-                    name));
+        final ResourceSummary ts = getTemplates().createTemplate(t);
 
         final ResourceSummary f = tempFolder();
         final ResourceSummary page = tempPage(f.getId(), ts.getId());

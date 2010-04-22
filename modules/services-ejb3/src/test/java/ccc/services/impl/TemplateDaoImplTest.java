@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;
@@ -67,8 +67,10 @@ public class TemplateDaoImplTest
                 true,
                 "Created."));
         foo.lock(_user);
-        final TemplateDelta td =
-            new TemplateDelta("newBody", "newDefn", MimeType.BINARY_DATA);
+        final TemplateDto td = new TemplateDto();
+        td.setBody("newBody");
+        td.setDefinition("newDefn");
+        td.setMimeType(MimeType.BINARY_DATA);
 
         expect(_repository.find(Template.class, foo.getId())).andReturn(foo);
         _audit.record(isA(LogEntry.class));

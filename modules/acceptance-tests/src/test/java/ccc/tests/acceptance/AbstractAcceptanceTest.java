@@ -52,7 +52,6 @@ import ccc.api.dto.GroupDto;
 import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.api.http.ProxyServiceLocator;
@@ -208,17 +207,17 @@ public abstract class AbstractAcceptanceTest
      */
     protected ResourceSummary dummyTemplate(final ResourceSummary parent) {
         final String templateName = UUID.randomUUID().toString();
-        final TemplateDelta newTemplate =
-            new TemplateDelta("body", "<fields/>", MimeType.HTML);
-        final ResourceSummary ts =
-            getTemplates().createTemplate(
-                new TemplateDto(
-                    parent.getId(),
-                    newTemplate,
-                    templateName,
-                    templateName,
-                    templateName));
-        return ts;
+
+        final TemplateDto t = new TemplateDto();
+        t.setName(new ResourceName(templateName));
+        t.setParent(parent.getId());
+        t.setDescription(templateName);
+        t.setTitle(templateName);
+        t.setBody("body");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
+
+        return getTemplates().createTemplate(t);
     }
 
     /**

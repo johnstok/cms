@@ -52,14 +52,14 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public final class UserDto implements Serializable, Jsonable2 {
 
-    private String _email;
+    private String _email; // FIXME: Should be type EmailAddress.
     private String _name;
     private UUID _id;
     private Username _username;
     private Set<UUID> _groups = new HashSet<UUID>();
     private Set<String> _permissions = new HashSet<String>();
     private Map<String, String> _metadata = new HashMap<String, String>();
-    private String _password;
+    private String _password; // FIXME: Should be type Password.
 
 
     /**
