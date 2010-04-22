@@ -73,7 +73,6 @@ import ccc.api.jaxrs.providers.JsonReader;
 import ccc.api.jaxrs.providers.Jsonable2Reader;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
-import ccc.api.jaxrs.providers.PageDeltaReader;
 import ccc.api.jaxrs.providers.ResSummaryReader;
 import ccc.api.jaxrs.providers.ResourceSummaryCollectionReader;
 import ccc.api.jaxrs.providers.RevisionSummaryCollectionReader;
@@ -123,7 +122,6 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(AliasDeltaReader.class);
         pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(UUIDProvider.class);
-        pFactory.addMessageBodyReader(PageDeltaReader.class);
         pFactory.addMessageBodyReader(ActionSummaryReader.class);
         pFactory.addMessageBodyReader(CommentReader.class);
         pFactory.addMessageBodyReader(GroupCollectionReader.class);

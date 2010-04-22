@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
@@ -115,7 +115,7 @@ public class CreatePagePresenter
     private Runnable createPage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
-                final PageDelta page = new PageDelta(paragraphs);
+                final PageDto page = PageDto.delta(paragraphs);
                 final UUID template =
                     (null==getView().getSelectedTemplate())
                     ? null

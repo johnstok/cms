@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.ServiceLocator;
 import ccc.api.dto.FolderDelta;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.Paragraph;
@@ -284,7 +284,7 @@ public class Migrations extends BaseMigrations {
                 }
             }
 
-            PageDelta delta = assemblePage(resource, createVersion.intValue());
+            PageDto delta = assemblePage(resource, createVersion.intValue());
             final ResourceSummary rs =
                 createPage(parentFolderId, resource, createVersion, le, delta);
 
@@ -407,21 +407,21 @@ public class Migrations extends BaseMigrations {
                             final ResourceSummary rs,
                             final int version,
                             final LogEntryBean le,
-                            final PageDelta d) {
+                            final PageDto d) {
 
-        final String userComment =
-            getLegacyQueries().selectUserComment(r.contentId(), version);
+        d.setComment(
+            getLegacyQueries().selectUserComment(r.contentId(), version));
 
         Boolean isMajorEdit = Boolean.valueOf(false);
         if (_options.isMigrateIsMajorEdit()) {
             isMajorEdit =
                 getLegacyQueries().selectIsMajorEdit(r.contentId(), version);
         }
+        d.setMajorChange(isMajorEdit.booleanValue());
+
         getMigrations().updatePage(
             rs.getId(),
             d,
-            userComment,
-            isMajorEdit.booleanValue(),
             le.getUser().getId(),
             le.getHappenedOn());
 

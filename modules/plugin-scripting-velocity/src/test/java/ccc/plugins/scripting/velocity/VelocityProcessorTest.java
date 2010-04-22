@@ -39,7 +39,6 @@ import org.apache.velocity.exception.ParseErrorException;
 import ccc.api.MemoryServiceLocator;
 import ccc.api.Resources;
 import ccc.api.ServiceLocator;
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.types.Paragraph;
 import ccc.commons.Testing;
@@ -140,13 +139,13 @@ public class VelocityProcessorTest extends TestCase {
         final PageDto foo =
             new PageDto(
                 null,
-                new PageDelta(
-                    Collections.singleton(Paragraph.fromText("bar", "baz"))),
                 "foo",
                 null,
                 "foo",
                 "",
                 false);
+        foo.setParagraphs(
+            Collections.singleton(Paragraph.fromText("bar", "baz")));
         final String template = "Hello $resource.getName()";
         final Context ctxt = new Context();
         ctxt.add("resource", foo);
@@ -168,13 +167,13 @@ public class VelocityProcessorTest extends TestCase {
         final PageDto foo =
             new PageDto(
                 null,
-                new PageDelta(
-                    Collections.singleton(Paragraph.fromText("bar", "baz"))),
                 "foo",
                 null,
                 "foo",
                 "",
                 false);
+        foo.setParagraphs(
+            Collections.singleton(Paragraph.fromText("bar", "baz")));
         final String template = "#macro failthis #end";
         final String expectedMessage = "A macro declaration requires at least "
             + "a name argumenttest[line 1, column 1]";

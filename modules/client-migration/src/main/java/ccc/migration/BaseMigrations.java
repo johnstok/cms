@@ -48,12 +48,12 @@ import ccc.api.ServiceLocator;
 import ccc.api.Users;
 import ccc.api.dto.AclDto;
 import ccc.api.dto.GroupDto;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
 import ccc.api.dto.AclDto.Entry;
-import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.CCException;
+import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
@@ -158,7 +158,7 @@ public class BaseMigrations {
      *
      * @return A page delta representing the CCC6 resource.
      */
-    protected PageDelta assemblePage(final ResourceBean r, final int version) {
+    protected PageDto assemblePage(final ResourceBean r, final int version) {
         final Set<Paragraph> paragraphDeltas =
             new HashSet<Paragraph>();
         final Map<String, StringBuffer> paragraphs =
@@ -187,7 +187,7 @@ public class BaseMigrations {
             }
         }
 
-        final PageDelta delta = new PageDelta(paragraphDeltas);
+        final PageDto delta = PageDto.delta(paragraphDeltas);
 
         return delta;
     }
@@ -197,36 +197,31 @@ public class BaseMigrations {
                                          final ResourceBean r,
                                          final Integer version,
                                          final LogEntryBean le,
-                                         final PageDelta delta) {
+                                         final PageDto delta) {
 
-        final String pageTitle = r.cleanTitle();
+        delta.setTitle(r.cleanTitle());
+        delta.setComment(null);
+        delta.setMajorChange(true);
+        delta.setName(ResourceName.escape(r.name()));
+        delta.setTemplate(null);
 
         ResourceSummary rs;
         try {
             rs = _migration.createPage(
                 parentFolderId,
                 delta,
-                r.name(),
                 false,
-                null,
-                pageTitle,
                 le.getUser().getId(),
-                le.getHappenedOn(),
-                null,
-                true);
+                le.getHappenedOn());
         } catch (final EJBException e) {
             if (e.getCausedByException() instanceof ResourceExistsException) {
+                delta.setName(ResourceName.escape(r.name()+"1"));
                 rs = _migration.createPage(
                     parentFolderId,
                     delta,
-                    r.name()+"1",
                     false,
-                    null,
-                    pageTitle,
                     le.getUser().getId(),
-                    le.getHappenedOn(),
-                    null,
-                    true);
+                    le.getHappenedOn());
                 log.warn("Renamed page '"+r.name()+"' to '"+r.name()+"1'.");
             } else {
                 throw e;

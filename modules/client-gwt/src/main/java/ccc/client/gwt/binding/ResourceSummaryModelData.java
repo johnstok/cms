@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
@@ -631,7 +631,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create a folder.
      */
     public static Request createPage(final UUID parentFolder,
-                                     final PageDelta page,
+                                     final PageDto page,
                                      final String name,
                                      final UUID template,
                                      final String title,
@@ -639,7 +639,7 @@ public class ResourceSummaryModelData
                                      final boolean majorChange) {
         final String path =  "api/secure/pages";
 
-        final GwtJson json = new GwtJson();
+        final GwtJson json = new GwtJson(); // FIXME: Broken.
         json.set(JsonKeys.PARENT_ID, parentFolder);
         json.set(JsonKeys.DELTA, page);
         json.set(JsonKeys.NAME, name);

@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.TemplateDto;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -62,7 +62,7 @@ public class UpdatePageDialog
         AbstractBaseDialog {
 
     private final UUID _pageId;
-    private final PageDelta _page;
+    private final PageDto _page;
     private final TemplateDto _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel = new EditPagePanel();
@@ -82,7 +82,7 @@ public class UpdatePageDialog
      * @param rt ResourceTable required in order to refresh the contents.
      */
     public UpdatePageDialog(final UUID pageId,
-                            final PageDelta page,
+                            final PageDto page,
                             final String pageName,
                             final TemplateDto template,
                             final ResourceTable rt) {
@@ -223,7 +223,7 @@ public class UpdatePageDialog
      *
      * @return Returns the _page.
      */
-    protected PageDelta page() {
+    protected PageDto page() {
         return _page;
     }
 

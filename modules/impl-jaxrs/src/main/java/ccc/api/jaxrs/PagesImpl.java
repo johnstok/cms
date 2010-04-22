@@ -36,7 +36,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Pages;
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.DBC;
@@ -73,7 +72,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta pageDelta(final UUID pageId) {
+    public PageDto pageDelta(final UUID pageId) {
         try {
             return _pages.pageDelta(pageId);
         } catch (final ClientResponseFailure cfe) {
@@ -106,7 +105,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateWorkingCopy(final UUID pageId, final PageDelta delta) {
+    public void updateWorkingCopy(final UUID pageId, final PageDto delta) {
         try {
             _pages.updateWorkingCopy(pageId, delta);
         } catch (final ClientResponseFailure cfe) {
@@ -117,7 +116,7 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final UUID pageId, final Json json) {
+    public void updatePage(final UUID pageId, final PageDto json) {
         try {
             _pages.updatePage(pageId, json);
         } catch (final ClientResponseFailure cfe) {

@@ -34,7 +34,7 @@ import ccc.api.Templates;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.FolderDto;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.TextFileDelta;
@@ -97,7 +97,7 @@ public class TmpRenderer {
             case FOLDER:
                 return render((FolderDto) s);
             case PAGE:
-                return render((PageDelta) s);
+                return render((PageDto) s);
             case SEARCH:
                 return renderSearch(s);
             default:
@@ -140,7 +140,7 @@ public class TmpRenderer {
     }
 
 
-    private Response render(final PageDelta s) {
+    private Response render(final PageDto s) {
         try {
             final UUID tId = s.getTemplate();
             final TemplateDto t = _templates.templateDelta(tId);

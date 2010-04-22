@@ -36,7 +36,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.plugins.s11n.Json;
@@ -73,7 +72,7 @@ public interface Pages {
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    PageDelta pageDelta(@PathParam("id") UUID pageId);
+    PageDto pageDelta(@PathParam("id") UUID pageId);
 
 
     /**
@@ -83,7 +82,7 @@ public interface Pages {
      * @param delta The changes to apply.
      */
     @POST @Path("/{id}")
-    void updatePage(@PathParam("id") UUID pageId, Json delta);
+    void updatePage(@PathParam("id") UUID pageId, PageDto delta);
 
 
     /**
@@ -93,7 +92,7 @@ public interface Pages {
      * @param delta The changes to apply.
      */
     @POST @Path("/{id}/wc")
-    void updateWorkingCopy(@PathParam("id") UUID pageId, PageDelta delta);
+    void updateWorkingCopy(@PathParam("id") UUID pageId, PageDto delta);
 
 
     /**

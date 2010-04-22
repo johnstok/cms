@@ -39,15 +39,14 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.dto.AclDto;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.types.ResourceName;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.UpdatePageCommand;
-import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateResourceAclCommand;
+import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.domain.Folder;
 import ccc.domain.Page;
 import ccc.domain.User;
@@ -98,27 +97,16 @@ public class MigrationEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final UUID parentId,
-                                      final PageDelta delta,
-                                      final String name,
+                                      final PageDto delta,
                                       final boolean publish,
-                                      final UUID templateId,
-                                      final String title,
                                       final UUID actorId,
-                                      final Date happenedOn,
-                                      final String comment,
-                                      final boolean majorChange) {
+                                      final Date happenedOn) {
         final User u = userForId(actorId);
 
         final Page p =
-            commands().createPageCommand(
-                parentId,
-                delta,
-                ResourceName.escape(name),
-                title,
-                templateId,
-                comment,
-                majorChange)
-            .execute(u, happenedOn);
+            commands()
+                .createPageCommand(parentId, delta)
+                .execute(u, happenedOn);
 
         if (publish) {
             p.lock(u);
@@ -133,18 +121,14 @@ public class MigrationEJB
     /** {@inheritDoc} */
     @Override
     public void updatePage(final UUID pageId,
-                           final PageDelta delta,
-                           final String comment,
-                           final boolean isMajorEdit,
+                           final PageDto delta,
                            final UUID actorId,
                            final Date happenedOn) {
         sudoExecute(
             new UpdatePageCommand(
                 getRepoFactory(),
                 pageId,
-                delta,
-                comment,
-                isMajorEdit),
+                delta),
             actorId,
             happenedOn);
     }

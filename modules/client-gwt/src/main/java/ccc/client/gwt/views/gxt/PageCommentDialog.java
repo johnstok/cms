@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdatePageAction;
@@ -53,7 +53,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final UUID _pageId;
-    private final PageDelta _page;
+    private final PageDto _page;
     private final UpdatePageDialog _updatePageDialog;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
@@ -68,7 +68,7 @@ public class PageCommentDialog extends AbstractEditDialog {
      *
      */
     public PageCommentDialog(final UUID pageId,
-                             final PageDelta page,
+                             final PageDto page,
                              final UpdatePageDialog updatePageDialog) {
         super(new GlobalsImpl().uiConstants().pageEditComment(),
               new GlobalsImpl());

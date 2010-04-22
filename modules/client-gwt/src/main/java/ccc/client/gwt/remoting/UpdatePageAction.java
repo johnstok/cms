@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.JsonKeys;
@@ -46,7 +46,7 @@ public class UpdatePageAction
         RemotingAction {
 
     private final UUID _pageId;
-    private final PageDelta _details;
+    private final PageDto _details;
     private final String _comment;
     private final boolean _majorChange;
 
@@ -58,8 +58,9 @@ public class UpdatePageAction
      * @param details Details of the update.
      * @param pageId The id of the page to update.
      */
+    // FIXME: Use the fields from PageDto instead.
     public UpdatePageAction(final UUID pageId,
-                             final PageDelta details,
+                             final PageDto details,
                              final String comment,
                              final boolean majorChange) {
         super(UI_CONSTANTS.updateContent(), RequestBuilder.POST);

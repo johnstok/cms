@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.Paragraph;
 
 
@@ -43,7 +43,7 @@ import ccc.api.types.Paragraph;
  */
 public class PageRevision
     extends
-        Revision<PageDelta> {
+        Revision<PageDto> {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
 
@@ -90,7 +90,7 @@ public class PageRevision
 
     /** {@inheritDoc} */
     @Override
-    protected PageDelta delta() {
-        return new PageDelta(_content);
+    protected PageDto delta() {
+        return PageDto.delta(_content);
     }
 }

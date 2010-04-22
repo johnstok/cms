@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -45,7 +45,7 @@ public class UpdateWorkingCopyAction
         RemotingAction {
 
     private final UUID _pageId;
-    private final PageDelta _workingCopy;
+    private final PageDto _workingCopy;
 
 
     /**
@@ -55,7 +55,7 @@ public class UpdateWorkingCopyAction
      * @param pageId The new page.
      */
     public UpdateWorkingCopyAction(final UUID pageId,
-                                    final PageDelta workingCopy) {
+                                   final PageDto workingCopy) {
         super(UI_CONSTANTS.saveDraft(), RequestBuilder.POST);
         _pageId = pageId;
         _workingCopy = workingCopy;

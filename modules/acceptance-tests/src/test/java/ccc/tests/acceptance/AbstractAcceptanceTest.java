@@ -28,7 +28,6 @@
 package ccc.tests.acceptance;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -49,7 +48,6 @@ import ccc.api.Users;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.GroupDto;
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDto;
@@ -57,7 +55,6 @@ import ccc.api.dto.UserDto;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.types.MimeType;
-import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
 
@@ -231,9 +228,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempPage(final UUID parentFolder,
                                        final UUID template) {
         final String name = UUID.randomUUID().toString();
-        final PageDelta delta = new PageDelta(new HashSet<Paragraph>());
         final PageDto page = new PageDto(parentFolder,
-                                        delta,
                                         name,
                                         template,
                                         "title",

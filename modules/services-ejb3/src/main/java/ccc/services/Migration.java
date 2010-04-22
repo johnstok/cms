@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.dto.AclDto;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 
 
@@ -70,15 +70,11 @@ public interface Migration {
      *
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
-     * @param comment A comment describing the changes.
-     * @param isMajorEdit Is this a major change.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
      */
     void updatePage(UUID pageId,
-                    PageDelta delta,
-                    String comment,
-                    boolean isMajorEdit,
+                    PageDto delta,
                     UUID actorId,
                     Date happenedOn);
 
@@ -88,27 +84,17 @@ public interface Migration {
      *
      * @param parentId The folder in which the page will be created.
      * @param delta The page's details.
-     * @param name The page's name.
      * @param publish True if the folder should be published, false otherwise.
-     * @param templateId The page's template.
-     * @param title The page's title.
      * @param actorId The user id of the actor.
      * @param happenedOn When the command happened.
-     * @param comment The comment of the page creation.
-     * @param majorChange The boolean for major change.
      *
      * @return A resource summary describing the new page.
      */
     ResourceSummary createPage(UUID parentId,
-                               PageDelta delta,
-                               String name,
+                               PageDto delta,
                                boolean publish,
-                               UUID templateId,
-                               String title,
                                UUID actorId,
-                               Date happenedOn,
-                               String comment,
-                               boolean majorChange);
+                               Date happenedOn);
 
 
     /**

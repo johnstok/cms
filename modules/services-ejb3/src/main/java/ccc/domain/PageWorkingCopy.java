@@ -31,7 +31,7 @@ import static java.util.Collections.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.Paragraph;
 
 
@@ -42,7 +42,7 @@ import ccc.api.types.Paragraph;
  */
 public class PageWorkingCopy
     extends
-        WorkingCopy<PageDelta> {
+        WorkingCopy<PageDto> {
 
     private Set<Paragraph> _wcContent;
 
@@ -54,19 +54,19 @@ public class PageWorkingCopy
      *
      * @param content The contents of this working copy.
      */
-    public PageWorkingCopy(final PageDelta content) {
+    public PageWorkingCopy(final PageDto content) {
         delta(content);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected PageDelta delta() {
-        return new PageDelta(_wcContent);
+    protected PageDto delta() {
+        return PageDto.delta(_wcContent);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void delta(final PageDelta snapshot) {
+    public void delta(final PageDto snapshot) {
         _wcContent = new HashSet<Paragraph>(snapshot.getParagraphs());
     }
 

@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -44,7 +44,7 @@ public final class CreatePageAction
         RemotingAction {
 
     private final UUID _parentFolder;
-    private final PageDelta _page;
+    private final PageDto _page;
     private final String _name;
     private final UUID _template;
     private final String _title;
@@ -64,8 +64,9 @@ public final class CreatePageAction
      * @param majorChange Is this update a major change.
      *
      */
+    // FIXME: Use the properties from PageDto instead.
     public CreatePageAction(final UUID parentFolder,
-                             final PageDelta page,
+                             final PageDto page,
                              final String name,
                              final UUID template,
                              final String title,
