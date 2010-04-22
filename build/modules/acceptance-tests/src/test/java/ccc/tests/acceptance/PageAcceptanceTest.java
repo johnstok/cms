@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.TemplateDto;
@@ -60,23 +59,21 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final String hw = "Hello World"; // Unicode non-breaking space.
         final ResourceSummary f = tempFolder();
         final String name = UUID.randomUUID().toString();
-        final PageDelta delta = new PageDelta(
-            new HashSet<Paragraph>(){{
-                add(Paragraph.fromText("test", hw));
-            }});
+        final PageDto page = new PageDto(f.getId(),
+            name,
+            null,
+            "title",
+            "",
+            true);
+        page.setParagraphs(new HashSet<Paragraph>(){{
+            add(Paragraph.fromText("test", hw));
+        }});
 
         // ACT
-        final PageDto page = new PageDto(f.getId(),
-                                         delta,
-                                         name,
-                                         null,
-                                         "title",
-                                         "",
-                                         true);
         final ResourceSummary ps = getPages().createPage(page);
 
         // ASSERT
-        final PageDelta pd = getPages().pageDelta(ps.getId());
+        final PageDto pd = getPages().pageDelta(ps.getId());
         assertEquals(hw, pd.getParagraph("test").getText());
     }
 
@@ -92,7 +89,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
-        final PageDelta pd = getPages().pageDelta(page.getId());
+        final PageDto pd = getPages().pageDelta(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -113,18 +110,16 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final Paragraph testPara =
             Paragraph.fromText("foo", "long story short");
         paras.add(testPara);
-        final PageDelta modified = new PageDelta(paras);
+        final PageDto modified = PageDto.delta(paras);
+        modified.setMajorChange(true);
+        modified.setComment("");
 
         // ACT
         getCommands().lock(page.getId());
 
-        final Json json = new JsonImpl();
-        json.set(JsonKeys.MAJOR_CHANGE, Boolean.TRUE);
-        json.set(JsonKeys.COMMENT, "");
-        json.set(JsonKeys.DELTA, modified);
 
-        getPages().updatePage(page.getId(), json);
-        final PageDelta pd = getPages().pageDelta(page.getId());
+        getPages().updatePage(page.getId(), modified);
+        final PageDto pd = getPages().pageDelta(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -185,31 +180,27 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         t.setBody("$resource.getParagraph(\"foo\").getText()");
         t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
         t.setMimeType(MimeType.HTML);
-
         final ResourceSummary ts = getTemplates().createTemplate(t);
 
         final ResourceSummary f = tempFolder();
         final ResourceSummary page = tempPage(f.getId(), ts.getId());
 
-
+        final PageDto update = new PageDto();
+        update.setMajorChange(true);
+        update.setComment("");
         final Set<Paragraph> paras = new HashSet<Paragraph>();
         final Paragraph testPara = Paragraph.fromText("foo", "original");
         paras.add(testPara);
-        final PageDelta orignal = new PageDelta(paras);
-
-        final Json json = new JsonImpl();
-        json.set(JsonKeys.MAJOR_CHANGE, Boolean.TRUE);
-        json.set(JsonKeys.COMMENT, "");
-        json.set(JsonKeys.DELTA, orignal);
+        update.setParagraphs(paras);
 
         // ACT
         getCommands().lock(page.getId());
-        getPages().updatePage(page.getId(), json);
+        getPages().updatePage(page.getId(), update);
 
         final Set<Paragraph> modparas = new HashSet<Paragraph>();
         final Paragraph modPara = Paragraph.fromText("foo", "working copy");
         modparas.add(modPara);
-        final PageDelta modified = new PageDelta(modparas);
+        final PageDto modified = PageDto.delta(modparas);
 
         getPages().updateWorkingCopy(page.getId(), modified);
 

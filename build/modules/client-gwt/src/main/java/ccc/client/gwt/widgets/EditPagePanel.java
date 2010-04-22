@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.FileDto;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -115,7 +115,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      * @param resourceSummary PageDTO of the original page.
      * @param pageName The name of the page.
      */
-    public void populateFields(final PageDelta resourceSummary,
+    public void populateFields(final PageDto resourceSummary,
                                final String pageName) {
         _name.setValue(pageName);
         _name.setReadOnly(true);

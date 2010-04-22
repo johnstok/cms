@@ -41,11 +41,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Pages;
-import ccc.api.dto.PageDelta;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.Paragraph;
-import ccc.api.types.ResourceName;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Page;
@@ -78,13 +76,8 @@ public class PagesEJB
         return
             execute(
                 commands().createPageCommand(
-                    page.getParentId(),
-                    page.getDelta(),
-                    ResourceName.escape(page.getName()),
-                    page.getTitle(),
-                    page.getTemplateId(),
-                    page.getComment(),
-                    page.getMajorChange()))
+                    page.getParent(),
+                    page))
                 .mapResource();
     }
 
@@ -92,19 +85,12 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public void updatePage(final UUID pageId, final Json json) {
-            final boolean majorEdit =
-                json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
-            final String comment = json.getString(JsonKeys.COMMENT);
-            final PageDelta delta = new PageDelta(json.getJson(JsonKeys.DELTA));
-
+    public void updatePage(final UUID pageId, final PageDto delta) {
             execute(
                 new UpdatePageCommand(
                     getRepoFactory(),
                     pageId,
-                    delta,
-                    comment,
-                    majorEdit));
+                    delta));
     }
 
 
@@ -112,7 +98,7 @@ public class PagesEJB
     @Override
     @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
-                                  final PageDelta delta) {
+                                  final PageDto delta) {
         new UpdateWorkingCopyCommand(getRepoFactory())
             .execute(
                 currentUser(),
@@ -138,7 +124,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public PageDelta pageDelta(final UUID pageId) {
+    public PageDto pageDelta(final UUID pageId) {
         checkPermission(RESOURCE_READ);
 
         return

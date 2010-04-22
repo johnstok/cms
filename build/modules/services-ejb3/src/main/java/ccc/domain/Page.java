@@ -30,7 +30,7 @@ package ccc.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
@@ -46,7 +46,7 @@ import ccc.commons.CharConversion;
  */
 public class Page
     extends
-        WorkingCopySupport<PageRevision, PageDelta, PageWorkingCopy> {
+        WorkingCopySupport<PageRevision, PageDto, PageWorkingCopy> {
 
     /** MAXIMUM_PARAGRAPHS : int. */
     public static final int MAXIMUM_PARAGRAPHS = 32;
@@ -64,7 +64,7 @@ public class Page
      */
     Page(final String title, final RevisionMetadata metadata) {
         super(title);
-        update(new PageDelta(new HashSet<Paragraph>()), metadata);
+        update(PageDto.delta(new HashSet<Paragraph>()), metadata);
     }
 
 
@@ -85,7 +85,7 @@ public class Page
         super(name, title);
         setTemplate(template);
         update(
-            new PageDelta(
+            PageDto.delta(
                 new HashSet<Paragraph>(Arrays.asList(paragraphs))),
                 metadata);
     }
@@ -109,7 +109,7 @@ public class Page
     }
 
 
-    private HashSet<Paragraph> cleanParagraphs(final PageDelta delta) {
+    private HashSet<Paragraph> cleanParagraphs(final PageDto delta) {
         final HashSet<Paragraph> paras = new HashSet<Paragraph>();
         for (final Paragraph para : delta.getParagraphs()) {
             if (ParagraphType.TEXT == para.getType()) {
@@ -134,22 +134,22 @@ public class Page
 
     /** {@inheritDoc} */
     @Override
-    public PageDelta createSnapshot() {
-        return new PageDelta(
+    public PageDto createSnapshot() {
+        return PageDto.delta(
             new HashSet<Paragraph>(currentRevision().getParagraphs()));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected PageWorkingCopy createWorkingCopy(final PageDelta delta) {
+    protected PageWorkingCopy createWorkingCopy(final PageDto delta) {
         return new PageWorkingCopy(delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void update(final PageDelta delta,
+    protected void update(final PageDto delta,
                           final RevisionMetadata metadata) {
         DBC.require().maxValue(
             delta.getParagraphs().size(),
@@ -177,9 +177,9 @@ public class Page
 
     /** {@inheritDoc} */
     @Override
-    public final PageDelta forWorkingCopy() {
-        final PageDelta dto =
-            new PageDelta(
+    public final PageDto forWorkingCopy() {
+        final PageDto dto =
+            PageDto.delta(
                 new HashSet<Paragraph>(getWorkingCopy().getParagraphs()));
         setDtoProps(dto);
         dto.setRevision(-1);
@@ -188,9 +188,9 @@ public class Page
 
     /** {@inheritDoc} */
     @Override
-    public final PageDelta forCurrentRevision() {
-        final PageDelta dto =
-            new PageDelta(
+    public final PageDto forCurrentRevision() {
+        final PageDto dto =
+            PageDto.delta(
                 new HashSet<Paragraph>(currentRevision().getParagraphs()));
         setDtoProps(dto);
         dto.setRevision(currentRevisionNo());
@@ -199,9 +199,9 @@ public class Page
 
     /** {@inheritDoc} */
     @Override
-    public final PageDelta forSpecificRevision(final int revNo) {
-        final PageDelta dto =
-            new PageDelta(
+    public final PageDto forSpecificRevision(final int revNo) {
+        final PageDto dto =
+            PageDto.delta(
                 new HashSet<Paragraph>(revision(revNo).getParagraphs()));
         setDtoProps(dto);
         dto.setRevision(revNo);
@@ -214,7 +214,7 @@ public class Page
      *
      * @return The corresponding delta.
      */
-    public PageDelta deltaPage() {
+    public PageDto deltaPage() {
         return getOrCreateWorkingCopy();
     }
 }

@@ -27,7 +27,7 @@
 package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.commands.AbstractCommandTest;
@@ -86,7 +86,7 @@ public class WorkingCopyManagerTest
                 _rm,
                 Paragraph.fromText("abc", "def"));
         page.lock(_user);
-        final PageDelta before = page.createSnapshot();
+        final PageDto before = page.createSnapshot();
 
         expect(_repository.find(Page.class, page.getId())).andReturn(page);
         _audit.record(isA(LogEntry.class));

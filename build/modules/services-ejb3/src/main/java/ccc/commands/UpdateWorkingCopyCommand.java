@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
@@ -74,7 +74,7 @@ public class UpdateWorkingCopyCommand {
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID resourceId,
-                        final PageDelta delta) {
+                        final PageDto delta) {
         final Page r = _repository.find(Page.class, resourceId);
         r.confirmLock(actor);
 

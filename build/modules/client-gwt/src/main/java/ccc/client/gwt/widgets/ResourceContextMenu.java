@@ -31,7 +31,7 @@ import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
 import java.util.Collection;
 
 import ccc.api.dto.GroupDto;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.api.types.Permission;
@@ -460,7 +460,7 @@ public class ResourceContextMenu
                 new PageDeltaAction(
                     getConstants().updateContent(), item.getId()){
                     @Override
-                    protected void execute(final PageDelta delta) {
+                    protected void execute(final PageDto delta) {
                         new UpdatePageDialog(
                             item.getId(),
                             delta,

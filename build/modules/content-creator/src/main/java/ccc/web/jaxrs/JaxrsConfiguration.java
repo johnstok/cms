@@ -62,8 +62,6 @@ import ccc.api.jaxrs.providers.Jsonable2Reader;
 import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
-import ccc.api.jaxrs.providers.PageDeltaReader;
-import ccc.api.jaxrs.providers.PageNewReader;
 import ccc.api.jaxrs.providers.ResourceCacheDurationPUReader;
 import ccc.api.jaxrs.providers.ResourceSummaryCollectionReader;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
@@ -123,7 +121,6 @@ public class JaxrsConfiguration
         providers.add(UUIDProvider.class);
         providers.add(AliasDeltaReader.class);
         providers.add(JsonReader.class);
-        providers.add(PageDeltaReader.class);
         providers.add(BooleanProvider.class);
         providers.add(JsonableWriter.class);
         providers.add(MetadataWriter.class);
@@ -133,7 +130,6 @@ public class JaxrsConfiguration
         providers.add(UserSummaryReader.class);
         providers.add(ResourceCacheDurationPUReader.class);
         providers.add(FolderDeltaReader.class);
-        providers.add(PageNewReader.class);
         providers.add(ActionNewReader.class);
         providers.add(AliasNewReader.class);
         providers.add(FolderNewReader.class);

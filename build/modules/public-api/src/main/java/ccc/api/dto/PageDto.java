@@ -26,12 +26,15 @@
  */
 package ccc.api.dto;
 
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -39,22 +42,27 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class PageDto implements Jsonable, Serializable {
+public class PageDto
+    extends
+        ResourceSnapshot
+    implements
+        Jsonable2 {
 
-    private final UUID      _parentId;
-    private final PageDelta _delta;
-    private final String    _name;
-    private final UUID      _templateId;
-    private final String    _title;
-    private final String    _comment;
-    private final boolean   _majorChange;
+    private String    _comment;
+    private boolean   _majorChange;
+    private HashSet<Paragraph> _paragraphs = new HashSet<Paragraph>();
+
+
+    /**
+     * Constructor.
+     */
+    public PageDto() { super(); }
 
 
     /**
      * Constructor.
      *
      * @param parentId The page's parent folder id.
-     * @param delta The page delta.
      * @param name The page's name.
      * @param templateId The page's template id.
      * @param title The page's title.
@@ -62,70 +70,19 @@ public class PageDto implements Jsonable, Serializable {
      * @param majorChange Is the update a major change.
      */
     public PageDto(final UUID parentId,
-                   final PageDelta delta,
                    final String name,
                    final UUID templateId,
                    final String title,
                    final String comment,
                    final boolean majorChange) {
-        _parentId = parentId;
-        _delta = delta;
-        _name = name;
-        _templateId = templateId;
-        _title = title;
+        setParent(parentId);
+        setName(new ResourceName(name));
+        setTemplate(templateId);
+        setTitle(title);
         _comment = comment;
         _majorChange = majorChange;
     }
 
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the parentId.
-     */
-    public final UUID getParentId() {
-        return _parentId;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the delta.
-     */
-    public final PageDelta getDelta() {
-        return _delta;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the name.
-     */
-    public final String getName() {
-        return _name;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the templateId.
-     */
-    public final UUID getTemplateId() {
-        return _templateId;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the title.
-     */
-    public final String getTitle() {
-        return _title;
-    }
 
     /**
      * Accessor.
@@ -145,15 +102,95 @@ public class PageDto implements Jsonable, Serializable {
         return _majorChange;
     }
 
+
+    /**
+     * Mutator.
+     *
+     * @param comment The comment to set.
+     */
+    public void setComment(final String comment) {
+        _comment = comment;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param majorChange The majorChange to set.
+     */
+    public void setMajorChange(final boolean majorChange) {
+        _majorChange = majorChange;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the paragraphs.
+     */
+    public Set<Paragraph> getParagraphs() {
+        return _paragraphs;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param paragraphs The paragraphs to set.
+     */
+    public void setParagraphs(final Set<Paragraph> paragraphs) {
+        _paragraphs = new HashSet<Paragraph>(paragraphs);
+    }
+
+
+    /**
+     * Look up a paragraph on this page by name.
+     *
+     * @param name The name of the paragraph to retrieve.
+     * @return The paragraph with the specified name.
+     */
+    public Paragraph getParagraph(final String name) {
+        for (final Paragraph p : _paragraphs) {
+            if (p.getName().equals(name)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, _parentId);
-        json.set(JsonKeys.DELTA, _delta);
-        json.set(JsonKeys.NAME, _name);
-        json.set(JsonKeys.TEMPLATE_ID, _templateId);
-        json.set(JsonKeys.TITLE, _title);
+        json.set(JsonKeys.PARENT_ID, getParent());
+        json.set(JsonKeys.PARAGRAPHS, getParagraphs());
+        json.set(
+            JsonKeys.NAME, (null==getName()) ? null : getName().toString());
+        json.set(JsonKeys.TEMPLATE_ID, getTemplate());
+        json.set(JsonKeys.TITLE, getTitle());
         json.set(JsonKeys.COMMENT, _comment);
         json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(_majorChange));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setParent(json.getId(JsonKeys.PARENT_ID));
+        for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
+            _paragraphs.add(new Paragraph(jsonPara));
+        }
+        final String name = json.getString(JsonKeys.NAME);
+        setName((null==name) ? null : new ResourceName(name));
+        setTemplate(json.getId(JsonKeys.TEMPLATE_ID));
+        setTitle(json.getString(JsonKeys.TITLE));
+        _comment = json.getString(JsonKeys.COMMENT);
+        _majorChange = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
+    }
+
+    public static PageDto delta(final Set<Paragraph> paragraphs) {
+        final PageDto p = new PageDto();
+        p.setParagraphs(paragraphs);
+        return p;
     }
 }

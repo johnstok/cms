@@ -31,7 +31,7 @@ import java.util.UUID;
 
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.FileDelta;
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
@@ -207,33 +207,18 @@ public class CommandFactory {
      * Create a 'create page' command.
      *
      * @param parentId The parent folder in which the page will be created.
-     * @param delta The page content.
-     * @param name The page's name.
-     * @param title The page's title.
-     * @param templateId The page's template.
-     * @param comment A description of the revision.
-     * @param majorChange Is this a major revision.
+     * @param page The page to create.
      *
      * @return The corresponding command.
      */
     public Command<Page> createPageCommand(final UUID parentId,
-                                            final PageDelta delta,
-                                            final ResourceName name,
-                                            final String title,
-                                            final UUID templateId,
-                                            final String comment,
-                                            final boolean majorChange) {
+                                           final PageDto page) {
 
         return new CreatePageCommand(
             _repository,
             _audit,
             parentId,
-            delta,
-            name,
-            title,
-            templateId,
-            comment,
-            majorChange);
+            page);
     }
 
 

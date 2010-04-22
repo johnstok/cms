@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.CommandType;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
@@ -47,9 +47,7 @@ public class UpdatePageCommand
         UpdateResourceCommand<Void> {
 
     private final UUID      _id;
-    private final PageDelta _delta;
-    private final boolean   _isMajorEdit;
-    private final String    _comment;
+    private final PageDto _delta;
 
     /**
      * Constructor.
@@ -62,14 +60,10 @@ public class UpdatePageCommand
      */
     public UpdatePageCommand(final IRepositoryFactory repoFactory,
                              final UUID id,
-                             final PageDelta delta,
-                             final String comment,
-                             final boolean isMajorEdit) {
+                             final PageDto delta) {
         super(repoFactory);
         _id = id;
         _delta = delta;
-        _comment = comment;
-        _isMajorEdit = isMajorEdit;
     }
 
 
@@ -81,7 +75,11 @@ public class UpdatePageCommand
         page.confirmLock(actor);
 
         final RevisionMetadata rm =
-            new RevisionMetadata(happenedOn, actor, _isMajorEdit, _comment);
+            new RevisionMetadata(
+                happenedOn,
+                actor,
+                _delta.getMajorChange(),
+                _delta.getComment());
 
         page.setOrUpdateWorkingCopy(_delta);
         page.applyWorkingCopy(rm);

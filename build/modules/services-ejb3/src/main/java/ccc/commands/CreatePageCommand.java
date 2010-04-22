@@ -30,10 +30,9 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDelta;
+import ccc.api.dto.PageDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
-import ccc.api.types.ResourceName;
 import ccc.domain.Page;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;
@@ -49,12 +48,7 @@ import ccc.persistence.ResourceRepository;
  */
 class CreatePageCommand extends CreateResourceCommand<Page> {
 
-    private final UUID _templateId;
-    private final boolean _majorChange;
-    private final String _comment;
-    private final PageDelta _delta;
-    private final ResourceName _name;
-    private final String _title;
+    private final PageDto _page;
     private final UUID _parentFolder;
 
 
@@ -64,30 +58,15 @@ class CreatePageCommand extends CreateResourceCommand<Page> {
      * @param repository The DAO used for CRUD operations, etc.
      * @param audit The audit log to record business actions.
      * @param parentFolder The folder in which the page will be created.
-     * @param delta The contents of the new page.
-     * @param name The new page's name.
-     * @param templateId The new page's template.
-     * @param comment Comment describing the change.
-     * @param majorChange Is this a major change.
-     * @param title The page's title.
+     * @param page The new page to create.
      */
     public CreatePageCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
                              final UUID parentFolder,
-                             final PageDelta delta,
-                             final ResourceName name,
-                             final String title,
-                             final UUID templateId,
-                             final String comment,
-                             final boolean majorChange) {
+                             final PageDto page) {
         super(repository, audit);
         _parentFolder = parentFolder;
-        _delta = delta;
-        _name = name;
-        _title = title;
-        _templateId = templateId;
-        _comment = comment;
-        _majorChange = majorChange;
+        _page = page;
     }
 
 
@@ -97,21 +76,23 @@ class CreatePageCommand extends CreateResourceCommand<Page> {
                           final Date happenedOn) {
 
         final Template template =
-            (null==_templateId)
+            (null==_page.getTemplate())
                 ? null
-                : getRepository().find(Template.class, _templateId);
+                : getRepository().find(Template.class, _page.getTemplate());
 
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn,
                 actor,
-                _majorChange,
-                _comment == null || _comment.isEmpty() ? "Created." : _comment);
+                _page.getMajorChange(),
+                (_page.getComment() == null || _page.getComment().isEmpty())
+                    ? "Created."
+                    : _page.getComment());
 
-        final Set<Paragraph> paras = _delta.getParagraphs();
+        final Set<Paragraph> paras = _page.getParagraphs();
         final Page page =
             new Page(
-                _name,
-                _title,
+                _page.getName(),
+                _page.getTitle(),
                 template,
                 rm,
                 paras.toArray(new Paragraph[paras.size()]));
