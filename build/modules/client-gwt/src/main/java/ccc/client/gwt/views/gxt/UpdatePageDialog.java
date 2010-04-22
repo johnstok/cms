@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.PageDelta;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -63,7 +63,7 @@ public class UpdatePageDialog
 
     private final UUID _pageId;
     private final PageDelta _page;
-    private final TemplateSummary _template;
+    private final TemplateDto _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel = new EditPagePanel();
     private int _fckReadyCount = 0;
@@ -84,7 +84,7 @@ public class UpdatePageDialog
     public UpdatePageDialog(final UUID pageId,
                             final PageDelta page,
                             final String pageName,
-                            final TemplateSummary template,
+                            final TemplateDto template,
                             final ResourceTable rt) {
         super(new GlobalsImpl().uiConstants().updateContent(),
               new GlobalsImpl());

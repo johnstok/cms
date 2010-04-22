@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -47,14 +47,14 @@ public class TemplateSummaryModelData
     implements
         ModelData {
 
-    private TemplateSummary _ts;
+    private TemplateDto _ts;
 
     /**
      * Constructor.
      *
      * @param ts The template summary to wrap.
      */
-    public TemplateSummaryModelData(final TemplateSummary ts) {
+    public TemplateSummaryModelData(final TemplateDto ts) {
         _ts = ts;
     }
 

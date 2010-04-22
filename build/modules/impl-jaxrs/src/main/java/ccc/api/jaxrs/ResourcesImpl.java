@@ -44,7 +44,7 @@ import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.SortOrder;
@@ -91,7 +91,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary computeTemplate(final UUID resourceId) {
+    public TemplateDto computeTemplate(final UUID resourceId) {
         try {
             return _delegate.computeTemplate(resourceId);
         } catch (final ClientResponseFailure cfe) {

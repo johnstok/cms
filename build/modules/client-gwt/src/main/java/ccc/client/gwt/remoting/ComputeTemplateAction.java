@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -79,8 +79,8 @@ public abstract class ComputeTemplateAction
                 /** {@inheritDoc} */
                 @Override
                 public void onOK(final Response response) {
-                    final TemplateSummary ts =
-                        new TemplateSummary(
+                    final TemplateDto ts = new TemplateDto();
+                    ts.fromJson(
                             new GwtJson(
                                 JSONParser.parse(
                                     response.getText()).isObject()));
@@ -91,5 +91,5 @@ public abstract class ComputeTemplateAction
     }
 
     protected abstract void noTemplate();
-    protected abstract void template(TemplateSummary t);
+    protected abstract void template(TemplateDto t);
 }

@@ -29,9 +29,9 @@ package ccc.tests.acceptance;
 import java.util.UUID;
 
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
 import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 
 
 /**
@@ -52,18 +52,17 @@ public class TemplateAcceptanceTest extends
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
-        final TemplateDelta newTemplate =
-            new TemplateDelta("body", "<fields/>", MimeType.HTML);
+        final TemplateDto t = new TemplateDto();
+        t.setName(new ResourceName(name));
+        t.setParent(templateFolder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("body");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
 
         // ACT
-        final ResourceSummary ts =
-            getTemplates().createTemplate(
-                new TemplateDto(
-                    templateFolder.getId(),
-                    newTemplate,
-                    "t-title",
-                    "t-desc",
-                    name));
+        final ResourceSummary ts = getTemplates().createTemplate(t);
 
         // ASSERT
         assertEquals("/assets/templates/"+name, ts.getAbsolutePath());
@@ -81,22 +80,20 @@ public class TemplateAcceptanceTest extends
         final ResourceSummary folder = tempFolder();
         final String name = UUID.randomUUID().toString();
 
-        final TemplateDelta newTemplate =
-            new TemplateDelta("body", "<fields/>", MimeType.HTML);
+        final TemplateDto t = new TemplateDto();
+        t.setName(new ResourceName(name));
+        t.setParent(folder.getId());
+        t.setDescription("t-desc");
+        t.setTitle("t-title");
+        t.setBody("body");
+        t.setDefinition("<fields/>");
+        t.setMimeType(MimeType.HTML);
 
         // ACT
-        final ResourceSummary ts =
-            getTemplates().createTemplate(
-                new TemplateDto(
-                    folder.getId(),
-                    newTemplate,
-                    "t-title",
-                    "t-desc",
-                    name));
-
+        final ResourceSummary ts = getTemplates().createTemplate(t);
 
         // ACT
-        final TemplateDelta fetched = getTemplates().templateDelta(ts.getId());
+        final TemplateDto fetched = getTemplates().templateDelta(ts.getId());
 
         // ASSERT
         assertEquals("body", fetched.getBody());
@@ -131,13 +128,16 @@ public class TemplateAcceptanceTest extends
         final ResourceSummary folder = tempFolder();
         final ResourceSummary t = dummyTemplate(folder);
 
+        final TemplateDto delta = new TemplateDto();
+        delta.setBody("newBody");
+        delta.setDefinition(
+            "<fields><field name=\"test\" type=\"html\"/></fields>");
+        delta.setMimeType(MimeType.BINARY_DATA);
+
         // ACT
-        final TemplateDelta delta = new TemplateDelta("newBody",
-            "<fields><field name=\"test\" type=\"html\"/></fields>",
-            MimeType.BINARY_DATA);
         getCommands().lock(t.getId());
         getTemplates().updateTemplate(t.getId(), delta);
-        final TemplateDelta updated = getTemplates().templateDelta(t.getId());
+        final TemplateDto updated = getTemplates().templateDelta(t.getId());
 
         // ASSERT
         assertEquals(delta.getBody(), updated.getBody());

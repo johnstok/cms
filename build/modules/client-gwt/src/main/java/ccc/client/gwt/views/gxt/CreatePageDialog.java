@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -124,7 +124,7 @@ public class CreatePageDialog
      * @param list List of templates.
      * @param parent The Folder in which page will created.
      */
-    public CreatePageDialog(final Collection<TemplateSummary> list,
+    public CreatePageDialog(final Collection<TemplateDto> list,
                             final ResourceSummaryModelData parent) {
         super(new GlobalsImpl().uiConstants().createPage(),
               new GlobalsImpl());
@@ -217,7 +217,7 @@ public class CreatePageDialog
      * @author Civic Computing Ltd.
      */
     private class DefaultCheckBox extends CheckBox {
-        private TemplateSummary _t2 = null;
+        private TemplateDto _t2 = null;
 
         DefaultCheckBox() {
             setBoxLabel(getUiConstants().useDefaultTemplate());
@@ -236,7 +236,7 @@ public class CreatePageDialog
                 }
 
                 /** {@inheritDoc} */
-                @Override protected void template(final TemplateSummary t) {
+                @Override protected void template(final TemplateDto t) {
                     _t2 = t;
                     setValue(Boolean.TRUE);
                     _templateGrid.disable();

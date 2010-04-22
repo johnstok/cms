@@ -40,9 +40,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.Templates;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
-import ccc.api.dto.TemplateSummary;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.Template;
@@ -88,7 +86,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(TEMPLATE_READ)
-    public Collection<TemplateSummary> templates() {
+    public Collection<TemplateDto> templates() {
         return
             Template.mapTemplates(
                 getRepoFactory()
@@ -111,7 +109,7 @@ public final class TemplatesEJB
     @Override
     @RolesAllowed(TEMPLATE_UPDATE)
     public void updateTemplate(final UUID templateId,
-                               final TemplateDelta delta) {
+                               final TemplateDto delta) {
         execute(
             new UpdateTemplateCommand(
                 getRepoFactory(),
@@ -129,11 +127,11 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public TemplateDelta templateDelta(final UUID templateId) {
+    public TemplateDto templateDelta(final UUID templateId) {
         checkPermission(TEMPLATE_READ);
         return
             getRepoFactory()
                 .createResourceRepository()
-                .find(Template.class, templateId).deltaTemplate();
+                .find(Template.class, templateId).createSnapshot();
     }
 }

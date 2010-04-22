@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -45,7 +45,7 @@ public class UpdateTemplateAction
         RemotingAction {
 
     private final UUID _template;
-    private final TemplateDelta _details;
+    private final TemplateDto _details;
 
 
     /**
@@ -55,7 +55,7 @@ public class UpdateTemplateAction
      * @param template The template to update.
      */
     public UpdateTemplateAction(final UUID template,
-                                 final TemplateDelta details) {
+                                 final TemplateDto details) {
         super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
         _template = template;
         _details = details;

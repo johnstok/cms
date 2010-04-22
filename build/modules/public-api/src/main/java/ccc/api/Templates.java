@@ -37,9 +37,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
-import ccc.api.dto.TemplateSummary;
 
 
 /**
@@ -61,7 +59,7 @@ public interface Templates {
      * @return A list of templates.
      */
     @GET
-    Collection<TemplateSummary> templates();
+    Collection<TemplateDto> templates();
 
 
     /**
@@ -83,7 +81,7 @@ public interface Templates {
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    TemplateDelta templateDelta(@PathParam("id") UUID templateId);
+    TemplateDto templateDelta(@PathParam("id") UUID templateId);
 
     /**
      * Update the specified template on the server.
@@ -93,7 +91,7 @@ public interface Templates {
      */
     @POST @Path("/{id}")
     void updateTemplate(
-        @PathParam("id") UUID templateId, TemplateDelta delta);
+        @PathParam("id") UUID templateId, TemplateDto delta);
 
     /**
      * Create a new template in CCC.

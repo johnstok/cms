@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,44 +24,33 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
+package ccc.api.types;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import ccc.api.dto.TemplateDto;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.View;
+import junit.framework.TestCase;
 
 
 /**
- * MVP View for changing a resource's template.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public interface ChangeResourceTemplate
+public class ActionStatusTest
     extends
-        View<Editable> {
+        TestCase {
 
     /**
-     * Mutator.
-     *
-     * @param templates The list of available templates to choose from.
+     * Test.
      */
-    void setTemplates(Collection<TemplateDto> templates);
+    public void testCamelCaseName() {
 
-    /**
-     * Mutator.
-     *
-     * @param templateId The currently selected template.
-     */
-    void setSelectedTemplate(UUID templateId);
+        // ARRANGE
 
-    /**
-     * Accessor.
-     *
-     * @return The currently selected template.
-     */
-    UUID getSelectedTemplate();
+        // ACT
 
+        // ASSERT
+        assertEquals("cancelled", ActionStatus.CANCELLED.camelCaseName());
+        assertEquals("complete",  ActionStatus.COMPLETE.camelCaseName());
+        assertEquals("failed",    ActionStatus.FAILED.camelCaseName());
+        assertEquals("scheduled", ActionStatus.SCHEDULED.camelCaseName());
+    }
 }

@@ -30,8 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.dto.TemplateDelta;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -45,7 +44,7 @@ import ccc.api.types.ResourceType;
  */
 public class Template
     extends
-        HistoricalResource<TemplateDelta, TemplateRevision> {
+        HistoricalResource<TemplateDto, TemplateRevision> {
 
     /** Constructor: for persistence only. */
     protected Template() { super(); }
@@ -100,9 +99,13 @@ public class Template
         DBC.require().notNull(description);
 
         setDescription(description);
-        update(
-            new TemplateDelta(body, definiton, mimeType),
-            metadata);
+
+        final TemplateDto t = new TemplateDto();
+        t.setBody(body);
+        t.setDefinition(definiton);
+        t.setMimeType(mimeType); // FIXME: Make a copy.
+
+        update(t, metadata);
     }
 
     /**
@@ -142,11 +145,12 @@ public class Template
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDelta createSnapshot() {
-        return new TemplateDelta(
-            getBody(),
-            getDefinition(),
-            getMimeType());
+    public TemplateDto createSnapshot() {
+        final TemplateDto t = new TemplateDto();
+        t.setBody(getBody());
+        t.setDefinition(getDefinition());
+        t.setMimeType(getMimeType()); // FIXME: Make a copy.
+        return t;
     }
 
 
@@ -156,7 +160,7 @@ public class Template
      * @param delta The new content for the template.
      * @param metadata The metadata describing this revision.
      */
-    public void update(final TemplateDelta delta,
+    public void update(final TemplateDto delta,
                        final RevisionMetadata metadata) {
         addRevision(
             new TemplateRevision(
@@ -171,20 +175,20 @@ public class Template
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary forCurrentRevision() {
+    public TemplateDto forCurrentRevision() {
         return summarize();
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary forSpecificRevision(final int revNo) {
+    public TemplateDto forSpecificRevision(final int revNo) {
         // TODO: Return correct revision.
         return summarize();
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateSummary forWorkingCopy() {
+    public TemplateDto forWorkingCopy() {
         // TODO: Return working copy.
         return summarize();
     }
@@ -195,9 +199,9 @@ public class Template
      *
      * @return The corresponding summary.
      */
-    public TemplateSummary summarize() {
-        final TemplateSummary dto =
-            new TemplateSummary(
+    public TemplateDto summarize() {
+        final TemplateDto dto =
+            TemplateDto.summary(
                 getId(),
                 getName(),
                 getTitle(),
@@ -211,30 +215,15 @@ public class Template
 
 
     /**
-     * Create a delta for a template.
-     *
-     * @return A corresponding delta.
-     */
-    public TemplateDelta deltaTemplate() {
-        final TemplateDelta delta =
-            new TemplateDelta(
-                getBody(),
-                getDefinition(),
-                getMimeType());
-        return delta;
-    }
-
-
-    /**
      * Create summaries for a collection of templates.
      *
      * @param templates The templates.
      * @return The corresponding summaries.
      */
-    public static Collection<TemplateSummary> mapTemplates(
+    public static Collection<TemplateDto> mapTemplates(
                                                final List<Template> templates) {
-        final Collection<TemplateSummary> mapped =
-            new ArrayList<TemplateSummary>();
+        final Collection<TemplateDto> mapped =
+            new ArrayList<TemplateDto>();
         for (final Template t : templates) {
             mapped.add(t.summarize()); }
         return mapped;
@@ -247,11 +236,11 @@ public class Template
      * @param templates The templates.
      * @return The corresponding deltas.
      */
-    protected Collection<TemplateDelta> deltaTemplates(
+    protected Collection<TemplateDto> deltaTemplates(
                                                final List<Template> templates) {
-        final Collection<TemplateDelta> mapped = new ArrayList<TemplateDelta>();
+        final Collection<TemplateDto> mapped = new ArrayList<TemplateDto>();
         for (final Template t : templates) {
-            mapped.add(t.deltaTemplate());
+            mapped.add(t.createSnapshot());
         }
         return mapped;
     }

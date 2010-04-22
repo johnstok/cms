@@ -28,7 +28,7 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
@@ -72,7 +72,7 @@ public final class ChooseTemplateAction
             || ResourceType.SEARCH==item.getType()) {
             new GetTemplatesAction(UI_CONSTANTS.chooseTemplate()){
                 @Override protected void execute(
-                                 final Collection<TemplateSummary> templates) {
+                                 final Collection<TemplateDto> templates) {
                     new ChangeResourceTemplatePresenter(
                         GLOBALS,
                         new ChooseTemplateDialog(),

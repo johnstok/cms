@@ -69,8 +69,6 @@ import ccc.api.jaxrs.providers.ResourceSummaryCollectionReader;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.jaxrs.providers.SearchResultWriter;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
-import ccc.api.jaxrs.providers.TemplateDeltaReader;
-import ccc.api.jaxrs.providers.TemplateNewReader;
 import ccc.api.jaxrs.providers.TextFileDeltaReader;
 import ccc.api.jaxrs.providers.TextFileDtoReader;
 import ccc.api.jaxrs.providers.UUIDProvider;
@@ -125,7 +123,6 @@ public class JaxrsConfiguration
         providers.add(UUIDProvider.class);
         providers.add(AliasDeltaReader.class);
         providers.add(JsonReader.class);
-        providers.add(TemplateDeltaReader.class);
         providers.add(PageDeltaReader.class);
         providers.add(BooleanProvider.class);
         providers.add(JsonableWriter.class);
@@ -141,7 +138,6 @@ public class JaxrsConfiguration
         providers.add(AliasNewReader.class);
         providers.add(FolderNewReader.class);
         providers.add(TextFileDeltaReader.class);
-        providers.add(TemplateNewReader.class);
         providers.add(CommentReader.class);
         providers.add(GroupReader.class);
         providers.add(AclReader.class);

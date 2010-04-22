@@ -30,7 +30,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.UUID;
 
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
+import ccc.api.dto.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.DialogMode;
@@ -134,7 +134,7 @@ public class EditTemplateDialog
      * @param proxy The resource model.
      * @param ssm The selection model.
      */
-    public EditTemplateDialog(final TemplateDelta model,
+    public EditTemplateDialog(final TemplateDto model,
                               final ResourceSummaryModelData proxy,
                               final SingleSelectionModel ssm) {
         super(new GlobalsImpl().uiConstants().editTemplate(),
@@ -236,13 +236,12 @@ public class EditTemplateDialog
         _third.add(_body, new FormData("95%"));
     }
 
-    private TemplateDelta model() {
-        final TemplateDelta delta =
-            new TemplateDelta(
-                _body.getEditorCode(),
-                _definition.getEditorCode(),
-                new MimeType(_mimePrimary.getValue(), _mimeSub.getValue())
-            );
+    private TemplateDto model() {
+        final TemplateDto delta = new TemplateDto();
+        delta.setBody(_body.getEditorCode());
+        delta.setDefinition(_definition.getEditorCode());
+        delta.setMimeType(
+            new MimeType(_mimePrimary.getValue(), _mimeSub.getValue()));
         return delta;
     }
 
@@ -293,7 +292,7 @@ public class EditTemplateDialog
     private Runnable createTemplates() {
         return new Runnable() {
             public void run() {
-                final TemplateDelta delta = model();
+                final TemplateDto delta = model();
                 switch (_mode) {
                     case CREATE:
                         new CreateTemplateAction(

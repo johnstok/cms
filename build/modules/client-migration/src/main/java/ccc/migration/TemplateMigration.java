@@ -34,9 +34,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.Templates;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDelta;
 import ccc.api.dto.TemplateDto;
-import ccc.api.dto.TemplateSummary;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -80,21 +78,17 @@ public class TemplateMigration {
         }
         sb.append("</fields>");
 
-        final TemplateDelta t =
-            new TemplateDelta(
-                "Empty template!",
-                sb.toString(),
-                MimeType.HTML);
+        final TemplateDto t = new TemplateDto();
+        t.setName(ResourceName.escape(templateName));
+        t.setParent(templateFolder.getId());
+        t.setDescription(templateDescription);
+        t.setTitle(templateName);
+        t.setBody("Empty template!");
+        t.setDefinition(sb.toString());
+        t.setMimeType(MimeType.HTML);
 
         try {
-            _templateApi.createTemplate(
-                new TemplateDto(
-                    templateFolder.getId(),
-                    t,
-                    templateName,
-                    templateDescription,
-                    templateName));
-
+            _templateApi.createTemplate(t);
         } catch (final CCException e) {
             log.error("Failed to create template: "+templateName, e);
         }
@@ -113,11 +107,11 @@ public class TemplateMigration {
                             final String templateDescription,
                             final ResourceSummary templateFolder) {
 
-        final Set<TemplateSummary> templates =
-            new HashSet<TemplateSummary>(_templateApi.templates());
+        final Set<TemplateDto> templates =
+            new HashSet<TemplateDto>(_templateApi.templates());
 
-        TemplateSummary template = null;
-        for (final TemplateSummary ts : templates) {
+        TemplateDto template = null;
+        for (final TemplateDto ts : templates) {
             if (ts.getName().equals(templateName)) {
                 template = ts;
             }

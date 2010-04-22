@@ -38,7 +38,7 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.dto.UserDto;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -137,10 +137,10 @@ public final class DataBinding {
      * @return The corresponding model data objects.
      */
     public static List<TemplateSummaryModelData> bindTemplateDelta(
-                                     final Collection<TemplateSummary> list) {
+                                     final Collection<TemplateDto> list) {
         final List<TemplateSummaryModelData> boundData =
             new ArrayList<TemplateSummaryModelData>();
-        for (final TemplateSummary ts : list) {
+        for (final TemplateDto ts : list) {
             boundData.add(new TemplateSummaryModelData(ts));
         }
         return boundData;

@@ -49,7 +49,7 @@ import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateSummary;
+import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourcePath;
@@ -490,7 +490,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public TemplateSummary computeTemplate(final UUID resourceId) {
+    public TemplateDto computeTemplate(final UUID resourceId) {
         final Resource r =
             getResources().find(Resource.class, resourceId);
         final Template t = r.computeTemplate(null);
