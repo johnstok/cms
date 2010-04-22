@@ -47,7 +47,9 @@ import ccc.domain.Template;
 import ccc.types.DBC;
 import ccc.types.PredefinedResourceNames;
 import ccc.types.ResourceName;
+import ccc.types.ResourceOrder;
 import ccc.types.ResourcePath;
+import ccc.types.ResourceType;
 import ccc.types.SortOrder;
 
 
@@ -309,8 +311,26 @@ class ResourceRepositoryImpl implements ResourceRepository {
             params.add(after);
         }
 
+        appendSorting(resource, sort, sortOrder, query);
+        
+        return
+        _repository.listDyn(
+            query.toString(),
+            Resource.class,
+            pageNo,
+            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
+            params.toArray());
+    }
+
+
+    private void appendSorting(final Resource resource,
+                               final String sort,
+                               final SortOrder sortOrder,
+                               final StringBuffer query) {
+
+        boolean knownSort = false;
         if (null != sort) {
-            boolean knownSort = true;
+            knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._title) ");
             } else if ("mm_include".equalsIgnoreCase(sort)) {
@@ -330,13 +350,26 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(sortOrder.name());
             }
         }
-        return
-        _repository.listDyn(
-            query.toString(),
-            Resource.class,
-            pageNo,
-            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-            params.toArray());
+        if (!knownSort && resource.type() == ResourceType.FOLDER) {
+            Folder f = resource.as(Folder.class);
+            ResourceOrder order = f.sortOrder();
+            switch (order){
+                case DATE_CHANGED_ASC: 
+                    query.append(" order by r._dateChanged asc ");
+                case DATE_CHANGED_DESC: 
+                    query.append(" order by r._dateChanged desc ");
+                case DATE_CREATED_ASC: 
+                    query.append(" order by r._dateCreated asc ");
+                case DATE_CREATED_DESC: 
+                    query.append(" order by r._dateCreated desc ");
+                case NAME_ALPHANUM_ASC: 
+                    query.append(" order by r._name asc ");
+                case NAME_ALPHANUM_CI_ASC: 
+                    query.append(" order by upper(r._name) asc ");
+                case MANUAL: 
+                    query.append(" order by _parentIndex ");
+            }
+        }
     }
 
 
