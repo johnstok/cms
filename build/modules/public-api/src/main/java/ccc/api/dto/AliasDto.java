@@ -26,13 +26,12 @@
  */
 package ccc.api.dto;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -44,10 +43,9 @@ public class AliasDto
     extends
         ResourceSnapshot
     implements
-        Jsonable,
-        Serializable {
+        Jsonable2 {
 
-    private final UUID _targetId;
+    private UUID _targetId;
     private String _targetPath;
 
 
@@ -68,12 +66,38 @@ public class AliasDto
 
 
     /**
+     * Constructor.
+     *
+     * @param targetId The alias' target's id.
+     */
+    public AliasDto(final UUID targetId) {
+        _targetId = targetId;
+    }
+
+
+    /**
+     * Constructor.
+     */
+    public AliasDto() { super(); }
+
+
+    /**
      * Accessor.
      *
      * @return Returns the targetId.
      */
     public final UUID getTargetId() {
         return _targetId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param targetId The targetId to set.
+     */
+    public void setTargetId(final UUID targetId) {
+        _targetId = targetId;
     }
 
 
@@ -101,7 +125,18 @@ public class AliasDto
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.PARENT_ID, getParent());
-        json.set(JsonKeys.NAME, getName().toString());
+        json.set(
+            JsonKeys.NAME, (null==getName()) ? null : getName().toString());
         json.set(JsonKeys.TARGET_ID, _targetId);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setTargetId(json.getId(JsonKeys.TARGET_ID));
+        setParent(json.getId(JsonKeys.PARENT_ID));
+        final String name = json.getString(JsonKeys.NAME);
+        setName((null==name) ? null : new ResourceName(name));
     }
 }

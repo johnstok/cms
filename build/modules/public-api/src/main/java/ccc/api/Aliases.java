@@ -35,7 +35,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.dto.ResourceSummary;
 
@@ -82,5 +81,5 @@ public interface Aliases {
      * @param delta The changes to apply.
      */
     @POST @Path("/{id}")
-    void updateAlias(@PathParam("id") UUID aliasId, AliasDelta delta);
+    void updateAlias(@PathParam("id") UUID aliasId, AliasDto delta);
 }

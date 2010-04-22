@@ -27,7 +27,7 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.api.dto.AliasDelta;
+import ccc.api.dto.AliasDto;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
@@ -156,7 +156,7 @@ public class AliasTest extends TestCase {
         final Alias alias = new Alias("bar", p);
 
         // ACT
-        final AliasDelta o = alias.createSnapshot();
+        final AliasDto o = alias.createSnapshot();
 
         // ASSERT
         assertEquals(p.getId(), o.getTargetId());

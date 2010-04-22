@@ -26,7 +26,6 @@
  */
 package ccc.domain;
 
-import ccc.api.dto.AliasDelta;
 import ccc.api.dto.AliasDto;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.DBC;
@@ -105,9 +104,9 @@ public class Alias extends Resource {
 
     /** {@inheritDoc} */
     @Override
-    public AliasDelta createSnapshot() {
-        final AliasDelta delta =
-            new AliasDelta(target().getId());
+    public AliasDto createSnapshot() {
+        final AliasDto delta =
+            new AliasDto(target().getId());
         return delta;
     }
 
@@ -157,15 +156,5 @@ public class Alias extends Resource {
                 : target().getAbsolutePath().removeTop().toString());
         setDtoProps(dto);
         return dto;
-    }
-
-
-    /**
-     * Create a delta for an alias.
-     *
-     * @return A corresponding delta.
-     */
-    public AliasDelta deltaAlias() {
-        return createSnapshot();
     }
 }
