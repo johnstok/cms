@@ -62,7 +62,7 @@ public class UpdatePageDialog
         AbstractBaseDialog {
 
     private final UUID _pageId;
-    private final PageDto _page;
+    private final Set<Paragraph> _paras;
     private final TemplateDto _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel = new EditPagePanel();
@@ -89,7 +89,7 @@ public class UpdatePageDialog
         super(new GlobalsImpl().uiConstants().updateContent(),
               new GlobalsImpl());
         _rt = rt;
-        _page = page;
+        _paras = new HashSet<Paragraph>(page.getParagraphs());
         _template = template;
         _pageId = pageId;
 
@@ -124,7 +124,7 @@ public class UpdatePageDialog
     private void drawGUI(final String pageName) {
         _panel.setScrollMode(Style.Scroll.AUTOY);
         _panel.createFields(_template.getDefinition());
-        _panel.populateFields(_page, pageName);
+        _panel.populateFields(_paras, pageName);
         _panel.layout();
 
         add(_panel);
@@ -155,7 +155,7 @@ public class UpdatePageDialog
     private SelectionListener<ButtonEvent> applyNowAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final Set<Paragraph> paragraphs = assignParagraphs();
+                final Set<Paragraph> paragraphs = getParagraphs();
 
                 Validate.callTo(updatePage())
                     .check(Validations.validateFields(
@@ -168,7 +168,7 @@ public class UpdatePageDialog
     private SelectionListener<ButtonEvent> saveDraftAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final Set<Paragraph> paragraphs = assignParagraphs();
+                final Set<Paragraph> paragraphs = getParagraphs();
 
                 Validate.callTo(saveDraft())
                     .check(Validations.validateFields(
@@ -183,7 +183,7 @@ public class UpdatePageDialog
             public void run() {
                 final PageCommentDialog commentDialog =
                     new PageCommentDialog(
-                        _pageId, _page, UpdatePageDialog.this);
+                        _pageId, getParagraphs(), UpdatePageDialog.this);
                 commentDialog.show();
             }
         };
@@ -192,7 +192,11 @@ public class UpdatePageDialog
     private Runnable saveDraft() {
         return new Runnable() {
             public void run() {
-                new UpdateWorkingCopyAction(_pageId, _page) {
+                final PageDto update = new PageDto();
+                update.setId(_pageId);
+                update.setParagraphs(getParagraphs());
+
+                new UpdateWorkingCopyAction(update) {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {
@@ -221,16 +225,6 @@ public class UpdatePageDialog
     /**
      * Accessor.
      *
-     * @return Returns the _page.
-     */
-    protected PageDto page() {
-        return _page;
-    }
-
-
-    /**
-     * Accessor.
-     *
      * @return Returns the _panel.
      */
     protected EditPagePanel panel() {
@@ -238,16 +232,10 @@ public class UpdatePageDialog
     }
 
 
-    private Set<Paragraph> assignParagraphs() {
-
-        final Set<Paragraph> paragraphs =
-            new HashSet<Paragraph>();
-
-        final List<PageElement> definitions =
-            panel().pageElements();
-
+    private Set<Paragraph> getParagraphs() {
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        final List<PageElement> definitions = panel().pageElements();
         _panel.extractValues(definitions, paragraphs);
-        _page.setParagraphs(paragraphs);
         return paragraphs;
     }
 }

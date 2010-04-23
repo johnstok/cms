@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import ccc.api.dto.PageDto;
 import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
@@ -115,21 +116,21 @@ public class CreatePagePresenter
     private Runnable createPage(final Set<Paragraph> paragraphs) {
         return new Runnable() {
             public void run() {
-                final PageDto page = PageDto.delta(paragraphs);
+
                 final UUID template =
                     (null==getView().getSelectedTemplate())
                     ? null
-                    :getView().getSelectedTemplate().getId();
+                        :getView().getSelectedTemplate().getId();
 
-                new CreatePageAction(
-                    getModel().getId(),
-                    page,
-                    getView().getName().getValue(),
-                    template,
-                    getView().getName().getValue(), // Title
-                    getView().getComment(),
-                    getView().getMajorEdit())
-                .execute();
+                final PageDto page = PageDto.delta(paragraphs);
+                page.setParent(getModel().getId());
+                page.setComment(getView().getComment());
+                page.setMajorChange(getView().getMajorEdit());
+                page.setTitle(getView().getName().getValue());
+                page.setTemplate(template);
+                page.setName(new ResourceName(getView().getName().getValue()));
+
+                new CreatePageAction(page).execute();
             }
         };
     }

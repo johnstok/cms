@@ -26,12 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.dto.PageDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -45,36 +42,24 @@ public class UpdatePageAction
     extends
         RemotingAction {
 
-    private final UUID _pageId;
     private final PageDto _details;
-    private final String _comment;
-    private final boolean _majorChange;
 
 
     /**
      * Constructor.
-     * @param majorChange Is this update a major change.
-     * @param comment A comment describing the update.
+     *
      * @param details Details of the update.
-     * @param pageId The id of the page to update.
      */
-    // FIXME: Use the fields from PageDto instead.
-    public UpdatePageAction(final UUID pageId,
-                             final PageDto details,
-                             final String comment,
-                             final boolean majorChange) {
+    public UpdatePageAction(final PageDto details) {
         super(UI_CONSTANTS.updateContent(), RequestBuilder.POST);
-        _pageId = pageId;
         _details = details;
-        _comment = comment;
-        _majorChange = majorChange;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/pages/"+_pageId;
+        return "/pages/"+_details.getId();
     }
 
 
@@ -82,9 +67,7 @@ public class UpdatePageAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.MAJOR_CHANGE, _majorChange);
-        json.set(JsonKeys.COMMENT, _comment);
-        json.set(JsonKeys.DELTA, _details);
+        _details.toJson(json);
         return json.toString();
     }
 }

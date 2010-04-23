@@ -620,33 +620,15 @@ public class ResourceSummaryModelData
     /**
      * Create a new page.
      *
-     * @param parentFolder
-     * @param page
-     * @param name
-     * @param template
-     * @param title
-     * @param comment
-     * @param majorChange
+     * @param page The page to create.
      *
      * @return The HTTP request to create a folder.
      */
-    public static Request createPage(final UUID parentFolder,
-                                     final PageDto page,
-                                     final String name,
-                                     final UUID template,
-                                     final String title,
-                                     final String comment,
-                                     final boolean majorChange) {
+    public static Request createPage(final PageDto page) {
         final String path =  "api/secure/pages";
 
         final GwtJson json = new GwtJson(); // FIXME: Broken.
-        json.set(JsonKeys.PARENT_ID, parentFolder);
-        json.set(JsonKeys.DELTA, page);
-        json.set(JsonKeys.NAME, name);
-        json.set(JsonKeys.TEMPLATE_ID, template);
-        json.set(JsonKeys.TITLE, title);
-        json.set(JsonKeys.COMMENT, comment);
-        json.set(JsonKeys.MAJOR_CHANGE, majorChange);
+        page.toJson(json);
 
         return
             new Request(

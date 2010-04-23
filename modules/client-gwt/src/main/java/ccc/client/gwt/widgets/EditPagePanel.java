@@ -34,7 +34,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.FileDto;
-import ccc.api.dto.PageDto;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -112,17 +111,17 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     /**
      * Populates fields for editing.
      *
-     * @param resourceSummary PageDTO of the original page.
+     * @param paras The current paragraph data.
      * @param pageName The name of the page.
      */
-    public void populateFields(final PageDto resourceSummary,
+    public void populateFields(final Set<Paragraph> paras,
                                final String pageName) {
         _name.setValue(pageName);
         _name.setReadOnly(true);
         _name.disable();
 
         for (final PageElement c : pageElements()) {
-            for (final Paragraph para : resourceSummary.getParagraphs()) {
+            for (final Paragraph para : paras) {
                 if (c.id().equals(para.getName())) {
                     if (FieldType.TEXT == c.fieldType()) {
                         final Field<String> f = c.field();

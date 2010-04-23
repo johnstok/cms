@@ -26,9 +26,11 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.PageDto;
+import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdatePageAction;
@@ -53,7 +55,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
     private final UUID _pageId;
-    private final PageDto _page;
+    private final Set<Paragraph> _paras;
     private final UpdatePageDialog _updatePageDialog;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
@@ -63,17 +65,17 @@ public class PageCommentDialog extends AbstractEditDialog {
      * Constructor.
      *
      * @param pageId The id of the page to be updated.
-     * @param page The page being edited.
+     * @param paras The updated paragraphs.
      * @param updatePageDialog The parent dialog.
      *
      */
     public PageCommentDialog(final UUID pageId,
-                             final PageDto page,
+                             final Set<Paragraph> paras,
                              final UpdatePageDialog updatePageDialog) {
         super(new GlobalsImpl().uiConstants().pageEditComment(),
               new GlobalsImpl());
         _pageId = pageId;
-        _page = page;
+        _paras = paras;
         _updatePageDialog = updatePageDialog;
         setModal(true);
         setBodyStyle("backgroundColor: white;");
@@ -109,11 +111,13 @@ public class PageCommentDialog extends AbstractEditDialog {
     private Runnable savePage() {
         return new Runnable() {
             public void run() {
-                new UpdatePageAction(
-                    _pageId,
-                    _page,
-                    _comment.getValue(),
-                    _majorEdit.getValue().booleanValue()) {
+                final PageDto update = new PageDto();
+                update.setId(_pageId);
+                update.setParagraphs(_paras);
+                update.setComment(_comment.getValue());
+                update.setMajorChange(_majorEdit.getValue().booleanValue());
+
+                new UpdatePageAction(update) {
                         /** {@inheritDoc} */
                         @Override protected void onNoContent(
                                                      final Response response) {

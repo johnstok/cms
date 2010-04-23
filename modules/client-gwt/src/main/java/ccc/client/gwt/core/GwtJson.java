@@ -172,7 +172,13 @@ public class GwtJson
     /** {@inheritDoc} */
     @Override
     public Json getJson(final String key) {
-        return new GwtJson(_delegate.get(key).isObject());
+        final JSONValue value = _delegate.get(key);
+        if (null==value) {
+            throw new RuntimeException("Missing key: "+key);
+        } else if (null!=value.isNull()) {
+            return null;
+        }
+        return new GwtJson(value.isObject());
     }
 
     /** {@inheritDoc} */
