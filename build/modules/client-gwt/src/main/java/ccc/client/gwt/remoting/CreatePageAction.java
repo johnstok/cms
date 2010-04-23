@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.dto.PageDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
@@ -43,55 +41,22 @@ public final class CreatePageAction
     extends
         RemotingAction {
 
-    private final UUID _parentFolder;
     private final PageDto _page;
-    private final String _name;
-    private final UUID _template;
-    private final String _title;
-    private final String _comment;
-    private final boolean _majorChange;
 
 
     /**
      * Constructor.
      *
-     * @param parentFolder The folder where the page will be created.
      * @param page The page's content.
-     * @param name The page's name.
-     * @param template The page's template.
-     * @param title The page's title.
-     * @param comment A comment describing the update.
-     * @param majorChange Is this update a major change.
-     *
      */
-    // FIXME: Use the properties from PageDto instead.
-    public CreatePageAction(final UUID parentFolder,
-                             final PageDto page,
-                             final String name,
-                             final UUID template,
-                             final String title,
-                             final String comment,
-                             final boolean majorChange) {
-        _parentFolder = parentFolder;
+    public CreatePageAction(final PageDto page) {
         _page = page;
-        _name = name;
-        _template = template;
-        _title = title;
-        _comment = comment;
-        _majorChange = majorChange;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
-        return ResourceSummaryModelData.createPage(
-            _parentFolder,
-            _page,
-            _name,
-            _template,
-            _title,
-            _comment,
-            _majorChange);
+        return ResourceSummaryModelData.createPage(_page);
     }
 }

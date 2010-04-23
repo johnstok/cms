@@ -514,6 +514,7 @@ public class ResourceTable
     public void onTemlateChanged(final ResourceTemplateChanged event) {
         final ResourceSummaryModelData md =
             _detailsStore.findModel("UUID", event.getResource());
+        if (null==md) { return; } // Not present in table.
         md.setTemplateId(event.getNewTemplate());
         update(md);
     }
