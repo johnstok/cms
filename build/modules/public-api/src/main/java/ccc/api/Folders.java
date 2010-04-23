@@ -31,19 +31,15 @@ import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 
-import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.types.SortOrder;
 
 
 /**
@@ -68,26 +64,6 @@ public interface Folders {
     @GET @Path("/{id}/folder-children")
     Collection<ResourceSummary> getFolderChildren(
         @PathParam("id") UUID folderId);
-
-    /**
-     * List paged set of the children of the specified folder.
-     *
-     * @param folderId The id of the folder.
-     * @param sort The column to sort.
-     * @param sortOrder The sort order (ASC/DESC).
-     * @param pageNo The page to display.
-     * @param pageSize The number of results per page.
-     *
-     * @return The list of child resource for paging.
-     */
-    @GET @Path("/{id}/children-paged")
-    DtoCollection<ResourceSummary> getChildrenPaged(
-        @PathParam("id") UUID folderId,
-        @QueryParam("sort") String sort,
-        @QueryParam("order") @DefaultValue("ASC") SortOrder sortOrder,
-        @QueryParam("page") @DefaultValue("1") int pageNo,
-        @QueryParam("count") @DefaultValue("20") int pageSize);
-
 
     /**
      * List all of the children of the specified folder.

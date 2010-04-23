@@ -42,13 +42,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Folders;
-import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
-import ccc.api.types.SortOrder;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.Folder;
 import ccc.domain.Resource;
@@ -255,42 +253,6 @@ public class FoldersEJB
             }
         }
         return Resource.mapResources(filtered);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
-    public DtoCollection<ResourceSummary> getChildrenPaged(
-                                                    final UUID folderId,
-                                                    final String sort,
-                                                    final SortOrder sortOrder,
-                                                    final int pageNo,
-                                                    final int pageSize) {
-        checkPermission(RESOURCE_READ);
-
-        final Folder f =
-            getRepoFactory()
-                .createResourceRepository()
-                .find(Folder.class, folderId);
-
-        checkRead(f);
-
-        final DtoCollection<ResourceSummary> dtoc =
-            new DtoCollection<ResourceSummary>(
-                f.getEntries().size(), Resource.mapResources(
-                    getRepoFactory()
-                        .createResourceRepository()
-                        .list(
-                            f,
-                            null,
-                            null,
-                            null,
-                            sort,
-                            sortOrder,
-                            pageNo,
-                            pageSize)));
-        return dtoc;
     }
 
 }
