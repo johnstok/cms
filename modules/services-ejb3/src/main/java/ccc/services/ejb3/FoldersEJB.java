@@ -42,7 +42,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Folders;
-import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.ResourceName;
@@ -123,7 +122,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed(FOLDER_UPDATE)
     public void updateFolder(final UUID folderId,
-                             final FolderDelta delta) {
+                             final FolderDto delta) {
         final List<UUID> list = new ArrayList<UUID>();
 
         for (final String item : delta.getSortList()) {

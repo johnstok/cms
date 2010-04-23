@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.dto.AclDto;
-import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
@@ -131,8 +130,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         sl.add(page1.getId().toString());
         sl.add(page3.getId().toString());
 
-        final FolderDelta fd =
-            new FolderDelta(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
+        final FolderDto fd =
+            new FolderDto(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
 
         getFolders().updateFolder(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
@@ -175,8 +174,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         sl.add(page1.getId().toString());
         sl.add(page3.getId().toString());
 
-        final FolderDelta fd =
-            new FolderDelta(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
+        final FolderDto fd =
+            new FolderDto(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
 
         getFolders().updateFolder(f.getId(), fd);
         final ResourceSummary updated = getCommands().resource(f.getId());
@@ -211,8 +210,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final List<String> sortList  = new ArrayList<String>();
         sortList.add(page.getId().toString());
 
-        final FolderDelta fd =
-            new FolderDelta(
+        final FolderDto fd =
+            new FolderDto(
                 tempFolder().getSortOrder(), page.getId(), sortList);
         getFolders().updateFolder(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
@@ -267,8 +266,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final List<String> sortList  = new ArrayList<String>();
         // ACT
         getCommands().lock(folder.getId());
-        final FolderDelta fd =
-            new FolderDelta(
+        final FolderDto fd =
+            new FolderDto(
                 ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
 
         getFolders().updateFolder(folder.getId(), fd);

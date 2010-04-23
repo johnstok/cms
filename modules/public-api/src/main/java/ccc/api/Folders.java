@@ -37,7 +37,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 
@@ -137,7 +136,7 @@ public interface Folders {
      * @param delta The updated details of the folder.
      */
     @POST @Path("/{id}")
-    void updateFolder(@PathParam("id") UUID folderId, FolderDelta delta);
+    void updateFolder(@PathParam("id") UUID folderId, FolderDto delta);
 
 
     /**
