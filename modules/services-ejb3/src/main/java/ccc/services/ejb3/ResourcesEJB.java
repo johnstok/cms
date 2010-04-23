@@ -45,6 +45,8 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.Resources;
 import ccc.api.dto.AclDto;
+import ccc.api.dto.DtoCollection;
+import ccc.api.dto.ResourceCriteria;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
@@ -673,7 +675,8 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> list(final String tag,
+    public DtoCollection<ResourceSummary> list(final UUID parent,
+                                            final String tag,
                                             final Long before,
                                             final Long after,
                                             final String sort,
@@ -689,18 +692,35 @@ public class ResourcesEJB
             Exceptions.swallow(e); // Leave user as NULL.
         }
 
-        return
-            Resource.mapResources(
+        final ResourceCriteria criteria = new ResourceCriteria();
+        Folder f = null;
+        if (parent != null) {
+            f =
+                getRepoFactory()
+                    .createResourceRepository()
+                    .find(Folder.class, parent);
+            checkRead(f);
+            criteria.setParent(parent);
+        }
+
+        criteria.setTag(tag);
+        criteria.setChangedBefore(
+            (null==before)?null:new Date(before.longValue()));
+        criteria.setChangedAfter(
+            (null==after)?null:new Date(after.longValue()));
+
+         final List<ResourceSummary> list = Resource.mapResources(
                 filterAccessibleTo(u,
-                    getResources().list(
-                        null,
-                        tag,
-                        (null==before)?null:new Date(before.longValue()),
-                        (null==after)?null:new Date(after.longValue()),
+                    getResources().list(criteria,
+                        f,
                         sort,
                         order,
                         pageNo,
                         pageSize)));
+
+         final long count = getResources().totalCount(criteria, f);
+
+         return new DtoCollection<ResourceSummary>(count, list);
     }
 
 

@@ -37,12 +37,10 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Folders;
-import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.DBC;
-import ccc.api.types.SortOrder;
 
 
 /**
@@ -157,26 +155,6 @@ public class FoldersImpl
     public void updateFolder(final UUID folderId, final FolderDelta delta) {
         try {
             _delegate.updateFolder(folderId, delta);
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public DtoCollection<ResourceSummary> getChildrenPaged(
-                                                    final UUID folderId,
-                                                    final String sort,
-                                                    final SortOrder sortOrder,
-                                                    final int offset,
-                                                    final int limit) {
-        try {
-            return _delegate.getChildrenPaged(folderId,
-                                             sort,
-                                             sortOrder,
-                                             offset,
-                                             limit);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

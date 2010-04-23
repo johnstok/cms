@@ -40,6 +40,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Resources;
 import ccc.api.dto.AclDto;
+import ccc.api.dto.DtoCollection;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
@@ -415,7 +416,8 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> list(
+    public DtoCollection<ResourceSummary> list(
+                                      final UUID parent,
                                       final String tag,
                                       final Long before,
                                       final Long after,
@@ -425,7 +427,7 @@ public class ResourcesImpl
                                       final int pageSize) {
         try {
             return _delegate.list(
-                tag, before, after, sort, order, pageNo, pageSize);
+                parent, tag, before, after, sort, order, pageNo, pageSize);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

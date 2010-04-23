@@ -26,11 +26,11 @@
  */
 package ccc.persistence;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.dto.ResourceCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
@@ -204,14 +204,12 @@ public interface ResourceRepository {
      *
      * @return A list of comments.
      */
-    List<Resource> list(Resource parent,
-                        String tag,
-                        Date before,
-                        Date after,
-                        String sort,
-                        SortOrder sortOrder,
-                        int pageNo,
-                        int pageSize);
+    List<Resource> list(ResourceCriteria criteria,
+        Folder f,
+        String sort,
+        SortOrder sortOrder,
+        int pageNo,
+        int pageSize);
 
     /**
      * Return count of images in the folder.
@@ -221,4 +219,11 @@ public interface ResourceRepository {
      * @throws EntityNotFoundException If no folder exists with the id.
      */
     long imagesCount(UUID folderId) throws EntityNotFoundException;
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param criteria
+     */
+    long totalCount(ResourceCriteria criteria, Folder f);
 }

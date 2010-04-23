@@ -27,7 +27,6 @@
 package ccc.persistence;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +34,14 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.dto.ResourceCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
+import ccc.api.types.ResourceOrder;
 import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.domain.File;
 import ccc.domain.Folder;
@@ -271,10 +273,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<Resource> list(final Resource resource,
-                               final String tag,
-                               final Date before,
-                               final Date after,
+    public List<Resource> list(final ResourceCriteria criteria,
+                               final Folder f,
                                final String sort,
                                final SortOrder sortOrder,
                                final int pageNo,
@@ -291,31 +291,56 @@ class ResourceRepositoryImpl implements ResourceRepository {
             query.append("select r from ccc.domain.Resource r ");
         }
 
-        if (null!=resource) {
+        appendCriteria(criteria, f, query, params);
+        appendSorting(f, sort, sortOrder, query);
+
+        return
+        _repository.listDyn(
+            query.toString(),
+            Resource.class,
+            pageNo,
+            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
+            params.toArray());
+    }
+
+
+    private void appendCriteria(final ResourceCriteria criteria,
+                                final Folder f,
+                                final StringBuffer query,
+                                final List<Object> params) {
+
+        if (null!=f) {
             query.append(" where r._parent = ?");
-            params.add(resource);
+            params.add(f);
         }
 
-        if (null!=tag) {
+        if (null!=criteria.getTag()) {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" ? in elements(r._tags)");
-            params.add(tag);
+            params.add(criteria.getTag());
         }
 
-        if (null!=before) {
+        if (null!=criteria.getChangedBefore()) {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" ? > r._dateChanged");
-            params.add(before);
+            params.add(criteria.getChangedBefore());
         }
 
-        if (null!=after) {
+        if (null!=criteria.getChangedAfter()) {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" ? < r._dateChanged");
-            params.add(after);
+            params.add(criteria.getChangedAfter());
         }
+    }
 
+    private void appendSorting(final Resource resource,
+                               final String sort,
+                               final SortOrder sortOrder,
+                               final StringBuffer query) {
+
+        boolean knownSort = false;
         if (null != sort) {
-            boolean knownSort = true;
+            knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._title) ");
             } else if ("mm_include".equalsIgnoreCase(sort)) {
@@ -335,14 +360,30 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(sortOrder.name());
             }
         }
-        return
-        _repository.listDyn(
-            query.toString(),
-            Resource.class,
-            pageNo,
-            pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-            params.toArray());
+        if (!knownSort
+            && resource != null
+            && resource.getType() == ResourceType.FOLDER) {
+            final Folder f = resource.as(Folder.class);
+            final ResourceOrder order = f.getSortOrder();
+            switch (order){
+                case DATE_CHANGED_ASC:
+                    query.append(" order by r._dateChanged asc ");
+                case DATE_CHANGED_DESC:
+                    query.append(" order by r._dateChanged desc ");
+                case DATE_CREATED_ASC:
+                    query.append(" order by r._dateCreated asc ");
+                case DATE_CREATED_DESC:
+                    query.append(" order by r._dateCreated desc ");
+                case NAME_ALPHANUM_ASC:
+                    query.append(" order by r._name asc ");
+                case NAME_ALPHANUM_CI_ASC:
+                    query.append(" order by upper(r._name) asc ");
+                case MANUAL:
+                    query.append(" order by _parentIndex ");
+            }
+        }
     }
+
 
 
     /** {@inheritDoc} */
@@ -354,5 +395,16 @@ class ResourceRepositoryImpl implements ResourceRepository {
         + " WHERE f._publishedBy is not null"
         + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
         + " AND f._parent = ?", r);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long totalCount(final ResourceCriteria criteria, final Folder f) {
+        final StringBuffer query = new StringBuffer();
+        final List<Object> params = new ArrayList<Object>();
+        query.append("SELECT COUNT(r) FROM ccc.domain.Resource r ");
+        appendCriteria(criteria, f, query, params);
+        return _repository.scalarLong(query.toString() ,params.toArray());
     }
 }

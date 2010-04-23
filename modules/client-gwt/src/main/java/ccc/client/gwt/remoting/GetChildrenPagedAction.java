@@ -81,7 +81,7 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/folders/"+_parentId+"/children-paged?page="+_pageNo
+        return "/resources/list?parent="+_parentId+"&page="+_pageNo
         +"&count="+_pageSize+"&sort="+_sort+"&order="+_order;
     }
 

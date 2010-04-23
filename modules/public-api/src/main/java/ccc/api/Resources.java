@@ -41,6 +41,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.AclDto;
+import ccc.api.dto.DtoCollection;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
@@ -78,7 +79,9 @@ public interface Resources {
      * @return A list of resources.
      */
     @GET
-    Collection<ResourceSummary> list(
+    @Path("/list")
+    DtoCollection<ResourceSummary> list(
+        @QueryParam("parent") UUID UUID,
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
@@ -86,6 +89,7 @@ public interface Resources {
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
+
 
 
     /**
@@ -422,7 +426,7 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path("/by-path-secure{path:.*}")
-    @Deprecated() // FIXME Use resourceForPath() or lookup by ID.
+    @Deprecated() // FIXME Use resourceForPath() or lookup by ID. - used in ContentServlet.getSnapshot
     ResourceSnapshot resourceForPathSecure(@PathParam("path") String path);
 
 
@@ -435,7 +439,7 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path("/by-path-secure{path:.*}")
-    @Deprecated // FIXME: Lookup by ID.
+    @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
     ResourceSnapshot revisionForPath(
                  @PathParam("path") final String path,
                  @QueryParam("version") @DefaultValue("0") final int version);
@@ -449,7 +453,7 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path("/by-path-wc{path:.*}")
-    @Deprecated // FIXME: Lookup by ID.
+    @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
     ResourceSnapshot workingCopyForPath(@PathParam("path") final String path);
 
 
