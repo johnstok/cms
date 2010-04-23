@@ -48,8 +48,6 @@ import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.ActionNewReader;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.FolderDeltaReader;
-import ccc.api.jaxrs.providers.FolderNewReader;
 import ccc.api.jaxrs.providers.JsonReader;
 import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
@@ -114,9 +112,7 @@ public class JaxrsConfiguration
         providers.add(ResourceSummaryCollectionReader.class);
         providers.add(StringCollectionWriter.class);
         providers.add(ResourceCacheDurationPUReader.class);
-        providers.add(FolderDeltaReader.class);
         providers.add(ActionNewReader.class);
-        providers.add(FolderNewReader.class);
         providers.add(TextFileDeltaReader.class);
         providers.add(UuidCollectionWriter.class);
         providers.add(TextFileDtoReader.class);

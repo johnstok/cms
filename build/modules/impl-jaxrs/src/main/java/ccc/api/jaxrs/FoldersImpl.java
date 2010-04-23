@@ -37,7 +37,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Folders;
-import ccc.api.dto.FolderDelta;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.DBC;
@@ -152,7 +151,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolder(final UUID folderId, final FolderDelta delta) {
+    public void updateFolder(final UUID folderId, final FolderDto delta) {
         try {
             _delegate.updateFolder(folderId, delta);
         } catch (final ClientResponseFailure cfe) {

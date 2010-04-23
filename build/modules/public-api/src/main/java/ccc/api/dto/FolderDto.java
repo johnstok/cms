@@ -26,12 +26,14 @@
  */
 package ccc.api.dto;
 
+import java.util.Collection;
 import java.util.UUID;
 
+import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -43,10 +45,18 @@ public class FolderDto
     extends
         ResourceSnapshot
     implements
-        Jsonable {
+        Jsonable2 {
 
     private UUID _indexPage;
     private UUID _defaultPage;
+    private String _sortOrder;
+    private Collection<String> _sortList;
+
+
+    /**
+     * Constructor.
+     */
+    public FolderDto() { super(); }
 
 
     /**
@@ -58,6 +68,23 @@ public class FolderDto
     public FolderDto(final UUID parentId, final ResourceName name) {
         setParent(parentId);
         setName(name);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param sortOrder The sort order for the folder's children.
+     * @param indexPage The folder index page (may be NULL).
+     * @param sortList The list of children for this folder, in sorted order.
+     */
+    public FolderDto(final String sortOrder,
+                     final UUID indexPage,
+                     final Collection<String> sortList) {
+        DBC.require().notNull(sortOrder);
+        _sortOrder = sortOrder;
+        _indexPage = indexPage;
+        _sortList = sortList;
     }
 
 
@@ -101,10 +128,46 @@ public class FolderDto
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the sort list.
+     */
+    public final Collection<String> getSortList() {
+        return _sortList;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the sortOrder.
+     */
+    public final String getSortOrder() {
+        return _sortOrder;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.PARENT_ID, getParent());
-        json.set(JsonKeys.NAME, getName().toString());
+        json.set(JsonKeys.SORT_ORDER, _sortOrder);
+        json.set(JsonKeys.INDEX_PAGE_ID, _indexPage);
+        json.setStrings(JsonKeys.SORT_LIST, _sortList);
+        json.set(
+            JsonKeys.NAME, (null==getName()) ? null : getName().toString());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        final String name = json.getString(JsonKeys.NAME);
+        setName((null==name) ? null : new ResourceName(name));
+        setParent(json.getId(JsonKeys.PARENT_ID));
+        _sortOrder = json.getString(JsonKeys.SORT_ORDER);
+        _indexPage = json.getId(JsonKeys.INDEX_PAGE_ID);
+        _sortList = json.getStrings(JsonKeys.SORT_LIST);
     }
 }

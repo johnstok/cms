@@ -37,7 +37,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import ccc.api.ServiceLocator;
-import ccc.api.dto.FolderDelta;
+import ccc.api.dto.FolderDto;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.exceptions.CCException;
@@ -150,7 +150,7 @@ public class Migrations extends BaseMigrations {
                 getResources().lock(UUID.fromString(f.getId().toString()));
                 getFolders().updateFolder(
                     f.getId(),
-                    new FolderDelta(f.getSortOrder(), hp.getId(), null));
+                    new FolderDto(f.getSortOrder(), hp.getId(), null));
                 getResources().unlock(f.getId());
             }
         }
