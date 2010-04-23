@@ -618,24 +618,6 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
-        checkPermission(RESOURCE_READ);
-
-        final Resource r = getResources().find(Resource.class, resourceId);
-        checkRead(r);
-
-        final List<ResourceSummary> siblings = new ArrayList<ResourceSummary>();
-        final Folder f = r.getParent().as(Folder.class);
-        for (final Resource item : f.getEntries()) {
-            siblings.add(item.mapResource());
-        }
-        return siblings;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
     public Map<String, String> metadata(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
@@ -676,13 +658,14 @@ public class ResourcesEJB
     @Override
     @PermitAll
     public DtoCollection<ResourceSummary> list(final UUID parent,
-                                            final String tag,
-                                            final Long before,
-                                            final Long after,
-                                            final String sort,
-                                            final SortOrder order,
-                                            final int pageNo,
-                                            final int pageSize) {
+        final String tag,
+        final Long before,
+        final Long after,
+        final String mainmenu,
+        final String sort,
+        final SortOrder order,
+        final int pageNo,
+        final int pageSize) {
         checkPermission(RESOURCE_READ);
 
         User u = null;
@@ -697,8 +680,8 @@ public class ResourcesEJB
         if (parent != null) {
             f =
                 getRepoFactory()
-                    .createResourceRepository()
-                    .find(Folder.class, parent);
+                .createResourceRepository()
+                .find(Folder.class, parent);
             checkRead(f);
             criteria.setParent(parent);
         }
@@ -708,19 +691,20 @@ public class ResourcesEJB
             (null==before)?null:new Date(before.longValue()));
         criteria.setChangedAfter(
             (null==after)?null:new Date(after.longValue()));
+        criteria.setMainmenu(mainmenu);
 
-         final List<ResourceSummary> list = Resource.mapResources(
-                filterAccessibleTo(u,
-                    getResources().list(criteria,
-                        f,
-                        sort,
-                        order,
-                        pageNo,
-                        pageSize)));
+        final List<ResourceSummary> list = Resource.mapResources(
+            filterAccessibleTo(u,
+                getResources().list(criteria,
+                    f,
+                    sort,
+                    order,
+                    pageNo,
+                    pageSize)));
 
-         final long count = getResources().totalCount(criteria, f);
+        final long count = getResources().totalCount(criteria, f);
 
-         return new DtoCollection<ResourceSummary>(count, list);
+        return new DtoCollection<ResourceSummary>(count, list);
     }
 
 
