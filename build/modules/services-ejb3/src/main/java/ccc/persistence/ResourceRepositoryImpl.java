@@ -135,17 +135,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     legacyId));
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public List<Resource> lookupWithMetadataKey(final String key) {
-        return
-        discardDeleted(
-            _repository.list(
-                QueryNames.RESOURCE_BY_METADATA_KEY,
-                Resource.class,
-                key));
-    }
-
 
     /** {@inheritDoc} */
     @Override
@@ -340,6 +329,12 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append((params.size()>0) ? " and" : " where");
                 query.append(" r._includeInMainMenu = false");
             }
+        }
+
+        if (null!=criteria.getMetadataKey()) {
+            query.append((params.size()>0) ? " and" : " where");
+            query.append(" r._metadata[?] is not null");
+            params.add(criteria.getMetadataKey());
         }
     }
 
