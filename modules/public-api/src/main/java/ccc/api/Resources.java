@@ -86,6 +86,7 @@ public interface Resources {
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
         @QueryParam("mainmenu") String mainMenu,
+        @QueryParam("metadataKey") String metadataKey,
         @QueryParam("sort") @DefaultValue("name") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -209,17 +210,6 @@ public interface Resources {
      */
     @GET @Path("/by-legacy-id/{id}")
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
-
-    /**
-     * Look up the resource for a specified metadata key.
-     *
-     * @param key The legacy id of the resource.
-     *
-     * @return A summary of the corresponding resource.
-     */
-    @GET @Path("/by-metadata-key/{id}")
-    Collection<ResourceSummary> resourceForMetadataKey(
-        @PathParam("id") String key);
 
 
     /**

@@ -508,16 +508,6 @@ public class ResourcesEJB
             getResources().lookup(new ResourcePath(rootPath)).mapResource();
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
-    public Collection<ResourceSummary> resourceForMetadataKey(
-        final String key) {
-        checkPermission(RESOURCE_READ);
-        return Resource.mapResources(getResources().lookupWithMetadataKey(key));
-    }
-
     /** {@inheritDoc} */
     @Override
     @PermitAll
@@ -663,6 +653,7 @@ public class ResourcesEJB
         final Long after,
         final String mainmenu,
         final String sort,
+        final String metadataKey,
         final SortOrder order,
         final int pageNo,
         final int pageSize) {
@@ -692,6 +683,7 @@ public class ResourcesEJB
         criteria.setChangedAfter(
             (null==after)?null:new Date(after.longValue()));
         criteria.setMainmenu(mainmenu);
+        criteria.setMetadataKey(metadataKey);
 
         final List<ResourceSummary> list = Resource.mapResources(
             filterAccessibleTo(u,
