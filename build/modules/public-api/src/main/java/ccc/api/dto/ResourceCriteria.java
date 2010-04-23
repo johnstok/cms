@@ -27,6 +27,7 @@ public class ResourceCriteria implements Serializable {
     private String _tag = null;
     private Date _changedAfter = null;
     private Date _changedBefore = null;
+    private String _mainmenu;
 
 
     /**
@@ -103,6 +104,24 @@ public class ResourceCriteria implements Serializable {
      */
     public void setParent(final UUID parent) {
         _parent = parent;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param mainmenu Included in main menu.
+     */
+    public void setMainmenu(final String mainmenu) {
+        _mainmenu = mainmenu;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return  Included in main menu.
+     */
+    public String getMainmenu() {
+        return _mainmenu;
     }
 
 

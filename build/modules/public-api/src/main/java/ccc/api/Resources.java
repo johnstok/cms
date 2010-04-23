@@ -85,6 +85,7 @@ public interface Resources {
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
+        @QueryParam("mainmenu") String mainMenu,
         @QueryParam("sort") @DefaultValue("name") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -392,16 +393,6 @@ public interface Resources {
     @POST @Path("/{id}/logentry-create")
     void createLogEntry(
         @PathParam("id") UUID resourceId, String action, String detail);
-
-    /**
-     * Returns siblings of the resource, the resource included.
-     *
-     * @param resourceId The id of the resource to create log entry for.
-     *
-     * @return The list of siblings.
-     */
-    @GET @Path("/{id}/siblings")
-    Collection<ResourceSummary> getSiblings(@PathParam("id") UUID resourceId);
 
 
     /**

@@ -405,29 +405,26 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getSiblings(final UUID resourceId) {
-        try {
-            return _delegate.getSiblings(resourceId);
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public DtoCollection<ResourceSummary> list(
                                       final UUID parent,
                                       final String tag,
                                       final Long before,
                                       final Long after,
+                                      final String mainmenu,
                                       final String sort,
                                       final SortOrder order,
                                       final int pageNo,
                                       final int pageSize) {
         try {
-            return _delegate.list(
-                parent, tag, before, after, sort, order, pageNo, pageSize);
+            return _delegate.list(parent,
+                tag,
+                before,
+                after,
+                mainmenu,
+                sort,
+                order,
+                pageNo,
+                pageSize);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

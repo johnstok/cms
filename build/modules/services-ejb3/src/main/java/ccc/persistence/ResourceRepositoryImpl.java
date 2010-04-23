@@ -331,6 +331,16 @@ class ResourceRepositoryImpl implements ResourceRepository {
             query.append(" ? < r._dateChanged");
             params.add(criteria.getChangedAfter());
         }
+
+        if (null!=criteria.getMainmenu()) {
+            if (criteria.getMainmenu().equalsIgnoreCase("true")) {
+                query.append((params.size()>0) ? " and" : " where");
+                query.append(" r._includeInMainMenu = true");
+            } else if (criteria.getMainmenu().equalsIgnoreCase("false")) {
+                query.append((params.size()>0) ? " and" : " where");
+                query.append(" r._includeInMainMenu = false");
+            }
+        }
     }
 
     private void appendSorting(final Resource resource,
@@ -368,18 +378,25 @@ class ResourceRepositoryImpl implements ResourceRepository {
             switch (order){
                 case DATE_CHANGED_ASC:
                     query.append(" order by r._dateChanged asc ");
+                    break;
                 case DATE_CHANGED_DESC:
                     query.append(" order by r._dateChanged desc ");
+                    break;
                 case DATE_CREATED_ASC:
                     query.append(" order by r._dateCreated asc ");
+                    break;
                 case DATE_CREATED_DESC:
                     query.append(" order by r._dateCreated desc ");
+                    break;
                 case NAME_ALPHANUM_ASC:
                     query.append(" order by r._name asc ");
+                    break;
                 case NAME_ALPHANUM_CI_ASC:
                     query.append(" order by upper(r._name) asc ");
+                    break;
                 case MANUAL:
                     query.append(" order by _parentIndex ");
+                    break;
             }
         }
     }
