@@ -57,19 +57,15 @@ import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.SecurityImpl2;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
-import ccc.api.jaxrs.providers.ActionSummaryCollectionReader;
 import ccc.api.jaxrs.providers.ActionSummaryReader;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.DtoCollectionReader;
 import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.GroupCollectionReader;
 import ccc.api.jaxrs.providers.JsonReader;
+import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
-import ccc.api.jaxrs.providers.ResourceSummaryCollectionReader;
-import ccc.api.jaxrs.providers.RevisionSummaryCollectionReader;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
-import ccc.api.jaxrs.providers.TemplateSummaryCollectionReader;
 import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UserSummaryCollectionReader;
 import ccc.api.jaxrs.providers.UuidCollectionWriter;
@@ -103,18 +99,14 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(UUIDProvider.class);
         pFactory.addMessageBodyReader(BooleanProvider.class);
         pFactory.addMessageBodyReader(JsonableWriter.class);
+        pFactory.addMessageBodyReader(JsonableCollectionWriter.class);
 
-        pFactory.addMessageBodyReader(ResourceSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(UserSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);
-        pFactory.addMessageBodyReader(ActionSummaryCollectionReader.class);
-        pFactory.addMessageBodyReader(RevisionSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(ActionSummaryReader.class);
-        pFactory.addMessageBodyReader(GroupCollectionReader.class);
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);
         pFactory.addMessageBodyReader(DtoCollectionReader.class);
-        pFactory.addMessageBodyReader(TemplateSummaryCollectionReader.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);

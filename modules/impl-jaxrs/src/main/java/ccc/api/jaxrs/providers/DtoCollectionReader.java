@@ -29,7 +29,6 @@ package ccc.api.jaxrs.providers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -101,15 +100,5 @@ public class DtoCollectionReader
         } catch (final IllegalAccessException e) {
             throw new WebApplicationException(e);
         }
-    }
-
-
-    @SuppressWarnings("unchecked")
-    private <T> Class<T> getTypeArgument(final Type type, final int index) {
-        if (type instanceof ParameterizedType) {
-            final ParameterizedType pType = (ParameterizedType) type;
-            return (Class<T>) pType.getActualTypeArguments()[index];
-        }
-        throw new RuntimeException("Not a parameterized type: "+type);
     }
 }
