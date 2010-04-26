@@ -33,7 +33,7 @@ import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public final class RevisionDto implements Serializable, Jsonable {
+public final class RevisionDto implements Serializable, Jsonable2 {
     private CommandType _command;
     private Username _actorUsername;
     private Date _happenedOn;
@@ -49,7 +49,7 @@ public final class RevisionDto implements Serializable, Jsonable {
     private String _comment;
     private boolean _isMajor;
 
-    @SuppressWarnings("unused") private RevisionDto() { super(); }
+    public RevisionDto() { super(); }
 
     /**
      * Constructor.
@@ -82,14 +82,7 @@ public final class RevisionDto implements Serializable, Jsonable {
      * @param json The JSON representation for this class.
      */
     public RevisionDto(final Json json) {
-        this(
-            CommandType.valueOf(json.getString(JsonKeys.COMMAND)),
-            new Username(json.getString(JsonKeys.USERNAME)),
-            json.getDate(JsonKeys.HAPPENED_ON),
-            json.getLong(JsonKeys.INDEX).longValue(),
-            json.getString(JsonKeys.COMMENT),
-            json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue()
-        );
+        fromJson(json);
     }
 
     /**
@@ -160,5 +153,16 @@ public final class RevisionDto implements Serializable, Jsonable {
         json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(isMajor()));
         json.set(JsonKeys.INDEX, Long.valueOf(getIndex()));
         json.set(JsonKeys.COMMENT, getComment());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        _command = CommandType.valueOf(json.getString(JsonKeys.COMMAND));
+        _actorUsername = new Username(json.getString(JsonKeys.USERNAME));
+        _happenedOn = json.getDate(JsonKeys.HAPPENED_ON);
+        _index = json.getLong(JsonKeys.INDEX).longValue();
+        _comment = json.getString(JsonKeys.COMMENT);
+        _isMajor = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
     }
 }

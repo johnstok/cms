@@ -158,4 +158,23 @@ public class AbstractProvider {
             throw new RuntimeException("UTF-8 encoding unsupported.", e);
         }
     }
+
+
+    /**
+     * Determine the class argument of a parameterized type.
+     *
+     * @param <T> The type of the class argument.
+     * @param type The parameterized type.
+     * @param index The index of the argument.
+     *
+     * @return The argument's class.
+     */
+    @SuppressWarnings("unchecked")
+    protected <T> Class<T> getTypeArgument(final Type type, final int index) {
+        if (type instanceof ParameterizedType) {
+            final ParameterizedType pType = (ParameterizedType) type;
+            return (Class<T>) pType.getActualTypeArguments()[index];
+        }
+        throw new RuntimeException("Not a parameterized type: "+type);
+    }
 }
