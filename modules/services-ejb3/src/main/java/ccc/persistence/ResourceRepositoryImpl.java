@@ -135,6 +135,16 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     legacyId));
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public List<Resource> lookupWithMetadataKey(final String key) {
+        return
+        discardDeleted(
+            _repository.list(
+                QueryNames.RESOURCE_BY_METADATA_KEY,
+                Resource.class,
+                key));
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -165,10 +175,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final StringBuffer query = new StringBuffer();
         query.append("FROM ccc.domain.File f WHERE f._publishedBy is not null "
             + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
-            + " AND f._parent = ? "
+            + " AND f._parent = :parent "
             + " order by upper(f._name) ASC");
-        final List<Object> params = new ArrayList<Object>();
-        params.add(r);
+        final Map<String,Object> params = new HashMap<String,Object>();
+        params.put("parent", r);
 
         return
         _repository.listDyn(
@@ -176,7 +186,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             File.class,
             pageNo,
             pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-            params.toArray());
+            params);
     }
 
 
@@ -270,7 +280,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                                final int pageSize) {
 
         final StringBuffer query = new StringBuffer();
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         if (null != sort && ("locked".equalsIgnoreCase(sort)
             || "published".equalsIgnoreCase(sort))) {
@@ -289,55 +299,53 @@ class ResourceRepositoryImpl implements ResourceRepository {
             Resource.class,
             pageNo,
             pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
-            params.toArray());
+            params);
     }
 
 
     private void appendCriteria(final ResourceCriteria criteria,
                                 final Folder f,
                                 final StringBuffer query,
-                                final List<Object> params) {
+                                final Map<String, Object> params) {
 
         if (null!=f) {
-            query.append(" where r._parent = ?");
-            params.add(f);
+            query.append(" where r._parent = :parent");
+            params.put("parent", f);
         }
 
         if (null!=criteria.getTag()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" ? in elements(r._tags)");
-            params.add(criteria.getTag());
+            query.append(" :tag in elements(r._tags)");
+            params.put("tag", criteria.getTag());
         }
 
         if (null!=criteria.getChangedBefore()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" ? > r._dateChanged");
-            params.add(criteria.getChangedBefore());
+            query.append(" :dateChangedBefore > r._dateChanged");
+            params.put("dateChangedBefore", criteria.getChangedBefore());
         }
 
         if (null!=criteria.getChangedAfter()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" ? < r._dateChanged");
-            params.add(criteria.getChangedAfter());
+            query.append(" :dateChangedAfter < r._dateChanged");
+            params.put("dateChangedAfter", criteria.getChangedAfter());
         }
 
         if (null!=criteria.getMainmenu()) {
+            boolean knownCriteria = false;
             if (criteria.getMainmenu().equalsIgnoreCase("true")) {
-                query.append((params.size()>0) ? " and" : " where");
-                query.append(" r._includeInMainMenu = ?");
-                params.add(Boolean.TRUE);
+                knownCriteria = true;
+                params.put("includeInMainMenu", Boolean.TRUE);
             } else if (criteria.getMainmenu().equalsIgnoreCase("false")) {
+                knownCriteria = true;
+                params.put("includeInMainMenu", Boolean.FALSE);
+            }
+            if (knownCriteria) {
                 query.append((params.size()>0) ? " and" : " where");
-                query.append(" r._includeInMainMenu = ?");
-                params.add(Boolean.FALSE);
+                query.append(" r._includeInMainMenu = :includeInMainMenu");
             }
         }
 
-        if (null!=criteria.getMetadataKey() && !criteria.getMetadataKey().isEmpty()) {
-            query.append((params.size()>0) ? " and" : " where");
-            query.append(" r._metadata[?] is not null");
-            params.add(criteria.getMetadataKey());
-        }
     }
 
     private void appendSorting(final Resource resource,
@@ -405,10 +413,12 @@ class ResourceRepositoryImpl implements ResourceRepository {
     public long imagesCount(final UUID folderId)
         throws EntityNotFoundException {
         final Resource r = find(Resource.class, folderId);
+        final Map<String,Object> params = new HashMap<String,Object>();
+        params.put("parent", r);
         return _repository.scalarLong("SELECT COUNT(f) FROM ccc.domain.File f "
         + " WHERE f._publishedBy is not null"
         + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
-        + " AND f._parent = ?", r);
+        + " AND f._parent = :parent", params);
     }
 
 
@@ -416,9 +426,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public long totalCount(final ResourceCriteria criteria, final Folder f) {
         final StringBuffer query = new StringBuffer();
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String,Object> params = new HashMap<String,Object>();
         query.append("SELECT COUNT(r) FROM ccc.domain.Resource r ");
         appendCriteria(criteria, f, query, params);
-        return _repository.scalarLong(query.toString() ,params.toArray());
+        return _repository.scalarLong(query.toString(), params);
     }
 }

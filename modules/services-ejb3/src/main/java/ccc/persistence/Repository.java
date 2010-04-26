@@ -29,6 +29,7 @@ package ccc.persistence;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.exceptions.EntityNotFoundException;
@@ -85,7 +86,7 @@ interface Repository {
                         Class<T> resultType,
                         int pageNo,
                         int pageSize,
-                        Object... params);
+                        Map<String,Object> params);
 
     /**
      * Query for a single long value.
@@ -95,7 +96,7 @@ interface Repository {
      *
      * @return The value as a long.
      */
-    long scalarLong(String queryString, Object... params);
+    long scalarLong(String queryString, Map<String,Object> params);
 
 
     /**

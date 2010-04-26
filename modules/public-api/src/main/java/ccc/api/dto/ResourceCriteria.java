@@ -28,7 +28,6 @@ public class ResourceCriteria implements Serializable {
     private Date _changedAfter = null;
     private Date _changedBefore = null;
     private String _mainmenu = null;
-    private String _metadataKey = null;
 
     /**
      * Constructor.
@@ -124,25 +123,25 @@ public class ResourceCriteria implements Serializable {
         return _mainmenu;
     }
 
-    /**
-     * Mutator.
-     *
-     * @param metadataKey The metadata key to set.
-     */
-    public void setMetadataKey(final String metadataKey) {
-
-        _metadataKey = metadataKey;
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the metadata key.
-     */
-    public String getMetadataKey() {
-
-        return _metadataKey;
-    }
+//    /**
+//     * Mutator.
+//     *
+//     * @param metadataKey The metadata key to set.
+//     */
+//    public void setMetadataKey(final String metadataKey) {
+//
+//        _metadataKey = metadataKey;
+//    }
+//
+//    /**
+//     * Accessor.
+//     *
+//     * @return Returns the metadata key.
+//     */
+//    public String getMetadataKey() {
+//
+//        return _metadataKey;
+//    }
 
 
 }

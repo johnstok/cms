@@ -29,9 +29,10 @@ package ccc.persistence;
 import static ccc.persistence.QueryNames.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -83,7 +84,7 @@ class UserRepositoryImpl implements UserRepository {
         final int pageNo,
         final int pageSize) {
 
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         final StringBuffer query = new StringBuffer();
         query.append("select u");
@@ -108,51 +109,51 @@ class UserRepositoryImpl implements UserRepository {
             User.class,
             pageNo,
             pageSize,
-            params.toArray());
+            params);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public long countUsers(final UserCriteria uc) {
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
         final StringBuffer query = new StringBuffer();
         query.append("select count(u) ");
         createUserQuery(query, uc, params);
-        return _repository.scalarLong(query.toString(), params.toArray());
+        return _repository.scalarLong(query.toString(), params);
     }
 
     private void createUserQuery(final StringBuffer query,
                                  final UserCriteria uc,
-                                 final List<Object> params) {
+                                 final Map<String, Object> params) {
 
         query.append(
             " from ccc.domain.User as u");
         if (null!=uc.getEmail()) {
-            query.append(" where lower(u._email._text) like lower(?)");
-            params.add(uc.getEmail());
+            query.append(" where lower(u._email._text) like lower(:email)");
+            params.put("email", uc.getEmail());
         }
         if (null!=uc.getUsername()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" lower(u._username._value) like lower(?)");
-            params.add(uc.getUsername());
+            query.append(" lower(u._username._value) like lower(:username)");
+            params.put("username", uc.getUsername());
         }
         if (null!=uc.getGroups()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" ? in (select r._name "
+            query.append(" :groups in (select r._name "
                 + "from ccc.domain.User as u2 left join u2._groups as r "
                 + "where u=u2) ");
-            params.add(uc.getGroups());
+            params.put("groups", uc.getGroups());
         }
         if (null!=uc.getMetadataKey() &&  null==uc.getMetadataValue()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" u._metadata[?] is not null");
-            params.add(uc.getMetadataKey());
+            query.append(" u._metadata[:metadataKey] is not null");
+            params.put("metadataKey", uc.getMetadataKey());
         } else if (null!=uc.getMetadataKey() && null!=uc.getMetadataValue()) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" u._metadata[?] = ? ");
-            params.add(uc.getMetadataKey());
-            params.add(uc.getMetadataValue());
+            query.append(" u._metadata[:metadataKey] = :metadataValue ");
+            params.put("metadataKey", uc.getMetadataKey());
+            params.put("metadataValue", uc.getMetadataValue());
         }
     }
 

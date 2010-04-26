@@ -29,7 +29,9 @@ package ccc.persistence;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -92,13 +94,13 @@ class JpaRepository implements Repository {
                                final Class<T> resultType,
                                final int pageNo,
                                final int pageSize,
-                               final Object... params) {
+                               final Map<String,Object> params) {
         DBC.require().greaterThan(0, pageNo);
         DBC.require().greaterThan(0, pageSize);
 
         final Query q = _em.createQuery(queryString);
-        for (int i=0; i<params.length; i++) {
-            q.setParameter((i+1), params[i]);
+        for (final Entry<String, Object> entry : params.entrySet()) {
+            q.setParameter(entry.getKey(), entry.getValue());
         }
         q.setMaxResults(pageSize);
         q.setFirstResult((pageNo-1)*pageSize);
@@ -161,10 +163,11 @@ class JpaRepository implements Repository {
 
     /** {@inheritDoc} */
     @Override
-    public long scalarLong(final String queryString, final Object... params) {
+    public long scalarLong(final String queryString,
+                           final Map<String,Object> params) {
         final Query q = _em.createQuery(queryString);
-        for (int i=0; i<params.length; i++) {
-            q.setParameter((i+1), params[i]);
+        for (final Entry<String, Object> entry : params.entrySet()) {
+            q.setParameter(entry.getKey(), entry.getValue());
         }
         final Number result = (Number) q.getSingleResult();
         return result.longValue();
