@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import ccc.api.dto.AliasDto;
-import ccc.api.dto.FileDelta;
+import ccc.api.dto.FileDto;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
@@ -141,7 +141,7 @@ public class CommandFactory {
      * @return The corresponding command.
      */
     public Command<File> createFileCommand(final UUID parentFolder,
-                                           final FileDelta file,
+                                           final FileDto file,
                                            final String title,
                                            final String description,
                                            final ResourceName resourceName,

@@ -29,13 +29,15 @@ package ccc.api.dto;
 import static ccc.plugins.s11n.JsonKeys.*;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -47,23 +49,72 @@ public final class FileDto
     extends
         ResourceSnapshot
     implements
-        Jsonable {
+        Jsonable2 {
 
     private MimeType              _mimeType;
     private String                _path;
     private Map<String, String>   _properties;
     private String                _charset;
-    private UUID                  _dataId;
     private long                  _size;
     private boolean               _isImage;
     private boolean               _isExecutable;
     private boolean               _isText;
     private boolean               _isMajorEdit;
     private String                _comment;
+
+    private UUID                  _dataId;
     private transient InputStream _inputStream;
+    private String                _content;
 
 
-    @SuppressWarnings("unused") private FileDto() { super(); }
+    /**
+     * Constructor.
+     */
+    public FileDto() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param parentId The parent ID.
+     * @param name The file's name.
+     * @param mimeType The file's mime type.
+     * @param isMajorRevision Is this a major revision.
+     * @param revisionComment Comment describing the revision.
+     * @param content The file's content.
+     */
+    public FileDto(final UUID parentId,
+                   final String name,
+                   final MimeType mimeType,
+                   final boolean isMajorRevision,
+                   final String revisionComment,
+                   final String content) {
+        setParent(parentId);
+        setName(new ResourceName(name));
+        _mimeType = mimeType;
+        setMajorEdit(isMajorRevision);
+        setComment(revisionComment);
+        _content = content;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param mimeType The file's mime type.
+     * @param size The file's size.
+     * @param data A reference to the files data.
+     * @param properties The file's properties.
+     */
+    public FileDto(final MimeType mimeType,
+                   final UUID data,
+                   final long size,
+                   final Map<String, String> properties) {
+        _mimeType = mimeType;
+        _dataId = data;
+        _size = size;
+        _properties = new HashMap<String, String>(properties);
+    }
 
 
     /**
@@ -94,17 +145,32 @@ public final class FileDto
     /**
      * Constructor.
      *
+     * @param id The file's ID.
+     * @param content The file's content.
+     * @param mimeType The file's mime-type.
+     * @param isMajorRevision Is this a major revision.
+     * @param revisionComment Comment describing the revision.
+     */
+    public FileDto(final UUID id,
+                   final String content,
+                   final MimeType mimeType,
+                   final boolean isMajorRevision,
+                   final String revisionComment) {
+        setId(id);
+        _content = content;
+        _mimeType = mimeType;
+        setMajorEdit(isMajorRevision);
+        setComment(revisionComment);
+    }
+
+
+    /**
+     * Constructor.
+     *
      * @param json The JSON representation for this class.
      */
     public FileDto(final Json json) {
-        this(
-            new MimeType(json.getJson(MIME_TYPE)),
-            json.getString(PATH),
-            json.getId(ID),
-            new ResourceName(json.getString(NAME)),
-            json.getString(TITLE),
-            json.getStringMap(PROPERTIES)
-        );
+        fromJson(json);
     }
 
 
@@ -138,17 +204,6 @@ public final class FileDto
     }
 
 
-    /** {@inheritDoc} */
-    @Override public void toJson(final Json json) {
-        json.set(MIME_TYPE, getMimeType());
-        json.set(PATH, getPath());
-        json.set(ID, getId());
-        json.set(NAME, getName().toString());
-        json.set(TITLE, getTitle());
-        json.set(PROPERTIES, getProperties());
-    }
-
-
     /**
      * Accessor.
      *
@@ -166,6 +221,16 @@ public final class FileDto
      */
     public UUID getData() {
         return _dataId;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param data The data to set.
+     */
+    public void setData(final UUID data) {
+        _dataId = data;
     }
 
 
@@ -336,5 +401,52 @@ public final class FileDto
      */
     public void setInputStream(final InputStream inputStream) {
         _inputStream = inputStream;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the content.
+     */
+    public String getContent() {
+        return _content;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override public void toJson(final Json json) {
+        json.set(MIME_TYPE, getMimeType());
+        json.set(PATH, getPath());
+        json.set(ID, getId());
+        json.set(NAME, (null==getName()) ? null : getName().toString());
+        json.set(TITLE, getTitle());
+        json.set(PROPERTIES, getProperties());
+        json.set(SIZE, Long.valueOf(getSize()));
+        json.set(DATA, getData());
+        json.set(PARENT_ID, getParent());
+        json.set(MAJOR_CHANGE, Boolean.valueOf(isMajorEdit()));
+        json.set(COMMENT, getComment());
+        json.set(TEXT, getContent());
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        final Json mime = json.getJson(MIME_TYPE);
+        setMimeType((null==mime) ? null : new MimeType(mime));
+        _path = json.getString(PATH);
+        setId(json.getId(ID));
+        final String name = json.getString(NAME);
+        setName((null==name) ? null : new ResourceName(name));
+        setTitle(json.getString(TITLE));
+        _properties = json.getStringMap(PROPERTIES);
+        setData(json.getId(JsonKeys.DATA));
+        setSize(json.getLong(JsonKeys.SIZE).longValue());
+        setParent(json.getId(PARENT_ID));
+        setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
+        setComment(json.getString(COMMENT));
+        _content = json.getString(TEXT);
     }
 }

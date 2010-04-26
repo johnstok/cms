@@ -26,13 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TextFileDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.ResourceCreated;
 import ccc.client.gwt.widgets.ContentCreator;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -48,13 +47,13 @@ public final class CreateTextFileAction
         RemotingAction {
 
 
-    private TextFileDto _dto;
+    private FileDto _dto;
     /**
      * Constructor.
      *
      * @param dto Text file DTO.
      */
-    public CreateTextFileAction(final TextFileDto dto) {
+    public CreateTextFileAction(final FileDto dto) {
         super(GLOBALS.uiConstants().createTextFile(), RequestBuilder.POST);
         _dto = dto;
     }
@@ -71,12 +70,7 @@ public final class CreateTextFileAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, _dto.getParentId());
-        json.set(JsonKeys.NAME, _dto.getName());
-        json.set(JsonKeys.MIME_TYPE, _dto.getMimeType());
-        json.set(JsonKeys.MAJOR_CHANGE, _dto.isMajorRevision());
-        json.set(JsonKeys.COMMENT, _dto.getRevisionComment());
-        json.set(JsonKeys.DATA, _dto.getContent());
+        _dto.toJson(json);
         return json.toString();
     }
 
