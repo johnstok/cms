@@ -33,7 +33,6 @@ import java.util.UUID;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -43,9 +42,7 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public class TemplateDto
     extends
-        ResourceSnapshot
-    implements
-        Jsonable2 {
+        ResourceSnapshot {
 
     private String   _body;
     private String   _definition;
@@ -115,30 +112,23 @@ public class TemplateDto
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(ID,          getId());
-        json.set(PARENT_ID,   getParent());
+        super.toJson(json);
+
         json.set(DEFINITION,  getDefinition());
         json.set(BODY,        getBody());
         json.set(MIME_TYPE,   getMimeType());
-        json.set(TITLE,       getTitle());
-        json.set(DESCRIPTION, getDescription());
-        json.set(NAME,        (null==getName()) ? null : getName().toString());
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
-        setId(json.getId(ID));
-        setParent(json.getId(PARENT_ID));
+        super.fromJson(json);
+
         setDefinition(json.getString(DEFINITION));
         setBody(json.getString(BODY));
         final Json mime = json.getJson(MIME_TYPE);
         setMimeType((null==mime) ? null : new MimeType(mime));
-        setTitle(json.getString(TITLE));
-        setDescription(json.getString(DESCRIPTION));
-        final String name = json.getString(NAME);
-        setName((null==name) ? null : new ResourceName(name));
     }
 
     /**

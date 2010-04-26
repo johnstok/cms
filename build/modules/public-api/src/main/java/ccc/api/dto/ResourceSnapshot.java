@@ -26,7 +26,10 @@
  */
 package ccc.api.dto;
 
+import static ccc.plugins.s11n.JsonKeys.*;
+
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +40,9 @@ import java.util.UUID;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -44,7 +50,10 @@ import ccc.api.types.ResourceType;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSnapshot implements Serializable {
+public class ResourceSnapshot
+    implements
+        Serializable,
+        Jsonable2 {
 
     private String              _absolutePath;
     private Duration            _cacheDuration;
@@ -58,7 +67,7 @@ public class ResourceSnapshot implements Serializable {
     private boolean             _isSecure;
     private boolean             _isVisible;
     private UUID                _lockedBy;
-    private Map<String, String> _metadata;
+    private Map<String, String> _metadata = new HashMap<String, String>();
     private ResourceName        _name;
     private UUID                _parent;
     private UUID                _publishedBy;
@@ -67,6 +76,66 @@ public class ResourceSnapshot implements Serializable {
     private UUID                _template;
     private String              _title;
     private ResourceType        _type;
+
+
+    /**
+     * Constructor.
+     */
+    public ResourceSnapshot() { super(); }
+
+
+    /**
+     * Constructor.
+     *
+     * @param cacheDuration The duration to set (may be NULL).
+     */
+    @Deprecated
+    public ResourceSnapshot(final Duration cacheDuration) {
+        _cacheDuration = cacheDuration;
+        _revision = -1;
+        _template = null;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param revision The revision used to create the working copy.
+     */
+    @Deprecated
+    public ResourceSnapshot(final Long revision) {
+        _revision = revision.intValue();
+        _cacheDuration = null;
+        _template = null;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param cacheDuration The duration to set (may be NULL).
+     * @param revision The revision used to create the working copy.
+     * @param templateId The template id.
+     */
+    @Deprecated
+    public ResourceSnapshot(final Duration cacheDuration,
+                                   final Long revision,
+                                   final UUID templateId) {
+        _revision = revision.intValue();
+        _cacheDuration = cacheDuration;
+        _template = templateId;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param templateId The template id.
+     */
+    @Deprecated
+    public ResourceSnapshot(final UUID templateId) {
+        _template = templateId;
+        _cacheDuration = null;
+        _revision = -1;
+    }
 
 
     /**
@@ -369,7 +438,10 @@ public class ResourceSnapshot implements Serializable {
      * @param tags The tags to set.
      */
     public void setTags(final Set<String> tags) {
-        _tags = new HashSet<String>(tags);
+        _tags =
+            (null==tags)
+                ? new HashSet<String>()
+                : new HashSet<String>(tags);
     }
 
 
@@ -389,7 +461,10 @@ public class ResourceSnapshot implements Serializable {
      * @param metadata The metadata to set.
      */
     public void setMetadata(final Map<String, String> metadata) {
-        _metadata = new HashMap<String, String>(metadata);
+        _metadata =
+            (null==metadata)
+                ? new HashMap<String, String>()
+                : new HashMap<String, String>(metadata);
     }
 
 
@@ -524,5 +599,63 @@ public class ResourceSnapshot implements Serializable {
      */
     public boolean isCacheable() {
         return null!=_cacheDuration && _cacheDuration.time()>0;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        setAbsolutePath(json.getString(ABSOLUTE_PATH));
+        final Json duration = json.getJson(CACHE_DURATION);
+        setCacheDuration((null==duration) ? null : new Duration(duration));
+        setDateChanged(json.getDate(DATE_CHANGED));
+        setDateCreated(json.getDate(DATE_CREATED));
+        setDescription(json.getString(DESCRIPTION));
+        setId(json.getId(ID));
+        setInMainMenu(json.getBool(INCLUDE_IN_MAIN_MENU).booleanValue());
+        setLocked(json.getBool(LOCKED).booleanValue());
+        setPublished(json.getBool(PUBLISHED).booleanValue());
+        setSecure(json.getBool(SECURE).booleanValue());
+        setVisible(json.getBool(VISIBLE).booleanValue());
+        setLockedBy(json.getId(LOCKED_BY));
+        setMetadata(json.getStringMap(METADATA));
+        final String name = json.getString(NAME);
+        setName((null==name) ? null : new ResourceName(name));
+        setParent(json.getId(PARENT_ID));
+        setPublishedBy(json.getId(PUBLISHED_BY));
+        setRevision(json.getInt(REVISION).intValue());
+        final Collection<String> tags = json.getStrings(TAGS);
+        setTags((null==tags) ? null : new HashSet<String>(tags));
+        setTemplate(json.getId(TEMPLATE_ID));
+        setTitle(json.getString(TITLE));
+        final String type = json.getString(TYPE);
+        setType((null==type) ? null : ResourceType.valueOf(type));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set(ABSOLUTE_PATH, _absolutePath);
+        json.set(CACHE_DURATION, _cacheDuration);
+        json.set(DATE_CHANGED, _dateChanged);
+        json.set(DATE_CREATED, _dateCreated);
+        json.set(DESCRIPTION, _description);
+        json.set(ID, _id);
+        json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_inMainMenu));
+        json.set(JsonKeys.LOCKED, Boolean.valueOf(_isLocked));
+        json.set(JsonKeys.PUBLISHED, Boolean.valueOf(_isPublished));
+        json.set(JsonKeys.SECURE, Boolean.valueOf(_isSecure));
+        json.set(JsonKeys.VISIBLE, Boolean.valueOf(_isVisible));
+        json.set(LOCKED_BY, _lockedBy);
+        json.set(METADATA, _metadata);
+        json.set(NAME, (null==_name) ? null : _name.toString());
+        json.set(PARENT_ID, _parent);
+        json.set(PUBLISHED_BY, _publishedBy);
+        json.set(REVISION, Long.valueOf(_revision));
+        json.setStrings(TAGS, _tags);
+        json.set(TEMPLATE_ID, _template);
+        json.set(TITLE, _title);
+        json.set(TYPE, (null==_type) ? null : _type.name());
     }
 }

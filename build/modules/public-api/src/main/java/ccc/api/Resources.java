@@ -42,7 +42,6 @@ import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.ACL;
 import ccc.api.dto.PagedCollection;
-import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
@@ -221,7 +220,7 @@ public interface Resources {
     @POST @Path("/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
-        ResourceDto duration);
+        ResourceSnapshot duration);
 
 
     /**
@@ -253,7 +252,7 @@ public interface Resources {
     @POST @Path("/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
-        ResourceDto template);
+        ResourceSnapshot template);
 
 
     /**
@@ -361,7 +360,8 @@ public interface Resources {
      * @param dto The DTO specifying the number of the revision to use.
      */
     @POST @Path("/{id}/wc-create")
-    void createWorkingCopy(@PathParam("id") UUID resourceId, ResourceDto dto);
+    void createWorkingCopy(@PathParam("id") UUID resourceId,
+                           ResourceSnapshot dto);
 
 
     /**

@@ -197,4 +197,12 @@ public final class JsonKeys {
     public static final String MESSAGE = "message";
     /** CAUSE : String. */
     public static final String CAUSE = "cause";
+    /** LOCKED : String. */
+    public static final String LOCKED = "locked";
+    /** PUBLISHED : String. */
+    public static final String PUBLISHED = "published";
+    /** SECURE : String. */
+    public static final String SECURE = "secure";
+    /** VISIBLE : String. */
+    public static final String VISIBLE = "visible";
 }

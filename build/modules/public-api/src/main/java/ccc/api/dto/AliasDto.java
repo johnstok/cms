@@ -31,7 +31,6 @@ import java.util.UUID;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -41,9 +40,7 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public class AliasDto
     extends
-        ResourceSnapshot
-    implements
-        Jsonable2 {
+        ResourceSnapshot {
 
     private UUID _targetId;
     private String _targetPath;
@@ -124,9 +121,8 @@ public class AliasDto
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, getParent());
-        json.set(
-            JsonKeys.NAME, (null==getName()) ? null : getName().toString());
+        super.toJson(json);
+
         json.set(JsonKeys.TARGET_ID, _targetId);
     }
 
@@ -134,9 +130,8 @@ public class AliasDto
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
+
         setTargetId(json.getId(JsonKeys.TARGET_ID));
-        setParent(json.getId(JsonKeys.PARENT_ID));
-        final String name = json.getString(JsonKeys.NAME);
-        setName((null==name) ? null : new ResourceName(name));
     }
 }

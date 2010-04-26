@@ -41,7 +41,6 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import ccc.api.Resources;
 import ccc.api.dto.ACL;
 import ccc.api.dto.PagedCollection;
-import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
@@ -192,7 +191,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceDto pu) {
+                                    final ResourceSnapshot pu) {
         try {
             _delegate.updateCacheDuration(resourceId, pu);
         } catch (final ClientResponseFailure cfe) {
@@ -226,7 +225,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceDto pu) {
+                                       final ResourceSnapshot pu) {
         try {
             _delegate.updateResourceTemplate(resourceId, pu);
         } catch (final ClientResponseFailure cfe) {
@@ -348,7 +347,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceDto pu) {
+                                  final ResourceSnapshot pu) {
         try {
             _delegate.createWorkingCopy(resourceId, pu);
         } catch (final ClientResponseFailure cfe) {
