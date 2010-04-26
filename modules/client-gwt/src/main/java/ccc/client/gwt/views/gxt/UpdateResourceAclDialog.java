@@ -31,10 +31,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.ACL;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
-import ccc.api.dto.ACL.Entry;
+import ccc.api.types.ACL;
+import ccc.api.types.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetUserAction;

@@ -34,15 +34,15 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.dto.ACL;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
-import ccc.api.dto.ACL.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.ACL;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
+import ccc.api.types.ACL.Entry;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.JsonImpl;
 

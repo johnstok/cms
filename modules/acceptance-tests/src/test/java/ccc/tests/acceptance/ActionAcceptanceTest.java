@@ -31,10 +31,10 @@ import java.util.HashMap;
 
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 
 

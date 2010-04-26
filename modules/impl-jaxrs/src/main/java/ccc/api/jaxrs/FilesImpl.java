@@ -37,10 +37,10 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Files;
 import ccc.api.StreamAction;
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.DBC;
+import ccc.api.types.PagedCollection;
 
 
 /**

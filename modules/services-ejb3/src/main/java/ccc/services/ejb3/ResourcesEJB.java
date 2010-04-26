@@ -44,15 +44,15 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Resources;
-import ccc.api.dto.ACL;
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceCriteria;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.ACL;
 import ccc.api.types.Duration;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
 import ccc.commands.ApplyWorkingCopyCommand;

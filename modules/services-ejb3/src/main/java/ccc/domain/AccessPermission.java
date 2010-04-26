@@ -26,8 +26,8 @@
  */
 package ccc.domain;
 
-import ccc.api.dto.ACL.Entry;
 import ccc.api.types.DBC;
+import ccc.api.types.ACL.Entry;
 
 
 /**

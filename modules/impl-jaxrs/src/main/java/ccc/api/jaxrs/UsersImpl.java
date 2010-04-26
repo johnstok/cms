@@ -37,9 +37,9 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Users;
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.UserDto;
 import ccc.api.types.DBC;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 

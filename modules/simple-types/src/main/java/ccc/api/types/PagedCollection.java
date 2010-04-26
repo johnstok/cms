@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.dto;
+package ccc.api.types;
 
 import java.io.Serializable;
 import java.util.List;
