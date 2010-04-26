@@ -37,8 +37,6 @@ import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TextFileDelta;
-import ccc.api.dto.TextFileDto;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.UnlockedException;
 import ccc.api.types.MimeType;
@@ -65,7 +63,7 @@ public class FileUploadAcceptanceTest
             getCommands().resourceForPath("");
         final ResourceSummary file =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     content.getId(),
                     fName,
                     MimeType.TEXT,
@@ -96,7 +94,7 @@ public class FileUploadAcceptanceTest
         final ResourceSummary content = getCommands().resourceForPath("");
         final ResourceSummary file =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     content.getId(),
                     fName,
                     MimeType.TEXT,
@@ -115,7 +113,7 @@ public class FileUploadAcceptanceTest
         getCommands().lock(file.getId());
         getFiles().update(
             file.getId(),
-            new TextFileDelta(
+            new FileDto(
                 file.getId(), "Update!", MimeType.TEXT, true, ""));
         revs = getCommands().history(file.getId());
         assertEquals(2, revs.size());
@@ -192,7 +190,7 @@ public class FileUploadAcceptanceTest
         // ACT
         final ResourceSummary rs =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -218,7 +216,7 @@ public class FileUploadAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -229,7 +227,7 @@ public class FileUploadAcceptanceTest
         // ACT
         try {
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -260,7 +258,7 @@ public class FileUploadAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -272,7 +270,7 @@ public class FileUploadAcceptanceTest
         // ACT
         getFiles().update(
             rs.getId(),
-            new TextFileDelta(
+            new FileDto(
                 rs.getId(), "Update!", MimeType.TEXT, true, ""));
 
         // ASSERT
@@ -293,7 +291,7 @@ public class FileUploadAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -336,7 +334,7 @@ public class FileUploadAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -346,7 +344,7 @@ public class FileUploadAcceptanceTest
         getCommands().lock(rs.getId());
 
         // ACT
-        getFiles().update(rs.getId(), new TextFileDelta(
+        getFiles().update(rs.getId(), new FileDto(
             rs.getId(),
             "Update!",
             new MimeType("text", "plain"),
@@ -370,7 +368,7 @@ public class FileUploadAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary rs =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -382,7 +380,7 @@ public class FileUploadAcceptanceTest
         try {
             getFiles().update(
                 rs.getId(),
-                new TextFileDelta(
+                new FileDto(
                     rs.getId(), "Update!", MimeType.TEXT, true, ""));
 
         // ASSERT

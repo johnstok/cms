@@ -38,6 +38,7 @@ import java.util.UUID;
 
 import javax.activation.MimeTypeParseException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -69,6 +70,7 @@ import ccc.plugins.multipart.MultipartFormData;
  */
 @Provider
 @Consumes("multipart/form-data")
+@Produces("multipart/form-data")
 public class FileReader
     extends
         AbstractProvider

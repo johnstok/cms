@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.dto.FileDelta;
+import ccc.api.dto.FileDto;
 import ccc.api.types.CommandType;
 import ccc.domain.Data;
 import ccc.domain.File;
@@ -50,7 +50,7 @@ public class UpdateFileCommand
         UpdateResourceCommand<File> {
 
     private final UUID        _fileId;
-    private final FileDelta   _fileDelta;
+    private final FileDto   _fileDelta;
     private final String      _comment;
     private final boolean     _isMajorEdit;
     private final InputStream _dataStream;
@@ -68,7 +68,7 @@ public class UpdateFileCommand
      */
     public UpdateFileCommand(final IRepositoryFactory repoFactory,
                              final UUID fileId,
-                             final FileDelta fileDelta,
+                             final FileDto fileDelta,
                              final String comment,
                              final boolean isMajorEdit,
                              final InputStream dataStream) {

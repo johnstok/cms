@@ -40,8 +40,6 @@ import ccc.api.StreamAction;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TextFileDelta;
-import ccc.api.dto.TextFileDto;
 import ccc.api.types.DBC;
 
 
@@ -75,7 +73,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TextFileDelta get(final UUID fileId) {
+    public FileDto get(final UUID fileId) {
         try {
             return _files.get(fileId);
         } catch (final ClientResponseFailure cfe) {
@@ -85,7 +83,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID id, final TextFileDelta file) {
+    public void update(final UUID id, final FileDto file) {
         try {
             _files.update(id, file);
         } catch (final ClientResponseFailure cfe) {
@@ -95,7 +93,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTextFile(final TextFileDto textFile) {
+    public ResourceSummary createTextFile(final FileDto textFile) {
         try {
             return _files.createTextFile(textFile);
         } catch (final ClientResponseFailure cfe) {

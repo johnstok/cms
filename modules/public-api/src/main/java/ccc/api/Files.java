@@ -40,8 +40,6 @@ import javax.ws.rs.QueryParam;
 import ccc.api.dto.DtoCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TextFileDelta;
-import ccc.api.dto.TextFileDto;
 
 
 /**
@@ -80,7 +78,7 @@ public interface Files {
      * @param file The new file representation.
      */
     @POST @Path("/{id}")
-    void update(@PathParam("id") UUID id, TextFileDelta file);
+    void update(@PathParam("id") UUID id, FileDto file);
 
 
     /**
@@ -91,7 +89,7 @@ public interface Files {
      * @return The file for the specified ID.
      */
     @GET @Path("/{id}")
-    TextFileDelta get(@PathParam("id") UUID fileId);
+    FileDto get(@PathParam("id") UUID fileId);
 
 
     /**
@@ -102,7 +100,7 @@ public interface Files {
      * @return A resource summary describing the new text file.
      */
     @POST
-    ResourceSummary createTextFile(TextFileDto textFile);
+    ResourceSummary createTextFile(FileDto textFile);
 
 
     /**

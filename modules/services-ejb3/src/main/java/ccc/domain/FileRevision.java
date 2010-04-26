@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.dto.FileDelta;
+import ccc.api.dto.FileDto;
 import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
@@ -43,7 +43,7 @@ import ccc.api.types.MimeType;
  */
 public class FileRevision
     extends
-        Revision<FileDelta> {
+        Revision<FileDto> {
 
     private Data      _data;
     private long       _size;
@@ -145,8 +145,8 @@ public class FileRevision
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta delta() {
-        return new FileDelta(
+    public FileDto delta() {
+        return new FileDto(
             _mimeType,
             _data.getId(),
             _size,

@@ -37,7 +37,6 @@ import ccc.api.dto.FolderDto;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.TemplateDto;
-import ccc.api.dto.TextFileDelta;
 import ccc.api.exceptions.CCException;
 import ccc.plugins.scripting.Script;
 import ccc.web.rendering.FileBody;
@@ -128,7 +127,7 @@ public class TmpRenderer {
 
     private Response invoke(final FileDto f) {
         try {
-            final TextFileDelta tf = _files.get(f.getId());
+            final FileDto tf = _files.get(f.getId());
             return
                 new Response(
                     new ScriptBody(

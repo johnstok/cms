@@ -26,13 +26,14 @@
  */
 package ccc.api.exceptions;
 
+import static ccc.plugins.s11n.JsonKeys.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
 import ccc.api.types.Failure;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -49,7 +50,7 @@ public class CCException
 
 
     /** Constructor. */
-    protected CCException() { this(null, null, new HashMap<String, String>()); }
+    public CCException() { this(null, null, new HashMap<String, String>()); }
 
 
     /**
@@ -64,8 +65,8 @@ public class CCException
                           final Map<String, String> params) {
         super(message, cause);
         _params.putAll(params);
-        _params.put(JsonKeys.MESSAGE, message); // TODO: Null check?
-        _params.put(JsonKeys.CAUSE, (null==cause) ? null : cause.getMessage());
+        _params.put(MESSAGE, ""+message); // NPE has NULL message :(
+        _params.put(CAUSE, (null==cause) ? null : ""+cause.getMessage());
     }
 
 
@@ -144,7 +145,7 @@ public class CCException
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        final String message = _params.get(JsonKeys.MESSAGE);
+        final String message = _params.get(MESSAGE);
         if (null!=message) { return message; }
         return super.getMessage();
     }

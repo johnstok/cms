@@ -57,8 +57,6 @@ import ccc.api.jaxrs.providers.ResourceSummaryCollectionReader;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.jaxrs.providers.SearchResultWriter;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
-import ccc.api.jaxrs.providers.TextFileDeltaReader;
-import ccc.api.jaxrs.providers.TextFileDtoReader;
 import ccc.api.jaxrs.providers.UUIDProvider;
 import ccc.api.jaxrs.providers.UuidCollectionWriter;
 import ccc.commons.JNDI;
@@ -113,9 +111,7 @@ public class JaxrsConfiguration
         providers.add(StringCollectionWriter.class);
         providers.add(ResourceCacheDurationPUReader.class);
         providers.add(ActionNewReader.class);
-        providers.add(TextFileDeltaReader.class);
         providers.add(UuidCollectionWriter.class);
-        providers.add(TextFileDtoReader.class);
         providers.add(SearchResultWriter.class);
         providers.add(FileReader.class);
         providers.add(SecurityImpl.class);

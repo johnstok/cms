@@ -35,9 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.FileDelta;
 import ccc.api.dto.FileDto;
-import ccc.api.dto.TextFileDelta;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -54,7 +52,7 @@ import ccc.persistence.DataRepository;
  */
 public class File
     extends
-        WorkingCopySupport<FileRevision, FileDelta, FileWorkingCopy>  {
+        WorkingCopySupport<FileRevision, FileDto, FileWorkingCopy>  {
 
     /** Constructor: for persistence only. */
     protected File() { super(); }
@@ -112,7 +110,7 @@ public class File
         DBC.require().notNull(data);
         setDescription(description);
         update(
-            new FileDelta(mimeType, data.getId(), size, properties),
+            new FileDto(mimeType, data.getId(), size, properties),
             metadata);
     }
 
@@ -237,7 +235,7 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    protected void update(final FileDelta delta,
+    protected void update(final FileDto delta,
                           final RevisionMetadata metadata) {
         addRevision(
             new FileRevision(
@@ -253,9 +251,9 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    public FileDelta createSnapshot() {
-        final FileDelta delta =
-            new FileDelta(
+    public FileDto createSnapshot() {
+        final FileDto delta =
+            new FileDto(
                 getMimeType(),
                 getData().getId(),
                 size(),
@@ -266,7 +264,7 @@ public class File
 
     /** {@inheritDoc} */
     @Override
-    protected FileWorkingCopy createWorkingCopy(final FileDelta delta) {
+    protected FileWorkingCopy createWorkingCopy(final FileDto delta) {
         return new FileWorkingCopy(delta);
     }
 
@@ -350,10 +348,9 @@ public class File
      *
      * @return The summary of the file.
      */
-    public TextFileDelta mapTextFile(final DataRepository _dm) {
-
-        final TextFileDelta fs =
-            new TextFileDelta(
+    public FileDto mapTextFile(final DataRepository _dm) {
+        final FileDto fs =
+            new FileDto(
                 getId(),
                 (!isText())
                     ? null : read(_dm, this),
@@ -384,7 +381,7 @@ public class File
      *
      * @return A corresponding delta.
      */
-    public FileDelta deltaFile() {
+    public FileDto deltaFile() {
         return getOrCreateWorkingCopy();
     }
 

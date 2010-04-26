@@ -45,13 +45,9 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.Files;
 import ccc.api.StreamAction;
 import ccc.api.dto.DtoCollection;
-import ccc.api.dto.FileDelta;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TextFileDelta;
-import ccc.api.dto.TextFileDto;
 import ccc.api.types.FilePropertyNames;
-import ccc.api.types.ResourceName;
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.File;
 import ccc.domain.RevisionMetadata;
@@ -111,7 +107,7 @@ public class FilesEJB
         final File f =
             commands().createFileCommand(
                 file.getParent(),
-                new FileDelta(
+                new FileDto(
                     file.getMimeType(),
                     null,
                     file.getSize(),
@@ -141,7 +137,7 @@ public class FilesEJB
             new UpdateFileCommand(
                 getRepoFactory(),
                 fileId,
-                new FileDelta(
+                new FileDto(
                     file.getMimeType(),
                     null,
                     file.getSize(),
@@ -159,7 +155,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_UPDATE})
-    public void update(final UUID id, final TextFileDelta file) {
+    public void update(final UUID id, final FileDto file) {
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -177,8 +173,8 @@ public class FilesEJB
         );
         f.setInputStream(new ByteArrayInputStream(bytes));
         f.setSize(bytes.length);
-        f.setMajorEdit(file.isMajorRevision());
-        f.setComment(file.getRevisionComment());
+        f.setMajorEdit(file.isMajorEdit());
+        f.setComment(file.getComment());
 
         updateFile(f.getId(), f);
     }
@@ -186,7 +182,8 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_CREATE})
-    public ResourceSummary createTextFile(final TextFileDto file) {
+    // FIXME: Removal of TextFileDto made this method a mess.
+    public ResourceSummary createTextFile(final FileDto file) {
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -198,17 +195,17 @@ public class FilesEJB
             file.getMimeType(),
             null,
             null,
-            new ResourceName(file.getName()),
             file.getName(),
+            file.getName().toString(),
             Collections.singletonMap(FilePropertyNames.CHARSET, "UTF-8")
         );
-        f.setDescription(file.getName());
-        f.setParent(file.getParentId());
+        f.setDescription(file.getName().toString());
+        f.setParent(file.getParent());
         f.setInputStream(new ByteArrayInputStream(bytes));
         f.setSize(bytes.length);
         f.setPublished(false);
-        f.setMajorEdit(file.isMajorRevision());
-        f.setComment(file.getRevisionComment());
+        f.setMajorEdit(file.isMajorEdit());
+        f.setComment(file.getComment());
         f.setDateCreated(new Date());
         f.setDateChanged(f.getDateCreated());
 
@@ -226,7 +223,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public TextFileDelta get(final UUID fileId) {
+    public FileDto get(final UUID fileId) {
         checkPermission(FILE_READ);
 
         // FIXME: check file is accessible to user.

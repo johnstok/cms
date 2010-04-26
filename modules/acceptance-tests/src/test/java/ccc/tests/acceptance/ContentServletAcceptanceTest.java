@@ -29,8 +29,8 @@ package ccc.tests.acceptance;
 import java.util.Collections;
 import java.util.UUID;
 
+import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TextFileDto;
 import ccc.api.types.MimeType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -64,7 +64,7 @@ public class ContentServletAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary script =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -102,7 +102,7 @@ public class ContentServletAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary script =
             getFiles().createTextFile(
-                new TextFileDto(
+                new FileDto(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
