@@ -26,9 +26,10 @@
  */
 package ccc.persistence;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -101,7 +102,7 @@ class ActionRepositoryImpl
                                   final int pageSize) {
 
         final StringBuffer query = new StringBuffer();
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         query.append("from ccc.domain.Action a WHERE a._status!='SCHEDULED'");
         query.append(" order by a.");
@@ -115,27 +116,27 @@ class ActionRepositoryImpl
                 Action.class,
                 pageNo,
                 pageSize,
-                params.toArray());
+                params);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public long countCompleted() {
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
         final String query = "select count(*) from ccc.domain.Action a "
         		+ " WHERE a._status!='SCHEDULED'";
-        return _repo.scalarLong(query, params.toArray());
+        return _repo.scalarLong(query, params);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public long countPending() {
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
         final String query = "select count(*) from ccc.domain.Action a "
                 + " WHERE a._status='SCHEDULED'";
-        return _repo.scalarLong(query, params.toArray());
+        return _repo.scalarLong(query, params);
     }
 
 
@@ -147,7 +148,7 @@ class ActionRepositoryImpl
                                 final int pageSize) {
 
         final StringBuffer query = new StringBuffer();
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         query.append("from ccc.domain.Action a WHERE a._status='SCHEDULED'");
         query.append(" order by a.");
@@ -161,7 +162,7 @@ class ActionRepositoryImpl
                 Action.class,
                 pageNo,
                 pageSize,
-                params.toArray());
+                params);
     }
 
     private String mapSortColumn(final String sort) {

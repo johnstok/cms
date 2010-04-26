@@ -26,9 +26,9 @@
  */
 package ccc.persistence;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -89,11 +89,11 @@ public class GroupRepositoryImpl
     @Override
     public Collection<Group> list(final String name) {
         final StringBuffer query = new StringBuffer("from ccc.domain.Group g");
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         if (null!=name) {
-            query.append(" where g._name = ?");
-            params.add(name);
+            query.append(" where g._name = :name");
+            params.put("name", name);
         }
 
         return _repo.listDyn(
@@ -101,6 +101,6 @@ public class GroupRepositoryImpl
             Group.class,
             1,
             100,
-            params.toArray());
+            params);
     }
 }

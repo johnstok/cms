@@ -26,8 +26,9 @@
  */
 package ccc.persistence;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -103,19 +104,19 @@ public class CommentRepositoryImpl
                               final int pageSize) {
 
         final StringBuffer query = new StringBuffer();
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         query.append("from ccc.domain.Comment c");
 
         if (null!=status) {
-            query.append(" where c._status = ?");
-            params.add(status);
+            query.append(" where c._status = :status");
+            params.put("status", status);
         }
 
         if (null!=resource) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" c._resource = ?");
-            params.add(resource);
+            query.append(" c._resource = :resource");
+            params.put("resource", resource);
         }
 
         query.append(" order by c.");
@@ -129,7 +130,7 @@ public class CommentRepositoryImpl
                 Comment.class,
                 pageNo,
                 pageSize,
-                params.toArray());
+                params);
     }
 
 
@@ -138,22 +139,22 @@ public class CommentRepositoryImpl
     public long count(final Resource resource, final CommentStatus status) {
 
         final StringBuffer query = new StringBuffer();
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
 
         query.append("select count(*) from ccc.domain.Comment c");
 
         if (null!=status) {
-            query.append(" where c._status = ?");
-            params.add(status);
+            query.append(" where c._status = :status");
+            params.put("status", status);
         }
 
         if (null!=resource) {
             query.append((params.size()>0) ? " and" : " where");
-            query.append(" c._resource = ?");
-            params.add(resource);
+            query.append(" c._resource = :resource");
+            params.put("resource", resource);
         }
 
-        return _repo.scalarLong(query.toString(), params.toArray());
+        return _repo.scalarLong(query.toString(), params);
     }
 
 

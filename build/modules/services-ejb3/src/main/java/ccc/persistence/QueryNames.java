@@ -54,6 +54,10 @@ final class QueryNames {
     /** RESOURCE_BY_LEGACY_ID : String. */
     public static final String RESOURCE_BY_LEGACY_ID = "resourceByLegacyId";
 
+    /** RESOURCE_BY_METADATA_KEY : String. */
+    public static final String RESOURCE_BY_METADATA_KEY =
+        "resourceByMetadataKey";
+
     /** ALL_PAGES : String. */
     public static final String ALL_PAGES = "allPages";
 

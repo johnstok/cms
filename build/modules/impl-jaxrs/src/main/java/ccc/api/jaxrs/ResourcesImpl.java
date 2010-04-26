@@ -165,6 +165,17 @@ public class ResourcesImpl
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Collection<ResourceSummary> resourceForMetadataKey(
+                                                            final String key) {
+        try {
+            return _delegate.resourceForMetadataKey(key);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -399,7 +410,6 @@ public class ResourcesImpl
                                       final Long before,
                                       final Long after,
                                       final String mainmenu,
-                                      final String metadataKey,
                                       final String sort,
                                       final SortOrder order,
                                       final int pageNo,
@@ -410,7 +420,6 @@ public class ResourcesImpl
                 before,
                 after,
                 mainmenu,
-                metadataKey,
                 sort,
                 order,
                 pageNo,

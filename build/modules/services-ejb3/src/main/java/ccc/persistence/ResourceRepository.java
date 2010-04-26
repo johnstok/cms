@@ -111,6 +111,15 @@ public interface ResourceRepository {
     Resource lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
 
     /**
+     * Look up a resource, given its metadata key.
+     *
+     * @param key The metadata key.
+     *
+     * @return The corresponding resources in CCC7.
+     */
+    List<Resource> lookupWithMetadataKey(String key);
+
+    /**
      * Lookup a root folder by name.
      *
      * @param name The name of the root folder.

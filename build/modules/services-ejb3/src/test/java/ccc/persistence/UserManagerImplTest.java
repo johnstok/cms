@@ -30,7 +30,8 @@ package ccc.persistence;
 import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import ccc.api.dto.UserCriteria;
@@ -95,14 +96,14 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsers() {
 
         // ARRANGE
-        final List<Object> params = new ArrayList<Object>();
+        final Map<String, Object> params = new HashMap<String, Object>();
         expect(_repository.listDyn(
             "select u "
             + "from ccc.domain.User as u",
             User.class,
             1,
             1,
-            params.toArray()))
+            params))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -122,17 +123,17 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithGroup() {
 
         // ARRANGE
-        final List<Object> params = new ArrayList<Object>();
-        params.add("ADMINISTRATOR");
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("groups", "ADMINISTRATOR");
         expect(_repository.listDyn(
-            "select u from ccc.domain.User as u where ? in ("
+            "select u from ccc.domain.User as u where :groups in ("
             + "select r._name "
             + "from ccc.domain.User as u2 left join u2._groups as r "
             + "where u=u2) ",
             User.class,
             1,
             1,
-            params.toArray()))
+            params))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -152,16 +153,16 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithUsername() {
 
         // ARRANGE
-        final List<Object> params = new ArrayList<Object>();
-        params.add("testname");
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("username", "testname");
         expect(_repository.listDyn(
             "select u"
             +" from ccc.domain.User as u"
-            + " where lower(u._username._value) like lower(?)",
+            + " where lower(u._username._value) like lower(:username)",
             User.class,
             1,
             1,
-            params.toArray()))
+            params))
             .andReturn(new ArrayList<User>());
         replayAll();
 
@@ -181,16 +182,16 @@ public class UserManagerImplTest extends TestCase {
     public void testListUsersWithEmail() {
 
         // ARRANGE
-        final List<Object> params = new ArrayList<Object>();
-        params.add("test@civicuk.com");
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("email", "test@civicuk.com");
         expect(_repository.listDyn(
             "select u"
             + " from ccc.domain.User as u"
-            + " where lower(u._email._text) like lower(?)",
+            + " where lower(u._email._text) like lower(:email)",
             User.class,
             1,
             1,
-            params.toArray()))
+            params))
             .andReturn(new ArrayList<User>());
         replayAll();
 
