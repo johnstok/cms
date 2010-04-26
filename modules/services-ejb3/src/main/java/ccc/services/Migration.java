@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 
@@ -122,7 +122,7 @@ public interface Migration {
      * @param happenedOn When the command happened.
      */
     void changeAcl(UUID resourceId,
-                   AclDto acl,
+                   ACL acl,
                    UUID actorId,
                    Date happenedOn);
 

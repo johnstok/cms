@@ -32,11 +32,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
-import ccc.api.dto.AclDto.Entry;
+import ccc.api.dto.ACL.Entry;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
@@ -234,7 +234,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary folder = tempFolder();
         final UserDto user = tempUser();
         final UserDto me = getUsers().loggedInUser();
-        final AclDto acl = new AclDto();
+        final ACL acl = new ACL();
         final Entry e = new Entry();
         e._canRead = true;
         e._canWrite = true;

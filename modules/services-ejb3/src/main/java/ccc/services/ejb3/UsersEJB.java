@@ -40,7 +40,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Users;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.UserCriteria;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.EntityNotFoundException;
@@ -134,7 +134,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public DtoCollection<UserDto> listUsers(
+    public PagedCollection<UserDto> listUsers(
         final String username,
         final String email,
         final String groups,
@@ -151,7 +151,7 @@ public class UsersEJB
             groups,
             metadataKey,
             metadataValue);
-        return new DtoCollection<UserDto>(userrepo.countUsers(uc), User.map(
+        return new PagedCollection<UserDto>(userrepo.countUsers(uc), User.map(
                 userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
     }
 

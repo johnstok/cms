@@ -38,7 +38,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.Comments;
 import ccc.api.dto.CommentDto;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 import ccc.commands.CreateCommentCommand;
@@ -104,7 +104,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_READ})
-    public DtoCollection<CommentDto> list(final UUID resourceId,
+    public PagedCollection<CommentDto> list(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
@@ -117,7 +117,7 @@ public class CommentsEJB
                     .createResourceRepository()
                     .find(Resource.class, resourceId);
         return
-            new DtoCollection<CommentDto>(
+            new PagedCollection<CommentDto>(
                 getRepoFactory().createCommentRepo().count(r, status),
                 Comment.map(
                     getRepoFactory()

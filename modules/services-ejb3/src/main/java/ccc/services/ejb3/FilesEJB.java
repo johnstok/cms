@@ -44,7 +44,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.Files;
 import ccc.api.StreamAction;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.FilePropertyNames;
@@ -73,7 +73,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_READ})
-    public DtoCollection<FileDto> getPagedImages(
+    public PagedCollection<FileDto> getPagedImages(
             final UUID folderId, final int pageNo, final int pageSize) {
         final List<File> list =
             getRepoFactory()
@@ -83,7 +83,7 @@ public class FilesEJB
             getRepoFactory()
                 .createResourceRepository()
                 .imagesCount(folderId);
-        return new DtoCollection<FileDto>(c, File.mapFiles(list));
+        return new PagedCollection<FileDto>(c, File.mapFiles(list));
     }
 
 

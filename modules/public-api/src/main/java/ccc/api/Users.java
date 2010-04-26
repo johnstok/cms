@@ -38,7 +38,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.UserDto;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
@@ -91,7 +91,7 @@ public interface Users {
      * @return Returns list of users.
      */
    @GET
-   DtoCollection<UserDto> listUsers(
+   PagedCollection<UserDto> listUsers(
         @QueryParam("username") String username,
         @QueryParam("email") String email,
         @QueryParam("groups") String groups,

@@ -37,7 +37,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Files;
 import ccc.api.StreamAction;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.DBC;
@@ -103,7 +103,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<FileDto> getPagedImages(final UUID folderId,
+    public PagedCollection<FileDto> getPagedImages(final UUID folderId,
                                                  final int pageNo,
                                                  final int pageSize) {
         try {

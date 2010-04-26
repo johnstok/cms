@@ -47,7 +47,7 @@ import ccc.api.Actions;
 import ccc.api.Resources;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.SortOrder;
 import ccc.commands.CancelActionCommand;
@@ -122,15 +122,15 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public DtoCollection<ActionSummary> listPendingActions(
+    public PagedCollection<ActionSummary> listPendingActions(
                                                     final String sort,
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
         final ActionRepository actions =
             getRepoFactory().createActionRepository();
-        final DtoCollection<ActionSummary> dc =
-            new DtoCollection<ActionSummary>(
+        final PagedCollection<ActionSummary> dc =
+            new PagedCollection<ActionSummary>(
                 actions.countPending(),
                 Action.mapActions(
                     actions.pending(sort, sortOrder, pageNo, pageSize)));
@@ -141,15 +141,15 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public DtoCollection<ActionSummary> listCompletedActions(
+    public PagedCollection<ActionSummary> listCompletedActions(
                                                     final String sort,
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
                                                     final int pageSize) {
         final ActionRepository actions =
             getRepoFactory().createActionRepository();
-        final DtoCollection<ActionSummary> dc =
-            new DtoCollection<ActionSummary>(
+        final PagedCollection<ActionSummary> dc =
+            new PagedCollection<ActionSummary>(
                 actions.countCompleted(),
                 Action.mapActions(actions.completed(
                     sort, sortOrder, pageNo, pageSize)));

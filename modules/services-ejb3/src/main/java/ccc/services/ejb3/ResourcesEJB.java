@@ -44,8 +44,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Resources;
-import ccc.api.dto.AclDto;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.ACL;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceCriteria;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
@@ -375,7 +375,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_ACL_UPDATE)
-    public void changeAcl(final UUID resourceId, final AclDto acl) {
+    public void changeAcl(final UUID resourceId, final ACL acl) {
         execute(
             new UpdateResourceAclCommand(getRepoFactory(), resourceId, acl));
     }
@@ -472,8 +472,8 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public AclDto acl(final UUID resourceId) {
-        final AclDto acl =
+    public ACL acl(final UUID resourceId) {
+        final ACL acl =
             getResources().find(Resource.class, resourceId).getAcl();
         return acl;
     }
@@ -647,7 +647,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public DtoCollection<ResourceSummary> list(final UUID parent,
+    public PagedCollection<ResourceSummary> list(final UUID parent,
         final String tag,
         final Long before,
         final Long after,
@@ -696,7 +696,7 @@ public class ResourcesEJB
 
         final long count = getResources().totalCount(criteria, f);
 
-        return new DtoCollection<ResourceSummary>(count, list);
+        return new PagedCollection<ResourceSummary>(count, list);
     }
 
 

@@ -46,12 +46,12 @@ import ccc.api.Groups;
 import ccc.api.Resources;
 import ccc.api.ServiceLocator;
 import ccc.api.Users;
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
-import ccc.api.dto.AclDto.Entry;
+import ccc.api.dto.ACL.Entry;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.DBC;
@@ -264,8 +264,8 @@ public class BaseMigrations {
                 userList.add(e);
             }
 
-            final AclDto acl =
-                new AclDto()
+            final ACL acl =
+                new ACL()
                     .setGroups(groupEntries)
                     .setUsers(userList);
 

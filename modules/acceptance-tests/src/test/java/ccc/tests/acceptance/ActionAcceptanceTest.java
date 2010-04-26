@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
@@ -65,7 +65,7 @@ public class ActionAcceptanceTest
                 CommandType.RESOURCE_PUBLISH,
                 new Date(ONE_DAY),
                 new HashMap<String, String>()));
-        final DtoCollection<ActionSummary> pending =
+        final PagedCollection<ActionSummary> pending =
             getActions().listPendingActions("", SortOrder.ASC, 1, 20);
 
         // ASSERT

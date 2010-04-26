@@ -29,8 +29,8 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.dto.AclDto;
-import ccc.api.dto.AclDto.Entry;
+import ccc.api.dto.ACL;
+import ccc.api.dto.ACL.Entry;
 import ccc.api.types.CommandType;
 import ccc.domain.AccessPermission;
 import ccc.domain.LogEntry;
@@ -50,7 +50,7 @@ public class UpdateResourceAclCommand
         Command<Void> {
 
     private final UUID _id;
-    private final AclDto _acl;
+    private final ACL _acl;
 
 
     /**
@@ -62,7 +62,7 @@ public class UpdateResourceAclCommand
      */
     public UpdateResourceAclCommand(final IRepositoryFactory repoFactory,
                                       final UUID id,
-                                      final AclDto acl) {
+                                      final ACL acl) {
         super(repoFactory);
         _id = id;
         _acl = acl;

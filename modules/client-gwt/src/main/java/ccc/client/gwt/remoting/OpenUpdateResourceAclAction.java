@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.Collection;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.GroupDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;
@@ -80,7 +80,7 @@ public final class OpenUpdateResourceAclAction
     protected void onOK(final Response response) {
 
         final JSONObject o = JSONParser.parse(response.getText()).isObject();
-        final AclDto acl = new AclDto(new GwtJson(o));
+        final ACL acl = new ACL(new GwtJson(o));
 
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(

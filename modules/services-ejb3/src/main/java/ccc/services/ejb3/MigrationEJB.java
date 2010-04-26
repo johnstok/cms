@@ -38,7 +38,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.commands.ApplyWorkingCopyCommand;
@@ -234,7 +234,7 @@ public class MigrationEJB
     /** {@inheritDoc} */
     @Override
     public void changeAcl(final UUID resourceId,
-                            final AclDto acl,
+                            final ACL acl,
                             final UUID actorId,
                             final Date happenedOn) {
         sudoExecute(

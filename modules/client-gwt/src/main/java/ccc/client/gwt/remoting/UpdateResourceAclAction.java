@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -45,7 +45,7 @@ public class UpdateResourceAclAction
         RemotingAction {
 
     private final UUID _resource;
-    private final AclDto _acl;
+    private final ACL _acl;
 
 
     /**
@@ -55,7 +55,7 @@ public class UpdateResourceAclAction
      * @param acl The updated access control list.
      */
     public UpdateResourceAclAction(final UUID resource,
-                                     final AclDto acl) {
+                                     final ACL acl) {
         super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
         _resource = resource;
         _acl = acl;
