@@ -39,8 +39,8 @@ import ccc.api.ActionScheduler;
 import ccc.api.Actions;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
-import ccc.api.dto.PagedCollection;
 import ccc.api.types.DBC;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 
 

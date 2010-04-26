@@ -40,10 +40,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.Users;
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.UserCriteria;
 import ccc.api.dto.UserDto;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;

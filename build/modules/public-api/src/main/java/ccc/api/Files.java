@@ -37,9 +37,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.PagedCollection;
 
 
 /**

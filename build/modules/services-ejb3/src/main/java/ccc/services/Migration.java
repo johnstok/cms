@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.ACL;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.ACL;
 
 
 /**

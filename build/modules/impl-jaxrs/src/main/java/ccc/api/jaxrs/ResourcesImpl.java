@@ -39,14 +39,14 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Resources;
-import ccc.api.dto.ACL;
-import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.dto.TemplateDto;
+import ccc.api.types.ACL;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
 
