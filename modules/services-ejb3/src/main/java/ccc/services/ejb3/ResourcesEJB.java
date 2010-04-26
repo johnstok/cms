@@ -47,7 +47,6 @@ import ccc.api.Resources;
 import ccc.api.dto.ACL;
 import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceCriteria;
-import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
@@ -267,8 +266,9 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void createWorkingCopy(final UUID resourceId, final ResourceDto pu) {
-        createWorkingCopy(resourceId, pu.getRevision().longValue());
+    public void createWorkingCopy(final UUID resourceId,
+                                  final ResourceSnapshot pu) {
+        createWorkingCopy(resourceId, pu.getRevision());
     }
 
 
@@ -289,8 +289,8 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceDto pu) {
-        updateResourceTemplate(resourceId, pu.getTemplateId());
+                                       final ResourceSnapshot pu) {
+        updateResourceTemplate(resourceId, pu.getTemplate());
     }
 
 
@@ -412,7 +412,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceDto pu) {
+                                    final ResourceSnapshot pu) {
         updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 

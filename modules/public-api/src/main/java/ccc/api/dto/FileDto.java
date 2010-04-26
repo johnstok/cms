@@ -37,7 +37,6 @@ import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -47,9 +46,7 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public final class FileDto
     extends
-        ResourceSnapshot
-    implements
-        Jsonable2 {
+        ResourceSnapshot {
 
     private MimeType              _mimeType;
     private String                _path;
@@ -416,15 +413,13 @@ public final class FileDto
 
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
+        super.toJson(json);
+
         json.set(MIME_TYPE, getMimeType());
         json.set(PATH, getPath());
-        json.set(ID, getId());
-        json.set(NAME, (null==getName()) ? null : getName().toString());
-        json.set(TITLE, getTitle());
         json.set(PROPERTIES, getProperties());
         json.set(SIZE, Long.valueOf(getSize()));
         json.set(DATA, getData());
-        json.set(PARENT_ID, getParent());
         json.set(MAJOR_CHANGE, Boolean.valueOf(isMajorEdit()));
         json.set(COMMENT, getComment());
         json.set(TEXT, getContent());
@@ -434,17 +429,14 @@ public final class FileDto
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
+
         final Json mime = json.getJson(MIME_TYPE);
         setMimeType((null==mime) ? null : new MimeType(mime));
         _path = json.getString(PATH);
-        setId(json.getId(ID));
-        final String name = json.getString(NAME);
-        setName((null==name) ? null : new ResourceName(name));
-        setTitle(json.getString(TITLE));
         _properties = json.getStringMap(PROPERTIES);
-        setData(json.getId(JsonKeys.DATA));
         setSize(json.getLong(JsonKeys.SIZE).longValue());
-        setParent(json.getId(PARENT_ID));
+        setData(json.getId(JsonKeys.DATA));
         setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
         setComment(json.getString(COMMENT));
         _content = json.getString(TEXT);

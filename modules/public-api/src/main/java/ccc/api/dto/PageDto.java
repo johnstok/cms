@@ -34,7 +34,6 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -44,9 +43,7 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public class PageDto
     extends
-        ResourceSnapshot
-    implements
-        Jsonable2 {
+        ResourceSnapshot {
 
     private String    _comment;
     private boolean   _majorChange;
@@ -162,12 +159,9 @@ public class PageDto
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, getParent());
+        super.toJson(json);
+
         json.set(JsonKeys.PARAGRAPHS, getParagraphs());
-        json.set(
-            JsonKeys.NAME, (null==getName()) ? null : getName().toString());
-        json.set(JsonKeys.TEMPLATE_ID, getTemplate());
-        json.set(JsonKeys.TITLE, getTitle());
         json.set(JsonKeys.COMMENT, _comment);
         json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(_majorChange));
     }
@@ -176,14 +170,11 @@ public class PageDto
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
-        setParent(json.getId(JsonKeys.PARENT_ID));
+        super.fromJson(json);
+
         for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
             _paragraphs.add(new Paragraph(jsonPara));
         }
-        final String name = json.getString(JsonKeys.NAME);
-        setName((null==name) ? null : new ResourceName(name));
-        setTemplate(json.getId(JsonKeys.TEMPLATE_ID));
-        setTitle(json.getString(JsonKeys.TITLE));
         _comment = json.getString(JsonKeys.COMMENT);
         _majorChange = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
     }

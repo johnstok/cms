@@ -33,7 +33,6 @@ import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -43,9 +42,7 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public class FolderDto
     extends
-        ResourceSnapshot
-    implements
-        Jsonable2 {
+        ResourceSnapshot {
 
     private UUID _indexPage;
     private UUID _defaultPage;
@@ -151,21 +148,19 @@ public class FolderDto
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(JsonKeys.PARENT_ID, getParent());
+        super.toJson(json);
+
         json.set(JsonKeys.SORT_ORDER, _sortOrder);
         json.set(JsonKeys.INDEX_PAGE_ID, _indexPage);
         json.setStrings(JsonKeys.SORT_LIST, _sortList);
-        json.set(
-            JsonKeys.NAME, (null==getName()) ? null : getName().toString());
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
-        final String name = json.getString(JsonKeys.NAME);
-        setName((null==name) ? null : new ResourceName(name));
-        setParent(json.getId(JsonKeys.PARENT_ID));
+        super.fromJson(json);
+
         _sortOrder = json.getString(JsonKeys.SORT_ORDER);
         _indexPage = json.getId(JsonKeys.INDEX_PAGE_ID);
         _sortList = json.getStrings(JsonKeys.SORT_LIST);

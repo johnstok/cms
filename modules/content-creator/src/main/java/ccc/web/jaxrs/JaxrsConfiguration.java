@@ -52,7 +52,6 @@ import ccc.api.jaxrs.providers.JsonReader;
 import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
-import ccc.api.jaxrs.providers.ResourceCacheDurationPUReader;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.jaxrs.providers.SearchResultWriter;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
@@ -107,7 +106,6 @@ public class JaxrsConfiguration
         providers.add(MetadataWriter.class);
         providers.add(JsonableCollectionWriter.class);
         providers.add(StringCollectionWriter.class);
-        providers.add(ResourceCacheDurationPUReader.class);
         providers.add(ActionNewReader.class);
         providers.add(UuidCollectionWriter.class);
         providers.add(SearchResultWriter.class);

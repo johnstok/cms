@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
 
 import ccc.api.dto.ACL;
 import ccc.api.dto.FolderDto;
-import ccc.api.dto.ResourceDto;
+import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
 import ccc.api.dto.ACL.Entry;
@@ -288,7 +288,7 @@ public class ResourceAcceptanceTest
         // ACT
         try {
             getCommands().updateResourceTemplate(
-                folder.getId(), new ResourceDto(ts.getId()));
+                folder.getId(), new ResourceSnapshot(ts.getId()));
         } finally {
             try {
                 getCommands().unlock(folder.getId());
@@ -313,8 +313,8 @@ public class ResourceAcceptanceTest
         final ResourceSummary folder = tempFolder();
         final Duration origDuration =
             getCommands().cacheDuration(folder.getId());
-        final ResourceDto duration =
-            new ResourceDto(new Duration(9));
+        final ResourceSnapshot duration =
+            new ResourceSnapshot(new Duration(9));
 
         // ACT
         getCommands().lock(folder.getId());
@@ -324,7 +324,7 @@ public class ResourceAcceptanceTest
             getCommands().cacheDuration(folder.getId());
 
         getCommands().updateCacheDuration(
-            folder.getId(), new ResourceDto((Duration) null));
+            folder.getId(), new ResourceSnapshot((Duration) null));
         final Duration noDuration = getCommands().cacheDuration(folder.getId());
 
         getCommands().deleteCacheDuration(folder.getId());

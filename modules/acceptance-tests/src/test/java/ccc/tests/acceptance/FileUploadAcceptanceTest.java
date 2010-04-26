@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import ccc.api.dto.FileDto;
-import ccc.api.dto.ResourceDto;
+import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.RevisionDto;
 import ccc.api.exceptions.ResourceExistsException;
@@ -73,7 +73,7 @@ public class FileUploadAcceptanceTest
 
         getCommands().lock(file.getId());
         getCommands().createWorkingCopy(
-            file.getId(), new ResourceDto(Long.valueOf(0)));
+            file.getId(), new ResourceSnapshot(Long.valueOf(0)));
 
         // ACT
         getCommands().clearWorkingCopy(file.getId());
@@ -125,7 +125,7 @@ public class FileUploadAcceptanceTest
 
         // Create working copy from rev 0.
         getCommands().createWorkingCopy(
-            file.getId(), new ResourceDto(Long.valueOf(0)));
+            file.getId(), new ResourceSnapshot(Long.valueOf(0)));
         ResourceSummary fWC = getCommands().resource(file.getId());
         assertEquals("Update!", getBrowser().previewContent(file, false));
         assertEquals("Hello!", getBrowser().previewContent(file, true));
