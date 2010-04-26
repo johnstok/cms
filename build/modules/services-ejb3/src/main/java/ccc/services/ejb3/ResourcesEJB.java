@@ -652,8 +652,8 @@ public class ResourcesEJB
         final Long before,
         final Long after,
         final String mainmenu,
-        final String sort,
         final String metadataKey,
+        final String sort,
         final SortOrder order,
         final int pageNo,
         final int pageSize) {
