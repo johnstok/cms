@@ -39,8 +39,8 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Resources;
-import ccc.api.dto.AclDto;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.ACL;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
@@ -180,7 +180,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public AclDto acl(final UUID resourceId) {
+    public ACL acl(final UUID resourceId) {
         try {
             return _delegate.acl(resourceId);
         } catch (final ClientResponseFailure cfe) {
@@ -237,7 +237,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void changeAcl(final UUID resourceId, final AclDto acl) {
+    public void changeAcl(final UUID resourceId, final ACL acl) {
         try {
             _delegate.changeAcl(resourceId, acl);
         } catch (final ClientResponseFailure cfe) {
@@ -394,7 +394,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<ResourceSummary> list(
+    public PagedCollection<ResourceSummary> list(
                                       final UUID parent,
                                       final String tag,
                                       final Long before,

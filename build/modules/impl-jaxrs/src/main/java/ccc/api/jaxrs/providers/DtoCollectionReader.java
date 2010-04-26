@@ -39,7 +39,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable2;
@@ -56,7 +56,7 @@ public class DtoCollectionReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<DtoCollection<Jsonable2>> {
+        MessageBodyReader<PagedCollection<Jsonable2>> {
 
     /** {@inheritDoc} */
     @Override
@@ -64,13 +64,13 @@ public class DtoCollectionReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return DtoCollection.class.equals(clazz);
+        return PagedCollection.class.equals(clazz);
     }
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<Jsonable2> readFrom(
-                                  final Class<DtoCollection<Jsonable2>> arg0,
+    public PagedCollection<Jsonable2> readFrom(
+                                  final Class<PagedCollection<Jsonable2>> arg0,
                                   final Type type,
                                   final Annotation[] arg2,
                                   final MediaType arg3,
@@ -89,8 +89,8 @@ public class DtoCollectionReader
                 elements.add(element);
             }
 
-            final DtoCollection<Jsonable2> d =
-                new DtoCollection<Jsonable2>(
+            final PagedCollection<Jsonable2> d =
+                new PagedCollection<Jsonable2>(
                     json.getLong(JsonKeys.SIZE).longValue(),
                     elements);
             return d;

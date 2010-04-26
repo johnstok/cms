@@ -40,10 +40,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.AclDto.Entry;
+import ccc.api.dto.ACL.Entry;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.UnlockedException;
@@ -885,8 +885,8 @@ public abstract class Resource
      *
      * @return An ACL for this resource.
      */
-    public AclDto getAcl() {
-        final AclDto acl = new AclDto();
+    public ACL getAcl() {
+        final ACL acl = new ACL();
         acl.setGroups(getGroupAcl());
         acl.setUsers(getUserAcl());
         return acl;

@@ -43,7 +43,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class AclDto implements Jsonable2, Serializable {
+public final class ACL implements Jsonable2, Serializable {
 
     private Set<Entry> _users = new HashSet<Entry>();
     private Set<Entry> _groups = new HashSet<Entry>();
@@ -54,13 +54,13 @@ public final class AclDto implements Jsonable2, Serializable {
      *
      * @param json The JSON representation of the ACL.
      */
-    public AclDto(final Json json) { fromJson(json); }
+    public ACL(final Json json) { fromJson(json); }
 
 
     /**
      * Constructor.
      */
-    public AclDto() { super(); }
+    public ACL() { super(); }
 
 
     /**
@@ -80,7 +80,7 @@ public final class AclDto implements Jsonable2, Serializable {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public AclDto setUsers(final Collection<Entry> users) {
+    public ACL setUsers(final Collection<Entry> users) {
         DBC.require().notNull(users);
         _users = new HashSet<Entry>(users);
         return this;
@@ -104,7 +104,7 @@ public final class AclDto implements Jsonable2, Serializable {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public AclDto setGroups(final Collection<Entry> groups) {
+    public ACL setGroups(final Collection<Entry> groups) {
         DBC.require().notNull(groups);
         _groups = new HashSet<Entry>(groups);
         return this;

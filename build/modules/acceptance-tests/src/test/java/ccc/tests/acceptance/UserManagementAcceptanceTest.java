@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
 import ccc.api.types.Username;
@@ -116,7 +116,7 @@ public class UserManagementAcceptanceTest
         final UserDto us = tempUser();
 
         // ACT
-        final DtoCollection<UserDto> ul =
+        final PagedCollection<UserDto> ul =
             getUsers()
                 .listUsers(
                     null,

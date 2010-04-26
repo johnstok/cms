@@ -39,7 +39,7 @@ import ccc.api.ActionScheduler;
 import ccc.api.Actions;
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 
@@ -79,7 +79,7 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<ActionSummary> listCompletedActions(
+    public PagedCollection<ActionSummary> listCompletedActions(
                                                     final String sort,
                                                     final SortOrder sortOrder,
                                                     final int pageNo,
@@ -98,7 +98,7 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<ActionSummary> listPendingActions(
+    public PagedCollection<ActionSummary> listPendingActions(
                                                     final String sort,
                                                     final SortOrder sortOrder,
                                                     final int pageNo,

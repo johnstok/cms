@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class DtoCollection<T extends Jsonable>
+public class PagedCollection<T extends Jsonable>
     implements Serializable, Jsonable {
 
     private final long _totalCount;
@@ -54,7 +54,7 @@ public class DtoCollection<T extends Jsonable>
      * @param totalCount The total number of elements in the collection.
      * @param elements The elements on the current page.
      */
-    public DtoCollection(final long totalCount, final List<T> elements) {
+    public PagedCollection(final long totalCount, final List<T> elements) {
         _totalCount = totalCount;
         _elements = elements;
     }

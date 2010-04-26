@@ -31,10 +31,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.GroupDto;
 import ccc.api.dto.UserDto;
-import ccc.api.dto.AclDto.Entry;
+import ccc.api.dto.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetUserAction;
@@ -87,7 +87,7 @@ public class UpdateResourceAclDialog
 
     private final UUID _resourceId;
 
-    private final AclDto _acl;
+    private final ACL _acl;
     private Collection<GroupDto> _allGroups;
 
     private static final int DIALOG_WIDTH = 440;
@@ -105,7 +105,7 @@ public class UpdateResourceAclDialog
      * @param allGroups A list of all groups available in the system.
      */
     public UpdateResourceAclDialog(final UUID resourceId,
-                                   final AclDto acl,
+                                   final ACL acl,
                                    final Collection<GroupDto> allGroups) {
         super(new GlobalsImpl().uiConstants().updateRoles(),
               new GlobalsImpl());
@@ -265,8 +265,8 @@ public class UpdateResourceAclDialog
                     newUsers.add(e);
                 }
 
-                final AclDto acl =
-                    new AclDto()
+                final ACL acl =
+                    new ACL()
                         .setGroups(newGroups)
                         .setUsers(newUsers);
 

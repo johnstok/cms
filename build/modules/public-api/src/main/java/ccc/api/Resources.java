@@ -40,8 +40,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import ccc.api.dto.AclDto;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.ACL;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
@@ -80,7 +80,7 @@ public interface Resources {
      */
     @GET
     @Path("/list")
-    DtoCollection<ResourceSummary> list(
+    PagedCollection<ResourceSummary> list(
         @QueryParam("parent") UUID UUID,
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
@@ -165,7 +165,7 @@ public interface Resources {
      * @return The access control list for the specified resource.
      */
     @GET @Path("/{id}/acl")
-    AclDto acl(@PathParam("id") UUID resourceId);
+    ACL acl(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -312,7 +312,7 @@ public interface Resources {
      * @param acl The access control list for the specified resource.
      */
     @POST @Path("/{id}/acl")
-    void changeAcl(@PathParam("id") UUID resourceId, AclDto acl);
+    void changeAcl(@PathParam("id") UUID resourceId, ACL acl);
 
 
     /**

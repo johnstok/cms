@@ -39,7 +39,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.CommentDto;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 
@@ -111,7 +111,7 @@ public interface Comments {
      * @return A list of comments.
      */
     @GET
-    DtoCollection<CommentDto> list(
+    PagedCollection<CommentDto> list(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,
         @QueryParam("sort") @DefaultValue("status") String sort,

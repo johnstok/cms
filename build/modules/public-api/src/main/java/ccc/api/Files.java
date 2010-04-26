@@ -37,7 +37,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.dto.FileDto;
 import ccc.api.dto.ResourceSummary;
 
@@ -65,7 +65,7 @@ public interface Files {
      * @return The list of images.
      */
     @GET @Path("/images/{id}")
-    DtoCollection<FileDto> getPagedImages(
+    PagedCollection<FileDto> getPagedImages(
         @PathParam("id") UUID folderId,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);

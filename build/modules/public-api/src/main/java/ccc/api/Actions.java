@@ -39,7 +39,7 @@ import javax.ws.rs.QueryParam;
 
 import ccc.api.dto.ActionDto;
 import ccc.api.dto.ActionSummary;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.types.SortOrder;
 
 
@@ -86,7 +86,7 @@ public interface Actions {
      * @return A collection of action summaries, one per outstanding action.
      */
     @GET @Path("/pending")
-    DtoCollection<ActionSummary> listPendingActions(
+    PagedCollection<ActionSummary> listPendingActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -103,7 +103,7 @@ public interface Actions {
      * @return A collection of action summaries, one per completed action.
      */
     @GET @Path("/completed")
-    DtoCollection<ActionSummary> listCompletedActions(
+    PagedCollection<ActionSummary> listCompletedActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
         @QueryParam("page") @DefaultValue("1") int pageNo,

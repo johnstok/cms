@@ -34,12 +34,12 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.dto.AclDto;
+import ccc.api.dto.ACL;
 import ccc.api.dto.FolderDto;
 import ccc.api.dto.ResourceDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.dto.UserDto;
-import ccc.api.dto.AclDto.Entry;
+import ccc.api.dto.ACL.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
@@ -181,7 +181,7 @@ public class ResourceAcceptanceTest
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final UserDto user = tempUser();
-        final AclDto acl = new AclDto();
+        final ACL acl = new ACL();
         final Entry e = new Entry();
         e._canRead = true;
         e._canWrite = true;
@@ -193,7 +193,7 @@ public class ResourceAcceptanceTest
         getCommands().changeAcl(folder.getId(), acl);
 
         // ASSERT
-        final AclDto actual = getCommands().acl(folder.getId());
+        final ACL actual = getCommands().acl(folder.getId());
         assertEquals(0, actual.getGroups().size());
         assertEquals(1, actual.getUsers().size());
         assertEquals(
@@ -208,7 +208,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final AclDto origAcl =
+        final ACL origAcl =
             getCommands().acl(folder.getId());
         final Entry e = new Entry();
         e._canRead = true;
@@ -216,18 +216,18 @@ public class ResourceAcceptanceTest
         e._name = "SITE_BUILDER";
         e._principal =
             getGroups().list("SITE_BUILDER").iterator().next().getId();
-        final AclDto acl =
-            new AclDto()
+        final ACL acl =
+            new ACL()
                 .setGroups(Collections.singleton(e));
 
         // ACT
         getCommands().lock(folder.getId());
         getCommands().changeAcl(folder.getId(), acl);
-        final AclDto withAcl =
+        final ACL withAcl =
             getCommands().acl(folder.getId());
 
-        getCommands().changeAcl(folder.getId(), new AclDto());
-        final AclDto noPermsAcl = getCommands().acl(folder.getId());
+        getCommands().changeAcl(folder.getId(), new ACL());
+        final ACL noPermsAcl = getCommands().acl(folder.getId());
 
         // ASSERT
         assertEquals(0, origAcl.getGroups().size());

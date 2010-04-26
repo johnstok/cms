@@ -37,7 +37,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.Comments;
 import ccc.api.dto.CommentDto;
-import ccc.api.dto.DtoCollection;
+import ccc.api.dto.PagedCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
@@ -113,7 +113,7 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public DtoCollection<CommentDto> list(final UUID resourceId,
+    public PagedCollection<CommentDto> list(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
