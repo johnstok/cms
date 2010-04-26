@@ -324,14 +324,16 @@ class ResourceRepositoryImpl implements ResourceRepository {
         if (null!=criteria.getMainmenu()) {
             if (criteria.getMainmenu().equalsIgnoreCase("true")) {
                 query.append((params.size()>0) ? " and" : " where");
-                query.append(" r._includeInMainMenu = true");
+                query.append(" r._includeInMainMenu = ?");
+                params.add(Boolean.TRUE);
             } else if (criteria.getMainmenu().equalsIgnoreCase("false")) {
                 query.append((params.size()>0) ? " and" : " where");
-                query.append(" r._includeInMainMenu = false");
+                query.append(" r._includeInMainMenu = ?");
+                params.add(Boolean.FALSE);
             }
         }
 
-        if (null!=criteria.getMetadataKey()) {
+        if (null!=criteria.getMetadataKey() && !criteria.getMetadataKey().isEmpty()) {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" r._metadata[?] is not null");
             params.add(criteria.getMetadataKey());
