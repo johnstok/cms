@@ -31,7 +31,7 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.UserRepository;
@@ -69,11 +69,11 @@ public class UpdatePasswordAction {
      *
      * @throws CccCheckedException If the command fails.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID userId,
                         final String password) {
-        final User u =
+        final UserEntity u =
                 _repository.find(userId);
         u.setPassword(password);
 

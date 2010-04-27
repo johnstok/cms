@@ -33,7 +33,7 @@ import ccc.api.core.UserDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -45,7 +45,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 public class UpdateUserCommand
     extends
-        Command<User> {
+        Command<UserEntity> {
 
     private final UUID _userId;
     private final UserDto _delta;
@@ -68,10 +68,10 @@ public class UpdateUserCommand
 
     /** {@inheritDoc} */
     @Override
-    public User doExecute(final User actor,
+    public UserEntity doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final User current = getUsers().find(_userId);
+        final UserEntity current = getUsers().find(_userId);
 
         // current.username(delta.getUsername().toString()); #571
         current.setEmail(new EmailAddress(_delta.getEmail()));

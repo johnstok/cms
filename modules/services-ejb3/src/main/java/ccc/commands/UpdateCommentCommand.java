@@ -35,9 +35,9 @@ import ccc.api.core.CommentDto;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
-import ccc.domain.Comment;
+import ccc.domain.CommentEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -49,7 +49,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 public class UpdateCommentCommand
     extends
-        Command<Comment> {
+        Command<CommentEntity> {
 
     private final CommentDto _comment;
     private final UUID       _commentId;
@@ -73,10 +73,10 @@ public class UpdateCommentCommand
 
     /** {@inheritDoc} */
     @Override
-    protected Comment doExecute(final User actor,
+    protected CommentEntity doExecute(final UserEntity actor,
                                 final Date happenedOn) {
 
-        final Comment c = getComments().retrieve(_commentId);
+        final CommentEntity c = getComments().retrieve(_commentId);
 
         c.setBody(_comment.getBody());
         c.setStatus(_comment.getStatus());

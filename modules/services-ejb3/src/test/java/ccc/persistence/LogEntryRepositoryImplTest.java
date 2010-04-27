@@ -35,9 +35,9 @@ import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
+import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -74,7 +74,7 @@ public class LogEntryRepositoryImplTest
     public void testRecordCreate() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
+        final PageEntity p = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
         final LogEntryRepository al = new LogEntryRepositoryImpl(_em);
         final LogEntry le = new LogEntry(
                                         _actor,
@@ -108,9 +108,9 @@ public class LogEntryRepositoryImplTest
     }
 
 
-    private final User _actor = new User(new Username("actor"), "password");
+    private final UserEntity _actor = new UserEntity(new Username("actor"), "password");
     private final Date _happenedOn = new Date();
     private Repository _em;
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

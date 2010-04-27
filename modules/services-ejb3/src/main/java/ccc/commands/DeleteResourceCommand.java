@@ -32,10 +32,10 @@ import java.util.UUID;
 import ccc.api.types.CommandType;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
-import ccc.domain.Folder;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -68,17 +68,17 @@ public class DeleteResourceCommand extends Command<Void> {
 
     /** {@inheritDoc} */
     @Override
-    protected Void doExecute(final User actor,
+    protected Void doExecute(final UserEntity actor,
                              final Date happenedOn) {
-        final Resource resource =
-            getRepository().find(Resource.class, _resourceId);
+        final ResourceEntity resource =
+            getRepository().find(ResourceEntity.class, _resourceId);
         resource.confirmLock(actor);
 
         if (resource.isDeleted()) {
             throw new RuntimeException("Can't delete a deleted resource.");
         }
 
-        final Folder trash =
+        final FolderEntity trash =
             getRepository().root(PredefinedResourceNames.TRASH);
 
         resource.delete();

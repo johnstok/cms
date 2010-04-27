@@ -36,7 +36,7 @@ import ccc.api.types.ResourceName;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdatePageCommand;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
+import ccc.domain.PageEntity;
 
 
 /**
@@ -56,8 +56,8 @@ public class PageDaoImplTest
     public void testUpdatePage() {
 
         // ARRANGE
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("test"),
                 "test",
                 null,
@@ -74,7 +74,7 @@ public class PageDaoImplTest
             new UpdatePageCommand(
                 _repoFactory, page.getId(), delta);
 
-        expect(_repository.find(Page.class, page.getId())).andReturn(page);
+        expect(_repository.find(PageEntity.class, page.getId())).andReturn(page);
         _audit.record(isA(LogEntry.class));
         replayAll();
 

@@ -78,5 +78,5 @@ public abstract class Principal
      *
      * @return True if the user is included; false otherwise.
      */
-    public abstract boolean includes(final User user);
+    public abstract boolean includes(final UserEntity user);
 }

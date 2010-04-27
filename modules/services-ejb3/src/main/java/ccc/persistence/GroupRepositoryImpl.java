@@ -33,9 +33,8 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
-import ccc.domain.Group;
+import ccc.domain.GroupEntity;
 
 
 /**
@@ -73,22 +72,26 @@ public class GroupRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public void create(final Group g) {
+    public void create(final GroupEntity g) {
         _repo.create(g);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Group find(final UUID groupId) throws EntityNotFoundException {
-        return _repo.find(Group.class, groupId);
+    public GroupEntity find(final UUID groupId) {
+        return _repo.find(GroupEntity.class, groupId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Collection<Group> list(final String name) {
-        final StringBuffer query = new StringBuffer("from ccc.domain.Group g");
+    public Collection<GroupEntity> list(final String name) {
+        final StringBuffer query = new StringBuffer();
+        query.append("from ");
+        query.append(GroupEntity.class.getName());
+        query.append(" g");
+
         final Map<String, Object> params = new HashMap<String, Object>();
 
         if (null!=name) {
@@ -98,7 +101,7 @@ public class GroupRepositoryImpl
 
         return _repo.listDyn(
             query.toString(),
-            Group.class,
+            GroupEntity.class,
             1,
             100,
             params);

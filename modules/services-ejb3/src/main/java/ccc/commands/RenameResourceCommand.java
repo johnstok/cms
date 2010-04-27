@@ -33,8 +33,8 @@ import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -72,15 +72,15 @@ public class RenameResourceCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Resource resource =
-            getRepository().find(Resource.class, _resourceId);
+        final ResourceEntity resource =
+            getRepository().find(ResourceEntity.class, _resourceId);
         resource.confirmLock(actor);
 
         final ResourceName newName = new ResourceName(_name);
-        final Resource existingResource =
+        final ResourceEntity existingResource =
             resource.getParent().getEntryWithName(newName);
         if (null!=existingResource) {
             throw new ResourceExistsException(

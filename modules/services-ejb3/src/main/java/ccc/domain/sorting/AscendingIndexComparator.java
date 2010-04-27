@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 import ccc.api.types.DBC;
-import ccc.domain.Resource;
+import ccc.domain.ResourceEntity;
 
 /**
  * Sort Resources in Ascending, Alphanumeric order, based on name.
@@ -41,11 +41,11 @@ import ccc.domain.Resource;
 public final class AscendingIndexComparator
     implements
         Serializable,
-        Comparator<Resource> {
+        Comparator<ResourceEntity> {
 
     /** {@inheritDoc} */
     @Override
-    public int compare(final Resource o1, final Resource o2) {
+    public int compare(final ResourceEntity o1, final ResourceEntity o2) {
         DBC.require().notNull(o1);
         DBC.require().notNull(o2);
 

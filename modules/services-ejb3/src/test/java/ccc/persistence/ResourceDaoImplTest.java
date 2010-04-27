@@ -40,11 +40,11 @@ import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
-import ccc.domain.Folder;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.FolderEntity;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -69,7 +69,7 @@ public class ResourceDaoImplTest
         expect(
             _repository.find(
                 QueryNames.ROOT_BY_NAME,
-                Folder.class,
+                FolderEntity.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
             .andThrow(new EntityNotFoundException((UUID) null));
         replayAll();
@@ -92,10 +92,10 @@ public class ResourceDaoImplTest
     public void testLookup() {
 
         // ARRANGE
-        final Folder contentRoot = new Folder(PredefinedResourceNames.CONTENT);
-        final Folder foo = new Folder("foo");
-        final Page bar =
-            new Page(
+        final FolderEntity contentRoot = new FolderEntity(PredefinedResourceNames.CONTENT);
+        final FolderEntity foo = new FolderEntity("foo");
+        final PageEntity bar =
+            new PageEntity(
                 new ResourceName("bar"),
                 "bar",
                 null,
@@ -107,19 +107,19 @@ public class ResourceDaoImplTest
         expect(
             _repository.find(
                 QueryNames.ROOT_BY_NAME,
-                Folder.class,
+                FolderEntity.class,
                 new ResourceName(PredefinedResourceNames.CONTENT)))
             .andReturn(contentRoot);
         replayAll();
 
 
         // ACT
-        final Resource resource = _rdao.lookup(new ResourcePath("/foo/bar"));
+        final ResourceEntity resource = _rdao.lookup(new ResourcePath("/foo/bar"));
 
 
         verifyAll();
         assertEquals(ResourceType.PAGE, resource.getType());
-        final Page page = resource.as(Page.class);
+        final PageEntity page = resource.as(PageEntity.class);
         assertEquals(1, page.currentRevision().getParagraphs().size());
     }
 
@@ -130,12 +130,12 @@ public class ResourceDaoImplTest
     public void testQueryAllLockedResources() {
 
         // ARRANGE
-        expect(_repository.list(QueryNames.LOCKED_RESOURCES, Resource.class))
+        expect(_repository.list(QueryNames.LOCKED_RESOURCES, ResourceEntity.class))
             .andReturn(Collections.singletonList(_r));
         replayAll();
 
         // ACT
-        final List<Resource> locked = _rdao.locked();
+        final List<ResourceEntity> locked = _rdao.locked();
 
         // ASSERT
         assertNotNull("Shouldn't be null.", locked);
@@ -151,27 +151,27 @@ public class ResourceDaoImplTest
     public void testFind() throws Exception {
 
         // ARRANGE
-        final Page bar =
-            new Page(
+        final PageEntity bar =
+            new PageEntity(
                 new ResourceName("bar"),
                 "bar",
                 null,
                 _rm,
                 Paragraph.fromText("default", "<H1>Default</H1>"));
 
-        expect(_repository.find(Page.class, bar.getId())).andReturn(bar);
+        expect(_repository.find(PageEntity.class, bar.getId())).andReturn(bar);
         replayAll();
 
 
         // ACT
-        final Resource resource =
-            _rdao.find(Page.class, bar.getId());
+        final ResourceEntity resource =
+            _rdao.find(PageEntity.class, bar.getId());
 
 
         // ASSERT
         verifyAll();
         assertEquals(ResourceType.PAGE, resource.getType());
-        final Page page = resource.as(Page.class);
+        final PageEntity page = resource.as(PageEntity.class);
         assertEquals(1, page.currentRevision().getParagraphs().size());
     }
 
@@ -189,8 +189,8 @@ public class ResourceDaoImplTest
     protected void setUp() throws Exception {
         _repository = createStrictMock(Repository.class);
         _rdao = new ResourceRepositoryImpl(_repository);
-        _r = new Page(new ResourceName("foo"), "foo", null, _rm);
-        _parent = new Folder("parent");
+        _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        _parent = new FolderEntity("parent");
         _parent.add(_r);
     }
 
@@ -206,9 +206,9 @@ public class ResourceDaoImplTest
 
     private Repository _repository;
     private ResourceRepositoryImpl _rdao;
-    private Resource _r;
-    private Folder _parent;
+    private ResourceEntity _r;
+    private FolderEntity _parent;
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

@@ -30,10 +30,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.Folder;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -69,14 +69,14 @@ public class MoveResourceCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID resourceId,
                         final UUID newParentId) {
-        final Resource resource = _repository.find(Resource.class, resourceId);
+        final ResourceEntity resource = _repository.find(ResourceEntity.class, resourceId);
         resource.confirmLock(actor);
 
-        final Folder newParent = _repository.find(Folder.class, newParentId);
+        final FolderEntity newParent = _repository.find(FolderEntity.class, newParentId);
         resource.getParent().remove(resource);
         newParent.add(resource);
 

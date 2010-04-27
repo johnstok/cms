@@ -36,8 +36,8 @@ import javax.persistence.EntityManager;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
-import ccc.domain.Comment;
-import ccc.domain.Resource;
+import ccc.domain.CommentEntity;
+import ccc.domain.ResourceEntity;
 import ccc.plugins.s11n.JsonKeys;
 
 
@@ -75,7 +75,7 @@ public class CommentRepositoryImpl
 
 
     /** {@inheritDoc} */
-    @Override public void create(final Comment comment) {
+    @Override public void create(final CommentEntity comment) {
         _repo.create(comment);
     }
 
@@ -89,14 +89,14 @@ public class CommentRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public Comment retrieve(final UUID commentId) {
-        return _repo.find(Comment.class, commentId);
+    public CommentEntity retrieve(final UUID commentId) {
+        return _repo.find(CommentEntity.class, commentId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public List<Comment> list(final Resource resource,
+    public List<CommentEntity> list(final ResourceEntity resource,
                               final CommentStatus status,
                               final String sort,
                               final SortOrder sortOrder,
@@ -106,7 +106,7 @@ public class CommentRepositoryImpl
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("from ccc.domain.Comment c");
+        query.append("from ccc.domain.CommentEntity c");
 
         if (null!=status) {
             query.append(" where c._status = :status");
@@ -127,7 +127,7 @@ public class CommentRepositoryImpl
         return
             _repo.listDyn(
                 query.toString(),
-                Comment.class,
+                CommentEntity.class,
                 pageNo,
                 pageSize,
                 params);
@@ -136,12 +136,12 @@ public class CommentRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public long count(final Resource resource, final CommentStatus status) {
+    public long count(final ResourceEntity resource, final CommentStatus status) {
 
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("select count(*) from ccc.domain.Comment c");
+        query.append("select count(*) from ccc.domain.CommentEntity c");
 
         if (null!=status) {
             query.append(" where c._status = :status");

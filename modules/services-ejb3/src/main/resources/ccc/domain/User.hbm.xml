@@ -33,7 +33,7 @@
 
 <hibernate-mapping default-access="field">
 	
-    <class name="ccc.domain.User" table="users">
+    <class name="ccc.domain.UserEntity" table="users">
     
         <id name="_id" 
         	column="id" 
@@ -78,7 +78,7 @@
             <cache usage="transactional"/>
             <key not-null="true" column="user_id" foreign-key="FK_USERROLES_USER_ID"/>
             <many-to-many
-                class="ccc.domain.Group"
+                class="ccc.domain.GroupEntity"
                 column="group_id" />
         </set>
         
@@ -91,6 +91,6 @@
             
     </class>
     
-    <query name="userWithMatchingUsername">from ccc.domain.User u where u._username._value = ?</query>
-    <query name="usersWithLegacyId">from ccc.domain.User u where u._metadata['legacyId'] = ?</query>
+    <query name="userWithMatchingUsername">from ccc.domain.UserEntity u where u._username._value = ?</query>
+    <query name="usersWithLegacyId">from ccc.domain.UserEntity u where u._metadata['legacyId'] = ?</query>
 </hibernate-mapping>

@@ -34,12 +34,12 @@ import ccc.api.core.ResourceCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
-import ccc.domain.File;
-import ccc.domain.Folder;
-import ccc.domain.Page;
-import ccc.domain.Resource;
-import ccc.domain.Revision;
-import ccc.domain.Template;
+import ccc.domain.FileEntity;
+import ccc.domain.FolderEntity;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.RevisionEntity;
+import ccc.domain.TemplateEntity;
 
 
 /**
@@ -54,7 +54,7 @@ public interface ResourceRepository {
      *
      * @return The list of resources.
      */
-    List<Resource> locked();
+    List<ResourceEntity> locked();
 
     /**
      * Retrieve the history of a resource.
@@ -66,7 +66,7 @@ public interface ResourceRepository {
      *
      * @return The revisions for the resource.
      */
-    Map<Integer, ? extends Revision<?>> history(UUID resourceId)
+    Map<Integer, ? extends RevisionEntity<?>> history(UUID resourceId)
     throws EntityNotFoundException;
 
     /**
@@ -81,7 +81,7 @@ public interface ResourceRepository {
      *
      * @return The resource for the specified id.
      */
-    <T extends Resource> T find(final Class<T> type, final UUID id)
+    <T extends ResourceEntity> T find(final Class<T> type, final UUID id)
     throws EntityNotFoundException;
 
     /**
@@ -95,7 +95,7 @@ public interface ResourceRepository {
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    Resource lookup(ResourcePath contentPath)
+    ResourceEntity lookup(ResourcePath contentPath)
     throws EntityNotFoundException;
 
     /**
@@ -108,7 +108,7 @@ public interface ResourceRepository {
      *
      * @return The corresponding resource in CCC7.
      */
-    Resource lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
+    ResourceEntity lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
 
     /**
      * Look up a resource, given its metadata key.
@@ -117,7 +117,7 @@ public interface ResourceRepository {
      *
      * @return The corresponding resources in CCC7.
      */
-    List<Resource> lookupWithMetadataKey(String key);
+    List<ResourceEntity> lookupWithMetadataKey(String key);
 
     /**
      * Lookup a root folder by name.
@@ -128,14 +128,14 @@ public interface ResourceRepository {
      *
      * @return The corresponding folder
      */
-    Folder root(String name) throws EntityNotFoundException;
+    FolderEntity root(String name) throws EntityNotFoundException;
 
     /**
      * Create a new resource.
      *
      * @param newResource The new resource to add.
      */
-    void create(Resource newResource);
+    void create(ResourceEntity newResource);
 
     /**
      * List all image files.
@@ -147,7 +147,7 @@ public interface ResourceRepository {
      * @return A list of files.
      * @throws EntityNotFoundException If no folder exists with the id.
      */
-    List<File> images(UUID folderId, final int pageNo,
+    List<FileEntity> images(UUID folderId, final int pageNo,
         final int pageSize) throws EntityNotFoundException;
 
     /**
@@ -155,28 +155,28 @@ public interface ResourceRepository {
      *
      * @return A list of folders.
      */
-    List<Folder> roots();
+    List<FolderEntity> roots();
 
     /**
      * List all templates.
      *
      * @return A list of templates
      */
-    List<Template> templates();
+    List<TemplateEntity> templates();
 
     /**
      * List all files.
      *
      * @return A list of files.
      */
-    List<File> files();
+    List<FileEntity> files();
 
     /**
      * List all pages.
      *
      * @return a list of pages.
      */
-    List<Page> pages();
+    List<PageEntity> pages();
 
     /**
      * Find a template, given its name.
@@ -188,7 +188,7 @@ public interface ResourceRepository {
      *
      * @return The template with the specified name.
      */
-    Template template(String name) throws EntityNotFoundException;
+    TemplateEntity template(String name) throws EntityNotFoundException;
 
     /**
      * List folder children.
@@ -204,8 +204,8 @@ public interface ResourceRepository {
      *
      * @return A list of comments.
      */
-    List<Resource> list(ResourceCriteria criteria,
-        Folder f,
+    List<ResourceEntity> list(ResourceCriteria criteria,
+        FolderEntity f,
         String sort,
         SortOrder sortOrder,
         int pageNo,
@@ -225,5 +225,5 @@ public interface ResourceRepository {
      *
      * @param criteria
      */
-    long totalCount(ResourceCriteria criteria, Folder f);
+    long totalCount(ResourceCriteria criteria, FolderEntity f);
 }

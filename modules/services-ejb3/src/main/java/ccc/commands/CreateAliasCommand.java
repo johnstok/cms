@@ -31,9 +31,9 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
-import ccc.domain.Alias;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.AliasEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -45,7 +45,7 @@ import ccc.persistence.ResourceRepository;
  */
 class CreateAliasCommand
     extends
-        CreateResourceCommand<Alias> {
+        CreateResourceCommand<AliasEntity> {
 
     private final UUID _parentFolder;
     private final UUID _targetId;
@@ -74,13 +74,13 @@ class CreateAliasCommand
 
     /** {@inheritDoc} */
     @Override
-    public Alias doExecute(final User actor,
+    public AliasEntity doExecute(final UserEntity actor,
                            final Date happenedOn) {
-        final Resource target = getRepository().find(Resource.class, _targetId);
+        final ResourceEntity target = getRepository().find(ResourceEntity.class, _targetId);
         if (target == null) {
             throw new RuntimeException("Target does not exists.");
         }
-        final Alias a = new Alias(_title.toString(), target);
+        final AliasEntity a = new AliasEntity(_title.toString(), target);
 
         create(actor, happenedOn, _parentFolder, a);
 

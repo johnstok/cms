@@ -52,8 +52,8 @@ import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.commands.CancelActionCommand;
 import ccc.commands.ScheduleActionCommand;
-import ccc.domain.Action;
-import ccc.domain.Resource;
+import ccc.domain.ActionEntity;
+import ccc.domain.ResourceEntity;
 import ccc.persistence.ActionRepository;
 import ccc.rest.extensions.ResourcesExt;
 
@@ -90,11 +90,11 @@ public class ActionsEJB
     public void executeAll() {
         LOG.debug("Executing scheduled actions.");
 
-        final List<Action> actions =
+        final List<ActionEntity> actions =
             getRepoFactory().createActionRepository().latest(new Date());
         LOG.debug("Actions to execute: "+actions.size());
 
-        for (final Action action : actions) {
+        for (final ActionEntity action : actions) {
             try {
                 _resourcesExt
                     .executeAction(action.getId()); // Executes in nested txn.
@@ -132,7 +132,7 @@ public class ActionsEJB
         final PagedCollection<ActionSummary> dc =
             new PagedCollection<ActionSummary>(
                 actions.countPending(),
-                Action.mapActions(
+                ActionEntity.mapActions(
                     actions.pending(sort, sortOrder, pageNo, pageSize)));
         return dc;
     }
@@ -151,7 +151,7 @@ public class ActionsEJB
         final PagedCollection<ActionSummary> dc =
             new PagedCollection<ActionSummary>(
                 actions.countCompleted(),
-                Action.mapActions(actions.completed(
+                ActionEntity.mapActions(actions.completed(
                     sort, sortOrder, pageNo, pageSize)));
         return dc;
     }
@@ -169,14 +169,14 @@ public class ActionsEJB
     @Override
     @RolesAllowed({ACTION_CREATE})
     public ActionSummary createAction(final ActionDto action) {
-        final Action a =
-            new Action(
+        final ActionEntity a =
+            new ActionEntity(
                 action.getCommand(),
                 action.getExecuteAfter(),
                 currentUser(),
                 getRepoFactory()
                     .createResourceRepository()
-                    .find(Resource.class, action.getResourceId()),
+                    .find(ResourceEntity.class, action.getResourceId()),
                 action.getParameters());
 
         new ScheduleActionCommand(getRepoFactory())
@@ -196,7 +196,7 @@ public class ActionsEJB
     }
 
 
-    private void fail(final Action action, final CCException e) {
+    private void fail(final ActionEntity action, final CCException e) {
         action.fail(e.getFailure());
         LOG.info(
             "Failed action: "
@@ -206,7 +206,7 @@ public class ActionsEJB
     }
 
 
-    private void fail(final Action action, final Exception e) {
+    private void fail(final ActionEntity action, final Exception e) {
         final CCException cce =
             new CCException("Unexpected error.", e);
         LOG.warn(

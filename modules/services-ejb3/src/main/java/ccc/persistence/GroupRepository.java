@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.domain.Group;
+import ccc.domain.GroupEntity;
 
 /**
  * API for group repositories.
@@ -49,7 +49,7 @@ public interface GroupRepository {
      *
      * @return The group corresponding to 'groupId'.
      */
-    Group find(UUID groupId) throws EntityNotFoundException;
+    GroupEntity find(UUID groupId) throws EntityNotFoundException;
 
 
     /**
@@ -57,7 +57,7 @@ public interface GroupRepository {
      *
      * @param g The group to create.
      */
-    void create(Group g);
+    void create(GroupEntity g);
 
 
     /**
@@ -67,5 +67,5 @@ public interface GroupRepository {
      *
      * @return A list of groups matching the search criteria.
      */
-    Collection<Group> list(String name);
+    Collection<GroupEntity> list(String name);
 }

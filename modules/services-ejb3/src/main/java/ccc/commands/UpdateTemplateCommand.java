@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.api.core.TemplateDto;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
+import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -68,11 +68,11 @@ public class UpdateTemplateCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Template template =
-            getRepository().find(Template.class, _templateId);
+        final TemplateEntity template =
+            getRepository().find(TemplateEntity.class, _templateId);
         template.confirmLock(actor);
 
         final RevisionMetadata rm =

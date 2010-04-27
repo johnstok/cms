@@ -36,10 +36,10 @@ import javax.persistence.Query;
 
 import junit.framework.TestCase;
 import ccc.api.types.ResourceName;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -91,13 +91,13 @@ public class JpaRepositoryTest
         replay(q);
 
         final EntityManager em = createStrictMock(EntityManager.class);
-        expect(em.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(em.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         replay(em);
 
         final JpaRepository qs = new JpaRepository(em);
 
         // ACT
-        qs.find(Resource.class, _r.getId());
+        qs.find(ResourceEntity.class, _r.getId());
 
         // ASSERT
         verify(q, em);
@@ -105,6 +105,6 @@ public class JpaRepositoryTest
 
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
-    private Resource _r = new Page(new ResourceName("foo"), "foo", null, _rm);
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+    private ResourceEntity _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
 }

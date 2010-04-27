@@ -34,7 +34,7 @@ import java.util.UUID;
 import ccc.api.core.UserCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 /**
  * API for user repositories.
@@ -53,7 +53,7 @@ public interface UserRepository {
      * @param order The sort order (ASC/DESC).
      * @return List of users.
      */
-    Collection<User> listUsers(UserCriteria uc,
+    Collection<UserEntity> listUsers(UserCriteria uc,
         String sort,
         SortOrder order,
         final int pageNo,
@@ -86,7 +86,7 @@ public interface UserRepository {
      *
      * @return The user corresponding to 'userId'.
      */
-    User find(UUID userId) throws EntityNotFoundException;
+    UserEntity find(UUID userId) throws EntityNotFoundException;
 
     /**
      * Look up a user from a JAAS principal.
@@ -98,7 +98,7 @@ public interface UserRepository {
      *
      * @return The corresponding CCC user.
      */
-    User loggedInUser(final Principal p) throws EntityNotFoundException;
+    UserEntity loggedInUser(final Principal p) throws EntityNotFoundException;
 
 
     /**
@@ -106,7 +106,7 @@ public interface UserRepository {
      *
      * @param user The new user to add.
      */
-    void create(User user);
+    void create(UserEntity user);
 
     /**
      * Look up a user using the legacy id.
@@ -117,7 +117,7 @@ public interface UserRepository {
      *
      * @return The user corresponding to 'legacyId'.
      */
-    User userByLegacyId(String legacyId) throws EntityNotFoundException;
+    UserEntity userByLegacyId(String legacyId) throws EntityNotFoundException;
 
 
     /**

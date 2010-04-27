@@ -38,7 +38,7 @@ import ccc.api.types.Username;
 
 
 /**
- * Tests for the {@link User} class.
+ * Tests for the {@link UserEntity} class.
  * TODO: Disallow NULL or empty password.
  * TODO: Validate password characters, min length, max length(?)
  *
@@ -57,7 +57,7 @@ public class UserTest
         // ARRANGE
 
         // ACT
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
 
         // ASSERT
         assertTrue("Password should match.", u.hasPassword("password"));
@@ -70,7 +70,7 @@ public class UserTest
     public void testChangePassword() {
         // ARRANGE
         final String password = "newPass";
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
 
         // ACT
         u.setPassword("newPass");
@@ -91,10 +91,10 @@ public class UserTest
     public void testGroupsAccessorHandlesNoGroups() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
 
         // ACT
-        final Set<Group> groups = u.getGroups();
+        final Set<GroupEntity> groups = u.getGroups();
 
         // ASSERT
         assertEquals(0, groups.size());
@@ -107,8 +107,8 @@ public class UserTest
     public void testEqualityIsIdBased() {
 
         // ARRANGE
-        final User u1 = new User(new Username("dummy"), "password");
-        final User u2 = new User(new Username("dummy"), "password");
+        final UserEntity u1 = new UserEntity(new Username("dummy"), "password");
+        final UserEntity u2 = new UserEntity(new Username("dummy"), "password");
 
         // ASSERT
         assertEquals(u1, u1);
@@ -125,7 +125,7 @@ public class UserTest
     public void testAccessorForUsername() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
 
         // ACT
         final Username username = u.getUsername();
@@ -142,7 +142,7 @@ public class UserTest
 
         // ACT
         try {
-            new User(new Username(""), "password");
+            new UserEntity(new Username(""), "password");
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -161,7 +161,7 @@ public class UserTest
 
         // ACT
         try {
-            new User(null, "password");
+            new UserEntity(null, "password");
             fail("NULL should be rejected.");
 
         // ASSERT
@@ -177,7 +177,7 @@ public class UserTest
     public void testAccessorForEmail() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
         u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -194,9 +194,9 @@ public class UserTest
     public void testCreatorGroups() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
-        final Set<Group> expected =
-            new HashSet<Group>() {{
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
+        final Set<GroupEntity> expected =
+            new HashSet<GroupEntity>() {{
                 add(CONTENT_CREATOR);
                 add(SITE_BUILDER);
             }};
@@ -224,7 +224,7 @@ public class UserTest
     public void testRejectsEmptyEmail() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
 
         // ACT
         try {
@@ -266,7 +266,7 @@ public class UserTest
     public void testUsernameMutatorRejectsNullUsername() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
         u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -285,7 +285,7 @@ public class UserTest
     public void testUsernameMutatorRejectsEmptyUsername() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
         u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -306,7 +306,7 @@ public class UserTest
     public void testUsernameMutatorRejectsInvalidUsername() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
         u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -327,7 +327,7 @@ public class UserTest
     public void testUsernameMutator() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
         u.setEmail(new EmailAddress("fooEmail@test.com"));
 
         // ACT
@@ -344,13 +344,13 @@ public class UserTest
     public void testReplaceGroups() {
 
         // ARRANGE
-        final User u = new User(new Username("dummy"), "password");
+        final UserEntity u = new UserEntity(new Username("dummy"), "password");
         u.addGroup(CONTENT_CREATOR);
         u.addGroup(SITE_BUILDER);
         u.addGroup(SITE_BUILDER);
 
-        final Set<Group> expected =
-            new HashSet<Group>() {{
+        final Set<GroupEntity> expected =
+            new HashSet<GroupEntity>() {{
                 add(ADMINISTRATOR);
                 add(SITE_BUILDER);
             }};
@@ -372,10 +372,10 @@ public class UserTest
     }
 
 
-    private static final Group SITE_BUILDER =
-        new Group("SITE_BUILDER");
-    private static final Group CONTENT_CREATOR =
-        new Group("CONTENT_CREATOR");
-    private static final Group ADMINISTRATOR =
-        new Group("ADMINISTRATOR");
+    private static final GroupEntity SITE_BUILDER =
+        new GroupEntity("SITE_BUILDER");
+    private static final GroupEntity CONTENT_CREATOR =
+        new GroupEntity("CONTENT_CREATOR");
+    private static final GroupEntity ADMINISTRATOR =
+        new GroupEntity("ADMINISTRATOR");
 }

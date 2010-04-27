@@ -31,8 +31,8 @@ import java.util.Date;
 import ccc.api.core.TemplateDto;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
+import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -42,7 +42,7 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-class CreateTemplateCommand extends CreateResourceCommand<Template> {
+class CreateTemplateCommand extends CreateResourceCommand<TemplateEntity> {
 
     private final TemplateDto _template;
 
@@ -63,13 +63,13 @@ class CreateTemplateCommand extends CreateResourceCommand<Template> {
 
     /** {@inheritDoc} */
     @Override
-    public Template doExecute(final User actor,
+    public TemplateEntity doExecute(final UserEntity actor,
                               final Date happenedOn) {
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn, actor, true, "Created.");
 
-        final Template t =
-            new Template(
+        final TemplateEntity t =
+            new TemplateEntity(
                 _template.getName(),
                 _template.getTitle(),
                 _template.getDescription(),

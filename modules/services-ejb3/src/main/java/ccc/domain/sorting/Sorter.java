@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccc.api.types.ResourceOrder;
-import ccc.domain.Resource;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -49,7 +49,7 @@ public final class Sorter {
      * @param resources The list to sort.
      * @param order     The order for the list's entries.
      */
-    public static void sort(final List<? extends Resource> resources,
+    public static void sort(final List<? extends ResourceEntity> resources,
                             final ResourceOrder  order) {
         switch (order) {
 

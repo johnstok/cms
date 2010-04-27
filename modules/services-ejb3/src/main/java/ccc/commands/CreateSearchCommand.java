@@ -31,7 +31,7 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.Search;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -67,7 +67,7 @@ class CreateSearchCommand
 
     /** {@inheritDoc} */
     @Override
-    public Search doExecute(final User actor,
+    public Search doExecute(final UserEntity actor,
                           final Date happenedOn) {
         final Search s = new Search(_title);
 

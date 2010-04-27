@@ -36,7 +36,7 @@ import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -71,10 +71,10 @@ public class UpdateCurrentUserCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final User current = getUsers().find(_userId);
+        final UserEntity current = getUsers().find(_userId);
 
         // TODO: Move to separate command
         if (null != _delta.getPassword()) {
@@ -121,7 +121,7 @@ public class UpdateCurrentUserCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void authorize(final User actor) {
+    protected void authorize(final UserEntity actor) {
         if (!actor.getId().equals(_userId)) {
             throw new UnauthorizedException(_userId, actor.getId());
         }

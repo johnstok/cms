@@ -50,7 +50,7 @@ public class LogEntryTest
     public void testCreator() {
 
         // ARRANGE
-        final Page p = new Page("foo", _rm);
+        final PageEntity p = new PageEntity("foo", _rm);
 
         // ACT
         final LogEntry le = new LogEntry(_actor, CommandType.RESOURCE_RENAME,
@@ -72,7 +72,7 @@ public class LogEntryTest
 
         // ARRANGE
         final String actionAsString = "TEST_ACTION_NAME";
-        final Page p = new Page("foo", _rm);
+        final PageEntity p = new PageEntity("foo", _rm);
 
         // ACT
         final LogEntry le = new LogEntry(_actor, actionAsString,
@@ -89,8 +89,8 @@ public class LogEntryTest
 
 
 
-    private final User _actor = new User(new Username("actor"), "password");
+    private final UserEntity _actor = new UserEntity(new Username("actor"), "password");
     private final Date _happenedOn = new Date();
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

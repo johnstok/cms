@@ -54,20 +54,20 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class User
+public class UserEntity
     extends
         Principal {
 
     /** SYSTEM_USER : User. */
-    public static final User SYSTEM_USER =
-        new User(new Username("SYSTEM"), "SYSTEM", "SYSTEM");
+    public static final UserEntity SYSTEM_USER =
+        new UserEntity(new Username("SYSTEM"), "SYSTEM", "SYSTEM");
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
     private static final int MAXIMUM_DATUM_KEY_LENGTH = 100;
 
     private Username _username;
     private EmailAddress _email;
     private byte[] _hash;
-    private Set<Group> _groups = new HashSet<Group>();
+    private Set<GroupEntity> _groups = new HashSet<GroupEntity>();
     private Map<String, String> _metadata = new HashMap<String, String>();
 
 
@@ -75,7 +75,7 @@ public class User
      * Constructor.
      * N.B. This constructor should only be used for persistence.
      */
-    protected User() { super(); }
+    protected UserEntity() { super(); }
 
 
     /**
@@ -85,7 +85,7 @@ public class User
      * @param name The user's full name.
      * @param passwordString The unhashed password as a string.
      */
-    public User(final Username username,
+    public UserEntity(final Username username,
                 final String name,
                 final String passwordString) {
         DBC.require().notNull(username);
@@ -106,7 +106,7 @@ public class User
      * @param username The user's unique name within CCC.
      * @param passwordString The unhashed password as a string.
      */
-    public User(final Username username,
+    public UserEntity(final Username username,
                 final String passwordString) {
         DBC.require().notNull(username);
         DBC.require().notEmpty(username.toString());
@@ -165,7 +165,7 @@ public class User
      *
      * @param group The group to assign.
      */
-    public void addGroup(final Group group) {
+    public void addGroup(final GroupEntity group) {
         _groups.add(group);
     }
 
@@ -177,7 +177,7 @@ public class User
      * @return True if the user has the permission.
      */
     public boolean hasPermission(final String permission) {
-        for (final Group g : getGroups()) {
+        for (final GroupEntity g : getGroups()) {
             if (g.hasPermission(permission)) { return true; }
         }
         return false;
@@ -189,8 +189,8 @@ public class User
      *
      * @return Groups of the user.
      */
-    public Set<Group> getGroups() {
-        return new HashSet<Group>(_groups);
+    public Set<GroupEntity> getGroups() {
+        return new HashSet<GroupEntity>(_groups);
     }
 
 
@@ -322,7 +322,7 @@ public class User
      */
     public Set<UUID> getGroupIds() {
         final Set<UUID> groupIds = new HashSet<UUID>();
-        for (final Group g : getGroups()) {
+        for (final GroupEntity g : getGroups()) {
             groupIds.add(g.getId());
         }
         return groupIds;
@@ -362,7 +362,7 @@ public class User
      */
     public Collection<String> getPermissions() {
         final Set<String> perms = new HashSet<String>();
-        for (final Group g : getGroups()) { perms.addAll(g.getPermissions()); }
+        for (final GroupEntity g : getGroups()) { perms.addAll(g.getPermissions()); }
         return perms;
     }
 
@@ -373,16 +373,16 @@ public class User
      * @param users The users.
      * @return The corresponding summaries.
      */
-    public static List<UserDto> map(final Collection<User> users) {
+    public static List<UserDto> map(final Collection<UserEntity> users) {
         final List<UserDto> mapped = new ArrayList<UserDto>();
-        for (final User u : users) { mapped.add(u.toDto()); }
+        for (final UserEntity u : users) { mapped.add(u.toDto()); }
         return mapped;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public boolean includes(final User user) { return equals(user); }
+    public boolean includes(final UserEntity user) { return equals(user); }
 
 
     /**

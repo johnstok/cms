@@ -44,7 +44,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class WorkingCopySupport<T extends Revision<U>,
+public abstract class WorkingCopySupport<T extends RevisionEntity<U>,
                                          U extends Jsonable,
                                          V extends WorkingCopy<U>>
     extends

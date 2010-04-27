@@ -32,7 +32,7 @@ import java.util.Properties;
 
 import ccc.api.types.CommandType;
 import ccc.commons.Resources;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.CommentRepository;
 import ccc.persistence.DataRepository;
 import ccc.persistence.GroupRepository;
@@ -105,7 +105,7 @@ public abstract class Command<T> {
      *
      * @return The result of the command, of type T.
      */
-    public final T execute(final User actor, final Date happenedOn) {
+    public final T execute(final UserEntity actor, final Date happenedOn) {
         validate();
         authorize(actor);
         beforeExecute(actor, happenedOn);
@@ -131,7 +131,7 @@ public abstract class Command<T> {
      * @param actor The actor performing the command.
      */
     @SuppressWarnings("unused")
-    protected void authorize(final User actor) { /* NO OP */ }
+    protected void authorize(final UserEntity actor) { /* NO OP */ }
 
     /**
      * Event handler that executes after the command has executed successfully.
@@ -140,7 +140,7 @@ public abstract class Command<T> {
      * @param happenedOn When the command was performed.
      * @param result The result of command execution.
      */
-    protected void afterExecute(final User actor,
+    protected void afterExecute(final UserEntity actor,
                                 final Date happenedOn,
                                 final T result) {
 
@@ -168,7 +168,7 @@ public abstract class Command<T> {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      */
-    protected void beforeExecute(final User actor,
+    protected void beforeExecute(final UserEntity actor,
                                  final Date happenedOn) {
 
         final String script = getBeforeScript();
@@ -280,7 +280,7 @@ public abstract class Command<T> {
      *
      * @return The result of the command, of type T.
      */
-    protected abstract T doExecute(final User actor, final Date happenedOn);
+    protected abstract T doExecute(final UserEntity actor, final Date happenedOn);
 
 
     /**

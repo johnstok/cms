@@ -36,12 +36,12 @@ import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
+import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 
 
 /**
- * Tests for the {@link TemplateDelta} and {@link Template} class.
+ * Tests for the {@link TemplateDelta} and {@link TemplateEntity} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -55,7 +55,7 @@ public class TemplateDaoImplTest
     public void testUpdateTemplates() {
 
         // ARRANGE
-        final Template foo = new Template(
+        final TemplateEntity foo = new TemplateEntity(
             "title",
             "description",
             "body",
@@ -63,7 +63,7 @@ public class TemplateDaoImplTest
             MimeType.HTML,
             new RevisionMetadata(
                 new Date(),
-                User.SYSTEM_USER,
+                UserEntity.SYSTEM_USER,
                 true,
                 "Created."));
         foo.lock(_user);
@@ -72,7 +72,7 @@ public class TemplateDaoImplTest
         td.setDefinition("newDefn");
         td.setMimeType(MimeType.BINARY_DATA);
 
-        expect(_repository.find(Template.class, foo.getId())).andReturn(foo);
+        expect(_repository.find(TemplateEntity.class, foo.getId())).andReturn(foo);
         _audit.record(isA(LogEntry.class));
         replayAll();
 

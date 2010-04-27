@@ -25,7 +25,7 @@ import ccc.commons.Exceptions;
 
 
 /**
- * Tests for the {@link Page} class.
+ * Tests for the {@link PageEntity} class.
  *
  * @author Civic Computing Ltd
  */
@@ -37,7 +37,7 @@ public final class PageTest extends TestCase {
     public void testNewPageHasNoWorkingCopy() {
 
         // ARRANGE
-        final Page page = new Page("Title", _rm);
+        final PageEntity page = new PageEntity("Title", _rm);
 
         // ACT
         final boolean hasWC = page.hasWorkingCopy();
@@ -52,8 +52,8 @@ public final class PageTest extends TestCase {
     public void testFindSpecificRevision() {
 
         // ARRANGE
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -65,7 +65,7 @@ public final class PageTest extends TestCase {
                     Paragraph.fromBoolean("meh", Boolean.TRUE))));
         page.applyWorkingCopy(
             new RevisionMetadata(
-                new Date(), User.SYSTEM_USER, true, "Updated."));
+                new Date(), UserEntity.SYSTEM_USER, true, "Updated."));
 
         // ACT
         final PageRevision rev0 = page.revision(0);
@@ -85,8 +85,8 @@ public final class PageTest extends TestCase {
     public void testFindCurrentRevision() {
 
         // ARRANGE
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -109,8 +109,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Date then = new Date();
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -128,7 +128,7 @@ public final class PageTest extends TestCase {
         page.setOrUpdateWorkingCopy(s);
         page.applyWorkingCopy(
             new RevisionMetadata(
-                new Date(), User.SYSTEM_USER, true, "Updated."));
+                new Date(), UserEntity.SYSTEM_USER, true, "Updated."));
 
         // ASSERT
         assertEquals(2, page.currentRevision().getParagraphs().size());
@@ -147,7 +147,7 @@ public final class PageTest extends TestCase {
     public void testUpdateWorkingCopy() { // TODO: Enable assertions.
 
         // ARRANGE
-        final Page page = new Page("foo", _rm);
+        final PageEntity page = new PageEntity("foo", _rm);
 
         // ACT
         page.setOrUpdateWorkingCopy(new PageDto());
@@ -163,7 +163,7 @@ public final class PageTest extends TestCase {
     public void testClearWorkingCopy() { // TODO: Enable assertions.
 
         // ARRANGE
-        final Page page = new Page("foo", _rm);
+        final PageEntity page = new PageEntity("foo", _rm);
         page.setOrUpdateWorkingCopy(page.createSnapshot());
 
         // ACT
@@ -180,8 +180,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Paragraph header = Paragraph.fromText("header", "Header");
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -203,8 +203,8 @@ public final class PageTest extends TestCase {
     public void testTakeSnapshotWithNoParagraphs() {
 
         // ARRANGE
-        final Page page =
-            new Page("Title", _rm);
+        final PageEntity page =
+            new PageEntity("Title", _rm);
 
         // ACT
         final PageDto s = page.createSnapshot();
@@ -220,8 +220,8 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final Paragraph header = Paragraph.fromText("header", "Header");
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -242,8 +242,8 @@ public final class PageTest extends TestCase {
     public void testParagraphsAccessorReturnsDefensiveCopy() {
 
         // ARRANGE
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -267,7 +267,7 @@ public final class PageTest extends TestCase {
      */
     public void testConstructorCanGenerateName() {
         // ACT
-        final Page page = new Page("foo", _rm);
+        final PageEntity page = new PageEntity("foo", _rm);
 
         // ASSERT
         assertEquals("foo", page.getTitle());
@@ -282,8 +282,8 @@ public final class PageTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("foo"),
                 "Title",
                 null,
@@ -301,7 +301,7 @@ public final class PageTest extends TestCase {
     public void testConstructorRejectsEmptyTitles() {
         // ACT
         try {
-            new Page(null, _rm);
+            new PageEntity(null, _rm);
             fail("Resources should reject NULL for the title parameter.");
 
          // ASSERT
@@ -316,19 +316,19 @@ public final class PageTest extends TestCase {
     public void testAdd32NewParagraphs() {
 
         // ARRANGE
-        final Paragraph[] paras = new Paragraph[Page.MAXIMUM_PARAGRAPHS];
-        for (int a=0; a < Page.MAXIMUM_PARAGRAPHS; a++) {
+        final Paragraph[] paras = new Paragraph[PageEntity.MAXIMUM_PARAGRAPHS];
+        for (int a=0; a < PageEntity.MAXIMUM_PARAGRAPHS; a++) {
             paras[a] =
                 Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
         }
 
         // ACT
-        final Page page =
-            new Page(new ResourceName("foo"), "Title", null, _rm, paras);
+        final PageEntity page =
+            new PageEntity(new ResourceName("foo"), "Title", null, _rm, paras);
 
         // ASSERT
         assertEquals(
-            Page.MAXIMUM_PARAGRAPHS,
+            PageEntity.MAXIMUM_PARAGRAPHS,
             page.currentRevision().getParagraphs().size());
 
     }
@@ -339,15 +339,15 @@ public final class PageTest extends TestCase {
     public void testAdd33NewParagraphs() {
 
         // ARRANGE
-        final Paragraph[] paras = new Paragraph[Page.MAXIMUM_PARAGRAPHS+1];
-        for (int a=0; a < Page.MAXIMUM_PARAGRAPHS+1; a++) {
+        final Paragraph[] paras = new Paragraph[PageEntity.MAXIMUM_PARAGRAPHS+1];
+        for (int a=0; a < PageEntity.MAXIMUM_PARAGRAPHS+1; a++) {
             paras[a] =
                 Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
         }
 
         // ACT
         try {
-            new Page(new ResourceName("foo"), "Title", null, _rm, paras);
+            new PageEntity(new ResourceName("foo"), "Title", null, _rm, paras);
             fail("Resources should reject adding more than 32 paragraphs.");
 
         // ASSERT
@@ -357,5 +357,5 @@ public final class PageTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

@@ -43,7 +43,7 @@ import ccc.api.types.MimeType;
  */
 public class FileRevision
     extends
-        Revision<FileDto> {
+        RevisionEntity<FileDto> {
 
     private Data      _data;
     private long       _size;
@@ -68,7 +68,7 @@ public class FileRevision
      * @param actor The actor that created this revision.
      */
     FileRevision(final Date timestamp,
-                 final User actor,
+                 final UserEntity actor,
                  final boolean majorChange,
                  final String comment,
                  final Data data,

@@ -43,7 +43,7 @@
         <param name="type">ccc.api.types.FailureCode</param>
     </typedef>
     
-    <class name="ccc.domain.Action" table="actions">
+    <class name="ccc.domain.ActionEntity" table="actions">
         
         <id name="_id" 
         	column="id" 
@@ -115,5 +115,5 @@
         
     </class>
     
-    <query name="latest_action">FROM ccc.domain.Action a WHERE a._status='SCHEDULED' AND a._executeAfter &lt; ? ORDER BY a._executeAfter asc</query>
+    <query name="latest_action">FROM ccc.domain.ActionEntity a WHERE a._status='SCHEDULED' AND a._executeAfter &lt; ? ORDER BY a._executeAfter asc</query>
 </hibernate-mapping>

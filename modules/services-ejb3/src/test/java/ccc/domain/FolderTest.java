@@ -28,7 +28,7 @@ import ccc.commons.Exceptions;
 
 
 /**
- * Tests for the {@link Folder} class.
+ * Tests for the {@link FolderEntity} class.
  *
  * @author Civic Computing Ltd
  */
@@ -40,10 +40,10 @@ public final class FolderTest extends TestCase {
     public void testEntrySorting() {
 
         // ARRANGE
-        final Folder f = new Folder();
-        f.add(new Page("k", _rm));
-        f.add(new Page("a", _rm));
-        f.add(new Page("z", _rm));
+        final FolderEntity f = new FolderEntity();
+        f.add(new PageEntity("k", _rm));
+        f.add(new PageEntity("a", _rm));
+        f.add(new PageEntity("z", _rm));
 
         // ACT
 
@@ -67,12 +67,12 @@ public final class FolderTest extends TestCase {
     public void testEntryPaging() {
 
         // ARRANGE
-        final Folder f = new Folder();
-        f.add(new Page("a", _rm));
-        f.add(new Page("b", _rm));
-        f.add(new Page("c", _rm));
-        f.add(new Page("d", _rm));
-        f.add(new Page("e", _rm));
+        final FolderEntity f = new FolderEntity();
+        f.add(new PageEntity("a", _rm));
+        f.add(new PageEntity("b", _rm));
+        f.add(new PageEntity("c", _rm));
+        f.add(new PageEntity("d", _rm));
+        f.add(new PageEntity("e", _rm));
 
         // ACT
 
@@ -92,9 +92,9 @@ public final class FolderTest extends TestCase {
     public void testIsAncestorOrThis() {
 
         // ARRANGE
-        final Folder a = new Folder();
-        final Folder b = new Folder();
-        final Folder c = new Folder();
+        final FolderEntity a = new FolderEntity();
+        final FolderEntity b = new FolderEntity();
+        final FolderEntity c = new FolderEntity();
 
         // ACT
         a.add(b);
@@ -115,8 +115,8 @@ public final class FolderTest extends TestCase {
     public void testDirectCircularDependency() {
 
         // ARRANGE
-        final Folder p = new Folder();
-        final Folder c = new Folder();
+        final FolderEntity p = new FolderEntity();
+        final FolderEntity c = new FolderEntity();
         p.add(c);
 
         // ACT
@@ -136,9 +136,9 @@ public final class FolderTest extends TestCase {
     public void testIndirectCircularDependency() {
 
         // ARRANGE
-        final Folder a = new Folder();
-        final Folder b = new Folder();
-        final Folder c = new Folder();
+        final FolderEntity a = new FolderEntity();
+        final FolderEntity b = new FolderEntity();
+        final FolderEntity c = new FolderEntity();
         a.add(b);
         b.add(c);
 
@@ -159,7 +159,7 @@ public final class FolderTest extends TestCase {
     public void testCantAddFolderToSelf() {
 
         // ARRANGE
-        final Folder a = new Folder();
+        final FolderEntity a = new FolderEntity();
 
         // ACT
         try {
@@ -178,7 +178,7 @@ public final class FolderTest extends TestCase {
     public void testChangeSortOrder() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         assertEquals(ResourceOrder.MANUAL, f.getSortOrder());
 
         // ACT
@@ -195,7 +195,7 @@ public final class FolderTest extends TestCase {
     public void testCreateFolderWithTitle() {
 
         // ACT
-        final Folder actual = new Folder("foo");
+        final FolderEntity actual = new FolderEntity("foo");
 
         // ASSERT
         assertEquals("foo", actual.getTitle());
@@ -208,11 +208,11 @@ public final class FolderTest extends TestCase {
     public void testFolders() {
 
             // ARRANGE
-            final Folder f = new Folder("f");
-            final Folder p = new Folder("p");
-            final Folder q = new Folder("q");
-            final Template r =
-                new Template(
+            final FolderEntity f = new FolderEntity("f");
+            final FolderEntity p = new FolderEntity("p");
+            final FolderEntity q = new FolderEntity("q");
+            final TemplateEntity r =
+                new TemplateEntity(
                     "r",
                     "desc",
                     "body",
@@ -224,7 +224,7 @@ public final class FolderTest extends TestCase {
             f.add(r);
 
             // ACT
-            final List<Folder> actual = f.getFolders();
+            final List<FolderEntity> actual = f.getFolders();
 
             // ASSERT
             assertEquals(2, actual.size());
@@ -238,11 +238,11 @@ public final class FolderTest extends TestCase {
     public void testPages() {
 
             // ARRANGE
-            final Folder f = new Folder("f");
-            final Page p = new Page("p", _rm);
-            final Page q = new Page("q", _rm);
-            final Template r =
-                new Template(
+            final FolderEntity f = new FolderEntity("f");
+            final PageEntity p = new PageEntity("p", _rm);
+            final PageEntity q = new PageEntity("q", _rm);
+            final TemplateEntity r =
+                new TemplateEntity(
                     "r",
                     "desc",
                     "body",
@@ -254,7 +254,7 @@ public final class FolderTest extends TestCase {
             f.add(r);
 
             // ACT
-            final List<Page> actual = f.getPages();
+            final List<PageEntity> actual = f.getPages();
 
             // ASSERT
             assertEquals(2, actual.size());
@@ -268,11 +268,11 @@ public final class FolderTest extends TestCase {
     public void testPagesRespectSortOrder() {
 
             // ARRANGE
-            final Folder f = new Folder("f");
-            final Page x = new Page("x", _rm);
-            final Page a = new Page("a", _rm);
-            final Template r =
-                new Template(
+            final FolderEntity f = new FolderEntity("f");
+            final PageEntity x = new PageEntity("x", _rm);
+            final PageEntity a = new PageEntity("a", _rm);
+            final TemplateEntity r =
+                new TemplateEntity(
                     "r",
                     "desc",
                     "body",
@@ -286,7 +286,7 @@ public final class FolderTest extends TestCase {
             f.setSortOrder(ResourceOrder.NAME_ALPHANUM_ASC);
 
             // ACT
-            final List<Page> actual = f.getPages();
+            final List<PageEntity> actual = f.getPages();
 
             // ASSERT
             assertEquals(2, actual.size());
@@ -300,14 +300,14 @@ public final class FolderTest extends TestCase {
     public void testFirstPage() {
 
         // ARRANGE
-        final Folder pages = new Folder("content");
-        final Page ab = new Page("ab", _rm);
-        final Page cd = new Page("cd", _rm);
+        final FolderEntity pages = new FolderEntity("content");
+        final PageEntity ab = new PageEntity("ab", _rm);
+        final PageEntity cd = new PageEntity("cd", _rm);
         pages.add(ab);
         pages.add(cd);
 
         // ACT
-        final Page firstChild = pages.getFirstPage();
+        final PageEntity firstChild = pages.getFirstPage();
 
         // ASSERT
         assertEquals(ab, firstChild);
@@ -319,10 +319,10 @@ public final class FolderTest extends TestCase {
     public void testHasPages() {
 
         // ARRANGE
-        final Folder noPages = new Folder("content");
-        final Folder pages = new Folder("content");
-        final Page ab = new Page("ab", _rm);
-        final Page cd = new Page("cd", _rm);
+        final FolderEntity noPages = new FolderEntity("content");
+        final FolderEntity pages = new FolderEntity("content");
+        final PageEntity ab = new PageEntity("ab", _rm);
+        final PageEntity cd = new PageEntity("cd", _rm);
         noPages.add(pages);
         pages.add(ab);
         pages.add(cd);
@@ -342,14 +342,14 @@ public final class FolderTest extends TestCase {
     public void testTypedEntries() {
 
         // ARRANGE
-        final Folder content = new Folder("content");
-        final Page ab = new Page("ab", _rm);
-        final Page cd = new Page("cd", _rm);
+        final FolderEntity content = new FolderEntity("content");
+        final PageEntity ab = new PageEntity("ab", _rm);
+        final PageEntity cd = new PageEntity("cd", _rm);
         content.add(cd);
         content.add(ab);
 
         // ACT
-        final List<Page> pages = content.getEntries(Page.class);
+        final List<PageEntity> pages = content.getEntries(PageEntity.class);
 
         // ASSERT
         assertEquals(2, pages.size());
@@ -362,9 +362,9 @@ public final class FolderTest extends TestCase {
     public void testFolderCount() {
 
         // ARRANGE
-        final Folder content = new Folder("content");
-        final Folder ab = new Folder("ab");
-        final Page cd = new Page("cd", _rm);
+        final FolderEntity content = new FolderEntity("content");
+        final FolderEntity ab = new FolderEntity("ab");
+        final PageEntity cd = new PageEntity("cd", _rm);
         content.add(cd);
         content.add(ab);
 
@@ -381,7 +381,7 @@ public final class FolderTest extends TestCase {
     public void testNullContentCannotBeAddedToFolders() {
 
         // ARRANGE
-        final Folder f = new Folder("foo");
+        final FolderEntity f = new FolderEntity("foo");
 
         // ACT
         try {
@@ -400,7 +400,7 @@ public final class FolderTest extends TestCase {
     public void testFolderTypeIsFolder() {
 
         // ACT
-        final Resource resource = new Folder("foo");
+        final ResourceEntity resource = new FolderEntity("foo");
 
         // ASSERT
         assertEquals(ResourceType.FOLDER, resource.getType());
@@ -412,10 +412,10 @@ public final class FolderTest extends TestCase {
     public void testResourceCanCastToFolder() {
 
         // ACT
-        final Resource resource = new Folder("foo");
+        final ResourceEntity resource = new FolderEntity("foo");
 
         // ASSERT
-        assertEquals(Folder.class, resource.as(Folder.class).getClass());
+        assertEquals(FolderEntity.class, resource.as(FolderEntity.class).getClass());
     }
 
     /**
@@ -424,7 +424,7 @@ public final class FolderTest extends TestCase {
     public void testEmptyFolderHasSizeZero() {
 
         // ACT
-        final int size = new Folder("foo").size();
+        final int size = new FolderEntity("foo").size();
 
         // ASSERT
         assertEquals(0, size);
@@ -436,8 +436,8 @@ public final class FolderTest extends TestCase {
     public void testAddPageToFolder() {
 
         // ARRANGE
-        final Folder folder = new Folder("foo");
-        final Page page = new Page("Name", _rm);
+        final FolderEntity folder = new FolderEntity("foo");
+        final PageEntity page = new PageEntity("Name", _rm);
 
         // ACT
         folder.add(page);
@@ -454,8 +454,8 @@ public final class FolderTest extends TestCase {
     public void testRemovePageFromFolder() {
 
         // ARRANGE
-        final Folder folder = new Folder("foo");
-        final Page page = new Page("Name", _rm);
+        final FolderEntity folder = new FolderEntity("foo");
+        final PageEntity page = new PageEntity("Name", _rm);
         folder.add(page);
 
         // ACT
@@ -473,8 +473,8 @@ public final class FolderTest extends TestCase {
     public void testAddFolderToFolder() {
 
         // ARRANGE
-        final Folder folder = new Folder("foo");
-        final Folder entry = new Folder("bar");
+        final FolderEntity folder = new FolderEntity("foo");
+        final FolderEntity entry = new FolderEntity("bar");
 
         // ACT
         folder.add(entry);
@@ -491,10 +491,10 @@ public final class FolderTest extends TestCase {
     public void testFolderEntriesCollectionIsUnmodifiable() {
 
         // ARRANGE
-        final Folder foo = new Folder("foo");
+        final FolderEntity foo = new FolderEntity("foo");
 
         // ACT
-        foo.getEntries().add(new Page("bar", _rm));
+        foo.getEntries().add(new PageEntity("bar", _rm));
 
          // ASSERT
         assertEquals(0, foo.getEntries().size());
@@ -506,12 +506,12 @@ public final class FolderTest extends TestCase {
     public void testFindEntryByUrl() {
 
         // ARRANGE
-        final Folder foo = new Folder("foo");
-        final Folder bar = new Folder("bar");
+        final FolderEntity foo = new FolderEntity("foo");
+        final FolderEntity bar = new FolderEntity("bar");
         foo.add(bar);
 
         // ACT
-        final Resource expected = foo.getEntryWithName2(new ResourceName("bar"));
+        final ResourceEntity expected = foo.getEntryWithName2(new ResourceName("bar"));
 
         // ASSERT
         assertSame(expected, bar);
@@ -523,15 +523,15 @@ public final class FolderTest extends TestCase {
     public void testNavigateToContent() {
 
         // ARRANGE
-        final Folder content = new Folder("content");
-        final Folder ab = new Folder("ab");
-        final Page cd = new Page("cd", _rm);
+        final FolderEntity content = new FolderEntity("content");
+        final FolderEntity ab = new FolderEntity("ab");
+        final PageEntity cd = new PageEntity("cd", _rm);
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
-        final Page expectedContent = content.navigateTo(path).as(Page.class);
+        final PageEntity expectedContent = content.navigateTo(path).as(PageEntity.class);
 
         // ASSERT
         assertSame(cd, expectedContent);
@@ -543,15 +543,15 @@ public final class FolderTest extends TestCase {
     public void testNavigateToFolder() {
 
         // ARRANGE
-        final Folder content = new Folder("content");
-        final Folder ab = new Folder("ab");
-        final Folder cd = new Folder("cd");
+        final FolderEntity content = new FolderEntity("content");
+        final FolderEntity ab = new FolderEntity("ab");
+        final FolderEntity cd = new FolderEntity("cd");
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
-        final Folder expectedFolder = content.navigateTo(path).as(Folder.class);
+        final FolderEntity expectedFolder = content.navigateTo(path).as(FolderEntity.class);
 
         // ASSERT
         assertSame(cd, expectedFolder);
@@ -563,15 +563,15 @@ public final class FolderTest extends TestCase {
     public void testNavigateToEmptyPath() {
 
         // ARRANGE
-        final Folder content = new Folder("content");
-        final Folder ab = new Folder("ab");
-        final Folder cd = new Folder("cd");
+        final FolderEntity content = new FolderEntity("content");
+        final FolderEntity ab = new FolderEntity("ab");
+        final FolderEntity cd = new FolderEntity("cd");
         ab.add(cd);
         content.add(ab);
         final ResourcePath path = new ResourcePath("");
 
         // ACT
-        final Folder expectedFolder = content.navigateTo(path).as(Folder.class);
+        final FolderEntity expectedFolder = content.navigateTo(path).as(FolderEntity.class);
 
         // ASSERT
         assertSame(content, expectedFolder);
@@ -583,8 +583,8 @@ public final class FolderTest extends TestCase {
     public void testHasEntryWithName() {
 
         // ARRANGE
-        final Page p = new Page("page", _rm);
-        final Folder f = new Folder("folder");
+        final PageEntity p = new PageEntity("page", _rm);
+        final FolderEntity f = new FolderEntity("folder");
         f.add(p);
 
         // ACT
@@ -608,13 +608,13 @@ public final class FolderTest extends TestCase {
     public void testAddRejectsResourcesWithExistingNames() {
 
         // ARRANGE
-        final Page p = new Page("page", _rm);
-        final Folder f = new Folder("folder");
+        final PageEntity p = new PageEntity("page", _rm);
+        final FolderEntity f = new FolderEntity("folder");
         f.add(p);
 
         // ACT
         try {
-            f.add(new Page("page", _rm));
+            f.add(new PageEntity("page", _rm));
             fail("Resources with existing names should be rejected.");
 
         // ASSERT
@@ -633,10 +633,10 @@ public final class FolderTest extends TestCase {
     public void testHasAliases() {
 
         // ARRANGE
-        final Folder noAliases = new Folder("content");
-        final Folder withAliases = new Folder("content");
-        final Page ab = new Page("ab", _rm);
-        final Alias cd = new Alias("cd", ab);
+        final FolderEntity noAliases = new FolderEntity("content");
+        final FolderEntity withAliases = new FolderEntity("content");
+        final PageEntity ab = new PageEntity("ab", _rm);
+        final AliasEntity cd = new AliasEntity("cd", ab);
         noAliases.add(ab);
         withAliases.add(cd);
 
@@ -655,16 +655,16 @@ public final class FolderTest extends TestCase {
     public void testFirstAlias() {
 
         // ARRANGE
-        final Folder pages = new Folder("content");
-        final Page ab = new Page("ab", _rm);
-        final Alias cd = new Alias("cd", ab);
-        final Alias de = new Alias("de", ab);
+        final FolderEntity pages = new FolderEntity("content");
+        final PageEntity ab = new PageEntity("ab", _rm);
+        final AliasEntity cd = new AliasEntity("cd", ab);
+        final AliasEntity de = new AliasEntity("de", ab);
         pages.add(ab);
         pages.add(cd);
         pages.add(de);
 
         // ACT
-        final Alias firstChild = pages.getFirstAlias();
+        final AliasEntity firstChild = pages.getFirstAlias();
 
         // ASSERT
         assertEquals(cd, firstChild);
@@ -676,9 +676,9 @@ public final class FolderTest extends TestCase {
      */
     public void testIndexPage() {
         // ARRANGE
-        final Folder f = new Folder("testFolder");
-        final Page baz = new Page("baz", _rm);
-        final Page foo = new Page("foo", _rm);
+        final FolderEntity f = new FolderEntity("testFolder");
+        final PageEntity baz = new PageEntity("baz", _rm);
+        final PageEntity foo = new PageEntity("foo", _rm);
 
         f.add(baz);
         f.add(foo);
@@ -691,5 +691,5 @@ public final class FolderTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

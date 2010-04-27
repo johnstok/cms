@@ -34,8 +34,8 @@ import ccc.commands.AbstractCommandTest;
 import ccc.commands.ClearWorkingCopyCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -54,11 +54,11 @@ public class WorkingCopyManagerTest
     public void testClearWorkingCopy() {
 
         // ARRANGE
-        final Page p = new Page(new ResourceName("foo"), "foo", null, _rm);
+        final PageEntity p = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
         p.lock(_user);
         p.setOrUpdateWorkingCopy(p.createSnapshot());
 
-        expect(_repository.find(Resource.class, p.getId())).andReturn(p);
+        expect(_repository.find(ResourceEntity.class, p.getId())).andReturn(p);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -78,8 +78,8 @@ public class WorkingCopyManagerTest
     public void testUpdateWorkingCopy() {
 
         // ARRANGE
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 new ResourceName("test"),
                 "test",
                 null,
@@ -88,7 +88,7 @@ public class WorkingCopyManagerTest
         page.lock(_user);
         final PageDto before = page.createSnapshot();
 
-        expect(_repository.find(Page.class, page.getId())).andReturn(page);
+        expect(_repository.find(PageEntity.class, page.getId())).andReturn(page);
         _audit.record(isA(LogEntry.class));
         replayAll();
 

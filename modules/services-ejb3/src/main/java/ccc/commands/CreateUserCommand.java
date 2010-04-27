@@ -33,7 +33,7 @@ import ccc.api.core.UserDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.GroupRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -72,11 +72,11 @@ public class CreateUserCommand {
      *
      * @return Persisted user.
      */
-    public User execute(final User actor,
+    public UserEntity execute(final UserEntity actor,
                         final Date happenedOn,
                         final UserDto delta) {
-        final User user =
-            new User(delta.getUsername(), delta.getName(), delta.getPassword());
+        final UserEntity user =
+            new UserEntity(delta.getUsername(), delta.getName(), delta.getPassword());
         user.setEmail(new EmailAddress(delta.getEmail()));
         for (final UUID groupId : delta.getGroups()) {
             user.addGroup(_groups.find(groupId));

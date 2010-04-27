@@ -36,13 +36,13 @@ import java.util.Map;
 import ccc.api.types.Duration;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
-import ccc.domain.Folder;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
+import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -61,7 +61,7 @@ public class ResourceCommandsTest
 
         // ARRANGE
         _r.lock(_user);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -83,7 +83,7 @@ public class ResourceCommandsTest
 
         // ARRANGE
         _r.lock(_user);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -115,8 +115,8 @@ public class ResourceCommandsTest
     public void testSetDefaultTemplate() {
 
         // ARRANGE
-        final Template defaultTemplate =
-            new Template(
+        final TemplateEntity defaultTemplate =
+            new TemplateEntity(
                 "foo",
                 "bar",
                 "baz",
@@ -124,14 +124,14 @@ public class ResourceCommandsTest
                 MimeType.HTML,
                 new RevisionMetadata(
                     new Date(),
-                    User.SYSTEM_USER,
+                    UserEntity.SYSTEM_USER,
                     true,
                     "Created."));
         _r.lock(_user);
 
-        expect(_repository.find(Resource.class, _r.getId()))
+        expect(_repository.find(ResourceEntity.class, _r.getId()))
             .andReturn(_r);
-        expect(_repository.find(Template.class, defaultTemplate.getId()))
+        expect(_repository.find(TemplateEntity.class, defaultTemplate.getId()))
             .andReturn(defaultTemplate);
         _audit.record(isA(LogEntry.class));
         replayAll();
@@ -152,14 +152,14 @@ public class ResourceCommandsTest
     public void testMove() {
 
         // ARRANGE
-        final Folder oldParent = new Folder("old");
-        final Folder newParent = new Folder("new");
+        final FolderEntity oldParent = new FolderEntity("old");
+        final FolderEntity newParent = new FolderEntity("new");
         oldParent.add(_r);
         _r.lock(_user);
 
-        expect(_repository.find(Resource.class, _r.getId()))
+        expect(_repository.find(ResourceEntity.class, _r.getId()))
             .andReturn(_r);
-        expect(_repository.find(Folder.class, newParent.getId()))
+        expect(_repository.find(FolderEntity.class, newParent.getId()))
             .andReturn(newParent);
         _audit.record(isA(LogEntry.class));
         replayAll();
@@ -181,7 +181,7 @@ public class ResourceCommandsTest
 
         // ARRANGE
         _r.lock(_user);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -228,7 +228,7 @@ public class ResourceCommandsTest
         // ARRANGE
         final int expecteduration = 3727;
         _r.lock(_user);
-        expect(_repository.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _audit.record(isA(LogEntry.class));
         replayAll();
 
@@ -247,8 +247,8 @@ public class ResourceCommandsTest
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        _r = new Page(new ResourceName("foo"), "foo", null, _rm);
-        _parent = new Folder("parent");
+        _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        _parent = new FolderEntity("parent");
         _parent.add(_r);
     }
 
@@ -261,6 +261,6 @@ public class ResourceCommandsTest
     }
 
 
-    private Resource _r;
-    private Folder _parent;
+    private ResourceEntity _r;
+    private FolderEntity _parent;
 }

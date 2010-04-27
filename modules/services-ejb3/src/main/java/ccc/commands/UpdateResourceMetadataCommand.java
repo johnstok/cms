@@ -33,8 +33,8 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -72,14 +72,14 @@ public class UpdateResourceMetadataCommand {
      * @param description The new description for the resource.
      * @param tags The new tags for the resource.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID id,
                         final String title,
                         final String description,
                         final Set<String> tags,
                         final Map<String, String> metadata) {
-        final Resource r = _repository.find(Resource.class, id);
+        final ResourceEntity r = _repository.find(ResourceEntity.class, id);
         r.confirmLock(actor);
 
         r.setTitle(title);

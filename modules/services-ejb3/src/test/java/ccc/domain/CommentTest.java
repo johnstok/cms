@@ -49,7 +49,7 @@ public class CommentTest
     public void testCreateDto() throws Exception {
 
         // ARRANGE
-        final Comment c = new Comment(P, "Foo", "keith");
+        final CommentEntity c = new CommentEntity(P, "Foo", "keith");
         c.setUrl(new URL("http://www.google.com"));
         c.setEmail(new EmailAddress("test@example.com"));
 
@@ -71,7 +71,7 @@ public class CommentTest
         // ARRANGE
 
         // ACT
-        final Comment c = new Comment(P, "Foo", "keith");
+        final CommentEntity c = new CommentEntity(P, "Foo", "keith");
 
         // ASSERT
         assertEquals("Foo", c.getBody());
@@ -87,7 +87,7 @@ public class CommentTest
     public void testUrlMutator() throws Exception {
 
         // ARRANGE
-        final Comment c = new Comment(P, "Foo", "keith");
+        final CommentEntity c = new CommentEntity(P, "Foo", "keith");
 
         // ACT
         c.setUrl(new URL("http://www.google.com"));
@@ -105,12 +105,12 @@ public class CommentTest
         // ARRANGE
 
         // ACT
-        final Comment c = new Comment(P, "Foo", "keith");
+        final CommentEntity c = new CommentEntity(P, "Foo", "keith");
 
         // ASSERT
         assertNull(c.getUrl());
     }
 
 
-    private static final Page P = new Page();
+    private static final PageEntity P = new PageEntity();
 }

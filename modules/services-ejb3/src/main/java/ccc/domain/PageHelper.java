@@ -49,7 +49,7 @@ import ccc.api.types.ParagraphType;
 
 /**
  * Helper class for manipulating pages.
- * TODO: these methods could be moved to the {@link Page} class.
+ * TODO: these methods could be moved to the {@link PageEntity} class.
  *
  * @author Civic Computing Ltd.
  */

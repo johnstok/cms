@@ -41,7 +41,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.GroupDto;
 import ccc.api.core.Groups;
 import ccc.api.types.Permission;
-import ccc.domain.Group;
+import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -66,7 +66,7 @@ public class GroupsEJB
     @Override
     @RolesAllowed(Permission.GROUP_CREATE)
     public GroupDto create(final GroupDto comment) {
-        final Group g = new Group(comment.getName());
+        final GroupEntity g = new GroupEntity(comment.getName());
         g.setPermissions(comment.getPermissions());
 
         getRepoFactory().createGroupRepo().create(g);
@@ -95,9 +95,9 @@ public class GroupsEJB
     @Override
     @RolesAllowed(Permission.GROUP_READ)
     public Collection<GroupDto> list(final String name) {
-        final Collection<Group> groups =
+        final Collection<GroupEntity> groups =
             getRepoFactory().createGroupRepo().list(name);
-        return Group.map(groups);
+        return GroupEntity.map(groups);
     }
 
 
@@ -105,7 +105,7 @@ public class GroupsEJB
     @Override
     @RolesAllowed(Permission.GROUP_UPDATE)
     public GroupDto update(final UUID id, final GroupDto group) {
-        final Group g = getRepoFactory().createGroupRepo().find(id);
+        final GroupEntity g = getRepoFactory().createGroupRepo().find(id);
         g.setName(group.getName());
         g.setPermissions(group.getPermissions());
 

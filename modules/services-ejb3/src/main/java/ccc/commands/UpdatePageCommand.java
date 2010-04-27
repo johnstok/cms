@@ -31,9 +31,9 @@ import java.util.UUID;
 
 import ccc.api.core.PageDto;
 import ccc.api.types.CommandType;
-import ccc.domain.Page;
+import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -69,9 +69,9 @@ public class UpdatePageCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor, final Date happenedOn) {
+    public Void doExecute(final UserEntity actor, final Date happenedOn) {
 
-        final Page page = getRepository().find(Page.class, _id);
+        final PageEntity page = getRepository().find(PageEntity.class, _id);
         page.confirmLock(actor);
 
         final RevisionMetadata rm =

@@ -29,15 +29,15 @@ import ccc.commons.Testing;
 
 
 /**
- * Tests for the {@link Resource} class.
+ * Tests for the {@link ResourceEntity} class.
  *
  * @author Civic Computing Ltd.
  */
 public final class ResourceTest extends TestCase {
 
-    private final Template _default = new Template();
-    private User _jill = new User(new Username("jill"), "password");
-    private User _jack = new User(new Username("jack"), "password");
+    private final TemplateEntity _default = new TemplateEntity();
+    private UserEntity _jill = new UserEntity(new Username("jill"), "password");
+    private UserEntity _jack = new UserEntity(new Username("jack"), "password");
 
 
     /**
@@ -46,7 +46,7 @@ public final class ResourceTest extends TestCase {
     public void testResourceNotIndexableByDefault() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
 
@@ -61,7 +61,7 @@ public final class ResourceTest extends TestCase {
     public void testResourceIndexingEnabledViaMetadata() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         r.addMetadatum("searchable", "true");
@@ -77,9 +77,9 @@ public final class ResourceTest extends TestCase {
     public void testChildrenCanOverrideIndexing() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addMetadatum("searchable", "true");
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         f.add(r);
 
         // ACT
@@ -96,18 +96,18 @@ public final class ResourceTest extends TestCase {
     public void testAccessibilityCheckRespectsAclCombinations() {
 
         // ARRANGE
-        final User tom = new User(new Username("tom"), "password");
+        final UserEntity tom = new UserEntity(new Username("tom"), "password");
         tom.addGroup(BAZ);
-        final User dick = new User(new Username("dick"), "password");
+        final UserEntity dick = new UserEntity(new Username("dick"), "password");
         dick.addGroup(FOO);
-        final User harry = new User(new Username("harry"), "password");
+        final UserEntity harry = new UserEntity(new Username("harry"), "password");
         harry.addGroup(FOO);
 
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addUserPermission(new AccessPermission(true, true, tom));
         f.addUserPermission(new AccessPermission(true, true, harry));
 
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         p.addGroupPermission(new AccessPermission(true, true, FOO));
         p.addGroupPermission(new AccessPermission(true, true, BAR));
         f.add(p);
@@ -129,9 +129,9 @@ public final class ResourceTest extends TestCase {
     public void testAccessibilityCheckRespectsAclUsersFromParent() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addUserPermission(new AccessPermission(true, true, _jill));
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         f.add(p);
 
         // ACT
@@ -151,7 +151,7 @@ public final class ResourceTest extends TestCase {
     public void testAccessibilityCheckAllowsAclUser() {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         p.addUserPermission(new AccessPermission(true, true, _jill));
 
         // ACT
@@ -171,7 +171,7 @@ public final class ResourceTest extends TestCase {
     public void testAccessibilityCheckAllowsAclUserWithGroupsInAcl() {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         p.addGroupPermission(new AccessPermission(true, true, FOO));
         p.addUserPermission(new AccessPermission(true, true, _jill));
 
@@ -192,7 +192,7 @@ public final class ResourceTest extends TestCase {
     public void testAccessibilityCheckHandlesNullUser() {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
 
         // ACT
         final boolean isAccessible = p.isReadableBy(null);
@@ -208,7 +208,7 @@ public final class ResourceTest extends TestCase {
     public void testSecureResourceInaccessibleToNullUser() {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         p.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
@@ -225,8 +225,8 @@ public final class ResourceTest extends TestCase {
     public void testSecureResourcesWithInsecureParentsAreSecure() {
 
         // ARRANGE
-        final Folder f = new Folder();
-        final Page p = new Page();
+        final FolderEntity f = new FolderEntity();
+        final PageEntity p = new PageEntity();
         p.addGroupPermission(new AccessPermission(true, true, FOO));
         f.add(p);
 
@@ -244,9 +244,9 @@ public final class ResourceTest extends TestCase {
     public void testSecureResourcesWithSecureParentsAreSecure() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addGroupPermission(new AccessPermission(true, true, FOO));
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         p.addGroupPermission(new AccessPermission(true, true, BAR));
         f.add(p);
 
@@ -264,9 +264,9 @@ public final class ResourceTest extends TestCase {
     public void testInsecureResourcesWithSecureParentsAreSecure() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addGroupPermission(new AccessPermission(true, true, FOO));
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         f.add(p);
 
         // ACT
@@ -283,8 +283,8 @@ public final class ResourceTest extends TestCase {
     public void testInsecureResourcesWithInsecureParentsAreInsecure() {
 
         // ARRANGE
-        final Folder f = new Folder();
-        final Page p = new Page();
+        final FolderEntity f = new FolderEntity();
+        final PageEntity p = new PageEntity();
         f.add(p);
 
         // ACT
@@ -301,7 +301,7 @@ public final class ResourceTest extends TestCase {
     public void testResourcesWithGroupsAreSecure() {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         p.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
@@ -318,7 +318,7 @@ public final class ResourceTest extends TestCase {
     public void testResourcesWithoutAclArentSecure() {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
 
         // ACT
         final boolean secure = p.isSecure();
@@ -334,13 +334,13 @@ public final class ResourceTest extends TestCase {
     public void testResourceAccessibilityRespectsParentalAcl() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addGroupPermission(new AccessPermission(true, true, BAR));
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.addGroupPermission(new AccessPermission(true, true, FOO));
         f.add(r);
 
-        final User tom = new User(new Username("paul"), "password");
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
         tom.addGroup(FOO);
 
         // ACT
@@ -356,10 +356,10 @@ public final class ResourceTest extends TestCase {
     public void testResourcesWithEmptyAclAreAccessible() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.clearGroupAcl();
         r.clearUserAcl();
-        final User tom = new User(new Username("paul"), "password");
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
 
         // ACT
         final boolean isAccessible = r.isReadableBy(tom);
@@ -374,9 +374,9 @@ public final class ResourceTest extends TestCase {
     public void testResourceIsAccessibleToUser() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.addGroupPermission(new AccessPermission(true, true, FOO));
-        final User tom = new User(new Username("paul"), "password");
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
         tom.addGroup(FOO);
 
         // ACT
@@ -392,10 +392,10 @@ public final class ResourceTest extends TestCase {
     public void testGroupsOnResourceUseOrLogic() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.addGroupPermission(new AccessPermission(true, true, FOO));
         r.addGroupPermission(new AccessPermission(true, true, BAR));
-        final User tom = new User(new Username("paul"), "password");
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
         tom.addGroup(FOO);
 
         // ACT
@@ -411,15 +411,15 @@ public final class ResourceTest extends TestCase {
     public void testGroupsOnParentUseAndLogic() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addGroupPermission(new AccessPermission(true, true, BAR));
         f.addGroupPermission(new AccessPermission(true, true, BAZ));
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.addGroupPermission(new AccessPermission(true, true, FOO));
         r.addGroupPermission(new AccessPermission(true, true, FOZ));
         f.add(r);
 
-        final User tom = new User(new Username("paul"), "password");
+        final UserEntity tom = new UserEntity(new Username("paul"), "password");
         tom.addGroup(FOO);
         tom.addGroup(BAR);
 
@@ -436,7 +436,7 @@ public final class ResourceTest extends TestCase {
     public void testResourceIsNotAccessibleToUser() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.addGroupPermission(new AccessPermission(true, true, FOO));
 
         // ACT
@@ -454,7 +454,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
         final AccessPermission foo = new AccessPermission(true, true, FOO);
         final AccessPermission bar = new AccessPermission(true, true, BAR);
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         r.addGroupPermission(foo);
@@ -475,7 +475,7 @@ public final class ResourceTest extends TestCase {
         final Date before = new Date();
 
         // ACT
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         final Date after = new Date();
 
         // ASSERT
@@ -491,7 +491,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ASSERT
         assertEquals(r.getDateCreated(), r.getDateChanged());
@@ -504,11 +504,11 @@ public final class ResourceTest extends TestCase {
     public void testDateChangedCanBeSet() throws InterruptedException {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         Thread.sleep(WAIT_LENGTH); // Wait
 
         // ACT
-        r.setDateChanged(new Date(), new User());
+        r.setDateChanged(new Date(), new UserEntity());
 
         // ASSERT
         assertTrue(r.getDateChanged().after(r.getDateCreated()));
@@ -520,7 +520,7 @@ public final class ResourceTest extends TestCase {
     public void testMetadataCanBeCleared() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.addMetadatum("foo", "bar");
 
         // ACT
@@ -536,9 +536,9 @@ public final class ResourceTest extends TestCase {
     public void testClearingMetadataDoesNotAffectParents() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addMetadatum("foo", "bar");
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         f.add(r);
 
         // ACT
@@ -554,7 +554,7 @@ public final class ResourceTest extends TestCase {
     public void testNullIsAnInvalidMetadatum() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         try {
@@ -577,7 +577,7 @@ public final class ResourceTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ASSERT
         assertNull(r.getMetadatum("foo"));
@@ -589,7 +589,7 @@ public final class ResourceTest extends TestCase {
     public void testAddMetadata() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         r.addMetadatum("foo", "bar");
@@ -604,8 +604,8 @@ public final class ResourceTest extends TestCase {
     public void testMetadataIsInheritedFromParents() {
 
         // ARRANGE
-        final Folder f = new Folder();
-        final Page p = new Page();
+        final FolderEntity f = new FolderEntity();
+        final PageEntity p = new PageEntity();
         f.add(p);
 
         // ACT
@@ -621,9 +621,9 @@ public final class ResourceTest extends TestCase {
     public void testLocalMetadataIsChosenOverParentMetadata() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addMetadatum("foo", "bar");
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         f.add(p);
 
         // ACT
@@ -640,12 +640,12 @@ public final class ResourceTest extends TestCase {
     public void testRootAccessorReturnParent() {
 
         // ARRANGE
-        final Folder root = new Folder("root");
-        final Resource child = new Page();
+        final FolderEntity root = new FolderEntity("root");
+        final ResourceEntity child = new PageEntity();
         root.add(child);
 
         // ACT
-        final Resource actual = child.getRoot();
+        final ResourceEntity actual = child.getRoot();
 
         // ASSERT
         assertEquals(root, actual);
@@ -657,10 +657,10 @@ public final class ResourceTest extends TestCase {
     public void testRootAccessorReturnsThisForNullParent() {
 
         // ARRANGE
-        final Resource root = new Page();
+        final ResourceEntity root = new PageEntity();
 
         // ACT
-        final Resource actual = root.getRoot();
+        final ResourceEntity actual = root.getRoot();
 
         // ASSERT
         assertEquals(root, actual);
@@ -672,7 +672,7 @@ public final class ResourceTest extends TestCase {
     public void testIncludeInMainMenu() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         assertEquals(false, p.isIncludedInMainMenu());
@@ -689,7 +689,7 @@ public final class ResourceTest extends TestCase {
     public void testLockFailsWhenAlreadyLocked() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
         p.lock(_jack);
 
         // ACT
@@ -710,7 +710,7 @@ public final class ResourceTest extends TestCase {
     public void testUnlockFailsWhenNotLocked() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         try {
@@ -732,7 +732,7 @@ public final class ResourceTest extends TestCase {
     public void testUnlockFailsWhenUserCannotUnlock() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
         p.lock(_jack);
 
         // ACT
@@ -755,7 +755,7 @@ public final class ResourceTest extends TestCase {
     public void testConfirmLockDoesNothingWithCorrectUser() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
         p.lock(_jill);
 
         // ACT
@@ -768,7 +768,7 @@ public final class ResourceTest extends TestCase {
     public void testConfirmLockThrowsUnlockedException() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         try {
@@ -787,7 +787,7 @@ public final class ResourceTest extends TestCase {
     public void testConfirmLockThrowsLockMismatchException() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
         p.lock(_jack);
 
         // ACT
@@ -812,7 +812,7 @@ public final class ResourceTest extends TestCase {
             add("bar");
             add("baz");
         }};
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         p.setTags(in);
@@ -836,7 +836,7 @@ public final class ResourceTest extends TestCase {
             add(" bar ");
             add("baz");
         }};
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         p.setTags(in);
@@ -855,7 +855,7 @@ public final class ResourceTest extends TestCase {
     public void testSetTagsEmptySetClearsTheList() {
 
         // ARRANGE
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         p.setTags(new HashSet<String>());
@@ -877,7 +877,7 @@ public final class ResourceTest extends TestCase {
             add(" ");
             add("baz");
         }};
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         p.setTags(in);
@@ -896,7 +896,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            final Resource p = new Page();
+            final ResourceEntity p = new PageEntity();
             p.setTags(null);
             fail("Null should be rejected.");
 
@@ -912,7 +912,7 @@ public final class ResourceTest extends TestCase {
     public void testIsLockedReturnsFalseByDefault() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         final boolean isLocked = r.isLocked();
@@ -927,8 +927,8 @@ public final class ResourceTest extends TestCase {
     public void testLockResource() {
 
         //ARRANGE
-        final User u = new User(new Username("blat"), "password");
-        final Resource r = new Page();
+        final UserEntity u = new UserEntity(new Username("blat"), "password");
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         r.lock(u);
@@ -943,7 +943,7 @@ public final class ResourceTest extends TestCase {
     public void testLockResourceRejectsNull() {
         // ACT
         try {
-            final Resource r = new Page();
+            final ResourceEntity r = new PageEntity();
             r.lock(null);
             fail("Null should be rejected.");
 
@@ -959,7 +959,7 @@ public final class ResourceTest extends TestCase {
     public void testUnlockResource() {
 
         //ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.lock(_jack);
 
         // ACT
@@ -975,8 +975,8 @@ public final class ResourceTest extends TestCase {
     public void testQueryForLockedByUser() {
 
         //ARRANGE
-        final User u = new User(new Username("blat"), "password");
-        final Resource r = new Page();
+        final UserEntity u = new UserEntity(new Username("blat"), "password");
+        final ResourceEntity r = new PageEntity();
 
         // ACT
         r.lock(u);
@@ -991,7 +991,7 @@ public final class ResourceTest extends TestCase {
     public void testNameMutatorRejectsNull() {
         // ACT
         try {
-            final Resource r = new Page();
+            final ResourceEntity r = new PageEntity();
             r.setName((ResourceName) null);
             fail("Null should be rejected.");
 
@@ -1011,7 +1011,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new Folder(tooLongTitle);
+            new FolderEntity(tooLongTitle);
             fail("Title should be rejected - too long.");
 
         // ASSERT
@@ -1032,7 +1032,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            final Resource r = new Page();
+            final ResourceEntity r = new PageEntity();
             r.setTitle(tooLongTitle);
             fail("Title should be rejected - too long.");
 
@@ -1050,7 +1050,7 @@ public final class ResourceTest extends TestCase {
     public void testTitleOnlyConstructor() {
 
         // ACT
-        final Resource r = new Folder("foo?");
+        final ResourceEntity r = new FolderEntity("foo?");
 
         // ASSERT
         assertEquals(new ResourceName("foo_"), r.getName());
@@ -1064,7 +1064,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new Folder((String) null);
+            new FolderEntity((String) null);
             fail("Null should be rejected.");
 
         // ASSERT
@@ -1079,8 +1079,8 @@ public final class ResourceTest extends TestCase {
     public void testAbsolutePath() {
 
         // ARRANGE
-        final Folder f = new Folder("foo");
-        final Resource p = new Folder("bar");
+        final FolderEntity f = new FolderEntity("foo");
+        final ResourceEntity p = new FolderEntity("bar");
         f.add(p);
 
         // ACT
@@ -1096,19 +1096,19 @@ public final class ResourceTest extends TestCase {
     public void testComputeTemplateReturnsDefaultWhenNoTemplateIsFound() {
 
         // ARRANGE
-        final Folder f1 = new Folder();
-        final Folder f2 = new Folder();
-        final Resource r = new Page();
+        final FolderEntity f1 = new FolderEntity();
+        final FolderEntity f2 = new FolderEntity();
+        final ResourceEntity r = new PageEntity();
 
         f2.add(f1);
         f1.add(r);
 
         // ACT
-        final Template actual = r.computeTemplate(_default);
+        final TemplateEntity actual = r.computeTemplate(_default);
 
         // ASSERT
         assertSame(_default, actual);
-        assertSame(_default, new Page().computeTemplate(_default));
+        assertSame(_default, new PageEntity().computeTemplate(_default));
     }
 
     /**
@@ -1117,22 +1117,22 @@ public final class ResourceTest extends TestCase {
     public void testComputeTemplateLooksInCalleeFirst() {
 
         // ARRANGE
-        final Template t1 = new Template();
-        final Template t2 = new Template();
-        final Template t3 = new Template();
+        final TemplateEntity t1 = new TemplateEntity();
+        final TemplateEntity t2 = new TemplateEntity();
+        final TemplateEntity t3 = new TemplateEntity();
 
-        final Folder f1 = new Folder();
+        final FolderEntity f1 = new FolderEntity();
         f1.setTemplate(t1);
-        final Folder f2 = new Folder();
+        final FolderEntity f2 = new FolderEntity();
         f2.setTemplate(t2);
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
         r.setTemplate(t3);
 
         f2.add(f1);
         f1.add(r);
 
         // ACT
-        final Template actual = r.computeTemplate(_default);
+        final TemplateEntity actual = r.computeTemplate(_default);
 
         // ASSERT
         assertEquals(t3, actual);
@@ -1144,16 +1144,16 @@ public final class ResourceTest extends TestCase {
     public void testComputeTemplateRecursesToParent() {
 
         // ARRANGE
-        final Template t = new Template();
-        final Resource r = new Page();
-        final Folder f1 = new Folder();
-        final Folder f2 = new Folder();
+        final TemplateEntity t = new TemplateEntity();
+        final ResourceEntity r = new PageEntity();
+        final FolderEntity f1 = new FolderEntity();
+        final FolderEntity f2 = new FolderEntity();
         f2.add(f1);
         f1.add(r);
         f2.setTemplate(t);
 
         // ACT
-        final Template actual = r.computeTemplate(_default);
+        final TemplateEntity actual = r.computeTemplate(_default);
 
         // ASSERT
         assertEquals(t, actual);
@@ -1165,9 +1165,9 @@ public final class ResourceTest extends TestCase {
     public void testParentCanBeChanged() { // FIXME: Test parent index field.
 
         // ARRANGE
-        final Resource r = new Page();
-        final Folder f1 = new Folder();
-        final Folder f2 = new Folder();
+        final ResourceEntity r = new PageEntity();
+        final FolderEntity f1 = new FolderEntity();
+        final FolderEntity f2 = new FolderEntity();
         r.setParent(f1, Integer.valueOf(0));
 
         // ACT
@@ -1183,8 +1183,8 @@ public final class ResourceTest extends TestCase {
     public void testParentCanBeCleared() { // FIXME: Test parent index field.
 
         // ARRANGE
-        final Resource r = new Page();
-        final Folder f = new Folder();
+        final ResourceEntity r = new PageEntity();
+        final FolderEntity f = new FolderEntity();
         r.setParent(f, Integer.valueOf(0));
 
         // ACT
@@ -1201,8 +1201,8 @@ public final class ResourceTest extends TestCase {
     public void testParentMutator() { // FIXME: Test parent index field.
 
         // ARRANGE
-        final Resource r = new Page();
-        final Folder expected = new Folder();
+        final ResourceEntity r = new PageEntity();
+        final FolderEntity expected = new FolderEntity();
 
         // ACT
         r.setParent(expected, Integer.valueOf(0));
@@ -1217,10 +1217,10 @@ public final class ResourceTest extends TestCase {
     public void testParentAccessor() {
 
         // ARRANGE
-        final Resource r = new Page();
+        final ResourceEntity r = new PageEntity();
 
         // ACT
-        final Folder actual = r.getParent();
+        final FolderEntity actual = r.getParent();
 
         // ASSERT
         assertNull("Should be null.", actual);
@@ -1233,7 +1233,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new Folder(null);
+            new FolderEntity(null);
             fail("Resources should reject NULL for the title parameter.");
 
          // ASSERT
@@ -1249,7 +1249,7 @@ public final class ResourceTest extends TestCase {
 
         // ACT
         try {
-            new Folder("");
+            new FolderEntity("");
             fail("Resources should reject the ZLS for the title parameter.");
 
          // ASSERT
@@ -1265,8 +1265,8 @@ public final class ResourceTest extends TestCase {
     public void testPublish() {
 
         //ARRANGE
-        final User u = new User(new Username("user"), "password");
-        final Resource p = new Page();
+        final UserEntity u = new UserEntity(new Username("user"), "password");
+        final ResourceEntity p = new PageEntity();
 
         // ACT
         p.publish(u);
@@ -1281,7 +1281,7 @@ public final class ResourceTest extends TestCase {
     public void testPublishRejectsNullUser() {
         // ACT
         try {
-            final Resource r = new Page();
+            final ResourceEntity r = new PageEntity();
             r.publish(null);
             fail("Null should be rejected.");
 
@@ -1298,18 +1298,18 @@ public final class ResourceTest extends TestCase {
     public void testIsVisibleTrue() {
 
         //ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
 
-        final Folder f1 = new Folder("parent1");
+        final FolderEntity f1 = new FolderEntity("parent1");
         f1.publish(u);
 
-        final Folder f2 = new Folder("parent2");
+        final FolderEntity f2 = new FolderEntity("parent2");
         f2.publish(u);
 
-        final Folder f3 = new Folder("parent3");
+        final FolderEntity f3 = new FolderEntity("parent3");
         f3.publish(u);
 
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
         p.publish(u);
 
         f1.add(f2);
@@ -1326,17 +1326,17 @@ public final class ResourceTest extends TestCase {
     public void testIsVisibleFalse() {
 
         //ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
 
-        final Folder f1 = new Folder("parent1");
+        final FolderEntity f1 = new FolderEntity("parent1");
 
-        final Folder f2 = new Folder("parent2");
+        final FolderEntity f2 = new FolderEntity("parent2");
         f2.publish(u);
 
-        final Folder f3 = new Folder("parent2");
+        final FolderEntity f3 = new FolderEntity("parent2");
         f3.publish(u);
 
-        final Resource p = new Page();
+        final ResourceEntity p = new PageEntity();
         p.publish(u);
 
         f1.add(f2);
@@ -1356,12 +1356,12 @@ public final class ResourceTest extends TestCase {
         final Duration d = new Duration(650);
         final Duration d2 = new Duration(352);
 
-        final Resource r = new Page();
-        final Resource r2 = new Page();
+        final ResourceEntity r = new PageEntity();
+        final ResourceEntity r2 = new PageEntity();
         r2.setCacheDuration(d2);
 
-        final Folder f1 = new Folder();
-        final Folder f2 = new Folder();
+        final FolderEntity f1 = new FolderEntity();
+        final FolderEntity f2 = new FolderEntity();
         f2.add(f1);
         f1.add(r);
         f1.add(r2);
@@ -1386,7 +1386,7 @@ public final class ResourceTest extends TestCase {
             new StringBuffer("before\u0096middle\u0092end\u0086");
 
         // ACT
-        final Resource resource = new Page();
+        final ResourceEntity resource = new PageEntity();
         resource.setTitle(bad.toString());
 
         // ASSERT
@@ -1402,10 +1402,10 @@ public final class ResourceTest extends TestCase {
     public void testComputeMetadata() {
 
         // ARRANGE
-        final Folder f = new Folder();
+        final FolderEntity f = new FolderEntity();
         f.addMetadatum("foo", "1");
         f.addMetadatum("bar", "1");
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
         f.addMetadatum("foo", "2");
         f.add(p);
 
@@ -1419,8 +1419,8 @@ public final class ResourceTest extends TestCase {
     }
 
     private static final int WAIT_LENGTH = 100;
-    private static final Group FOO = new Group("foo");
-    private static final Group BAR = new Group("bar");
-    private static final Group BAZ = new Group("baz");
-    private static final Group FOZ = new Group("foz");
+    private static final GroupEntity FOO = new GroupEntity("foo");
+    private static final GroupEntity BAR = new GroupEntity("bar");
+    private static final GroupEntity BAZ = new GroupEntity("baz");
+    private static final GroupEntity FOZ = new GroupEntity("foz");
 }

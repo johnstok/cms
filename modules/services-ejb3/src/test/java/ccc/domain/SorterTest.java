@@ -50,10 +50,10 @@ public class SorterTest
     public void testname() {
 
         // ARRANGE
-        final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Folder("k"));
-            add(new Folder("z"));
-            add(new Folder("a"));
+        final List<ResourceEntity> resources = new ArrayList<ResourceEntity>() {{
+            add(new FolderEntity("k"));
+            add(new FolderEntity("z"));
+            add(new FolderEntity("a"));
         }};
 
         // ACT
@@ -71,11 +71,11 @@ public class SorterTest
     public void testManualOrdering() {
 
         // ARRANGE
-        final Resource z = new Folder("z");
+        final ResourceEntity z = new FolderEntity("z");
         z.setIndexPosition(0);
-        final Resource a = new Folder("a");
+        final ResourceEntity a = new FolderEntity("a");
         a.setIndexPosition(1);
-        final List<Resource> resources = Arrays.asList(a, z);
+        final List<ResourceEntity> resources = Arrays.asList(a, z);
 
         // ACT
         Sorter.sort(resources, ResourceOrder.MANUAL);
@@ -90,9 +90,9 @@ public class SorterTest
     public void testDateChangedAscOrdering() {
 
         // ARRANGE
-        final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Folder("z"));
-            add(new Folder("a"));
+        final List<ResourceEntity> resources = new ArrayList<ResourceEntity>() {{
+            add(new FolderEntity("z"));
+            add(new FolderEntity("a"));
         }};
 
         // ACT
@@ -108,9 +108,9 @@ public class SorterTest
     public void testDateChangedDescOrdering() {
 
         // ARRANGE
-        final List<Resource> resources = new ArrayList<Resource>() {{
-            add(new Folder("z"));
-            add(new Folder("a"));
+        final List<ResourceEntity> resources = new ArrayList<ResourceEntity>() {{
+            add(new FolderEntity("z"));
+            add(new FolderEntity("a"));
         }};
 
         // ACT

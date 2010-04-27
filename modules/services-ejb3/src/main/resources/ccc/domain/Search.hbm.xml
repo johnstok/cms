@@ -34,7 +34,7 @@
 <hibernate-mapping default-access="field">
     
     <joined-subclass
-        name="ccc.domain.Search"  extends="ccc.domain.Resource" table="searches">
+        name="ccc.domain.Search"  extends="ccc.domain.ResourceEntity" table="searches">
         <key column="id" foreign-key="FK_SEARCH_RESOURCE_ID"/>
     </joined-subclass>
     

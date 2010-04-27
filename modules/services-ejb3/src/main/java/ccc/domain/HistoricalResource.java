@@ -44,9 +44,9 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class HistoricalResource<S, T extends Revision<S>>
+public abstract class HistoricalResource<S, T extends RevisionEntity<S>>
     extends
-        Resource {
+        ResourceEntity {
 
     private int _currentRev = -1;
     private Map<Integer, T> _history = new HashMap<Integer, T>();

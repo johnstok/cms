@@ -29,9 +29,9 @@ package ccc.commands;
 import java.util.Date;
 
 import ccc.api.types.CommandType;
-import ccc.domain.Action;
+import ccc.domain.ActionEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.ActionRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -66,9 +66,9 @@ public class ScheduleActionCommand {
      * @param actor The user that executed the command.
      * @param happenedOn The date the command was executed.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
-                        final Action action) {
+                        final ActionEntity action) {
         _repository.create(action);
 
         _audit.record(

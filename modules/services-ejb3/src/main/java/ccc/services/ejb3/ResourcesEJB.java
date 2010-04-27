@@ -68,14 +68,14 @@ import ccc.commands.UpdateResourceMetadataCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.commons.Exceptions;
 import ccc.commons.streams.ReadToStringAction;
-import ccc.domain.Action;
-import ccc.domain.File;
-import ccc.domain.Folder;
+import ccc.domain.ActionEntity;
+import ccc.domain.FileEntity;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.Revision;
-import ccc.domain.Template;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.RevisionEntity;
+import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.extensions.ResourcesExt;
 
@@ -103,7 +103,7 @@ public class ResourcesEJB
     @TransactionAttribute(REQUIRES_NEW)
     @RolesAllowed(ACTION_EXECUTE)
     public void executeAction(final UUID actionId) {
-            final Action a =
+            final ActionEntity a =
                 getRepoFactory().createActionRepository().find(actionId);
 
             if (new Date().before(a.getExecuteAfter())) {
@@ -114,7 +114,7 @@ public class ResourcesEJB
     }
 
 
-    private void executeAction(final Action action) {
+    private void executeAction(final ActionEntity action) {
         switch (action.getType()) {
 
             case RESOURCE_UNPUBLISH:
@@ -143,7 +143,7 @@ public class ResourcesEJB
     }
 
 
-    private void executeDelete(final Action action) {
+    private void executeDelete(final ActionEntity action) {
         sudoExecute(
             commands().createDeleteResourceCmd(action.getSubject().getId()),
             action.getActor().getId(),
@@ -151,7 +151,7 @@ public class ResourcesEJB
     }
 
 
-    private void executeUpdate(final Action action) {
+    private void executeUpdate(final ActionEntity action) {
         sudoExecute(
             new ApplyWorkingCopyCommand(
                 getRepoFactory(),
@@ -165,7 +165,7 @@ public class ResourcesEJB
     }
 
 
-    private void executePublish(final Action action) {
+    private void executePublish(final ActionEntity action) {
         sudoExecute(
             commands().publishResource(action.getSubject().getId()),
             action.getActor().getId(),
@@ -173,7 +173,7 @@ public class ResourcesEJB
     }
 
 
-    private void executeUnpublish(final Action action) {
+    private void executeUnpublish(final ActionEntity action) {
         sudoExecute(
             commands().unpublishResourceCommand(action.getSubject().getId()),
             action.getActor().getId(),
@@ -455,7 +455,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_READ)
     public Collection<RevisionDto> history(final UUID resourceId) {
-        return Revision.mapRevisions(
+        return RevisionEntity.mapRevisions(
             getRepoFactory()
             .createResourceRepository()
             .history(resourceId));
@@ -466,7 +466,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_READ)
     public Collection<ResourceSummary> locked() {
-        return Resource.mapResources(getResources().locked());
+        return ResourceEntity.mapResources(getResources().locked());
     }
 
 
@@ -475,7 +475,7 @@ public class ResourcesEJB
     @RolesAllowed(RESOURCE_READ)
     public ACL acl(final UUID resourceId) {
         final ACL acl =
-            getResources().find(Resource.class, resourceId).getAcl();
+            getResources().find(ResourceEntity.class, resourceId).getAcl();
         return acl;
     }
 
@@ -484,8 +484,8 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_READ)
     public Duration cacheDuration(final UUID resourceId) {
-        final Resource r =
-            getResources().find(Resource.class, resourceId);
+        final ResourceEntity r =
+            getResources().find(ResourceEntity.class, resourceId);
         return r.getCacheDuration();
     }
 
@@ -494,9 +494,9 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_READ)
     public TemplateDto computeTemplate(final UUID resourceId) {
-        final Resource r =
-            getResources().find(Resource.class, resourceId);
-        final Template t = r.computeTemplate(null);
+        final ResourceEntity r =
+            getResources().find(ResourceEntity.class, resourceId);
+        final TemplateEntity t = r.computeTemplate(null);
         return (null==t) ? null : t.summarize();
     }
 
@@ -516,7 +516,7 @@ public class ResourcesEJB
     public Collection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         checkPermission(RESOURCE_READ);
-        return Resource.mapResources(getResources().lookupWithMetadataKey(key));
+        return ResourceEntity.mapResources(getResources().lookupWithMetadataKey(key));
     }
 
     /** {@inheritDoc} */
@@ -539,7 +539,7 @@ public class ResourcesEJB
     public String getAbsolutePath(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
         return
-            getResources().find(Resource.class, resourceId)
+            getResources().find(ResourceEntity.class, resourceId)
                       .getAbsolutePath()
                       .removeTop()
                       .toString();
@@ -553,7 +553,7 @@ public class ResourcesEJB
         checkPermission(RESOURCE_READ);
 
         final ResourcePath rp = new ResourcePath(rootPath);
-        final Resource r = getResources().lookup(rp);
+        final ResourceEntity r = getResources().lookup(rp);
         checkRead(r);
         return r.forCurrentRevision();
     }
@@ -566,7 +566,7 @@ public class ResourcesEJB
         checkPermission(RESOURCE_READ);
 
         final ResourcePath rp = new ResourcePath(rootPath);
-        final Resource r =
+        final ResourceEntity r =
             getResources().lookup(rp);
         checkRead(r);
         return r.forWorkingCopy();
@@ -581,7 +581,7 @@ public class ResourcesEJB
         checkPermission(RESOURCE_READ);
 
         final ResourcePath rp = new ResourcePath(path);
-        final Resource r =
+        final ResourceEntity r =
             getResources().lookup(rp);
         checkRead(r);
         return r.forSpecificRevision(version);
@@ -597,14 +597,14 @@ public class ResourcesEJB
 
         final StringBuilder sb = new StringBuilder();
         final ResourcePath rp = new ResourcePath(absolutePath);
-        Resource r;
+        ResourceEntity r;
         try {
             r = getResources().lookup(rp);
         } catch (final EntityNotFoundException e) {
             return null;
         }
-        if (r instanceof File) {
-            final File f = (File) r;
+        if (r instanceof FileEntity) {
+            final FileEntity f = (FileEntity) r;
             if (f.isText()) {
                 getRepoFactory().createDataRepository().retrieve(
                     f.getData(),
@@ -622,7 +622,7 @@ public class ResourcesEJB
     public Map<String, String> metadata(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
-        final Resource r = getResources().find(Resource.class, resourceId);
+        final ResourceEntity r = getResources().find(ResourceEntity.class, resourceId);
         return r.getMetadata();
     }
 
@@ -633,7 +633,7 @@ public class ResourcesEJB
     public ResourceSummary resource(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
-        final Resource r = getResources().find(Resource.class, resourceId);
+        final ResourceEntity r = getResources().find(ResourceEntity.class, resourceId);
         checkRead(r);
 
         return r.mapResource();
@@ -669,7 +669,7 @@ public class ResourcesEJB
         final int pageSize) {
         checkPermission(RESOURCE_READ);
 
-        User u = null;
+        UserEntity u = null;
         try {
             u = currentUser();
         } catch (final EntityNotFoundException e) {
@@ -677,12 +677,12 @@ public class ResourcesEJB
         }
 
         final ResourceCriteria criteria = new ResourceCriteria();
-        Folder f = null;
+        FolderEntity f = null;
         if (parent != null) {
             f =
                 getRepoFactory()
                 .createResourceRepository()
-                .find(Folder.class, parent);
+                .find(FolderEntity.class, parent);
             checkRead(f);
             criteria.setParent(parent);
         }
@@ -694,7 +694,7 @@ public class ResourcesEJB
             (null==after)?null:new Date(after.longValue()));
         criteria.setMainmenu(mainmenu);
 
-        final List<ResourceSummary> list = Resource.mapResources(
+        final List<ResourceSummary> list = ResourceEntity.mapResources(
             filterAccessibleTo(u,
                 getResources().list(criteria,
                     f,
@@ -709,11 +709,11 @@ public class ResourcesEJB
     }
 
 
-    private Collection<? extends Resource> filterAccessibleTo(
-                                            final User u,
-                                            final List<Resource> resources) {
-        final List<Resource> accessible = new ArrayList<Resource>();
-        for (final Resource r : resources) {
+    private Collection<? extends ResourceEntity> filterAccessibleTo(
+                                            final UserEntity u,
+                                            final List<ResourceEntity> resources) {
+        final List<ResourceEntity> accessible = new ArrayList<ResourceEntity>();
+        for (final ResourceEntity r : resources) {
             if (r.isReadableBy(u)) { accessible.add(r); }
         }
         return accessible;

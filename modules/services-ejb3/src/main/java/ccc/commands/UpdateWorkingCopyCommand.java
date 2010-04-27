@@ -33,9 +33,9 @@ import ccc.api.core.PageDto;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.domain.WorkingCopySupport;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -71,11 +71,11 @@ public class UpdateWorkingCopyCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID resourceId,
                         final PageDto delta) {
-        final Page r = _repository.find(Page.class, resourceId);
+        final PageEntity r = _repository.find(PageEntity.class, resourceId);
         r.confirmLock(actor);
 
         r.setOrUpdateWorkingCopy(delta);
@@ -98,12 +98,12 @@ public class UpdateWorkingCopyCommand {
      * @param revisionNo The revision that the working copy will be created
      *  from.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID resourceId,
                         final long revisionNo) {
-        final Resource r =
-            _repository.find(Resource.class, resourceId);
+        final ResourceEntity r =
+            _repository.find(ResourceEntity.class, resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WorkingCopySupport<?, ?, ?>) {
