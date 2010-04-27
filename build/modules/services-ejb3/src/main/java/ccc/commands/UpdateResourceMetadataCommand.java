@@ -28,6 +28,7 @@ package ccc.commands;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
@@ -70,15 +71,13 @@ public class UpdateResourceMetadataCommand {
      * @param title The new title for the resource.
      * @param description The new description for the resource.
      * @param tags The new tags for the resource.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final User actor,
                         final Date happenedOn,
                         final UUID id,
                         final String title,
                         final String description,
-                        final String tags,
+                        final Set<String> tags,
                         final Map<String, String> metadata) {
         final Resource r = _repository.find(Resource.class, id);
         r.confirmLock(actor);

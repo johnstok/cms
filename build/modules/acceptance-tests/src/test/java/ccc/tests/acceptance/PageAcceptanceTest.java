@@ -38,9 +38,6 @@ import ccc.api.dto.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -135,8 +132,20 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
     public void testValidateFields() {
 
         // ARRANGE
-        final String definition = "<fields><field name=\"test\" "
-            + "type=\"text_field\" regexp=\"\\d{1,3}\"/></fields>";
+        final ResourceSummary f = tempFolder();
+        final TemplateDto t = new TemplateDto();
+        t.setParent(f.getId());
+        t.setName(new ResourceName("example"));
+        t.setTitle("example");
+        t.setDescription("example");
+        t.setMimeType(MimeType.HTML);
+        t.setDefinition(
+            "<fields>"
+            + "<field name=\"test\" type=\"text_field\" regexp=\"\\d{1,3}\"/>"
+            + "</fields>");
+        t.setBody("empty");
+        final ResourceSummary ts = getTemplates().createTemplate(t);
+
         final Paragraph invalidPara = Paragraph.fromText("test", "fail");
         final Paragraph validPara = Paragraph.fromText("test", "12");
 
@@ -146,15 +155,15 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         validParas.add(validPara);
 
         // ACT
-        final Json okjson = new JsonImpl();
-        okjson.set(JsonKeys.DEFINITION, definition);
-        okjson.set(JsonKeys.PARAGRAPHS, validParas);
-        final String okResult = getPages().validateFields(okjson);
+        final PageDto okParas = new PageDto();
+        okParas.setTemplate(ts.getId());
+        okParas.setParagraphs(validParas);
+        final String okResult = getPages().validateFields(okParas);
 
-        final Json nokjson = new JsonImpl();
-        nokjson.set(JsonKeys.DEFINITION, definition);
-        nokjson.set(JsonKeys.PARAGRAPHS, invalidParas);
-        final String nokResult =  getPages().validateFields(nokjson);
+        final PageDto nokParas = new PageDto();
+        nokParas.setTemplate(ts.getId());
+        nokParas.setParagraphs(invalidParas);
+        final String nokResult =  getPages().validateFields(nokParas);
 
         // ASSERT
         assertTrue("Errors should be empty", okResult.isEmpty());

@@ -43,8 +43,6 @@ import ccc.api.types.ACL;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ACL.Entry;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -145,11 +143,11 @@ public class ResourceAcceptanceTest
             getCommands().metadata(folder.getId());
 
         final String newTitle = UUID.randomUUID().toString();
-        final JsonImpl md = new JsonImpl();
-        md.set(JsonKeys.TITLE, newTitle);
-        md.set(JsonKeys.DESCRIPTION, newTitle);
-        md.set(JsonKeys.TAGS, newTitle);
-        md.set(JsonKeys.METADATA, Collections.singletonMap("uuid", newTitle));
+        final ResourceSnapshot md = new ResourceSnapshot();
+        md.setTitle(newTitle);
+        md.setDescription(newTitle);
+        md.setTags(Collections.singleton(newTitle));
+        md.setMetadata(Collections.singletonMap("uuid", newTitle));
 
         // ACT
         getCommands().lock(folder.getId());
@@ -163,11 +161,11 @@ public class ResourceAcceptanceTest
         assertEquals(0, origData.size());
         assertFalse(newTitle.equals(folder.getTitle()));
         assertFalse(newTitle.equals(folder.getDescription()));
-        assertFalse(newTitle.equals(folder.getTags()));
+        assertEquals(0, folder.getTags().size());
 
         assertEquals(newTitle, updated.getTitle());
         assertEquals(newTitle, updated.getDescription());
-        assertEquals(newTitle, updated.getTags());
+        assertEquals(Collections.singleton(newTitle), updated.getTags());
         assertEquals(1, newData.size());
         assertEquals(newTitle, newData.get("uuid"));
     }
@@ -427,11 +425,11 @@ public class ResourceAcceptanceTest
 
         final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
 
-        final JsonImpl md = new JsonImpl();
-        md.set(JsonKeys.TITLE, f.getTitle());
-        md.set(JsonKeys.DESCRIPTION, f.getDescription());
-        md.set(JsonKeys.TAGS, f.getTags());
-        md.set(JsonKeys.METADATA, Collections.singletonMap("legacyId", id));
+        final ResourceSnapshot md = new ResourceSnapshot();
+        md.setTitle(f.getTitle());
+        md.setDescription(f.getDescription());
+        md.setTags(f.getTags());
+        md.setMetadata(Collections.singletonMap("legacyId", id));
 
         // ACT
         getCommands().lock(f.getId());

@@ -27,7 +27,9 @@
 package ccc.migration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -330,7 +332,10 @@ public class Migrations extends BaseMigrations {
                 if ("Description_Custom".equals(paragraph.getName())) {
                     rs.setDescription(paragraph.getText());
                 } else if ("Keywords_Custom".equals(paragraph.getName())) {
-                    rs.setTags(paragraph.getText());
+                    rs.setTags(
+                        new HashSet<String>(
+                            Arrays.asList(
+                                paragraph.getText().split(","))));
                 }
             }
 

@@ -28,6 +28,7 @@ package ccc.services;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.dto.PageDto;
@@ -200,7 +201,7 @@ public interface Migration {
     void updateMetadata(UUID resourceId,
                         String title,
                         String description,
-                        String tags,
+                        Set<String> tags,
                         Map<String, String> metadata,
                         UUID actorId,
                         Date happenedOn);

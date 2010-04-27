@@ -36,6 +36,7 @@ import java.util.UUID;
 
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
+import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
@@ -416,7 +417,18 @@ public class ResourceSummaryModelData
      * @return The tags.
      */
     public String getTags() {
-        return _rs.getTags();
+        final StringBuilder sb = new StringBuilder();
+        for (final String tag : _rs.getTags()) {
+            sb.append(tag);
+            sb.append(',');
+        }
+
+        String tagString = sb.toString();
+        if (tagString.endsWith(",")) {
+            tagString = tagString.substring(0, tagString.length()-1);
+        }
+
+        return tagString;
     }
 
     /**
@@ -452,7 +464,18 @@ public class ResourceSummaryModelData
      * @param tags The tags to set.
      */
     public void setTags(final String tags) {
-        _rs.setTags(tags);
+        DBC.require().notNull(tags);
+        DBC.require().containsNoBrackets(tags);
+
+        final String[] tagArray = tags.split(",");
+        final Set<String> cleaned = new HashSet<String>();
+        for(final String tag : tagArray) {
+            if (tag.trim().length() < 1) {
+                continue;
+            }
+            cleaned.add(tag.trim());
+        }
+        _rs.setTags(cleaned);
     }
 
     /**

@@ -47,7 +47,6 @@ import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.JsonReader;
 import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
@@ -109,7 +108,6 @@ public class JaxrsConfiguration
         providers.add(SearchResultWriter.class);
         providers.add(FileReader.class);
         providers.add(SecurityImpl.class);
-        providers.add(JsonReader.class);
 
         return providers;
     }
