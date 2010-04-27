@@ -35,8 +35,8 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Comments;
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
+import ccc.api.core.Comments;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.PagedCollection;

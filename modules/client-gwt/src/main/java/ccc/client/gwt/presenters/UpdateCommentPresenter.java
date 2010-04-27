@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Globals;

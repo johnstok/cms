@@ -41,9 +41,9 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.Folders;
-import ccc.api.dto.FolderDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.FolderDto;
+import ccc.api.core.Folders;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
 import ccc.commands.UpdateFolderCommand;

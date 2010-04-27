@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.events;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

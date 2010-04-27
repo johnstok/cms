@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDto;
+import ccc.api.core.PageDto;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;

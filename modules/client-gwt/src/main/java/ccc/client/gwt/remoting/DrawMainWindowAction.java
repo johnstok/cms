@@ -28,8 +28,8 @@ package ccc.client.gwt.remoting;
 
 import java.util.Collection;
 
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.UserDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.widgets.LeftRightPane;
 import ccc.client.gwt.widgets.MainMenu;
 import ccc.client.gwt.widgets.ResourceNavigator;

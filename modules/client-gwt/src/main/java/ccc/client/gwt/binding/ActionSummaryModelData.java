@@ -35,7 +35,7 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.ActionSummary;
+import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceType;

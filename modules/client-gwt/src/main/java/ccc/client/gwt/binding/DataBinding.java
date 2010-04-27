@@ -32,14 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ccc.api.dto.ActionSummary;
-import ccc.api.dto.CommentDto;
-import ccc.api.dto.FileDto;
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateDto;
-import ccc.api.dto.UserDto;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.CommentDto;
+import ccc.api.core.FileDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.RevisionDto;
+import ccc.api.core.TemplateDto;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 

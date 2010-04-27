@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
 import ccc.api.types.MimeType;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;

@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 
 
 /**

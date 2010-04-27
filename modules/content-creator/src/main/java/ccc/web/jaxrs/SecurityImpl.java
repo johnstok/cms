@@ -39,7 +39,7 @@ import javax.ws.rs.core.Context;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.annotations.cache.NoCache;
 
-import ccc.api.Security;
+import ccc.api.core.Security;
 import ccc.api.types.Permission;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.json.JsonImpl;

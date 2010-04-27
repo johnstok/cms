@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;

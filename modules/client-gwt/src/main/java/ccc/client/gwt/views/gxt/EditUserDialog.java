@@ -34,8 +34,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.UserDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.validation.Validate;

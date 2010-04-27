@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;

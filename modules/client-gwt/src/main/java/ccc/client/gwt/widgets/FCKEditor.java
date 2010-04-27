@@ -16,7 +16,7 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.remoting.GetRootsAction;
 import ccc.client.gwt.views.gxt.ImageSelectionDialog;
 import ccc.client.gwt.views.gxt.LinkSelectionDialog;

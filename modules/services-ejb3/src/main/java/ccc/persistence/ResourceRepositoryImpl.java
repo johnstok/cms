@@ -34,7 +34,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
-import ccc.api.dto.ResourceCriteria;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.PredefinedResourceNames;

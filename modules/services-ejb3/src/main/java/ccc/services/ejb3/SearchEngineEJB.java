@@ -46,8 +46,8 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.SearchEngine;
-import ccc.api.SearchResult;
+import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchResult;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;

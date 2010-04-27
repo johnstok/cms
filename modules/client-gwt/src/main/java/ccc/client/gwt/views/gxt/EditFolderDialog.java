@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;

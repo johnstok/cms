@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDto;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.PageDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;

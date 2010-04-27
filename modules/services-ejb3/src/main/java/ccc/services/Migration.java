@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.PageDto;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ACL;
 
 

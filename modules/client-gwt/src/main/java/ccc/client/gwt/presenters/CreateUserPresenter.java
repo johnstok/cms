@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;

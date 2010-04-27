@@ -30,7 +30,7 @@ package ccc.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import ccc.api.dto.PageDto;
+import ccc.api.core.PageDto;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;

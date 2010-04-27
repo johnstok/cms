@@ -36,8 +36,8 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Users;
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
+import ccc.api.core.Users;
 import ccc.api.types.DBC;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;

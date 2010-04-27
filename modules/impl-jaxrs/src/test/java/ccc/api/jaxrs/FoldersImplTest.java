@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import ccc.api.Folders;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.Folders;
+import ccc.api.core.ResourceSummary;
 
 
 /**

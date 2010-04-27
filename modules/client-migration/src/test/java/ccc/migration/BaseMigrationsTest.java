@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import ccc.api.ServiceLocator;
+import ccc.api.core.ServiceLocator;
 import ccc.commons.Testing;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;

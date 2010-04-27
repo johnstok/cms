@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;

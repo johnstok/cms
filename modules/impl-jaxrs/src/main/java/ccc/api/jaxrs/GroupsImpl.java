@@ -36,8 +36,8 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Groups;
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.Groups;
 import ccc.api.types.DBC;
 
 

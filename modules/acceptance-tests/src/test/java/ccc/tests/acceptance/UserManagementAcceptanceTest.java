@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.UserDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.Username;
 

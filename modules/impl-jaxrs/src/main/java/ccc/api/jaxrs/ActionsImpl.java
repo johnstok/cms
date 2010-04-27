@@ -35,10 +35,10 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.ActionScheduler;
-import ccc.api.Actions;
-import ccc.api.dto.ActionDto;
-import ccc.api.dto.ActionSummary;
+import ccc.api.core.ActionDto;
+import ccc.api.core.ActionScheduler;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.Actions;
 import ccc.api.types.DBC;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;

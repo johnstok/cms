@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;

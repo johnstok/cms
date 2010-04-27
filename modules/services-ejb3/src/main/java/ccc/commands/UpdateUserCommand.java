@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;

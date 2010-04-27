@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.Data;

@@ -26,7 +26,7 @@
  */
 package ccc.api.http;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 
 
 /**

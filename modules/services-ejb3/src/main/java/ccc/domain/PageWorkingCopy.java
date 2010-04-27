@@ -31,7 +31,7 @@ import static java.util.Collections.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import ccc.api.dto.PageDto;
+import ccc.api.core.PageDto;
 import ccc.api.types.Paragraph;
 
 

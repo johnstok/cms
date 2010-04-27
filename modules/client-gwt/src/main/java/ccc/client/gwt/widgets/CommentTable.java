@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.CommentModelData;

@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.UserDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.UserDto;
 import ccc.api.types.Permission;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;

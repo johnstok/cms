@@ -38,8 +38,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.Groups;
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.Groups;
 import ccc.api.types.Permission;
 import ccc.domain.Group;
 import ccc.domain.LogEntry;

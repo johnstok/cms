@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.Collection;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.api.types.ACL;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;

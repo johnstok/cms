@@ -44,12 +44,12 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.Resources;
-import ccc.api.dto.ResourceCriteria;
-import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.ResourceCriteria;
+import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resources;
+import ccc.api.core.RevisionDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ACL;
 import ccc.api.types.Duration;

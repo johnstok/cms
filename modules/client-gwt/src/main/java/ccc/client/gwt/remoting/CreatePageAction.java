@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.dto.PageDto;
+import ccc.api.core.PageDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;

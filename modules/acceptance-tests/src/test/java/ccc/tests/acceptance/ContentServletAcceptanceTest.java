@@ -30,9 +30,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
-import ccc.api.dto.FileDto;
-import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.FileDto;
+import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.MimeType;
 
 

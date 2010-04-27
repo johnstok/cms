@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.api.dto.RevisionDto;
+import ccc.api.core.RevisionDto;
 import ccc.api.types.CommandType;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.i18n.CommandTypeConstants;

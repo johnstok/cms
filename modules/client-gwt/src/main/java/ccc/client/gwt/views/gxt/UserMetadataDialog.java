@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.Map;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.validation.Validate;

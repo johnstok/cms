@@ -29,7 +29,7 @@ package ccc.client.gwt.presenters;
 
 import java.util.Set;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Validatable;
 import ccc.client.gwt.core.ValidationResult;

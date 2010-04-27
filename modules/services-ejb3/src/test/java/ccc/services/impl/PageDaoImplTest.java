@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
 
-import ccc.api.dto.PageDto;
+import ccc.api.core.PageDto;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.commands.AbstractCommandTest;

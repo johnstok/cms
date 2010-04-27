@@ -29,8 +29,8 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.dto.UserCriteria;
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserCriteria;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;

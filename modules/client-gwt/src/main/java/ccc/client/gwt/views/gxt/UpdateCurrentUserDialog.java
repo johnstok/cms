@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 
 import static ccc.client.gwt.validation.Validations.*;
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateCurrentUserAction;
 import ccc.client.gwt.validation.Validate;

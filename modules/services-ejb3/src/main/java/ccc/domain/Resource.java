@@ -39,8 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.ResourceSummary;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.UnlockedException;

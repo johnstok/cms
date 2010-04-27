@@ -27,7 +27,7 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.api.dto.AliasDto;
+import ccc.api.core.AliasDto;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;

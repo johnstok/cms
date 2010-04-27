@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;

@@ -29,9 +29,9 @@ package ccc.tests.acceptance;
 import java.util.Date;
 import java.util.HashMap;
 
-import ccc.api.dto.ActionDto;
-import ccc.api.dto.ActionSummary;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ActionDto;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.PagedCollection;

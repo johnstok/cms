@@ -29,7 +29,7 @@ package ccc.domain;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 

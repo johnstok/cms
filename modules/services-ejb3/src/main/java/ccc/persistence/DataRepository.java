@@ -29,7 +29,7 @@ package ccc.persistence;
 
 import java.io.InputStream;
 
-import ccc.api.StreamAction;
+import ccc.api.core.StreamAction;
 import ccc.domain.Data;
 
 

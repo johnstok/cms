@@ -32,8 +32,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import ccc.api.dto.ActionSummary;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
 

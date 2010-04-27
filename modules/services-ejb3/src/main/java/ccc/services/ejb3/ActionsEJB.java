@@ -43,10 +43,10 @@ import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.Actions;
-import ccc.api.Resources;
-import ccc.api.dto.ActionDto;
-import ccc.api.dto.ActionSummary;
+import ccc.api.core.ActionDto;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.Actions;
+import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;

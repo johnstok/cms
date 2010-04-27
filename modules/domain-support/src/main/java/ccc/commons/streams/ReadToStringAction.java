@@ -31,7 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import ccc.api.StreamAction;
+import ccc.api.core.StreamAction;
 import ccc.commons.IO;
 
 /**

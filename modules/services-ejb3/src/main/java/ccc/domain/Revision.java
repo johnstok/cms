@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.api.dto.RevisionDto;
+import ccc.api.core.RevisionDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 

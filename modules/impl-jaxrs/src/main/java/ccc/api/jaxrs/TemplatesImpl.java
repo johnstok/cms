@@ -36,9 +36,9 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Templates;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.TemplateDto;
+import ccc.api.core.Templates;
 import ccc.api.types.DBC;
 
 

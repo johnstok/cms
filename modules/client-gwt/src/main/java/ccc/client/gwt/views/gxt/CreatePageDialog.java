@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;

@@ -30,10 +30,10 @@ import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
 
 import java.util.Collection;
 
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.PageDto;
-import ccc.api.dto.TemplateDto;
-import ccc.api.dto.UserDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.PageDto;
+import ccc.api.core.TemplateDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.actions.ChooseTemplateAction;

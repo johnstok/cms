@@ -27,7 +27,7 @@
 package ccc.web;
 
 import junit.framework.TestCase;
-import ccc.api.SearchEngine;
+import ccc.api.core.SearchEngine;
 import ccc.commons.Testing;
 
 

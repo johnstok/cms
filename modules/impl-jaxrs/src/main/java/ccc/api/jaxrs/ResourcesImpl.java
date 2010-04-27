@@ -38,11 +38,11 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Resources;
-import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.RevisionDto;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resources;
+import ccc.api.core.RevisionDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.ACL;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;

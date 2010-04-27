@@ -44,7 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.plugins.s11n.json.JsonImpl;
 
 

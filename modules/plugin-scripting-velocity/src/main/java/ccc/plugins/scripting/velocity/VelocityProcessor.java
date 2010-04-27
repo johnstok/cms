@@ -49,7 +49,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.SortTool;
 
-import ccc.api.ServiceLocator;
+import ccc.api.core.ServiceLocator;
 import ccc.api.types.DBC;
 import ccc.plugins.markup.XHTML;
 import ccc.plugins.scripting.Context;

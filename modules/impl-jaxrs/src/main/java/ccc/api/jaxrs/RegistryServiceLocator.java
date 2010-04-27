@@ -26,20 +26,20 @@
  */
 package ccc.api.jaxrs;
 
-import ccc.api.ActionScheduler;
-import ccc.api.Actions;
-import ccc.api.Aliases;
-import ccc.api.Comments;
-import ccc.api.Files;
-import ccc.api.Folders;
-import ccc.api.Groups;
-import ccc.api.Pages;
-import ccc.api.Resources;
-import ccc.api.SearchEngine;
-import ccc.api.Security;
-import ccc.api.ServiceLocator;
-import ccc.api.Templates;
-import ccc.api.Users;
+import ccc.api.core.ActionScheduler;
+import ccc.api.core.Actions;
+import ccc.api.core.Aliases;
+import ccc.api.core.Comments;
+import ccc.api.core.Files;
+import ccc.api.core.Folders;
+import ccc.api.core.Groups;
+import ccc.api.core.Pages;
+import ccc.api.core.Resources;
+import ccc.api.core.SearchEngine;
+import ccc.api.core.Security;
+import ccc.api.core.ServiceLocator;
+import ccc.api.core.Templates;
+import ccc.api.core.Users;
 import ccc.api.types.DBC;
 import ccc.commons.Registry;
 

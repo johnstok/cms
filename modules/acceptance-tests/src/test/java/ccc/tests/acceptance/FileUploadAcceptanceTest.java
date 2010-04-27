@@ -33,10 +33,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
-import ccc.api.dto.FileDto;
-import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.RevisionDto;
+import ccc.api.core.FileDto;
+import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.RevisionDto;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.exceptions.UnlockedException;
 import ccc.api.types.MimeType;

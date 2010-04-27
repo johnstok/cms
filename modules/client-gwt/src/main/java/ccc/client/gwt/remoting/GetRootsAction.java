@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;

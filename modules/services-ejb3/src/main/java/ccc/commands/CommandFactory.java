@@ -29,10 +29,10 @@ package ccc.commands;
 import java.io.InputStream;
 import java.util.UUID;
 
-import ccc.api.dto.AliasDto;
-import ccc.api.dto.FileDto;
-import ccc.api.dto.PageDto;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.AliasDto;
+import ccc.api.core.FileDto;
+import ccc.api.core.PageDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;

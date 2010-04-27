@@ -32,7 +32,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.ServiceLocator;
+import ccc.api.core.ServiceLocator;
 import ccc.api.jaxrs.ActionsImpl;
 import ccc.api.jaxrs.AliasesImpl;
 import ccc.api.jaxrs.CommentsImpl;

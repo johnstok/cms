@@ -28,9 +28,9 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.UserDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.UserDto;
 import ccc.api.types.Permission;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
