@@ -27,6 +27,7 @@
 
 package ccc.plugins.search;
 
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.MimeType;
@@ -62,10 +63,16 @@ public interface Indexer {
     /**
      * Add a document to the lucene index.
      *
-     * @param id      The document's id.
+     * @param id The document's id.
+     * @param absolutePath The document's absolute path.
      * @param content The document's content.
+     * @param paragraphs The paragraphs of the document.
      */
-    void createDocument(final UUID id, final String content);
+    void createDocument(final UUID id,
+                        final String absolutePath,
+                        final String content,
+                        final Map<String, String> paragraphs);
+
 
     TextExtractor createExtractor(MimeType mimeType);
 }
