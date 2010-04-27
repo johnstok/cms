@@ -31,6 +31,7 @@ import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.security.RolesAllowed;
@@ -214,7 +215,7 @@ public class MigrationEJB
     public void updateMetadata(final UUID resourceId,
                                final String title,
                                final String description,
-                               final String tags,
+                               final Set<String> tags,
                                final Map<String, String> metadata,
                                final UUID actorId,
                                final Date happenedOn) {

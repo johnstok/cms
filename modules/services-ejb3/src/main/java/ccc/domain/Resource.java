@@ -31,7 +31,6 @@ import static ccc.api.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -343,48 +342,23 @@ public abstract class Resource
     /**
      * Set the tags for this resource.
      *
-     * @param tagString A string of comma separated values that represents the
-     *  tags for this resource.
+     * @param tags A set of string tags.
      */
-    public void setTags(final String tagString) {
-        require().notNull(tagString);
-        require().containsNoBrackets(tagString);
-
-        final String[] tagArray = tagString.split(",");
+    public void setTags(final Set<String> tags) {
+        require().notNull(tags);
         _tags.clear();
-        for(final String tag : tagArray) {
-            if (tag.trim().length() < 1) {
-                continue;
-            }
-            _tags.add(tag.trim());
+        for (final String tag : tags) {
+            require().containsNoBrackets(tag);
+            final String clean = tag.trim();
+            if (clean.length()<1) { continue; }
+            _tags.add(clean);
         }
     }
 
 
     /** {@inheritDoc} */
     public Set<String> getTags() {
-        return Collections.unmodifiableSet(_tags);
-    }
-
-
-    /**
-     * Return this resource's tags as a comma separated list.
-     *
-     * @return A string representation of the tags.
-     */
-    public String getTagString() {
-        final StringBuilder sb = new StringBuilder();
-        for (final String tag : getTags()) {
-            sb.append(tag);
-            sb.append(',');
-        }
-
-        String tagString = sb.toString();
-        if (tagString.endsWith(",")) {
-            tagString = tagString.substring(0, tagString.length()-1);
-        }
-
-        return tagString;
+        return new HashSet<String>(_tags);
     }
 
 
@@ -982,7 +956,7 @@ public abstract class Resource
                 getDateCreated(),
                 getDateChanged(),
                 (null==getTemplate()) ? null : getTemplate().getId(),
-                getTagString(),
+                getTags(),
                 getAbsolutePath().removeTop().toString(),
                 indexPage,
                 getDescription(),

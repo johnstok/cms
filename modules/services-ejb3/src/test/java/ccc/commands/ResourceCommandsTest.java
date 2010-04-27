@@ -30,6 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import ccc.api.types.Duration;
@@ -95,7 +96,7 @@ public class ResourceCommandsTest
             _r.getId(),
             "newTitle",
             "newDesc",
-            "foo,bar",
+            new HashSet<String>() {{ add("foo"); add("bar"); }},
             props);
 
         // ASSERT

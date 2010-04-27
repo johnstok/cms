@@ -39,7 +39,6 @@ import ccc.api.Pages;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.DBC;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -94,9 +93,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public String validateFields(final Json json) {
+    public String validateFields(final PageDto page) {
         try {
-            return _pages.validateFields(json);
+            return _pages.validateFields(page);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

@@ -48,7 +48,6 @@ import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -335,9 +334,10 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateMetadata(final UUID resourceId, final Json json) {
+    public void updateMetadata(final UUID resourceId,
+                               final ResourceSnapshot resource) {
         try {
-            _delegate.updateMetadata(resourceId, json);
+            _delegate.updateMetadata(resourceId, resource);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

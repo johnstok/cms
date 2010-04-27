@@ -27,13 +27,13 @@
 package ccc.tests.acceptance;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.UUID;
 
 import ccc.api.dto.FileDto;
+import ccc.api.dto.ResourceSnapshot;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.MimeType;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
@@ -50,15 +50,14 @@ public class ContentServletAcceptanceTest
      *
      * @throws Exception If the test fails.
      */
-    public void testCommittedResponsesHandledDirectly() throws Exception {
+    public void testCommittedResponsesHandledDirectly() {
 
         // ARRANGE
-        final Json metadata = new JsonImpl();
-        metadata.set("title", "fail.js");
-        metadata.set("description", "fail.js");
-        metadata.set("tags", "");
-        metadata.set(
-            "metadata", Collections.singletonMap("executable", "true"));
+        final ResourceSnapshot metadata = new ResourceSnapshot();
+        metadata.setTitle("fail.js");
+        metadata.setDescription("fail.js");
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");
@@ -88,15 +87,14 @@ public class ContentServletAcceptanceTest
      *
      * @throws Exception If the test fails.
      */
-    public void testUncommittedResponsesHandledByJsp() throws Exception {
+    public void testUncommittedResponsesHandledByJsp() {
 
         // ARRANGE
-        final Json metadata = new JsonImpl();
-        metadata.set("title", "fail.js");
-        metadata.set("description", "fail.js");
-        metadata.set("tags", "");
-        metadata.set(
-            "metadata", Collections.singletonMap("executable", "true"));
+        final ResourceSnapshot metadata = new ResourceSnapshot();
+        metadata.setTitle("fail.js");
+        metadata.setDescription("fail.js");
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("executable", "true"));
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary filesFolder =
             getCommands().resourceForPath("/files");

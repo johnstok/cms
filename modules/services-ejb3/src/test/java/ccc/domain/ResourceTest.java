@@ -12,6 +12,7 @@
 package ccc.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -803,14 +804,18 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testSetTagsParsesCsvCorrectly() {
+    public void testSetTags() {
 
         // ARRANGE
-        final String tagString = "foo,bar,baz";
+        final Set<String> in = new HashSet<String>() {{
+            add("foo");
+            add("bar");
+            add("baz");
+        }};
         final Resource p = new Page();
 
         // ACT
-        p.setTags(tagString);
+        p.setTags(in);
 
         // ASSERT
         final Set<String> tags = p.getTags();
@@ -826,11 +831,15 @@ public final class ResourceTest extends TestCase {
     public void testSetTagsTrimsWhitespace() {
 
         // ARRANGE
-        final String tagString = "foo, bar ,baz";
+        final Set<String> in = new HashSet<String>() {{
+            add("foo");
+            add(" bar ");
+            add("baz");
+        }};
         final Resource p = new Page();
 
         // ACT
-        p.setTags(tagString);
+        p.setTags(in);
 
         // ASSERT
         final Set<String> tags = p.getTags();
@@ -843,14 +852,13 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testSetTagsToZlsClearsTheList() {
+    public void testSetTagsEmptySetClearsTheList() {
 
         // ARRANGE
-        final String tagString = "";
         final Resource p = new Page();
 
         // ACT
-        p.setTags(tagString);
+        p.setTags(new HashSet<String>());
 
         // ASSERT
         final Set<String> tags = p.getTags();
@@ -863,11 +871,16 @@ public final class ResourceTest extends TestCase {
     public void testSetTagsIgnoresEmptyTags() {
 
         // ARRANGE
-        final String tagString = "foo,, ,baz";
+        final Set<String> in = new HashSet<String>() {{
+            add("foo");
+            add("");
+            add(" ");
+            add("baz");
+        }};
         final Resource p = new Page();
 
         // ACT
-        p.setTags(tagString);
+        p.setTags(in);
 
         // ASSERT
         final Set<String> tags = p.getTags();

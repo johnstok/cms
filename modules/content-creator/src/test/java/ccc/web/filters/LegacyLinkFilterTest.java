@@ -32,6 +32,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,7 +43,6 @@ import ccc.api.Resources;
 import ccc.api.dto.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.commons.Testing;
-import ccc.web.filters.LegacyLinkFilter;
 import ccc.web.rendering.RedirectRequiredException;
 
 
@@ -253,7 +253,7 @@ public class LegacyLinkFilterTest
                 new Date(),
                 new Date(),
                 null,
-                "",
+                new HashSet<String>(),
                 "/bar",
                 null,
                 "",
@@ -333,7 +333,7 @@ public class LegacyLinkFilterTest
         new Date(),
         new Date(),
         null,
-        "",
+        new HashSet<String>(),
         "/bar/foo",
         null,
         "",

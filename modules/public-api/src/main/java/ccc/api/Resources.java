@@ -48,7 +48,6 @@ import ccc.api.types.ACL;
 import ccc.api.types.Duration;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -346,11 +345,11 @@ public interface Resources {
      * Update metadata of the resource.
      *
      * @param resourceId The id of the resource to update.
-     * @param json JSON representation of the metadata.
+     * @param resource The resource containing new metadata.
      */
     @POST @Path("/{id}/metadata")
-    // FIXME: Replace Json type in signature.
-    void updateMetadata(@PathParam("id") UUID resourceId, Json json);
+    void updateMetadata(@PathParam("id") UUID resourceId,
+                        ResourceSnapshot resource);
 
 
     /**

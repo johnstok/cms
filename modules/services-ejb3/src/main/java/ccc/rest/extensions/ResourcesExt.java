@@ -27,6 +27,7 @@
 package ccc.rest.extensions;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.Duration;
@@ -73,7 +74,7 @@ public interface ResourcesExt
     void updateMetadata(UUID resourceId,
                         String title,
                         String description,
-                        String tags,
+                        Set<String> tags,
                         Map<String, String> metadata);
 
 

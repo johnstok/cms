@@ -30,8 +30,6 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -43,13 +41,11 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.Pages;
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.api.types.Paragraph;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.Page;
 import ccc.domain.PageHelper;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
+import ccc.domain.Template;
 
 
 /**
@@ -111,13 +107,13 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public String validateFields(final Json json) {
-        final String def = json.getString(JsonKeys.DEFINITION);
-        final Set<Paragraph> p = new HashSet<Paragraph>();
-        for (final Json j : json.getCollection(JsonKeys.PARAGRAPHS)) {
-            p.add(new Paragraph(j));
-        }
-        return new PageHelper().validateFields(p, def);
+    public String validateFields(final PageDto page) {
+        final Template t =
+            getRepoFactory().createResourceRepository().find(
+                Template.class, page.getTemplate());
+        return
+            new PageHelper().validateFields(
+                page.getParagraphs(), t.getDefinition());
     }
 
 

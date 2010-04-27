@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -76,7 +77,6 @@ import ccc.domain.Revision;
 import ccc.domain.Template;
 import ccc.domain.User;
 import ccc.persistence.ResourceRepository;
-import ccc.plugins.s11n.Json;
 import ccc.rest.extensions.ResourcesExt;
 
 
@@ -323,14 +323,15 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
-    public void updateMetadata(final UUID resourceId, final Json json) {
+    public void updateMetadata(final UUID resourceId,
+                               final ResourceSnapshot resource) {
 
-        final String title = json.getString("title");
-        final String description = json.getString("description");
-        final String tags = json.getString("tags");
-        final Map<String, String> metadata = json.getStringMap("metadata");
-
-        updateMetadata(resourceId, title, description, tags, metadata);
+        updateMetadata(
+            resourceId,
+            resource.getTitle(),
+            resource.getDescription(),
+            resource.getTags(),
+            resource.getMetadata());
     }
 
 
@@ -338,10 +339,10 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateMetadata(final UUID resourceId,
-                                   final String title,
-                                   final String description,
-                                   final String tags,
-                                   final Map<String, String> metadata) {
+                               final String title,
+                               final String description,
+                               final Set<String> tags,
+                               final Map<String, String> metadata) {
 
         final Date happenedOn = new Date();
         final UUID actorId = currentUserId();

@@ -79,7 +79,7 @@ public class PageHelper {
      * @return The errors, as a list of strings.
      */
     public String validateFields(final Collection<Paragraph> delta,
-                                       final String t) {
+                                 final String t) {
         Document document;
         final StringBuffer errors = new StringBuffer();
 

@@ -30,6 +30,8 @@ import static ccc.plugins.s11n.JsonKeys.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.ResourceType;
@@ -63,7 +65,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
     private Date _dateCreated;
     private Date _dateChanged;
     private UUID _templateId;
-    private String _tags;
+    private Set<String> _tags;
     private String _absolutePath;
     private UUID _indexPageId;
     private String _description;
@@ -115,7 +117,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
                            final Date dateCreated,
                            final Date dateChanged,
                            final UUID templateId,
-                           final String tags,
+                           final Set<String> tags,
                            final String absolutePath,
                            final UUID indexPageId,
                            final String description,
@@ -379,7 +381,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
      *
      * @return Returns the tags.
      */
-    public String getTags() {
+    public Set<String> getTags() {
         return _tags;
     }
 
@@ -419,7 +421,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
      *
      * @param tags The tags to set.
      */
-    public void setTags(final String tags) {
+    public void setTags(final Set<String> tags) {
         _tags = tags;
     }
 
@@ -526,7 +528,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
         json.set(DATE_CREATED, _dateCreated);
         json.set(DATE_CHANGED, _dateChanged);
         json.set(TEMPLATE_ID, _templateId);
-        json.set(TAGS, _tags);
+        json.setStrings(TAGS, _tags);
         json.set(ABSOLUTE_PATH, _absolutePath);
         json.set(INDEX_PAGE_ID, _indexPageId);
         json.set(DESCRIPTION, _description);
@@ -559,7 +561,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
         _dateCreated = json.getDate(DATE_CREATED);
         _dateChanged = json.getDate(DATE_CHANGED);
         _templateId = json.getId(TEMPLATE_ID);
-        _tags = json.getString(TAGS);
+        _tags = new HashSet<String>(json.getStrings(TAGS));
         _absolutePath = json.getString(ABSOLUTE_PATH);
         _indexPageId = json.getId(INDEX_PAGE_ID);
         _description = json.getString(DESCRIPTION);

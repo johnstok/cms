@@ -38,7 +38,6 @@ import javax.ws.rs.Produces;
 
 import ccc.api.dto.PageDto;
 import ccc.api.dto.ResourceSummary;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -56,12 +55,12 @@ public interface Pages {
     /**
      * Validate a set of paragraphs against a given definition.
      *
-     * @param json The paragraphs to validate.
+     * @param page The page to test.
      *
      * @return A list of errors, as strings.
      */
     @POST @Path("/validator")
-    String validateFields(Json json);
+    String validateFields(PageDto page);
 
 
     /**
