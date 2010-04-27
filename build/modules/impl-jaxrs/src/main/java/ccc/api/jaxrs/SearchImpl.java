@@ -127,4 +127,22 @@ public class SearchImpl
             throw convertException(cfe);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult multiFieldFind(final String searchTerms,
+                                       final String fields,
+                                       final int noOfResultsPerPage,
+                                       final int page) {
+        try {
+            return _delegate.multiFieldFind(
+                searchTerms,
+                fields,
+                noOfResultsPerPage,
+                page);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
+    }
 }

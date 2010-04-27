@@ -28,7 +28,9 @@ package ccc.plugins.search.lucene;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -37,6 +39,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -159,6 +162,41 @@ public class SimpleLuceneFS
                     new QueryParser(
                         LUCENE_VERSION,
                         field,
+                        new StandardAnalyzer(LUCENE_VERSION))
+                    .parse(searchTerms),
+                    maxHits);
+
+            sh.handle(searcher, docs);
+        } catch (final IOException e) {
+            LOG.warn("Error performing query.", e);
+        } catch (final ParseException e) {
+            LOG.warn("Error performing query.", e);
+        } finally {
+            if (searcher != null) {
+                try {
+                    searcher.close();
+                } catch (final IOException e) {
+                    Exceptions.swallow(e);
+                }
+            }
+        }
+    }
+
+    private void multiFieldFind(final String searchTerms,
+                      final String[] fields,
+                      final int maxHits,
+                      final CapturingHandler sh) {
+        IndexSearcher searcher = null;
+        try {
+            searcher =
+                new IndexSearcher(
+                    FSDirectory.open(new java.io.File(_indexPath)));
+
+            final TopDocs docs =
+                searcher.search(
+                    new MultiFieldQueryParser(
+                        LUCENE_VERSION,
+                        fields,
                         new StandardAnalyzer(LUCENE_VERSION))
                     .parse(searchTerms),
                     maxHits);
@@ -303,7 +341,10 @@ public class SimpleLuceneFS
 
     /** {@inheritDoc} */
     @Override
-    public void createDocument(final UUID id, final String content) {
+    public void createDocument(final UUID id,
+                               final String path,
+                               final String content,
+                               final Map<String, String> fields) {
         try {
             final Document d = new Document();
             d.add(
@@ -312,6 +353,24 @@ public class SimpleLuceneFS
                     id.toString(),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
+            d.add(
+                new Field(
+                    "absolutePath",
+                    path,
+                    Field.Store.YES,
+                    Field.Index.NOT_ANALYZED));
+
+            if (fields != null) {
+                for (final Entry<String, String> entry : fields.entrySet()) {
+                    d.add(
+                        new Field(
+                            entry.getKey(),
+                            entry.getValue(),
+                            Field.Store.NO,
+                            Field.Index.ANALYZED));
+                }
+            }
+
             d.add(
                 new Field(
                     "content",
@@ -349,5 +408,41 @@ public class SimpleLuceneFS
             return null;
 
         }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult multiFieldFind(final String searchTerms,
+                                       final String[] fields,
+                                       final int nofOfResultsPerPage,
+                                       final int pageNo) {
+
+        if (searchTerms == null || searchTerms.trim().equals("")) {
+            return
+            new SearchResult(
+                new HashSet<UUID>(),
+                0,
+                nofOfResultsPerPage,
+                searchTerms,
+                pageNo);
+        }
+
+        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+        final CapturingHandler capturingHandler =
+            new CapturingHandler(nofOfResultsPerPage, pageNo);
+
+        multiFieldFind(
+            searchTerms,
+            fields,
+            maxHits,
+            capturingHandler);
+
+        return new SearchResult(
+            capturingHandler.getHits(),
+            capturingHandler.getTotalResultsCount(),
+            nofOfResultsPerPage,
+            searchTerms,
+            pageNo);
     }
 }
