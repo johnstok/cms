@@ -31,7 +31,7 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -63,7 +63,7 @@ public class DeleteCommentCommand
 
     /** {@inheritDoc} */
     @Override
-    protected Void doExecute(final User actor,
+    protected Void doExecute(final UserEntity actor,
                              final Date happenedOn) {
 
         getComments().delete(_commentId);

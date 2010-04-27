@@ -44,7 +44,7 @@ import ccc.commons.CharConversion;
  *
  * @author Civic Computing Ltd.
  */
-public class Page
+public class PageEntity
     extends
         WorkingCopySupport<PageRevision, PageDto, PageWorkingCopy> {
 
@@ -53,7 +53,7 @@ public class Page
 
 
     /** Constructor: for persistence only. */
-    protected Page() { super(); }
+    protected PageEntity() { super(); }
 
 
     /**
@@ -62,7 +62,7 @@ public class Page
      * @param title The title for the resource.
      * @param metadata The metadata for the revision.
      */
-    Page(final String title, final RevisionMetadata metadata) {
+    PageEntity(final String title, final RevisionMetadata metadata) {
         super(title);
         update(PageDto.delta(new HashSet<Paragraph>()), metadata);
     }
@@ -77,9 +77,9 @@ public class Page
      * @param metadata The metadata for the revision.
      * @param paragraphs The page's paragraphs.
      */
-    public Page(final ResourceName name,
+    public PageEntity(final ResourceName name,
                 final String title,
-                final Template template,
+                final TemplateEntity template,
                 final RevisionMetadata metadata,
                 final Paragraph... paragraphs) {
         super(name, title);
@@ -101,7 +101,7 @@ public class Page
 
 
     private void validateParagraphs(final HashSet<Paragraph> paras) {
-        final Template template = computeTemplate(null);
+        final TemplateEntity template = computeTemplate(null);
         if (null != template) {
             final PageHelper pageHelper = new PageHelper();
             pageHelper.validateFieldsForPage(paras, template.getDefinition());

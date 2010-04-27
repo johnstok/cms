@@ -32,7 +32,7 @@ import java.security.Principal;
 
 import junit.framework.TestCase;
 import ccc.api.types.Username;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -56,13 +56,13 @@ public class UserRepositoryImplTest
         final Principal p = new Principal() {
             @Override public String getName() { return "foo"; }};
         expect(_repository.find(
-            QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "foo"))
+            QueryNames.USER_WITH_MATCHING_USERNAME, UserEntity.class, "foo"))
             .andReturn(null);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
 
         // ACT
-        final User actual = ul.loggedInUser(p);
+        final UserEntity actual = ul.loggedInUser(p);
 
         // ASSERT
         verify(_repository);
@@ -77,17 +77,17 @@ public class UserRepositoryImplTest
     public void testLoggedInUser() throws Exception {
 
         // ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
         final Principal p = new Principal() {
             @Override public String getName() { return "user"; }};
         expect(_repository.find(
-            QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "user"))
+            QueryNames.USER_WITH_MATCHING_USERNAME, UserEntity.class, "user"))
             .andReturn(u);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
 
         // ACT
-        final User actual = ul.loggedInUser(p);
+        final UserEntity actual = ul.loggedInUser(p);
 
         // ASSERT
         verify(_repository);
@@ -103,17 +103,17 @@ public class UserRepositoryImplTest
     public void testUserWithLegacyId() throws Exception {
 
         // ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
         u.addMetadatum("legacyId", "8");
 
         expect(_repository.find(
-            QueryNames.USERS_WITH_LEGACY_ID, User.class, "8"))
+            QueryNames.USERS_WITH_LEGACY_ID, UserEntity.class, "8"))
             .andReturn(u);
         replay(_repository);
         final UserRepositoryImpl ul = new UserRepositoryImpl(_repository);
 
         // ACT
-        final User actual = ul.userByLegacyId("8");
+        final UserEntity actual = ul.userByLegacyId("8");
 
         // ASSERT
         verify(_repository);

@@ -32,7 +32,7 @@
 -->
 
 <hibernate-mapping default-access="field" default-cascade="none">
-	<class name="ccc.domain.Resource" table="resources" abstract="true">
+	<class name="ccc.domain.ResourceEntity" table="resources" abstract="true">
 		<cache usage="transactional"/>
 		<id name="_id" 
 			column="id" 
@@ -161,7 +161,7 @@
                     name="_principal"
                     column="group_id" 
                     not-null="true"
-                    class="ccc.domain.Group" />
+                    class="ccc.domain.GroupEntity" />
             </composite-element>
         </set>
 
@@ -183,7 +183,7 @@
                     name="_principal"
                     column="user_id" 
                     not-null="true"
-                    class="ccc.domain.User" />
+                    class="ccc.domain.UserEntity" />
             </composite-element>
         </set>
         
@@ -204,8 +204,8 @@
         
 	</class>
     
-    <query name="lockedResources">from ccc.domain.Resource r where r._lockedBy is not null</query>
-    <query name="rootByName">from ccc.domain.Resource r where r._name = ? and r._parent is null</query>
-    <query name="resourceByLegacyId">from ccc.domain.Resource r where r._metadata['legacyId'] = ?</query>
-    <query name="resourceByMetadataKey">from ccc.domain.Resource r where r._metadata[?] is not null</query>
+    <query name="lockedResources">from ccc.domain.ResourceEntity r where r._lockedBy is not null</query>
+    <query name="rootByName">from ccc.domain.ResourceEntity r where r._name = ? and r._parent is null</query>
+    <query name="resourceByLegacyId">from ccc.domain.ResourceEntity r where r._metadata['legacyId'] = ?</query>
+    <query name="resourceByMetadataKey">from ccc.domain.ResourceEntity r where r._metadata[?] is not null</query>
 </hibernate-mapping>

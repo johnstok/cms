@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.Action;
+import ccc.domain.ActionEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.ActionRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -67,10 +67,10 @@ public class CancelActionCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID actionId) {
-        final Action a = _repository.find(actionId);
+        final ActionEntity a = _repository.find(actionId);
         a.cancel();
 
         _audit.record(

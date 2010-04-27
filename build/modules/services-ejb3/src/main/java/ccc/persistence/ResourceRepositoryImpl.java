@@ -43,13 +43,13 @@ import ccc.api.types.ResourceOrder;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
-import ccc.domain.File;
-import ccc.domain.Folder;
+import ccc.domain.FileEntity;
+import ccc.domain.FolderEntity;
 import ccc.domain.HistoricalResource;
-import ccc.domain.Page;
-import ccc.domain.Resource;
-import ccc.domain.Revision;
-import ccc.domain.Template;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.RevisionEntity;
+import ccc.domain.TemplateEntity;
 
 
 /**
@@ -85,25 +85,25 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<Resource> locked() {
-        return list(QueryNames.LOCKED_RESOURCES, Resource.class);
+    public List<ResourceEntity> locked() {
+        return list(QueryNames.LOCKED_RESOURCES, ResourceEntity.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Map<Integer, ? extends Revision<?>> history(final UUID resourceId)
+    public Map<Integer, ? extends RevisionEntity<?>> history(final UUID resourceId)
     throws EntityNotFoundException {
-        final Resource r = find(Resource.class, resourceId);
+        final ResourceEntity r = find(ResourceEntity.class, resourceId);
         return (r instanceof HistoricalResource<?, ?>)
             ? ((HistoricalResource<?, ?>) r).revisions()
-            : new HashMap<Integer, Revision<?>>();
+            : new HashMap<Integer, RevisionEntity<?>>();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public <T extends Resource> T find(final Class<T> type, final UUID id)
+    public <T extends ResourceEntity> T find(final Class<T> type, final UUID id)
     throws EntityNotFoundException {
         return discardDeleted(_repository.find(type, id));
     }
@@ -113,9 +113,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
      * {@inheritDoc}
      */
     @Override
-    public Resource lookup(final ResourcePath path)
+    public ResourceEntity lookup(final ResourcePath path)
     throws EntityNotFoundException {
-        final Folder root = root(PredefinedResourceNames.CONTENT);
+        final FolderEntity root = root(PredefinedResourceNames.CONTENT);
         try {
             return root.navigateTo(path);
         } catch (final RuntimeException e) { // TODO: Dodgy?
@@ -125,55 +125,55 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public Resource lookupWithLegacyId(final String legacyId)
+    public ResourceEntity lookupWithLegacyId(final String legacyId)
     throws EntityNotFoundException {
         return
             discardDeleted(
                 _repository.find(
                     QueryNames.RESOURCE_BY_LEGACY_ID,
-                    Resource.class,
+                    ResourceEntity.class,
                     legacyId));
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<Resource> lookupWithMetadataKey(final String key) {
+    public List<ResourceEntity> lookupWithMetadataKey(final String key) {
         return
         discardDeleted(
             _repository.list(
                 QueryNames.RESOURCE_BY_METADATA_KEY,
-                Resource.class,
+                ResourceEntity.class,
                 key));
     }
 
     /** {@inheritDoc} */
     @Override
-    public Folder root(final String name) throws EntityNotFoundException {
+    public FolderEntity root(final String name) throws EntityNotFoundException {
         return
             find(
                 QueryNames.ROOT_BY_NAME,
-                Folder.class,
+                FolderEntity.class,
                 new ResourceName(name));
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void create(final Resource newResource) {
+    public void create(final ResourceEntity newResource) {
         _repository.create(newResource);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public List<File> images(final UUID folderId,
+    public List<FileEntity> images(final UUID folderId,
         final int pageNo,
         final int pageSize)
     throws EntityNotFoundException {
-        final Resource r = find(Resource.class, folderId);
+        final ResourceEntity r = find(ResourceEntity.class, folderId);
 
         final StringBuffer query = new StringBuffer();
-        query.append("FROM ccc.domain.File f WHERE f._publishedBy is not null "
+        query.append("FROM ccc.domain.FileEntity f WHERE f._publishedBy is not null "
             + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
             + " AND f._parent = :parent "
             + " order by upper(f._name) ASC");
@@ -183,7 +183,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         return
         _repository.listDyn(
             query.toString(),
-            File.class,
+            FileEntity.class,
             pageNo,
             pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
             params);
@@ -192,11 +192,11 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<Folder> roots() {
-        final List<Folder> roots = new ArrayList<Folder>();
+    public List<FolderEntity> roots() {
+        final List<FolderEntity> roots = new ArrayList<FolderEntity>();
 
         // Exclude the trash root.
-        for (final Folder root : list(QueryNames.ROOTS, Folder.class)) {
+        for (final FolderEntity root : list(QueryNames.ROOTS, FolderEntity.class)) {
             if (!PredefinedResourceNames.TRASH.equals(root.getName().toString())) {
                 roots.add(root);
             }
@@ -208,43 +208,43 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<Template> templates() {
-        return list(QueryNames.ALL_TEMPLATES, Template.class);
+    public List<TemplateEntity> templates() {
+        return list(QueryNames.ALL_TEMPLATES, TemplateEntity.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public List<File> files() {
-        return list(QueryNames.ALL_FILES, File.class);
+    public List<FileEntity> files() {
+        return list(QueryNames.ALL_FILES, FileEntity.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public List<Page> pages() {
-        return list(QueryNames.ALL_PAGES, Page.class);
+    public List<PageEntity> pages() {
+        return list(QueryNames.ALL_PAGES, PageEntity.class);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Template template(final String name) throws EntityNotFoundException {
+    public TemplateEntity template(final String name) throws EntityNotFoundException {
         return find(
             QueryNames.TEMPLATE_BY_NAME,
-            Template.class,
+            TemplateEntity.class,
             new ResourceName(name));
     }
 
 
-    private <T extends Resource> List<T> list(final String queryName,
+    private <T extends ResourceEntity> List<T> list(final String queryName,
                                               final Class<T> resultType,
                                               final Object... params) {
         return discardDeleted(_repository.list(queryName, resultType, params));
     }
 
 
-    private <T extends Resource> T find(final String queryName,
+    private <T extends ResourceEntity> T find(final String queryName,
                                         final Class<T> resultType,
                                         final Object... params)
     throws EntityNotFoundException {
@@ -252,7 +252,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    private <T extends Resource> T discardDeleted(final T resource)
+    private <T extends ResourceEntity> T discardDeleted(final T resource)
     throws EntityNotFoundException {
         if (resource.isDeleted()) {
             throw new EntityNotFoundException(resource.getId());
@@ -261,7 +261,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    private <T extends Resource> List<T> discardDeleted(final List<T> all) {
+    private <T extends ResourceEntity> List<T> discardDeleted(final List<T> all) {
         final List<T> nondeleted = new ArrayList<T>();
         for (final T r : all) {
             if (!r.isDeleted()) { nondeleted.add(r); }
@@ -272,8 +272,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<Resource> list(final ResourceCriteria criteria,
-                               final Folder f,
+    public List<ResourceEntity> list(final ResourceCriteria criteria,
+                               final FolderEntity f,
                                final String sort,
                                final SortOrder sortOrder,
                                final int pageNo,
@@ -284,10 +284,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
         if (null != sort && ("locked".equalsIgnoreCase(sort)
             || "published".equalsIgnoreCase(sort))) {
-            query.append("select r from ccc.domain.Resource r "
+            query.append("select r from ccc.domain.ResourceEntity r "
                 + "LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
         } else {
-            query.append("select r from ccc.domain.Resource r ");
+            query.append("select r from ccc.domain.ResourceEntity r ");
         }
 
         appendCriteria(criteria, f, query, params);
@@ -296,7 +296,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         return
         _repository.listDyn(
             query.toString(),
-            Resource.class,
+            ResourceEntity.class,
             pageNo,
             pageSize > MAX_RESULTS ? MAX_RESULTS : pageSize,
             params);
@@ -304,7 +304,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 
     private void appendCriteria(final ResourceCriteria criteria,
-                                final Folder f,
+                                final FolderEntity f,
                                 final StringBuffer query,
                                 final Map<String, Object> params) {
 
@@ -348,7 +348,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     }
 
-    private void appendSorting(final Resource resource,
+    private void appendSorting(final ResourceEntity resource,
                                final String sort,
                                final SortOrder sortOrder,
                                final StringBuffer query) {
@@ -378,7 +378,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
         if (!knownSort
             && resource != null
             && resource.getType() == ResourceType.FOLDER) {
-            final Folder f = resource.as(Folder.class);
+            final FolderEntity f = resource.as(FolderEntity.class);
             final ResourceOrder order = f.getSortOrder();
             switch (order){
                 case DATE_CHANGED_ASC:
@@ -412,10 +412,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
     @Override
     public long imagesCount(final UUID folderId)
         throws EntityNotFoundException {
-        final Resource r = find(Resource.class, folderId);
+        final ResourceEntity r = find(ResourceEntity.class, folderId);
         final Map<String,Object> params = new HashMap<String,Object>();
         params.put("parent", r);
-        return _repository.scalarLong("SELECT COUNT(f) FROM ccc.domain.File f "
+        return _repository.scalarLong("SELECT COUNT(f) FROM ccc.domain.FileEntity f "
         + " WHERE f._publishedBy is not null"
         + " AND f._history[f._currentRev]._mimeType._primaryType = 'image' "
         + " AND f._parent = :parent", params);
@@ -424,10 +424,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public long totalCount(final ResourceCriteria criteria, final Folder f) {
+    public long totalCount(final ResourceCriteria criteria, final FolderEntity f) {
         final StringBuffer query = new StringBuffer();
         final Map<String,Object> params = new HashMap<String,Object>();
-        query.append("SELECT COUNT(r) FROM ccc.domain.Resource r ");
+        query.append("SELECT COUNT(r) FROM ccc.domain.ResourceEntity r ");
         appendCriteria(criteria, f, query, params);
         return _repository.scalarLong(query.toString(), params);
     }

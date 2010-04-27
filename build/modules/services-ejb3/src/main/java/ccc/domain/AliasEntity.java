@@ -36,17 +36,17 @@ import ccc.plugins.s11n.JsonKeys;
 
 /**
  * An alias resource. Models a symbolic link that points to another
- * {@link Resource}.
+ * {@link ResourceEntity}.
  *
  * @author Civic Computing Ltd
  */
-public class Alias extends Resource {
+public class AliasEntity extends ResourceEntity {
 
-    private Resource _target;
+    private ResourceEntity _target;
 
 
     /** Constructor: for persistence only. */
-    protected Alias() { super(); }
+    protected AliasEntity() { super(); }
 
     /**
      * Constructor.
@@ -54,8 +54,8 @@ public class Alias extends Resource {
      * @param title The title for the alias.
      * @param target The target for the alias.
      */
-    public Alias(final String title,
-                 final Resource target) {
+    public AliasEntity(final String title,
+                 final ResourceEntity target) {
         super(title);
         target(target);
     }
@@ -72,7 +72,7 @@ public class Alias extends Resource {
      *
      * @param target The new target.
      */
-    public void target(final Resource target) {
+    public void target(final ResourceEntity target) {
         DBC.require().notNull(target);
         if (equals(target) || isTargetedBy(target)) {
             throw new CycleDetectedException(getId());
@@ -80,9 +80,9 @@ public class Alias extends Resource {
         _target = target;
     }
 
-    private boolean isTargetedBy(final Resource target) {
-        if (target instanceof Alias) {
-            final Alias alias = (Alias) target;
+    private boolean isTargetedBy(final ResourceEntity target) {
+        if (target instanceof AliasEntity) {
+            final AliasEntity alias = (AliasEntity) target;
             return equals(alias.target()) || isTargetedBy(alias.target());
         }
         return false;
@@ -93,7 +93,7 @@ public class Alias extends Resource {
      *
      * @return The current target for this alias.
      */
-    public Resource target() {
+    public ResourceEntity target() {
         if (null==_target) {
             return null;
         } else if (_target.isDeleted()) {

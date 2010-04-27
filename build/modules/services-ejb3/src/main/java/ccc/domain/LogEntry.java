@@ -45,7 +45,7 @@ public class LogEntry extends Entity {
     private long         _index = -1;  // Only available once persisted
     private Date         _recordedOn;  // Only available once persisted
 
-    private User         _actor;
+    private UserEntity         _actor;
     private String       _action;
     private Date         _happenedOn;
     private UUID         _subjectId;
@@ -64,7 +64,7 @@ public class LogEntry extends Entity {
      * @param subjectId The subject of the action.
      * @param detail Details of the action.
      */
-    public LogEntry(final User actor,
+    public LogEntry(final UserEntity actor,
                     final CommandType action,
                     final Date happenedOn,
                     final UUID subjectId,
@@ -91,7 +91,7 @@ public class LogEntry extends Entity {
      * @param subjectId The subject of the action.
      * @param detail Details of the action.
      */
-    public LogEntry(final User actor,
+    public LogEntry(final UserEntity actor,
                     final String action,
                     final Date happenedOn,
                     final UUID subjectId,
@@ -126,7 +126,7 @@ public class LogEntry extends Entity {
      *
      * @return The user that performed the action.
      */
-    public User getActor() {
+    public UserEntity getActor() {
         return _actor;
     }
 

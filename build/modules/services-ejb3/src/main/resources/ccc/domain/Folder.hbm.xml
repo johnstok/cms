@@ -37,8 +37,8 @@
     </typedef>
     
     <joined-subclass
-        name="ccc.domain.Folder" 
-        extends="ccc.domain.Resource"
+        name="ccc.domain.FolderEntity" 
+        extends="ccc.domain.ResourceEntity"
         table="folders">
         
         <key column="id" foreign-key="FK_FOLDER_RESOURCE_ID"/>
@@ -53,7 +53,7 @@
         <set name="_entries" inverse="true">
             <cache usage="transactional"/>
             <key column="parent_id" />
-            <one-to-many class="ccc.domain.Resource" />
+            <one-to-many class="ccc.domain.ResourceEntity" />
         </set>
         
         
@@ -65,5 +65,5 @@
         
     </joined-subclass>
     
-    <query name="roots">from ccc.domain.Folder f where f._parent is null order by _name asc</query>
+    <query name="roots">from ccc.domain.FolderEntity f where f._parent is null order by _name asc</query>
 </hibernate-mapping>

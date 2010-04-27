@@ -40,7 +40,7 @@ import ccc.api.types.MimeType;
  */
 public class TemplateRevision
     extends
-        Revision<TemplateDto> {
+        RevisionEntity<TemplateDto> {
 
     private String _body;
     private String _definition;
@@ -61,7 +61,7 @@ public class TemplateRevision
      * @param mimeType The mime type for the template.
      */
     TemplateRevision(final Date timestamp,
-                     final User actor,
+                     final UserEntity actor,
                      final boolean majorChange,
                      final String comment,
                      final String body,

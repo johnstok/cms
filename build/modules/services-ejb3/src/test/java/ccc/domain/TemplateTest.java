@@ -36,7 +36,7 @@ import ccc.api.types.ResourceType;
 
 
 /**
- * Tests for the {@link Template} class.
+ * Tests for the {@link TemplateEntity} class.
  *
  * @author Civic Computing Ltd
  */
@@ -48,7 +48,7 @@ public final class TemplateTest extends TestCase {
     public void testSnapshot() {
 
         // ARRANGE
-        final Template t = new Template(
+        final TemplateEntity t = new TemplateEntity(
             "foo!",
             "bar",
             "Hello world",
@@ -73,7 +73,7 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Template t = new Template(
+        final TemplateEntity t = new TemplateEntity(
             "foo!",
             "bar",
             "Hello world",
@@ -98,7 +98,7 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final Template t = new Template(new ResourceName("testName"),
+        final TemplateEntity t = new TemplateEntity(new ResourceName("testName"),
             "foo!",
             "bar",
             "Hello world",
@@ -116,5 +116,5 @@ public final class TemplateTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

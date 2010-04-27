@@ -31,9 +31,9 @@ import java.util.UUID;
 
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
-import ccc.domain.Resource;
+import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.domain.WCAware;
 import ccc.persistence.IRepositoryFactory;
 
@@ -73,10 +73,10 @@ public class ApplyWorkingCopyCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Resource r = getRepository().find(Resource.class, _id);
+        final ResourceEntity r = getRepository().find(ResourceEntity.class, _id);
         r.confirmLock(actor);
 
         if (r instanceof WCAware<?>) {

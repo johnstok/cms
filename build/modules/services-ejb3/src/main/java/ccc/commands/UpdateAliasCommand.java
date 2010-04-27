@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.domain.Alias;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.AliasEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -66,13 +66,13 @@ public class UpdateAliasCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Alias alias = getRepository().find(Alias.class, _aliasId);
+        final AliasEntity alias = getRepository().find(AliasEntity.class, _aliasId);
         alias.confirmLock(actor);
 
-        final Resource target = getRepository().find(Resource.class, _targetId);
+        final ResourceEntity target = getRepository().find(ResourceEntity.class, _targetId);
         alias.target(target);
 
         update(alias, actor, happenedOn);

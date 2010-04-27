@@ -44,7 +44,7 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class Comment
+public class CommentEntity
     extends
         Entity {
 
@@ -53,14 +53,14 @@ public class Comment
     private URL _url;            // NULL allowed.
     private EmailAddress _email;
 
-    private Resource _resource;
+    private ResourceEntity _resource;
 
     private final Date _timestamp = new Date();
     private CommentStatus _status = CommentStatus.PENDING;
 
 
     /** Constructor: for persistence only. */
-    protected Comment() { super(); }
+    protected CommentEntity() { super(); }
 
 
     /**
@@ -70,7 +70,7 @@ public class Comment
      * @param body The comment's body content.
      * @param author The comment's author.
      */
-    public Comment(final Resource resource,
+    public CommentEntity(final ResourceEntity resource,
                    final String body,
                    final String author) {
         DBC.require().notNull(resource);
@@ -105,7 +105,7 @@ public class Comment
      *
      * @return The comment's resource.
      */
-    public Resource getResource() { return _resource; }
+    public ResourceEntity getResource() { return _resource; }
 
 
     /**
@@ -218,9 +218,9 @@ public class Comment
      * @param comments The comments to map.
      * @return The corresponding DTOs.
      */
-    public static List<CommentDto> map(final List<Comment> comments) {
+    public static List<CommentDto> map(final List<CommentEntity> comments) {
         final List<CommentDto> mapped = new ArrayList<CommentDto>();
-        for (final Comment c : comments) {
+        for (final CommentEntity c : comments) {
             mapped.add(c.createDto());
         }
         return mapped;

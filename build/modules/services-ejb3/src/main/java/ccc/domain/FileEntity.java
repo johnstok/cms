@@ -50,12 +50,12 @@ import ccc.persistence.DataRepository;
  *
  * @author Civic Computing Ltd.
  */
-public class File
+public class FileEntity
     extends
         WorkingCopySupport<FileRevision, FileDto, FileWorkingCopy>  {
 
     /** Constructor: for persistence only. */
-    protected File() { super(); }
+    protected FileEntity() { super(); }
 
 
     /**
@@ -68,7 +68,7 @@ public class File
      * @param size The size of the file in bytes.
      * @param metadata The metadata for the revision.
      */
-    public File(final ResourceName name,
+    public FileEntity(final ResourceName name,
                 final String title,
                 final String description,
                 final Data data,
@@ -98,7 +98,7 @@ public class File
      * @param properties The properties of the file..
      * @param metadata The metadata for the revision.
      */
-    public File(final ResourceName name,
+    public FileEntity(final ResourceName name,
                 final String title,
                 final String description,
                 final Data data,
@@ -367,9 +367,9 @@ public class File
      * @param files The files.
      * @return The corresponding summaries.
      */
-    public static List<FileDto> mapFiles(final Collection<File> files) {
+    public static List<FileDto> mapFiles(final Collection<FileEntity> files) {
         final List<FileDto> mapped = new ArrayList<FileDto>();
-        for (final File f : files) {
+        for (final FileEntity f : files) {
             mapped.add(f.mapFile());
         }
         return mapped;
@@ -398,7 +398,7 @@ public class File
      *
      * @return The file's contents as a string.
      */
-    public static String read(final DataRepository dm, final File file) {
+    public static String read(final DataRepository dm, final FileEntity file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
             file.getData(), new ReadToStringAction(sb, file.getCharset()));

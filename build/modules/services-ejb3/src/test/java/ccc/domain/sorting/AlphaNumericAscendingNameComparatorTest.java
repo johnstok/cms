@@ -31,8 +31,8 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.domain.Folder;
-import ccc.domain.Resource;
+import ccc.domain.FolderEntity;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -50,10 +50,10 @@ public class AlphaNumericAscendingNameComparatorTest
     public void testCaseSensitiveSort() {
 
         // ARRANGE
-        final List<Resource> unsorted = new ArrayList<Resource>();
-        unsorted.add(new Folder("mmm"));
-        unsorted.add(new Folder("zzz"));
-        unsorted.add(new Folder("aaa"));
+        final List<ResourceEntity> unsorted = new ArrayList<ResourceEntity>();
+        unsorted.add(new FolderEntity("mmm"));
+        unsorted.add(new FolderEntity("zzz"));
+        unsorted.add(new FolderEntity("aaa"));
 
         // ACT
         Collections.sort(unsorted, new AlphaNumericAscendingNameComparator());
@@ -70,11 +70,11 @@ public class AlphaNumericAscendingNameComparatorTest
     public void testCaseInsensitiveSort() {
 
         // ARRANGE
-        final List<Resource> unsorted = new ArrayList<Resource>();
-        unsorted.add(new Folder("zzz"));
-        unsorted.add(new Folder("ZZZ"));
-        unsorted.add(new Folder("aaa"));
-        unsorted.add(new Folder("AAA"));
+        final List<ResourceEntity> unsorted = new ArrayList<ResourceEntity>();
+        unsorted.add(new FolderEntity("zzz"));
+        unsorted.add(new FolderEntity("ZZZ"));
+        unsorted.add(new FolderEntity("aaa"));
+        unsorted.add(new FolderEntity("AAA"));
 
         // ACT
         Collections.sort(

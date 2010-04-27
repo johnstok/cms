@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
-import ccc.domain.Folder;
-import ccc.domain.User;
+import ccc.domain.FolderEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -43,10 +43,10 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-class CreateFolderCommand extends CreateResourceCommand<Folder> {
+class CreateFolderCommand extends CreateResourceCommand<FolderEntity> {
 
     private final UUID _parentFolder;
-    private final Folder _folder;
+    private final FolderEntity _folder;
     private final String _name;
     private final String _title;
 
@@ -70,7 +70,7 @@ class CreateFolderCommand extends CreateResourceCommand<Folder> {
                                                throws EntityNotFoundException  {
         super(repository, audit);
         _parentFolder = parentFolder;
-        _folder = getRepository().find(Folder.class, parentFolder);
+        _folder = getRepository().find(FolderEntity.class, parentFolder);
         _name = name;
         _title = title;
     }
@@ -78,9 +78,9 @@ class CreateFolderCommand extends CreateResourceCommand<Folder> {
 
     /** {@inheritDoc} */
     @Override
-    public Folder doExecute(final User actor,
+    public FolderEntity doExecute(final UserEntity actor,
                             final Date happenedOn) {
-        final Folder f = new Folder(_name);
+        final FolderEntity f = new FolderEntity(_name);
         f.setTitle((null==_title)?_name:_title);
 
         create(actor, happenedOn, _parentFolder, f);
@@ -91,7 +91,7 @@ class CreateFolderCommand extends CreateResourceCommand<Folder> {
 
     /** {@inheritDoc} */
     @Override
-    protected void authorize(final User actor) throws UnauthorizedException {
+    protected void authorize(final UserEntity actor) throws UnauthorizedException {
         if (!_folder.isWriteableBy(actor)) {
             throw new UnauthorizedException(_parentFolder, actor.getId());
         }

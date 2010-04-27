@@ -43,7 +43,7 @@ import javax.security.auth.spi.LoginModule;
 import org.apache.log4j.Logger;
 
 import ccc.api.types.Username;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 
@@ -145,7 +145,7 @@ public class CCCLoginModule implements LoginModule {
             _permGroup = createPerms(_permissions);
 
             final boolean passwordOk =
-                User.matches(
+                UserEntity.matches(
                     (byte[]) _user[1],
                     new String(pc.getPassword()),
                     (String) _user[2]);

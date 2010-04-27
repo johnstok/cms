@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.domain.WCAware;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -69,10 +69,10 @@ public class ClearWorkingCopyCommand {
      * @param actor The user that executed the command.
      * @param happenedOn The date the command was executed.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID resourceId) {
-        final Resource r = _repository.find(Resource.class, resourceId);
+        final ResourceEntity r = _repository.find(ResourceEntity.class, resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WCAware<?>) {

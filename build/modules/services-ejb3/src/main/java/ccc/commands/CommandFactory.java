@@ -36,10 +36,10 @@ import ccc.api.core.TemplateDto;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
-import ccc.domain.File;
-import ccc.domain.Folder;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.FileEntity;
+import ccc.domain.FolderEntity;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Search;
 import ccc.persistence.DataRepository;
@@ -100,7 +100,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<? extends Resource> createTemplateCommand(
+    public Command<? extends ResourceEntity> createTemplateCommand(
                                                 final TemplateDto template) {
         return new CreateTemplateCommand(
             _repository,
@@ -116,7 +116,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<? extends Resource> createAliasCommand(
+    public Command<? extends ResourceEntity> createAliasCommand(
                                                         final AliasDto alias) {
         return new CreateAliasCommand(
             _repository,
@@ -140,7 +140,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<File> createFileCommand(final UUID parentFolder,
+    public Command<FileEntity> createFileCommand(final UUID parentFolder,
                                            final FileDto file,
                                            final String title,
                                            final String description,
@@ -170,7 +170,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<Folder> createFolderCommand(final UUID parentId,
+    public Command<FolderEntity> createFolderCommand(final UUID parentId,
                                               final String name,
                                               final String title) {
 
@@ -195,7 +195,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<Void> createRootCommand(final Folder f) {
+    public Command<Void> createRootCommand(final FolderEntity f) {
         return new CreateRootCommand(
             _repository,
             _audit,
@@ -211,7 +211,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<Page> createPageCommand(final UUID parentId,
+    public Command<PageEntity> createPageCommand(final UUID parentId,
                                            final PageDto page) {
 
         return new CreatePageCommand(

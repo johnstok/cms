@@ -42,12 +42,12 @@ import ccc.api.types.ResourceType;
  *
  * @author Civic Computing Ltd
  */
-public class Template
+public class TemplateEntity
     extends
         HistoricalResource<TemplateDto, TemplateRevision> {
 
     /** Constructor: for persistence only. */
-    protected Template() { super(); }
+    protected TemplateEntity() { super(); }
 
     /**
      * Constructor.
@@ -59,7 +59,7 @@ public class Template
      * @param mimeType The mime type this template will produce.
      * @param metadata The metadata describing the initial revision.
      */
-    public Template(final String title,
+    public TemplateEntity(final String title,
                     final String description,
                     final String body,
                     final String definiton,
@@ -87,7 +87,7 @@ public class Template
      * @param mimeType The mime type this template will produce.
      * @param metadata The metadata of the template.
      */
-    public Template(final ResourceName name,
+    public TemplateEntity(final ResourceName name,
                     final String title,
                     final String description,
                     final String body,
@@ -221,10 +221,10 @@ public class Template
      * @return The corresponding summaries.
      */
     public static Collection<TemplateDto> mapTemplates(
-                                               final List<Template> templates) {
+                                               final List<TemplateEntity> templates) {
         final Collection<TemplateDto> mapped =
             new ArrayList<TemplateDto>();
-        for (final Template t : templates) {
+        for (final TemplateEntity t : templates) {
             mapped.add(t.summarize()); }
         return mapped;
     }
@@ -237,9 +237,9 @@ public class Template
      * @return The corresponding deltas.
      */
     protected Collection<TemplateDto> deltaTemplates(
-                                               final List<Template> templates) {
+                                               final List<TemplateEntity> templates) {
         final Collection<TemplateDto> mapped = new ArrayList<TemplateDto>();
-        for (final Template t : templates) {
+        for (final TemplateEntity t : templates) {
             mapped.add(t.createSnapshot());
         }
         return mapped;

@@ -43,9 +43,9 @@ import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateWorkingCopyCommand;
-import ccc.domain.Page;
+import ccc.domain.PageEntity;
 import ccc.domain.PageHelper;
-import ccc.domain.Template;
+import ccc.domain.TemplateEntity;
 
 
 /**
@@ -108,9 +108,9 @@ public class PagesEJB
     @Override
     @RolesAllowed(PAGE_UPDATE)
     public String validateFields(final PageDto page) {
-        final Template t =
+        final TemplateEntity t =
             getRepoFactory().createResourceRepository().find(
-                Template.class, page.getTemplate());
+                TemplateEntity.class, page.getTemplate());
         return
             new PageHelper().validateFields(
                 page.getParagraphs(), t.getDefinition());
@@ -126,6 +126,6 @@ public class PagesEJB
         return
             getRepoFactory()
                 .createResourceRepository()
-                .find(Page.class, pageId).deltaPage();
+                .find(PageEntity.class, pageId).deltaPage();
     }
 }

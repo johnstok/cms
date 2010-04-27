@@ -34,10 +34,10 @@ import ccc.api.core.FileDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.Data;
-import ccc.domain.File;
+import ccc.domain.FileEntity;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -48,7 +48,7 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-class CreateFileCommand extends CreateResourceCommand<File> {
+class CreateFileCommand extends CreateResourceCommand<FileEntity> {
 
     private final DataRepository _data;
     private final UUID _parentFolder;
@@ -99,7 +99,7 @@ class CreateFileCommand extends CreateResourceCommand<File> {
 
     /** {@inheritDoc} */
     @Override
-    public File doExecute(final User actor,
+    public FileEntity doExecute(final UserEntity actor,
                           final Date happenedOn) {
         final Data data = _data.create(_dataStream, _file.getSize());
 
@@ -108,8 +108,8 @@ class CreateFileCommand extends CreateResourceCommand<File> {
                 data, _file.getProperties(), _data);
         }
 
-        final File f =
-            new File(
+        final FileEntity f =
+            new FileEntity(
                 _name,
                 _title,
                 _description,

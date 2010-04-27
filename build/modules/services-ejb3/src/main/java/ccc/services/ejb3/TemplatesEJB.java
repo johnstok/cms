@@ -43,7 +43,7 @@ import ccc.api.core.TemplateDto;
 import ccc.api.core.Templates;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.commands.UpdateTemplateCommand;
-import ccc.domain.Template;
+import ccc.domain.TemplateEntity;
 
 
 /**
@@ -88,7 +88,7 @@ public final class TemplatesEJB
     @RolesAllowed(TEMPLATE_READ)
     public Collection<TemplateDto> templates() {
         return
-            Template.mapTemplates(
+            TemplateEntity.mapTemplates(
                 getRepoFactory()
                     .createResourceRepository()
                     .templates());
@@ -132,6 +132,6 @@ public final class TemplatesEJB
         return
             getRepoFactory()
                 .createResourceRepository()
-                .find(Template.class, templateId).createSnapshot();
+                .find(TemplateEntity.class, templateId).createSnapshot();
     }
 }

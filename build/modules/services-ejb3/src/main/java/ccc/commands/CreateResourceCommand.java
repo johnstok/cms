@@ -29,10 +29,10 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.domain.Folder;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -68,14 +68,14 @@ abstract class CreateResourceCommand<T>
      * @param folderId The folder in which the resource will be created.
      * @param newResource The new resource.
      */
-    protected void create(final User actor,
+    protected void create(final UserEntity actor,
                           final Date happenedOn,
                           final UUID folderId,
-                          final Resource newResource) {
+                          final ResourceEntity newResource) {
         newResource.setDateCreated(happenedOn, actor);
         newResource.setDateChanged(happenedOn, actor);
 
-        final Folder folder = getRepository().find(Folder.class, folderId);
+        final FolderEntity folder = getRepository().find(FolderEntity.class, folderId);
         if (null==folder) {
             throw new RuntimeException("No folder exists with id: "+folderId);
         }
@@ -93,8 +93,8 @@ abstract class CreateResourceCommand<T>
      * @param actor The actor performing the command.
      * @param happenedOn When the command was performed.
      */
-    protected void audit(final Resource resource,
-                         final User actor,
+    protected void audit(final ResourceEntity resource,
+                         final UserEntity actor,
                          final Date happenedOn) {
 
         final JsonImpl ss = new JsonImpl(resource);

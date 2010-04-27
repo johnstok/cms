@@ -42,14 +42,14 @@ import ccc.api.types.DBC;
  * @author Civic Computing Ltd.
  * @param <T>
  */
-public abstract class Revision<T> extends Entity {
+public abstract class RevisionEntity<T> extends Entity {
     private Date _timestamp;
-    private User _actor;
+    private UserEntity _actor;
     private boolean _majorChange;
     private String _comment;
 
     /** Constructor: for persistence only. */
-    protected Revision() { super(); }
+    protected RevisionEntity() { super(); }
 
     /**
      * Constructor.
@@ -59,8 +59,8 @@ public abstract class Revision<T> extends Entity {
      * @param majorChange The boolean flag of the major change.
      * @param comment The comment of the revision.
      */
-    protected Revision(final Date timestamp,
-                       final User actor,
+    protected RevisionEntity(final Date timestamp,
+                       final UserEntity actor,
                        final boolean majorChange,
                        final String comment) {
         DBC.require().notNull(timestamp);
@@ -88,7 +88,7 @@ public abstract class Revision<T> extends Entity {
      *
      * @return Returns the actor.
      */
-    public final User getActor() {
+    public final UserEntity getActor() {
         return _actor;
     }
 
@@ -151,10 +151,10 @@ public abstract class Revision<T> extends Entity {
      * @return The corresponding summaries.
      */
     public static Collection<RevisionDto> mapRevisions(
-                         final Map<Integer, ? extends Revision<?>> revisions) {
+                         final Map<Integer, ? extends RevisionEntity<?>> revisions) {
         final Collection<RevisionDto> mapped =
             new ArrayList<RevisionDto>();
-        for (final Map.Entry<Integer, ? extends Revision<?>> rev
+        for (final Map.Entry<Integer, ? extends RevisionEntity<?>> rev
             : revisions.entrySet()) {
             mapped.add(rev.getValue().mapRevision(rev.getKey().intValue()));
         }

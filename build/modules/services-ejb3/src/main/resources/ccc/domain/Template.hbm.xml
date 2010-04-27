@@ -33,7 +33,7 @@
 
 <hibernate-mapping default-access="field">
     <joined-subclass
-        name="ccc.domain.Template" extends="ccc.domain.Resource" table="templates">
+        name="ccc.domain.TemplateEntity" extends="ccc.domain.ResourceEntity" table="templates">
         <key column="id" foreign-key="FK_TEMPLATE_RESOURCE_ID"/>
         
         <property
@@ -51,6 +51,6 @@
                 
     </joined-subclass>
     
-    <query name="templateByName">from ccc.domain.Template t where t._name = ?</query>
-    <query name="allTemplates">from ccc.domain.Template</query>
+    <query name="templateByName">from ccc.domain.TemplateEntity t where t._name = ?</query>
+    <query name="allTemplates">from ccc.domain.TemplateEntity</query>
 </hibernate-mapping>

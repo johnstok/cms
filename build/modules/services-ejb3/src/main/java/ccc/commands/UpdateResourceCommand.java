@@ -29,8 +29,8 @@ package ccc.commands;
 import java.util.Date;
 
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -80,17 +80,17 @@ abstract class UpdateResourceCommand<T>
      * @param actor The actor who performed the update.
      * @param happenedOn The date the update took place.
      */
-    protected void update(final Resource resource,
-                          final User actor,
+    protected void update(final ResourceEntity resource,
+                          final UserEntity actor,
                           final Date happenedOn) {
         resource.setDateChanged(happenedOn, actor);
         audit(resource, happenedOn, actor);
     }
 
 
-    private void audit(final Resource resource,
+    private void audit(final ResourceEntity resource,
                        final Date happenedOn,
-                       final User actor) {
+                       final UserEntity actor) {
 
         final JsonImpl ss = new JsonImpl(resource);
 

@@ -33,10 +33,10 @@ import java.util.UUID;
 import ccc.api.core.PageDto;
 import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
-import ccc.domain.Page;
+import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.Template;
-import ccc.domain.User;
+import ccc.domain.TemplateEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -46,7 +46,7 @@ import ccc.persistence.ResourceRepository;
  *
  * @author Civic Computing Ltd.
  */
-class CreatePageCommand extends CreateResourceCommand<Page> {
+class CreatePageCommand extends CreateResourceCommand<PageEntity> {
 
     private final PageDto _page;
     private final UUID _parentFolder;
@@ -72,13 +72,13 @@ class CreatePageCommand extends CreateResourceCommand<Page> {
 
     /** {@inheritDoc} */
     @Override
-    public Page doExecute(final User actor,
+    public PageEntity doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Template template =
+        final TemplateEntity template =
             (null==_page.getTemplate())
                 ? null
-                : getRepository().find(Template.class, _page.getTemplate());
+                : getRepository().find(TemplateEntity.class, _page.getTemplate());
 
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn,
@@ -89,8 +89,8 @@ class CreatePageCommand extends CreateResourceCommand<Page> {
                     : _page.getComment());
 
         final Set<Paragraph> paras = _page.getParagraphs();
-        final Page page =
-            new Page(
+        final PageEntity page =
+            new PageEntity(
                 _page.getName(),
                 _page.getTitle(),
                 template,

@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
-import ccc.domain.Comment;
-import ccc.domain.Resource;
+import ccc.domain.CommentEntity;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -49,7 +49,7 @@ public interface CommentRepository {
      *
      * @param comment The comment to persist.
      */
-    void create(Comment comment);
+    void create(CommentEntity comment);
 
 
     /**
@@ -71,7 +71,7 @@ public interface CommentRepository {
      *
      * @return The corresponding comment.
      */
-    Comment retrieve(UUID commentId) throws EntityNotFoundException;
+    CommentEntity retrieve(UUID commentId) throws EntityNotFoundException;
 
 
     /**
@@ -86,7 +86,7 @@ public interface CommentRepository {
      *
      * @return A list of comments.
      */
-    List<Comment> list(Resource resource,
+    List<CommentEntity> list(ResourceEntity resource,
                        CommentStatus status,
                        String sort,
                        SortOrder sortOrder,
@@ -102,5 +102,5 @@ public interface CommentRepository {
      *
      * @return The number of comments.
      */
-    long count(Resource resource, CommentStatus status);
+    long count(ResourceEntity resource, CommentStatus status);
 }

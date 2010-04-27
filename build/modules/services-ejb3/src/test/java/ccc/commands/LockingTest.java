@@ -37,13 +37,13 @@ import ccc.api.types.CommandType;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Username;
-import ccc.domain.Folder;
-import ccc.domain.Group;
+import ccc.domain.FolderEntity;
+import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -69,7 +69,7 @@ public class LockingTest
     public void testResourceCannotBeUnlockedByNonlockerNonAdmin() {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         replayAll();
 
         _r.lock(_anotherUser);
@@ -95,7 +95,7 @@ public class LockingTest
     public void testResourceCanBeUnlockedByNonlockerAdmin() {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -116,7 +116,7 @@ public class LockingTest
     public void testUnlockedResourceCanBeLocked() {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -135,7 +135,7 @@ public class LockingTest
     public void testLockedResourceCannotBeRelockedBySomeoneElse() {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         replayAll();
         _r.lock(_anotherUser);
 
@@ -161,7 +161,7 @@ public class LockingTest
         _r.lock(_regularUser);
         _r.publish(_regularUser);
 
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -183,7 +183,7 @@ public class LockingTest
         // ARRANGE
         _r.lock(_regularUser);
 
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -203,7 +203,7 @@ public class LockingTest
     public void testResourceCanBeUnlockedByLockerNonadmin() {
 
         // ARRANGE
-        expect(_rdao.find(Resource.class, _r.getId())).andReturn(_r);
+        expect(_rdao.find(ResourceEntity.class, _r.getId())).andReturn(_r);
         _al.record(isA(LogEntry.class));
         replayAll();
 
@@ -232,8 +232,8 @@ public class LockingTest
     protected void setUp() throws Exception {
         _al = createStrictMock(LogEntryRepository.class);
         _rdao = createStrictMock(ResourceRepository.class);
-        _r = new Page(new ResourceName("foo"), "foo", null, _rm);
-        _parent = new Folder("parent");
+        _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        _parent = new FolderEntity("parent");
         _parent.add(_r);
     }
 
@@ -249,18 +249,18 @@ public class LockingTest
 
     private LogEntryRepository _al;
     private ResourceRepository _rdao;
-    private Resource _r;
-    private Folder _parent;
+    private ResourceEntity _r;
+    private FolderEntity _parent;
 
-    private final User _regularUser =
-        new User(new Username("regular"), "password");
-    private final User _anotherUser =
-        new User(new Username("another"), "password");
-    private final User _adminUser =
-        new User(new Username("admin"), "password"){{
+    private final UserEntity _regularUser =
+        new UserEntity(new Username("regular"), "password");
+    private final UserEntity _anotherUser =
+        new UserEntity(new Username("another"), "password");
+    private final UserEntity _adminUser =
+        new UserEntity(new Username("admin"), "password"){{
        addGroup(
-           new Group("ADMINISTRATOR", Permission.RESOURCE_UNLOCK));
+           new GroupEntity("ADMINISTRATOR", Permission.RESOURCE_UNLOCK));
     }};
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

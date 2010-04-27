@@ -45,8 +45,8 @@ import junit.framework.TestCase;
 import ccc.api.types.Username;
 import ccc.commons.MapRegistry;
 import ccc.commons.Registry;
-import ccc.domain.Group;
-import ccc.domain.User;
+import ccc.domain.GroupEntity;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -81,7 +81,7 @@ public class JdbcDatabaseTest
     public void testLookupUserSucceeds() throws SQLException {
 
         // ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
@@ -118,7 +118,7 @@ public class JdbcDatabaseTest
     public void testLookupUserFailsForMissingUser() throws SQLException {
 
         // ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x"))
@@ -147,7 +147,7 @@ public class JdbcDatabaseTest
     public void testLookupUserFailsForDuplicateUsers() throws SQLException {
 
         // ARRANGE
-        final User u = new User(new Username("user"), "password");
+        final UserEntity u = new UserEntity(new Username("user"), "password");
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("x")).andReturn(_s);
@@ -186,9 +186,9 @@ public class JdbcDatabaseTest
     public void testLookupPerms() throws SQLException {
 
         // ARRANGE
-        final User u = new User(new Username("user"), "password");
-        u.addGroup(new Group("ADMINISTRATOR"));
-        u.addGroup(new Group("CONTENT_CREATOR"));
+        final UserEntity u = new UserEntity(new Username("user"), "password");
+        u.addGroup(new GroupEntity("ADMINISTRATOR"));
+        u.addGroup(new GroupEntity("CONTENT_CREATOR"));
 
         expect(_ds.getConnection()).andReturn(_c);
         expect(_c.prepareStatement("y")).andReturn(_s);

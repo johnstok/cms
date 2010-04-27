@@ -39,9 +39,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import ccc.api.core.UserCriteria;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -78,7 +77,7 @@ class UserRepositoryImpl implements UserRepository {
 
     /** {@inheritDoc} */
     @Override
-    public Collection<User> listUsers(final UserCriteria uc,
+    public Collection<UserEntity> listUsers(final UserCriteria uc,
         final String sort,
         final SortOrder order,
         final int pageNo,
@@ -106,7 +105,7 @@ class UserRepositoryImpl implements UserRepository {
 
         return _repository.listDyn(
             query.toString(),
-            User.class,
+            UserEntity.class,
             pageNo,
             pageSize,
             params);
@@ -128,7 +127,7 @@ class UserRepositoryImpl implements UserRepository {
                                  final Map<String, Object> params) {
 
         query.append(
-            " from ccc.domain.User as u");
+            " from ccc.domain.UserEntity as u");
         if (null!=uc.getEmail()) {
             query.append(" where lower(u._email._text) like lower(:email)");
             params.put("email", uc.getEmail());
@@ -141,7 +140,7 @@ class UserRepositoryImpl implements UserRepository {
         if (null!=uc.getGroups()) {
             query.append((params.size()>0) ? " and" : " where");
             query.append(" :groups in (select r._name "
-                + "from ccc.domain.User as u2 left join u2._groups as r "
+                + "from ccc.domain.UserEntity as u2 left join u2._groups as r "
                 + "where u=u2) ");
             params.put("groups", uc.getGroups());
         }
@@ -163,26 +162,26 @@ class UserRepositoryImpl implements UserRepository {
     public boolean usernameExists(final String username) {
         return _repository.exists(
             USER_WITH_MATCHING_USERNAME,
-            User.class,
+            UserEntity.class,
             username);
     }
 
     /** {@inheritDoc} */
     @Override
-    public User find(final UUID userId) throws EntityNotFoundException {
-        return _repository.find(User.class, userId);
+    public UserEntity find(final UUID userId) {
+        return _repository.find(UserEntity.class, userId);
     }
 
     /** {@inheritDoc} */
     @Override
-    public User loggedInUser(final Principal p) throws EntityNotFoundException {
+    public UserEntity loggedInUser(final Principal p) {
         if (null==p) {
             return null;
         }
         try {
             final String principalName = p.getName();
-            final User user = _repository.find(
-                USER_WITH_MATCHING_USERNAME, User.class, principalName);
+            final UserEntity user = _repository.find(
+                USER_WITH_MATCHING_USERNAME, UserEntity.class, principalName);
             return user;
         } catch (final IllegalStateException e) {
             return null;
@@ -192,16 +191,16 @@ class UserRepositoryImpl implements UserRepository {
 
     /** {@inheritDoc} */
     @Override
-    public void create(final User user) {
+    public void create(final UserEntity user) {
         _repository.create(user);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public User userByLegacyId(final String legacyId)
-    throws EntityNotFoundException {
-        return _repository.find(USERS_WITH_LEGACY_ID, User.class, legacyId);
+    public UserEntity userByLegacyId(final String legacyId) {
+        return _repository.find(
+            USERS_WITH_LEGACY_ID, UserEntity.class, legacyId);
     }
 
     /** {@inheritDoc} */

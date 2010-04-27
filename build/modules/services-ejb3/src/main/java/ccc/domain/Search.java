@@ -40,7 +40,7 @@ import ccc.plugins.s11n.Jsonable;
  */
 public class Search
     extends
-        Resource {
+        ResourceEntity {
 
     /** Constructor: for persistence only. */
     protected Search() { super(); }

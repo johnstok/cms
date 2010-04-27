@@ -55,12 +55,12 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public class Action extends Entity {
+public class ActionEntity extends Entity {
 
-    private User                _actor;
+    private UserEntity                _actor;
     private CommandType         _type;
     private Map<String, String> _parameters;
-    private Resource            _subject;
+    private ResourceEntity            _subject;
     private Date                _executeAfter;
     private FailureCode         _code;
     private ActionStatus        _status = ActionStatus.SCHEDULED;
@@ -68,7 +68,7 @@ public class Action extends Entity {
     private String              _fId;
 
     /** Constructor: for persistence only. */
-    protected Action() { super(); }
+    protected ActionEntity() { super(); }
 
     /**
      * Constructor.
@@ -79,10 +79,10 @@ public class Action extends Entity {
      * @param subject The resource the action will operate on.
      * @param parameters Additional parameters required by the action.
      */
-    public Action(final CommandType type,
+    public ActionEntity(final CommandType type,
                   final Date executeAfter,
-                  final User actor,
-                  final Resource subject,
+                  final UserEntity actor,
+                  final ResourceEntity subject,
                   final Map<String, String> parameters) {
         _type = type;
         _executeAfter = new Date(executeAfter.getTime());
@@ -115,7 +115,7 @@ public class Action extends Entity {
      *
      * @return The user that scheduled the action.
      */
-    public User getActor() {
+    public UserEntity getActor() {
         return _actor;
     }
 
@@ -229,7 +229,7 @@ public class Action extends Entity {
      *
      * @return The resource the action will operate on.
      */
-    public Resource getSubject() {
+    public ResourceEntity getSubject() {
         return _subject;
     }
 
@@ -248,10 +248,10 @@ public class Action extends Entity {
      * @return The corresponding summaries.
      */
     public static List<ActionSummary> mapActions(
-                                             final Collection<Action> actions) {
+                                             final Collection<ActionEntity> actions) {
         final List<ActionSummary> summaries =
             new ArrayList<ActionSummary>();
-        for (final Action a : actions) {
+        for (final ActionEntity a : actions) {
             summaries.add(a.mapAction());
         }
         return summaries;

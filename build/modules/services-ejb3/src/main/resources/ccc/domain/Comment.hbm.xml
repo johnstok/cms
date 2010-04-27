@@ -36,7 +36,7 @@
         <param name="type">ccc.api.types.CommentStatus</param>
     </typedef>
 
-    <class name="ccc.domain.Comment" table="comments">
+    <class name="ccc.domain.CommentEntity" table="comments">
         
         <id name="_id" 
         	column="id" 

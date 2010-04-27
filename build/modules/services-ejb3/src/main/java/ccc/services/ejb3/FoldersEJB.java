@@ -47,9 +47,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
 import ccc.commands.UpdateFolderCommand;
-import ccc.domain.Folder;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.FolderEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.domain.sorting.Sorter;
 
 
@@ -90,10 +90,10 @@ public class FoldersEJB
                                         final boolean publish) {
         checkPermission(FOLDER_CREATE);
 
-        final User u = currentUser();
+        final UserEntity u = currentUser();
         final Date happenedOn = new Date();
 
-        final Folder f =
+        final FolderEntity f =
             commands().createFolderCommand(parentId, name, title)
             .execute(u, happenedOn);
 
@@ -111,7 +111,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed(ROOT_CREATE)
     public ResourceSummary createRoot(final String name) {
-        final Folder f = new Folder(name);
+        final FolderEntity f = new FolderEntity(name);
         commands().createRootCommand(f)
                   .execute(currentUser(), new Date());
         return f.mapResource();
@@ -146,19 +146,19 @@ public class FoldersEJB
     @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> getChildrenManualOrder(
                                                         final UUID folderId) {
-        final Folder f =
+        final FolderEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(Folder.class, folderId);
+                .find(FolderEntity.class, folderId);
 
         checkRead(f);
 
         if (f != null) {
-            final List<Resource> list = f.getEntries();
+            final List<ResourceEntity> list = f.getEntries();
             Sorter.sort(list, ResourceOrder.MANUAL);
-            return Resource.mapResources(list);
+            return ResourceEntity.mapResources(list);
         }
-        return Resource.mapResources(new ArrayList<Resource>());
+        return ResourceEntity.mapResources(new ArrayList<ResourceEntity>());
     }
 
 
@@ -175,7 +175,7 @@ public class FoldersEJB
             Boolean.valueOf(
                 getRepoFactory()
                     .createResourceRepository()
-                    .find(Folder.class, folderId)
+                    .find(FolderEntity.class, folderId)
                     .hasEntryWithName(new ResourceName(name)));
     }
 
@@ -185,7 +185,7 @@ public class FoldersEJB
     @RolesAllowed(FOLDER_READ)
     public Collection<ResourceSummary> roots() {
         return
-            Resource.mapResources(
+            ResourceEntity.mapResources(
                 getRepoFactory()
                     .createResourceRepository()
                     .roots());
@@ -201,16 +201,16 @@ public class FoldersEJB
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
-        final Folder f =
+        final FolderEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(Folder.class, folderId);
+                .find(FolderEntity.class, folderId);
 
         checkRead(f);
 
-        final List<Folder> folderChildren = f.getFolders();
+        final List<FolderEntity> folderChildren = f.getFolders();
         Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
-        return Resource.mapResources(folderChildren);
+        return ResourceEntity.mapResources(folderChildren);
     }
 
 
@@ -220,14 +220,14 @@ public class FoldersEJB
     public Collection<ResourceSummary> getChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
-        final Folder f =
+        final FolderEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(Folder.class, folderId);
+                .find(FolderEntity.class, folderId);
 
         checkRead(f);
 
-        return Resource.mapResources(f.getEntries());
+        return ResourceEntity.mapResources(f.getEntries());
     }
 
 
@@ -237,21 +237,21 @@ public class FoldersEJB
     public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
-        final Folder f =
+        final FolderEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(Folder.class, folderId);
+                .find(FolderEntity.class, folderId);
 
         checkRead(f);
 
-        final List<Resource> filtered = new ArrayList<Resource>();
-        final User user = currentUser();
-        for (final Resource r : f.getEntries()) {
+        final List<ResourceEntity> filtered = new ArrayList<ResourceEntity>();
+        final UserEntity user = currentUser();
+        for (final ResourceEntity r : f.getEntries()) {
             if (r.isReadableBy(user)) {
                 filtered.add(r);
             }
         }
-        return Resource.mapResources(filtered);
+        return ResourceEntity.mapResources(filtered);
     }
 
 }

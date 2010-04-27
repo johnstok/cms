@@ -49,9 +49,9 @@ import ccc.api.core.StreamAction;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.PagedCollection;
 import ccc.commands.UpdateFileCommand;
-import ccc.domain.File;
+import ccc.domain.FileEntity;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -75,7 +75,7 @@ public class FilesEJB
     @RolesAllowed({FILE_READ})
     public PagedCollection<FileDto> getPagedImages(
             final UUID folderId, final int pageNo, final int pageSize) {
-        final List<File> list =
+        final List<FileEntity> list =
             getRepoFactory()
                 .createResourceRepository()
                 .images(folderId, pageNo, pageSize);
@@ -83,7 +83,7 @@ public class FilesEJB
             getRepoFactory()
                 .createResourceRepository()
                 .imagesCount(folderId);
-        return new PagedCollection<FileDto>(c, File.mapFiles(list));
+        return new PagedCollection<FileDto>(c, FileEntity.mapFiles(list));
     }
 
 
@@ -93,7 +93,7 @@ public class FilesEJB
     public ResourceSummary createFile(final FileDto file) {
         checkPermission(FILE_CREATE);
 
-        final User u = currentUser();
+        final UserEntity u = currentUser();
 
         final Date dateCreated = file.getDateCreated();
 
@@ -104,7 +104,7 @@ public class FilesEJB
                 file.isMajorEdit(),
                 file.getComment());
 
-        final File f =
+        final FileEntity f =
             commands().createFileCommand(
                 file.getParent(),
                 new FileDto(
@@ -230,7 +230,7 @@ public class FilesEJB
         return
             getRepoFactory()
                 .createResourceRepository()
-                .find(File.class, fileId)
+                .find(FileEntity.class, fileId)
                 .mapTextFile(getRepoFactory().createDataRepository());
     }
 
@@ -242,10 +242,10 @@ public class FilesEJB
                          final StreamAction action) {
         checkPermission(FILE_READ);
 
-        final File f =
+        final FileEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(File.class, file);
+                .find(FileEntity.class, file);
         checkRead(f);
 
         getRepoFactory()
@@ -262,10 +262,10 @@ public class FilesEJB
                                  final StreamAction action) {
         checkPermission(FILE_READ);
 
-        final File f =
+        final FileEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(File.class, file);
+                .find(FileEntity.class, file);
         checkRead(f);
 
         getRepoFactory()
@@ -281,10 +281,10 @@ public class FilesEJB
                                     final StreamAction action) {
         checkPermission(FILE_READ);
 
-        final File f =
+        final FileEntity f =
             getRepoFactory()
                 .createResourceRepository()
-                .find(File.class, file);
+                .find(FileEntity.class, file);
         checkRead(f);
 
         getRepoFactory()

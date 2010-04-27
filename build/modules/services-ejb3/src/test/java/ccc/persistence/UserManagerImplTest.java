@@ -38,7 +38,7 @@ import ccc.api.core.UserCriteria;
 import ccc.api.core.UserDto;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Username;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -56,7 +56,7 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         expect(Boolean.valueOf(
             _repository.exists(
-            QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "blat")))
+            QueryNames.USER_WITH_MATCHING_USERNAME, UserEntity.class, "blat")))
             .andReturn(Boolean.TRUE);
         replayAll();
 
@@ -76,7 +76,7 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         expect(Boolean.valueOf(
             _repository.exists(
-                QueryNames.USER_WITH_MATCHING_USERNAME, User.class, "blat")))
+                QueryNames.USER_WITH_MATCHING_USERNAME, UserEntity.class, "blat")))
             .andReturn(Boolean.FALSE);
         replayAll();
 
@@ -99,12 +99,12 @@ public class UserManagerImplTest extends TestCase {
         final Map<String, Object> params = new HashMap<String, Object>();
         expect(_repository.listDyn(
             "select u "
-            + "from ccc.domain.User as u",
-            User.class,
+            + "from ccc.domain.UserEntity as u",
+            UserEntity.class,
             1,
             1,
             params))
-            .andReturn(new ArrayList<User>());
+            .andReturn(new ArrayList<UserEntity>());
         replayAll();
 
 
@@ -126,15 +126,15 @@ public class UserManagerImplTest extends TestCase {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("groups", "ADMINISTRATOR");
         expect(_repository.listDyn(
-            "select u from ccc.domain.User as u where :groups in ("
+            "select u from ccc.domain.UserEntity as u where :groups in ("
             + "select r._name "
-            + "from ccc.domain.User as u2 left join u2._groups as r "
+            + "from ccc.domain.UserEntity as u2 left join u2._groups as r "
             + "where u=u2) ",
-            User.class,
+            UserEntity.class,
             1,
             1,
             params))
-            .andReturn(new ArrayList<User>());
+            .andReturn(new ArrayList<UserEntity>());
         replayAll();
 
         // ACT
@@ -157,13 +157,13 @@ public class UserManagerImplTest extends TestCase {
         params.put("username", "testname");
         expect(_repository.listDyn(
             "select u"
-            +" from ccc.domain.User as u"
+            +" from ccc.domain.UserEntity as u"
             + " where lower(u._username._value) like lower(:username)",
-            User.class,
+            UserEntity.class,
             1,
             1,
             params))
-            .andReturn(new ArrayList<User>());
+            .andReturn(new ArrayList<UserEntity>());
         replayAll();
 
         // ACT
@@ -186,13 +186,13 @@ public class UserManagerImplTest extends TestCase {
         params.put("email", "test@civicuk.com");
         expect(_repository.listDyn(
             "select u"
-            + " from ccc.domain.User as u"
+            + " from ccc.domain.UserEntity as u"
             + " where lower(u._email._text) like lower(:email)",
-            User.class,
+            UserEntity.class,
             1,
             1,
             params))
-            .andReturn(new ArrayList<User>());
+            .andReturn(new ArrayList<UserEntity>());
         replayAll();
 
         // ACT
@@ -206,7 +206,7 @@ public class UserManagerImplTest extends TestCase {
     }
 
 
-    private User _u;
+    private UserEntity _u;
     private UserDto _uDelta;
     private Repository _repository;
     private UserRepositoryImpl _um;
@@ -214,7 +214,7 @@ public class UserManagerImplTest extends TestCase {
     /** {@inheritDoc} */
     @Override
     protected void setUp() {
-        _u = new User(new Username("testUser"), "password");
+        _u = new UserEntity(new Username("testUser"), "password");
         _u.setEmail(new EmailAddress("test@civicuk.com"));
 
         _uDelta = new UserDto();

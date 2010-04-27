@@ -37,7 +37,7 @@ import java.util.Date;
 public final class RevisionMetadata {
 
     private final Date _timestamp;
-    private final User _actor;
+    private final UserEntity _actor;
     private final boolean _majorChange;
     private final String _comment;
 
@@ -51,7 +51,7 @@ public final class RevisionMetadata {
      * @param comment The comment of the revision.
      */
     public RevisionMetadata(final Date timestamp,
-                            final User actor,
+                            final UserEntity actor,
                             final boolean majorChange,
                             final String comment) {
         _timestamp = new Date(timestamp.getTime());
@@ -76,7 +76,7 @@ public final class RevisionMetadata {
      *
      * @return Returns the actor.
      */
-    public User getActor() {
+    public UserEntity getActor() {
         return _actor;
     }
 

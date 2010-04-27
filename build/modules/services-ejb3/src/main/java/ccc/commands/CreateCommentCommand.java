@@ -34,10 +34,10 @@ import ccc.api.core.CommentDto;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
-import ccc.domain.Comment;
+import ccc.domain.CommentEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -49,7 +49,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 public class CreateCommentCommand
     extends
-        Command<Comment> {
+        Command<CommentEntity> {
 
     private final CommentDto _comment;
 
@@ -69,14 +69,14 @@ public class CreateCommentCommand
 
     /** {@inheritDoc} */
     @Override
-    protected Comment doExecute(final User actor,
+    protected CommentEntity doExecute(final UserEntity actor,
                                 final Date happenedOn) {
 
-        final Resource r =
-            getRepository().find(Resource.class, _comment.getResourceId());
+        final ResourceEntity r =
+            getRepository().find(ResourceEntity.class, _comment.getResourceId());
 
-        final Comment c =
-            new Comment(r, _comment.getBody(), _comment.getAuthor());
+        final CommentEntity c =
+            new CommentEntity(r, _comment.getBody(), _comment.getAuthor());
         if (_comment.getUrl() != null) {
             try {
                 c.setUrl(new URL(_comment.getUrl()));

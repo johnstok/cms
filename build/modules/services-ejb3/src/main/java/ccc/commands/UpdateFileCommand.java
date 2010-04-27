@@ -33,10 +33,10 @@ import java.util.UUID;
 import ccc.api.core.FileDto;
 import ccc.api.types.CommandType;
 import ccc.domain.Data;
-import ccc.domain.File;
+import ccc.domain.FileEntity;
 import ccc.domain.FileHelper;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 
 
@@ -47,7 +47,7 @@ import ccc.persistence.IRepositoryFactory;
  */
 public class UpdateFileCommand
     extends
-        UpdateResourceCommand<File> {
+        UpdateResourceCommand<FileEntity> {
 
     private final UUID        _fileId;
     private final FileDto   _fileDelta;
@@ -83,10 +83,10 @@ public class UpdateFileCommand
 
     /** {@inheritDoc} */
     @Override
-    public File doExecute(final User actor,
+    public FileEntity doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final File f = getRepository().find(File.class, _fileId);
+        final FileEntity f = getRepository().find(FileEntity.class, _fileId);
         f.confirmLock(actor);
 
         final Data d = getData().create(_dataStream, _fileDelta.getSize());

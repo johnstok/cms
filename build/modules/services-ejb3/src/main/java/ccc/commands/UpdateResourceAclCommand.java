@@ -34,8 +34,8 @@ import ccc.api.types.CommandType;
 import ccc.api.types.ACL.Entry;
 import ccc.domain.AccessPermission;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -70,10 +70,10 @@ public class UpdateResourceAclCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Resource r = getRepository().find(Resource.class, _id);
+        final ResourceEntity r = getRepository().find(ResourceEntity.class, _id);
         r.confirmLock(actor);
 
         lookupGroups(r);
@@ -91,7 +91,7 @@ public class UpdateResourceAclCommand
     }
 
 
-    private void lookupGroups(final Resource r) {
+    private void lookupGroups(final ResourceEntity r) {
         r.clearGroupAcl();
         for (final Entry e : _acl.getGroups()) {
             r.addGroupPermission(
@@ -101,7 +101,7 @@ public class UpdateResourceAclCommand
     }
 
 
-    private void lookupUsers(final Resource r) {
+    private void lookupUsers(final ResourceEntity r) {
         r.clearUserAcl();
         for (final Entry e : _acl.getUsers()) {
             r.addUserPermission(

@@ -48,9 +48,9 @@ import ccc.commands.IncludeInMainMenuCommand;
 import ccc.commands.UpdatePageCommand;
 import ccc.commands.UpdateResourceAclCommand;
 import ccc.commands.UpdateResourceMetadataCommand;
-import ccc.domain.Folder;
-import ccc.domain.Page;
-import ccc.domain.User;
+import ccc.domain.FolderEntity;
+import ccc.domain.PageEntity;
+import ccc.domain.UserEntity;
 import ccc.services.Migration;
 
 
@@ -79,9 +79,9 @@ public class MigrationEJB
                                         final boolean publish,
                                         final UUID actorId,
                                         final Date happenedOn) {
-        final User u = userForId(actorId);
+        final UserEntity u = userForId(actorId);
 
-        final Folder f =
+        final FolderEntity f =
             commands().createFolderCommand(parentId, name, title)
             .execute(u, happenedOn);
 
@@ -102,9 +102,9 @@ public class MigrationEJB
                                       final boolean publish,
                                       final UUID actorId,
                                       final Date happenedOn) {
-        final User u = userForId(actorId);
+        final UserEntity u = userForId(actorId);
 
-        final Page p =
+        final PageEntity p =
             commands()
                 .createPageCommand(parentId, delta)
                 .execute(u, happenedOn);

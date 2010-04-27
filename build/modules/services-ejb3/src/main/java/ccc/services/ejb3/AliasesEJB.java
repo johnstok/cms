@@ -41,7 +41,7 @@ import ccc.api.core.AliasDto;
 import ccc.api.core.Aliases;
 import ccc.api.core.ResourceSummary;
 import ccc.commands.UpdateAliasCommand;
-import ccc.domain.Alias;
+import ccc.domain.AliasEntity;
 
 
 /**
@@ -90,10 +90,10 @@ public class AliasesEJB
     @Override
     @RolesAllowed({ALIAS_READ})
     public String aliasTargetName(final UUID aliasId) {
-        final Alias alias =
+        final AliasEntity alias =
             getRepoFactory()
                 .createResourceRepository()
-                .find(Alias.class, aliasId);
+                .find(AliasEntity.class, aliasId);
         if (alias != null) {
             return alias.target().getName().toString();
         }

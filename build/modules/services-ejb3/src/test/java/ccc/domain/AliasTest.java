@@ -38,7 +38,7 @@ import ccc.plugins.s11n.json.JsonImpl;
 
 
 /**
- * Tests for the {@link Alias} class.
+ * Tests for the {@link AliasEntity} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -52,8 +52,8 @@ public class AliasTest extends TestCase {
 
         // ARRANGE
         final Json json = new JsonImpl();
-        final Alias a = new Alias();
-        final Page p = new Page();
+        final AliasEntity a = new AliasEntity();
+        final PageEntity p = new PageEntity();
         a.target(p);
 
         // ACT
@@ -71,7 +71,7 @@ public class AliasTest extends TestCase {
 
         // ARRANGE
         final Json json = new JsonImpl();
-        final Alias a = new Alias();
+        final AliasEntity a = new AliasEntity();
 
         // ACT
         a.toJson(json);
@@ -86,7 +86,7 @@ public class AliasTest extends TestCase {
     public void testSelfCircularDependency() {
 
         // ARRANGE
-        final Alias a = new Alias();
+        final AliasEntity a = new AliasEntity();
 
         // ACT
         try {
@@ -106,8 +106,8 @@ public class AliasTest extends TestCase {
     public void testDirectCircularDependency() throws CycleDetectedException {
 
         // ARRANGE
-        final Alias a = new Alias();
-        final Alias b = new Alias();
+        final AliasEntity a = new AliasEntity();
+        final AliasEntity b = new AliasEntity();
         a.target(b);
 
         // ACT
@@ -128,9 +128,9 @@ public class AliasTest extends TestCase {
     public void testIndirectCircularDependency() throws CycleDetectedException {
 
         // ARRANGE
-        final Alias a = new Alias();
-        final Alias b = new Alias();
-        final Alias c = new Alias();
+        final AliasEntity a = new AliasEntity();
+        final AliasEntity b = new AliasEntity();
+        final AliasEntity c = new AliasEntity();
         a.target(b);
         b.target(c);
 
@@ -152,8 +152,8 @@ public class AliasTest extends TestCase {
     public void testSnapshot() throws CycleDetectedException {
 
         // ARRANGE
-        final Resource p = new Folder("foo");
-        final Alias alias = new Alias("bar", p);
+        final ResourceEntity p = new FolderEntity("foo");
+        final AliasEntity alias = new AliasEntity("bar", p);
 
         // ACT
         final AliasDto o = alias.createSnapshot();
@@ -169,10 +169,10 @@ public class AliasTest extends TestCase {
     public void testCreateAliasWithTitle() throws CycleDetectedException {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
 
         // ACT
-        final Alias alias = new Alias("bar", p);
+        final AliasEntity alias = new AliasEntity("bar", p);
 
         // ASSERT
         assertEquals(p, alias.target());
@@ -186,7 +186,7 @@ public class AliasTest extends TestCase {
     public void testTypeReturnsAlias() {
 
         // ACT
-        final ResourceType t = new Alias().getType();
+        final ResourceType t = new AliasEntity().getType();
 
         // ASSERT
         assertEquals(ResourceType.ALIAS, t);
@@ -199,10 +199,10 @@ public class AliasTest extends TestCase {
     public void testCreateAliasWithName() throws CycleDetectedException {
 
         // ARRANGE
-        final Page p = new Page();
+        final PageEntity p = new PageEntity();
 
         // ACT
-        final Alias alias = new Alias("bar", p);
+        final AliasEntity alias = new AliasEntity("bar", p);
 
         // ASSERT
         assertEquals(p, alias.target());
@@ -216,7 +216,7 @@ public class AliasTest extends TestCase {
 
         // ACT
         try {
-            new Alias("foo", null);
+            new AliasEntity("foo", null);
             fail("Null should be rejected");
 
         // ASSERT

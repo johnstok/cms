@@ -52,9 +52,9 @@ import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.PredefinedResourceNames;
-import ccc.domain.File;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.FileEntity;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 import ccc.domain.Setting;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
@@ -194,8 +194,8 @@ public class SearchEngineEJB  implements SearchEngine {
 
 
     private void indexFiles(final Indexer lucene) {
-        final List<File> files = _resources.files();
-        for (final File f : files) {
+        final List<FileEntity> files = _resources.files();
+        for (final FileEntity f : files) {
             if (canIndex(f)) {
                 if (!PredefinedResourceNames.CONTENT.equals(
                     f.getRoot().getName().toString())) {
@@ -227,8 +227,8 @@ public class SearchEngineEJB  implements SearchEngine {
 
 
     private void indexPages(final Indexer lucene) {
-        final List<Page> pages = _resources.pages();
-        for (final Page p : pages) {
+        final List<PageEntity> pages = _resources.pages();
+        for (final PageEntity p : pages) {
             if (canIndex(p)) {
                 lucene.createDocument(p.getId(), extractContent(p));
                 LOG.debug("Indexed page: "+p.getTitle());
@@ -237,7 +237,7 @@ public class SearchEngineEJB  implements SearchEngine {
     }
 
 
-    private String extractContent(final Page page) {
+    private String extractContent(final PageEntity page) {
         final StringBuilder sb = new StringBuilder(page.getTitle());
         for (final Paragraph p : page.currentRevision().getParagraphs()) {
             if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
@@ -249,7 +249,7 @@ public class SearchEngineEJB  implements SearchEngine {
     }
 
 
-    private boolean canIndex(final Resource r) {
+    private boolean canIndex(final ResourceEntity r) {
         return r.isVisible() && !r.isSecure() && r.isIndexable();
     }
 

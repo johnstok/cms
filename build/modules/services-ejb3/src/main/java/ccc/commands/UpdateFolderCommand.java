@@ -33,11 +33,11 @@ import java.util.UUID;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceOrder;
-import ccc.domain.Folder;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -52,7 +52,7 @@ public class UpdateFolderCommand
         UpdateResourceCommand<Void> {
 
     private final UUID _folderId;
-    private final Folder _folder;
+    private final FolderEntity _folder;
     private final ResourceOrder _order;
     private final UUID _indexPageId;
     private final List<UUID> _orderList;
@@ -74,7 +74,7 @@ public class UpdateFolderCommand
                                final List<UUID> orderList) {
         super(repoFactory);
         _folderId = folderId;
-        _folder = getRepository().find(Folder.class, folderId);
+        _folder = getRepository().find(FolderEntity.class, folderId);
         _order = order;
         _indexPageId = indexPageId;
         _orderList = orderList;
@@ -83,15 +83,15 @@ public class UpdateFolderCommand
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final Folder f = getRepository().find(Folder.class, _folderId);
+        final FolderEntity f = getRepository().find(FolderEntity.class, _folderId);
         f.confirmLock(actor);
 
-        Page p = null;
+        PageEntity p = null;
         if (_indexPageId != null) {
-            p = getRepository().find(Page.class, _indexPageId);
+            p = getRepository().find(PageEntity.class, _indexPageId);
         }
         f.setIndexPage(p);
         f.setSortOrder(_order);
@@ -104,7 +104,7 @@ public class UpdateFolderCommand
 
             for (int i=0; i<_orderList.size(); i++) {
                 final UUID id = _orderList.get(i);
-                final Resource r = f.getChild(id);
+                final ResourceEntity r = f.getChild(id);
                 if (null==r) {
                     throw new RuntimeException("Not a child of folder: "+id);
                 }
@@ -129,7 +129,7 @@ public class UpdateFolderCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void authorize(final User actor) throws UnauthorizedException {
+    protected void authorize(final UserEntity actor) throws UnauthorizedException {
         if (!_folder.isWriteableBy(actor)) {
             throw new UnauthorizedException(_folderId, actor.getId());
         }

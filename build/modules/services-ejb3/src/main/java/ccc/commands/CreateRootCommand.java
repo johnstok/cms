@@ -31,9 +31,9 @@ import java.util.Date;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.CommandType;
-import ccc.domain.Folder;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.FolderEntity;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 
@@ -45,7 +45,7 @@ import ccc.persistence.ResourceRepository;
  */
 class CreateRootCommand extends CreateResourceCommand<Void> {
 
-    private final Folder _folder;
+    private final FolderEntity _folder;
 
 
     /**
@@ -57,7 +57,7 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
      */
     public CreateRootCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
-                             final Folder folder) {
+                             final FolderEntity folder) {
         super(repository, audit);
         _folder = folder; // TODO: Should create the folder in doExecute().
     }
@@ -65,10 +65,10 @@ class CreateRootCommand extends CreateResourceCommand<Void> {
 
     /** {@inheritDoc} */
     @Override
-    public Void doExecute(final User actor,
+    public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
         try {
-            final Resource possibleRoot =
+            final ResourceEntity possibleRoot =
                 getRepository().root(_folder.getName().toString());
             throw new ResourceExistsException(
                 possibleRoot.getId(), possibleRoot.getName());

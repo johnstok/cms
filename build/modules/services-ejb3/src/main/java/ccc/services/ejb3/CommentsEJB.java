@@ -44,8 +44,8 @@ import ccc.api.types.SortOrder;
 import ccc.commands.CreateCommentCommand;
 import ccc.commands.DeleteCommentCommand;
 import ccc.commands.UpdateCommentCommand;
-import ccc.domain.Comment;
-import ccc.domain.Resource;
+import ccc.domain.CommentEntity;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -110,16 +110,16 @@ public class CommentsEJB
                                           final SortOrder sortOrder,
                                           final int pageNo,
                                           final int pageSize) {
-        final Resource r =
+        final ResourceEntity r =
             (null==resourceId)
                 ? null
                 : getRepoFactory()
                     .createResourceRepository()
-                    .find(Resource.class, resourceId);
+                    .find(ResourceEntity.class, resourceId);
         return
             new PagedCollection<CommentDto>(
                 getRepoFactory().createCommentRepo().count(r, status),
-                Comment.map(
+                CommentEntity.map(
                     getRepoFactory()
                         .createCommentRepo()
                         .list(

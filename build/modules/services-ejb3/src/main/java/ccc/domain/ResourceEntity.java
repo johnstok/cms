@@ -65,7 +65,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd
  */
-public abstract class Resource
+public abstract class ResourceEntity
     extends
         Entity
     implements
@@ -77,27 +77,27 @@ public abstract class Resource
 
     private String         _title             = getId().toString();
     private ResourceName   _name              = ResourceName.escape(_title);
-    private Template       _template          = null;
-    private Folder         _parent            = null;
+    private TemplateEntity       _template          = null;
+    private FolderEntity         _parent            = null;
     private Integer        _parentIndex       = null;
-    private User           _lockedBy          = null;
+    private UserEntity           _lockedBy          = null;
     private Set<String>    _tags              = new HashSet<String>();
     private Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
     private Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
-    private User           _publishedBy       = null;
+    private UserEntity           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
     private Date           _dateChanged       = _dateCreated;
     private Duration       _cache             = null;
     private String         _description       = "";
     private boolean        _deleted           = false;
-    private User           _changedBy         = null;
-    private User           _createdBy         = null;
+    private UserEntity           _changedBy         = null;
+    private UserEntity           _createdBy         = null;
     private Map<String, String> _metadata = new HashMap<String, String>();
 
 
     /** Constructor: for persistence only. */
-    protected Resource() { super(); }
+    protected ResourceEntity() { super(); }
 
 
     /**
@@ -106,7 +106,7 @@ public abstract class Resource
      * @param name The name for this resource.
      * @param title The title of this resource, as a string.
      */
-    protected Resource(final ResourceName name,
+    protected ResourceEntity(final ResourceName name,
                        final String title) {
         setName(name);
         setTitle(title);
@@ -120,7 +120,7 @@ public abstract class Resource
      *
      * @param title The title of this resource, as a string.
      */
-    public Resource(final String title) {
+    public ResourceEntity(final String title) {
         setTitle(title);
         setName(ResourceName.escape(title));
     }
@@ -135,7 +135,7 @@ public abstract class Resource
 
 
     /**
-     * Type-safe helper method to convert an instance of {@link Resource} to a
+     * Type-safe helper method to convert an instance of {@link ResourceEntity} to a
      * subclass.
      *
      * @param <T> The type that this resource should be converted to.
@@ -143,7 +143,7 @@ public abstract class Resource
      *      should be converted to.
      * @return This resource as a Page.
      */
-    public final <T extends Resource> T as(final Class<T> resourceType) {
+    public final <T extends ResourceEntity> T as(final Class<T> resourceType) {
         return resourceType.cast(this);
     }
 
@@ -155,7 +155,7 @@ public abstract class Resource
      * @param def The default template to use if we cannot compute one.
      * @return The template or null if none is found.
      */
-    public final Template computeTemplate(final Template def) {
+    public final TemplateEntity computeTemplate(final TemplateEntity def) {
         return
         (null!=getTemplate())
             ? getTemplate()
@@ -218,9 +218,9 @@ public abstract class Resource
     /**
      * Accessor for the template.
      *
-     * @return The {@link Template}.
+     * @return The {@link TemplateEntity}.
      */
-    public Template getTemplate() {
+    public TemplateEntity getTemplate() {
         if (null==_template) {
             return null;
         } else if (_template.isDeleted()) {
@@ -235,7 +235,7 @@ public abstract class Resource
      *
      * @param template The new template.
      */
-    public void setTemplate(final Template template) {
+    public void setTemplate(final TemplateEntity template) {
         _template = template;
     }
 
@@ -245,18 +245,18 @@ public abstract class Resource
      *
      * @return The folder containing this resource.
      */
-    public Folder getParent() {
+    public FolderEntity getParent() {
         return _parent;
     }
 
 
     /**
      * Mutator for the resource's parent. <i>This method should only be called
-     * by the {@link Folder} class.</i>
+     * by the {@link FolderEntity} class.</i>
      *
      * @param parent The folder containing this resource.
      */
-    void setParent(final Folder parent, final Integer index) {
+    void setParent(final FolderEntity parent, final Integer index) {
         _parent = parent;
         if (null!=parent) {
             _parentIndex = require().notNull(index);
@@ -282,7 +282,7 @@ public abstract class Resource
      * @param u The user who is locking the resource.
      * @throws LockMismatchException If the resource is already locked.
      */
-    public void lock(final User u) throws LockMismatchException {
+    public void lock(final UserEntity u) throws LockMismatchException {
         require().notNull(u);
         if (isLocked()) {
             throw new LockMismatchException(getId());
@@ -296,7 +296,7 @@ public abstract class Resource
      *
      * @return The locking user or null if the resource is not locked.
      */
-    public User getLockedBy() {
+    public UserEntity getLockedBy() {
         return _lockedBy;
     }
 
@@ -311,7 +311,7 @@ public abstract class Resource
      * @throws InsufficientPrivilegesException If the user has insufficient
      *  privileges to unlock the resource.
      */
-    public void unlock(final User user) throws InsufficientPrivilegesException,
+    public void unlock(final UserEntity user) throws InsufficientPrivilegesException,
                                                UnlockedException {
 
         if (!isLocked()) {
@@ -333,7 +333,7 @@ public abstract class Resource
      * @param user The user trying to unlock the resource.
      * @return True if the user can unlock the resource, false otherwise.
      */
-    public boolean canUnlock(final User user) {
+    public boolean canUnlock(final UserEntity user) {
         return user.equals(getLockedBy())
         || user.hasPermission(Permission.RESOURCE_UNLOCK);
     }
@@ -367,7 +367,7 @@ public abstract class Resource
      *
      * @param user The user.
      */
-    public void publish(final User user) {
+    public void publish(final UserEntity user) {
         require().notNull(user);
         _publishedBy = user;
     }
@@ -388,7 +388,7 @@ public abstract class Resource
      *
      * @return The user or null if the resource is unpublished.
      */
-    public User getPublishedBy() {
+    public UserEntity getPublishedBy() {
         return _publishedBy;
     }
 
@@ -442,7 +442,7 @@ public abstract class Resource
      * @throws UnlockedException If the resource isn't locked.
      * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void confirmLock(final User user) throws UnlockedException,
+    public void confirmLock(final UserEntity user) throws UnlockedException,
                                                     LockMismatchException {
         if (!isLocked()) {
             throw new UnlockedException(getId());
@@ -474,7 +474,7 @@ public abstract class Resource
      *
      * @return The root parent of this resource.
      */
-    public Resource getRoot() {
+    public ResourceEntity getRoot() {
         if (null == _parent) {
             return this;
         }
@@ -576,7 +576,7 @@ public abstract class Resource
      *
      * @return The creating user.
      */
-    public User getCreatedBy() {
+    public UserEntity getCreatedBy() {
         return _createdBy;
     }
 
@@ -587,7 +587,7 @@ public abstract class Resource
      * @param createdOn The date of creation.
      * @param createdBy The user who created.
      */
-    public void setDateCreated(final Date createdOn, final User createdBy) {
+    public void setDateCreated(final Date createdOn, final UserEntity createdBy) {
         require().notNull(createdOn);
         require().notNull(createdBy);
         _dateCreated = new Date(createdOn.getTime());
@@ -606,7 +606,7 @@ public abstract class Resource
      *
      * @return The last user to change this resource.
      */
-    public User getChangedBy() {
+    public UserEntity getChangedBy() {
         return _changedBy;
     }
 
@@ -617,7 +617,7 @@ public abstract class Resource
      * @param changedOn The date the resource changed.
      * @param changedBy The user who changed the resource.
      */
-    public void setDateChanged(final Date changedOn, final User changedBy) {
+    public void setDateChanged(final Date changedOn, final UserEntity changedBy) {
         require().notNull(changedOn);
         require().notNull(changedBy);
         _dateChanged = new Date(changedOn.getTime());
@@ -674,7 +674,7 @@ public abstract class Resource
 
 
     /** {@inheritDoc} */
-    public boolean isReadableBy(final User user) {
+    public boolean isReadableBy(final UserEntity user) {
         final boolean parentIsAccessible =
             (null==_parent) ? true : getParent().isReadableBy(user);
 
@@ -701,7 +701,7 @@ public abstract class Resource
 
 
     /** {@inheritDoc} */
-    public boolean isWriteableBy(final User user) {
+    public boolean isWriteableBy(final UserEntity user) {
         final boolean parentIsWriteable =
             (null==_parent) ? true : getParent().isWriteableBy(user);
 
@@ -905,10 +905,10 @@ public abstract class Resource
      * @return The corresponding collection of ResourceSummary.
      */
     public static List<ResourceSummary> mapResources(
-                               final Collection<? extends Resource> resources) {
+                               final Collection<? extends ResourceEntity> resources) {
         final List<ResourceSummary> mapped =
             new ArrayList<ResourceSummary>();
-        for (final Resource r : resources) {
+        for (final ResourceEntity r : resources) {
             mapped.add(r.mapResource());
         }
         return mapped;
@@ -927,15 +927,15 @@ public abstract class Resource
         UUID indexPage = null;
         boolean hasWorkingCopy = false;
         if (getType() == ResourceType.FOLDER) {
-            childCount = as(Folder.class).getEntries().size();
-            folderCount = as(Folder.class).getFolders().size();
-            sortOrder = as(Folder.class).getSortOrder().name();
-            indexPage = (null==as(Folder.class).getIndexPage())
-                ? null : as(Folder.class).getIndexPage().getId();
+            childCount = as(FolderEntity.class).getEntries().size();
+            folderCount = as(FolderEntity.class).getFolders().size();
+            sortOrder = as(FolderEntity.class).getSortOrder().name();
+            indexPage = (null==as(FolderEntity.class).getIndexPage())
+                ? null : as(FolderEntity.class).getIndexPage().getId();
         } else if (getType() == ResourceType.PAGE) {
-            hasWorkingCopy = (as(Page.class).hasWorkingCopy());
+            hasWorkingCopy = (as(PageEntity.class).hasWorkingCopy());
         } else if (getType() == ResourceType.FILE) {
-            hasWorkingCopy = (as(File.class).hasWorkingCopy());
+            hasWorkingCopy = (as(FileEntity.class).hasWorkingCopy());
         }
 
         final ResourceSummary rs =

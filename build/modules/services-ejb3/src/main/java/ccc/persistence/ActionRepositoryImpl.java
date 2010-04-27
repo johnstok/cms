@@ -37,7 +37,7 @@ import javax.persistence.EntityManager;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
-import ccc.domain.Action;
+import ccc.domain.ActionEntity;
 import ccc.plugins.s11n.JsonKeys;
 
 
@@ -75,28 +75,28 @@ class ActionRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<Action> latest(final Date since) {
-        return _repo.list(QueryNames.LATEST_ACTION, Action.class, since);
+    public List<ActionEntity> latest(final Date since) {
+        return _repo.list(QueryNames.LATEST_ACTION, ActionEntity.class, since);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Action find(final UUID actionId) throws EntityNotFoundException {
-        return _repo.find(Action.class, actionId);
+    public ActionEntity find(final UUID actionId) throws EntityNotFoundException {
+        return _repo.find(ActionEntity.class, actionId);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void create(final Action action) {
+    public void create(final ActionEntity action) {
         _repo.create(action);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public List<Action> completed(final String sort,
+    public List<ActionEntity> completed(final String sort,
                                   final SortOrder sortOrder,
                                   final int pageNo,
                                   final int pageSize) {
@@ -104,7 +104,7 @@ class ActionRepositoryImpl
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("from ccc.domain.Action a WHERE a._status!='SCHEDULED'");
+        query.append("from ccc.domain.ActionEntity a WHERE a._status!='SCHEDULED'");
         query.append(" order by a.");
         query.append(mapSortColumn(sort));
         query.append(" ");
@@ -113,7 +113,7 @@ class ActionRepositoryImpl
         return
             _repo.listDyn(
                 query.toString(),
-                Action.class,
+                ActionEntity.class,
                 pageNo,
                 pageSize,
                 params);
@@ -124,7 +124,7 @@ class ActionRepositoryImpl
     @Override
     public long countCompleted() {
         final Map<String, Object> params = new HashMap<String, Object>();
-        final String query = "select count(*) from ccc.domain.Action a "
+        final String query = "select count(*) from ccc.domain.ActionEntity a "
         		+ " WHERE a._status!='SCHEDULED'";
         return _repo.scalarLong(query, params);
     }
@@ -134,7 +134,7 @@ class ActionRepositoryImpl
     @Override
     public long countPending() {
         final Map<String, Object> params = new HashMap<String, Object>();
-        final String query = "select count(*) from ccc.domain.Action a "
+        final String query = "select count(*) from ccc.domain.ActionEntity a "
                 + " WHERE a._status='SCHEDULED'";
         return _repo.scalarLong(query, params);
     }
@@ -142,7 +142,7 @@ class ActionRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public List<Action> pending(final String sort,
+    public List<ActionEntity> pending(final String sort,
                                 final SortOrder sortOrder,
                                 final int pageNo,
                                 final int pageSize) {
@@ -150,7 +150,7 @@ class ActionRepositoryImpl
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("from ccc.domain.Action a WHERE a._status='SCHEDULED'");
+        query.append("from ccc.domain.ActionEntity a WHERE a._status='SCHEDULED'");
         query.append(" order by a.");
         query.append(mapSortColumn(sort));
         query.append(" ");
@@ -159,7 +159,7 @@ class ActionRepositoryImpl
         return
             _repo.listDyn(
                 query.toString(),
-                Action.class,
+                ActionEntity.class,
                 pageNo,
                 pageSize,
                 params);

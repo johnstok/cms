@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
-import ccc.domain.Action;
+import ccc.domain.ActionEntity;
 
 
 /**
@@ -50,7 +50,7 @@ public interface ActionRepository {
      * @return All SCHEDULED actions with an execute_after date less than the
      *  specified date.
      */
-    List<Action> latest(Date until);
+    List<ActionEntity> latest(Date until);
 
     /**
      * Retrieve subset of actions in the status SCHEDULED.
@@ -62,7 +62,7 @@ public interface ActionRepository {
      *
      * @return A list of actions.
      */
-    List<Action> pending(String sort,
+    List<ActionEntity> pending(String sort,
         SortOrder sortOrder,
         int pageNo,
         int pageSize);
@@ -77,7 +77,7 @@ public interface ActionRepository {
      *
      * @return A list of actions.
      */
-    List<Action> completed(String sort,
+    List<ActionEntity> completed(String sort,
         SortOrder sortOrder,
         int pageNo,
         int pageSize);
@@ -108,13 +108,13 @@ public interface ActionRepository {
      *
      * @return The corresponding action.
      */
-    Action find(UUID actionId) throws EntityNotFoundException;
+    ActionEntity find(UUID actionId) throws EntityNotFoundException;
 
     /**
      * Persist a newly created action.
      *
      * @param action The action to persist.
      */
-    void create(Action action);
+    void create(ActionEntity action);
 
 }

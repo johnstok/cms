@@ -27,9 +27,9 @@
 package ccc.commands;
 
 import static org.easymock.EasyMock.*;
-import ccc.domain.Alias;
+import ccc.domain.AliasEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
+import ccc.domain.ResourceEntity;
 import ccc.domain.Search;
 
 
@@ -50,12 +50,12 @@ public class UpdateAliasCommandTest
         // ARRANGE
         final Search foo = new Search("foo");
         final Search bar = new Search("bar");
-        final Alias alias = new Alias("alias", foo);
+        final AliasEntity alias = new AliasEntity("alias", foo);
         alias.lock(getUser());
 
-        expect(getRepository().find(Alias.class, alias.getId()))
+        expect(getRepository().find(AliasEntity.class, alias.getId()))
             .andReturn(alias);
-        expect(getRepository().find(Resource.class, bar.getId()))
+        expect(getRepository().find(ResourceEntity.class, bar.getId()))
             .andReturn(bar);
         getAudit().record(isA(LogEntry.class));
         replayAll();

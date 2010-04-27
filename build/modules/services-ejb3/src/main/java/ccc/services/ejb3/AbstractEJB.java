@@ -43,8 +43,8 @@ import ccc.api.types.DBC;
 import ccc.commands.Command;
 import ccc.commands.CommandFactory;
 import ccc.commons.Exceptions;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.DataRepository;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
@@ -153,8 +153,8 @@ abstract class AbstractEJB {
      *
      * @throws EntityNotFoundException If a corresponding user doesn't exist.
      */
-    protected User userForId(final UUID userId) throws EntityNotFoundException {
-        final User u = _users.find(userId);
+    protected UserEntity userForId(final UUID userId) throws EntityNotFoundException {
+        final UserEntity u = _users.find(userId);
         return u;
     }
 
@@ -168,7 +168,7 @@ abstract class AbstractEJB {
      *
      * @return The currently logged in user.
      */
-    protected User currentUser() throws EntityNotFoundException {
+    protected UserEntity currentUser() throws EntityNotFoundException {
         return _users.loggedInUser(_context.getCallerPrincipal());
     }
 
@@ -191,11 +191,11 @@ abstract class AbstractEJB {
      *
      * @param r The resource to check.
      */
-    protected void checkRead(final Resource r) {
+    protected void checkRead(final ResourceEntity r) {
 
         DBC.require().notNull(r);
 
-        User u = null;
+        UserEntity u = null;
         try {
             u = currentUser();
         } catch (final EntityNotFoundException e) {
@@ -214,11 +214,11 @@ abstract class AbstractEJB {
      *
      * @param r The resource to check.
      */
-    protected void checkWrite(final Resource r) {
+    protected void checkWrite(final ResourceEntity r) {
 
         DBC.require().notNull(r);
 
-        User u = null;
+        UserEntity u = null;
         try {
             u = currentUser();
         } catch (final EntityNotFoundException e) {
@@ -239,7 +239,7 @@ abstract class AbstractEJB {
      */
     protected void checkPermission(final String... permissions) {
         try {
-            final User u = currentUser();
+            final UserEntity u = currentUser();
             for (final String permission : permissions) {
                 if (u.hasPermission(permission)) { return; }
             }

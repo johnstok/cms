@@ -35,7 +35,7 @@ import junit.framework.TestCase;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Username;
 import ccc.domain.RevisionMetadata;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.GroupRepository;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -52,12 +52,12 @@ public abstract class AbstractCommandTest
     extends
         TestCase {
 
-    protected final User _user =
-        new User(new Username("currentUser"), "password");
+    protected final UserEntity _user =
+        new UserEntity(new Username("currentUser"), "password");
     protected final Date _now = new Date();
 
     protected final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
     protected SimpleRepositoryFactory _repoFactory =
         new SimpleRepositoryFactory();
 
@@ -79,7 +79,7 @@ public abstract class AbstractCommandTest
      *
      * @return Returns the user.
      */
-    public User getUser() {
+    public UserEntity getUser() {
         return _user;
     }
 

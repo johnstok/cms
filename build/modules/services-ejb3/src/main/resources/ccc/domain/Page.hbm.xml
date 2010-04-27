@@ -38,8 +38,8 @@
     </typedef>
     
     <joined-subclass
-        name="ccc.domain.Page"
-        extends="ccc.domain.Resource"
+        name="ccc.domain.PageEntity"
+        extends="ccc.domain.ResourceEntity"
         table="pages">
         <key column="id" foreign-key="FK_PAGE_RESOURCE_ID"/>
         
@@ -64,5 +64,5 @@
         
     </joined-subclass>
     
-	<query name="allPages">from ccc.domain.Page</query>
+	<query name="allPages">from ccc.domain.PageEntity</query>
 </hibernate-mapping>

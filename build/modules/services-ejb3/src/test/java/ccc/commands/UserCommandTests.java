@@ -33,7 +33,7 @@ import java.util.Date;
 import ccc.api.core.UserDto;
 import ccc.api.types.Username;
 import ccc.domain.LogEntry;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 
 
 /**
@@ -53,7 +53,7 @@ public class UserCommandTests
 
         // ARRANGE
         final Date now = new Date();
-        _um.create(isA(User.class));
+        _um.create(isA(UserEntity.class));
         _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
         replayAll();
 
@@ -61,7 +61,7 @@ public class UserCommandTests
             new CreateUserCommand(_repoFactory);
 
         // ACT
-        final User u = cu.execute(_user, now, _uDelta);
+        final UserEntity u = cu.execute(_user, now, _uDelta);
 
         // ASSERT
         verifyAll();

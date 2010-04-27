@@ -32,8 +32,8 @@ import java.util.UUID;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -69,9 +69,9 @@ class UnlockResourceCommand extends Command<Void> {
 
     /** {@inheritDoc} */
     @Override
-    protected Void doExecute(final User actor,
+    protected Void doExecute(final UserEntity actor,
                              final Date happenedOn) {
-        final Resource r = getRepository().find(Resource.class, _resourceId);
+        final ResourceEntity r = getRepository().find(ResourceEntity.class, _resourceId);
         r.unlock(actor);
 
         final LogEntry le =

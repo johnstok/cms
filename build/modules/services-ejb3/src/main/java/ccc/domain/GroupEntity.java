@@ -43,7 +43,7 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class Group
+public class GroupEntity
     extends
         Principal {
 
@@ -51,7 +51,7 @@ public class Group
 
 
     /** Constructor: for persistence only. */
-    protected Group() { super(); }
+    protected GroupEntity() { super(); }
 
 
     /**
@@ -60,7 +60,7 @@ public class Group
      * @param name The group's name.
      * @param permissions The group's permissions.
      */
-    public Group(final String name, final String... permissions) {
+    public GroupEntity(final String name, final String... permissions) {
         setName(name);
         setPermissions(new HashSet<String>(Arrays.asList(permissions)));
     }
@@ -120,9 +120,9 @@ public class Group
      * @param groups The groups to map.
      * @return The corresponding DTOs.
      */
-    public static Collection<GroupDto> map(final Collection<Group> groups) {
+    public static Collection<GroupDto> map(final Collection<GroupEntity> groups) {
         final List<GroupDto> mapped = new ArrayList<GroupDto>();
-        for (final Group g : groups) {
+        for (final GroupEntity g : groups) {
             mapped.add(g.createDto());
         }
         return mapped;
@@ -138,7 +138,7 @@ public class Group
 
     /** {@inheritDoc} */
     @Override
-    public boolean includes(final User user) {
+    public boolean includes(final UserEntity user) {
         return (null==user) ? false : user.getGroups().contains(this);
     }
 }

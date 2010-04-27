@@ -31,8 +31,8 @@ import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.domain.LogEntry;
-import ccc.domain.Resource;
-import ccc.domain.User;
+import ccc.domain.ResourceEntity;
+import ccc.domain.UserEntity;
 import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
@@ -78,11 +78,11 @@ public class IncludeInMainMenuCommand {
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
      */
-    public void execute(final User actor,
+    public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID id,
                         final boolean b) {
-        final Resource r = _repository.find(Resource.class, id);
+        final ResourceEntity r = _repository.find(ResourceEntity.class, id);
         r.confirmLock(actor);
 
         r.setIncludedInMainMenu(b);

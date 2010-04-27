@@ -50,7 +50,7 @@ import ccc.commands.CreateUserCommand;
 import ccc.commands.UpdateCurrentUserCommand;
 import ccc.commands.UpdatePasswordAction;
 import ccc.commands.UpdateUserCommand;
-import ccc.domain.User;
+import ccc.domain.UserEntity;
 import ccc.persistence.UserRepository;
 
 
@@ -151,7 +151,7 @@ public class UsersEJB
             groups,
             metadataKey,
             metadataValue);
-        return new PagedCollection<UserDto>(userrepo.countUsers(uc), User.map(
+        return new PagedCollection<UserDto>(userrepo.countUsers(uc), UserEntity.map(
                 userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
     }
 

@@ -34,7 +34,7 @@ import ccc.api.types.FailureCode;
 
 
 /**
- * Tests for the {@link Action} class.
+ * Tests for the {@link ActionEntity} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -48,7 +48,7 @@ public class ActionTest
     public void testCancelAnAction() {
 
         // ARRANGE
-        final Action a = new Action();
+        final ActionEntity a = new ActionEntity();
 
         // ACT
         a.cancel();
@@ -63,8 +63,8 @@ public class ActionTest
     public void testFailAnAction() {
 
         // ARRANGE
-        final Page p = new Page();
-        final Action a = new Action();
+        final PageEntity p = new PageEntity();
+        final ActionEntity a = new ActionEntity();
         final CCException e = new UnlockedException(p.getId());
 
         // ACT
@@ -83,7 +83,7 @@ public class ActionTest
         // ARRANGE
 
         // ACT
-        final Action a = new Action();
+        final ActionEntity a = new ActionEntity();
 
         // ASSERT
         assertEquals(ActionStatus.SCHEDULED, a.getStatus());
@@ -95,7 +95,7 @@ public class ActionTest
     public void testCompleteAnAction() {
 
         // ARRANGE
-        final Action a = new Action();
+        final ActionEntity a = new ActionEntity();
 
         // ACT
         a.complete();

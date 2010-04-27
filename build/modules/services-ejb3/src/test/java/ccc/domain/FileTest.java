@@ -37,7 +37,7 @@ import ccc.api.types.ResourceName;
 
 
 /**
- * Tests for the {@link File} class.
+ * Tests for the {@link FileEntity} class.
  *
  * @author Civic Computing Ltd
  */
@@ -49,7 +49,7 @@ public class FileTest extends TestCase {
     public void testGetProperty() {
 
         // ACT
-        final File f = new File(
+        final FileEntity f = new FileEntity(
             new ResourceName("name"),
             "title",
             "",
@@ -72,7 +72,7 @@ public class FileTest extends TestCase {
     public void testImageFilesAreDetected() {
 
         // ARRANGE
-        final File f = new File(
+        final FileEntity f = new FileEntity(
             new ResourceName("name"),
             "title",
             "desc",
@@ -96,7 +96,7 @@ public class FileTest extends TestCase {
     public void testNonImageFilesAreDetected() {
 
         // ARRANGE
-        final File f = new File(
+        final FileEntity f = new FileEntity(
             new ResourceName("name"),
             "title",
             "desc",
@@ -120,8 +120,8 @@ public class FileTest extends TestCase {
 
         // ARRANGE
         final Data data = new Data();
-        final File f =
-            new File(
+        final FileEntity f =
+            new FileEntity(
                 new ResourceName("foo"),
                 "foo",
                 "desc",
@@ -146,8 +146,8 @@ public class FileTest extends TestCase {
     public void testMimeTypeProperty() {
 
         // ARRANGE
-        final File f =
-            new File(
+        final FileEntity f =
+            new FileEntity(
                 new ResourceName("foo"),
                 "foo",
                 "desc",
@@ -170,8 +170,8 @@ public class FileTest extends TestCase {
     public void testFileSizeProperty() {
 
         // ARRANGE
-        final File f =
-            new File(new ResourceName("foo"),
+        final FileEntity f =
+            new FileEntity(new ResourceName("foo"),
                 "foo",
                 "desc",
                 new Data(),
@@ -195,7 +195,7 @@ public class FileTest extends TestCase {
 
         // ACT
         try {
-            new File(
+            new FileEntity(
                 new ResourceName("file"),
                 "title",
                 "desc",
@@ -211,5 +211,5 @@ public class FileTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), User.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

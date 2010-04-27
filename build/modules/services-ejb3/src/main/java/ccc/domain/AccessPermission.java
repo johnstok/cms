@@ -71,7 +71,7 @@ public class AccessPermission {
      *
      * @return Returns true if a read is allowed; false otherwise.
      */
-    public boolean allowsRead(final User user) {
+    public boolean allowsRead(final UserEntity user) {
         return _canRead && _principal.includes(user);
     }
 
@@ -83,7 +83,7 @@ public class AccessPermission {
      *
      * @return Returns true if a write is allowed; false otherwise.
      */
-    public boolean allowsWrite(final User user) {
+    public boolean allowsWrite(final UserEntity user) {
         return _canWrite && _principal.includes(user);
     }
 

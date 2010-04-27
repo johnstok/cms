@@ -43,7 +43,7 @@ import ccc.api.types.Paragraph;
  */
 public class PageRevision
     extends
-        Revision<PageDto> {
+        RevisionEntity<PageDto> {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
 
@@ -62,7 +62,7 @@ public class PageRevision
      * @param content The new content for the page.
      */
     PageRevision(final Date timestamp,
-                 final User actor,
+                 final UserEntity actor,
                  final boolean majorChange,
                  final String comment,
                  final Set<Paragraph> content) {

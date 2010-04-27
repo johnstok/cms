@@ -37,10 +37,10 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateFolderCommand;
-import ccc.domain.Folder;
+import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.Page;
-import ccc.domain.Resource;
+import ccc.domain.PageEntity;
+import ccc.domain.ResourceEntity;
 
 
 /**
@@ -60,9 +60,9 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_user);
-        expect(_repository.find(Folder.class, _f.getId()))
+        expect(_repository.find(FolderEntity.class, _f.getId()))
             .andReturn(_f);
-        expect(_repository.find(Folder.class, _f.getId()))
+        expect(_repository.find(FolderEntity.class, _f.getId()))
             .andReturn(_f);
         _audit.record(isA(LogEntry.class));
         replayAll();
@@ -90,16 +90,16 @@ public class FolderDaoImplTest
 
         // ARRANGE
         _f.lock(_user);
-        final Page foo = new Page(new ResourceName("foo"), "foo", null, _rm);
-        final Page bar = new Page(new ResourceName("bar"), "bar", null, _rm);
-        final Page baz = new Page(new ResourceName("baz"), "baz", null, _rm);
+        final PageEntity foo = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        final PageEntity bar = new PageEntity(new ResourceName("bar"), "bar", null, _rm);
+        final PageEntity baz = new PageEntity(new ResourceName("baz"), "baz", null, _rm);
         _f.add(foo);
         _f.add(bar);
         _f.add(baz);
 
-        expect(_repository.find(Folder.class, _f.getId()))
+        expect(_repository.find(FolderEntity.class, _f.getId()))
             .andReturn(_f);
-        expect(_repository.find(Folder.class, _f.getId()))
+        expect(_repository.find(FolderEntity.class, _f.getId()))
             .andReturn(_f);
         _audit.record(isA(LogEntry.class));
         replayAll();
@@ -122,7 +122,7 @@ public class FolderDaoImplTest
 
         // ASSERT
         verifyAll();
-        final List<Resource> entries = _f.getEntries();
+        final List<ResourceEntity> entries = _f.getEntries();
         assertEquals(3, entries.size());
         assertEquals(baz, entries.get(0));
         assertEquals(foo, entries.get(1));
@@ -134,7 +134,7 @@ public class FolderDaoImplTest
     /** {@inheritDoc} */
     @Override protected void setUp() throws Exception {
         super.setUp();
-        _f = new Folder("foo");
+        _f = new FolderEntity("foo");
     }
 
 
@@ -145,5 +145,5 @@ public class FolderDaoImplTest
     }
 
 
-    private Folder _f;
+    private FolderEntity _f;
 }
