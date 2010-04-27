@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.DBC;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.RemotingAction;
@@ -42,7 +42,7 @@ public class UpdateCommentAction
     extends
         RemotingAction {
 
-    private final CommentDto _comment;
+    private final Comment _comment;
 
 
     /**
@@ -50,7 +50,7 @@ public class UpdateCommentAction
      *
      * @param comment The updated comment.
      */
-    public UpdateCommentAction(final CommentDto comment) {
+    public UpdateCommentAction(final Comment comment) {
         _comment = DBC.require().notNull(comment);
     }
 

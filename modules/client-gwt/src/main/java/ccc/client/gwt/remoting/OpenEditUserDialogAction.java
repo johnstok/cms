@@ -29,8 +29,8 @@ package ccc.client.gwt.remoting;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
-import ccc.api.core.UserDto;
+import ccc.api.core.Group;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.EditUserDialog;
@@ -52,7 +52,7 @@ public class OpenEditUserDialogAction
 
     private final UUID _userId;
     private final UserTable _userTable;
-    private Collection<GroupDto> _groups;
+    private Collection<Group> _groups;
 
     /**
      * Constructor.
@@ -61,7 +61,7 @@ public class OpenEditUserDialogAction
      */
     public OpenEditUserDialogAction(final UUID userId,
                                     final UserTable userTable,
-                                    final Collection<GroupDto> groups) {
+                                    final Collection<Group> groups) {
         super(UI_CONSTANTS.editUser());
         _userId = userId;
         _userTable = userTable;
@@ -79,7 +79,7 @@ public class OpenEditUserDialogAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final UserDto delta = new UserDto(new GwtJson(result));
+        final User delta = new User(new GwtJson(result));
         new EditUserDialog(_userId, delta, _userTable, _groups).show();
     }
 }

@@ -29,10 +29,10 @@ package ccc.commands;
 import java.io.InputStream;
 import java.util.UUID;
 
-import ccc.api.core.AliasDto;
-import ccc.api.core.FileDto;
-import ccc.api.core.PageDto;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Alias;
+import ccc.api.core.File;
+import ccc.api.core.Page;
+import ccc.api.core.Template;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
@@ -101,7 +101,7 @@ public class CommandFactory {
      * @return The corresponding command.
      */
     public Command<? extends ResourceEntity> createTemplateCommand(
-                                                final TemplateDto template) {
+                                                final Template template) {
         return new CreateTemplateCommand(
             _repository,
             _audit,
@@ -117,7 +117,7 @@ public class CommandFactory {
      * @return The corresponding command.
      */
     public Command<? extends ResourceEntity> createAliasCommand(
-                                                        final AliasDto alias) {
+                                                        final Alias alias) {
         return new CreateAliasCommand(
             _repository,
             _audit,
@@ -141,7 +141,7 @@ public class CommandFactory {
      * @return The corresponding command.
      */
     public Command<FileEntity> createFileCommand(final UUID parentFolder,
-                                           final FileDto file,
+                                           final File file,
                                            final String title,
                                            final String description,
                                            final ResourceName resourceName,
@@ -212,7 +212,7 @@ public class CommandFactory {
      * @return The corresponding command.
      */
     public Command<PageEntity> createPageCommand(final UUID parentId,
-                                           final PageDto page) {
+                                           final Page page) {
 
         return new CreatePageCommand(
             _repository,

@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 
 
 /**
@@ -52,12 +52,12 @@ public class GroupsAcceptanceTest
 
         // ARRANGE
         final UUID name = UUID.randomUUID();
-        final GroupDto g = new GroupDto();
+        final Group g = new Group();
         g.setName(name.toString());
         g.setPermissions(Collections.singleton("bar"));
 
         // ACT
-        final GroupDto actual = getGroups().create(g);
+        final Group actual = getGroups().create(g);
 
         // ASSERT
         assertEquals(name.toString(), actual.getName());
@@ -74,15 +74,15 @@ public class GroupsAcceptanceTest
 
         // ARRANGE
         final UUID name = UUID.randomUUID();
-        final GroupDto g = new GroupDto();
+        final Group g = new Group();
         g.setName(name.toString());
-        final GroupDto created = getGroups().create(g);
+        final Group created = getGroups().create(g);
 
         // ACT
         final String newName = UUID.randomUUID().toString();
         created.setName(newName);
         created.setPermissions(Collections.singleton("foo"));
-        final GroupDto actual = getGroups().update(created.getId(), created);
+        final Group actual = getGroups().update(created.getId(), created);
 
         // ASSERT
         assertEquals(newName.toString(), actual.getName());
@@ -99,7 +99,7 @@ public class GroupsAcceptanceTest
         // ARRANGE
 
         // ACT
-        final Collection<GroupDto> actual = getGroups().list("ADMINISTRATOR");
+        final Collection<Group> actual = getGroups().list("ADMINISTRATOR");
 
         // ASSERT
         assertEquals(1, actual.size());
@@ -116,12 +116,12 @@ public class GroupsAcceptanceTest
 
         // ARRANGE
         final UUID name = UUID.randomUUID();
-        final GroupDto g = new GroupDto();
+        final Group g = new Group();
         g.setName(name.toString());
-        final GroupDto created = getGroups().create(g);
+        final Group created = getGroups().create(g);
 
         // ACT
-        final GroupDto actual = getGroups().find(created.getId());
+        final Group actual = getGroups().find(created.getId());
 
         // ASSERT
         assertEquals(name.toString(), actual.getName());

@@ -28,7 +28,7 @@ package ccc.tests.acceptance;
 
 import java.util.Date;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.core.ResourceSummary;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.CommentStatus;
@@ -51,8 +51,8 @@ public class CommentsAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final CommentDto c =
-            new CommentDto(
+        final Comment c =
+            new Comment(
                 "keith",
                 "Hello world",
                 folder.getId(),
@@ -62,7 +62,7 @@ public class CommentsAcceptanceTest
         c.setStatus(CommentStatus.APPROVED);
 
         // ACT
-        final CommentDto actual = getComments().create(c);
+        final Comment actual = getComments().create(c);
 
         // ASSERT
         assertEquals("keith", actual.getAuthor());
@@ -81,15 +81,15 @@ public class CommentsAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final CommentDto comment =
-            new CommentDto(
+        final Comment comment =
+            new Comment(
                 "keith",
                 "Hello world",
                 folder.getId(),
                 new Date(),
                 "http://www.google.com");
         comment.setEmail("test@example.com");
-        final CommentDto c = getComments().create(comment);
+        final Comment c = getComments().create(comment);
         getComments().retrieve(c.getId()); // Comment exists.
 
         // ACT
@@ -112,15 +112,15 @@ public class CommentsAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final CommentDto comment =
-            new CommentDto(
+        final Comment comment =
+            new Comment(
                 "keith",
                 "Hello world",
                 folder.getId(),
                 new Date(),
             "http://www.google.com");
         comment.setEmail("test@example.com");
-        final CommentDto c = getComments().create(comment);
+        final Comment c = getComments().create(comment);
 
         // ACT
         c.setBody("Updated world!");
@@ -130,7 +130,7 @@ public class CommentsAcceptanceTest
         getComments().update(c.getId(), c);
 
         // ASSERT
-        final CommentDto actual = getComments().retrieve(c.getId());
+        final Comment actual = getComments().retrieve(c.getId());
 
         assertEquals("Updated world!", actual.getBody());
         assertEquals(CommentStatus.APPROVED, actual.getStatus());

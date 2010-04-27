@@ -34,7 +34,6 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.FileDto;
 import ccc.api.core.Files;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
@@ -88,7 +87,7 @@ public class CccServer implements Server {
                            final boolean publish) {
 
         try {
-            final FileDto f = new FileDto(
+            final ccc.api.core.File f = new ccc.api.core.File(
                 new MimeType("application", "octet-stream"),
                 null,
                 null,

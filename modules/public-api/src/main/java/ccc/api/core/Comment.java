@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public class CommentDto
+public class Comment
     implements
         Jsonable2,
         Serializable {
@@ -65,7 +65,7 @@ public class CommentDto
      * @param timestamp The comment's timestamp.
      * @param url       The comment's url.
      */
-    public CommentDto(final String author,
+    public Comment(final String author,
                       final String body,
                       final UUID resource,
                       final Date timestamp,
@@ -81,7 +81,7 @@ public class CommentDto
     /**
      * Constructor.
      */
-    public CommentDto() { super(); }
+    public Comment() { super(); }
 
 
     /**
@@ -89,7 +89,7 @@ public class CommentDto
      *
      * @param json The JSON representation of this comment.
      */
-    public CommentDto(final Json json) {
+    public Comment(final Json json) {
         fromJson(json);
     }
 

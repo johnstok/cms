@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;
@@ -67,7 +67,7 @@ public class TemplateDaoImplTest
                 true,
                 "Created."));
         foo.lock(_user);
-        final TemplateDto td = new TemplateDto();
+        final Template td = new Template();
         td.setBody("newBody");
         td.setDefinition("newDefn");
         td.setMimeType(MimeType.BINARY_DATA);

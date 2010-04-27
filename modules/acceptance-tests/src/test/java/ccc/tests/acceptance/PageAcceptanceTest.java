@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -56,7 +56,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final String hw = "Hello World"; // Unicode non-breaking space.
         final ResourceSummary f = tempFolder();
         final String name = UUID.randomUUID().toString();
-        final PageDto page = new PageDto(f.getId(),
+        final Page page = new Page(f.getId(),
             name,
             null,
             "title",
@@ -70,7 +70,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary ps = getPages().createPage(page);
 
         // ASSERT
-        final PageDto pd = getPages().pageDelta(ps.getId());
+        final Page pd = getPages().pageDelta(ps.getId());
         assertEquals(hw, pd.getParagraph("test").getText());
     }
 
@@ -86,7 +86,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
-        final PageDto pd = getPages().pageDelta(page.getId());
+        final Page pd = getPages().pageDelta(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -107,7 +107,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final Paragraph testPara =
             Paragraph.fromText("foo", "long story short");
         paras.add(testPara);
-        final PageDto modified = PageDto.delta(paras);
+        final Page modified = Page.delta(paras);
         modified.setMajorChange(true);
         modified.setComment("");
 
@@ -116,7 +116,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
 
         getPages().updatePage(page.getId(), modified);
-        final PageDto pd = getPages().pageDelta(page.getId());
+        final Page pd = getPages().pageDelta(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -133,7 +133,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setParent(f.getId());
         t.setName(new ResourceName("example"));
         t.setTitle("example");
@@ -155,12 +155,12 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         validParas.add(validPara);
 
         // ACT
-        final PageDto okParas = new PageDto();
+        final Page okParas = new Page();
         okParas.setTemplate(ts.getId());
         okParas.setParagraphs(validParas);
         final String okResult = getPages().validateFields(okParas);
 
-        final PageDto nokParas = new PageDto();
+        final Page nokParas = new Page();
         nokParas.setTemplate(ts.getId());
         nokParas.setParagraphs(invalidParas);
         final String nokResult =  getPages().validateFields(nokParas);
@@ -181,7 +181,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setName(new ResourceName(name));
         t.setParent(templateFolder.getId());
         t.setDescription("t-desc");
@@ -194,7 +194,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary f = tempFolder();
         final ResourceSummary page = tempPage(f.getId(), ts.getId());
 
-        final PageDto update = new PageDto();
+        final Page update = new Page();
         update.setMajorChange(true);
         update.setComment("");
         final Set<Paragraph> paras = new HashSet<Paragraph>();
@@ -209,7 +209,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final Set<Paragraph> modparas = new HashSet<Paragraph>();
         final Paragraph modPara = Paragraph.fromText("foo", "working copy");
         modparas.add(modPara);
-        final PageDto modified = PageDto.delta(modparas);
+        final Page modified = Page.delta(modparas);
 
         getPages().updateWorkingCopy(page.getId(), modified);
 

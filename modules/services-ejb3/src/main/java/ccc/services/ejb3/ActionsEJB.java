@@ -43,7 +43,7 @@ import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.ActionDto;
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
 import ccc.api.core.Resources;
@@ -168,7 +168,7 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_CREATE})
-    public ActionSummary createAction(final ActionDto action) {
+    public ActionSummary createAction(final Action action) {
         final ActionEntity a =
             new ActionEntity(
                 action.getCommand(),

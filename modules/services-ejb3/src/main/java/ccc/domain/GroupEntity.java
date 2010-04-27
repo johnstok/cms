@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.types.DBC;
 import ccc.plugins.s11n.Json;
 
@@ -105,8 +105,8 @@ public class GroupEntity
      *
      * @return A DTO representing this group.
      */
-    public GroupDto createDto() {
-        final GroupDto dto = new GroupDto();
+    public Group createDto() {
+        final Group dto = new Group();
         dto.setId(getId());
         dto.setName(getName());
         dto.setPermissions(getPermissions());
@@ -120,8 +120,8 @@ public class GroupEntity
      * @param groups The groups to map.
      * @return The corresponding DTOs.
      */
-    public static Collection<GroupDto> map(final Collection<GroupEntity> groups) {
-        final List<GroupDto> mapped = new ArrayList<GroupDto>();
+    public static Collection<Group> map(final Collection<GroupEntity> groups) {
+        final List<Group> mapped = new ArrayList<Group>();
         for (final GroupEntity g : groups) {
             mapped.add(g.createDto());
         }

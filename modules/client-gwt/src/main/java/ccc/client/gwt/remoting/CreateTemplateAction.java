@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
@@ -50,7 +50,7 @@ public abstract class CreateTemplateAction
 
     private final UUID _parentFolder;
     private final String _resourceName;
-    private final TemplateDto _delta;
+    private final Template _delta;
 
     /**
      * Constructor.
@@ -61,7 +61,7 @@ public abstract class CreateTemplateAction
      */
     public CreateTemplateAction(final UUID parentFolder,
                                  final String resourceName,
-                                 final TemplateDto delta) {
+                                 final Template delta) {
         super(GLOBALS.uiConstants().createTemplate(), RequestBuilder.POST);
         _parentFolder = parentFolder;
         _resourceName = resourceName;

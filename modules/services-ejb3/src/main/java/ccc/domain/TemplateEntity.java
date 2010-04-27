@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -44,7 +44,7 @@ import ccc.api.types.ResourceType;
  */
 public class TemplateEntity
     extends
-        HistoricalResource<TemplateDto, TemplateRevision> {
+        HistoricalResource<Template, TemplateRevision> {
 
     /** Constructor: for persistence only. */
     protected TemplateEntity() { super(); }
@@ -100,7 +100,7 @@ public class TemplateEntity
 
         setDescription(description);
 
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setBody(body);
         t.setDefinition(definiton);
         t.setMimeType(mimeType); // FIXME: Make a copy.
@@ -145,8 +145,8 @@ public class TemplateEntity
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDto createSnapshot() {
-        final TemplateDto t = new TemplateDto();
+    public Template createSnapshot() {
+        final Template t = new Template();
         t.setBody(getBody());
         t.setDefinition(getDefinition());
         t.setMimeType(getMimeType()); // FIXME: Make a copy.
@@ -160,7 +160,7 @@ public class TemplateEntity
      * @param delta The new content for the template.
      * @param metadata The metadata describing this revision.
      */
-    public void update(final TemplateDto delta,
+    public void update(final Template delta,
                        final RevisionMetadata metadata) {
         addRevision(
             new TemplateRevision(
@@ -175,20 +175,20 @@ public class TemplateEntity
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDto forCurrentRevision() {
+    public Template forCurrentRevision() {
         return summarize();
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDto forSpecificRevision(final int revNo) {
+    public Template forSpecificRevision(final int revNo) {
         // TODO: Return correct revision.
         return summarize();
     }
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDto forWorkingCopy() {
+    public Template forWorkingCopy() {
         // TODO: Return working copy.
         return summarize();
     }
@@ -199,9 +199,9 @@ public class TemplateEntity
      *
      * @return The corresponding summary.
      */
-    public TemplateDto summarize() {
-        final TemplateDto dto =
-            TemplateDto.summary(
+    public Template summarize() {
+        final Template dto =
+            Template.summary(
                 getId(),
                 getName(),
                 getTitle(),
@@ -220,10 +220,10 @@ public class TemplateEntity
      * @param templates The templates.
      * @return The corresponding summaries.
      */
-    public static Collection<TemplateDto> mapTemplates(
+    public static Collection<Template> mapTemplates(
                                                final List<TemplateEntity> templates) {
-        final Collection<TemplateDto> mapped =
-            new ArrayList<TemplateDto>();
+        final Collection<Template> mapped =
+            new ArrayList<Template>();
         for (final TemplateEntity t : templates) {
             mapped.add(t.summarize()); }
         return mapped;
@@ -236,9 +236,9 @@ public class TemplateEntity
      * @param templates The templates.
      * @return The corresponding deltas.
      */
-    protected Collection<TemplateDto> deltaTemplates(
+    protected Collection<Template> deltaTemplates(
                                                final List<TemplateEntity> templates) {
-        final Collection<TemplateDto> mapped = new ArrayList<TemplateDto>();
+        final Collection<Template> mapped = new ArrayList<Template>();
         for (final TemplateEntity t : templates) {
             mapped.add(t.createSnapshot());
         }

@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
@@ -69,7 +69,7 @@ public abstract class ResourceEntity
     extends
         Entity
     implements
-        SnapshotSupport<ResourceSnapshot> {
+        SnapshotSupport<Resource> {
 
     private static final int MAXIMUM_TITLE_LENGTH = 256;
     private static final int MAXIMUM_DATUM_LENGTH = 1000;
@@ -872,7 +872,7 @@ public abstract class ResourceEntity
      *
      * @param dto The DTO to populate.
      */
-    protected void setDtoProps(final ResourceSnapshot dto) {
+    protected void setDtoProps(final Resource dto) {
         /* These methods are in alphabetical order, for simplicity. */
         dto.setAbsolutePath(getAbsolutePath().removeTop().toString());
         dto.setCacheDuration(computeCache());

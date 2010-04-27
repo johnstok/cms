@@ -38,7 +38,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.commands.UpdatePageCommand;
@@ -67,7 +67,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createPage(final PageDto page) {
+    public ResourceSummary createPage(final Page page) {
         checkPermission(PAGE_CREATE);
         return
             execute(
@@ -81,7 +81,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public void updatePage(final UUID pageId, final PageDto delta) {
+    public void updatePage(final UUID pageId, final Page delta) {
             execute(
                 new UpdatePageCommand(
                     getRepoFactory(),
@@ -94,7 +94,7 @@ public class PagesEJB
     @Override
     @RolesAllowed(PAGE_UPDATE)
     public void updateWorkingCopy(final UUID pageId,
-                                  final PageDto delta) {
+                                  final Page delta) {
         new UpdateWorkingCopyCommand(getRepoFactory())
             .execute(
                 currentUser(),
@@ -107,7 +107,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public String validateFields(final PageDto page) {
+    public String validateFields(final Page page) {
         final TemplateEntity t =
             getRepoFactory().createResourceRepository().find(
                 TemplateEntity.class, page.getTemplate());
@@ -120,7 +120,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public PageDto pageDelta(final UUID pageId) {
+    public Page pageDelta(final UUID pageId) {
         checkPermission(RESOURCE_READ);
 
         return

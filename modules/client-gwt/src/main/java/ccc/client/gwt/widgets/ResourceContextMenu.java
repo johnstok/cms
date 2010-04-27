@@ -30,10 +30,10 @@ import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
 
 import java.util.Collection;
 
-import ccc.api.core.GroupDto;
-import ccc.api.core.PageDto;
-import ccc.api.core.TemplateDto;
-import ccc.api.core.UserDto;
+import ccc.api.core.Group;
+import ccc.api.core.Page;
+import ccc.api.core.Template;
+import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.actions.ChooseTemplateAction;
@@ -116,7 +116,7 @@ public class ResourceContextMenu
      * @param tbl The table this menu will work for.
      * @param user The UserSummary of the currently logged in user.
      */
-    ResourceContextMenu(final ResourceTable tbl, final UserDto user) {
+    ResourceContextMenu(final ResourceTable tbl, final User user) {
         _table = tbl;
 
         _publishAction = new PublishAction(_table);
@@ -138,7 +138,7 @@ public class ResourceContextMenu
         _createActionAction = new OpenCreateActionAction(_table);
         _updateAclAction = new ListGroups() {
             @Override
-            protected void execute(final Collection<GroupDto> g) {
+            protected void execute(final Collection<Group> g) {
                 new OpenUpdateResourceAclAction(_table, g)
                     .execute();
             }};
@@ -160,7 +160,7 @@ public class ResourceContextMenu
     }
 
 
-    private void refreshMenuItems(final UserDto user,
+    private void refreshMenuItems(final User user,
                                   final MenuEvent be) {
         removeAll();
         final ResourceSummaryModelData item = _table.tableSelection();
@@ -456,11 +456,11 @@ public class ResourceContextMenu
 
             /** {@inheritDoc} */
             // Get a delta to edit.
-            @Override protected void template(final TemplateDto ts) {
+            @Override protected void template(final Template ts) {
                 new PageDeltaAction(
                     getConstants().updateContent(), item.getId()){
                     @Override
-                    protected void execute(final PageDto delta) {
+                    protected void execute(final Page delta) {
                         new UpdatePageDialog(
                             item.getId(),
                             delta,

@@ -35,7 +35,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import ccc.api.core.UserCriteria;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Username;
 import ccc.domain.UserEntity;
@@ -207,7 +207,7 @@ public class UserManagerImplTest extends TestCase {
 
 
     private UserEntity _u;
-    private UserDto _uDelta;
+    private User _uDelta;
     private Repository _repository;
     private UserRepositoryImpl _um;
 
@@ -217,7 +217,7 @@ public class UserManagerImplTest extends TestCase {
         _u = new UserEntity(new Username("testUser"), "password");
         _u.setEmail(new EmailAddress("test@civicuk.com"));
 
-        _uDelta = new UserDto();
+        _uDelta = new User();
         _uDelta.setEmail("new.email@civicuk.com");
         _uDelta.setUsername(new Username("newNameUser"));
         _uDelta.setName("newNameUser");

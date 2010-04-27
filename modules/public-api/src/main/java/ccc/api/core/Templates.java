@@ -57,7 +57,7 @@ public interface Templates {
      * @return A list of templates.
      */
     @GET
-    Collection<TemplateDto> templates();
+    Collection<Template> templates();
 
 
     /**
@@ -79,7 +79,7 @@ public interface Templates {
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    TemplateDto templateDelta(@PathParam("id") UUID templateId);
+    Template templateDelta(@PathParam("id") UUID templateId);
 
     /**
      * Update the specified template on the server.
@@ -89,7 +89,7 @@ public interface Templates {
      */
     @POST @Path("/{id}")
     void updateTemplate(
-        @PathParam("id") UUID templateId, TemplateDto delta);
+        @PathParam("id") UUID templateId, Template delta);
 
     /**
      * Create a new template in CCC.
@@ -99,5 +99,5 @@ public interface Templates {
      * @return A resource summary describing the new template.
      */
     @POST
-    ResourceSummary createTemplate(TemplateDto template);
+    ResourceSummary createTemplate(Template template);
 }

@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -122,7 +122,7 @@ public class CreatePagePresenter
                     ? null
                         :getView().getSelectedTemplate().getId();
 
-                final PageDto page = PageDto.delta(paragraphs);
+                final Page page = Page.delta(paragraphs);
                 page.setParent(getModel().getId());
                 page.setComment(getView().getComment());
                 page.setMajorChange(getView().getMajorEdit());

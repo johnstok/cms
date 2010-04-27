@@ -38,11 +38,11 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
-import ccc.api.core.RevisionDto;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Revision;
+import ccc.api.core.Template;
 import ccc.api.types.ACL;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
@@ -90,7 +90,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDto computeTemplate(final UUID resourceId) {
+    public Template computeTemplate(final UUID resourceId) {
         try {
             return _delegate.computeTemplate(resourceId);
         } catch (final ClientResponseFailure cfe) {
@@ -112,7 +112,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<RevisionDto> history(final UUID resourceId) {
+    public Collection<Revision> history(final UUID resourceId) {
         try {
             return _delegate.history(resourceId);
         } catch (final ClientResponseFailure cfe) {
@@ -201,7 +201,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceSnapshot pu) {
+                                    final Resource pu) {
         try {
             _delegate.updateCacheDuration(resourceId, pu);
         } catch (final ClientResponseFailure cfe) {
@@ -235,7 +235,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceSnapshot pu) {
+                                       final Resource pu) {
         try {
             _delegate.updateResourceTemplate(resourceId, pu);
         } catch (final ClientResponseFailure cfe) {
@@ -335,7 +335,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void updateMetadata(final UUID resourceId,
-                               final ResourceSnapshot resource) {
+                               final Resource resource) {
         try {
             _delegate.updateMetadata(resourceId, resource);
         } catch (final ClientResponseFailure cfe) {
@@ -358,7 +358,7 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceSnapshot pu) {
+                                  final Resource pu) {
         try {
             _delegate.createWorkingCopy(resourceId, pu);
         } catch (final ClientResponseFailure cfe) {
@@ -444,7 +444,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSnapshot resourceForPathSecure(final String path) {
+    public Resource resourceForPathSecure(final String path) {
         try {
             return _delegate.resourceForPathSecure(path);
         } catch (final ClientResponseFailure cfe) {
@@ -455,7 +455,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSnapshot revisionForPath(final String path,
+    public Resource revisionForPath(final String path,
                                             final int version) {
         try {
             return _delegate.revisionForPath(path, version);
@@ -467,7 +467,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSnapshot workingCopyForPath(final String path) {
+    public Resource workingCopyForPath(final String path) {
         try {
             return _delegate.workingCopyForPath(path);
         } catch (final ClientResponseFailure cfe) {

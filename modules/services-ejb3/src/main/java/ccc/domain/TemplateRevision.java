@@ -28,7 +28,7 @@ package ccc.domain;
 
 import java.util.Date;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 
@@ -40,7 +40,7 @@ import ccc.api.types.MimeType;
  */
 public class TemplateRevision
     extends
-        RevisionEntity<TemplateDto> {
+        RevisionEntity<Template> {
 
     private String _body;
     private String _definition;
@@ -110,8 +110,8 @@ public class TemplateRevision
 
     /** {@inheritDoc} */
     @Override
-    protected TemplateDto delta() {
-        final TemplateDto t = new TemplateDto();
+    protected Template delta() {
+        final Template t = new Template();
         t.setBody(_body);
         t.setDefinition(_definition);
         t.setMimeType(_mimeType); // FIXME: Make a copy.

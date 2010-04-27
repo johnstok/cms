@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.events;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.DBC;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -42,7 +42,7 @@ public class CommentUpdatedEvent
     extends
         GwtEvent<CommentUpdatedEvent.CommentUpdatedHandler> {
 
-    private final CommentDto _comment;
+    private final Comment _comment;
 
 
     /**
@@ -50,7 +50,7 @@ public class CommentUpdatedEvent
      *
      * @param resource The updated comment.
      */
-    public CommentUpdatedEvent(final CommentDto resource) {
+    public CommentUpdatedEvent(final Comment resource) {
         _comment = DBC.require().notNull(resource);
     }
 
@@ -60,7 +60,7 @@ public class CommentUpdatedEvent
      *
      * @return Returns the comment.
      */
-    public CommentDto getComment() { return _comment; }
+    public Comment getComment() { return _comment; }
 
 
     /** {@inheritDoc} */

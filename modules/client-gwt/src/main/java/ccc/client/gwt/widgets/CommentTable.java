@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.CommentModelData;
@@ -219,7 +219,7 @@ public class CommentTable
 
                             @Override
                             protected void execute(
-                                       final Collection<CommentDto> comments,
+                                       final Collection<Comment> comments,
                                        final int totalCount) {
 
                                 final List<CommentModelData> results =
@@ -254,7 +254,7 @@ public class CommentTable
     /** {@inheritDoc} */
     @Override
     public void onUpdate(final CommentUpdatedEvent event) {
-        final CommentDto updatedComment = event.getComment();
+        final Comment updatedComment = event.getComment();
         final CommentModelData commentBinding =
             _detailsStore.findModel("id", updatedComment.getId());
         commentBinding.setDelegate(updatedComment);

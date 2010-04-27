@@ -33,7 +33,7 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.MimeType;
@@ -78,7 +78,7 @@ public class TemplateMigration {
         }
         sb.append("</fields>");
 
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setName(ResourceName.escape(templateName));
         t.setParent(templateFolder.getId());
         t.setDescription(templateDescription);
@@ -107,11 +107,11 @@ public class TemplateMigration {
                             final String templateDescription,
                             final ResourceSummary templateFolder) {
 
-        final Set<TemplateDto> templates =
-            new HashSet<TemplateDto>(_templateApi.templates());
+        final Set<Template> templates =
+            new HashSet<Template>(_templateApi.templates());
 
-        TemplateDto template = null;
-        for (final TemplateDto ts : templates) {
+        Template template = null;
+        for (final Template ts : templates) {
             if (ts.getName().equals(templateName)) {
                 template = ts;
             }

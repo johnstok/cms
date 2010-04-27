@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
@@ -55,14 +55,14 @@ public class FileBody
         Body {
     private static final Logger LOG = Logger.getLogger(FileBody.class);
 
-    private final FileDto _file;
+    private final File _file;
 
     /**
      * Constructor.
      *
      * @param file The file to render.
      */
-    public FileBody(final FileDto file) {
+    public FileBody(final File file) {
         DBC.require().notNull(file);
         _file = file;
     }

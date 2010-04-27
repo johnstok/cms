@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
@@ -51,7 +51,7 @@ public class UpdateCommentCommand
     extends
         Command<CommentEntity> {
 
-    private final CommentDto _comment;
+    private final Comment _comment;
     private final UUID       _commentId;
 
 
@@ -64,7 +64,7 @@ public class UpdateCommentCommand
      */
     public UpdateCommentCommand(final IRepositoryFactory repoFactory,
                                 final UUID commentId,
-                                final CommentDto comment) {
+                                final Comment comment) {
         super(repoFactory);
         _comment = comment;
         _commentId = commentId;

@@ -42,13 +42,13 @@ import javax.ejb.EJBException;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Folders;
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.Groups;
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ResourceExistsException;
@@ -79,8 +79,8 @@ public class BaseMigrations {
     private final TemplateMigration _tm;
     private final String _linkPrefix;
 
-    private Map<String, GroupDto> _cachedGroups =
-        new HashMap<String, GroupDto>();
+    private Map<String, Group> _cachedGroups =
+        new HashMap<String, Group>();
 
     private final Properties _paragraphTypes =
         ccc.commons.Resources.readIntoProps("paragraph-types.properties");
@@ -116,7 +116,7 @@ public class BaseMigrations {
 
         if (null==le && version == 0) {
             final LogEntryBean fe = new LogEntryBean(0, new Date());
-            final List<UserDto> users =
+            final List<User> users =
               getUsers()
                   .listUsers(username, null, null, null, null, null, null, 1, 1)
                   .getElements();
@@ -129,7 +129,7 @@ public class BaseMigrations {
 
         log.debug("Actor for "+id+" v."+version+" is "+le.getActor());
 
-        final UserDto user = userForLegacyId(le.getActor());
+        final User user = userForLegacyId(le.getActor());
         if (null == user) {
             throw new MigrationException("User missing: "+le.getActor());
         }
@@ -140,7 +140,7 @@ public class BaseMigrations {
     }
 
 
-    private UserDto userForLegacyId(final int ccc6UserId) {
+    private User userForLegacyId(final int ccc6UserId) {
         try {
             return getUsers().userByLegacyId(""+ccc6UserId);
         } catch (final CCException e) {
@@ -158,7 +158,7 @@ public class BaseMigrations {
      *
      * @return A page delta representing the CCC6 resource.
      */
-    protected PageDto assemblePage(final ResourceBean r, final int version) {
+    protected Page assemblePage(final ResourceBean r, final int version) {
         final Set<Paragraph> paragraphDeltas =
             new HashSet<Paragraph>();
         final Map<String, StringBuffer> paragraphs =
@@ -187,7 +187,7 @@ public class BaseMigrations {
             }
         }
 
-        final PageDto delta = PageDto.delta(paragraphDeltas);
+        final Page delta = Page.delta(paragraphDeltas);
 
         return delta;
     }
@@ -197,7 +197,7 @@ public class BaseMigrations {
                                          final ResourceBean r,
                                          final Integer version,
                                          final LogEntryBean le,
-                                         final PageDto delta) {
+                                         final Page delta) {
 
         delta.setTitle(r.cleanTitle());
         delta.setComment(null);

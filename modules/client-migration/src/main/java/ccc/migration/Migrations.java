@@ -38,8 +38,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.FolderDto;
-import ccc.api.core.PageDto;
+import ccc.api.core.Folder;
+import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
@@ -152,7 +152,7 @@ public class Migrations extends BaseMigrations {
                 getResources().lock(UUID.fromString(f.getId().toString()));
                 getFolders().updateFolder(
                     f.getId(),
-                    new FolderDto(f.getSortOrder(), hp.getId(), null));
+                    new Folder(f.getSortOrder(), hp.getId(), null));
                 getResources().unlock(f.getId());
             }
         }
@@ -286,7 +286,7 @@ public class Migrations extends BaseMigrations {
                 }
             }
 
-            PageDto delta = assemblePage(resource, createVersion.intValue());
+            Page delta = assemblePage(resource, createVersion.intValue());
             final ResourceSummary rs =
                 createPage(parentFolderId, resource, createVersion, le, delta);
 
@@ -412,7 +412,7 @@ public class Migrations extends BaseMigrations {
                             final ResourceSummary rs,
                             final int version,
                             final LogEntryBean le,
-                            final PageDto d) {
+                            final Page d) {
 
         d.setComment(
             getLegacyQueries().selectUserComment(r.contentId(), version));

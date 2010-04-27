@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -228,7 +228,7 @@ public class ImageSelectionPanel extends ContentPanel {
         }
 
         @Override
-        protected void execute(final Collection<FileDto> images,
+        protected void execute(final Collection<File> images,
                                final int totalCount) {
             final List<ImageSummaryModelData> results =
                 loadModel(_image, images);
@@ -240,7 +240,7 @@ public class ImageSelectionPanel extends ContentPanel {
     }
 
     private List<ImageSummaryModelData> loadModel(final ImageTriggerField image,
-        final Collection<FileDto> arg0) {
+        final Collection<File> arg0) {
         final List<ImageSummaryModelData> models =
             DataBinding.bindFileSummary(arg0);
         if (image != null && models != null && models.size() > 0) {

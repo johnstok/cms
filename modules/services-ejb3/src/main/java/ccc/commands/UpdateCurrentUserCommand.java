@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
@@ -51,7 +51,7 @@ public class UpdateCurrentUserCommand
         Command<Void> {
 
     private final UUID _userId;
-    private final UserDto _delta;
+    private final User _delta;
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ public class UpdateCurrentUserCommand
      */
     public UpdateCurrentUserCommand(final IRepositoryFactory repoFactory,
                                     final UUID userId,
-                                    final UserDto delta) {
+                                    final User delta) {
         super(repoFactory);
         _userId = userId;
         _delta = delta;

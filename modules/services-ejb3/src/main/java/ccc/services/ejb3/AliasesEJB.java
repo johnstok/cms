@@ -37,7 +37,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.AliasDto;
+import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
 import ccc.api.core.ResourceSummary;
 import ccc.commands.UpdateAliasCommand;
@@ -64,7 +64,7 @@ public class AliasesEJB
     @Override
     @RolesAllowed({ALIAS_UPDATE})
     public void updateAlias(final UUID aliasId,
-                            final AliasDto delta) {
+                            final Alias delta) {
             new UpdateAliasCommand(
                 getRepoFactory(),
                 delta.getTargetId(),
@@ -78,7 +78,7 @@ public class AliasesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ALIAS_CREATE})
-    public ResourceSummary createAlias(final AliasDto alias) {
+    public ResourceSummary createAlias(final Alias alias) {
         return commands()
             .createAliasCommand(alias)
             .execute(currentUser(), new Date())

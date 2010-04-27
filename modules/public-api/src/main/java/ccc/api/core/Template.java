@@ -40,9 +40,9 @@ import ccc.plugins.s11n.Json;
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateDto
+public class Template
     extends
-        ResourceSnapshot {
+        Resource {
 
     private String   _body;
     private String   _definition;
@@ -143,13 +143,13 @@ public class TemplateDto
      *
      * @return A template DTO with the appropriate fields set.
      */
-    public static TemplateDto summary(final UUID id,
+    public static Template summary(final UUID id,
                                       final ResourceName name,
                                       final String title,
                                       final String description,
                                       final String body,
                                       final String definition) {
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setId(id);
         t.setName(name);
         t.setTitle(title);

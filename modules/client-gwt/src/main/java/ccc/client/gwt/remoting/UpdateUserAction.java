@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -48,7 +48,7 @@ public abstract class UpdateUserAction
         RemotingAction {
 
     private final UUID _userId;
-    private final UserDto _userDetails;
+    private final User _userDetails;
 
 
     /**
@@ -56,7 +56,7 @@ public abstract class UpdateUserAction
      * @param userDetails The updated user details.
      * @param userId The user's id.
      */
-    public UpdateUserAction(final UUID userId, final UserDto userDetails) {
+    public UpdateUserAction(final UUID userId, final User userDetails) {
         _userId = userId;
         _userDetails = userDetails;
     }

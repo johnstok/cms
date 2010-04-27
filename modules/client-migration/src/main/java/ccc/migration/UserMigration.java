@@ -35,9 +35,9 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.Groups;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.EmailAddress;
@@ -55,8 +55,8 @@ public class UserMigration {
     private final LegacyDBQueries _legacyQueries;
     private final Users _userCommands;
     private final Groups _groups;
-    private Map<String, GroupDto> _cachedGroups =
-        new HashMap<String, GroupDto>();
+    private Map<String, Group> _cachedGroups =
+        new HashMap<String, Group>();
 
     /**
      * Constructor.
@@ -81,12 +81,12 @@ public class UserMigration {
      */
     void migrateUsers() throws CCException {
 
-        final Map<Integer, UserDto> mus = _legacyQueries.selectUsers();
+        final Map<Integer, User> mus = _legacyQueries.selectUsers();
 
-        for (final Map.Entry<Integer, UserDto> mu : mus.entrySet()) {
+        for (final Map.Entry<Integer, User> mu : mus.entrySet()) {
             try {
                 // TODO: improve reporting
-                final UserDto ud = mu.getValue();
+                final User ud = mu.getValue();
 
                 final Set<String> roles =
                     _legacyQueries.selectRolesForUser(mu.getKey().intValue());
@@ -119,7 +119,7 @@ public class UserMigration {
     }
 
 
-    private void correctEmail(final UserDto ud) {
+    private void correctEmail(final User ud) {
         if (!EmailAddress.isValidText(ud.getEmail())) {
             log.warn("Correcting invalid email: "+ud.getEmail());
             ud.setEmail("unknown@example.com");
@@ -128,7 +128,7 @@ public class UserMigration {
 
 
     static Set<UUID> migrateGroups(final Collection<String> roles,
-                                   final Map<String, GroupDto> cachedGroups,
+                                   final Map<String, Group> cachedGroups,
                                    final Groups groups) throws CCException {
 
         final Set<UUID> groupList = new HashSet<UUID>();
@@ -138,15 +138,15 @@ public class UserMigration {
                 groupList.add(cachedGroups.get(role).getId());
 
             } else { // Group not cached
-                final Collection<GroupDto> gs = groups.list(role);
+                final Collection<Group> gs = groups.list(role);
                 if (0==gs.size()) { // Doesn't exist.
-                    final GroupDto g = new GroupDto();
+                    final Group g = new Group();
                     g.setName(role);
-                    final GroupDto created = groups.create(g);
+                    final Group created = groups.create(g);
                     cachedGroups.put(role, created);
                     groupList.add(created.getId());
                 } else {
-                    final GroupDto retrieved = gs.iterator().next();
+                    final Group retrieved = gs.iterator().next();
                     cachedGroups.put(role, retrieved);
                     groupList.add(retrieved.getId());
                 }

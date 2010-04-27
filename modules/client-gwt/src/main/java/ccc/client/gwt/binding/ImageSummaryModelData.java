@@ -33,14 +33,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.FilePropertyNames;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * {@link ModelData} implementation for the {@link FileDto} class.
+ * {@link ModelData} implementation for the {@link File} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -48,14 +48,14 @@ public class ImageSummaryModelData
     implements
         ModelData {
 
-    private FileDto _fs;
+    private File _fs;
 
     /**
      * Constructor.
      *
      * @param fs The file summary.
      */
-    public ImageSummaryModelData(final FileDto fs) {
+    public ImageSummaryModelData(final File fs) {
         _fs = fs;
     }
 

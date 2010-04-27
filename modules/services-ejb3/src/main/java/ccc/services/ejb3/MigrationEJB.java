@@ -39,7 +39,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ACL;
 import ccc.commands.ApplyWorkingCopyCommand;
@@ -98,7 +98,7 @@ public class MigrationEJB
     /** {@inheritDoc} */
     @Override
     public ResourceSummary createPage(final UUID parentId,
-                                      final PageDto delta,
+                                      final Page delta,
                                       final boolean publish,
                                       final UUID actorId,
                                       final Date happenedOn) {
@@ -122,7 +122,7 @@ public class MigrationEJB
     /** {@inheritDoc} */
     @Override
     public void updatePage(final UUID pageId,
-                           final PageDto delta,
+                           final Page delta,
                            final UUID actorId,
                            final Date happenedOn) {
         sudoExecute(

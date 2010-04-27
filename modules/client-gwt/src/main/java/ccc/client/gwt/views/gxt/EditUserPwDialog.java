@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 
 import static ccc.client.gwt.validation.Validations.*;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
@@ -105,7 +105,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                final UserDto update = new UserDto();
+                final User update = new User();
                 update.setPassword(_password1.getValue());
 
                 new UpdateUserPasswordAction(_userDTO.getId(), update) {

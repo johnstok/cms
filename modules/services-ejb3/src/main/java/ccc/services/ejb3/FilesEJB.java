@@ -42,7 +42,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.StreamAction;
@@ -73,7 +73,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_READ})
-    public PagedCollection<FileDto> getPagedImages(
+    public PagedCollection<File> getPagedImages(
             final UUID folderId, final int pageNo, final int pageSize) {
         final List<FileEntity> list =
             getRepoFactory()
@@ -83,14 +83,14 @@ public class FilesEJB
             getRepoFactory()
                 .createResourceRepository()
                 .imagesCount(folderId);
-        return new PagedCollection<FileDto>(c, FileEntity.mapFiles(list));
+        return new PagedCollection<File>(c, FileEntity.mapFiles(list));
     }
 
 
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createFile(final FileDto file) {
+    public ResourceSummary createFile(final File file) {
         checkPermission(FILE_CREATE);
 
         final UserEntity u = currentUser();
@@ -107,7 +107,7 @@ public class FilesEJB
         final FileEntity f =
             commands().createFileCommand(
                 file.getParent(),
-                new FileDto(
+                new File(
                     file.getMimeType(),
                     null,
                     file.getSize(),
@@ -132,12 +132,12 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_UPDATE})
-    public ResourceSummary updateFile(final UUID fileId, final FileDto file) {
+    public ResourceSummary updateFile(final UUID fileId, final File file) {
         return
             new UpdateFileCommand(
                 getRepoFactory(),
                 fileId,
-                new FileDto(
+                new File(
                     file.getMimeType(),
                     null,
                     file.getSize(),
@@ -155,7 +155,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({FILE_UPDATE})
-    public void update(final UUID id, final FileDto file) {
+    public void update(final UUID id, final File file) {
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -163,7 +163,7 @@ public class FilesEJB
             throw new InternalError(e.getMessage());
         }
 
-        final FileDto f = new FileDto(
+        final File f = new File(
             file.getMimeType(),
             null,
             file.getId(),
@@ -183,7 +183,7 @@ public class FilesEJB
     @Override
     @RolesAllowed({FILE_CREATE})
     // FIXME: Removal of TextFileDto made this method a mess.
-    public ResourceSummary createTextFile(final FileDto file) {
+    public ResourceSummary createTextFile(final File file) {
         byte[] bytes;
         try {
             bytes = file.getContent().getBytes("UTF-8");
@@ -191,7 +191,7 @@ public class FilesEJB
             throw new InternalError(e.getMessage());
         }
 
-        final FileDto f = new FileDto(
+        final File f = new File(
             file.getMimeType(),
             null,
             null,
@@ -223,7 +223,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public FileDto get(final UUID fileId) {
+    public File get(final UUID fileId) {
         checkPermission(FILE_READ);
 
         // FIXME: check file is accessible to user.

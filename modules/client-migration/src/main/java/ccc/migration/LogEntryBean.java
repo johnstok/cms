@@ -29,7 +29,7 @@ package ccc.migration;
 
 import java.util.Date;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 
 
 /**
@@ -40,7 +40,7 @@ import ccc.api.core.UserDto;
 public class LogEntryBean {
     private int  _actor;
     private Date _happenedOn;
-    private UserDto _user;
+    private User _user;
 
 
 
@@ -79,7 +79,7 @@ public class LogEntryBean {
      *
      * @return Returns the user.
      */
-    UserDto getUser() {
+    User getUser() {
         return _user;
     }
 
@@ -89,7 +89,7 @@ public class LogEntryBean {
      *
      * @param user The user to set.
      */
-    void setUser(final UserDto user) {
+    void setUser(final User user) {
         _user = user;
     }
 }

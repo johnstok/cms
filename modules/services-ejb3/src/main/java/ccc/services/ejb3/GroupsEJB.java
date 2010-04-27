@@ -38,7 +38,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.types.Permission;
 import ccc.domain.GroupEntity;
@@ -65,13 +65,13 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_CREATE)
-    public GroupDto create(final GroupDto comment) {
+    public Group create(final Group comment) {
         final GroupEntity g = new GroupEntity(comment.getName());
         g.setPermissions(comment.getPermissions());
 
         getRepoFactory().createGroupRepo().create(g);
 
-        final GroupDto result = g.createDto();
+        final Group result = g.createDto();
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
@@ -87,14 +87,14 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_READ)
-    public GroupDto find(final UUID id) {
+    public Group find(final UUID id) {
         return getRepoFactory().createGroupRepo().find(id).createDto();
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_READ)
-    public Collection<GroupDto> list(final String name) {
+    public Collection<Group> list(final String name) {
         final Collection<GroupEntity> groups =
             getRepoFactory().createGroupRepo().list(name);
         return GroupEntity.map(groups);
@@ -104,12 +104,12 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_UPDATE)
-    public GroupDto update(final UUID id, final GroupDto group) {
+    public Group update(final UUID id, final Group group) {
         final GroupEntity g = getRepoFactory().createGroupRepo().find(id);
         g.setName(group.getName());
         g.setPermissions(group.getPermissions());
 
-        final GroupDto result = g.createDto();
+        final Group result = g.createDto();
 
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(

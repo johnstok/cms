@@ -64,7 +64,7 @@ public interface Users {
      * @return The corresponding delta.
      */
     @GET @Path("/{id}/delta")
-    UserDto userDelta(@PathParam("id") UUID userId);
+    User userDelta(@PathParam("id") UUID userId);
 
     /**
      * Returns currently logged in user.
@@ -72,7 +72,7 @@ public interface Users {
      * @return UserDTO
      */
     @GET @Path("/me")
-    UserDto loggedInUser();
+    User loggedInUser();
 
     /**
      * Query  users.
@@ -90,7 +90,7 @@ public interface Users {
      * @return Returns list of users.
      */
    @GET
-   PagedCollection<UserDto> listUsers(
+   PagedCollection<User> listUsers(
         @QueryParam("username") String username,
         @QueryParam("email") String email,
         @QueryParam("groups") String groups,
@@ -120,7 +120,7 @@ public interface Users {
      * @return A user summary describing the new user.
      */
     @POST
-    UserDto createUser(UserDto delta);
+    User createUser(User delta);
 
 
     /**
@@ -130,7 +130,7 @@ public interface Users {
      * @param delta The changes to apply.
      */
     @POST @Path("/{id}")
-    void updateUser(@PathParam("id") UUID userId, UserDto delta);
+    void updateUser(@PathParam("id") UUID userId, User delta);
 
 
     /**
@@ -140,7 +140,7 @@ public interface Users {
      * @param user New details for the user.
      */
     @POST @Path("/{id}/password")
-    void updateUserPassword(@PathParam("id") UUID userId, UserDto user);
+    void updateUserPassword(@PathParam("id") UUID userId, User user);
 
     /**
      * Update the email and/or password for the current user.
@@ -149,7 +149,7 @@ public interface Users {
      * @param user New details for the user.
      */
     @POST @Path("/{id}/currentuser")
-    void updateYourUser(@PathParam("id") UUID userId, UserDto user);
+    void updateYourUser(@PathParam("id") UUID userId, User user);
 
 
     /**
@@ -160,7 +160,7 @@ public interface Users {
      * @return A summary of the corresponding user.
      */
     @GET @Path("/by-legacy-id/{id}")
-    UserDto userByLegacyId(@PathParam("id") String legacyId);
+    User userByLegacyId(@PathParam("id") String legacyId);
 
     /**
      * Query metadata values with given key.

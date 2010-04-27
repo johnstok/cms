@@ -35,22 +35,22 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Actions;
-import ccc.api.core.AliasDto;
+import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
 import ccc.api.core.Comments;
 import ccc.api.core.Files;
-import ccc.api.core.FolderDto;
+import ccc.api.core.Folder;
 import ccc.api.core.Folders;
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.Groups;
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Security;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.core.Templates;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
@@ -205,7 +205,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary dummyTemplate(final ResourceSummary parent) {
         final String templateName = UUID.randomUUID().toString();
 
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setName(new ResourceName(templateName));
         t.setParent(parent.getId());
         t.setDescription(templateName);
@@ -228,7 +228,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempPage(final UUID parentFolder,
                                        final UUID template) {
         final String name = UUID.randomUUID().toString();
-        final PageDto page = new PageDto(parentFolder,
+        final Page page = new Page(parentFolder,
                                         name,
                                         template,
                                         "title",
@@ -246,7 +246,7 @@ public abstract class AbstractAcceptanceTest
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = getCommands().resourceForPath("");
         return getFolders().createFolder(
-            new FolderDto(content.getId(), new ResourceName(fName)));
+            new Folder(content.getId(), new ResourceName(fName)));
     }
 
 
@@ -258,8 +258,8 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempAlias() {
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = getCommands().resourceForPath("");
-        final AliasDto alias =
-            new AliasDto(
+        final Alias alias =
+            new Alias(
                 folder.getId(), new ResourceName(name), folder.getId());
         return getAliases().createAlias(alias);
     }
@@ -270,17 +270,17 @@ public abstract class AbstractAcceptanceTest
      *
      * @return The user DTO.
      */
-    protected UserDto tempUser() {
+    protected User tempUser() {
 
         final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
-        final GroupDto contentCreator =
+        final Group contentCreator =
             getGroups().list("CONTENT_CREATOR").iterator().next();
 
         // Create the user
-        final UserDto u =
-            new UserDto()
+        final User u =
+            new User()
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)

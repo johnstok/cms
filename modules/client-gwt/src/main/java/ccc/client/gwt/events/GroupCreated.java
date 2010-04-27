@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.events;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -41,7 +41,7 @@ public class GroupCreated
     extends
         GwtEvent<GroupCreated.GroupCreatedHandler> {
 
-    private final GroupDto _group;
+    private final Group _group;
 
 
     /**
@@ -49,7 +49,7 @@ public class GroupCreated
      *
      * @param group The newly created group.
      */
-    public GroupCreated(final GroupDto group) { _group = group; }
+    public GroupCreated(final Group group) { _group = group; }
 
 
     /**
@@ -57,7 +57,7 @@ public class GroupCreated
      *
      * @return Returns the new group.
      */
-    public GroupDto getGroup() { return _group; }
+    public Group getGroup() { return _group; }
 
 
     /** {@inheritDoc} */

@@ -29,7 +29,7 @@ package ccc.tests.acceptance;
 import java.util.Date;
 import java.util.HashMap;
 
-import ccc.api.core.ActionDto;
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ActionStatus;
@@ -60,7 +60,7 @@ public class ActionAcceptanceTest
 
         // ACT
         getActions().createAction(
-            new ActionDto(
+            new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 new Date(ONE_DAY),
@@ -82,7 +82,7 @@ public class ActionAcceptanceTest
         // ARRANGE
         final ResourceSummary rs = tempFolder();
         final ActionSummary a = getActions().createAction(
-            new ActionDto(
+            new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 new Date(ONE_DAY),
@@ -105,7 +105,7 @@ public class ActionAcceptanceTest
         final ResourceSummary rs = tempFolder();
         getCommands().lock(rs.getId());
         final ActionSummary a = getActions().createAction(
-            new ActionDto(
+            new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 time,
@@ -127,7 +127,7 @@ public class ActionAcceptanceTest
         final Date epoch =  new Date(0);
         final ResourceSummary rs = tempFolder();
         final ActionSummary a = getActions().createAction(
-            new ActionDto(
+            new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
                 epoch,
@@ -151,7 +151,7 @@ public class ActionAcceptanceTest
         final ResourceSummary rs = tempFolder();
         getCommands().lock(rs.getId());
         final ActionSummary a = getActions().createAction(
-            new ActionDto(
+            new Action(
                 rs.getId(),
                 CommandType.RESOURCE_DELETE,
                 time,

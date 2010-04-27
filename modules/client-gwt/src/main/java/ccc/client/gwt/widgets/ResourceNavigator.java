@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -67,7 +67,7 @@ public class ResourceNavigator extends ContentPanel {
      */
     public ResourceNavigator(final LeftRightPane view,
                       final Collection<ResourceSummary> roots,
-                      final UserDto user) {
+                      final User user) {
         setId("resource-navigator");
 
         _view = view;

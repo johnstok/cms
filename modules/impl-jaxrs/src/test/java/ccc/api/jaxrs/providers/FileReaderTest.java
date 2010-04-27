@@ -37,7 +37,7 @@ import junit.framework.TestCase;
 
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -62,8 +62,8 @@ public class FileReaderTest
         // ARRANGE
         final DummyOutputStream es = new DummyOutputStream();
         final FileReader fr = new FileReader();
-        final FileDto f =
-            new FileDto(
+        final File f =
+            new File(
                 MimeType.BINARY_DATA,
                 null,
                 null,
@@ -77,8 +77,8 @@ public class FileReaderTest
         // ACT
         fr.writeTo(
             f,
-            FileDto.class,
-            FileDto.class,
+            File.class,
+            File.class,
             new Annotation[]{},
             MediaType.MULTIPART_FORM_DATA_TYPE,
             new MultivaluedMapImpl<String, Object>(),
@@ -104,8 +104,8 @@ public class FileReaderTest
         try {
             fr.writeTo(
                 null,
-                FileDto.class,
-                FileDto.class,
+                File.class,
+                File.class,
                 new Annotation[]{},
                 MediaType.MULTIPART_FORM_DATA_TYPE,
                 new MultivaluedMapImpl<String, Object>(),

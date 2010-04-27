@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Resource;
 import ccc.api.types.ResourceType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
@@ -77,8 +77,8 @@ public class Search
 
     /** {@inheritDoc} */
     @Override
-    public final ResourceSnapshot forCurrentRevision() {
-        final ResourceSnapshot dto = new ResourceSnapshot();
+    public final Resource forCurrentRevision() {
+        final Resource dto = new Resource();
         setDtoProps(dto);
         return dto;
     }
@@ -86,8 +86,8 @@ public class Search
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSnapshot forSpecificRevision(final int revNo) {
-        final ResourceSnapshot dto = new ResourceSnapshot();
+    public Resource forSpecificRevision(final int revNo) {
+        final Resource dto = new Resource();
         setDtoProps(dto);
         return dto;
     }
@@ -95,8 +95,8 @@ public class Search
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSnapshot forWorkingCopy() {
-        final ResourceSnapshot dto = new ResourceSnapshot();
+    public Resource forWorkingCopy() {
+        final Resource dto = new Resource();
         setDtoProps(dto);
         return dto;
     }

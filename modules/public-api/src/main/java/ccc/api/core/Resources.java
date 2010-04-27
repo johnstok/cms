@@ -136,7 +136,7 @@ public interface Resources {
      * @return The list of resources.
      */
     @GET @Path("/{id}/revisions")
-    Collection<RevisionDto> history(@PathParam("id") UUID resourceId);
+    Collection<Revision> history(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -180,7 +180,7 @@ public interface Resources {
      * @return TemplateSummary.
      */
     @GET @Path("/{id}/template")
-    TemplateDto computeTemplate(@PathParam("id") UUID resourceId);
+    Template computeTemplate(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -225,7 +225,7 @@ public interface Resources {
     @POST @Path("/{id}/duration")
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
-        ResourceSnapshot duration);
+        Resource duration);
 
 
     /**
@@ -257,7 +257,7 @@ public interface Resources {
     @POST @Path("/{id}/template")
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
-        ResourceSnapshot template);
+        Resource template);
 
 
     /**
@@ -345,7 +345,7 @@ public interface Resources {
      */
     @POST @Path("/{id}/metadata")
     void updateMetadata(@PathParam("id") UUID resourceId,
-                        ResourceSnapshot resource);
+                        Resource resource);
 
 
     /**
@@ -366,7 +366,7 @@ public interface Resources {
      */
     @POST @Path("/{id}/wc-create")
     void createWorkingCopy(@PathParam("id") UUID resourceId,
-                           ResourceSnapshot dto);
+                           Resource dto);
 
 
     /**
@@ -413,7 +413,7 @@ public interface Resources {
      */
     @GET @Path("/by-path-secure{path:.*}")
     @Deprecated() // FIXME Use resourceForPath() or lookup by ID. - used in ContentServlet.getSnapshot
-    ResourceSnapshot resourceForPathSecure(@PathParam("path") String path);
+    Resource resourceForPathSecure(@PathParam("path") String path);
 
 
     /**
@@ -426,7 +426,7 @@ public interface Resources {
      */
     @GET @Path("/by-path-secure{path:.*}")
     @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
-    ResourceSnapshot revisionForPath(
+    Resource revisionForPath(
                  @PathParam("path") final String path,
                  @QueryParam("version") @DefaultValue("0") final int version);
 
@@ -440,7 +440,7 @@ public interface Resources {
      */
     @GET @Path("/by-path-wc{path:.*}")
     @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
-    ResourceSnapshot workingCopyForPath(@PathParam("path") final String path);
+    Resource workingCopyForPath(@PathParam("path") final String path);
 
 
     /**

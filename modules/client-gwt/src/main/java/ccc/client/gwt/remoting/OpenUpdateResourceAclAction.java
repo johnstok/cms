@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.Collection;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.types.ACL;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;
@@ -51,7 +51,7 @@ public final class OpenUpdateResourceAclAction
 
 
     private final SingleSelectionModel _selectionModel;
-    private Collection<GroupDto> _groups;
+    private Collection<Group> _groups;
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public final class OpenUpdateResourceAclAction
      * @param groups All groups available on the server.
      */
     public OpenUpdateResourceAclAction(final SingleSelectionModel ssm,
-                                         final Collection<GroupDto> groups) {
+                                         final Collection<Group> groups) {
         super(UI_CONSTANTS.updateRoles());
         _selectionModel = ssm;
         _groups = groups;

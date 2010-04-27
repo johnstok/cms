@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.MimeType;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
@@ -80,7 +80,7 @@ public class CreateTextFilePresenter
         final CreateTextFile view = getView();
 
         if (view.getValidationResult().isValid()) {
-            final FileDto dto = new FileDto(
+            final File dto = new File(
                 getModel().getId(),
                 view.getName(),
                 new MimeType(view.getPrimaryMime(), view.getSubMime()),

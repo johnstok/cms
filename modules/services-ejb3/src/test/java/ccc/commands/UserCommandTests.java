@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.domain.LogEntry;
 import ccc.domain.UserEntity;
@@ -124,7 +124,7 @@ public class UserCommandTests
     /** {@inheritDoc} */
     @Override protected void setUp() throws Exception {
         super.setUp();
-        _uDelta = new UserDto();
+        _uDelta = new User();
         _uDelta.setEmail("new.email@civicuk.com");
         _uDelta.setUsername(new Username("newNameUser"));
         _uDelta.setName("newNameUser");
@@ -139,5 +139,5 @@ public class UserCommandTests
     }
 
 
-    private UserDto _uDelta;
+    private User _uDelta;
 }

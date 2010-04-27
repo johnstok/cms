@@ -35,7 +35,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.core.Files;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.StreamAction;
@@ -73,7 +73,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public FileDto get(final UUID fileId) {
+    public File get(final UUID fileId) {
         try {
             return _files.get(fileId);
         } catch (final ClientResponseFailure cfe) {
@@ -83,7 +83,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID id, final FileDto file) {
+    public void update(final UUID id, final File file) {
         try {
             _files.update(id, file);
         } catch (final ClientResponseFailure cfe) {
@@ -93,7 +93,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTextFile(final FileDto textFile) {
+    public ResourceSummary createTextFile(final File textFile) {
         try {
             return _files.createTextFile(textFile);
         } catch (final ClientResponseFailure cfe) {
@@ -103,7 +103,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<FileDto> getPagedImages(final UUID folderId,
+    public PagedCollection<File> getPagedImages(final UUID folderId,
                                                  final int pageNo,
                                                  final int pageSize) {
         try {
@@ -115,7 +115,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFile(final FileDto file) {
+    public ResourceSummary createFile(final File file) {
         try {
             return _files.createFile(file);
         } catch (final ClientResponseFailure cfe) {
@@ -158,7 +158,7 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary updateFile(final UUID fileId, final FileDto file) {
+    public ResourceSummary updateFile(final UUID fileId, final File file) {
         try {
             return _files.updateFile(fileId, file);
         } catch (final ClientResponseFailure cfe) {

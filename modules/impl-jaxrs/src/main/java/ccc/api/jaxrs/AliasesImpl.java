@@ -35,7 +35,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.AliasDto;
+import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
@@ -82,7 +82,7 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final UUID aliasId, final AliasDto delta) {
+    public void updateAlias(final UUID aliasId, final Alias delta) {
         try {
             _delegate.updateAlias(aliasId, delta);
         } catch (final ClientResponseFailure cfe) {
@@ -93,7 +93,7 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final AliasDto alias) {
+    public ResourceSummary createAlias(final Alias alias) {
         try {
             return _delegate.createAlias(alias);
         } catch (final ClientResponseFailure cfe) {

@@ -37,7 +37,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.types.DBC;
 
@@ -72,7 +72,7 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public TemplateDto templateDelta(final UUID templateId) {
+    public Template templateDelta(final UUID templateId) {
         try {
             return _templates.templateDelta(templateId);
         } catch (final ClientResponseFailure cfe) {
@@ -94,7 +94,7 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<TemplateDto> templates() {
+    public Collection<Template> templates() {
         try {
             return _templates.templates();
         } catch (final ClientResponseFailure cfe) {
@@ -106,7 +106,7 @@ public class TemplatesImpl
     /** {@inheritDoc} */
     @Override
     public void updateTemplate(final UUID templateId,
-                               final TemplateDto delta) {
+                               final Template delta) {
         try {
             _templates.updateTemplate(templateId, delta);
         } catch (final ClientResponseFailure cfe) {
@@ -117,7 +117,7 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final TemplateDto template) {
+    public ResourceSummary createTemplate(final Template template) {
         try {
             return _templates.createTemplate(template);
         } catch (final ClientResponseFailure cfe) {

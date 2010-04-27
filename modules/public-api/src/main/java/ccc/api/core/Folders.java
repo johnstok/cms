@@ -125,7 +125,7 @@ public interface Folders {
      * @return A resource summary describing the new folder.
      */
     @POST
-    ResourceSummary createFolder(FolderDto folder);
+    ResourceSummary createFolder(Folder folder);
 
     /**
      * Update the specified folder.
@@ -134,7 +134,7 @@ public interface Folders {
      * @param delta The updated details of the folder.
      */
     @POST @Path("/{id}")
-    void updateFolder(@PathParam("id") UUID folderId, FolderDto delta);
+    void updateFolder(@PathParam("id") UUID folderId, Folder delta);
 
 
     /**

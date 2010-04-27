@@ -41,9 +41,9 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public class PageDto
+public class Page
     extends
-        ResourceSnapshot {
+        Resource {
 
     private String    _comment;
     private boolean   _majorChange;
@@ -53,7 +53,7 @@ public class PageDto
     /**
      * Constructor.
      */
-    public PageDto() { super(); }
+    public Page() { super(); }
 
 
     /**
@@ -66,7 +66,7 @@ public class PageDto
      * @param comment The comment for a page update.
      * @param majorChange Is the update a major change.
      */
-    public PageDto(final UUID parentId,
+    public Page(final UUID parentId,
                    final String name,
                    final UUID templateId,
                    final String title,
@@ -179,8 +179,8 @@ public class PageDto
         _majorChange = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
     }
 
-    public static PageDto delta(final Set<Paragraph> paragraphs) {
-        final PageDto p = new PageDto();
+    public static Page delta(final Set<Paragraph> paragraphs) {
+        final Page p = new Page();
         p.setParagraphs(paragraphs);
         return p;
     }

@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.plugins.s11n.JsonKeys;
 
 
@@ -45,7 +45,7 @@ public final class GroupModelData
     extends
         CccModelData {
 
-    private GroupDto _delegate;
+    private Group _delegate;
 
 
     /**
@@ -53,7 +53,7 @@ public final class GroupModelData
      *
      * @param delegate The DTO this model delegates to.
      */
-    public GroupModelData(final GroupDto delegate) {
+    public GroupModelData(final Group delegate) {
         _delegate = delegate;
     }
 
@@ -111,7 +111,7 @@ public final class GroupModelData
      *
      * @param delegate The DTO this model data delegates to.
      */
-    public void setDelegate(final GroupDto delegate) {
+    public void setDelegate(final Group delegate) {
         _delegate = delegate;
     }
 
@@ -121,7 +121,7 @@ public final class GroupModelData
      *
      * @return The underlying DTO.
      */
-    public GroupDto getDelegate() {
+    public Group getDelegate() {
         return _delegate;
     }
 

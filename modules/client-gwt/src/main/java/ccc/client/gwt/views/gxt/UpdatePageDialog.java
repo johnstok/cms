@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Page;
+import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -63,7 +63,7 @@ public class UpdatePageDialog
 
     private final UUID _pageId;
     private final Set<Paragraph> _paras;
-    private final TemplateDto _template;
+    private final Template _template;
     private final ResourceTable _rt;
     private final EditPagePanel _panel = new EditPagePanel();
     private int _fckReadyCount = 0;
@@ -82,9 +82,9 @@ public class UpdatePageDialog
      * @param rt ResourceTable required in order to refresh the contents.
      */
     public UpdatePageDialog(final UUID pageId,
-                            final PageDto page,
+                            final Page page,
                             final String pageName,
-                            final TemplateDto template,
+                            final Template template,
                             final ResourceTable rt) {
         super(new GlobalsImpl().uiConstants().updateContent(),
               new GlobalsImpl());
@@ -192,7 +192,7 @@ public class UpdatePageDialog
     private Runnable saveDraft() {
         return new Runnable() {
             public void run() {
-                final PageDto update = new PageDto();
+                final Page update = new Page();
                 update.setId(_pageId);
                 update.setParagraphs(getParagraphs());
 

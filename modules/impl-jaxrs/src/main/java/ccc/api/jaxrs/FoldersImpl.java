@@ -36,7 +36,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.FolderDto;
+import ccc.api.core.Folder;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
@@ -140,7 +140,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final FolderDto folder) {
+    public ResourceSummary createFolder(final Folder folder) {
         try {
             return _delegate.createFolder(folder);
         } catch (final ClientResponseFailure cfe) {
@@ -151,7 +151,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolder(final UUID folderId, final FolderDto delta) {
+    public void updateFolder(final UUID folderId, final Folder delta) {
         try {
             _delegate.updateFolder(folderId, delta);
         } catch (final ClientResponseFailure cfe) {

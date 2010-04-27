@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.i18n.UIConstants;
@@ -174,7 +174,7 @@ public class UserACLSelector extends Window {
                         order) {
 
                         @Override
-                        protected void execute(final Collection<UserDto> users,
+                        protected void execute(final Collection<User> users,
                                                final int totalCount) {
                             final List<UserSummaryModelData> results =
                                 DataBinding.bindUserSummary(users);

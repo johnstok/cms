@@ -29,7 +29,7 @@ package ccc.domain;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.EmailAddress;
 
 
@@ -54,7 +54,7 @@ public class CommentTest
         c.setEmail(new EmailAddress("test@example.com"));
 
         // ACT
-        final CommentDto dto = c.createDto();
+        final Comment dto = c.createDto();
 
         // ASSERT
         assertEquals("Foo", dto.getBody());

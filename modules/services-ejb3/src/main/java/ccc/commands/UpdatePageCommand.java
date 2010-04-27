@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.types.CommandType;
 import ccc.domain.PageEntity;
 import ccc.domain.RevisionMetadata;
@@ -47,7 +47,7 @@ public class UpdatePageCommand
         UpdateResourceCommand<Void> {
 
     private final UUID      _id;
-    private final PageDto _delta;
+    private final Page _delta;
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public class UpdatePageCommand
      */
     public UpdatePageCommand(final IRepositoryFactory repoFactory,
                              final UUID id,
-                             final PageDto delta) {
+                             final Page delta) {
         super(repoFactory);
         _id = id;
         _delta = delta;

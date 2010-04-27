@@ -29,7 +29,7 @@ package ccc.client.gwt.presenters;
 
 import java.util.Set;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Validatable;
 import ccc.client.gwt.core.ValidationResult;
@@ -97,7 +97,7 @@ public abstract class GroupPresenter
      *
      * @param dto The DTO that will provide the view's data.
      */
-    protected final void bind(final GroupDto dto) {
+    protected final void bind(final Group dto) {
         _view.setName(dto.getName());
         _view.setPermissions(dto.getPermissions());
     }
@@ -108,7 +108,7 @@ public abstract class GroupPresenter
      *
      * @param dto The DTO that will receive the view's data.
      */
-    protected final void unbind(final GroupDto dto) {
+    protected final void unbind(final Group dto) {
         dto.setName(_view.getName());
         dto.setPermissions(_view.getPermissions());
     }

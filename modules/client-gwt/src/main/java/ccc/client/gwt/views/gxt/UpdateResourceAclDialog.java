@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
-import ccc.api.core.UserDto;
+import ccc.api.core.Group;
+import ccc.api.core.User;
 import ccc.api.types.ACL;
 import ccc.api.types.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
@@ -88,7 +88,7 @@ public class UpdateResourceAclDialog
     private final UUID _resourceId;
 
     private final ACL _acl;
-    private Collection<GroupDto> _allGroups;
+    private Collection<Group> _allGroups;
 
     private static final int DIALOG_WIDTH = 440;
     private static final int GRID_WIDTH = 200;
@@ -106,7 +106,7 @@ public class UpdateResourceAclDialog
      */
     public UpdateResourceAclDialog(final UUID resourceId,
                                    final ACL acl,
-                                   final Collection<GroupDto> allGroups) {
+                                   final Collection<Group> allGroups) {
         super(new GlobalsImpl().uiConstants().updateRoles(),
               new GlobalsImpl());
         _resourceId = resourceId;
@@ -129,7 +129,7 @@ public class UpdateResourceAclDialog
         for (final Entry e : _acl.getUsers()) {
             new GetUserAction(e._principal) { // FIXME: remove these calls.
                 @Override
-                protected void execute(final UserDto user) {
+                protected void execute(final User user) {
                     final UserSummaryModelData d =
                         new UserSummaryModelData(user);
                     uData.add(d);
@@ -167,10 +167,10 @@ public class UpdateResourceAclDialog
         add(_userGridPanel, centerData);
     }
 
-    private void createGroupPanel(final Collection<GroupDto> allGroups) {
+    private void createGroupPanel(final Collection<Group> allGroups) {
 
         final List<ModelData> gData = new ArrayList<ModelData>();
-        for (final GroupDto g : allGroups) {
+        for (final Group g : allGroups) {
             final BaseModelData d = new BaseModelData();
             for (final Entry e : _acl.getGroups()){
                 if (e._principal.equals(g.getId())) {

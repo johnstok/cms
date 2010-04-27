@@ -41,7 +41,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class RevisionDto implements Serializable, Jsonable2 {
+public final class Revision implements Serializable, Jsonable2 {
     private CommandType _command;
     private Username _actorUsername;
     private Date _happenedOn;
@@ -49,7 +49,7 @@ public final class RevisionDto implements Serializable, Jsonable2 {
     private String _comment;
     private boolean _isMajor;
 
-    public RevisionDto() { super(); }
+    public Revision() { super(); }
 
     /**
      * Constructor.
@@ -61,7 +61,7 @@ public final class RevisionDto implements Serializable, Jsonable2 {
      * @param comment The comment of the action.
      * @param isMajorEdit Is the action a major edit.
      */
-    public RevisionDto(final CommandType  command,
+    public Revision(final CommandType  command,
                            final Username  actorUsername,
                            final Date    on,
                            final long    index,
@@ -81,7 +81,7 @@ public final class RevisionDto implements Serializable, Jsonable2 {
      *
      * @param json The JSON representation for this class.
      */
-    public RevisionDto(final Json json) {
+    public Revision(final Json json) {
         fromJson(json);
     }
 

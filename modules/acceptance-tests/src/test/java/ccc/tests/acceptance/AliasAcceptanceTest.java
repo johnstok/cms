@@ -28,7 +28,7 @@ package ccc.tests.acceptance;
 
 import java.util.UUID;
 
-import ccc.api.core.AliasDto;
+import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
 
@@ -53,7 +53,7 @@ public class AliasAcceptanceTest
 
         // ACT
         getCommands().lock(rs.getId());
-        getAliases().updateAlias(rs.getId(), new AliasDto(folder.getId()));
+        getAliases().updateAlias(rs.getId(), new Alias(folder.getId()));
 
         // ASSERT
         final String targetName = getAliases().aliasTargetName(rs.getId());
@@ -68,8 +68,8 @@ public class AliasAcceptanceTest
 
         final String name = UUID.randomUUID().toString();
         final ResourceSummary folder = tempFolder();
-        final AliasDto alias =
-            new AliasDto(
+        final Alias alias =
+            new Alias(
                 folder.getId(), new ResourceName(name), folder.getId());
 
         // ACT

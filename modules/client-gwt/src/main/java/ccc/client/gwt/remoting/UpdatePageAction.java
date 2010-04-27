@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -42,7 +42,7 @@ public class UpdatePageAction
     extends
         RemotingAction {
 
-    private final PageDto _details;
+    private final Page _details;
 
 
     /**
@@ -50,7 +50,7 @@ public class UpdatePageAction
      *
      * @param details Details of the update.
      */
-    public UpdatePageAction(final PageDto details) {
+    public UpdatePageAction(final Page details) {
         super(UI_CONSTANTS.updateContent(), RequestBuilder.POST);
         _details = details;
     }

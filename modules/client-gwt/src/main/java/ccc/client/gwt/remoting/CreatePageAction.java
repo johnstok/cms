@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -41,7 +41,7 @@ public final class CreatePageAction
     extends
         RemotingAction {
 
-    private final PageDto _page;
+    private final Page _page;
 
 
     /**
@@ -49,7 +49,7 @@ public final class CreatePageAction
      *
      * @param page The page's content.
      */
-    public CreatePageAction(final PageDto page) {
+    public CreatePageAction(final Page page) {
         _page = page;
     }
 

@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import ccc.api.core.AliasDto;
+import ccc.api.core.Alias;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceType;
@@ -104,9 +104,9 @@ public class AliasEntity extends ResourceEntity {
 
     /** {@inheritDoc} */
     @Override
-    public AliasDto createSnapshot() {
-        final AliasDto delta =
-            new AliasDto(target().getId());
+    public Alias createSnapshot() {
+        final Alias delta =
+            new Alias(target().getId());
         return delta;
     }
 
@@ -128,25 +128,25 @@ public class AliasEntity extends ResourceEntity {
 
     /** {@inheritDoc} */
     @Override
-    public final AliasDto forWorkingCopy() {
+    public final Alias forWorkingCopy() {
         return createDto();
     }
 
     /** {@inheritDoc} */
     @Override
-    public final AliasDto forCurrentRevision() {
+    public final Alias forCurrentRevision() {
         return createDto();
     }
 
     /** {@inheritDoc} */
     @Override
-    public final AliasDto forSpecificRevision(final int revNo) {
+    public final Alias forSpecificRevision(final int revNo) {
         return createDto();
     }
 
-    private AliasDto createDto() {
-        final AliasDto dto =
-            new AliasDto(
+    private Alias createDto() {
+        final Alias dto =
+            new Alias(
                 getParent().getId(),
                 getName(),
                 (null==target())?null:target().getId());

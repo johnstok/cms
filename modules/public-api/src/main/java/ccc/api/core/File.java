@@ -44,9 +44,9 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public final class FileDto
+public final class File
     extends
-        ResourceSnapshot {
+        Resource {
 
     private MimeType              _mimeType;
     private String                _path;
@@ -67,7 +67,7 @@ public final class FileDto
     /**
      * Constructor.
      */
-    public FileDto() { super(); }
+    public File() { super(); }
 
 
     /**
@@ -80,7 +80,7 @@ public final class FileDto
      * @param revisionComment Comment describing the revision.
      * @param content The file's content.
      */
-    public FileDto(final UUID parentId,
+    public File(final UUID parentId,
                    final String name,
                    final MimeType mimeType,
                    final boolean isMajorRevision,
@@ -103,7 +103,7 @@ public final class FileDto
      * @param data A reference to the files data.
      * @param properties The file's properties.
      */
-    public FileDto(final MimeType mimeType,
+    public File(final MimeType mimeType,
                    final UUID data,
                    final long size,
                    final Map<String, String> properties) {
@@ -124,7 +124,7 @@ public final class FileDto
      * @param title The file's title.
      * @param properties The file's properties
      */
-    public FileDto(final MimeType type,
+    public File(final MimeType type,
                    final String path,
                    final UUID id,
                    final ResourceName name,
@@ -148,7 +148,7 @@ public final class FileDto
      * @param isMajorRevision Is this a major revision.
      * @param revisionComment Comment describing the revision.
      */
-    public FileDto(final UUID id,
+    public File(final UUID id,
                    final String content,
                    final MimeType mimeType,
                    final boolean isMajorRevision,
@@ -166,7 +166,7 @@ public final class FileDto
      *
      * @param json The JSON representation for this class.
      */
-    public FileDto(final Json json) {
+    public File(final Json json) {
         fromJson(json);
     }
 

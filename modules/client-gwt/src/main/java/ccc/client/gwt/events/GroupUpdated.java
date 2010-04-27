@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.events;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -41,7 +41,7 @@ public class GroupUpdated
     extends
         GwtEvent<GroupUpdated.GroupUpdatedHandler> {
 
-    private final GroupDto _group;
+    private final Group _group;
 
 
     /**
@@ -49,7 +49,7 @@ public class GroupUpdated
      *
      * @param group The updated group.
      */
-    public GroupUpdated(final GroupDto group) { _group = group; }
+    public GroupUpdated(final Group group) { _group = group; }
 
 
     /**
@@ -57,7 +57,7 @@ public class GroupUpdated
      *
      * @return Returns the new group.
      */
-    public GroupDto getGroup() { return _group; }
+    public Group getGroup() { return _group; }
 
 
     /** {@inheritDoc} */

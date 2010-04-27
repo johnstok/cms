@@ -35,7 +35,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.core.Comments;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
@@ -73,7 +73,7 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public CommentDto create(final CommentDto comment) {
+    public Comment create(final Comment comment) {
         try {
             return _delegate.create(comment);
         } catch (final ClientResponseFailure cfe) {
@@ -83,7 +83,7 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public CommentDto retrieve(final UUID commentId) {
+    public Comment retrieve(final UUID commentId) {
         try {
             return _delegate.retrieve(commentId);
         } catch (final ClientResponseFailure cfe) {
@@ -93,7 +93,7 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID commentId, final CommentDto comment) {
+    public void update(final UUID commentId, final Comment comment) {
         try {
             _delegate.update(commentId, comment);
         } catch (final ClientResponseFailure cfe) {
@@ -113,7 +113,7 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<CommentDto> list(final UUID resourceId,
+    public PagedCollection<Comment> list(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,

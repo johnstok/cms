@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.commons.Exceptions;
@@ -60,7 +60,7 @@ public final class PageTest extends TestCase {
                 _rm,
                 Paragraph.fromText("header", "Header"));
         page.setOrUpdateWorkingCopy(
-            PageDto.delta(
+            Page.delta(
                 Collections.singleton(
                     Paragraph.fromBoolean("meh", Boolean.TRUE))));
         page.applyWorkingCopy(
@@ -116,7 +116,7 @@ public final class PageTest extends TestCase {
                 null,
                 _rm,
                 Paragraph.fromText("header", "Header"));
-        final PageDto s = page.createSnapshot();
+        final Page s = page.createSnapshot();
 
         // ACT
         final Set<Paragraph> paras = new HashSet<Paragraph>(){{
@@ -150,7 +150,7 @@ public final class PageTest extends TestCase {
         final PageEntity page = new PageEntity("foo", _rm);
 
         // ACT
-        page.setOrUpdateWorkingCopy(new PageDto());
+        page.setOrUpdateWorkingCopy(new Page());
 
         // ASSERT
         assertEquals("foo", page.getTitle()); // The page hasn't changed.
@@ -189,7 +189,7 @@ public final class PageTest extends TestCase {
                 header);
 
         // ACT
-        final PageDto s = page.createSnapshot();
+        final Page s = page.createSnapshot();
 
         // ASSERT
         assertEquals(1, s.getParagraphs().size());
@@ -207,7 +207,7 @@ public final class PageTest extends TestCase {
             new PageEntity("Title", _rm);
 
         // ACT
-        final PageDto s = page.createSnapshot();
+        final Page s = page.createSnapshot();
 
         // ASSERT
         assertEquals(0, s.getParagraphs().size());

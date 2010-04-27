@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.UserCriteria;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.remoting.GetUserAction;
@@ -153,7 +153,7 @@ public class UserTable extends TablePanel {
 
                     new ListGroups() {
                         @Override
-                        protected void execute(final Collection<GroupDto> g) {
+                        protected void execute(final Collection<Group> g) {
                             new OpenEditUserDialogAction(
                                 userDTO.getId(), UserTable.this, g)
                             .execute();
@@ -189,7 +189,7 @@ public class UserTable extends TablePanel {
                     grid.getSelectionModel().getSelectedItem();
                 new GetUserAction(modeldata.getId()) {
                     @Override
-                    protected void execute(final UserDto user) {
+                    protected void execute(final User user) {
                         new UserMetadataDialog(user).show();
                     }
                 }.execute();
@@ -339,7 +339,7 @@ public class UserTable extends TablePanel {
                         order) {
 
                             @Override
-                            protected void execute(final Collection<UserDto> users,
+                            protected void execute(final Collection<User> users,
                                                    final int totalCount) {
                                 final List<UserSummaryModelData> results =
                                     DataBinding.bindUserSummary(users);

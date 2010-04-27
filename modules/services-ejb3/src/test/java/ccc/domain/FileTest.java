@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -132,7 +132,7 @@ public class FileTest extends TestCase {
                 _rm);
 
         // ACT
-        final FileDto o = f.createSnapshot();
+        final File o = f.createSnapshot();
 
         // ASSERT
         assertEquals(new MimeType("foo", "bar"), o.getMimeType());

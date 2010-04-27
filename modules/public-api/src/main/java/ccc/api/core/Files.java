@@ -63,7 +63,7 @@ public interface Files {
      * @return The list of images.
      */
     @GET @Path("/images/{id}")
-    PagedCollection<FileDto> getPagedImages(
+    PagedCollection<File> getPagedImages(
         @PathParam("id") UUID folderId,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
@@ -76,7 +76,7 @@ public interface Files {
      * @param file The new file representation.
      */
     @POST @Path("/{id}")
-    void update(@PathParam("id") UUID id, FileDto file);
+    void update(@PathParam("id") UUID id, File file);
 
 
     /**
@@ -87,7 +87,7 @@ public interface Files {
      * @return The file for the specified ID.
      */
     @GET @Path("/{id}")
-    FileDto get(@PathParam("id") UUID fileId);
+    File get(@PathParam("id") UUID fileId);
 
 
     /**
@@ -98,7 +98,7 @@ public interface Files {
      * @return A resource summary describing the new text file.
      */
     @POST
-    ResourceSummary createTextFile(FileDto textFile);
+    ResourceSummary createTextFile(File textFile);
 
 
     /**
@@ -111,7 +111,7 @@ public interface Files {
     @POST @Path("/bin")
     @Consumes("multipart/form-data")
     @Produces({"application/json", "text/html"})
-    ResourceSummary createFile(FileDto file);
+    ResourceSummary createFile(File file);
 
 
     /**
@@ -125,7 +125,7 @@ public interface Files {
     @POST @Path("/bin/{id}")
     @Consumes("multipart/form-data")
     @Produces({"application/json", "text/html"})
-    ResourceSummary updateFile(@PathParam("id") UUID fileId, FileDto file);
+    ResourceSummary updateFile(@PathParam("id") UUID fileId, File file);
 
 
     /**

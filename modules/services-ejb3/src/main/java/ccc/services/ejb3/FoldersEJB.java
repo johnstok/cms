@@ -41,7 +41,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.FolderDto;
+import ccc.api.core.Folder;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
@@ -72,7 +72,7 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createFolder(final FolderDto folder) {
+    public ResourceSummary createFolder(final Folder folder) {
         checkPermission(FOLDER_CREATE);
 
         return createFolder(
@@ -122,7 +122,7 @@ public class FoldersEJB
     @Override
     @RolesAllowed(FOLDER_UPDATE)
     public void updateFolder(final UUID folderId,
-                             final FolderDto delta) {
+                             final Folder delta) {
         final List<UUID> list = new ArrayList<UUID>();
 
         for (final String item : delta.getSortList()) {

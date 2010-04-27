@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.FolderDto;
+import ccc.api.core.Folder;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.DBC;
@@ -533,15 +533,15 @@ public final class FolderEntity
 
     /** {@inheritDoc} */
     @Override
-    public FolderDto forWorkingCopy() {
+    public Folder forWorkingCopy() {
         return forCurrentRevision();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public FolderDto forCurrentRevision() {
-        final FolderDto dto = new FolderDto(
+    public Folder forCurrentRevision() {
+        final Folder dto = new Folder(
             (null==getParent()) ? null : getParent().getId(),
                 getName());
         super.setDtoProps(dto);
@@ -553,7 +553,7 @@ public final class FolderEntity
 
     /** {@inheritDoc} */
     @Override
-    public FolderDto forSpecificRevision(final int revNo) {
+    public Folder forSpecificRevision(final int revNo) {
         return forCurrentRevision();
     }
 }
