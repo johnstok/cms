@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
 import ccc.api.types.DBC;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.RemotingAction;

@@ -47,7 +47,7 @@ import org.apache.lucene.search.similar.MoreLikeThis;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import ccc.api.SearchResult;
+import ccc.api.core.SearchResult;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.commons.Exceptions;

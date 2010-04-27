@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ccc.api.dto.ActionSummary;
+import ccc.api.core.ActionSummary;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InsufficientPrivilegesException;

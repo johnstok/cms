@@ -29,7 +29,7 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;

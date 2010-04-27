@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;

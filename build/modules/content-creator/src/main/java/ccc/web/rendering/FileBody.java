@@ -33,9 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.Files;
-import ccc.api.ServiceLocator;
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
+import ccc.api.core.Files;
+import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.DBC;

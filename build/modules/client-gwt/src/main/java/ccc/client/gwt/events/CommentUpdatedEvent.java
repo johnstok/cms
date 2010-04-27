@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.events;
 
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
 import ccc.api.types.DBC;
 
 import com.google.gwt.event.shared.EventHandler;

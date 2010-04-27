@@ -29,8 +29,8 @@ package ccc.client.gwt.remoting;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.UserDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.EditUserDialog;

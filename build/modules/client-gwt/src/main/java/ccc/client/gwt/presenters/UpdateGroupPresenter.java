@@ -28,7 +28,7 @@ package ccc.client.gwt.presenters;
 
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.client.gwt.events.GroupUpdated;
 import ccc.client.gwt.events.GroupUpdated.GroupUpdatedHandler;
 import ccc.client.gwt.remoting.UpdateGroupAction;

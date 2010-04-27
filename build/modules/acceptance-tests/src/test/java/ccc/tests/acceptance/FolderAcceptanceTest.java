@@ -32,9 +32,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.FolderDto;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.UserDto;
+import ccc.api.core.FolderDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.UserDto;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ACL;
 import ccc.api.types.PredefinedResourceNames;

@@ -28,7 +28,7 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;

@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.MimeType;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateTemplateCommand;

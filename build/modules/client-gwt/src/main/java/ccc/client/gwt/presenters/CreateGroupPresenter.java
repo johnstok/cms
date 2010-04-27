@@ -27,7 +27,7 @@
 package ccc.client.gwt.presenters;
 
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.client.gwt.events.GroupCreated;
 import ccc.client.gwt.events.GroupCreated.GroupCreatedHandler;
 import ccc.client.gwt.remoting.CreateGroupAction;

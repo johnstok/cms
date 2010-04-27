@@ -43,8 +43,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.Resources;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.ResourcePath;
 import ccc.web.rendering.NotFoundException;

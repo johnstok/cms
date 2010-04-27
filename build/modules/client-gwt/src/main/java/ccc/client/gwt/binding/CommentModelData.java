@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.GlobalsImpl;

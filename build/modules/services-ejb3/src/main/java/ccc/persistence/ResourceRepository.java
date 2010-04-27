@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.dto.ResourceCriteria;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;

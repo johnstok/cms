@@ -42,9 +42,9 @@ import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.ActionScheduler;
-import ccc.api.Actions;
-import ccc.api.Scheduler;
+import ccc.api.core.ActionScheduler;
+import ccc.api.core.Actions;
+import ccc.api.core.Scheduler;
 
 
 /**

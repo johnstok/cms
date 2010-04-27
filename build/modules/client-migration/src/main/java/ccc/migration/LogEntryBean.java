@@ -29,7 +29,7 @@ package ccc.migration;
 
 import java.util.Date;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 
 
 /**

@@ -33,10 +33,10 @@ import static ccc.api.types.PredefinedResourceNames.*;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.Folders;
-import ccc.api.Resources;
-import ccc.api.dto.FolderDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.FolderDto;
+import ccc.api.core.Folders;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
 import ccc.api.http.ProxyServiceLocator;
 import ccc.api.types.ResourceName;

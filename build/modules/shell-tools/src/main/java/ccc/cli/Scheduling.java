@@ -30,8 +30,8 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.ActionScheduler;
-import ccc.api.ServiceLocator;
+import ccc.api.core.ActionScheduler;
+import ccc.api.core.ServiceLocator;
 import ccc.api.http.ProxyServiceLocator;
 
 /**

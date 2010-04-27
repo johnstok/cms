@@ -42,10 +42,10 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.Files;
-import ccc.api.StreamAction;
-import ccc.api.dto.FileDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.FileDto;
+import ccc.api.core.Files;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.StreamAction;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.PagedCollection;
 import ccc.commands.UpdateFileCommand;

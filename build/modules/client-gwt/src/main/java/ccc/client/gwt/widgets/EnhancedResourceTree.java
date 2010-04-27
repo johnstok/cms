@@ -26,8 +26,8 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.UserDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 

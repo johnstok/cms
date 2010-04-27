@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;

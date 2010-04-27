@@ -32,8 +32,8 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.SearchEngine;
-import ccc.api.SearchResult;
+import ccc.api.core.SearchEngine;
+import ccc.api.core.SearchResult;
 import ccc.api.types.DBC;
 
 

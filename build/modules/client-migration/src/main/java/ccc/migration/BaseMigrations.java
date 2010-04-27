@@ -41,15 +41,15 @@ import javax.ejb.EJBException;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.Folders;
-import ccc.api.Groups;
-import ccc.api.Resources;
-import ccc.api.ServiceLocator;
-import ccc.api.Users;
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.PageDto;
-import ccc.api.dto.ResourceSummary;
-import ccc.api.dto.UserDto;
+import ccc.api.core.Folders;
+import ccc.api.core.GroupDto;
+import ccc.api.core.Groups;
+import ccc.api.core.PageDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resources;
+import ccc.api.core.ServiceLocator;
+import ccc.api.core.UserDto;
+import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.ACL;

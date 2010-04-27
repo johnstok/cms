@@ -38,10 +38,10 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.ServiceLocator;
-import ccc.api.dto.FolderDto;
-import ccc.api.dto.PageDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.FolderDto;
+import ccc.api.core.PageDto;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.Paragraph;
 import ccc.cli.Migrate.Options;

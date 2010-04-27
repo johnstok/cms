@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;

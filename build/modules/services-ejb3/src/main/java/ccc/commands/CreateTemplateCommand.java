@@ -28,7 +28,7 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.Template;

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.FolderDto;
+import ccc.api.core.FolderDto;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.ResourceExistsException;
 import ccc.api.types.DBC;

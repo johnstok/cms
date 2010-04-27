@@ -28,15 +28,15 @@ package ccc.web;
 
 import java.util.UUID;
 
-import ccc.api.Files;
-import ccc.api.Resources;
-import ccc.api.Templates;
-import ccc.api.dto.AliasDto;
-import ccc.api.dto.FileDto;
-import ccc.api.dto.FolderDto;
-import ccc.api.dto.PageDto;
-import ccc.api.dto.ResourceSnapshot;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.AliasDto;
+import ccc.api.core.FileDto;
+import ccc.api.core.Files;
+import ccc.api.core.FolderDto;
+import ccc.api.core.PageDto;
+import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Resources;
+import ccc.api.core.TemplateDto;
+import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
 import ccc.plugins.scripting.Script;
 import ccc.web.rendering.FileBody;

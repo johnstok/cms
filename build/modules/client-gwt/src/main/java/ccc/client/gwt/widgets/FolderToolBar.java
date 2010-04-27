@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.Permission;
 import ccc.client.gwt.actions.OpenCreateFileAction;
 import ccc.client.gwt.actions.OpenCreateFolderAction;

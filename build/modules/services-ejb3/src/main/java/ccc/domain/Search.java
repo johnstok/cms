@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import ccc.api.dto.ResourceSnapshot;
+import ccc.api.core.ResourceSnapshot;
 import ccc.api.types.ResourceType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;

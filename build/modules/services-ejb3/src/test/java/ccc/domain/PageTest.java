@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import ccc.api.dto.PageDto;
+import ccc.api.core.PageDto;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.commons.Exceptions;

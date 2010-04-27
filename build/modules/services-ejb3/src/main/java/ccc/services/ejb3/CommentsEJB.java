@@ -36,8 +36,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.Comments;
-import ccc.api.dto.CommentDto;
+import ccc.api.core.CommentDto;
+import ccc.api.core.Comments;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;

@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.api.dto.FileDto;
+import ccc.api.core.FileDto;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;

@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import ccc.api.dto.UserDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;

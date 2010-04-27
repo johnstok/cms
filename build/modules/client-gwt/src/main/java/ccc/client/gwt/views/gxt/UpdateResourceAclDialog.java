@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
-import ccc.api.dto.UserDto;
+import ccc.api.core.GroupDto;
+import ccc.api.core.UserDto;
 import ccc.api.types.ACL;
 import ccc.api.types.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;

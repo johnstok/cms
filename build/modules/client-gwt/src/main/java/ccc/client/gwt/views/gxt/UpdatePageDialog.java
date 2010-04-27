@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.dto.PageDto;
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.PageDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;

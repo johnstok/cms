@@ -28,8 +28,8 @@ package ccc.tests.acceptance;
 
 import java.util.UUID;
 
-import ccc.api.dto.AliasDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.AliasDto;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
 
 

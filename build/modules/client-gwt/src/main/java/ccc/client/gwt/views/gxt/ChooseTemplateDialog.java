@@ -29,7 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.TemplateSummaryModelData;

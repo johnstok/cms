@@ -31,7 +31,7 @@ import java.io.InputStream;
 
 import javax.persistence.EntityManager;
 
-import ccc.api.StreamAction;
+import ccc.api.core.StreamAction;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.domain.Data;

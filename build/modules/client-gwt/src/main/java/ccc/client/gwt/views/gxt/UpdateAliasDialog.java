@@ -30,8 +30,8 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.UUID;
 
-import ccc.api.dto.AliasDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.AliasDto;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateAliasAction;

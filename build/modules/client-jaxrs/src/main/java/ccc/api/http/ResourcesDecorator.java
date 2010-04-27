@@ -30,8 +30,8 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 
-import ccc.api.Resources;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resources;
 import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;

@@ -26,7 +26,7 @@
  */
 package ccc.domain;
 
-import ccc.api.dto.AliasDto;
+import ccc.api.core.AliasDto;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceType;

@@ -28,7 +28,7 @@ package ccc.api.jaxrs;
 
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Security;
+import ccc.api.core.Security;
 import ccc.api.types.DBC;
 
 

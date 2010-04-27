@@ -36,9 +36,9 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.Folders;
-import ccc.api.dto.FolderDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.FolderDto;
+import ccc.api.core.Folders;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 
 

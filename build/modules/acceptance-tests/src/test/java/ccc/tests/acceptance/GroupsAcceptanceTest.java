@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 
 
 /**

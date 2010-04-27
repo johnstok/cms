@@ -28,7 +28,7 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.presenters.CreateUserPresenter;
 import ccc.client.gwt.remoting.ListGroups;

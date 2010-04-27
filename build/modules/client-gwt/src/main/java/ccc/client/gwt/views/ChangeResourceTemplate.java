@@ -29,7 +29,7 @@ package ccc.client.gwt.views;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.dto.TemplateDto;
+import ccc.api.core.TemplateDto;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.View;
 

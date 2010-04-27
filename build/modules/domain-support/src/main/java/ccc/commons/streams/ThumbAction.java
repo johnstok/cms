@@ -36,7 +36,7 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
-import ccc.api.StreamAction;
+import ccc.api.core.StreamAction;
 import ccc.commons.Exceptions;
 
 /**

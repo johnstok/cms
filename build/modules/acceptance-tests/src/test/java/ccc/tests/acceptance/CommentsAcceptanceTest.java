@@ -28,8 +28,8 @@ package ccc.tests.acceptance;
 
 import java.util.Date;
 
-import ccc.api.dto.CommentDto;
-import ccc.api.dto.ResourceSummary;
+import ccc.api.core.CommentDto;
+import ccc.api.core.ResourceSummary;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.CommentStatus;
 

@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.Collection;
 
-import ccc.api.dto.GroupDto;
+import ccc.api.core.GroupDto;
 import ccc.client.gwt.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
