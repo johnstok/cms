@@ -27,7 +27,7 @@
 package ccc.client.gwt.presenters;
 
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.events.GroupCreated;
 import ccc.client.gwt.events.GroupCreated.GroupCreatedHandler;
 import ccc.client.gwt.remoting.CreateGroupAction;
@@ -64,7 +64,7 @@ public class CreateGroupPresenter
     @Override
     public void save() {
         if (valid()) {
-            final GroupDto group = new GroupDto();
+            final Group group = new Group();
             unbind(group);
             new CreateGroupAction(group).execute();
         }

@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
@@ -141,14 +141,14 @@ public interface Globals {
      *
      * @return The current logged in user.
      */
-    UserDto currentUser();
+    User currentUser();
 
     /**
      * Mutator.
      *
      * @param user The current logged in user.
      */
-    void currentUser(final UserDto user);
+    void currentUser(final User user);
 
     /**
      * Factory for {@link ActionNameConstants} objects.

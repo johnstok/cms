@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.Map;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.validation.Validate;
@@ -50,7 +50,7 @@ import com.extjs.gxt.ui.client.widget.Text;
  */
 public class UserMetadataDialog extends AbstractEditDialog {
 
-    private UserDto _user;
+    private User _user;
     private final MetadataGrid _metadataPanel;
     private static final int HEIGHT = 420;
 
@@ -59,7 +59,7 @@ public class UserMetadataDialog extends AbstractEditDialog {
      *
      * @param user The user.
      */
-    public UserMetadataDialog(final UserDto user) {
+    public UserMetadataDialog(final User user) {
         super(new GlobalsImpl().uiConstants().metadata(), new GlobalsImpl());
         setHeight(HEIGHT);
         _user = user;

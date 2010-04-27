@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -85,7 +85,7 @@ public abstract class PageDeltaAction
                     public void onOK(final Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
-                        final PageDto delta = new PageDto();
+                        final Page delta = new Page();
                         delta.fromJson(new GwtJson(result));
                         execute(delta);
                     }
@@ -98,5 +98,5 @@ public abstract class PageDeltaAction
      *
      * @param delta The delta returned by the server.
      */
-    protected abstract void execute(PageDto delta);
+    protected abstract void execute(Page delta);
 }

@@ -29,7 +29,7 @@ package ccc.client.gwt.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
@@ -110,13 +110,13 @@ public class GlobalsImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto currentUser() {
+    public User currentUser() {
         return UserStore.currentUser();
     }
 
     /** {@inheritDoc} */
     @Override
-    public void currentUser(final UserDto user) {
+    public void currentUser(final User user) {
         UserStore.currentUser(user);
     }
 
@@ -224,17 +224,17 @@ public class GlobalsImpl
      * @author Civic Computing Ltd.
      */
     private static final class UserStore {
-        private static UserDto usr;
+        private static User usr;
 
         private UserStore() {
             // no-op
         }
 
-        public static UserDto currentUser() {
+        public static User currentUser() {
             return usr;
         }
 
-        public static void currentUser(final UserDto user) {
+        public static void currentUser(final User user) {
             usr = user;
         }
     }

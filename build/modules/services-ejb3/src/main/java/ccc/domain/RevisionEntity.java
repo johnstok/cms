@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import ccc.api.core.RevisionDto;
+import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 
@@ -130,9 +130,9 @@ public abstract class RevisionEntity<T> extends Entity {
      *
      * @return A corresponding summary.
      */
-    public RevisionDto mapRevision(final int index) {
+    public Revision mapRevision(final int index) {
         return
-            new RevisionDto(
+            new Revision(
                 CommandType.PAGE_UPDATE,
                 getActor().getUsername(),
                 getTimestamp(),
@@ -150,10 +150,10 @@ public abstract class RevisionEntity<T> extends Entity {
      *
      * @return The corresponding summaries.
      */
-    public static Collection<RevisionDto> mapRevisions(
+    public static Collection<Revision> mapRevisions(
                          final Map<Integer, ? extends RevisionEntity<?>> revisions) {
-        final Collection<RevisionDto> mapped =
-            new ArrayList<RevisionDto>();
+        final Collection<Revision> mapped =
+            new ArrayList<Revision>();
         for (final Map.Entry<Integer, ? extends RevisionEntity<?>> rev
             : revisions.entrySet()) {
             mapped.add(rev.getValue().mapRevision(rev.getKey().intValue()));

@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 
 import static ccc.client.gwt.validation.Validations.*;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateCurrentUserAction;
 import ccc.client.gwt.validation.Validate;
@@ -52,7 +52,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private final UserDto _user;
+    private final User _user;
 
     /**
      * Constructor.
@@ -141,7 +141,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                     @Override protected void onNoContent(
                                                      final Response response) {
                         // TODO Update current user should return a UserDto.
-                        final UserDto user = new UserDto();
+                        final User user = new User();
                         user.setEmail(_email.getValue());
                         user.setId(_user.getId());
                         user.setUsername(_user.getUsername());

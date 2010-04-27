@@ -40,7 +40,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.UserCriteria;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.PagedCollection;
@@ -73,7 +73,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_CREATE)
-    public UserDto createUser(final UserDto delta) {
+    public User createUser(final User delta) {
         return
             new CreateUserCommand(getRepoFactory())
             .execute(currentUser(), new Date(), delta)
@@ -84,7 +84,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_UPDATE)
-    public void updateUser(final UUID userId, final UserDto delta) {
+    public void updateUser(final UUID userId, final User delta) {
         new UpdateUserCommand(
             getRepoFactory(),
             userId,
@@ -98,7 +98,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_UPDATE)
-    public void updateUserPassword(final UUID userId, final UserDto user) {
+    public void updateUserPassword(final UUID userId, final User user) {
         new UpdatePasswordAction(getRepoFactory()).execute(
             currentUser(),
             new Date(),
@@ -110,7 +110,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(SELF_UPDATE)
-    public void updateYourUser(final UUID userId, final UserDto user) {
+    public void updateYourUser(final UUID userId, final User user) {
         execute(
             new UpdateCurrentUserCommand(
                 getRepoFactory(),
@@ -134,7 +134,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public PagedCollection<UserDto> listUsers(
+    public PagedCollection<User> listUsers(
         final String username,
         final String email,
         final String groups,
@@ -151,7 +151,7 @@ public class UsersEJB
             groups,
             metadataKey,
             metadataValue);
-        return new PagedCollection<UserDto>(userrepo.countUsers(uc), UserEntity.map(
+        return new PagedCollection<User>(userrepo.countUsers(uc), UserEntity.map(
                 userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
     }
 
@@ -159,7 +159,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public UserDto userDelta(final UUID userId) {
+    public User userDelta(final UUID userId) {
         return
             getRepoFactory()
                 .createUserRepo()
@@ -171,7 +171,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public UserDto userByLegacyId(final String legacyId) {
+    public User userByLegacyId(final String legacyId) {
         return
             getRepoFactory()
                 .createUserRepo()
@@ -193,7 +193,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public UserDto loggedInUser() {
+    public User loggedInUser() {
         try {
             return currentUser().toDto();
         } catch (final EntityNotFoundException e) {

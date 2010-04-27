@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
@@ -75,7 +75,7 @@ public class CreateUserDialog
      *
      * @param allGroups The list of all groups.
      */
-    public CreateUserDialog(final Collection<GroupDto> allGroups) {
+    public CreateUserDialog(final Collection<Group> allGroups) {
         super(new GlobalsImpl().uiConstants().createUser(),
              new GlobalsImpl());
 

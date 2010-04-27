@@ -34,10 +34,10 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.FolderDto;
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ACL;
 import ccc.api.types.Duration;
@@ -67,7 +67,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final UserDto us = getUsers().loggedInUser();
+        final User us = getUsers().loggedInUser();
 
         // ACT
         getCommands().lock(folder.getId());
@@ -113,10 +113,10 @@ public class ResourceAcceptanceTest
         final ResourceSummary secondFolder = tempFolder();
 
         final ResourceSummary childFolder1 = getFolders().createFolder(
-            new FolderDto(firstFolder.getId(),
+            new Folder(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
         getFolders().createFolder(
-            new FolderDto(firstFolder.getId(),
+            new Folder(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
 
         // ACT
@@ -143,7 +143,7 @@ public class ResourceAcceptanceTest
             getCommands().metadata(folder.getId());
 
         final String newTitle = UUID.randomUUID().toString();
-        final ResourceSnapshot md = new ResourceSnapshot();
+        final Resource md = new Resource();
         md.setTitle(newTitle);
         md.setDescription(newTitle);
         md.setTags(Collections.singleton(newTitle));
@@ -178,7 +178,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final UserDto user = tempUser();
+        final User user = tempUser();
         final ACL acl = new ACL();
         final Entry e = new Entry();
         e._canRead = true;
@@ -264,7 +264,7 @@ public class ResourceAcceptanceTest
         getCommands().lock(contentRoot.getId());
 
         // ASSERT
-        final UserDto currentUser = getUsers().loggedInUser();
+        final User currentUser = getUsers().loggedInUser();
         final ResourceSummary updatedRoot =
             getCommands().resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
@@ -286,7 +286,7 @@ public class ResourceAcceptanceTest
         // ACT
         try {
             getCommands().updateResourceTemplate(
-                folder.getId(), new ResourceSnapshot(ts.getId()));
+                folder.getId(), new Resource(ts.getId()));
         } finally {
             try {
                 getCommands().unlock(folder.getId());
@@ -311,8 +311,8 @@ public class ResourceAcceptanceTest
         final ResourceSummary folder = tempFolder();
         final Duration origDuration =
             getCommands().cacheDuration(folder.getId());
-        final ResourceSnapshot duration =
-            new ResourceSnapshot(new Duration(9));
+        final Resource duration =
+            new Resource(new Duration(9));
 
         // ACT
         getCommands().lock(folder.getId());
@@ -322,7 +322,7 @@ public class ResourceAcceptanceTest
             getCommands().cacheDuration(folder.getId());
 
         getCommands().updateCacheDuration(
-            folder.getId(), new ResourceSnapshot((Duration) null));
+            folder.getId(), new Resource((Duration) null));
         final Duration noDuration = getCommands().cacheDuration(folder.getId());
 
         getCommands().deleteCacheDuration(folder.getId());
@@ -425,7 +425,7 @@ public class ResourceAcceptanceTest
 
         final String id = ""+new Random().nextInt(MAX_RANDOM_VALUE);
 
-        final ResourceSnapshot md = new ResourceSnapshot();
+        final Resource md = new Resource();
         md.setTitle(f.getTitle());
         md.setDescription(f.getDescription());
         md.setTags(f.getTags());

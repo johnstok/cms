@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
 import ccc.domain.PageEntity;
@@ -48,7 +48,7 @@ import ccc.persistence.ResourceRepository;
  */
 class CreatePageCommand extends CreateResourceCommand<PageEntity> {
 
-    private final PageDto _page;
+    private final Page _page;
     private final UUID _parentFolder;
 
 
@@ -63,7 +63,7 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
     public CreatePageCommand(final ResourceRepository repository,
                              final LogEntryRepository audit,
                              final UUID parentFolder,
-                             final PageDto page) {
+                             final Page page) {
         super(repository, audit);
         _parentFolder = parentFolder;
         _page = page;

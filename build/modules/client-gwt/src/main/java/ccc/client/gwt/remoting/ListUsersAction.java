@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.UserCriteria;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -119,10 +119,10 @@ public abstract class ListUsersAction
 
                         final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
 
-                        final Collection<UserDto> children =
-                            new ArrayList<UserDto>();
+                        final Collection<User> children =
+                            new ArrayList<User>();
                         for (int i=0; i<result.size(); i++) {
-                            children.add(new UserDto(new GwtJson(result.get(i).isObject())));
+                            children.add(new User(new GwtJson(result.get(i).isObject())));
                         }
 
                         execute(children, totalCount);
@@ -136,5 +136,5 @@ public abstract class ListUsersAction
      * @param users The collection of users returned.
      * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<UserDto> users, int totalCount);
+    protected abstract void execute(Collection<User> users, int totalCount);
 }

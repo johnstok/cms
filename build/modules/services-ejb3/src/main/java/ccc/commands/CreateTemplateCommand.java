@@ -28,7 +28,7 @@ package ccc.commands;
 
 import java.util.Date;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
@@ -44,7 +44,7 @@ import ccc.persistence.ResourceRepository;
  */
 class CreateTemplateCommand extends CreateResourceCommand<TemplateEntity> {
 
-    private final TemplateDto _template;
+    private final Template _template;
 
 
     /**
@@ -56,7 +56,7 @@ class CreateTemplateCommand extends CreateResourceCommand<TemplateEntity> {
      */
     public CreateTemplateCommand(final ResourceRepository repository,
                                  final LogEntryRepository audit,
-                                 final TemplateDto template) {
+                                 final Template template) {
         super(repository, audit);
         _template = template;
     }

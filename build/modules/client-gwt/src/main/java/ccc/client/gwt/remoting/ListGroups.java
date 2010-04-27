@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -56,7 +56,7 @@ public abstract class ListGroups
      *
      * @param groups The groups returned.
      */
-    protected abstract void execute(Collection<GroupDto> groups);
+    protected abstract void execute(Collection<Group> groups);
 
 
     /** {@inheritDoc} */
@@ -71,9 +71,9 @@ public abstract class ListGroups
                 @Override
                 public void onOK(final Response response) {
                     final JSONArray result = JSONParser.parse(response.getText()).isArray();
-                    final Collection<GroupDto> groups = new ArrayList<GroupDto>();
+                    final Collection<Group> groups = new ArrayList<Group>();
                     for (int i=0; i<result.size(); i++) {
-                        groups.add(new GroupDto(new GwtJson(result.get(i).isObject())));
+                        groups.add(new Group(new GwtJson(result.get(i).isObject())));
                     }
                     execute(groups);
                 }

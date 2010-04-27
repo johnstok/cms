@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
@@ -106,9 +106,9 @@ public abstract class ListComments
             (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
 
         final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
-        final Collection<CommentDto> comments = new ArrayList<CommentDto>();
+        final Collection<Comment> comments = new ArrayList<Comment>();
         for (int i=0; i<result.size(); i++) {
-            comments.add(new CommentDto(new GwtJson(result.get(i).isObject())));
+            comments.add(new Comment(new GwtJson(result.get(i).isObject())));
         }
 
         execute(comments, totalCount);
@@ -121,6 +121,6 @@ public abstract class ListComments
      * @param comments The page of comments returned.
      * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<CommentDto> comments,
+    protected abstract void execute(Collection<Comment> comments,
                                     int totalCount);
 }

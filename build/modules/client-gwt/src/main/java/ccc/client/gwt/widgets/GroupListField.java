@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 
@@ -57,11 +57,11 @@ public class GroupListField extends ListField<BaseModelData> {
      * @param allGroups The list of all groups.
      * @param selectedGroups UUIDs of selected groups.
      */
-    public GroupListField(final Collection<GroupDto> allGroups,
+    public GroupListField(final Collection<Group> allGroups,
                           final Set<UUID> selectedGroups) {
         final ListStore<BaseModelData> gData = new ListStore<BaseModelData>();
         final List<BaseModelData> selected = new ArrayList<BaseModelData>();
-        for (final GroupDto g : allGroups) {
+        for (final Group g : allGroups) {
             final BaseModelData d = new BaseModelData();
             d.set("name", g.getName());
             d.set("id", g.getId());

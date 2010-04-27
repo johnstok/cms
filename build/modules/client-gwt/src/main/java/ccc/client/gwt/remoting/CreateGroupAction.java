@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.GroupCreated;
@@ -46,7 +46,7 @@ public class CreateGroupAction
     extends
         RemotingAction {
 
-    private final GroupDto _group;
+    private final Group _group;
 
 
     /**
@@ -54,7 +54,7 @@ public class CreateGroupAction
      *
      * @param group The updated group.
      */
-    public CreateGroupAction(final GroupDto group) {
+    public CreateGroupAction(final Group group) {
         super(UI_CONSTANTS.createGroup(), RequestBuilder.POST);
         _group = group;
     }
@@ -79,8 +79,8 @@ public class CreateGroupAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final GroupDto newGroup =
-            new GroupDto(
+        final Group newGroup =
+            new Group(
                 new GwtJson(JSONParser.parse(response.getText()).isObject()));
         final GwtEvent<?> event = new GroupCreated(newGroup);
         fireEvent(event);

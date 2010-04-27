@@ -45,11 +45,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.ResourceCriteria;
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
-import ccc.api.core.RevisionDto;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Revision;
+import ccc.api.core.Template;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ACL;
 import ccc.api.types.Duration;
@@ -267,7 +267,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void createWorkingCopy(final UUID resourceId,
-                                  final ResourceSnapshot pu) {
+                                  final Resource pu) {
         createWorkingCopy(resourceId, pu.getRevision());
     }
 
@@ -289,7 +289,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateResourceTemplate(final UUID resourceId,
-                                       final ResourceSnapshot pu) {
+                                       final Resource pu) {
         updateResourceTemplate(resourceId, pu.getTemplate());
     }
 
@@ -324,7 +324,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_UPDATE)
     public void updateMetadata(final UUID resourceId,
-                               final ResourceSnapshot resource) {
+                               final Resource resource) {
 
         updateMetadata(
             resourceId,
@@ -413,7 +413,7 @@ public class ResourcesEJB
     @Override
     @RolesAllowed(RESOURCE_CACHE_UPDATE)
     public void updateCacheDuration(final UUID resourceId,
-                                    final ResourceSnapshot pu) {
+                                    final Resource pu) {
         updateCacheDuration(resourceId, pu.getCacheDuration());
     }
 
@@ -454,7 +454,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public Collection<RevisionDto> history(final UUID resourceId) {
+    public Collection<Revision> history(final UUID resourceId) {
         return RevisionEntity.mapRevisions(
             getRepoFactory()
             .createResourceRepository()
@@ -493,7 +493,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public TemplateDto computeTemplate(final UUID resourceId) {
+    public Template computeTemplate(final UUID resourceId) {
         final ResourceEntity r =
             getResources().find(ResourceEntity.class, resourceId);
         final TemplateEntity t = r.computeTemplate(null);
@@ -549,7 +549,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSnapshot resourceForPathSecure(final String rootPath) {
+    public Resource resourceForPathSecure(final String rootPath) {
         checkPermission(RESOURCE_READ);
 
         final ResourcePath rp = new ResourcePath(rootPath);
@@ -562,7 +562,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSnapshot workingCopyForPath(final String rootPath) {
+    public Resource workingCopyForPath(final String rootPath) {
         checkPermission(RESOURCE_READ);
 
         final ResourcePath rp = new ResourcePath(rootPath);
@@ -576,7 +576,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSnapshot revisionForPath(final String path,
+    public Resource revisionForPath(final String path,
                                             final int version) {
         checkPermission(RESOURCE_READ);
 

@@ -28,7 +28,7 @@ package ccc.client.gwt.presenters;
 
 import java.util.Collection;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
@@ -64,7 +64,7 @@ public class ChangeResourceTemplatePresenter
                                final Globals globals,
                                final ChangeResourceTemplate view,
                                final ResourceSummaryModelData model,
-                               final Collection<TemplateDto> templates) {
+                               final Collection<Template> templates) {
         super(globals, view, model);
 
         addHandler(ResourceTemplateChanged.TYPE, this);

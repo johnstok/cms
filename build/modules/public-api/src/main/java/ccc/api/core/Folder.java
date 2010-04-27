@@ -40,9 +40,9 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderDto
+public class Folder
     extends
-        ResourceSnapshot {
+        Resource {
 
     private UUID _indexPage;
     private UUID _defaultPage;
@@ -53,7 +53,7 @@ public class FolderDto
     /**
      * Constructor.
      */
-    public FolderDto() { super(); }
+    public Folder() { super(); }
 
 
     /**
@@ -62,7 +62,7 @@ public class FolderDto
      * @param parentId The folder's parent.
      * @param name     The folder's name.
      */
-    public FolderDto(final UUID parentId, final ResourceName name) {
+    public Folder(final UUID parentId, final ResourceName name) {
         setParent(parentId);
         setName(name);
     }
@@ -75,7 +75,7 @@ public class FolderDto
      * @param indexPage The folder index page (may be NULL).
      * @param sortList The list of children for this folder, in sorted order.
      */
-    public FolderDto(final String sortOrder,
+    public Folder(final String sortOrder,
                      final UUID indexPage,
                      final Collection<String> sortList) {
         DBC.require().notNull(sortOrder);

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.migration.ccc6.handlers.AllUsersSelector;
 import ccc.migration.ccc6.handlers.FileSelector;
 import ccc.migration.ccc6.handlers.FlaggedSelector;
@@ -127,7 +127,7 @@ public class LegacyDBQueries {
      *
      * @return The list of users.
      */
-    public Map<Integer, UserDto> selectUsers() {
+    public Map<Integer, User> selectUsers() {
         final AllUsersSelector rsh = new AllUsersSelector(this);
         return _db.select(rsh);
     }

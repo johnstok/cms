@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ACL;
 
@@ -75,7 +75,7 @@ public interface Migration {
      * @param happenedOn When the command happened.
      */
     void updatePage(UUID pageId,
-                    PageDto delta,
+                    Page delta,
                     UUID actorId,
                     Date happenedOn);
 
@@ -92,7 +92,7 @@ public interface Migration {
      * @return A resource summary describing the new page.
      */
     ResourceSummary createPage(UUID parentId,
-                               PageDto delta,
+                               Page delta,
                                boolean publish,
                                UUID actorId,
                                Date happenedOn);

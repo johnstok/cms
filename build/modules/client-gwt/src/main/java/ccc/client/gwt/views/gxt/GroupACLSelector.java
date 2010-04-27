@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.Collection;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -60,7 +60,7 @@ class GroupACLSelector extends Window {
      * @param constants UI constants.
      */
     public GroupACLSelector(final ListStore<ModelData> store,
-                            final Collection<GroupDto> allGroups,
+                            final Collection<Group> allGroups,
                             final UIConstants constants) {
         _constants = constants;
         _store = store;
@@ -78,7 +78,7 @@ class GroupACLSelector extends Window {
         panel.setBodyBorder(false);
 
         final ListStore<ModelData> gData = new ListStore<ModelData>();
-        for (final GroupDto g : allGroups) {
+        for (final Group g : allGroups) {
             final BaseModelData d = new BaseModelData();
             boolean contains = false;
             for (final ModelData m : _store.getModels()) {

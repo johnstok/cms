@@ -42,7 +42,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public class GroupDto
+public class Group
     implements
         Jsonable2,
         Serializable {
@@ -55,7 +55,7 @@ public class GroupDto
     /**
      * Constructor.
      */
-    public GroupDto() { super(); }
+    public Group() { super(); }
 
 
     /**
@@ -63,7 +63,7 @@ public class GroupDto
      *
      * @param json The JSON representation of this group.
      */
-    public GroupDto(final Json json) { fromJson(json); }
+    public Group(final Json json) { fromJson(json); }
 
 
     /**

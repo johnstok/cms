@@ -43,7 +43,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionDto
+public class Action
     implements
         Jsonable2,
         Serializable {
@@ -57,7 +57,7 @@ public class ActionDto
     /**
      * Constructor.
      */
-    public ActionDto() { super(); }
+    public Action() { super(); }
 
 
     /**
@@ -68,7 +68,7 @@ public class ActionDto
      * @param executeAfter The earliest time the action may be performed.
      * @param parameters Additional parameters for the action.
      */
-    public ActionDto(final UUID resourceId,
+    public Action(final UUID resourceId,
                      final CommandType command,
                      final Date executeAfter,
                      final Map<String, String> parameters) {

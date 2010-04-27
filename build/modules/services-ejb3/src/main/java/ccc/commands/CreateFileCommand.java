@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.domain.Data;
@@ -52,7 +52,7 @@ class CreateFileCommand extends CreateResourceCommand<FileEntity> {
 
     private final DataRepository _data;
     private final UUID _parentFolder;
-    private final FileDto _file;
+    private final File _file;
     private final String _title;
     private final String _description;
     private final ResourceName _name;
@@ -79,7 +79,7 @@ class CreateFileCommand extends CreateResourceCommand<FileEntity> {
                              final LogEntryRepository audit,
                              final DataRepository data,
                              final UUID parentFolder,
-                             final FileDto file,
+                             final File file,
                              final String title,
                              final String description,
                              final ResourceName name,

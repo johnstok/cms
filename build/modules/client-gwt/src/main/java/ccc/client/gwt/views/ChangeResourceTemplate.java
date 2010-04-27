@@ -29,7 +29,7 @@ package ccc.client.gwt.views;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.View;
 
@@ -48,7 +48,7 @@ public interface ChangeResourceTemplate
      *
      * @param templates The list of available templates to choose from.
      */
-    void setTemplates(Collection<TemplateDto> templates);
+    void setTemplates(Collection<Template> templates);
 
     /**
      * Mutator.

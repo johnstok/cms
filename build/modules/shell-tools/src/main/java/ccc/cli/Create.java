@@ -33,7 +33,7 @@ import static ccc.api.types.PredefinedResourceNames.*;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.core.FolderDto;
+import ccc.api.core.Folder;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
@@ -82,19 +82,19 @@ public final class Create extends CccApp {
             folders.createRoot(TRASH);
 
             final ResourceSummary assets = folders.createFolder(
-                new FolderDto(content.getId(), new ResourceName(ASSETS)));
+                new Folder(content.getId(), new ResourceName(ASSETS)));
 
             folders.createFolder(
-                new FolderDto(assets.getId(), new ResourceName(TEMPLATES)));
+                new Folder(assets.getId(), new ResourceName(TEMPLATES)));
             folders.createFolder(
-                new FolderDto(assets.getId(), new ResourceName(CSS)));
+                new Folder(assets.getId(), new ResourceName(CSS)));
             folders.createFolder(
-                new FolderDto(assets.getId(), new ResourceName(IMAGES)));
+                new Folder(assets.getId(), new ResourceName(IMAGES)));
 
             folders.createFolder(
-                new FolderDto(content.getId(), new ResourceName(FILES)));
+                new Folder(content.getId(), new ResourceName(FILES)));
             folders.createFolder(
-                new FolderDto(content.getId(), new ResourceName(IMAGES)));
+                new Folder(content.getId(), new ResourceName(IMAGES)));
             resources.createSearch(content.getId(), "search");
 
             // TODO: Remove. Should set 'publish' root via UI

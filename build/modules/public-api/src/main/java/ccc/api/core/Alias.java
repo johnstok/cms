@@ -38,9 +38,9 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public class AliasDto
+public class Alias
     extends
-        ResourceSnapshot {
+        Resource {
 
     private UUID _targetId;
     private String _targetPath;
@@ -53,7 +53,7 @@ public class AliasDto
      * @param name The alias' name.
      * @param targetId The alias' target.
      */
-    public AliasDto(final UUID parentId,
+    public Alias(final UUID parentId,
                     final ResourceName name,
                     final UUID targetId) {
         setParent(parentId);
@@ -67,7 +67,7 @@ public class AliasDto
      *
      * @param targetId The alias' target's id.
      */
-    public AliasDto(final UUID targetId) {
+    public Alias(final UUID targetId) {
         _targetId = targetId;
     }
 
@@ -75,7 +75,7 @@ public class AliasDto
     /**
      * Constructor.
      */
-    public AliasDto() { super(); }
+    public Alias() { super(); }
 
 
     /**

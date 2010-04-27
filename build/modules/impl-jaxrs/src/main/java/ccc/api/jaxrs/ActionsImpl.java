@@ -35,7 +35,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.ActionDto;
+import ccc.api.core.Action;
 import ccc.api.core.ActionScheduler;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
@@ -117,7 +117,7 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary createAction(final ActionDto action) {
+    public ActionSummary createAction(final Action action) {
         try {
             return _delegate.createAction(action);
         } catch (final ClientResponseFailure cfe) {

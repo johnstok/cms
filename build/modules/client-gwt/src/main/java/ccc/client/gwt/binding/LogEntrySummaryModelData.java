@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 
-import ccc.api.core.RevisionDto;
+import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.i18n.CommandTypeConstants;
@@ -42,7 +42,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * {@link ModelData} implementation for the {@link RevisionDto} class.
+ * {@link ModelData} implementation for the {@link Revision} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -53,7 +53,7 @@ public class LogEntrySummaryModelData
     /** EXPAND_PROPERTY : String. */
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
-    private final RevisionDto _les;
+    private final Revision _les;
     private Globals _globals;
 
     /**
@@ -62,7 +62,7 @@ public class LogEntrySummaryModelData
      * @param les The log entry summary to wrap.
      * @param globals The globals.
      */
-    public LogEntrySummaryModelData(final RevisionDto les,
+    public LogEntrySummaryModelData(final Revision les,
                                     final Globals globals) {
         _les = les;
         _globals = globals;

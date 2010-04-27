@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Globals;
@@ -84,8 +84,8 @@ public class UpdateCommentPresenter
         final ValidationResult result = getView().getValidationResult();
 
         if (result.isValid()) {
-            final CommentDto updated =
-                new CommentDto(
+            final Comment updated =
+                new Comment(
                     getView().getAuthor(),
                     getView().getBody2(),
                     getModel().getResourceId(),

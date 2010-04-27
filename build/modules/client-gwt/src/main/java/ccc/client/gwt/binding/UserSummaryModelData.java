@@ -33,14 +33,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Username;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
 
 /**
- * {@link ModelData} implementation for the {@link UserDto} class.
+ * {@link ModelData} implementation for the {@link User} class.
  *
  * @author Civic Computing Ltd.
  */
@@ -48,14 +48,14 @@ public class UserSummaryModelData
     implements
         ModelData {
 
-    private UserDto _us;
+    private User _us;
 
     /**
      * Constructor.
      *
      * @param us The User summary.
      */
-    public UserSummaryModelData(final UserDto us) {
+    public UserSummaryModelData(final User us) {
         _us = us;
     }
 

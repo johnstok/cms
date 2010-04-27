@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;
@@ -48,7 +48,7 @@ public class UpdateUserCommand
         Command<UserEntity> {
 
     private final UUID _userId;
-    private final UserDto _delta;
+    private final User _delta;
 
 
     /**
@@ -60,7 +60,7 @@ public class UpdateUserCommand
      */
     public UpdateUserCommand(final IRepositoryFactory repoFactory,
                              final UUID userId,
-                             final UserDto delta) {
+                             final User delta) {
         super(repoFactory);
         _userId = userId;
         _delta = delta;

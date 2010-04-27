@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.GroupModelData;
@@ -186,7 +186,7 @@ public class GroupTable
 
                             @Override
                             protected void execute(
-                                       final Collection<GroupDto> groups) {
+                                       final Collection<Group> groups) {
 
                                 final List<GroupModelData> results =
                                     DataBinding.bindGroupSummary(groups);

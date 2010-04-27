@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.UserCreated;
@@ -46,14 +46,14 @@ public class CreateUserAction
     extends
         RemotingAction {
 
-    private final UserDto _userDelta;
+    private final User _userDelta;
 
     /**
      * Constructor.
      *
      * @param userDelta The user's details.
      */
-    public CreateUserAction(final UserDto userDelta) {
+    public CreateUserAction(final User userDelta) {
         super(GLOBALS.uiConstants().createUser(), RequestBuilder.POST);
         _userDelta = userDelta;
     }
@@ -75,8 +75,8 @@ public class CreateUserAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final UserDto newUser =
-            new UserDto(
+        final User newUser =
+            new User(
                 new GwtJson(JSONParser.parse(response.getText()).isObject()));
         final GwtEvent<?> event = new UserCreated(newUser);
         fireEvent(event);

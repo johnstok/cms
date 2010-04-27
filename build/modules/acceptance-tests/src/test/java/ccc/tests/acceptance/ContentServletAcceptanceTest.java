@@ -30,8 +30,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.File;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.MimeType;
 
@@ -53,7 +53,7 @@ public class ContentServletAcceptanceTest
     public void testCommittedResponsesHandledDirectly() {
 
         // ARRANGE
-        final ResourceSnapshot metadata = new ResourceSnapshot();
+        final Resource metadata = new Resource();
         metadata.setTitle("fail.js");
         metadata.setDescription("fail.js");
         metadata.setTags(new HashSet<String>());
@@ -63,7 +63,7 @@ public class ContentServletAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary script =
             getFiles().createTextFile(
-                new FileDto(
+                new File(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,
@@ -90,7 +90,7 @@ public class ContentServletAcceptanceTest
     public void testUncommittedResponsesHandledByJsp() {
 
         // ARRANGE
-        final ResourceSnapshot metadata = new ResourceSnapshot();
+        final Resource metadata = new Resource();
         metadata.setTitle("fail.js");
         metadata.setDescription("fail.js");
         metadata.setTags(new HashSet<String>());
@@ -100,7 +100,7 @@ public class ContentServletAcceptanceTest
             getCommands().resourceForPath("/files");
         final ResourceSummary script =
             getFiles().createTextFile(
-                new FileDto(
+                new File(
                     filesFolder.getId(),
                     fName,
                     MimeType.TEXT,

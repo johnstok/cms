@@ -33,7 +33,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.migration.LegacyDBQueries;
 import ccc.migration.MigrationException;
@@ -45,7 +45,7 @@ import ccc.migration.MigrationException;
  */
 public final class AllUsersSelector
     implements
-        SqlQuery<Map<Integer, UserDto>> {
+        SqlQuery<Map<Integer, User>> {
 
     private static Logger log = Logger.getLogger(AllUsersSelector.class);
 
@@ -61,10 +61,10 @@ public final class AllUsersSelector
     }
 
     /** {@inheritDoc} */
-    @Override public Map<Integer, UserDto> handle(final ResultSet rs)
+    @Override public Map<Integer, User> handle(final ResultSet rs)
                                                            throws SQLException {
-        final Map<Integer, UserDto> resultList =
-            new HashMap<Integer, UserDto>();
+        final Map<Integer, User> resultList =
+            new HashMap<Integer, User>();
         while (rs.next()) {
             final String userName = rs.getString("user_name");
             final String password = rs.getString("user_passwd");
@@ -82,7 +82,7 @@ public final class AllUsersSelector
                     email = metamap.get("Email");
                 }
 
-                final UserDto user = new UserDto();
+                final User user = new User();
                 user.setEmail(email);
                 user.setUsername(new Username(userName));
                 user.setName(name);

@@ -44,7 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.plugins.s11n.json.JsonImpl;
 
 
@@ -59,7 +59,7 @@ public class UserSummaryCollectionReader
     extends
         AbstractProvider
     implements
-        MessageBodyReader<Collection<UserDto>> {
+        MessageBodyReader<Collection<User>> {
 
     /** {@inheritDoc} */
     @Override
@@ -67,13 +67,13 @@ public class UserSummaryCollectionReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return isCollectionOfType(UserDto.class, type);
+        return isCollectionOfType(User.class, type);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Collection<UserDto> readFrom(
-                                    final Class<Collection<UserDto>> arg0,
+    public Collection<User> readFrom(
+                                    final Class<Collection<User>> arg0,
                                     final Type arg1,
                                     final Annotation[] arg2,
                                     final MediaType arg3,
@@ -81,10 +81,10 @@ public class UserSummaryCollectionReader
                                     final InputStream arg5) throws IOException {
         try {
             final JSONArray result = new JSONArray(readString(arg3, arg5));
-            final Collection<UserDto> us = new ArrayList<UserDto>();
+            final Collection<User> us = new ArrayList<User>();
             for (int i=0; i<result.length(); i++) {
                 final JSONObject o = result.getJSONObject(i);
-                us.add(new UserDto(new JsonImpl(o)));
+                us.add(new User(new JsonImpl(o)));
             }
             return us;
         } catch (final JSONException e) {

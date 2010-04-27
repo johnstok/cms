@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
@@ -105,7 +105,7 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
     @Override
     public void save() {
         if (valid()) {
-            final UserDto user = new UserDto();
+            final User user = new User();
             unbind(user);
             new CreateUserAction(user).execute();
         }
@@ -131,7 +131,7 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
      *
      * @param dto The DTO that will receive the view's data.
      */
-    protected final void unbind(final UserDto dto) {
+    protected final void unbind(final User dto) {
         dto.setEmail(_view.getEmail());
         dto.setUsername(new Username(_view.getUsername()));
         dto.setName(_view.getName());

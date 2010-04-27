@@ -54,7 +54,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.DBC;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
@@ -75,8 +75,8 @@ public class FileReader
     extends
         AbstractProvider
     implements
-        MessageBodyWriter<FileDto>,
-        MessageBodyReader<FileDto> {
+        MessageBodyWriter<File>,
+        MessageBodyReader<File> {
 
     private static final Logger LOG = Logger.getLogger(FileReader.class);
 
@@ -97,13 +97,13 @@ public class FileReader
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return FileDto.class.equals(clazz);
+        return File.class.equals(clazz);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public FileDto readFrom(final Class<FileDto> arg0,
+    public File readFrom(final Class<File> arg0,
                              final Type arg1,
                              final Annotation[] arg2,
                              final MediaType arg3,
@@ -117,13 +117,13 @@ public class FileReader
                 arg3.toString(),
                 arg5);
 
-        final FileDto f = parse(form);
+        final File f = parse(form);
 
         return f;
     }
 
 
-    private FileDto parse(final MultipartFormData form) throws IOException {
+    private File parse(final MultipartFormData form) throws IOException {
 
         final InputStream fileIs = form.getInputStream(FILE);
         final String fileType    = form.getContentType(FILE);
@@ -162,7 +162,7 @@ public class FileReader
                 Long.valueOf(lastUpdate).longValue());
         }
 
-        final FileDto f = new FileDto(
+        final File f = new File(
             toMimeType(fileType),
             null,
             null,
@@ -226,7 +226,7 @@ public class FileReader
 
     /** {@inheritDoc} */
     @Override
-    public long getSize(final FileDto t,
+    public long getSize(final File t,
                         final Class<?> type,
                         final Type genericType,
                         final Annotation[] annotations,
@@ -241,13 +241,13 @@ public class FileReader
                                final Type genericType,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        return FileDto.class.equals(type);
+        return File.class.equals(type);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void writeTo(final FileDto t,
+    public void writeTo(final File t,
                         final Class<?> type,
                         final Type genericType,
                         final Annotation[] annotations,
@@ -315,7 +315,7 @@ public class FileReader
         implements
             PartSource {
 
-        private final FileDto _t;
+        private final File _t;
 
 
         /**
@@ -323,7 +323,7 @@ public class FileReader
          *
          * @param t The file DTO.
          */
-        SimplePart(final FileDto t) {
+        SimplePart(final File t) {
             _t = DBC.require().notNull(t);
         }
 

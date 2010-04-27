@@ -28,7 +28,7 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.presenters.CreateUserPresenter;
 import ccc.client.gwt.remoting.ListGroups;
@@ -48,7 +48,7 @@ public final class OpenCreateUserAction
     @Override public void execute() {
         new ListGroups() {
             @Override
-            protected void execute(final Collection<GroupDto> g) {
+            protected void execute(final Collection<Group> g) {
                 new CreateUserPresenter(
                     new CreateUserDialog(g), GLOBALS);
             }}.execute();

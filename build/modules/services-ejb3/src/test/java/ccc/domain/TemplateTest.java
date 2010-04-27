@@ -29,7 +29,7 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
@@ -57,7 +57,7 @@ public final class TemplateTest extends TestCase {
             _rm);
 
         // ACT
-        final TemplateDto o  = t.createSnapshot();
+        final Template o  = t.createSnapshot();
 
         // ASSERT
         assertEquals("<fields/>", o.getDefinition());

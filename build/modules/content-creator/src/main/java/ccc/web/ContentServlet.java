@@ -48,12 +48,11 @@ import ccc.api.core.Folders;
 import ccc.api.core.Groups;
 import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.Pages;
-import ccc.api.core.ResourceSnapshot;
 import ccc.api.core.Resources;
 import ccc.api.core.SearchEngine;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.Templates;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
@@ -135,7 +134,8 @@ public class ContentServlet
         final Integer version = determineVersion(req);
         LOG.debug("[wc="+wc+", v="+version+"]");
 
-        final ResourceSnapshot resource = getSnapshot(contentPath, wc, version);
+        final ccc.api.core.Resource resource =
+            getSnapshot(contentPath, wc, version);
 
         if (null == resource) {
             LOG.warn("No resource for path "+contentPath);
@@ -188,9 +188,9 @@ public class ContentServlet
     }
 
 
-    private ResourceSnapshot getSnapshot(final String path,
-                                         final boolean workingCopy,
-                                         final Integer version) {
+    private ccc.api.core.Resource getSnapshot(final String path,
+                                              final boolean workingCopy,
+                                              final Integer version) {
         try {
             if (_respectVisibility) {
                 LOG.debug("Retrieving current revision.");
@@ -229,7 +229,7 @@ public class ContentServlet
 
     private Context createContext(final HttpServletRequest request,
                                   final HttpServletResponse response,
-                                  final ResourceSnapshot rs) {
+                                  final ccc.api.core.Resource rs) {
         final Context context = new Context();
 
         context.add("user", loggedInUser());
@@ -257,7 +257,7 @@ public class ContentServlet
     }
 
 
-    private UserDto loggedInUser() {
+    private User loggedInUser() {
         return _users.loggedInUser();
     }
 }

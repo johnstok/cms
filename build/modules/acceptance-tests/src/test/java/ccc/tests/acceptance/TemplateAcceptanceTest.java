@@ -29,7 +29,7 @@ package ccc.tests.acceptance;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 
@@ -52,7 +52,7 @@ public class TemplateAcceptanceTest extends
             getCommands().resourceForPath("/assets/templates");
         final String name = UUID.randomUUID().toString();
 
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setName(new ResourceName(name));
         t.setParent(templateFolder.getId());
         t.setDescription("t-desc");
@@ -80,7 +80,7 @@ public class TemplateAcceptanceTest extends
         final ResourceSummary folder = tempFolder();
         final String name = UUID.randomUUID().toString();
 
-        final TemplateDto t = new TemplateDto();
+        final Template t = new Template();
         t.setName(new ResourceName(name));
         t.setParent(folder.getId());
         t.setDescription("t-desc");
@@ -93,7 +93,7 @@ public class TemplateAcceptanceTest extends
         final ResourceSummary ts = getTemplates().createTemplate(t);
 
         // ACT
-        final TemplateDto fetched = getTemplates().templateDelta(ts.getId());
+        final Template fetched = getTemplates().templateDelta(ts.getId());
 
         // ASSERT
         assertEquals("body", fetched.getBody());
@@ -128,7 +128,7 @@ public class TemplateAcceptanceTest extends
         final ResourceSummary folder = tempFolder();
         final ResourceSummary t = dummyTemplate(folder);
 
-        final TemplateDto delta = new TemplateDto();
+        final Template delta = new Template();
         delta.setBody("newBody");
         delta.setDefinition(
             "<fields><field name=\"test\" type=\"html\"/></fields>");
@@ -137,7 +137,7 @@ public class TemplateAcceptanceTest extends
         // ACT
         getCommands().lock(t.getId());
         getTemplates().updateTemplate(t.getId(), delta);
-        final TemplateDto updated = getTemplates().templateDelta(t.getId());
+        final Template updated = getTemplates().templateDelta(t.getId());
 
         // ASSERT
         assertEquals(delta.getBody(), updated.getBody());

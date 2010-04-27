@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
@@ -51,7 +51,7 @@ public class CreateCommentCommand
     extends
         Command<CommentEntity> {
 
-    private final CommentDto _comment;
+    private final Comment _comment;
 
 
     /**
@@ -61,7 +61,7 @@ public class CreateCommentCommand
      * @param comment Details of the comment to create.
      */
     public CreateCommentCommand(final IRepositoryFactory repoFactory,
-                                final CommentDto comment) {
+                                final Comment comment) {
         super(repoFactory);
         _comment = comment;
     }

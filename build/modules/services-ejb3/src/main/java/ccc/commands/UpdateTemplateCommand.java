@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.types.CommandType;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
@@ -47,7 +47,7 @@ public class UpdateTemplateCommand
         UpdateResourceCommand<Void> {
 
     private final UUID _templateId;
-    private final TemplateDto _delta;
+    private final Template _delta;
 
 
     /**
@@ -59,7 +59,7 @@ public class UpdateTemplateCommand
      */
     public UpdateTemplateCommand(final IRepositoryFactory repoFactory,
                                  final UUID templateId,
-                                 final TemplateDto delta) {
+                                 final Template delta) {
         super(repoFactory);
         _templateId = templateId;
         _delta = delta;

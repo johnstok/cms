@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
@@ -197,8 +197,8 @@ public class CommentEntity
      *
      * @return A DTO representing this comment.
      */
-    public CommentDto createDto() {
-        final CommentDto dto = new CommentDto(
+    public Comment createDto() {
+        final Comment dto = new Comment(
             getAuthor(),
             getBody(),
             getResource().getId(),
@@ -218,8 +218,8 @@ public class CommentEntity
      * @param comments The comments to map.
      * @return The corresponding DTOs.
      */
-    public static List<CommentDto> map(final List<CommentEntity> comments) {
-        final List<CommentDto> mapped = new ArrayList<CommentDto>();
+    public static List<Comment> map(final List<CommentEntity> comments) {
+        final List<Comment> mapped = new ArrayList<Comment>();
         for (final CommentEntity c : comments) {
             mapped.add(c.createDto());
         }

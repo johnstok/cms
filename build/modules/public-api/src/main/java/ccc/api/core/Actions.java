@@ -71,7 +71,7 @@ public interface Actions {
      * @return A summary of the new action.
      */
     @POST
-    ActionSummary createAction(ActionDto action);
+    ActionSummary createAction(Action action);
 
 
     /**

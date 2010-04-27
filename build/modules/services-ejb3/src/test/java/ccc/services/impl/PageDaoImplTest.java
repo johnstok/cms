@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
 
 import java.util.Collections;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.commands.AbstractCommandTest;
@@ -63,8 +63,8 @@ public class PageDaoImplTest
                 null,
                 _rm,
                 Paragraph.fromText("abc", "def"));
-        final PageDto delta =
-            PageDto.delta(
+        final Page delta =
+            Page.delta(
                 Collections.singleton(Paragraph.fromText("foo", "bar")));
         delta.setComment("comment text");
         delta.setMajorChange(false);

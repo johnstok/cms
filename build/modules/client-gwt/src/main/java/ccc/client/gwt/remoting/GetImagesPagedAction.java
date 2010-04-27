@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -102,9 +102,9 @@ public abstract class GetImagesPagedAction
                             (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
 
                         final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
-                        final Collection<FileDto> files = new ArrayList<FileDto>();
+                        final Collection<File> files = new ArrayList<File>();
                         for (int i=0; i<result.size(); i++) {
-                            files.add(new FileDto(new GwtJson(result.get(i).isObject())));
+                            files.add(new File(new GwtJson(result.get(i).isObject())));
                         }
 
                         execute(files, totalCount);
@@ -119,6 +119,6 @@ public abstract class GetImagesPagedAction
      * @param images The available images.
      * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<FileDto> images,
+    protected abstract void execute(Collection<File> images,
                                     int totalCount);
 }

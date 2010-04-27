@@ -64,7 +64,7 @@ public interface Comments {
      * @return Return the newly created comment.
      */
     @POST
-    CommentDto create(CommentDto comment);
+    Comment create(Comment comment);
 
 
     /**
@@ -75,7 +75,7 @@ public interface Comments {
      * @return Return the corresponding comment.
      */
     @GET @Path("/{id}")
-    CommentDto retrieve(@PathParam("id") UUID commentId);
+    Comment retrieve(@PathParam("id") UUID commentId);
 
 
     /**
@@ -85,7 +85,7 @@ public interface Comments {
      * @param comment The updated comment.
      */
     @POST @Path("/{id}")
-    void update(@PathParam("id") UUID commentId, CommentDto comment);
+    void update(@PathParam("id") UUID commentId, Comment comment);
 
 
     /**
@@ -110,7 +110,7 @@ public interface Comments {
      * @return A list of comments.
      */
     @GET
-    PagedCollection<CommentDto> list(
+    PagedCollection<Comment> list(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,
         @QueryParam("sort") @DefaultValue("status") String sort,

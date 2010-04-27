@@ -50,7 +50,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public class ResourceSnapshot
+public class Resource
     implements
         Serializable,
         Jsonable2 {
@@ -81,7 +81,7 @@ public class ResourceSnapshot
     /**
      * Constructor.
      */
-    public ResourceSnapshot() { super(); }
+    public Resource() { super(); }
 
 
     /**
@@ -90,7 +90,7 @@ public class ResourceSnapshot
      * @param cacheDuration The duration to set (may be NULL).
      */
     @Deprecated
-    public ResourceSnapshot(final Duration cacheDuration) {
+    public Resource(final Duration cacheDuration) {
         _cacheDuration = cacheDuration;
         _revision = -1;
         _template = null;
@@ -102,7 +102,7 @@ public class ResourceSnapshot
      * @param revision The revision used to create the working copy.
      */
     @Deprecated
-    public ResourceSnapshot(final Long revision) {
+    public Resource(final Long revision) {
         _revision = revision.intValue();
         _cacheDuration = null;
         _template = null;
@@ -117,7 +117,7 @@ public class ResourceSnapshot
      * @param templateId The template id.
      */
     @Deprecated
-    public ResourceSnapshot(final Duration cacheDuration,
+    public Resource(final Duration cacheDuration,
                                    final Long revision,
                                    final UUID templateId) {
         _revision = revision.intValue();
@@ -131,7 +131,7 @@ public class ResourceSnapshot
      * @param templateId The template id.
      */
     @Deprecated
-    public ResourceSnapshot(final UUID templateId) {
+    public Resource(final UUID templateId) {
         _template = templateId;
         _cacheDuration = null;
         _revision = -1;

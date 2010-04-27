@@ -69,7 +69,7 @@ public interface Aliases {
      * @return A resource summary describing the new alias.
      */
     @POST
-    ResourceSummary createAlias(AliasDto alias);
+    ResourceSummary createAlias(Alias alias);
 
 
     /**
@@ -79,5 +79,5 @@ public interface Aliases {
      * @param delta The changes to apply.
      */
     @POST @Path("/{id}")
-    void updateAlias(@PathParam("id") UUID aliasId, AliasDto delta);
+    void updateAlias(@PathParam("id") UUID aliasId, Alias delta);
 }

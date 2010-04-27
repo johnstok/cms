@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.events;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -41,7 +41,7 @@ public class UserCreated
     extends
         GwtEvent<UserCreated.UserCreatedHandler> {
 
-    private final UserDto _user;
+    private final User _user;
 
 
     /**
@@ -49,7 +49,7 @@ public class UserCreated
      *
      * @param group The newly created group.
      */
-    public UserCreated(final UserDto group) { _user = group; }
+    public UserCreated(final User group) { _user = group; }
 
 
     /**
@@ -57,7 +57,7 @@ public class UserCreated
      *
      * @return Returns the new group.
      */
-    public UserDto getGroup() { return _user; }
+    public User getGroup() { return _user; }
 
 
     /** {@inheritDoc} */

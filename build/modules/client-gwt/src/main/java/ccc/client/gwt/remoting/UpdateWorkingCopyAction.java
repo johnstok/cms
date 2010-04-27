@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -42,7 +42,7 @@ public class UpdateWorkingCopyAction
     extends
         RemotingAction {
 
-    private final PageDto _workingCopy;
+    private final Page _workingCopy;
 
 
     /**
@@ -50,7 +50,7 @@ public class UpdateWorkingCopyAction
      *
      * @param workingCopy The new working copy.
      */
-    public UpdateWorkingCopyAction(final PageDto workingCopy) {
+    public UpdateWorkingCopyAction(final Page workingCopy) {
         super(UI_CONSTANTS.saveDraft(), RequestBuilder.POST);
         _workingCopy = workingCopy;
     }

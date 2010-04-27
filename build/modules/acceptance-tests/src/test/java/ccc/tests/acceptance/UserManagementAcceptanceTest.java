@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
-import ccc.api.core.UserDto;
+import ccc.api.core.Group;
+import ccc.api.core.User;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.Username;
 
@@ -58,7 +58,7 @@ public class UserManagementAcceptanceTest
     public void testUpdatePassword() {
 
         // ARRANGE
-        final UserDto us = tempUser();
+        final User us = tempUser();
 
         // ACT
         us.setPassword("Another00-");
@@ -80,10 +80,10 @@ public class UserManagementAcceptanceTest
     public void testSearchForUsersWithUsername() {
 
         // ARRANGE
-        final UserDto us = tempUser();
+        final User us = tempUser();
 
         // ACT
-        final List<UserDto> ul =
+        final List<User> ul =
             getUsers()
                 .listUsers(
                     us.getUsername().toString(),
@@ -99,7 +99,7 @@ public class UserManagementAcceptanceTest
 
         // ASSERT
         assertEquals(1, ul.size());
-        final UserDto uq = ul.iterator().next();
+        final User uq = ul.iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getGroups().size());
@@ -113,10 +113,10 @@ public class UserManagementAcceptanceTest
     public void testSearchForUsersWithEmail() {
 
         // ARRANGE
-        final UserDto us = tempUser();
+        final User us = tempUser();
 
         // ACT
-        final PagedCollection<UserDto> ul =
+        final PagedCollection<User> ul =
             getUsers()
                 .listUsers(
                     null,
@@ -131,7 +131,7 @@ public class UserManagementAcceptanceTest
 
         // ASSERT
         assertEquals(1, ul.getTotalCount());
-        final UserDto uq = ul.getElements().iterator().next();
+        final User uq = ul.getElements().iterator().next();
         assertEquals(us.getUsername(), uq.getUsername());
         assertEquals(us.getEmail(), uq.getEmail());
         assertEquals(1, uq.getGroups().size());
@@ -148,16 +148,16 @@ public class UserManagementAcceptanceTest
         final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
-        final GroupDto siteBuilder =
+        final Group siteBuilder =
             getGroups().list("SITE_BUILDER").iterator().next();
 
-        final UserDto us = tempUser();
+        final User us = tempUser();
 
         // ACT
 
         getUsers().updateUser(
             us.getId(),
-            new UserDto()
+            new User()
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
@@ -165,7 +165,7 @@ public class UserManagementAcceptanceTest
                 .setMetadata(Collections.singletonMap("key2", "value2")));
 
         // ASSERT
-        final UserDto ud = getUsers().userDelta(us.getId());
+        final User ud = getUsers().userDelta(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(name, ud.getName());
@@ -183,19 +183,19 @@ public class UserManagementAcceptanceTest
         final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
-        final GroupDto siteBuilder =
+        final Group siteBuilder =
             getGroups().list("SITE_BUILDER").iterator().next();
 
         // Create the user
-        final UserDto u =
-            new UserDto()
+        final User u =
+            new User()
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
                 .setGroups(Collections.singleton(siteBuilder.getId()))
                 .setMetadata(Collections.singletonMap("key", "value"))
                 .setPassword("Testtest00-");
-        final UserDto us = getUsers().createUser(u);
+        final User us = getUsers().createUser(u);
 
 
         assertEquals(username, us.getUsername());
@@ -215,19 +215,19 @@ public class UserManagementAcceptanceTest
             new Username(UUID.randomUUID().toString().substring(0, 8)+"ЊЋЌ");
         final String email = "foo@abc.def";
         final String name = "testuser";
-        final GroupDto siteBuilder =
+        final Group siteBuilder =
             getGroups().list("SITE_BUILDER").iterator().next();
 
         // Create the user
-        final UserDto u =
-            new UserDto()
+        final User u =
+            new User()
         .setEmail(email)
         .setUsername(username)
         .setName(name)
         .setGroups(Collections.singleton(siteBuilder.getId()))
         .setMetadata(Collections.singletonMap("key", "value"))
         .setPassword("Testtest00-");
-        final UserDto us = getUsers().createUser(u);
+        final User us = getUsers().createUser(u);
 
 
         assertEquals(username, us.getUsername());
@@ -243,7 +243,7 @@ public class UserManagementAcceptanceTest
     public void testUpdateYourUser() {
 
         // ARRANGE
-        UserDto user = tempUser();
+        User user = tempUser();
 
         final String email = "username@abc.def";
         final String password = "test Test00-";
@@ -280,8 +280,8 @@ public class UserManagementAcceptanceTest
         final String name = "testuser";
 
         // Create the user
-        final UserDto u =
-            new UserDto()
+        final User u =
+            new User()
                 .setEmail(email)
                 .setUsername(username)
                 .setName(name)
@@ -310,8 +310,8 @@ public class UserManagementAcceptanceTest
         final String name = "testuser";
 
         // Create the user
-        final UserDto u =
-            new UserDto()
+        final User u =
+            new User()
         .setEmail(email)
         .setUsername(originalUsername)
         .setName(name)
@@ -334,7 +334,7 @@ public class UserManagementAcceptanceTest
     public void testLoggedInUser() {
 
         // ACT
-        final UserDto user = getUsers().loggedInUser();
+        final User user = getUsers().loggedInUser();
 
         // ASSERT
         assertEquals(new Username("migration"), user.getUsername());
@@ -348,13 +348,13 @@ public class UserManagementAcceptanceTest
     public void testSearchForUsersWithLegacyId() {
 
         // ARRANGE
-        final UserDto us = tempUser();
+        final User us = tempUser();
 
         final int legacyId = new Random().nextInt(100000);
 
         getUsers().updateUser(
             us.getId(),
-            new UserDto()
+            new User()
                 .setEmail(us.getEmail())
                 .setUsername(us.getUsername())
                 .setName(us.getName())
@@ -362,7 +362,7 @@ public class UserManagementAcceptanceTest
                     Collections.singletonMap("legacyId", ""+legacyId)));
 
         // ACT
-        final UserDto ul = getUsers().userByLegacyId(""+legacyId);
+        final User ul = getUsers().userByLegacyId(""+legacyId);
 
         // ASSERT
         assertNotNull(ul);

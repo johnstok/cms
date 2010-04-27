@@ -50,7 +50,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class UserDto implements Serializable, Jsonable2 {
+public final class User implements Serializable, Jsonable2 {
 
     private String _email; // FIXME: Should be type EmailAddress.
     private String _name;
@@ -65,7 +65,7 @@ public final class UserDto implements Serializable, Jsonable2 {
     /**
      * Constructor.
      */
-    public UserDto() { super(); }
+    public User() { super(); }
 
 
     /**
@@ -73,7 +73,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @param json The JSON representation of a user.
      */
-    public UserDto(final Json json) {
+    public User(final Json json) {
         fromJson(json);
     }
 
@@ -145,7 +145,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setMetadata(final Map<String, String> metadata) {
+    public User setMetadata(final Map<String, String> metadata) {
         DBC.require().notNull(metadata);
         _metadata = new HashMap<String, String>(metadata);
         return this;
@@ -159,7 +159,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setEmail(final String email) {
+    public User setEmail(final String email) {
         _email = email;
         return this;
     }
@@ -172,7 +172,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setId(final UUID id) {
+    public User setId(final UUID id) {
         _id = id;
         return this;
     }
@@ -185,7 +185,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setUsername(final Username username) {
+    public User setUsername(final Username username) {
         _username = username;
         return this;
     }
@@ -198,7 +198,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setName(final String name) {
+    public User setName(final String name) {
         _name = name;
         return this;
     }
@@ -211,7 +211,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setGroups(final Set<UUID> groups) {
+    public User setGroups(final Set<UUID> groups) {
         DBC.require().notNull(groups);
         _groups = new HashSet<UUID>(groups);
         return this;
@@ -235,7 +235,7 @@ public final class UserDto implements Serializable, Jsonable2 {
      *
      * @return Returns 'this' reference, to allow method chaining.
      */
-    public UserDto setPassword(final String password) {
+    public User setPassword(final String password) {
         _password = password;
         return this;
     }

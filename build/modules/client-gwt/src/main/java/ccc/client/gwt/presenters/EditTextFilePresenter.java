@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.presenters;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.MimeType;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
@@ -44,7 +44,7 @@ import ccc.client.gwt.views.EditTextFile;
  */
 public class EditTextFilePresenter
     extends
-        AbstractPresenter<EditTextFile, FileDto>
+        AbstractPresenter<EditTextFile, File>
     implements
         Editable,
         UpdatedHandler {
@@ -58,7 +58,7 @@ public class EditTextFilePresenter
      */
     public EditTextFilePresenter(final Globals globals,
                                  final EditTextFile view,
-                                 final FileDto model) {
+                                 final File model) {
         super(globals, view, model);
 
         addHandler(TextFileUpdated.TYPE, this);
@@ -84,7 +84,7 @@ public class EditTextFilePresenter
         final EditTextFile view = getView();
 
         if (view.getValidationResult().isValid()) {
-            final FileDto dto = new FileDto(getModel().getId(),
+            final File dto = new File(getModel().getId(),
                 view.getText(),
                 new MimeType(view.getPrimaryMime(), view.getSubMime()),
                 view.isMajorEdit(),

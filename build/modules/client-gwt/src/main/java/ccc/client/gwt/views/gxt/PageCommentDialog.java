@@ -29,7 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -111,7 +111,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     private Runnable savePage() {
         return new Runnable() {
             public void run() {
-                final PageDto update = new PageDto();
+                final Page update = new Page();
                 update.setId(_pageId);
                 update.setParagraphs(_paras);
                 update.setComment(_comment.getValue());

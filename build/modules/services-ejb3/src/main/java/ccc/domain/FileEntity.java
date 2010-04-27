@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -52,7 +52,7 @@ import ccc.persistence.DataRepository;
  */
 public class FileEntity
     extends
-        WorkingCopySupport<FileRevision, FileDto, FileWorkingCopy>  {
+        WorkingCopySupport<FileRevision, File, FileWorkingCopy>  {
 
     /** Constructor: for persistence only. */
     protected FileEntity() { super(); }
@@ -110,7 +110,7 @@ public class FileEntity
         DBC.require().notNull(data);
         setDescription(description);
         update(
-            new FileDto(mimeType, data.getId(), size, properties),
+            new File(mimeType, data.getId(), size, properties),
             metadata);
     }
 
@@ -235,7 +235,7 @@ public class FileEntity
 
     /** {@inheritDoc} */
     @Override
-    protected void update(final FileDto delta,
+    protected void update(final File delta,
                           final RevisionMetadata metadata) {
         addRevision(
             new FileRevision(
@@ -251,9 +251,9 @@ public class FileEntity
 
     /** {@inheritDoc} */
     @Override
-    public FileDto createSnapshot() {
-        final FileDto delta =
-            new FileDto(
+    public File createSnapshot() {
+        final File delta =
+            new File(
                 getMimeType(),
                 getData().getId(),
                 size(),
@@ -264,7 +264,7 @@ public class FileEntity
 
     /** {@inheritDoc} */
     @Override
-    protected FileWorkingCopy createWorkingCopy(final FileDto delta) {
+    protected FileWorkingCopy createWorkingCopy(final File delta) {
         return new FileWorkingCopy(delta);
     }
 
@@ -277,8 +277,8 @@ public class FileEntity
 
     /** {@inheritDoc} */
     @Override
-    public final FileDto forWorkingCopy() {
-        final FileDto dto = mapFile();
+    public final File forWorkingCopy() {
+        final File dto = mapFile();
         final FileWorkingCopy sn = getWorkingCopy();
         dto.setCharset(sn.getCharset());
         dto.setDataId(sn.getData().getId());
@@ -293,8 +293,8 @@ public class FileEntity
 
     /** {@inheritDoc} */
     @Override
-    public final FileDto forCurrentRevision() {
-        final FileDto dto = mapFile();
+    public final File forCurrentRevision() {
+        final File dto = mapFile();
         final FileRevision sn = currentRevision();
         dto.setCharset(sn.getCharset());
         dto.setDataId(sn.getData().getId());
@@ -309,8 +309,8 @@ public class FileEntity
 
     /** {@inheritDoc} */
     @Override
-    public final FileDto forSpecificRevision(final int revNo) {
-        final FileDto dto = mapFile();
+    public final File forSpecificRevision(final int revNo) {
+        final File dto = mapFile();
         final FileRevision sn = revision(revNo);
         dto.setCharset(sn.getCharset());
         dto.setDataId(sn.getData().getId());
@@ -329,9 +329,9 @@ public class FileEntity
      *
      * @return The summary of the file.
      */
-    public FileDto mapFile() {
-        final FileDto fs =
-            new FileDto(
+    public File mapFile() {
+        final File fs =
+            new File(
                 getMimeType(),
                 getAbsolutePath().removeTop().toString(),
                 getId(),
@@ -348,9 +348,9 @@ public class FileEntity
      *
      * @return The summary of the file.
      */
-    public FileDto mapTextFile(final DataRepository _dm) {
-        final FileDto fs =
-            new FileDto(
+    public File mapTextFile(final DataRepository _dm) {
+        final File fs =
+            new File(
                 getId(),
                 (!isText())
                     ? null : read(_dm, this),
@@ -367,8 +367,8 @@ public class FileEntity
      * @param files The files.
      * @return The corresponding summaries.
      */
-    public static List<FileDto> mapFiles(final Collection<FileEntity> files) {
-        final List<FileDto> mapped = new ArrayList<FileDto>();
+    public static List<File> mapFiles(final Collection<FileEntity> files) {
+        final List<File> mapped = new ArrayList<File>();
         for (final FileEntity f : files) {
             mapped.add(f.mapFile());
         }
@@ -381,7 +381,7 @@ public class FileEntity
      *
      * @return A corresponding delta.
      */
-    public FileDto deltaFile() {
+    public File deltaFile() {
         return getOrCreateWorkingCopy();
     }
 
@@ -415,7 +415,7 @@ public class FileEntity
      * @return The file's contents as a string.
      */
     public static String read(final DataRepository dm,
-                              final FileDto file) {
+                              final File file) {
         final StringBuilder sb = new StringBuilder();
         dm.retrieve(
             new Data(file.getData()),

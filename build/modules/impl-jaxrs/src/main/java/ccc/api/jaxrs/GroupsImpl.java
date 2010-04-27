@@ -36,7 +36,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.types.DBC;
 
@@ -71,7 +71,7 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto create(final GroupDto delta) {
+    public Group create(final Group delta) {
         try {
             return _groups.create(delta);
         } catch (final ClientResponseFailure cfe) {
@@ -82,7 +82,7 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto find(final UUID id) {
+    public Group find(final UUID id) {
         try {
             return _groups.find(id);
         } catch (final ClientResponseFailure cfe) {
@@ -93,7 +93,7 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<GroupDto> list(final String name) {
+    public Collection<Group> list(final String name) {
         try {
             return _groups.list(name);
         } catch (final ClientResponseFailure cfe) {
@@ -104,7 +104,7 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public GroupDto update(final UUID id, final GroupDto group) {
+    public Group update(final UUID id, final Group group) {
         try {
             return _groups.update(id, group);
         } catch (final ClientResponseFailure cfe) {

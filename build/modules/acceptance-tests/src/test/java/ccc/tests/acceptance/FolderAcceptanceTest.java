@@ -32,9 +32,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.core.FolderDto;
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ACL;
 import ccc.api.types.PredefinedResourceNames;
@@ -66,13 +66,13 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             getCommands().resourceForPath("");
         final ResourceSummary testFolder =
             getFolders().createFolder(
-                new FolderDto(content.getId(), new ResourceName(fName)));
+                new Folder(content.getId(), new ResourceName(fName)));
         final ResourceSummary child1 =
             getFolders().createFolder(
-                new FolderDto(testFolder.getId(), new ResourceName(cn1)));
+                new Folder(testFolder.getId(), new ResourceName(cn1)));
         final ResourceSummary child2 =
             getFolders().createFolder(
-                new FolderDto(testFolder.getId(), new ResourceName(cn2)));
+                new Folder(testFolder.getId(), new ResourceName(cn2)));
 
         // ACT
         final List<ResourceSummary> folders = new ArrayList<ResourceSummary>(
@@ -130,8 +130,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         sl.add(page1.getId().toString());
         sl.add(page3.getId().toString());
 
-        final FolderDto fd =
-            new FolderDto(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
+        final Folder fd =
+            new Folder(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
 
         getFolders().updateFolder(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
@@ -174,8 +174,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         sl.add(page1.getId().toString());
         sl.add(page3.getId().toString());
 
-        final FolderDto fd =
-            new FolderDto(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
+        final Folder fd =
+            new Folder(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
 
         getFolders().updateFolder(f.getId(), fd);
         final ResourceSummary updated = getCommands().resource(f.getId());
@@ -210,8 +210,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final List<String> sortList  = new ArrayList<String>();
         sortList.add(page.getId().toString());
 
-        final FolderDto fd =
-            new FolderDto(
+        final Folder fd =
+            new Folder(
                 tempFolder().getSortOrder(), page.getId(), sortList);
         getFolders().updateFolder(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
@@ -232,8 +232,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final UserDto user = tempUser();
-        final UserDto me = getUsers().loggedInUser();
+        final User user = tempUser();
+        final User me = getUsers().loggedInUser();
         final ACL acl = new ACL();
         final Entry e = new Entry();
         e._canRead = true;
@@ -266,8 +266,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final List<String> sortList  = new ArrayList<String>();
         // ACT
         getCommands().lock(folder.getId());
-        final FolderDto fd =
-            new FolderDto(
+        final Folder fd =
+            new Folder(
                 ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
 
         getFolders().updateFolder(folder.getId(), fd);

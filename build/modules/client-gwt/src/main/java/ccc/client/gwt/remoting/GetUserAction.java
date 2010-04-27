@@ -28,7 +28,7 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -75,7 +75,7 @@ public abstract class GetUserAction
                     public void onOK(final Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
-                        final UserDto user = new UserDto(new GwtJson(result));
+                        final User user = new User(new GwtJson(result));
                         execute(user);
                     }
                 });
@@ -87,5 +87,5 @@ public abstract class GetUserAction
      *
      * @param user The user returned.
      */
-    protected abstract void execute(UserDto user);
+    protected abstract void execute(User user);
 }

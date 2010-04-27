@@ -28,7 +28,7 @@ package ccc.client.gwt.presenters;
 
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.client.gwt.events.GroupUpdated;
 import ccc.client.gwt.events.GroupUpdated.GroupUpdatedHandler;
 import ccc.client.gwt.remoting.UpdateGroupAction;
@@ -58,7 +58,7 @@ public class UpdateGroupPresenter
      * @param view The view for this presenter.
      * @param group The group to update.
      */
-    public UpdateGroupPresenter(final GroupView view, final GroupDto group) {
+    public UpdateGroupPresenter(final GroupView view, final Group group) {
         super(view);
         _groupId = group.getId();
         bind(group);
@@ -70,7 +70,7 @@ public class UpdateGroupPresenter
     @Override
     public void save() {
         if (valid()) {
-            final GroupDto group = new GroupDto();
+            final Group group = new Group();
             group.setId(_groupId);
             unbind(group);
             new UpdateGroupAction(group).execute();

@@ -29,7 +29,7 @@ package ccc.domain;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 
@@ -41,7 +41,7 @@ import ccc.api.types.MimeType;
  */
 public class FileWorkingCopy
     extends
-        WorkingCopy<FileDto> {
+        WorkingCopy<File> {
 
     private MimeType _mimeType;
     private long _size;
@@ -58,14 +58,14 @@ public class FileWorkingCopy
      *
      * @param delta The delta describing this working copy's state.
      */
-    public FileWorkingCopy(final FileDto delta) {
+    public FileWorkingCopy(final File delta) {
         delta(delta);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public void delta(final FileDto snapshot) {
+    public void delta(final File snapshot) {
         _mimeType = snapshot.getMimeType();
         _size = snapshot.getSize();
         _data = new Data(UUID.fromString(snapshot.getData().toString()));
@@ -75,8 +75,8 @@ public class FileWorkingCopy
 
     /** {@inheritDoc} */
     @Override
-    public FileDto delta() {
-        return new FileDto(
+    public File delta() {
+        return new File(
             _mimeType,
             _data.getId(),
             _size,

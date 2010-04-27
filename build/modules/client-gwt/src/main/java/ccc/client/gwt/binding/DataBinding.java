@@ -33,13 +33,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ccc.api.core.ActionSummary;
-import ccc.api.core.CommentDto;
-import ccc.api.core.FileDto;
-import ccc.api.core.GroupDto;
+import ccc.api.core.Comment;
+import ccc.api.core.File;
+import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.RevisionDto;
-import ccc.api.core.TemplateDto;
-import ccc.api.core.UserDto;
+import ccc.api.core.Revision;
+import ccc.api.core.Template;
+import ccc.api.core.User;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 
@@ -72,10 +72,10 @@ public final class DataBinding {
      * @return The model data.
      */
     public static List<LogEntrySummaryModelData> bindLogEntrySummary(
-                                       final Collection<RevisionDto> arg0) {
+                                       final Collection<Revision> arg0) {
         final List<LogEntrySummaryModelData> boundData =
             new ArrayList<LogEntrySummaryModelData>();
-        for (final RevisionDto les : arg0) {
+        for (final Revision les : arg0) {
             boundData.add(new LogEntrySummaryModelData(les, GLOBALS));
         }
         return boundData;
@@ -120,10 +120,10 @@ public final class DataBinding {
      * @return The corresponding model data objects.
      */
     public static List<UserSummaryModelData> bindUserSummary(
-                                         final Collection<UserDto> result) {
+                                         final Collection<User> result) {
         final List<UserSummaryModelData> boundData =
             new ArrayList<UserSummaryModelData>();
-        for (final UserDto us : result) {
+        for (final User us : result) {
             boundData.add(new UserSummaryModelData(us));
         }
         return boundData;
@@ -137,10 +137,10 @@ public final class DataBinding {
      * @return The corresponding model data objects.
      */
     public static List<TemplateSummaryModelData> bindTemplateDelta(
-                                     final Collection<TemplateDto> list) {
+                                     final Collection<Template> list) {
         final List<TemplateSummaryModelData> boundData =
             new ArrayList<TemplateSummaryModelData>();
-        for (final TemplateDto ts : list) {
+        for (final Template ts : list) {
             boundData.add(new TemplateSummaryModelData(ts));
         }
         return boundData;
@@ -154,10 +154,10 @@ public final class DataBinding {
      * @return The corresponding model data objects.
      */
     public static List<ImageSummaryModelData> bindFileSummary(
-                                           final Collection<FileDto> arg0) {
+                                           final Collection<File> arg0) {
         final List<ImageSummaryModelData> boundData =
             new ArrayList<ImageSummaryModelData>();
-        for (final FileDto fs : arg0) {
+        for (final File fs : arg0) {
             boundData.add(new ImageSummaryModelData(fs));
         }
         return boundData;
@@ -202,10 +202,10 @@ public final class DataBinding {
 
 
     public static List<CommentModelData> bindCommentSummary(
-                                    final Collection<CommentDto> comments) {
+                                    final Collection<Comment> comments) {
         final List<CommentModelData> boundData =
             new ArrayList<CommentModelData>();
-        for (final CommentDto as : comments) {
+        for (final Comment as : comments) {
             boundData.add(new CommentModelData(as));
         }
         return boundData;
@@ -213,10 +213,10 @@ public final class DataBinding {
 
 
     public static List<GroupModelData> bindGroupSummary(
-                                    final Collection<GroupDto> groups) {
+                                    final Collection<Group> groups) {
         final List<GroupModelData> boundData =
             new ArrayList<GroupModelData>();
-        for (final GroupDto as : groups) {
+        for (final Group as : groups) {
             boundData.add(new GroupModelData(as));
         }
         return boundData;

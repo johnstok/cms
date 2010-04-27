@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -243,7 +243,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                                       resourceId) {
                 @Override protected void execute(final String path) {
                     // TODO: Dodgy - just get the FileDTO for the specified Id.
-                    final FileDto fs = new FileDto(
+                    final File fs = new File(
                         new MimeType("image", "*"),
                         path,
                         resourceId,

@@ -37,7 +37,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 
 import ccc.api.core.MemoryServiceLocator;
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
 import ccc.api.types.Paragraph;
@@ -136,8 +136,8 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderResource() {
 
         // ARRANGE
-        final PageDto foo =
-            new PageDto(
+        final Page foo =
+            new Page(
                 null,
                 "foo",
                 null,
@@ -164,8 +164,8 @@ public class VelocityProcessorTest extends TestCase {
     public void testRenderVelocityError() {
 
         // ARRANGE
-        final PageDto foo =
-            new PageDto(
+        final Page foo =
+            new Page(
                 null,
                 "foo",
                 null,

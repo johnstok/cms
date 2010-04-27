@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -57,7 +57,7 @@ public final class CommentModelData
     extends
         CccModelData {
 
-    private CommentDto _delegate;
+    private Comment _delegate;
 
 
     /**
@@ -65,7 +65,7 @@ public final class CommentModelData
      *
      * @param delegate The DTO this model delegates to.
      */
-    public CommentModelData(final CommentDto delegate) {
+    public CommentModelData(final Comment delegate) {
         _delegate = delegate;
     }
 
@@ -166,7 +166,7 @@ public final class CommentModelData
     }
 
 
-    public void setDelegate(final CommentDto updated) {
+    public void setDelegate(final Comment updated) {
         _delegate = updated;
     }
 
@@ -178,7 +178,7 @@ public final class CommentModelData
      *
      * @return The HTTP request to perform the update.
      */
-    public static Request update(final CommentDto comment) {
+    public static Request update(final Comment comment) {
         final String path = "api/secure/comments/"+comment.getId();
 
         final GwtJson json = new GwtJson();
@@ -202,7 +202,7 @@ public final class CommentModelData
      */
     public static class CommentUpdatedCallback extends ResponseHandlerAdapter {
 
-        private final CommentDto _comment;
+        private final Comment _comment;
 
         /**
          * Constructor.
@@ -211,7 +211,7 @@ public final class CommentModelData
          * @param comment The updated comment.
          */
         public CommentUpdatedCallback(final String name,
-                                      final CommentDto comment) {
+                                      final Comment comment) {
             super(name);
             _comment = DBC.require().notNull(comment);
         }

@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.core.RevisionDto;
+import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.LogEntrySummaryModelData;
@@ -57,7 +57,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class HistoryDialog
     extends
-        AbstractTableDialog<RevisionDto, LogEntrySummaryModelData> {
+        AbstractTableDialog<Revision, LogEntrySummaryModelData> {
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
@@ -67,11 +67,11 @@ public class HistoryDialog
      * Constructor.
      *
      * @param data The history to display, as a collection of
-     *  {@link RevisionDto}.
+     *  {@link Revision}.
      * @param resourceId The UUID.
      * @param ssm The selection model.
      */
-    public HistoryDialog(final Collection<RevisionDto> data,
+    public HistoryDialog(final Collection<Revision> data,
                          final UUID resourceId,
                          final SingleSelectionModel ssm) {
         super(new GlobalsImpl().uiConstants().resourceHistory(),

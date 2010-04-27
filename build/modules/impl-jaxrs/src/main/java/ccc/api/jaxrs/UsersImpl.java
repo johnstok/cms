@@ -36,7 +36,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.types.DBC;
 import ccc.api.types.PagedCollection;
@@ -74,7 +74,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto loggedInUser() {
+    public User loggedInUser() {
         try {
             return _delegate.loggedInUser();
         } catch (final ClientResponseFailure cfe) {
@@ -85,7 +85,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto userDelta(final UUID userId) {
+    public User userDelta(final UUID userId) {
         try {
             return _delegate.userDelta(userId);
         } catch (final ClientResponseFailure cfe) {
@@ -107,7 +107,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto createUser(final UserDto user) {
+    public User createUser(final User user) {
         try {
             return _delegate.createUser(user);
         } catch (final ClientResponseFailure cfe) {
@@ -118,7 +118,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateUserPassword(final UUID userId, final UserDto pu) {
+    public void updateUserPassword(final UUID userId, final User pu) {
         try {
             _delegate.updateUserPassword(userId, pu);
         } catch (final ClientResponseFailure cfe) {
@@ -129,7 +129,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final UUID userId, final UserDto user) {
+    public void updateYourUser(final UUID userId, final User user) {
         try {
             _delegate.updateYourUser(userId, user);
         } catch (final ClientResponseFailure cfe) {
@@ -140,7 +140,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final UUID userId, final UserDto delta) {
+    public void updateUser(final UUID userId, final User delta) {
         try {
             _delegate.updateUser(userId, delta);
         } catch (final ClientResponseFailure cfe) {
@@ -151,7 +151,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserDto userByLegacyId(final String legacyId) {
+    public User userByLegacyId(final String legacyId) {
         try {
             return _delegate.userByLegacyId(legacyId);
         } catch (final ClientResponseFailure cfe) {
@@ -173,7 +173,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<UserDto> listUsers(final String username,
+    public PagedCollection<User> listUsers(final String username,
                                             final String email,
                                             final String groups,
                                             final String metadataKey,

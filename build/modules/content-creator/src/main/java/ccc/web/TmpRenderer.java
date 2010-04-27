@@ -28,14 +28,14 @@ package ccc.web;
 
 import java.util.UUID;
 
-import ccc.api.core.AliasDto;
-import ccc.api.core.FileDto;
+import ccc.api.core.Alias;
+import ccc.api.core.File;
 import ccc.api.core.Files;
-import ccc.api.core.FolderDto;
-import ccc.api.core.PageDto;
-import ccc.api.core.ResourceSnapshot;
+import ccc.api.core.Folder;
+import ccc.api.core.Page;
+import ccc.api.core.Resource;
 import ccc.api.core.Resources;
-import ccc.api.core.TemplateDto;
+import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
 import ccc.plugins.scripting.Script;
@@ -83,20 +83,20 @@ public class TmpRenderer {
      *
      * @return A response representing the resource.
      */
-    public Response render(final ResourceSnapshot s) {
+    public Response render(final Resource s) {
         switch (s.getType()) {
             case ALIAS:
-                return render((AliasDto) s);
+                return render((Alias) s);
             case FILE:
-                final FileDto f = (FileDto) s;
+                final File f = (File) s;
                 if (f.isText() && f.isExecutable()) {
                     return invoke(f);
                 }
                 return render(f);
             case FOLDER:
-                return render((FolderDto) s);
+                return render((Folder) s);
             case PAGE:
-                return render((PageDto) s);
+                return render((Page) s);
             case SEARCH:
                 return renderSearch(s);
             default:
@@ -105,10 +105,10 @@ public class TmpRenderer {
     }
 
 
-    private Response renderSearch(final ResourceSnapshot s) {
+    private Response renderSearch(final Resource s) {
         try {
             final UUID tId = s.getTemplate();
-            final TemplateDto t = _templates.templateDelta(tId);
+            final Template t = _templates.templateDelta(tId);
             final Response r =
                 new Response(
                     new SearchBody(
@@ -125,9 +125,9 @@ public class TmpRenderer {
     }
 
 
-    private Response invoke(final FileDto f) {
+    private Response invoke(final File f) {
         try {
-            final FileDto tf = _files.get(f.getId());
+            final File tf = _files.get(f.getId());
             return
                 new Response(
                     new ScriptBody(
@@ -139,10 +139,10 @@ public class TmpRenderer {
     }
 
 
-    private Response render(final PageDto s) {
+    private Response render(final Page s) {
         try {
             final UUID tId = s.getTemplate();
-            final TemplateDto t = _templates.templateDelta(tId);
+            final Template t = _templates.templateDelta(tId);
             final Response r =
                 new Response(
                     new PageBody(
@@ -162,7 +162,7 @@ public class TmpRenderer {
     }
 
 
-    private Response render(final FolderDto s) {
+    private Response render(final Folder s) {
         try {
             if (null!= s.getIndexPage()) {
                 throw new RedirectRequiredException(
@@ -181,7 +181,7 @@ public class TmpRenderer {
     }
 
 
-    private Response render(final FileDto s) {
+    private Response render(final File s) {
         final Response r = new Response(new FileBody(s));
         r.setDescription(s.getDescription());
         r.setDisposition("inline; filename=\""+s.getName()+"\"");
@@ -196,7 +196,7 @@ public class TmpRenderer {
     }
 
 
-    private Response render(final AliasDto s) {
+    private Response render(final Alias s) {
         if (null==s.getTargetPath()) { throw new NotFoundException(); }
         throw new RedirectRequiredException(s.getTargetPath());
     }

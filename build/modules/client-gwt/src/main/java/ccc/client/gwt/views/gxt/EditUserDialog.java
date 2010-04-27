@@ -34,8 +34,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.GroupDto;
-import ccc.api.core.UserDto;
+import ccc.api.core.Group;
+import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.validation.Validate;
@@ -63,7 +63,7 @@ public class EditUserDialog extends AbstractEditDialog {
 
 
     private final UUID          _userId;
-    private final UserDto _userDTO;
+    private final User _userDTO;
     private final UserTable   _userTable;
 
     /**
@@ -75,9 +75,9 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param allGroups The list of all groups.
      */
     public EditUserDialog(final UUID userId,
-                          final UserDto userDTO,
+                          final User userDTO,
                           final UserTable userTable,
-                          final Collection<GroupDto> allGroups) {
+                          final Collection<Group> allGroups) {
         super(new GlobalsImpl().uiConstants().editUser(), new GlobalsImpl());
 
         _userId    = userId;

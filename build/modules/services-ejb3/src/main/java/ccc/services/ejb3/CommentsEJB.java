@@ -36,7 +36,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.CommentDto;
+import ccc.api.core.Comment;
 import ccc.api.core.Comments;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.PagedCollection;
@@ -66,7 +66,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_CREATE})
-    public CommentDto create(final CommentDto comment) {
+    public Comment create(final Comment comment) {
         return
             execute(
                 new CreateCommentCommand(getRepoFactory(), comment))
@@ -77,7 +77,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_READ})
-    public CommentDto retrieve(final UUID commentId) {
+    public Comment retrieve(final UUID commentId) {
         return
             getRepoFactory()
                 .createCommentRepo()
@@ -88,7 +88,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_UPDATE})
-    public void update(final UUID commentId, final CommentDto comment) {
+    public void update(final UUID commentId, final Comment comment) {
         execute(new UpdateCommentCommand(getRepoFactory(), commentId, comment));
     }
 
@@ -104,7 +104,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_READ})
-    public PagedCollection<CommentDto> list(final UUID resourceId,
+    public PagedCollection<Comment> list(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
@@ -117,7 +117,7 @@ public class CommentsEJB
                     .createResourceRepository()
                     .find(ResourceEntity.class, resourceId);
         return
-            new PagedCollection<CommentDto>(
+            new PagedCollection<Comment>(
                 getRepoFactory().createCommentRepo().count(r, status),
                 CommentEntity.map(
                     getRepoFactory()

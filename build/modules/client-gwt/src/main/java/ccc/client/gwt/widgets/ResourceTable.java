@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -119,7 +119,7 @@ public class ResourceTable
      */
     ResourceTable(final ResourceSummary root,
         final FolderResourceTree tree,
-        final UserDto user) {
+        final User user) {
 
         ContentCreator.EVENT_BUS.addHandler(ResourceDeleted.TYPE, this);
         ContentCreator.EVENT_BUS.addHandler(ResourceCreated.TYPE, this);

@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.client.gwt.actions.OpenCreateFileAction;
 import ccc.client.gwt.actions.OpenCreateFolderAction;
@@ -55,7 +55,7 @@ public class FolderToolBar
      * @param ssm The selection model to use.
      * @param user UserSummary currently logged in user.
      */
-    FolderToolBar(final SingleSelectionModel ssm, final UserDto user) {
+    FolderToolBar(final SingleSelectionModel ssm, final User user) {
         addSeparator();
         addButton(
             "uploadFile",

@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.core.RevisionDto;
+import ccc.api.core.Revision;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -75,11 +75,11 @@ public final class ViewHistoryAction
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
                         final JSONArray result = JSONParser.parse(response.getText()).isArray();
-                        final Collection<RevisionDto> history =
-                            new ArrayList<RevisionDto>();
+                        final Collection<Revision> history =
+                            new ArrayList<Revision>();
                         for (int i=0; i<result.size(); i++) {
                             history.add(
-                                new RevisionDto(new GwtJson(result.get(i).isObject())));
+                                new Revision(new GwtJson(result.get(i).isObject())));
                         }
 
                         new HistoryDialog(

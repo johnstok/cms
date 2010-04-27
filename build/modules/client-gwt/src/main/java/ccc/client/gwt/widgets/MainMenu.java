@@ -28,9 +28,9 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 
-import ccc.api.core.GroupDto;
+import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
@@ -79,14 +79,14 @@ public class MainMenu
 
     private final Globals _globals = new GlobalsImpl();
     private final UIConstants _constants = _globals.uiConstants();
-    private final UserDto _user;
+    private final User _user;
 
     /**
      * Constructor.
      *
      * @param user UserSummary of the currently logged in user.
      */
-    public MainMenu(final UserDto user) {
+    public MainMenu(final User user) {
         _user = user;
         if (_user.hasPermission(Permission.USER_CREATE)) {
             addMenu(
@@ -228,7 +228,7 @@ public class MainMenu
                     _constants.updateRoles(),
                     new ListGroups() {
                         @Override
-                        protected void execute(final Collection<GroupDto> g) {
+                        protected void execute(final Collection<Group> g) {
                             new OpenUpdateResourceAclAction(ssm, g)
                                 .execute();
                         }}));

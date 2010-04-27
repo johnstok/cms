@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.PageDto;
+import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
@@ -647,7 +647,7 @@ public class ResourceSummaryModelData
      *
      * @return The HTTP request to create a folder.
      */
-    public static Request createPage(final PageDto page) {
+    public static Request createPage(final Page page) {
         final String path =  "api/secure/pages";
 
         final GwtJson json = new GwtJson(); // FIXME: Broken.

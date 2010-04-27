@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.Collection;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.client.gwt.widgets.LeftRightPane;
 import ccc.client.gwt.widgets.MainMenu;
 import ccc.client.gwt.widgets.ResourceNavigator;
@@ -53,14 +53,14 @@ public final class DrawMainWindowAction
         GetRootsAction {
 
     /** _user : UserSummary. */
-    private final UserDto _user;
+    private final User _user;
 
     /**
      * Constructor.
      *
      * @param user The currently logged in user.
      */
-    public DrawMainWindowAction(final UserDto user) {
+    public DrawMainWindowAction(final User user) {
         _user = user;
     }
 

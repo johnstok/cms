@@ -29,7 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.EmailAddress;
 import ccc.domain.LogEntry;
@@ -74,7 +74,7 @@ public class CreateUserCommand {
      */
     public UserEntity execute(final UserEntity actor,
                         final Date happenedOn,
-                        final UserDto delta) {
+                        final User delta) {
         final UserEntity user =
             new UserEntity(delta.getUsername(), delta.getName(), delta.getPassword());
         user.setEmail(new EmailAddress(delta.getEmail()));

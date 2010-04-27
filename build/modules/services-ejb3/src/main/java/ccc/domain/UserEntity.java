@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import ccc.api.core.UserDto;
+import ccc.api.core.User;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
@@ -342,8 +342,8 @@ public class UserEntity
      *
      * @return A DTO representation of this user.
      */
-    public UserDto toDto() {
-        final UserDto dto = new UserDto();
+    public User toDto() {
+        final User dto = new User();
         dto.setEmail(getEmail().getText());
         dto.setId(getId());
         dto.setUsername(getUsername());
@@ -373,8 +373,8 @@ public class UserEntity
      * @param users The users.
      * @return The corresponding summaries.
      */
-    public static List<UserDto> map(final Collection<UserEntity> users) {
-        final List<UserDto> mapped = new ArrayList<UserDto>();
+    public static List<User> map(final Collection<UserEntity> users) {
+        final List<User> mapped = new ArrayList<User>();
         for (final UserEntity u : users) { mapped.add(u.toDto()); }
         return mapped;
     }

@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.FileDto;
+import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -47,13 +47,13 @@ public final class CreateTextFileAction
         RemotingAction {
 
 
-    private FileDto _dto;
+    private File _dto;
     /**
      * Constructor.
      *
      * @param dto Text file DTO.
      */
-    public CreateTextFileAction(final FileDto dto) {
+    public CreateTextFileAction(final File dto) {
         super(GLOBALS.uiConstants().createTextFile(), RequestBuilder.POST);
         _dto = dto;
     }
