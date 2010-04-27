@@ -30,9 +30,7 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
@@ -240,7 +238,7 @@ public class SearchEngineEJB  implements SearchEngine {
                     p.getId(),
                     p.getAbsolutePath().toString(),
                     extractContent(p),
-                    createFieldMap(p));
+                    p.currentRevision().getParagraphs());
                 LOG.debug("Indexed page: "+p.getTitle());
             }
         }
@@ -256,16 +254,6 @@ public class SearchEngineEJB  implements SearchEngine {
             }
         }
         return sb.toString();
-    }
-
-    private Map<String, String> createFieldMap(final PageEntity page) {
-        final Map<String, String> map = new HashMap<String, String>();
-        for (final Paragraph p : page.currentRevision().getParagraphs()) {
-            if (ParagraphType.TEXT == p.getType() && p.getText() != null) {
-                map.put(p.getName(), XHTML.cleanUpContent(p.getText()));
-            }
-        }
-        return map;
     }
 
 

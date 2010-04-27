@@ -27,10 +27,11 @@
 
 package ccc.plugins.search;
 
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
 
 
 /**
@@ -71,7 +72,7 @@ public interface Indexer {
     void createDocument(final UUID id,
                         final String absolutePath,
                         final String content,
-                        final Map<String, String> paragraphs);
+                        final Set<Paragraph> paragraphs);
 
 
     TextExtractor createExtractor(MimeType mimeType);
