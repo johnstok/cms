@@ -28,13 +28,14 @@ package ccc.api.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -42,12 +43,21 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class ActionDto implements Jsonable, Serializable {
+public class ActionDto
+    implements
+        Jsonable2,
+        Serializable {
 
-    private final UUID _resourceId;
-    private final CommandType _command;
-    private final Date _executeAfter;
-    private final Map<String, String> _parameters;
+    private UUID _resourceId;
+    private CommandType _command;
+    private Date _executeAfter;
+    private Map<String, String> _parameters = new HashMap<String, String>();
+
+
+    /**
+     * Constructor.
+     */
+    public ActionDto() { super(); }
 
 
     /**
@@ -65,7 +75,7 @@ public class ActionDto implements Jsonable, Serializable {
         _resourceId = resourceId;
         _command = command;
         _executeAfter = new Date(executeAfter.getTime());
-        _parameters = parameters;
+        _parameters.putAll(parameters);
     }
 
 
@@ -116,5 +126,15 @@ public class ActionDto implements Jsonable, Serializable {
         json.set(JsonKeys.COMMAND, _command.name());
         json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
         json.set(JsonKeys.PARAMETERS, _parameters);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        _resourceId = json.getId(JsonKeys.SUBJECT_ID);
+        _command = CommandType.valueOf(json.getString(JsonKeys.COMMAND));
+        _executeAfter = json.getDate(JsonKeys.EXECUTE_AFTER);
+        _parameters = json.getStringMap(JsonKeys.PARAMETERS);
     }
 }
