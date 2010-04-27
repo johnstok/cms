@@ -28,14 +28,14 @@ package ccc.plugins.search.lucene;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericField;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
@@ -53,7 +53,10 @@ import org.apache.lucene.util.Version;
 import ccc.api.core.SearchResult;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
 import ccc.commons.Exceptions;
+import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.SearchException;
 import ccc.plugins.search.TextExtractor;
 
@@ -344,7 +347,7 @@ public class SimpleLuceneFS
     public void createDocument(final UUID id,
                                final String path,
                                final String content,
-                               final Map<String, String> fields) {
+                               final Set<Paragraph> paragraphs) {
         try {
             final Document d = new Document();
             d.add(
@@ -360,14 +363,23 @@ public class SimpleLuceneFS
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
 
-            if (fields != null) {
-                for (final Entry<String, String> entry : fields.entrySet()) {
-                    d.add(
-                        new Field(
-                            entry.getKey(),
-                            entry.getValue(),
-                            Field.Store.NO,
-                            Field.Index.ANALYZED));
+            if (paragraphs != null) {
+                for (final Paragraph paragraph : paragraphs) {
+                    if (paragraph.getType() == ParagraphType.TEXT
+                        && paragraph.getText() != null) {
+                        d.add(
+                            new Field(
+                                paragraph.getName(),
+                                XHTML.cleanUpContent(paragraph.getText()),
+                                Field.Store.NO,
+                                Field.Index.ANALYZED));
+
+                    } else if (paragraph.getType() == ParagraphType.DATE
+                        && paragraph.getDate() != null ) {
+                       final NumericField nf = new NumericField(paragraph.getName());
+                       nf.setLongValue( paragraph.getDate().getTime());
+                       d.add(nf);
+                    }
                 }
             }
 
