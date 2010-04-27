@@ -71,3 +71,4 @@ INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_CREATE',   
 INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_ACL_UPDATE',   (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_SCHEDULE',       (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_REINDEX',        (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('ACTION_SCHEDULE',       (SELECT id FROM groups WHERE name='ADMINISTRATOR'));

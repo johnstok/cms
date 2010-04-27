@@ -30,7 +30,7 @@ package ccc.api.core;
 
 
 /**
- * Locator for CCC business services.
+ * Locator for CC services.
  *
  * @author Civic Computing Ltd.
  */
