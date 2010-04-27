@@ -85,8 +85,7 @@ public class JaxrsConfiguration
         resources.add(new GroupsImpl(sl.getGroups()));
         resources.add(new TemplatesImpl(sl.getTemplates()));
         resources.add(new FilesImpl(sl.getFiles()));
-        resources.add(new ActionsImpl(
-            sl.getActions(), sl.lookupActionScheduler()));
+        resources.add(new ActionsImpl(sl.getActions()));
 
         RESOURCES = Collections.unmodifiableSet(resources);
     }

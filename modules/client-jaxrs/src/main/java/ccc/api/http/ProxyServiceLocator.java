@@ -32,7 +32,6 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import ccc.api.core.ActionScheduler;
 import ccc.api.core.Actions;
 import ccc.api.core.Aliases;
 import ccc.api.core.Comments;
@@ -129,6 +128,11 @@ public class ProxyServiceLocator implements ServiceLocator {
     private final HttpClient _httpClient;
 
 
+    /**
+     * Constructor.
+     *
+     * @param hostUrl The base URL for the CC server.
+     */
     public ProxyServiceLocator(final String hostUrl) {
         _httpClient = new HttpClient();
         _hostUrl = hostUrl;
@@ -151,9 +155,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         _actions  =
             new ActionsImpl(
                 ProxyFactory.create(
-                    Actions.class, _secure+"/actions", _httpClient),
-                ProxyFactory.create(
-                    ActionScheduler.class, _secure+"/actions", _httpClient));
+                    Actions.class, _secure+"/actions", _httpClient));
         _folders =
             new FoldersImpl(
                 ProxyFactory.create(
@@ -196,10 +198,6 @@ public class ProxyServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Actions getActions() { return _actions; }
-
-    /** {@inheritDoc} */
-    @Override
-    public ActionScheduler lookupActionScheduler() { return _actions; }
 
     /** {@inheritDoc} */
     @Override

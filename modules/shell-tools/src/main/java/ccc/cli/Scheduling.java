@@ -30,7 +30,7 @@ package ccc.cli;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
-import ccc.api.core.ActionScheduler;
+import ccc.api.core.Actions;
 import ccc.api.core.ServiceLocator;
 import ccc.api.http.ProxyServiceLocator;
 
@@ -61,7 +61,7 @@ public final class Scheduling extends CccApp {
         services.getSecurity().login(
             options.getUsername(), options.getPassword());
 
-        final ActionScheduler s = services.lookupActionScheduler();
+        final Actions s = services.getActions();
 
         if ("start".equals(options.getAction())) {
             s.start();

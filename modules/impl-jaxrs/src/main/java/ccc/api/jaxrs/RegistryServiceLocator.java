@@ -26,7 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import ccc.api.core.ActionScheduler;
 import ccc.api.core.Actions;
 import ccc.api.core.Aliases;
 import ccc.api.core.Comments;
@@ -49,7 +48,6 @@ import ccc.commons.Registry;
  *
  * @author Civic Computing Ltd.
  */
-// FIXME: This class is not a part of the HTTP client.
 public class RegistryServiceLocator implements ServiceLocator {
 
     private final Registry _registry;
@@ -100,13 +98,6 @@ public class RegistryServiceLocator implements ServiceLocator {
     @Override
     public SearchEngine getSearch() {
         return _registry.<SearchEngine>get(localPath(SearchEngine.NAME));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public ActionScheduler lookupActionScheduler() {
-        return _registry.<ActionScheduler>get(localPath(ActionScheduler.NAME));
     }
 
 

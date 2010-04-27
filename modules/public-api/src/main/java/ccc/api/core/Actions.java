@@ -48,7 +48,9 @@ import ccc.api.types.SortOrder;
  */
 @Consumes("application/json")
 @Produces("application/json")
-public interface Actions {
+public interface Actions
+    extends
+        Scheduler {
 
     /** NAME : String. */
     String NAME = "ActionDao";

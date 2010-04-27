@@ -36,12 +36,14 @@ package ccc.api.core;
  */
 public interface ServiceLocator {
 
+
     /**
      * Accessor.
      *
      * @return Returns the comments service.
      */
     Comments getComments();
+
 
     /**
      * Accessor.
@@ -50,12 +52,14 @@ public interface ServiceLocator {
      */
     Templates getTemplates();
 
+
     /**
      * Accessor.
      *
      * @return Returns the resources service.
      */
     Resources getResources();
+
 
     /**
      * Accessor.
@@ -64,12 +68,6 @@ public interface ServiceLocator {
      */
     Actions getActions();
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the action scheduler service.
-     */
-    ActionScheduler lookupActionScheduler();
 
     /**
      * Accessor.
@@ -78,12 +76,14 @@ public interface ServiceLocator {
      */
     Pages getPages();
 
+
     /**
      * Accessor.
      *
      * @return Returns the folders service.
      */
     Folders getFolders();
+
 
     /**
      * Accessor.
@@ -92,12 +92,14 @@ public interface ServiceLocator {
      */
     Users getUsers();
 
+
     /**
      * Accessor.
      *
      * @return Returns the files service.
      */
     Files getFiles();
+
 
     /**
      * Accessor.
@@ -106,6 +108,7 @@ public interface ServiceLocator {
      */
     SearchEngine getSearch();
 
+
     /**
      * Accessor.
      *
@@ -113,12 +116,14 @@ public interface ServiceLocator {
      */
     Security getSecurity();
 
+
     /**
      * Accessor.
      *
      * @return Returns the alias service.
      */
     Aliases getAliases();
+
 
     /**
      * Accessor.

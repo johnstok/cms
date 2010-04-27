@@ -164,4 +164,27 @@ public class ActionAcceptanceTest
         final ActionSummary completed = getActions().findAction(a.getId());
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
+
+    /**
+     * Test.
+     */
+    public void testStartStopActionScheduler() {
+
+        // ARRANGE
+
+        // ACT
+        final boolean startedAtFirst = getActions().isRunning();
+
+        getActions().start();
+        final boolean startedAfterStart = getActions().isRunning();
+
+        getActions().stop();
+        final boolean startedAfterStop = getActions().isRunning();
+
+        // ASSERT
+        assertFalse(startedAtFirst);
+        assertTrue(startedAfterStart);
+        assertFalse(startedAfterStop);
+
+    }
 }

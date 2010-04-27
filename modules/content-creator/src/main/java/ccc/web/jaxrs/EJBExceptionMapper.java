@@ -58,8 +58,10 @@ public class EJBExceptionMapper
         }
 
         // FIXME: We can do better here.
+        // FIXME: Handle non-CC causes
+        // FIXME: Handle no cause; e.g. Caller Unauthorized.
         final CCException re =
-            new CCException(e.getCausedByException().getMessage());
+            new CCException(e.getMessage());
         LOG.warn(
             "Converted unexpected EJB exception to error: "
             + re.getFailure().getExceptionId(), e);
