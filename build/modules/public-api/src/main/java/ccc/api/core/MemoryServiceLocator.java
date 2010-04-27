@@ -42,7 +42,7 @@ public class MemoryServiceLocator
     private Folders         _folders;
     private Users           _userCommands;
     private Actions         _actions;
-    private ActionScheduler _actionscheduler;
+    private Scheduler       _actionscheduler;
     private Files           _files;
     private SearchEngine    _search;
     private Aliases         _aliases;
@@ -108,11 +108,6 @@ public class MemoryServiceLocator
     /** {@inheritDoc} */
     @Override
     public Groups getGroups() { return _groups; }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public ActionScheduler lookupActionScheduler() { return _actionscheduler; }
 
 
     /**

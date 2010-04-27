@@ -29,6 +29,7 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,9 +37,12 @@ import java.util.UUID;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
 import javax.ejb.TransactionAttribute;
 
 import org.apache.log4j.Logger;
@@ -74,9 +78,13 @@ public class ActionsEJB
     implements
         Actions {
 
+    private static final int TIMEOUT_DELAY_SECS = 60*1000;
+    private static final int INITIAL_DELAY_SECS = 30*1000;
+    private static final String TIMER_NAME = "action_scheduler";
     private static final Logger LOG =
         Logger.getLogger(ActionsEJB.class.getName());
 
+    @javax.annotation.Resource private EJBContext  _context;
     @EJB(name=Resources.NAME) private ResourcesExt _resourcesExt;
 
 
@@ -196,6 +204,59 @@ public class ActionsEJB
     }
 
 
+    /** {@inheritDoc} */
+    @Override
+    @RolesAllowed({ACTION_SCHEDULE})
+    public void start() {
+        LOG.debug("Starting scheduler.");
+        _context.getTimerService().createTimer(
+            INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
+        LOG.debug("Started scheduler.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    @RolesAllowed({ACTION_SCHEDULE})
+    public void stop() {
+        LOG.debug("Stopping scheduler.");
+        final Collection<Timer> c = _context.getTimerService().getTimers();
+        for (final Timer t : c) {
+            if (TIMER_NAME.equals(t.getInfo())) {
+                t.cancel();
+            }
+        }
+        LOG.debug("Stopped scheduler.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    @RolesAllowed({ACTION_SCHEDULE})
+    public boolean isRunning() {
+        final Collection<Timer> c = _context.getTimerService().getTimers();
+        for (final Timer t : c) {
+            if (TIMER_NAME.equals(t.getInfo())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Run the scheduled action.
+     *
+     * @param timer The timer that called this method.
+     */
+    @Timeout
+    public void run(@SuppressWarnings("unused") final Timer timer) {
+        executeAll();
+    }
+
+
     private void fail(final ActionEntity action, final CCException e) {
         action.fail(e.getFailure());
         LOG.info(
@@ -211,7 +272,7 @@ public class ActionsEJB
             new CCException("Unexpected error.", e);
         LOG.warn(
             "Unexpected error executing action: "
-                + cce.getFailure().getExceptionId(),
+            + cce.getFailure().getExceptionId(),
             e);
         fail(action, cce);
     }

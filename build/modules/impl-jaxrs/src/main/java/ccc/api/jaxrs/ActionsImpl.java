@@ -36,7 +36,6 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Action;
-import ccc.api.core.ActionScheduler;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
 import ccc.api.types.DBC;
@@ -57,23 +56,18 @@ public class ActionsImpl
     extends
         JaxrsCollection
     implements
-        Actions,
-        ActionScheduler {
+        Actions {
 
     private final Actions _delegate;
-    private final ActionScheduler _schedulerDelegate;
 
 
     /**
      * Constructor.
      *
-     * @param actions
-     * @param actionScheduler
+     * @param actions The actions delegate.
      */
-    public ActionsImpl(final Actions actions,
-                       final ActionScheduler actionScheduler) {
+    public ActionsImpl(final Actions actions) {
         _delegate = DBC.require().notNull(actions);
-        _schedulerDelegate = DBC.require().notNull(actionScheduler);
     }
 
 
@@ -163,7 +157,7 @@ public class ActionsImpl
     @Produces({"text/html", "application/json"})
     public boolean isRunning() {
         try {
-            return _schedulerDelegate.isRunning();
+            return _delegate.isRunning();
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -174,7 +168,7 @@ public class ActionsImpl
     @Produces({"text/html", "application/json"})
     public void start() {
         try {
-            _schedulerDelegate.start();
+            _delegate.start();
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -185,7 +179,7 @@ public class ActionsImpl
     @Produces({"text/html", "application/json"})
     public void stop() {
         try {
-            _schedulerDelegate.stop();
+            _delegate.stop();
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
