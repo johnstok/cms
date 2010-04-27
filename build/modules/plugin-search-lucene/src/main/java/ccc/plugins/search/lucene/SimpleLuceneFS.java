@@ -358,10 +358,10 @@ public class SimpleLuceneFS
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
-                    "absolutePath",
+                    "apath",
                     path,
                     Field.Store.YES,
-                    Field.Index.NOT_ANALYZED));
+                    Field.Index.ANALYZED));
 
             if (paragraphs != null) {
                 for (final Paragraph paragraph : paragraphs) {
