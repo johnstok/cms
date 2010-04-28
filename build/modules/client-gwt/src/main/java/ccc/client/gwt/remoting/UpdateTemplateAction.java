@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.Template;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -44,7 +42,6 @@ public class UpdateTemplateAction
     extends
         RemotingAction {
 
-    private final UUID _template;
     private final Template _details;
 
 
@@ -52,12 +49,9 @@ public class UpdateTemplateAction
      * Constructor.
      *
      * @param details The new details for the template.
-     * @param template The template to update.
      */
-    public UpdateTemplateAction(final UUID template,
-                                 final Template details) {
+    public UpdateTemplateAction(final Template details) {
         super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
-        _template = template;
         _details = details;
     }
 
@@ -65,7 +59,7 @@ public class UpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/templates/"+_template;
+        return "/templates/"+_details.getId();
     }
 
 
