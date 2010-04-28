@@ -145,6 +145,26 @@ public class Folder
     }
 
 
+    /**
+     * Mutator.
+     *
+     * @param sortOrder The sortOrder to set.
+     */
+    public void setSortOrder(final String sortOrder) {
+        _sortOrder = sortOrder;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param sortList The sortList to set.
+     */
+    public void setSortList(final Collection<String> sortList) {
+        _sortList = sortList;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
