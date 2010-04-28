@@ -181,17 +181,27 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         getFolders().updateFolder(f.getId(), fd);
         final ResourceSummary updated = getCommands().resource(f.getId());
 
-        final List<ResourceSummary> list =
-            new ArrayList<ResourceSummary>(getFolders().getChildren(f.getId()));
+
+        final PagedCollection<ResourceSummary> list =
+            getCommands().list(f.getId(),
+                null,
+                null,
+                null,
+                null,
+                "name",
+                SortOrder.ASC,
+                1,
+                1000);
+
 
         // ASSERT
         assertNull(f.getLockedBy());
         assertNotNull(updated.getLockedBy());
         assertEquals(ResourceOrder.DATE_CREATED_ASC.name(),
             updated.getSortOrder());
-        assertEquals(page1.getId(), list.get(0).getId());
-        assertEquals(page2.getId(), list.get(1).getId());
-        assertEquals(page3.getId(), list.get(2).getId());
+        assertEquals(page1.getId(), list.getElements().get(0).getId());
+        assertEquals(page2.getId(), list.getElements().get(1).getId());
+        assertEquals(page3.getId(), list.getElements().get(2).getId());
     }
 
 
@@ -246,7 +256,16 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
         // ACT
         try {
-            getFolders().getChildren(folder.getId());
+            final PagedCollection<ResourceSummary> list =
+                getCommands().list(folder.getId(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    "name",
+                    SortOrder.ASC,
+                    1,
+                    1000);
             fail();
 
         // ASSERT
