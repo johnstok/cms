@@ -26,7 +26,6 @@
  */
 package ccc.tests.acceptance;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
@@ -41,7 +40,9 @@ import ccc.api.core.User;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ACL;
 import ccc.api.types.Duration;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.ResourceName;
+import ccc.api.types.SortOrder;
 import ccc.api.types.ACL.Entry;
 
 
@@ -125,9 +126,18 @@ public class ResourceAcceptanceTest
 
         // ASSERT
         final ResourceSummary content = getCommands().resourceForPath("");
-        final Collection<ResourceSummary> children =
-            getFolders().getChildren(content.getId());
+        final PagedCollection<ResourceSummary> children =
+            getCommands().list(content.getId(),
+                null,
+                null,
+                null,
+                null,
+                "name",
+                SortOrder.ASC,
+                1,
+                1000);
         assertNotNull(children);
+        assertNotNull(children.getElements());
 
     }
 
