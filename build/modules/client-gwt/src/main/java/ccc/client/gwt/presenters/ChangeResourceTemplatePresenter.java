@@ -28,6 +28,7 @@ package ccc.client.gwt.presenters;
 
 import java.util.Collection;
 
+import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
@@ -85,10 +86,10 @@ public class ChangeResourceTemplatePresenter
     /** {@inheritDoc} */
     @Override
     public void save() {
-        new UpdateResourceTemplateAction(
-            getModel().getId(),
-            getView().getSelectedTemplate())
-        .execute();
+        final Resource r = new Resource();
+        r.setId(getModel().getId());
+        r.setTemplate(getView().getSelectedTemplate());
+        new UpdateResourceTemplateAction(r).execute();
     }
 
 
