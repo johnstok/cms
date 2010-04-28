@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.Resource;
 import ccc.api.types.Duration;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -171,10 +172,11 @@ public class EditCacheDialog extends AbstractEditDialog {
                     updatedDs = new Duration(days, hours, minutes, seconds);
                 }
 
-                new UpdateCacheDurationAction(
-                    _item.getId(),
-                    updatedDs
-                ){
+                final Resource r = new Resource();
+                r.setId(_item.getId());
+                r.setCacheDuration(updatedDs);
+
+                new UpdateCacheDurationAction(r){
                     @Override protected void onNoContent(final Response r) {
                         hide();
                     }
