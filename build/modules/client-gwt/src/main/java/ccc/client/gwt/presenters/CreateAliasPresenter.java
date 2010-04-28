@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.presenters;
 
+import ccc.api.core.Alias;
+import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
@@ -106,11 +108,12 @@ public class CreateAliasPresenter
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                new CreateAliasAction(
-                    getView().getParentId(),
-                    getView().getAliasName(),
-                    getModel().getId())
-                .execute();
+                final Alias a = new Alias();
+                a.setParent(getView().getParentId());
+                a.setName(new ResourceName(getView().getAliasName()));
+                a.setTargetId(getModel().getId());
+
+                new CreateAliasAction(a).execute();
             }
         };
     }

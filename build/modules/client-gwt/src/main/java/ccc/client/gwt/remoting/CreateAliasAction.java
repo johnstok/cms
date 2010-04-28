@@ -26,8 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
+import ccc.api.core.Alias;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -42,31 +41,22 @@ public final class CreateAliasAction
     extends
         RemotingAction {
 
-    private final UUID _parentId;
-    private final String _aliasName;
-    private final UUID _targetId;
+    private final Alias _alias;
 
 
     /**
      * Constructor.
      *
-     * @param parentId The id of the alias' parent folder.
-     * @param aliasName The name of the alias.
-     * @param targetId The id of the target resource.
+     * @param alias The new alias to create.
      */
-    public CreateAliasAction(final UUID parentId,
-                              final String aliasName,
-                              final UUID targetId) {
-        _parentId = parentId;
-        _aliasName = aliasName;
-        _targetId = targetId;
+    public CreateAliasAction(final Alias alias) {
+        _alias = alias;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
-        return ResourceSummaryModelData.createAlias(
-            _parentId, _aliasName, _targetId);
+        return ResourceSummaryModelData.createAlias(_alias);
     }
 }

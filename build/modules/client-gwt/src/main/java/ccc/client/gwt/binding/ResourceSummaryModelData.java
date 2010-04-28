@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Alias;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
@@ -599,21 +600,15 @@ public class ResourceSummaryModelData
     /**
      * Create a new alias.
      *
-     * @param parentId
-     * @param aliasName
-     * @param targetId
+     * @param alias The alias to create.
      *
      * @return The HTTP request to create an alias.
      */
-    public static Request createAlias(final UUID parentId,
-                                      final String aliasName,
-                                      final UUID targetId) {
+    public static Request createAlias(final Alias alias) {
         final String path = "api/secure/aliases";
 
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, parentId);
-        json.set(JsonKeys.NAME, aliasName);
-        json.set(JsonKeys.TARGET_ID, targetId);
+        alias.toJson(json);
 
         return
             new Request(
