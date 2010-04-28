@@ -196,23 +196,6 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getChildren(final UUID folderId) {
-        checkPermission(RESOURCE_READ);
-
-        final FolderEntity f =
-            getRepoFactory()
-                .createResourceRepository()
-                .find(FolderEntity.class, folderId);
-
-        checkRead(f);
-
-        return ResourceEntity.mapResources(f.getEntries());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
     public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId) {
         checkPermission(RESOURCE_READ);
 

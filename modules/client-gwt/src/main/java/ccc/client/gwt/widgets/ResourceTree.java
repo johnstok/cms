@@ -35,7 +35,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.remoting.GetChildrenAction;
+import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
@@ -82,8 +82,9 @@ public class ResourceTree extends AbstractResourceTree {
                     ? _root.getId()
                     : ((ResourceSummaryModelData) loadConfig).getId();
 
-                    new GetChildrenAction(_globals.userActions().loadData(),
-                        parentId) {
+                    new GetChildrenPagedAction(
+                        parentId,
+                        1,1000,"name","ASC") {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
@@ -92,7 +93,8 @@ public class ResourceTree extends AbstractResourceTree {
 
                         /** {@inheritDoc} */
                         @Override protected void execute(
-                                   final Collection<ResourceSummary> children) {
+                                   final Collection<ResourceSummary> children,
+                                   final int count) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }
