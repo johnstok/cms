@@ -86,17 +86,6 @@ public interface Folders {
         @PathParam("id") UUID folderId);
 
     /**
-     * List all of the children of the specified folder in manual order.
-     *
-     * @param folderId The folder.
-     *
-     * @return The folder's of children.
-     */
-    @GET @Path("/{id}/children-manual-order")
-    Collection<ResourceSummary> getChildrenManualOrder(
-        @PathParam("id") UUID folderId);
-
-    /**
      * Query whether given folder has a resource with given name.
      *
      * @param folderId The id of the folder to check.

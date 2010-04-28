@@ -95,18 +95,6 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildrenManualOrder(
-                                                        final UUID folderId) {
-        try {
-            return _delegate.getChildrenManualOrder(folderId);
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
         try {
             return _delegate.getFolderChildren(folderId);
