@@ -26,14 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.types.DBC;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -48,24 +46,16 @@ public abstract class CreateTemplateAction
     extends
         RemotingAction {
 
-    private final UUID _parentFolder;
-    private final String _resourceName;
     private final Template _delta;
 
     /**
      * Constructor.
      *
-     * @param parentFolder The folder in which the template will be created.
-     * @param resourceName The name of the template.
      * @param delta The template's details.
      */
-    public CreateTemplateAction(final UUID parentFolder,
-                                 final String resourceName,
-                                 final Template delta) {
+    public CreateTemplateAction(final Template delta) {
         super(GLOBALS.uiConstants().createTemplate(), RequestBuilder.POST);
-        _parentFolder = parentFolder;
-        _resourceName = resourceName;
-        _delta = delta;
+        _delta = DBC.require().notNull(delta);
     }
 
     /** {@inheritDoc} */
@@ -85,11 +75,7 @@ public abstract class CreateTemplateAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, _parentFolder);
-        json.set(JsonKeys.DELTA, _delta);
-        json.set(JsonKeys.TITLE, _resourceName);
-        json.set(JsonKeys.DESCRIPTION, "");
-        json.set(JsonKeys.NAME, _resourceName);
+        _delta.toJson(json);
         return json.toString();
     }
 

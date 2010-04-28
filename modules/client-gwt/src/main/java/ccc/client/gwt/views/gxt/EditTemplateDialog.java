@@ -32,6 +32,7 @@ import java.util.UUID;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.DialogMode;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -295,10 +296,13 @@ public class EditTemplateDialog
                 final Template delta = model();
                 switch (_mode) {
                     case CREATE:
-                        new CreateTemplateAction(
-                            _parentFolderId,
-                            _name.getValue(),
-                            delta){
+
+                        delta.setTitle(_name.getValue());
+                        delta.setDescription(_name.getValue());
+                        delta.setName(new ResourceName(_name.getValue()));
+                        delta.setParent(_parentFolderId);
+
+                        new CreateTemplateAction(delta){
                                 @Override protected void execute(
                                              final ResourceSummary template) {
                                     _ssm.create(
@@ -308,7 +312,10 @@ public class EditTemplateDialog
                             }.execute();
                         break;
                     case UPDATE:
-                        new UpdateTemplateAction(_id, delta) {
+
+                        delta.setId(_id);
+
+                        new UpdateTemplateAction(delta) {
                             /** {@inheritDoc} */
                             @Override protected void onNoContent(
                                                      final Response response) {
