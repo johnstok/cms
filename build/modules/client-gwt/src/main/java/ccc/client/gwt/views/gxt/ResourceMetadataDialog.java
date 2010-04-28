@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Collection;
 import java.util.Map;
 
+import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -141,12 +142,14 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
                 final String title = _title.getValue();
                 final String description = _description.getValue();
 
-                new UpdateMetadataAction(
-                    _resource.getId(),
-                    _title.getValue(),
-                    _description.getValue(),
-                    tags,
-                    metadata) {
+                final Resource r = new Resource();
+                r.setId(_resource.getId());
+                r.setTitle(title);
+                r.setDescription(description);
+                r.setMetadata(metadata);
+                r.setTags(ResourceSummaryModelData.parseTagString(tags));
+
+                new UpdateMetadataAction(r) {
                         /** {@inheritDoc} */
                         @Override protected void onNoContent(
                                                      final Response response) {

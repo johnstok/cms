@@ -464,18 +464,29 @@ public class ResourceSummaryModelData
      * @param tags The tags to set.
      */
     public void setTags(final String tags) {
+        _rs.setTags(parseTagString(tags));
+    }
+
+    /**
+     * Parse a comma separated string to produce a set of tags.
+     *
+     * @param tags The string to parse.
+     *
+     * @return The set of tags.
+     */
+    public static Set<String> parseTagString(final String tags) {
         DBC.require().notNull(tags);
         DBC.require().containsNoBrackets(tags);
 
         final String[] tagArray = tags.split(",");
-        final Set<String> cleaned = new HashSet<String>();
+        final Set<String> parsed = new HashSet<String>();
         for(final String tag : tagArray) {
             if (tag.trim().length() < 1) {
                 continue;
             }
-            cleaned.add(tag.trim());
+            parsed.add(tag.trim());
         }
-        _rs.setTags(cleaned);
+        return parsed;
     }
 
     /**
