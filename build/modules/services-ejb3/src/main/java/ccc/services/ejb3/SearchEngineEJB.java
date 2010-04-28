@@ -292,16 +292,4 @@ public class SearchEngineEJB  implements SearchEngine {
         return indexPathValue;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
-    public SearchResult multiFieldFind(final String searchTerms,
-                                       final String fields,
-                                       final int resultCount,
-                                       final int page) {
-        fields.split(",");
-
-        return createIndex().multiFieldFind(searchTerms, fields.split(","), resultCount, page);
-    }
 }

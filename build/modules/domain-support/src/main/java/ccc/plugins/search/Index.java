@@ -56,19 +56,5 @@ public interface Index {
      */
     SearchResult similar(String uuid, int nofOfResultsPerPage, int pageNo);
 
-    /**
-     * Find the results that match the specified search terms in specified
-     * fields.
-     *
-     * @param searchTerms The terms to match.
-     * @param fields The fields to search.
-     * @param resultCount The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
-     * @return The SearchResult object with set entities and total count.
-     */
-    SearchResult multiFieldFind(final String searchTerms,
-                                String[] fields,
-                                int nofOfResultsPerPage,
-                                int pageNo);
 
 }

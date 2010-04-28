@@ -422,39 +422,4 @@ public class SimpleLuceneFS
         }
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public SearchResult multiFieldFind(final String searchTerms,
-                                       final String[] fields,
-                                       final int nofOfResultsPerPage,
-                                       final int pageNo) {
-
-        if (searchTerms == null || searchTerms.trim().equals("")) {
-            return
-            new SearchResult(
-                new HashSet<UUID>(),
-                0,
-                nofOfResultsPerPage,
-                searchTerms,
-                pageNo);
-        }
-
-        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
-        final CapturingHandler capturingHandler =
-            new CapturingHandler(nofOfResultsPerPage, pageNo);
-
-        multiFieldFind(
-            searchTerms,
-            fields,
-            maxHits,
-            capturingHandler);
-
-        return new SearchResult(
-            capturingHandler.getHits(),
-            capturingHandler.getTotalResultsCount(),
-            nofOfResultsPerPage,
-            searchTerms,
-            pageNo);
-    }
 }
