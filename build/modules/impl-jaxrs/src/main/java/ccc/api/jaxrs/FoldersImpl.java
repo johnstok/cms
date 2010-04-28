@@ -72,17 +72,6 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getChildren(final UUID folderId) {
-        try {
-            return _delegate.getChildren(folderId);
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Collection<ResourceSummary> getAccessibleChildren(
                                                           final UUID folderId) {
         try {

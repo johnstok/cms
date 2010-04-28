@@ -28,7 +28,6 @@ package ccc.migration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,9 @@ import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.Paragraph;
+import ccc.api.types.SortOrder;
 import ccc.cli.Migrate.Options;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;
@@ -165,9 +166,18 @@ public class Migrations extends BaseMigrations {
         getResources().lock(UUID.fromString(resource.getId().toString()));
         getResources().publish(resource.getId());
         if ("FOLDER".equals(resource.getType().name())) {
-            final Collection<ResourceSummary> children =
-                getFolders().getChildren(resource.getId());
-            for (final ResourceSummary child : children) {
+            final PagedCollection<ResourceSummary> children =
+                getResources().list(
+                    resource.getId(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    "name",
+                    SortOrder.ASC,
+                    1,
+                    1000);
+            for (final ResourceSummary child : children.getElements()) {
                 publishRecursive(child);
             }
         }

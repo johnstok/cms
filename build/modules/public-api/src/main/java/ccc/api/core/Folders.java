@@ -62,16 +62,6 @@ public interface Folders {
     Collection<ResourceSummary> getFolderChildren(
         @PathParam("id") UUID folderId);
 
-    /**
-     * List all of the children of the specified folder.
-     *
-     * @param folderId The folder.
-     *
-     * @return The folder's of children.
-     */
-    @GET @Path("/{id}/children")
-    Collection<ResourceSummary> getChildren(
-        @PathParam("id") UUID folderId);
 
     /**
      * List all of the children of the specified folder which are  accessible
