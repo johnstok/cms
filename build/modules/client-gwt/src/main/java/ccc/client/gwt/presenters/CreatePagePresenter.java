@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.presenters;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -94,7 +93,9 @@ public class CreatePagePresenter
         if (vr.isValid()) {
 
             final Set<Paragraph> paragraphs = getView().getParagraphs();
-                new HashSet<Paragraph>();
+            final Page p = Page.delta(paragraphs);
+            p.setTemplate(
+                getView().getSelectedTemplate().getTemplate().getId());
 
             Validate.callTo(createPage(paragraphs))
                 .check(Validations.notEmpty(getView().getName()))
@@ -105,8 +106,7 @@ public class CreatePagePresenter
                 .check(Validations.uniqueResourceName(
                     getModel(),  getView().getName()))
                 .stopIfInError()
-                .check(Validations.validateFields(paragraphs,
-                    getView().getDefinition()))
+                .check(Validations.validateFields(p))
                 .callMethodOr(Validations.reportErrors());
         } else {
             getView().alert(vr.getErrorText());

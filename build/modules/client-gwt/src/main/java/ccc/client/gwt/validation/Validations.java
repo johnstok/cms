@@ -27,11 +27,10 @@
 package ccc.client.gwt.validation;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Page;
 import ccc.api.types.EmailAddress;
-import ccc.api.types.Paragraph;
 import ccc.api.types.Password;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
@@ -307,15 +306,13 @@ public final class Validations {
     /**
      * Validates page fields against template regular expressions.
      *
-     * @param delta ParagraphDelta of the paragraph fields to validate.
-     * @param definition Template definition.
+     * @param page The page to validate.
      * @return The Validator
      */
-    public static Validator validateFields(final Set<Paragraph> delta,
-                                           final String definition) {
+    public static Validator validateFields(final Page page) {
         return new Validator() {
             public void validate(final Validate validate) {
-                new ValidateFieldAction(delta, definition) {
+                new ValidateFieldAction(page) {
                     /** {@inheritDoc} */
                     @Override
                     protected void onOK(final Response response) {

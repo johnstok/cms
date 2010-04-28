@@ -26,12 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.Set;
-
-import ccc.api.types.Paragraph;
+import ccc.api.core.Page;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -45,20 +42,17 @@ public class ValidateFieldAction
     extends
         RemotingAction {
 
-    private final String _definition;
-    private final Set<Paragraph> _paragraphs;
+    private final Page _page;
 
 
     /**
      * Constructor.
-     * @param definition Template definition used to validate the paragraphs.
-     * @param paragraphs The paragraphs to validate.
+     *
+     * @param page The page to validate.
      */
-    public ValidateFieldAction(final Set<Paragraph> paragraphs,
-                                final String definition) {
+    public ValidateFieldAction(final Page page) {
         super(USER_ACTIONS.validatePageFields(), RequestBuilder.POST);
-        _definition = definition;
-        _paragraphs = paragraphs;
+        _page = page;
     }
 
 
@@ -73,8 +67,7 @@ public class ValidateFieldAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.DEFINITION, _definition);
-        json.set(JsonKeys.PARAGRAPHS, _paragraphs);
+        _page.toJson(json);
         return json.toString();
     }
 }
