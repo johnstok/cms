@@ -26,12 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
-import ccc.api.types.Duration;
+import ccc.api.core.Resource;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -45,26 +42,23 @@ public abstract class UpdateCacheDurationAction
     extends
         RemotingAction {
 
-    private final UUID _resourceId;
-    private final Duration _duration;
+    private final Resource _resource;
 
 
     /**
      * Constructor.
-     * @param duration The new cache duration.
-     * @param resourceId The resource to update.
+     *
+     * @param resource The resource to update.
      */
-    public UpdateCacheDurationAction(final UUID resourceId,
-                                      final Duration duration) {
+    public UpdateCacheDurationAction(final Resource resource) {
         super(GLOBALS.uiConstants().editCacheDuration(), RequestBuilder.POST);
-        _resourceId = resourceId;
-        _duration = duration;
+        _resource = resource;
     }
 
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return "/resources/"+_resourceId+"/duration";
+        return "/resources/"+_resource.getId()+"/duration";
     }
 
 
@@ -72,9 +66,7 @@ public abstract class UpdateCacheDurationAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.CACHE_DURATION, _duration);
-        json.set(JsonKeys.REVISION, (String) null);
-        json.set(JsonKeys.TEMPLATE_ID, (String) null);
+        _resource.toJson(json);
         return json.toString();
     }
 }
