@@ -80,18 +80,4 @@ public interface SearchEngine extends Scheduler {
     @GET @Path("/index")
     void index();
 
-    /**
-     * Find the entities that match the specified search terms..
-     *
-     * @param searchTerms The terms to match.
-     * @param noOfResultsPerPage The number of results to return.
-     * @param page The page of results to return (first page has index of 0).
-     * @return The SearchResult object with set entities and total count.
-     */
-    @GET @Path("/multifieldfind")
-    SearchResult multiFieldFind(
-              @QueryParam("terms") final String searchTerms,
-              @QueryParam("fields") final String fields,
-              @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
-              @QueryParam("page") @DefaultValue("1") int page);
 }
