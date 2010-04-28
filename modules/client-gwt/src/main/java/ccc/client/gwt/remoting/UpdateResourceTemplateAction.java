@@ -26,14 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
+import ccc.api.core.Resource;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.ResourceTemplateChanged;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
@@ -48,27 +46,24 @@ public class UpdateResourceTemplateAction
     extends
         RemotingAction {
 
-    private final UUID _resourceId;
-    private final UUID _templateId;
+    private final Resource _resource;
 
 
     /**
      * Constructor.
-     * @param templateId The template to set.
-     * @param resourceId The resource to update.
+     *
+     * @param resource The resource to update.
      */
-    public UpdateResourceTemplateAction(final UUID resourceId,
-                                         final UUID templateId) {
+    public UpdateResourceTemplateAction(final Resource resource) {
         super(UI_CONSTANTS.chooseTemplate(), RequestBuilder.POST);
-        _resourceId = resourceId;
-        _templateId = templateId;
+        _resource = resource;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/resources/"+_resourceId+"/template";
+        return "/resources/"+_resource.getId()+"/template";
     }
 
 
@@ -76,9 +71,7 @@ public class UpdateResourceTemplateAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        json.set(JsonKeys.REVISION, (String) null);
-        json.set(JsonKeys.CACHE_DURATION, (String) null);
-        json.set(JsonKeys.TEMPLATE_ID, _templateId);
+        _resource.toJson(json);
         return json.toString();
     }
 
@@ -87,6 +80,7 @@ public class UpdateResourceTemplateAction
     @Override
     protected void onNoContent(final Response response) {
         ContentCreator.EVENT_BUS.fireEvent(
-            new ResourceTemplateChanged(_resourceId, _templateId));
+            new ResourceTemplateChanged(
+                _resource.getId(), _resource.getTemplate()));
     }
 }
