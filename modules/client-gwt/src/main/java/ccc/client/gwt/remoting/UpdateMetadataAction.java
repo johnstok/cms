@@ -26,9 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.Map;
-import java.util.UUID;
-
+import ccc.api.core.Resource;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -45,40 +43,24 @@ public class UpdateMetadataAction
     extends
         RemotingAction {
 
-    private final UUID _resourceId;
-    private final String _title;
-    private final String _description;
-    private final String _tags;
-    private final Map<String, String> _metadata;
+    private final Resource _resource;
 
 
     /**
      * Constructor.
      *
-     * @param metadata Key value pairs.
-     * @param tags Tags for a resource.
-     * @param description The resource's description.
-     * @param title The resource's title.
-     * @param resourceId The resource's id.
+     * @param resource The resource to update.
      */
-    public UpdateMetadataAction(final UUID resourceId,
-                                 final String title,
-                                 final String description,
-                                 final String tags,
-                                 final Map<String, String> metadata) {
+    public UpdateMetadataAction(final Resource resource) {
         super(UI_CONSTANTS.updateTags(), RequestBuilder.POST);
-        _resourceId = resourceId;
-        _title = title;
-        _description = description;
-        _tags = tags;
-        _metadata = metadata;
+        _resource = resource;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/resources/"+_resourceId+"/metadata";
+        return "/resources/"+_resource.getId()+"/metadata";
     }
 
 
@@ -86,10 +68,7 @@ public class UpdateMetadataAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set("title", _title);
-        json.set("description", _description);
-        json.set("tags", _tags);
-        json.set("metadata", _metadata);
+        _resource.toJson(json);
         return json.toString();
     }
 }
