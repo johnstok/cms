@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.binding.DataBinding;
@@ -297,11 +298,12 @@ AbstractEditDialog {
             @Override public void componentSelected(final ButtonEvent ce) {
                 final ResourceSummaryModelData md =
                     _selectionModel.tableSelection();
+
                 final String order = _sortOrder.getValue().<String>get("value");
                 final UUID indexPageId =
                     _indexPage.getValue().<UUID>get("value");
-                final List<String> orderList = new ArrayList<String>();
 
+                final List<String> orderList = new ArrayList<String>();
                 if (order.equals(MANUAL.name())) {
                     final List<ResourceSummaryModelData> models =
                         _grid.getStore().getModels();
@@ -310,11 +312,13 @@ AbstractEditDialog {
                     }
                 }
 
-                new UpdateFolderAction(
-                    md.getId(),
-                    order,
-                    indexPageId,
-                    orderList) {
+                final Folder f = new Folder();
+                f.setId(md.getId());
+                f.setSortOrder(order);
+                f.setIndexPage(indexPageId);
+                f.setSortList(orderList);
+
+                new UpdateFolderAction(f) {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(final Response r) {
                         md.setIndexPageId(indexPageId);
