@@ -26,13 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.List;
-import java.util.UUID;
-
+import ccc.api.core.Folder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -46,36 +43,24 @@ public class UpdateFolderAction
     extends
         RemotingAction {
 
-    private final UUID _id;
-    private final String _sortOrder;
-    private final UUID _indexPageId;
-    private final List<String> _sortList;
+    private final Folder _folder;
 
 
     /**
      * Constructor.
      *
-     * @param indexPageId The id of the fodler's index page.
-     * @param sortOrder The sort order for the folder.
-     * @param id The folder's id.
-     * @param sortList The manual order of the resources in the folder.
+     * @param folder The folder to update.
      */
-    public UpdateFolderAction(final UUID id,
-                               final String sortOrder,
-                               final UUID indexPageId,
-                               final List<String> sortList) {
+    public UpdateFolderAction(final Folder folder) {
         super(UI_CONSTANTS.folderSortOrder(), RequestBuilder.POST);
-        _id = id;
-        _sortOrder = sortOrder;
-        _indexPageId = indexPageId;
-        _sortList = sortList;
+        _folder = folder;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/folders/"+_id;
+        return "/folders/"+_folder.getId();
     }
 
 
@@ -83,9 +68,7 @@ public class UpdateFolderAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        json.set(JsonKeys.SORT_ORDER, _sortOrder);
-        json.set(JsonKeys.INDEX_PAGE_ID, _indexPageId);
-        json.setStrings(JsonKeys.SORT_LIST, _sortList);
+        _folder.toJson(json);
         return json.toString();
     }
 }
