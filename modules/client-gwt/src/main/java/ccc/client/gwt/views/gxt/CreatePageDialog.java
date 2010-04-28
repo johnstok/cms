@@ -45,7 +45,6 @@ import ccc.client.gwt.views.CreatePage;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 
-import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -97,7 +96,7 @@ public class CreatePageDialog
     private static final int NAME_COLUMN_WIDTH = 260;
 
     private final ContentPanel _firstWizardPage = new ContentPanel();
-    private EditPagePanel _secondWizardPage = new EditPagePanel();
+    private EditPagePanel _secondWizardPage = new EditPagePanel(null);
     private final ContentPanel _thirdWizardPage = new ContentPanel();
 
     private final ListStore<TemplateSummaryModelData> _templatesStore =
@@ -150,7 +149,7 @@ public class CreatePageDialog
                 final TemplateSummaryModelData t =
                     (TemplateSummaryModelData)
                         gridEvent.getGrid().getSelectionModel().getSelectedItem();
-                updateSecondPage(t.getDefinition(), t.getDescription());
+                updateSecondPage(t.getTemplate());
             }
         };
         _templateGrid.addListener(Events.RowClick, gridEventlistener);
@@ -188,7 +187,6 @@ public class CreatePageDialog
         _firstWizardPage.add(_descriptionPanel, centerData);
         addCard(_firstWizardPage);
 
-        _secondWizardPage.setScrollMode(Style.Scroll.AUTOY);
         addCard(_secondWizardPage);
 
         _thirdWizardPage.setBorders(false);
@@ -241,7 +239,7 @@ public class CreatePageDialog
                     setValue(Boolean.TRUE);
                     _templateGrid.disable();
                     _templateGrid.getSelectionModel().deselectAll();
-                    updateSecondPage(t.getDefinition(), t.getDescription());
+                    updateSecondPage(t);
                 }
 
             }.execute();
@@ -252,8 +250,7 @@ public class CreatePageDialog
                         if (null != _t2) {
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            updateSecondPage(
-                                _t2.getDefinition(), _t2.getDescription());
+                            updateSecondPage(_t2);
                         }
                     } else {
                         _secondWizardPage.removeAll();
@@ -276,14 +273,11 @@ public class CreatePageDialog
         };
     }
 
-    private void updateSecondPage(final String definition,
-                                  final String description) {
-        final EditPagePanel second = new EditPagePanel();
-        second.createFields(definition);
-        second.setScrollMode(Style.Scroll.AUTOY);
+    private void updateSecondPage(final Template t) {
+        final EditPagePanel second = new EditPagePanel(t);
         replaceCard(_secondWizardPage, second);
         _secondWizardPage = second;
-        _description.setText(description);
+        _description.setText(t.getDescription());
         refresh();
     }
 
@@ -318,12 +312,6 @@ public class CreatePageDialog
     @Override
     public TemplateSummaryModelData getSelectedTemplate() {
         return _templateGrid.getSelectionModel().getSelectedItem();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getDefinition() {
-        return _secondWizardPage.definition();
     }
 
     /** {@inheritDoc} */

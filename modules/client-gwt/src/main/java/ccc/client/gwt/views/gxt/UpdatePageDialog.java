@@ -44,7 +44,6 @@ import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 import ccc.client.gwt.widgets.ResourceTable;
 
-import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -65,7 +64,7 @@ public class UpdatePageDialog
     private final Set<Paragraph> _paras;
     private final Template _template;
     private final ResourceTable _rt;
-    private final EditPagePanel _panel = new EditPagePanel();
+    private final EditPagePanel _panel;
     private int _fckReadyCount = 0;
 
     private Button _saveDraftButton;
@@ -92,6 +91,7 @@ public class UpdatePageDialog
         _paras = new HashSet<Paragraph>(page.getParagraphs());
         _template = template;
         _pageId = pageId;
+        _panel = new EditPagePanel(_template);
 
         setLayout(new FitLayout());
 
@@ -122,8 +122,6 @@ public class UpdatePageDialog
     }
 
     private void drawGUI(final String pageName) {
-        _panel.setScrollMode(Style.Scroll.AUTOY);
-        _panel.createFields(_template.getDefinition());
         _panel.populateFields(_paras, pageName);
         _panel.layout();
 
@@ -155,11 +153,11 @@ public class UpdatePageDialog
     private SelectionListener<ButtonEvent> applyNowAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final Set<Paragraph> paragraphs = getParagraphs();
+                final Page p = Page.delta(getParagraphs());
+                p.setTemplate(_panel.template().getId());
 
                 Validate.callTo(updatePage())
-                    .check(Validations.validateFields(
-                        paragraphs, _panel.definition()))
+                    .check(Validations.validateFields(p))
                     .callMethodOr(Validations.reportErrors());
             }
         };
@@ -168,11 +166,11 @@ public class UpdatePageDialog
     private SelectionListener<ButtonEvent> saveDraftAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                final Set<Paragraph> paragraphs = getParagraphs();
+                final Page p = Page.delta(getParagraphs());
+                p.setTemplate(_panel.template().getId());
 
                 Validate.callTo(saveDraft())
-                    .check(Validations.validateFields(
-                        paragraphs, _panel.definition()))
+                    .check(Validations.validateFields(p))
                     .callMethodOr(Validations.reportErrors());
             }
         };

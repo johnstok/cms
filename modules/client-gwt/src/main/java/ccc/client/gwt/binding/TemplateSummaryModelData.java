@@ -177,4 +177,13 @@ public class TemplateSummaryModelData
     public String getName() {
         return _ts.getName().toString();
     }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the delegate template.
+     */
+    public Template getTemplate() {
+        return _ts;
+    }
 }

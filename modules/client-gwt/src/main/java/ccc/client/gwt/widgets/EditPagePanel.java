@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
@@ -44,6 +45,7 @@ import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.widgets.PageElement.FieldType;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -77,24 +79,29 @@ import com.google.gwt.xml.client.XMLParser;
  * @author Civic Computing Ltd.
  */
 public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
+
     private static final int LABEL_LENGTH = 13;
     private TextField<String> _name = new TextField<String>();
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
-    private String _definition;
+    private Template _template;
     private final Globals _globals = new GlobalsImpl();
     private int _fckCount = 0;
+
 
     /**
      * Constructor.
      *
+     * @param template The template for the page.
      */
-    public EditPagePanel() {
-        super();
+    public EditPagePanel(final Template template) {
+        _template = template;
         setLayout(new FormLayout());
         setBorders(false);
         setBodyBorder(false);
         setHeaderVisible(false);
+        if (null!=template) { createFields(template.getDefinition()); }
+        setScrollMode(Scroll.AUTOY);
     }
 
     /**
@@ -421,8 +428,8 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      *
      * @return The definition
      */
-    public String definition() {
-        return _definition;
+    public Template template() {
+        return _template;
     }
 
     /**
@@ -430,8 +437,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
      *
      * @param definition XML of the definition.
      */
-    public void createFields(final String definition) {
-        _definition = definition;
+    private void createFields(final String definition) {
         if (definition == null || definition.trim().equals("")) {
             return;
         }

@@ -61,13 +61,6 @@ public interface CreatePage extends View<Editable>, Validatable {
     /**
      * Accessor.
      *
-     * @return The definition.
-     */
-    String getDefinition();
-
-    /**
-     * Accessor.
-     *
      * @return The name.
      */
     TextField<String> getName();
