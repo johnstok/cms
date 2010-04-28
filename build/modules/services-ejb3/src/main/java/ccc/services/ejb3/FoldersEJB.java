@@ -143,27 +143,6 @@ public class FoldersEJB
 
     /** {@inheritDoc} */
     @Override
-    @RolesAllowed(FOLDER_READ)
-    public Collection<ResourceSummary> getChildrenManualOrder(
-                                                        final UUID folderId) {
-        final FolderEntity f =
-            getRepoFactory()
-                .createResourceRepository()
-                .find(FolderEntity.class, folderId);
-
-        checkRead(f);
-
-        if (f != null) {
-            final List<ResourceEntity> list = f.getEntries();
-            Sorter.sort(list, ResourceOrder.MANUAL);
-            return ResourceEntity.mapResources(list);
-        }
-        return ResourceEntity.mapResources(new ArrayList<ResourceEntity>());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     @PermitAll
     public Boolean nameExistsInFolder(final UUID folderId, final String name) {
         checkPermission(FOLDER_READ);

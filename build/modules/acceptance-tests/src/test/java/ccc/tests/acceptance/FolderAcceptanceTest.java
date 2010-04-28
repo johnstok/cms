@@ -27,7 +27,6 @@
 package ccc.tests.acceptance;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -37,9 +36,11 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ACL;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
+import ccc.api.types.SortOrder;
 import ccc.api.types.ACL.Entry;
 
 
@@ -136,10 +137,10 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         getFolders().updateFolder(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
 
-        final Collection<ResourceSummary> children =
-            getFolders().getChildrenManualOrder(folder.getId());
+        final PagedCollection<ResourceSummary> children =
+            getCommands().list(folder.getId(), null, null, null, null, "manual", SortOrder.ASC, 1, 100);
         final List<ResourceSummary> list =
-            new ArrayList<ResourceSummary>(children);
+            new ArrayList<ResourceSummary>(children.getElements());
 
         // ASSERT
         assertNull(folder.getLockedBy());
