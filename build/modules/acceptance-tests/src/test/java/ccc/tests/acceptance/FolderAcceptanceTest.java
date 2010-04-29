@@ -76,8 +76,17 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
                 new Folder(testFolder.getId(), new ResourceName(cn2)));
 
         // ACT
-        final List<ResourceSummary> folders = new ArrayList<ResourceSummary>(
-            getFolders().getFolderChildren(testFolder.getId()));
+        final List<ResourceSummary> folders =
+            getCommands().list(testFolder.getId(),
+                null,
+                null,
+                null,
+                null,
+                "folder",
+                "name",
+                SortOrder.ASC,
+                1,
+                1000).getElements();
 
         // ASSERT
         assertEquals(2, folders.size());
@@ -138,7 +147,16 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary updated = getCommands().resource(folder.getId());
 
         final PagedCollection<ResourceSummary> children =
-            getCommands().list(folder.getId(), null, null, null, null, "manual", SortOrder.ASC, 1, 100);
+            getCommands().list(folder.getId(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                "manual",
+                SortOrder.ASC,
+                1,
+                100);
         final List<ResourceSummary> list =
             new ArrayList<ResourceSummary>(children.getElements());
 
@@ -188,7 +206,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
                 null,
                 null,
                 null,
-                "name",
+                null,
+                null,
                 SortOrder.ASC,
                 1,
                 1000);
@@ -258,6 +277,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         try {
             final PagedCollection<ResourceSummary> list =
                 getCommands().list(folder.getId(),
+                    null,
                     null,
                     null,
                     null,
