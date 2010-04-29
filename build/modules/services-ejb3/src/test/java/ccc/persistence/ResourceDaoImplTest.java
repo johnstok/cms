@@ -28,9 +28,7 @@ package ccc.persistence;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -123,24 +121,24 @@ public class ResourceDaoImplTest
         assertEquals(1, page.currentRevision().getParagraphs().size());
     }
 
-
-    /**
-     * Test.
-     */
-    public void testQueryAllLockedResources() {
-
-        // ARRANGE
-        expect(_repository.list(QueryNames.LOCKED_RESOURCES, ResourceEntity.class))
-            .andReturn(Collections.singletonList(_r));
-        replayAll();
-
-        // ACT
-        final List<ResourceEntity> locked = _rdao.locked();
-
-        // ASSERT
-        assertNotNull("Shouldn't be null.", locked);
-        verifyAll();
-    }
+//
+//    /**
+//     * Test.
+//     */
+//    public void testQueryAllLockedResources() {
+//
+//        // ARRANGE
+//        expect(_repository.list(QueryNames.LOCKED_RESOURCES, ResourceEntity.class))
+//            .andReturn(Collections.singletonList(_r));
+//        replayAll();
+//
+//        // ACT
+//        final List<ResourceEntity> locked = _rdao.listlocked();
+//
+//        // ASSERT
+//        assertNotNull("Shouldn't be null.", locked);
+//        verifyAll();
+//    }
 
 
     /**

@@ -44,6 +44,8 @@ public class ResourceCriteria implements Serializable {
     private Date _changedBefore = null;
     private String _mainmenu = null;
     private String _type = null;
+    private String _published = null;
+    private String _locked = null;
 
     /**
      * Constructor.
@@ -158,6 +160,53 @@ public class ResourceCriteria implements Serializable {
      */
     public String getMainmenu() {
         return _mainmenu;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the published.
+     */
+    public final String getPublished() {
+
+        return _published;
+    }
+
+
+
+    /**
+     * Mutator.
+     *
+     * @param published The published to set.
+     */
+    public final void setPublished(final String published) {
+
+        _published = published;
+    }
+
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the locked.
+     */
+    public final String getLocked() {
+
+        return _locked;
+    }
+
+
+
+    /**
+     * Mutator.
+     *
+     * @param locked The locked to set.
+     */
+    public final void setLocked(final String locked) {
+
+        _locked = locked;
     }
 
 }

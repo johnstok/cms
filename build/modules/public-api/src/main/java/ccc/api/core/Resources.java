@@ -60,11 +60,16 @@ public interface Resources {
 
 
     /**
-     * List existing resources.
+     * List existing resources. Leave field to null if not applicable.
      *
-     * @param tag Filter resources by tag. NULL will return all.
+     * @param parent Filter resources by parent.
+     * @param tag Filter resources by tag.
      * @param before Include only resources created before this date.
      * @param after Include only resources created after this date.
+     * @param mainMenu Filter resources by 'included in main menu'.
+     * @param type Filter resources by type.
+     * @param locked Filter resources by locked (true or null).
+     * @param published Filter resources by published (true or null).
      * @param sort The field results be sorted on.
      * @param order The order results be sorted in.
      * @param pageNo The page of results to return.
@@ -75,13 +80,15 @@ public interface Resources {
     @GET
     @Path("/list")
     PagedCollection<ResourceSummary> list(
-        @QueryParam("parent") UUID UUID,
+        @QueryParam("parent") UUID parent,
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
         @QueryParam("mainmenu") String mainMenu,
         @QueryParam("type") String type,
-        @QueryParam("sort") @DefaultValue("name") String sort,
+        @QueryParam("locked") String locked,
+        @QueryParam("published") String published,
+        @QueryParam("sort") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
@@ -118,15 +125,6 @@ public interface Resources {
      */
     @GET @Path("/{id}/path")
     String getAbsolutePath(@PathParam("id") UUID resourceId);
-
-
-    /**
-     * List all locked resources.
-     *
-     * @return The list of resources.
-     */
-    @GET @Path("/locked")
-    Collection<ResourceSummary> locked();
 
 
     /**

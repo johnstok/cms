@@ -49,12 +49,6 @@ import ccc.domain.TemplateEntity;
  */
 public interface ResourceRepository {
 
-    /**
-     * List all locked resources.
-     *
-     * @return The list of resources.
-     */
-    List<ResourceEntity> locked();
 
     /**
      * Retrieve the history of a resource.

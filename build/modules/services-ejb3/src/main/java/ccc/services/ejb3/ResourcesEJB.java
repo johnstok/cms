@@ -465,14 +465,6 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public Collection<ResourceSummary> locked() {
-        return ResourceEntity.mapResources(getResources().locked());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @RolesAllowed(RESOURCE_READ)
     public ACL acl(final UUID resourceId) {
         final ACL acl =
             getResources().find(ResourceEntity.class, resourceId).getAcl();
@@ -662,8 +654,10 @@ public class ResourcesEJB
         final String tag,
         final Long before,
         final Long after,
-        final String mainmenu,
+        final String mainMenu,
         final String type,
+        final String locked,
+        final String published,
         final String sort,
         final SortOrder order,
         final int pageNo,
@@ -693,8 +687,10 @@ public class ResourcesEJB
             (null==before)?null:new Date(before.longValue()));
         criteria.setChangedAfter(
             (null==after)?null:new Date(after.longValue()));
-        criteria.setMainmenu(mainmenu);
+        criteria.setMainmenu(mainMenu);
         criteria.setType(type);
+        criteria.setPublished(published);
+        criteria.setLocked(locked);
 
         final List<ResourceSummary> list = ResourceEntity.mapResources(
             filterAccessibleTo(u,
@@ -726,4 +722,5 @@ public class ResourcesEJB
     private ResourceRepository getResources() {
         return getRepoFactory().createResourceRepository();
     }
+
 }
