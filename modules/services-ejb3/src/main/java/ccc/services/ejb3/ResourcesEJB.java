@@ -44,8 +44,8 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.ResourceCriteria;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Revision;
@@ -663,6 +663,7 @@ public class ResourcesEJB
         final Long before,
         final Long after,
         final String mainmenu,
+        final String type,
         final String sort,
         final SortOrder order,
         final int pageNo,
@@ -693,6 +694,7 @@ public class ResourcesEJB
         criteria.setChangedAfter(
             (null==after)?null:new Date(after.longValue()));
         criteria.setMainmenu(mainmenu);
+        criteria.setType(type);
 
         final List<ResourceSummary> list = ResourceEntity.mapResources(
             filterAccessibleTo(u,

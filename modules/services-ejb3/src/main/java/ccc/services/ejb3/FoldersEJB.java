@@ -50,7 +50,6 @@ import ccc.commands.UpdateFolderCommand;
 import ccc.domain.FolderEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.UserEntity;
-import ccc.domain.sorting.Sorter;
 
 
 /**
@@ -173,24 +172,6 @@ public class FoldersEJB
     /* ====================================================================
      * UNSAFE METHODS.
      * ================================================================== */
-
-    /** {@inheritDoc} */
-    @Override
-    @PermitAll
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
-        checkPermission(RESOURCE_READ);
-
-        final FolderEntity f =
-            getRepoFactory()
-                .createResourceRepository()
-                .find(FolderEntity.class, folderId);
-
-        checkRead(f);
-
-        final List<FolderEntity> folderChildren = f.getFolders();
-        Sorter.sort(folderChildren, ResourceOrder.NAME_ALPHANUM_CI_ASC);
-        return ResourceEntity.mapResources(folderChildren);
-    }
 
 
     /** {@inheritDoc} */

@@ -51,17 +51,6 @@ public interface Folders {
     /** NAME : String. */
     String NAME = "PublicFolderCommands";
 
-    /**
-     * List all of the folders that are children of the specified parent folder.
-     *
-     * @param folderId The id of the folder.
-     *
-     * @return The list of child folders.
-     */
-    @GET @Path("/{id}/folder-children")
-    Collection<ResourceSummary> getFolderChildren(
-        @PathParam("id") UUID folderId);
-
 
     /**
      * List all of the children of the specified folder which are  accessible

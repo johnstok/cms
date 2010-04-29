@@ -2,6 +2,21 @@
  * Copyright (c) 2010 Civic Computing Ltd.
  * All rights reserved.
  *
+ * This file is part of Content Control.
+ *
+ * Content Control is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Content Control is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Content Control.  If not, see http://www.gnu.org/licenses/.
+ *
  * Revision      $Rev$
  * Modified by   $Author$
  * Modified on   $Date$
@@ -28,6 +43,29 @@ public class ResourceCriteria implements Serializable {
     private Date _changedAfter = null;
     private Date _changedBefore = null;
     private String _mainmenu = null;
+    private String _Type = null;
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the Type.
+     */
+    public final String getType() {
+
+        return _Type;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param Type The Type to set.
+     */
+    public final void setType(final String Type) {
+
+        _Type = Type;
+    }
 
     /**
      * Constructor.
@@ -40,7 +78,7 @@ public class ResourceCriteria implements Serializable {
     /**
      * Accessor.
      *
-     * @return Tha parent.
+     * @return The parent.
      */
     public UUID getParent() {
         return _parent;
@@ -122,26 +160,5 @@ public class ResourceCriteria implements Serializable {
     public String getMainmenu() {
         return _mainmenu;
     }
-
-//    /**
-//     * Mutator.
-//     *
-//     * @param metadataKey The metadata key to set.
-//     */
-//    public void setMetadataKey(final String metadataKey) {
-//
-//        _metadataKey = metadataKey;
-//    }
-//
-//    /**
-//     * Accessor.
-//     *
-//     * @return Returns the metadata key.
-//     */
-//    public String getMetadataKey() {
-//
-//        return _metadataKey;
-//    }
-
 
 }
