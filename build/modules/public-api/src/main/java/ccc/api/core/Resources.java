@@ -80,6 +80,7 @@ public interface Resources {
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
         @QueryParam("mainmenu") String mainMenu,
+        @QueryParam("type") String type,
         @QueryParam("sort") @DefaultValue("name") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,

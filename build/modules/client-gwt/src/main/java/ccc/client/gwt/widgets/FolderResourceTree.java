@@ -35,7 +35,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.remoting.GetChildrenFolderAction;
+import ccc.client.gwt.remoting.GetChildrenPagedAction;
 import ccc.client.gwt.remoting.GetRootsAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
@@ -89,9 +89,12 @@ public class FolderResourceTree extends AbstractResourceTree {
 
                     }.execute();
                 } else {
-                    new GetChildrenFolderAction(
-                        _globals.userActions().loadData(),
-                        ((ResourceSummaryModelData) loadConfig).getId()) {
+                    new GetChildrenPagedAction(
+                        ((ResourceSummaryModelData) loadConfig).getId(),
+                        1,
+                        1000,
+                        "name",
+                        "ASC") {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
@@ -101,8 +104,17 @@ public class FolderResourceTree extends AbstractResourceTree {
                         }
 
                         /** {@inheritDoc} */
-                        @Override protected void execute(
-                                 final Collection<ResourceSummary> children) {
+                            @Override
+                            protected String getPath() {
+                                return "/resources/list?parent="
+                                +((ResourceSummaryModelData) loadConfig).getId()
+                                +"&page=1&count=1000&sort="
+                                +"name&order=ASC&type=folder";
+                            }
+
+                        @Override
+                        protected void execute(final Collection<ResourceSummary> children,
+                                               final int totalCount) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }

@@ -342,6 +342,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
             }
         }
 
+        if (null!=criteria.getType()) {
+            if (criteria.getType().equalsIgnoreCase("folder")) {
+                query.append((params.size()>0) ? " and" : " where");
+                // prepared statement wont work here
+                query.append(" r.class = ccc.domain.FolderEntity");
+            }
+        }
+
     }
 
     private void appendSorting(final ResourceEntity resource,

@@ -84,17 +84,6 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getFolderChildren(final UUID folderId) {
-        try {
-            return _delegate.getFolderChildren(folderId);
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Boolean nameExistsInFolder(final UUID folderId, final String name) {
         try {
             return _delegate.nameExistsInFolder(folderId, name);
