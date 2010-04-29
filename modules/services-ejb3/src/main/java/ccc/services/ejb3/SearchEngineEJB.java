@@ -220,8 +220,7 @@ public class SearchEngineEJB  implements SearchEngine {
                 final String content =
                     XHTML.cleanUpContent(f.getTitle()+" "+extractor.getText());
                 lucene.createDocument(
-                    f.getId(),
-                    f.getAbsolutePath().toString(),
+                    f.mapResource(),
                     content,
                     null);
                 LOG.debug("Indexed file: "+f.getTitle());
@@ -235,8 +234,7 @@ public class SearchEngineEJB  implements SearchEngine {
         for (final PageEntity p : pages) {
             if (canIndex(p)) {
                 lucene.createDocument(
-                    p.getId(),
-                    p.getAbsolutePath().toString(),
+                    p.mapResource(),
                     extractContent(p),
                     p.currentRevision().getParagraphs());
                 LOG.debug("Indexed page: "+p.getTitle());

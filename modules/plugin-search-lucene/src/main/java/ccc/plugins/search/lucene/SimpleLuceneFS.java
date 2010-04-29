@@ -51,6 +51,7 @@ import org.apache.lucene.search.similar.MoreLikeThis;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.SearchResult;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
@@ -358,24 +359,18 @@ public class SimpleLuceneFS
 
     /** {@inheritDoc} */
     @Override
-    public void createDocument(final UUID id,
-                               final String path,
+    public void createDocument(final ResourceSummary resource,
                                final String content,
                                final Set<Paragraph> paragraphs) {
         try {
             final Document d = new Document();
-            d.add(
-                new Field(
-                    "id",
-                    id.toString(),
-                    Field.Store.YES,
-                    Field.Index.NOT_ANALYZED));
-            d.add(
-                new Field(
-                    "apath",
-                    path,
-                    Field.Store.YES,
-                    Field.Index.ANALYZED));
+            final StringBuilder tags = new StringBuilder();
+            for (final String tag : resource.getTags()) {
+                if (tags.length() > 0) {
+                    tags.append(" ,");
+                }
+                tags.append(tag);
+            }
 
             if (paragraphs != null) {
                 for (final Paragraph paragraph : paragraphs) {
@@ -390,6 +385,31 @@ public class SimpleLuceneFS
                     Field.Store.NO,
                     Field.Index.ANALYZED,
                     Field.TermVector.YES));
+            d.add(
+                new Field(
+                    "id",
+                    resource.getId().toString(),
+                    Field.Store.YES,
+                    Field.Index.NOT_ANALYZED));
+            d.add(
+                new Field(
+                    "apath",
+                    resource.getAbsolutePath(),
+                    Field.Store.YES,
+                    Field.Index.ANALYZED));
+            d.add(
+                new Field(
+                    "rname",
+                    resource.getName().toString(),
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
+            d.add(
+                new Field(
+                    "rtitle",
+                    resource.getTitle(),
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
+
             _writer.addDocument(d);
             LOG.debug("Added document.");
 
@@ -415,13 +435,13 @@ public class SimpleLuceneFS
             && paragraph.getNumber() != null) {
             final NumericField nf =
                 new NumericField(paragraph.getName(), 8, Field.Store.YES, true);
-            nf.setLongValue( paragraph.getNumber().longValue());
+            nf.setDoubleValue(paragraph.getNumber().doubleValue());
             d.add(nf);
         } else if (paragraph.getType() == ParagraphType.DATE
             && paragraph.getDate() != null) {
            final NumericField nf =
                new NumericField(paragraph.getName(), 8, Field.Store.YES, true);
-           nf.setLongValue( paragraph.getDate().getTime());
+           nf.setLongValue(paragraph.getDate().getTime());
            d.add(nf);
         } else if (paragraph.getType() == ParagraphType.BOOLEAN
             && paragraph.getBoolean() != null) {
