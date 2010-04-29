@@ -271,13 +271,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-//        if (null != sort && ("locked".equalsIgnoreCase(sort)
-//            || "published".equalsIgnoreCase(sort))) {
             query.append("select r from ccc.domain.ResourceEntity r "
                 + "LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
-//        } else {
-//            query.append("select r from ccc.domain.ResourceEntity r ");
-//        }
 
         appendCriteria(criteria, f, query, params);
         appendSorting(f, sort, sortOrder, query);
@@ -354,6 +349,10 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(" r._lockedBy is not null");
             }
         }
+
+        query.append((params.size()>0) ? " and" : " where");
+        query.append(" r._deleted = :deleted");
+        params.put("deleted", Boolean.FALSE);
     }
 
     private void appendSorting(final ResourceEntity resource,
