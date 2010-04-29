@@ -74,9 +74,6 @@ final class QueryNames {
     /** USERS_WITH_LEGACY_ID : String. */
     public static final String USERS_WITH_LEGACY_ID = "usersWithLegacyId";
 
-    /** LOCKED_RESOURCES : String. */
-    public static final String LOCKED_RESOURCES = "lockedResources";
-
     /** RESOURCE_HISTORY : String. */
     public static final String RESOURCE_HISTORY = "resourceHistory";
 

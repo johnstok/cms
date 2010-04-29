@@ -204,7 +204,6 @@
         
 	</class>
     
-    <query name="lockedResources">from ccc.domain.ResourceEntity r where r._lockedBy is not null</query>
     <query name="rootByName">from ccc.domain.ResourceEntity r where r._name = ? and r._parent is null</query>
     <query name="resourceByLegacyId">from ccc.domain.ResourceEntity r where r._metadata['legacyId'] = ?</query>
     <query name="resourceByMetadataKey">from ccc.domain.ResourceEntity r where r._metadata[?] is not null</query>

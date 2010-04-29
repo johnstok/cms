@@ -123,17 +123,6 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> locked() {
-        try {
-            return _delegate.locked();
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Map<String, String> metadata(final UUID resourceId) {
         try {
             return _delegate.metadata(resourceId);
@@ -405,23 +394,27 @@ public class ResourcesImpl
     /** {@inheritDoc} */
     @Override
     public PagedCollection<ResourceSummary> list(
-                                      final UUID parent,
-                                      final String tag,
-                                      final Long before,
-                                      final Long after,
-                                      final String mainmenu,
-                                      final String type,
-                                      final String sort,
-                                      final SortOrder order,
-                                      final int pageNo,
-                                      final int pageSize) {
+                                                final UUID parent,
+                                                final String tag,
+                                                final Long before,
+                                                final Long after,
+                                                final String mainMenu,
+                                                final String type,
+                                                final String locked,
+                                                final String published,
+                                                final String sort,
+                                                final SortOrder order,
+                                                final int pageNo,
+                                                final int pageSize) {
         try {
             return _delegate.list(parent,
                 tag,
                 before,
                 after,
-                mainmenu,
+                mainMenu,
                 type,
+                locked,
+                published,
                 sort,
                 order,
                 pageNo,
@@ -488,4 +481,5 @@ public class ResourcesImpl
             throw convertException(cfe);
         }
     }
+
 }

@@ -85,13 +85,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<ResourceEntity> locked() {
-        return list(QueryNames.LOCKED_RESOURCES, ResourceEntity.class);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Map<Integer, ? extends RevisionEntity<?>> history(
         final UUID resourceId) {
         final ResourceEntity r = find(ResourceEntity.class, resourceId);
@@ -278,13 +271,13 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        if (null != sort && ("locked".equalsIgnoreCase(sort)
-            || "published".equalsIgnoreCase(sort))) {
+//        if (null != sort && ("locked".equalsIgnoreCase(sort)
+//            || "published".equalsIgnoreCase(sort))) {
             query.append("select r from ccc.domain.ResourceEntity r "
                 + "LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
-        } else {
-            query.append("select r from ccc.domain.ResourceEntity r ");
-        }
+//        } else {
+//            query.append("select r from ccc.domain.ResourceEntity r ");
+//        }
 
         appendCriteria(criteria, f, query, params);
         appendSorting(f, sort, sortOrder, query);
@@ -349,7 +342,18 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(" r.class = ccc.domain.FolderEntity");
             }
         }
-
+        if (null!=criteria.getPublished()) {
+            if (criteria.getPublished().equalsIgnoreCase("true")) {
+                query.append((params.size()>0) ? " and" : " where");
+                query.append(" r._publishedBy is not null");
+            }
+        }
+        if (null!=criteria.getLocked()) {
+            if (criteria.getLocked().equalsIgnoreCase("true")) {
+                query.append((params.size()>0) ? " and" : " where");
+                query.append(" r._lockedBy is not null");
+            }
+        }
     }
 
     private void appendSorting(final ResourceEntity resource,
@@ -373,7 +377,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             } else if ("type".equalsIgnoreCase(sort)) {
                 query.append(" order by r.class ");
             } else if ("manual".equalsIgnoreCase(sort)) {
-                query.append(" order by _parentIndex ");
+                query.append(" order by r._parentIndex ");
             } else {
                 knownSort = false;
             }
@@ -406,7 +410,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                     query.append(" order by upper(r._name) asc ");
                     break;
                 case MANUAL:
-                    query.append(" order by _parentIndex ");
+                    query.append(" order by r._parentIndex asc ");
                     break;
             }
         }
@@ -434,7 +438,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
                            final FolderEntity f) {
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
-        query.append("SELECT COUNT(r) FROM ccc.domain.ResourceEntity r ");
+        query.append("SELECT COUNT(r) FROM ccc.domain.ResourceEntity r "
+        		+ " LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
         appendCriteria(criteria, f, query, params);
         return _repository.scalarLong(query.toString(), params);
     }

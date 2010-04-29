@@ -83,6 +83,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
                 null,
                 null,
                 "folder",
+                null,
+                null,
                 "name",
                 SortOrder.ASC,
                 1,
@@ -153,6 +155,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
                 null,
                 null,
                 null,
+                null,
+                null,
                 "manual",
                 SortOrder.ASC,
                 1,
@@ -202,6 +206,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
         final PagedCollection<ResourceSummary> list =
             getCommands().list(f.getId(),
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -277,6 +283,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         try {
             final PagedCollection<ResourceSummary> list =
                 getCommands().list(folder.getId(),
+                    null,
+                    null,
                     null,
                     null,
                     null,
