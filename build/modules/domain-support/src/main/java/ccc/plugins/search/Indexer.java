@@ -28,8 +28,8 @@
 package ccc.plugins.search;
 
 import java.util.Set;
-import java.util.UUID;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 
@@ -64,13 +64,11 @@ public interface Indexer {
     /**
      * Add a document to the lucene index.
      *
-     * @param id The document's id.
-     * @param absolutePath The document's absolute path.
+     * @param resource The resource.
      * @param content The document's content.
      * @param paragraphs The paragraphs of the document.
      */
-    void createDocument(final UUID id,
-                        final String absolutePath,
+    void createDocument(final ResourceSummary resource,
                         final String content,
                         final Set<Paragraph> paragraphs);
 
