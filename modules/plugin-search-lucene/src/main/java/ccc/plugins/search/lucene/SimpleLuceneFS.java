@@ -43,6 +43,7 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
@@ -165,7 +166,20 @@ public class SimpleLuceneFS
                     new QueryParser(
                         LUCENE_VERSION,
                         field,
-                        new StandardAnalyzer(LUCENE_VERSION))
+                        new StandardAnalyzer(LUCENE_VERSION)) {
+                        /** {@inheritDoc} */
+                        @Override
+                        protected Query newRangeQuery(final String f,
+                                                      final String min,
+                                                      final String max,
+                                                      final boolean inclusive) {
+                            return NumericRangeQuery.newLongRange(f,
+                                Long.parseLong(min),
+                                Long.parseLong(max),
+                                true,
+                                true);
+                        }
+                    }
                     .parse(searchTerms),
                     maxHits);
 
@@ -365,21 +379,7 @@ public class SimpleLuceneFS
 
             if (paragraphs != null) {
                 for (final Paragraph paragraph : paragraphs) {
-                    if (paragraph.getType() == ParagraphType.TEXT
-                        && paragraph.getText() != null) {
-                        d.add(
-                            new Field(
-                                paragraph.getName(),
-                                XHTML.cleanUpContent(paragraph.getText()),
-                                Field.Store.NO,
-                                Field.Index.ANALYZED));
-
-                    } else if (paragraph.getType() == ParagraphType.DATE
-                        && paragraph.getDate() != null ) {
-                       final NumericField nf = new NumericField(paragraph.getName());
-                       nf.setLongValue( paragraph.getDate().getTime());
-                       d.add(nf);
-                    }
+                    indexParagraph(d, paragraph);
                 }
             }
 
@@ -395,6 +395,41 @@ public class SimpleLuceneFS
 
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
+        }
+    }
+
+
+    private void indexParagraph(final Document d, final Paragraph paragraph) {
+
+        if ((paragraph.getType() == ParagraphType.TEXT
+            || paragraph.getType() == ParagraphType.LIST)
+            && paragraph.getText() != null) {
+            d.add(
+                new Field(
+                    paragraph.getName(),
+                    XHTML.cleanUpContent(paragraph.getText()),
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
+
+        } else if (paragraph.getType() == ParagraphType.NUMBER
+            && paragraph.getNumber() != null) {
+            final NumericField nf =
+                new NumericField(paragraph.getName(), 8, Field.Store.YES, true);
+            nf.setLongValue( paragraph.getNumber().longValue());
+            d.add(nf);
+        } else if (paragraph.getType() == ParagraphType.DATE
+            && paragraph.getDate() != null) {
+           final NumericField nf =
+               new NumericField(paragraph.getName(), 8, Field.Store.YES, true);
+           nf.setLongValue( paragraph.getDate().getTime());
+           d.add(nf);
+        } else if (paragraph.getType() == ParagraphType.BOOLEAN
+            && paragraph.getBoolean() != null) {
+            final Field f = new Field(paragraph.getName(),
+                ""+paragraph.getBoolean().booleanValue(),
+                Field.Store.YES,
+                Field.Index.ANALYZED);
+            d.add(f);
         }
     }
 
