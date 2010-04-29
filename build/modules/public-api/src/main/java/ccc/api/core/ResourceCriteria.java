@@ -43,29 +43,7 @@ public class ResourceCriteria implements Serializable {
     private Date _changedAfter = null;
     private Date _changedBefore = null;
     private String _mainmenu = null;
-    private String _Type = null;
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the Type.
-     */
-    public final String getType() {
-
-        return _Type;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param Type The Type to set.
-     */
-    public final void setType(final String Type) {
-
-        _Type = Type;
-    }
+    private String _type = null;
 
     /**
      * Constructor.
@@ -74,6 +52,27 @@ public class ResourceCriteria implements Serializable {
     public ResourceCriteria() {
         super();
     }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the Type.
+     */
+    public final String getType() {
+        return _type;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param type The type to set.
+     */
+    public final void setType(final String type) {
+        _type = type;
+    }
+
 
     /**
      * Accessor.
