@@ -39,7 +39,6 @@ import org.apache.lucene.document.NumericField;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -175,47 +174,12 @@ public class SimpleLuceneFS
                                                       final String max,
                                                       final boolean inclusive) {
                             return NumericRangeQuery.newLongRange(f,
-                                Long.parseLong(min),
-                                Long.parseLong(max),
+                                Long.valueOf(min),
+                                Long.valueOf(max),
                                 true,
                                 true);
                         }
                     }
-                    .parse(searchTerms),
-                    maxHits);
-
-            sh.handle(searcher, docs);
-        } catch (final IOException e) {
-            LOG.warn("Error performing query.", e);
-        } catch (final ParseException e) {
-            LOG.warn("Error performing query.", e);
-        } finally {
-            if (searcher != null) {
-                try {
-                    searcher.close();
-                } catch (final IOException e) {
-                    Exceptions.swallow(e);
-                }
-            }
-        }
-    }
-
-    private void multiFieldFind(final String searchTerms,
-                      final String[] fields,
-                      final int maxHits,
-                      final CapturingHandler sh) {
-        IndexSearcher searcher = null;
-        try {
-            searcher =
-                new IndexSearcher(
-                    FSDirectory.open(new java.io.File(_indexPath)));
-
-            final TopDocs docs =
-                searcher.search(
-                    new MultiFieldQueryParser(
-                        LUCENE_VERSION,
-                        fields,
-                        new StandardAnalyzer(LUCENE_VERSION))
                     .parse(searchTerms),
                     maxHits);
 
@@ -364,19 +328,14 @@ public class SimpleLuceneFS
                                final Set<Paragraph> paragraphs) {
         try {
             final Document d = new Document();
-            final StringBuilder tags = new StringBuilder();
-            for (final String tag : resource.getTags()) {
-                if (tags.length() > 0) {
-                    tags.append(" ,");
-                }
-                tags.append(tag);
-            }
 
             if (paragraphs != null) {
                 for (final Paragraph paragraph : paragraphs) {
                     indexParagraph(d, paragraph);
                 }
             }
+
+            indexTags(resource, d);
 
             d.add(
                 new Field(
@@ -393,19 +352,19 @@ public class SimpleLuceneFS
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
-                    "apath",
+                    "path",
                     resource.getAbsolutePath(),
                     Field.Store.YES,
                     Field.Index.ANALYZED));
             d.add(
                 new Field(
-                    "rname",
+                    "name",
                     resource.getName().toString(),
                     Field.Store.NO,
                     Field.Index.ANALYZED));
             d.add(
                 new Field(
-                    "rtitle",
+                    "title",
                     resource.getTitle(),
                     Field.Store.NO,
                     Field.Index.ANALYZED));
@@ -415,6 +374,26 @@ public class SimpleLuceneFS
 
         } catch (final IOException e) {
             LOG.warn("Error adding document.", e);
+        }
+    }
+
+
+    private void indexTags(final ResourceSummary resource, final Document d) {
+
+        final StringBuilder tags = new StringBuilder();
+        for (final String tag : resource.getTags()) {
+            if (tags.length() > 0) {
+                tags.append(" ,");
+            }
+            tags.append(tag);
+        }
+        if (tags.length()>0) {
+            d.add(
+                new Field(
+                    "tags",
+                    tags.toString(),
+                    Field.Store.NO,
+                    Field.Index.ANALYZED));
         }
     }
 
