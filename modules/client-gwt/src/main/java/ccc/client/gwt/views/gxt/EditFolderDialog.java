@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.Folder;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.gwt.binding.DataBinding;
@@ -42,7 +43,7 @@ import ccc.client.gwt.binding.ResourceSummaryModelData.Property;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.remoting.GetChildrenPagedAction;
+import ccc.client.gwt.remoting.GetChildrenAction;
 import ccc.client.gwt.remoting.UpdateFolderAction;
 import ccc.client.gwt.widgets.ResourceTypeRendererFactory;
 
@@ -181,11 +182,11 @@ AbstractEditDialog {
         final ResourceSummaryModelData selection =
             _selectionModel.tableSelection();
 
-        new GetChildrenPagedAction(selection.getId(), 1, 1000, "manual", "ASC") {
+        new GetChildrenAction(getUiConstants().edit()) {
 
             @Override
             protected String getPath() {
-                return "/resources/list?parent="
+                return Resource.LIST+"?parent="
                 +selection.getId()+"&sort=manual&order=ASC&page=1&count=1000";
             }
 
@@ -196,13 +197,11 @@ AbstractEditDialog {
 
             /** {@inheritDoc} */
             @Override
-            protected void execute(final Collection<ResourceSummary> children,
-                                   final int count) {
+            protected void execute(final Collection<ResourceSummary> children) {
                 _detailsStore.removeAll();
                 populateIndexOptions(children);
                 setCurrentIndexPage(currentIndexPage);
-                _detailsStore.add(
-                    DataBinding.bindResourceSummary(children));
+                _detailsStore.add(DataBinding.bindResourceSummary(children));
                 _grid.reconfigure(_detailsStore, _cm);
             }
         }.execute();

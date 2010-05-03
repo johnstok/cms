@@ -46,7 +46,7 @@ import ccc.api.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure/pages")
+@Path("")
 @Consumes("application/json")
 @Produces("application/json")
 @NoCache

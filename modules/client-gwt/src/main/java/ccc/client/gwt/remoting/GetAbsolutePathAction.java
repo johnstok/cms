@@ -28,6 +28,9 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
+import ccc.api.core.Resource;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -68,7 +71,10 @@ public abstract class GetAbsolutePathAction
         return
             new Request(
                 RequestBuilder.GET,
-                "api/secure/resources/"+_resourceId+"/path",
+                Globals.API_URL
+                    + new URIBuilder(Resource.PATH)
+                        .replace("id", _resourceId.toString())
+                        .toString(),
                 "",
                 new ResponseHandlerAdapter(_name) {
 

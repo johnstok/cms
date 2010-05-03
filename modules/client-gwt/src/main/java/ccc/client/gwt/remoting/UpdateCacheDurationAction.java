@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -58,7 +59,10 @@ public abstract class UpdateCacheDurationAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return "/resources/"+_resource.getId()+"/duration";
+        return
+            new URIBuilder(Resource.DURATION)
+            .replace("id", _resource.getId().toString())
+            .toString();
     }
 
 

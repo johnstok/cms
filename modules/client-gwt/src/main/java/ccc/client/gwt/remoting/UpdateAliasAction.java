@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Alias;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -64,7 +65,10 @@ public class UpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/aliases/"+_alias;
+        return
+            new URIBuilder(Alias.COLLECTION+Alias.ELEMENT)
+            .replace("id", _alias.toString())
+            .toString();
     }
 
 

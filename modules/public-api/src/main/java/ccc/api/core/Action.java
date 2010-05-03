@@ -48,9 +48,16 @@ public class Action
         Jsonable2,
         Serializable {
 
-    private UUID _resourceId;
-    private CommandType _command;
-    private Date _executeAfter;
+    public static final String  COLLECTION  = "/secure/actions";
+    public static final String  ELEMENT     = COLLECTION + "/{id}";
+    public static final String  PENDING     = COLLECTION + "/pending";
+    public static final String  COMPLETED   = COLLECTION + "/completed";
+    public static final String  EXECUTE     = COLLECTION + "/all";
+    public static final String  CANCEL      = ELEMENT + "/cancel";
+
+    private UUID                _resourceId;
+    private CommandType         _command;
+    private Date                _executeAfter;
     private Map<String, String> _parameters = new HashMap<String, String>();
 
 

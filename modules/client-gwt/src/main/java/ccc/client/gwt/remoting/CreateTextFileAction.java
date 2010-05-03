@@ -62,8 +62,7 @@ public final class CreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-
-        return "/files";
+        return File.COLLECTION;
     }
 
     /** {@inheritDoc} */

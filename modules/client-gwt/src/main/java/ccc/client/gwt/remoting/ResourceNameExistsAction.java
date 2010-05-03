@@ -28,6 +28,8 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
+import ccc.api.core.Folder;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.Response;
@@ -62,11 +64,10 @@ public abstract class ResourceNameExistsAction
     @Override
     protected String getPath() {
         return
-            "/folders/"
-            + encode(_folderId.toString())
-            +"/"
-            + encode(_resourceName)
-            +"/exists";
+            new URIBuilder(Folder.EXISTS)
+            .replace("id", encode(_folderId.toString()))
+            .replace("name", encode(_resourceName))
+            .toString();
     }
 
     /** {@inheritDoc} */

@@ -47,6 +47,9 @@ public class Group
         Jsonable2,
         Serializable {
 
+    public static final String COLLECTION = "/secure/groups";
+    public static final String ELEMENT = COLLECTION+"/{id}";
+
     private String _name;
     private UUID _id;
     private Set<String> _permissions = new HashSet<String>();

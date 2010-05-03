@@ -62,7 +62,6 @@ public abstract class RemotingAction
 
     private String  _actionName;
     private Method  _method;
-    private boolean _isSecure;
 
 
     /**
@@ -79,7 +78,6 @@ public abstract class RemotingAction
     public RemotingAction(final String actionName) {
         _actionName = actionName;
         _method = RequestBuilder.GET;
-        _isSecure = true;
     }
 
 
@@ -92,23 +90,6 @@ public abstract class RemotingAction
     public RemotingAction(final String actionName, final Method method) {
         _actionName = actionName;
         _method = method;
-        _isSecure = true;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param actionName The name of this action.
-     * @param method The HTTP method to use.
-     * @param isSecure Can this method only be called with a valid user session.
-     */
-    public RemotingAction(final String actionName,
-                          final Method method,
-                          final boolean isSecure) {
-        _actionName = actionName;
-        _method = method;
-        _isSecure = isSecure;
     }
 
 
@@ -148,8 +129,7 @@ public abstract class RemotingAction
         return
             new Request(
                 _method,
-                Globals.API_URL
-                + ((_isSecure) ? "/secure" : "/public")+getPath(),
+                Globals.API_URL + getPath(),
                 getBody(),
                 new ResponseHandlerAdapter(_actionName) {
 

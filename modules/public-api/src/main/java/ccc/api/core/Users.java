@@ -63,7 +63,7 @@ public interface Users {
      *
      * @return The corresponding delta.
      */
-    @GET @Path("/{id}/delta")
+    @GET @Path(User.DELTA)
     User userDelta(@PathParam("id") UUID userId);
 
     /**
@@ -71,7 +71,7 @@ public interface Users {
      *
      * @return UserDTO
      */
-    @GET @Path("/me")
+    @GET @Path(User.ME)
     User loggedInUser();
 
     /**
@@ -89,7 +89,7 @@ public interface Users {
      *
      * @return Returns list of users.
      */
-   @GET
+   @GET @Path(User.COLLECTION)
    PagedCollection<User> listUsers(
         @QueryParam("username") String username,
         @QueryParam("email") String email,
@@ -108,7 +108,7 @@ public interface Users {
      * @param username The username to check
      * @return True if the username is in use, false otherwise.
      */
-    @GET @Path("/{uname}/exists")
+    @GET @Path(User.EXISTS)
     Boolean usernameExists(@PathParam("uname") Username username);
 
 
@@ -119,7 +119,7 @@ public interface Users {
      *
      * @return A user summary describing the new user.
      */
-    @POST
+    @POST @Path(User.COLLECTION)
     User createUser(User delta);
 
 
@@ -129,7 +129,7 @@ public interface Users {
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
      */
-    @POST @Path("/{id}")
+    @POST @Path(User.ELEMENT)
     void updateUser(@PathParam("id") UUID userId, User delta);
 
 
@@ -139,7 +139,7 @@ public interface Users {
      * @param userId The user's id.
      * @param user New details for the user.
      */
-    @POST @Path("/{id}/password")
+    @POST @Path(User.PASSWORD)
     void updateUserPassword(@PathParam("id") UUID userId, User user);
 
     /**
@@ -148,7 +148,7 @@ public interface Users {
      * @param userId The user's id.
      * @param user New details for the user.
      */
-    @POST @Path("/{id}/currentuser")
+    @POST @Path(User.CURRENT)
     void updateYourUser(@PathParam("id") UUID userId, User user);
 
 
@@ -159,7 +159,7 @@ public interface Users {
      *
      * @return A summary of the corresponding user.
      */
-    @GET @Path("/by-legacy-id/{id}")
+    @GET @Path(User.LEGACY)
     User userByLegacyId(@PathParam("id") String legacyId);
 
     /**
@@ -168,7 +168,7 @@ public interface Users {
      * @param key The key as a string.
      * @return Returns list of users.
      */
-    @GET @Path("/metadata/{key}")
+    @GET @Path(User.METADATA)
     Collection<String> listUserMetadataValuesWithKey(
         @PathParam("key") String key);
 

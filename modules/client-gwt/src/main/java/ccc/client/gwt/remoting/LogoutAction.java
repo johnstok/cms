@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Security;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -47,7 +48,7 @@ public final class LogoutAction
      * Constructor.
      */
     public LogoutAction() {
-        super(UI_CONSTANTS.logout(), RequestBuilder.POST, false);
+        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
     }
 
 
@@ -63,6 +64,6 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/sessions/current";
+        return Security.CURRENT;
     }
 }

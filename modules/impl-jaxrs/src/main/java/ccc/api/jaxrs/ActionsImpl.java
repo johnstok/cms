@@ -48,7 +48,7 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure/actions")
+@Path("")
 @Consumes("application/json")
 @Produces("application/json")
 @NoCache

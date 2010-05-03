@@ -29,7 +29,9 @@ package ccc.client.gwt.remoting;
 import java.util.Collection;
 
 import ccc.api.core.Group;
+import ccc.api.core.Resource;
 import ccc.api.types.ACL;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -70,9 +72,9 @@ public final class OpenUpdateResourceAclAction
     @Override
     protected String getPath() {
         return
-            "/resources/"
-            + _selectionModel.tableSelection().getId()
-            + "/acl";
+            new URIBuilder(Resource.ACL)
+            .replace("id", _selectionModel.tableSelection().getId().toString())
+            .toString();
     }
 
     /** {@inheritDoc} */

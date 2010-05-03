@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -78,9 +80,14 @@ public abstract class GetImagesPagedAction
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "api/secure/files/images/"+_parentId+"/?page="+_pageNo+"&count="+_pageSize;
+        return
+            Globals.API_URL
+            + new URIBuilder(File.COLLECTION+File.IMAGES)
+                .replace("id", _parentId.toString())
+            + "/?page="+_pageNo+"&count="+_pageSize;
     }
 
 
@@ -96,15 +103,19 @@ public abstract class GetImagesPagedAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+                        final JSONObject obj =
+                            JSONParser.parse(response.getText()).isObject();
 
                         final int totalCount =
                             (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
 
-                        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
+                        final JSONArray result =
+                            obj.get(JsonKeys.ELEMENTS).isArray();
                         final Collection<File> files = new ArrayList<File>();
                         for (int i=0; i<result.size(); i++) {
-                            files.add(new File(new GwtJson(result.get(i).isObject())));
+                            files.add(
+                                new File(
+                                    new GwtJson(result.get(i).isObject())));
                         }
 
                         execute(files, totalCount);

@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.TextFileUpdated;
@@ -60,7 +61,10 @@ public class EditTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/files/"+_dto.getId();
+        return
+            new URIBuilder(File.COLLECTION+File.ELEMENT)
+            .replace("id", _dto.getId().toString())
+            .toString();
     }
 
     /** {@inheritDoc} */

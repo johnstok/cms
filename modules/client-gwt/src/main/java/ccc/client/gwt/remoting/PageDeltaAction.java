@@ -29,6 +29,8 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -67,7 +69,10 @@ public abstract class PageDeltaAction
 
     @Override
     protected String getPath() {
-        return "api/secure/pages/" + _id + "/delta";
+        return
+            Globals.API_URL +
+            new URIBuilder(Page.COLLECTION+Page.DELTA)
+            .replace("id", _id.toString());
     }
 
 

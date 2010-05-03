@@ -35,6 +35,8 @@ import java.util.UUID;
 import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.Request;
@@ -179,7 +181,10 @@ public final class CommentModelData
      * @return The HTTP request to perform the update.
      */
     public static Request update(final Comment comment) {
-        final String path = "api/secure/comments/"+comment.getId();
+        final String path =
+            Globals.API_URL
+            + new URIBuilder(Comment.ELEMENT)
+                .replace("id", comment.getId().toString());
 
         final GwtJson json = new GwtJson();
         comment.toJson(json);

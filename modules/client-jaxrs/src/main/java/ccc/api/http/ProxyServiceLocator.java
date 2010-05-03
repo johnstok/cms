@@ -70,7 +70,7 @@ import ccc.api.jaxrs.providers.UuidCollectionWriter;
 
 
 /**
- * TODO: Add a description for this type.
+ * {@link ServiceLocator} implementation that uses RESTEasy proxies.
  *
  * @author Civic Computing Ltd.
  */
@@ -122,8 +122,7 @@ public class ProxyServiceLocator implements ServiceLocator {
     private final Groups _groups;
     private final SearchEngine _search;
 
-    private final String     _secure;
-    private final String     _public;
+    private final String     _api;
     private final String     _hostUrl;
     private final HttpClient _httpClient;
 
@@ -136,62 +135,72 @@ public class ProxyServiceLocator implements ServiceLocator {
     public ProxyServiceLocator(final String hostUrl) {
         _httpClient = new HttpClient();
         _hostUrl = hostUrl;
-        _secure = _hostUrl+"/ccc/api/secure";
-        _public = _hostUrl+"/ccc/api/public";
+        _api = _hostUrl+"/ccc/api";
 
-        LOG.debug("Secure URL: "+_secure);
-        LOG.debug("Public URL: "+_public);
+        LOG.debug("API URL: "+_api);
 
         _commands  =
             new ResourcesDecorator(
                 ProxyFactory.create(
-                    Resources.class, _secure+"/resources", _httpClient),
-                    _secure,
-                    _httpClient);
+                    Resources.class,
+                    _api, _httpClient),
+                _api,
+                _httpClient);
         _users =
             new UsersImpl(
                 ProxyFactory.create(
-                    Users.class, _secure+"/users", _httpClient));
+                    Users.class,
+                    _api, _httpClient));
         _actions  =
             new ActionsImpl(
                 ProxyFactory.create(
-                    Actions.class, _secure+"/actions", _httpClient));
+                    Actions.class,
+                    _api, _httpClient));
         _folders =
             new FoldersImpl(
                 ProxyFactory.create(
-                    Folders.class, _secure+"/folders", _httpClient));
+                    Folders.class,
+                    _api, _httpClient));
         _pages =
             new PagesImpl(
                 ProxyFactory.create(
-                    Pages.class, _secure+"/pages", _httpClient));
+                    Pages.class,
+                    _api, _httpClient));
         _security =
             new SecurityImpl2(
                 ProxyFactory.create(
-                    Security.class, _public, _httpClient));
+                    Security.class,
+                    _api, _httpClient));
         _templates =
             new TemplatesImpl(
                 ProxyFactory.create(
-                    Templates.class, _secure+"/templates", _httpClient));
+                    Templates.class,
+                    _api, _httpClient));
         _comments =
             new CommentsImpl(
                 ProxyFactory.create(
-                    Comments.class, _secure+"/comments", _httpClient));
+                    Comments.class,
+                    _api, _httpClient));
         _files =
             new FilesImpl(
                 ProxyFactory.create(
-                    Files.class, _secure+"/files", _httpClient));
+                    Files.class,
+                    _api, _httpClient));
         _groups =
             new GroupsImpl(
                 ProxyFactory.create(
-                    Groups.class, _secure+"/groups", _httpClient));
+                    Groups.class,
+                    _api, _httpClient));
         _aliases =
             new AliasesImpl(
                 ProxyFactory.create(
-                    Aliases.class, _secure+"/aliases", _httpClient));
+                    Aliases.class,
+                    _api, _httpClient));
         _search =
             new SearchImpl(
                 ProxyFactory.create(
-                    SearchEngine.class, _secure+"/search", _httpClient));
+                    SearchEngine.class,
+                    _api+SearchEngine.COLLECTION, _httpClient));
     }
 
 
@@ -199,41 +208,51 @@ public class ProxyServiceLocator implements ServiceLocator {
     @Override
     public Actions getActions() { return _actions; }
 
+
     /** {@inheritDoc} */
     @Override
     public Comments getComments() { return _comments; }
+
 
     /** {@inheritDoc} */
     @Override
     public Files getFiles() { return _files; }
 
+
     /** {@inheritDoc} */
     @Override
     public Folders getFolders() { return _folders; }
+
 
     /** {@inheritDoc} */
     @Override
     public Pages getPages() { return _pages; }
 
+
     /** {@inheritDoc} */
     @Override
     public Groups getGroups() { return _groups; }
+
 
     /** {@inheritDoc} */
     @Override
     public Resources getResources() { return _commands; }
 
+
     /** {@inheritDoc} */
     @Override
     public SearchEngine getSearch() { return _search; }
+
 
     /** {@inheritDoc} */
     @Override
     public Templates getTemplates() { return _templates; }
 
+
     /** {@inheritDoc} */
     @Override
     public Users getUsers() { return _users; }
+
 
     /** {@inheritDoc} */
     @Override
@@ -243,6 +262,7 @@ public class ProxyServiceLocator implements ServiceLocator {
     /** {@inheritDoc} */
     @Override
     public Security getSecurity() { return _security; }
+
 
     /**
      * Accessor.
@@ -259,7 +279,5 @@ public class ProxyServiceLocator implements ServiceLocator {
      *
      * @return The HTTP client for this service locator.
      */
-    public HttpClient getHttpClient() {
-        return _httpClient;
-    }
+    public HttpClient getHttpClient() { return _httpClient; }
 }

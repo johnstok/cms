@@ -78,7 +78,7 @@ public interface Resources {
      * @return A list of resources.
      */
     @GET
-    @Path("/list")
+    @Path(Resource.LIST)
     PagedCollection<ResourceSummary> list(
         @QueryParam("parent") UUID parent,
         @QueryParam("tag") String tag,
@@ -94,7 +94,6 @@ public interface Resources {
         @QueryParam("count") @DefaultValue("20") int pageSize);
 
 
-
     /**
      * Get the resource located at the specified path.
      *
@@ -102,7 +101,7 @@ public interface Resources {
      *
      * @return A summary of the resource.
      */
-    @GET @Path("/{id}")
+    @GET @Path(Resource.ELEMENT)
     ResourceSummary resource(@PathParam("id") UUID resourceId);
 
 
@@ -112,7 +111,7 @@ public interface Resources {
      * @param resourceId The id of the existing resource.
      */
     @POST // Should be DELETE but hard to support from the browser.
-    @Path("/{id}/delete")
+    @Path(Resource.DELETE)
     void deleteResource(@PathParam("id") UUID resourceId);
 
 
@@ -123,7 +122,7 @@ public interface Resources {
      *
      * @return The absolute path as a string.
      */
-    @GET @Path("/{id}/path")
+    @GET @Path(Resource.PATH)
     String getAbsolutePath(@PathParam("id") UUID resourceId);
 
 
@@ -134,7 +133,7 @@ public interface Resources {
      *
      * @return The list of resources.
      */
-    @GET @Path("/{id}/revisions")
+    @GET @Path(Resource.REVISIONS)
     Collection<Revision> history(@PathParam("id") UUID resourceId);
 
 
@@ -145,7 +144,7 @@ public interface Resources {
      *
      * @return The metadata in a hashmap.
      */
-    @GET @Path("/{id}/metadata")
+    @GET @Path(Resource.METADATA)
     Map<String, String> metadata(@PathParam("id") UUID resourceId);
 
 
@@ -156,7 +155,7 @@ public interface Resources {
      *
      * @return The access control list for the specified resource.
      */
-    @GET @Path("/{id}/acl")
+    @GET @Path(Resource.ACL)
     ACL acl(@PathParam("id") UUID resourceId);
 
 
@@ -167,7 +166,7 @@ public interface Resources {
      *
      * @return Duration.
      */
-    @GET @Path("/{id}/duration")
+    @GET @Path(Resource.DURATION)
     Duration cacheDuration(@PathParam("id") UUID resourceId);
 
 
@@ -178,7 +177,7 @@ public interface Resources {
      *
      * @return TemplateSummary.
      */
-    @GET @Path("/{id}/template")
+    @GET @Path(Resource.TEMPLATE)
     Template computeTemplate(@PathParam("id") UUID resourceId);
 
 
@@ -189,7 +188,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path("/by-path{path:.*}")
+    @GET @Path(Resource.SEARCH_PATH)
     ResourceSummary resourceForPath(@PathParam("path") String path);
 
 
@@ -200,7 +199,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path("/by-legacy-id/{id}")
+    @GET @Path(Resource.SEARCH_LEGACY)
     ResourceSummary resourceForLegacyId(@PathParam("id") String legacyId);
 
     /**
@@ -210,7 +209,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path("/by-metadata-key/{id}")
+    @GET @Path(Resource.SEARCH_METADATA)
     Collection<ResourceSummary> resourceForMetadataKey(
         @PathParam("id") String key);
 
@@ -221,7 +220,7 @@ public interface Resources {
      * @param resourceId The resource to update.
      * @param duration DTO specifying the cache duration.
      */
-    @POST @Path("/{id}/duration")
+    @POST @Path(Resource.DURATION)
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
         Resource duration);
@@ -234,7 +233,7 @@ public interface Resources {
      *
      * @param resourceId The uuid of the resource to lock.
      */
-    @POST @Path("/{id}/lock")
+    @POST @Path(Resource.LOCK)
     void lock(@PathParam("id") UUID resourceId);
 
 
@@ -243,7 +242,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource.
      */
-    @POST @Path("/{id}/wc-apply")
+    @POST @Path(Resource.WC_APPLY)
     void applyWorkingCopy(@PathParam("id") UUID resourceId);
 
 
@@ -253,7 +252,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      * @param template DTO specifying the new template to set for the resource.
      */
-    @POST @Path("/{id}/template")
+    @POST @Path(Resource.TEMPLATE)
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
         Resource template);
@@ -265,7 +264,7 @@ public interface Resources {
      *
      * @param resourceId The resource to unlock.
      */
-    @POST @Path("/{id}/unlock")
+    @POST @Path(Resource.UNLOCK)
     void unlock(@PathParam("id") UUID resourceId);
 
 
@@ -274,7 +273,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path("/{id}/unpublish")
+    @POST @Path(Resource.UNPUBLISH)
     void unpublish(@PathParam("id") UUID resourceId);
 
 
@@ -283,7 +282,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path("/{id}/publish")
+    @POST @Path(Resource.PUBLISH)
     void publish(@PathParam("id") UUID resourceId);
 
 
@@ -294,7 +293,7 @@ public interface Resources {
      * @param newParentId The id of the folder to which the resource should be
      *  moved.
      */
-    @POST @Path("/{id}/parent")
+    @POST @Path(Resource.PARENT)
     void move(@PathParam("id") UUID resourceId, UUID newParentId);
 
 
@@ -304,7 +303,7 @@ public interface Resources {
      * @param resourceId The id of the resource to rename.
      * @param name The new name.
      */
-    @POST @Path("/{id}/name")
+    @POST @Path(Resource.NAME)
     void rename(@PathParam("id") final UUID resourceId, final String name);
 
 
@@ -314,7 +313,7 @@ public interface Resources {
      * @param resourceId The resource to update.
      * @param acl The access control list for the specified resource.
      */
-    @POST @Path("/{id}/acl")
+    @POST @Path(Resource.ACL)
     void changeAcl(@PathParam("id") UUID resourceId, ACL acl);
 
 
@@ -323,7 +322,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path("/{id}/exclude-mm")
+    @POST @Path(Resource.EXCLUDE_MM)
     void excludeFromMainMenu(@PathParam("id") UUID resourceId);
 
 
@@ -332,7 +331,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path("/{id}/include-mm")
+    @POST @Path(Resource.INCLUDE_MM)
     void includeInMainMenu(@PathParam("id") UUID resourceId);
 
 
@@ -342,7 +341,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      * @param resource The resource containing new metadata.
      */
-    @POST @Path("/{id}/metadata")
+    @POST @Path(Resource.METADATA)
     void updateMetadata(@PathParam("id") UUID resourceId,
                         Resource resource);
 
@@ -352,7 +351,7 @@ public interface Resources {
      *
      * @param pageId The id of the page with a working copy.
      */
-    @POST @Path("/{id}/wc-clear")
+    @POST @Path(Resource.WC_CLEAR)
     void clearWorkingCopy(@PathParam("id") UUID pageId);
 
 
@@ -363,7 +362,7 @@ public interface Resources {
      * @param resourceId The id of the resource.
      * @param dto The DTO specifying the number of the revision to use.
      */
-    @POST @Path("/{id}/wc-create")
+    @POST @Path(Resource.WC_CREATE)
     void createWorkingCopy(@PathParam("id") UUID resourceId,
                            Resource dto);
 
@@ -373,7 +372,7 @@ public interface Resources {
      *
      * @param id The id of the resource to update.
      */
-    @DELETE @Path("/{id}/duration")
+    @DELETE @Path(Resource.DURATION)
     void deleteCacheDuration(@PathParam("id") UUID id);
 
 
@@ -384,7 +383,7 @@ public interface Resources {
      * @param action The action for the log entry.
      * @param detail The details for the log entry.
      */
-    @POST @Path("/{id}/logentry-create")
+    @POST @Path(Resource.LOG_ENTRY)
     void createLogEntry(
         @PathParam("id") UUID resourceId, String action, String detail);
 
@@ -398,7 +397,7 @@ public interface Resources {
      *
      * @return The contents as a string.
      */
-    @GET @Path("/text-content{path:.*}")
+    @GET @Path(Resource.TEXT)
     String fileContentsFromPath(@PathParam("path") String absolutePath,
                                 @DefaultValue("UTF-8") String charset);
 
@@ -410,7 +409,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path("/by-path-secure{path:.*}")
+    @GET @Path(Resource.PATH_SECURE)
     @Deprecated() // FIXME Use resourceForPath() or lookup by ID. - used in ContentServlet.getSnapshot
     Resource resourceForPathSecure(@PathParam("path") String path);
 
@@ -423,7 +422,8 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path("/by-path-secure{path:.*}")
+    @GET @Path(Resource.PATH_SECURE)
+        // FIXME: Path is duplicate of resourceForPathSecure()
     @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
     Resource revisionForPath(
                  @PathParam("path") final String path,
@@ -437,7 +437,7 @@ public interface Resources {
      *
      * @return A summary of the corresponding resource.
      */
-    @GET @Path("/by-path-wc{path:.*}")
+    @GET @Path(Resource.PATH_WC)
     @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
     Resource workingCopyForPath(@PathParam("path") final String path);
 
@@ -450,7 +450,7 @@ public interface Resources {
      *
      * @return A summary of the newly created search.
      */
-    @POST @Path("/search/{id}/{title}")
+    @POST @Path(Resource.SEARCH)
     // FIXME Should post a 'search' object.
     // FIXME Should be part of the 'search' API.
     ResourceSummary createSearch(@PathParam("id")    UUID parentId,

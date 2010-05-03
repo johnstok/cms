@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -67,7 +68,10 @@ extends
     @Override
     protected String getPath() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        return "/files/" + item.getId();
+        return
+            new URIBuilder(File.COLLECTION+File.ELEMENT)
+            .replace("id", item.getId().toString())
+            .toString();
     }
 
 

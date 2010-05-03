@@ -87,16 +87,6 @@ public interface Globals {
     String hostURL();
 
     /**
-     * Determine the URL for the REST API.
-     *
-     * @param secure If true the secure URL will be returned, otherwise the
-     *  public URL will be returned.
-     *
-     * @return The host url as a string.
-     */
-    String apiURL(boolean secure);
-
-    /**
      * Determine the URL for the application.
      *
      * @return The host url as a string.

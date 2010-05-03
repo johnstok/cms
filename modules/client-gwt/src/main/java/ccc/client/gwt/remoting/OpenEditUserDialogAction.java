@@ -71,7 +71,7 @@ public class OpenEditUserDialogAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/users/"+_userId+"/delta";
+        return User.COLLECTION+"/"+_userId+"/delta";
     }
 
     /** {@inheritDoc} */

@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Template;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.Response;
@@ -57,9 +59,9 @@ public abstract class TemplateNameExistsAction
     @Override
     protected String getPath() {
         return
-            "/templates/"
-            +  encode(_name)
-            + "/exists";
+            new URIBuilder(Template.COLLECTION+Template.EXISTS)
+            .replace("name", encode(_name))
+            .toString();
     }
 
     /** {@inheritDoc} */

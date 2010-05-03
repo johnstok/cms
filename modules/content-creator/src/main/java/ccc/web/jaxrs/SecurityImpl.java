@@ -51,7 +51,7 @@ import ccc.plugins.security.Sessions;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/public")
+@Path("")
 @Consumes("application/json")
 @Produces("application/json")
 @NoCache

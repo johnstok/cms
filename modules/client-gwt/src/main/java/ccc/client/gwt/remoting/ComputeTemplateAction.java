@@ -28,7 +28,10 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.core.Template;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -67,8 +70,11 @@ public abstract class ComputeTemplateAction
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            "api/secure/resources/"+_id+"/template",
-            "", new ResponseHandlerAdapter(_name) {
+            Globals.API_URL
+                + new URIBuilder(Resource.TEMPLATE)
+                .replace("id", _id.toString()),
+            "",
+            new ResponseHandlerAdapter(_name) {
 
                 /** {@inheritDoc} */
                 @Override

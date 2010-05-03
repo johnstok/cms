@@ -35,10 +35,12 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceType;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
@@ -260,7 +262,11 @@ public class ActionSummaryModelData
      * @return The HTTP request to cancel this action.
      */
     public Request cancel() {
-        final String path = "api/secure/actions/"+getId()+"/cancel";
+        final String path =
+            Globals.API_URL
+            + new URIBuilder(Action.COLLECTION+Action.CANCEL)
+                .replace("id", getId().toString())
+                .toString();
         return
             new Request(
                 RequestBuilder.POST,
@@ -279,11 +285,12 @@ public class ActionSummaryModelData
      *
      * @return The HTTP request to create the action.
      */
+    // FIXME: Should pass an action here.
     public static Request createAction(final UUID subject,
                                        final CommandType command,
                                        final Date executeAfter,
                                        final Map<String, String> params) {
-        final String path = "api/secure/actions";
+        final String path = Globals.API_URL+Action.COLLECTION;
 
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.SUBJECT_ID, subject);

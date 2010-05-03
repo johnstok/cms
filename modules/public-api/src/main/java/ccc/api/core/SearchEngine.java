@@ -43,6 +43,8 @@ import javax.ws.rs.QueryParam;
 @Consumes("application/json")
 public interface SearchEngine extends Scheduler {
 
+    String COLLECTION = "/secure/search";
+
     /** NAME : String. */
     String NAME = "Search";
 

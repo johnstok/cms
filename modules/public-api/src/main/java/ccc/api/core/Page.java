@@ -45,6 +45,12 @@ public class Page
     extends
         Resource {
 
+    public static final String COLLECTION  = "/secure/pages";
+    public static final String VALIDATOR   = COLLECTION + "/validator";
+    public static final String ELEMENT     = COLLECTION + "/{id}";
+    public static final String DELTA       = ELEMENT + "/delta";
+    public static final String WC          = ELEMENT + "/wc";
+
     private String    _comment;
     private boolean   _majorChange;
     private HashSet<Paragraph> _paragraphs = new HashSet<Paragraph>();

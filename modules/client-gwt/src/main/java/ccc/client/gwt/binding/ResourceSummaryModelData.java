@@ -35,11 +35,14 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Alias;
+import ccc.api.core.Folder;
 import ccc.api.core.Page;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
+import ccc.api.types.URIBuilder;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -533,7 +536,10 @@ public class ResourceSummaryModelData
      * @return The path as a string.
      */
     public String revisionsPath() {
-        return "/resources/"+getId()+"/revisions";
+        return
+            new URIBuilder(Resource.REVISIONS)
+                .replace("id", getId().toString())
+                .toString();
     }
 
     /**
@@ -572,7 +578,10 @@ public class ResourceSummaryModelData
      * @return A HTTP request.
      */
     public Request applyWorkingCopy() {
-        final String path = "api/secure/resources/"+getId()+"/wc-apply";
+        final String path =
+            Globals.API_URL
+            + new URIBuilder(Resource.WC_APPLY)
+                .replace("id", getId().toString());
 
         return new Request(
             RequestBuilder.POST,
@@ -587,7 +596,11 @@ public class ResourceSummaryModelData
      * @return A HTTP request.
      */
     public Request clearWorkingCopy() {
-        final String path = "api/secure/resources/"+getId()+"/wc-clear";
+        final String path =
+            Globals.API_URL
+            + new URIBuilder(Resource.WC_CLEAR)
+                .replace("id", getId().toString())
+                .toString();
 
         return new Request(
             RequestBuilder.POST,
@@ -605,7 +618,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create an alias.
      */
     public static Request createAlias(final Alias alias) {
-        final String path = "api/secure/aliases";
+        final String path = Globals.API_URL+Alias.COLLECTION;
 
         final GwtJson json = new GwtJson();
         alias.toJson(json);
@@ -623,14 +636,15 @@ public class ResourceSummaryModelData
     /**
      * Create a new folder.
      *
-     * @param name
-     * @param parentFolder
+     * @param name The new folder's name.
+     * @param parentFolder The parent folder.
      *
      * @return The HTTP request to create a folder.
      */
+    // FIXME: Should pass a folder here.
     public static Request createFolder(final String name,
                                        final UUID parentFolder) {
-        final String path = "api/secure/folders";
+        final String path = Globals.API_URL+Folder.COLLECTION;
 
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.PARENT_ID, parentFolder);
@@ -654,7 +668,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create a folder.
      */
     public static Request createPage(final Page page) {
-        final String path =  "api/secure/pages";
+        final String path =  Globals.API_URL+Page.COLLECTION;
 
         final GwtJson json = new GwtJson(); // FIXME: Broken.
         page.toJson(json);
@@ -681,7 +695,11 @@ public class ResourceSummaryModelData
     public static Request rename(final String name,
                                  final UUID id,
                                  final ResourcePath newPath) {
-        final String path = "api/secure/resources/"+id+"/name";
+        final String path =
+            Globals.API_URL
+            + new URIBuilder(Resource.NAME)
+                .replace("id", id.toString())
+                .toString();
 
         return
             new Request(

@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Security;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 
@@ -51,7 +52,7 @@ public class LoginAction
      * @param dialog The login dialog to act on.
      */
     public LoginAction(final LoginDialog dialog) {
-        super(UI_CONSTANTS.login(), RequestBuilder.POST, false);
+        super(UI_CONSTANTS.login(), RequestBuilder.POST);
         _dialog = dialog;
     }
 
@@ -60,9 +61,9 @@ public class LoginAction
     @Override
     protected String getPath() {
         return
-            "/sessions?u="
-            +encode(_dialog.getUsername())+"&p="
-            +encode(_dialog.getPassword());
+            Security.COLLECTION
+            +"?u=" + encode(_dialog.getUsername())
+            +"&p=" + encode(_dialog.getPassword());
     }
 
     /** {@inheritDoc} */

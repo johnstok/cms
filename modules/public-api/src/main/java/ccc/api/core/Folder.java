@@ -44,6 +44,17 @@ public class Folder
     extends
         Resource {
 
+    public static final String COLLECTION            = "/secure/folders";
+    public static final String ELEMENT               = COLLECTION + "/{id}";
+    public static final String ROOTS                 = COLLECTION + "/roots";
+    public static final String FOLDER_CHILDREN       = ELEMENT + "/folder-children";
+    public static final String CHILDREN              = ELEMENT + "/children";
+    public static final String ACCESSIBLE_CHILDREN   = ELEMENT + "/accessible-children";
+    public static final String CHILDREN_MANUAL_ORDER = ELEMENT + "/children-manual-order";
+    public static final String EXISTS                = ELEMENT + "/{name}/exists";
+    public static final String DEPRECATED            = COLLECTION + "/deprecated";
+    public static final String ROOT_NAME             = ROOTS + "/{name}";
+
     private UUID _indexPage;
     private UUID _defaultPage;
     private String _sortOrder;

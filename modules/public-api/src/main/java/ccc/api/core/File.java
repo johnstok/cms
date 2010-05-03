@@ -48,6 +48,14 @@ public final class File
     extends
         Resource {
 
+    public static final String COLLECTION        = "/secure/files";
+    public static final String IMAGES            = COLLECTION + "/images/{id}";
+    public static final String ELEMENT           = COLLECTION + "/{id}";
+    public static final String BINARY_COLLECTION = COLLECTION + "/bin";
+    public static final String BINARY_ELEMENT    = BINARY_COLLECTION + "/{id}";
+    public static final String BINARY_WC         = BINARY_ELEMENT + "/wc";
+    public static final String BINARY_REVISION   = BINARY_ELEMENT + "/rev";
+
     private MimeType              _mimeType;
     private String                _path;
     private Map<String, String>   _properties;

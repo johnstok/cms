@@ -56,7 +56,7 @@ public interface Templates {
      *
      * @return A list of templates.
      */
-    @GET
+    @GET @Path(Template.COLLECTION)
     Collection<Template> templates();
 
 
@@ -67,7 +67,7 @@ public interface Templates {
      *
      * @return True if name exists.
      */
-    @GET @Path("/{name}/exists")
+    @GET @Path(Template.EXISTS)
     Boolean templateNameExists(@PathParam("name") final String templateName);
 
 
@@ -78,7 +78,7 @@ public interface Templates {
      *
      * @return The corresponding delta.
      */
-    @GET @Path("/{id}/delta")
+    @GET @Path(Template.DELTA)
     Template templateDelta(@PathParam("id") UUID templateId);
 
     /**
@@ -87,7 +87,7 @@ public interface Templates {
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
      */
-    @POST @Path("/{id}")
+    @POST @Path(Template.ELEMENT)
     void updateTemplate(
         @PathParam("id") UUID templateId, Template delta);
 
@@ -98,6 +98,6 @@ public interface Templates {
      *
      * @return A resource summary describing the new template.
      */
-    @POST
+    @POST @Path(Template.COLLECTION)
     ResourceSummary createTemplate(Template template);
 }

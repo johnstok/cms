@@ -59,7 +59,7 @@ public interface Groups {
      *
      * @return Returns list of groups.
      */
-    @GET
+    @GET @Path(Group.COLLECTION)
     Collection<Group> list(@QueryParam("name") String name);
 
 
@@ -70,7 +70,7 @@ public interface Groups {
      *
      * @return Returns the corresponding group.
      */
-    @GET @Path("/{id}")
+    @GET @Path(Group.ELEMENT)
     Group find(@PathParam("id") UUID id);
 
 
@@ -81,7 +81,7 @@ public interface Groups {
      *
      * @return A DTO describing the new group.
      */
-    @POST
+    @POST @Path(Group.COLLECTION)
     Group create(Group group);
 
 
@@ -93,6 +93,6 @@ public interface Groups {
      *
      * @return A DTO describing the updated group.
      */
-    @POST @Path("/{id}")
+    @POST @Path(Group.ELEMENT)
     Group update(@PathParam("id") UUID id, Group group);
 }

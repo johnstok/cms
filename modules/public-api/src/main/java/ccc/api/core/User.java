@@ -50,7 +50,20 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class User implements Serializable, Jsonable2 {
+public final class User
+    implements
+        Serializable,
+        Jsonable2 {
+
+    public static final String  COLLECTION = "/secure/users";
+    public static final String  ELEMENT    = COLLECTION + "/{id}";
+    public static final String  ME         = COLLECTION + "/me";
+    public static final String  EXISTS     = COLLECTION + "/{uname}/exists";
+    public static final String  LEGACY     = COLLECTION + "/by-legacy-id/{id}";
+    public static final String  METADATA   = COLLECTION + "/metadata/{key}";
+    public static final String  DELTA      = ELEMENT + "/delta";
+    public static final String  PASSWORD   = ELEMENT + "/password";
+    public static final String  CURRENT    = ELEMENT + "/currentuser";
 
     private String _email; // FIXME: Should be type EmailAddress.
     private String _name;

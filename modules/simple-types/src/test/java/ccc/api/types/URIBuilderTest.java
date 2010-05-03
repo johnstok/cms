@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,38 +21,35 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.api.types;
 
-import ccc.api.core.Security;
-import ccc.client.gwt.core.RemotingAction;
-
+import junit.framework.TestCase;
 
 
 /**
- * Abstract action for property loading. Implement onOK method for accessing
- * map values. See LoginDialog or AboutDialog.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetPropertyAction
+public class URIBuilderTest
     extends
-        RemotingAction {
-
+        TestCase {
 
     /**
-     * Constructor.
+     * Test.
      */
-    public GetPropertyAction() {
-        super(USER_ACTIONS.readProperties());
-    }
+    public void testReplace() {
 
+        // ARRANGE
+        final URIBuilder b = new URIBuilder("/foo/{id}/baz");
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return Security.PROPERTIES;
+        // ACT
+        b.replace("id", "bar");
+
+        // ASSERT
+        assertEquals("/foo/bar/baz", b.toString());
     }
 }

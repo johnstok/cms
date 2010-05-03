@@ -48,7 +48,7 @@ import ccc.api.types.PagedCollection;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure/files")
+@Path("")
 @Consumes("application/json")
 @Produces("application/json")
 @NoCache

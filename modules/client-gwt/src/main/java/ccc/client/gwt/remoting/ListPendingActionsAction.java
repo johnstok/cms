@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
@@ -82,7 +83,8 @@ public abstract class ListPendingActionsAction
     @Override
     protected String getPath() {
         final String path =
-            "/actions/pending"
+            Action.COLLECTION
+            + Action.PENDING
             + "?page="+_page
             + "&count="+_count
             + ((null==_order) ? "" : "&order="+_order.name())

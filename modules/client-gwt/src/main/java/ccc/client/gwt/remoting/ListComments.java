@@ -87,7 +87,7 @@ public abstract class ListComments
     @Override
     protected String getPath() {
         final String path =
-            "/comments"
+            Comment.COLLECTION
             + "?page="+_page
             + "&count="+_count
             + ((null==_status) ? "" : "&status="+_status.name())

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.Group;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -64,7 +65,7 @@ public abstract class ListGroups
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            "api/secure/groups",
+            Globals.API_URL+Group.COLLECTION,
             "",
             new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
                 /** {@inheritDoc} */
