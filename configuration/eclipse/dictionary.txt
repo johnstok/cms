@@ -180,3 +180,5 @@ mapper
 unauthorized
 uploader
 decorator
+wildcard
+proxies
