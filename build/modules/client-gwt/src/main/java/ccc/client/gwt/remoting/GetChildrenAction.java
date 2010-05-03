@@ -26,33 +26,57 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Security;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import ccc.api.core.ResourceSummary;
+import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Abstract action for property loading. Implement onOK method for accessing
- * map values. See LoginDialog or AboutDialog.
+ * Remote action for children resource fetching.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetPropertyAction
+public abstract class GetChildrenAction
     extends
         RemotingAction {
 
 
     /**
      * Constructor.
+     *
+     * @param actionName The name of the action.
      */
-    public GetPropertyAction() {
-        super(USER_ACTIONS.readProperties());
+    public GetChildrenAction(final String actionName) {
+        super(actionName);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return Security.PROPERTIES;
+    protected void onOK(final Response response) {
+        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+        final Collection<ResourceSummary> children =
+            new ArrayList<ResourceSummary>();
+        for (int i=0; i<result.size(); i++) {
+            children.add(
+                new ResourceSummary(new GwtJson(result.get(i).isObject())));
+        }
+
+        execute(children);
     }
+
+
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param children The collection of folder children.
+     */
+    protected abstract void execute(Collection<ResourceSummary> children);
 }

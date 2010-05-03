@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.User;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -63,7 +64,10 @@ public abstract class UpdateUserPasswordAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return "/users/"+_userId+"/password";
+        return
+            new URIBuilder(User.COLLECTION+User.PASSWORD)
+            .replace("id", _userId.toString())
+            .toString();
     }
 
 

@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.ResourceTemplateChanged;
@@ -63,7 +64,10 @@ public class UpdateResourceTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/resources/"+_resource.getId()+"/template";
+        return
+            new URIBuilder(Resource.TEMPLATE)
+                .replace("id", _resource.getId().toString())
+                .toString();
     }
 
 

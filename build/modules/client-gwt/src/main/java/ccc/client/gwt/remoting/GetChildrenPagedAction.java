@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -81,8 +82,13 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/resources/list?parent="+_parentId+"&page="+_pageNo
-        +"&count="+_pageSize+"&sort="+_sort+"&order="+_order;
+        return
+            Resource.LIST
+            + "?parent="+_parentId
+            + "&page="+_pageNo
+            + "&count="+_pageSize
+            + "&sort="+_sort
+            + "&order="+_order;
     }
 
 

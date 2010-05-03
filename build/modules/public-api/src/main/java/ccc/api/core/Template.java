@@ -44,6 +44,11 @@ public class Template
     extends
         Resource {
 
+    public static final String COLLECTION = "/secure/templates";
+    public static final String ELEMENT    = COLLECTION + "/{id}";
+    public static final String EXISTS     = COLLECTION + "/{name}/exists";
+    public static final String DELTA      = ELEMENT + "/delta";
+
     private String   _body;
     private String   _definition;
     private MimeType _mimeType;

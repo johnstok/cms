@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.Revision;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -69,7 +70,8 @@ public final class ViewHistoryAction
         return
             new Request(
                 RequestBuilder.GET,
-                "api/secure"+_selectionModel.tableSelection().revisionsPath(),
+                Globals.API_URL
+                    + _selectionModel.tableSelection().revisionsPath(),
                 "",
                 new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()){
                     /** {@inheritDoc} */

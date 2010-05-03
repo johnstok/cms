@@ -11,6 +11,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
@@ -74,7 +75,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
-        getPanel().setAction("api/secure/files/bin");
+        getPanel().setAction(Globals.API_URL+File.BINARY_COLLECTION);
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 

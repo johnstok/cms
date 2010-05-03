@@ -49,7 +49,7 @@ import ccc.api.types.Username;
  *
  * @author Civic Computing Ltd.
  */
-@Path("/secure/users")
+@Path("")
 @Consumes("application/json")
 @Produces("application/json")
 @NoCache

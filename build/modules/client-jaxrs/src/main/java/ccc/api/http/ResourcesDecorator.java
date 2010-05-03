@@ -26,10 +26,15 @@
  */
 package ccc.api.http;
 
+import java.util.Collections;
+
+import javax.ws.rs.core.UriBuilder;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.jaxrs.ResourcesImpl;
@@ -76,8 +81,14 @@ class ResourcesDecorator
          * FIXME: Make use of RestExceptionMapper to throw correct exceptions.
          */
 
+        final String uri =
+            UriBuilder
+                .fromPath(Resource.SEARCH_PATH)
+                .buildFromEncodedMap(
+                    Collections.singletonMap("path", path))
+                .toString();
         final ClientRequest request =
-            new ClientRequest(_base+"/resources/by-path"+path, _http);
+            new ClientRequest(_base+uri, _http);
 
         BaseClientResponse response;
         try {

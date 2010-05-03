@@ -29,8 +29,9 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ccc.api.core.UserCriteria;
 import ccc.api.core.User;
+import ccc.api.core.UserCriteria;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -83,7 +84,9 @@ public abstract class ListUsersAction
     @Override
     protected String getPath() {
         final StringBuilder path = new StringBuilder();
-        path.append("api/secure/users?page="+_pageNo
+        path.append(Globals.API_URL);
+        path.append(User.COLLECTION);
+        path.append("?page="+_pageNo
         +"&count="+_pageSize+"&sort="+_sort+"&order="+_order);
         if (null != _uc) {
             if (null != _uc.getEmail()) {

@@ -57,7 +57,7 @@ public interface Pages {
      *
      * @return A list of errors, as strings.
      */
-    @POST @Path("/validator")
+    @POST @Path(Page.VALIDATOR)
     String validateFields(Page page);
 
 
@@ -68,7 +68,7 @@ public interface Pages {
      *
      * @return The corresponding delta.
      */
-    @GET @Path("/{id}/delta")
+    @GET @Path(Page.DELTA)
     Page pageDelta(@PathParam("id") UUID pageId);
 
 
@@ -78,7 +78,7 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    @POST @Path("/{id}")
+    @POST @Path(Page.ELEMENT)
     void updatePage(@PathParam("id") UUID pageId, Page delta);
 
 
@@ -88,7 +88,7 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    @POST @Path("/{id}/wc")
+    @POST @Path(Page.WC)
     void updateWorkingCopy(@PathParam("id") UUID pageId, Page delta);
 
 
@@ -99,7 +99,7 @@ public interface Pages {
      *
      * @return A resource summary describing the new page.
      */
-    @POST
+    @POST @Path(Page.COLLECTION)
     ResourceSummary createPage(Page page);
 
 }

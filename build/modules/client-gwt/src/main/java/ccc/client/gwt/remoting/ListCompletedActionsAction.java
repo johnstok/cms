@@ -29,9 +29,11 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -83,7 +85,8 @@ public abstract class ListCompletedActionsAction
     @Override
     protected String getPath() {
         final String path =
-            "api/secure/actions/completed"
+            Globals.API_URL
+            + Action.COMPLETED
             + "?page="+_page
             + "&count="+_count
             + ((null==_order) ? "" : "&order="+_order.name())

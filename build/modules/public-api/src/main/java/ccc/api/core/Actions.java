@@ -61,7 +61,8 @@ public interface Actions
      *
      * @param actionId The id of the action to cancel.
      */
-    @POST @Path("/{id}/cancel")
+    @POST
+    @Path(Action.CANCEL)
     void cancelAction(
         @PathParam("id") UUID actionId);
 
@@ -73,6 +74,7 @@ public interface Actions
      * @return A summary of the new action.
      */
     @POST
+    @Path(Action.COLLECTION)
     ActionSummary createAction(Action action);
 
 
@@ -85,7 +87,8 @@ public interface Actions
      * @param pageSize The number of results in a page.
      * @return A collection of action summaries, one per outstanding action.
      */
-    @GET @Path("/pending")
+    @GET
+    @Path(Action.PENDING)
     PagedCollection<ActionSummary> listPendingActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
@@ -102,7 +105,7 @@ public interface Actions
      * @param pageSize The number of results in a page.
      * @return A collection of action summaries, one per completed action.
      */
-    @GET @Path("/completed")
+    @GET @Path(Action.COMPLETED)
     PagedCollection<ActionSummary> listCompletedActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
@@ -113,7 +116,7 @@ public interface Actions
     /**
      * Executes all available actions whose 'execute after' date is in the past.
      */
-    @POST @Path("/all")
+    @POST @Path(Action.EXECUTE)
     void executeAll();
 
 
@@ -124,6 +127,6 @@ public interface Actions
      *
      * @return A summary of the action.
      */
-    @GET @Path("/{id}")
+    @GET @Path(Action.ELEMENT)
     ActionSummary findAction(@PathParam("id") UUID actionId);
 }

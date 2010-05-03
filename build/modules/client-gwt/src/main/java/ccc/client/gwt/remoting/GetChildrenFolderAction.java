@@ -26,53 +26,71 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
+
 import ccc.api.core.Folder;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.plugins.s11n.Json;
 
-import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Remote action for folder updating.
+ * Remote action for children of folder type resource fetching.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateFolderAction
+public abstract class GetChildrenFolderAction
     extends
         RemotingAction {
 
-    private final Folder _folder;
-
+    private final UUID _parentId;
 
     /**
      * Constructor.
      *
-     * @param folder The folder to update.
+     * @param actionName The name of the action.
+     * @param parentId The id of the parent folder.
      */
-    public UpdateFolderAction(final Folder folder) {
-        super(UI_CONSTANTS.folderSortOrder(), RequestBuilder.POST);
-        _folder = folder;
+    public GetChildrenFolderAction(final String actionName,
+                                   final UUID parentId) {
+        super(actionName);
+        _parentId = parentId;
     }
-
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return
-            new URIBuilder(Folder.ELEMENT)
-            .replace("id", _folder.getId().toString())
+            new URIBuilder(Folder.FOLDER_CHILDREN)
+            .replace("id", _parentId.toString())
             .toString();
     }
 
-
     /** {@inheritDoc} */
     @Override
-    protected String getBody() {
-        final Json json = new GwtJson();
-        _folder.toJson(json);
-        return json.toString();
+    protected void onOK(final Response response) {
+        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+        final Collection<ResourceSummary> children =
+            new ArrayList<ResourceSummary>();
+        for (int i=0; i<result.size(); i++) {
+            children.add(
+                new ResourceSummary(new GwtJson(result.get(i).isObject())));
+        }
+
+        execute(children);
     }
+
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param children The collection of folder children.
+     */
+    protected abstract void execute(Collection<ResourceSummary> children);
 }

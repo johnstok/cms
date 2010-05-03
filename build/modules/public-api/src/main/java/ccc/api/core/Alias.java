@@ -26,9 +26,12 @@
  */
 package ccc.api.core;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.ResourceName;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -41,6 +44,10 @@ import ccc.plugins.s11n.JsonKeys;
 public class Alias
     extends
         Resource {
+
+    public static final String COLLECTION  = "/secure/aliases";
+    public static final String ELEMENT     = COLLECTION + "/{id}";
+    public static final String TARGET_NAME = ELEMENT + "/targetname";
 
     private UUID _targetId;
     private String _targetPath;
@@ -123,7 +130,18 @@ public class Alias
     public void toJson(final Json json) {
         super.toJson(json);
 
+        final Map<String, String> links = new HashMap<String, String>();
+        links.put("create", Alias.COLLECTION);
+        if (null!=getId()) {
+            links.put(
+                "update",
+                new URIBuilder(Alias.COLLECTION+Alias.ELEMENT)
+                    .replace("id", getId().toString())
+                    .toString());
+        }
+
         json.set(JsonKeys.TARGET_ID, _targetId);
+        json.set("links", links);
     }
 
 

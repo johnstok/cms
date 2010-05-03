@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.Template;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -68,7 +69,7 @@ public abstract class GetTemplatesAction
         return
             new Request(
                 RequestBuilder.GET,
-                "api/secure/templates",
+                Globals.API_URL+Template.COLLECTION,
                 "",
                 new ResponseHandlerAdapter(_name) {
 

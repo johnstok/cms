@@ -26,7 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.UpdateAliasDialog;
@@ -61,7 +63,10 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/aliases/" + _alias.getId() + "/targetname";
+        return
+            new URIBuilder(Alias.COLLECTION+Alias.TARGET_NAME)
+            .replace("id", _alias.getId().toString())
+            .toString();
     }
 
     /** {@inheritDoc} */

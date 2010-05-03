@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -59,7 +60,10 @@ public class UpdateWorkingCopyAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/pages/"+_workingCopy.getId()+"/wc";
+        return
+            new URIBuilder(Page.COLLECTION+Page.WC)
+            .replace("id", _workingCopy.getId().toString())
+            .toString();
     }
 
 

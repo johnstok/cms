@@ -26,8 +26,6 @@
  */
 package ccc.api.core;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -54,6 +52,37 @@ public class Resource
     implements
         Serializable,
         Jsonable2 {
+
+    private static final String COLLECTION = "/secure/resources";
+    public static final String LIST = COLLECTION+"/list";
+    public static final String ELEMENT = COLLECTION+"/{id}";
+    public static final String DELETE = COLLECTION+"/{id}/delete";
+    public static final String PATH = COLLECTION+"/{id}/path";
+    public static final String LOCKED = COLLECTION+"/locked";
+    public static final String REVISIONS = COLLECTION+"/{id}/revisions";
+    public static final String METADATA = COLLECTION+"/{id}/metadata";
+    public static final String ACL = COLLECTION+"/{id}/acl";
+    public static final String DURATION = COLLECTION+"/{id}/duration";
+    public static final String TEMPLATE = COLLECTION+"/{id}/template";
+    public static final String SEARCH_PATH = COLLECTION+"/by-path{path:.*}";
+    public static final String SEARCH_LEGACY = COLLECTION+"/by-legacy-id/{id}";
+    public static final String SEARCH_METADATA = COLLECTION+"/by-metadata-key/{id}";
+    public static final String LOCK = COLLECTION+"/{id}/lock";
+    public static final String WC_APPLY = COLLECTION+"/{id}/wc-apply";
+    public static final String UNLOCK = COLLECTION+"/{id}/unlock";
+    public static final String UNPUBLISH = COLLECTION+"/{id}/unpublish";
+    public static final String PUBLISH = COLLECTION+"/{id}/publish";
+    public static final String PARENT = COLLECTION+"/{id}/parent";
+    public static final String NAME = COLLECTION+"/{id}/name";
+    public static final String EXCLUDE_MM = COLLECTION+"/{id}/exclude-mm";
+    public static final String INCLUDE_MM = COLLECTION+"/{id}/include-mm";
+    public static final String WC_CLEAR = COLLECTION+"/{id}/wc-clear";
+    public static final String WC_CREATE = COLLECTION+"/{id}/wc-create";
+    public static final String LOG_ENTRY = COLLECTION+"/{id}/logentry-create";
+    public static final String TEXT = COLLECTION+"/text-content{path:.*}";
+    public static final String PATH_SECURE = COLLECTION+"/by-path-secure{path:.*}";
+    public static final String PATH_WC = COLLECTION+"/by-path-wc{path:.*}";
+    public static final String SEARCH = COLLECTION+"/search/{id}/{title}";
 
     private String              _absolutePath;
     private Duration            _cacheDuration;
@@ -605,30 +634,31 @@ public class Resource
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
-        setAbsolutePath(json.getString(ABSOLUTE_PATH));
-        final Json duration = json.getJson(CACHE_DURATION);
+        setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
+        final Json duration = json.getJson(JsonKeys.CACHE_DURATION);
         setCacheDuration((null==duration) ? null : new Duration(duration));
-        setDateChanged(json.getDate(DATE_CHANGED));
-        setDateCreated(json.getDate(DATE_CREATED));
-        setDescription(json.getString(DESCRIPTION));
-        setId(json.getId(ID));
-        setInMainMenu(json.getBool(INCLUDE_IN_MAIN_MENU).booleanValue());
-        setLocked(json.getBool(LOCKED).booleanValue());
-        setPublished(json.getBool(PUBLISHED).booleanValue());
-        setSecure(json.getBool(SECURE).booleanValue());
-        setVisible(json.getBool(VISIBLE).booleanValue());
-        setLockedBy(json.getId(LOCKED_BY));
-        setMetadata(json.getStringMap(METADATA));
-        final String name = json.getString(NAME);
+        setDateChanged(json.getDate(JsonKeys.DATE_CHANGED));
+        setDateCreated(json.getDate(JsonKeys.DATE_CREATED));
+        setDescription(json.getString(JsonKeys.DESCRIPTION));
+        setId(json.getId(JsonKeys.ID));
+        setInMainMenu(
+            json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU).booleanValue());
+        setLocked(json.getBool(JsonKeys.LOCKED).booleanValue());
+        setPublished(json.getBool(JsonKeys.PUBLISHED).booleanValue());
+        setSecure(json.getBool(JsonKeys.SECURE).booleanValue());
+        setVisible(json.getBool(JsonKeys.VISIBLE).booleanValue());
+        setLockedBy(json.getId(JsonKeys.LOCKED_BY));
+        setMetadata(json.getStringMap(JsonKeys.METADATA));
+        final String name = json.getString(JsonKeys.NAME);
         setName((null==name) ? null : new ResourceName(name));
-        setParent(json.getId(PARENT_ID));
-        setPublishedBy(json.getId(PUBLISHED_BY));
-        setRevision(json.getInt(REVISION).intValue());
-        final Collection<String> tags = json.getStrings(TAGS);
+        setParent(json.getId(JsonKeys.PARENT_ID));
+        setPublishedBy(json.getId(JsonKeys.PUBLISHED_BY));
+        setRevision(json.getInt(JsonKeys.REVISION).intValue());
+        final Collection<String> tags = json.getStrings(JsonKeys.TAGS);
         setTags((null==tags) ? null : new HashSet<String>(tags));
-        setTemplate(json.getId(TEMPLATE_ID));
-        setTitle(json.getString(TITLE));
-        final String type = json.getString(TYPE);
+        setTemplate(json.getId(JsonKeys.TEMPLATE_ID));
+        setTitle(json.getString(JsonKeys.TITLE));
+        final String type = json.getString(JsonKeys.TYPE);
         setType((null==type) ? null : ResourceType.valueOf(type));
     }
 
@@ -636,26 +666,26 @@ public class Resource
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        json.set(ABSOLUTE_PATH, _absolutePath);
-        json.set(CACHE_DURATION, _cacheDuration);
-        json.set(DATE_CHANGED, _dateChanged);
-        json.set(DATE_CREATED, _dateCreated);
-        json.set(DESCRIPTION, _description);
-        json.set(ID, _id);
-        json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_inMainMenu));
+        json.set(JsonKeys.ABSOLUTE_PATH, _absolutePath);
+        json.set(JsonKeys.CACHE_DURATION, _cacheDuration);
+        json.set(JsonKeys.DATE_CHANGED, _dateChanged);
+        json.set(JsonKeys.DATE_CREATED, _dateCreated);
+        json.set(JsonKeys.DESCRIPTION, _description);
+        json.set(JsonKeys.ID, _id);
+        json.set(JsonKeys.INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_inMainMenu));
         json.set(JsonKeys.LOCKED, Boolean.valueOf(_isLocked));
         json.set(JsonKeys.PUBLISHED, Boolean.valueOf(_isPublished));
         json.set(JsonKeys.SECURE, Boolean.valueOf(_isSecure));
         json.set(JsonKeys.VISIBLE, Boolean.valueOf(_isVisible));
-        json.set(LOCKED_BY, _lockedBy);
-        json.set(METADATA, _metadata);
-        json.set(NAME, (null==_name) ? null : _name.toString());
-        json.set(PARENT_ID, _parent);
-        json.set(PUBLISHED_BY, _publishedBy);
-        json.set(REVISION, Long.valueOf(_revision));
-        json.setStrings(TAGS, _tags);
-        json.set(TEMPLATE_ID, _template);
-        json.set(TITLE, _title);
-        json.set(TYPE, (null==_type) ? null : _type.name());
+        json.set(JsonKeys.LOCKED_BY, _lockedBy);
+        json.set(JsonKeys.METADATA, _metadata);
+        json.set(JsonKeys.NAME, (null==_name) ? null : _name.toString());
+        json.set(JsonKeys.PARENT_ID, _parent);
+        json.set(JsonKeys.PUBLISHED_BY, _publishedBy);
+        json.set(JsonKeys.REVISION, Long.valueOf(_revision));
+        json.setStrings(JsonKeys.TAGS, _tags);
+        json.set(JsonKeys.TEMPLATE_ID, _template);
+        json.set(JsonKeys.TITLE, _title);
+        json.set(JsonKeys.TYPE, (null==_type) ? null : _type.name());
     }
 }

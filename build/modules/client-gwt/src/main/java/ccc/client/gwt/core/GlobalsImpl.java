@@ -94,16 +94,6 @@ public class GlobalsImpl
 
     /** {@inheritDoc} */
     @Override
-    @Deprecated
-    public String apiURL(final boolean secure) {
-        return
-            GWT.getHostPageBaseURL()
-            + API_URL
-            + ((secure) ? "/secure" : "/public");
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public String appURL() {
         return GWT.getHostPageBaseURL();
     }

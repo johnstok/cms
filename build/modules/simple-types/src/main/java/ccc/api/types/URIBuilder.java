@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,38 +21,52 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
-
-import ccc.api.core.Security;
-import ccc.client.gwt.core.RemotingAction;
+package ccc.api.types;
 
 
 
 /**
- * Abstract action for property loading. Implement onOK method for accessing
- * map values. See LoginDialog or AboutDialog.
+ * Helper class for building URIs.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class GetPropertyAction
-    extends
-        RemotingAction {
+// FIXME: Move this out of the api-types module.
+public class URIBuilder {
+
+    private String _uri;
 
 
     /**
      * Constructor.
+     *
+     * @param uri The URI as a string.
      */
-    public GetPropertyAction() {
-        super(USER_ACTIONS.readProperties());
+    public URIBuilder(final String uri) {
+        _uri = DBC.require().notNull(uri);
+    }
+
+
+    /**
+     * Replace a wildcard in the URI.
+     *
+     * @param name The wildcard name.
+     * @param value The replacement value.
+     *
+     * @return Return a reference to 'this' to allow method chaining.
+     */
+    public URIBuilder replace(final String name, final String value) {
+        // FIXME: URL encoding?
+        _uri = _uri.replaceAll("\\{"+name+"\\}", value);
+        return this;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return Security.PROPERTIES;
+    public String toString() {
+        return _uri;
     }
 }

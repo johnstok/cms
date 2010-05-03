@@ -63,7 +63,7 @@ public class CreateGroupAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/groups";
+        return Group.COLLECTION;
     }
 
 

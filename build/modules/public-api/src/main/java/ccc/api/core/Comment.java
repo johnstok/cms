@@ -46,6 +46,9 @@ public class Comment
         Jsonable2,
         Serializable {
 
+    public static final String COLLECTION = "/secure/comments";
+    public static final String ELEMENT = COLLECTION+"/{id}";
+
     private UUID          _id;
     private UUID          _resourceId;
     private String        _body;

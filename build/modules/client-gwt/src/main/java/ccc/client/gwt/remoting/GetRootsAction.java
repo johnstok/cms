@@ -29,7 +29,9 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -53,7 +55,7 @@ public abstract class GetRootsAction
 
     @Override
     protected String getPath() {
-        return "api/secure/folders/roots";
+        return Globals.API_URL+Folder.ROOTS;
     }
 
 

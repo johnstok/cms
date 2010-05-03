@@ -29,6 +29,8 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.User;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -66,9 +68,12 @@ public abstract class GetUserAction
         return
             new Request(
                 RequestBuilder.GET,
-                "api/secure/users/"+_id+"/delta",
+                Globals.API_URL
+                    + new URIBuilder(User.COLLECTION+User.DELTA)
+                    .replace("id", _id.toString()),
                 "",
-                new ResponseHandlerAdapter(GLOBALS.userActions().internalAction()) {
+                new ResponseHandlerAdapter(
+                    GLOBALS.userActions().internalAction()) {
 
                     /** {@inheritDoc} */
                     @Override

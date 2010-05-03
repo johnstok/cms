@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Security;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 
 
@@ -46,14 +46,14 @@ public class IsLoggedInAction
      * Constructor.
      */
     public IsLoggedInAction() {
-        super(USER_ACTIONS.internalAction(), RequestBuilder.GET, false);
+        super(USER_ACTIONS.internalAction());
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "/sessions/current";
+        return Security.CURRENT;
     }
 
 

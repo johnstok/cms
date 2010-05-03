@@ -26,7 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.User;
+import ccc.api.types.URIBuilder;
 import ccc.api.types.Username;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -55,9 +58,13 @@ public abstract class UniqueUsernameAction
         _username = username;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return "api/secure/users/" + encode(_username.toString()) + "/exists";
+        return
+            Globals.API_URL
+            + new URIBuilder(User.COLLECTION+User.EXISTS)
+                .replace("uname", encode(_username.toString()));
     }
 
 
