@@ -170,7 +170,7 @@ public class Group
      */
     public String self() {
         return
-            new URIBuilder(Group.COLLECTION+Group.ELEMENT)
+            new URIBuilder(Group.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }
