@@ -29,7 +29,6 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.User;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -68,9 +67,7 @@ public abstract class GetUserAction
         return
             new Request(
                 RequestBuilder.GET,
-                Globals.API_URL
-                    + new URIBuilder(User.COLLECTION+User.DELTA)
-                    .replace("id", _id.toString()),
+                Globals.API_URL + User.delta(_id),
                 "",
                 new ResponseHandlerAdapter(
                     GLOBALS.userActions().internalAction()) {

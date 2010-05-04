@@ -133,10 +133,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
                 _user.setEmail(_email.getValue());
                 _user.setName(_name.getValue());
 
-                new UpdateCurrentUserAction(
-                    _user.getId(),
-                    _user
-                ){
+                new UpdateCurrentUserAction(_user){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {

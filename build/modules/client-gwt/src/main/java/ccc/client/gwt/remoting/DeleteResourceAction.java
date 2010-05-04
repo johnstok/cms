@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -64,9 +63,7 @@ public class DeleteResourceAction
     @Override
     protected String getPath() {
         return
-            new URIBuilder(Resource.DELETE)
-            .replace("id", _selectionModel.tableSelection().getId().toString())
-            .toString();
+            Resource.uriDelete(_selectionModel.tableSelection().getId());
     }
 
 

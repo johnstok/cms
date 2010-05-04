@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
@@ -63,10 +62,7 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Resource.WC_CREATE)
-            .replace("id", _dialog.getResourceId().toString())
-            .toString();
+        return Resource.history(_dialog.getResourceId());
     }
 
 

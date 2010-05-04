@@ -42,7 +42,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
-import ccc.api.types.URIBuilder;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -536,10 +535,7 @@ public class ResourceSummaryModelData
      * @return The path as a string.
      */
     public String revisionsPath() {
-        return
-            new URIBuilder(Resource.REVISIONS)
-                .replace("id", getId().toString())
-                .toString();
+        return Resource.revisions(getId());
     }
 
     /**
@@ -578,14 +574,9 @@ public class ResourceSummaryModelData
      * @return A HTTP request.
      */
     public Request applyWorkingCopy() {
-        final String path =
-            Globals.API_URL
-            + new URIBuilder(Resource.WC_APPLY)
-                .replace("id", getId().toString());
-
         return new Request(
             RequestBuilder.POST,
-            path,
+            Globals.API_URL + Resource.applyWc(getId()),
             "",
             new WCAppliedCallback(g.uiConstants().applyWorkingCopy(), this));
     }
@@ -596,15 +587,9 @@ public class ResourceSummaryModelData
      * @return A HTTP request.
      */
     public Request clearWorkingCopy() {
-        final String path =
-            Globals.API_URL
-            + new URIBuilder(Resource.WC_CLEAR)
-                .replace("id", getId().toString())
-                .toString();
-
         return new Request(
             RequestBuilder.POST,
-            path,
+            Globals.API_URL + Resource.clearWc(getId()),
             "",
             new WCClearedCallback(g.uiConstants().deleteWorkingCopy(), this));
     }
@@ -618,7 +603,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create an alias.
      */
     public static Request createAlias(final Alias alias) {
-        final String path = Globals.API_URL+Alias.COLLECTION;
+        final String path = Globals.API_URL+Alias.list();
 
         final GwtJson json = new GwtJson();
         alias.toJson(json);
@@ -644,7 +629,7 @@ public class ResourceSummaryModelData
     // FIXME: Should pass a folder here.
     public static Request createFolder(final String name,
                                        final UUID parentFolder) {
-        final String path = Globals.API_URL+Folder.COLLECTION;
+        final String path = Globals.API_URL+Folder.list();
 
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.PARENT_ID, parentFolder);
@@ -668,7 +653,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create a folder.
      */
     public static Request createPage(final Page page) {
-        final String path =  Globals.API_URL+Page.COLLECTION;
+        final String path =  Globals.API_URL+Page.list();
 
         final GwtJson json = new GwtJson(); // FIXME: Broken.
         page.toJson(json);
@@ -695,16 +680,10 @@ public class ResourceSummaryModelData
     public static Request rename(final String name,
                                  final UUID id,
                                  final ResourcePath newPath) {
-        final String path =
-            Globals.API_URL
-            + new URIBuilder(Resource.NAME)
-                .replace("id", id.toString())
-                .toString();
-
         return
             new Request(
                 RequestBuilder.POST,
-                path,
+                Globals.API_URL + Resource.rename(id),
                 name,
                 new ResourceRenamedCallback(
                     new GlobalsImpl().uiConstants().rename(),

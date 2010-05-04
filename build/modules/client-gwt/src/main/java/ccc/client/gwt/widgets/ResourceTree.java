@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
@@ -83,8 +84,7 @@ public class ResourceTree extends AbstractResourceTree {
                     : ((ResourceSummaryModelData) loadConfig).getId();
 
                     new GetChildrenPagedAction(
-                        parentId,
-                        1,1000,"name","ASC") {
+                        parentId, 1, 1000, "name", SortOrder.ASC, null) {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {

@@ -26,10 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.User;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -46,28 +43,21 @@ public abstract class UpdateUserPasswordAction
         RemotingAction {
 
     private final User _newPassword;
-    private final UUID _userId;
 
 
     /**
      * Constructor.
      * @param newPassword The user's new password.
-     * @param userId The user's id.
      */
-    public UpdateUserPasswordAction(final UUID userId,
-                                    final User newPassword) {
+    public UpdateUserPasswordAction(final User newPassword) {
         super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);
-        _userId = userId;
         _newPassword = newPassword;
     }
 
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return
-            new URIBuilder(User.COLLECTION+User.PASSWORD)
-            .replace("id", _userId.toString())
-            .toString();
+        return _newPassword.uriPassword();
     }
 
 

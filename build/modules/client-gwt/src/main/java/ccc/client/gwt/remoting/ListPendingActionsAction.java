@@ -82,13 +82,7 @@ public abstract class ListPendingActionsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final String path =
-            Action.COLLECTION
-            + Action.PENDING
-            + "?page="+_page
-            + "&count="+_count
-            + ((null==_order) ? "" : "&order="+_order.name())
-            + ((null==_sort) ? "" : "&sort="+_sort);
+        final String path = Action.pending(_page, _count, _order, _sort);
         return path;
     }
 

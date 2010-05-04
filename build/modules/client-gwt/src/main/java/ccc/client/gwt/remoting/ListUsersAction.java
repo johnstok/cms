@@ -81,25 +81,34 @@ public abstract class ListUsersAction
         _order = order;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final StringBuilder path = new StringBuilder();
-        path.append(Globals.API_URL);
-        path.append(User.COLLECTION);
-        path.append("?page="+_pageNo
-        +"&count="+_pageSize+"&sort="+_sort+"&order="+_order);
+        String email    = null;
+        String username = null;
+        String groups   = null;
         if (null != _uc) {
             if (null != _uc.getEmail()) {
-                path.append("&email="+encode(_uc.getEmail()));
+                email=encode(_uc.getEmail());
             }
             if (null != _uc.getUsername()) {
-                path.append("&username="+encode(_uc.getUsername()));
+                username=encode(_uc.getUsername());
             }
             if (null != _uc.getGroups()) {
-                path.append("&groups="+encode(_uc.getGroups()));
+                groups=encode(_uc.getGroups());
             }
         }
-        return path.toString();
+
+        return
+            Globals.API_URL
+            + User.list(
+                _pageNo,
+                _pageSize,
+                _sort,
+                _order,
+                email,
+                username,
+                groups);
     }
 
 

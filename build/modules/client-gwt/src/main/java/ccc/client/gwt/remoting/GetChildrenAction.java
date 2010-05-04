@@ -32,9 +32,11 @@ import java.util.Collection;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -61,7 +63,12 @@ public abstract class GetChildrenAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+
+        final int totalCount =
+            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
+        final JSONArray result = obj.get(JsonKeys.ELEMENTS).isArray();
         final Collection<ResourceSummary> children =
             new ArrayList<ResourceSummary>();
         for (int i=0; i<result.size(); i++) {

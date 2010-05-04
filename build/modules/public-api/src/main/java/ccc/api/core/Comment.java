@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommentStatus;
+import ccc.api.types.SortOrder;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable2;
@@ -46,8 +48,8 @@ public class Comment
         Jsonable2,
         Serializable {
 
-    public static final String COLLECTION = "/secure/comments";
-    public static final String ELEMENT = COLLECTION+"/{id}";
+    static final String COLLECTION = "/secure/comments";
+    static final String ELEMENT = COLLECTION+"/{id}";
 
     private UUID          _id;
     private UUID          _resourceId;
@@ -258,5 +260,43 @@ public class Comment
         _id = json.getId(JsonKeys.ID);
         _status = CommentStatus.valueOf(json.getString(JsonKeys.STATUS));
         _email = json.getString(JsonKeys.EMAIL);
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param page
+     * @param count
+     * @param status
+     * @param order
+     * @param sort
+     * @return
+     */
+    public static String list(final int page,
+                              final int count,
+                              final CommentStatus status,
+                              final SortOrder order,
+                              final String sort) {
+        return
+            Comment.COLLECTION
+                + "?page="+page
+                + "&count="+count
+                + ((null==status) ? "" : "&status="+status.name())
+                + ((null==order) ? "" : "&order="+order.name())
+                + ((null==sort) ? "" : "&sort="+sort);
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(Comment.ELEMENT)
+                .replace("id", getId().toString())
+                .toString();
     }
 }

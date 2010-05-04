@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -62,10 +61,7 @@ public class UnpublishAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Resource.UNPUBLISH)
-            .replace("id", _selectionModel.tableSelection().getId().toString())
-            .toString();
+        return Resource.uriUnpublish(_selectionModel.tableSelection().getId());
     }
 
 

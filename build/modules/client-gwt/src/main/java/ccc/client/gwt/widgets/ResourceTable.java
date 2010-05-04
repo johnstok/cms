@@ -34,6 +34,7 @@ import java.util.UUID;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -196,16 +197,18 @@ public class ResourceTable
                         (BasePagingLoadConfig) loadConfig;
 
                     final int page =  config.getOffset()/ config.getLimit()+1;
-                    final String order = (
-                        config.getSortDir() == Style.SortDir.ASC
-                        ? "ASC" : "DESC");
+                    final SortOrder order =
+                        (config.getSortDir() == Style.SortDir.ASC)
+                            ? SortOrder.ASC
+                            : SortOrder.DESC;
 
                     new GetChildrenPagedAction(
                         folder.getId(),
                         page,
                         config.getLimit(),
                         config.getSortField(),
-                        order) {
+                        order,
+                        null) {
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
                             callback.onFailure(t);

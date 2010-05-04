@@ -29,7 +29,6 @@ package ccc.client.gwt.views.gxt;
 import java.util.UUID;
 
 import ccc.api.core.File;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.ImagePaths;
@@ -81,10 +80,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
-        getPanel().setAction(
-            Globals.API_URL
-            + new URIBuilder(File.BINARY_ELEMENT)
-                .replace("id", fileId.toString()));
+        getPanel().setAction(Globals.API_URL + File.selfBinary(fileId));
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 

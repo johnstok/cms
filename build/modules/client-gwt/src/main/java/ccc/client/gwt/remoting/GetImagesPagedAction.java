@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.api.core.File;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -85,9 +84,7 @@ public abstract class GetImagesPagedAction
     protected String getPath() {
         return
             Globals.API_URL
-            + new URIBuilder(File.COLLECTION+File.IMAGES)
-                .replace("id", _parentId.toString())
-            + "/?page="+_pageNo+"&count="+_pageSize;
+            + File.images(_parentId, _pageNo, _pageSize);
     }
 
 

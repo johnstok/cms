@@ -29,7 +29,6 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -63,10 +62,7 @@ public class MoveResourceAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return
-            new URIBuilder(Resource.PARENT)
-            .replace("id", _resource.toString())
-            .toString();
+        return Resource.move(_resource);
     }
 
 

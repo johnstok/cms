@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 
 
@@ -44,10 +45,10 @@ public class Template
     extends
         Resource {
 
-    public static final String COLLECTION = "/secure/templates";
-    public static final String ELEMENT    = COLLECTION + "/{id}";
-    public static final String EXISTS     = COLLECTION + "/{name}/exists";
-    public static final String DELTA      = ELEMENT + "/delta";
+    static final String COLLECTION = "/secure/templates";
+    static final String ELEMENT    = COLLECTION + "/{id}";
+    static final String EXISTS     = COLLECTION + "/{name}/exists";
+    static final String DELTA      = ELEMENT + "/delta";
 
     private String   _body;
     private String   _definition;
@@ -162,5 +163,56 @@ public class Template
         t._body = body;
         t._definition = definition;
         return t;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() {
+        return Template.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String delta(final UUID id) {
+        return
+            new URIBuilder(Template.COLLECTION+Template.DELTA)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param name
+     * @return
+     */
+    public static String exists(final String name) {
+        return
+            new URIBuilder(Template.COLLECTION+Template.EXISTS)
+            .replace("name", name)
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(Template.COLLECTION+Template.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
     }
 }

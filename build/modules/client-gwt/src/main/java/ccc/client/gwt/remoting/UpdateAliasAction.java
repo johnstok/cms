@@ -26,10 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.Alias;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -38,7 +35,7 @@ import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
- * TODO: Add a description for this type.
+ * Update an alias.
  *
  * @author Civic Computing Ltd.
  */
@@ -46,18 +43,16 @@ public class UpdateAliasAction
     extends
         RemotingAction {
 
-    private final UUID _alias;
     private final Alias _details;
 
 
     /**
      * Constructor.
+     *
      * @param details The new alias details.
-     * @param alias The alias to update.
      */
-    public UpdateAliasAction(final UUID alias, final Alias details) {
+    public UpdateAliasAction(final Alias details) {
         super(UI_CONSTANTS.updateAlias(), RequestBuilder.POST);
-        _alias = alias;
         _details = details;
     }
 
@@ -65,10 +60,7 @@ public class UpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Alias.COLLECTION+Alias.ELEMENT)
-            .replace("id", _alias.toString())
-            .toString();
+        return _details.self();
     }
 
 

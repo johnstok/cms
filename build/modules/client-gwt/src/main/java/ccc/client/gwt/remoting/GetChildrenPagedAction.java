@@ -32,6 +32,8 @@ import java.util.UUID;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.JsonKeys;
@@ -55,7 +57,8 @@ RemotingAction{
     private int _pageNo;
     private int _pageSize;
     private String _sort;
-    private String _order;
+    private SortOrder _order;
+    private ResourceType _type;
 
     /**
      * Constructor.
@@ -70,25 +73,22 @@ RemotingAction{
                                   final int pageNo,
                                   final int pageSize,
                                   final String sort,
-                                  final String order) {
+                                  final SortOrder order,
+                                  final ResourceType type) {
         super(GLOBALS.uiConstants().getChildrenPaged());
         _parentId = parentId;
         _pageNo = pageNo;
         _pageSize = pageSize;
         _sort = sort;
         _order = order;
+        _type = type;
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
         return
-            Resource.LIST
-            + "?parent="+_parentId
-            + "&page="+_pageNo
-            + "&count="+_pageSize
-            + "&sort="+_sort
-            + "&order="+_order;
+            Resource.list(_parentId, _pageNo, _pageSize, _sort, _order, _type);
     }
 
 

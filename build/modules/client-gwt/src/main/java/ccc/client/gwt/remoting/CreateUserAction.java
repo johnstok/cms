@@ -61,7 +61,7 @@ public class CreateUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return User.COLLECTION;
+        return User.list();
     }
 
     /** {@inheritDoc} */

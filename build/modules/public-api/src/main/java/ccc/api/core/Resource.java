@@ -38,6 +38,8 @@ import java.util.UUID;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable2;
@@ -54,35 +56,36 @@ public class Resource
         Jsonable2 {
 
     private static final String COLLECTION = "/secure/resources";
-    public static final String LIST = COLLECTION+"/list";
-    public static final String ELEMENT = COLLECTION+"/{id}";
-    public static final String DELETE = COLLECTION+"/{id}/delete";
-    public static final String PATH = COLLECTION+"/{id}/path";
-    public static final String LOCKED = COLLECTION+"/locked";
-    public static final String REVISIONS = COLLECTION+"/{id}/revisions";
-    public static final String METADATA = COLLECTION+"/{id}/metadata";
-    public static final String ACL = COLLECTION+"/{id}/acl";
-    public static final String DURATION = COLLECTION+"/{id}/duration";
-    public static final String TEMPLATE = COLLECTION+"/{id}/template";
-    public static final String SEARCH_PATH = COLLECTION+"/by-path{path:.*}";
-    public static final String SEARCH_LEGACY = COLLECTION+"/by-legacy-id/{id}";
-    public static final String SEARCH_METADATA = COLLECTION+"/by-metadata-key/{id}";
-    public static final String LOCK = COLLECTION+"/{id}/lock";
-    public static final String WC_APPLY = COLLECTION+"/{id}/wc-apply";
-    public static final String UNLOCK = COLLECTION+"/{id}/unlock";
-    public static final String UNPUBLISH = COLLECTION+"/{id}/unpublish";
-    public static final String PUBLISH = COLLECTION+"/{id}/publish";
-    public static final String PARENT = COLLECTION+"/{id}/parent";
-    public static final String NAME = COLLECTION+"/{id}/name";
-    public static final String EXCLUDE_MM = COLLECTION+"/{id}/exclude-mm";
-    public static final String INCLUDE_MM = COLLECTION+"/{id}/include-mm";
-    public static final String WC_CLEAR = COLLECTION+"/{id}/wc-clear";
-    public static final String WC_CREATE = COLLECTION+"/{id}/wc-create";
-    public static final String LOG_ENTRY = COLLECTION+"/{id}/logentry-create";
-    public static final String TEXT = COLLECTION+"/text-content{path:.*}";
-    public static final String PATH_SECURE = COLLECTION+"/by-path-secure{path:.*}";
-    public static final String PATH_WC = COLLECTION+"/by-path-wc{path:.*}";
-    public static final String SEARCH = COLLECTION+"/search/{id}/{title}";
+    static final String LIST = COLLECTION+"/list";
+    static final String ELEMENT = COLLECTION+"/{id}";
+    static final String DELETE = COLLECTION+"/{id}/delete";
+    static final String PATH = COLLECTION+"/{id}/path";
+    static final String LOCKED = COLLECTION+"/locked";
+    static final String REVISIONS = COLLECTION+"/{id}/revisions";
+    static final String METADATA = COLLECTION+"/{id}/metadata";
+    static final String ACL = COLLECTION+"/{id}/acl";
+    static final String DURATION = COLLECTION+"/{id}/duration";
+    static final String TEMPLATE = COLLECTION+"/{id}/template";
+    static final String SEARCH_PATH = COLLECTION+"/by-path{path:.*}";
+    private static final String SEARCH_PATH_SIMPLE = COLLECTION+"/by-path";
+    static final String SEARCH_LEGACY = COLLECTION+"/by-legacy-id/{id}";
+    static final String SEARCH_METADATA = COLLECTION+"/by-metadata-key/{id}";
+    static final String LOCK = COLLECTION+"/{id}/lock";
+    static final String WC_APPLY = COLLECTION+"/{id}/wc-apply";
+    static final String UNLOCK = COLLECTION+"/{id}/unlock";
+    static final String UNPUBLISH = COLLECTION+"/{id}/unpublish";
+    static final String PUBLISH = COLLECTION+"/{id}/publish";
+    static final String PARENT = COLLECTION+"/{id}/parent";
+    static final String NAME = COLLECTION+"/{id}/name";
+    static final String EXCLUDE_MM = COLLECTION+"/{id}/exclude-mm";
+    static final String INCLUDE_MM = COLLECTION+"/{id}/include-mm";
+    static final String WC_CLEAR = COLLECTION+"/{id}/wc-clear";
+    static final String WC_CREATE = COLLECTION+"/{id}/wc-create";
+    static final String LOG_ENTRY = COLLECTION+"/{id}/logentry-create";
+    static final String TEXT = COLLECTION+"/text-content{path:.*}";
+    static final String PATH_SECURE = COLLECTION+"/by-path-secure{path:.*}";
+    static final String PATH_WC = COLLECTION+"/by-path-wc{path:.*}";
+    static final String SEARCH = COLLECTION+"/search/{id}/{title}";
 
     private String              _absolutePath;
     private Duration            _cacheDuration;
@@ -687,5 +690,309 @@ public class Resource
         json.set(JsonKeys.TEMPLATE_ID, _template);
         json.set(JsonKeys.TITLE, _title);
         json.set(JsonKeys.TYPE, (null==_type) ? null : _type.name());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param path
+     * @return
+     */
+    public static String path(final String path) {
+        // FIXME: Bit hacky.
+        return SEARCH_PATH_SIMPLE+path;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String revisions(final UUID id) {
+        return
+            new URIBuilder(Resource.REVISIONS)
+                .replace("id", id.toString())
+                .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String rename(final UUID id) {
+        return
+            new URIBuilder(Resource.NAME)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String applyWc(final UUID id) {
+        return
+            new URIBuilder(Resource.WC_APPLY)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String clearWc(final UUID id) {
+        return
+            new URIBuilder(Resource.WC_CLEAR)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @param page
+     * @param count
+     * @param sort
+     * @param order
+     * @return
+     */
+    public static String list(final UUID id,
+                              final int page,
+                              final int count,
+                              final String sort,
+                              final SortOrder order,
+                              final ResourceType type) {
+        return
+            Resource.LIST
+            + "?parent="+id
+            + ((null==sort) ? "" : "&sort="+sort)
+            + "&order="+order.name()
+            + "&page="+page
+            + "&count="+count
+            + ((null==type) ? "" : "&type="+type.name().toLowerCase());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String uriMetadata() {
+        return
+            new URIBuilder(Resource.METADATA)
+            .replace("id", getId().toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String uriUnpublish(final UUID id) {
+        return
+            new URIBuilder(Resource.UNPUBLISH)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String uriTemplate(final UUID id) {
+        return
+            new URIBuilder(Resource.TEMPLATE)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String uriDelete(final UUID id) {
+        return
+            new URIBuilder(Resource.DELETE)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param resourceId
+     * @return
+     */
+    public static String history(final UUID resourceId) {
+        return
+            new URIBuilder(Resource.WC_CREATE)
+            .replace("id", resourceId.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param resourceId
+     * @return
+     */
+    public static String uriAbsPath(final UUID resourceId) {
+        return
+            new URIBuilder(Resource.PATH)
+            .replace("id", resourceId.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String includeMM(final UUID id) {
+        return
+            new URIBuilder(Resource.INCLUDE_MM)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String lock(final UUID id) {
+        return
+            new URIBuilder(Resource.LOCK)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param resource
+     * @return
+     */
+    public static String move(final UUID resource) {
+        return
+            new URIBuilder(Resource.PARENT)
+            .replace("id", resource.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String duration(final UUID id) {
+        return
+            new URIBuilder(Resource.DURATION)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String unlock(final UUID id) {
+        return
+            new URIBuilder(Resource.UNLOCK)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param resource
+     * @return
+     */
+    public static String acl(final UUID resource) {
+        return
+            new URIBuilder(Resource.ACL)
+            .replace("id", resource.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String uriPublish(final UUID id) {
+        return
+            new URIBuilder(Resource.PUBLISH)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String excludeMM(final UUID id) {
+        return
+            new URIBuilder(Resource.EXCLUDE_MM)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String uriMetadata(final UUID id) {
+        return
+            new URIBuilder(Resource.METADATA)
+            .replace("id", id.toString())
+            .toString();
     }
 }

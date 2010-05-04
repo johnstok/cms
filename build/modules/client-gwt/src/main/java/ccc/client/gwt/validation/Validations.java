@@ -32,6 +32,7 @@ import java.util.UUID;
 import ccc.api.core.Page;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
+import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -217,8 +218,9 @@ public final class Validations {
 
         return new Validator() {
             public void validate(final Validate validate) {
+                // FIXME: Conversion to type ResourceName can fail.
                 new ResourceNameExistsAction(folder.getId(),
-                                             name.getValue()){
+                                             new ResourceName(name.getValue())){
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {
                             validate.addMessage(
@@ -263,8 +265,9 @@ public final class Validations {
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
+                // FIXME: Conversion to type ResourceName can fail.
                 new ResourceNameExistsAction(id,
-                                             name.getValue()){
+                                             new ResourceName(name.getValue())){
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {
                            validate.addMessage(

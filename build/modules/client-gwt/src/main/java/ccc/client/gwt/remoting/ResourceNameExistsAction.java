@@ -29,7 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Folder;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.ResourceName;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.Response;
@@ -46,7 +46,7 @@ public abstract class ResourceNameExistsAction
         RemotingAction {
 
     private UUID _folderId;
-    private String _resourceName;
+    private ResourceName _resourceName;
 
     /**
      * Constructor.
@@ -54,7 +54,7 @@ public abstract class ResourceNameExistsAction
      * @param folderId The id of the folder to check.
      */
     public ResourceNameExistsAction(final UUID folderId,
-                                    final String resourceName) {
+                                    final ResourceName resourceName) {
         super(USER_ACTIONS.checkUniqueResourceName());
         _folderId = folderId;
         _resourceName = resourceName;
@@ -63,11 +63,8 @@ public abstract class ResourceNameExistsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Folder.EXISTS)
-            .replace("id", encode(_folderId.toString()))
-            .replace("name", encode(_resourceName))
-            .toString();
+        return Folder.exists(_folderId, _resourceName);
+
     }
 
     /** {@inheritDoc} */

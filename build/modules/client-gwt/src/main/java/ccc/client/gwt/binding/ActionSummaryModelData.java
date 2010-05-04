@@ -40,7 +40,6 @@ import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceType;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
@@ -264,9 +263,7 @@ public class ActionSummaryModelData
     public Request cancel() {
         final String path =
             Globals.API_URL
-            + new URIBuilder(Action.COLLECTION+Action.CANCEL)
-                .replace("id", getId().toString())
-                .toString();
+            + Action.cancel(getId());
         return
             new Request(
                 RequestBuilder.POST,
@@ -290,7 +287,7 @@ public class ActionSummaryModelData
                                        final CommandType command,
                                        final Date executeAfter,
                                        final Map<String, String> params) {
-        final String path = Globals.API_URL+Action.COLLECTION;
+        final String path = Globals.API_URL+Action.list();
 
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.SUBJECT_ID, subject);

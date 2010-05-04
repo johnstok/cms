@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -70,9 +69,7 @@ public abstract class ComputeTemplateAction
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            Globals.API_URL
-                + new URIBuilder(Resource.TEMPLATE)
-                .replace("id", _id.toString()),
+            Globals.API_URL + Resource.uriTemplate(_id),
             "",
             new ResponseHandlerAdapter(_name) {
 
