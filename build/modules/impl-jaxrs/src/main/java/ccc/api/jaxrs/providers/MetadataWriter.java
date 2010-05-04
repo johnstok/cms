@@ -58,6 +58,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 @Provider
 @Produces("application/json")
+@Deprecated // FIXME: We should only be sending metadata wrapped in a resource or user.
 public class MetadataWriter
     extends
         AbstractProvider

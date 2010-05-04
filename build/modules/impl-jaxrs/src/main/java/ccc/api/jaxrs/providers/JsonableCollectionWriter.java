@@ -98,6 +98,7 @@ public class JsonableCollectionWriter
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
+        // FIXME: Send an object, not an array.
         final PrintWriter pw = createWriter(outputStream);
         pw.println("[\n");
         int a = 0;

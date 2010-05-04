@@ -96,6 +96,8 @@ public class StringCollectionWriter
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
 
+        // FIXME: Use JsonImpl.
+        // FIXME: Send an object, not an array.
         final PrintWriter pw = createWriter(outputStream);
         pw.println("[");
         int a = 0;
