@@ -55,7 +55,7 @@ public abstract class GetRootsAction
 
     @Override
     protected String getPath() {
-        return Globals.API_URL+Folder.ROOTS;
+        return Globals.API_URL+Folder.roots();
     }
 
 

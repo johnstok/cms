@@ -102,7 +102,7 @@ public class UserMetadataDialog extends AbstractEditDialog {
                 final Map<String, String> metadata =
                     _metadataPanel.currentMetadata();
                 _user.setMetadata(metadata);
-                new UpdateUserAction(_user.getId(), _user) {
+                new UpdateUserAction(_user) {
                     /** {@inheritDoc} */
                     @Override protected void done() {
                         UserMetadataDialog.this.hide();

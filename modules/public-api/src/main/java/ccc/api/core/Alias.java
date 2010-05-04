@@ -45,9 +45,9 @@ public class Alias
     extends
         Resource {
 
-    public static final String COLLECTION  = "/secure/aliases";
-    public static final String ELEMENT     = COLLECTION + "/{id}";
-    public static final String TARGET_NAME = ELEMENT + "/targetname";
+    static final String COLLECTION  = "/secure/aliases";
+    static final String ELEMENT     = COLLECTION + "/{id}";
+    static final String TARGET_NAME = ELEMENT + "/targetname";
 
     private UUID _targetId;
     private String _targetPath;
@@ -151,5 +151,42 @@ public class Alias
         super.fromJson(json);
 
         setTargetId(json.getId(JsonKeys.TARGET_ID));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() {
+        return Alias.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String targetName(final UUID id) {
+        return
+            new URIBuilder(Alias.TARGET_NAME)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(Alias.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
     }
 }

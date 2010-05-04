@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -61,10 +60,7 @@ public class UpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Resource.METADATA)
-            .replace("id", _resource.getId().toString())
-            .toString();
+        return _resource.uriMetadata();
     }
 
 

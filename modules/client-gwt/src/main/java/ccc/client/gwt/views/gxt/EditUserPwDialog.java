@@ -106,9 +106,10 @@ public class EditUserPwDialog extends AbstractEditDialog {
         return new Runnable() {
             public void run() {
                 final User update = new User();
+                update.setId(_userDTO.getId());
                 update.setPassword(_password1.getValue());
 
-                new UpdateUserPasswordAction(_userDTO.getId(), update) {
+                new UpdateUserPasswordAction(update) {
                     @Override protected void onNoContent(final Response r) {
                         hide();
                     }

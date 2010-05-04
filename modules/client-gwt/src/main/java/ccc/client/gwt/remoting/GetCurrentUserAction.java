@@ -65,6 +65,6 @@ public class GetCurrentUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return User.ME;
+        return User.me();
     }
 }

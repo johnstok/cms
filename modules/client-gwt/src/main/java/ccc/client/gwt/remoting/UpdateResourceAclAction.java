@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import ccc.api.core.Resource;
 import ccc.api.types.ACL;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -67,10 +66,7 @@ public class UpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Resource.ACL)
-            .replace("id", _resource.toString())
-            .toString();
+        return Resource.acl(_resource);
     }
 
 

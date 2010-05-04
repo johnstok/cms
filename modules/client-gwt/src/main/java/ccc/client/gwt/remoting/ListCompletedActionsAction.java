@@ -85,12 +85,7 @@ public abstract class ListCompletedActionsAction
     @Override
     protected String getPath() {
         final String path =
-            Globals.API_URL
-            + Action.COMPLETED
-            + "?page="+_page
-            + "&count="+_count
-            + ((null==_order) ? "" : "&order="+_order.name())
-            + ((null==_sort) ? "" : "&sort="+_sort);
+            Globals.API_URL + Action.completed(_page, _count, _order, _sort);
         return path;
     }
 

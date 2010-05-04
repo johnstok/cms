@@ -62,7 +62,7 @@ public final class CreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return File.COLLECTION;
+        return File.list();
     }
 
     /** {@inheritDoc} */

@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -45,11 +46,11 @@ public class Page
     extends
         Resource {
 
-    public static final String COLLECTION  = "/secure/pages";
-    public static final String VALIDATOR   = COLLECTION + "/validator";
-    public static final String ELEMENT     = COLLECTION + "/{id}";
-    public static final String DELTA       = ELEMENT + "/delta";
-    public static final String WC          = ELEMENT + "/wc";
+    static final String COLLECTION  = "/secure/pages";
+    static final String VALIDATOR   = COLLECTION + "/validator";
+    static final String ELEMENT     = COLLECTION + "/{id}";
+    static final String DELTA       = ELEMENT + "/delta";
+    static final String WC          = ELEMENT + "/wc";
 
     private String    _comment;
     private boolean   _majorChange;
@@ -189,5 +190,63 @@ public class Page
         final Page p = new Page();
         p.setParagraphs(paragraphs);
         return p;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() { return COLLECTION; }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String validate() {
+        return Page.COLLECTION+Page.VALIDATOR;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String workingCopy() {
+        return
+            new URIBuilder(Page.COLLECTION+Page.WC)
+            .replace("id", getId().toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(Page.COLLECTION+Page.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String deltaURI(final UUID id) {
+        return
+            new URIBuilder(Page.COLLECTION+Page.DELTA)
+            .replace("id", id.toString())
+            .toString();
     }
 }

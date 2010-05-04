@@ -65,7 +65,7 @@ public abstract class ListGroups
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            Globals.API_URL+Group.COLLECTION,
+            Globals.API_URL+Group.list(),
             "",
             new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
                 /** {@inheritDoc} */

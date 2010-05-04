@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.Resource;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.ResourceMetadataDialog;
@@ -63,10 +62,7 @@ public final class OpenUpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Resource.METADATA)
-            .replace("id", _selectionModel.tableSelection().getId().toString())
-            .toString();
+        return Resource.uriMetadata(_selectionModel.tableSelection().getId());
     }
 
     /** {@inheritDoc} */

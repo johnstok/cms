@@ -135,7 +135,10 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private Runnable createAlias() {
         return new Runnable() {
             public void run() {
-                new UpdateAliasAction(_aliasId, new Alias(_targetId)){
+                final Alias a = new Alias(_targetId);
+                a.setId(_aliasId);
+
+                new UpdateAliasAction(a){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {

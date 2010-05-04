@@ -32,7 +32,6 @@ import java.util.UUID;
 
 import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -46,6 +45,7 @@ import com.google.gwt.json.client.JSONParser;
  *
  * @author Civic Computing Ltd.
  */
+// FIXME: Delete - not used.
 public abstract class GetChildrenFolderAction
     extends
         RemotingAction {
@@ -67,10 +67,7 @@ public abstract class GetChildrenFolderAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Folder.FOLDER_CHILDREN)
-            .replace("id", _parentId.toString())
-            .toString();
+        return Folder.childrenFolder(_parentId);
     }
 
     /** {@inheritDoc} */

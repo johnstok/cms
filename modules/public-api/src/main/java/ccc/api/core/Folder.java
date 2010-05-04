@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -44,16 +45,16 @@ public class Folder
     extends
         Resource {
 
-    public static final String COLLECTION            = "/secure/folders";
-    public static final String ELEMENT               = COLLECTION + "/{id}";
-    public static final String ROOTS                 = COLLECTION + "/roots";
-    public static final String FOLDER_CHILDREN       = ELEMENT + "/folder-children";
-    public static final String CHILDREN              = ELEMENT + "/children";
-    public static final String ACCESSIBLE_CHILDREN   = ELEMENT + "/accessible-children";
-    public static final String CHILDREN_MANUAL_ORDER = ELEMENT + "/children-manual-order";
-    public static final String EXISTS                = ELEMENT + "/{name}/exists";
-    public static final String DEPRECATED            = COLLECTION + "/deprecated";
-    public static final String ROOT_NAME             = ROOTS + "/{name}";
+    static final String COLLECTION            = "/secure/folders";
+    static final String ELEMENT               = COLLECTION + "/{id}";
+    static final String ROOTS                 = COLLECTION + "/roots";
+    static final String FOLDER_CHILDREN       = ELEMENT + "/folder-children";
+    static final String CHILDREN              = ELEMENT + "/children";
+    static final String ACCESSIBLE_CHILDREN   = ELEMENT + "/accessible-children";
+    static final String CHILDREN_MANUAL_ORDER = ELEMENT + "/children-manual-order";
+    static final String EXISTS                = ELEMENT + "/{name}/exists";
+    static final String DEPRECATED            = COLLECTION + "/deprecated";
+    static final String ROOT_NAME             = ROOTS + "/{name}";
 
     private UUID _indexPage;
     private UUID _defaultPage;
@@ -195,5 +196,69 @@ public class Folder
         _sortOrder = json.getString(JsonKeys.SORT_ORDER);
         _indexPage = json.getId(JsonKeys.INDEX_PAGE_ID);
         _sortList = json.getStrings(JsonKeys.SORT_LIST);
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() {
+        return Folder.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String childrenFolder(final UUID id) {
+        return
+            new URIBuilder(Folder.FOLDER_CHILDREN)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String roots() {
+        return Folder.ROOTS;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param folderId
+     * @param encode
+     * @return
+     */
+    public static String exists(final UUID folderId,
+                                final ResourceName resourceName) {
+        return
+            new URIBuilder(Folder.EXISTS)
+            .replace("id", folderId.toString())
+            .replace("name", resourceName.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(Folder.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
     }
 }

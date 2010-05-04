@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -60,10 +59,7 @@ public class UpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Template.COLLECTION+Template.ELEMENT)
-            .replace("id", _details.getId().toString())
-            .toString();
+        return _details.self();
     }
 
 

@@ -26,10 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.User;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -49,17 +46,14 @@ public abstract class UpdateUserAction
     extends
         RemotingAction {
 
-    private final UUID _userId;
     private final User _userDetails;
 
 
     /**
      * Constructor.
      * @param userDetails The updated user details.
-     * @param userId The user's id.
      */
-    public UpdateUserAction(final UUID userId, final User userDetails) {
-        _userId = userId;
+    public UpdateUserAction(final User userDetails) {
         _userDetails = userDetails;
     }
 
@@ -67,11 +61,7 @@ public abstract class UpdateUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            Globals.API_URL
-            + new URIBuilder(User.COLLECTION+User.ELEMENT)
-            .replace("id", _userId.toString())
-            .toString();
+        return Globals.API_URL + _userDetails.self();
     }
 
 

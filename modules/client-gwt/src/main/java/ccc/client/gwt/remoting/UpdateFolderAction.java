@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Folder;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
@@ -61,10 +60,7 @@ public class UpdateFolderAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Folder.ELEMENT)
-            .replace("id", _folder.getId().toString())
-            .toString();
+        return _folder.self();
     }
 
 

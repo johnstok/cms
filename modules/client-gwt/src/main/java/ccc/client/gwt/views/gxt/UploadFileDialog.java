@@ -75,7 +75,7 @@ public class UploadFileDialog extends AbstractEditDialog {
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
 
         // Create a FormPanel and point it at a service.
-        getPanel().setAction(Globals.API_URL+File.BINARY_COLLECTION);
+        getPanel().setAction(Globals.API_URL+File.listBinary());
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 

@@ -133,6 +133,7 @@ public class EditUserDialog extends AbstractEditDialog {
             public void run() {
                 _userDTO.setEmail(_email.getValue());
                 _userDTO.setName(_name.getValue());
+                _userDTO.setId(_userId);
 
                 final Set<UUID> validGroups = new HashSet<UUID>();
                 for (final BaseModelData selected : _groups.getSelection()) {
@@ -140,10 +141,7 @@ public class EditUserDialog extends AbstractEditDialog {
                 }
                 _userDTO.setGroups(validGroups);
 
-                new UpdateUserAction(
-                    _userId,
-                    _userDTO
-                ){
+                new UpdateUserAction(_userDTO){
                     /** {@inheritDoc} */
                     @Override protected void done() {
                         // TODO: Just update the edited row model data.

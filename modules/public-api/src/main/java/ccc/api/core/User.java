@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
+import ccc.api.types.URIBuilder;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable2;
@@ -55,15 +56,15 @@ public final class User
         Serializable,
         Jsonable2 {
 
-    public static final String  COLLECTION = "/secure/users";
-    public static final String  ELEMENT    = COLLECTION + "/{id}";
-    public static final String  ME         = COLLECTION + "/me";
-    public static final String  EXISTS     = COLLECTION + "/{uname}/exists";
-    public static final String  LEGACY     = COLLECTION + "/by-legacy-id/{id}";
-    public static final String  METADATA   = COLLECTION + "/metadata/{key}";
-    public static final String  DELTA      = ELEMENT + "/delta";
-    public static final String  PASSWORD   = ELEMENT + "/password";
-    public static final String  CURRENT    = ELEMENT + "/currentuser";
+    static final String  COLLECTION = "/secure/users";
+    static final String  ELEMENT    = COLLECTION + "/{id}";
+    static final String  ME         = COLLECTION + "/me";
+    static final String  EXISTS     = COLLECTION + "/{uname}/exists";
+    static final String  LEGACY     = COLLECTION + "/by-legacy-id/{id}";
+    static final String  METADATA   = COLLECTION + "/metadata/{key}";
+    static final String  DELTA      = ELEMENT + "/delta";
+    static final String  PASSWORD   = ELEMENT + "/password";
+    static final String  CURRENT    = ELEMENT + "/currentuser";
 
     private String _email; // FIXME: Should be type EmailAddress.
     private String _name;
@@ -343,5 +344,130 @@ public final class User
             uuids.add(UUID.fromString(string));
         }
         return uuids;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() {
+        return User.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String me() {
+        return User.ME;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String delta(final UUID id) {
+        return
+            new URIBuilder(User.DELTA)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param sort
+     * @param order
+     * @param email
+     * @param username
+     * @param groups
+     * @return
+     */
+    // FIXME: Should accept a UserCriteria and encode internally.
+    public static String list(final int pageNo,
+                              final int pageSize,
+                              final String sort,
+                              final String order,
+                              final String email,
+                              final String username,
+                              final String groups) {
+        final StringBuilder path = new StringBuilder();
+        path.append(User.COLLECTION);
+        path.append("?page="+pageNo
+        +"&count="+pageSize+"&sort="+sort+"&order="+order);
+        if (null != email) {
+            path.append("&email="+email);
+        }
+        if (null != username) {
+            path.append("&username="+username);
+        }
+        if (null != groups) {
+            path.append("&groups="+groups);
+        }
+        return path.toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param username
+     * @return
+     */
+    // FIXME: Should accept Username and encode internally.
+    public static String exists(final String username) {
+        return
+            new URIBuilder(User.EXISTS)
+            .replace("uname", username)
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String currentSelf() {
+        return
+            new URIBuilder(User.CURRENT)
+            .replace("id", getId().toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(User.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String uriPassword() {
+        return
+            new URIBuilder(User.PASSWORD)
+            .replace("id", getId().toString())
+            .toString();
     }
 }

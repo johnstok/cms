@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable2;
@@ -47,8 +48,8 @@ public class Group
         Jsonable2,
         Serializable {
 
-    public static final String COLLECTION = "/secure/groups";
-    public static final String ELEMENT = COLLECTION+"/{id}";
+    static final String COLLECTION = "/secure/groups";
+    static final String ELEMENT = COLLECTION+"/{id}";
 
     private String _name;
     private UUID _id;
@@ -149,5 +150,28 @@ public class Group
             json.getString(JsonKeys.NAME));
         setPermissions(
             new HashSet<String>(json.getStrings(JsonKeys.PERMISSIONS)));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() {
+        return Group.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(Group.COLLECTION+Group.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
     }
 }

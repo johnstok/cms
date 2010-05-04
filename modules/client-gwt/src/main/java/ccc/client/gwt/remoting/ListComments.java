@@ -86,14 +86,7 @@ public abstract class ListComments
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final String path =
-            Comment.COLLECTION
-            + "?page="+_page
-            + "&count="+_count
-            + ((null==_status) ? "" : "&status="+_status.name())
-            + ((null==_order) ? "" : "&order="+_order.name())
-            + ((null==_sort) ? "" : "&sort="+_sort);
-        return path;
+        return Comment.list(_page, _count, _status, _order, _sort);
     }
 
 

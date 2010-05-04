@@ -28,7 +28,6 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
 import ccc.api.types.Duration;
-import ccc.api.types.URIBuilder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -84,9 +83,6 @@ public class OpenEditCacheAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            new URIBuilder(Resource.DURATION)
-            .replace("id", _selectionModel.tableSelection().getId().toString())
-            .toString();
+        return Resource.duration(_selectionModel.tableSelection().getId());
     }
 }

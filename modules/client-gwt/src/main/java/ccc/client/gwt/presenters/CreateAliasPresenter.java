@@ -87,8 +87,10 @@ public class CreateAliasPresenter
     public void save() {
         final ValidationResult vr = getView().getValidationResult();
         if (vr.isValid()) {
+            // FIXME: Conversion to type ResourceName can fail.
             new ResourceNameExistsAction(
-                getView().getParentId(), getView().getAliasName()) {
+                getView().getParentId(),
+                new ResourceName(getView().getAliasName())) {
                 @Override protected void execute(final boolean nameExists) {
                     if (nameExists) {
                         getGlobals().alert(

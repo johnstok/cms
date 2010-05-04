@@ -35,6 +35,7 @@ import java.util.UUID;
 
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -48,13 +49,13 @@ public final class File
     extends
         Resource {
 
-    public static final String COLLECTION        = "/secure/files";
-    public static final String IMAGES            = COLLECTION + "/images/{id}";
-    public static final String ELEMENT           = COLLECTION + "/{id}";
-    public static final String BINARY_COLLECTION = COLLECTION + "/bin";
-    public static final String BINARY_ELEMENT    = BINARY_COLLECTION + "/{id}";
-    public static final String BINARY_WC         = BINARY_ELEMENT + "/wc";
-    public static final String BINARY_REVISION   = BINARY_ELEMENT + "/rev";
+    static final String COLLECTION        = "/secure/files";
+    static final String IMAGES            = COLLECTION + "/images/{id}";
+    static final String ELEMENT           = COLLECTION + "/{id}";
+    static final String BINARY_COLLECTION = COLLECTION + "/bin";
+    static final String BINARY_ELEMENT    = BINARY_COLLECTION + "/{id}";
+    static final String BINARY_WC         = BINARY_ELEMENT + "/wc";
+    static final String BINARY_REVISION   = BINARY_ELEMENT + "/rev";
 
     private MimeType              _mimeType;
     private String                _path;
@@ -448,5 +449,84 @@ public final class File
         setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
         setComment(json.getString(COMMENT));
         _content = json.getString(TEXT);
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list() {
+        return File.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String self() {
+        return
+            new URIBuilder(File.ELEMENT)
+            .replace("id", getId().toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param parentId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public static String images(final UUID parentId,
+                                final int pageNo,
+                                final int pageSize) {
+        return
+            new URIBuilder(File.IMAGES)
+                .replace("id", parentId.toString())
+            + "?page="+pageNo+"&count="+pageSize;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public static String self(final UUID id) {
+        return
+            new URIBuilder(File.COLLECTION+File.ELEMENT)
+            .replace("id", id.toString())
+            .toString();
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String listBinary() {
+        return File.BINARY_COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param fileId
+     * @return
+     */
+    public static String selfBinary(final UUID fileId) {
+        return
+            new URIBuilder(File.BINARY_ELEMENT)
+            .replace("id", fileId.toString())
+            .toString();
     }
 }

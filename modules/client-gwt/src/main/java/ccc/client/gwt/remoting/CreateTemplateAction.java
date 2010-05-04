@@ -61,7 +61,7 @@ public abstract class CreateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Template.COLLECTION;
+        return Template.list();
     }
 
     /** {@inheritDoc} */

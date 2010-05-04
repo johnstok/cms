@@ -37,6 +37,7 @@ import ccc.api.core.Folder;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData.Property;
@@ -109,14 +110,14 @@ AbstractEditDialog {
      * @param currentIndexPage The current index page.
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
-                                       final String currentSortOrder,
-                                       final UUID currentIndexPage) {
+                            final String currentSortOrder,
+                            final UUID currentIndexPage) {
         super(new GlobalsImpl().uiConstants().edit(), new GlobalsImpl());
 
         _currentIndexPage = currentIndexPage;
         setHeight(Globals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
-        loadDetailStore(_currentIndexPage);
+//        loadDetailStore(_currentIndexPage);
 
         configureComboBox(_indexPage,
             _indexPageStore,
@@ -186,8 +187,8 @@ AbstractEditDialog {
 
             @Override
             protected String getPath() {
-                return Resource.LIST+"?parent="
-                +selection.getId()+"&sort=manual&order=ASC&page=1&count=1000";
+                return Resource.list(
+                    selection.getId(), 1, 1000, "manual", SortOrder.ASC, null);
             }
 
             /** {@inheritDoc} */
@@ -398,10 +399,10 @@ AbstractEditDialog {
             if (md != null) {
                 // TODO: We should be using a switch statement here.
                 final String order = md.<String>get("value");
+                loadDetailStore(_currentIndexPage);
                 if (MANUAL.name().equals(order)) {
                     _grid.enable();
                     // reload original manual order - otherwise DnD fails.
-                    loadDetailStore(_currentIndexPage);
                 } else  {
                     _grid.disable();
                     if (NAME_ALPHANUM_ASC.name().equals(order)) {

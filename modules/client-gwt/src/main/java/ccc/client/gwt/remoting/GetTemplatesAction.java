@@ -69,7 +69,7 @@ public abstract class GetTemplatesAction
         return
             new Request(
                 RequestBuilder.GET,
-                Globals.API_URL+Template.COLLECTION,
+                Globals.API_URL+Template.list(),
                 "",
                 new ResponseHandlerAdapter(_name) {
 
