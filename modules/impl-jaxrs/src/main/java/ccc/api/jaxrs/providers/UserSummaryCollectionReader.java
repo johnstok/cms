@@ -55,6 +55,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  */
 @Provider
 @Consumes("application/json")
+@Deprecated // FIXME: Can't we use a generic collection reader for this?
 public class UserSummaryCollectionReader
     extends
         AbstractProvider
@@ -80,6 +81,7 @@ public class UserSummaryCollectionReader
                                     final MultivaluedMap<String, String> arg4,
                                     final InputStream arg5) throws IOException {
         try {
+            // FIXME: Send an object, not an array.
             final JSONArray result = new JSONArray(readString(arg3, arg5));
             final Collection<User> us = new ArrayList<User>();
             for (int i=0; i<result.length(); i++) {

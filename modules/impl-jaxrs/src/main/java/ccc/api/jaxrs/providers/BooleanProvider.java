@@ -51,6 +51,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Consumes("application/json")
 @Produces({"application/json", "text/html"})
+@Deprecated // FIXME: Sending a boolean indicates procedural thinking rephrase the method.
 public class BooleanProvider
     extends
         AbstractProvider

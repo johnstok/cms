@@ -47,6 +47,7 @@ import ccc.api.core.ActionSummary;
  */
 @Provider
 @Consumes("application/json")
+@Deprecated // FIXME: We shouldn't be sending a single summary - send an Action instead.
 public class ActionSummaryReader
     extends
         AbstractProvider
