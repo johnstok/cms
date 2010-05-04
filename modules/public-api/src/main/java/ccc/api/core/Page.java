@@ -207,7 +207,7 @@ public class Page
      * @return
      */
     public String validate() {
-        return Page.COLLECTION+Page.VALIDATOR;
+        return Page.VALIDATOR;
     }
 
 
@@ -218,7 +218,7 @@ public class Page
      */
     public String workingCopy() {
         return
-            new URIBuilder(Page.COLLECTION+Page.WC)
+            new URIBuilder(Page.WC)
             .replace("id", getId().toString())
             .toString();
     }
@@ -231,7 +231,7 @@ public class Page
      */
     public String self() {
         return
-            new URIBuilder(Page.COLLECTION+Page.ELEMENT)
+            new URIBuilder(Page.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }
@@ -245,7 +245,7 @@ public class Page
      */
     public static String deltaURI(final UUID id) {
         return
-            new URIBuilder(Page.COLLECTION+Page.DELTA)
+            new URIBuilder(Page.DELTA)
             .replace("id", id.toString())
             .toString();
     }

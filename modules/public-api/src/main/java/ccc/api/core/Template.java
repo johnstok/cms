@@ -184,7 +184,7 @@ public class Template
      */
     public static String delta(final UUID id) {
         return
-            new URIBuilder(Template.COLLECTION+Template.DELTA)
+            new URIBuilder(Template.DELTA)
             .replace("id", id.toString())
             .toString();
     }
@@ -198,7 +198,7 @@ public class Template
      */
     public static String exists(final String name) {
         return
-            new URIBuilder(Template.COLLECTION+Template.EXISTS)
+            new URIBuilder(Template.EXISTS)
             .replace("name", name)
             .toString();
     }
@@ -211,7 +211,7 @@ public class Template
      */
     public String self() {
         return
-            new URIBuilder(Template.COLLECTION+Template.ELEMENT)
+            new URIBuilder(Template.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }
