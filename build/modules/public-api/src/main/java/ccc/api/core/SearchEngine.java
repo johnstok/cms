@@ -60,7 +60,7 @@ public interface SearchEngine extends Scheduler {
     SearchResult find(
               @QueryParam("terms") final String searchTerms,
               @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
-              @QueryParam("page") @DefaultValue("1") int page);
+              @QueryParam("page") @DefaultValue("0") int page);
 
     /**
      * Find the results that are similar to the specified page.
@@ -74,7 +74,7 @@ public interface SearchEngine extends Scheduler {
     SearchResult similar(
               @QueryParam("uuid") final String uuid,
               @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
-              @QueryParam("page") @DefaultValue("1") int page);
+              @QueryParam("page") @DefaultValue("0") int page);
 
     /**
      * Rebuild the search index.
