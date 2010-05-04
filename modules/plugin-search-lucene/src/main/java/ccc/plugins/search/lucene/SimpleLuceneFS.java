@@ -32,6 +32,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.KeywordAnalyzer;
+import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -74,6 +76,7 @@ public class SimpleLuceneFS
     private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
+    private static final String DEFAULT_FIELD = "content";
 
     private final String _indexPath;
     private IndexWriter _writer;
@@ -114,12 +117,11 @@ public class SimpleLuceneFS
                 pageNo);
         }
 
-        final String field = "content";
         final int maxHits = (pageNo+1)*nofOfResultsPerPage;
         final CapturingHandler capturingHandler =
             new CapturingHandler(nofOfResultsPerPage, pageNo);
 
-        find(searchTerms, field, maxHits, capturingHandler);
+        find(searchTerms, maxHits, capturingHandler);
 
         return new SearchResult(
             capturingHandler.getHits(),
@@ -152,7 +154,6 @@ public class SimpleLuceneFS
 
 
     private void find(final String searchTerms,
-                      final String field,
                       final int maxHits,
                       final CapturingHandler sh) {
         IndexSearcher searcher = null;
@@ -161,26 +162,8 @@ public class SimpleLuceneFS
                 new IndexSearcher(
                     FSDirectory.open(new java.io.File(_indexPath)));
 
-            final TopDocs docs =
-                searcher.search(
-                    new QueryParser(
-                        LUCENE_VERSION,
-                        field,
-                        new StandardAnalyzer(LUCENE_VERSION)) {
-                        /** {@inheritDoc} */
-                        @Override
-                        protected Query newRangeQuery(final String f,
-                                                      final String min,
-                                                      final String max,
-                                                      final boolean inclusive) {
-                            return NumericRangeQuery.newLongRange(f,
-                                Long.valueOf(min),
-                                Long.valueOf(max),
-                                true,
-                                true);
-                        }
-                    }
-                    .parse(searchTerms),
+            final TopDocs docs = searcher.search(
+                    createParser().parse(searchTerms),
                     maxHits);
 
             sh.handle(searcher, docs);
@@ -353,20 +336,20 @@ public class SimpleLuceneFS
             d.add(
                 new Field(
                     "path",
-                    resource.getAbsolutePath(),
+                    resource.getAbsolutePath().toLowerCase(),
                     Field.Store.YES,
-                    Field.Index.ANALYZED));
+                    Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "name",
-                    resource.getName().toString(),
-                    Field.Store.NO,
-                    Field.Index.ANALYZED));
+                    resource.getName().toString().toLowerCase(),
+                    Field.Store.YES,
+                    Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "title",
                     resource.getTitle(),
-                    Field.Store.NO,
+                    Field.Store.YES,
                     Field.Index.ANALYZED));
 
             _writer.addDocument(d);
@@ -383,7 +366,7 @@ public class SimpleLuceneFS
         final StringBuilder tags = new StringBuilder();
         for (final String tag : resource.getTags()) {
             if (tags.length() > 0) {
-                tags.append(" ,");
+                tags.append(",");
             }
             tags.append(tag);
         }
@@ -452,8 +435,37 @@ public class SimpleLuceneFS
 
         } else {
             return null;
-
         }
+    }
+
+    private QueryParser createParser() {
+        final PerFieldAnalyzerWrapper wrapper =
+            new PerFieldAnalyzerWrapper(new StandardAnalyzer(LUCENE_VERSION));
+
+        wrapper.addAnalyzer("id", new KeywordAnalyzer());
+        wrapper.addAnalyzer("path", new KeywordAnalyzer());
+        wrapper.addAnalyzer("name", new KeywordAnalyzer());
+        wrapper.addAnalyzer("title", new KeywordAnalyzer());
+
+        final QueryParser qp = new QueryParser(
+            LUCENE_VERSION,
+            DEFAULT_FIELD,
+            wrapper) {
+            /** {@inheritDoc} */
+            @Override
+            protected Query newRangeQuery(final String f,
+                                          final String min,
+                                          final String max,
+                                          final boolean inclusive) {
+                return NumericRangeQuery.newLongRange(f,
+                    Long.valueOf(min),
+                    Long.valueOf(max),
+                    true,
+                    true);
+            }
+        };
+
+        return qp;
     }
 
 }
