@@ -40,6 +40,7 @@ import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
+import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
@@ -55,7 +56,6 @@ import ccc.client.gwt.events.ResourceRenamed;
 import ccc.client.gwt.events.WorkingCopyApplied;
 import ccc.client.gwt.events.WorkingCopyCleared;
 import ccc.client.gwt.widgets.ContentCreator;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.http.client.RequestBuilder;
@@ -632,8 +632,10 @@ public class ResourceSummaryModelData
         final String path = Globals.API_URL+Folder.list();
 
         final GwtJson json = new GwtJson();
-        json.set(JsonKeys.PARENT_ID, parentFolder);
-        json.set(JsonKeys.NAME, name);
+        final Folder f = new Folder();
+        f.setParent(parentFolder);
+        f.setName(new ResourceName(name));
+        f.toJson(json);
 
         return
             new Request(
