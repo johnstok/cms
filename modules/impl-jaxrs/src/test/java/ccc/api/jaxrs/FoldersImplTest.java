@@ -29,11 +29,11 @@ package ccc.api.jaxrs;
 import static org.easymock.EasyMock.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import junit.framework.TestCase;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.PagedCollection;
 
 
 /**
@@ -55,7 +55,7 @@ public class FoldersImplTest
         replay(_foldersExt);
 
         // ACT
-        final Collection<ResourceSummary> actual = _unit.roots();
+        final PagedCollection<ResourceSummary> actual = _unit.roots();
 
         // ASSERT
         assertEquals(_rs, actual);
@@ -80,5 +80,7 @@ public class FoldersImplTest
 
     private Folders _foldersExt;
     private FoldersImpl _unit;
-    private Collection<ResourceSummary> _rs = new ArrayList<ResourceSummary>();
+    private PagedCollection<ResourceSummary> _rs =
+        new PagedCollection<ResourceSummary>(
+            1, new ArrayList<ResourceSummary>());
 }

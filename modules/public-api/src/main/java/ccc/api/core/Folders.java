@@ -27,7 +27,6 @@
 
 package ccc.api.core;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -36,6 +35,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+
+import ccc.api.types.PagedCollection;
 
 
 
@@ -61,7 +62,7 @@ public interface Folders {
      * @return The folder's of children.
      */
     @GET @Path(Folder.ACCESSIBLE_CHILDREN)
-    Collection<ResourceSummary> getAccessibleChildren(
+    PagedCollection<ResourceSummary> getAccessibleChildren(
         @PathParam("id") UUID folderId);
 
     /**
@@ -83,7 +84,7 @@ public interface Folders {
      * @return A collection of resource summaries - one for each root folder.
      */
     @GET @Path(Folder.ROOTS)
-    Collection<ResourceSummary> roots();
+    PagedCollection<ResourceSummary> roots();
 
     /**
      * Create a folder with the specified name.
