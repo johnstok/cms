@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.Group;
-import ccc.api.core.UserCriteria;
 import ccc.api.core.User;
+import ccc.api.core.UserCriteria;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.remoting.GetUserAction;
@@ -151,9 +151,10 @@ public class UserTable extends TablePanel {
                     final UserSummaryModelData userDTO =
                         grid.getSelectionModel().getSelectedItem();
 
-                    new ListGroups() {
+                    new ListGroups(1,999,"name","ASC") {
                         @Override
-                        protected void execute(final Collection<Group> g) {
+                        protected void execute(final Collection<Group> g,
+                                               final int totalCount) {
                             new OpenEditUserDialogAction(
                                 userDTO.getId(), UserTable.this, g)
                             .execute();
@@ -326,7 +327,7 @@ public class UserTable extends TablePanel {
                     final BasePagingLoadConfig config =
                         (BasePagingLoadConfig) loadConfig;
 
-                    final int page =  config.getOffset()/ config.getLimit()+1;
+                    final int page =  config.getOffset()/config.getLimit()+1;
                     final String order = (
                         config.getSortDir() == Style.SortDir.ASC
                         ? "ASC" : "DESC");

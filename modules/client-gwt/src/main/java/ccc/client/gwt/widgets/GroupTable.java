@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.Group;
-import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.GroupModelData;
 import ccc.client.gwt.events.GroupUpdated;
@@ -107,7 +106,7 @@ public class GroupTable
         _grid.addPlugin(gp);
         add(_grid);
 
-        _pagerBar = new PagingToolBar(10000); //FIXME: No paging for groups.
+        _pagerBar = new PagingToolBar(PAGING_ROW_COUNT);
         setBottomComponent(_pagerBar);
     }
 
@@ -171,12 +170,13 @@ public class GroupTable
 
                         final int page =
                             config.getOffset()/ config.getLimit()+1;
-                        final SortOrder order =
-                            (Style.SortDir.ASC==config.getSortDir())
-                                ? SortOrder.ASC
-                                : SortOrder.DESC;
+                        final String order = (
+                            config.getSortDir() == Style.SortDir.ASC
+                            ? "ASC" : "DESC");
 
-                        new ListGroups() {
+                        new ListGroups(page, config.getLimit(),
+                            config.getSortField(),
+                            order) {
 
                             /** {@inheritDoc} */
                             @Override
@@ -186,14 +186,15 @@ public class GroupTable
 
                             @Override
                             protected void execute(
-                                       final Collection<Group> groups) {
+                                       final Collection<Group> groups,
+                                       final int totalCount) {
 
                                 final List<GroupModelData> results =
                                     DataBinding.bindGroupSummary(groups);
 
                                 final PagingLoadResult<GroupModelData> plr =
-                                    new BasePagingLoadResult<GroupModelData>
-                                (results, config.getOffset(), groups.size());
+                                    new BasePagingLoadResult<GroupModelData>(
+                                       results, config.getOffset(), totalCount);
                                 callback.onSuccess(plr);
                             }
                         }.execute();

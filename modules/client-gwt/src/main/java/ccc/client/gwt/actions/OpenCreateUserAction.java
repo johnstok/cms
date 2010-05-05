@@ -46,9 +46,10 @@ public final class OpenCreateUserAction
 
     /** {@inheritDoc} */
     @Override public void execute() {
-        new ListGroups() {
+        new ListGroups(1,999,"name","ASC") {
             @Override
-            protected void execute(final Collection<Group> g) {
+            protected void execute(final Collection<Group> g,
+                                   final int totalCount) {
                 new CreateUserPresenter(
                     new CreateUserDialog(g), GLOBALS);
             }}.execute();
