@@ -27,7 +27,6 @@
 
 package ccc.api.jaxrs;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -155,7 +154,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> resourceForMetadataKey(
+    public PagedCollection<ResourceSummary> resourceForMetadataKey(
                                                             final String key) {
         try {
             return _delegate.resourceForMetadataKey(key);

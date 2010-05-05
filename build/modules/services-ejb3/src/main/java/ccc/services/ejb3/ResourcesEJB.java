@@ -506,10 +506,12 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> resourceForMetadataKey(
+    public PagedCollection<ResourceSummary> resourceForMetadataKey(
         final String key) {
         checkPermission(RESOURCE_READ);
-        return ResourceEntity.mapResources(getResources().lookupWithMetadataKey(key));
+        final List<ResourceSummary> list =
+         ResourceEntity.mapResources(getResources().lookupWithMetadataKey(key));
+        return new PagedCollection<ResourceSummary>(list.size(), list);
     }
 
     /** {@inheritDoc} */

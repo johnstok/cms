@@ -26,7 +26,6 @@
  */
 package ccc.api.core;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -210,7 +209,7 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path(Resource.SEARCH_METADATA)
-    Collection<ResourceSummary> resourceForMetadataKey(
+    PagedCollection<ResourceSummary> resourceForMetadataKey(
         @PathParam("id") String key);
 
 
