@@ -37,10 +37,12 @@ import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 /**
@@ -76,14 +78,18 @@ public final class ViewHistoryAction
                 new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()){
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
-                        final JSONArray result = JSONParser.parse(response.getText()).isArray();
+
+                        final JSONObject obj =
+                            JSONParser.parse(response.getText()).isObject();
+                        final JSONArray result =
+                            obj.get(JsonKeys.ELEMENTS).isArray();
+
                         final Collection<Revision> history =
                             new ArrayList<Revision>();
                         for (int i=0; i<result.size(); i++) {
                             history.add(
                                 new Revision(new GwtJson(result.get(i).isObject())));
                         }
-
                         new HistoryDialog(
                             history, _selectionModel.tableSelection().getId(), _selectionModel)
                         .show();

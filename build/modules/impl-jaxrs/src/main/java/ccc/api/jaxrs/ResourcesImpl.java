@@ -112,7 +112,7 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<Revision> history(final UUID resourceId) {
+    public PagedCollection<Revision> history(final UUID resourceId) {
         try {
             return _delegate.history(resourceId);
         } catch (final ClientResponseFailure cfe) {
