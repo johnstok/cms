@@ -62,8 +62,11 @@ public abstract class ListComments
     /**
      * Constructor.
      *
-     * @param order The sort order.
-     * @param sort The column to sort on.
+     * @param status The status to filter.
+     * @param page The page to display.
+     * @param count The number of results per page.
+     * @param sort The sort order.
+     * @param order The column to sort on.
      */
     public ListComments(final CommentStatus status,
                         final int page,

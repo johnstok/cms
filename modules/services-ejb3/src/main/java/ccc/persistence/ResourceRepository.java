@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.ResourceCriteria;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
 import ccc.domain.FileEntity;
@@ -55,13 +54,9 @@ public interface ResourceRepository {
      *
      * @param resourceId The id of the resource whose history we will look up.
      *
-     * @throws EntityNotFoundException If no entity exists with the specified
-     *  uuid.
-     *
      * @return The revisions for the resource.
      */
-    Map<Integer, ? extends RevisionEntity<?>> history(UUID resourceId)
-    throws EntityNotFoundException;
+    Map<Integer, ? extends RevisionEntity<?>> history(UUID resourceId);
 
     /**
      * Find a resource using its unique id.
@@ -70,39 +65,28 @@ public interface ResourceRepository {
      * @param type A class representing the type of the resource to return.
      * @param id The id of the resource to find.
      *
-     * @throws EntityNotFoundException If no entity exists with the specified
-     *  uuid.
-     *
      * @return The resource for the specified id.
      */
-    <T extends ResourceEntity> T find(final Class<T> type, final UUID id)
-    throws EntityNotFoundException;
+    <T extends ResourceEntity> T find(final Class<T> type, final UUID id);
 
     /**
      * Look up a resource.
      *
      * @param contentPath ResourcePath The path to the resource.
      *
-     * @throws EntityNotFoundException If no entity exists with the specified
-     *  path.
-     *
      * @return Resource The resource at the specified path, or NULL if it
      *  doesn't exist.
      */
-    ResourceEntity lookup(ResourcePath contentPath)
-    throws EntityNotFoundException;
+    ResourceEntity lookup(ResourcePath contentPath);
 
     /**
      * Look up a resource, given its CCC6 id.
      *
      * @param legacyId The CCC6 id.
      *
-     * @throws EntityNotFoundException If no entity exists with the specified
-     *  id.
-     *
      * @return The corresponding resource in CCC7.
      */
-    ResourceEntity lookupWithLegacyId(String legacyId) throws EntityNotFoundException;
+    ResourceEntity lookupWithLegacyId(String legacyId);
 
     /**
      * Look up a resource, given its metadata key.
@@ -118,11 +102,9 @@ public interface ResourceRepository {
      *
      * @param name The name of the root folder.
      *
-     * @throws EntityNotFoundException If no root exists with the specified id.
-     *
      * @return The corresponding folder
      */
-    FolderEntity root(String name) throws EntityNotFoundException;
+    FolderEntity root(String name);
 
     /**
      * Create a new resource.
@@ -139,10 +121,9 @@ public interface ResourceRepository {
      * @param pageSize The number of results in a page.
      *
      * @return A list of files.
-     * @throws EntityNotFoundException If no folder exists with the id.
      */
     List<FileEntity> images(UUID folderId, final int pageNo,
-        final int pageSize) throws EntityNotFoundException;
+        final int pageSize);
 
     /**
      * List all root folders.
@@ -153,10 +134,12 @@ public interface ResourceRepository {
 
     /**
      * List all templates.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      *
      * @return A list of templates
      */
-    List<TemplateEntity> templates();
+    List<TemplateEntity> templates(int pageNo, int pageSize);
 
     /**
      * List all files.
@@ -177,20 +160,15 @@ public interface ResourceRepository {
      *
      * @param name The name of the template.
      *
-     * @throws EntityNotFoundException If no template exists with the specified
-     *  name.
-     *
      * @return The template with the specified name.
      */
-    TemplateEntity template(String name) throws EntityNotFoundException;
+    TemplateEntity template(String name);
 
     /**
-     * List folder children.
+     * List resources with given criteria.
      *
-     * @param parent Filter resources by parent. NULL will return all.
-     * @param tag Filter resources by tag. NULL will return all.
-     * @param after Only return comments created after this date.
-     * @param before Only return comments before this date.
+     * @param criteria Search criteria.
+     * @param f Filter resources by parent. NULL will return all.
      * @param sort The sort results be sorted in.
      * @param sortOrder The order results be sorted in.
      * @param pageNo The page of results to return.
@@ -210,14 +188,22 @@ public interface ResourceRepository {
      *
      * @param folderId The id of the folder whose images we will look up.
      * @return The count.
-     * @throws EntityNotFoundException If no folder exists with the id.
      */
-    long imagesCount(UUID folderId) throws EntityNotFoundException;
+    long imagesCount(UUID folderId);
 
     /**
-     * TODO: Add a description for this method.
+     * Return count of resources with given criteria.
      *
-     * @param criteria
+     * @param criteria Search criteria.
+     * @param f Filter resources by parent. NULL will return all.
+     * @return The count
      */
     long totalCount(ResourceCriteria criteria, FolderEntity f);
+
+    /**
+     * Return count of templates.
+     *
+     * @return The count.
+     */
+    long templateCount();
 }

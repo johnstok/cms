@@ -35,10 +35,12 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -71,10 +73,14 @@ public abstract class ListGroups
                 /** {@inheritDoc} */
                 @Override
                 public void onOK(final Response response) {
-                    final JSONArray result = JSONParser.parse(response.getText()).isArray();
+                    final JSONObject obj =
+                        JSONParser.parse(response.getText()).isObject();
+                    final JSONArray result =
+                        obj.get(JsonKeys.ELEMENTS).isArray();
                     final Collection<Group> groups = new ArrayList<Group>();
                     for (int i=0; i<result.size(); i++) {
-                        groups.add(new Group(new GwtJson(result.get(i).isObject())));
+                        groups.add(
+                            new Group(new GwtJson(result.get(i).isObject())));
                     }
                     execute(groups);
                 }

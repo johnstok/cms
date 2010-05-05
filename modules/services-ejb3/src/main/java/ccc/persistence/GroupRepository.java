@@ -29,7 +29,6 @@ package ccc.persistence;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.GroupEntity;
 
 /**
@@ -45,11 +44,9 @@ public interface GroupRepository {
      *
      * @param groupId The UUID for the group.
      *
-     * @throws EntityNotFoundException If no group exists for the specified ID.
-     *
      * @return The group corresponding to 'groupId'.
      */
-    GroupEntity find(UUID groupId) throws EntityNotFoundException;
+    GroupEntity find(UUID groupId);
 
 
     /**
@@ -64,8 +61,18 @@ public interface GroupRepository {
      * List groups.
      *
      * @param name Filter groups based on name. NULL disables the filter.
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
      *
      * @return A list of groups matching the search criteria.
      */
-    Collection<GroupEntity> list(String name);
+    Collection<GroupEntity> list(String name, int pageNo, int pageSize);
+
+    /**
+     * Return number of group entities with given filter.
+     *
+     * @param name Filter groups based on name. NULL disables the filter.
+     * @return The amount of the entities.
+     */
+    long totalCount(String name);
 }

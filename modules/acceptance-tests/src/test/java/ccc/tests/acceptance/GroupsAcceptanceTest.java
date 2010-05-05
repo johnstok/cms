@@ -26,11 +26,11 @@
  */
 package ccc.tests.acceptance;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.core.Group;
+import ccc.api.types.PagedCollection;
 
 
 /**
@@ -99,11 +99,13 @@ public class GroupsAcceptanceTest
         // ARRANGE
 
         // ACT
-        final Collection<Group> actual = getGroups().list("ADMINISTRATOR");
+        final PagedCollection<Group> actual =
+            getGroups().list("ADMINISTRATOR", 1, 20);
 
         // ASSERT
-        assertEquals(1, actual.size());
-        assertEquals("ADMINISTRATOR", actual.iterator().next().getName());
+        assertEquals(1, actual.getTotalCount());
+        assertEquals("ADMINISTRATOR",
+            actual.getElements().iterator().next().getName());
     }
 
 

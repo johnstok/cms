@@ -73,5 +73,11 @@ public interface Indexer {
                         final Set<Paragraph> paragraphs);
 
 
+    /**
+     * Creates a text extractor for PDF, Word and plain text files.
+     *
+     * @param mimeType MimeType used to match the file.
+     * @return TextExtractor for the file or null if no matching found.
+     */
     TextExtractor createExtractor(MimeType mimeType);
 }

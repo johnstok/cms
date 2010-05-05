@@ -26,16 +26,18 @@
  */
 package ccc.api.core;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import ccc.api.types.PagedCollection;
 
 
 
@@ -56,11 +58,15 @@ public interface Groups {
      * List available groups.
      *
      * @param name Filter based on group name. NULL disables filter.
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
      *
-     * @return Returns list of groups.
+     * @return Returns paged list of groups.
      */
     @GET @Path(Group.COLLECTION)
-    Collection<Group> list(@QueryParam("name") String name);
+    PagedCollection<Group> list(@QueryParam("name") String name,
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 
 
     /**

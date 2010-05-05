@@ -40,9 +40,11 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.Permission;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
+import ccc.persistence.GroupRepository;
 import ccc.plugins.s11n.json.JsonImpl;
 
 
@@ -94,10 +96,16 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_READ)
-    public Collection<Group> list(final String name) {
-        final Collection<GroupEntity> groups =
-            getRepoFactory().createGroupRepo().list(name);
-        return GroupEntity.map(groups);
+    public PagedCollection<Group> list(
+        final String name,
+        final int pageNo,
+        final int pageSize) {
+
+        final GroupRepository gr = getRepoFactory().createGroupRepo();
+        final long totalCount = gr.totalCount(name);
+
+        final Collection<GroupEntity> groups = gr.list(name, pageNo, pageSize);
+        return new PagedCollection<Group>(totalCount, GroupEntity.map(groups));
     }
 
 

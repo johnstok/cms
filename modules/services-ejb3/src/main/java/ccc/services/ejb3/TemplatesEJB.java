@@ -29,7 +29,6 @@ package ccc.services.ejb3;
 import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
@@ -42,8 +41,10 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.exceptions.EntityNotFoundException;
+import ccc.api.types.PagedCollection;
 import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.TemplateEntity;
+import ccc.persistence.ResourceRepository;
 
 
 /**
@@ -86,12 +87,13 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(TEMPLATE_READ)
-    public Collection<Template> templates() {
-        return
-            TemplateEntity.mapTemplates(
-                getRepoFactory()
-                    .createResourceRepository()
-                    .templates());
+    public PagedCollection<Template> templates(final int pageNo,
+                                               final int pageSize) {
+        final ResourceRepository repo =
+            getRepoFactory().createResourceRepository();
+
+        return new PagedCollection<Template>(repo.templateCount(),
+            TemplateEntity.mapTemplates(repo.templates(pageNo, pageSize)));
     }
 
 
