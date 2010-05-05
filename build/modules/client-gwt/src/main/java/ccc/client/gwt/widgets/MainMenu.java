@@ -226,9 +226,10 @@ public class MainMenu
                 rootMenu.add(createMenuItem(
                     "updateRoles-root-"+name,
                     _constants.updateRoles(),
-                    new ListGroups() {
+                    new ListGroups(1,999,"name","ASC") {
                         @Override
-                        protected void execute(final Collection<Group> g) {
+                        protected void execute(final Collection<Group> g,
+                                               final int totalCount) {
                             new OpenUpdateResourceAclAction(ssm, g)
                                 .execute();
                         }}));

@@ -162,6 +162,22 @@ public class Group
         return Group.COLLECTION;
     }
 
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static String list(final int pageNo,
+                              final int pageSize,
+                              final String sort,
+                              final String order) {
+        final StringBuilder path = new StringBuilder();
+        path.append(Group.COLLECTION);
+        path.append("?page="+pageNo
+            +"&count="+pageSize+"&sort="+sort+"&order="+order);
+        return path.toString();
+    }
+
 
     /**
      * TODO: Add a description for this method.

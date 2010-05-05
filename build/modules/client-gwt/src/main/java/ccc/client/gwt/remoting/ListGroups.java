@@ -53,13 +53,38 @@ public abstract class ListGroups
     extends
         RemotingAction {
 
+    private int _pageNo;
+    private int _pageSize;
+    private String _sort;
+    private String _order;
+
+
+    /**
+     * Constructor.
+     *
+     * @param pageNo The page to display.
+     * @param pageSize The number of results per page.
+     * @param sort The column to sort.
+     * @param order The sort order (ASC/DESC).
+     */
+    public ListGroups(final int pageNo,
+                      final int pageSize,
+                      final String sort,
+                      final String order) {
+        _pageNo = pageNo;
+        _pageSize = pageSize;
+        _sort = sort;
+        _order = order;
+    }
+
 
     /**
      * Handle the result of a successful call.
      *
      * @param groups The groups returned.
+     * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<Group> groups);
+    protected abstract void execute(Collection<Group> groups, int totalCount);
 
 
     /** {@inheritDoc} */
@@ -67,7 +92,7 @@ public abstract class ListGroups
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            Globals.API_URL+Group.list(),
+            Globals.API_URL+Group.list(_pageNo, _pageSize, _sort, _order),
             "",
             new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
                 /** {@inheritDoc} */
@@ -75,14 +100,18 @@ public abstract class ListGroups
                 public void onOK(final Response response) {
                     final JSONObject obj =
                         JSONParser.parse(response.getText()).isObject();
+                    final int totalCount =
+                        (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+
                     final JSONArray result =
                         obj.get(JsonKeys.ELEMENTS).isArray();
+
                     final Collection<Group> groups = new ArrayList<Group>();
                     for (int i=0; i<result.size(); i++) {
                         groups.add(
                             new Group(new GwtJson(result.get(i).isObject())));
                     }
-                    execute(groups);
+                    execute(groups, totalCount);
                 }
             });
     }

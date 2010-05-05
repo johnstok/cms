@@ -136,9 +136,10 @@ public class ResourceContextMenu
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new OpenCreateActionAction(_table);
-        _updateAclAction = new ListGroups() {
+        _updateAclAction = new ListGroups(1,999,"name","ASC") {
             @Override
-            protected void execute(final Collection<Group> g) {
+            protected void execute(final Collection<Group> g,
+                                   final int totalCount) {
                 new OpenUpdateResourceAclAction(_table, g)
                     .execute();
             }};
