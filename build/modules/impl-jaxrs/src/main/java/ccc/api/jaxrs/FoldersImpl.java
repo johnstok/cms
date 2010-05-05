@@ -26,7 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,6 +39,7 @@ import ccc.api.core.Folder;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
+import ccc.api.types.PagedCollection;
 
 
 /**
@@ -72,7 +72,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> getAccessibleChildren(
+    public PagedCollection<ResourceSummary> getAccessibleChildren(
                                                           final UUID folderId) {
         try {
             return _delegate.getAccessibleChildren(folderId);
@@ -95,7 +95,7 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<ResourceSummary> roots() {
+    public PagedCollection<ResourceSummary> roots() {
         try {
             return _delegate.roots();
         } catch (final ClientResponseFailure cfe) {

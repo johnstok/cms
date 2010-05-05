@@ -335,12 +335,12 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
     public void testRoots() {
 
         // ACT
-        final List<ResourceSummary> roots =
-            new ArrayList<ResourceSummary>(getFolders().roots());
+        final PagedCollection<ResourceSummary> roots = getFolders().roots();
 
         // ASSERT
-        assertEquals(1, roots.size());
-        assertEquals(PredefinedResourceNames.CONTENT, roots.get(0).getName());
+        assertEquals(1, roots.getTotalCount());
+        assertEquals(PredefinedResourceNames.CONTENT,
+            roots.getElements().get(0).getName());
 
     }
 

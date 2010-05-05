@@ -30,7 +30,6 @@ import static ccc.api.types.Permission.*;
 import static javax.ejb.TransactionAttributeType.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +43,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.Folder;
 import ccc.api.core.Folders;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.PagedCollection;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
 import ccc.commands.UpdateFolderCommand;
@@ -161,12 +161,12 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(FOLDER_READ)
-    public Collection<ResourceSummary> roots() {
-        return
-            ResourceEntity.mapResources(
-                getRepoFactory()
-                    .createResourceRepository()
-                    .roots());
+    public PagedCollection<ResourceSummary> roots() {
+        final List<ResourceSummary> roots = ResourceEntity.mapResources(
+            getRepoFactory()
+            .createResourceRepository()
+            .roots());
+        return new PagedCollection<ResourceSummary>(roots.size(), roots);
     }
 
     /* ====================================================================
@@ -177,7 +177,8 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Collection<ResourceSummary> getAccessibleChildren(final UUID folderId) {
+    public PagedCollection<ResourceSummary> getAccessibleChildren(
+        final UUID folderId) {
         checkPermission(RESOURCE_READ);
 
         final FolderEntity f =
@@ -194,7 +195,9 @@ public class FoldersEJB
                 filtered.add(r);
             }
         }
-        return ResourceEntity.mapResources(filtered);
+        final List<ResourceSummary> entities =
+            ResourceEntity.mapResources(filtered);
+        return new PagedCollection<ResourceSummary>(entities.size(), entities);
     }
 
 }
