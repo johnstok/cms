@@ -454,11 +454,12 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_READ)
-    public Collection<Revision> history(final UUID resourceId) {
-        return RevisionEntity.mapRevisions(
+    public PagedCollection<Revision> history(final UUID resourceId) {
+        final List<Revision> revisions = RevisionEntity.mapRevisions(
             getRepoFactory()
             .createResourceRepository()
             .history(resourceId));
+        return new PagedCollection<Revision>(revisions.size(), revisions);
     }
 
 

@@ -103,7 +103,8 @@ public class FileUploadAcceptanceTest
                     "Hello!"));
 
         // History for first revision
-        Collection<Revision> revs = getCommands().history(file.getId());
+        Collection<Revision> revs =
+            getCommands().history(file.getId()).getElements();
         assertEquals(1, revs.size());
         final Revision rev1 = revs.iterator().next();
         assertEquals(0, rev1.getIndex());
@@ -115,7 +116,7 @@ public class FileUploadAcceptanceTest
             file.getId(),
             new File(
                 file.getId(), "Update!", MimeType.TEXT, true, ""));
-        revs = getCommands().history(file.getId());
+        revs = getCommands().history(file.getId()).getElements();
         assertEquals(2, revs.size());
         Iterator<Revision> i = revs.iterator();
         i.next();
@@ -133,7 +134,7 @@ public class FileUploadAcceptanceTest
 
         // Apply working copy
         getCommands().applyWorkingCopy(file.getId());
-        revs = getCommands().history(file.getId());
+        revs = getCommands().history(file.getId()).getElements();
         assertEquals(3, revs.size());
         i = revs.iterator();
         i.next();

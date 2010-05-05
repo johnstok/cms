@@ -134,7 +134,7 @@ public interface Resources {
      * @return The list of resources.
      */
     @GET @Path(Resource.REVISIONS)
-    Collection<Revision> history(@PathParam("id") UUID resourceId);
+    PagedCollection<Revision> history(@PathParam("id") UUID resourceId);
 
 
     /**

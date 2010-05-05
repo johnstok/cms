@@ -27,8 +27,8 @@
 package ccc.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import ccc.api.core.Revision;
@@ -150,9 +150,9 @@ public abstract class RevisionEntity<T> extends Entity {
      *
      * @return The corresponding summaries.
      */
-    public static Collection<Revision> mapRevisions(
+    public static List<Revision> mapRevisions(
                          final Map<Integer, ? extends RevisionEntity<?>> revisions) {
-        final Collection<Revision> mapped =
+        final List<Revision> mapped =
             new ArrayList<Revision>();
         for (final Map.Entry<Integer, ? extends RevisionEntity<?>> rev
             : revisions.entrySet()) {
