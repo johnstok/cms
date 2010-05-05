@@ -199,8 +199,19 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     /** {@inheritDoc} */
     @Override
-    public List<TemplateEntity> templates() {
-        return list(QueryNames.ALL_TEMPLATES, TemplateEntity.class);
+    public List<TemplateEntity> templates(final int pageNo,
+                                          final int pageSize) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        final StringBuffer query = new StringBuffer();
+        query.append("from ");
+        query.append(TemplateEntity.class.getName());
+
+        return _repository.listDyn(
+            query.toString(),
+            TemplateEntity.class,
+            pageNo,
+            pageSize,
+            params);
     }
 
 
@@ -438,8 +449,22 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
         query.append("SELECT COUNT(r) FROM ccc.domain.ResourceEntity r "
-        		+ " LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
+            + " LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
         appendCriteria(criteria, f, query, params);
         return _repository.scalarLong(query.toString(), params);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long templateCount() {
+        final StringBuffer query = new StringBuffer();
+        final Map<String, Object> params = new HashMap<String, Object>();
+        query.append("SELECT COUNT(t) FROM ");
+        query.append(TemplateEntity.class.getName());
+        query.append(" t ");
+
+        return _repository.scalarLong(query.toString(), params);
+    }
+
 }

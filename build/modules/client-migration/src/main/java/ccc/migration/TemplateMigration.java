@@ -108,7 +108,7 @@ public class TemplateMigration {
                             final ResourceSummary templateFolder) {
 
         final Set<Template> templates =
-            new HashSet<Template>(_templateApi.templates());
+            new HashSet<Template>(_templateApi.templates(1, 999).getElements());
 
         Template template = null;
         for (final Template ts : templates) {

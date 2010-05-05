@@ -28,6 +28,7 @@
 package ccc.tests.acceptance;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
@@ -275,8 +276,9 @@ public abstract class AbstractAcceptanceTest
         final Username username = dummyUsername();
         final String email = username+"@abc.def";
         final String name = "testuser";
-        final Group contentCreator =
-            getGroups().list("CONTENT_CREATOR").iterator().next();
+        final List<Group> groups =
+            getGroups().list("CONTENT_CREATOR", 1, 20).getElements();
+        final Group contentCreator = groups.iterator().next();
 
         // Create the user
         final User u =

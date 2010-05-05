@@ -26,15 +26,18 @@
  */
 package ccc.api.core;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+
+import ccc.api.types.PagedCollection;
 
 
 
@@ -54,10 +57,15 @@ public interface Templates {
     /**
      * List all the templates currently available in CCC.
      *
+     * @param pageNo The page of results to return.
+     * @param pageSize The number of results in a page.
+     *
      * @return A list of templates.
      */
     @GET @Path(Template.COLLECTION)
-    Collection<Template> templates();
+    PagedCollection<Template> templates(
+        @QueryParam("page") @DefaultValue("1") int pageNo,
+        @QueryParam("count") @DefaultValue("20") int pageSize);
 
 
     /**

@@ -35,10 +35,12 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
+import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -69,14 +71,18 @@ public abstract class GetTemplatesAction
         return
             new Request(
                 RequestBuilder.GET,
-                Globals.API_URL+Template.list(),
+                Globals.API_URL+Template.list(1,999),
                 "",
                 new ResponseHandlerAdapter(_name) {
 
                     /** {@inheritDoc} */
                     @Override public void onOK(final Response response) {
+
+                        final JSONObject obj =
+                            JSONParser.parse(response.getText()).isObject();
                         final JSONArray result =
-                            JSONParser.parse(response.getText()).isArray();
+                            obj.get(JsonKeys.ELEMENTS).isArray();
+
                         final Collection<Template> templates =
                             new ArrayList<Template>();
                         for (int i=0; i<result.size(); i++) {

@@ -86,24 +86,46 @@ public class GroupRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<GroupEntity> list(final String name) {
+    public Collection<GroupEntity> list(final String name,
+                                        final int pageNo,
+                                        final int pageSize) {
+        final Map<String, Object> params = new HashMap<String, Object>();
         final StringBuffer query = new StringBuffer();
         query.append("from ");
         query.append(GroupEntity.class.getName());
         query.append(" g");
-
-        final Map<String, Object> params = new HashMap<String, Object>();
-
-        if (null!=name) {
-            query.append(" where g._name = :name");
-            params.put("name", name);
-        }
+        appendCriteria(query, name, params);
 
         return _repo.listDyn(
             query.toString(),
             GroupEntity.class,
-            1,
-            100,
+            pageNo,
+            pageSize,
             params);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long totalCount(final String name) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        final StringBuffer query = new StringBuffer();
+        query.append("SELECT COUNT(g) from ");
+        query.append(GroupEntity.class.getName());
+        query.append(" g");
+
+        appendCriteria(query, name, params);
+        return _repo.scalarLong(query.toString(), params);
+    }
+
+
+    private StringBuffer appendCriteria(final StringBuffer query,
+                                        final String name,
+                                        final Map<String, Object> params) {
+        if (null!=name) {
+            query.append(" where g._name = :name");
+            params.put("name", name);
+        }
+        return query;
     }
 }

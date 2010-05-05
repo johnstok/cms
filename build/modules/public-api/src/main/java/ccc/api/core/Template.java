@@ -171,8 +171,13 @@ public class Template
      *
      * @return
      */
-    public static String list() {
-        return Template.COLLECTION;
+    public static String list(final int pageNo,
+                              final int pageSize) {
+        final StringBuilder path = new StringBuilder();
+        path.append(Template.COLLECTION);
+        path.append("?page="+pageNo
+            +"&count="+pageSize);
+        return path.toString();
     }
 
 

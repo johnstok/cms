@@ -41,6 +41,7 @@ import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.EmailAddress;
+import ccc.api.types.PagedCollection;
 
 
 /**
@@ -138,15 +139,15 @@ public class UserMigration {
                 groupList.add(cachedGroups.get(role).getId());
 
             } else { // Group not cached
-                final Collection<Group> gs = groups.list(role);
-                if (0==gs.size()) { // Doesn't exist.
+                final PagedCollection<Group> gs = groups.list(role, 1, 999);
+                if (0==gs.getTotalCount()) { // Doesn't exist.
                     final Group g = new Group();
                     g.setName(role);
                     final Group created = groups.create(g);
                     cachedGroups.put(role, created);
                     groupList.add(created.getId());
                 } else {
-                    final Group retrieved = gs.iterator().next();
+                    final Group retrieved = gs.getElements().iterator().next();
                     cachedGroups.put(role, retrieved);
                     groupList.add(retrieved.getId());
                 }

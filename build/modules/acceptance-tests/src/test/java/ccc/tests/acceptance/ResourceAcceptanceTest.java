@@ -27,6 +27,7 @@
 package ccc.tests.acceptance;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -34,6 +35,7 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 
 import ccc.api.core.Folder;
+import ccc.api.core.Group;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
@@ -225,8 +227,9 @@ public class ResourceAcceptanceTest
         e._canRead = true;
         e._canWrite = true;
         e._name = "SITE_BUILDER";
-        e._principal =
-            getGroups().list("SITE_BUILDER").iterator().next().getId();
+        final List<Group> groups =
+            getGroups().list("SITE_BUILDER", 1, 20).getElements();
+        e._principal = groups.iterator().next().getId();
         final ACL acl =
             new ACL()
                 .setGroups(Collections.singleton(e));

@@ -220,9 +220,9 @@ public class TemplateEntity
      * @param templates The templates.
      * @return The corresponding summaries.
      */
-    public static Collection<Template> mapTemplates(
-                                               final List<TemplateEntity> templates) {
-        final Collection<Template> mapped =
+    public static List<Template> mapTemplates(
+                                        final List<TemplateEntity> templates) {
+        final List<Template> mapped =
             new ArrayList<Template>();
         for (final TemplateEntity t : templates) {
             mapped.add(t.summarize()); }
@@ -237,7 +237,7 @@ public class TemplateEntity
      * @return The corresponding deltas.
      */
     protected Collection<Template> deltaTemplates(
-                                               final List<TemplateEntity> templates) {
+                                         final List<TemplateEntity> templates) {
         final Collection<Template> mapped = new ArrayList<Template>();
         for (final TemplateEntity t : templates) {
             mapped.add(t.createSnapshot());

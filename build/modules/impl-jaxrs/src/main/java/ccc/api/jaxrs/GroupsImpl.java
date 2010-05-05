@@ -26,7 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -39,6 +38,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.types.DBC;
+import ccc.api.types.PagedCollection;
 
 
 /**
@@ -93,17 +93,6 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<Group> list(final String name) {
-        try {
-            return _groups.list(name);
-        } catch (final ClientResponseFailure cfe) {
-            throw convertException(cfe);
-        }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Group update(final UUID id, final Group group) {
         try {
             return _groups.update(id, group);
@@ -111,5 +100,18 @@ public class GroupsImpl
             throw convertException(cfe);
         }
 
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public PagedCollection<Group> list(final String name,
+        final int pageNo,
+        final int pageSize) {
+        try {
+            return _groups.list(name, pageNo, pageSize);
+        } catch (final ClientResponseFailure cfe) {
+            throw convertException(cfe);
+        }
     }
 }

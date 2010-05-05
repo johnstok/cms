@@ -52,5 +52,4 @@
     </joined-subclass>
     
     <query name="templateByName">from ccc.domain.TemplateEntity t where t._name = ?</query>
-    <query name="allTemplates">from ccc.domain.TemplateEntity</query>
 </hibernate-mapping>

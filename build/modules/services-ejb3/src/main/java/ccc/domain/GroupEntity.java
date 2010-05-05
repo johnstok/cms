@@ -120,7 +120,7 @@ public class GroupEntity
      * @param groups The groups to map.
      * @return The corresponding DTOs.
      */
-    public static Collection<Group> map(final Collection<GroupEntity> groups) {
+    public static List<Group> map(final Collection<GroupEntity> groups) {
         final List<Group> mapped = new ArrayList<Group>();
         for (final GroupEntity g : groups) {
             mapped.add(g.createDto());

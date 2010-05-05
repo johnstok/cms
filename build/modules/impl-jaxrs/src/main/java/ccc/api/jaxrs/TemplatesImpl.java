@@ -26,7 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -40,6 +39,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.types.DBC;
+import ccc.api.types.PagedCollection;
 
 
 /**
@@ -94,9 +94,10 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Collection<Template> templates() {
+    public PagedCollection<Template> templates(final int pageNo,
+                                               final int pageSize) {
         try {
-            return _templates.templates();
+            return _templates.templates(pageNo, pageSize);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -124,4 +125,6 @@ public class TemplatesImpl
             throw convertException(cfe);
         }
     }
+
+
 }
