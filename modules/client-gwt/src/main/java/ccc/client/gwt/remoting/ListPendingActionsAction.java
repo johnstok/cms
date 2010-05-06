@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.ActionCollection;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
+import ccc.client.gwt.binding.ActionCollection;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 

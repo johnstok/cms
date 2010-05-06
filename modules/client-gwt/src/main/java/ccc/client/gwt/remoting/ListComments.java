@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.CommentCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
+import ccc.client.gwt.binding.CommentCollection;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 

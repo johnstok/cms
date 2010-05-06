@@ -24,11 +24,12 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.client.gwt.binding;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;

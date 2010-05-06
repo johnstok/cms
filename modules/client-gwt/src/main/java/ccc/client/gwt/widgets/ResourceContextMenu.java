@@ -27,7 +27,6 @@
 package ccc.client.gwt.widgets;
 
 import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
-import ccc.api.core.GroupCollection;
 import ccc.api.core.Page;
 import ccc.api.core.Template;
 import ccc.api.core.User;
@@ -40,6 +39,7 @@ import ccc.client.gwt.actions.OpenMoveAction;
 import ccc.client.gwt.actions.OpenRenameAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.actions.PreviewAction;
+import ccc.client.gwt.binding.GroupCollection;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.remoting.ApplyWorkingCopyAction;

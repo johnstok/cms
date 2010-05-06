@@ -26,8 +26,8 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.UserCollection;
 import ccc.api.core.UserCriteria;
+import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
