@@ -249,7 +249,7 @@ public class ActionEntity extends Entity {
      * @return The corresponding summaries.
      */
     public static List<ActionSummary> mapActions(
-                                             final Collection<ActionEntity> actions) {
+                                     final Collection<ActionEntity> actions) {
         final List<ActionSummary> summaries =
             new ArrayList<ActionSummary>();
         for (final ActionEntity a : actions) {
@@ -277,7 +277,9 @@ public class ActionEntity extends Entity {
                 (null==getCode()) ? null : getCode());
         summary.addLink(
             "self",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
+            new URIBuilder(
+                    ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+                    + ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
                 .replace("id", getId().toString())
                 .toString());
         return summary;

@@ -284,10 +284,32 @@ public class ActionsEJB
 
     private void addLinks(final PagedCollection<ActionSummary> actions) {
         actions.addLink(
-            "self",      ccc.api.core.ResourceIdentifiers.Action.PENDING);
+            "self",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Action.PENDING);
         actions.addLink(
-            "pending",   ccc.api.core.ResourceIdentifiers.Action.PENDING);
+            "pending",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Action.PENDING);
         actions.addLink(
-            "completed", ccc.api.core.ResourceIdentifiers.Action.COMPLETED);
+            "completed",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Action.COMPLETED);
+        actions.addLink(
+            "execute_all",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Action.EXECUTE);
+        actions.addLink(
+            "start",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Scheduler.START);
+        actions.addLink(
+            "stop",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Scheduler.STOP);
+        actions.addLink(
+            "running",
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + ccc.api.core.ResourceIdentifiers.Scheduler.RUNNING);
     }
 }

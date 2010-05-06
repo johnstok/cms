@@ -155,7 +155,7 @@ public class ProxyServiceLocator implements ServiceLocator {
             new ActionsImpl(
                 ProxyFactory.create(
                     Actions.class,
-                    _api, _httpClient));
+                    _api+ccc.api.core.ResourceIdentifiers.Action.COLLECTION, _httpClient));
         _folders =
             new FoldersImpl(
                 ProxyFactory.create(
