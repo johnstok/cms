@@ -76,7 +76,7 @@ public class SimpleLuceneFS
     private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
-    private static final String DEFAULT_FIELD = "content";
+    private static final String DEFAULT_FIELD = "allcontent";
 
     private final String _indexPath;
     private IndexWriter _writer;
@@ -201,7 +201,7 @@ public class SimpleLuceneFS
                 return;
             }
             final MoreLikeThis mlt = new MoreLikeThis(ir);
-            mlt.setFieldNames(new String[] {"content"});
+            mlt.setFieldNames(new String[] {DEFAULT_FIELD});
             mlt.setMinDocFreq(2);
             final Query query = mlt.like(docNum);
             ch.handle(searcher, searcher.search(query, maxHits));
@@ -322,7 +322,7 @@ public class SimpleLuceneFS
 
             d.add(
                 new Field(
-                    "content",
+                    DEFAULT_FIELD,
                     content,
                     Field.Store.NO,
                     Field.Index.ANALYZED,
