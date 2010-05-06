@@ -63,7 +63,7 @@ public class ServicesImpl {
     @GET
     public API isLoggedIn() {
         final API api = new API();
-        api.addLink(API.ACTIONS,   Action.PENDING); // FIXME: Should be COLLECTION.
+        api.addLink(API.ACTIONS,   Action.COLLECTION+Action.PENDING); // FIXME: Should be COLLECTION.
         api.addLink(API.ALIASES,   Alias.COLLECTION);
         api.addLink(API.COMMENTS,  Comment.COLLECTION);
         api.addLink(API.FILES,     File.COLLECTION);

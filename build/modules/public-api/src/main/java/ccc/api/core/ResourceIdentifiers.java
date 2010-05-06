@@ -117,11 +117,10 @@ public interface ResourceIdentifiers {
 
     public static interface Action {
         String  COLLECTION  = "/secure/actions";
-        String  ELEMENT     = COLLECTION + "/{id}";
-        String  PENDING     = COLLECTION + "/pending";
-        String  COMPLETED   = COLLECTION + "/completed";
-        String  EXECUTE     = COLLECTION + "/all";
-        String  CANCEL      = ELEMENT + "/cancel";
+        String  ELEMENT     = "/{id}";
+        String  PENDING     = "/pending";
+        String  COMPLETED   = "/completed";
+        String  EXECUTE     = "/all";
     }
 
     public static interface Alias {
