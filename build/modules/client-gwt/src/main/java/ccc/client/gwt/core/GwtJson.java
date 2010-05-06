@@ -368,4 +368,33 @@ public class GwtJson
     public String toString() {
         return _delegate.toString();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Json create() { return new GwtJson(); }
+
+    /** {@inheritDoc} */
+    @Override
+    public void set(final String key, final Json value) {
+        if (null==value) {
+            _delegate.put(key, JSONNull.getInstance());
+        } else {
+            final GwtJson o = (GwtJson) value;
+            _delegate.put(key, o.getDelegate());
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setJsons(final String key,
+                         final Collection<? extends Json> values) {
+        final JSONArray value = new JSONArray();
+        int i=0;
+        for (final Json j : values) {
+            final GwtJson o = (GwtJson) j;
+            value.set(i, o.getDelegate());
+            i++;
+        }
+        _delegate.put(key, value);
+    }
 }

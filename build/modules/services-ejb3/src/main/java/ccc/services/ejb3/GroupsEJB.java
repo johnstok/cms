@@ -40,7 +40,7 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
-import ccc.api.types.PagedCollection;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.Permission;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;

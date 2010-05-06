@@ -36,10 +36,10 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.types.DBC;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 

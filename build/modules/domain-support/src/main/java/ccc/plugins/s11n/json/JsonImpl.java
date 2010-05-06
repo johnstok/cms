@@ -437,4 +437,40 @@ public class JsonImpl implements Serializable, Json {
             throw new InvalidSnapshotException(e);
         }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json create() { return new JsonImpl(); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void set(final String key, final Json value) {
+        try {
+            if (null==value) {
+                _detail.put(key, NULL);
+            } else {
+                final JsonImpl s = (JsonImpl) value;
+                _detail.put(key, s._detail);
+            }
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    public void setJsons(final String key,
+                         final Collection<? extends Json> snapshots) {
+        try {
+            _detail.put(key, new JSONArray());
+            for (final Json o : snapshots) {
+                final JsonImpl s = (JsonImpl) o;
+                _detail.append(key, s._detail);
+            }
+        } catch (final JSONException e) {
+            throw new InvalidSnapshotException(e);
+        }
+    }
 }

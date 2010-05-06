@@ -44,6 +44,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
@@ -53,7 +54,6 @@ import ccc.api.core.Template;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.ACL;
 import ccc.api.types.Duration;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
 import ccc.commands.ApplyWorkingCopyCommand;

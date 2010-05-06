@@ -37,9 +37,9 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Comment;
 import ccc.api.core.Comments;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 
 

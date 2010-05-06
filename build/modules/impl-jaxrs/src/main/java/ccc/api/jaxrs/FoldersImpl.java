@@ -37,9 +37,9 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Folder;
 import ccc.api.core.Folders;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
-import ccc.api.types.PagedCollection;
 
 
 /**

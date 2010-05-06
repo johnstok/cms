@@ -37,11 +37,11 @@ import org.apache.log4j.Logger;
 
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.EmailAddress;
-import ccc.api.types.PagedCollection;
 
 
 /**

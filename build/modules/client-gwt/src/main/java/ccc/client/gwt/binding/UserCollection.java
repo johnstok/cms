@@ -29,8 +29,8 @@ package ccc.client.gwt.binding;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;

@@ -44,10 +44,10 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.File;
 import ccc.api.core.Files;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.StreamAction;
 import ccc.api.types.FilePropertyNames;
-import ccc.api.types.PagedCollection;
 import ccc.commands.UpdateFileCommand;
 import ccc.domain.FileEntity;
 import ccc.domain.RevisionMetadata;

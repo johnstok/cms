@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.ActionSummary;
-import ccc.api.types.PagedCollection;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;

@@ -42,8 +42,8 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Folder;
 import ccc.api.core.Folders;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceOrder;
 import ccc.commands.UpdateFolderCommand;

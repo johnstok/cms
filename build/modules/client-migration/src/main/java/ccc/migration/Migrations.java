@@ -39,10 +39,10 @@ import org.apache.log4j.Logger;
 
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.ServiceLocator;
 import ccc.api.exceptions.CCException;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.Paragraph;
 import ccc.api.types.SortOrder;
 import ccc.cli.Migrate.Options;

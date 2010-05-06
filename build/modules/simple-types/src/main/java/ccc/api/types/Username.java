@@ -28,17 +28,13 @@ package ccc.api.types;
 
 import java.io.Serializable;
 
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
-
 
 /**
  * A username.
  *
  * @author Civic Computing Ltd.
  */
-public final class Username implements Serializable, Jsonable {
+public final class Username implements Serializable {
 
     /** VALID_CHARACTERS : String. */
     public static final String  VALID_CHARACTERS = "[\\w]*";
@@ -90,11 +86,5 @@ public final class Username implements Serializable, Jsonable {
             if (other._value != null) { return false; }
         } else if (!_value.equals(other._value)) { return false; }
         return true;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.USERNAME, _value);
     }
 }
