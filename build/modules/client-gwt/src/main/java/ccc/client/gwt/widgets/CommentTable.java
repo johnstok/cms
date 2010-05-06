@@ -27,10 +27,10 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ccc.api.core.Comment;
+import ccc.api.core.CommentCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.CommentModelData;
@@ -218,16 +218,17 @@ public class CommentTable
                             }
 
                             @Override
-                            protected void execute(
-                                       final Collection<Comment> comments,
-                                       final int totalCount) {
+                            protected void execute(final CommentCollection comments) {
 
                                 final List<CommentModelData> results =
-                                    DataBinding.bindCommentSummary(comments);
+                                    DataBinding.bindCommentSummary(
+                                        comments.getElements());
 
                                 final PagingLoadResult<CommentModelData> plr =
-                                    new BasePagingLoadResult<CommentModelData>
-                                (results, config.getOffset(), totalCount);
+                                    new BasePagingLoadResult<CommentModelData> (
+                                        results,
+                                        config.getOffset(),
+                                        (int) comments.getTotalCount());
                                 callback.onSuccess(plr);
                             }
                         }.execute();

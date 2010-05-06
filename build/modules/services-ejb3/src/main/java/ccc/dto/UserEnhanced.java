@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,49 +21,49 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.dto;
 
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.RemotingAction;
+import java.util.HashMap;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
+import ccc.api.core.User;
+import ccc.api.types.URIBuilder;
+import ccc.plugins.s11n.Json;
 
 
 /**
- * Log current user out.
+ * Enhanced user class providing server-side features.
  *
  * @author Civic Computing Ltd.
  */
-public final class LogoutAction
+public class UserEnhanced
     extends
-        RemotingAction {
-
-
-    /**
-     * Constructor.
-     */
-    public LogoutAction() {
-        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
-    }
-
+        User {
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
-        GLOBALS.currentUser(null);
-        GLOBALS.disableExitConfirmation();
-        GLOBALS.redirectTo(Globals.APP_URL);
+    // FIXME: Remove strings to constants.
+    public void toJson(final Json json) {
+        super.toJson(json);
+
+        final HashMap<String, String> links = new HashMap<String, String>();
+        if (null!=getId()) {
+            links.put(
+                "password",
+                new URIBuilder(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
+                    .replace("id", getId().toString())
+                    .toString());
+            links.put(
+                "self",
+                new URIBuilder(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+                    .replace("id", getId().toString())
+                    .toString());
+        }
+
+        json.set("links", links); // TODO: Preserve parent links?
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        // FIXME: Hard coded URI.
-        return ccc.api.core.ResourceIdentifiers.Security.CURRENT;
-    }
 }

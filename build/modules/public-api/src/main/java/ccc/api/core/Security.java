@@ -43,10 +43,6 @@ import javax.ws.rs.QueryParam;
 @Produces("application/json")
 public interface Security {
 
-    String COLLECTION = "/public/sessions";
-    String PROPERTIES = COLLECTION+"/allproperties";
-    String CURRENT    = COLLECTION+"/current";
-
     /**
      * Log in to CCC.
      *
@@ -55,7 +51,7 @@ public interface Security {
      *
      * @return True if the login fails, false otherwise.
      */
-    @POST @Path(COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Security.COLLECTION)
     Boolean login(
           @QueryParam("u") final String username,
           @QueryParam("p") final String password);
@@ -66,7 +62,7 @@ public interface Security {
      *
      * @return True if a user is associated, false otherwise.
      */
-    @GET @Path(CURRENT)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Security.CURRENT)
     Boolean isLoggedIn();
 
 
@@ -74,7 +70,7 @@ public interface Security {
      * Log out from the current session.
      *
      */
-    @POST @Path(CURRENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Security.CURRENT)
     void logout();
 
 
@@ -83,6 +79,6 @@ public interface Security {
      *
      * @return The properties as a string.
      */
-    @GET @Path(PROPERTIES)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Security.PROPERTIES)
     String readAllProperties();
 }

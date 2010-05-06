@@ -57,7 +57,7 @@ public abstract class UpdateCurrentUserAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return _userDetails.currentSelf();
+        return GLOBALS.users().me();
     }
 
 

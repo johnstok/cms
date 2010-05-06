@@ -63,7 +63,7 @@ public interface Comments {
      *
      * @return Return the newly created comment.
      */
-    @POST @Path(Comment.COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Comment.COLLECTION)
     Comment create(Comment comment);
 
 
@@ -74,7 +74,7 @@ public interface Comments {
      *
      * @return Return the corresponding comment.
      */
-    @GET @Path(Comment.ELEMENT)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
     Comment retrieve(@PathParam("id") UUID commentId);
 
 
@@ -84,7 +84,7 @@ public interface Comments {
      * @param commentId The comment's ID.
      * @param comment The updated comment.
      */
-    @POST @Path(Comment.ELEMENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
     void update(@PathParam("id") UUID commentId, Comment comment);
 
 
@@ -93,7 +93,7 @@ public interface Comments {
      *
      * @param commentId The comment's ID.
      */
-    @DELETE  @Path(Comment.ELEMENT)
+    @DELETE  @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
     void delete(@PathParam("id") UUID commentId);
 
 
@@ -109,7 +109,7 @@ public interface Comments {
      *
      * @return A list of comments.
      */
-    @GET @Path(Comment.COLLECTION)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Comment.COLLECTION)
     PagedCollection<Comment> list(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,

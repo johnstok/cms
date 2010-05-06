@@ -26,9 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.ActionCollection;
-import ccc.api.types.DBC;
-import ccc.api.types.SortOrder;
+import ccc.api.core.API;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -38,64 +36,37 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Display the list of pending actions.
+ * Create a new user.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ListPendingActionsAction
+public class GetServicesAction
     extends
         RemotingAction {
 
-    private int           _page;
-    private int           _count;
-    private SortOrder     _order;
-    private String        _sort;
-
     /**
      * Constructor.
-     *
-     * @param page The page of results to return.
-     * @param count The number of results in a page.
-     * @param sort The field to sort on.
-     * @param order The order results be sorted in.
      */
-    public ListPendingActionsAction(final int page,
-                                    final int count,
-                                    final String sort,
-                                    final SortOrder order) {
-        super(USER_ACTIONS.viewActions());
-        DBC.require().toBeTrue(page>0);
-        DBC.require().toBeTrue(count>0);
-
-        _page = page;
-        _count = count;
-        _sort = sort;
-        _order = order;
+    public GetServicesAction() {
+        super(USER_ACTIONS.internalAction());
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final String path =
-            GLOBALS.actions().pending(_page, _count, _order, _sort);
-        return path;
+        return "";
     }
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final JSONObject obj =
+        final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final ActionCollection actions = new ActionCollection();
-        actions.fromJson(new GwtJson(obj));
-
-        execute(actions);
+        final API api = new API();
+        api.fromJson(new GwtJson(result));
+        onOK(api);
     }
 
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param actions The page of actions returned.
-     */
-    protected abstract void execute(ActionCollection actions);
+
+    protected void onOK(final API api) { /* NO OP */ }
 }

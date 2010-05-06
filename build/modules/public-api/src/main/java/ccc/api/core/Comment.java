@@ -26,16 +26,13 @@
  */
 package ccc.api.core;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommentStatus;
-import ccc.api.types.SortOrder;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Res;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -44,12 +41,8 @@ import ccc.plugins.s11n.Jsonable2;
  * @author Civic Computing Ltd.
  */
 public class Comment
-    implements
-        Jsonable2,
-        Serializable {
-
-    static final String COLLECTION = "/secure/comments";
-    static final String ELEMENT = COLLECTION+"/{id}";
+    extends
+        Res {
 
     private UUID          _id;
     private UUID          _resourceId;
@@ -238,6 +231,7 @@ public class Comment
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set(JsonKeys.DATE_CREATED, _timestamp);
         json.set(JsonKeys.TARGET_ID, _resourceId);
         json.set(JsonKeys.BODY, _body);
@@ -252,6 +246,7 @@ public class Comment
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
         _timestamp = json.getDate(JsonKeys.DATE_CREATED);
         _resourceId = json.getId(JsonKeys.TARGET_ID);
         _body = json.getString(JsonKeys.BODY);
@@ -266,37 +261,7 @@ public class Comment
     /**
      * TODO: Add a description for this method.
      *
-     * @param page
-     * @param count
-     * @param status
-     * @param order
-     * @param sort
      * @return
      */
-    public static String list(final int page,
-                              final int count,
-                              final CommentStatus status,
-                              final SortOrder order,
-                              final String sort) {
-        return
-            Comment.COLLECTION
-                + "?page="+page
-                + "&count="+count
-                + ((null==status) ? "" : "&status="+status.name())
-                + ((null==order) ? "" : "&order="+order.name())
-                + ((null==sort) ? "" : "&sort="+sort);
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public String self() {
-        return
-            new URIBuilder(Comment.ELEMENT)
-                .replace("id", getId().toString())
-                .toString();
-    }
+    public String self() { return getLink("self"); }
 }

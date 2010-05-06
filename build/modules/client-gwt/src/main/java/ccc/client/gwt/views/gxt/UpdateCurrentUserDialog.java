@@ -129,6 +129,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
+                // FIXME: Don't set values on the stored user!!!
                 _user.setPassword(_password1.getValue());
                 _user.setEmail(_email.getValue());
                 _user.setName(_name.getValue());

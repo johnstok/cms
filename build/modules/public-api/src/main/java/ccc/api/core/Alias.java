@@ -45,10 +45,6 @@ public class Alias
     extends
         Resource {
 
-    static final String COLLECTION  = "/secure/aliases";
-    static final String ELEMENT     = COLLECTION + "/{id}";
-    static final String TARGET_NAME = ELEMENT + "/targetname";
-
     private UUID _targetId;
     private String _targetPath;
 
@@ -131,11 +127,11 @@ public class Alias
         super.toJson(json);
 
         final Map<String, String> links = new HashMap<String, String>();
-        links.put("create", Alias.COLLECTION);
+        links.put("create", ccc.api.core.ResourceIdentifiers.Alias.COLLECTION);
         if (null!=getId()) {
             links.put(
                 "update",
-                new URIBuilder(Alias.COLLECTION+Alias.ELEMENT)
+                new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
                     .replace("id", getId().toString())
                     .toString());
         }
@@ -160,7 +156,7 @@ public class Alias
      * @return
      */
     public static String list() {
-        return Alias.COLLECTION;
+        return ccc.api.core.ResourceIdentifiers.Alias.COLLECTION;
     }
 
 
@@ -172,7 +168,7 @@ public class Alias
      */
     public static String targetName(final UUID id) {
         return
-            new URIBuilder(Alias.TARGET_NAME)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
             .replace("id", id.toString())
             .toString();
     }
@@ -185,7 +181,7 @@ public class Alias
      */
     public String self() {
         return
-            new URIBuilder(Alias.ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }

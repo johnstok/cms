@@ -27,11 +27,11 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.Group;
+import ccc.api.core.GroupCollection;
 import ccc.api.core.User;
+import ccc.api.core.UserCollection;
 import ccc.api.core.UserCriteria;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
@@ -151,12 +151,13 @@ public class UserTable extends TablePanel {
                     final UserSummaryModelData userDTO =
                         grid.getSelectionModel().getSelectedItem();
 
-                    new ListGroups(1,999,"name","ASC") {
+                    new ListGroups(1, 999, "name", "ASC") {
                         @Override
-                        protected void execute(final Collection<Group> g,
-                                               final int totalCount) {
+                        protected void execute(final GroupCollection groups) {
                             new OpenEditUserDialogAction(
-                                userDTO.getId(), UserTable.this, g)
+                                userDTO.getDelegate(),
+                                UserTable.this,
+                                groups.getElements())
                             .execute();
                         }}.execute();
 
@@ -188,7 +189,7 @@ public class UserTable extends TablePanel {
             @Override public void componentSelected(final MenuEvent ce) {
                 final UserSummaryModelData modeldata =
                     grid.getSelectionModel().getSelectedItem();
-                new GetUserAction(modeldata.getId()) {
+                new GetUserAction(modeldata.getDelegate().self()) {
                     @Override
                     protected void execute(final User user) {
                         new UserMetadataDialog(user).show();
@@ -340,13 +341,14 @@ public class UserTable extends TablePanel {
                         order) {
 
                             @Override
-                            protected void execute(final Collection<User> users,
-                                                   final int totalCount) {
+                            protected void execute(final UserCollection users) {
                                 final List<UserSummaryModelData> results =
-                                    DataBinding.bindUserSummary(users);
+                                    DataBinding.bindUserSummary(users.getElements());
 
                                 final PagingLoadResult<UserSummaryModelData> plr =
-                                    new BasePagingLoadResult<UserSummaryModelData>(results, config.getOffset(), totalCount);
+                                    new BasePagingLoadResult<UserSummaryModelData>(
+                                        results, config.getOffset(),
+                                        (int) users.getTotalCount());
                                 callback.onSuccess(plr);
                             }
                     }.execute();

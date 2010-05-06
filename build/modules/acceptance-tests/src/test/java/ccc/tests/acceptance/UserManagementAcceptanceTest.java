@@ -261,7 +261,7 @@ public class UserManagementAcceptanceTest
         user.setPassword(password);
 
         // ACT
-        getUsers().updateYourUser(user.getId(), user);
+        getUsers().updateYourUser(user);
         user = getUsers().loggedInUser();
 
         // ASSERT

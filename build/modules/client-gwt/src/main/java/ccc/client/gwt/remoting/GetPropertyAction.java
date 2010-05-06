@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Security;
 import ccc.client.gwt.core.RemotingAction;
 
 
@@ -53,6 +52,7 @@ public abstract class GetPropertyAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Security.PROPERTIES;
+        // FIXME: Hard coded URI.
+        return ccc.api.core.ResourceIdentifiers.Security.PROPERTIES;
     }
 }

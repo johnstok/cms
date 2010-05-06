@@ -27,9 +27,9 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import ccc.api.core.ActionCollection;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.SortOrder;
@@ -224,7 +224,7 @@ public class ActionTable
 
             @Override
             protected void execute(
-                       final Collection<ActionSummary> comments,
+                       final List<ActionSummary> comments,
                        final int totalCount) {
 
                 final List<ActionSummaryModelData> results =
@@ -256,15 +256,13 @@ public class ActionTable
             }
 
             @Override
-            protected void execute(
-                                   final Collection<ActionSummary> comments,
-                                   final int totalCount) {
+            protected void execute(final ActionCollection actions) {
                 final List<ActionSummaryModelData> results =
-                    DataBinding.bindActionSummary(comments);
+                    DataBinding.bindActionSummary(actions.getElements());
 
                 final PagingLoadResult<ActionSummaryModelData> plr =
                     new BasePagingLoadResult<ActionSummaryModelData>
-                (results, config.getOffset(), totalCount);
+                (results, config.getOffset(), (int) actions.getTotalCount());
                 callback.onSuccess(plr);
             }
         };

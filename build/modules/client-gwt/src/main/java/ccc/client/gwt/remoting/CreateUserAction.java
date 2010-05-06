@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.API;
 import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -61,7 +62,7 @@ public class CreateUserAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return User.list();
+        return new API().users();
     }
 
     /** {@inheritDoc} */

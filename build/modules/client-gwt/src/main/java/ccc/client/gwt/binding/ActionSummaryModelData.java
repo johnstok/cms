@@ -35,7 +35,6 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
@@ -261,12 +260,10 @@ public class ActionSummaryModelData
      * @return The HTTP request to cancel this action.
      */
     public Request cancel() {
-        final String path =
-            Globals.API_URL
-            + Action.cancel(getId());
+        final String path = Globals.API_URL + _as.self();
         return
             new Request(
-                RequestBuilder.POST,
+                RequestBuilder.POST, // FIXME: Should be delete.
                 path,
                 "",
                 new ActionCancelledCallback(this));
@@ -287,7 +284,8 @@ public class ActionSummaryModelData
                                        final CommandType command,
                                        final Date executeAfter,
                                        final Map<String, String> params) {
-        final String path = Globals.API_URL+Action.list();
+
+        final String path = Globals.API_URL+new GlobalsImpl().actions().list();
 
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.SUBJECT_ID, subject);

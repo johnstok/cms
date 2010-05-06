@@ -50,6 +50,7 @@ public class UserSummaryModelData
 
     private User _us;
 
+
     /**
      * Constructor.
      *
@@ -58,6 +59,7 @@ public class UserSummaryModelData
     public UserSummaryModelData(final User us) {
         _us = us;
     }
+
 
     /** {@inheritDoc} */
     @Override @SuppressWarnings("unchecked") @Deprecated
@@ -82,6 +84,7 @@ public class UserSummaryModelData
         }
     }
 
+
     /** {@inheritDoc} */
     @Override @Deprecated
     public Map<String, Object> getProperties() {
@@ -91,6 +94,7 @@ public class UserSummaryModelData
         }
         return properties;
     }
+
 
     /** {@inheritDoc} */
     @Override @Deprecated
@@ -102,17 +106,20 @@ public class UserSummaryModelData
         return names;
     }
 
+
     /** {@inheritDoc} */
     @Override @Deprecated
     public <X> X remove(final String property) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+
     /** {@inheritDoc} */
     @Override @Deprecated
     public <X> X set(final String property, final X value) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
+
 
     /**
      * Property names for a user summary.
@@ -128,6 +135,7 @@ public class UserSummaryModelData
         USERNAME;
     }
 
+
     /**
      * Accessor.
      *
@@ -137,6 +145,7 @@ public class UserSummaryModelData
         return _us.getId();
     }
 
+
     /**
      * Accessor.
      *
@@ -145,4 +154,12 @@ public class UserSummaryModelData
     public Username getUsername() {
         return _us.getUsername();
     }
+
+
+    /**
+     * Get the user this model data delegates to.
+     *
+     * @return The delegate user.
+     */
+    public User getDelegate() { return _us; }
 }

@@ -129,9 +129,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final UUID userId, final User user) {
+    public void updateYourUser(final User user) {
         try {
-            _delegate.updateYourUser(userId, user);
+            _delegate.updateYourUser(user);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

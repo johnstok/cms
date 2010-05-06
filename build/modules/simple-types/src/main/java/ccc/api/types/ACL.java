@@ -235,5 +235,17 @@ public final class ACL implements Jsonable2, Serializable {
             }
             return true;
         }
+
+
+        /**
+         * TODO: Add a description for this method.
+         *
+         * @return
+         */
+        @Deprecated
+        // FIXME: _principal should be a reference to a user (with id & title).
+        public String user() {
+            return "/secure/users/"+_principal;
+        }
     }
 }

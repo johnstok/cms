@@ -26,10 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-import ccc.api.core.Action;
+import ccc.api.core.ActionCollection;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
@@ -38,11 +37,9 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -82,10 +79,12 @@ public abstract class ListCompletedActionsAction
         _order = order;
     }
 
+    /** {@inheritDoc} */
     @Override
     protected String getPath() {
         final String path =
-            Globals.API_URL + Action.completed(_page, _count, _order, _sort);
+            Globals.API_URL
+            + GLOBALS.actions().completed(_page, _count, _order, _sort);
         return path;
     }
 
@@ -102,19 +101,14 @@ public abstract class ListCompletedActionsAction
                     /** {@inheritDoc} */
                     @Override
                     public void onOK(final Response response) {
-                        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+                        final JSONObject obj =
+                            JSONParser.parse(response.getText()).isObject();
+                        final ActionCollection actions = new ActionCollection();
+                        actions.fromJson(new GwtJson(obj));
 
-                        final int totalCount =
-                            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
-
-                        final JSONArray result = obj.get(JsonKeys.ELEMENTS).isArray();
-                        final Collection<ActionSummary> actions =
-                            new ArrayList<ActionSummary>();
-                        for (int i=0; i<result.size(); i++) {
-                            actions.add(new ActionSummary(
-                                new GwtJson(result.get(i).isObject())));
-                        }
-                        execute(actions, totalCount);
+                        execute(
+                            actions.getElements(),
+                            (int) actions.getTotalCount());
                     }
                 });
     }
@@ -125,6 +119,6 @@ public abstract class ListCompletedActionsAction
      * @param actions The page of actions returned.
      * @param totalCount The total actions available on the server.
      */
-    protected abstract void execute(Collection<ActionSummary> actions,
+    protected abstract void execute(List<ActionSummary> actions,
                                     int totalCount);
 }

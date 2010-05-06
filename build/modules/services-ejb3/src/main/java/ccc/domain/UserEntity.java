@@ -45,6 +45,7 @@ import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
 import ccc.api.types.Username;
+import ccc.dto.UserEnhanced;
 import ccc.plugins.s11n.Json;
 
 
@@ -342,8 +343,8 @@ public class UserEntity
      *
      * @return A DTO representation of this user.
      */
-    public User toDto() {
-        final User dto = new User();
+    public UserEnhanced toDto() {
+        final UserEnhanced dto = new UserEnhanced();
         dto.setEmail(getEmail().getText());
         dto.setId(getId());
         dto.setUsername(getUsername());

@@ -49,14 +49,6 @@ public final class File
     extends
         Resource {
 
-    static final String COLLECTION        = "/secure/files";
-    static final String IMAGES            = COLLECTION + "/images/{id}";
-    static final String ELEMENT           = COLLECTION + "/{id}";
-    static final String BINARY_COLLECTION = COLLECTION + "/bin";
-    static final String BINARY_ELEMENT    = BINARY_COLLECTION + "/{id}";
-    static final String BINARY_WC         = BINARY_ELEMENT + "/wc";
-    static final String BINARY_REVISION   = BINARY_ELEMENT + "/rev";
-
     private MimeType              _mimeType;
     private String                _path;
     private Map<String, String>   _properties;
@@ -458,7 +450,7 @@ public final class File
      * @return
      */
     public static String list() {
-        return File.COLLECTION;
+        return ccc.api.core.ResourceIdentifiers.File.COLLECTION;
     }
 
 
@@ -469,7 +461,7 @@ public final class File
      */
     public String self() {
         return
-            new URIBuilder(File.ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }
@@ -487,7 +479,7 @@ public final class File
                                 final int pageNo,
                                 final int pageSize) {
         return
-            new URIBuilder(File.IMAGES)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.IMAGES)
                 .replace("id", parentId.toString())
             + "?page="+pageNo+"&count="+pageSize;
     }
@@ -501,7 +493,7 @@ public final class File
      */
     public static String self(final UUID id) {
         return
-            new URIBuilder(File.COLLECTION+File.ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
             .replace("id", id.toString())
             .toString();
     }
@@ -513,7 +505,7 @@ public final class File
      * @return
      */
     public static String listBinary() {
-        return File.BINARY_COLLECTION;
+        return ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION;
     }
 
 
@@ -525,7 +517,7 @@ public final class File
      */
     public static String selfBinary(final UUID fileId) {
         return
-            new URIBuilder(File.BINARY_ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
             .replace("id", fileId.toString())
             .toString();
     }

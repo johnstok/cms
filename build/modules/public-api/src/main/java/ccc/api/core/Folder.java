@@ -45,17 +45,6 @@ public class Folder
     extends
         Resource {
 
-    static final String COLLECTION            = "/secure/folders";
-    static final String ELEMENT               = COLLECTION + "/{id}";
-    static final String ROOTS                 = COLLECTION + "/roots";
-    static final String FOLDER_CHILDREN       = ELEMENT + "/folder-children";
-    static final String CHILDREN              = ELEMENT + "/children";
-    static final String ACCESSIBLE_CHILDREN   = ELEMENT + "/accessible-children";
-    static final String CHILDREN_MANUAL_ORDER = ELEMENT + "/children-manual-order";
-    static final String EXISTS                = ELEMENT + "/{name}/exists";
-    static final String DEPRECATED            = COLLECTION + "/deprecated";
-    static final String ROOT_NAME             = ROOTS + "/{name}";
-
     private UUID _indexPage;
     private UUID _defaultPage;
     private String _sortOrder;
@@ -205,7 +194,7 @@ public class Folder
      * @return
      */
     public static String list() {
-        return Folder.COLLECTION;
+        return ccc.api.core.ResourceIdentifiers.Folder.COLLECTION;
     }
 
 
@@ -217,7 +206,7 @@ public class Folder
      */
     public static String childrenFolder(final UUID id) {
         return
-            new URIBuilder(Folder.FOLDER_CHILDREN)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.FOLDER_CHILDREN)
             .replace("id", id.toString())
             .toString();
     }
@@ -229,7 +218,7 @@ public class Folder
      * @return
      */
     public static String roots() {
-        return Folder.ROOTS;
+        return ccc.api.core.ResourceIdentifiers.Folder.ROOTS;
     }
 
 
@@ -243,7 +232,7 @@ public class Folder
     public static String exists(final UUID folderId,
                                 final ResourceName resourceName) {
         return
-            new URIBuilder(Folder.EXISTS)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.EXISTS)
             .replace("id", folderId.toString())
             .replace("name", resourceName.toString())
             .toString();
@@ -257,7 +246,7 @@ public class Folder
      */
     public String self() {
         return
-            new URIBuilder(Folder.ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }

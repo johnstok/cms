@@ -45,11 +45,6 @@ public class Template
     extends
         Resource {
 
-    static final String COLLECTION = "/secure/templates";
-    static final String ELEMENT    = COLLECTION + "/{id}";
-    static final String EXISTS     = COLLECTION + "/{name}/exists";
-    static final String DELTA      = ELEMENT + "/delta";
-
     private String   _body;
     private String   _definition;
     private MimeType _mimeType;
@@ -171,10 +166,22 @@ public class Template
      *
      * @return
      */
+    public static String list() {
+        return ccc.api.core.ResourceIdentifiers.Template.COLLECTION;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
     public static String list(final int pageNo,
                               final int pageSize) {
         final StringBuilder path = new StringBuilder();
-        path.append(Template.COLLECTION);
+        path.append(ccc.api.core.ResourceIdentifiers.Template.COLLECTION);
         path.append("?page="+pageNo
             +"&count="+pageSize);
         return path.toString();
@@ -189,7 +196,7 @@ public class Template
      */
     public static String delta(final UUID id) {
         return
-            new URIBuilder(Template.DELTA)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.DELTA)
             .replace("id", id.toString())
             .toString();
     }
@@ -203,7 +210,7 @@ public class Template
      */
     public static String exists(final String name) {
         return
-            new URIBuilder(Template.EXISTS)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.EXISTS)
             .replace("name", name)
             .toString();
     }
@@ -216,7 +223,7 @@ public class Template
      */
     public String self() {
         return
-            new URIBuilder(Template.ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }

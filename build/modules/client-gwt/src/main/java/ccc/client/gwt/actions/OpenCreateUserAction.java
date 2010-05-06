@@ -26,9 +26,7 @@
  */
 package ccc.client.gwt.actions;
 
-import java.util.Collection;
-
-import ccc.api.core.Group;
+import ccc.api.core.GroupCollection;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.presenters.CreateUserPresenter;
 import ccc.client.gwt.remoting.ListGroups;
@@ -48,10 +46,9 @@ public final class OpenCreateUserAction
     @Override public void execute() {
         new ListGroups(1,999,"name","ASC") {
             @Override
-            protected void execute(final Collection<Group> g,
-                                   final int totalCount) {
+            protected void execute(final GroupCollection groups) {
                 new CreateUserPresenter(
-                    new CreateUserDialog(g), GLOBALS);
+                    new CreateUserDialog(groups.getElements()), GLOBALS);
             }}.execute();
         }
 }

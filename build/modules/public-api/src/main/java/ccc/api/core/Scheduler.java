@@ -42,13 +42,13 @@ public interface Scheduler {
     /**
      * Start the scheduler running.
      */
-    @GET @Path("/start")
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.START)
     void start();
 
     /**
      * Stop the scheduler running.
      */
-    @GET @Path("/stop")
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.STOP)
     void stop();
 
     /**
@@ -56,6 +56,6 @@ public interface Scheduler {
      *
      * @return True if the scheduler is running; false otherwise.
      */
-    @GET @Path("/running")
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.RUNNING)
     boolean isRunning();
 }

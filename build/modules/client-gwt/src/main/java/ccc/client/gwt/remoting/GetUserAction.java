@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.User;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
@@ -49,15 +47,15 @@ import com.google.gwt.json.client.JSONParser;
 public abstract class GetUserAction
     extends RemotingAction {
 
-    private final UUID _id;
+    private final String _userPath;
 
     /**
      * Constructor.
      *
-     * @param id The user id.
+     * @param userPath The path to the user on the server.
      */
-    public GetUserAction(final UUID id) {
-        _id = id;
+    public GetUserAction(final String userPath) {
+        _userPath = userPath;
     }
 
 
@@ -67,7 +65,7 @@ public abstract class GetUserAction
         return
             new Request(
                 RequestBuilder.GET,
-                Globals.API_URL + User.delta(_id),
+                Globals.API_URL + _userPath,
                 "",
                 new ResponseHandlerAdapter(
                     GLOBALS.userActions().internalAction()) {

@@ -107,6 +107,7 @@ public class JaxrsConfiguration
         providers.add(SearchResultWriter.class);
         providers.add(FileReader.class);
         providers.add(SecurityImpl.class);
+        providers.add(ServicesImpl.class);
 
         return providers;
     }

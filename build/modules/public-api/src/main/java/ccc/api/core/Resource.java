@@ -55,38 +55,6 @@ public class Resource
         Serializable,
         Jsonable2 {
 
-    private static final String COLLECTION = "/secure/resources";
-    static final String LIST = COLLECTION+"/list";
-    static final String ELEMENT = COLLECTION+"/{id}";
-    static final String DELETE = COLLECTION+"/{id}/delete";
-    static final String PATH = COLLECTION+"/{id}/path";
-    static final String LOCKED = COLLECTION+"/locked";
-    static final String REVISIONS = COLLECTION+"/{id}/revisions";
-    static final String METADATA = COLLECTION+"/{id}/metadata";
-    static final String ACL = COLLECTION+"/{id}/acl";
-    static final String DURATION = COLLECTION+"/{id}/duration";
-    static final String TEMPLATE = COLLECTION+"/{id}/template";
-    static final String SEARCH_PATH = COLLECTION+"/by-path{path:.*}";
-    private static final String SEARCH_PATH_SIMPLE = COLLECTION+"/by-path";
-    static final String SEARCH_LEGACY = COLLECTION+"/by-legacy-id/{id}";
-    static final String SEARCH_METADATA = COLLECTION+"/by-metadata-key/{id}";
-    static final String LOCK = COLLECTION+"/{id}/lock";
-    static final String WC_APPLY = COLLECTION+"/{id}/wc-apply";
-    static final String UNLOCK = COLLECTION+"/{id}/unlock";
-    static final String UNPUBLISH = COLLECTION+"/{id}/unpublish";
-    static final String PUBLISH = COLLECTION+"/{id}/publish";
-    static final String PARENT = COLLECTION+"/{id}/parent";
-    static final String NAME = COLLECTION+"/{id}/name";
-    static final String EXCLUDE_MM = COLLECTION+"/{id}/exclude-mm";
-    static final String INCLUDE_MM = COLLECTION+"/{id}/include-mm";
-    static final String WC_CLEAR = COLLECTION+"/{id}/wc-clear";
-    static final String WC_CREATE = COLLECTION+"/{id}/wc-create";
-    static final String LOG_ENTRY = COLLECTION+"/{id}/logentry-create";
-    static final String TEXT = COLLECTION+"/text-content{path:.*}";
-    static final String PATH_SECURE = COLLECTION+"/by-path-secure{path:.*}";
-    static final String PATH_WC = COLLECTION+"/by-path-wc{path:.*}";
-    static final String SEARCH = COLLECTION+"/search/{id}/{title}";
-
     private String              _absolutePath;
     private Duration            _cacheDuration;
     private Date                _dateChanged;
@@ -701,7 +669,8 @@ public class Resource
      */
     public static String path(final String path) {
         // FIXME: Bit hacky.
-        return SEARCH_PATH_SIMPLE+path;
+        return
+            ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE+path;
     }
 
 
@@ -713,7 +682,7 @@ public class Resource
      */
     public static String revisions(final UUID id) {
         return
-            new URIBuilder(Resource.REVISIONS)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
                 .replace("id", id.toString())
                 .toString();
     }
@@ -727,7 +696,7 @@ public class Resource
      */
     public static String rename(final UUID id) {
         return
-            new URIBuilder(Resource.NAME)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME)
             .replace("id", id.toString())
             .toString();
     }
@@ -741,7 +710,7 @@ public class Resource
      */
     public static String applyWc(final UUID id) {
         return
-            new URIBuilder(Resource.WC_APPLY)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY)
             .replace("id", id.toString())
             .toString();
     }
@@ -755,7 +724,7 @@ public class Resource
      */
     public static String clearWc(final UUID id) {
         return
-            new URIBuilder(Resource.WC_CLEAR)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR)
             .replace("id", id.toString())
             .toString();
     }
@@ -778,7 +747,7 @@ public class Resource
                               final SortOrder order,
                               final ResourceType type) {
         return
-            Resource.LIST
+            ccc.api.core.ResourceIdentifiers.Resource.LIST
             + "?parent="+id
             + ((null==sort) ? "" : "&sort="+sort)
             + "&order="+order.name()
@@ -795,7 +764,7 @@ public class Resource
      */
     public String uriMetadata() {
         return
-            new URIBuilder(Resource.METADATA)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
             .replace("id", getId().toString())
             .toString();
     }
@@ -809,7 +778,7 @@ public class Resource
      */
     public static String uriUnpublish(final UUID id) {
         return
-            new URIBuilder(Resource.UNPUBLISH)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH)
             .replace("id", id.toString())
             .toString();
     }
@@ -823,7 +792,7 @@ public class Resource
      */
     public static String uriTemplate(final UUID id) {
         return
-            new URIBuilder(Resource.TEMPLATE)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
             .replace("id", id.toString())
             .toString();
     }
@@ -837,7 +806,7 @@ public class Resource
      */
     public static String uriDelete(final UUID id) {
         return
-            new URIBuilder(Resource.DELETE)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DELETE)
             .replace("id", id.toString())
             .toString();
     }
@@ -851,7 +820,7 @@ public class Resource
      */
     public static String history(final UUID resourceId) {
         return
-            new URIBuilder(Resource.WC_CREATE)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE)
             .replace("id", resourceId.toString())
             .toString();
     }
@@ -865,7 +834,7 @@ public class Resource
      */
     public static String uriAbsPath(final UUID resourceId) {
         return
-            new URIBuilder(Resource.PATH)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
             .replace("id", resourceId.toString())
             .toString();
     }
@@ -879,7 +848,7 @@ public class Resource
      */
     public static String includeMM(final UUID id) {
         return
-            new URIBuilder(Resource.INCLUDE_MM)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
             .replace("id", id.toString())
             .toString();
     }
@@ -893,7 +862,7 @@ public class Resource
      */
     public static String lock(final UUID id) {
         return
-            new URIBuilder(Resource.LOCK)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
             .replace("id", id.toString())
             .toString();
     }
@@ -907,7 +876,7 @@ public class Resource
      */
     public static String move(final UUID resource) {
         return
-            new URIBuilder(Resource.PARENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
             .replace("id", resource.toString())
             .toString();
     }
@@ -921,7 +890,7 @@ public class Resource
      */
     public static String duration(final UUID id) {
         return
-            new URIBuilder(Resource.DURATION)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
             .replace("id", id.toString())
             .toString();
     }
@@ -935,7 +904,7 @@ public class Resource
      */
     public static String unlock(final UUID id) {
         return
-            new URIBuilder(Resource.UNLOCK)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK)
             .replace("id", id.toString())
             .toString();
     }
@@ -949,7 +918,7 @@ public class Resource
      */
     public static String acl(final UUID resource) {
         return
-            new URIBuilder(Resource.ACL)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL)
             .replace("id", resource.toString())
             .toString();
     }
@@ -963,7 +932,7 @@ public class Resource
      */
     public static String uriPublish(final UUID id) {
         return
-            new URIBuilder(Resource.PUBLISH)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
             .replace("id", id.toString())
             .toString();
     }
@@ -977,7 +946,7 @@ public class Resource
      */
     public static String excludeMM(final UUID id) {
         return
-            new URIBuilder(Resource.EXCLUDE_MM)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
             .replace("id", id.toString())
             .toString();
     }
@@ -991,7 +960,7 @@ public class Resource
      */
     public static String uriMetadata(final UUID id) {
         return
-            new URIBuilder(Resource.METADATA)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
             .replace("id", id.toString())
             .toString();
     }

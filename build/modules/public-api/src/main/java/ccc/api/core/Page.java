@@ -46,12 +46,6 @@ public class Page
     extends
         Resource {
 
-    static final String COLLECTION  = "/secure/pages";
-    static final String VALIDATOR   = COLLECTION + "/validator";
-    static final String ELEMENT     = COLLECTION + "/{id}";
-    static final String DELTA       = ELEMENT + "/delta";
-    static final String WC          = ELEMENT + "/wc";
-
     private String    _comment;
     private boolean   _majorChange;
     private HashSet<Paragraph> _paragraphs = new HashSet<Paragraph>();
@@ -198,7 +192,7 @@ public class Page
      *
      * @return
      */
-    public static String list() { return COLLECTION; }
+    public static String list() { return ccc.api.core.ResourceIdentifiers.Page.COLLECTION; }
 
 
     /**
@@ -207,7 +201,7 @@ public class Page
      * @return
      */
     public String validate() {
-        return Page.VALIDATOR;
+        return ccc.api.core.ResourceIdentifiers.Page.VALIDATOR;
     }
 
 
@@ -218,7 +212,7 @@ public class Page
      */
     public String workingCopy() {
         return
-            new URIBuilder(Page.WC)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC)
             .replace("id", getId().toString())
             .toString();
     }
@@ -231,7 +225,7 @@ public class Page
      */
     public String self() {
         return
-            new URIBuilder(Page.ELEMENT)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
             .replace("id", getId().toString())
             .toString();
     }
@@ -245,7 +239,7 @@ public class Page
      */
     public static String deltaURI(final UUID id) {
         return
-            new URIBuilder(Page.DELTA)
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.DELTA)
             .replace("id", id.toString())
             .toString();
     }

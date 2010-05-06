@@ -28,7 +28,7 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 
-import ccc.api.core.Group;
+import ccc.api.core.GroupCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
@@ -228,10 +228,10 @@ public class MainMenu
                     _constants.updateRoles(),
                     new ListGroups(1,999,"name","ASC") {
                         @Override
-                        protected void execute(final Collection<Group> g,
-                                               final int totalCount) {
-                            new OpenUpdateResourceAclAction(ssm, g)
-                                .execute();
+                        protected void execute(final GroupCollection groups) {
+                            new OpenUpdateResourceAclAction(
+                                ssm, groups.getElements())
+                            .execute();
                         }}));
                 rootMenu.add(createMenuItem(
                     "updateMetadata-root-"+name,

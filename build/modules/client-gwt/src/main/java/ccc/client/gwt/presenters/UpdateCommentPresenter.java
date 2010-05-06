@@ -94,6 +94,7 @@ public class UpdateCommentPresenter
             updated.setId(getModel().getId());
             updated.setStatus(getView().getStatus());
             updated.setEmail(getView().getEmail());
+            updated.addLink("self", getModel().getDelegate().self());
 
             new UpdateCommentAction(updated).execute();
 
