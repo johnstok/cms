@@ -28,10 +28,6 @@ package ccc.api.types;
 
 import java.io.Serializable;
 
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
-
 
 
 /**
@@ -39,7 +35,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class Duration implements Serializable, Jsonable2 {
+public final class Duration implements Serializable {
 
     private static final long SECONDS_IN_MINUTE = 60;
     private static final long SECONDS_IN_HOUR = 3600;
@@ -79,16 +75,6 @@ public final class Duration implements Serializable, Jsonable2 {
      */
     public Duration(final long time) {
         _time = time;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of a duration.
-     */
-    public Duration(final Json json) {
-        fromJson(json);
     }
 
 
@@ -194,19 +180,5 @@ public final class Duration implements Serializable, Jsonable2 {
             return false;
         }
         return true;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.SECONDS, Long.valueOf(_time));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        setTime(json.getLong(JsonKeys.SECONDS).longValue());
     }
 }

@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.api.types.Paragraph;
-import ccc.api.types.ParagraphType;
 import ccc.plugins.s11n.Json;
 
 
@@ -87,7 +85,7 @@ public final class ParagraphTest extends TestCase {
         replay(_json);
 
         // ACT
-        p.toJson(_json);
+        new ParagraphSerializer().write(_json, p);
 
         // ASSERT
         verify(_json);
@@ -110,7 +108,7 @@ public final class ParagraphTest extends TestCase {
         replay(_json);
 
         // ACT
-        p.toJson(_json);
+        new ParagraphSerializer().write(_json, p);
 
         // ASSERT
         verify(_json);
@@ -128,7 +126,7 @@ public final class ParagraphTest extends TestCase {
         replay(_json);
 
         // ACT
-        final Paragraph p = Paragraph.fromSnapshot(_json);
+        final Paragraph p = new ParagraphSerializer().read(_json);
 
         // ASSERT
         verify(_json);
@@ -152,7 +150,7 @@ public final class ParagraphTest extends TestCase {
         replay(_json);
 
         // ACT
-        final Paragraph p = Paragraph.fromSnapshot(_json);
+        final Paragraph p = new ParagraphSerializer().read(_json);
 
         // ASSERT
         verify(_json);
@@ -322,10 +320,10 @@ public final class ParagraphTest extends TestCase {
         expect(_json.getString("type")).andReturn("BOOLEAN");
         expect(_json.getBool("boolean")).andReturn(true);
         replay(_json);
-        p.toJson(_json);
+        new ParagraphSerializer().write(_json, p);
 
 
-        final Paragraph p2 = new Paragraph(_json);
+        final Paragraph p2 = new ParagraphSerializer().read(_json);
         assertNull(p.getBoolean());
         assertEquals(p2.getBoolean(), new Boolean(true));
 
@@ -348,9 +346,9 @@ public final class ParagraphTest extends TestCase {
         expect(_json.getString("type")).andReturn("DATE");
         expect(_json.getDate("date")).andReturn(testDate);
         replay(_json);
-        p.toJson(_json);
+        new ParagraphSerializer().write(_json, p);
 
-        final Paragraph p2 = new Paragraph(_json);
+        final Paragraph p2 = new ParagraphSerializer().read(_json);
         assertEquals(p2.getDate(), testDate);
 
     }

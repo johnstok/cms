@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.api.core;
 
 import java.io.Serializable;
 import java.util.HashMap;

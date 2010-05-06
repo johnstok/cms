@@ -38,8 +38,8 @@ import javax.ejb.TransactionAttribute;
 
 import ccc.api.core.Comment;
 import ccc.api.core.Comments;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.CommentStatus;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.commands.CreateCommentCommand;
 import ccc.commands.DeleteCommentCommand;

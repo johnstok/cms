@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.api.types.Res;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 

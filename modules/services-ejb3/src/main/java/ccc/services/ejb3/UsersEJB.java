@@ -39,11 +39,11 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.api.core.Users;
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 import ccc.commands.CreateUserCommand;

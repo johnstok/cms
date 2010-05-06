@@ -208,4 +208,22 @@ public interface Json {
      * @return The value, as a map of strings.
      */
     Map<String, String> getStringMap(String key);
+
+    /**
+     * Create a new Json object.
+     *
+     * @return The new object.
+     */
+    Json create();
+
+    /**
+     * Mutator.
+     *
+     * @param key The key.
+     * @param value The value, as a Json.
+     */
+    void set(String key, Json value);
+
+    public void setJsons(final String key,
+                         final Collection<? extends Json> snapshots);
 }

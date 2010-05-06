@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.Duration;
+import ccc.api.types.DurationSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
@@ -607,7 +608,8 @@ public class Resource
     public void fromJson(final Json json) {
         setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
         final Json duration = json.getJson(JsonKeys.CACHE_DURATION);
-        setCacheDuration((null==duration) ? null : new Duration(duration));
+        setCacheDuration(
+            (null==duration) ? null : new DurationSerializer().read(duration));
         setDateChanged(json.getDate(JsonKeys.DATE_CHANGED));
         setDateCreated(json.getDate(JsonKeys.DATE_CREATED));
         setDescription(json.getString(JsonKeys.DESCRIPTION));
@@ -638,7 +640,9 @@ public class Resource
     @Override
     public void toJson(final Json json) {
         json.set(JsonKeys.ABSOLUTE_PATH, _absolutePath);
-        json.set(JsonKeys.CACHE_DURATION, _cacheDuration);
+        json.set(
+            JsonKeys.CACHE_DURATION,
+            new DurationSerializer().write(json.create(), _cacheDuration));
         json.set(JsonKeys.DATE_CHANGED, _dateChanged);
         json.set(JsonKeys.DATE_CREATED, _dateCreated);
         json.set(JsonKeys.DESCRIPTION, _description);

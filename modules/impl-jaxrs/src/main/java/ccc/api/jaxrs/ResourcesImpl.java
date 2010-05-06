@@ -37,6 +37,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
@@ -45,7 +46,6 @@ import ccc.api.core.Template;
 import ccc.api.types.ACL;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 
 

@@ -32,8 +32,8 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 import ccc.api.core.Folders;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.PagedCollection;
 
 
 /**

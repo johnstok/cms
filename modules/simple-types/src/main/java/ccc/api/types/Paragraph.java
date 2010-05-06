@@ -34,17 +34,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
-
 
 /**
  * A paragraph of HTML.
  *
  * @author Civic Computing Ltd
  */
-public final class Paragraph implements Serializable, Jsonable {
+public final class Paragraph implements Serializable {
     /** MAX_NAME_LENGTH : int. */
     static final int MAX_NAME_LENGTH = 256;
 
@@ -54,42 +50,8 @@ public final class Paragraph implements Serializable, Jsonable {
     private Date          _date;
     private String        _name;
 
+
     private Paragraph() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of a paragraph.
-     */
-    public Paragraph(final Json json) {
-        require().notNull(json);
-
-        _name = json.getString(JsonKeys.NAME);
-        _type = ParagraphType.valueOf(json.getString(JsonKeys.TYPE));
-        switch (_type) {
-            case BOOLEAN:
-                _boolean = json.getBool(JsonKeys.BOOLEAN);
-                break;
-
-            case DATE:
-                _date = json.getDate(JsonKeys.DATE);
-                break;
-
-            case TEXT:
-            case LIST:
-                _text = json.getString(JsonKeys.TEXT);
-                break;
-
-            case NUMBER:
-                _text = json.getBigDecimal(JsonKeys.NUMBER).toString();
-                break;
-
-            default:
-                throw new IllegalArgumentException(
-                    "Paragraph type unsupported: "+_type);
-        }
-    }
 
 
     private void name(final String name) {
@@ -98,11 +60,13 @@ public final class Paragraph implements Serializable, Jsonable {
         _name = name;
     }
 
+
     private void text(final String text) {
         require().notNull(text);
         _text = text;
         _type = ParagraphType.TEXT;
     }
+
 
     private void list(final String text) {
         require().notNull(text);
@@ -110,11 +74,13 @@ public final class Paragraph implements Serializable, Jsonable {
         _type = ParagraphType.LIST;
     }
 
+
     private void bool(final Boolean b) {
         require().notNull(b);
         _boolean = b;
         _type = ParagraphType.BOOLEAN;
     }
+
 
     private void date(final Date date) {
         require().notNull(date);
@@ -122,11 +88,13 @@ public final class Paragraph implements Serializable, Jsonable {
         _type = ParagraphType.DATE;
     }
 
+
     private void number(final BigDecimal number) {
         require().notNull(number);
         _text = number.toString();
         _type = ParagraphType.NUMBER;
     }
+
 
     /**
      * Factory method. Creates a paragraph representing text.
@@ -142,6 +110,7 @@ public final class Paragraph implements Serializable, Jsonable {
 
         return p;
     }
+
 
     /**
      * Factory method. Creates a paragraph representing a boolean.
@@ -159,6 +128,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return p;
     }
 
+
     /**
      * Factory method. Creates a paragraph representing a date.
      *
@@ -174,6 +144,7 @@ public final class Paragraph implements Serializable, Jsonable {
 
         return p;
     }
+
 
     /**
      * Factory method. Creates a paragraph representing a number.
@@ -191,6 +162,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return p;
     }
 
+
     /**
      * Factory method. Creates a paragraph representing a number.
      *
@@ -206,6 +178,7 @@ public final class Paragraph implements Serializable, Jsonable {
 
         return p;
     }
+
 
     /**
      * Factory method. Creates a paragraph representing a number.
@@ -224,6 +197,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return p;
     }
 
+
     /**
      * Factory method. Creates a paragraph representing a list of strings.
      *
@@ -241,6 +215,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return p;
     }
 
+
     /**
      * Accessor.
      *
@@ -249,6 +224,7 @@ public final class Paragraph implements Serializable, Jsonable {
     public BigDecimal getNumber() {
         return new BigDecimal(_text);
     }
+
 
     /**
      * Accessor.
@@ -259,6 +235,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return _text;
     }
 
+
     /**
      * Accessor.
      *
@@ -267,6 +244,7 @@ public final class Paragraph implements Serializable, Jsonable {
     public ParagraphType getType() {
         return _type;
     }
+
 
     /**
      * Accessor.
@@ -277,6 +255,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return _boolean;
     }
 
+
     /**
      * Accessor.
      *
@@ -285,6 +264,7 @@ public final class Paragraph implements Serializable, Jsonable {
     public Date getDate() {
         return (null==_date) ? null : new Date(_date.getTime());
     }
+
 
     /**
      * Accessor.
@@ -295,6 +275,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return textToList(getText());
     }
 
+
     /**
      * Accessor.
      *
@@ -304,6 +285,7 @@ public final class Paragraph implements Serializable, Jsonable {
         return _name;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
@@ -312,6 +294,7 @@ public final class Paragraph implements Serializable, Jsonable {
         result = prime * result + ((_name == null) ? 0 : _name.hashCode());
         return result;
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -336,26 +319,6 @@ public final class Paragraph implements Serializable, Jsonable {
         return true;
     }
 
-    /**
-     * Create a paragraph from a snapshot.
-     *
-     * @param json The snapshot used to create a new paragraph object.
-     * @return A valid paragraph.
-     */
-    public static Paragraph fromSnapshot(final Json json) {
-        return new Paragraph(json);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.NAME, getName());
-        json.set(JsonKeys.TYPE, _type.name());
-        json.set(JsonKeys.TEXT, getText());
-        json.set(JsonKeys.BOOLEAN, getBoolean());
-        json.set(JsonKeys.DATE, getDate());
-    }
-
 
     /**
      * Escape a html/xhtml string.
@@ -377,6 +340,7 @@ public final class Paragraph implements Serializable, Jsonable {
                      .replace("\u003e", "&gt;");        // >
     }
 
+
     private static String listToText(final List<String> list) {
         final StringBuilder sb = new StringBuilder();
         for (final String cb : list) {
@@ -391,6 +355,7 @@ public final class Paragraph implements Serializable, Jsonable {
         }
         return sb.toString();
     }
+
 
     private List<String> textToList(final String text) {
         final List<String> list = new ArrayList<String>();

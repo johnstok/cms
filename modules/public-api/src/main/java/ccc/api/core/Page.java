@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
@@ -162,7 +163,9 @@ public class Page
     public void toJson(final Json json) {
         super.toJson(json);
 
-        json.set(JsonKeys.PARAGRAPHS, getParagraphs());
+        json.setJsons(
+            JsonKeys.PARAGRAPHS,
+            new ParagraphSerializer().write(json, getParagraphs()));
         json.set(JsonKeys.COMMENT, _comment);
         json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(_majorChange));
     }
@@ -174,7 +177,7 @@ public class Page
         super.fromJson(json);
 
         for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
-            _paragraphs.add(new Paragraph(jsonPara));
+            _paragraphs.add(new ParagraphSerializer().read(jsonPara));
         }
         _comment = json.getString(JsonKeys.COMMENT);
         _majorChange = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();

@@ -34,7 +34,6 @@ import java.util.UUID;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
-import ccc.api.types.Res;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;

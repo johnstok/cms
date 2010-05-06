@@ -41,7 +41,6 @@ import javax.ws.rs.QueryParam;
 
 import ccc.api.types.ACL;
 import ccc.api.types.Duration;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 
 

@@ -59,6 +59,7 @@ import ccc.api.jaxrs.UsersImpl;
 import ccc.api.jaxrs.providers.ActionSummaryReader;
 import ccc.api.jaxrs.providers.BooleanProvider;
 import ccc.api.jaxrs.providers.DtoCollectionReader;
+import ccc.api.jaxrs.providers.DurationProvider;
 import ccc.api.jaxrs.providers.FileReader;
 import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
@@ -91,6 +92,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyWriter(UUIDProvider.class);
         pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
         pFactory.addMessageBodyWriter(FileReader.class);
+        pFactory.addMessageBodyWriter(DurationProvider.class);
 
         // Readers
         pFactory.addMessageBodyReader(UUIDProvider.class);
@@ -104,6 +106,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyReader(ActionSummaryReader.class);
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);
         pFactory.addMessageBodyReader(DtoCollectionReader.class);
+        pFactory.addMessageBodyReader(DurationProvider.class);
 
         // String Converters
         pFactory.addStringConverter(UUIDProvider.class);

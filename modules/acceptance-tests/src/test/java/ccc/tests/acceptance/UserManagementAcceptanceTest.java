@@ -32,8 +32,8 @@ import java.util.Random;
 import java.util.UUID;
 
 import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.Username;
 
 

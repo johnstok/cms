@@ -28,10 +28,6 @@ package ccc.api.types;
 
 import java.io.Serializable;
 
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
-
 
 /**
  * A class representing a mime type. Mime types are defined in the following
@@ -41,7 +37,7 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-public class MimeType implements Serializable, Jsonable {
+public class MimeType implements Serializable {
     private String _primaryType;
     private String _subType;
 
@@ -60,16 +56,6 @@ public class MimeType implements Serializable, Jsonable {
         _subType = subType;
     }
 
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of this mime type.
-     */
-    public MimeType(final Json json) {
-        _primaryType = json.getString(JsonKeys.PRIMARY_TYPE);
-        _subType = json.getString(JsonKeys.SUB_TYPE);
-    }
 
     /**
      * Accessor.
@@ -165,12 +151,4 @@ public class MimeType implements Serializable, Jsonable {
         new MimeType("image", "jpeg");
     public static final MimeType TEXT =
         new MimeType("text", "plain");
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.PRIMARY_TYPE, _primaryType);
-        json.set(JsonKeys.SUB_TYPE, _subType);
-    }
 }

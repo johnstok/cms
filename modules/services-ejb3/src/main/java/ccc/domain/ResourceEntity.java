@@ -48,6 +48,7 @@ import ccc.api.types.ACL;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
+import ccc.api.types.DurationSerializer;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
@@ -847,7 +848,9 @@ public abstract class ResourceEntity
             Boolean.valueOf(isIncludedInMainMenu()));
         json.set(JsonKeys.DATE_CREATED, getDateCreated());
         json.set(JsonKeys.DATE_CHANGED, getDateChanged());
-        json.set(JsonKeys.CACHE_DURATION, getCacheDuration());
+        json.set(
+            JsonKeys.CACHE_DURATION,
+            new DurationSerializer().write(json.create(), getCacheDuration()));
         json.set(JsonKeys.DESCRIPTION, getDescription());
         json.set(JsonKeys.TYPE, getType().name());
         json.set(JsonKeys.DELETED, Boolean.valueOf(isDeleted()));

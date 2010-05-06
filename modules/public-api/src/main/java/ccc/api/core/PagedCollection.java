@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.api.core;
 
 import java.util.ArrayList;
 import java.util.List;

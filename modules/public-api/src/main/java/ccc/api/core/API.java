@@ -26,7 +26,6 @@
  */
 package ccc.api.core;
 
-import ccc.api.types.Res;
 
 
 

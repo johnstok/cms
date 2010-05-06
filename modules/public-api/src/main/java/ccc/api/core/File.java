@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.MimeType;
+import ccc.api.types.MimeTypeSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
@@ -416,7 +417,9 @@ public final class File
     @Override public void toJson(final Json json) {
         super.toJson(json);
 
-        json.set(MIME_TYPE, getMimeType());
+        json.set(
+            MIME_TYPE,
+            new MimeTypeSerializer().write(json.create(), getMimeType()));
         json.set(PATH, getPath());
         json.set(PROPERTIES, getProperties());
         json.set(SIZE, Long.valueOf(getSize()));
@@ -432,8 +435,7 @@ public final class File
     public void fromJson(final Json json) {
         super.fromJson(json);
 
-        final Json mime = json.getJson(MIME_TYPE);
-        setMimeType((null==mime) ? null : new MimeType(mime));
+        setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
         _path = json.getString(PATH);
         _properties = json.getStringMap(PROPERTIES);
         setSize(json.getLong(JsonKeys.SIZE).longValue());

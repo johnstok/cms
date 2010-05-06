@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import ccc.api.core.Group;
-import ccc.api.types.PagedCollection;
+import ccc.api.core.PagedCollection;
 
 
 /**

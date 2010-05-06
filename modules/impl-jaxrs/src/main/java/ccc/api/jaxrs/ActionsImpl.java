@@ -38,8 +38,8 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Actions;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.DBC;
-import ccc.api.types.PagedCollection;
 import ccc.api.types.SortOrder;
 
 
