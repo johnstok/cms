@@ -29,11 +29,11 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.api.core.GroupCollection;
 import ccc.api.core.User;
-import ccc.api.core.UserCollection;
 import ccc.api.core.UserCriteria;
 import ccc.client.gwt.binding.DataBinding;
+import ccc.client.gwt.binding.GroupCollection;
+import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.ListGroups;

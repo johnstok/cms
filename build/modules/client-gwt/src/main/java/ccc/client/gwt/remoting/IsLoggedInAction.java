@@ -27,12 +27,12 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.API;
-import ccc.api.core.ActionCollection;
-import ccc.api.core.CommentCollection;
-import ccc.api.core.GroupCollection;
-import ccc.api.core.UserCollection;
 import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
+import ccc.client.gwt.binding.ActionCollection;
+import ccc.client.gwt.binding.CommentCollection;
+import ccc.client.gwt.binding.GroupCollection;
+import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.concurrent.SimpleLatch;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;

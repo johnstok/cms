@@ -29,8 +29,8 @@ package ccc.client.gwt.views.gxt;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.api.core.UserCollection;
 import ccc.client.gwt.binding.DataBinding;
+import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.remoting.ListUsersAction;

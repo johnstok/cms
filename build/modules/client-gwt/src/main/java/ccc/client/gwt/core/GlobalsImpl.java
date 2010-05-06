@@ -29,11 +29,11 @@ package ccc.client.gwt.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.ActionCollection;
-import ccc.api.core.CommentCollection;
-import ccc.api.core.GroupCollection;
 import ccc.api.core.User;
-import ccc.api.core.UserCollection;
+import ccc.client.gwt.binding.ActionCollection;
+import ccc.client.gwt.binding.CommentCollection;
+import ccc.client.gwt.binding.GroupCollection;
+import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;

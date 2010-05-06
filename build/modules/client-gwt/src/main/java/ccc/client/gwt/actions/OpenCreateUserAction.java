@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.actions;
 
-import ccc.api.core.GroupCollection;
+import ccc.client.gwt.binding.GroupCollection;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.presenters.CreateUserPresenter;
 import ccc.client.gwt.remoting.ListGroups;

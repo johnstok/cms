@@ -28,7 +28,6 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 
-import ccc.api.core.GroupCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
@@ -38,6 +37,7 @@ import ccc.client.gwt.actions.OpenCreateUserAction;
 import ccc.client.gwt.actions.OpenHelpAction;
 import ccc.client.gwt.actions.OpenUpdateCurrentUserAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
+import ccc.client.gwt.binding.GroupCollection;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.Globals;

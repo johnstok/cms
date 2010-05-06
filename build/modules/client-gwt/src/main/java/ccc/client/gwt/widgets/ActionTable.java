@@ -29,10 +29,10 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.api.core.ActionCollection;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.SortOrder;
+import ccc.client.gwt.binding.ActionCollection;
 import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.events.ActionCancelled;
