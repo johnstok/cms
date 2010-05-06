@@ -105,7 +105,13 @@ public class GroupsEJB
         final long totalCount = gr.totalCount(name);
 
         final Collection<GroupEntity> groups = gr.list(name, pageNo, pageSize);
-        return new PagedCollection<Group>(totalCount, GroupEntity.map(groups));
+
+        final PagedCollection<Group> pGroups =
+            new PagedCollection<Group>(totalCount, GroupEntity.map(groups));
+        pGroups.addLink(
+            "self", ccc.api.core.ResourceIdentifiers.Group.COLLECTION);
+
+        return pGroups;
     }
 
 

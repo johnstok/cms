@@ -42,7 +42,7 @@ import ccc.api.types.DBC;
  *
  * @author Civic Computing Ltd.
  */
-@Path(SearchEngine.COLLECTION)
+@Path(ccc.api.core.ResourceIdentifiers.SearchEngine.COLLECTION)
 @Produces({"text/html", "application/json"})
 @NoCache
 public class SearchImpl

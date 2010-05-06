@@ -26,19 +26,14 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import ccc.api.core.Comment;
+import ccc.api.core.CommentCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -89,7 +84,7 @@ public abstract class ListComments
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Comment.list(_page, _count, _status, _order, _sort);
+        return GLOBALS.comments().list(_page, _count, _status, _order, _sort);
     }
 
 
@@ -98,16 +93,10 @@ public abstract class ListComments
     protected void onOK(final Response response) {
         final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-        final int totalCount =
-            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+        final CommentCollection comments = new CommentCollection();
+        comments.fromJson(new GwtJson(obj));
 
-        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
-        final Collection<Comment> comments = new ArrayList<Comment>();
-        for (int i=0; i<result.size(); i++) {
-            comments.add(new Comment(new GwtJson(result.get(i).isObject())));
-        }
-
-        execute(comments, totalCount);
+        execute(comments);
     }
 
 
@@ -115,8 +104,6 @@ public abstract class ListComments
      * Handle the result of a successful call.
      *
      * @param comments The page of comments returned.
-     * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<Comment> comments,
-                                    int totalCount);
+    protected abstract void execute(CommentCollection comments);
 }

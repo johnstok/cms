@@ -116,7 +116,7 @@ public class CommentsEJB
                 : getRepoFactory()
                     .createResourceRepository()
                     .find(ResourceEntity.class, resourceId);
-        return
+        final PagedCollection<Comment> comments =
             new PagedCollection<Comment>(
                 getRepoFactory().createCommentRepo().count(r, status),
                 CommentEntity.map(
@@ -124,5 +124,9 @@ public class CommentsEJB
                         .createCommentRepo()
                         .list(
                             r, status, sort, sortOrder, pageNo, pageSize)));
+        comments.addLink(
+            "self", ccc.api.core.ResourceIdentifiers.Comment.COLLECTION);
+
+        return comments;
     }
 }

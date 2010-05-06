@@ -62,9 +62,8 @@ public class EditUserDialog extends AbstractEditDialog {
     private final ListField<BaseModelData> _groups;
 
 
-    private final UUID          _userId;
     private final User _userDTO;
-    private final UserTable   _userTable;
+    private final UserTable _userTable;
 
     /**
      * Constructor.
@@ -74,13 +73,11 @@ public class EditUserDialog extends AbstractEditDialog {
      * @param userTable The user table.
      * @param allGroups The list of all groups.
      */
-    public EditUserDialog(final UUID userId,
-                          final User userDTO,
+    public EditUserDialog(final User userDTO,
                           final UserTable userTable,
                           final Collection<Group> allGroups) {
         super(new GlobalsImpl().uiConstants().editUser(), new GlobalsImpl());
 
-        _userId    = userId;
         _userDTO   = userDTO;
         _userTable = userTable;
 
@@ -133,7 +130,6 @@ public class EditUserDialog extends AbstractEditDialog {
             public void run() {
                 _userDTO.setEmail(_email.getValue());
                 _userDTO.setName(_name.getValue());
-                _userDTO.setId(_userId);
 
                 final Set<UUID> validGroups = new HashSet<UUID>();
                 for (final BaseModelData selected : _groups.getSelection()) {

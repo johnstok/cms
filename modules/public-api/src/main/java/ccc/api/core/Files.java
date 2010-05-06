@@ -62,7 +62,7 @@ public interface Files {
      *
      * @return The list of images.
      */
-    @GET @Path(File.IMAGES)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.File.IMAGES)
     PagedCollection<File> getPagedImages(
         @PathParam("id") UUID folderId,
         @QueryParam("page") @DefaultValue("1") int pageNo,
@@ -75,7 +75,7 @@ public interface Files {
      * @param id The ID of the file to update.
      * @param file The new file representation.
      */
-    @POST @Path(File.ELEMENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
     void update(@PathParam("id") UUID id, File file);
 
 
@@ -86,7 +86,7 @@ public interface Files {
      *
      * @return The file for the specified ID.
      */
-    @GET @Path(File.ELEMENT)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
     File get(@PathParam("id") UUID fileId);
 
 
@@ -97,7 +97,7 @@ public interface Files {
      *
      * @return A resource summary describing the new text file.
      */
-    @POST @Path(File.COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.File.COLLECTION)
     ResourceSummary createTextFile(File textFile);
 
 
@@ -108,7 +108,7 @@ public interface Files {
      *
      * @return A summary of the newly created file.
      */
-    @POST @Path(File.BINARY_COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION)
     @Consumes("multipart/form-data")
     @Produces({"application/json", "text/html"})
     ResourceSummary createFile(File file);
@@ -122,7 +122,7 @@ public interface Files {
      *
      * @return A summary of the updated file.
      */
-    @POST @Path(File.BINARY_ELEMENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
     @Consumes("multipart/form-data")
     @Produces({"application/json", "text/html"})
     ResourceSummary updateFile(@PathParam("id") UUID fileId, File file);
@@ -134,7 +134,7 @@ public interface Files {
      * @param file The file's ID.
      * @param action The action to perform.
      */
-    @GET @Path(File.BINARY_ELEMENT)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
     void retrieve(@PathParam("id") UUID file,
                   StreamAction action);
 
@@ -145,7 +145,7 @@ public interface Files {
      * @param file The file's ID.
      * @param action The action to perform.
      */
-    @GET @Path(File.BINARY_WC)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_WC)
     void retrieveWorkingCopy(@PathParam("id") UUID file,
                              StreamAction action);
 
@@ -157,7 +157,7 @@ public interface Files {
      * @param revision The file revision to retrieve.
      * @param action The action to perform.
      */
-    @GET @Path(File.BINARY_REVISION)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_REVISION)
     void retrieveRevision(@PathParam("id") UUID file,
                           int revision,
                           StreamAction action);

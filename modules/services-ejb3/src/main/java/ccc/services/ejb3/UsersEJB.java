@@ -39,8 +39,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
-import ccc.api.core.UserCriteria;
 import ccc.api.core.User;
+import ccc.api.core.UserCriteria;
 import ccc.api.core.Users;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.PagedCollection;
@@ -110,11 +110,11 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(SELF_UPDATE)
-    public void updateYourUser(final UUID userId, final User user) {
+    public void updateYourUser(final User user) {
         execute(
             new UpdateCurrentUserCommand(
                 getRepoFactory(),
-                userId,
+                currentUserId(),
                 user));
     }
 
@@ -151,8 +151,15 @@ public class UsersEJB
             groups,
             metadataKey,
             metadataValue);
-        return new PagedCollection<User>(userrepo.countUsers(uc), UserEntity.map(
-                userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
+        final PagedCollection<User> users =
+            new PagedCollection<User>(
+                userrepo.countUsers(uc),
+                UserEntity.map(
+                    userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
+        users.addLink("me", ccc.api.core.ResourceIdentifiers.User.ME);
+        users.addLink("self", ccc.api.core.ResourceIdentifiers.User.COLLECTION);
+        users.addLink("exists", ccc.api.core.ResourceIdentifiers.User.EXISTS);
+        return users;
     }
 
 

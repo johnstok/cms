@@ -26,7 +26,7 @@
  */
 package ccc.api.types;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import ccc.plugins.s11n.Json;
@@ -41,11 +41,14 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
+// FIXME: Make abstract?
+// Reify the generic type parameter on s11n.
 public class PagedCollection<T extends Jsonable>
-    implements Serializable, Jsonable {
+    extends
+        Res {
 
-    private final long _totalCount;
-    private final List<T> _elements;
+    protected long _totalCount;
+    protected List<T> _elements;
 
 
     /**
@@ -54,9 +57,19 @@ public class PagedCollection<T extends Jsonable>
      * @param totalCount The total number of elements in the collection.
      * @param elements The elements on the current page.
      */
-    public PagedCollection(final long totalCount, final List<T> elements) {
+    public PagedCollection(final long totalCount,
+                           final List<T> elements) {
         _totalCount = totalCount;
         _elements = elements;
+    }
+
+
+    /**
+     * Constructor.
+     */
+    public PagedCollection() {
+        _totalCount = 0;
+        _elements = new ArrayList<T>();
     }
 
 
@@ -84,6 +97,7 @@ public class PagedCollection<T extends Jsonable>
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set(JsonKeys.SIZE, Long.valueOf(_totalCount));
         json.set(JsonKeys.ELEMENTS, _elements);
     }

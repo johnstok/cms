@@ -26,21 +26,16 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import ccc.api.core.User;
+import ccc.api.core.UserCollection;
 import ccc.api.core.UserCriteria;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -58,7 +53,7 @@ public abstract class ListUsersAction
     private int _pageNo;
     private int _pageSize;
     private String _sort;
-    private String _order;
+    private String _order; // FIXME: Should be type SortOrder.
 
     /**
      * Constructor.
@@ -101,7 +96,7 @@ public abstract class ListUsersAction
 
         return
             Globals.API_URL
-            + User.list(
+            + GLOBALS.users().list(
                 _pageNo,
                 _pageSize,
                 _sort,
@@ -126,18 +121,10 @@ public abstract class ListUsersAction
 
                         final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-                        final int totalCount =
-                            (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+                        final UserCollection uc = new UserCollection();
+                        uc.fromJson(new GwtJson(obj));
 
-                        final JSONArray result =obj.get(JsonKeys.ELEMENTS).isArray();
-
-                        final Collection<User> children =
-                            new ArrayList<User>();
-                        for (int i=0; i<result.size(); i++) {
-                            children.add(new User(new GwtJson(result.get(i).isObject())));
-                        }
-
-                        execute(children, totalCount);
+                        execute(uc);
                     }
                 });
     }
@@ -148,5 +135,5 @@ public abstract class ListUsersAction
      * @param users The collection of users returned.
      * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(Collection<User> users, int totalCount);
+    protected abstract void execute(UserCollection users);
 }

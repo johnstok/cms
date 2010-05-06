@@ -26,7 +26,16 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Security;
+import ccc.api.core.API;
+import ccc.api.core.ActionCollection;
+import ccc.api.core.CommentCollection;
+import ccc.api.core.GroupCollection;
+import ccc.api.core.UserCollection;
+import ccc.api.core.UserCriteria;
+import ccc.api.types.SortOrder;
+import ccc.client.gwt.concurrent.SimpleLatch;
+import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 
@@ -53,7 +62,8 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Security.CURRENT;
+        // FIXME: Hard coded URI.
+        return ccc.api.core.ResourceIdentifiers.Security.CURRENT;
     }
 
 
@@ -62,9 +72,84 @@ public class IsLoggedInAction
     protected void onOK(final Response response) {
         if (parseBoolean(response)) {
             GLOBALS.enableExitConfirmation();
-            new GetCurrentUserAction().execute();
+            loadServices();
         } else {
             new LoginDialog().show();
         }
+    }
+
+
+    private void loadServices() {
+        new GetServicesAction() {
+            /** {@inheritDoc} */
+            @Override protected void onOK(final API api) {
+
+                final SimpleLatch l = new SimpleLatch(4) {
+                    /** {@inheritDoc} */
+                    @Override protected void complete() {
+                        new GetCurrentUserAction().execute();
+                    }
+                };
+
+
+                new ListUsersAction(new UserCriteria(), 1, 1, "", "ASC") {
+                    /** {@inheritDoc} */
+                    @Override
+                    protected String getPath() {
+                        return Globals.API_URL + api.users();
+                    }
+
+                    @Override
+                    protected void execute(final UserCollection users) {
+                        GlobalsImpl.users(users);
+                        l.countDown();
+                    }
+                }.execute();
+
+
+                new ListPendingActionsAction(1, 1, "", SortOrder.ASC) {
+                    /** {@inheritDoc} */
+                    @Override
+                    protected String getPath() { return api.actions(); }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    protected void execute(final ActionCollection actions) {
+                        GlobalsImpl.actions(actions);
+                        l.countDown();
+                    }
+                }.execute();
+
+
+                new ListComments(null, 1, 1, "", SortOrder.ASC) {
+                    /** {@inheritDoc} */
+                    @Override
+                    protected String getPath() { return api.comments(); }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    protected void execute(final CommentCollection comments) {
+                        GlobalsImpl.comments(comments);
+                        l.countDown();
+                    }
+                }.execute();
+
+
+                new ListGroups(1, 1, "", "ASC") {
+                    /** {@inheritDoc} */
+                    @Override
+                    protected String getPath() {
+                        return Globals.API_URL + api.groups();
+                    }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    protected void execute(final GroupCollection groups) {
+                        GlobalsImpl.groups(groups);
+                        l.countDown();
+                    }
+                }.execute();
+            }
+        }.execute();
     }
 }

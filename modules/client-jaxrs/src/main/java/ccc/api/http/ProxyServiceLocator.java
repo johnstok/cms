@@ -200,7 +200,7 @@ public class ProxyServiceLocator implements ServiceLocator {
             new SearchImpl(
                 ProxyFactory.create(
                     SearchEngine.class,
-                    _api+SearchEngine.COLLECTION, _httpClient));
+                    _api+ccc.api.core.ResourceIdentifiers.SearchEngine.COLLECTION, _httpClient));
     }
 
 

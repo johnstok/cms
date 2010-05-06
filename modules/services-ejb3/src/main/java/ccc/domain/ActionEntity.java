@@ -46,6 +46,7 @@ import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Failure;
 import ccc.api.types.FailureCode;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -274,6 +275,11 @@ public class ActionEntity extends Entity {
                 getSubject().getAbsolutePath().removeTop().toString(),
                 getStatus(),
                 (null==getCode()) ? null : getCode());
+        summary.addLink(
+            "self",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
+                .replace("id", getId().toString())
+                .toString());
         return summary;
     }
 

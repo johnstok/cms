@@ -63,7 +63,7 @@ public class CreateGroupAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Group.list();
+        return GLOBALS.groups().list();
     }
 
 

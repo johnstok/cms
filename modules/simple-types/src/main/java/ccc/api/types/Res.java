@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,49 +21,64 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.api.types;
 
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.RemotingAction;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.Jsonable2;
 
 
 /**
- * Log current user out.
+ * Base API class supporting s11n and linking.
  *
  * @author Civic Computing Ltd.
  */
-public final class LogoutAction
-    extends
-        RemotingAction {
+public class Res
+    implements
+        Serializable,
+        Jsonable2 {
+
+    private final Map<String, String> _links = new HashMap<String, String>();
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void fromJson(final Json json) {
+        final Map<String, String> links = json.getStringMap("links");
+        if (null!=links) { _links.putAll(links); }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void toJson(final Json json) {
+        json.set("links", _links);
+    }
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param key
+     * @return
+     */
+    protected String getLink(final String key) {
+        return _links.get(key);
+    }
 
 
     /**
-     * Constructor.
+     * TODO: Add a description for this method.
+     *
+     * @param key
+     * @param value
      */
-    public LogoutAction() {
-        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onNoContent(final Response response) {
-        GLOBALS.currentUser(null);
-        GLOBALS.disableExitConfirmation();
-        GLOBALS.redirectTo(Globals.APP_URL);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        // FIXME: Hard coded URI.
-        return ccc.api.core.ResourceIdentifiers.Security.CURRENT;
+    public void addLink(final String key, final String value) {
+        _links.put(key, value);
     }
 }

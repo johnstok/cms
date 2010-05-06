@@ -33,7 +33,8 @@ package ccc.api.types;
  *
  * @author Civic Computing Ltd.
  */
-// FIXME: Move this out of the api-types module.
+// FIXME: Rename to Link.
+// FIXME: Implement URI Template spec.
 public class URIBuilder {
 
     private String _uri;

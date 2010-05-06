@@ -33,6 +33,7 @@ import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
@@ -94,8 +95,10 @@ public class CreatePagePresenter
 
             final Set<Paragraph> paragraphs = getView().getParagraphs();
             final Page p = Page.delta(paragraphs);
+            final TemplateSummaryModelData tData = getView().getSelectedTemplate();
+            // FIXME: tData can be NULL!
             p.setTemplate(
-                getView().getSelectedTemplate().getTemplate().getId());
+                tData.getTemplate().getId());
 
             Validate.callTo(createPage(paragraphs))
                 .check(Validations.notEmpty(getView().getName()))

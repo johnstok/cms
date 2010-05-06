@@ -33,8 +33,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.api.types.SortOrder;
-import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable2;
@@ -49,13 +47,6 @@ public class Action
     implements
         Jsonable2,
         Serializable {
-
-    static final String  COLLECTION  = "/secure/actions";
-    static final String  ELEMENT     = COLLECTION + "/{id}";
-    static final String  PENDING     = COLLECTION + "/pending";
-    static final String  COMPLETED   = COLLECTION + "/completed";
-    static final String  EXECUTE     = COLLECTION + "/all";
-    static final String  CANCEL      = ELEMENT + "/cancel";
 
     private UUID                _resourceId;
     private CommandType         _command;
@@ -145,73 +136,5 @@ public class Action
         _command = CommandType.valueOf(json.getString(JsonKeys.COMMAND));
         _executeAfter = json.getDate(JsonKeys.EXECUTE_AFTER);
         _parameters = json.getStringMap(JsonKeys.PARAMETERS);
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String list() {
-        return Action.COLLECTION;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String cancel(final UUID id) {
-        return
-            new URIBuilder(Action.CANCEL)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param page
-     * @param count
-     * @param order
-     * @param sort
-     * @return
-     */
-    public static String pending(final int page,
-                                 final int count,
-                                 final SortOrder order,
-                                 final String sort) {
-        return
-            Action.PENDING
-            + "?page="+page
-            + "&count="+count
-            + ((null==order) ? "" : "&order="+order.name())
-            + ((null==sort) ? "" : "&sort="+sort);
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param page
-     * @param count
-     * @param order
-     * @param sort
-     * @return
-     */
-    public static String completed(final int page,
-                                   final int count,
-                                   final SortOrder order,
-                                   final String sort) {
-        return
-            Action.COMPLETED
-            + "?page="+page
-            + "&count="+count
-            + ((null==order) ? "" : "&order="+order.name())
-            + ((null==sort) ? "" : "&sort="+sort);
     }
 }

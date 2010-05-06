@@ -57,7 +57,7 @@ public interface Aliases {
      *
      * @return The corresponding target name.
      */
-    @GET @Path(Alias.TARGET_NAME)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
     String aliasTargetName(@PathParam("id") UUID aliasId);
 
 
@@ -68,7 +68,7 @@ public interface Aliases {
      *
      * @return A resource summary describing the new alias.
      */
-    @POST @Path(Alias.COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Alias.COLLECTION)
     ResourceSummary createAlias(Alias alias);
 
 
@@ -78,6 +78,6 @@ public interface Aliases {
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
      */
-    @POST @Path(Alias.ELEMENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
     void updateAlias(@PathParam("id") UUID aliasId, Alias delta);
 }

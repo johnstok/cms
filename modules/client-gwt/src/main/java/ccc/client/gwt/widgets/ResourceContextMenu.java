@@ -27,10 +27,7 @@
 package ccc.client.gwt.widgets;
 
 import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
-
-import java.util.Collection;
-
-import ccc.api.core.Group;
+import ccc.api.core.GroupCollection;
 import ccc.api.core.Page;
 import ccc.api.core.Template;
 import ccc.api.core.User;
@@ -138,9 +135,8 @@ public class ResourceContextMenu
         _createActionAction = new OpenCreateActionAction(_table);
         _updateAclAction = new ListGroups(1,999,"name","ASC") {
             @Override
-            protected void execute(final Collection<Group> g,
-                                   final int totalCount) {
-                new OpenUpdateResourceAclAction(_table, g)
+            protected void execute(final GroupCollection groups) {
+                new OpenUpdateResourceAclAction(_table, groups.getElements())
                     .execute();
             }};
         _applyWorkingCopyAction = new ApplyWorkingCopyAction(_table);

@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.RemotingAction;
@@ -62,7 +61,7 @@ public abstract class UniqueUsernameAction
     protected String getPath() {
         return
             Globals.API_URL
-            + User.exists(encode(_username.toString()));
+            + GLOBALS.users().exists(encode(_username.toString()));
     }
 
 

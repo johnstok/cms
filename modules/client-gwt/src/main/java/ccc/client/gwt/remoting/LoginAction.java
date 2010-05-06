@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Security;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 
@@ -60,8 +59,9 @@ public class LoginAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        // FIXME: Hard coded URI.
         return
-            Security.COLLECTION
+            ccc.api.core.ResourceIdentifiers.Security.COLLECTION
             +"?u=" + encode(_dialog.getUsername())
             +"&p=" + encode(_dialog.getPassword());
     }

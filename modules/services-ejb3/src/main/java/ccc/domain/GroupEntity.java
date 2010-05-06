@@ -35,6 +35,7 @@ import java.util.Set;
 
 import ccc.api.core.Group;
 import ccc.api.types.DBC;
+import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 
 
@@ -110,6 +111,11 @@ public class GroupEntity
         dto.setId(getId());
         dto.setName(getName());
         dto.setPermissions(getPermissions());
+        dto.addLink(
+            "self",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
+            .replace("id", getId().toString())
+            .toString());
         return dto;
     }
 

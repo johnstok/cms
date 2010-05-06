@@ -351,7 +351,9 @@ public class GwtJson
     public Map<String, String> getStringMap(final String key) {
         final Map<String, String> value = new HashMap<String, String>();
         final JSONValue v = _delegate.get(key);
-        if (null!=v.isNull()) {
+        if (null==v) {
+            throw new RuntimeException("Missing key: "+key);
+        } else if (null!=v.isNull()) {
             return null;
         }
         final JSONObject o = v.isObject();

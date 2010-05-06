@@ -127,7 +127,7 @@ public class UpdateResourceAclDialog
         final List<UserSummaryModelData> uData =
             new ArrayList<UserSummaryModelData>();
         for (final Entry e : _acl.getUsers()) {
-            new GetUserAction(e._principal) { // FIXME: remove these calls.
+            new GetUserAction(e.user()) { // FIXME: remove these calls.
                 @Override
                 protected void execute(final User user) {
                     final UserSummaryModelData d =

@@ -224,4 +224,12 @@ public final class CommentModelData
                 new CommentUpdatedEvent(_comment));
         }
     }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public Comment getDelegate() { return _delegate; }
 }

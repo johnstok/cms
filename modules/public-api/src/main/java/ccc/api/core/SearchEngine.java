@@ -43,8 +43,6 @@ import javax.ws.rs.QueryParam;
 @Consumes("application/json")
 public interface SearchEngine extends Scheduler {
 
-    String COLLECTION = "/secure/search";
-
     /** NAME : String. */
     String NAME = "Search";
 
@@ -56,7 +54,7 @@ public interface SearchEngine extends Scheduler {
      * @param page The page of results to return (first page has index of 0).
      * @return The SearchResult object with set entities and total count.
      */
-    @GET @Path("/find")
+    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.FIND)
     SearchResult find(
               @QueryParam("terms") final String searchTerms,
               @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
@@ -70,7 +68,7 @@ public interface SearchEngine extends Scheduler {
      * @param page The page of results to return (first page has index of 0).
      * @return The SearchResult object with set entities and total count.
      */
-    @GET @Path("/similar")
+    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.SIMILAR)
     SearchResult similar(
               @QueryParam("uuid") final String uuid,
               @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
@@ -79,7 +77,7 @@ public interface SearchEngine extends Scheduler {
     /**
      * Rebuild the search index.
      */
-    @GET @Path("/index")
+    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.INDEX)
     void index();
 
 }

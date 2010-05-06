@@ -26,7 +26,11 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.api.core.ActionCollection;
+import ccc.api.core.CommentCollection;
+import ccc.api.core.GroupCollection;
 import ccc.api.core.User;
+import ccc.api.core.UserCollection;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
@@ -201,4 +205,32 @@ public interface Globals {
      *  doesn't exist.
      */
     String getSetting(String settingName);
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    UserCollection users();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    ActionCollection actions();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    CommentCollection comments();
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    GroupCollection groups();
 }

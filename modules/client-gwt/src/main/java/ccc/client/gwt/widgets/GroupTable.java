@@ -27,10 +27,9 @@
 package ccc.client.gwt.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import ccc.api.core.Group;
+import ccc.api.core.GroupCollection;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.GroupModelData;
 import ccc.client.gwt.events.GroupUpdated;
@@ -186,15 +185,17 @@ public class GroupTable
 
                             @Override
                             protected void execute(
-                                       final Collection<Group> groups,
-                                       final int totalCount) {
+                                       final GroupCollection groups) {
 
                                 final List<GroupModelData> results =
-                                    DataBinding.bindGroupSummary(groups);
+                                    DataBinding.bindGroupSummary(
+                                        groups.getElements());
 
                                 final PagingLoadResult<GroupModelData> plr =
-                                    new BasePagingLoadResult<GroupModelData>(
-                                       results, config.getOffset(), totalCount);
+                                    new BasePagingLoadResult<GroupModelData> (
+                                       results,
+                                       config.getOffset(),
+                                       (int) groups.getTotalCount());
                                 callback.onSuccess(plr);
                             }
                         }.execute();

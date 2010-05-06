@@ -29,7 +29,11 @@ package ccc.client.gwt.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.core.ActionCollection;
+import ccc.api.core.CommentCollection;
+import ccc.api.core.GroupCollection;
 import ccc.api.core.User;
+import ccc.api.core.UserCollection;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
@@ -77,6 +81,11 @@ public class GlobalsImpl
         (null == Window.Location.getParameter("dec"));
 
     private HandlerRegistration _handlerRegistration = null;
+
+    private static UserCollection USERS;
+    private static ActionCollection ACTIONS;
+    private static CommentCollection COMMENTS;
+    private static GroupCollection GROUPS;
 
 
     /** {@inheritDoc} */
@@ -267,4 +276,56 @@ public class GlobalsImpl
     public void setSettings(final Map<String, String> settings) {
         SETTINGS.putAll(settings);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public UserCollection users() { return USERS; }
+
+
+    /**
+     * Set the collection for managing users.
+     *
+     * @param users The user collection to access.
+     */
+    public static void users(final UserCollection users) { USERS = users; }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionCollection actions() { return ACTIONS; }
+
+
+    /**
+     * Set the collection for managing actions.
+     *
+     * @param actions The action collection to access.
+     */
+    public static void actions(final ActionCollection actions) { ACTIONS = actions; }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public CommentCollection comments() { return COMMENTS; }
+
+
+    /**
+     * Set the collection for managing comments.
+     *
+     * @param comments The comment collection to access.
+     */
+    public static void comments(final CommentCollection comments) { COMMENTS = comments; }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public GroupCollection groups() { return GROUPS; }
+
+
+    /**
+     * Set the collection for managing groups.
+     *
+     * @param groups The group collection to access.
+     */
+    public static void groups(final GroupCollection groups) { GROUPS = groups; }
 }

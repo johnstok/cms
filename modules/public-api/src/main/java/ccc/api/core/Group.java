@@ -26,16 +26,14 @@
  */
 package ccc.api.core;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Res;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -44,12 +42,8 @@ import ccc.plugins.s11n.Jsonable2;
  * @author Civic Computing Ltd.
  */
 public class Group
-    implements
-        Jsonable2,
-        Serializable {
-
-    static final String COLLECTION = "/secure/groups";
-    static final String ELEMENT = COLLECTION+"/{id}";
+    extends
+        Res {
 
     private String _name;
     private UUID _id;
@@ -136,6 +130,7 @@ public class Group
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set(JsonKeys.ID, getId());
         json.set(JsonKeys.NAME, getName());
         json.setStrings(JsonKeys.PERMISSIONS, getPermissions());
@@ -145,6 +140,7 @@ public class Group
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
         setId(json.getId(JsonKeys.ID));
         setName(
             json.getString(JsonKeys.NAME));
@@ -158,36 +154,5 @@ public class Group
      *
      * @return
      */
-    public static String list() {
-        return Group.COLLECTION;
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String list(final int pageNo,
-                              final int pageSize,
-                              final String sort,
-                              final String order) {
-        final StringBuilder path = new StringBuilder();
-        path.append(Group.COLLECTION);
-        path.append("?page="+pageNo
-            +"&count="+pageSize+"&sort="+sort+"&order="+order);
-        return path.toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public String self() {
-        return
-            new URIBuilder(Group.ELEMENT)
-            .replace("id", getId().toString())
-            .toString();
-    }
+    public String self() { return getLink("self"); }
 }

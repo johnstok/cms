@@ -28,17 +28,16 @@ package ccc.api.core;
 
 import static ccc.plugins.s11n.JsonKeys.*;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
+import ccc.api.types.Res;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -46,7 +45,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class ActionSummary implements Serializable, Jsonable2 {
+public final class ActionSummary extends Res {
 
     private UUID _id;
     private CommandType _type;
@@ -265,6 +264,7 @@ public final class ActionSummary implements Serializable, Jsonable2 {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set(ID, getId());
         json.set(TYPE, getType().name());
         json.set(USERNAME, getActorUsername().toString());
@@ -278,6 +278,7 @@ public final class ActionSummary implements Serializable, Jsonable2 {
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
         setId(json.getId(ID));
         setType(CommandType.valueOf(json.getString(TYPE)));
         setActorUsername(new Username(json.getString(USERNAME)));
@@ -289,5 +290,16 @@ public final class ActionSummary implements Serializable, Jsonable2 {
             (null==json.getString(CODE))
                 ? null
                 : FailureCode.valueOf(json.getString(CODE)));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public String self() {
+        return getLink("self");
     }
 }

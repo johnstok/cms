@@ -61,7 +61,7 @@ public interface Folders {
      *
      * @return The folder's of children.
      */
-    @GET @Path(Folder.ACCESSIBLE_CHILDREN)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.ACCESSIBLE_CHILDREN)
     PagedCollection<ResourceSummary> getAccessibleChildren(
         @PathParam("id") UUID folderId);
 
@@ -74,7 +74,7 @@ public interface Folders {
      * @return Returns true in case folder has a resource with given name,
      *  false otherwise.
      */
-    @GET @Path(Folder.EXISTS)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.EXISTS)
     Boolean nameExistsInFolder(@PathParam("id") final UUID folderId,
                                @PathParam("name") final String name);
 
@@ -83,7 +83,7 @@ public interface Folders {
      *
      * @return A collection of resource summaries - one for each root folder.
      */
-    @GET @Path(Folder.ROOTS)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Folder.ROOTS)
     PagedCollection<ResourceSummary> roots();
 
     /**
@@ -93,7 +93,7 @@ public interface Folders {
      *
      * @return A resource summary describing the new folder.
      */
-    @POST @Path(Folder.COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.COLLECTION)
     ResourceSummary createFolder(Folder folder);
 
     /**
@@ -102,7 +102,7 @@ public interface Folders {
      * @param folderId The id of the folder to update.
      * @param delta The updated details of the folder.
      */
-    @POST @Path(Folder.ELEMENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
     void updateFolder(@PathParam("id") UUID folderId, Folder delta);
 
 
@@ -116,7 +116,7 @@ public interface Folders {
      *
      * @return A resource summary describing the new folder.
      */
-    @POST @Path(Folder.DEPRECATED)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.DEPRECATED)
     @Deprecated
     ResourceSummary createFolder(UUID parentId,
                                  String name,
@@ -131,7 +131,7 @@ public interface Folders {
      *
      * @return A resource summary describing the new root.
      */
-    @POST @Path(Folder.ROOT_NAME)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.ROOT_NAME)
     // FIXME Post a 'folder' DTO.
     ResourceSummary createRoot(@PathParam("name") String name);
 }

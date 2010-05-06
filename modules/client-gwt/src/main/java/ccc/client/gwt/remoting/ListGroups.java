@@ -26,20 +26,15 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import ccc.api.core.Group;
+import ccc.api.core.GroupCollection;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -56,7 +51,7 @@ public abstract class ListGroups
     private int _pageNo;
     private int _pageSize;
     private String _sort;
-    private String _order;
+    private String _order; // FIXME: Should be type SortOrder.
 
 
     /**
@@ -78,13 +73,13 @@ public abstract class ListGroups
     }
 
 
-    /**
-     * Handle the result of a successful call.
-     *
-     * @param groups The groups returned.
-     * @param totalCount The total comments available on the server.
-     */
-    protected abstract void execute(Collection<Group> groups, int totalCount);
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return
+            Globals.API_URL
+            + GLOBALS.groups().list(_pageNo, _pageSize, _sort, _order);
+    }
 
 
     /** {@inheritDoc} */
@@ -92,7 +87,7 @@ public abstract class ListGroups
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            Globals.API_URL+Group.list(_pageNo, _pageSize, _sort, _order),
+            getPath(),
             "",
             new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
                 /** {@inheritDoc} */
@@ -100,19 +95,19 @@ public abstract class ListGroups
                 public void onOK(final Response response) {
                     final JSONObject obj =
                         JSONParser.parse(response.getText()).isObject();
-                    final int totalCount =
-                        (int) obj.get(JsonKeys.SIZE).isNumber().doubleValue();
+                    final GroupCollection groups = new GroupCollection();
+                    groups.fromJson(new GwtJson(obj));
 
-                    final JSONArray result =
-                        obj.get(JsonKeys.ELEMENTS).isArray();
-
-                    final Collection<Group> groups = new ArrayList<Group>();
-                    for (int i=0; i<result.size(); i++) {
-                        groups.add(
-                            new Group(new GwtJson(result.get(i).isObject())));
-                    }
-                    execute(groups, totalCount);
+                    execute(groups);
                 }
             });
     }
+
+
+    /**
+     * Handle the result of a successful call.
+     *
+     * @param groups The groups returned.
+     */
+    protected abstract void execute(GroupCollection groups);
 }

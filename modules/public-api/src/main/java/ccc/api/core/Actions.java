@@ -61,8 +61,8 @@ public interface Actions
      *
      * @param actionId The id of the action to cancel.
      */
-    @POST
-    @Path(Action.CANCEL)
+    @POST // FIXME: Should be delete.
+    @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
     void cancelAction(
         @PathParam("id") UUID actionId);
 
@@ -74,7 +74,7 @@ public interface Actions
      * @return A summary of the new action.
      */
     @POST
-    @Path(Action.COLLECTION)
+    @Path(ccc.api.core.ResourceIdentifiers.Action.PENDING) // FIXME: Should be COLLECTION.
     ActionSummary createAction(Action action);
 
 
@@ -88,7 +88,7 @@ public interface Actions
      * @return A collection of action summaries, one per outstanding action.
      */
     @GET
-    @Path(Action.PENDING)
+    @Path(ccc.api.core.ResourceIdentifiers.Action.PENDING)
     PagedCollection<ActionSummary> listPendingActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
@@ -105,7 +105,7 @@ public interface Actions
      * @param pageSize The number of results in a page.
      * @return A collection of action summaries, one per completed action.
      */
-    @GET @Path(Action.COMPLETED)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Action.COMPLETED)
     PagedCollection<ActionSummary> listCompletedActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
@@ -116,7 +116,7 @@ public interface Actions
     /**
      * Executes all available actions whose 'execute after' date is in the past.
      */
-    @POST @Path(Action.EXECUTE)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Action.EXECUTE) // FIXME: Should be POST.
     void executeAll();
 
 
@@ -127,6 +127,6 @@ public interface Actions
      *
      * @return A summary of the action.
      */
-    @GET @Path(Action.ELEMENT)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
     ActionSummary findAction(@PathParam("id") UUID actionId);
 }

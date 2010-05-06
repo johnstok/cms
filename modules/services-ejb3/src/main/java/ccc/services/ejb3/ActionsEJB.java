@@ -142,6 +142,8 @@ public class ActionsEJB
                 actions.countPending(),
                 ActionEntity.mapActions(
                     actions.pending(sort, sortOrder, pageNo, pageSize)));
+        addLinks(dc);
+
         return dc;
     }
 
@@ -161,6 +163,8 @@ public class ActionsEJB
                 actions.countCompleted(),
                 ActionEntity.mapActions(actions.completed(
                     sort, sortOrder, pageNo, pageSize)));
+        addLinks(dc);
+
         return dc;
     }
 
@@ -275,5 +279,15 @@ public class ActionsEJB
             + cce.getFailure().getExceptionId(),
             e);
         fail(action, cce);
+    }
+
+
+    private void addLinks(final PagedCollection<ActionSummary> actions) {
+        actions.addLink(
+            "self",      ccc.api.core.ResourceIdentifiers.Action.PENDING);
+        actions.addLink(
+            "pending",   ccc.api.core.ResourceIdentifiers.Action.PENDING);
+        actions.addLink(
+            "completed", ccc.api.core.ResourceIdentifiers.Action.COMPLETED);
     }
 }

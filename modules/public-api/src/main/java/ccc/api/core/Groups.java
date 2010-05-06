@@ -63,7 +63,7 @@ public interface Groups {
      *
      * @return Returns paged list of groups.
      */
-    @GET @Path(Group.COLLECTION)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Group.COLLECTION)
     PagedCollection<Group> list(@QueryParam("name") String name,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
@@ -76,7 +76,7 @@ public interface Groups {
      *
      * @return Returns the corresponding group.
      */
-    @GET @Path(Group.ELEMENT)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
     Group find(@PathParam("id") UUID id);
 
 
@@ -87,7 +87,7 @@ public interface Groups {
      *
      * @return A DTO describing the new group.
      */
-    @POST @Path(Group.COLLECTION)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Group.COLLECTION)
     Group create(Group group);
 
 
@@ -99,6 +99,6 @@ public interface Groups {
      *
      * @return A DTO describing the updated group.
      */
-    @POST @Path(Group.ELEMENT)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
     Group update(@PathParam("id") UUID id, Group group);
 }

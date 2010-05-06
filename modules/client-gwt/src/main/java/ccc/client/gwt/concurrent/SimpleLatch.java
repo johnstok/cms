@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,49 +21,40 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: See subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.gwt.concurrent;
 
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.RemotingAction;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
+import ccc.api.types.DBC;
 
 
 /**
- * Log current user out.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public final class LogoutAction
-    extends
-        RemotingAction {
+public abstract class SimpleLatch {
+
+    private int _count = 0;
 
 
     /**
      * Constructor.
+     *
+     * @param count The number to count down from.
      */
-    public LogoutAction() {
-        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
+    public SimpleLatch(final int count) {
+        DBC.require().minValue(count, 1);
+        _count = count;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onNoContent(final Response response) {
-        GLOBALS.currentUser(null);
-        GLOBALS.disableExitConfirmation();
-        GLOBALS.redirectTo(Globals.APP_URL);
+    public synchronized void countDown() {
+        _count--;
+        if (0==_count) {
+            complete();
+        }
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        // FIXME: Hard coded URI.
-        return ccc.api.core.ResourceIdentifiers.Security.CURRENT;
-    }
+    protected abstract void complete();
 }
