@@ -36,8 +36,8 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.StreamAction;
 import ccc.api.types.DBC;
+import ccc.api.types.StreamAction;
 import ccc.commons.IO;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;

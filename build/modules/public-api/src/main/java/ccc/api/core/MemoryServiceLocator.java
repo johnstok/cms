@@ -24,22 +24,8 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.api.core;
 
-import ccc.api.core.Actions;
-import ccc.api.core.Aliases;
-import ccc.api.core.Comments;
-import ccc.api.core.Files;
-import ccc.api.core.Folders;
-import ccc.api.core.Groups;
-import ccc.api.core.Pages;
-import ccc.api.core.Resources;
-import ccc.api.core.Scheduler;
-import ccc.api.core.SearchEngine;
-import ccc.api.core.Security;
-import ccc.api.core.ServiceLocator;
-import ccc.api.core.Templates;
-import ccc.api.core.Users;
 
 
 /**

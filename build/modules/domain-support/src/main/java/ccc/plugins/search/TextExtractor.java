@@ -26,7 +26,7 @@
  */
 package ccc.plugins.search;
 
-import ccc.api.core.StreamAction;
+import ccc.api.types.StreamAction;
 
 
 /**

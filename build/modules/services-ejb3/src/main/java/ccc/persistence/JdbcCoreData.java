@@ -37,8 +37,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import ccc.api.core.StreamAction;
 import ccc.api.types.DBC;
+import ccc.api.types.StreamAction;
 import ccc.commons.Exceptions;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;

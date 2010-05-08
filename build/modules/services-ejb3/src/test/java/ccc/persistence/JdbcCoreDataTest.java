@@ -41,7 +41,7 @@ import junit.framework.TestCase;
 
 import org.h2.jdbcx.JdbcDataSource;
 
-import ccc.api.core.StreamAction;
+import ccc.api.types.StreamAction;
 import ccc.commons.IO;
 import ccc.domain.Data;
 
