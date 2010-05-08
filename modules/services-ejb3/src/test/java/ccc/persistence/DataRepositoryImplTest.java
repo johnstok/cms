@@ -33,7 +33,7 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 import ccc.api.core.SearchEngine;
-import ccc.api.core.StreamAction;
+import ccc.api.types.StreamAction;
 import ccc.domain.Data;
 import ccc.persistence.streams.CoreData;
 

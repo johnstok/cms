@@ -33,7 +33,7 @@ import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.StreamAction;
+import ccc.api.types.StreamAction;
 import ccc.commons.IO;
 
 /**

@@ -34,7 +34,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import junit.framework.TestCase;
-import ccc.api.core.StreamAction;
+import ccc.api.types.StreamAction;
 import ccc.commons.Resources;
 import ccc.domain.Data;
 

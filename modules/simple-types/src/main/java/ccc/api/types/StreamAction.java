@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.api.core;
+package ccc.api.types;
 
 import java.io.InputStream;
 
