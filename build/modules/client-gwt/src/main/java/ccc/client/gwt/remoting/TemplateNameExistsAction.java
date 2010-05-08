@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.Response;
@@ -57,7 +58,7 @@ public abstract class TemplateNameExistsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Template.exists(encode(_name));
+        return Template.exists(encode(_name)).build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

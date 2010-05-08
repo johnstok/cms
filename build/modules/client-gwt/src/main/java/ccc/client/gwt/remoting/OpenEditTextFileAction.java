@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -67,7 +68,7 @@ extends
     @Override
     protected String getPath() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        return File.self(item.getId());
+        return File.self(item.getId()).build(new GWTTemplateEncoder());
     }
 
 

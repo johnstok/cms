@@ -29,6 +29,8 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
@@ -47,7 +49,7 @@ public abstract class GetAbsolutePathAction
     extends
         RemotingAction {
 
-    private final UUID _resourceId;
+    private final ResourceSummary _resource;
     private final String _name;
 
 
@@ -55,12 +57,12 @@ public abstract class GetAbsolutePathAction
      * Constructor.
      *
      * @param actionName The name of the action.
-     * @param resourceId The resource's id.
+     * @param resource The resource.
      */
     public GetAbsolutePathAction(final String actionName,
-                                 final UUID resourceId) {
+                                 final ResourceSummary resource) {
         _name = actionName;
-        _resourceId = resourceId;
+        _resource = resource;
     }
 
 
@@ -70,7 +72,7 @@ public abstract class GetAbsolutePathAction
         return
             new Request(
                 RequestBuilder.GET,
-                Globals.API_URL + Resource.uriAbsPath(_resourceId),
+                Globals.API_URL + _resource.uriAbsPath().build(new GWTTemplateEncoder()),
                 "",
                 new ResponseHandlerAdapter(_name) {
 

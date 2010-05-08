@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 
@@ -59,7 +60,7 @@ public class LockAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Resource.lock(_selectionModel.tableSelection().getId());
+        return _selectionModel.tableSelection().getDelegate().lock().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

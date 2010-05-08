@@ -17,39 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 2761 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2010-05-06 18:03:31 +0100 (Thu, 06 May 2010) $
  *
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.client.gwt.core;
 
-import junit.framework.TestCase;
+import ccc.api.types.URIBuilder.Encoder;
 
+import com.google.gwt.http.client.URL;
 
 /**
- * TODO: Add a description for this type.
+ * Encodes strings with GWT's URL class.
  *
  * @author Civic Computing Ltd.
  */
-public class URIBuilderTest
-    extends
-        TestCase {
+public final class GWTTemplateEncoder implements Encoder {
 
-    /**
-     * Test.
-     */
-    public void testReplace() {
-
-        // ARRANGE
-        final URIBuilder b = new URIBuilder("/foo/{id}/baz");
-
-        // ACT
-        b.replace("id", "bar");
-
-        // ASSERT
-        assertEquals("/foo/bar/baz", b.toString());
+    /** {@inheritDoc} */
+    @Override public String encode(String string) {
+        return URL.encodeComponent(string);
     }
 }

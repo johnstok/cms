@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import ccc.api.core.Folder;
 import ccc.api.types.ResourceName;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.Response;
@@ -63,7 +64,7 @@ public abstract class ResourceNameExistsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Folder.exists(_folderId, _resourceName);
+        return Folder.exists(_folderId, _resourceName).build(new GWTTemplateEncoder());
 
     }
 

@@ -213,11 +213,10 @@ public class Page
      *
      * @return
      */
-    public String workingCopy() {
+    public URIBuilder workingCopy() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC);
+//            .build("id", getId().toString());
     }
 
 
@@ -226,11 +225,10 @@ public class Page
      *
      * @return
      */
-    public String self() {
+    public URIBuilder self() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT);
+//            .build("id", getId().toString());
     }
 
 
@@ -240,10 +238,9 @@ public class Page
      * @param id
      * @return
      */
-    public static String deltaURI(final UUID id) {
+    public static URIBuilder deltaURI(final UUID id) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.DELTA)
-            .replace("id", id.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.DELTA);
+//            .build("id", id.toString());
     }
 }

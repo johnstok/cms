@@ -36,6 +36,7 @@ import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.URIBuilder;
+import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 
 
@@ -211,8 +212,7 @@ public class CommentEntity
         dto.addLink(
             "self",
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
-                .replace("id", getId().toString())
-                .toString());
+                .build("id", getId().toString(), new NormalisingEncoder()));
 
         return dto;
     }

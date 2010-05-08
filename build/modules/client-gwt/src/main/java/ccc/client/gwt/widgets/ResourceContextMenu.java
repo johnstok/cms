@@ -443,7 +443,7 @@ public class ResourceContextMenu
     private void updatePage(final ResourceSummaryModelData item) {
         // Get the template for the page.
         new ComputeTemplateAction(
-            getConstants().updateContent(), item.getId()) {
+            getConstants().updateContent(), item.getDelegate()) {
 
             /** {@inheritDoc} */
             @Override

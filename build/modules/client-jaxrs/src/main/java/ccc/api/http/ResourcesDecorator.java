@@ -37,6 +37,8 @@ import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
 import ccc.api.types.HttpStatusCode;
+import ccc.api.types.URIBuilder;
+import ccc.commons.NormalisingEncoder;
 
 
 /**
@@ -72,12 +74,13 @@ class ResourcesDecorator
     @SuppressWarnings("unchecked")
     @Override
     public ResourceSummary resourceForPath(final String path) {
-        /*
-         * This method works around an encoding issue in REST-EASY 1.1.
-         * FIXME: Make use of RestExceptionMapper to throw correct exceptions.
-         */
-        final ClientRequest request =
-            new ClientRequest(_base+Resource.path(path), _http);
+        /* This method works around an encoding issue in REST-EASY 1.1. */
+        String uri =
+            new URIBuilder(
+                ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE
+                + "{path}")
+            .build("path", path, new NormalisingEncoder());
+        final ClientRequest request = new ClientRequest(_base+uri, _http);
 
         BaseClientResponse response;
         try {

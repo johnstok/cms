@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Alias;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -60,7 +61,7 @@ public class UpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _details.self();
+        return _details.self().build(new GWTTemplateEncoder());
     }
 
 

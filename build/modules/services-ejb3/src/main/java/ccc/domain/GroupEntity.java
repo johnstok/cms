@@ -36,6 +36,7 @@ import java.util.Set;
 import ccc.api.core.Group;
 import ccc.api.types.DBC;
 import ccc.api.types.URIBuilder;
+import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 
 
@@ -114,8 +115,7 @@ public class GroupEntity
         dto.addLink(
             "self",
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
-            .replace("id", getId().toString())
-            .toString());
+            .build("id", getId().toString(), new NormalisingEncoder()));
         return dto;
     }
 

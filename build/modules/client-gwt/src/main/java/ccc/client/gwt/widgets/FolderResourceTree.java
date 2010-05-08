@@ -92,7 +92,7 @@ public class FolderResourceTree extends AbstractResourceTree {
                     }.execute();
                 } else {
                     new GetChildrenPagedAction(
-                        ((ResourceSummaryModelData) loadConfig).getId(),
+                        ((ResourceSummaryModelData) loadConfig).getDelegate(),
                         1,
                         1000,
                         "name",

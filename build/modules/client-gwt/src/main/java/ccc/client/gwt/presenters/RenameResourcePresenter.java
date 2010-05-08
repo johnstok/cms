@@ -87,7 +87,7 @@ public class RenameResourcePresenter
             final ResourcePath newPath =
                 p.parent().append(new ResourceName(getView().getName()));
 
-            new RenameAction(getModel().getId(),
+            new RenameAction(getModel(),
                              getView().getName(),
                              newPath)
             .execute();

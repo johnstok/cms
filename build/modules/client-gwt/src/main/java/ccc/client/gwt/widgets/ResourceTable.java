@@ -203,7 +203,7 @@ public class ResourceTable
                             : SortOrder.DESC;
 
                     new GetChildrenPagedAction(
-                        folder.getId(),
+                        folder.getDelegate(),
                         page,
                         config.getLimit(),
                         config.getSortField(),

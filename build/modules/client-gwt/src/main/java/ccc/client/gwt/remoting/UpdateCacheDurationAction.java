@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -58,7 +59,7 @@ public abstract class UpdateCacheDurationAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return Resource.duration(_resource.getId());
+        return _resource.duration().build(new GWTTemplateEncoder());
     }
 
 

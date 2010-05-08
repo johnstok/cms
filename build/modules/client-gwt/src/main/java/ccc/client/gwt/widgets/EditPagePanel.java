@@ -34,11 +34,14 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.api.types.URIBuilder;
 import ccc.client.gwt.binding.ImageSummaryModelData;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
@@ -239,17 +242,22 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         });
     }
 
+    // FIXME: Dodgy - just get the FileDTO for the specified Id.
     private void populateImage(final PageElement c, final Paragraph para) {
 
         final ImageTriggerField image = c.image();
         final String id = para.getText();
         if (id != null && !id.trim().equals("")) {
             final UUID resourceId = UUID.fromString(id);
+            ResourceSummary s = new ResourceSummary();
+            s.addLink(
+                "absolute-path", 
+                new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+                .build(new GWTTemplateEncoder()));
 
             new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
-                                      resourceId) {
+                                      s) {
                 @Override protected void execute(final String path) {
-                    // TODO: Dodgy - just get the FileDTO for the specified Id.
                     final File fs = new File(
                         new MimeType("image", "*"),
                         path,

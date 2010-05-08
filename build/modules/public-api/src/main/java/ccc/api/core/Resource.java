@@ -668,96 +668,12 @@ public class Resource
     /**
      * TODO: Add a description for this method.
      *
-     * @param path
      * @return
      */
-    public static String path(final String path) {
-        // FIXME: Bit hacky.
+    public URIBuilder uriMetadata() {
         return
-            ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE+path;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String revisions(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
-                .replace("id", id.toString())
-                .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String rename(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String applyWc(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String clearWc(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @param page
-     * @param count
-     * @param sort
-     * @param order
-     * @return
-     */
-    public static String list(final UUID id,
-                              final int page,
-                              final int count,
-                              final String sort,
-                              final SortOrder order,
-                              final ResourceType type) {
-        return
-            ccc.api.core.ResourceIdentifiers.Resource.LIST
-            + "?parent="+id
-            + ((null==sort) ? "" : "&sort="+sort)
-            + "&order="+order.name()
-            + "&page="+page
-            + "&count="+count
-            + ((null==type) ? "" : "&type="+type.name().toLowerCase());
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA);
+//            .build("id", getId().toString());
     }
 
 
@@ -766,206 +682,21 @@ public class Resource
      *
      * @return
      */
-    public String uriMetadata() {
+    public URIBuilder uriTemplate() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE);
+//            .build("id", id.toString());
     }
 
 
     /**
      * TODO: Add a description for this method.
      *
-     * @param id
      * @return
      */
-    public static String uriUnpublish(final UUID id) {
+    public URIBuilder duration() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String uriTemplate(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String uriDelete(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DELETE)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param resourceId
-     * @return
-     */
-    public static String history(final UUID resourceId) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE)
-            .replace("id", resourceId.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param resourceId
-     * @return
-     */
-    public static String uriAbsPath(final UUID resourceId) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
-            .replace("id", resourceId.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String includeMM(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String lock(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param resource
-     * @return
-     */
-    public static String move(final UUID resource) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
-            .replace("id", resource.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String duration(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String unlock(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param resource
-     * @return
-     */
-    public static String acl(final UUID resource) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL)
-            .replace("id", resource.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String uriPublish(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String excludeMM(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
-            .replace("id", id.toString())
-            .toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static String uriMetadata(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
-            .replace("id", id.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION);
+//            .build("id", id.toString());
     }
 }

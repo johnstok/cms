@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.CommandType;
 import ccc.client.gwt.binding.DataBinding;
@@ -191,7 +192,7 @@ public class HistoryDialog
      *
      * @return The id for the resource.
      */
-    public UUID getResourceId() {
-        return _id;
+    public ResourceSummary getResource() {
+        return _ssm.tableSelection().getDelegate();
     }
 }
