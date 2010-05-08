@@ -44,6 +44,7 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
@@ -535,7 +536,7 @@ public class ResourceSummaryModelData
      * @return The path as a string.
      */
     public String revisionsPath() {
-        return Resource.revisions(getId());
+        return _rs.revisions().build(new GWTTemplateEncoder());
     }
 
     /**
@@ -576,7 +577,7 @@ public class ResourceSummaryModelData
     public Request applyWorkingCopy() {
         return new Request(
             RequestBuilder.POST,
-            Globals.API_URL + Resource.applyWc(getId()),
+            Globals.API_URL + _rs.applyWc().build(new GWTTemplateEncoder()),
             "",
             new WCAppliedCallback(g.uiConstants().applyWorkingCopy(), this));
     }
@@ -589,7 +590,7 @@ public class ResourceSummaryModelData
     public Request clearWorkingCopy() {
         return new Request(
             RequestBuilder.POST,
-            Globals.API_URL + Resource.clearWc(getId()),
+            Globals.API_URL + _rs.clearWc().build(new GWTTemplateEncoder()),
             "",
             new WCClearedCallback(g.uiConstants().deleteWorkingCopy(), this));
     }
@@ -679,18 +680,17 @@ public class ResourceSummaryModelData
      *
      * @return The HTTP request to rename a resource.
      */
-    public static Request rename(final String name,
-                                 final UUID id,
+    public Request rename(final String name,
                                  final ResourcePath newPath) {
         return
             new Request(
                 RequestBuilder.POST,
-                Globals.API_URL + Resource.rename(id),
+                Globals.API_URL + _rs.rename().build(new GWTTemplateEncoder()),
                 name,
                 new ResourceRenamedCallback(
                     new GlobalsImpl().uiConstants().rename(),
                     name,
-                    id,
+                    getId(),
                     newPath));
     }
 
@@ -862,4 +862,12 @@ public class ResourceSummaryModelData
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public ResourceSummary getDelegate() { return _rs; }
 }

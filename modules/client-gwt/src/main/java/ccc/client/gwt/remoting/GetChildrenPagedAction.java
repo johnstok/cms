@@ -28,12 +28,14 @@ package ccc.client.gwt.remoting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.JsonKeys;
@@ -53,7 +55,7 @@ public abstract class GetChildrenPagedAction
 extends
 RemotingAction{
 
-    private final UUID _parentId;
+    private final ResourceSummary _parent;
     private int _pageNo;
     private int _pageSize;
     private String _sort;
@@ -63,20 +65,20 @@ RemotingAction{
     /**
      * Constructor.
      *
-     * @param parentId The id of the parent folder.
+     * @param parent The parent folder.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      * @param sort The column to sort.
      * @param order The sort order (ASC/DESC).
      */
-    public GetChildrenPagedAction(final UUID parentId,
+    public GetChildrenPagedAction(final ResourceSummary parent,
                                   final int pageNo,
                                   final int pageSize,
                                   final String sort,
                                   final SortOrder order,
                                   final ResourceType type) {
         super(GLOBALS.uiConstants().getChildrenPaged());
-        _parentId = parentId;
+        _parent = parent;
         _pageNo = pageNo;
         _pageSize = pageSize;
         _sort = sort;
@@ -87,8 +89,14 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return
-            Resource.list(_parentId, _pageNo, _pageSize, _sort, _order, _type);
+        HashMap<String, String[]> params = new HashMap<String, String[]>();
+        params.put("parent", new String[] {_parent.getId().toString()});
+        params.put("sort", new String[] {_sort});
+        params.put("order", new String[] {_order.name()});
+        params.put("page", new String[] {""+_pageNo});
+        params.put("count", new String[] {""+_pageSize});
+        params.put("type", new String[] {_type.name()});
+        return _parent.list().build(params, new GWTTemplateEncoder());
     }
 
 

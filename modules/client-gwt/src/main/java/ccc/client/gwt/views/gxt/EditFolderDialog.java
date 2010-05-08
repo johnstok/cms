@@ -30,6 +30,7 @@ import static ccc.api.types.ResourceOrder.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData.Property;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -187,8 +189,13 @@ AbstractEditDialog {
 
             @Override
             protected String getPath() {
-                return Resource.list(
-                    selection.getId(), 1, 1000, "manual", SortOrder.ASC, null);
+                HashMap<String, String[]> params = new HashMap<String, String[]>();
+                params.put("parent", new String[] {selection.getId().toString()});
+                params.put("sort", new String[] {"manual"});
+                params.put("order", new String[] {SortOrder.ASC.name()});
+                params.put("page", new String[] {"1"});
+                params.put("count", new String[] {"1000"});
+                return selection.getDelegate().list().build(params, new GWTTemplateEncoder());
             }
 
             /** {@inheritDoc} */

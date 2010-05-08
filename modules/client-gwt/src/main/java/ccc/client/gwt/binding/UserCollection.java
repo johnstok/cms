@@ -32,6 +32,7 @@ import java.util.Collection;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -100,12 +101,10 @@ public class UserCollection
      * @param username
      * @return
      */
-    // FIXME: Should accept Username and encode internally.
     public String exists(final String username) {
         return
             new URIBuilder(getLink("exists"))
-            .replace("uname", username)
-            .toString();
+            .build("uname", username, new GWTTemplateEncoder());
     }
 
 

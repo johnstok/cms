@@ -27,6 +27,8 @@
 package ccc.api.core;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
@@ -204,11 +206,10 @@ public class Folder
      * @param id
      * @return
      */
-    public static String childrenFolder(final UUID id) {
+    public static URIBuilder childrenFolder(final UUID id) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.FOLDER_CHILDREN)
-            .replace("id", id.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.FOLDER_CHILDREN);
+//            .build("id", id.toString());
     }
 
 
@@ -229,13 +230,14 @@ public class Folder
      * @param encode
      * @return
      */
-    public static String exists(final UUID folderId,
+    public static URIBuilder exists(final UUID folderId,
                                 final ResourceName resourceName) {
+        Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("id", new String[] {folderId.toString()});
+        params.put("name", new String[] {resourceName.toString()});
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.EXISTS)
-            .replace("id", folderId.toString())
-            .replace("name", resourceName.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.EXISTS);
+//            .build(params, new NormalisingEncoder());
     }
 
 
@@ -244,10 +246,9 @@ public class Folder
      *
      * @return
      */
-    public String self() {
+    public URIBuilder self() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT);
+//            .build("id", getId().toString());
     }
 }

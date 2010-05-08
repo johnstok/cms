@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -60,7 +61,7 @@ public class UpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.uriMetadata();
+        return _resource.uriMetadata().build(new GWTTemplateEncoder());
     }
 
 

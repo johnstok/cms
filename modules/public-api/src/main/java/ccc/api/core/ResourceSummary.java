@@ -35,6 +35,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
+import ccc.api.types.URIBuilder;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.Jsonable2;
@@ -46,7 +48,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class ResourceSummary implements Serializable, Jsonable2 {
+public final class ResourceSummary extends Res {
 
     private UUID _id;
     private UUID _parent;
@@ -512,6 +514,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set(ID, _id);
         json.set(NAME, _name);
         json.set(PARENT_ID, _parent);
@@ -540,6 +543,7 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
         _id = json.getId(ID);
         _parent = json.getId(PARENT_ID);
         _name = json.getString(NAME);
@@ -573,5 +577,242 @@ public final class ResourceSummary implements Serializable, Jsonable2 {
             (null==json.getString(CHANGED_BY))
             ? null
                 : new Username(json.getString(CHANGED_BY));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public String path() {
+        // FIXME: Use URIBuilder.
+        return
+            ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE+"{path}";
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder rename() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder applyWc() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder clearWc() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder list() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LIST);
+    }
+    
+    
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param id
+     * @return
+     */
+    public URIBuilder revisions() {
+        return
+            new URIBuilder(getLink("revision"));
+//                .build("id", id.toString());
+    }
+    
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder uriUnpublish() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder uriDelete() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DELETE);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder history() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE);
+//            .build("id", resourceId.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder uriAbsPath() {
+        return new URIBuilder("absolute-path");
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder includeMM() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder lock() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder move() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT);
+//            .build("id", resource.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder duration() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION);
+//            .build("id", id.toString());
+    }
+    
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder unlock() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder acl() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL);
+//            .build("id", resource.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder uriPublish() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder excludeMM() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder uriMetadata() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA);
+//            .build("id", id.toString());
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder uriTemplate() {
+        return
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE);
+//            .build("id", id.toString());
     }
 }

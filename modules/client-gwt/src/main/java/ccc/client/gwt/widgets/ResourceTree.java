@@ -77,14 +77,14 @@ public class ResourceTree extends AbstractResourceTree {
                 final Object loadConfig,
                 final AsyncCallback<List<ResourceSummaryModelData>> callback) {
 
-                final UUID parentId =
+                final ResourceSummary parent =
                     (null==loadConfig
                         || !(loadConfig instanceof ResourceSummaryModelData))
-                    ? _root.getId()
-                    : ((ResourceSummaryModelData) loadConfig).getId();
+                    ? _root
+                    : ((ResourceSummaryModelData) loadConfig).getDelegate();
 
                     new GetChildrenPagedAction(
-                        parentId, 1, 1000, "name", SortOrder.ASC, null) {
+                        parent, 1, 1000, "name", SortOrder.ASC, null) {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {

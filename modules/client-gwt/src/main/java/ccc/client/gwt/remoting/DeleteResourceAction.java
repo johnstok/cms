@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.events.ResourceDeleted;
@@ -63,7 +64,7 @@ public class DeleteResourceAction
     @Override
     protected String getPath() {
         return
-            Resource.uriDelete(_selectionModel.tableSelection().getId());
+            _selectionModel.tableSelection().getDelegate().uriDelete().build(new GWTTemplateEncoder());
     }
 
 

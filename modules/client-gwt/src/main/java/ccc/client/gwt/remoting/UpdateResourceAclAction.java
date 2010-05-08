@@ -29,7 +29,9 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ACL;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -45,7 +47,7 @@ public class UpdateResourceAclAction
     extends
         RemotingAction {
 
-    private final UUID _resource;
+    private final ResourceSummary _resource;
     private final ACL _acl;
 
 
@@ -55,8 +57,8 @@ public class UpdateResourceAclAction
      * @param resource The resource to update.
      * @param acl The updated access control list.
      */
-    public UpdateResourceAclAction(final UUID resource,
-                                     final ACL acl) {
+    public UpdateResourceAclAction(final ResourceSummary resource,
+                                   final ACL acl) {
         super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
         _resource = resource;
         _acl = acl;
@@ -66,7 +68,7 @@ public class UpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Resource.acl(_resource);
+        return _resource.acl().build(new GWTTemplateEncoder());
     }
 
 

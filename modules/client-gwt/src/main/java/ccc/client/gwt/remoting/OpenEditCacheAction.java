@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
 import ccc.api.types.DurationSerializer;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -82,6 +83,6 @@ public class OpenEditCacheAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Resource.duration(_selectionModel.tableSelection().getId());
+        return _selectionModel.tableSelection().getDelegate().duration().build(new GWTTemplateEncoder());
     }
 }

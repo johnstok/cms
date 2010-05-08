@@ -125,19 +125,7 @@ public class Alias
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-
-        final Map<String, String> links = new HashMap<String, String>();
-        links.put("create", ccc.api.core.ResourceIdentifiers.Alias.COLLECTION);
-        if (null!=getId()) {
-            links.put(
-                "update",
-                new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
-                    .replace("id", getId().toString())
-                    .toString());
-        }
-
         json.set(JsonKeys.TARGET_ID, _targetId);
-        json.set("links", links);
     }
 
 
@@ -145,7 +133,6 @@ public class Alias
     @Override
     public void fromJson(final Json json) {
         super.fromJson(json);
-
         setTargetId(json.getId(JsonKeys.TARGET_ID));
     }
 
@@ -166,11 +153,10 @@ public class Alias
      * @param id
      * @return
      */
-    public static String targetName(final UUID id) {
+    public static URIBuilder targetName(final UUID id) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
-            .replace("id", id.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME);
+//            .build("id", id.toString());
     }
 
 
@@ -179,10 +165,9 @@ public class Alias
      *
      * @return
      */
-    public String self() {
+    public URIBuilder self() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT);
+//            .build("id", getId().toString());
     }
 }

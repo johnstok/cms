@@ -461,11 +461,10 @@ public final class File
      *
      * @return
      */
-    public String self() {
+    public URIBuilder self() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT);
+//            .build("id", getId().toString());
     }
 
 
@@ -477,13 +476,14 @@ public final class File
      * @param pageSize
      * @return
      */
-    public static String images(final UUID parentId,
+    public static URIBuilder images(final UUID parentId,
                                 final int pageNo,
                                 final int pageSize) {
+        // FIXME: Pass params to builder.
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.IMAGES)
-                .replace("id", parentId.toString())
-            + "?page="+pageNo+"&count="+pageSize;
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.IMAGES);
+//                .build("id", parentId.toString())
+//            + "?page="+pageNo+"&count="+pageSize;
     }
 
 
@@ -493,11 +493,10 @@ public final class File
      * @param id
      * @return
      */
-    public static String self(final UUID id) {
+    public static URIBuilder self(final UUID id) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
-            .replace("id", id.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT);
+//            .build("id", id.toString());
     }
 
 
@@ -517,10 +516,9 @@ public final class File
      * @param fileId
      * @return
      */
-    public static String selfBinary(final UUID fileId) {
+    public static URIBuilder selfBinary(final UUID fileId) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
-            .replace("id", fileId.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT);
+//            .build("id", fileId.toString());
     }
 }

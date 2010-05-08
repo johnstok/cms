@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 import ccc.api.core.User;
 import ccc.api.types.URIBuilder;
+import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 
 
@@ -53,13 +54,11 @@ public class UserEnhanced
             links.put(
                 "password",
                 new URIBuilder(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
-                    .replace("id", getId().toString())
-                    .toString());
+                    .build("id", getId().toString(), new NormalisingEncoder()));
             links.put(
                 "self",
                 new URIBuilder(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
-                    .replace("id", getId().toString())
-                    .toString());
+                    .build("id", getId().toString(), new NormalisingEncoder()));
         }
 
         json.set("links", links); // TODO: Preserve parent links?

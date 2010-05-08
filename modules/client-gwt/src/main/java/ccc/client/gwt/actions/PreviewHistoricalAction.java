@@ -62,7 +62,7 @@ public final class PreviewHistoricalAction
         }
 
         new GetAbsolutePathAction(UI_CONSTANTS.preview(),
-                                  _historyDialog.getResourceId()) {
+                                  _historyDialog.getResource()) {
             @Override protected void execute(final String path) {
                 final String url =
                     GLOBALS.appURL()

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.Group;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.ACL;
 import ccc.api.types.ACL.Entry;
@@ -85,7 +86,7 @@ public class UpdateResourceAclDialog
     private Grid<UserSummaryModelData> _userGrid;
     private final ContentPanel _userGridPanel = new ContentPanel();
 
-    private final UUID _resourceId;
+    private final ResourceSummary _resource;
 
     private final ACL _acl;
     private Collection<Group> _allGroups;
@@ -100,16 +101,16 @@ public class UpdateResourceAclDialog
     /**
      * Constructor.
      *
-     * @param resourceId The resource whose ACL will be updated.
+     * @param resource The resource whose ACL will be updated.
      * @param acl The access control list for the resource.
      * @param allGroups A list of all groups available in the system.
      */
-    public UpdateResourceAclDialog(final UUID resourceId,
+    public UpdateResourceAclDialog(final ResourceSummary resource,
                                    final ACL acl,
                                    final Collection<Group> allGroups) {
         super(new GlobalsImpl().uiConstants().updateRoles(),
               new GlobalsImpl());
-        _resourceId = resourceId;
+        _resource = resource;
         _acl = acl;
         _allGroups = allGroups;
         setLayout(new RowLayout(Orientation.HORIZONTAL));
@@ -270,7 +271,7 @@ public class UpdateResourceAclDialog
                         .setGroups(newGroups)
                         .setUsers(newUsers);
 
-                new UpdateResourceAclAction(_resourceId, acl) {
+                new UpdateResourceAclAction(_resource, acl) {
                     /** {@inheritDoc} */
                     @Override
                     protected void onNoContent(final Response response) {

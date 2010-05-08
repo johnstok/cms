@@ -197,11 +197,10 @@ public class Template
      * @param id
      * @return
      */
-    public static String delta(final UUID id) {
+    public static URIBuilder delta(final UUID id) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.DELTA)
-            .replace("id", id.toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.DELTA);
+//            .build("id", id.toString());
     }
 
 
@@ -211,11 +210,10 @@ public class Template
      * @param name
      * @return
      */
-    public static String exists(final String name) {
+    public static URIBuilder exists(final String name) {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.EXISTS)
-            .replace("name", name)
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.EXISTS);
+//            .build("name", name);
     }
 
 
@@ -224,10 +222,9 @@ public class Template
      *
      * @return
      */
-    public String self() {
+    public URIBuilder self() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
-            .replace("id", getId().toString())
-            .toString();
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT);
+//            .build("id", getId().toString());
     }
 }

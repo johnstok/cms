@@ -45,7 +45,7 @@ public class RenameAction
         RemotingAction {
 
     private final String _name;
-    private final UUID _id;
+    private final ResourceSummaryModelData _resource;
     private final ResourcePath _newPath;
 
 
@@ -56,18 +56,18 @@ public class RenameAction
      * @param id The id of the resource to update.
      * @param newPath The updated absolute path to the resource.
      */
-    public RenameAction(final UUID id,
+    public RenameAction(final ResourceSummaryModelData resource,
                         final String name,
                         final ResourcePath newPath) {
-        _id      = DBC.require().notNull(id);
-        _name    = DBC.require().notEmpty(name);
-        _newPath = DBC.require().notNull(newPath);
+        _resource = DBC.require().notNull(resource);
+        _name     = DBC.require().notEmpty(name);
+        _newPath  = DBC.require().notNull(newPath);
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
-        return ResourceSummaryModelData.rename(_name, _id, _newPath);
+        return _resource.rename(_name, _newPath);
     }
 }

@@ -139,7 +139,7 @@ public class MoveDialog extends AbstractEditDialog {
     private Runnable move() {
         return new Runnable() {
             public void run() {
-                new MoveResourceAction(_target.getId(), _parent.getId()){
+                new MoveResourceAction(_target.getDelegate(), _parent.getId()){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {

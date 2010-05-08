@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.events.ResourceTemplateChanged;
@@ -63,7 +64,7 @@ public class UpdateResourceTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Resource.uriTemplate(_resource.getId());
+        return _resource.uriTemplate().build(new GWTTemplateEncoder());
     }
 
 

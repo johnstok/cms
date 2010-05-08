@@ -29,7 +29,9 @@ package ccc.client.gwt.remoting;
 import java.util.UUID;
 
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
@@ -50,18 +52,18 @@ public abstract class ComputeTemplateAction
     extends
         RemotingAction {
 
-    private final UUID _id;
+    private final ResourceSummary _resource;
     private final String _name;
 
     /**
      * Constructor.
      *
      * @param actionName The name of this action.
-     * @param id The id of the resource.
+     * @param resource The resource to invoke.
      */
-    public ComputeTemplateAction(final String actionName, final UUID id) {
-        _name = actionName;
-        _id = id;
+    public ComputeTemplateAction(final String actionName, final ResourceSummary resource) {
+        _name     = actionName;
+        _resource = resource;
     }
 
     /** {@inheritDoc} */
@@ -69,7 +71,7 @@ public abstract class ComputeTemplateAction
     protected Request getRequest() {
         return new Request(
             RequestBuilder.GET,
-            Globals.API_URL + Resource.uriTemplate(_id),
+            Globals.API_URL + _resource.uriTemplate().build(new GWTTemplateEncoder()),
             "",
             new ResponseHandlerAdapter(_name) {
 

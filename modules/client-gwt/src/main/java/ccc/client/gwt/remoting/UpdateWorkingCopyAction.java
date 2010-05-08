@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 
@@ -60,7 +61,7 @@ public class UpdateWorkingCopyAction
     @Override
     protected String getPath() {
         return
-            _workingCopy.workingCopy();
+            _workingCopy.workingCopy().build(new GWTTemplateEncoder());
     }
 
 

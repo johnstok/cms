@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.EditTemplateDialog;
@@ -65,7 +66,7 @@ public class OpenUpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Template.delta(_template.getId());
+        return Template.delta(_template.getId()).build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

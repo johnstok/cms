@@ -32,6 +32,7 @@ import ccc.api.core.Group;
 import ccc.api.core.Resource;
 import ccc.api.types.ACL;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -70,7 +71,7 @@ public final class OpenUpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Resource.acl(_selectionModel.tableSelection().getId());
+        return _selectionModel.tableSelection().getDelegate().acl().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */
@@ -82,7 +83,7 @@ public final class OpenUpdateResourceAclAction
 
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(
-            item.getId(),
+            item.getDelegate(),
             acl,
             _groups)
         .show();

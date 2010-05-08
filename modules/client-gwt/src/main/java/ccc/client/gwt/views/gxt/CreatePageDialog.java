@@ -222,7 +222,7 @@ public class CreatePageDialog
             setId(getUiConstants().useDefaultTemplate());
 
             new ComputeTemplateAction(
-                getUiConstants().createPage(), _parent.getId()) {
+                getUiConstants().createPage(), _parent.getDelegate()) {
 
                 /** {@inheritDoc} */
                 @Override
