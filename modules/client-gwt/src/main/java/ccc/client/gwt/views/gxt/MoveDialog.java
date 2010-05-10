@@ -130,7 +130,7 @@ public class MoveDialog extends AbstractEditDialog {
                     .check(Validations.notEmpty(_parentFolder))
                     .stopIfInError()
                     .check(Validations.uniqueResourceName(
-                        _parent.getId(), _targetName))
+                        _parent.getDelegate(), _targetName))
                     .callMethodOr(Validations.reportErrors());
             }
         };

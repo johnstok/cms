@@ -32,6 +32,7 @@ import java.util.Collection;
 import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
@@ -39,8 +40,6 @@ import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -58,7 +57,7 @@ public abstract class GetRootsAction
 
     @Override
     protected String getPath() {
-        return Globals.API_URL+Folder.roots();
+        return Globals.API_URL+GlobalsImpl.getAPI().getLink(Folder.ROOTS);
     }
 
 

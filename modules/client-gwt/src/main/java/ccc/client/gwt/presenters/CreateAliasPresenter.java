@@ -89,7 +89,7 @@ public class CreateAliasPresenter
         if (vr.isValid()) {
             // FIXME: Conversion to type ResourceName can fail.
             new ResourceNameExistsAction(
-                getView().getParentId(),
+                getView().getParent2(),
                 new ResourceName(getView().getAliasName())) {
                 @Override protected void execute(final boolean nameExists) {
                     if (nameExists) {
@@ -111,7 +111,7 @@ public class CreateAliasPresenter
         return new Runnable() {
             public void run() {
                 final Alias a = new Alias();
-                a.setParent(getView().getParentId());
+                a.setParent(getView().getParent2().getId());
                 a.setName(new ResourceName(getView().getAliasName()));
                 a.setTargetId(getModel().getId());
 

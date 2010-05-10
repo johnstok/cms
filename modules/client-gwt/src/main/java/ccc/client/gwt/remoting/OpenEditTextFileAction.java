@@ -68,7 +68,7 @@ extends
     @Override
     protected String getPath() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        return File.self(item.getId()).build(new GWTTemplateEncoder());
+        return item.getDelegate().self().build(new GWTTemplateEncoder());
     }
 
 

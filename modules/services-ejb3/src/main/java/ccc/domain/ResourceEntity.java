@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Folder;
+import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.exceptions.InsufficientPrivilegesException;
@@ -53,8 +55,10 @@ import ccc.api.types.Permission;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
+import ccc.api.types.URIBuilder;
 import ccc.api.types.ACL.Entry;
 import ccc.commons.CharConversion;
+import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable;
@@ -898,6 +902,19 @@ public abstract class ResourceEntity
         dto.setTitle(getTitle());
         dto.setType(getType());
         dto.setVisible(isVisible());
+
+        dto.addLink(
+            Resource.METADATA,
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+                .build("id", getId().toString(), new NormalisingEncoder()));
+        dto.addLink(
+            Resource.TEMPLATE,
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        dto.addLink(
+            Resource.DURATION,
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+            .build("id", getId().toString(), new NormalisingEncoder()));
     }
 
 
@@ -968,6 +985,142 @@ public abstract class ResourceEntity
                 (getChangedBy() != null)
                     ? getChangedBy().getUsername() : null
             );
+
+        rs.addLink(
+            "revisions",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
+                .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "absolute-path",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "template",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "metadata",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "exclude_mm",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "publish",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "acl",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "unlock",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "duration",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "parent",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "lock",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "include_mm",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "wc-create",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "delete",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DELETE)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "unpublish",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "list",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LIST)
+            .build("id", getId().toString(), new NormalisingEncoder())
+            +"?{-join|&|parent,sort,order,page,count,type}");
+        rs.addLink(
+            "wc_clear",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "wc_apply",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            "name",
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+
+        switch (getType()) {
+            case ALIAS:
+                rs.addLink(
+                    Resource.SELF,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                break;
+
+            case PAGE:
+                rs.addLink(
+                    Resource.SELF,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Resource.DELTA,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.DELTA)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Page.WORKING_COPY,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                break;
+
+            case FOLDER:
+                rs.addLink(
+                    Resource.SELF,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Folder.EXISTS,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder())
+                    + "/{name}/exists"); // FIXME: How to only replace one param
+                break;
+
+            case FILE:
+                rs.addLink(
+                    Resource.SELF,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                break;
+
+            case TEMPLATE:
+                rs.addLink(
+                    Resource.SELF,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Resource.DELTA,
+                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.DELTA)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                break;
+
+            default:
+                break;
+        }
+
         return rs;
     }
 

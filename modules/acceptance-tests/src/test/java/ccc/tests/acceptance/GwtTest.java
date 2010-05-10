@@ -23,7 +23,6 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
-import ccc.api.core.API;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.RequestExecutor;
@@ -63,18 +62,12 @@ public class GwtTest extends TestCase {
                 }
             });
 
-        new GetServicesAction() {
+        new GetServicesAction()
+            .setExecutor(new HttpClientRequestExecutor())
+            .setParser(new ServerTextParser())
+            .execute();
 
-            /** {@inheritDoc} */
-            @Override
-            protected void onOK(final API api) {
-                assertEquals("/secure/aliases", api.aliases());
-            }
-
-        }
-        .setExecutor(new HttpClientRequestExecutor())
-        .setParser(new ServerTextParser())
-        .execute();
+        assertEquals("/secure/aliases", GlobalsImpl.getAPI().aliases());
     }
 
 

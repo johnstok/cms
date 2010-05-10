@@ -26,12 +26,9 @@
  */
 package ccc.api.core;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.ResourceName;
-import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -137,37 +134,6 @@ public class Alias
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String list() {
-        return ccc.api.core.ResourceIdentifiers.Alias.COLLECTION;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static URIBuilder targetName(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME);
-//            .build("id", id.toString());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder self() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT);
-//            .build("id", getId().toString());
-    }
+    /** TARGET_NAME : String. */
+    public static final String TARGET_NAME = "target_name";
 }

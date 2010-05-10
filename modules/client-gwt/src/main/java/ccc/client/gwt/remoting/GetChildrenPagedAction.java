@@ -29,9 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.UUID;
 
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
@@ -89,13 +87,13 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        HashMap<String, String[]> params = new HashMap<String, String[]>();
+        final HashMap<String, String[]> params = new HashMap<String, String[]>();
         params.put("parent", new String[] {_parent.getId().toString()});
         params.put("sort", new String[] {_sort});
         params.put("order", new String[] {_order.name()});
         params.put("page", new String[] {""+_pageNo});
         params.put("count", new String[] {""+_pageSize});
-        params.put("type", new String[] {_type.name()});
+        params.put("type", new String[] {(null==_type) ? null : _type.name()});
         return _parent.list().build(params, new GWTTemplateEncoder());
     }
 

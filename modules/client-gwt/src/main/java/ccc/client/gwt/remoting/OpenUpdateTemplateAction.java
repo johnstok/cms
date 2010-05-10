@@ -66,7 +66,7 @@ public class OpenUpdateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Template.delta(_template.getId()).build(new GWTTemplateEncoder());
+        return _template.getDelegate().delta().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

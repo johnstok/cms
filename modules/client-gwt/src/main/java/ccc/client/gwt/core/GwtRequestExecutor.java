@@ -41,18 +41,18 @@ public class GwtRequestExecutor
     implements
         RequestExecutor {
 
-    
+
     /** {@inheritDoc} */
     @Override
     public void invokeRequest(final Request request) {
 
         final ResponseHandler handler = request.getCallback();
-        
+
         final String url = new GlobalsImpl().appURL() + request.getPath();
         final RequestBuilder builder =
             new RequestBuilder(getMethod(request.getMethod()), url);
         builder.setHeader("Accept", "application/json");
-        if (RequestBuilder.POST.equals(request.getMethod())) {
+        if (HttpMethod.POST.equals(request.getMethod())) {
             builder.setHeader("Content-Type", "application/json");
             builder.setRequestData(request.getBody());
         }
@@ -67,7 +67,7 @@ public class GwtRequestExecutor
     }
 
 
-    private Method getMethod(HttpMethod method) {
+    private Method getMethod(final HttpMethod method) {
         switch (method) {
             case GET:
                 return RequestBuilder.GET;

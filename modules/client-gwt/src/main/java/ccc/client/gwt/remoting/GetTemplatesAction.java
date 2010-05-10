@@ -28,9 +28,14 @@ package ccc.client.gwt.remoting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import ccc.api.core.Template;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
@@ -38,8 +43,6 @@ import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -69,10 +72,16 @@ public abstract class GetTemplatesAction
     /** {@inheritDoc} */
     @Override
     protected Request getRequest() {
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("count", new String[] {"999"});
+        params.put("page", new String[] {"1"});
+
         return
             new Request(
                 HttpMethod.GET,
-                Globals.API_URL+Template.list(1,999),
+                Globals.API_URL
+                    + new URIBuilder(GlobalsImpl.getAPI().templates())
+                    .build(params, new GWTTemplateEncoder()),
                 "",
                 new ResponseHandlerAdapter(_name) {
 

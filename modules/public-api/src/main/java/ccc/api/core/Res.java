@@ -67,7 +67,7 @@ public class Res
      * @param key
      * @return
      */
-    protected String getLink(final String key) {
+    public String getLink(final String key) {
         return _links.get(key);
     }
 

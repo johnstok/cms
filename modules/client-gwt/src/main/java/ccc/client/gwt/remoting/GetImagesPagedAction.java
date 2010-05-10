@@ -28,9 +28,12 @@ package ccc.client.gwt.remoting;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -39,8 +42,6 @@ import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -55,7 +56,7 @@ public abstract class GetImagesPagedAction
     extends
         RemotingAction {
 
-    private final UUID _parentId;
+    private final ResourceSummary _parent;
     private int _pageNo;
     private int _pageSize;
     private final String _name;
@@ -63,17 +64,17 @@ public abstract class GetImagesPagedAction
     /**
      * Constructor.
      *
-     * @param parentId The id of the folder.
+     * @param parent The folder containing the images.
      * @param actionName Local-specific name for the action.
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      */
     public GetImagesPagedAction(final String actionName,
-                                  final UUID parentId,
-                                  final int pageNo,
-                                  final int pageSize) {
+                                final ResourceSummary parent,
+                                final int pageNo,
+                                final int pageSize) {
         _name = actionName;
-        _parentId = parentId;
+        _parent = parent;
         _pageNo = pageNo;
         _pageSize = pageSize;
 
@@ -83,9 +84,12 @@ public abstract class GetImagesPagedAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("count", new String[] {""+_pageSize});
+        params.put("page", new String[] {""+_pageNo});
         return
             Globals.API_URL
-            + File.images(_parentId, _pageNo, _pageSize);
+            + _parent.images().build(params, new GWTTemplateEncoder());
     }
 
 

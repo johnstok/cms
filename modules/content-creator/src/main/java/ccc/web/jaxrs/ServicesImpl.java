@@ -75,6 +75,21 @@ public class ServicesImpl {
         api.addLink(API.SECURITY,  Security.COLLECTION);
         api.addLink(API.TEMPLATES, Template.COLLECTION);
         api.addLink(API.USERS,     User.COLLECTION);
+
+        api.addLink(ccc.api.core.Folder.ROOTS, Folder.ROOTS);
+
+        api.addLink(
+            ccc.api.core.Template.EXISTS,
+            ccc.api.core.ResourceIdentifiers.Template.EXISTS);
+
+        api.addLink(
+            ccc.api.core.Page.VALIDATOR,
+            ccc.api.core.ResourceIdentifiers.Page.VALIDATOR);
+
+        api.addLink(ccc.api.core.Security.PROPERTIES, Security.PROPERTIES);
+        api.addLink(ccc.api.core.Security.CURRENT,    Security.CURRENT);
+        api.addLink(ccc.api.core.Security.COLLECTION, Security.COLLECTION+"?{-join|&|u,p}");
+
         return api;
     }
 }

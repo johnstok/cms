@@ -432,7 +432,7 @@ public class ResourceContextMenu
 
 
     private void updateFile(final ResourceSummaryModelData item) {
-        new UpdateFileDialog(item.getId()).show();
+        new UpdateFileDialog(item.getDelegate()).show();
     }
 
     // TODO: Factor these methods to actions
@@ -455,7 +455,7 @@ public class ResourceContextMenu
             // Get a delta to edit.
             @Override protected void template(final Template ts) {
                 new PageDeltaAction(
-                    getConstants().updateContent(), item.getId()){
+                    getConstants().updateContent(), item.getDelegate()){
                     @Override
                     protected void execute(final Page delta) {
                         new UpdatePageDialog(

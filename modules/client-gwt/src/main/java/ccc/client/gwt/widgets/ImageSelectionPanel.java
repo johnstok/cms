@@ -29,9 +29,9 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -183,7 +183,7 @@ public class ImageSelectionPanel extends ContentPanel {
 
                     new GetImagesPaged(
                         GlobalsImpl.uiConstants().selectImage(),
-                        _folder.getId(),
+                        _folder.getDelegate(),
                         config,
                         callback).execute();
                 }
@@ -205,22 +205,14 @@ public class ImageSelectionPanel extends ContentPanel {
         private final AsyncCallback<PagingLoadResult
         <ImageSummaryModelData>> _callback;
 
-        /**
-         * Constructor.
-         *
-         * @param actionName
-         * @param parentId
-         * @param image
-         * @param config
-         * @param callback
-         */
+
         private GetImagesPaged(final String actionName,
-                               final UUID parentId,
+                               final ResourceSummary parent,
                                final BasePagingLoadConfig config,
                                final AsyncCallback<PagingLoadResult
                                    <ImageSummaryModelData>> callback) {
 
-            super(actionName, parentId,
+            super(actionName, parent,
                 config.getOffset()/config.getLimit()+1,
                 config.getLimit());
             _config = config;

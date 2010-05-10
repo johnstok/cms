@@ -27,8 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import java.util.UUID;
-
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -179,8 +178,8 @@ public class CreateAliasDialog
 
     /** {@inheritDoc} */
     @Override
-    public UUID getParentId() {
-       return (null==_parent) ? null : _parent.getId();
+    public ResourceSummary getParent2() {
+       return (null==_parent) ? null : _parent.getDelegate();
     }
 
 

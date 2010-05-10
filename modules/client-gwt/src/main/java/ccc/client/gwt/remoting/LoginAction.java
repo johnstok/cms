@@ -26,6 +26,13 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ccc.api.core.Security;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -58,11 +65,12 @@ public class LoginAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        // FIXME: Hard coded URI.
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("u", new String[] {_dialog.getUsername()});
+        params.put("p", new String[] {_dialog.getPassword()});
         return
-            ccc.api.core.ResourceIdentifiers.Security.COLLECTION
-            +"?u=" + encode(_dialog.getUsername())
-            +"&p=" + encode(_dialog.getPassword());
+            new URIBuilder(GlobalsImpl.getAPI().getLink(Security.COLLECTION))
+            .build(params, new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */
