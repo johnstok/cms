@@ -30,15 +30,12 @@ import org.apache.commons.httpclient.HttpClient;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
 import ccc.api.types.HttpStatusCode;
-import ccc.api.types.URIBuilder;
-import ccc.commons.NormalisingEncoder;
 
 
 /**
@@ -75,11 +72,9 @@ class ResourcesDecorator
     @Override
     public ResourceSummary resourceForPath(final String path) {
         /* This method works around an encoding issue in REST-EASY 1.1. */
-        String uri =
-            new URIBuilder(
-                ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE
-                + "{path}")
-            .build("path", path, new NormalisingEncoder());
+        final String uri =
+            ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE
+            + path;
         final ClientRequest request = new ClientRequest(_base+uri, _http);
 
         BaseClientResponse response;

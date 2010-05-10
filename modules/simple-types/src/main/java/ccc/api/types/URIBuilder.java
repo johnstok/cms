@@ -64,9 +64,9 @@ public class URIBuilder {
      *
      * @return The URI, as a string.
      */
-    public String build(final String name, 
-                        final String value, 
-                        Encoder encoder) {
+    public String build(final String name,
+                        final String value,
+                        final Encoder encoder) {
         return build(
             Collections.singletonMap(name, new String[] {value}),
             encoder);
@@ -78,16 +78,16 @@ public class URIBuilder {
     public String toString() {
         return _uri;
     }
-    
+
 
     /**
      * Build a URI with no specified parameters.
-     * 
+     *
      * @param encoder The encoder to use when building a string.
      *
      * @return The URI, as a string.
      */
-    public String build(Encoder encoder) {
+    public String build(final Encoder encoder) {
         return build(new HashMap<String, String[]>(), encoder);
     }
 
@@ -97,17 +97,17 @@ public class URIBuilder {
      *
      * @param params The template parameters.
      * @param encoder The encoder to use when building a string.
-     * 
+     *
      * @return The URI, as a string.
      */
-    public String build(Map<String, String[]> params, Encoder encoder) {
-        
-        StringBuffer sb = new StringBuffer();
+    public String build(final Map<String, String[]> params, final Encoder encoder) {
+
+        final StringBuffer sb = new StringBuffer();
         StringBuffer pattern = new StringBuffer();
-        
+
         boolean inPattern = false;
         for (int i=0; i<_uri.length(); i++) {
-            char c = _uri.charAt(i);
+            final char c = _uri.charAt(i);
             if ('{'==c) {
                 inPattern=true;
                 continue;
@@ -123,38 +123,36 @@ public class URIBuilder {
                 pattern.append(c);
             }
         }
-        if (inPattern) { 
+        if (inPattern) {
             throw new IllegalStateException(
-                "URI ended with incomplete expression."); 
+                "URI ended with incomplete expression.");
         }
         return sb.toString();
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param group
-     * @param params
-     * @return
-     */
-    private String evaluate(String template, Map<String, String[]> params, Encoder encoder) {
+    private String evaluate(final String template,
+                            final Map<String, String[]> params,
+                            final Encoder encoder) {
 
       String op = "var";
       String arg = null;
-      
-      String[] parts = template.split("\\|");
-      String varString = parts[parts.length-1];
+
+      final String[] parts = template.split("\\|");
+      final String varString = parts[parts.length-1];
       if (3==parts.length) {
           op = parts[0].substring(1);
           arg = parts[1];
       }
-      
-      Map<String, String[]> varRes = new LinkedHashMap<String, String[]>();
-      String[] vars = varString.split(",");
-      for (String var : vars) {
-          String[] varDef = var.split("=");
-          varRes.put(varDef[0], (varDef.length>1)?new String[] {varDef[1]}:null);
+
+      final Map<String, String[]> varRes =
+          new LinkedHashMap<String, String[]>();
+      final String[] vars = varString.split(",");
+      for (final String var : vars) {
+          final String[] varDef = var.split("=");
+          varRes.put(
+              varDef[0],
+              (varDef.length>1)?new String[] {varDef[1]}:null);
       }
 
         switch (Operation.valueOf(op.toUpperCase())) {
@@ -173,112 +171,80 @@ public class URIBuilder {
             case LIST:
                 return list(encoder, varRes, params, arg);
             default:
-                throw new UnsupportedOperationException("Unsupported operation: " + op);
+                throw new UnsupportedOperationException(
+                    "Unsupported operation: " + op);
         }
-    }   
-    
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @param arg
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    private String neg(Encoder encoder,
-                       Map<String, String[]> varRes,
-                       Map<String, String[]> params,
-                       String arg) {
-        StringBuffer result = new StringBuffer();
-        for (String var : varRes.keySet()) {
-            String[] param = params.get(var);
-            String[] def   = varRes.get(var);
+    }
+
+
+    private String neg(final Encoder encoder,
+                       final Map<String, String[]> varRes,
+                       final Map<String, String[]> params,
+                       final String arg) {
+        final StringBuffer result = new StringBuffer();
+        for (final String var : varRes.keySet()) {
+            final String[] param = params.get(var);
             if (null!=param&&param.length>0) {
                 /* NO OP */
-            } else if (null!=param&&param.length>0){
+            } else if (null!=param&&param.length>0) {
                 /* NO OP */
             } else {
                 result.append(encoder.encode(arg));
             }
         }
-        
+
         return result.toString();
     }
-    
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @param arg
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    private String opt(Encoder encoder,
-                       Map<String, String[]> varRes,
-                       Map<String, String[]> params,
-                       String arg) {
-        StringBuffer result = new StringBuffer();
-        for (String var : varRes.keySet()) {
-            String[] param = params.get(var);
-            String[] def   = varRes.get(var);
+
+
+    private String opt(final Encoder encoder,
+                       final Map<String, String[]> varRes,
+                       final Map<String, String[]> params,
+                       final String arg) {
+        final StringBuffer result = new StringBuffer();
+        for (final String var : varRes.keySet()) {
+            final String[] param = params.get(var);
             if (null!=param&&param.length>0) {
                 result.append(encoder.encode(arg));
             } else if (null!=param&&param.length>0){
                 result.append(encoder.encode(arg));
             }
         }
-        
+
         return result.toString();
     }
-    
-    
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @param arg
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    private String list(Encoder encoder,
-                        Map<String, String[]> varRes,
-                        Map<String, String[]> params,
-                        String arg) {
-        String result = suffix(encoder, varRes, params, arg);
-        return (result.length()>0) ? result.substring(0, result.length()-arg.length()) : result;
+
+
+    private String list(final Encoder encoder,
+                        final Map<String, String[]> varRes,
+                        final Map<String, String[]> params,
+                        final String arg) {
+        final String result = suffix(encoder, varRes, params, arg);
+        return
+            (result.length()>0)
+                ? result.substring(0, result.length()-arg.length())
+                : result;
     }
-    
-    
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @param arg
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
+
+
     // FIXME: Supplying a list variable to the join operator is an error.
-    private String join(Encoder encoder,
-                        Map<String, String[]> varRes,
-                        Map<String, String[]> params,
-                        String arg) {
-        StringBuffer result = new StringBuffer();
-        for (String var : varRes.keySet()) {
-            String[] param = params.get(var);
-            String[] def   = varRes.get(var);
+    private String join(final Encoder encoder,
+                        final Map<String, String[]> varRes,
+                        final Map<String, String[]> params,
+                        final String arg) {
+        final StringBuffer result = new StringBuffer();
+        for (final String var : varRes.keySet()) {
+            final String[] param = params.get(var);
+            final String[] def   = varRes.get(var);
             if (null!=param) {
-                for (String val : param) {
+                for (final String val : param) {
                     result.append(var);
                     result.append("=");
                     result.append(encoder.encode(val));
                     result.append(arg);
                 }
             } else if (null!=def){
-                for (String val : def) {
+                for (final String val : def) {
                     result.append(var);
                     result.append("=");
                     result.append(encoder.encode(val));
@@ -287,102 +253,75 @@ public class URIBuilder {
             }
         }
         if (result.length()>0) { result.deleteCharAt(result.length()-1); }
-        
+
         return result.toString();
     }
-    
-    
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @param arg
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    // FIXME: Supplying a list variable to the join operator is an error.
-    private String prefix(Encoder encoder,
-                          Map<String, String[]> varRes,
-                          Map<String, String[]> params,
-                          String arg) {
-        StringBuffer result = new StringBuffer();
-        for (String var : varRes.keySet()) {
-            String[] param = params.get(var);
-            String[] def   = varRes.get(var);
+
+
+    private String prefix(final Encoder encoder,
+                          final Map<String, String[]> varRes,
+                          final Map<String, String[]> params,
+                          final String arg) {
+        final StringBuffer result = new StringBuffer();
+        for (final String var : varRes.keySet()) {
+            final String[] param = params.get(var);
+            final String[] def   = varRes.get(var);
             if (null!=param) {
-                for (String val : param) {
+                for (final String val : param) {
                     result.append(arg);
                     result.append(encoder.encode(val));
                 }
             } else if (null!=def){
-                for (String val : def) {
+                for (final String val : def) {
                     result.append(arg);
                     result.append(encoder.encode(val));
                 }
             }
         }
-        
+
         return result.toString();
-    }   
-    
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @param arg
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    // FIXME: Supplying a list variable to the join operator is an error.
-    private String suffix(Encoder encoder,
-                          Map<String, String[]> varRes,
-                          Map<String, String[]> params,
-                          String arg) {
-        StringBuffer result = new StringBuffer();
-        for (String var : varRes.keySet()) {
-            String[] param = params.get(var);
-            String[] def   = varRes.get(var);
+    }
+
+
+    private String suffix(final Encoder encoder,
+                          final Map<String, String[]> varRes,
+                          final Map<String, String[]> params,
+                          final String arg) {
+        final StringBuffer result = new StringBuffer();
+        for (final String var : varRes.keySet()) {
+            final String[] param = params.get(var);
+            final String[] def   = varRes.get(var);
             if (null!=param) {
-                for (String val : param) {
+                for (final String val : param) {
                     result.append(encoder.encode(val));
                     result.append(arg);
                 }
             } else if (null!=def){
-                for (String val : def) {
+                for (final String val : def) {
                     result.append(encoder.encode(val));
                     result.append(arg);
                 }
             }
         }
-        
+
         return result.toString();
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param varRes
-     * @param params
-     * @return
-     * @throws UnsupportedEncodingException 
-     */
-    private String var(Encoder encoder,
-                       Map<String, String[]> varRes,
-                       Map<String, String[]> params) {
+    private String var(final Encoder encoder,
+                       final Map<String, String[]> varRes,
+                       final Map<String, String[]> params) {
 
-        StringBuffer result = new StringBuffer();
-        for (String var : varRes.keySet()) {
-            String[] param = params.get(var);
-            String[] def   = varRes.get(var);
+        final StringBuffer result = new StringBuffer();
+        for (final String var : varRes.keySet()) {
+            final String[] param = params.get(var);
+            final String[] def   = varRes.get(var);
             if (null!=param) {
-                for (String val : param) {
+                for (final String val : param) {
                     result.append(encoder.encode(val));
                 }
             } else if (null!=def){
-                for (String val : def) {
+                for (final String val : def) {
                     result.append(encoder.encode(val));
                 }
             } else {
@@ -395,7 +334,7 @@ public class URIBuilder {
     private static enum Operation {
         VAR, JOIN, OPT, NEG, SUFFIX, PREFIX, LIST;
     }
-    
+
     public static interface Encoder {
         String encode(String string);
     }
