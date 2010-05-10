@@ -35,16 +35,13 @@ import java.util.Map;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
+import ccc.client.gwt.remoting.TextParser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
@@ -64,6 +61,7 @@ public abstract class RemotingAction
     private String          _actionName;
     private HttpMethod      _method;
     private RequestExecutor _executor = new GwtRequestExecutor();
+    private TextParser      _parser   = new GWTTextParser();
 
 
     /**
@@ -101,15 +99,40 @@ public abstract class RemotingAction
         if (!beforeExecute()) { return; }
         _executor.invokeRequest(getRequest());
     }
-    
-    
+
+
     /**
      * Mutator.
      *
      * @param executor The executor to set.
+     *
+     * @return A reference to 'this'.
      */
-    public RemotingAction setExecutor(RequestExecutor executor) {
+    public RemotingAction setExecutor(final RequestExecutor executor) {
         _executor = DBC.require().notNull(executor);
+        return this;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the parser.
+     */
+    public TextParser getParser() {
+        return _parser;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param parser The parser to set.
+     *
+     * @return A reference to 'this'.
+     */
+    public RemotingAction setParser(final TextParser parser) {
+        _parser = DBC.require().notNull(parser);
         return this;
     }
 

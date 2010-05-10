@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,48 +21,30 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
+
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.API;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.Json;
 
 
 /**
- * Create a new user.
+ * API for parsing text.
  *
  * @author Civic Computing Ltd.
  */
-public class GetServicesAction
-    extends
-        RemotingAction {
+public interface TextParser {
+
 
     /**
-     * Constructor.
+     * Parse text into a JSON object.
+     *
+     * @param text The text to parse.
+     *
+     * @return The corresponding JSON object.
      */
-    public GetServicesAction() {
-        super(USER_ACTIONS.internalAction());
-    }
+    Json parseJson(final String text);
 
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return "";
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final Json json = getParser().parseJson(response.getText());
-        final API api = new API();
-        api.fromJson(json);
-        onOK(api);
-    }
-
-
-    protected void onOK(final API api) { /* NO OP */ }
 }

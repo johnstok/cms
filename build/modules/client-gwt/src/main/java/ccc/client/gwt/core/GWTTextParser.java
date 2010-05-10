@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,48 +21,34 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.gwt.core;
 
-import ccc.api.core.API;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
+import ccc.client.gwt.remoting.TextParser;
 import ccc.plugins.s11n.Json;
+
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Create a new user.
+ * Implementation of the {@link TextParser} API using the GWT library.
  *
  * @author Civic Computing Ltd.
  */
-public class GetServicesAction
-    extends
-        RemotingAction {
+public class GWTTextParser
+    implements
+        TextParser {
 
-    /**
-     * Constructor.
-     */
-    public GetServicesAction() {
-        super(USER_ACTIONS.internalAction());
-    }
 
     /** {@inheritDoc} */
     @Override
-    protected String getPath() {
-        return "";
+    public Json parseJson(final String text) {
+        final JSONObject result =
+            JSONParser.parse(text).isObject();
+        final Json json = new GwtJson(result);
+        return json;
     }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void onOK(final Response response) {
-        final Json json = getParser().parseJson(response.getText());
-        final API api = new API();
-        api.fromJson(json);
-        onOK(api);
-    }
-
-
-    protected void onOK(final API api) { /* NO OP */ }
 }
