@@ -27,11 +27,10 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
-
-import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
@@ -60,7 +59,7 @@ public class ValidateFieldAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _page.validate();
+        return GlobalsImpl.getAPI().getLink(Page.VALIDATOR);
     }
 
 

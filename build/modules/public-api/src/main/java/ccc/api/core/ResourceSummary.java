@@ -26,20 +26,16 @@
  */
 package ccc.api.core;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.ResourceType;
-import ccc.api.types.SortOrder;
 import ccc.api.types.URIBuilder;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable2;
+import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -515,28 +511,33 @@ public final class ResourceSummary extends Res {
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(ID, _id);
-        json.set(NAME, _name);
-        json.set(PARENT_ID, _parent);
-        json.set(TYPE, _type.name());
-        json.set(LOCKED_BY, (null==_lockedBy)?null:_lockedBy.toString());
-        json.set(TITLE, _title);
+        json.set(JsonKeys.ID, _id);
+        json.set(JsonKeys.NAME, _name);
+        json.set(JsonKeys.PARENT_ID, _parent);
+        json.set(JsonKeys.TYPE, _type.name());
         json.set(
-            PUBLISHED_BY, (null==_publishedBy)?null:_publishedBy.toString());
-        json.set(CHILD_COUNT, Long.valueOf(_childCount));
-        json.set(FOLDER_COUNT, Long.valueOf(_folderCount));
-        json.set(INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
-        json.set(SORT_ORDER, _sortOrder);
-        json.set(HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
-        json.set(DATE_CREATED, _dateCreated);
-        json.set(DATE_CHANGED, _dateChanged);
-        json.set(TEMPLATE_ID, _templateId);
-        json.setStrings(TAGS, _tags);
-        json.set(ABSOLUTE_PATH, _absolutePath);
-        json.set(INDEX_PAGE_ID, _indexPageId);
-        json.set(DESCRIPTION, _description);
-        json.set(CREATED_BY, (null==_createdBy)?null:_createdBy.toString());
-        json.set(CHANGED_BY, (null==_changedBy)?null:_changedBy.toString());
+            JsonKeys.LOCKED_BY, (null==_lockedBy)?null:_lockedBy.toString());
+        json.set(JsonKeys.TITLE, _title);
+        json.set(
+            JsonKeys.PUBLISHED_BY,
+            (null==_publishedBy)?null:_publishedBy.toString());
+        json.set(JsonKeys.CHILD_COUNT, Long.valueOf(_childCount));
+        json.set(JsonKeys.FOLDER_COUNT, Long.valueOf(_folderCount));
+        json.set(
+            JsonKeys.INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
+        json.set(JsonKeys.SORT_ORDER, _sortOrder);
+        json.set(JsonKeys.HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
+        json.set(JsonKeys.DATE_CREATED, _dateCreated);
+        json.set(JsonKeys.DATE_CHANGED, _dateChanged);
+        json.set(JsonKeys.TEMPLATE_ID, _templateId);
+        json.setStrings(JsonKeys.TAGS, _tags);
+        json.set(JsonKeys.ABSOLUTE_PATH, _absolutePath);
+        json.set(JsonKeys.INDEX_PAGE_ID, _indexPageId);
+        json.set(JsonKeys.DESCRIPTION, _description);
+        json.set(
+            JsonKeys.CREATED_BY, (null==_createdBy)?null:_createdBy.toString());
+        json.set(
+            JsonKeys.CHANGED_BY, (null==_changedBy)?null:_changedBy.toString());
     }
 
 
@@ -544,51 +545,39 @@ public final class ResourceSummary extends Res {
     @Override
     public void fromJson(final Json json) {
         super.fromJson(json);
-        _id = json.getId(ID);
-        _parent = json.getId(PARENT_ID);
-        _name = json.getString(NAME);
+        _id = json.getId(JsonKeys.ID);
+        _parent = json.getId(JsonKeys.PARENT_ID);
+        _name = json.getString(JsonKeys.NAME);
         _publishedBy =
-            (null==json.getString(PUBLISHED_BY))
+            (null==json.getString(JsonKeys.PUBLISHED_BY))
                 ? null
-                : new Username(json.getString(PUBLISHED_BY));
-        _title = json.getString(TITLE);
+                : new Username(json.getString(JsonKeys.PUBLISHED_BY));
+        _title = json.getString(JsonKeys.TITLE);
         _lockedBy =
-            (null==json.getString(LOCKED_BY))
+            (null==json.getString(JsonKeys.LOCKED_BY))
                 ? null
-                : new Username(json.getString(LOCKED_BY));
-        _type = ResourceType.valueOf(json.getString(TYPE));
-        _childCount = json.getInt(CHILD_COUNT);
-        _folderCount = json.getInt(FOLDER_COUNT);
-        _includeInMainMenu = json.getBool(INCLUDE_IN_MAIN_MENU);
-        _sortOrder = json.getString(SORT_ORDER);
-        _hasWorkingCopy = json.getBool(HAS_WORKING_COPY);
-        _dateCreated = json.getDate(DATE_CREATED);
-        _dateChanged = json.getDate(DATE_CHANGED);
-        _templateId = json.getId(TEMPLATE_ID);
-        _tags = new HashSet<String>(json.getStrings(TAGS));
-        _absolutePath = json.getString(ABSOLUTE_PATH);
-        _indexPageId = json.getId(INDEX_PAGE_ID);
-        _description = json.getString(DESCRIPTION);
+                : new Username(json.getString(JsonKeys.LOCKED_BY));
+        _type = ResourceType.valueOf(json.getString(JsonKeys.TYPE));
+        _childCount = json.getInt(JsonKeys.CHILD_COUNT);
+        _folderCount = json.getInt(JsonKeys.FOLDER_COUNT);
+        _includeInMainMenu = json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU);
+        _sortOrder = json.getString(JsonKeys.SORT_ORDER);
+        _hasWorkingCopy = json.getBool(JsonKeys.HAS_WORKING_COPY);
+        _dateCreated = json.getDate(JsonKeys.DATE_CREATED);
+        _dateChanged = json.getDate(JsonKeys.DATE_CHANGED);
+        _templateId = json.getId(JsonKeys.TEMPLATE_ID);
+        _tags = new HashSet<String>(json.getStrings(JsonKeys.TAGS));
+        _absolutePath = json.getString(JsonKeys.ABSOLUTE_PATH);
+        _indexPageId = json.getId(JsonKeys.INDEX_PAGE_ID);
+        _description = json.getString(JsonKeys.DESCRIPTION);
         _createdBy =
-            (null==json.getString(CREATED_BY))
+            (null==json.getString(JsonKeys.CREATED_BY))
                 ? null
-                : new Username(json.getString(CREATED_BY));
+                : new Username(json.getString(JsonKeys.CREATED_BY));
         _changedBy =
-            (null==json.getString(CHANGED_BY))
+            (null==json.getString(JsonKeys.CHANGED_BY))
             ? null
-                : new Username(json.getString(CHANGED_BY));
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public String path() {
-        // FIXME: Use URIBuilder.
-        return
-            ccc.api.core.ResourceIdentifiers.Resource.SEARCH_PATH_SIMPLE+"{path}";
+                : new Username(json.getString(JsonKeys.CHANGED_BY));
     }
 
 
@@ -598,9 +587,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder rename() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.NAME));
     }
 
 
@@ -610,9 +597,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder applyWc() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.WC_APPLY));
     }
 
 
@@ -622,9 +607,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder clearWc() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.WC_CLEAR));
     }
 
 
@@ -634,11 +617,10 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder list() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LIST);
+        return new URIBuilder(getLink(Resource.LIST));
     }
-    
-    
+
+
     /**
      * TODO: Add a description for this method.
      *
@@ -646,20 +628,16 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder revisions() {
-        return
-            new URIBuilder(getLink("revision"));
-//                .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.REVISIONS));
     }
-    
+
     /**
      * TODO: Add a description for this method.
      *
      * @return
      */
     public URIBuilder uriUnpublish() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.UNPUBLISH));
     }
 
 
@@ -669,9 +647,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder uriDelete() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DELETE);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.DELETE));
     }
 
 
@@ -681,9 +657,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder history() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE);
-//            .build("id", resourceId.toString());
+        return new URIBuilder(getLink(Resource.WC_CREATE));
     }
 
 
@@ -693,7 +667,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder uriAbsPath() {
-        return new URIBuilder("absolute-path");
+        return new URIBuilder(getLink(Resource.ABSOLUTE_PATH));
     }
 
 
@@ -703,9 +677,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder includeMM() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.INCLUDE_MM));
     }
 
 
@@ -715,9 +687,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder lock() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.LOCK));
     }
 
 
@@ -727,9 +697,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder move() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT);
-//            .build("id", resource.toString());
+        return new URIBuilder(getLink(Resource.PARENT));
     }
 
 
@@ -739,11 +707,9 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder duration() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.DURATION));
     }
-    
+
 
     /**
      * TODO: Add a description for this method.
@@ -751,9 +717,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder unlock() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.UNLOCK));
     }
 
 
@@ -763,9 +727,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder acl() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL);
-//            .build("id", resource.toString());
+        return new URIBuilder(getLink(Resource.ACL));
     }
 
 
@@ -775,9 +737,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder uriPublish() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.PUBLISH));
     }
 
 
@@ -787,9 +747,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder excludeMM() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.EXCLUDE_MM));
     }
 
 
@@ -799,9 +757,7 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder uriMetadata() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(Resource.METADATA));
     }
 
 
@@ -811,8 +767,69 @@ public final class ResourceSummary extends Res {
      * @return
      */
     public URIBuilder uriTemplate() {
+        return new URIBuilder(getLink(Resource.TEMPLATE));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder delta() {
+        return new URIBuilder(getLink(Resource.DELTA));
+    }
+
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder images() {
+        return new URIBuilder(getLink(Folder.IMAGES));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder self() {
+        return new URIBuilder(getLink(Resource.SELF));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder selfBinary() {
+        return new URIBuilder(getLink(File.SELF_BINARY));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder exists() {
         return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE);
-//            .build("id", id.toString());
+            new URIBuilder(getLink(Folder.EXISTS));
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public URIBuilder targetName() {
+        return
+            new URIBuilder(getLink(Alias.TARGET_NAME));
     }
 }

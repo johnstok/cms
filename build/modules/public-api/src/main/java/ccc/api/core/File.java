@@ -36,7 +36,6 @@ import java.util.UUID;
 import ccc.api.types.MimeType;
 import ccc.api.types.MimeTypeSerializer;
 import ccc.api.types.ResourceName;
-import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -446,79 +445,8 @@ public final class File
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String list() {
-        return ccc.api.core.ResourceIdentifiers.File.COLLECTION;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder self() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT);
-//            .build("id", getId().toString());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param parentId
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
-    public static URIBuilder images(final UUID parentId,
-                                final int pageNo,
-                                final int pageSize) {
-        // FIXME: Pass params to builder.
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.IMAGES);
-//                .build("id", parentId.toString())
-//            + "?page="+pageNo+"&count="+pageSize;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static URIBuilder self(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT);
-//            .build("id", id.toString());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String listBinary() {
-        return ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param fileId
-     * @return
-     */
-    public static URIBuilder selfBinary(final UUID fileId) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT);
-//            .build("id", fileId.toString());
-    }
+    /** LIST_BINARY : String. */
+    public static final String LIST_BINARY = "list_binary";
+    /** SELF_BINARY : String. */
+    public static final String SELF_BINARY = "self_binary";
 }

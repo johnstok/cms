@@ -27,9 +27,9 @@
 package ccc.client.gwt.validation;
 
 import java.util.List;
-import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
 import ccc.api.types.ResourceName;
@@ -219,7 +219,7 @@ public final class Validations {
         return new Validator() {
             public void validate(final Validate validate) {
                 // FIXME: Conversion to type ResourceName can fail.
-                new ResourceNameExistsAction(folder.getId(),
+                new ResourceNameExistsAction(folder.getDelegate(),
                                              new ResourceName(name.getValue())){
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {
@@ -261,12 +261,12 @@ public final class Validations {
      * @param name name Resource name
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final UUID id,
+    public static Validator uniqueResourceName(final ResourceSummary folder,
                                                final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
                 // FIXME: Conversion to type ResourceName can fail.
-                new ResourceNameExistsAction(id,
+                new ResourceNameExistsAction(folder,
                                              new ResourceName(name.getValue())){
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {

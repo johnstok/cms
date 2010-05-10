@@ -26,9 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
-import ccc.api.core.Folder;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
@@ -46,25 +44,26 @@ public abstract class ResourceNameExistsAction
     extends
         RemotingAction {
 
-    private UUID _folderId;
+    private ResourceSummary _folder;
     private ResourceName _resourceName;
 
     /**
      * Constructor.
      * @param resourceName The resource name to check.
-     * @param folderId The id of the folder to check.
+     * @param folder The folder to check.
      */
-    public ResourceNameExistsAction(final UUID folderId,
+    public ResourceNameExistsAction(final ResourceSummary folder,
                                     final ResourceName resourceName) {
         super(USER_ACTIONS.checkUniqueResourceName());
-        _folderId = folderId;
+        _folder = folder;
         _resourceName = resourceName;
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Folder.exists(_folderId, _resourceName).build(new GWTTemplateEncoder());
+        return _folder.exists().build(
+            "name", _resourceName.toString(), new GWTTemplateEncoder());
 
     }
 

@@ -29,6 +29,7 @@ package ccc.client.gwt.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.core.API;
 import ccc.api.core.User;
 import ccc.client.gwt.binding.ActionCollection;
 import ccc.client.gwt.binding.CommentCollection;
@@ -70,7 +71,7 @@ public class GlobalsImpl
     private static ErrorDescriptions ERROR_DESCRIPTIONS;
     private static ErrorResolutions ERROR_RESOLUTIONS;
     private static ActionNameConstants USER_ACTIONS;
-    
+
     private static boolean ENABLE_EXIT_CONFIRMATION = false;
 
     private HandlerRegistration _handlerRegistration = null;
@@ -79,6 +80,8 @@ public class GlobalsImpl
     private static ActionCollection ACTIONS;
     private static CommentCollection COMMENTS;
     private static GroupCollection GROUPS;
+
+    private static API API;
 
 
     /** {@inheritDoc} */
@@ -159,7 +162,7 @@ public class GlobalsImpl
         Window.Location.reload();
     }
 
-    
+
     /**
      * Accessor for the {@link UIConstants} object.
      *
@@ -168,18 +171,18 @@ public class GlobalsImpl
     public static UIConstants uiConstants() {
        return UI_CONSTANTS;
     }
-    
+
 
     /**
      * Mutator for the {@link UIConstants} object.
-     * 
+     *
      * @param uiConstants The new UI constants.
      */
-    public static void setUiConstants(UIConstants uiConstants) {
+    public static void setUiConstants(final UIConstants uiConstants) {
        UI_CONSTANTS = uiConstants;
     }
 
-    
+
     /** {@inheritDoc} */
     @Override
     public UIMessages uiMessages() {
@@ -211,7 +214,7 @@ public class GlobalsImpl
     }
 
 
-    public static void setUserActions(ActionNameConstants userActions) {
+    public static void setUserActions(final ActionNameConstants userActions) {
         USER_ACTIONS = userActions;
     }
 
@@ -351,7 +354,7 @@ public class GlobalsImpl
      *
      * @param enabled True if the dialog should be displayed, false otherwise.
      */
-    public static void setEnableExitConfirmation(boolean enabled) {
+    public static void setEnableExitConfirmation(final boolean enabled) {
         ENABLE_EXIT_CONFIRMATION = enabled;
     }
 
@@ -361,7 +364,7 @@ public class GlobalsImpl
      *
      * @param create
      */
-    public static void setUiMessages(UIMessages create) {
+    public static void setUiMessages(final UIMessages create) {
         UI_MESSAGES = create;
     }
 
@@ -371,7 +374,7 @@ public class GlobalsImpl
      *
      * @param create
      */
-    public static void setActionConstants(ActionStatusConstants create) {
+    public static void setActionConstants(final ActionStatusConstants create) {
         ACTION_STATUSES = create;
     }
 
@@ -381,7 +384,7 @@ public class GlobalsImpl
      *
      * @param create
      */
-    public static void setCommandConstants(CommandTypeConstants create) {
+    public static void setCommandConstants(final CommandTypeConstants create) {
         COMMAND_TYPES = create;
     }
 
@@ -391,7 +394,7 @@ public class GlobalsImpl
      *
      * @param create
      */
-    public static void setErrorDescriptions(ErrorDescriptions create) {
+    public static void setErrorDescriptions(final ErrorDescriptions create) {
         ERROR_DESCRIPTIONS = create;
     }
 
@@ -401,7 +404,27 @@ public class GlobalsImpl
      *
      * @param create
      */
-    public static void setErrorResolutions(ErrorResolutions create) {
+    public static void setErrorResolutions(final ErrorResolutions create) {
         ERROR_RESOLUTIONS = create;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param api
+     */
+    public static void setAPI(final API api) {
+        API = api;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public static API getAPI() {
+        return API;
     }
 }

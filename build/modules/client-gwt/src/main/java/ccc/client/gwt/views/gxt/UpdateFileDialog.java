@@ -26,9 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import java.util.UUID;
-
-import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.ImagePaths;
@@ -73,14 +71,15 @@ public class UpdateFileDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param fileId The {@link UUID} of the file.
+     * @param file The file to update.
      */
-    public UpdateFileDialog(final UUID fileId) {
-        super(new GlobalsImpl().uiConstants().updateFile(),
+    public UpdateFileDialog(final ResourceSummary file) {
+        super(GlobalsImpl.uiConstants().updateFile(),
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
-        getPanel().setAction(Globals.API_URL + File.selfBinary(fileId));
+        getPanel().setAction(Globals.API_URL + file.selfBinary());
+
         getPanel().setEncoding(FormPanel.Encoding.MULTIPART);
         getPanel().setMethod(FormPanel.Method.POST);
 
@@ -91,7 +90,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
         addField(_file);
 
         _id.setName("id");
-        _id.setValue(fileId.toString());
+        _id.setValue(file.getId().toString());
         addField(_id);
 
         _majorEdit.setName("majorEdit");

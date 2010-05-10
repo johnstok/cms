@@ -238,6 +238,7 @@ public class URIBuilder {
             final String[] def   = varRes.get(var);
             if (null!=param) {
                 for (final String val : param) {
+                    if (null==val) { continue; }
                     result.append(var);
                     result.append("=");
                     result.append(encoder.encode(val));
@@ -245,6 +246,7 @@ public class URIBuilder {
                 }
             } else if (null!=def){
                 for (final String val : def) {
+                    if (null==val) { continue; }
                     result.append(var);
                     result.append("=");
                     result.append(encoder.encode(val));

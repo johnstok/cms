@@ -26,7 +26,6 @@
  */
 package ccc.api.core;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,11 +38,9 @@ import ccc.api.types.Duration;
 import ccc.api.types.DurationSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.api.types.SortOrder;
 import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -52,9 +49,8 @@ import ccc.plugins.s11n.Jsonable2;
  * @author Civic Computing Ltd.
  */
 public class Resource
-    implements
-        Serializable,
-        Jsonable2 {
+    extends
+        Res {
 
     private String              _absolutePath;
     private Duration            _cacheDuration;
@@ -606,6 +602,7 @@ public class Resource
     /** {@inheritDoc} */
     @Override
     public void fromJson(final Json json) {
+        super.fromJson(json);
         setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
         final Json duration = json.getJson(JsonKeys.CACHE_DURATION);
         setCacheDuration(
@@ -639,6 +636,7 @@ public class Resource
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
+        super.toJson(json);
         json.set(JsonKeys.ABSOLUTE_PATH, _absolutePath);
         json.set(
             JsonKeys.CACHE_DURATION,
@@ -671,9 +669,7 @@ public class Resource
      * @return
      */
     public URIBuilder uriMetadata() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA);
-//            .build("id", getId().toString());
+        return new URIBuilder(getLink(METADATA));
     }
 
 
@@ -683,9 +679,7 @@ public class Resource
      * @return
      */
     public URIBuilder uriTemplate() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(TEMPLATE));
     }
 
 
@@ -695,8 +689,60 @@ public class Resource
      * @return
      */
     public URIBuilder duration() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION);
-//            .build("id", id.toString());
+        return new URIBuilder(getLink(DURATION));
     }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @return
+     */
+    public final URIBuilder self() {
+        return new URIBuilder(getLink(SELF));
+    }
+
+
+    /** NAME : String. */
+    public static final String NAME = "name";
+    /** WC_APPLY : String. */
+    public static final String WC_APPLY = "wc_apply";
+    /** WC_CLEAR : String. */
+    public static final String WC_CLEAR = "wc_clear";
+    /** LIST : String. */
+    public static final String LIST = "list";
+    /** REVISIONS : String. */
+    public static final String REVISIONS = "revisions";
+    /** UNPUBLISH : String. */
+    public static final String UNPUBLISH = "unpublish";
+    /** DELETE : String. */
+    public static final String DELETE = "delete";
+    /** WC_CREATE : String. */
+    public static final String WC_CREATE = "wc-create";
+    /** ABSOLUTE_PATH : String. */
+    public static final String ABSOLUTE_PATH = "absolute-path";
+    /** INCLUDE_MM : String. */
+    public static final String INCLUDE_MM = "include_mm";
+    /** LOCK : String. */
+    public static final String LOCK = "lock";
+    /** PARENT : String. */
+    public static final String PARENT = "parent";
+    /** DURATION : String. */
+    public static final String DURATION = "duration";
+    /** UNLOCK : String. */
+    public static final String UNLOCK = "unlock";
+    /** ACL : String. */
+    public static final String ACL = "acl";
+    /** PUBLISH : String. */
+    public static final String PUBLISH = "publish";
+    /** EXCLUDE_MM : String. */
+    public static final String EXCLUDE_MM = "exclude_mm";
+    /** METADATA : String. */
+    public static final String METADATA = "metadata";
+    /** TEMPLATE : String. */
+    public static final String TEMPLATE = "template";
+    /** DELTA : String. */
+    public static final String DELTA = "delta";
+    /** SELF : String. */
+    public static final String SELF = "self";
 }

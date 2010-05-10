@@ -27,13 +27,10 @@
 package ccc.api.core;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
-import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -190,65 +187,10 @@ public class Folder
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String list() {
-        return ccc.api.core.ResourceIdentifiers.Folder.COLLECTION;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static URIBuilder childrenFolder(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.FOLDER_CHILDREN);
-//            .build("id", id.toString());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String roots() {
-        return ccc.api.core.ResourceIdentifiers.Folder.ROOTS;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param folderId
-     * @param encode
-     * @return
-     */
-    public static URIBuilder exists(final UUID folderId,
-                                final ResourceName resourceName) {
-        Map<String, String[]> params = new HashMap<String, String[]>();
-        params.put("id", new String[] {folderId.toString()});
-        params.put("name", new String[] {resourceName.toString()});
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.EXISTS);
-//            .build(params, new NormalisingEncoder());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder self() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT);
-//            .build("id", getId().toString());
-    }
+    /** ROOTS : String. */
+    public static final String ROOTS = "roots";
+    /** IMAGES : String. */
+    public static final String IMAGES = "images";
+    /** EXISTS : String. */
+    public static final String EXISTS = "exists";
 }

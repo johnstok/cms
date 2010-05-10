@@ -33,7 +33,6 @@ import java.util.UUID;
 import ccc.api.types.MimeType;
 import ccc.api.types.MimeTypeSerializer;
 import ccc.api.types.ResourceName;
-import ccc.api.types.URIBuilder;
 import ccc.plugins.s11n.Json;
 
 
@@ -164,67 +163,6 @@ public class Template
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public static String list() {
-        return ccc.api.core.ResourceIdentifiers.Template.COLLECTION;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
-    public static String list(final int pageNo,
-                              final int pageSize) {
-        final StringBuilder path = new StringBuilder();
-        path.append(ccc.api.core.ResourceIdentifiers.Template.COLLECTION);
-        path.append("?page="+pageNo
-            +"&count="+pageSize);
-        return path.toString();
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static URIBuilder delta(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.DELTA);
-//            .build("id", id.toString());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param name
-     * @return
-     */
-    public static URIBuilder exists(final String name) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.EXISTS);
-//            .build("name", name);
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder self() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT);
-//            .build("id", getId().toString());
-    }
+    /** EXISTS : String. */
+    public static final String EXISTS = "template-exists";
 }

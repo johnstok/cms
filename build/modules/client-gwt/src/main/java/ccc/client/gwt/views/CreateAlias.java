@@ -27,8 +27,7 @@
 
 package ccc.client.gwt.views;
 
-import java.util.UUID;
-
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Validatable;
 import ccc.client.gwt.core.View;
@@ -60,7 +59,7 @@ public interface CreateAlias extends View<Editable>, Validatable {
      *
      * @return Returns the parent id.
      */
-    UUID getParentId();
+    ResourceSummary getParent2();
 
     /**
      * Mutator.

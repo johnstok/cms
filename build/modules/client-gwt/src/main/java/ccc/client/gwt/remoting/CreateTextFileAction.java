@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
@@ -61,7 +62,7 @@ public final class CreateTextFileAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return File.list();
+        return GlobalsImpl.getAPI().files();
     }
 
     /** {@inheritDoc} */

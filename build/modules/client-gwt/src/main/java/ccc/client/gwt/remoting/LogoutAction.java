@@ -26,7 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Security;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -62,7 +64,6 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        // FIXME: Hard coded URI.
-        return ccc.api.core.ResourceIdentifiers.Security.CURRENT;
+        return GlobalsImpl.getAPI().getLink(Security.CURRENT);
     }
 }

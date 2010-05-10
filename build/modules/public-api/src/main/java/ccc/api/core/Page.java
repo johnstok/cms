@@ -195,52 +195,13 @@ public class Page
      *
      * @return
      */
-    public static String list() { return ccc.api.core.ResourceIdentifiers.Page.COLLECTION; }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public String validate() {
-        return ccc.api.core.ResourceIdentifiers.Page.VALIDATOR;
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
     public URIBuilder workingCopy() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC);
-//            .build("id", getId().toString());
+        return new URIBuilder(getLink(WORKING_COPY));
     }
 
 
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder self() {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT);
-//            .build("id", getId().toString());
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param id
-     * @return
-     */
-    public static URIBuilder deltaURI(final UUID id) {
-        return
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.DELTA);
-//            .build("id", id.toString());
-    }
+    /** WORKING_COPY : String. */
+    public static final String WORKING_COPY = "wc";
+    /** VALIDATOR : String. */
+    public static final String VALIDATOR = "page-validator";
 }

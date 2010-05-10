@@ -26,16 +26,20 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
+import ccc.api.types.URIBuilder;
+import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.Json;
-
-import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
@@ -62,7 +66,12 @@ public abstract class CreateTemplateAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Template.list(1,999);
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("count", new String[] {"999"});
+        params.put("page", new String[] {"1"});
+        return
+            new URIBuilder(GlobalsImpl.getAPI().templates())
+            .build(params, new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

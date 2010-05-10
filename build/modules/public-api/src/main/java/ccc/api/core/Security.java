@@ -81,4 +81,12 @@ public interface Security {
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Security.PROPERTIES)
     String readAllProperties();
+
+
+    /** CURRENT : String. */
+    String CURRENT = "current";
+    /** COLLECTION : String. */
+    String COLLECTION = "collection";
+    /** PROPERTIES : String. */
+    String PROPERTIES = "properties";
 }

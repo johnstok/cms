@@ -37,7 +37,6 @@ import java.util.UUID;
 import ccc.api.core.Alias;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
@@ -61,7 +60,6 @@ import ccc.client.gwt.events.WorkingCopyCleared;
 import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -537,7 +535,7 @@ public class ResourceSummaryModelData
      * @return The path as a string.
      */
     public String revisionsPath() {
-        return _rs.revisions().build(new GWTTemplateEncoder());
+        return _rs.revisions().toString();
     }
 
     /**
@@ -605,7 +603,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create an alias.
      */
     public static Request createAlias(final Alias alias) {
-        final String path = Globals.API_URL+Alias.list();
+        final String path = Globals.API_URL+GlobalsImpl.getAPI().aliases();
 
         final GwtJson json = new GwtJson();
         alias.toJson(json);
@@ -631,7 +629,7 @@ public class ResourceSummaryModelData
     // FIXME: Should pass a folder here.
     public static Request createFolder(final String name,
                                        final UUID parentFolder) {
-        final String path = Globals.API_URL+Folder.list();
+        final String path = Globals.API_URL+GlobalsImpl.getAPI().folders();
 
         final GwtJson json = new GwtJson();
         final Folder f = new Folder();
@@ -657,7 +655,7 @@ public class ResourceSummaryModelData
      * @return The HTTP request to create a folder.
      */
     public static Request createPage(final Page page) {
-        final String path =  Globals.API_URL+Page.list();
+        final String path =  Globals.API_URL+GlobalsImpl.getAPI().pages();
 
         final GwtJson json = new GwtJson(); // FIXME: Broken.
         page.toJson(json);

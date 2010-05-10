@@ -38,6 +38,7 @@ import ccc.client.gwt.i18n.ErrorResolutions;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.i18n.UIMessages;
 import ccc.client.gwt.remoting.GetPropertyAction;
+import ccc.client.gwt.remoting.GetServicesAction;
 import ccc.client.gwt.remoting.IsLoggedInAction;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -50,7 +51,7 @@ import com.google.gwt.user.client.Window;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public final class ContentCreator implements EntryPoint {
-    
+
     public ContentCreator() {
         GlobalsImpl.setUserActions(GWT.<ActionNameConstants>create(ActionNameConstants.class));
         GlobalsImpl.setUiConstants(GWT.<UIConstants>create(UIConstants.class));
@@ -59,7 +60,7 @@ public final class ContentCreator implements EntryPoint {
         GlobalsImpl.setCommandConstants(GWT.<CommandTypeConstants>create(CommandTypeConstants.class));
         GlobalsImpl.setErrorDescriptions(GWT.<ErrorDescriptions>create(ErrorDescriptions.class));
         GlobalsImpl.setErrorResolutions(GWT.<ErrorResolutions>create(ErrorResolutions.class));
-        
+
         GlobalsImpl.setEnableExitConfirmation(null == Window.Location.getParameter("dec"));
     }
 
@@ -79,8 +80,15 @@ public final class ContentCreator implements EntryPoint {
                 _globals.unexpectedError(event.getException(), event.getName());
             }
         });
-        loadSettings();
-        new IsLoggedInAction().execute();
+
+        new GetServicesAction() {
+            /** {@inheritDoc} */
+            @Override
+            protected void onOK(final Response response) {
+                super.onOK(response);
+                loadSettings();
+            }}.execute();
+
     }
 
 
@@ -89,6 +97,7 @@ public final class ContentCreator implements EntryPoint {
             /** {@inheritDoc} */
             @Override protected void onOK(final Response response) {
                 _globals.setSettings(parseMapString(response));
+                new IsLoggedInAction().execute();
             }
         }.execute();
     }

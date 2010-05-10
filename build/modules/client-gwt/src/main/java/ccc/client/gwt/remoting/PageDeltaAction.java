@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -36,8 +36,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -51,7 +49,7 @@ public abstract class PageDeltaAction
     extends
         RemotingAction {
 
-    private final UUID _id;
+    private final ResourceSummary _resource;
     private final String _name;
 
 
@@ -59,17 +57,21 @@ public abstract class PageDeltaAction
      * Constructor.
      *
      * @param actionName Name of the action.
-     * @param id The UUID.
+     * @param resource The resource we need a delta for.
      */
-    public PageDeltaAction(final String actionName, final UUID id) {
+    public PageDeltaAction(final String actionName,
+                           final ResourceSummary resource) {
         _name = actionName;
-        _id = id;
+        _resource = resource;
     }
 
 
+    /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Globals.API_URL + Page.deltaURI(_id);
+        return
+            Globals.API_URL
+            + _resource.delta().build(new GWTTemplateEncoder());
     }
 
 

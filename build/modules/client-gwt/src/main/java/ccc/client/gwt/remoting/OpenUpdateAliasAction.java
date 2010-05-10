@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
@@ -63,7 +62,7 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return Alias.targetName(_alias.getId()).build(new GWTTemplateEncoder());
+        return _alias.getDelegate().targetName().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */
