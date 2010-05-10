@@ -34,6 +34,7 @@ import java.util.Map;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.DBC;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
 
@@ -60,8 +61,9 @@ public abstract class RemotingAction
     implements
         Action {
 
-    private String  _actionName;
-    private Method  _method;
+    private String          _actionName;
+    private HttpMethod      _method;
+    private RequestExecutor _executor = new GwtRequestExecutor();
 
 
     /**
@@ -77,7 +79,7 @@ public abstract class RemotingAction
      */
     public RemotingAction(final String actionName) {
         _actionName = actionName;
-        _method = RequestBuilder.GET;
+        _method = HttpMethod.GET;
     }
 
 
@@ -87,7 +89,7 @@ public abstract class RemotingAction
      * @param actionName The name of this action.
      * @param method The HTTP method to use.
      */
-    public RemotingAction(final String actionName, final Method method) {
+    public RemotingAction(final String actionName, final HttpMethod method) {
         _actionName = actionName;
         _method = method;
     }
@@ -96,29 +98,21 @@ public abstract class RemotingAction
     /** {@inheritDoc} */
     @Override
     public void execute() {
-
         if (!beforeExecute()) { return; }
-
-        final Request request = getRequest();
-        final ResponseHandler handler = request.getCallback();
-
-        final String url = GLOBALS.appURL() + request.getPath();
-        final RequestBuilder builder =
-            new RequestBuilder(request.getMethod(), url);
-        builder.setHeader("Accept", "application/json");
-        if (RequestBuilder.POST.equals(request.getMethod())) {
-            builder.setHeader("Content-Type", "application/json");
-            builder.setRequestData(request.getBody());
-        }
-        builder.setCallback(new RequestCallbackAdapter(handler));
-
-        try {
-            builder.send();
-            GWT.log("Sent request: "+request.getMethod()+" "+url, null);
-        } catch (final RequestException e) {
-            handler.onFailed(e);
-        }
+        _executor.invokeRequest(getRequest());
     }
+    
+    
+    /**
+     * Mutator.
+     *
+     * @param executor The executor to set.
+     */
+    public RemotingAction setExecutor(RequestExecutor executor) {
+        _executor = DBC.require().notNull(executor);
+        return this;
+    }
+
 
     /**
      * Get the HTTP request for this action.
@@ -136,14 +130,14 @@ public abstract class RemotingAction
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onNoContent(final Response response) {
+                    public void onNoContent(final ccc.client.gwt.core.Response response) {
                         RemotingAction.this.onNoContent(response);
                     }
 
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final Response response) {
+                    public void onOK(final ccc.client.gwt.core.Response response) {
                         RemotingAction.this.onOK(response);
                     }
                 });
@@ -168,11 +162,11 @@ public abstract class RemotingAction
      * @param throwable The throwable.
      */
     protected void onFailure(final Throwable throwable) {
-        GLOBALS.unexpectedError(throwable, getActionName());
+        new GlobalsImpl().unexpectedError(throwable, getActionName());
     }
 
 
-    private void onUnsupported(final Response response) {
+    private void onUnsupported(final ccc.client.gwt.core.Response response) {
         onFailure(
             new RuntimeException(// TODO Add UnsupportedResponseException
                 "Unsupported response: "
@@ -213,7 +207,7 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected void onNoContent(final Response response) {
+    protected void onNoContent(final ccc.client.gwt.core.Response response) {
         onUnsupported(response);
     }
 
@@ -223,7 +217,7 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected void onOK(final Response response) {
+    protected void onOK(final ccc.client.gwt.core.Response response) {
         onUnsupported(response);
     }
 
@@ -247,7 +241,7 @@ public abstract class RemotingAction
      *
      * @return The resource summary.
      */
-    protected ResourceSummary parseResourceSummary(final Response response) {
+    protected ResourceSummary parseResourceSummary(final ccc.client.gwt.core.Response response) {
         return new ResourceSummary(
             new GwtJson(JSONParser.parse(response.getText()).isObject()));
     }
@@ -277,7 +271,7 @@ public abstract class RemotingAction
      *
      * @return A boolean.
      */
-    protected boolean parseBoolean(final Response response) {
+    protected boolean parseBoolean(final ccc.client.gwt.core.Response response) {
         final JSONBoolean b = JSONParser.parse(response.getText()).isBoolean();
         return b.booleanValue();
     }
@@ -309,7 +303,7 @@ public abstract class RemotingAction
      * @param response The response to parse.
      * @return A map.
      */
-    protected Map<String, String> parseMapString(final Response response) {
+    protected Map<String, String> parseMapString(final ccc.client.gwt.core.Response response) {
         final JSONValue value = JSONParser.parse(response.getText());
         final JSONObject result = value.isObject();
         final Json json = new GwtJson(result);

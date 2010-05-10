@@ -34,6 +34,7 @@ import java.util.Set;
 import ccc.api.types.Permission;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.presenters.GroupPresenter.GroupView;
@@ -71,9 +72,9 @@ public class GroupViewImpl
      * @param globals The globals implementation.
      */
     public GroupViewImpl(final Globals globals) {
-        super(globals.uiConstants().createGroup(), globals);
+        super(GlobalsImpl.uiConstants().createGroup(), globals);
 
-        _name.setFieldLabel(globals.uiConstants().name());
+        _name.setFieldLabel(GlobalsImpl.uiConstants().name());
         _name.setAllowBlank(false);
         addField(_name);
 
@@ -84,7 +85,7 @@ public class GroupViewImpl
             _permGroup.add(cb);
         }
         _permGroup.setOrientation(Orientation.VERTICAL);
-        _permGroup.setFieldLabel(globals.uiConstants().permissions());
+        _permGroup.setFieldLabel(GlobalsImpl.uiConstants().permissions());
 
         addField(_permGroup);
     }

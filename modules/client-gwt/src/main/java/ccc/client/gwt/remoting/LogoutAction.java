@@ -27,10 +27,9 @@
 package ccc.client.gwt.remoting;
 
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
+import ccc.client.gwt.core.Response;
 
 
 /**
@@ -47,7 +46,7 @@ public final class LogoutAction
      * Constructor.
      */
     public LogoutAction() {
-        super(UI_CONSTANTS.logout(), RequestBuilder.POST);
+        super(UI_CONSTANTS.logout(), HttpMethod.POST);
     }
 
 

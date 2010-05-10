@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Page;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -52,7 +53,7 @@ public class UpdateWorkingCopyAction
      * @param workingCopy The new working copy.
      */
     public UpdateWorkingCopyAction(final Page workingCopy) {
-        super(UI_CONSTANTS.saveDraft(), RequestBuilder.POST);
+        super(UI_CONSTANTS.saveDraft(), HttpMethod.POST);
         _workingCopy = workingCopy;
     }
 

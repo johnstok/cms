@@ -33,6 +33,7 @@ import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -67,14 +68,14 @@ public abstract class GetRootsAction
 
         return
             new Request(
-                RequestBuilder.GET,
+                HttpMethod.GET,
                 getPath(),
                 "",
-                new ResponseHandlerAdapter(GLOBALS.userActions().internalAction()) {
+                new ResponseHandlerAdapter(USER_ACTIONS.internalAction()) {
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final Response response) {
+                    public void onOK(final ccc.client.gwt.core.Response response) {
                         final JSONObject obj =
                             JSONParser.parse(response.getText()).isObject();
 

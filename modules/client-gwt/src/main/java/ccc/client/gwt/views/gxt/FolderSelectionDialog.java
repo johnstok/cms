@@ -61,7 +61,7 @@ public class FolderSelectionDialog extends Window {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
-        setHeading(_globals.uiConstants().selectFolder());
+        setHeading(GlobalsImpl.uiConstants().selectFolder());
         setWidth(WIDTH);
         setHeight(HEIGHT);
         setMinWidth(Globals.MIN_WIDTH);
@@ -69,7 +69,7 @@ public class FolderSelectionDialog extends Window {
         _tree = new FolderResourceTree(_globals);
         add(_tree.treePanel());
         final Button save = new Button(
-            _globals.uiConstants().ok(),
+            GlobalsImpl.uiConstants().ok(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {

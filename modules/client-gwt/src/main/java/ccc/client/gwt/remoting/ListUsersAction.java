@@ -30,6 +30,7 @@ import ccc.api.core.UserCriteria;
 import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -112,12 +113,12 @@ public abstract class ListUsersAction
     protected Request getRequest() {
         return
             new Request(
-                RequestBuilder.GET,
+                HttpMethod.GET,
                 getPath(),
                 "",
                 new ResponseHandlerAdapter(USER_ACTIONS.viewUsers()) {
                     /** {@inheritDoc} */
-                    @Override public void onOK(final Response response) {
+                    @Override public void onOK(final ccc.client.gwt.core.Response response) {
 
                         final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 

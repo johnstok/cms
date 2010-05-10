@@ -30,6 +30,7 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.events.FolderCreated;
 import ccc.client.gwt.events.FolderCreated.FolderCreatedHandler;
 import ccc.client.gwt.remoting.CreateFolderAction;
@@ -87,7 +88,7 @@ public class CreateFolderPresenter
             .execute();
         } else {
             getGlobals().alert(
-                getGlobals().uiConstants().resourceNameIsInvalid());
+                GlobalsImpl.uiConstants().resourceNameIsInvalid());
         }
     }
 

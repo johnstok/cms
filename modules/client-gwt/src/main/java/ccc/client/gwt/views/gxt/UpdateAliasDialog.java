@@ -34,6 +34,7 @@ import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateAliasAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
@@ -46,7 +47,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.http.client.Response;
 
 /**
  * Dialog for creating a new Alias.

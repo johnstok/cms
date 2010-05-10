@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Template;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -52,7 +53,7 @@ public class UpdateTemplateAction
      * @param details The new details for the template.
      */
     public UpdateTemplateAction(final Template details) {
-        super(UI_CONSTANTS.editTemplate(), RequestBuilder.POST);
+        super(UI_CONSTANTS.editTemplate(), HttpMethod.POST);
         _details = details;
     }
 

@@ -29,13 +29,12 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.events.ResourceDeleted;
 import ccc.client.gwt.widgets.ContentCreator;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 /**
  * Publish a resource.
@@ -55,7 +54,7 @@ public class DeleteResourceAction
      * @param selectionModel The selection model to use.
      */
     public DeleteResourceAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.delete(), RequestBuilder.POST);
+        super(UI_CONSTANTS.delete(), HttpMethod.POST);
         _selectionModel = selectionModel;
     }
 

@@ -28,12 +28,13 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Group;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.events.GroupCreated;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -55,7 +56,7 @@ public class CreateGroupAction
      * @param group The updated group.
      */
     public CreateGroupAction(final Group group) {
-        super(UI_CONSTANTS.createGroup(), RequestBuilder.POST);
+        super(UI_CONSTANTS.createGroup(), HttpMethod.POST);
         _group = group;
     }
 

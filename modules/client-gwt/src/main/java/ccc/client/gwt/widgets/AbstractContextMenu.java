@@ -46,7 +46,7 @@ public class AbstractContextMenu
         Menu {
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _constants = _globals.uiConstants();
+    private final UIConstants _constants = GlobalsImpl.uiConstants();
 
 
     /**

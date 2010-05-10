@@ -33,6 +33,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.ACL;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -59,7 +60,7 @@ public class UpdateResourceAclAction
      */
     public UpdateResourceAclAction(final ResourceSummary resource,
                                    final ACL acl) {
-        super(GLOBALS.uiConstants().updateRoles(), RequestBuilder.POST);
+        super(UI_CONSTANTS.updateRoles(), HttpMethod.POST);
         _resource = resource;
         _acl = acl;
     }

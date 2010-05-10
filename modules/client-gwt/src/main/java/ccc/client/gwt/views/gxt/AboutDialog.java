@@ -29,9 +29,8 @@ package ccc.client.gwt.views.gxt;
 import java.util.Map;
 
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.GetPropertyAction;
-
-import com.google.gwt.http.client.Response;
 
 
 /**

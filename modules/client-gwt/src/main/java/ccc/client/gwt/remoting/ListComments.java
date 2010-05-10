@@ -32,8 +32,8 @@ import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.CommentCollection;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 

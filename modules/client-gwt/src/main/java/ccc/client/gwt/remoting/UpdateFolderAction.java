@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Folder;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
 
@@ -53,7 +54,7 @@ public class UpdateFolderAction
      * @param folder The folder to update.
      */
     public UpdateFolderAction(final Folder folder) {
-        super(UI_CONSTANTS.folderSortOrder(), RequestBuilder.POST);
+        super(UI_CONSTANTS.folderSortOrder(), HttpMethod.POST);
         _folder = folder;
     }
 

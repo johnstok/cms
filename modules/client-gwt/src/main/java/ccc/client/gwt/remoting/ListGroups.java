@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.client.gwt.binding.GroupCollection;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -86,13 +87,13 @@ public abstract class ListGroups
     @Override
     protected Request getRequest() {
         return new Request(
-            RequestBuilder.GET,
+            HttpMethod.GET,
             getPath(),
             "",
             new ResponseHandlerAdapter(USER_ACTIONS.unknownAction()){
                 /** {@inheritDoc} */
                 @Override
-                public void onOK(final Response response) {
+                public void onOK(final ccc.client.gwt.core.Response response) {
                     final JSONObject obj =
                         JSONParser.parse(response.getText()).isObject();
                     final GroupCollection groups = new GroupCollection();

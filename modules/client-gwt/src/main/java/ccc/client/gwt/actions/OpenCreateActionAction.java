@@ -56,7 +56,7 @@ public final class OpenCreateActionAction
     public void execute() {
         final ResourceSummaryModelData item = _ssm.tableSelection();
         if (item == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noResourceSelected());
+            GLOBALS.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateActionPresenter(
                 GLOBALS,

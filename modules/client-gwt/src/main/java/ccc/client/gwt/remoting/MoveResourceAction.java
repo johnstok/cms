@@ -31,6 +31,7 @@ import java.util.UUID;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -56,7 +57,7 @@ public class MoveResourceAction
      * @param resource The resource to move.
      */
     public MoveResourceAction(final ResourceSummary resource, final UUID newParent) {
-        super(UI_CONSTANTS.move(), RequestBuilder.POST);
+        super(UI_CONSTANTS.move(), HttpMethod.POST);
         _resource = resource;
         _parent = newParent;
     }

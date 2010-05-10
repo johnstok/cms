@@ -31,9 +31,9 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.UpdateAliasDialog;
 
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -55,7 +55,7 @@ public class OpenUpdateAliasAction
      */
     public OpenUpdateAliasAction(final ResourceSummaryModelData alias,
                              final ResourceSummary targetRoot) {
-        super(GLOBALS.uiConstants().updateAlias());
+        super(UI_CONSTANTS.updateAlias());
         _alias = alias;
         _targetRoot = targetRoot;
     }

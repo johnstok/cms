@@ -64,7 +64,7 @@ public class CreateActionPanel
         LayoutContainer {
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _uiConstants = _globals.uiConstants();
+    private final UIConstants _uiConstants = GlobalsImpl.uiConstants();
 
     private final DataList _list = new DataList();
     private final LayoutContainer _parameters = new LayoutContainer();
@@ -242,7 +242,7 @@ public class CreateActionPanel
 
         /** {@inheritDoc} */
         public void populateForm(final LayoutContainer form) {
-            final UIConstants uiConstants = _globals.uiConstants();
+            final UIConstants uiConstants = GlobalsImpl.uiConstants();
 
             _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>"
                 +uiConstants.appliesTheSelectedResourcesWorkingCopy()

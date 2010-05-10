@@ -31,6 +31,7 @@ import java.util.UUID;
 import ccc.api.core.Page;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -77,13 +78,13 @@ public abstract class PageDeltaAction
     protected Request getRequest() {
         return
             new Request(
-                RequestBuilder.GET,
+                HttpMethod.GET,
                 getPath(),
                 "",
                 new ResponseHandlerAdapter(_name) {
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final Response response) {
+                    public void onOK(final ccc.client.gwt.core.Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
                         final Page delta = new Page();

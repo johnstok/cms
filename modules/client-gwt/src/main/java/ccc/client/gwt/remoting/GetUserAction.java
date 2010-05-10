@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.User;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -64,15 +65,15 @@ public abstract class GetUserAction
     protected Request getRequest() {
         return
             new Request(
-                RequestBuilder.GET,
+                HttpMethod.GET,
                 Globals.API_URL + _userPath,
                 "",
                 new ResponseHandlerAdapter(
-                    GLOBALS.userActions().internalAction()) {
+                    USER_ACTIONS.internalAction()) {
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final Response response) {
+                    public void onOK(final ccc.client.gwt.core.Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
                         final User user = new User(new GwtJson(result));

@@ -37,6 +37,7 @@ import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
@@ -48,7 +49,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.http.client.Response;
 
 
 /**

@@ -128,7 +128,7 @@ public class ImageSelectionPanel extends ContentPanel {
                         }});
                     folderSelect.show();
                 }});
-        toolBar.add(new Text(_globals.uiConstants().folder()));
+        toolBar.add(new Text(GlobalsImpl.uiConstants().folder()));
         toolBar.add(_folderField);
         toolBar.add(new SeparatorToolItem());
 
@@ -182,7 +182,7 @@ public class ImageSelectionPanel extends ContentPanel {
                         (BasePagingLoadConfig) loadConfig;
 
                     new GetImagesPaged(
-                        _globals.uiConstants().selectImage(),
+                        GlobalsImpl.uiConstants().selectImage(),
                         _folder.getId(),
                         config,
                         callback).execute();

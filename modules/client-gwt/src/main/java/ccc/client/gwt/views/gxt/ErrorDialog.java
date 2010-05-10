@@ -28,6 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.types.FailureCode;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemoteException;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
@@ -59,7 +60,7 @@ public class ErrorDialog extends AbstractEditDialog {
                         final String error,
                         final String resolution,
                         final Globals globals) {
-        super(globals.uiConstants().error(), globals);
+        super(GlobalsImpl.uiConstants().error(), globals);
         setPanelId("error-panel");
 
         getPanel().add(_message);

@@ -36,6 +36,7 @@ import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.DialogMode;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
 import ccc.client.gwt.remoting.TemplateNameExistsAction;
@@ -56,7 +57,6 @@ import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.layout.FormData;
-import com.google.gwt.http.client.Response;
 
 
 /**

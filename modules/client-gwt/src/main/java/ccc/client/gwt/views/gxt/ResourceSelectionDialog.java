@@ -63,7 +63,7 @@ public class ResourceSelectionDialog extends Window {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
-        setHeading(_globals.uiConstants().selectResource());
+        setHeading(GlobalsImpl.uiConstants().selectResource());
         setWidth(DIALOG_WIDTH);
         setMinWidth(Globals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
@@ -73,7 +73,7 @@ public class ResourceSelectionDialog extends Window {
         add(_tree.treePanel());
 
         final Button save = new Button(
-            _globals.uiConstants().save(),
+            GlobalsImpl.uiConstants().save(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {

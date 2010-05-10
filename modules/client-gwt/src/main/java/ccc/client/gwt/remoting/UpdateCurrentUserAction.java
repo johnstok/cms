@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -50,7 +51,7 @@ public abstract class UpdateCurrentUserAction
      * @param userDetails The updated user details.
      */
     public UpdateCurrentUserAction(final User userDetails) {
-        super(GLOBALS.uiConstants().editUserPw(), RequestBuilder.POST);
+        super(UI_CONSTANTS.editUserPw(), HttpMethod.POST);
         _userDetails = userDetails;
     }
 

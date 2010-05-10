@@ -32,6 +32,7 @@ import java.util.Collection;
 import ccc.api.core.Revision;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -71,13 +72,13 @@ public final class ViewHistoryAction
     protected Request getRequest() {
         return
             new Request(
-                RequestBuilder.GET,
+                HttpMethod.GET,
                 Globals.API_URL
                     + _selectionModel.tableSelection().revisionsPath(),
                 "",
                 new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()){
                     /** {@inheritDoc} */
-                    @Override public void onOK(final Response response) {
+                    @Override public void onOK(final ccc.client.gwt.core.Response response) {
 
                         final JSONObject obj =
                             JSONParser.parse(response.getText()).isObject();

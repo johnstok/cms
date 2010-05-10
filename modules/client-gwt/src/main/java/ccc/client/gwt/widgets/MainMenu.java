@@ -78,7 +78,7 @@ public class MainMenu
     private static final String CONTENT = "content";
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _constants = _globals.uiConstants();
+    private final UIConstants _constants = GlobalsImpl.uiConstants();
     private final User _user;
 
     /**
@@ -263,7 +263,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    GLOBALS.alert(sb.toString());
+                    _globals.alert(sb.toString());
                 }
 
             });

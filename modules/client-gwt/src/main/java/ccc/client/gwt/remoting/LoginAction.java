@@ -26,11 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.LoginDialog;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -51,7 +50,7 @@ public class LoginAction
      * @param dialog The login dialog to act on.
      */
     public LoginAction(final LoginDialog dialog) {
-        super(UI_CONSTANTS.login(), RequestBuilder.POST);
+        super(UI_CONSTANTS.login(), HttpMethod.POST);
         _dialog = dialog;
     }
 

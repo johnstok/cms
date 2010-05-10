@@ -29,11 +29,12 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -54,7 +55,7 @@ public class UnlockAction
      * @param selectionModel The selection model.
      */
     public UnlockAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.unlock(), RequestBuilder.POST);
+        super(UI_CONSTANTS.unlock(), HttpMethod.POST);
         _selectionModel = selectionModel;
     }
 

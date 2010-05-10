@@ -69,7 +69,7 @@ public class GroupListField extends ListField<BaseModelData> {
             if (selectedGroups.contains(g.getId())) { selected.add(d); }
         }
 
-        setFieldLabel(_globals.uiConstants().roles());
+        setFieldLabel(GlobalsImpl.uiConstants().roles());
         setHeight(GROUP_HEIGHT);
         setStore(gData);
         setSelection(selected);

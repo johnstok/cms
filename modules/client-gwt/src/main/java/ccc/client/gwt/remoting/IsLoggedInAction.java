@@ -37,9 +37,8 @@ import ccc.client.gwt.concurrent.SimpleLatch;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.LoginDialog;
-
-import com.google.gwt.http.client.Response;
 
 
 /**

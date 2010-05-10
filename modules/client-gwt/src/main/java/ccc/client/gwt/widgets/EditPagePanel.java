@@ -255,7 +255,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
                 .build(new GWTTemplateEncoder()));
 
-            new GetAbsolutePathAction(_globals.uiConstants().selectImage(),
+            new GetAbsolutePathAction(GlobalsImpl.uiConstants().selectImage(),
                                       s) {
                 @Override protected void execute(final String path) {
                     final File fs = new File(
@@ -779,7 +779,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     private void addStaticFields() {
         _name = new TextField<String>();
-        _name.setFieldLabel(_globals.uiConstants().name());
+        _name.setFieldLabel(GlobalsImpl.uiConstants().name());
         _name.setAllowBlank(false);
         add(_name, new FormData("95%"));
     }
