@@ -45,6 +45,7 @@ import ccc.client.gwt.binding.ResourceSummaryModelData.Property;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetChildrenAction;
 import ccc.client.gwt.remoting.UpdateFolderAction;
@@ -69,7 +70,6 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 

@@ -29,12 +29,11 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.File;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.events.TextFileUpdated;
 import ccc.client.gwt.widgets.ContentCreator;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -54,7 +53,7 @@ public class EditTextFileAction
      * @param dto The dto of the file.
      */
     public EditTextFileAction(final File dto) {
-        super(UI_CONSTANTS.updateTextFile(), RequestBuilder.POST);
+        super(UI_CONSTANTS.updateTextFile(), HttpMethod.POST);
         _dto = dto;
     }
 

@@ -29,12 +29,11 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.events.ResourceCreated;
 import ccc.client.gwt.widgets.ContentCreator;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -54,7 +53,7 @@ public final class CreateTextFileAction
      * @param dto Text file DTO.
      */
     public CreateTextFileAction(final File dto) {
-        super(GLOBALS.uiConstants().createTextFile(), RequestBuilder.POST);
+        super(UI_CONSTANTS.createTextFile(), HttpMethod.POST);
         _dto = dto;
     }
 

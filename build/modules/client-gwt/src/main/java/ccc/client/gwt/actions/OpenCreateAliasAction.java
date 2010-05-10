@@ -29,6 +29,7 @@ package ccc.client.gwt.actions;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.presenters.CreateAliasPresenter;
 import ccc.client.gwt.views.gxt.CreateAliasDialog;
 
@@ -56,7 +57,7 @@ public final class OpenCreateAliasAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         if (item == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noResourceSelected());
+            GLOBALS.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateAliasPresenter(
                 GLOBALS,

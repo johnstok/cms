@@ -42,6 +42,7 @@ import ccc.api.types.ResourceType;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.ActionCancelled;
@@ -263,7 +264,7 @@ public class ActionSummaryModelData
         final String path = Globals.API_URL + _as.self();
         return
             new Request(
-                RequestBuilder.POST, // FIXME: Should be delete.
+                HttpMethod.POST, // FIXME: Should be delete.
                 path,
                 "",
                 new ActionCancelledCallback(this));
@@ -295,7 +296,7 @@ public class ActionSummaryModelData
 
         return
             new Request(
-                RequestBuilder.POST,
+                HttpMethod.POST,
                 path,
                 json.toString(),
                 new ActionCreatedCallback());
@@ -323,7 +324,7 @@ public class ActionSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final Response response) {
+        public void onNoContent(final ccc.client.gwt.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
@@ -345,7 +346,7 @@ public class ActionSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final Response response) {
+        public void onOK(final ccc.client.gwt.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(new ActionCreated());
         }
     }

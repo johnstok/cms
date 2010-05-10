@@ -29,6 +29,7 @@ package ccc.client.gwt.actions;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.presenters.CreateFolderPresenter;
 import ccc.client.gwt.views.gxt.CreateFolderDialog;
 
@@ -56,7 +57,7 @@ public final class OpenCreateFolderAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.treeSelection();
         if (item == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noFolderSelected());
+            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateFolderPresenter(
                 GLOBALS,

@@ -38,7 +38,7 @@ import com.google.gwt.http.client.RequestBuilder.Method;
  */
 public class Request {
 
-    private final Method          _method;
+    private final HttpMethod      _method;
     private final String          _path;
     private final String          _body;
     private final ResponseHandler _callback;
@@ -52,7 +52,7 @@ public class Request {
      * @param body     The request's body.
      * @param callback The callback fired when the request completes.
      */
-    public Request(final Method method,
+    public Request(final HttpMethod method,
                    final String path,
                    final String body,
                    final ResponseHandler callback) {
@@ -68,7 +68,7 @@ public class Request {
      *
      * @return Returns the request method.
      */
-    public Method getMethod() { return _method; }
+    public HttpMethod getMethod() { return _method; }
 
 
     /**

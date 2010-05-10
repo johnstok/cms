@@ -48,7 +48,9 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.Request;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.AliasCreated;
 import ccc.client.gwt.events.FolderCreated;
@@ -60,7 +62,6 @@ import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -576,10 +577,10 @@ public class ResourceSummaryModelData
      */
     public Request applyWorkingCopy() {
         return new Request(
-            RequestBuilder.POST,
+            HttpMethod.POST,
             Globals.API_URL + _rs.applyWc().build(new GWTTemplateEncoder()),
             "",
-            new WCAppliedCallback(g.uiConstants().applyWorkingCopy(), this));
+            new WCAppliedCallback(GlobalsImpl.uiConstants().applyWorkingCopy(), this));
     }
 
     /**
@@ -589,10 +590,10 @@ public class ResourceSummaryModelData
      */
     public Request clearWorkingCopy() {
         return new Request(
-            RequestBuilder.POST,
+            HttpMethod.POST,
             Globals.API_URL + _rs.clearWc().build(new GWTTemplateEncoder()),
             "",
-            new WCClearedCallback(g.uiConstants().deleteWorkingCopy(), this));
+            new WCClearedCallback(GlobalsImpl.uiConstants().deleteWorkingCopy(), this));
     }
 
 
@@ -611,7 +612,7 @@ public class ResourceSummaryModelData
 
         return
             new Request(
-                RequestBuilder.POST,
+                HttpMethod.POST,
                 path,
                 json.toString(),
                 new AliasCreatedCallback(
@@ -640,7 +641,7 @@ public class ResourceSummaryModelData
 
         return
             new Request(
-                RequestBuilder.POST,
+                HttpMethod.POST,
                 path,
                 json.toString(),
                 new FolderCreatedCallback(
@@ -663,7 +664,7 @@ public class ResourceSummaryModelData
 
         return
             new Request(
-                RequestBuilder.POST,
+                HttpMethod.POST,
                 path,
                 json.toString(),
                 new PageCreatedCallback(
@@ -684,7 +685,7 @@ public class ResourceSummaryModelData
                                  final ResourcePath newPath) {
         return
             new Request(
-                RequestBuilder.POST,
+                HttpMethod.POST,
                 Globals.API_URL + _rs.rename().build(new GWTTemplateEncoder()),
                 name,
                 new ResourceRenamedCallback(
@@ -722,7 +723,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final Response response) {
+        public void onNoContent(final ccc.client.gwt.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
@@ -746,7 +747,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final Response response) {
+        public void onOK(final ccc.client.gwt.core.Response response) {
             final ResourceSummaryModelData rs =
                 new ResourceSummaryModelData(parseResourceSummary(response));
             ContentCreator.EVENT_BUS.fireEvent(new PageCreated(rs));
@@ -772,7 +773,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final Response response) {
+        public void onOK(final ccc.client.gwt.core.Response response) {
             final ResourceSummaryModelData rs =
                 new ResourceSummaryModelData(parseResourceSummary(response));
             ContentCreator.EVENT_BUS.fireEvent(new FolderCreated(rs));
@@ -798,7 +799,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final Response response) {
+        public void onOK(final ccc.client.gwt.core.Response response) {
             final ResourceSummaryModelData newAlias =
                 new ResourceSummaryModelData(parseResourceSummary(response));
             ContentCreator.EVENT_BUS.fireEvent(new AliasCreated(newAlias));
@@ -829,7 +830,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final Response response) {
+        public void onNoContent(final ccc.client.gwt.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
@@ -858,7 +859,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final Response response) {
+        public void onNoContent(final ccc.client.gwt.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }

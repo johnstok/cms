@@ -113,7 +113,7 @@ public class ResourceNavigator extends ContentPanel {
         _commentTree = new CommentTree(_view);
         final ContentPanel commentsPanel = new ContentPanel();
         setPanel(commentsPanel, "comment-navigator",
-            _globals.uiConstants().comments(), _commentTree);
+            GlobalsImpl.uiConstants().comments(), _commentTree);
 
         _rootTrees.get(0).showTable();
     }

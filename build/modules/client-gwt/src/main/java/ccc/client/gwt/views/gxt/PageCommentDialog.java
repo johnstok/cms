@@ -33,6 +33,7 @@ import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdatePageAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
@@ -41,7 +42,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.google.gwt.http.client.Response;
 
 /**
  * Dialog for capturing the page edit metadata.

@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -70,14 +71,14 @@ public abstract class UniqueUsernameAction
     protected Request getRequest() {
         return
             new Request(
-                RequestBuilder.GET,
+                HttpMethod.GET,
                 getPath(),
                 "",
                 new ResponseHandlerAdapter(
-                    GLOBALS.userActions().checkUniqueUsername()) {
+                    USER_ACTIONS.checkUniqueUsername()) {
 
                     /** {@inheritDoc} */
-                    @Override public void onOK(final Response response) {
+                    @Override public void onOK(final ccc.client.gwt.core.Response response) {
                         final boolean exists =
                             JSONParser
                                 .parse(response.getText())

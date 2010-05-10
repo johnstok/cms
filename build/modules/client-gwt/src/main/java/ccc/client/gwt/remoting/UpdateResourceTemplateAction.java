@@ -29,13 +29,12 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Resource;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.events.ResourceTemplateChanged;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
-
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -56,7 +55,7 @@ public class UpdateResourceTemplateAction
      * @param resource The resource to update.
      */
     public UpdateResourceTemplateAction(final Resource resource) {
-        super(UI_CONSTANTS.chooseTemplate(), RequestBuilder.POST);
+        super(UI_CONSTANTS.chooseTemplate(), HttpMethod.POST);
         _resource = resource;
     }
 

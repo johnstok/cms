@@ -5,7 +5,6 @@ import ccc.api.types.DBC;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.Response;
 
 /**
  * Adapter that maps GWT's callback handler to the CC response handler.
@@ -33,7 +32,9 @@ public final class RequestCallbackAdapter
     }
 
     public void onResponseReceived(final Request request,
-                                   final Response response) {
+                                   final com.google.gwt.http.client.Response r) {
+        Response response = 
+            new Response(r.getText(), r.getStatusText(), r.getStatusCode());
 
         if (SessionTimeoutException.isTimedout(response.getText())) {
             _handler.onSessionTimeout(response);

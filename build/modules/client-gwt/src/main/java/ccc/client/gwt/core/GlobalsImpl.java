@@ -63,22 +63,15 @@ public class GlobalsImpl
     private static final Map<String, String> SETTINGS =
         new HashMap<String, String>();
 
-    private static final UIConstants UI_CONSTANTS =
-        GWT.create(UIConstants.class);
-    private static final UIMessages UI_MESSAGES =
-        GWT.create(UIMessages.class);
-    private static final ActionStatusConstants ACTION_STATUSES =
-        GWT.create(ActionStatusConstants.class);
-    private static final CommandTypeConstants COMMAND_TYPES =
-        GWT.create(CommandTypeConstants.class);
-    private static final ErrorDescriptions ERROR_DESCRIPTIONS =
-        GWT.create(ErrorDescriptions.class);
-    private static final ErrorResolutions ERROR_RESOLUTIONS =
-        GWT.create(ErrorResolutions.class);
-    private static final ActionNameConstants USER_ACTIONS =
-        GWT.create(ActionNameConstants.class);
-    private static final boolean ENABLE_EXIT_CONFIRMATION =
-        (null == Window.Location.getParameter("dec"));
+    private static UIConstants UI_CONSTANTS;
+    private static UIMessages UI_MESSAGES;
+    private static ActionStatusConstants ACTION_STATUSES;
+    private static CommandTypeConstants COMMAND_TYPES;
+    private static ErrorDescriptions ERROR_DESCRIPTIONS;
+    private static ErrorResolutions ERROR_RESOLUTIONS;
+    private static ActionNameConstants USER_ACTIONS;
+    
+    private static boolean ENABLE_EXIT_CONFIRMATION = false;
 
     private HandlerRegistration _handlerRegistration = null;
 
@@ -166,12 +159,27 @@ public class GlobalsImpl
         Window.Location.reload();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public UIConstants uiConstants() {
+    
+    /**
+     * Accessor for the {@link UIConstants} object.
+     *
+     * @return A new instance of {@link UIConstants}.
+     */
+    public static UIConstants uiConstants() {
        return UI_CONSTANTS;
     }
+    
 
+    /**
+     * Mutator for the {@link UIConstants} object.
+     * 
+     * @param uiConstants The new UI constants.
+     */
+    public static void setUiConstants(UIConstants uiConstants) {
+       UI_CONSTANTS = uiConstants;
+    }
+
+    
     /** {@inheritDoc} */
     @Override
     public UIMessages uiMessages() {
@@ -193,10 +201,18 @@ public class GlobalsImpl
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ActionNameConstants userActions() {
+    /**
+     * Accessor for the {@link ActionNameConstants} object.
+     *
+     * @return A new instance of {@link ActionNameConstants}.
+     */
+    public static ActionNameConstants userActions() {
         return USER_ACTIONS;
+    }
+
+
+    public static void setUserActions(ActionNameConstants userActions) {
+        USER_ACTIONS = userActions;
     }
 
     /**
@@ -328,4 +344,64 @@ public class GlobalsImpl
      * @param groups The group collection to access.
      */
     public static void groups(final GroupCollection groups) { GROUPS = groups; }
+
+
+    /**
+     * Set whether an 'exit confirmation' dialog should be displayed.
+     *
+     * @param enabled True if the dialog should be displayed, false otherwise.
+     */
+    public static void setEnableExitConfirmation(boolean enabled) {
+        ENABLE_EXIT_CONFIRMATION = enabled;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param create
+     */
+    public static void setUiMessages(UIMessages create) {
+        UI_MESSAGES = create;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param create
+     */
+    public static void setActionConstants(ActionStatusConstants create) {
+        ACTION_STATUSES = create;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param create
+     */
+    public static void setCommandConstants(CommandTypeConstants create) {
+        COMMAND_TYPES = create;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param create
+     */
+    public static void setErrorDescriptions(ErrorDescriptions create) {
+        ERROR_DESCRIPTIONS = create;
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param create
+     */
+    public static void setErrorResolutions(ErrorResolutions create) {
+        ERROR_RESOLUTIONS = create;
+    }
 }

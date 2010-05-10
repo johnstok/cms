@@ -30,11 +30,12 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.Json;
 
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -54,7 +55,7 @@ public abstract class CreateTemplateAction
      * @param delta The template's details.
      */
     public CreateTemplateAction(final Template delta) {
-        super(GLOBALS.uiConstants().createTemplate(), RequestBuilder.POST);
+        super(UI_CONSTANTS.createTemplate(), HttpMethod.POST);
         _delta = DBC.require().notNull(delta);
     }
 

@@ -27,9 +27,6 @@
 
 package ccc.client.gwt.core;
 
-import com.google.gwt.http.client.Response;
-
-
 /**
  * API for handling HTTP responses.
  *

@@ -29,6 +29,7 @@ package ccc.client.gwt.actions;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
+import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.views.gxt.UploadFileDialog;
 
 /**
@@ -55,7 +56,7 @@ public final class OpenCreateFileAction
     public void execute() {
         final ResourceSummaryModelData parent = _selectionModel.treeSelection();
         if (parent == null) {
-            GLOBALS.alert(GLOBALS.uiConstants().noFolderSelected());
+            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new UploadFileDialog(parent, _selectionModel).show();
         }

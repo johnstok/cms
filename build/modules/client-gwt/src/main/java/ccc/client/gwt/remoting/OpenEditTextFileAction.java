@@ -31,12 +31,12 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.EditTextFilePresenter;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.widgets.ResourceTable;
 
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -59,7 +59,7 @@ extends
      * @param selectionModel The selection model.
      */
     public OpenEditTextFileAction(final ResourceTable selectionModel) {
-        super(GLOBALS.uiConstants().updateTextFile());
+        super(UI_CONSTANTS.updateTextFile());
         _selectionModel = selectionModel;
     }
 
@@ -85,7 +85,7 @@ extends
                 dto);
         } else {
             GLOBALS.alert(
-                GLOBALS.uiConstants().noEditorForResource());
+                UI_CONSTANTS.noEditorForResource());
         }
     }
 

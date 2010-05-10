@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -51,7 +52,7 @@ public class ValidateFieldAction
      * @param page The page to validate.
      */
     public ValidateFieldAction(final Page page) {
-        super(USER_ACTIONS.validatePageFields(), RequestBuilder.POST);
+        super(USER_ACTIONS.validatePageFields(), HttpMethod.POST);
         _page = page;
     }
 

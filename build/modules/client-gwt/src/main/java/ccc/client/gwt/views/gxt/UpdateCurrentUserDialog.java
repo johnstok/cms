@@ -30,13 +30,13 @@ package ccc.client.gwt.views.gxt;
 import static ccc.client.gwt.validation.Validations.*;
 import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateCurrentUserAction;
 import ccc.client.gwt.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.http.client.Response;
 
 
 /**

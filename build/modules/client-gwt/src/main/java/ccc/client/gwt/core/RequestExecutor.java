@@ -17,59 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Content Control.  If not, see http://www.gnu.org/licenses/.
  *
- * Revision      $Rev$
- * Modified by   $Author$
- * Modified on   $Date$
+ * Revision      $Rev: 2636 $
+ * Modified by   $Author: keith $
+ * Modified on   $Date: 2010-04-09 14:56:56 +0100 (Fri, 09 Apr 2010) $
  *
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
 
-import ccc.api.core.Page;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.HttpMethod;
-import ccc.client.gwt.core.RemotingAction;
-
-import com.google.gwt.http.client.RequestBuilder;
-
+package ccc.client.gwt.core;
 
 /**
- * Remote action for page updating.
+ * Sends an HTTP request to a host server.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdatePageAction
-    extends
-        RemotingAction {
-
-    private final Page _details;
-
+public interface RequestExecutor {
 
     /**
-     * Constructor.
+     * Send the specified request.
      *
-     * @param details Details of the update.
+     * @param request The request to send.
      */
-    public UpdatePageAction(final Page details) {
-        super(UI_CONSTANTS.updateContent(), HttpMethod.POST);
-        _details = details;
-    }
+    void invokeRequest(final Request request);
 
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getPath() {
-        return _details.self().build(new GWTTemplateEncoder());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getBody() {
-        final GwtJson json = new GwtJson();
-        _details.toJson(json);
-        return json.toString();
-    }
 }

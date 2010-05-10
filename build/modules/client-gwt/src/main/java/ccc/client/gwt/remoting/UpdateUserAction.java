@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.User;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -80,12 +81,12 @@ public abstract class UpdateUserAction
 
         return
             new Request(
-                RequestBuilder.POST,
+                HttpMethod.POST,
                 getPath(),
                 getBody(),
                 new ResponseHandlerAdapter(UI_CONSTANTS.editUser()) {
                     /** {@inheritDoc} */
-                    @Override public void onNoContent(final Response response) {
+                    @Override public void onNoContent(final ccc.client.gwt.core.Response response) {
                         done();
                     }
                 });

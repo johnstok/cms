@@ -30,6 +30,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.MoveResourceAction;
 import ccc.client.gwt.validation.Validate;
@@ -45,7 +46,6 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.TriggerField;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.google.gwt.http.client.Response;
 
 
 /**

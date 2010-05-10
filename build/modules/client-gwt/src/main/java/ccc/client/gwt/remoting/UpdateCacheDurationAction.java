@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Resource;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
 import com.google.gwt.http.client.RequestBuilder;
@@ -52,7 +53,7 @@ public abstract class UpdateCacheDurationAction
      * @param resource The resource to update.
      */
     public UpdateCacheDurationAction(final Resource resource) {
-        super(GLOBALS.uiConstants().editCacheDuration(), RequestBuilder.POST);
+        super(UI_CONSTANTS.editCacheDuration(), HttpMethod.POST);
         _resource = resource;
     }
 

@@ -31,13 +31,13 @@ import static ccc.client.gwt.validation.Validations.*;
 import ccc.api.core.User;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
 import ccc.client.gwt.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.google.gwt.http.client.Response;
 
 
 /**

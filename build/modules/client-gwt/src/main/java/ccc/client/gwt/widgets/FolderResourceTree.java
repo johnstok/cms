@@ -37,6 +37,7 @@ import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetChildrenPagedAction;
 import ccc.client.gwt.remoting.GetRootsAction;
 
@@ -101,8 +102,8 @@ public class FolderResourceTree extends AbstractResourceTree {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
-                            GLOBALS.unexpectedError(
-                                t, GLOBALS.userActions().unknownAction());
+                            _globals.unexpectedError(
+                                t, GlobalsImpl.userActions().unknownAction());
                             callback.onFailure(t);
                         }
 

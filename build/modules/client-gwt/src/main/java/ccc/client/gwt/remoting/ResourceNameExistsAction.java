@@ -32,8 +32,8 @@ import ccc.api.core.Folder;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 
 

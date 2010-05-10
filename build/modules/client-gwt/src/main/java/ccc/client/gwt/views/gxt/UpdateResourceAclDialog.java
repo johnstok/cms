@@ -38,6 +38,7 @@ import ccc.api.types.ACL;
 import ccc.api.types.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.UpdateResourceAclAction;
 
@@ -63,7 +64,6 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.google.gwt.http.client.Response;
 
 
 /**

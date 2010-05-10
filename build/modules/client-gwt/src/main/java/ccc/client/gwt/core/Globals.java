@@ -53,12 +53,6 @@ public interface Globals {
      */
     void installUnexpectedExceptionHandler();
 
-    /**
-     * Factory for {@link UIConstants} objects.
-     *
-     * @return A new instance of {@link UIConstants}.
-     */
-    UIConstants uiConstants();
 
     /**
      * Factory for {@link UIMessages} objects.
@@ -144,12 +138,6 @@ public interface Globals {
      */
     void currentUser(final User user);
 
-    /**
-     * Factory for {@link ActionNameConstants} objects.
-     *
-     * @return A new instance of {@link ActionNameConstants}.
-     */
-    ActionNameConstants userActions();
 
     /** DEFAULT_WIDTH : int. */
     int DEFAULT_WIDTH = 640;

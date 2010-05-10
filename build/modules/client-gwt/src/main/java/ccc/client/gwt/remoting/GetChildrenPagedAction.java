@@ -38,9 +38,9 @@ import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.JsonKeys;
 
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -77,7 +77,7 @@ RemotingAction{
                                   final String sort,
                                   final SortOrder order,
                                   final ResourceType type) {
-        super(GLOBALS.uiConstants().getChildrenPaged());
+        super(UI_CONSTANTS.getChildrenPaged());
         _parent = parent;
         _pageNo = pageNo;
         _pageSize = pageSize;

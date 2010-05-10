@@ -30,7 +30,6 @@ import ccc.client.gwt.events.Error;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
 
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
