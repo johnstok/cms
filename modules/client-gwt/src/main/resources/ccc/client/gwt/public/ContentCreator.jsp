@@ -10,7 +10,7 @@
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
-    <title>Content Creator</title>
+    <title>Content Control</title>
     
     <!--                                           -->
     <!-- This script loads your compiled module.   -->
