@@ -60,7 +60,6 @@ public interface ResourceIdentifiers {
         String COLLECTION = "/secure/templates";
         String ELEMENT    = COLLECTION + "/{id}";
         String EXISTS     = COLLECTION + "/{name}/exists";
-        String DELTA      = ELEMENT + "/delta";
     }
 
     public static interface Page {

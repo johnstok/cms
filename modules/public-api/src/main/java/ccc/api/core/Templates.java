@@ -62,7 +62,7 @@ public interface Templates {
      * @return A list of templates.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Template.COLLECTION)
-    PagedCollection<Template> templates(
+    PagedCollection<Template> query(
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
 
@@ -85,8 +85,8 @@ public interface Templates {
      *
      * @return The corresponding delta.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.DELTA)
-    Template templateDelta(@PathParam("id") UUID templateId);
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+    Template retrieve(@PathParam("id") UUID templateId);
 
     /**
      * Update the specified template on the server.
@@ -95,7 +95,7 @@ public interface Templates {
      * @param delta The changes to apply.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
-    void updateTemplate(
+    void update(
         @PathParam("id") UUID templateId, Template delta);
 
     /**
@@ -106,5 +106,5 @@ public interface Templates {
      * @return A resource summary describing the new template.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Template.COLLECTION)
-    ResourceSummary createTemplate(Template template);
+    ResourceSummary create(Template template);
 }

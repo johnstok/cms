@@ -72,9 +72,9 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Template templateDelta(final UUID templateId) {
+    public Template retrieve(final UUID templateId) {
         try {
-            return _templates.templateDelta(templateId);
+            return _templates.retrieve(templateId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -94,10 +94,10 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<Template> templates(final int pageNo,
+    public PagedCollection<Template> query(final int pageNo,
                                                final int pageSize) {
         try {
-            return _templates.templates(pageNo, pageSize);
+            return _templates.query(pageNo, pageSize);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -106,10 +106,10 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateTemplate(final UUID templateId,
+    public void update(final UUID templateId,
                                final Template delta) {
         try {
-            _templates.updateTemplate(templateId, delta);
+            _templates.update(templateId, delta);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -118,9 +118,9 @@ public class TemplatesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createTemplate(final Template template) {
+    public ResourceSummary create(final Template template) {
         try {
-            return _templates.createTemplate(template);
+            return _templates.create(template);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

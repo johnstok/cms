@@ -35,6 +35,8 @@ import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
+import ccc.api.types.URIBuilder;
+import ccc.commons.NormalisingEncoder;
 
 
 /**
@@ -146,11 +148,7 @@ public class TemplateEntity
     /** {@inheritDoc} */
     @Override
     public Template createSnapshot() {
-        final Template t = new Template();
-        t.setBody(getBody());
-        t.setDefinition(getDefinition());
-        t.setMimeType(getMimeType()); // FIXME: Make a copy.
-        return t;
+        return summarize();
     }
 
 
@@ -209,7 +207,14 @@ public class TemplateEntity
                 getBody(),
                 getDefinition());
         setDtoProps(dto);
+        dto.setMimeType(getMimeType());
         dto.setRevision(currentRevisionNo());
+
+        dto.addLink(
+            Template.SELF,
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+
         return dto;
     }
 

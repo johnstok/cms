@@ -88,7 +88,7 @@ public class TemplateMigration {
         t.setMimeType(MimeType.HTML);
 
         try {
-            _templateApi.createTemplate(t);
+            _templateApi.create(t);
         } catch (final CCException e) {
             log.error("Failed to create template: "+templateName, e);
         }
@@ -108,7 +108,7 @@ public class TemplateMigration {
                             final ResourceSummary templateFolder) {
 
         final Set<Template> templates =
-            new HashSet<Template>(_templateApi.templates(1, 999).getElements());
+            new HashSet<Template>(_templateApi.query(1, 999).getElements());
 
         Template template = null;
         for (final Template ts : templates) {

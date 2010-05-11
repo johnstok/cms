@@ -108,7 +108,7 @@ public class TmpRenderer {
     private Response renderSearch(final Resource s) {
         try {
             final UUID tId = s.getTemplate();
-            final Template t = _templates.templateDelta(tId);
+            final Template t = _templates.retrieve(tId);
             final Response r =
                 new Response(
                     new SearchBody(
@@ -142,7 +142,7 @@ public class TmpRenderer {
     private Response render(final Page s) {
         try {
             final UUID tId = s.getTemplate();
-            final Template t = _templates.templateDelta(tId);
+            final Template t = _templates.retrieve(tId);
             final Response r =
                 new Response(
                     new PageBody(
