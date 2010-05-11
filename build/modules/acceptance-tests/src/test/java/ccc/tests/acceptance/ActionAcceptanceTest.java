@@ -59,7 +59,7 @@ public class ActionAcceptanceTest
         final ResourceSummary rs = tempFolder();
 
         // ACT
-        getActions().createAction(
+        getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -81,7 +81,7 @@ public class ActionAcceptanceTest
 
         // ARRANGE
         final ResourceSummary rs = tempFolder();
-        final ActionSummary a = getActions().createAction(
+        final ActionSummary a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -89,10 +89,10 @@ public class ActionAcceptanceTest
                 new HashMap<String, String>()));
 
         // ACT
-        getActions().cancelAction(a.getId());
+        getActions().cancel(a.getId());
 
         // ASSERT
-        final ActionSummary cancelled = getActions().findAction(a.getId());
+        final ActionSummary cancelled = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.CANCELLED, cancelled.getStatus());
     }
 
@@ -104,7 +104,7 @@ public class ActionAcceptanceTest
         final Date time =  new Date(new Date().getTime()-ONE_SECOND);
         final ResourceSummary rs = tempFolder();
         getCommands().lock(rs.getId());
-        final ActionSummary a = getActions().createAction(
+        final ActionSummary a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -115,7 +115,7 @@ public class ActionAcceptanceTest
         getActions().executeAll();
 
         // ASSERT
-        final ActionSummary completed = getActions().findAction(a.getId());
+        final ActionSummary completed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 
@@ -126,7 +126,7 @@ public class ActionAcceptanceTest
         // ARRANGE
         final Date epoch =  new Date(0);
         final ResourceSummary rs = tempFolder();
-        final ActionSummary a = getActions().createAction(
+        final ActionSummary a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_PUBLISH,
@@ -137,7 +137,7 @@ public class ActionAcceptanceTest
         getActions().executeAll();
 
         // ASSERT
-        final ActionSummary failed = getActions().findAction(a.getId());
+        final ActionSummary failed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.FAILED, failed.getStatus());
     }
 
@@ -150,7 +150,7 @@ public class ActionAcceptanceTest
         final Date time =  new Date(0);
         final ResourceSummary rs = tempFolder();
         getCommands().lock(rs.getId());
-        final ActionSummary a = getActions().createAction(
+        final ActionSummary a = getActions().create(
             new Action(
                 rs.getId(),
                 CommandType.RESOURCE_DELETE,
@@ -161,7 +161,7 @@ public class ActionAcceptanceTest
         getActions().executeAll();
 
         // ASSERT
-        final ActionSummary completed = getActions().findAction(a.getId());
+        final ActionSummary completed = getActions().retrieve(a.getId());
         assertEquals(ActionStatus.COMPLETE, completed.getStatus());
     }
 

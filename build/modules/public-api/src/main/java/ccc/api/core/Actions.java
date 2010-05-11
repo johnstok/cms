@@ -62,8 +62,7 @@ public interface Actions
      */
     @POST // FIXME: Should be delete.
     @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
-    void cancelAction(
-        @PathParam("id") UUID actionId);
+    void cancel(@PathParam("id") UUID actionId);
 
     /**
      * Create a new scheduled action.
@@ -73,8 +72,7 @@ public interface Actions
      * @return A summary of the new action.
      */
     @POST
-    @Path(ccc.api.core.ResourceIdentifiers.Action.PENDING) // FIXME: Should be COLLECTION.
-    ActionSummary createAction(Action action);
+    ActionSummary create(Action action);
 
 
     /**
@@ -87,7 +85,6 @@ public interface Actions
      * @return A collection of action summaries, one per outstanding action.
      */
     @GET
-    @Path(ccc.api.core.ResourceIdentifiers.Action.PENDING)
     PagedCollection<ActionSummary> listPendingActions(
         @QueryParam("sort") @DefaultValue("status") String sort,
         @QueryParam("order") @DefaultValue("DESC") SortOrder sortOrder,
@@ -115,7 +112,7 @@ public interface Actions
     /**
      * Executes all available actions whose 'execute after' date is in the past.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Action.EXECUTE) // FIXME: Should be POST.
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Action.EXECUTE)
     void executeAll();
 
 
@@ -127,5 +124,5 @@ public interface Actions
      * @return A summary of the action.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
-    ActionSummary findAction(@PathParam("id") UUID actionId);
+    ActionSummary retrieve(@PathParam("id") UUID actionId);
 }

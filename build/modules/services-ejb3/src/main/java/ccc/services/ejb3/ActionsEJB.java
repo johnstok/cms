@@ -172,7 +172,7 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_CANCEL})
-    public void cancelAction(final UUID actionId) {
+    public void cancel(final UUID actionId) {
         new CancelActionCommand(getRepoFactory())
             .execute(currentUser(), new Date(), actionId);
     }
@@ -180,7 +180,7 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_CREATE})
-    public ActionSummary createAction(final Action action) {
+    public ActionSummary create(final Action action) {
         final ActionEntity a =
             new ActionEntity(
                 action.getCommand(),
@@ -200,7 +200,7 @@ public class ActionsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ACTION_LIST})
-    public ActionSummary findAction(final UUID actionId) {
+    public ActionSummary retrieve(final UUID actionId) {
         return
             getRepoFactory()
                 .createActionRepository()
@@ -285,12 +285,10 @@ public class ActionsEJB
     private void addLinks(final PagedCollection<ActionSummary> actions) {
         actions.addLink(
             "self",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Action.PENDING);
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION);
         actions.addLink(
             "pending",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Action.PENDING);
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION);
         actions.addLink(
             "completed",
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION

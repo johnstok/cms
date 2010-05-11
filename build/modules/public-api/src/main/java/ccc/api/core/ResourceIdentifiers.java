@@ -116,7 +116,6 @@ public interface ResourceIdentifiers {
     public static interface Action {
         String  COLLECTION  = "/secure/actions";
         String  ELEMENT     = "/{id}";
-        String  PENDING     = "/pending";
         String  COMPLETED   = "/completed";
         String  EXECUTE     = "/all";
     }

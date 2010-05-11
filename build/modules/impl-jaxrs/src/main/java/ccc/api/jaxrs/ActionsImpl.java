@@ -111,9 +111,9 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary createAction(final Action action) {
+    public ActionSummary create(final Action action) {
         try {
-            return _delegate.createAction(action);
+            return _delegate.create(action);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -122,9 +122,9 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void cancelAction(final UUID actionId) {
+    public void cancel(final UUID actionId) {
         try {
-             _delegate.cancelAction(actionId);
+             _delegate.cancel(actionId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -144,9 +144,9 @@ public class ActionsImpl
 
     /** {@inheritDoc} */
     @Override
-    public ActionSummary findAction(final UUID actionId) {
+    public ActionSummary retrieve(final UUID actionId) {
         try {
-            return _delegate.findAction(actionId);
+            return _delegate.retrieve(actionId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
