@@ -215,7 +215,7 @@ public abstract class AbstractAcceptanceTest
         t.setDefinition("<fields/>");
         t.setMimeType(MimeType.HTML);
 
-        return getTemplates().createTemplate(t);
+        return getTemplates().create(t);
     }
 
     /**

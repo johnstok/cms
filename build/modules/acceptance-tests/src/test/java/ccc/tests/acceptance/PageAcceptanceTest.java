@@ -144,7 +144,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
             + "<field name=\"test\" type=\"text_field\" regexp=\"\\d{1,3}\"/>"
             + "</fields>");
         t.setBody("empty");
-        final ResourceSummary ts = getTemplates().createTemplate(t);
+        final ResourceSummary ts = getTemplates().create(t);
 
         final Paragraph invalidPara = Paragraph.fromText("test", "fail");
         final Paragraph validPara = Paragraph.fromText("test", "12");
@@ -189,7 +189,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         t.setBody("$resource.getParagraph(\"foo\").getText()");
         t.setDefinition("<fields><field name=\"foo\" type=\"html\"/></fields>");
         t.setMimeType(MimeType.HTML);
-        final ResourceSummary ts = getTemplates().createTemplate(t);
+        final ResourceSummary ts = getTemplates().create(t);
 
         final ResourceSummary f = tempFolder();
         final ResourceSummary page = tempPage(f.getId(), ts.getId());

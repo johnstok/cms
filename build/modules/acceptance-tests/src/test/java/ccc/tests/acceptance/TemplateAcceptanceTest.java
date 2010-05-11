@@ -62,7 +62,7 @@ public class TemplateAcceptanceTest extends
         t.setMimeType(MimeType.HTML);
 
         // ACT
-        final ResourceSummary ts = getTemplates().createTemplate(t);
+        final ResourceSummary ts = getTemplates().create(t);
 
         // ASSERT
         assertEquals("/assets/templates/"+name, ts.getAbsolutePath());
@@ -90,10 +90,10 @@ public class TemplateAcceptanceTest extends
         t.setMimeType(MimeType.HTML);
 
         // ACT
-        final ResourceSummary ts = getTemplates().createTemplate(t);
+        final ResourceSummary ts = getTemplates().create(t);
 
         // ACT
-        final Template fetched = getTemplates().templateDelta(ts.getId());
+        final Template fetched = getTemplates().retrieve(ts.getId());
 
         // ASSERT
         assertEquals("body", fetched.getBody());
@@ -136,8 +136,8 @@ public class TemplateAcceptanceTest extends
 
         // ACT
         getCommands().lock(t.getId());
-        getTemplates().updateTemplate(t.getId(), delta);
-        final Template updated = getTemplates().templateDelta(t.getId());
+        getTemplates().update(t.getId(), delta);
+        final Template updated = getTemplates().retrieve(t.getId());
 
         // ASSERT
         assertEquals(delta.getBody(), updated.getBody());

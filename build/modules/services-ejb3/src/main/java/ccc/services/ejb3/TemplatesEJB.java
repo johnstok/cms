@@ -87,7 +87,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(TEMPLATE_READ)
-    public PagedCollection<Template> templates(final int pageNo,
+    public PagedCollection<Template> query(final int pageNo,
                                                final int pageSize) {
         final ResourceRepository repo =
             getRepoFactory().createResourceRepository();
@@ -100,7 +100,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(TEMPLATE_CREATE)
-    public ResourceSummary createTemplate(final Template template) {
+    public ResourceSummary create(final Template template) {
         return
             execute(commands().createTemplateCommand(template))
             .mapResource();
@@ -110,7 +110,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(TEMPLATE_UPDATE)
-    public void updateTemplate(final UUID templateId,
+    public void update(final UUID templateId,
                                final Template delta) {
         execute(
             new UpdateTemplateCommand(
@@ -129,7 +129,7 @@ public final class TemplatesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Template templateDelta(final UUID templateId) {
+    public Template retrieve(final UUID templateId) {
         checkPermission(TEMPLATE_READ);
         return
             getRepoFactory()

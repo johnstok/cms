@@ -1107,10 +1107,6 @@ public abstract class ResourceEntity
                     Resource.SELF,
                     new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
-                rs.addLink(
-                    Resource.DELTA,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.DELTA)
-                    .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             default:
