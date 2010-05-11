@@ -70,11 +70,11 @@ class XHttpServletRequest
     @Override
     public String getMethod() {
         if ("POST".equals(_delegate.getMethod())) { // Only correct for 'POST'.
-            return _delegate.getMethod();
-        } else if ("PUT".equals(_xHttpMethod)) {    // Correct 'PUT'.
-            return "PUT";
-        } else if ("DELETE".equals(_xHttpMethod)) { // Correct 'DELETE'.
-            return "DELETE";
+            if ("PUT".equals(_xHttpMethod)) {    // Correct 'PUT'.
+                return "PUT";
+            } else if ("DELETE".equals(_xHttpMethod)) { // Correct 'DELETE'.
+                return "DELETE";
+            }
         }
         return _delegate.getMethod();
     }

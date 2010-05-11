@@ -51,11 +51,17 @@ public class GwtRequestExecutor
         final String url = new GlobalsImpl().appURL() + request.getPath();
         final RequestBuilder builder =
             new RequestBuilder(getMethod(request.getMethod()), url);
+
         builder.setHeader("Accept", "application/json");
-        if (HttpMethod.POST.equals(request.getMethod())) {
+        builder.setHeader(
+            HttpMethod.OVERRIDE_HEADER, request.getMethod().toString());
+
+        if (HttpMethod.POST.equals(request.getMethod())
+            || HttpMethod.PUT.equals(request.getMethod())) {
             builder.setHeader("Content-Type", "application/json");
             builder.setRequestData(request.getBody());
         }
+
         builder.setCallback(new RequestCallbackAdapter(handler));
 
         try {
@@ -72,6 +78,10 @@ public class GwtRequestExecutor
             case GET:
                 return RequestBuilder.GET;
             case POST:
+                return RequestBuilder.POST;
+            case PUT:
+                return RequestBuilder.POST;
+            case DELETE:
                 return RequestBuilder.POST;
             default:
                 throw new IllegalArgumentException(

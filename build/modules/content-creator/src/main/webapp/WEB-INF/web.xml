@@ -61,6 +61,10 @@
         <filter-name>ccc6-filter</filter-name>
         <filter-class>ccc.web.filters.LegacyLinkFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>method-filter</filter-name>
+        <filter-class>ccc.web.filters.MethodOverrideFilter</filter-class>
+    </filter>
 
     <servlet>
         <servlet-name>Resteasy</servlet-name>
@@ -108,6 +112,11 @@
         <servlet-name>login-error-page</servlet-name>
         <jsp-file>/static/LoginError.html</jsp-file>
     </servlet>
+
+    <filter-mapping>
+        <filter-name>method-filter</filter-name>
+        <servlet-name>Resteasy</servlet-name>
+    </filter-mapping>  
 
     <filter-mapping>
         <filter-name>err-filter</filter-name>

@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.presenters;
 
-import java.util.UUID;
-
 import ccc.api.core.Group;
 import ccc.client.gwt.events.GroupUpdated;
 import ccc.client.gwt.events.GroupUpdated.GroupUpdatedHandler;
@@ -49,7 +47,7 @@ public class UpdateGroupPresenter
     implements
         GroupUpdatedHandler {
 
-    private final UUID _groupId;
+    private final Group _group;
 
 
     /**
@@ -60,7 +58,7 @@ public class UpdateGroupPresenter
      */
     public UpdateGroupPresenter(final GroupView view, final Group group) {
         super(view);
-        _groupId = group.getId();
+        _group = group;
         bind(group);
         render(ContentCreator.EVENT_BUS.addHandler(GroupUpdated.TYPE, this));
     }
@@ -71,7 +69,8 @@ public class UpdateGroupPresenter
     public void save() {
         if (valid()) {
             final Group group = new Group();
-            group.setId(_groupId);
+            group.setId(_group.getId());
+            group.addLink("self", _group.getLink("self"));
             unbind(group);
             new UpdateGroupAction(group).execute();
         }

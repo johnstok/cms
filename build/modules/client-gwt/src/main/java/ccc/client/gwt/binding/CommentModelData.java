@@ -45,9 +45,6 @@ import ccc.client.gwt.events.CommentUpdatedEvent;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
-
 
 
 /**
@@ -187,7 +184,7 @@ public final class CommentModelData
         comment.toJson(json);
 
         return new Request(
-            HttpMethod.POST,
+            HttpMethod.PUT,
             path,
             json.toString(),
             new CommentUpdatedCallback(
