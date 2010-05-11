@@ -88,8 +88,11 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_UPDATE})
-    public void update(final UUID commentId, final Comment comment) {
-        execute(new UpdateCommentCommand(getRepoFactory(), commentId, comment));
+    public Comment update(final UUID commentId, final Comment comment) {
+        return
+            execute(
+                new UpdateCommentCommand(getRepoFactory(), commentId, comment))
+            .createDto();
     }
 
 
@@ -104,7 +107,7 @@ public class CommentsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({COMMENT_READ})
-    public PagedCollection<Comment> list(final UUID resourceId,
+    public PagedCollection<Comment> query(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
