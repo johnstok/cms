@@ -82,9 +82,9 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateAlias(final UUID aliasId, final Alias delta) {
+    public void update(final UUID aliasId, final Alias delta) {
         try {
-            _delegate.updateAlias(aliasId, delta);
+            _delegate.update(aliasId, delta);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -93,9 +93,9 @@ public class AliasesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createAlias(final Alias alias) {
+    public ResourceSummary create(final Alias alias) {
         try {
-            return _delegate.createAlias(alias);
+            return _delegate.create(alias);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

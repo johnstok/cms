@@ -63,7 +63,7 @@ public class AliasesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ALIAS_UPDATE})
-    public void updateAlias(final UUID aliasId,
+    public void update(final UUID aliasId,
                             final Alias delta) {
             new UpdateAliasCommand(
                 getRepoFactory(),
@@ -78,7 +78,7 @@ public class AliasesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed({ALIAS_CREATE})
-    public ResourceSummary createAlias(final Alias alias) {
+    public ResourceSummary create(final Alias alias) {
         return commands()
             .createAliasCommand(alias)
             .execute(currentUser(), new Date())
