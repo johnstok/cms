@@ -18,5 +18,19 @@ package ccc.client.gwt.core;
  * @author Civic Computing Ltd.
  */
 public enum HttpMethod {
-    GET, POST;
+
+    /** GET : HttpMethod. */
+    GET,
+
+    /** POST : HttpMethod. */
+    POST,
+
+    /** PUT : HttpMethod. */
+    PUT,
+
+    /** DELETE : HttpMethod. */
+    DELETE;
+
+    /** OVERRIDE_HEADER : String. */
+    public static final String OVERRIDE_HEADER = "X-HTTP-Method-Override";
 }
