@@ -28,6 +28,8 @@
 package ccc.remoting;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.activation.MimeTypeParseException;
 import javax.ejb.EJB;
@@ -127,6 +129,26 @@ public abstract class MultipartServlet
     }
 
 
+    /**
+     * Returns maximum upload file size.
+     *
+     * @return The size in bytes.
+     */
+    protected long maxFileSize() {
+        long maxSize = 32 * 1024 * 1024; // Default value 32MB.
+        try {
+            InputStream inStream = Thread.currentThread().getContextClassLoader()
+            .getResourceAsStream("uploadConfig.properties");
+            Properties uploadProps = new Properties();
+            uploadProps.load(inStream);
+            maxSize = Long.decode(uploadProps.getProperty("maxFileSize"));
+            
+        } catch(Exception e) {
+            LOG.warn("Setting maximum file size for upload failed, using default 32MB.");
+        }
+        return maxSize;
+    }
+    
     /**
      * Accessor.
      *

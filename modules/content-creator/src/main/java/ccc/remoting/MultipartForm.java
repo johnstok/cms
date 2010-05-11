@@ -48,7 +48,6 @@ import ccc.types.DBC;
  */
 public class MultipartForm {
 
-    private static final long MAX_FILE_SIZE      = 32*1024*1024; //  32mb
     private static final int  MAX_IN_MEMORY_SIZE = 500*1024;     // 500kb
 
     private final Map<String, FileItem> _formItems =
@@ -61,7 +60,7 @@ public class MultipartForm {
      *
      * @param items The list of items on this form.
      */
-    public MultipartForm(final List<FileItem> items) {
+    MultipartForm(final List<FileItem> items) {
         DBC.require().notNull(items);
 
         for (final FileItem item : items) {
@@ -85,8 +84,8 @@ public class MultipartForm {
      *
      * @param request The HTTP request this form represents.
      */
-    public MultipartForm(final HttpServletRequest request) {
-        this(parseFileItems(request));
+    public MultipartForm(final HttpServletRequest request, long maxFileSize) {
+        this(parseFileItems(request, maxFileSize));
     }
 
     /**
@@ -97,7 +96,8 @@ public class MultipartForm {
      */
     @SuppressWarnings("unchecked")
     private static List<FileItem> parseFileItems(
-        final HttpServletRequest request) {
+        final HttpServletRequest request,
+        long maxFileSize) {
 
         DBC.require().notNull(request);
 
@@ -118,7 +118,7 @@ public class MultipartForm {
         final ServletFileUpload upload = new ServletFileUpload(factory);
 
         // Set overall request size constraint
-        upload.setFileSizeMax(MAX_FILE_SIZE);
+        upload.setFileSizeMax(maxFileSize);
 
         try {
             return upload.parseRequest(request);

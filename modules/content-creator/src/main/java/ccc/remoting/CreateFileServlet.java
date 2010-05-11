@@ -55,7 +55,7 @@ public class CreateFileServlet
          * ================================================================== */
         response.setContentType("text/html");
 
-        final MultipartForm form = new MultipartForm(request);
+        final MultipartForm form = new MultipartForm(request, maxFileSize());
 
         final FileItem file        = form.getFileItem().get("file");
         final FileItem name        = form.getFormItem("fileName");

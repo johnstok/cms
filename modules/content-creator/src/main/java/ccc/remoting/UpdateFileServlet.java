@@ -66,7 +66,7 @@ public class UpdateFileServlet extends MultipartServlet {
          * ================================================================== */
         response.setContentType("text/html");
 
-        final MultipartForm form = new MultipartForm(request);
+        final MultipartForm form = new MultipartForm(request, maxFileSize());
         final UUID fileId = UUID.fromString(form.getFormItem("id").getString());
 
         final FileItem cItem = form.getFormItem("comment");
