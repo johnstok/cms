@@ -171,7 +171,7 @@ public class FileUploadAcceptanceTest
         f.setComment("Testing 1, 2, 3.");
 
         // ACT
-        final ResourceSummary rs = getFiles().createFile(f);
+        final ResourceSummary rs = getFiles().create(f);
 
         // ASSERT
         assertEquals(fName, rs.getName());

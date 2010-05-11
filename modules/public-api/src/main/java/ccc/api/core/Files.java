@@ -88,7 +88,7 @@ public interface Files {
      * @return The file for the specified ID.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
-    File get(@PathParam("id") UUID fileId);
+    File retrieve(@PathParam("id") UUID fileId);
 
 
     /**
@@ -99,6 +99,7 @@ public interface Files {
      * @return A resource summary describing the new text file.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.COLLECTION)
+    @Deprecated
     ResourceSummary createTextFile(File textFile);
 
 
@@ -112,7 +113,7 @@ public interface Files {
     @POST @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_COLLECTION)
     @Consumes("multipart/form-data")
     @Produces({"application/json", "text/html"})
-    ResourceSummary createFile(File file);
+    ResourceSummary create(File file);
 
 
     /**
@@ -130,7 +131,7 @@ public interface Files {
 
 
     /**
-     * Write the contents of a file to an output stream.
+     * Process the contents of a file with an action.
      *
      * @param file The file's ID.
      * @param action The action to perform.
@@ -141,7 +142,7 @@ public interface Files {
 
 
     /**
-     * Write the contents of a file to an output stream.
+     * Process the contents of a file's working copy with an action.
      *
      * @param file The file's ID.
      * @param action The action to perform.
@@ -152,7 +153,7 @@ public interface Files {
 
 
     /**
-     * Write the contents of a file to an output stream.
+     * Process the contents of a file revision with an action.
      *
      * @param file The file's ID.
      * @param revision The file revision to retrieve.
@@ -160,6 +161,6 @@ public interface Files {
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.File.BINARY_REVISION)
     void retrieveRevision(@PathParam("id") UUID file,
-                          int revision,
+                          @PathParam("rev") int revision,
                           StreamAction action);
 }

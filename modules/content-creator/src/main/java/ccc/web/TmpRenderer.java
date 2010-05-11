@@ -127,7 +127,7 @@ public class TmpRenderer {
 
     private Response invoke(final File f) {
         try {
-            final File tf = _files.get(f.getId());
+            final File tf = _files.retrieve(f.getId());
             return
                 new Response(
                     new ScriptBody(

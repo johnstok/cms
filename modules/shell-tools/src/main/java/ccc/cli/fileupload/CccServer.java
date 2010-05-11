@@ -102,7 +102,7 @@ public class CccServer implements Server {
             f.setSize(localFile.length());
             f.setPublished(publish);
 
-            _uploader.createFile(f);
+            _uploader.create(f);
         } catch (final FileNotFoundException e) {
             LOG.warn("Failed to upload file: "+localFile.getAbsolutePath(), e);
         }

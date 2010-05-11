@@ -73,9 +73,9 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public File get(final UUID fileId) {
+    public File retrieve(final UUID fileId) {
         try {
-            return _files.get(fileId);
+            return _files.retrieve(fileId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -115,9 +115,9 @@ public class FilesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFile(final File file) {
+    public ResourceSummary create(final File file) {
         try {
-            return _files.createFile(file);
+            return _files.create(file);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

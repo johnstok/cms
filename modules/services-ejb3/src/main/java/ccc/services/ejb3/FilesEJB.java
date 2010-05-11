@@ -90,7 +90,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createFile(final File file) {
+    public ResourceSummary create(final File file) {
         checkPermission(FILE_CREATE);
 
         final UserEntity u = currentUser();
@@ -209,7 +209,7 @@ public class FilesEJB
         f.setDateCreated(new Date());
         f.setDateChanged(f.getDateCreated());
 
-        return createFile(f);
+        return create(f);
     }
 
 
@@ -223,7 +223,7 @@ public class FilesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public File get(final UUID fileId) {
+    public File retrieve(final UUID fileId) {
         checkPermission(FILE_READ);
 
         // FIXME: check file is accessible to user.
