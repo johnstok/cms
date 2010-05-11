@@ -706,19 +706,11 @@ public class Resource
     /** NAME : String. */
     public static final String NAME = "name";
     /** WC_APPLY : String. */
-    public static final String WC_APPLY = "wc_apply";
-    /** WC_CLEAR : String. */
-    public static final String WC_CLEAR = "wc_clear";
+    public static final String WC = "wc";
     /** LIST : String. */
     public static final String LIST = "list";
     /** REVISIONS : String. */
     public static final String REVISIONS = "revisions";
-    /** UNPUBLISH : String. */
-    public static final String UNPUBLISH = "unpublish";
-    /** DELETE : String. */
-    public static final String DELETE = "delete";
-    /** WC_CREATE : String. */
-    public static final String WC_CREATE = "wc-create";
     /** ABSOLUTE_PATH : String. */
     public static final String ABSOLUTE_PATH = "absolute-path";
     /** INCLUDE_MM : String. */
@@ -729,8 +721,6 @@ public class Resource
     public static final String PARENT = "parent";
     /** DURATION : String. */
     public static final String DURATION = "duration";
-    /** UNLOCK : String. */
-    public static final String UNLOCK = "unlock";
     /** ACL : String. */
     public static final String ACL = "acl";
     /** PUBLISH : String. */
@@ -741,8 +731,6 @@ public class Resource
     public static final String METADATA = "metadata";
     /** TEMPLATE : String. */
     public static final String TEMPLATE = "template";
-    /** DELTA : String. */
-    public static final String DELTA = "delta";
     /** SELF : String. */
     public static final String SELF = "self";
 }

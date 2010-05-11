@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.HttpMethod;
@@ -54,7 +53,7 @@ public class DeleteResourceAction
      * @param selectionModel The selection model to use.
      */
     public DeleteResourceAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.delete(), HttpMethod.POST);
+        super(UI_CONSTANTS.delete(), HttpMethod.DELETE);
         _selectionModel = selectionModel;
     }
 
@@ -63,7 +62,7 @@ public class DeleteResourceAction
     @Override
     protected String getPath() {
         return
-            _selectionModel.tableSelection().getDelegate().uriDelete().build(new GWTTemplateEncoder());
+            _selectionModel.tableSelection().getDelegate().self().build(new GWTTemplateEncoder());
     }
 
 

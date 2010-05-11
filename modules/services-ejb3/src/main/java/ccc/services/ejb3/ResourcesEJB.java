@@ -441,7 +441,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(RESOURCE_DELETE)
-    public void deleteResource(final UUID resourceId) {
+    public void delete(final UUID resourceId) {
         execute(commands().createDeleteResourceCmd(resourceId));
     }
 
@@ -625,7 +625,7 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary resource(final UUID resourceId) {
+    public ResourceSummary retrieve(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
         final ResourceEntity r = getResources().find(ResourceEntity.class, resourceId);

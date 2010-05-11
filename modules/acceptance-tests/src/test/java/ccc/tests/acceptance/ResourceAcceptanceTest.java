@@ -74,10 +74,10 @@ public class ResourceAcceptanceTest
 
         // ACT
         getCommands().lock(folder.getId());
-        final ResourceSummary locked = getCommands().resource(folder.getId());
+        final ResourceSummary locked = getCommands().retrieve(folder.getId());
 
         getCommands().unlock(folder.getId());
-        final ResourceSummary unlocked = getCommands().resource(folder.getId());
+        final ResourceSummary unlocked = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
@@ -99,7 +99,7 @@ public class ResourceAcceptanceTest
         // ACT
         getCommands().lock(folder.getId());
         getCommands().move(folder.getId(), assets.getId());
-        final ResourceSummary moved = getCommands().resource(folder.getId());
+        final ResourceSummary moved = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertEquals("/assets/"+folder.getName(), moved.getAbsolutePath());
@@ -167,7 +167,7 @@ public class ResourceAcceptanceTest
         // ACT
         getCommands().lock(folder.getId());
         getCommands().updateMetadata(folder.getId(), md);
-        final ResourceSummary updated = getCommands().resource(folder.getId());
+        final ResourceSummary updated = getCommands().retrieve(folder.getId());
         final Map<String, String> newData =
             getCommands().metadata(folder.getId());
 
@@ -282,7 +282,7 @@ public class ResourceAcceptanceTest
         // ASSERT
         final User currentUser = getUsers().retrieveCurrent();
         final ResourceSummary updatedRoot =
-            getCommands().resource(contentRoot.getId());
+            getCommands().retrieve(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());
         getCommands().unlock(contentRoot.getId());
     }
@@ -313,7 +313,7 @@ public class ResourceAcceptanceTest
 
         // ASSERT
         final ResourceSummary updatedFolder =
-            getCommands().resource(folder.getId());
+            getCommands().retrieve(folder.getId());
         assertEquals(ts.getId(), updatedFolder.getTemplateId());
     }
 
@@ -366,7 +366,7 @@ public class ResourceAcceptanceTest
         getCommands().lock(folder.getId());
 
         getCommands().rename(folder.getId(), newName);
-        final ResourceSummary renamed = getCommands().resource(folder.getId());
+        final ResourceSummary renamed = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertFalse(newName.equals(folder.getName()));
@@ -387,10 +387,10 @@ public class ResourceAcceptanceTest
         getCommands().lock(folder.getId());
 
         getCommands().includeInMainMenu(folder.getId());
-        final ResourceSummary included = getCommands().resource(folder.getId());
+        final ResourceSummary included = getCommands().retrieve(folder.getId());
 
         getCommands().excludeFromMainMenu(folder.getId());
-        final ResourceSummary excluded = getCommands().resource(folder.getId());
+        final ResourceSummary excluded = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertFalse(folder.isIncludeInMainMenu());
@@ -415,11 +415,11 @@ public class ResourceAcceptanceTest
 
         getCommands().publish(folder.getId());
         final ResourceSummary published =
-            getCommands().resource(folder.getId());
+            getCommands().retrieve(folder.getId());
 
         getCommands().unpublish(folder.getId());
         final ResourceSummary unpublished =
-            getCommands().resource(folder.getId());
+            getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertNull(folder.getPublishedBy());
@@ -469,11 +469,11 @@ public class ResourceAcceptanceTest
 
         // ACT
         getCommands().lock(f.getId());
-        getCommands().deleteResource(f.getId());
+        getCommands().delete(f.getId());
 
         // ASSERT
         try {
-            getCommands().resource(f.getId());
+            getCommands().retrieve(f.getId());
             fail();
         } catch (final EntityNotFoundException e) {
             assertEquals(f.getId(), e.getId());

@@ -596,18 +596,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder applyWc() {
-        return new URIBuilder(getLink(Resource.WC_APPLY));
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder clearWc() {
-        return new URIBuilder(getLink(Resource.WC_CLEAR));
+    public URIBuilder wc() {
+        return new URIBuilder(getLink(Resource.WC));
     }
 
 
@@ -629,35 +619,6 @@ public final class ResourceSummary extends Res {
      */
     public URIBuilder revisions() {
         return new URIBuilder(getLink(Resource.REVISIONS));
-    }
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder uriUnpublish() {
-        return new URIBuilder(getLink(Resource.UNPUBLISH));
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder uriDelete() {
-        return new URIBuilder(getLink(Resource.DELETE));
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder history() {
-        return new URIBuilder(getLink(Resource.WC_CREATE));
     }
 
 
@@ -716,16 +677,6 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder unlock() {
-        return new URIBuilder(getLink(Resource.UNLOCK));
-    }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
     public URIBuilder acl() {
         return new URIBuilder(getLink(Resource.ACL));
     }
@@ -769,17 +720,6 @@ public final class ResourceSummary extends Res {
     public URIBuilder uriTemplate() {
         return new URIBuilder(getLink(Resource.TEMPLATE));
     }
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    public URIBuilder delta() {
-        return new URIBuilder(getLink(Resource.DELTA));
-    }
-
 
 
     /**

@@ -133,9 +133,9 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary resource(final UUID resourceId) {
+    public ResourceSummary retrieve(final UUID resourceId) {
         try {
-            return _delegate.resource(resourceId);
+            return _delegate.retrieve(resourceId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -368,9 +368,9 @@ public class ResourcesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void deleteResource(final UUID resourceId) {
+    public void delete(final UUID resourceId) {
         try {
-            _delegate.deleteResource(resourceId);
+            _delegate.delete(resourceId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
