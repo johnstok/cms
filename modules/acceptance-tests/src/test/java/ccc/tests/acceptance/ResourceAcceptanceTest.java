@@ -228,7 +228,7 @@ public class ResourceAcceptanceTest
         e._canWrite = true;
         e._name = "SITE_BUILDER";
         final List<Group> groups =
-            getGroups().list("SITE_BUILDER", 1, 20).getElements();
+            getGroups().query("SITE_BUILDER", 1, 20).getElements();
         e._principal = groups.iterator().next().getId();
         final ACL acl =
             new ACL()

@@ -82,9 +82,9 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public Group find(final UUID id) {
+    public Group retrieve(final UUID id) {
         try {
-            return _groups.find(id);
+            return _groups.retrieve(id);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -105,11 +105,11 @@ public class GroupsImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<Group> list(final String name,
+    public PagedCollection<Group> query(final String name,
         final int pageNo,
         final int pageSize) {
         try {
-            return _groups.list(name, pageNo, pageSize);
+            return _groups.query(name, pageNo, pageSize);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

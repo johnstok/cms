@@ -63,7 +63,8 @@ public interface Groups {
      * @return Returns paged list of groups.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Group.COLLECTION)
-    PagedCollection<Group> list(@QueryParam("name") String name,
+    PagedCollection<Group> query(
+        @QueryParam("name") String name,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
 
@@ -76,7 +77,7 @@ public interface Groups {
      * @return Returns the corresponding group.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Group.ELEMENT)
-    Group find(@PathParam("id") UUID id);
+    Group retrieve(@PathParam("id") UUID id);
 
 
     /**

@@ -89,14 +89,14 @@ public class GroupsEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_READ)
-    public Group find(final UUID id) {
+    public Group retrieve(final UUID id) {
         return getRepoFactory().createGroupRepo().find(id).createDto();
     }
 
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(Permission.GROUP_READ)
-    public PagedCollection<Group> list(
+    public PagedCollection<Group> query(
         final String name,
         final int pageNo,
         final int pageSize) {

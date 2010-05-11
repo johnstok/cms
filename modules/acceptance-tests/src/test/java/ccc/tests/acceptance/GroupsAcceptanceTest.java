@@ -100,7 +100,7 @@ public class GroupsAcceptanceTest
 
         // ACT
         final PagedCollection<Group> actual =
-            getGroups().list("ADMINISTRATOR", 1, 20);
+            getGroups().query("ADMINISTRATOR", 1, 20);
 
         // ASSERT
         assertEquals(1, actual.getTotalCount());
@@ -123,7 +123,7 @@ public class GroupsAcceptanceTest
         final Group created = getGroups().create(g);
 
         // ACT
-        final Group actual = getGroups().find(created.getId());
+        final Group actual = getGroups().retrieve(created.getId());
 
         // ASSERT
         assertEquals(name.toString(), actual.getName());
