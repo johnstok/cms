@@ -82,9 +82,11 @@ public interface Comments {
      *
      * @param commentId The comment's ID.
      * @param comment The updated comment.
+     *
+     * @return The updated comment.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Comment.ELEMENT)
-    void update(@PathParam("id") UUID commentId, Comment comment);
+    Comment update(@PathParam("id") UUID commentId, Comment comment);
 
 
     /**
@@ -109,7 +111,7 @@ public interface Comments {
      * @return A list of comments.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Comment.COLLECTION)
-    PagedCollection<Comment> list(
+    PagedCollection<Comment> query(
         @QueryParam("resource") UUID resourceId,
         @QueryParam("status") CommentStatus status,
         @QueryParam("sort") @DefaultValue("status") String sort,

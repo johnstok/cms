@@ -93,9 +93,9 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public void update(final UUID commentId, final Comment comment) {
+    public Comment update(final UUID commentId, final Comment comment) {
         try {
-            _delegate.update(commentId, comment);
+            return _delegate.update(commentId, comment);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -113,14 +113,14 @@ public class CommentsImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<Comment> list(final UUID resourceId,
+    public PagedCollection<Comment> query(final UUID resourceId,
                                           final CommentStatus status,
                                           final String sort,
                                           final SortOrder sortOrder,
                                           final int pageNo,
                                           final int pageSize) {
         try {
-            return _delegate.list(
+            return _delegate.query(
                 resourceId, status, sort, sortOrder, pageNo, pageSize);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
