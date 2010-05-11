@@ -987,80 +987,60 @@ public abstract class ResourceEntity
             );
 
         rs.addLink(
-            "revisions",
+            Resource.REVISIONS,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "absolute-path",
+            Resource.ABSOLUTE_PATH,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "template",
+            Resource.TEMPLATE,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "metadata",
+            Resource.METADATA,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "exclude_mm",
+            Resource.EXCLUDE_MM,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "publish",
+            Resource.PUBLISH,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "acl",
+            Resource.ACL,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "unlock",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        rs.addLink(
-            "duration",
+            Resource.DURATION,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "parent",
+            Resource.PARENT,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "lock",
+            Resource.LOCK,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "include_mm",
+            Resource.INCLUDE_MM,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "wc-create",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        rs.addLink(
-            "delete",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DELETE)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        rs.addLink(
-            "unpublish",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        rs.addLink(
-            "list",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LIST)
+            Resource.LIST,
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
             .build("id", getId().toString(), new NormalisingEncoder())
             +"?{-join|&|parent,sort,order,page,count,type}");
         rs.addLink(
-            "wc_clear",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR)
+            Resource.WC,
+            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
-            "wc_apply",
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY)
-            .build("id", getId().toString(), new NormalisingEncoder()));
-        rs.addLink(
-            "name",
+            Resource.NAME,
             new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME)
             .build("id", getId().toString(), new NormalisingEncoder()));
 

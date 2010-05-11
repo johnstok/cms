@@ -26,15 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
-
-import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
@@ -55,14 +52,14 @@ public class UnlockAction
      * @param selectionModel The selection model.
      */
     public UnlockAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.unlock(), HttpMethod.POST);
+        super(UI_CONSTANTS.unlock(), HttpMethod.DELETE);
         _selectionModel = selectionModel;
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().unlock().build(new GWTTemplateEncoder());
+        return _selectionModel.tableSelection().getDelegate().lock().build(new GWTTemplateEncoder());
     }
 
 

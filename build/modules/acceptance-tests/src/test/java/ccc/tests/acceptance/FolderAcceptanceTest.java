@@ -146,7 +146,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             new Folder(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
 
         getFolders().update(folder.getId(), fd);
-        final ResourceSummary updated = getCommands().resource(folder.getId());
+        final ResourceSummary updated = getCommands().retrieve(folder.getId());
 
         final PagedCollection<ResourceSummary> children =
             getCommands().list(folder.getId(),
@@ -201,7 +201,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             new Folder(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
 
         getFolders().update(f.getId(), fd);
-        final ResourceSummary updated = getCommands().resource(f.getId());
+        final ResourceSummary updated = getCommands().retrieve(f.getId());
 
 
         final PagedCollection<ResourceSummary> list =
@@ -250,7 +250,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             new Folder(
                 tempFolder().getSortOrder(), page.getId(), sortList);
         getFolders().update(folder.getId(), fd);
-        final ResourceSummary updated = getCommands().resource(folder.getId());
+        final ResourceSummary updated = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
@@ -319,7 +319,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
                 ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
 
         getFolders().update(folder.getId(), fd);
-        final ResourceSummary updated = getCommands().resource(folder.getId());
+        final ResourceSummary updated = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());

@@ -576,7 +576,7 @@ public class ResourceSummaryModelData
     public Request applyWorkingCopy() {
         return new Request(
             HttpMethod.POST,
-            Globals.API_URL + _rs.applyWc().build(new GWTTemplateEncoder()),
+            Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
             new WCAppliedCallback(GlobalsImpl.uiConstants().applyWorkingCopy(), this));
     }
@@ -589,7 +589,7 @@ public class ResourceSummaryModelData
     public Request clearWorkingCopy() {
         return new Request(
             HttpMethod.POST,
-            Globals.API_URL + _rs.clearWc().build(new GWTTemplateEncoder()),
+            Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
             new WCClearedCallback(GlobalsImpl.uiConstants().deleteWorkingCopy(), this));
     }

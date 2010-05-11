@@ -130,7 +130,6 @@ public interface ResourceIdentifiers {
 
         String COLLECTION         = "/secure/resources";
 
-        String LIST               = COLLECTION + "/list";
         String LOCKED             = COLLECTION + "/locked";
         String SEARCH_PATH_SIMPLE = COLLECTION + "/by-path";
         String SEARCH_PATH        = SEARCH_PATH_SIMPLE + "{path:.*}";
@@ -143,7 +142,6 @@ public interface ResourceIdentifiers {
 
         String ELEMENT            = COLLECTION + "/{id}";
 
-        String DELETE             = ELEMENT + "/delete";
         String PATH               = ELEMENT + "/path";
         String REVISIONS          = ELEMENT + "/revisions";
         String METADATA           = ELEMENT + "/metadata";
@@ -151,16 +149,12 @@ public interface ResourceIdentifiers {
         String DURATION           = ELEMENT + "/duration";
         String TEMPLATE           = ELEMENT + "/template";
         String LOCK               = ELEMENT + "/lock";
-        String UNLOCK             = ELEMENT + "/unlock";
-        String UNPUBLISH          = ELEMENT + "/unpublish";
         String PUBLISH            = ELEMENT + "/publish";
         String PARENT             = ELEMENT + "/parent";
         String NAME               = ELEMENT + "/name";
         String EXCLUDE_MM         = ELEMENT + "/exclude-mm";
         String INCLUDE_MM         = ELEMENT + "/include-mm";
-        String WC_APPLY           = ELEMENT + "/wc-apply";
-        String WC_CLEAR           = ELEMENT + "/wc-clear";
-        String WC_CREATE          = ELEMENT + "/wc-create";
+        String WC                 = ELEMENT + "/wc";
         String LOG_ENTRY          = ELEMENT + "/logentry-create";
     }
 }

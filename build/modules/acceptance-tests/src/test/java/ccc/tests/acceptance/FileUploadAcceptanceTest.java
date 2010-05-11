@@ -79,7 +79,7 @@ public class FileUploadAcceptanceTest
         getCommands().clearWorkingCopy(file.getId());
 
         // ASSERT
-        final ResourceSummary fWC = getCommands().resource(file.getId());
+        final ResourceSummary fWC = getCommands().retrieve(file.getId());
         assertEquals("Hello!", getBrowser().previewContent(file, false));
         assertFalse(fWC.isHasWorkingCopy());
     }
@@ -127,7 +127,7 @@ public class FileUploadAcceptanceTest
         // Create working copy from rev 0.
         getCommands().createWorkingCopy(
             file.getId(), new Resource(Long.valueOf(0)));
-        ResourceSummary fWC = getCommands().resource(file.getId());
+        ResourceSummary fWC = getCommands().retrieve(file.getId());
         assertEquals("Update!", getBrowser().previewContent(file, false));
         assertEquals("Hello!", getBrowser().previewContent(file, true));
         assertTrue(fWC.isHasWorkingCopy());
@@ -142,7 +142,7 @@ public class FileUploadAcceptanceTest
         final Revision rev3 = i.next();
         assertEquals(2, rev3.getIndex());
         assertEquals("Hello!", getBrowser().previewContent(file, false));
-        fWC = getCommands().resource(file.getId());
+        fWC = getCommands().retrieve(file.getId());
         assertFalse(fWC.isHasWorkingCopy());
     }
 

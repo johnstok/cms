@@ -32,8 +32,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 
 /**
@@ -54,7 +52,7 @@ public class UpdateMetadataAction
      * @param resource The resource to update.
      */
     public UpdateMetadataAction(final Resource resource) {
-        super(UI_CONSTANTS.updateTags(), HttpMethod.POST);
+        super(UI_CONSTANTS.updateTags(), HttpMethod.PUT);
         _resource = resource;
     }
 

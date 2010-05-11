@@ -34,6 +34,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -76,7 +77,7 @@ public interface Resources {
      * @return A list of resources.
      */
     @GET
-    @Path(ccc.api.core.ResourceIdentifiers.Resource.LIST)
+    @Path(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
     PagedCollection<ResourceSummary> list(
         @QueryParam("parent") UUID parent,
         @QueryParam("tag") String tag,
@@ -100,7 +101,7 @@ public interface Resources {
      * @return A summary of the resource.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
-    ResourceSummary resource(@PathParam("id") UUID resourceId);
+    ResourceSummary retrieve(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -108,9 +109,8 @@ public interface Resources {
      *
      * @param resourceId The id of the existing resource.
      */
-    @POST // Should be DELETE but hard to support from the browser.
-    @Path(ccc.api.core.ResourceIdentifiers.Resource.DELETE)
-    void deleteResource(@PathParam("id") UUID resourceId);
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
+    void delete(@PathParam("id") UUID resourceId);
 
 
     /**
@@ -218,7 +218,7 @@ public interface Resources {
      * @param resourceId The resource to update.
      * @param duration DTO specifying the cache duration.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
     void updateCacheDuration(
         @PathParam("id") UUID resourceId,
         Resource duration);
@@ -240,7 +240,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.WC_APPLY)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.WC)
     void applyWorkingCopy(@PathParam("id") UUID resourceId);
 
 
@@ -262,7 +262,7 @@ public interface Resources {
      *
      * @param resourceId The resource to unlock.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.UNLOCK)
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
     void unlock(@PathParam("id") UUID resourceId);
 
 
@@ -271,7 +271,7 @@ public interface Resources {
      *
      * @param resourceId The id of the resource to update.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.UNPUBLISH)
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
     void unpublish(@PathParam("id") UUID resourceId);
 
 
@@ -339,7 +339,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      * @param resource The resource containing new metadata.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
     void updateMetadata(@PathParam("id") UUID resourceId,
                         Resource resource);
 
@@ -349,7 +349,7 @@ public interface Resources {
      *
      * @param pageId The id of the page with a working copy.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.WC_CLEAR)
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Resource.WC)
     void clearWorkingCopy(@PathParam("id") UUID pageId);
 
 
@@ -360,7 +360,7 @@ public interface Resources {
      * @param resourceId The id of the resource.
      * @param dto The DTO specifying the number of the revision to use.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.WC_CREATE)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
     void createWorkingCopy(@PathParam("id") UUID resourceId,
                            Resource dto);
 

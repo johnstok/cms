@@ -26,15 +26,12 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
-
-import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
@@ -55,7 +52,7 @@ public class UnpublishAction
      * @param selectionModel The selection model.
      */
     public UnpublishAction(final SingleSelectionModel selectionModel) {
-        super(UI_CONSTANTS.unpublish(), HttpMethod.POST);
+        super(UI_CONSTANTS.unpublish(), HttpMethod.DELETE);
         _selectionModel = selectionModel;
     }
 
@@ -63,7 +60,7 @@ public class UnpublishAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().uriUnpublish().build(new GWTTemplateEncoder());
+        return _selectionModel.tableSelection().getDelegate().uriPublish().build(new GWTTemplateEncoder());
     }
 
 
