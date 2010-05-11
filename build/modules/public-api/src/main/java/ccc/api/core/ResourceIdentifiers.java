@@ -67,7 +67,6 @@ public interface ResourceIdentifiers {
         String COLLECTION  = "/secure/pages";
         String VALIDATOR   = COLLECTION + "/validator";
         String ELEMENT     = COLLECTION + "/{id}";
-        String DELTA       = ELEMENT + "/delta";
         String WC          = ELEMENT + "/wc";
     }
 

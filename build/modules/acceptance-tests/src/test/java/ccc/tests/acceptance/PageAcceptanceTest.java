@@ -67,10 +67,10 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         }});
 
         // ACT
-        final ResourceSummary ps = getPages().createPage(page);
+        final ResourceSummary ps = getPages().create(page);
 
         // ASSERT
-        final Page pd = getPages().pageDelta(ps.getId());
+        final Page pd = getPages().retrieve(ps.getId());
         assertEquals(hw, pd.getParagraph("test").getText());
     }
 
@@ -86,7 +86,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary page = tempPage(f.getId(), template.getId());
 
         // ACT
-        final Page pd = getPages().pageDelta(page.getId());
+        final Page pd = getPages().retrieve(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -115,8 +115,8 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         getCommands().lock(page.getId());
 
 
-        getPages().updatePage(page.getId(), modified);
-        final Page pd = getPages().pageDelta(page.getId());
+        getPages().update(page.getId(), modified);
+        final Page pd = getPages().retrieve(page.getId());
 
         // ASSERT
         assertNotNull("Page delta must not be null", pd);
@@ -158,12 +158,12 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
         final Page okParas = new Page();
         okParas.setTemplate(ts.getId());
         okParas.setParagraphs(validParas);
-        final String okResult = getPages().validateFields(okParas);
+        final String okResult = getPages().validate(okParas);
 
         final Page nokParas = new Page();
         nokParas.setTemplate(ts.getId());
         nokParas.setParagraphs(invalidParas);
-        final String nokResult =  getPages().validateFields(nokParas);
+        final String nokResult =  getPages().validate(nokParas);
 
         // ASSERT
         assertTrue("Errors should be empty", okResult.isEmpty());
@@ -204,7 +204,7 @@ public class PageAcceptanceTest extends AbstractAcceptanceTest {
 
         // ACT
         getCommands().lock(page.getId());
-        getPages().updatePage(page.getId(), update);
+        getPages().update(page.getId(), update);
 
         final Set<Paragraph> modparas = new HashSet<Paragraph>();
         final Paragraph modPara = Paragraph.fromText("foo", "working copy");

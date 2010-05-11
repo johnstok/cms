@@ -58,7 +58,7 @@ public interface Pages {
      * @return A list of errors, as strings.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Page.VALIDATOR)
-    String validateFields(Page page);
+    String validate(Page page);
 
 
     /**
@@ -68,8 +68,8 @@ public interface Pages {
      *
      * @return The corresponding delta.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Page.DELTA)
-    Page pageDelta(@PathParam("id") UUID pageId);
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+    Page retrieve(@PathParam("id") UUID pageId);
 
 
     /**
@@ -79,7 +79,7 @@ public interface Pages {
      * @param delta The changes to apply.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
-    void updatePage(@PathParam("id") UUID pageId, Page delta);
+    void update(@PathParam("id") UUID pageId, Page delta);
 
 
     /**
@@ -100,6 +100,6 @@ public interface Pages {
      * @return A resource summary describing the new page.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Page.COLLECTION)
-    ResourceSummary createPage(Page page);
+    ResourceSummary create(Page page);
 
 }

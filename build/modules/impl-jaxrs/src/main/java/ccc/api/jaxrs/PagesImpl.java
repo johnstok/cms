@@ -71,9 +71,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public Page pageDelta(final UUID pageId) {
+    public Page retrieve(final UUID pageId) {
         try {
-            return _pages.pageDelta(pageId);
+            return _pages.retrieve(pageId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -82,9 +82,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createPage(final Page page) {
+    public ResourceSummary create(final Page page) {
         try {
-            return _pages.createPage(page);
+            return _pages.create(page);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -93,9 +93,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public String validateFields(final Page page) {
+    public String validate(final Page page) {
         try {
-            return _pages.validateFields(page);
+            return _pages.validate(page);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -115,9 +115,9 @@ public class PagesImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updatePage(final UUID pageId, final Page json) {
+    public void update(final UUID pageId, final Page json) {
         try {
-            _pages.updatePage(pageId, json);
+            _pages.update(pageId, json);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
