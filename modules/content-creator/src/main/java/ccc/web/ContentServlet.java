@@ -258,6 +258,6 @@ public class ContentServlet
 
 
     private User loggedInUser() {
-        return _users.loggedInUser();
+        return _users.retrieveCurrent();
     }
 }

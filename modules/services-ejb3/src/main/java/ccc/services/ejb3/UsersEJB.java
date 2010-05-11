@@ -73,7 +73,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_CREATE)
-    public User createUser(final User delta) {
+    public User create(final User delta) {
         return
             new CreateUserCommand(getRepoFactory())
             .execute(currentUser(), new Date(), delta)
@@ -84,7 +84,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_UPDATE)
-    public void updateUser(final UUID userId, final User delta) {
+    public void update(final UUID userId, final User delta) {
         new UpdateUserCommand(
             getRepoFactory(),
             userId,
@@ -110,7 +110,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(SELF_UPDATE)
-    public void updateYourUser(final User user) {
+    public void updateCurrent(final User user) {
         execute(
             new UpdateCurrentUserCommand(
                 getRepoFactory(),
@@ -134,7 +134,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public PagedCollection<User> listUsers(
+    public PagedCollection<User> query(
         final String username,
         final String email,
         final String groups,
@@ -166,7 +166,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(USER_READ)
-    public User userDelta(final UUID userId) {
+    public User retrieve(final UUID userId) {
         return
             getRepoFactory()
                 .createUserRepo()
@@ -200,7 +200,7 @@ public class UsersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public User loggedInUser() {
+    public User retrieveCurrent() {
         try {
             return currentUser().toDto();
         } catch (final EntityNotFoundException e) {

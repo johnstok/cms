@@ -70,7 +70,7 @@ public class ResourceAcceptanceTest
 
         // ARRANGE
         final ResourceSummary folder = tempFolder();
-        final User us = getUsers().loggedInUser();
+        final User us = getUsers().retrieveCurrent();
 
         // ACT
         getCommands().lock(folder.getId());
@@ -280,7 +280,7 @@ public class ResourceAcceptanceTest
         getCommands().lock(contentRoot.getId());
 
         // ASSERT
-        final User currentUser = getUsers().loggedInUser();
+        final User currentUser = getUsers().retrieveCurrent();
         final ResourceSummary updatedRoot =
             getCommands().resource(contentRoot.getId());
         assertEquals(currentUser.getUsername(), updatedRoot.getLockedBy());

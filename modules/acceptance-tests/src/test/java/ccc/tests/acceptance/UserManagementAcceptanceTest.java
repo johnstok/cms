@@ -85,7 +85,7 @@ public class UserManagementAcceptanceTest
         // ACT
         final List<User> ul =
             getUsers()
-                .listUsers(
+                .query(
                     us.getUsername().toString(),
                     null,
                     null,
@@ -118,7 +118,7 @@ public class UserManagementAcceptanceTest
         // ACT
         final PagedCollection<User> ul =
             getUsers()
-                .listUsers(
+                .query(
                     null,
                     us.getEmail(),
                     null,
@@ -157,7 +157,7 @@ public class UserManagementAcceptanceTest
 
         // ACT
 
-        getUsers().updateUser(
+        getUsers().update(
             us.getId(),
             new User()
                 .setEmail(email)
@@ -167,7 +167,7 @@ public class UserManagementAcceptanceTest
                 .setMetadata(Collections.singletonMap("key2", "value2")));
 
         // ASSERT
-        final User ud = getUsers().userDelta(us.getId());
+        final User ud = getUsers().retrieve(us.getId());
 //        assertEquals(username, ud.getUsername());
         assertEquals(email, ud.getEmail());
         assertEquals(name, ud.getName());
@@ -199,7 +199,7 @@ public class UserManagementAcceptanceTest
                 .setGroups(Collections.singleton(siteBuilder.getId()))
                 .setMetadata(Collections.singletonMap("key", "value"))
                 .setPassword("Testtest00-");
-        final User us = getUsers().createUser(u);
+        final User us = getUsers().create(u);
 
 
         assertEquals(username, us.getUsername());
@@ -232,7 +232,7 @@ public class UserManagementAcceptanceTest
         .setGroups(Collections.singleton(siteBuilder.getId()))
         .setMetadata(Collections.singletonMap("key", "value"))
         .setPassword("Testtest00-");
-        final User us = getUsers().createUser(u);
+        final User us = getUsers().create(u);
 
 
         assertEquals(username, us.getUsername());
@@ -255,14 +255,14 @@ public class UserManagementAcceptanceTest
 
         getSecurity().logout();
         getSecurity().login(user.getUsername().toString(), "Testtest00-");
-        user = getUsers().loggedInUser();
+        user = getUsers().retrieveCurrent();
 
         user.setEmail(email);
         user.setPassword(password);
 
         // ACT
-        getUsers().updateYourUser(user);
-        user = getUsers().loggedInUser();
+        getUsers().updateCurrent(user);
+        user = getUsers().retrieveCurrent();
 
         // ASSERT
         assertEquals(email, user.getEmail());
@@ -293,7 +293,7 @@ public class UserManagementAcceptanceTest
                 .setMetadata(Collections.singletonMap("key", "value"))
                 .setPassword("Testtest00-");
 
-        getUsers().createUser(u);
+        getUsers().create(u);
 
         // ACT
         final Boolean exists = getUsers().usernameExists(username);
@@ -323,7 +323,7 @@ public class UserManagementAcceptanceTest
         .setMetadata(Collections.singletonMap("key", "value"))
         .setPassword("Testtest00-");
 
-        getUsers().createUser(u);
+        getUsers().create(u);
 
         // ACT
         final Boolean exists = getUsers().usernameExists(testUsername);
@@ -339,7 +339,7 @@ public class UserManagementAcceptanceTest
     public void testLoggedInUser() {
 
         // ACT
-        final User user = getUsers().loggedInUser();
+        final User user = getUsers().retrieveCurrent();
 
         // ASSERT
         assertEquals(new Username("migration"), user.getUsername());
@@ -357,7 +357,7 @@ public class UserManagementAcceptanceTest
 
         final int legacyId = new Random().nextInt(100000);
 
-        getUsers().updateUser(
+        getUsers().update(
             us.getId(),
             new User()
                 .setEmail(us.getEmail())

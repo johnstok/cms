@@ -110,7 +110,7 @@ public class UserMigration {
 
                 correctEmail(ud);
 
-                _userCommands.createUser(ud);
+                _userCommands.create(ud);
             } catch (final RuntimeException e) {
                 log.warn(
                     "Failed creating user "+mu.getKey()+": "+e.getMessage(), e);

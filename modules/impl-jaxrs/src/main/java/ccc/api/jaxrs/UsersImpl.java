@@ -74,9 +74,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public User loggedInUser() {
+    public User retrieveCurrent() {
         try {
-            return _delegate.loggedInUser();
+            return _delegate.retrieveCurrent();
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -85,9 +85,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public User userDelta(final UUID userId) {
+    public User retrieve(final UUID userId) {
         try {
-            return _delegate.userDelta(userId);
+            return _delegate.retrieve(userId);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -107,9 +107,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public User createUser(final User user) {
+    public User create(final User user) {
         try {
-            return _delegate.createUser(user);
+            return _delegate.create(user);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -129,9 +129,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateYourUser(final User user) {
+    public void updateCurrent(final User user) {
         try {
-            _delegate.updateYourUser(user);
+            _delegate.updateCurrent(user);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -140,9 +140,9 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateUser(final UUID userId, final User delta) {
+    public void update(final UUID userId, final User delta) {
         try {
-            _delegate.updateUser(userId, delta);
+            _delegate.update(userId, delta);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -173,7 +173,7 @@ public class UsersImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<User> listUsers(final String username,
+    public PagedCollection<User> query(final String username,
                                             final String email,
                                             final String groups,
                                             final String metadataKey,
@@ -183,7 +183,7 @@ public class UsersImpl
                                             final int pageNo,
                                             final int pageSize) {
         try {
-            return _delegate.listUsers(
+            return _delegate.query(
                 username,
                 email,
                 groups,

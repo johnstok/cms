@@ -118,7 +118,7 @@ public class BaseMigrations {
             final LogEntryBean fe = new LogEntryBean(0, new Date());
             final List<User> users =
               getUsers()
-                  .listUsers(username, null, null, null, null, null, null, 1, 1)
+                  .query(username, null, null, null, null, null, null, 1, 1)
                   .getElements();
             fe.setUser(users.get(0));
             return fe;

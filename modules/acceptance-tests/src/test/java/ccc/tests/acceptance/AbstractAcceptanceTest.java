@@ -290,7 +290,7 @@ public abstract class AbstractAcceptanceTest
                 .setMetadata(Collections.singletonMap("key", "value"))
                 .setPassword("Testtest00-");
 
-        return getUsers().createUser(u);
+        return getUsers().create(u);
     }
 
 
