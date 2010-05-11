@@ -32,8 +32,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 /**
  * Remote action for page updating.
@@ -53,7 +51,7 @@ public class UpdatePageAction
      * @param details Details of the update.
      */
     public UpdatePageAction(final Page details) {
-        super(UI_CONSTANTS.updateContent(), HttpMethod.POST);
+        super(UI_CONSTANTS.updateContent(), HttpMethod.PUT);
         _details = details;
     }
 

@@ -32,6 +32,7 @@ import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -78,7 +79,7 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
     void update(@PathParam("id") UUID pageId, Page delta);
 
 
@@ -88,7 +89,7 @@ public interface Pages {
      * @param pageId The id of the page to update.
      * @param delta The changes to apply.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Page.WC)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Page.WC)
     void updateWorkingCopy(@PathParam("id") UUID pageId, Page delta);
 
 

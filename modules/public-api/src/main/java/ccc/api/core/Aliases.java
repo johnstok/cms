@@ -31,6 +31,7 @@ import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -78,6 +79,6 @@ public interface Aliases {
      * @param aliasId The id of the alias to update.
      * @param delta The changes to apply.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
     void update(@PathParam("id") UUID aliasId, Alias delta);
 }

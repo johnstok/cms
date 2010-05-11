@@ -33,6 +33,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -128,7 +129,7 @@ public interface Users {
      * @param userId The id of the user to update.
      * @param delta The changes to apply.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
     void update(@PathParam("id") UUID userId, User delta);
 
 
@@ -138,7 +139,7 @@ public interface Users {
      * @param userId The user's id.
      * @param user New details for the user.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
     void updateUserPassword(@PathParam("id") UUID userId, User user);
 
     /**
@@ -146,7 +147,7 @@ public interface Users {
      *
      * @param user New details for the user.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.User.ME)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.User.ME)
     void updateCurrent(User user);
 
 

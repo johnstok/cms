@@ -53,8 +53,6 @@ import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 
 
 /**
@@ -264,7 +262,7 @@ public class ActionSummaryModelData
         final String path = Globals.API_URL + _as.self();
         return
             new Request(
-                HttpMethod.POST, // FIXME: Should be delete.
+                HttpMethod.DELETE,
                 path,
                 "",
                 new ActionCancelledCallback(this));

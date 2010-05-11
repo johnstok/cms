@@ -29,6 +29,7 @@ package ccc.api.core;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -60,8 +61,7 @@ public interface Actions
      *
      * @param actionId The id of the action to cancel.
      */
-    @POST // FIXME: Should be delete.
-    @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
     void cancel(@PathParam("id") UUID actionId);
 
     /**

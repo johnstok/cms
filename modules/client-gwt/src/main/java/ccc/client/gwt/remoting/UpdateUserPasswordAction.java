@@ -31,8 +31,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 /**
  * TODO: Add a description for this type.
@@ -51,7 +49,7 @@ public abstract class UpdateUserPasswordAction
      * @param newPassword The user's new password.
      */
     public UpdateUserPasswordAction(final User newPassword) {
-        super(UI_CONSTANTS.editUserPw(), HttpMethod.POST);
+        super(UI_CONSTANTS.editUserPw(), HttpMethod.PUT);
         _newPassword = newPassword;
     }
 

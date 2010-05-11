@@ -32,8 +32,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 
 /**
@@ -54,7 +52,7 @@ public class UpdateAliasAction
      * @param details The new alias details.
      */
     public UpdateAliasAction(final Alias details) {
-        super(UI_CONSTANTS.updateAlias(), HttpMethod.POST);
+        super(UI_CONSTANTS.updateAlias(), HttpMethod.PUT);
         _details = details;
     }
 
