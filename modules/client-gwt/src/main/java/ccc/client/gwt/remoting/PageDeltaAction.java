@@ -71,7 +71,7 @@ public abstract class PageDeltaAction
     protected String getPath() {
         return
             Globals.API_URL
-            + _resource.delta().build(new GWTTemplateEncoder());
+            + _resource.self().build(new GWTTemplateEncoder());
     }
 
 

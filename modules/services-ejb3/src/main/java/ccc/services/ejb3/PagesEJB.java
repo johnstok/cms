@@ -67,7 +67,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createPage(final Page page) {
+    public ResourceSummary create(final Page page) {
         checkPermission(PAGE_CREATE);
         return
             execute(
@@ -81,7 +81,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public void updatePage(final UUID pageId, final Page delta) {
+    public void update(final UUID pageId, final Page delta) {
             execute(
                 new UpdatePageCommand(
                     getRepoFactory(),
@@ -107,7 +107,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(PAGE_UPDATE)
-    public String validateFields(final Page page) {
+    public String validate(final Page page) {
         final TemplateEntity t =
             getRepoFactory().createResourceRepository().find(
                 TemplateEntity.class, page.getTemplate());
@@ -120,7 +120,7 @@ public class PagesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public Page pageDelta(final UUID pageId) {
+    public Page retrieve(final UUID pageId) {
         checkPermission(RESOURCE_READ);
 
         return

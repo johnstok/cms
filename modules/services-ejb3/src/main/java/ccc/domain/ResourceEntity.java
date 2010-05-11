@@ -1078,10 +1078,6 @@ public abstract class ResourceEntity
                     new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
-                    Resource.DELTA,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.DELTA)
-                    .build("id", getId().toString(), new NormalisingEncoder()));
-                rs.addLink(
                     Page.WORKING_COPY,
                     new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC)
                     .build("id", getId().toString(), new NormalisingEncoder()));

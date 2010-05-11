@@ -235,7 +235,7 @@ public abstract class AbstractAcceptanceTest
                                         "title",
                                         "",
                                         true);
-        return getPages().createPage(page);
+        return getPages().create(page);
     }
 
     /**
