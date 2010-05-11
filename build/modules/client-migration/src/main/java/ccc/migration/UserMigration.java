@@ -139,7 +139,7 @@ public class UserMigration {
                 groupList.add(cachedGroups.get(role).getId());
 
             } else { // Group not cached
-                final PagedCollection<Group> gs = groups.list(role, 1, 999);
+                final PagedCollection<Group> gs = groups.query(role, 1, 999);
                 if (0==gs.getTotalCount()) { // Doesn't exist.
                     final Group g = new Group();
                     g.setName(role);

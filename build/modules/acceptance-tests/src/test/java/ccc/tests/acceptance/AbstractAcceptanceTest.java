@@ -277,7 +277,7 @@ public abstract class AbstractAcceptanceTest
         final String email = username+"@abc.def";
         final String name = "testuser";
         final List<Group> groups =
-            getGroups().list("CONTENT_CREATOR", 1, 20).getElements();
+            getGroups().query("CONTENT_CREATOR", 1, 20).getElements();
         final Group contentCreator = groups.iterator().next();
 
         // Create the user

@@ -150,7 +150,7 @@ public class UserManagementAcceptanceTest
         final String name = "testuser";
 
         final List<Group> groups =
-            getGroups().list("SITE_BUILDER", 1, 20).getElements();
+            getGroups().query("SITE_BUILDER", 1, 20).getElements();
         final Group siteBuilder = groups.iterator().next();
 
         final User us = tempUser();
@@ -187,7 +187,7 @@ public class UserManagementAcceptanceTest
         final String name = "testuser";
 
         final List<Group> groups =
-            getGroups().list("SITE_BUILDER", 1, 20).getElements();
+            getGroups().query("SITE_BUILDER", 1, 20).getElements();
         final Group siteBuilder = groups.iterator().next();
 
         // Create the user
@@ -220,7 +220,7 @@ public class UserManagementAcceptanceTest
         final String email = "foo@abc.def";
         final String name = "testuser";
         final List<Group> groups =
-            getGroups().list("SITE_BUILDER", 1, 20).getElements();
+            getGroups().query("SITE_BUILDER", 1, 20).getElements();
         final Group siteBuilder = groups.iterator().next();
 
         // Create the user
