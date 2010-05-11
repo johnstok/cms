@@ -34,9 +34,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
-
 
 /**
  * Remote action for user updating.
@@ -81,7 +78,7 @@ public abstract class UpdateUserAction
 
         return
             new Request(
-                HttpMethod.POST,
+                HttpMethod.PUT,
                 getPath(),
                 getBody(),
                 new ResponseHandlerAdapter(UI_CONSTANTS.editUser()) {

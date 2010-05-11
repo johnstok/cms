@@ -33,8 +33,6 @@ import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 /**
  * Remote action for folder updating.
@@ -54,7 +52,7 @@ public class UpdateFolderAction
      * @param folder The folder to update.
      */
     public UpdateFolderAction(final Folder folder) {
-        super(UI_CONSTANTS.folderSortOrder(), HttpMethod.POST);
+        super(UI_CONSTANTS.folderSortOrder(), HttpMethod.PUT);
         _folder = folder;
     }
 

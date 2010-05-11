@@ -32,8 +32,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 /**
  * Remote action for working copy updating.
@@ -53,7 +51,7 @@ public class UpdateWorkingCopyAction
      * @param workingCopy The new working copy.
      */
     public UpdateWorkingCopyAction(final Page workingCopy) {
-        super(UI_CONSTANTS.saveDraft(), HttpMethod.POST);
+        super(UI_CONSTANTS.saveDraft(), HttpMethod.PUT);
         _workingCopy = workingCopy;
     }
 

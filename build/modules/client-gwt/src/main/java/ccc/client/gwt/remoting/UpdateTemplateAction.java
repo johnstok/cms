@@ -32,8 +32,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 
-import com.google.gwt.http.client.RequestBuilder;
-
 
 /**
  * Remote action for template updating.
@@ -53,7 +51,7 @@ public class UpdateTemplateAction
      * @param details The new details for the template.
      */
     public UpdateTemplateAction(final Template details) {
-        super(UI_CONSTANTS.editTemplate(), HttpMethod.POST);
+        super(UI_CONSTANTS.editTemplate(), HttpMethod.PUT);
         _details = details;
     }
 

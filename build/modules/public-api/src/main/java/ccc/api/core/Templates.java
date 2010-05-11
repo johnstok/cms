@@ -32,6 +32,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -94,7 +95,7 @@ public interface Templates {
      * @param templateId The id of the template to update.
      * @param delta The changes to apply.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
     void update(
         @PathParam("id") UUID templateId, Template delta);
 
