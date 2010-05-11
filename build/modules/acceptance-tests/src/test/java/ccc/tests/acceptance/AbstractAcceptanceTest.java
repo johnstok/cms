@@ -246,7 +246,7 @@ public abstract class AbstractAcceptanceTest
     protected ResourceSummary tempFolder() {
         final String fName = UUID.randomUUID().toString();
         final ResourceSummary content = getCommands().resourceForPath("");
-        return getFolders().createFolder(
+        return getFolders().create(
             new Folder(content.getId(), new ResourceName(fName)));
     }
 

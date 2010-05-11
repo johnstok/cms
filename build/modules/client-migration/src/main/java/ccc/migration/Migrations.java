@@ -151,7 +151,7 @@ public class Migrations extends BaseMigrations {
                 getResources().resourceForLegacyId(""+map.get(e.getKey()));
             if (f != null && hp != null) {
                 getResources().lock(UUID.fromString(f.getId().toString()));
-                getFolders().updateFolder(
+                getFolders().update(
                     f.getId(),
                     new Folder(f.getSortOrder(), hp.getId(), null));
                 getResources().unlock(f.getId());
