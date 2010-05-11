@@ -56,14 +56,14 @@ public interface Users {
 
 
     /**
-     * Retrieve the delta for a user.
+     * Retrieve a user.
      *
      * @param userId The user's id.
      *
      * @return The corresponding delta.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
-    User userDelta(@PathParam("id") UUID userId);
+    User retrieve(@PathParam("id") UUID userId);
 
     /**
      * Returns currently logged in user.
@@ -71,7 +71,7 @@ public interface Users {
      * @return UserDTO
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.User.ME)
-    User loggedInUser();
+    User retrieveCurrent();
 
     /**
      * Query  users.
@@ -89,7 +89,7 @@ public interface Users {
      * @return Returns list of users.
      */
    @GET @Path(ccc.api.core.ResourceIdentifiers.User.COLLECTION)
-   PagedCollection<User> listUsers(
+   PagedCollection<User> query(
         @QueryParam("username") String username,
         @QueryParam("email") String email,
         @QueryParam("groups") String groups,
@@ -119,7 +119,7 @@ public interface Users {
      * @return A user summary describing the new user.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.User.COLLECTION)
-    User createUser(User delta);
+    User create(User delta);
 
 
     /**
@@ -129,7 +129,7 @@ public interface Users {
      * @param delta The changes to apply.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
-    void updateUser(@PathParam("id") UUID userId, User delta);
+    void update(@PathParam("id") UUID userId, User delta);
 
 
     /**
@@ -144,11 +144,10 @@ public interface Users {
     /**
      * Update the email and/or password for the current user.
      *
-     * @param userId The user's id.
      * @param user New details for the user.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.User.ME)
-    void updateYourUser(User user);
+    void updateCurrent(User user);
 
 
     /**

@@ -269,7 +269,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ARRANGE
         final ResourceSummary folder = tempFolder();
         final User user = tempUser();
-        final User me = getUsers().loggedInUser();
+        final User me = getUsers().retrieveCurrent();
         final ACL acl = new ACL();
         final Entry e = new Entry();
         e._canRead = true;
