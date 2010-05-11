@@ -81,19 +81,19 @@ public final class Create extends CccApp {
             final ResourceSummary content = folders.createRoot(CONTENT);
             folders.createRoot(TRASH);
 
-            final ResourceSummary assets = folders.createFolder(
+            final ResourceSummary assets = folders.create(
                 new Folder(content.getId(), new ResourceName(ASSETS)));
 
-            folders.createFolder(
+            folders.create(
                 new Folder(assets.getId(), new ResourceName(TEMPLATES)));
-            folders.createFolder(
+            folders.create(
                 new Folder(assets.getId(), new ResourceName(CSS)));
-            folders.createFolder(
+            folders.create(
                 new Folder(assets.getId(), new ResourceName(IMAGES)));
 
-            folders.createFolder(
+            folders.create(
                 new Folder(content.getId(), new ResourceName(FILES)));
-            folders.createFolder(
+            folders.create(
                 new Folder(content.getId(), new ResourceName(IMAGES)));
             resources.createSearch(content.getId(), "search");
 

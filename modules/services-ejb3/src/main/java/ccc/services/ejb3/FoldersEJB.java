@@ -71,7 +71,7 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public ResourceSummary createFolder(final Folder folder) {
+    public ResourceSummary create(final Folder folder) {
         checkPermission(FOLDER_CREATE);
 
         return createFolder(
@@ -120,7 +120,7 @@ public class FoldersEJB
     /** {@inheritDoc} */
     @Override
     @RolesAllowed(FOLDER_UPDATE)
-    public void updateFolder(final UUID folderId,
+    public void update(final UUID folderId,
                              final Folder delta) {
         final List<UUID> list = new ArrayList<UUID>();
 

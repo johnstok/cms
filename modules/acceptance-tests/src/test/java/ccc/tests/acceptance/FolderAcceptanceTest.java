@@ -66,13 +66,13 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final ResourceSummary content =
             getCommands().resourceForPath("");
         final ResourceSummary testFolder =
-            getFolders().createFolder(
+            getFolders().create(
                 new Folder(content.getId(), new ResourceName(fName)));
         final ResourceSummary child1 =
-            getFolders().createFolder(
+            getFolders().create(
                 new Folder(testFolder.getId(), new ResourceName(cn1)));
         final ResourceSummary child2 =
-            getFolders().createFolder(
+            getFolders().create(
                 new Folder(testFolder.getId(), new ResourceName(cn2)));
 
         // ACT
@@ -145,7 +145,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final Folder fd =
             new Folder(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
 
-        getFolders().updateFolder(folder.getId(), fd);
+        getFolders().update(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
 
         final PagedCollection<ResourceSummary> children =
@@ -200,7 +200,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final Folder fd =
             new Folder(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
 
-        getFolders().updateFolder(f.getId(), fd);
+        getFolders().update(f.getId(), fd);
         final ResourceSummary updated = getCommands().resource(f.getId());
 
 
@@ -249,7 +249,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final Folder fd =
             new Folder(
                 tempFolder().getSortOrder(), page.getId(), sortList);
-        getFolders().updateFolder(folder.getId(), fd);
+        getFolders().update(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
 
         // ASSERT
@@ -318,7 +318,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
             new Folder(
                 ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
 
-        getFolders().updateFolder(folder.getId(), fd);
+        getFolders().update(folder.getId(), fd);
         final ResourceSummary updated = getCommands().resource(folder.getId());
 
         // ASSERT

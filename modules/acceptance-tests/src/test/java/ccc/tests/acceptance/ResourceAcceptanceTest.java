@@ -115,10 +115,10 @@ public class ResourceAcceptanceTest
         final ResourceSummary firstFolder = tempFolder();
         final ResourceSummary secondFolder = tempFolder();
 
-        final ResourceSummary childFolder1 = getFolders().createFolder(
+        final ResourceSummary childFolder1 = getFolders().create(
             new Folder(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
-        getFolders().createFolder(
+        getFolders().create(
             new Folder(firstFolder.getId(),
             new ResourceName(UUID.randomUUID().toString())));
 

@@ -106,9 +106,9 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public ResourceSummary createFolder(final Folder folder) {
+    public ResourceSummary create(final Folder folder) {
         try {
-            return _delegate.createFolder(folder);
+            return _delegate.create(folder);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }
@@ -117,9 +117,9 @@ public class FoldersImpl
 
     /** {@inheritDoc} */
     @Override
-    public void updateFolder(final UUID folderId, final Folder delta) {
+    public void update(final UUID folderId, final Folder delta) {
         try {
-            _delegate.updateFolder(folderId, delta);
+            _delegate.update(folderId, delta);
         } catch (final ClientResponseFailure cfe) {
             throw convertException(cfe);
         }

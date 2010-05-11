@@ -23,6 +23,7 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
+import ccc.api.core.ResourceIdentifiers.Alias;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.RequestExecutor;
@@ -67,7 +68,7 @@ public class GwtTest extends TestCase {
             .setParser(new ServerTextParser())
             .execute();
 
-        assertEquals("/secure/aliases", GlobalsImpl.getAPI().aliases());
+        assertEquals(Alias.COLLECTION, GlobalsImpl.getAPI().aliases());
     }
 
 

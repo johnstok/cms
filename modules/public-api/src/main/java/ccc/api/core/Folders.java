@@ -93,7 +93,7 @@ public interface Folders {
      * @return A resource summary describing the new folder.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.COLLECTION)
-    ResourceSummary createFolder(Folder folder);
+    ResourceSummary create(Folder folder);
 
     /**
      * Update the specified folder.
@@ -102,7 +102,7 @@ public interface Folders {
      * @param delta The updated details of the folder.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
-    void updateFolder(@PathParam("id") UUID folderId, Folder delta);
+    void update(@PathParam("id") UUID folderId, Folder delta);
 
 
     /**
