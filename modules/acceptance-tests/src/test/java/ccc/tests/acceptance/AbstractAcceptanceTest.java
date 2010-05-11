@@ -262,7 +262,7 @@ public abstract class AbstractAcceptanceTest
         final Alias alias =
             new Alias(
                 folder.getId(), new ResourceName(name), folder.getId());
-        return getAliases().createAlias(alias);
+        return getAliases().create(alias);
     }
 
 

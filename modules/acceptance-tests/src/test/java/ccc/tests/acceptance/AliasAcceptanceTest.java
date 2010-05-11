@@ -53,7 +53,7 @@ public class AliasAcceptanceTest
 
         // ACT
         getCommands().lock(rs.getId());
-        getAliases().updateAlias(rs.getId(), new Alias(folder.getId()));
+        getAliases().update(rs.getId(), new Alias(folder.getId()));
 
         // ASSERT
         final String targetName = getAliases().aliasTargetName(rs.getId());
@@ -73,7 +73,7 @@ public class AliasAcceptanceTest
                 folder.getId(), new ResourceName(name), folder.getId());
 
         // ACT
-        final ResourceSummary rs = getAliases().createAlias(alias);
+        final ResourceSummary rs = getAliases().create(alias);
 
         // ASSERT
         final String targetName = getAliases().aliasTargetName(rs.getId());
