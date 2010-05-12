@@ -58,7 +58,6 @@ public final class ResourceSummary extends Res {
     private int    _childCount;
     private int    _folderCount;
     private boolean _includeInMainMenu;
-    private String _sortOrder;
     private boolean _hasWorkingCopy;
     private Date _dateCreated;
     private Date _dateChanged;
@@ -88,7 +87,6 @@ public final class ResourceSummary extends Res {
      * @param childCount The number of children the resource has.
      * @param folderCount The number of folders the resource contains.
      * @param includeInMainMenu Is the resource included in the main menu.
-     * @param sortOrder The sort order for the resource.
      * @param hasWorkingCopy Does the resource have a working copy.
      * @param dateCreated When was the resource created.
      * @param dateChanged When was the resource last changed.
@@ -110,7 +108,6 @@ public final class ResourceSummary extends Res {
                            final int childCount,
                            final int folderCount,
                            final boolean includeInMainMenu,
-                           final String sortOrder,
                            final boolean hasWorkingCopy,
                            final Date dateCreated,
                            final Date dateChanged,
@@ -131,7 +128,6 @@ public final class ResourceSummary extends Res {
         _childCount = childCount;
         _folderCount = folderCount;
         _includeInMainMenu = includeInMainMenu;
-        _sortOrder = sortOrder;
         _hasWorkingCopy = hasWorkingCopy;
         _dateCreated = new Date(dateCreated.getTime());
         _dateChanged = new Date(dateChanged.getTime());
@@ -277,16 +273,6 @@ public final class ResourceSummary extends Res {
     /**
      * Accessor.
      *
-     * @return Returns the sortOrder.
-     */
-    public String getSortOrder() {
-        return _sortOrder;
-    }
-
-
-    /**
-     * Accessor.
-     *
      * @return Returns the hasWorkingCopy.
      */
     public boolean isHasWorkingCopy() {
@@ -321,16 +307,6 @@ public final class ResourceSummary extends Res {
      */
     public void setHasWorkingCopy(final boolean hasWorkingCopy) {
         _hasWorkingCopy = hasWorkingCopy;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param sortOrder The sortOrder to set.
-     */
-    public void setSortOrder(final String sortOrder) {
-        _sortOrder = sortOrder;
     }
 
 
@@ -525,7 +501,6 @@ public final class ResourceSummary extends Res {
         json.set(JsonKeys.FOLDER_COUNT, Long.valueOf(_folderCount));
         json.set(
             JsonKeys.INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
-        json.set(JsonKeys.SORT_ORDER, _sortOrder);
         json.set(JsonKeys.HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
         json.set(JsonKeys.DATE_CREATED, _dateCreated);
         json.set(JsonKeys.DATE_CHANGED, _dateChanged);
@@ -561,7 +536,6 @@ public final class ResourceSummary extends Res {
         _childCount = json.getInt(JsonKeys.CHILD_COUNT);
         _folderCount = json.getInt(JsonKeys.FOLDER_COUNT);
         _includeInMainMenu = json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU);
-        _sortOrder = json.getString(JsonKeys.SORT_ORDER);
         _hasWorkingCopy = json.getBool(JsonKeys.HAS_WORKING_COPY);
         _dateCreated = json.getDate(JsonKeys.DATE_CREATED);
         _dateChanged = json.getDate(JsonKeys.DATE_CHANGED);

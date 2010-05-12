@@ -124,9 +124,6 @@ public class ResourceSummaryModelData
             case PUBLISHED:
                 return (X) _rs.getPublishedBy();
 
-            case SORT_ORDER:
-                return (X) _rs.getSortOrder();
-
             case TITLE:
                 return (X) _rs.getTitle();
 
@@ -209,8 +206,6 @@ public class ResourceSummaryModelData
         FOLDER_COUNT,
         /** MM_INCLUDE : Property. */
         MM_INCLUDE,
-        /** SORT_ORDER : Property. */
-        SORT_ORDER,
         /** WORKING_COPY : Property. */
         WORKING_COPY,
         /** DATE_CHANGED : Property. */
@@ -300,15 +295,6 @@ public class ResourceSummaryModelData
     /**
      * Mutator.
      *
-     * @param order The sort order to set.
-     */
-    public void setSortOrder(final String order) {
-        _rs.setSortOrder(order);
-    }
-
-    /**
-     * Mutator.
-     *
      * @param title The resource title to set.
      */
     public void setTitle(final String title) {
@@ -349,15 +335,6 @@ public class ResourceSummaryModelData
      */
     public String getTitle() {
         return _rs.getTitle();
-    }
-
-    /**
-     * Accessor.
-     *
-     * @return The sort order of the resource.
-     */
-    public String getSortOrder() {
-        return _rs.getSortOrder();
     }
 
     /**

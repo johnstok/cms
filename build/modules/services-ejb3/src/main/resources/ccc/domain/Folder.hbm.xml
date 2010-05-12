@@ -32,9 +32,6 @@
 -->
 
 <hibernate-mapping default-access="field">
-    <typedef class="ccc.plugins.persistence.hibernate.EnumUserType" name="SortOrder">
-        <param name="type">ccc.api.types.ResourceOrder</param>
-    </typedef>
     
     <joined-subclass
         name="ccc.domain.FolderEntity" 
@@ -42,13 +39,6 @@
         table="folders">
         
         <key column="id" foreign-key="FK_FOLDER_RESOURCE_ID"/>
-        
-        <property
-            name="_order"
-            column="sort_order"
-            not-null="true"
-            type="SortOrder" 
-            length="255" />
         
         <set name="_entries" inverse="true">
             <cache usage="transactional"/>

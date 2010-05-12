@@ -57,7 +57,6 @@ public final class FolderEntity
         ResourceEntity {
 
     private Set<ResourceEntity> _entries = new HashSet<ResourceEntity>();
-    private ResourceOrder  _order = ResourceOrder.MANUAL;
     private PageEntity _indexPage = null;
 
 
@@ -163,7 +162,7 @@ public final class FolderEntity
      */
     public List<ResourceEntity> getEntries() {
         final List<ResourceEntity> entries = new ArrayList<ResourceEntity>(_entries);
-        Sorter.sort(entries, _order);
+        Sorter.sort(entries, ResourceOrder.MANUAL);
         return entries;
     }
 
@@ -413,27 +412,6 @@ public final class FolderEntity
     }
 
 
-    /**
-     * Accessor for the sort order property.
-     *
-     * @return The folder sort order.
-     */
-    public ResourceOrder getSortOrder() {
-        return _order;
-    }
-
-
-    /**
-     * Mutator for the sort order property.
-     *
-     * @param order The new sort order.
-     */
-    public void setSortOrder(final ResourceOrder order) {
-        DBC.require().notNull(order);
-        _order = order;
-    }
-
-
     /** {@inheritDoc} */
     @Override
     public Jsonable createSnapshot() {
@@ -501,7 +479,6 @@ public final class FolderEntity
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-        json.set(JsonKeys.SORT_ORDER, getSortOrder().name());
         json.set(
             JsonKeys.INDEX_PAGE_ID,
             (null==getIndexPage()) ? null : getIndexPage().getId().toString());

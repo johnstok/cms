@@ -32,7 +32,6 @@ import java.util.UUID;
 
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
-import ccc.api.types.ResourceOrder;
 import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
 import ccc.domain.PageEntity;
@@ -53,7 +52,6 @@ public class UpdateFolderCommand
 
     private final UUID _folderId;
     private final FolderEntity _folder;
-    private final ResourceOrder _order;
     private final UUID _indexPageId;
     private final List<UUID> _orderList;
 
@@ -62,20 +60,17 @@ public class UpdateFolderCommand
      *
      * @param repoFactory The repository factory for this command.
      * @param folderId The folder to update.
-     * @param order The new sort order.
      * @param indexPageId The index page.
      * @param orderList The manual order of the resources in the specified
      *  folder.
      */
     public UpdateFolderCommand(final IRepositoryFactory repoFactory,
                                final UUID folderId,
-                               final ResourceOrder order,
                                final UUID indexPageId,
                                final List<UUID> orderList) {
         super(repoFactory);
         _folderId = folderId;
         _folder = getRepository().find(FolderEntity.class, folderId);
-        _order = order;
         _indexPageId = indexPageId;
         _orderList = orderList;
     }
@@ -86,7 +81,8 @@ public class UpdateFolderCommand
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final FolderEntity f = getRepository().find(FolderEntity.class, _folderId);
+        final FolderEntity f =
+            getRepository().find(FolderEntity.class, _folderId);
         f.confirmLock(actor);
 
         PageEntity p = null;
@@ -94,7 +90,6 @@ public class UpdateFolderCommand
             p = getRepository().find(PageEntity.class, _indexPageId);
         }
         f.setIndexPage(p);
-        f.setSortOrder(_order);
 
         if (_orderList != null && !_orderList.isEmpty()) {
 
@@ -129,7 +124,7 @@ public class UpdateFolderCommand
 
     /** {@inheritDoc} */
     @Override
-    protected void authorize(final UserEntity actor) throws UnauthorizedException {
+    protected void authorize(final UserEntity actor) {
         if (!_folder.isWriteableBy(actor)) {
             throw new UnauthorizedException(_folderId, actor.getId());
         }
