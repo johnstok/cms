@@ -39,9 +39,7 @@ import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
-import ccc.api.types.ResourceOrder;
 import ccc.api.types.ResourcePath;
-import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.domain.FileEntity;
 import ccc.domain.FolderEntity;
@@ -286,7 +284,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 + "LEFT JOIN r._lockedBy LEFT JOIN r._publishedBy");
 
         appendCriteria(criteria, f, query, params);
-        appendSorting(f, sort, sortOrder, query);
+        appendSorting(sort, sortOrder, query);
 
         return
         _repository.listDyn(
@@ -366,14 +364,12 @@ class ResourceRepositoryImpl implements ResourceRepository {
         params.put("deleted", Boolean.FALSE);
     }
 
-    private void appendSorting(final ResourceEntity resource,
-                               final String sort,
+    private void appendSorting(final String sort,
                                final SortOrder sortOrder,
                                final StringBuffer query) {
 
-        boolean knownSort = false;
         if (null != sort) {
-            knownSort = true;
+            boolean knownSort = true;
             if ("title".equalsIgnoreCase(sort)) {
                 query.append(" order by upper(r._title) ");
             } else if ("mm_include".equalsIgnoreCase(sort)) {
@@ -388,40 +384,15 @@ class ResourceRepositoryImpl implements ResourceRepository {
                 query.append(" order by r.class ");
             } else if ("manual".equalsIgnoreCase(sort)) {
                 query.append(" order by r._parentIndex ");
+            } else if ("date_changed".equalsIgnoreCase(sort)) {
+                query.append(" order by r._dateChanged ");
+            } else if ("date_created".equalsIgnoreCase(sort)) {
+                query.append(" order by r._dateCreated ");
             } else {
                 knownSort = false;
             }
             if (knownSort) {
                 query.append(sortOrder.name());
-            }
-        }
-        if (!knownSort
-            && resource != null
-            && resource.getType() == ResourceType.FOLDER) {
-            final FolderEntity f = resource.as(FolderEntity.class);
-            final ResourceOrder order = f.getSortOrder();
-            switch (order){
-                case DATE_CHANGED_ASC:
-                    query.append(" order by r._dateChanged asc ");
-                    break;
-                case DATE_CHANGED_DESC:
-                    query.append(" order by r._dateChanged desc ");
-                    break;
-                case DATE_CREATED_ASC:
-                    query.append(" order by r._dateCreated asc ");
-                    break;
-                case DATE_CREATED_DESC:
-                    query.append(" order by r._dateCreated desc ");
-                    break;
-                case NAME_ALPHANUM_ASC:
-                    query.append(" order by r._name asc ");
-                    break;
-                case NAME_ALPHANUM_CI_ASC:
-                    query.append(" order by upper(r._name) asc ");
-                    break;
-                case MANUAL:
-                    query.append(" order by r._parentIndex asc ");
-                    break;
             }
         }
     }

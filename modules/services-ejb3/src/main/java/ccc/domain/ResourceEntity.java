@@ -943,13 +943,11 @@ public abstract class ResourceEntity
     public ResourceSummary mapResource() {
         int childCount = 0;
         int folderCount = 0;
-        String sortOrder = null;
         UUID indexPage = null;
         boolean hasWorkingCopy = false;
         if (getType() == ResourceType.FOLDER) {
             childCount = as(FolderEntity.class).getEntries().size();
             folderCount = as(FolderEntity.class).getFolders().size();
-            sortOrder = as(FolderEntity.class).getSortOrder().name();
             indexPage = (null==as(FolderEntity.class).getIndexPage())
                 ? null : as(FolderEntity.class).getIndexPage().getId();
         } else if (getType() == ResourceType.PAGE) {
@@ -971,7 +969,6 @@ public abstract class ResourceEntity
                 childCount,
                 folderCount,
                 isIncludedInMainMenu(),
-                sortOrder,
                 hasWorkingCopy,
                 getDateCreated(),
                 getDateChanged(),

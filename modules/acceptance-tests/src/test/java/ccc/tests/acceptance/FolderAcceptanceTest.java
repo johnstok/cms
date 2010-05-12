@@ -39,7 +39,6 @@ import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ACL;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
-import ccc.api.types.ResourceOrder;
 import ccc.api.types.SortOrder;
 import ccc.api.types.ACL.Entry;
 
@@ -142,8 +141,8 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         sl.add(page1.getId().toString());
         sl.add(page3.getId().toString());
 
-        final Folder fd =
-            new Folder(ResourceOrder.DATE_CHANGED_ASC.name(), null, sl);
+        final Folder fd = new Folder();
+        fd.setSortList(sl);
 
         getFolders().update(folder.getId(), fd);
         final ResourceSummary updated = getCommands().retrieve(folder.getId());
@@ -167,66 +166,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         // ASSERT
         assertNull(folder.getLockedBy());
         assertNotNull(updated.getLockedBy());
-        assertEquals(ResourceOrder.DATE_CHANGED_ASC.name(),
-                     updated.getSortOrder());
         assertEquals(page2.getId(), list.get(0).getId());
         assertEquals(page1.getId(), list.get(1).getId());
         assertEquals(page3.getId(), list.get(2).getId());
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testGetChildren() {
-
-        // ARRANGE
-        final ResourceSummary f = tempFolder();
-        final ResourceSummary template =
-            dummyTemplate(getCommands().resourceForPath(""));
-        final ResourceSummary page1 = tempPage(f.getId(), template.getId());
-        pause(ONE_SECOND);
-        final ResourceSummary page2 = tempPage(f.getId(), template.getId());
-        pause(ONE_SECOND);
-        final ResourceSummary page3 = tempPage(f.getId(), template.getId());
-
-        // ACT
-        getCommands().lock(f.getId());
-        final List<String> sl  = new ArrayList<String>();
-        sl.add(page2.getId().toString());
-        sl.add(page1.getId().toString());
-        sl.add(page3.getId().toString());
-
-        final Folder fd =
-            new Folder(ResourceOrder.DATE_CREATED_ASC.name(), null, sl);
-
-        getFolders().update(f.getId(), fd);
-        final ResourceSummary updated = getCommands().retrieve(f.getId());
-
-
-        final PagedCollection<ResourceSummary> list =
-            getCommands().list(f.getId(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                SortOrder.ASC,
-                1,
-                1000);
-
-
-        // ASSERT
-        assertNull(f.getLockedBy());
-        assertNotNull(updated.getLockedBy());
-        assertEquals(ResourceOrder.DATE_CREATED_ASC.name(),
-            updated.getSortOrder());
-        assertEquals(page1.getId(), list.getElements().get(0).getId());
-        assertEquals(page2.getId(), list.getElements().get(1).getId());
-        assertEquals(page3.getId(), list.getElements().get(2).getId());
     }
 
 
@@ -246,16 +188,16 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final List<String> sortList  = new ArrayList<String>();
         sortList.add(page.getId().toString());
 
-        final Folder fd =
-            new Folder(
-                tempFolder().getSortOrder(), page.getId(), sortList);
+        final Folder fd = new Folder();
+        fd.setSortList(sortList);
+        fd.setIndexPage(page.getId());
+
         getFolders().update(folder.getId(), fd);
         final ResourceSummary updated = getCommands().retrieve(folder.getId());
 
         // ASSERT
         assertNull(folder.getLockedBy());
         assertNotNull(updated.getLockedBy());
-        assertEquals(ResourceOrder.MANUAL.name(), updated.getSortOrder());
         assertEquals(page.getId(), updated.getIndexPageId());
         assertEquals(1, updated.getChildCount());
     }
@@ -307,31 +249,6 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
     /**
      * Test.
      */
-    public void testChangeFolderSortOrder() {
-
-        // ARRANGE
-        final ResourceSummary folder = tempFolder();
-        final List<String> sortList  = new ArrayList<String>();
-        // ACT
-        getCommands().lock(folder.getId());
-        final Folder fd =
-            new Folder(
-                ResourceOrder.DATE_CHANGED_ASC.name(), null, sortList);
-
-        getFolders().update(folder.getId(), fd);
-        final ResourceSummary updated = getCommands().retrieve(folder.getId());
-
-        // ASSERT
-        assertNull(folder.getLockedBy());
-        assertNotNull(updated.getLockedBy());
-        assertEquals(
-            ResourceOrder.DATE_CHANGED_ASC.name(), updated.getSortOrder());
-    }
-
-
-    /**
-     * Test.
-     */
     public void testRoots() {
 
         // ACT
@@ -344,16 +261,4 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
     }
 
-
-    /**
-     * Simple delay to overcome MySQL timestamp one second accuracy.
-     * @param i
-     */
-    private void pause(final int i) {
-        try {
-            Thread.sleep(i);
-        } catch (final InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

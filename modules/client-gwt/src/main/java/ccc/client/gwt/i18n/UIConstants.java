@@ -700,6 +700,14 @@ public interface UIConstants extends Constants {
     String folderSortOrder();
 
     /**
+     * "Manual order".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Manual order")
+    String manualOrder();
+
+    /**
      * "Resource Details".
      *
      * @return The constant, in the appropriate locale.

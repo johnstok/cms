@@ -45,7 +45,6 @@ import ccc.api.core.Folders;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
-import ccc.api.types.ResourceOrder;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.FolderEntity;
 import ccc.domain.ResourceEntity;
@@ -131,7 +130,6 @@ public class FoldersEJB
         new UpdateFolderCommand(
             getRepoFactory(),
             folderId,
-            ResourceOrder.valueOf(delta.getSortOrder()),
             delta.getIndexPage(),
             list)
         .execute(

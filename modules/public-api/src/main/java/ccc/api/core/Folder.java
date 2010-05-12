@@ -29,7 +29,6 @@ package ccc.api.core;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
@@ -46,7 +45,6 @@ public class Folder
 
     private UUID _indexPage;
     private UUID _defaultPage;
-    private String _sortOrder;
     private Collection<String> _sortList;
 
 
@@ -65,23 +63,6 @@ public class Folder
     public Folder(final UUID parentId, final ResourceName name) {
         setParent(parentId);
         setName(name);
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param sortOrder The sort order for the folder's children.
-     * @param indexPage The folder index page (may be NULL).
-     * @param sortList The list of children for this folder, in sorted order.
-     */
-    public Folder(final String sortOrder,
-                     final UUID indexPage,
-                     final Collection<String> sortList) {
-        DBC.require().notNull(sortOrder);
-        _sortOrder = sortOrder;
-        _indexPage = indexPage;
-        _sortList = sortList;
     }
 
 
@@ -136,26 +117,6 @@ public class Folder
 
 
     /**
-     * Accessor.
-     *
-     * @return Returns the sortOrder.
-     */
-    public final String getSortOrder() {
-        return _sortOrder;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param sortOrder The sortOrder to set.
-     */
-    public void setSortOrder(final String sortOrder) {
-        _sortOrder = sortOrder;
-    }
-
-
-    /**
      * Mutator.
      *
      * @param sortList The sortList to set.
@@ -169,8 +130,6 @@ public class Folder
     @Override
     public void toJson(final Json json) {
         super.toJson(json);
-
-        json.set(JsonKeys.SORT_ORDER, _sortOrder);
         json.set(JsonKeys.INDEX_PAGE_ID, _indexPage);
         json.setStrings(JsonKeys.SORT_LIST, _sortList);
     }
@@ -180,8 +139,6 @@ public class Folder
     @Override
     public void fromJson(final Json json) {
         super.fromJson(json);
-
-        _sortOrder = json.getString(JsonKeys.SORT_ORDER);
         _indexPage = json.getId(JsonKeys.INDEX_PAGE_ID);
         _sortList = json.getStrings(JsonKeys.SORT_LIST);
     }

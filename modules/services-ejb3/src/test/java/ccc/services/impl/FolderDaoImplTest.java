@@ -28,19 +28,12 @@ package ccc.services.impl;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourceOrder;
 import ccc.commands.AbstractCommandTest;
 import ccc.commands.UpdateFolderCommand;
 import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
-import ccc.domain.PageEntity;
-import ccc.domain.ResourceEntity;
 
 
 /**
@@ -71,7 +64,6 @@ public class FolderDaoImplTest
             new UpdateFolderCommand(
                 _repoFactory,
                 _f.getId(),
-                ResourceOrder.NAME_ALPHANUM_ASC,
                 null,
                 null);
 
@@ -80,55 +72,53 @@ public class FolderDaoImplTest
 
         // ASSERT
         verifyAll();
-        assertEquals(ResourceOrder.NAME_ALPHANUM_ASC, _f.getSortOrder());
     }
 
-    /**
-     * Test.
-     */
-    public void testReorder() {
-
-        // ARRANGE
-        _f.lock(_user);
-        final PageEntity foo = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
-        final PageEntity bar = new PageEntity(new ResourceName("bar"), "bar", null, _rm);
-        final PageEntity baz = new PageEntity(new ResourceName("baz"), "baz", null, _rm);
-        _f.add(foo);
-        _f.add(bar);
-        _f.add(baz);
-
-        expect(_repository.find(FolderEntity.class, _f.getId()))
-            .andReturn(_f);
-        expect(_repository.find(FolderEntity.class, _f.getId()))
-            .andReturn(_f);
-        _audit.record(isA(LogEntry.class));
-        replayAll();
-
-        final List<UUID> order = new ArrayList<UUID>();
-        order.add(baz.getId());
-        order.add(foo.getId());
-        order.add(bar.getId());
-
-        // ACT
-        final UpdateFolderCommand uf =
-            new UpdateFolderCommand(
-                _repoFactory,
-                _f.getId(),
-                ResourceOrder.MANUAL,
-                null,
-                order);
-
-        uf.execute(_user, new Date());
-
-        // ASSERT
-        verifyAll();
-        final List<ResourceEntity> entries = _f.getEntries();
-        assertEquals(3, entries.size());
-        assertEquals(baz, entries.get(0));
-        assertEquals(foo, entries.get(1));
-        assertEquals(bar, entries.get(2));
-
-    }
+//    /**
+//     * Test.
+//     */
+//    public void testReorder() {
+//
+//        // ARRANGE
+//        _f.lock(_user);
+//        final PageEntity foo = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+//        final PageEntity bar = new PageEntity(new ResourceName("bar"), "bar", null, _rm);
+//        final PageEntity baz = new PageEntity(new ResourceName("baz"), "baz", null, _rm);
+//        _f.add(foo);
+//        _f.add(bar);
+//        _f.add(baz);
+//
+//        expect(_repository.find(FolderEntity.class, _f.getId()))
+//            .andReturn(_f);
+//        expect(_repository.find(FolderEntity.class, _f.getId()))
+//            .andReturn(_f);
+//        _audit.record(isA(LogEntry.class));
+//        replayAll();
+//
+//        final List<UUID> order = new ArrayList<UUID>();
+//        order.add(baz.getId());
+//        order.add(foo.getId());
+//        order.add(bar.getId());
+//
+//        // ACT
+//        final UpdateFolderCommand uf =
+//            new UpdateFolderCommand(
+//                _repoFactory,
+//                _f.getId(),
+//                null,
+//                order);
+//
+//        uf.execute(_user, new Date());
+//
+//        // ASSERT
+//        verifyAll();
+//        final List<ResourceEntity> entries = _f.getEntries();
+//        assertEquals(3, entries.size());
+//        assertEquals(baz, entries.get(0));
+//        assertEquals(foo, entries.get(1));
+//        assertEquals(bar, entries.get(2));
+//
+//    }
 
 
     /** {@inheritDoc} */

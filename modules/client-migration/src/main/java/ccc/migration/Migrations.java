@@ -153,7 +153,7 @@ public class Migrations extends BaseMigrations {
                 getResources().lock(UUID.fromString(f.getId().toString()));
                 getFolders().update(
                     f.getId(),
-                    new Folder(f.getSortOrder(), hp.getId(), null));
+                    new Folder(hp.getId(), null));
                 getResources().unlock(f.getId());
             }
         }
