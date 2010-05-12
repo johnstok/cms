@@ -250,7 +250,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      * @param template DTO specifying the new template to set for the resource.
      */
-    @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+    @PUT @Path(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
     void updateResourceTemplate(
         @PathParam("id") UUID resourceId,
         Resource template);

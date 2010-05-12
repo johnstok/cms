@@ -57,8 +57,7 @@ public class OpenUpdateFolderAction
             _selectionModel.tableSelection();
         new EditFolderDialog(
             _selectionModel,
-            selectedModel.getSortOrder(),
-            selectedModel.getIndexPageId())
+            selectedModel)
         .show();
     }
 }

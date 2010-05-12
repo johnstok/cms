@@ -55,7 +55,7 @@ public class UpdateResourceTemplateAction
      * @param resource The resource to update.
      */
     public UpdateResourceTemplateAction(final Resource resource) {
-        super(UI_CONSTANTS.chooseTemplate(), HttpMethod.POST);
+        super(UI_CONSTANTS.chooseTemplate(), HttpMethod.PUT);
         _resource = resource;
     }
 
