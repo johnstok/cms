@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.core.Resource;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -116,6 +117,10 @@ public class PageCommentDialog extends AbstractEditDialog {
                 update.setParagraphs(_paras);
                 update.setComment(_comment.getValue());
                 update.setMajorChange(_majorEdit.getValue().booleanValue());
+                // FIXME: Broken - this updates the currently selected page!!!
+                update.addLink(
+                    Resource.SELF,
+                    _updatePageDialog.rt().tableSelection().getDelegate().getLink(Resource.SELF));
 
                 new UpdatePageAction(update) {
                         /** {@inheritDoc} */

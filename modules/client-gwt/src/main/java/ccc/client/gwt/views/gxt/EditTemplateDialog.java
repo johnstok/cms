@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.UUID;
 
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
@@ -88,6 +89,7 @@ public class EditTemplateDialog
     private CodeMirrorEditor _body;
     private CodeMirrorEditor _definition;
 
+    private Template _model;
     private UUID _id;
     private UUID _parentFolderId = null;
     private DialogMode _mode;
@@ -148,6 +150,7 @@ public class EditTemplateDialog
         _id = proxy.getId();
         _ssm = ssm;
 
+        _model = model;
         _definitionString = model.getDefinition();
         _bodyString = model.getBody();
         populateFirstScreen();
@@ -314,6 +317,8 @@ public class EditTemplateDialog
                     case UPDATE:
 
                         delta.setId(_id);
+                        delta.addLink(
+                            Resource.SELF, _model.getLink(Resource.SELF));
 
                         new UpdateTemplateAction(delta) {
                             /** {@inheritDoc} */

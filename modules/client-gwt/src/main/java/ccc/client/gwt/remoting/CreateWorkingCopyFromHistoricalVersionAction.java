@@ -26,13 +26,13 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Resource;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.HistoryDialog;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -72,10 +72,9 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        json.set(
-            JsonKeys.REVISION, Long.valueOf(_dialog.selectedItem().getIndex()));
-        json.set(JsonKeys.CACHE_DURATION, (String) null);
-        json.set(JsonKeys.TEMPLATE_ID, (String) null);
+        final Resource r = new Resource();
+        r.setRevision((int) _dialog.selectedItem().getIndex()); // FIXME
+        r.toJson(json);
         return json.toString();
     }
 

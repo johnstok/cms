@@ -193,6 +193,11 @@ public class UpdatePageDialog
                 final Page update = new Page();
                 update.setId(_pageId);
                 update.setParagraphs(getParagraphs());
+                // FIXME: Broken - this updates the currently selected page!!!
+                update.addLink(
+                    Page.WORKING_COPY,
+                    rt().tableSelection().getDelegate().getLink(
+                        Page.WORKING_COPY));
 
                 new UpdateWorkingCopyAction(update) {
                     /** {@inheritDoc} */

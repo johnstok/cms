@@ -102,6 +102,7 @@ AbstractEditDialog {
     private ModelData _none = new BaseModelData();
 
     private final UUID _currentIndexPage;
+    private final ResourceSummaryModelData _folder;
 
 
     /**
@@ -112,14 +113,14 @@ AbstractEditDialog {
      * @param currentIndexPage The current index page.
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
-                            final String currentSortOrder,
-                            final UUID currentIndexPage) {
+                            final ResourceSummaryModelData folder) {
         super(new GlobalsImpl().uiConstants().edit(), new GlobalsImpl());
 
-        _currentIndexPage = currentIndexPage;
+        _currentIndexPage = folder.getIndexPageId();
+        _folder = folder;
+
         setHeight(Globals.DEFAULT_HEIGHT);
         _selectionModel = ssm;
-//        loadDetailStore(_currentIndexPage);
 
         configureComboBox(_indexPage,
             _indexPageStore,
@@ -146,7 +147,7 @@ AbstractEditDialog {
         configureDropTarget();
 
         _sortOrder.addSelectionChangedListener(new SortChangeListener());
-        setCurrentSortValue(currentSortOrder);
+        setCurrentSortValue(folder.getSortOrder());
 
         addListener(Events.Resize,
             new Listener<BoxComponentEvent>() {
@@ -189,7 +190,7 @@ AbstractEditDialog {
 
             @Override
             protected String getPath() {
-                HashMap<String, String[]> params = new HashMap<String, String[]>();
+                final HashMap<String, String[]> params = new HashMap<String, String[]>();
                 params.put("parent", new String[] {selection.getId().toString()});
                 params.put("sort", new String[] {"manual"});
                 params.put("order", new String[] {SortOrder.ASC.name()});
@@ -327,6 +328,9 @@ AbstractEditDialog {
                 f.setSortOrder(order);
                 f.setIndexPage(indexPageId);
                 f.setSortList(orderList);
+                f.addLink(
+                    Resource.SELF,
+                    _folder.getDelegate().getLink(Resource.SELF));
 
                 new UpdateFolderAction(f) {
                     /** {@inheritDoc} */
