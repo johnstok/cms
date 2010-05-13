@@ -142,10 +142,10 @@ AbstractEditDialog {
             new Listener<BoxComponentEvent>() {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
-                final int height =
+                final int newHeight =
                     be.getHeight() - (Globals.DEFAULT_HEIGHT - GRID_HEIGHT);
-                if (height > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
-                    _grid.setHeight(height);
+                if (newHeight > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
+                    _grid.setHeight(newHeight);
                 }
             }
         });

@@ -114,10 +114,10 @@ public class CommentView
     /**
      * Mutator.
      *
-     * @param body The text of the comment.
+     * @param commentBody The text of the comment.
      */
-    public void setBody2(final String body) {
-        _body.setValue(body);
+    public void setBody2(final String commentBody) {
+        _body.setValue(commentBody);
     }
 
     /**

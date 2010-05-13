@@ -33,6 +33,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Serializer;
 
 
 /**
