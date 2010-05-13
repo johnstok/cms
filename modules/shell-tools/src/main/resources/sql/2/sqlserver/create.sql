@@ -5,7 +5,7 @@ ALTER TABLE resource_users ADD can_write tinyint DEFAULT 1 NOT NULL;
 ALTER TABLE resource_roles ADD can_read tinyint DEFAULT 1 NOT NULL;
 ALTER TABLE resource_roles ADD can_write tinyint DEFAULT 1 NOT NULL;
 
-ALTER TABLE folders DROP sort_order;
+ALTER TABLE folders DROP COLUMN sort_order;
 
 INSERT INTO groups (id, vn, name) SELECT lower(NEWID()), 0, 'Site Reader';
 INSERT INTO users (id, email, username, vn, hash, name) VALUES (lower(NEWID()), 'support@civicuk.com', 'anonymous', 0, 0x00, 'Anonymous User');

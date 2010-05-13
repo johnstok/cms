@@ -5,7 +5,7 @@ ALTER TABLE resource_users ADD can_write number(1,0) DEFAULT 1 NOT NULL;
 ALTER TABLE resource_roles ADD can_read number(1,0) DEFAULT 1 NOT NULL;
 ALTER TABLE resource_roles ADD can_write number(1,0) DEFAULT 1 NOT NULL;
 
-ALTER TABLE folders DROP sort_order;
+ALTER TABLE folders DROP COLUMN sort_order;
 
 INSERT INTO groups (id, vn, name) VALUES (uuid(), 0, 'Site Reader');
 INSERT INTO users (id, email, username, vn, hash, name) VALUES (uuid(), 'support@civicuk.com', 'anonymous', 0, hextoraw('00'), 'Anonymous User');
