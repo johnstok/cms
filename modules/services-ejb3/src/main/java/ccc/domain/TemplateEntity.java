@@ -35,7 +35,7 @@ import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
 
 
@@ -212,7 +212,7 @@ public class TemplateEntity
 
         dto.addLink(
             Template.SELF,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+            new Link(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
 
         return dto;

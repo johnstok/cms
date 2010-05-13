@@ -29,7 +29,7 @@ package ccc.dto;
 import java.util.HashMap;
 
 import ccc.api.core.User;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 
@@ -53,11 +53,11 @@ public class UserEnhanced
         if (null!=getId()) {
             links.put(
                 "password",
-                new URIBuilder(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
+                new Link(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
                     .build("id", getId().toString(), new NormalisingEncoder()));
             links.put(
                 "self",
-                new URIBuilder(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+                new Link(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
         }
 

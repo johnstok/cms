@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.api.types.URIBuilder.Encoder;
+import ccc.api.types.Link.Encoder;
 
 import com.google.gwt.http.client.URL;
 

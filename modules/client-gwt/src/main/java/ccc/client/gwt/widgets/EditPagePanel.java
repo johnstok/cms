@@ -39,7 +39,7 @@ import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
@@ -252,7 +252,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             ResourceSummary s = new ResourceSummary();
             s.addLink(
                 "absolute-path", 
-                new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+                new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
                 .build(new GWTTemplateEncoder()));
 
             new GetAbsolutePathAction(GlobalsImpl.uiConstants().selectImage(),

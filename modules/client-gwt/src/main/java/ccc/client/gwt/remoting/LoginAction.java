@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.Security;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.HttpMethod;
@@ -69,7 +69,7 @@ public class LoginAction
         params.put("u", new String[] {_dialog.getUsername()});
         params.put("p", new String[] {_dialog.getPassword()});
         return
-            new URIBuilder(GlobalsImpl.getAPI().getLink(Security.COLLECTION))
+            new Link(GlobalsImpl.getAPI().getLink(Security.COLLECTION))
             .build(params, new GWTTemplateEncoder());
     }
 

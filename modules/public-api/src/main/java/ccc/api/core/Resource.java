@@ -38,7 +38,7 @@ import ccc.api.types.Duration;
 import ccc.api.types.DurationSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -668,8 +668,8 @@ public class Resource
      *
      * @return
      */
-    public URIBuilder uriMetadata() {
-        return new URIBuilder(getLink(METADATA));
+    public Link uriMetadata() {
+        return new Link(getLink(METADATA));
     }
 
 
@@ -678,8 +678,8 @@ public class Resource
      *
      * @return
      */
-    public URIBuilder uriTemplate() {
-        return new URIBuilder(getLink(TEMPLATE));
+    public Link uriTemplate() {
+        return new Link(getLink(TEMPLATE));
     }
 
 
@@ -688,8 +688,8 @@ public class Resource
      *
      * @return
      */
-    public URIBuilder duration() {
-        return new URIBuilder(getLink(DURATION));
+    public Link duration() {
+        return new Link(getLink(DURATION));
     }
 
 
@@ -698,8 +698,8 @@ public class Resource
      *
      * @return
      */
-    public final URIBuilder self() {
-        return new URIBuilder(getLink(SELF));
+    public final Link self() {
+        return new Link(getLink(SELF));
     }
 
 

@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.ResourceType;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
@@ -560,8 +560,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder rename() {
-        return new URIBuilder(getLink(Resource.NAME));
+    public Link rename() {
+        return new Link(getLink(Resource.NAME));
     }
 
 
@@ -570,8 +570,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder wc() {
-        return new URIBuilder(getLink(Resource.WC));
+    public Link wc() {
+        return new Link(getLink(Resource.WC));
     }
 
 
@@ -580,8 +580,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder list() {
-        return new URIBuilder(getLink(Resource.LIST));
+    public Link list() {
+        return new Link(getLink(Resource.LIST));
     }
 
 
@@ -591,8 +591,8 @@ public final class ResourceSummary extends Res {
      * @param id
      * @return
      */
-    public URIBuilder revisions() {
-        return new URIBuilder(getLink(Resource.REVISIONS));
+    public Link revisions() {
+        return new Link(getLink(Resource.REVISIONS));
     }
 
 
@@ -601,8 +601,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder uriAbsPath() {
-        return new URIBuilder(getLink(Resource.ABSOLUTE_PATH));
+    public Link uriAbsPath() {
+        return new Link(getLink(Resource.ABSOLUTE_PATH));
     }
 
 
@@ -611,8 +611,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder includeMM() {
-        return new URIBuilder(getLink(Resource.INCLUDE_MM));
+    public Link includeMM() {
+        return new Link(getLink(Resource.INCLUDE_MM));
     }
 
 
@@ -621,8 +621,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder lock() {
-        return new URIBuilder(getLink(Resource.LOCK));
+    public Link lock() {
+        return new Link(getLink(Resource.LOCK));
     }
 
 
@@ -631,8 +631,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder move() {
-        return new URIBuilder(getLink(Resource.PARENT));
+    public Link move() {
+        return new Link(getLink(Resource.PARENT));
     }
 
 
@@ -641,8 +641,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder duration() {
-        return new URIBuilder(getLink(Resource.DURATION));
+    public Link duration() {
+        return new Link(getLink(Resource.DURATION));
     }
 
 
@@ -651,8 +651,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder acl() {
-        return new URIBuilder(getLink(Resource.ACL));
+    public Link acl() {
+        return new Link(getLink(Resource.ACL));
     }
 
 
@@ -661,8 +661,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder uriPublish() {
-        return new URIBuilder(getLink(Resource.PUBLISH));
+    public Link uriPublish() {
+        return new Link(getLink(Resource.PUBLISH));
     }
 
 
@@ -671,8 +671,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder excludeMM() {
-        return new URIBuilder(getLink(Resource.EXCLUDE_MM));
+    public Link excludeMM() {
+        return new Link(getLink(Resource.EXCLUDE_MM));
     }
 
 
@@ -681,8 +681,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder uriMetadata() {
-        return new URIBuilder(getLink(Resource.METADATA));
+    public Link uriMetadata() {
+        return new Link(getLink(Resource.METADATA));
     }
 
 
@@ -691,8 +691,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder uriTemplate() {
-        return new URIBuilder(getLink(Resource.TEMPLATE));
+    public Link uriTemplate() {
+        return new Link(getLink(Resource.TEMPLATE));
     }
 
 
@@ -701,8 +701,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder images() {
-        return new URIBuilder(getLink(Folder.IMAGES));
+    public Link images() {
+        return new Link(getLink(Folder.IMAGES));
     }
 
 
@@ -711,8 +711,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder self() {
-        return new URIBuilder(getLink(Resource.SELF));
+    public Link self() {
+        return new Link(getLink(Resource.SELF));
     }
 
 
@@ -721,8 +721,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder selfBinary() {
-        return new URIBuilder(getLink(File.SELF_BINARY));
+    public Link selfBinary() {
+        return new Link(getLink(File.SELF_BINARY));
     }
 
 
@@ -731,9 +731,9 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder exists() {
+    public Link exists() {
         return
-            new URIBuilder(getLink(Folder.EXISTS));
+            new Link(getLink(Folder.EXISTS));
     }
 
 
@@ -742,8 +742,8 @@ public final class ResourceSummary extends Res {
      *
      * @return
      */
-    public URIBuilder targetName() {
+    public Link targetName() {
         return
-            new URIBuilder(getLink(Alias.TARGET_NAME));
+            new Link(getLink(Alias.TARGET_NAME));
     }
 }

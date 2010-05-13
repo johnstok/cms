@@ -29,14 +29,14 @@ package ccc.commons;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
 
 import junit.framework.TestCase;
 
 
 /**
- * Tests for the {@link URIBuilder} class.
+ * Tests for the {@link Link} class.
  * <br>These tests use the {@link NormalisingEncoder}.
  *
  * @author Civic Computing Ltd.
@@ -51,7 +51,7 @@ public class URIBuilderTest
     public void testReplace() {
 
         // ARRANGE
-        final URIBuilder b = new URIBuilder("/foo/{id}/baz");
+        final Link b = new Link("/foo/{id}/baz");
 
         // ACT
         String uri = b.build("id", "bar", new NormalisingEncoder());
@@ -93,7 +93,7 @@ public class URIBuilderTest
         for (String[] test : tests) {
             
         // ASSERT
-            assertEquals(test[1], new URIBuilder(test[0]).build(params, new NormalisingEncoder()));
+            assertEquals(test[1], new Link(test[0]).build(params, new NormalisingEncoder()));
         }
     }
 }

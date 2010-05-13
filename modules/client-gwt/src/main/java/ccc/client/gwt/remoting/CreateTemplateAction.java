@@ -32,7 +32,7 @@ import java.util.Map;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
@@ -70,7 +70,7 @@ public abstract class CreateTemplateAction
         params.put("count", new String[] {"999"});
         params.put("page", new String[] {"1"});
         return
-            new URIBuilder(GlobalsImpl.getAPI().templates())
+            new Link(GlobalsImpl.getAPI().templates())
             .build(params, new GWTTemplateEncoder());
     }
 
