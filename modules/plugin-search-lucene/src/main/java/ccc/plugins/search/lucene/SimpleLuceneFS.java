@@ -52,12 +52,13 @@ import org.apache.lucene.search.similar.MoreLikeThis;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-import ccc.api.core.ResourceSummary;
-import ccc.api.core.SearchResult;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
+import ccc.api.types.SearchResult;
 import ccc.commons.Exceptions;
 import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.SearchException;
@@ -306,7 +307,11 @@ public class SimpleLuceneFS
 
     /** {@inheritDoc} */
     @Override
-    public void createDocument(final ResourceSummary resource,
+    public void createDocument(final UUID id,
+                               final ResourcePath path,
+                               final ResourceName name,
+                               final String title,
+                               final Set<String> tags,
                                final String content,
                                final Set<Paragraph> paragraphs) {
         try {
@@ -318,7 +323,7 @@ public class SimpleLuceneFS
                 }
             }
 
-            indexTags(resource, d);
+            indexTags(tags, d);
 
             d.add(
                 new Field(
@@ -330,25 +335,25 @@ public class SimpleLuceneFS
             d.add(
                 new Field(
                     "id",
-                    resource.getId().toString(),
+                    id.toString(),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "path",
-                    resource.getAbsolutePath().toLowerCase(),
+                    path.toString().toLowerCase(),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "name",
-                    resource.getName().toString().toLowerCase(),
+                    name.toString().toLowerCase(),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "title",
-                    resource.getTitle(),
+                    title,
                     Field.Store.YES,
                     Field.Index.ANALYZED));
 
@@ -361,20 +366,20 @@ public class SimpleLuceneFS
     }
 
 
-    private void indexTags(final ResourceSummary resource, final Document d) {
+    private void indexTags(final Set<String> tags, final Document d) {
 
-        final StringBuilder tags = new StringBuilder();
-        for (final String tag : resource.getTags()) {
-            if (tags.length() > 0) {
-                tags.append(",");
+        final StringBuilder tagBuilder = new StringBuilder();
+        for (final String tag : tags) {
+            if (tagBuilder.length() > 0) {
+                tagBuilder.append(",");
             }
-            tags.append(tag);
+            tagBuilder.append(tag);
         }
-        if (tags.length()>0) {
+        if (tagBuilder.length()>0) {
             d.add(
                 new Field(
                     "tags",
-                    tags.toString(),
+                    tagBuilder.toString(),
                     Field.Store.NO,
                     Field.Index.ANALYZED));
         }

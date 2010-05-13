@@ -34,9 +34,9 @@ import java.nio.charset.Charset;
 import javax.servlet.http.HttpServletRequest;
 
 import ccc.api.core.SearchEngine;
-import ccc.api.core.SearchResult;
 import ccc.api.core.ServiceLocator;
 import ccc.api.types.DBC;
+import ccc.api.types.SearchResult;
 import ccc.commons.Exceptions;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;

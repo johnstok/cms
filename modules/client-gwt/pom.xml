@@ -30,6 +30,7 @@
                                     <pathelement location="${basedir}/src/main/resources" />
                                     <pathelement location="${basedir}/../public-api/src/main/java" />
                                     <pathelement location="${basedir}/../simple-types/src/main/java" />
+                                    <pathelement location="${basedir}/../domain-support/src/main/java" />
                                     <pathelement path="${compile_classpath}" />
                                 </path>
                                 <property name="gwt_compile_classpath" refid="gwt.compile.classpath" />

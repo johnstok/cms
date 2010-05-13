@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.api.types;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -29,5 +29,5 @@
 <module>
     <source path="api/core" />
     <source path="api/temp" />
-    <source path="plugins" />
+    <source path="plugins/s11n" excludes="json/JsonImpl.java"/>
 </module>
