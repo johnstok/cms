@@ -94,11 +94,11 @@ public class ErrorDialog extends AbstractEditDialog {
         addListener(Events.Resize, new Listener<BoxComponentEvent>() {
             @Override
             public void handleEvent(final BoxComponentEvent be) {
-                final int height = be.getHeight()-PANEL_HEIGHT;
-                if (height > DIALOG_MIN_HEIGHT) {
-                    _action.setHeight(height/3);
-                    _error.setHeight(height/3);
-                    _resolution.setHeight(height/3);
+                final int newHeight = be.getHeight()-PANEL_HEIGHT;
+                if (newHeight > DIALOG_MIN_HEIGHT) {
+                    _action.setHeight(newHeight/3);
+                    _error.setHeight(newHeight/3);
+                    _resolution.setHeight(newHeight/3);
                 }
             }
         });

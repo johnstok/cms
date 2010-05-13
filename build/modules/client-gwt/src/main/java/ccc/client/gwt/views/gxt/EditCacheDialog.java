@@ -179,7 +179,7 @@ public class EditCacheDialog extends AbstractEditDialog {
                     Resource.DURATION, _item.getDelegate().duration().toString());
 
                 new UpdateCacheDurationAction(r){
-                    @Override protected void onNoContent(final Response r) {
+                    @Override protected void onNoContent(final Response resp) {
                         hide();
                     }
                 }.execute();

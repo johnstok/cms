@@ -162,9 +162,9 @@ public class MetadataGrid extends ContentPanel {
      * @param be Event of resizing.
      */
     public void handleResize(final BoxComponentEvent be) {
-        final int height =
+        final int newHeight =
             be.getHeight() - (Globals.DEFAULT_HEIGHT - GRID_HEIGHT);
-        if (height > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
+        if (newHeight > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
             _grid.setHeight(height);
         }
     }

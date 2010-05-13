@@ -99,10 +99,10 @@ public abstract class AbstractEditDialog
     /**
      * Set the width of labels on this dialog's form panel.
      *
-     * @param width The width as an int.
+     * @param labelWidth The width as an int.
      */
-    protected void setLabelWidth(final int width) {
-        _panel.setLabelWidth(width);
+    protected void setLabelWidth(final int labelWidth) {
+        _panel.setLabelWidth(labelWidth);
     }
 
 

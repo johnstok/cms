@@ -40,10 +40,10 @@ public class BigDecimalPropertyEditor extends NumberPropertyEditor {
     /**
      * Constructor.
      *
-     * @param type The number class.
+     * @param clazz The number class.
      */
-    public BigDecimalPropertyEditor(final Class<?> type) {
-        super(type);
+    public BigDecimalPropertyEditor(final Class<?> clazz) {
+        super(clazz);
     }
 
     /** {@inheritDoc} */
