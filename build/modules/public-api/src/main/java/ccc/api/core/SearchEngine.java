@@ -33,6 +33,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import ccc.api.types.SearchResult;
+
 
 /**
  * The search API.

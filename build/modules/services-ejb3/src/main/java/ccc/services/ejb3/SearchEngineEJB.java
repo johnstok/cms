@@ -46,12 +46,13 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.SearchEngine;
-import ccc.api.core.SearchResult;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.PredefinedResourceNames;
+import ccc.api.types.SearchResult;
 import ccc.domain.FileEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
@@ -220,7 +221,11 @@ public class SearchEngineEJB  implements SearchEngine {
                 final String content =
                     XHTML.cleanUpContent(f.getTitle()+" "+extractor.getText());
                 lucene.createDocument(
-                    f.mapResource(),
+                    f.getId(),
+                    f.getAbsolutePath(),
+                    f.getName(),
+                    f.getTitle(),
+                    f.getTags(),
                     content,
                     null);
                 LOG.debug("Indexed file: "+f.getTitle());
@@ -234,7 +239,11 @@ public class SearchEngineEJB  implements SearchEngine {
         for (final PageEntity p : pages) {
             if (canIndex(p)) {
                 lucene.createDocument(
-                    p.mapResource(),
+                    p.getId(),
+                    p.getAbsolutePath(),
+                    p.getName(),
+                    p.getTitle(),
+                    p.getTags(),
                     extractContent(p),
                     p.currentRevision().getParagraphs());
                 LOG.debug("Indexed page: "+p.getTitle());
