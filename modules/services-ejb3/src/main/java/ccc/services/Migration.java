@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.ACL;
 
 
 /**

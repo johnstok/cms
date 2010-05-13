@@ -28,9 +28,9 @@ package ccc.client.gwt.remoting;
 
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.ACL;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;

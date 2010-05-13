@@ -40,7 +40,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import ccc.api.types.ACL;
 import ccc.api.types.Duration;
 import ccc.api.types.SortOrder;
 

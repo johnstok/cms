@@ -31,11 +31,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
-import ccc.api.types.ACL;
-import ccc.api.types.ACL.Entry;
+import ccc.api.core.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.Response;

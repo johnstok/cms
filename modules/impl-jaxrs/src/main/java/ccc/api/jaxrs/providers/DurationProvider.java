@@ -41,8 +41,8 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import ccc.api.temp.DurationSerializer;
 import ccc.api.types.Duration;
-import ccc.api.types.DurationSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
 
 

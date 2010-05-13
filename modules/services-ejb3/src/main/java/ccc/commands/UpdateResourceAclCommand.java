@@ -29,9 +29,9 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.types.ACL;
+import ccc.api.core.ACL;
+import ccc.api.core.ACL.Entry;
 import ccc.api.types.CommandType;
-import ccc.api.types.ACL.Entry;
 import ccc.domain.AccessPermission;
 import ccc.domain.LogEntry;
 import ccc.domain.ResourceEntity;

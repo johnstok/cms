@@ -32,8 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.core.Failure;
 import ccc.api.types.DBC;
-import ccc.api.types.Failure;
 
 
 /**
