@@ -298,16 +298,8 @@ public class ActionsEJB
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION
             + ccc.api.core.ResourceIdentifiers.Action.EXECUTE);
         actions.addLink(
-            "start",
+            "scheduler",
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Scheduler.START);
-        actions.addLink(
-            "stop",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Scheduler.STOP);
-        actions.addLink(
-            "running",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Scheduler.RUNNING);
+            + ccc.api.core.ResourceIdentifiers.Scheduler.SCHEDULER);
     }
 }

@@ -26,7 +26,9 @@
  */
 package ccc.api.core;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 
@@ -42,13 +44,13 @@ public interface Scheduler {
     /**
      * Start the scheduler running.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.START)
+    @POST @Path(ccc.api.core.ResourceIdentifiers.Scheduler.SCHEDULER)
     void start();
 
     /**
      * Stop the scheduler running.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.STOP)
+    @DELETE @Path(ccc.api.core.ResourceIdentifiers.Scheduler.SCHEDULER)
     void stop();
 
     /**
@@ -56,6 +58,6 @@ public interface Scheduler {
      *
      * @return True if the scheduler is running; false otherwise.
      */
-    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.RUNNING)
+    @GET @Path(ccc.api.core.ResourceIdentifiers.Scheduler.SCHEDULER)
     boolean isRunning();
 }
