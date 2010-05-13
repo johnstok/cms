@@ -73,7 +73,7 @@ public class ServicesImpl {
         api.addLink(API.RESOURCES, Resource.COLLECTION);
         api.addLink(API.SEARCH,    SearchEngine.COLLECTION);
         api.addLink(API.SECURITY,  Security.COLLECTION);
-        api.addLink(API.TEMPLATES, Template.COLLECTION);
+        api.addLink(API.TEMPLATES, Template.COLLECTION+"?{-join|&|count,page}");
         api.addLink(API.USERS,     User.COLLECTION);
 
         api.addLink(ccc.api.core.Folder.ROOTS, Folder.ROOTS);
