@@ -29,12 +29,12 @@ package ccc.api.jaxrs.providers;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
+import ccc.api.core.Failure;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ConflictException;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
-import ccc.api.types.Failure;
 import ccc.api.types.HttpStatusCode;
 import ccc.plugins.s11n.InvalidSnapshotException;
 import ccc.plugins.s11n.json.JsonImpl;

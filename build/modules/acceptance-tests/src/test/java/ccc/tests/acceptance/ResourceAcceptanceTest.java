@@ -34,18 +34,18 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Folder;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
+import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.EntityNotFoundException;
-import ccc.api.types.ACL;
 import ccc.api.types.Duration;
 import ccc.api.types.ResourceName;
 import ccc.api.types.SortOrder;
-import ccc.api.types.ACL.Entry;
 
 
 /**

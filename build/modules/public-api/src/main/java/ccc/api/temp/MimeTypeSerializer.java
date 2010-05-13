@@ -24,8 +24,9 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.api.temp;
 
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 

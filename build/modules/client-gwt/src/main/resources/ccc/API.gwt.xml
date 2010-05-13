@@ -28,4 +28,6 @@
 
 <module>
     <source path="api/core" />
+    <source path="api/temp" />
+    <source path="plugins" />
 </module>

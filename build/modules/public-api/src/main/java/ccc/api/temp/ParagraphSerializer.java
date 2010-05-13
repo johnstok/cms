@@ -24,11 +24,13 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.api.temp;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 

@@ -30,8 +30,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.temp.ParagraphSerializer;
 import ccc.api.types.Paragraph;
-import ccc.api.types.ParagraphSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.Link;
 import ccc.plugins.s11n.Json;

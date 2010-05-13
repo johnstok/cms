@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccc.api.core.ActionSummary;
+import ccc.api.core.Failure;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InsufficientPrivilegesException;
@@ -44,7 +45,6 @@ import ccc.api.exceptions.UnlockedException;
 import ccc.api.exceptions.WorkingCopyNotSupportedException;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
-import ccc.api.types.Failure;
 import ccc.api.types.FailureCode;
 import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;

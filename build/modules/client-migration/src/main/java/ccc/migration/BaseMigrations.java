@@ -41,6 +41,7 @@ import javax.ejb.EJBException;
 
 import org.apache.log4j.Logger;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Folders;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
@@ -50,14 +51,13 @@ import ccc.api.core.Resources;
 import ccc.api.core.ServiceLocator;
 import ccc.api.core.User;
 import ccc.api.core.Users;
+import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.ResourceExistsException;
-import ccc.api.types.ACL;
 import ccc.api.types.DBC;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.ResourceName;
-import ccc.api.types.ACL.Entry;
 import ccc.commons.CharConversion;
 import ccc.rest.extensions.ResourcesExt;
 import ccc.services.Migration;

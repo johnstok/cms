@@ -24,13 +24,14 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.api.core;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.types.DBC;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Jsonable2;

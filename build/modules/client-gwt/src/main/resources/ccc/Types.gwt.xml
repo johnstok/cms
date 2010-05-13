@@ -28,5 +28,4 @@
 
 <module>
     <source path="api/types" />
-    <source path="plugins" />
 </module>

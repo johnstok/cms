@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
+import ccc.api.temp.ParagraphSerializer;
 import ccc.plugins.s11n.Json;
 
 

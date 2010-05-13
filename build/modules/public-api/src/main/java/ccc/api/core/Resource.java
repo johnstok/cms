@@ -34,8 +34,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.temp.DurationSerializer;
 import ccc.api.types.Duration;
-import ccc.api.types.DurationSerializer;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Link;

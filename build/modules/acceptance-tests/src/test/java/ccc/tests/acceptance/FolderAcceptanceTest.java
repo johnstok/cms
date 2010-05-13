@@ -31,16 +31,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Folder;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
+import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.UnauthorizedException;
-import ccc.api.types.ACL;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
 import ccc.api.types.SortOrder;
-import ccc.api.types.ACL.Entry;
 
 
 /**

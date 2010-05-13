@@ -39,9 +39,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ccc.api.core.ACL;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
-import ccc.api.types.ACL;
 import ccc.commands.ApplyWorkingCopyCommand;
 import ccc.commands.ChangeTemplateForResourceCommand;
 import ccc.commands.IncludeInMainMenuCommand;

@@ -24,39 +24,40 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
+package ccc.api.temp;
 
-package ccc.api.types;
-
+import ccc.api.types.Duration;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
 
 
 /**
- * Serialize an object to / from a representation.
- *
- * @param <T> The type of object to be serialized / deserialized.
+ * Serializer for Durations.
  *
  * @author Civic Computing Ltd.
  */
-public interface Serializer<T> {
+public class DurationSerializer implements Serializer<Duration> {
 
-    /**
-     * Serialize to representation.
-     *
-     * @param json The wire representation.
-     * @param instance The object to serialize.
-     *
-     * @return Returns the 'json' input param if the 'instance' param is not
-     * NULL; returns NULL otherwise.
-     */
-    Json write(final Json json, final T instance);
 
-    /**
-     * Deserialize from a representation.
-     *
-     * @param json The wire representation.
-     *
-     * @return The corresponding object.
-     */
-    T read(final Json json);
+    /** {@inheritDoc} */
+    @Override
+    public Duration read(final Json json) {
+        if (null==json) { return null; }
 
+        final Duration d = new Duration();
+        d.setTime(json.getLong(JsonKeys.SECONDS).longValue());
+
+        return d;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json write(final Json json, final Duration instance) {
+        if (null==instance) { return null; }
+
+        json.set(JsonKeys.SECONDS, Long.valueOf(instance.getTime()));
+
+        return json;
+    }
 }
