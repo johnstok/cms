@@ -38,9 +38,7 @@ package ccc.api.core;
 public interface ResourceIdentifiers {
 
     public static interface Scheduler {
-        String START   = "/start";
-        String STOP    = "/stop";
-        String RUNNING = "/running";
+        String SCHEDULER   = "/scheduler";
     }
 
     public static interface SearchEngine {
