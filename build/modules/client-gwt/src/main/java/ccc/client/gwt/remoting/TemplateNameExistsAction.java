@@ -27,7 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
@@ -61,7 +61,7 @@ public abstract class TemplateNameExistsAction
     @Override
     protected String getPath() {
         return
-            new URIBuilder(GlobalsImpl.getAPI().getLink(Template.EXISTS))
+            new Link(GlobalsImpl.getAPI().getLink(Template.EXISTS))
             .build("name", _name, new GWTTemplateEncoder());
     }
 

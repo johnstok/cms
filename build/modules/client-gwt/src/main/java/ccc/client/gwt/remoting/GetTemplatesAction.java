@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.Template;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -80,7 +80,7 @@ public abstract class GetTemplatesAction
             new Request(
                 HttpMethod.GET,
                 Globals.API_URL
-                    + new URIBuilder(GlobalsImpl.getAPI().templates())
+                    + new Link(GlobalsImpl.getAPI().templates())
                     .build(params, new GWTTemplateEncoder()),
                 "",
                 new ResponseHandlerAdapter(_name) {

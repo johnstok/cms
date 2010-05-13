@@ -39,8 +39,7 @@ import java.util.Map;
  *
  * @author Civic Computing Ltd.
  */
-// FIXME: Rename to Link.
-public class URIBuilder {
+public class Link {
 
     private String _uri;
 
@@ -50,7 +49,7 @@ public class URIBuilder {
      *
      * @param uri The URI as a string.
      */
-    public URIBuilder(final String uri) {
+    public Link(final String uri) {
         _uri     = DBC.require().notNull(uri);
     }
 

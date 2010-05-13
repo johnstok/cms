@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
@@ -103,7 +103,7 @@ public class UserCollection
      */
     public String exists(final String username) {
         return
-            new URIBuilder(getLink("exists"))
+            new Link(getLink("exists"))
             .build("uname", username, new GWTTemplateEncoder());
     }
 

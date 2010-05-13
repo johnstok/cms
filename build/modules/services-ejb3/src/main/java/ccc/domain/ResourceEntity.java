@@ -55,7 +55,7 @@ import ccc.api.types.Permission;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.api.types.ACL.Entry;
 import ccc.commons.CharConversion;
 import ccc.commons.NormalisingEncoder;
@@ -905,15 +905,15 @@ public abstract class ResourceEntity
 
         dto.addLink(
             Resource.METADATA,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         dto.addLink(
             Resource.TEMPLATE,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
             .build("id", getId().toString(), new NormalisingEncoder()));
         dto.addLink(
             Resource.DURATION,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
             .build("id", getId().toString(), new NormalisingEncoder()));
     }
 
@@ -985,89 +985,89 @@ public abstract class ResourceEntity
 
         rs.addLink(
             Resource.REVISIONS,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.REVISIONS)
                 .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.ABSOLUTE_PATH,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PATH)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.TEMPLATE,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.TEMPLATE)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.METADATA,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.METADATA)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.EXCLUDE_MM,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.EXCLUDE_MM)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.PUBLISH,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.ACL,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.ACL)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.ACL)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.DURATION,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.DURATION)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.PARENT,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.PARENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.LOCK,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.LOCK)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.INCLUDE_MM,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.INCLUDE_MM)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.LIST,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.COLLECTION)
             .build("id", getId().toString(), new NormalisingEncoder())
             +"?{-join|&|parent,sort,order,page,count,type}");
         rs.addLink(
             Resource.WC,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.WC)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.WC)
             .build("id", getId().toString(), new NormalisingEncoder()));
         rs.addLink(
             Resource.NAME,
-            new URIBuilder(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
             .build("id", getId().toString(), new NormalisingEncoder()));
 
         switch (getType()) {
             case ALIAS:
                 rs.addLink(
                     Resource.SELF,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
+                    new Link(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case PAGE:
                 rs.addLink(
                     Resource.SELF,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
+                    new Link(ccc.api.core.ResourceIdentifiers.Page.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     Page.WORKING_COPY,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Page.WC)
+                    new Link(ccc.api.core.ResourceIdentifiers.Page.WC)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case FOLDER:
                 rs.addLink(
                     Resource.SELF,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                    new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     Folder.EXISTS,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
+                    new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder())
                     + "/{name}/exists"); // FIXME: How to only replace one param
                 break;
@@ -1075,14 +1075,14 @@ public abstract class ResourceEntity
             case FILE:
                 rs.addLink(
                     Resource.SELF,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+                    new Link(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
             case TEMPLATE:
                 rs.addLink(
                     Resource.SELF,
-                    new URIBuilder(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
+                    new Link(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 

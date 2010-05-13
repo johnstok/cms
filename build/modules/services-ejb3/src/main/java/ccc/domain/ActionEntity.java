@@ -46,7 +46,7 @@ import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Failure;
 import ccc.api.types.FailureCode;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
@@ -278,7 +278,7 @@ public class ActionEntity extends Entity {
                 (null==getCode()) ? null : getCode());
         summary.addLink(
             "self",
-            new URIBuilder(
+            new Link(
                     ccc.api.core.ResourceIdentifiers.Action.COLLECTION
                     + ccc.api.core.ResourceIdentifiers.Action.ELEMENT)
                 .build("id", getId().toString(), new NormalisingEncoder()));

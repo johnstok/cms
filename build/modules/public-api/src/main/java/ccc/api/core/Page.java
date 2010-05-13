@@ -33,7 +33,7 @@ import java.util.UUID;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphSerializer;
 import ccc.api.types.ResourceName;
-import ccc.api.types.URIBuilder;
+import ccc.api.types.Link;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -195,8 +195,8 @@ public class Page
      *
      * @return
      */
-    public URIBuilder workingCopy() {
-        return new URIBuilder(getLink(WORKING_COPY));
+    public Link workingCopy() {
+        return new Link(getLink(WORKING_COPY));
     }
 
 
