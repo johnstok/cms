@@ -148,6 +148,9 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
                 r.setDescription(description);
                 r.setMetadata(metadata);
                 r.setTags(ResourceSummaryModelData.parseTagString(tags));
+                r.addLink(
+                    Resource.METADATA,
+                    _resource.getDelegate().uriMetadata().toString());
 
                 new UpdateMetadataAction(r) {
                         /** {@inheritDoc} */
