@@ -5,7 +5,7 @@ ALTER TABLE resource_users ADD can_write bit DEFAULT 1 NOT NULL;
 ALTER TABLE resource_roles ADD can_read bit DEFAULT 1 NOT NULL;
 ALTER TABLE resource_roles ADD can_write bit DEFAULT 1 NOT NULL;
 
-ALTER TABLE folders DROP sort_order;
+ALTER TABLE folders DROP COLUMN sort_order;
 
 INSERT INTO groups (id, vn, name) SELECT RANDOM_UUID(), 0, 'Site Reader';
 INSERT INTO users (id, email, username, vn, hash, name) VALUES (RANDOM_UUID(), 'support@civicuk.com', 'anonymous', 0, X'00', 'Anonymous User');
