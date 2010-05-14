@@ -33,7 +33,7 @@ import ccc.client.gwt.core.RemotingAction;
 
 
 /**
- * TODO: Add a description for this type.
+ * Updates a user's password..
  *
  * @author Civic Computing Ltd.
  */
@@ -41,29 +41,30 @@ public abstract class UpdateUserPasswordAction
     extends
         RemotingAction {
 
-    private final User _newPassword;
+    private final User _user;
 
 
     /**
      * Constructor.
-     * @param newPassword The user's new password.
+     *
+     * @param user The user with an updated password.
      */
-    public UpdateUserPasswordAction(final User newPassword) {
+    public UpdateUserPasswordAction(final User user) {
         super(UI_CONSTANTS.editUserPw(), HttpMethod.PUT);
-        _newPassword = newPassword;
+        _user = user;
     }
 
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return _newPassword.uriPassword();
+        return _user.uriPassword();
     }
 
 
     /** {@inheritDoc} */
     @Override protected String getBody() {
         final GwtJson json = new GwtJson();
-        _newPassword.toJson(json);
+        _user.toJson(json);
         return json.toString();
     }
 }

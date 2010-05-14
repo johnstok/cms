@@ -45,18 +45,17 @@ public class UserEnhanced
 
     /** {@inheritDoc} */
     @Override
-    // FIXME: Remove strings to constants.
     public void toJson(final Json json) {
         super.toJson(json);
 
         final HashMap<String, String> links = new HashMap<String, String>();
         if (null!=getId()) {
             links.put(
-                "password",
+                User.PASSWORD,
                 new Link(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
                     .build("id", getId().toString(), new NormalisingEncoder()));
             links.put(
-                "self",
+                User.SELF,
                 new Link(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
         }
