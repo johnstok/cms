@@ -52,11 +52,11 @@ import ccc.api.temp.DurationSerializer;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.Duration;
+import ccc.api.types.Link;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
-import ccc.api.types.Link;
 import ccc.commons.CharConversion;
 import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
@@ -1039,6 +1039,10 @@ public abstract class ResourceEntity
         rs.addLink(
             Resource.NAME,
             new Link(ccc.api.core.ResourceIdentifiers.Resource.NAME)
+            .build("id", getId().toString(), new NormalisingEncoder()));
+        rs.addLink(
+            Resource.DELETE,
+            new Link(ccc.api.core.ResourceIdentifiers.Resource.ELEMENT)
             .build("id", getId().toString(), new NormalisingEncoder()));
 
         switch (getType()) {
