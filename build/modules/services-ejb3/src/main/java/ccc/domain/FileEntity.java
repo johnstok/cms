@@ -36,10 +36,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.File;
+import ccc.api.core.Resource;
 import ccc.api.types.DBC;
+import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
+import ccc.commons.NormalisingEncoder;
 import ccc.commons.streams.ReadToStringAction;
 import ccc.persistence.DataRepository;
 
@@ -357,6 +360,10 @@ public class FileEntity
                 getMimeType(),
                 currentRevision().isMajorChange(),
                 currentRevision().getComment());
+        fs.addLink(
+            Resource.SELF,
+            new Link(ccc.api.core.ResourceIdentifiers.File.ELEMENT)
+                .build("id", getId().toString(), new NormalisingEncoder()));
         return fs;
     }
 

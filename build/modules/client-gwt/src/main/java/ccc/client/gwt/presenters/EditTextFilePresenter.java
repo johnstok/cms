@@ -27,6 +27,7 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.File;
+import ccc.api.core.Resource;
 import ccc.api.types.MimeType;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
@@ -89,6 +90,7 @@ public class EditTextFilePresenter
                 new MimeType(view.getPrimaryMime(), view.getSubMime()),
                 view.isMajorEdit(),
                 view.getComment());
+            dto.addLink(Resource.SELF, getModel().self().toString());
             new EditTextFileAction(dto).execute();
 
         } else {
