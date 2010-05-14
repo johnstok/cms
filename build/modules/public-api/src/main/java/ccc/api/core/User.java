@@ -342,7 +342,7 @@ public class User
      *
      * @return
      */
-    public String self() { return getLink("self"); }
+    public String self() { return getLink(SELF); }
 
 
     /**
@@ -355,4 +355,6 @@ public class User
 
     /** PASSWORD : String. */
     public static final String PASSWORD = "password";
+    /** SELF : String. */
+    public static final String SELF = "self";
 }

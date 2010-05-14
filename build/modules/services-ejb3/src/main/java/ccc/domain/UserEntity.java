@@ -363,7 +363,9 @@ public class UserEntity
      */
     public Collection<String> getPermissions() {
         final Set<String> perms = new HashSet<String>();
-        for (final GroupEntity g : getGroups()) { perms.addAll(g.getPermissions()); }
+        for (final GroupEntity g : getGroups()) {
+            perms.addAll(g.getPermissions());
+        }
         return perms;
     }
 
