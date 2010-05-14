@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
@@ -75,7 +74,7 @@ public class TemplatesImpl
     public Template retrieve(final UUID templateId) {
         try {
             return _templates.retrieve(templateId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -86,7 +85,7 @@ public class TemplatesImpl
     public Boolean templateNameExists(final String templateName) {
         try {
             return _templates.templateNameExists(templateName);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -98,7 +97,7 @@ public class TemplatesImpl
                                                final int pageSize) {
         try {
             return _templates.query(pageNo, pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -110,7 +109,7 @@ public class TemplatesImpl
                                final Template delta) {
         try {
             _templates.update(templateId, delta);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -121,7 +120,7 @@ public class TemplatesImpl
     public ResourceSummary create(final Template template) {
         try {
             return _templates.create(template);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

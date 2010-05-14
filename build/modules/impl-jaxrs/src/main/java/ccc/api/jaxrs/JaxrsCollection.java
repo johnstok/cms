@@ -34,6 +34,7 @@ import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.exceptions.CCException;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
+import ccc.commons.Reflection;
 
 
 
@@ -45,22 +46,30 @@ import ccc.api.jaxrs.providers.RestExceptionMapper;
 public abstract class JaxrsCollection {
 
     /**
-     * Convert a RestEasy exception to a CC API exception.
+     * Convert a runtime exception to a CC specific exception.
      *
-     * @param <T> The type of exception that should be returned.
-     * @param ex The RestEasy exception.
+     * @param e The runtime exception.
      *
      * @return The converted exception.
      */
-    public <T extends CCException> T convertException(
-                                             final ClientResponseFailure ex) {
-        try {
-            final ClientResponse<byte[]> r = ex.getResponse();
-            final String body = new String(r.getEntity(), "UTF-8");
-            return
-                new RestExceptionMapper().<T>fromResponse(body);
-        } catch (final UnsupportedEncodingException e) {
-            throw new InternalError("Unsupported encoding.");
+    public RuntimeException convertException(final RuntimeException e) {
+        if (e instanceof ClientResponseFailure) {
+            final ClientResponseFailure ex = (ClientResponseFailure) e;
+            try {
+                final ClientResponse<byte[]> r = ex.getResponse();
+                final String body = new String(r.getEntity(), "UTF-8");
+                return
+                    new RestExceptionMapper().fromResponse(body);
+            } catch (final UnsupportedEncodingException ee) {
+                throw new InternalError("Unsupported encoding.");
+            }
+        } else if (Reflection.isClass("javax.ejb.EJBException", e)) {
+            if (e.getCause() instanceof CCException) {
+                return (CCException) e.getCause();
+            }
+            return e;
+        } else {
+            return e;
         }
     }
 }

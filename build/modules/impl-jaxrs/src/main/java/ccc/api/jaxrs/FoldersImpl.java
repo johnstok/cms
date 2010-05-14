@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Folder;
 import ccc.api.core.Folders;
@@ -76,7 +75,7 @@ public class FoldersImpl
                                                           final UUID folderId) {
         try {
             return _delegate.getAccessibleChildren(folderId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -87,7 +86,7 @@ public class FoldersImpl
     public Boolean nameExistsInFolder(final UUID folderId, final String name) {
         try {
             return _delegate.nameExistsInFolder(folderId, name);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -98,7 +97,7 @@ public class FoldersImpl
     public PagedCollection<ResourceSummary> roots() {
         try {
             return _delegate.roots();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -109,7 +108,7 @@ public class FoldersImpl
     public ResourceSummary create(final Folder folder) {
         try {
             return _delegate.create(folder);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -120,7 +119,7 @@ public class FoldersImpl
     public void update(final UUID folderId, final Folder delta) {
         try {
             _delegate.update(folderId, delta);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -134,7 +133,7 @@ public class FoldersImpl
                                         final boolean publish) {
         try {
             return _delegate.createFolder(parentId, name, title, publish);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -145,7 +144,7 @@ public class FoldersImpl
     public ResourceSummary createRoot(final String name) {
         try {
             return _delegate.createRoot(name);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

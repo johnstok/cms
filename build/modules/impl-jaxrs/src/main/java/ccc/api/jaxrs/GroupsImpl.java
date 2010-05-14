@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
@@ -74,7 +73,7 @@ public class GroupsImpl
     public Group create(final Group delta) {
         try {
             return _groups.create(delta);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -85,7 +84,7 @@ public class GroupsImpl
     public Group retrieve(final UUID id) {
         try {
             return _groups.retrieve(id);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -96,7 +95,7 @@ public class GroupsImpl
     public Group update(final UUID id, final Group group) {
         try {
             return _groups.update(id, group);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
 
@@ -110,7 +109,7 @@ public class GroupsImpl
         final int pageSize) {
         try {
             return _groups.query(name, pageNo, pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Comment;
 import ccc.api.core.Comments;
@@ -76,7 +75,7 @@ public class CommentsImpl
     public Comment create(final Comment comment) {
         try {
             return _delegate.create(comment);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -86,7 +85,7 @@ public class CommentsImpl
     public Comment retrieve(final UUID commentId) {
         try {
             return _delegate.retrieve(commentId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -96,7 +95,7 @@ public class CommentsImpl
     public Comment update(final UUID commentId, final Comment comment) {
         try {
             return _delegate.update(commentId, comment);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -106,7 +105,7 @@ public class CommentsImpl
     public void delete(final UUID commentId) {
         try {
             _delegate.delete(commentId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -122,7 +121,7 @@ public class CommentsImpl
         try {
             return _delegate.query(
                 resourceId, status, sort, sortOrder, pageNo, pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

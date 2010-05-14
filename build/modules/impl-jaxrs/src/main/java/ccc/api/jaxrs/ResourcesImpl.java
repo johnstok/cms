@@ -35,7 +35,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.ACL;
 import ccc.api.core.PagedCollection;
@@ -81,7 +80,7 @@ public class ResourcesImpl
     public Duration cacheDuration(final UUID resourceId) {
         try {
             return _delegate.cacheDuration(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -92,7 +91,7 @@ public class ResourcesImpl
     public Template computeTemplate(final UUID resourceId) {
         try {
             return _delegate.computeTemplate(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -103,7 +102,7 @@ public class ResourcesImpl
     public String getAbsolutePath(final UUID resourceId) {
         try {
             return _delegate.getAbsolutePath(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -114,7 +113,7 @@ public class ResourcesImpl
     public PagedCollection<Revision> history(final UUID resourceId) {
         try {
             return _delegate.history(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -125,7 +124,7 @@ public class ResourcesImpl
     public Map<String, String> metadata(final UUID resourceId) {
         try {
             return _delegate.metadata(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -136,7 +135,7 @@ public class ResourcesImpl
     public ResourceSummary retrieve(final UUID resourceId) {
         try {
             return _delegate.retrieve(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -147,7 +146,7 @@ public class ResourcesImpl
     public ResourceSummary resourceForLegacyId(final String legacyId) {
         try {
             return _delegate.resourceForLegacyId(legacyId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -158,7 +157,7 @@ public class ResourcesImpl
                                                             final String key) {
         try {
             return _delegate.resourceForMetadataKey(key);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -169,7 +168,7 @@ public class ResourcesImpl
     public ResourceSummary resourceForPath(final String path) {
         try {
             return _delegate.resourceForPath(path);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -180,7 +179,7 @@ public class ResourcesImpl
     public ACL acl(final UUID resourceId) {
         try {
             return _delegate.acl(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -192,7 +191,7 @@ public class ResourcesImpl
                                     final Resource pu) {
         try {
             _delegate.updateCacheDuration(resourceId, pu);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -203,7 +202,7 @@ public class ResourcesImpl
     public void lock(final UUID resourceId) {
         try {
             _delegate.lock(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -214,7 +213,7 @@ public class ResourcesImpl
     public void applyWorkingCopy(final UUID resourceId) {
         try {
             _delegate.applyWorkingCopy(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -226,7 +225,7 @@ public class ResourcesImpl
                                        final Resource pu) {
         try {
             _delegate.updateResourceTemplate(resourceId, pu);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -237,7 +236,7 @@ public class ResourcesImpl
     public void changeAcl(final UUID resourceId, final ACL acl) {
         try {
             _delegate.changeAcl(resourceId, acl);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -248,7 +247,7 @@ public class ResourcesImpl
     public void move(final UUID resourceId, final UUID newParentId) {
         try {
             _delegate.move(resourceId, newParentId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -259,7 +258,7 @@ public class ResourcesImpl
     public void publish(final UUID resourceId) {
         try {
             _delegate.publish(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -270,7 +269,7 @@ public class ResourcesImpl
     public void rename(final UUID resourceId, final String name) {
         try {
             _delegate.rename(resourceId, name);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -281,7 +280,7 @@ public class ResourcesImpl
     public void unlock(final UUID resourceId) {
         try {
             _delegate.unlock(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -292,7 +291,7 @@ public class ResourcesImpl
     public void unpublish(final UUID resourceId) {
         try {
             _delegate.unpublish(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -303,7 +302,7 @@ public class ResourcesImpl
     public void excludeFromMainMenu(final UUID resourceId) {
         try {
             _delegate.excludeFromMainMenu(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -314,7 +313,7 @@ public class ResourcesImpl
     public void includeInMainMenu(final UUID resourceId) {
         try {
             _delegate.includeInMainMenu(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -326,7 +325,7 @@ public class ResourcesImpl
                                final Resource resource) {
         try {
             _delegate.updateMetadata(resourceId, resource);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -337,7 +336,7 @@ public class ResourcesImpl
     public void clearWorkingCopy(final UUID pageId) {
         try {
             _delegate.clearWorkingCopy(pageId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -349,7 +348,7 @@ public class ResourcesImpl
                                   final Resource pu) {
         try {
             _delegate.createWorkingCopy(resourceId, pu);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -360,7 +359,7 @@ public class ResourcesImpl
     public void deleteCacheDuration(final UUID id) {
         try {
             _delegate.deleteCacheDuration(id);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -371,7 +370,7 @@ public class ResourcesImpl
     public void delete(final UUID resourceId) {
         try {
             _delegate.delete(resourceId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -384,7 +383,7 @@ public class ResourcesImpl
                                final String detail) {
         try {
             _delegate.createLogEntry(resourceId, action, detail);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -418,7 +417,7 @@ public class ResourcesImpl
                 order,
                 pageNo,
                 pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -430,7 +429,7 @@ public class ResourcesImpl
                                        final String charset) {
         try {
             return _delegate.fileContentsFromPath(absolutePath, charset);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -441,7 +440,7 @@ public class ResourcesImpl
     public Resource resourceForPathSecure(final String path) {
         try {
             return _delegate.resourceForPathSecure(path);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -453,7 +452,7 @@ public class ResourcesImpl
                                             final int version) {
         try {
             return _delegate.revisionForPath(path, version);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -464,7 +463,7 @@ public class ResourcesImpl
     public Resource workingCopyForPath(final String path) {
         try {
             return _delegate.workingCopyForPath(path);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -476,7 +475,7 @@ public class ResourcesImpl
                                         final String title) {
         try {
             return _delegate.createSearch(parentId, title);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

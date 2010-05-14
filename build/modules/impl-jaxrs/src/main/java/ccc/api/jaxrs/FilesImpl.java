@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.File;
 import ccc.api.core.Files;
@@ -76,7 +75,7 @@ public class FilesImpl
     public File retrieve(final UUID fileId) {
         try {
             return _files.retrieve(fileId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -86,7 +85,7 @@ public class FilesImpl
     public void update(final UUID id, final File file) {
         try {
             _files.update(id, file);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -96,7 +95,7 @@ public class FilesImpl
     public ResourceSummary createTextFile(final File textFile) {
         try {
             return _files.createTextFile(textFile);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -108,7 +107,7 @@ public class FilesImpl
                                                  final int pageSize) {
         try {
             return _files.getPagedImages(folderId, pageNo, pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -118,7 +117,7 @@ public class FilesImpl
     public ResourceSummary create(final File file) {
         try {
             return _files.create(file);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -128,7 +127,7 @@ public class FilesImpl
     public void retrieve(final UUID file, final StreamAction action) {
         try {
             _files.retrieve(file, action);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -140,7 +139,7 @@ public class FilesImpl
                                  final StreamAction action) {
         try {
             _files.retrieveRevision(file, revision, action);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -151,7 +150,7 @@ public class FilesImpl
                                     final StreamAction action) {
         try {
             _files.retrieveWorkingCopy(file, action);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -161,7 +160,7 @@ public class FilesImpl
     public ResourceSummary updateFile(final UUID fileId, final File file) {
         try {
             return _files.updateFile(fileId, file);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
