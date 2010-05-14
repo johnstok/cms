@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
@@ -84,7 +83,7 @@ public class ActionsImpl
                 sortOrder,
                 pageNo,
                 pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -103,7 +102,7 @@ public class ActionsImpl
                 sortOrder,
                 pageNo,
                 pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -114,7 +113,7 @@ public class ActionsImpl
     public ActionSummary create(final Action action) {
         try {
             return _delegate.create(action);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -125,7 +124,7 @@ public class ActionsImpl
     public void cancel(final UUID actionId) {
         try {
              _delegate.cancel(actionId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -136,7 +135,7 @@ public class ActionsImpl
     public void executeAll() {
         try {
             _delegate.executeAll();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -147,7 +146,7 @@ public class ActionsImpl
     public ActionSummary retrieve(final UUID actionId) {
         try {
             return _delegate.retrieve(actionId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -158,7 +157,7 @@ public class ActionsImpl
     public boolean isRunning() {
         try {
             return _delegate.isRunning();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -169,7 +168,7 @@ public class ActionsImpl
     public void start() {
         try {
             _delegate.start();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -180,7 +179,7 @@ public class ActionsImpl
     public void stop() {
         try {
             _delegate.stop();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

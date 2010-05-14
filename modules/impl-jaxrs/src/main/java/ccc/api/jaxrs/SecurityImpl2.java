@@ -26,8 +26,6 @@
  */
 package ccc.api.jaxrs;
 
-import org.jboss.resteasy.client.ClientResponseFailure;
-
 import ccc.api.core.Security;
 import ccc.api.types.DBC;
 
@@ -61,7 +59,7 @@ public class SecurityImpl2
     public Boolean isLoggedIn() {
         try {
             return _delegate.isLoggedIn();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -72,7 +70,7 @@ public class SecurityImpl2
     public Boolean login(final String username, final String password) {
         try {
             return _delegate.login(username, password);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -83,7 +81,7 @@ public class SecurityImpl2
     public void logout() {
         try {
             _delegate.logout();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -94,7 +92,7 @@ public class SecurityImpl2
     public String readAllProperties() {
         try {
             return _delegate.readAllProperties();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

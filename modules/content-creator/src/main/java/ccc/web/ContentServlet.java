@@ -31,43 +31,19 @@ import static ccc.commons.Strings.*;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
-import javax.ejb.EJB;
-import javax.mail.Session;
 import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ccc.api.core.Actions;
-import ccc.api.core.Comments;
-import ccc.api.core.Files;
-import ccc.api.core.Folders;
-import ccc.api.core.Groups;
 import ccc.api.core.MemoryServiceLocator;
-import ccc.api.core.Pages;
-import ccc.api.core.Resources;
-import ccc.api.core.SearchEngine;
 import ccc.api.core.ServiceLocator;
-import ccc.api.core.Templates;
 import ccc.api.core.User;
-import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
-import ccc.api.jaxrs.CommentsImpl;
-import ccc.api.jaxrs.FilesImpl;
-import ccc.api.jaxrs.FoldersImpl;
-import ccc.api.jaxrs.GroupsImpl;
-import ccc.api.jaxrs.PagesImpl;
-import ccc.api.jaxrs.ResourcesImpl;
-import ccc.api.jaxrs.SearchImpl;
-import ccc.api.jaxrs.UsersImpl;
 import ccc.api.types.ResourcePath;
 import ccc.plugins.PluginFactory;
-import ccc.plugins.mail.Mailer;
-import ccc.plugins.mail.javamail.JavaMailMailer;
 import ccc.plugins.s11n.json.JsonImpl;
 import ccc.plugins.scripting.Context;
 import ccc.web.rendering.AuthenticationRequiredException;
@@ -82,20 +58,8 @@ import ccc.web.rendering.Response;
  */
 public class ContentServlet
     extends
-        HttpServlet {
+        AbstractCCCServlet {
     private static final Logger LOG = Logger.getLogger(ContentServlet.class);
-
-    @EJB(name = SearchEngine.NAME) private transient SearchEngine _search;
-    @EJB(name = Users.NAME)        private transient Users        _users;
-    @EJB(name = Pages.NAME)        private transient Pages        _pages;
-    @EJB(name = Folders.NAME)      private transient Folders      _folders;
-    @EJB(name = Files.NAME)        private transient Files        _files;
-    @EJB(name = Resources.NAME)    private transient Resources    _resources;
-    @EJB(name = Actions.NAME)      private transient Actions      _actions;
-    @EJB(name = Templates.NAME)    private transient Templates    _templates;
-    @EJB(name = Comments.NAME)     private transient Comments     _comments;
-    @EJB(name = Groups.NAME)       private transient Groups       _groups;
-    @Resource(name = Mailer.NAME)  private transient Session      _mail;
 
     private boolean _respectVisibility = true;
 
@@ -146,7 +110,8 @@ public class ContentServlet
         }
 
         final Response r =
-            new TmpRenderer(_files, _templates, _resources).render(resource);
+            new TmpRenderer(getFiles(), getTemplates(), getResources())
+            .render(resource);
 
         if (resource.isSecure()       // Don't cache secure pages.
             || !_respectVisibility) { // Don't cache previews or working copies.
@@ -194,16 +159,16 @@ public class ContentServlet
         try {
             if (_respectVisibility) {
                 LOG.debug("Retrieving current revision.");
-                return _resources.resourceForPathSecure(path);
+                return getResources().resourceForPathSecure(path);
             } else if (workingCopy) {
                 LOG.debug("Retrieving working copy.");
-                return _resources.workingCopyForPath(path);
+                return getResources().workingCopyForPath(path);
             } else if (null==version) {
                 LOG.debug("Retrieving current revision.");
-                return _resources.resourceForPathSecure(path);
+                return getResources().resourceForPathSecure(path);
             } else {
                 LOG.debug("Retrieving revision: "+version+".");
-                return _resources.revisionForPath(path, version.intValue());
+                return getResources().revisionForPath(path, version.intValue());
             }
         } catch (final UnauthorizedException e) {
             LOG.warn(e.getMessage());
@@ -213,7 +178,7 @@ public class ContentServlet
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy
                 + ", v=" + version
-                + " " + new JsonImpl(e.getFailure()));
+                + " " + new JsonImpl(e.getFailure()).getDetail());
             throw new NotFoundException();
         }
     }
@@ -237,27 +202,27 @@ public class ContentServlet
         context.add("response", response);
         context.add("services", createServiceLocator());
         context.add("resource", rs);
-        context.add("mail", new JavaMailMailer(_mail));
+        context.add("mail", getMailer());
         return context;
     }
 
 
     private ServiceLocator createServiceLocator() {
         final MemoryServiceLocator sl = new MemoryServiceLocator();
-        sl.setUserCommands(new UsersImpl(_users));
-        sl.setFolderCommands(new FoldersImpl(_folders));
-        sl.setFiles(new FilesImpl(_files));
-        sl.setPageCommands(new PagesImpl(_pages));
-        sl.setCommands(new ResourcesImpl(_resources));
-        sl.setActions(_actions);
-        sl.setSearch(new SearchImpl(_search));
-        sl.setComments(new CommentsImpl(_comments));
-        sl.setGroups(new GroupsImpl(_groups));
+        sl.setUserCommands(getUsers());
+        sl.setFolderCommands(getFolders());
+        sl.setFiles(getFiles());
+        sl.setPageCommands(getPages());
+        sl.setCommands(getResources());
+        sl.setActions(getActions());
+        sl.setSearch(getSearch());
+        sl.setComments(getComments());
+        sl.setGroups(getGroups());
         return sl;
     }
 
 
     private User loggedInUser() {
-        return _users.retrieveCurrent();
+        return getUsers().retrieveCurrent();
     }
 }

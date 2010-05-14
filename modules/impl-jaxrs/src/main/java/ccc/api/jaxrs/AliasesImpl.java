@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Alias;
 import ccc.api.core.Aliases;
@@ -74,7 +73,7 @@ public class AliasesImpl
     public String aliasTargetName(final UUID aliasId) {
         try {
             return _delegate.aliasTargetName(aliasId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -85,7 +84,7 @@ public class AliasesImpl
     public void update(final UUID aliasId, final Alias delta) {
         try {
             _delegate.update(aliasId, delta);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -96,7 +95,7 @@ public class AliasesImpl
     public ResourceSummary create(final Alias alias) {
         try {
             return _delegate.create(alias);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

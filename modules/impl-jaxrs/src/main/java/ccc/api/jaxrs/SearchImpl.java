@@ -30,7 +30,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.SearchEngine;
 import ccc.api.types.DBC;
@@ -71,7 +70,7 @@ public class SearchImpl
                              final int page) {
         try {
             return _delegate.find(searchTerms, noOfResultsPerPage, page);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -81,7 +80,7 @@ public class SearchImpl
     public void index() {
         try {
             _delegate.index();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -91,7 +90,7 @@ public class SearchImpl
     public boolean isRunning() {
         try {
             return _delegate.isRunning();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -101,7 +100,7 @@ public class SearchImpl
     public void start() {
         try {
             _delegate.start();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -111,7 +110,7 @@ public class SearchImpl
     public void stop() {
         try {
             _delegate.stop();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -123,7 +122,7 @@ public class SearchImpl
                                 final int page) {
         try {
             return _delegate.similar(uuid, noOfResultsPerPage, page);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

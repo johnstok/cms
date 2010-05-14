@@ -34,7 +34,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
@@ -77,7 +76,7 @@ public class UsersImpl
     public User retrieveCurrent() {
         try {
             return _delegate.retrieveCurrent();
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -88,7 +87,7 @@ public class UsersImpl
     public User retrieve(final UUID userId) {
         try {
             return _delegate.retrieve(userId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -99,7 +98,7 @@ public class UsersImpl
     public Boolean usernameExists(final Username username) {
         try {
             return _delegate.usernameExists(username);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -110,7 +109,7 @@ public class UsersImpl
     public User create(final User user) {
         try {
             return _delegate.create(user);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -121,7 +120,7 @@ public class UsersImpl
     public void updateUserPassword(final UUID userId, final User pu) {
         try {
             _delegate.updateUserPassword(userId, pu);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -132,7 +131,7 @@ public class UsersImpl
     public void updateCurrent(final User user) {
         try {
             _delegate.updateCurrent(user);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -143,7 +142,7 @@ public class UsersImpl
     public void update(final UUID userId, final User delta) {
         try {
             _delegate.update(userId, delta);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -154,7 +153,7 @@ public class UsersImpl
     public User userByLegacyId(final String legacyId) {
         try {
             return _delegate.userByLegacyId(legacyId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -165,7 +164,7 @@ public class UsersImpl
     public Collection<String> listUserMetadataValuesWithKey(final String key) {
         try {
             return _delegate.listUserMetadataValuesWithKey(key);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -193,7 +192,7 @@ public class UsersImpl
                 order,
                 pageNo,
                 pageSize);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

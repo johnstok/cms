@@ -28,12 +28,41 @@ package ccc.web;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
+import javax.ejb.EJB;
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+
+import ccc.api.core.Actions;
+import ccc.api.core.Aliases;
+import ccc.api.core.Comments;
+import ccc.api.core.Files;
+import ccc.api.core.Folders;
+import ccc.api.core.Groups;
+import ccc.api.core.Pages;
+import ccc.api.core.Resources;
+import ccc.api.core.SearchEngine;
+import ccc.api.core.Security;
+import ccc.api.core.ServiceLocator;
+import ccc.api.core.Templates;
+import ccc.api.core.Users;
+import ccc.api.jaxrs.ActionsImpl;
+import ccc.api.jaxrs.CommentsImpl;
+import ccc.api.jaxrs.FilesImpl;
+import ccc.api.jaxrs.FoldersImpl;
+import ccc.api.jaxrs.GroupsImpl;
+import ccc.api.jaxrs.PagesImpl;
+import ccc.api.jaxrs.ResourcesImpl;
+import ccc.api.jaxrs.SearchImpl;
+import ccc.api.jaxrs.TemplatesImpl;
+import ccc.api.jaxrs.UsersImpl;
+import ccc.plugins.mail.Mailer;
+import ccc.plugins.mail.javamail.JavaMailMailer;
 
 
 
@@ -44,9 +73,24 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstractCCCServlet
     extends
-        HttpServlet {
+        HttpServlet
+    implements
+        ServiceLocator {
+
     private static final Logger LOG =
         Logger.getLogger(AbstractCCCServlet.class);
+
+    @EJB(name = SearchEngine.NAME) private transient SearchEngine _search;
+    @EJB(name = Users.NAME)        private transient Users        _users;
+    @EJB(name = Pages.NAME)        private transient Pages        _pages;
+    @EJB(name = Folders.NAME)      private transient Folders      _folders;
+    @EJB(name = Files.NAME)        private transient Files        _files;
+    @EJB(name = Resources.NAME)    private transient Resources    _resources;
+    @EJB(name = Actions.NAME)      private transient Actions      _actions;
+    @EJB(name = Templates.NAME)    private transient Templates    _templates;
+    @EJB(name = Comments.NAME)     private transient Comments     _comments;
+    @EJB(name = Groups.NAME)       private transient Groups       _groups;
+    @Resource(name = Mailer.NAME)  private transient Session      _mail;
 
 
     /**
@@ -134,5 +178,99 @@ public abstract class AbstractCCCServlet
         } else {
             return Exception.class.cast(o);
         }
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The mail implementation for this servlet.
+     */
+    protected Mailer getMailer() {
+        return new JavaMailMailer(_mail);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Actions getActions() {
+        return new ActionsImpl(_actions);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Aliases getAliases() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Comments getComments() {
+        return new CommentsImpl(_comments);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Files getFiles() {
+        return new FilesImpl(_files);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Folders getFolders() {
+        return new FoldersImpl(_folders);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Groups getGroups() {
+        return new GroupsImpl(_groups);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Pages getPages() {
+        return new PagesImpl(_pages);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Resources getResources() {
+        return new ResourcesImpl(_resources);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchEngine getSearch() {
+        return new SearchImpl(_search);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Security getSecurity() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Templates getTemplates() {
+        return new TemplatesImpl(_templates);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Users getUsers() {
+        return new UsersImpl(_users);
     }
 }

@@ -110,4 +110,22 @@ public final class Reflection {
             throw new RuntimeException(e);
         }
     }
+
+
+    /**
+     * Test if the specified object is an instance of the specified class.
+     *
+     * @param className The class.
+     * @param object The object to test.
+     *
+     * @return True if the object is an instance of the class; false otherwise.
+     */
+    public static boolean isClass(final String className, final Object object) {
+        try {
+            final Class<?> clazz = Class.forName(className);
+            return clazz.isAssignableFrom(object.getClass());
+        } catch (final ClassNotFoundException e) {
+            return false;
+        }
+    }
 }

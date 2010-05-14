@@ -33,7 +33,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.cache.NoCache;
-import org.jboss.resteasy.client.ClientResponseFailure;
 
 import ccc.api.core.Page;
 import ccc.api.core.Pages;
@@ -74,7 +73,7 @@ public class PagesImpl
     public Page retrieve(final UUID pageId) {
         try {
             return _pages.retrieve(pageId);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -85,7 +84,7 @@ public class PagesImpl
     public ResourceSummary create(final Page page) {
         try {
             return _pages.create(page);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -96,7 +95,7 @@ public class PagesImpl
     public String validate(final Page page) {
         try {
             return _pages.validate(page);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -107,7 +106,7 @@ public class PagesImpl
     public void updateWorkingCopy(final UUID pageId, final Page delta) {
         try {
             _pages.updateWorkingCopy(pageId, delta);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }
@@ -118,7 +117,7 @@ public class PagesImpl
     public void update(final UUID pageId, final Page json) {
         try {
             _pages.update(pageId, json);
-        } catch (final ClientResponseFailure cfe) {
+        } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }
     }

@@ -30,8 +30,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import ccc.api.core.ServiceLocator;
 import ccc.api.jaxrs.ActionsImpl;
 import ccc.api.jaxrs.AliasesImpl;
@@ -67,11 +65,14 @@ import ccc.commons.JNDI;
 public class JaxrsConfiguration
     extends
         javax.ws.rs.core.Application {
-    private static final Logger LOG =
-        Logger.getLogger(JaxrsConfiguration.class);
 
-    private static final Set<Object> RESOURCES;
-    static {
+    private final Set<Object> _resources;
+
+
+    /**
+     * Constructor.
+     */
+    public JaxrsConfiguration() {
         final Set<Object> resources = new HashSet<Object>();
         final ServiceLocator sl =
             new RegistryServiceLocator(CCCProperties.getAppName(), new JNDI());
@@ -88,7 +89,7 @@ public class JaxrsConfiguration
         resources.add(new FilesImpl(sl.getFiles()));
         resources.add(new ActionsImpl(sl.getActions()));
 
-        RESOURCES = Collections.unmodifiableSet(resources);
+        _resources = Collections.unmodifiableSet(resources);
     }
 
     /** {@inheritDoc} */
@@ -116,5 +117,5 @@ public class JaxrsConfiguration
 
     /** {@inheritDoc} */
     @Override
-    public Set<Object> getSingletons() { return RESOURCES; }
+    public Set<Object> getSingletons() { return _resources; }
 }
