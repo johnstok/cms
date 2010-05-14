@@ -29,6 +29,7 @@ package ccc.persistence;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,13 +41,16 @@ import ccc.api.types.DBC;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
+import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.domain.AliasEntity;
 import ccc.domain.FileEntity;
 import ccc.domain.FolderEntity;
 import ccc.domain.HistoricalResource;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionEntity;
+import ccc.domain.Search;
 import ccc.domain.TemplateEntity;
 
 
@@ -339,19 +343,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
             }
         }
 
-        if (null!=criteria.getType()) {
-            if (criteria.getType().equalsIgnoreCase("folder")) {
-                query.append((params.size()>0) ? " and" : " where");
-                // prepared statement wont work here
-                query.append(" r.class = ccc.domain.FolderEntity");
-            }
-        }
+
         if (null!=criteria.getPublished()) {
             if (criteria.getPublished().equalsIgnoreCase("true")) {
                 query.append((params.size()>0) ? " and" : " where");
                 query.append(" r._publishedBy is not null");
             }
         }
+
         if (null!=criteria.getLocked()) {
             if (criteria.getLocked().equalsIgnoreCase("true")) {
                 query.append((params.size()>0) ? " and" : " where");
@@ -362,6 +361,51 @@ class ResourceRepositoryImpl implements ResourceRepository {
         query.append((params.size()>0) ? " and" : " where");
         query.append(" r._deleted = :deleted");
         params.put("deleted", Boolean.FALSE);
+
+        if (null!=criteria.getType()) {
+            // prepared statement wont work here
+            try {
+                final ResourceType type =
+                    ResourceType.valueOf(
+                        criteria.getType().toUpperCase(Locale.US));
+                switch (type) {
+                    case FOLDER:
+                        query.append((params.size()>0) ? " and" : " where");
+                        query.append(" r.class = ");
+                        query.append(FolderEntity.class.getName());
+                        break;
+                    case SEARCH:
+                        query.append((params.size()>0) ? " and" : " where");
+                        query.append(" r.class = ");
+                        query.append(Search.class.getName());
+                        break;
+                    case PAGE:
+                        query.append((params.size()>0) ? " and" : " where");
+                        query.append(" r.class = ");
+                        query.append(PageEntity.class.getName());
+                        break;
+                    case TEMPLATE:
+                        query.append((params.size()>0) ? " and" : " where");
+                        query.append(" r.class = ");
+                        query.append(TemplateEntity.class.getName());
+                        break;
+                    case ALIAS:
+                        query.append((params.size()>0) ? " and" : " where");
+                        query.append(" r.class = ");
+                        query.append(AliasEntity.class.getName());
+                        break;
+                    case FILE:
+                        query.append((params.size()>0) ? " and" : " where");
+                        query.append(" r.class = ");
+                        query.append(FileEntity.class.getName());
+                        break;
+                    default:
+                        break; // Append nothing.
+                }
+            } catch (final RuntimeException e) {
+                /* Ignore bad data. */
+            }
+        }
     }
 
     private void appendSorting(final String sort,
