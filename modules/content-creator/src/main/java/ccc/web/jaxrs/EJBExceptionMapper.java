@@ -44,6 +44,8 @@ import ccc.api.jaxrs.providers.RestExceptionMapper;
 public class EJBExceptionMapper
     implements
         ExceptionMapper<EJBException> {
+    // TODO: Decide if we still need this class now that the client-jaxrs module handles EJBException.
+
     private static final Logger LOG =
         Logger.getLogger(EJBExceptionMapper.class);
 
