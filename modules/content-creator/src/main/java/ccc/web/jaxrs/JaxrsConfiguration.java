@@ -50,6 +50,7 @@ import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
+import ccc.api.jaxrs.providers.S11nProvider;
 import ccc.api.jaxrs.providers.SearchResultWriter;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
 import ccc.api.jaxrs.providers.UUIDProvider;
@@ -111,6 +112,7 @@ public class JaxrsConfiguration
         providers.add(DurationProvider.class);
         providers.add(SecurityImpl.class);
         providers.add(ServicesImpl.class);
+        providers.add(S11nProvider.class);
 
         return providers;
     }
