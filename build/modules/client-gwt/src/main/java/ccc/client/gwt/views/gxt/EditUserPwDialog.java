@@ -108,6 +108,8 @@ public class EditUserPwDialog extends AbstractEditDialog {
                 final User update = new User();
                 update.setId(_userDTO.getId());
                 update.setPassword(_password1.getValue());
+                update.addLink(
+                    User.PASSWORD, _userDTO.getDelegate().uriPassword());
 
                 new UpdateUserPasswordAction(update) {
                     @Override protected void onNoContent(final Response r) {
