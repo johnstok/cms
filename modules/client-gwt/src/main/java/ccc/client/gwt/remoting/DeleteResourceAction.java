@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.Resource;
+import ccc.api.types.Link;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.HttpMethod;
@@ -62,7 +64,12 @@ public class DeleteResourceAction
     @Override
     protected String getPath() {
         return
-            _selectionModel.tableSelection().getDelegate().self().build(new GWTTemplateEncoder());
+            new Link(
+                _selectionModel
+                    .tableSelection()
+                    .getDelegate()
+                    .getLink(Resource.DELETE))
+            .build(new GWTTemplateEncoder());
     }
 
 

@@ -36,9 +36,9 @@ import java.util.UUID;
 
 import ccc.api.temp.DurationSerializer;
 import ccc.api.types.Duration;
+import ccc.api.types.Link;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.api.types.Link;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 
@@ -733,4 +733,6 @@ public class Resource
     public static final String TEMPLATE = "template";
     /** SELF : String. */
     public static final String SELF = "self";
+    /** DELETE : String. */
+    public static final String DELETE = "delete";
 }
