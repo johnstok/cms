@@ -350,5 +350,9 @@ public class User
      *
      * @return
      */
-    public String uriPassword() { return getLink("password"); }
+    public String uriPassword() { return getLink(PASSWORD); }
+
+
+    /** PASSWORD : String. */
+    public static final String PASSWORD = "password";
 }
