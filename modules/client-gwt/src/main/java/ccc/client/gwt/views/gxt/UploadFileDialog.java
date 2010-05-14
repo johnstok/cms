@@ -115,6 +115,8 @@ public class UploadFileDialog extends AbstractEditDialog {
                 public void handleEvent(final FormEvent be) {
                     final String response = be.getResultHtml();
 
+                    // TODO: Handle 404 with notfound.jsp
+
                     if (SessionTimeoutException.isTimedout(response)) {
                         getGlobals().unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),

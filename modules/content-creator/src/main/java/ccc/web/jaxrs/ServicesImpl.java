@@ -90,6 +90,8 @@ public class ServicesImpl {
         api.addLink(ccc.api.core.Security.CURRENT,    Security.CURRENT);
         api.addLink(ccc.api.core.Security.COLLECTION, Security.COLLECTION+"?{-join|&|u,p}");
 
+        api.addLink(ccc.api.core.File.LIST_BINARY, File.BINARY_COLLECTION);
+
         return api;
     }
 }
