@@ -1763,4 +1763,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Not a valid password, it should not contains spaces.")
     String isNotValidPassword();
+
+    /**
+     * "Navigator".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Navigator")
+    String navigator();
 }

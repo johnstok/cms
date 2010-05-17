@@ -461,19 +461,6 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * Accessor.
-     *
-     * @return Returns the name with the first letter capitalised.
-     */
-    public String getCappedName() {
-        final String heading = getName();
-        final String c = heading.substring(0, 1).toUpperCase();
-        final String cappedName = c+heading.substring(1);
-        return cappedName;
-    }
-
-
-    /**
      * Mutator.
      *
      * @param count The folder count.
