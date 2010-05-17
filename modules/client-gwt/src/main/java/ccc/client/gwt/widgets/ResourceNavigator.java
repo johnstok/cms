@@ -74,7 +74,7 @@ public class ResourceNavigator extends ContentPanel {
 
         setLayout(new AccordionLayout());
         setBodyBorder(false);
-        setHeading("Navigator");
+        setHeading(GlobalsImpl.uiConstants().navigator());
 
         for (final ResourceSummary root : roots) {
             final EnhancedResourceTree enhancedResourceTree =
@@ -84,7 +84,7 @@ public class ResourceNavigator extends ContentPanel {
             contentPanel.getHeader().setId(root.getName()+"-navigator");
             contentPanel.setAnimCollapse(false);
             contentPanel.setScrollMode(Scroll.AUTO);
-            contentPanel.setHeading(root.getCappedName());
+            contentPanel.setHeading(GlobalsImpl.uiConstants().content());
 
             contentPanel.add(enhancedResourceTree.treePanel());
             add(contentPanel);
@@ -102,13 +102,13 @@ public class ResourceNavigator extends ContentPanel {
         if (user.hasPermission(Permission.USER_READ)) {
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
-                "Users", _usersTree);
+                GlobalsImpl.uiConstants().users(), _usersTree);
         }
 
         _actionTree = new ActionTree(_view);
         final ContentPanel actionPanel = new ContentPanel();
         setPanel(actionPanel, "action-navigator",
-            "Actions", _actionTree);
+            GlobalsImpl.uiConstants().actions(), _actionTree);
 
         _commentTree = new CommentTree(_view);
         final ContentPanel commentsPanel = new ContentPanel();
@@ -118,18 +118,18 @@ public class ResourceNavigator extends ContentPanel {
         _rootTrees.get(0).showTable();
     }
 
-    private void setPanel(final ContentPanel actionPanel,
+    private void setPanel(final ContentPanel panel,
                           final String id,
                           final String text,
                           final Tree actionTree) {
 
-        actionPanel.getHeader().setId(id);
-        actionPanel.setAnimCollapse(false);
-        actionPanel.setScrollMode(Scroll.AUTO);
-        actionPanel.setHeading(text);
-        actionPanel.add(actionTree.getTree());
-        add(actionPanel);
-        actionPanel.addListener(
+        panel.getHeader().setId(id);
+        panel.setAnimCollapse(false);
+        panel.setScrollMode(Scroll.AUTO);
+        panel.setHeading(text);
+        panel.add(actionTree.getTree());
+        add(panel);
+        panel.addListener(
             Events.Expand,
             new Listener<ComponentEvent>(){
                 public void handleEvent(final ComponentEvent bce) {
