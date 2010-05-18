@@ -207,6 +207,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
         final StringBuffer query = new StringBuffer();
         query.append("from ");
         query.append(TemplateEntity.class.getName());
+        query.append(" where ");
+        query.append(" _deleted = :deleted");
+        params.put("deleted", Boolean.FALSE);
 
         return _repository.listDyn(
             query.toString(),
