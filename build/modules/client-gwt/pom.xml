@@ -37,12 +37,11 @@
                                 <!-- echo message="gwt compile classpath: ${gwt_compile_classpath}"/ -->
 
                                 <echo message="Running GWT compiler" />
-                                <java classname="com.google.gwt.dev.GWTCompiler" classpath="${gwt_compile_classpath}" fork="true" failonerror="true">
+                                <java classname="com.google.gwt.dev.Compiler" classpath="${gwt_compile_classpath}" fork="true" failonerror="true">
                                     <jvmarg value="-Xms512M" />
                                     <jvmarg value="-Xmx512M" />
                                     <jvmarg value="-Xss4M" />
-                                    <jvmarg value="-Dgwt.nowarn.legacy.tools" />
-                                    <arg value="-out" />
+                                    <arg value="-war" />
                                     <arg value="${basedir}/target/www" />
                                     <arg value="ccc.client.gwt.ContentCreator" />
                                 </java>
@@ -134,58 +133,18 @@
             <artifactId>gwt-math</artifactId>
             <version>${lib.version.gwt-math}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${lib.version.gwt}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${lib.version.gwt}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${lib.version.gwt}</version>
-                    <classifier>windows</classifier>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${lib.version.gwt}</version>
-                    <type>zip</type>
-                    <classifier>windows-libs</classifier>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${lib.version.gwt}</version>
-                    <classifier>linux</classifier>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>com.google.gwt</groupId>
-                    <artifactId>gwt-dev</artifactId>
-                    <version>${lib.version.gwt}</version>
-                    <type>zip</type>
-                    <classifier>linux-libs</classifier>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 </project>
