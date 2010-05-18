@@ -32,10 +32,10 @@ import java.util.List;
 
 import ccc.api.core.Template;
 import ccc.api.types.DBC;
+import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
 
 
@@ -145,12 +145,6 @@ public class TemplateEntity
         return currentRevision().getMimeType();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Template createSnapshot() {
-        return summarize();
-    }
-
 
     /**
      * Update the contents of this template.
@@ -245,7 +239,7 @@ public class TemplateEntity
                                          final List<TemplateEntity> templates) {
         final Collection<Template> mapped = new ArrayList<Template>();
         for (final TemplateEntity t : templates) {
-            mapped.add(t.createSnapshot());
+            mapped.add(t.forCurrentRevision());
         }
         return mapped;
     }

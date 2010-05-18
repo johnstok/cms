@@ -30,8 +30,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -123,24 +121,6 @@ public class Folder
      */
     public void setSortList(final Collection<String> sortList) {
         _sortList = sortList;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.INDEX_PAGE_ID, _indexPage);
-        json.setStrings(JsonKeys.SORT_LIST, _sortList);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _indexPage = json.getId(JsonKeys.INDEX_PAGE_ID);
-        _sortList = json.getStrings(JsonKeys.SORT_LIST);
     }
 
 

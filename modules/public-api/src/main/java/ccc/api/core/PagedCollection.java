@@ -29,10 +29,6 @@ package ccc.api.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
-
 
 /**
  * Wrapper class for a collection of DTOs.
@@ -41,35 +37,40 @@ import ccc.plugins.s11n.Jsonable;
  *
  * @author Civic Computing Ltd.
  */
-// FIXME: Make abstract?
-// Reify the generic type parameter on s11n.
-public class PagedCollection<T extends Jsonable>
+public class PagedCollection<T>
     extends
         Res {
 
-    protected long _totalCount;
-    protected List<T> _elements;
+    protected long         _totalCount;
+    protected List<T>      _elements;
+    private final Class<T> _elementClass;
 
 
     /**
      * Constructor.
      *
      * @param totalCount The total number of elements in the collection.
+     * @param elementClass The type of collection to create.
      * @param elements The elements on the current page.
      */
     public PagedCollection(final long totalCount,
+                           final Class<T> elementClass,
                            final List<T> elements) {
         _totalCount = totalCount;
         _elements = elements;
+        _elementClass = elementClass;
     }
 
 
     /**
      * Constructor.
+     *
+     * @param elementClass The type of collection to create.
      */
-    public PagedCollection() {
+    public PagedCollection(final Class<T> elementClass) {
         _totalCount = 0;
         _elements = new ArrayList<T>();
+        _elementClass = elementClass;
     }
 
 
@@ -94,11 +95,12 @@ public class PagedCollection<T extends Jsonable>
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.SIZE, Long.valueOf(_totalCount));
-        json.set(JsonKeys.ELEMENTS, _elements);
+    /**
+     * Accessor.
+     *
+     * @return Returns the elementClass.
+     */
+    public Class<T> getElementClass() {
+        return _elementClass;
     }
 }

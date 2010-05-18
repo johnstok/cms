@@ -31,8 +31,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -53,14 +51,6 @@ public class Group
      * Constructor.
      */
     public Group() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of this group.
-     */
-    public Group(final Json json) { fromJson(json); }
 
 
     /**
@@ -115,7 +105,6 @@ public class Group
     }
 
 
-
     /**
      * Mutator.
      *
@@ -123,28 +112,6 @@ public class Group
      */
     public final void setId(final UUID id) {
         _id = id;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.ID, getId());
-        json.set(JsonKeys.NAME, getName());
-        json.setStrings(JsonKeys.PERMISSIONS, getPermissions());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        setId(json.getId(JsonKeys.ID));
-        setName(
-            json.getString(JsonKeys.NAME));
-        setPermissions(
-            new HashSet<String>(json.getStrings(JsonKeys.PERMISSIONS)));
     }
 
 

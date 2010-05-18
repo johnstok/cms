@@ -132,13 +132,6 @@ public class PageEntity
      * Working copy implementation.
      * ================================================================== */
 
-    /** {@inheritDoc} */
-    @Override
-    public Page createSnapshot() {
-        return Page.delta(
-            new HashSet<Paragraph>(currentRevision().getParagraphs()));
-    }
-
 
     /** {@inheritDoc} */
     @Override

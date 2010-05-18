@@ -252,18 +252,6 @@ public class FileEntity
                 delta.getProperties()));
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public File createSnapshot() {
-        final File delta =
-            new File(
-                getMimeType(),
-                getData().getId(),
-                size(),
-                getProperties());
-        return delta;
-    }
-
 
     /** {@inheritDoc} */
     @Override

@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.api.temp.FileSerializer;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
@@ -77,7 +78,7 @@ extends
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final File dto = new File(new GwtJson(result));
+        final File dto = new FileSerializer().read(new GwtJson(result));
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
                 GLOBALS,

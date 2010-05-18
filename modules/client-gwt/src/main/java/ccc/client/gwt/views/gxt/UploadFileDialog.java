@@ -13,6 +13,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.ResourceSummarySerializer;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -136,7 +137,8 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final JSONObject json =
                                 JSONParser.parse(be.getResultHtml()).isObject();
                             final ResourceSummary rs =
-                                new ResourceSummary(new GwtJson(json));
+                                new ResourceSummarySerializer()
+                                    .read(new GwtJson(json));
                             ssm.create(new ResourceSummaryModelData(rs));
                         }
                     }

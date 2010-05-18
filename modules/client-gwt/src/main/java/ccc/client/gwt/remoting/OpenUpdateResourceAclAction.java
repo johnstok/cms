@@ -30,7 +30,7 @@ import java.util.Collection;
 
 import ccc.api.core.ACL;
 import ccc.api.core.Group;
-import ccc.api.core.Resource;
+import ccc.api.temp.ACLSerializer;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
@@ -79,7 +79,7 @@ public final class OpenUpdateResourceAclAction
     protected void onOK(final Response response) {
 
         final JSONObject o = JSONParser.parse(response.getText()).isObject();
-        final ACL acl = new ACL(new GwtJson(o));
+        final ACL acl = new ACLSerializer().read(new GwtJson(o));
 
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(

@@ -27,13 +27,14 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.API;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.Comment;
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.Security;
+import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.ActionCollection;
-import ccc.client.gwt.binding.CommentCollection;
-import ccc.client.gwt.binding.GroupCollection;
-import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.concurrent.SimpleLatch;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -98,7 +99,7 @@ public class IsLoggedInAction
             }
 
             @Override
-            protected void execute(final UserCollection users) {
+            protected void execute(final PagedCollection<User> users) {
                 GlobalsImpl.users(users);
                 l.countDown();
             }
@@ -112,7 +113,7 @@ public class IsLoggedInAction
 
             /** {@inheritDoc} */
             @Override
-            protected void execute(final ActionCollection actions) {
+            protected void execute(final PagedCollection<ActionSummary> actions) {
                 GlobalsImpl.actions(actions);
                 l.countDown();
             }
@@ -126,7 +127,7 @@ public class IsLoggedInAction
 
             /** {@inheritDoc} */
             @Override
-            protected void execute(final CommentCollection comments) {
+            protected void execute(final PagedCollection<Comment> comments) {
                 GlobalsImpl.comments(comments);
                 l.countDown();
             }
@@ -142,7 +143,7 @@ public class IsLoggedInAction
 
             /** {@inheritDoc} */
             @Override
-            protected void execute(final GroupCollection groups) {
+            protected void execute(final PagedCollection<Group> groups) {
                 GlobalsImpl.groups(groups);
                 l.countDown();
             }

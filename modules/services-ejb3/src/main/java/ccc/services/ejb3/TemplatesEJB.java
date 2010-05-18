@@ -92,8 +92,11 @@ public final class TemplatesEJB
         final ResourceRepository repo =
             getRepoFactory().createResourceRepository();
 
-        return new PagedCollection<Template>(repo.templateCount(),
-            TemplateEntity.mapTemplates(repo.templates(pageNo, pageSize)));
+        return
+            new PagedCollection<Template>(
+                repo.templateCount(),
+                Template.class,
+                TemplateEntity.mapTemplates(repo.templates(pageNo, pageSize)));
     }
 
 
@@ -134,6 +137,6 @@ public final class TemplatesEJB
         return
             getRepoFactory()
                 .createResourceRepository()
-                .find(TemplateEntity.class, templateId).createSnapshot();
+                .find(TemplateEntity.class, templateId).forCurrentRevision();
     }
 }

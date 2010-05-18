@@ -26,17 +26,15 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.api.core.ActionSummary;
+import ccc.api.core.Comment;
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.client.gwt.binding.ActionCollection;
-import ccc.client.gwt.binding.CommentCollection;
-import ccc.client.gwt.binding.GroupCollection;
-import ccc.client.gwt.binding.UserCollection;
-import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
 import ccc.client.gwt.i18n.ErrorDescriptions;
 import ccc.client.gwt.i18n.ErrorResolutions;
-import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.i18n.UIMessages;
 
 
@@ -199,26 +197,26 @@ public interface Globals {
      *
      * @return
      */
-    UserCollection users();
+    PagedCollection<User> users();
 
     /**
      * TODO: Add a description for this method.
      *
      * @return
      */
-    ActionCollection actions();
+    PagedCollection<ActionSummary> actions();
 
     /**
      * TODO: Add a description for this method.
      *
      * @return
      */
-    CommentCollection comments();
+    PagedCollection<Comment> comments();
 
     /**
      * TODO: Add a description for this method.
      *
      * @return
      */
-    GroupCollection groups();
+    PagedCollection<Group> groups();
 }

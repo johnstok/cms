@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
+import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
@@ -56,14 +57,14 @@ public abstract class UpdateCurrentUserAction
 
     /** {@inheritDoc} */
     @Override protected String getPath() {
-        return GLOBALS.users().me();
+        return GLOBALS.users().getLink("me");
     }
 
 
     /** {@inheritDoc} */
     @Override protected String getBody() {
         final GwtJson json = new GwtJson();
-        _userDetails.toJson(json);
+        new UserSerializer().write(json, _userDetails);
         return json.toString();
     }
 }

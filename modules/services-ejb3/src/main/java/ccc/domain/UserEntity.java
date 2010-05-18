@@ -41,11 +41,13 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import ccc.api.core.User;
+import ccc.api.temp.UserSerializer;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
+import ccc.api.types.Link;
 import ccc.api.types.Password;
 import ccc.api.types.Username;
-import ccc.dto.UserEnhanced;
+import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 
 
@@ -312,7 +314,7 @@ public class UserEntity
     /** {@inheritDoc} */
     @Override
     public void toJson(final Json json) {
-        toDto().toJson(json);
+        new UserSerializer().write(json, toDto());
     }
 
 
@@ -343,8 +345,8 @@ public class UserEntity
      *
      * @return A DTO representation of this user.
      */
-    public UserEnhanced toDto() {
-        final UserEnhanced dto = new UserEnhanced();
+    public User toDto() {
+        final User dto = new User();
         dto.setEmail(getEmail().getText());
         dto.setId(getId());
         dto.setUsername(getUsername());
@@ -352,6 +354,16 @@ public class UserEntity
         dto.setGroups(getGroupIds());
         dto.setMetadata(getMetadata());
         dto.setPermissions(getPermissions());
+
+        dto.addLink(
+            User.PASSWORD,
+            new Link(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
+                .build("id", getId().toString(), new NormalisingEncoder()));
+        dto.addLink(
+            User.SELF,
+            new Link(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
+                .build("id", getId().toString(), new NormalisingEncoder()));
+
         return dto;
     }
 

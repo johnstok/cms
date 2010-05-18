@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.api.temp.FileSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -67,7 +68,7 @@ public class EditTextFileAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _dto.toJson(json);
+        new FileSerializer().write(json, _dto);
         return json.toString();
     }
 

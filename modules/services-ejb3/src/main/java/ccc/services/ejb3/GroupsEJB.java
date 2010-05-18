@@ -41,6 +41,7 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
+import ccc.api.temp.GroupSerializer;
 import ccc.api.types.Permission;
 import ccc.domain.GroupEntity;
 import ccc.domain.LogEntry;
@@ -75,13 +76,16 @@ public class GroupsEJB
 
         final Group result = g.createDto();
 
+        final JsonImpl json = new JsonImpl();
+        new GroupSerializer().write(json, result);
+
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
                 currentUser(),
                 GROUP_CREATE,
                 new Date(),
                 g.getId(),
-                new JsonImpl(result).getDetail()));
+                json.getDetail()));
 
         return result;
     }
@@ -107,9 +111,12 @@ public class GroupsEJB
         final Collection<GroupEntity> groups = gr.list(name, pageNo, pageSize);
 
         final PagedCollection<Group> pGroups =
-            new PagedCollection<Group>(totalCount, GroupEntity.map(groups));
+            new PagedCollection<Group>(
+                totalCount, Group.class, GroupEntity.map(groups));
         pGroups.addLink(
-            "self", ccc.api.core.ResourceIdentifiers.Group.COLLECTION);
+            "self",
+            ccc.api.core.ResourceIdentifiers.Group.COLLECTION
+            + "?{-join|&|count,page,sort,order}");
 
         return pGroups;
     }
@@ -125,13 +132,16 @@ public class GroupsEJB
 
         final Group result = g.createDto();
 
+        final JsonImpl json = new JsonImpl();
+        new GroupSerializer().write(json, result);
+
         getRepoFactory().createLogEntryRepo().record(
             new LogEntry(
                 currentUser(),
                 GROUP_UPDATE,
                 new Date(),
                 g.getId(),
-                new JsonImpl(result).getDetail()));
+                json.getDetail()));
 
         return result;
     }

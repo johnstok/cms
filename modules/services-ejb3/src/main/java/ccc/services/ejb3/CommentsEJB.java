@@ -122,13 +122,16 @@ public class CommentsEJB
         final PagedCollection<Comment> comments =
             new PagedCollection<Comment>(
                 getRepoFactory().createCommentRepo().count(r, status),
+                Comment.class,
                 CommentEntity.map(
                     getRepoFactory()
                         .createCommentRepo()
                         .list(
                             r, status, sort, sortOrder, pageNo, pageSize)));
         comments.addLink(
-            "self", ccc.api.core.ResourceIdentifiers.Comment.COLLECTION);
+            "self",
+            ccc.api.core.ResourceIdentifiers.Comment.COLLECTION
+            + "?{-join|&|count,page,sort,order,status}");
 
         return comments;
     }

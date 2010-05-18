@@ -82,5 +82,5 @@ public class FoldersImplTest
     private FoldersImpl _unit;
     private PagedCollection<ResourceSummary> _rs =
         new PagedCollection<ResourceSummary>(
-            1, new ArrayList<ResourceSummary>());
+            1, ResourceSummary.class, new ArrayList<ResourceSummary>());
 }

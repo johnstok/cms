@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
+import ccc.api.temp.TemplateSerializer;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
@@ -74,8 +75,8 @@ public class OpenUpdateTemplateAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final Template delta = new Template();
-        delta.fromJson(new GwtJson(result));
+        final Template delta =
+            new TemplateSerializer().read(new GwtJson(result));
         new EditTemplateDialog(
             delta,
             _template,

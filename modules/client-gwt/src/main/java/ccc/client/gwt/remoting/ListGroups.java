@@ -26,7 +26,14 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.client.gwt.binding.GroupCollection;
+import java.util.HashMap;
+import java.util.Map;
+
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
+import ccc.api.temp.PagedCollectionReader;
+import ccc.api.types.Link;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -34,8 +41,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -77,9 +82,15 @@ public abstract class ListGroups
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("page",  new String[] {""+_pageNo});
+        params.put("count", new String[] {""+_pageSize});
+        params.put("sort",  new String[] {_sort});
+        params.put("order", new String[] {_order});
         return
             Globals.API_URL
-            + GLOBALS.groups().list(_pageNo, _pageSize, _sort, _order);
+            + new Link(GLOBALS.groups().getLink("self"))
+                .build(params, new GWTTemplateEncoder());
     }
 
 
@@ -96,8 +107,9 @@ public abstract class ListGroups
                 public void onOK(final ccc.client.gwt.core.Response response) {
                     final JSONObject obj =
                         JSONParser.parse(response.getText()).isObject();
-                    final GroupCollection groups = new GroupCollection();
-                    groups.fromJson(new GwtJson(obj));
+                    final PagedCollection<Group> groups =
+                        PagedCollectionReader
+                        .read(new GwtJson(obj), Group.class);
 
                     execute(groups);
                 }
@@ -110,5 +122,5 @@ public abstract class ListGroups
      *
      * @param groups The groups returned.
      */
-    protected abstract void execute(GroupCollection groups);
+    protected abstract void execute(PagedCollection<Group> groups);
 }

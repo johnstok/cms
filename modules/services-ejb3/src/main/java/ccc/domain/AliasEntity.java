@@ -102,13 +102,6 @@ public class AliasEntity extends ResourceEntity {
         return _target;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Alias createSnapshot() {
-        final Alias delta =
-            new Alias(target().getId());
-        return delta;
-    }
 
     /** {@inheritDoc} */
     @Override

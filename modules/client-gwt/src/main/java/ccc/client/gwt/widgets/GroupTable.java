@@ -29,8 +29,9 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.GroupCollection;
 import ccc.client.gwt.binding.GroupModelData;
 import ccc.client.gwt.events.GroupUpdated;
 import ccc.client.gwt.events.GroupUpdated.GroupUpdatedHandler;
@@ -185,7 +186,7 @@ public class GroupTable
 
                             @Override
                             protected void execute(
-                                       final GroupCollection groups) {
+                                       final PagedCollection<Group> groups) {
 
                                 final List<GroupModelData> results =
                                     DataBinding.bindGroupSummary(

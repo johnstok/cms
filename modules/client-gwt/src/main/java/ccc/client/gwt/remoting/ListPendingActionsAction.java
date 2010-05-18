@@ -26,9 +26,16 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ccc.api.core.ActionSummary;
+import ccc.api.core.PagedCollection;
+import ccc.api.temp.PagedCollectionReader;
 import ccc.api.types.DBC;
+import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.ActionCollection;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -76,8 +83,15 @@ public abstract class ListPendingActionsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("page",  new String[] {""+_page});
+        params.put("count", new String[] {""+_count});
+        params.put("sort",  new String[] {_sort});
+        params.put("order", new String[] {_order.name()});
+
         final String path =
-            GLOBALS.actions().pending(_page, _count, _order, _sort);
+            new Link(GLOBALS.actions().getLink("pending"))
+            .build(params, new GWTTemplateEncoder());
         return path;
     }
 
@@ -86,8 +100,8 @@ public abstract class ListPendingActionsAction
     protected void onOK(final Response response) {
         final JSONObject obj =
             JSONParser.parse(response.getText()).isObject();
-        final ActionCollection actions = new ActionCollection();
-        actions.fromJson(new GwtJson(obj));
+        final PagedCollection<ActionSummary> actions =
+            PagedCollectionReader.read(new GwtJson(obj), ActionSummary.class);
 
         execute(actions);
     }
@@ -97,5 +111,5 @@ public abstract class ListPendingActionsAction
      *
      * @param actions The page of actions returned.
      */
-    protected abstract void execute(ActionCollection actions);
+    protected abstract void execute(PagedCollection<ActionSummary> actions);
 }

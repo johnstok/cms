@@ -26,7 +26,6 @@
  */
 package ccc.api.core;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,13 +33,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.temp.DurationSerializer;
 import ccc.api.types.Duration;
 import ccc.api.types.Link;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -596,70 +592,6 @@ public class Resource
      */
     public boolean isCacheable() {
         return null!=_cacheDuration && _cacheDuration.time()>0;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        setAbsolutePath(json.getString(JsonKeys.ABSOLUTE_PATH));
-        final Json duration = json.getJson(JsonKeys.CACHE_DURATION);
-        setCacheDuration(
-            (null==duration) ? null : new DurationSerializer().read(duration));
-        setDateChanged(json.getDate(JsonKeys.DATE_CHANGED));
-        setDateCreated(json.getDate(JsonKeys.DATE_CREATED));
-        setDescription(json.getString(JsonKeys.DESCRIPTION));
-        setId(json.getId(JsonKeys.ID));
-        setInMainMenu(
-            json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU).booleanValue());
-        setLocked(json.getBool(JsonKeys.LOCKED).booleanValue());
-        setPublished(json.getBool(JsonKeys.PUBLISHED).booleanValue());
-        setSecure(json.getBool(JsonKeys.SECURE).booleanValue());
-        setVisible(json.getBool(JsonKeys.VISIBLE).booleanValue());
-        setLockedBy(json.getId(JsonKeys.LOCKED_BY));
-        setMetadata(json.getStringMap(JsonKeys.METADATA));
-        final String name = json.getString(JsonKeys.NAME);
-        setName((null==name) ? null : new ResourceName(name));
-        setParent(json.getId(JsonKeys.PARENT_ID));
-        setPublishedBy(json.getId(JsonKeys.PUBLISHED_BY));
-        setRevision(json.getInt(JsonKeys.REVISION).intValue());
-        final Collection<String> tags = json.getStrings(JsonKeys.TAGS);
-        setTags((null==tags) ? null : new HashSet<String>(tags));
-        setTemplate(json.getId(JsonKeys.TEMPLATE_ID));
-        setTitle(json.getString(JsonKeys.TITLE));
-        final String type = json.getString(JsonKeys.TYPE);
-        setType((null==type) ? null : ResourceType.valueOf(type));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.ABSOLUTE_PATH, _absolutePath);
-        json.set(
-            JsonKeys.CACHE_DURATION,
-            new DurationSerializer().write(json.create(), _cacheDuration));
-        json.set(JsonKeys.DATE_CHANGED, _dateChanged);
-        json.set(JsonKeys.DATE_CREATED, _dateCreated);
-        json.set(JsonKeys.DESCRIPTION, _description);
-        json.set(JsonKeys.ID, _id);
-        json.set(JsonKeys.INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_inMainMenu));
-        json.set(JsonKeys.LOCKED, Boolean.valueOf(_isLocked));
-        json.set(JsonKeys.PUBLISHED, Boolean.valueOf(_isPublished));
-        json.set(JsonKeys.SECURE, Boolean.valueOf(_isSecure));
-        json.set(JsonKeys.VISIBLE, Boolean.valueOf(_isVisible));
-        json.set(JsonKeys.LOCKED_BY, _lockedBy);
-        json.set(JsonKeys.METADATA, _metadata);
-        json.set(JsonKeys.NAME, (null==_name) ? null : _name.toString());
-        json.set(JsonKeys.PARENT_ID, _parent);
-        json.set(JsonKeys.PUBLISHED_BY, _publishedBy);
-        json.set(JsonKeys.REVISION, Long.valueOf(_revision));
-        json.setStrings(JsonKeys.TAGS, _tags);
-        json.set(JsonKeys.TEMPLATE_ID, _template);
-        json.set(JsonKeys.TITLE, _title);
-        json.set(JsonKeys.TYPE, (null==_type) ? null : _type.name());
     }
 
 

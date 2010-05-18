@@ -30,6 +30,7 @@ import java.util.Collection;
 
 import ccc.api.core.Group;
 import ccc.api.core.User;
+import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -77,7 +78,8 @@ public class OpenEditUserDialogAction
     protected void onOK(final Response response) {
         final JSONObject result =
             JSONParser.parse(response.getText()).isObject();
-        final User delta = new User(new GwtJson(result));
+        final User delta =
+            new UserSerializer().read(new GwtJson(result));
         new EditUserDialog(delta, _userTable, _groups).show();
     }
 }

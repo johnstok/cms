@@ -27,21 +27,15 @@
  */
 package ccc.api.core;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -67,16 +61,6 @@ public class User
      * Constructor.
      */
     public User() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of a user.
-     */
-    public User(final Json json) {
-        fromJson(json);
-    }
 
 
     /**
@@ -271,69 +255,6 @@ public class User
      */
     public boolean hasPermission(final String perm) {
         return _permissions.contains(perm);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        setId(json.getId(ID));
-        setEmail(json.getString(EMAIL));
-        setName(json.getString(NAME));
-        setPassword(json.getString(JsonKeys.PASSWORD));
-        setPermissions(json.getStrings(PERMISSIONS));
-
-        final String un = json.getString(USERNAME);
-        setUsername((null==un) ? null : new Username(un));
-
-        final Collection<String> r = json.getStrings(ROLES);
-        setGroups(
-            (null==r)
-                ? new HashSet<UUID>()
-                : new HashSet<UUID>(mapUuid(r)));
-
-        final Map<String, String> md = json.getStringMap(JsonKeys.METADATA);
-        setMetadata(
-            (null==md)
-                ? new HashMap<String, String>()
-                : new HashMap<String, String>(md));
-
-        final Map<String, String> links = json.getStringMap("links");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(ID, getId());
-        json.set(EMAIL, getEmail());
-        json.set(NAME, getName());
-        json.set(
-            USERNAME, (null==getUsername()) ? null : getUsername().toString());
-        json.setStrings(ROLES, mapString(getGroups()));
-        json.set(JsonKeys.METADATA, _metadata);
-        json.set(JsonKeys.PASSWORD, _password);
-        json.setStrings(PERMISSIONS, _permissions);
-    }
-
-
-    private Set<String> mapString(final Set<UUID> uuids) {
-        final Set<String> strings = new HashSet<String>();
-        for (final UUID uuid : uuids) {
-            strings.add(uuid.toString());
-        }
-        return strings;
-    }
-
-
-    private Collection<? extends UUID> mapUuid(final Collection<String> s) {
-        final List<UUID> uuids = new ArrayList<UUID>();
-        for (final String string : s) {
-            uuids.add(UUID.fromString(string));
-        }
-        return uuids;
     }
 
 

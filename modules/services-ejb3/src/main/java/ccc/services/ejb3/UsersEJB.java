@@ -154,11 +154,19 @@ public class UsersEJB
         final PagedCollection<User> users =
             new PagedCollection<User>(
                 userrepo.countUsers(uc),
+                User.class,
                 UserEntity.map(
                     userrepo.listUsers(uc, sort, order, pageNo, pageSize)));
-        users.addLink("me", ccc.api.core.ResourceIdentifiers.User.ME);
-        users.addLink("self", ccc.api.core.ResourceIdentifiers.User.COLLECTION);
-        users.addLink("exists", ccc.api.core.ResourceIdentifiers.User.EXISTS);
+        users.addLink(
+            "me",
+            ccc.api.core.ResourceIdentifiers.User.ME);
+        users.addLink(
+            "self",
+            ccc.api.core.ResourceIdentifiers.User.COLLECTION
+            + "?{-join|&|count,page,sort,order,email,username,groups}");
+        users.addLink(
+            "exists",
+            ccc.api.core.ResourceIdentifiers.User.EXISTS);
         return users;
     }
 

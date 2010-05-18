@@ -26,11 +26,9 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.temp.TemplateSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
@@ -39,8 +37,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -85,11 +81,11 @@ public abstract class ComputeTemplateAction
                 /** {@inheritDoc} */
                 @Override
                 public void onOK(final ccc.client.gwt.core.Response response) {
-                    final Template ts = new Template();
-                    ts.fromJson(
+                    final Template ts =
+                        new TemplateSerializer().read(
                             new GwtJson(
-                                JSONParser.parse(
-                                    response.getText()).isObject()));
+                                JSONParser.parse(response.getText())
+                                .isObject()));
                     template(ts);
                 }
 

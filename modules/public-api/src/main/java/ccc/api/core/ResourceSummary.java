@@ -27,15 +27,12 @@
 package ccc.api.core;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.types.ResourceType;
 import ccc.api.types.Link;
+import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -138,16 +135,6 @@ public final class ResourceSummary extends Res {
         _description = description;
         _createdBy = createdBy;
         _changedBy = changedBy;
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of a resource summary.
-     */
-    public ResourceSummary(final Json json) {
-        fromJson(json);
     }
 
 
@@ -463,82 +450,90 @@ public final class ResourceSummary extends Res {
     /**
      * Mutator.
      *
+     * @param id The id to set.
+     */
+    public void setId(final UUID id) {
+        _id = id;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param parent The parent to set.
+     */
+    public void setParent(final UUID parent) {
+        _parent = parent;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param createdBy The createdBy to set.
+     */
+    public void setCreatedBy(final Username createdBy) {
+        _createdBy = createdBy;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param changedBy The changedBy to set.
+     */
+    public void setChangedBy(final Username changedBy) {
+        _changedBy = changedBy;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param type The type to set.
+     */
+    public void setType(final ResourceType type) {
+        _type = type;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param childCount The childCount to set.
+     */
+    public void setChildCount(final int childCount) {
+        _childCount = childCount;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param dateCreated The dateCreated to set.
+     */
+    public void setDateCreated(final Date dateCreated) {
+        _dateCreated = dateCreated;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param dateChanged The dateChanged to set.
+     */
+    public void setDateChanged(final Date dateChanged) {
+        _dateChanged = dateChanged;
+    }
+
+
+    /**
+     * Mutator.
+     *
      * @param count The folder count.
      */
     public void setFolderCount(final int count) {
         _folderCount = count;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.ID, _id);
-        json.set(JsonKeys.NAME, _name);
-        json.set(JsonKeys.PARENT_ID, _parent);
-        json.set(JsonKeys.TYPE, _type.name());
-        json.set(
-            JsonKeys.LOCKED_BY, (null==_lockedBy)?null:_lockedBy.toString());
-        json.set(JsonKeys.TITLE, _title);
-        json.set(
-            JsonKeys.PUBLISHED_BY,
-            (null==_publishedBy)?null:_publishedBy.toString());
-        json.set(JsonKeys.CHILD_COUNT, Long.valueOf(_childCount));
-        json.set(JsonKeys.FOLDER_COUNT, Long.valueOf(_folderCount));
-        json.set(
-            JsonKeys.INCLUDE_IN_MAIN_MENU, Boolean.valueOf(_includeInMainMenu));
-        json.set(JsonKeys.HAS_WORKING_COPY, Boolean.valueOf(_hasWorkingCopy));
-        json.set(JsonKeys.DATE_CREATED, _dateCreated);
-        json.set(JsonKeys.DATE_CHANGED, _dateChanged);
-        json.set(JsonKeys.TEMPLATE_ID, _templateId);
-        json.setStrings(JsonKeys.TAGS, _tags);
-        json.set(JsonKeys.ABSOLUTE_PATH, _absolutePath);
-        json.set(JsonKeys.INDEX_PAGE_ID, _indexPageId);
-        json.set(JsonKeys.DESCRIPTION, _description);
-        json.set(
-            JsonKeys.CREATED_BY, (null==_createdBy)?null:_createdBy.toString());
-        json.set(
-            JsonKeys.CHANGED_BY, (null==_changedBy)?null:_changedBy.toString());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _id = json.getId(JsonKeys.ID);
-        _parent = json.getId(JsonKeys.PARENT_ID);
-        _name = json.getString(JsonKeys.NAME);
-        _publishedBy =
-            (null==json.getString(JsonKeys.PUBLISHED_BY))
-                ? null
-                : new Username(json.getString(JsonKeys.PUBLISHED_BY));
-        _title = json.getString(JsonKeys.TITLE);
-        _lockedBy =
-            (null==json.getString(JsonKeys.LOCKED_BY))
-                ? null
-                : new Username(json.getString(JsonKeys.LOCKED_BY));
-        _type = ResourceType.valueOf(json.getString(JsonKeys.TYPE));
-        _childCount = json.getInt(JsonKeys.CHILD_COUNT);
-        _folderCount = json.getInt(JsonKeys.FOLDER_COUNT);
-        _includeInMainMenu = json.getBool(JsonKeys.INCLUDE_IN_MAIN_MENU);
-        _hasWorkingCopy = json.getBool(JsonKeys.HAS_WORKING_COPY);
-        _dateCreated = json.getDate(JsonKeys.DATE_CREATED);
-        _dateChanged = json.getDate(JsonKeys.DATE_CHANGED);
-        _templateId = json.getId(JsonKeys.TEMPLATE_ID);
-        _tags = new HashSet<String>(json.getStrings(JsonKeys.TAGS));
-        _absolutePath = json.getString(JsonKeys.ABSOLUTE_PATH);
-        _indexPageId = json.getId(JsonKeys.INDEX_PAGE_ID);
-        _description = json.getString(JsonKeys.DESCRIPTION);
-        _createdBy =
-            (null==json.getString(JsonKeys.CREATED_BY))
-                ? null
-                : new Username(json.getString(JsonKeys.CREATED_BY));
-        _changedBy =
-            (null==json.getString(JsonKeys.CHANGED_BY))
-            ? null
-                : new Username(json.getString(JsonKeys.CHANGED_BY));
     }
 
 

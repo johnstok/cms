@@ -26,14 +26,9 @@
  */
 package ccc.client.gwt.binding;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.SortOrder;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -44,6 +39,15 @@ import ccc.plugins.s11n.JsonKeys;
 public class ActionCollection
     extends
         PagedCollection<ActionSummary> {
+
+
+    /**
+     * Constructor.
+     */
+    public ActionCollection() {
+        super(ActionSummary.class);
+    }
+
 
     /**
      * TODO: Add a description for this method.
@@ -96,23 +100,5 @@ public class ActionCollection
             + "&count=" + count
             + ((null == order) ? "" : "&order=" + order.name())
             + ((null == sort) ? "" : "&sort=" + sort);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _totalCount = json.getLong(JsonKeys.SIZE).longValue();
-        final Collection<Json> elementJson =
-            json.getCollection(JsonKeys.ELEMENTS);
-        final ArrayList<ActionSummary> elements =
-            new ArrayList<ActionSummary>();
-        for (final Json element : elementJson) {
-            final ActionSummary a = new ActionSummary();
-            a.fromJson(element);
-            elements.add(a);
-        }
-        _elements.addAll(elements);
     }
 }

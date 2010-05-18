@@ -48,6 +48,7 @@ import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
 import ccc.api.exceptions.UnlockedException;
+import ccc.api.temp.ACLSerializer;
 import ccc.api.temp.DurationSerializer;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
@@ -61,7 +62,6 @@ import ccc.commons.CharConversion;
 import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
 
 
 /**
@@ -818,14 +818,6 @@ public abstract class ResourceEntity
     }
 
 
-    /**
-     * Create a snapshot of this resource that can be serialized to JSON.
-     *
-     * @return The snapshot as an implementation of {@link Jsonable}.
-     */
-    public abstract Jsonable createSnapshot();
-
-
     /** {@inheritDoc} */
     @Override public void toJson(final Json json) {
         super.toJson(json);
@@ -843,7 +835,7 @@ public abstract class ResourceEntity
         json.setStrings(JsonKeys.TAGS, new ArrayList<String>(getTags()));
         json.set(
             JsonKeys.ACL,
-            getAcl());
+            new ACLSerializer().write(json.create(), getAcl()));
         json.set(
             JsonKeys.PUBLISHED_BY,
             (null==getPublishedBy()) ? null : getPublishedBy().getId().toString());

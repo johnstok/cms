@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
+import ccc.api.temp.PageSerializer;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -67,7 +68,7 @@ public class ValidateFieldAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _page.toJson(json);
+        new PageSerializer().write(json, _page);
         return json.toString();
     }
 }

@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.ResourceSummarySerializer;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GWTTemplateEncoder;
@@ -112,8 +113,9 @@ RemotingAction{
         final Collection<ResourceSummary> children =
             new ArrayList<ResourceSummary>();
         for (int i=0; i<result.size(); i++) {
-            children.add(new ResourceSummary(
-                new GwtJson(result.get(i).isObject())));
+            children.add(
+                new ResourceSummarySerializer().read(
+                    new GwtJson(result.get(i).isObject())));
         }
 
         execute(children, totalCount);

@@ -26,17 +26,13 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.core.ACL;
-import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.ACLSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
-
-import com.google.gwt.http.client.RequestBuilder;
 
 
 /**
@@ -77,7 +73,7 @@ public class UpdateResourceAclAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _acl.toJson(json);
+        new ACLSerializer().write(json, _acl);
         return json.toString();
     }
 }

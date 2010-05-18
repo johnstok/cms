@@ -37,7 +37,6 @@ import ccc.api.core.Group;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -132,13 +131,6 @@ public class GroupEntity
             mapped.add(g.createDto());
         }
         return mapped;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        createDto().toJson(json);
     }
 
 

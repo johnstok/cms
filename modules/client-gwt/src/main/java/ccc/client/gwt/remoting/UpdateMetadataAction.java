@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.api.temp.TempSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -68,7 +69,7 @@ public class UpdateMetadataAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _resource.toJson(json);
+        new TempSerializer().write(json, _resource);
         return json.toString();
     }
 }

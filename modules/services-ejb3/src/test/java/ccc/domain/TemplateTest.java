@@ -29,7 +29,6 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
-import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
@@ -41,29 +40,6 @@ import ccc.api.types.ResourceType;
  * @author Civic Computing Ltd
  */
 public final class TemplateTest extends TestCase {
-
-    /**
-     * Test.
-     */
-    public void testSnapshot() {
-
-        // ARRANGE
-        final TemplateEntity t = new TemplateEntity(
-            "foo!",
-            "bar",
-            "Hello world",
-            "<fields/>",
-            MimeType.HTML,
-            _rm);
-
-        // ACT
-        final Template o  = t.createSnapshot();
-
-        // ASSERT
-        assertEquals("<fields/>", o.getDefinition());
-        assertEquals("Hello world", o.getBody());
-        assertEquals(MimeType.HTML, o.getMimeType());
-    }
 
     /**
      * Test.
@@ -98,13 +74,15 @@ public final class TemplateTest extends TestCase {
         // ARRANGE
 
         // ACT
-        final TemplateEntity t = new TemplateEntity(new ResourceName("testName"),
-            "foo!",
-            "bar",
-            "Hello world",
-            "<fields/>",
-            MimeType.HTML,
-            _rm);
+        final TemplateEntity t =
+            new TemplateEntity(
+                new ResourceName("testName"),
+                "foo!",
+                "bar",
+                "Hello world",
+                "<fields/>",
+                MimeType.HTML,
+                _rm);
 
         // ASSERT
         assertEquals(new ResourceName("testName"), t.getName());

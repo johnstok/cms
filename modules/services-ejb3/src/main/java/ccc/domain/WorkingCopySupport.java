@@ -31,7 +31,6 @@ import java.util.List;
 
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Jsonable;
 
 
 
@@ -45,7 +44,7 @@ import ccc.plugins.s11n.Jsonable;
  * @author Civic Computing Ltd.
  */
 public abstract class WorkingCopySupport<T extends RevisionEntity<U>,
-                                         U extends Jsonable,
+                                         U,
                                          V extends WorkingCopy<U>>
     extends
         HistoricalResource<U, T>

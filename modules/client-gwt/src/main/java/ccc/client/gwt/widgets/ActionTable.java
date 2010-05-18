@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccc.api.core.ActionSummary;
+import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.ActionCollection;
 import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.events.ActionCancelled;
@@ -256,7 +256,7 @@ public class ActionTable
             }
 
             @Override
-            protected void execute(final ActionCollection actions) {
+            protected void execute(final PagedCollection<ActionSummary> actions) {
                 final List<ActionSummaryModelData> results =
                     DataBinding.bindActionSummary(actions.getElements());
 

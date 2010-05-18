@@ -83,7 +83,8 @@ public class FilesEJB
             getRepoFactory()
                 .createResourceRepository()
                 .imagesCount(folderId);
-        return new PagedCollection<File>(c, FileEntity.mapFiles(list));
+        return
+            new PagedCollection<File>(c, File.class, FileEntity.mapFiles(list));
     }
 
 

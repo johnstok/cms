@@ -29,11 +29,11 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.GroupCollection;
-import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.ListGroups;
@@ -153,7 +153,7 @@ public class UserTable extends TablePanel {
 
                     new ListGroups(1, 999, "name", "ASC") {
                         @Override
-                        protected void execute(final GroupCollection groups) {
+                        protected void execute(final PagedCollection<Group> groups) {
                             new OpenEditUserDialogAction(
                                 userDTO.getDelegate(),
                                 UserTable.this,
@@ -341,7 +341,7 @@ public class UserTable extends TablePanel {
                         order) {
 
                             @Override
-                            protected void execute(final UserCollection users) {
+                            protected void execute(final PagedCollection<User> users) {
                                 final List<UserSummaryModelData> results =
                                     DataBinding.bindUserSummary(users.getElements());
 

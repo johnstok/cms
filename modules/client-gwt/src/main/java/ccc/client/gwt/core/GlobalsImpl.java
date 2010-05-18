@@ -30,11 +30,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.API;
+import ccc.api.core.ActionSummary;
+import ccc.api.core.Comment;
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.client.gwt.binding.ActionCollection;
-import ccc.client.gwt.binding.CommentCollection;
-import ccc.client.gwt.binding.GroupCollection;
-import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
@@ -76,10 +76,10 @@ public class GlobalsImpl
 
     private HandlerRegistration _handlerRegistration = null;
 
-    private static UserCollection USERS;
-    private static ActionCollection ACTIONS;
-    private static CommentCollection COMMENTS;
-    private static GroupCollection GROUPS;
+    private static PagedCollection<User> USERS;
+    private static PagedCollection<ActionSummary> ACTIONS;
+    private static PagedCollection<Comment> COMMENTS;
+    private static PagedCollection<Group> GROUPS;
 
     private static API API;
 
@@ -299,7 +299,7 @@ public class GlobalsImpl
 
     /** {@inheritDoc} */
     @Override
-    public UserCollection users() { return USERS; }
+    public PagedCollection<User> users() { return USERS; }
 
 
     /**
@@ -307,12 +307,12 @@ public class GlobalsImpl
      *
      * @param users The user collection to access.
      */
-    public static void users(final UserCollection users) { USERS = users; }
+    public static void users(final PagedCollection<User> users) { USERS = users; }
 
 
     /** {@inheritDoc} */
     @Override
-    public ActionCollection actions() { return ACTIONS; }
+    public PagedCollection<ActionSummary> actions() { return ACTIONS; }
 
 
     /**
@@ -320,12 +320,12 @@ public class GlobalsImpl
      *
      * @param actions The action collection to access.
      */
-    public static void actions(final ActionCollection actions) { ACTIONS = actions; }
+    public static void actions(final PagedCollection<ActionSummary> actions) { ACTIONS = actions; }
 
 
     /** {@inheritDoc} */
     @Override
-    public CommentCollection comments() { return COMMENTS; }
+    public PagedCollection<Comment> comments() { return COMMENTS; }
 
 
     /**
@@ -333,12 +333,12 @@ public class GlobalsImpl
      *
      * @param comments The comment collection to access.
      */
-    public static void comments(final CommentCollection comments) { COMMENTS = comments; }
+    public static void comments(final PagedCollection<Comment> comments) { COMMENTS = comments; }
 
 
     /** {@inheritDoc} */
     @Override
-    public GroupCollection groups() { return GROUPS; }
+    public PagedCollection<Group> groups() { return GROUPS; }
 
 
     /**
@@ -346,7 +346,7 @@ public class GlobalsImpl
      *
      * @param groups The group collection to access.
      */
-    public static void groups(final GroupCollection groups) { GROUPS = groups; }
+    public static void groups(final PagedCollection<Group> groups) { GROUPS = groups; }
 
 
     /**

@@ -459,7 +459,9 @@ public class ResourcesEJB
             getRepoFactory()
             .createResourceRepository()
             .history(resourceId));
-        return new PagedCollection<Revision>(revisions.size(), revisions);
+        return
+            new PagedCollection<Revision>(
+                revisions.size(), Revision.class, revisions);
     }
 
 
@@ -511,7 +513,9 @@ public class ResourcesEJB
         checkPermission(RESOURCE_READ);
         final List<ResourceSummary> list =
          ResourceEntity.mapResources(getResources().lookupWithMetadataKey(key));
-        return new PagedCollection<ResourceSummary>(list.size(), list);
+        return
+            new PagedCollection<ResourceSummary>(
+                list.size(), ResourceSummary.class, list);
     }
 
     /** {@inheritDoc} */
@@ -706,7 +710,9 @@ public class ResourcesEJB
 
         final long count = getResources().totalCount(criteria, f);
 
-        return new PagedCollection<ResourceSummary>(count, list);
+        return
+            new PagedCollection<ResourceSummary>(
+                count, ResourceSummary.class, list);
     }
 
 

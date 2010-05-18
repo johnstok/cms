@@ -33,9 +33,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -43,18 +40,10 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public final class ACL implements Jsonable2, Serializable {
+public final class ACL implements Serializable {
 
     private Set<Entry> _users = new HashSet<Entry>();
     private Set<Entry> _groups = new HashSet<Entry>();
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of the ACL.
-     */
-    public ACL(final Json json) { fromJson(json); }
 
 
     /**
@@ -111,23 +100,7 @@ public final class ACL implements Jsonable2, Serializable {
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.GROUPS, getGroups());
-        json.set(JsonKeys.USERS, getUsers());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        setGroups(Entry.unmap(json.getCollection(JsonKeys.GROUPS)));
-        setUsers(Entry.unmap(json.getCollection(JsonKeys.USERS)));
-    }
-
-
-    public static class Entry implements Jsonable2, Serializable {
+    public static class Entry implements Serializable {
 
         public UUID    _principal;
         public String  _name;
@@ -137,52 +110,8 @@ public final class ACL implements Jsonable2, Serializable {
 
         /**
          * Constructor.
-         *
-         * @param json The JSON representation of an ACL entry.
-         */
-        public Entry(final Json json) { fromJson(json); }
-
-
-        /**
-         * Constructor.
          */
         public Entry() { super(); }
-
-
-        /**
-         * Un-map from a JSON collection to an Entry collection.
-         *
-         * @param s The JSON collection.
-         *
-         * @return The corresponding ACL entry collection.
-         */
-        public static Collection<Entry> unmap(final Collection<Json> s) {
-            final Set<Entry> uuids = new HashSet<Entry>();
-            for (final Json json : s) {
-                uuids.add(new Entry(json));
-            }
-            return uuids;
-        }
-
-
-        /** {@inheritDoc} */
-        @Override
-        public void fromJson(final Json json) {
-            _principal = json.getId(JsonKeys.PRINCIPAL);
-            _name      = json.getString(JsonKeys.NAME);
-            _canRead   = json.getBool("can_read").booleanValue();
-            _canWrite  = json.getBool("can_write").booleanValue();
-        }
-
-
-        /** {@inheritDoc} */
-        @Override
-        public void toJson(final Json json) {
-            json.set(JsonKeys.PRINCIPAL, _principal);
-            json.set(JsonKeys.NAME, _name);
-            json.set("can_read", _canRead);
-            json.set("can_write", _canWrite);
-        }
 
 
         /** {@inheritDoc} */

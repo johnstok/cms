@@ -32,9 +32,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -45,10 +42,9 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import ccc.api.core.Revision;
-import ccc.api.temp.DurationSerializer;
-import ccc.api.temp.RevisionSerializer;
-import ccc.api.types.Duration;
+import ccc.api.core.PagedCollection;
+import ccc.api.temp.PagedCollectionSerializer;
+import ccc.api.temp.SerializerFactory;
 import ccc.plugins.s11n.Serializer;
 import ccc.plugins.s11n.json.JsonImpl;
 
@@ -61,7 +57,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  * @author Civic Computing Ltd.
  */
 @Provider
-@Produces("application/json")
+@Produces({"application/json", "text/html"})
 @Consumes("application/json")
 public class S11nProvider<T>
     extends
@@ -70,21 +66,10 @@ public class S11nProvider<T>
         MessageBodyWriter<T>,
         MessageBodyReader<T> {
 
-    // TODO: How can we constrain the wildcards to a single type?
-    private final Map<Class<?>, Serializer<?>> _supportedClasses;
-
-
-    /**
-     * Constructor.
-     */
-    public S11nProvider() {
-        final Map<Class<?>, Serializer<?>> supported =
-            new HashMap<Class<?>, Serializer<?>>();
-
-        supported.put(Revision.class, new RevisionSerializer());
-        supported.put(Duration.class, new DurationSerializer());
-
-        _supportedClasses = Collections.unmodifiableMap(supported);
+    static {
+        SerializerFactory
+            .addSerializer(
+                PagedCollection.class, new PagedCollectionSerializer());
     }
 
 
@@ -105,7 +90,7 @@ public class S11nProvider<T>
                                final Type type,
                                final Annotation[] annotations,
                                final MediaType mediaType) {
-        return _supportedClasses.keySet().contains(clazz);
+        return SerializerFactory.canCreate(clazz);
     }
 
 
@@ -118,7 +103,7 @@ public class S11nProvider<T>
                         final MediaType mediaType,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream outputStream) {
-        final Serializer<T> s = (Serializer<T>) _supportedClasses.get(clazz);
+        final Serializer<T> s = (Serializer<T>) SerializerFactory.create(clazz);
         final JsonImpl json = new JsonImpl();
         s.write(json, object);
 
@@ -140,7 +125,7 @@ public class S11nProvider<T>
                               final Type type,
                               final Annotation[] annotations,
                               final MediaType mediaType) {
-        return _supportedClasses.keySet().contains(clazz);
+        return SerializerFactory.canCreate(clazz);
     }
 
 
@@ -153,8 +138,7 @@ public class S11nProvider<T>
                       final MultivaluedMap<String, String> httpHeaders,
                       final InputStream is) throws IOException {
         try {
-            final Serializer<T> s =
-                (Serializer<T>) _supportedClasses.get(clazz);
+            final Serializer<T> s = SerializerFactory.create(clazz);
             return s.read(readJson(mimetype, is));
 
         } catch (final RuntimeException e) { // FIXME: Choose correct type!

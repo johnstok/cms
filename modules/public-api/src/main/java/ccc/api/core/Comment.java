@@ -30,8 +30,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ccc.api.types.CommentStatus;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -79,16 +77,6 @@ public class Comment
      * Constructor.
      */
     public Comment() { super(); }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of this comment.
-     */
-    public Comment(final Json json) {
-        fromJson(json);
-    }
 
 
     /**
@@ -224,36 +212,6 @@ public class Comment
      */
     public final void setTimestamp(final Date timestamp) {
         _timestamp = timestamp;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.DATE_CREATED, _timestamp);
-        json.set(JsonKeys.TARGET_ID, _resourceId);
-        json.set(JsonKeys.BODY, _body);
-        json.set(JsonKeys.AUTHOR, _author);
-        json.set(JsonKeys.URL, _url);
-        json.set(JsonKeys.ID, _id);
-        json.set(JsonKeys.STATUS, _status.name());
-        json.set(JsonKeys.EMAIL, _email);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _timestamp = json.getDate(JsonKeys.DATE_CREATED);
-        _resourceId = json.getId(JsonKeys.TARGET_ID);
-        _body = json.getString(JsonKeys.BODY);
-        _author = json.getString(JsonKeys.AUTHOR);
-        _url = json.getString(JsonKeys.URL);
-        _id = json.getId(JsonKeys.ID);
-        _status = CommentStatus.valueOf(json.getString(JsonKeys.STATUS));
-        _email = json.getString(JsonKeys.EMAIL);
     }
 
 

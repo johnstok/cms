@@ -38,7 +38,9 @@ import java.util.UUID;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
+import ccc.api.types.Link;
 import ccc.api.types.ResourceType;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
@@ -284,7 +286,10 @@ public class ActionSummaryModelData
                                        final Date executeAfter,
                                        final Map<String, String> params) {
 
-        final String path = Globals.API_URL+new GlobalsImpl().actions().list();
+        final String path =
+            Globals.API_URL
+            + new Link(new GlobalsImpl().actions().getLink("self"))
+                .build(new GWTTemplateEncoder());
 
         final GwtJson json = new GwtJson();
         json.set(JsonKeys.SUBJECT_ID, subject);

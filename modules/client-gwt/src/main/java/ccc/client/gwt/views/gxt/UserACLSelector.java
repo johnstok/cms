@@ -29,8 +29,9 @@ package ccc.client.gwt.views.gxt;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.core.PagedCollection;
+import ccc.api.core.User;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.UserCollection;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.remoting.ListUsersAction;
@@ -173,7 +174,7 @@ public class UserACLSelector extends Window {
                         order) {
 
                         @Override
-                        protected void execute(final UserCollection users) {
+                        protected void execute(final PagedCollection<User> users) {
                             final List<UserSummaryModelData> results =
                                 DataBinding.bindUserSummary(users.getElements());
 

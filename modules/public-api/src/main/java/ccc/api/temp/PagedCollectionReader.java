@@ -24,44 +24,44 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.dto;
+package ccc.api.temp;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Map;
 
-import ccc.api.core.User;
-import ccc.api.types.Link;
-import ccc.commons.NormalisingEncoder;
+import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Enhanced user class providing server-side features.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class UserEnhanced
-    extends
-        User {
+public class PagedCollectionReader {
 
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
+    public static <T> PagedCollection<T> read(final Json json,
+                                              final Class<T> elementClass) {
+        if (null==json) { return null; }
 
-        final HashMap<String, String> links = new HashMap<String, String>();
-        if (null!=getId()) {
-            links.put(
-                User.PASSWORD,
-                new Link(ccc.api.core.ResourceIdentifiers.User.PASSWORD)
-                    .build("id", getId().toString(), new NormalisingEncoder()));
-            links.put(
-                User.SELF,
-                new Link(ccc.api.core.ResourceIdentifiers.User.ELEMENT)
-                    .build("id", getId().toString(), new NormalisingEncoder()));
+        final Serializer<T> serializer =
+            SerializerFactory.create(elementClass);
+
+        final ArrayList<T> elements = new ArrayList<T>();
+        for (final Json jElem : json.getCollection(JsonKeys.ELEMENTS)) {
+            elements.add(serializer.read(jElem));
         }
+        final PagedCollection<T> c =
+            new PagedCollection<T>(
+                json.getLong(JsonKeys.SIZE).longValue(),
+                elementClass,
+                elements);
 
-        json.set("links", links); // TODO: Preserve parent links?
+        final Map<String, String> links = json.getStringMap("links");
+        if (null!=links) { c.addLinks(links); }
+
+        return c;
     }
-
-
 }

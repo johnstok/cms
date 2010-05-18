@@ -56,18 +56,13 @@ import ccc.api.jaxrs.SearchImpl;
 import ccc.api.jaxrs.SecurityImpl2;
 import ccc.api.jaxrs.TemplatesImpl;
 import ccc.api.jaxrs.UsersImpl;
-import ccc.api.jaxrs.providers.ActionSummaryReader;
 import ccc.api.jaxrs.providers.BooleanProvider;
-import ccc.api.jaxrs.providers.DtoCollectionReader;
-import ccc.api.jaxrs.providers.DurationProvider;
 import ccc.api.jaxrs.providers.FileReader;
-import ccc.api.jaxrs.providers.JsonableCollectionWriter;
 import ccc.api.jaxrs.providers.JsonableWriter;
 import ccc.api.jaxrs.providers.MetadataWriter;
 import ccc.api.jaxrs.providers.S11nProvider;
 import ccc.api.jaxrs.providers.StringCollectionWriter;
 import ccc.api.jaxrs.providers.UUIDProvider;
-import ccc.api.jaxrs.providers.UserSummaryCollectionReader;
 import ccc.api.jaxrs.providers.UuidCollectionWriter;
 
 
@@ -93,22 +88,16 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyWriter(UUIDProvider.class);
         pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
         pFactory.addMessageBodyWriter(FileReader.class);
-        pFactory.addMessageBodyWriter(DurationProvider.class);
         pFactory.addMessageBodyWriter(S11nProvider.class);
 
         // Readers
         pFactory.addMessageBodyReader(UUIDProvider.class);
         pFactory.addMessageBodyReader(BooleanProvider.class);
         pFactory.addMessageBodyReader(JsonableWriter.class);
-        pFactory.addMessageBodyReader(JsonableCollectionWriter.class);
 
-        pFactory.addMessageBodyReader(UserSummaryCollectionReader.class);
         pFactory.addMessageBodyReader(StringCollectionWriter.class);
         pFactory.addMessageBodyReader(MetadataWriter.class);
-        pFactory.addMessageBodyReader(ActionSummaryReader.class);
         pFactory.addMessageBodyReader(UuidCollectionWriter.class);
-        pFactory.addMessageBodyReader(DtoCollectionReader.class);
-        pFactory.addMessageBodyReader(DurationProvider.class);
         pFactory.addMessageBodyReader(S11nProvider.class);
 
         // String Converters

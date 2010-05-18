@@ -28,6 +28,8 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
@@ -37,7 +39,6 @@ import ccc.client.gwt.actions.OpenCreateUserAction;
 import ccc.client.gwt.actions.OpenHelpAction;
 import ccc.client.gwt.actions.OpenUpdateCurrentUserAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
-import ccc.client.gwt.binding.GroupCollection;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.Globals;
@@ -228,7 +229,7 @@ public class MainMenu
                     _constants.updateRoles(),
                     new ListGroups(1,999,"name","ASC") {
                         @Override
-                        protected void execute(final GroupCollection groups) {
+                        protected void execute(final PagedCollection<Group> groups) {
                             new OpenUpdateResourceAclAction(
                                 ssm, groups.getElements())
                             .execute();

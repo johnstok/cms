@@ -34,6 +34,8 @@ import java.util.Map;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.ActionSummarySerializer;
+import ccc.api.temp.ResourceSummarySerializer;
 import ccc.api.types.DBC;
 import ccc.client.gwt.remoting.TextParser;
 import ccc.client.gwt.widgets.ContentCreator;
@@ -265,8 +267,10 @@ public abstract class RemotingAction
      * @return The resource summary.
      */
     protected ResourceSummary parseResourceSummary(final ccc.client.gwt.core.Response response) {
-        return new ResourceSummary(
-            new GwtJson(JSONParser.parse(response.getText()).isObject()));
+        return
+            new ResourceSummarySerializer().read(
+                new GwtJson(
+                    JSONParser.parse(response.getText()).isObject()));
     }
 
 
@@ -314,7 +318,8 @@ public abstract class RemotingAction
             new ArrayList<ActionSummary>();
         for (int i=0; i<result.size(); i++) {
             actions.add(
-                new ActionSummary(new GwtJson(result.get(i).isObject())));
+                new ActionSummarySerializer().read(
+                    new GwtJson(result.get(i).isObject())));
         }
         return actions;
     }

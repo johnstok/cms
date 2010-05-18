@@ -56,7 +56,7 @@ public class WorkingCopyManagerTest
         // ARRANGE
         final PageEntity p = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
         p.lock(_user);
-        p.setOrUpdateWorkingCopy(p.createSnapshot());
+        p.setOrUpdateWorkingCopy(p.forCurrentRevision());
 
         expect(_repository.find(ResourceEntity.class, p.getId())).andReturn(p);
         _audit.record(isA(LogEntry.class));
@@ -86,7 +86,7 @@ public class WorkingCopyManagerTest
                 _rm,
                 Paragraph.fromText("abc", "def"));
         page.lock(_user);
-        final Page before = page.createSnapshot();
+        final Page before = page.forCurrentRevision();
 
         expect(_repository.find(PageEntity.class, page.getId())).andReturn(page);
         _audit.record(isA(LogEntry.class));

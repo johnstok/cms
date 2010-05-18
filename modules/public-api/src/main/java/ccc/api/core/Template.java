@@ -26,14 +26,10 @@
  */
 package ccc.api.core;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
 import java.util.UUID;
 
-import ccc.api.temp.MimeTypeSerializer;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -109,30 +105,6 @@ public class Template
         _mimeType = mimeType;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-
-        json.set(DEFINITION,  getDefinition());
-        json.set(BODY,        getBody());
-        json.set(
-            MIME_TYPE,
-            new MimeTypeSerializer().write(json.create(), getMimeType()));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-
-        setDefinition(json.getString(DEFINITION));
-        setBody(json.getString(BODY));
-        final Json mime = json.getJson(MIME_TYPE);
-        setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
-    }
 
     /**
      * Create a summary DTO.

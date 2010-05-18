@@ -29,8 +29,6 @@ package ccc.api.core;
 import java.util.UUID;
 
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -115,22 +113,6 @@ public class Alias
      */
     public String getTargetPath() {
         return _targetPath;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(JsonKeys.TARGET_ID, _targetId);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        setTargetId(json.getId(JsonKeys.TARGET_ID));
     }
 
 

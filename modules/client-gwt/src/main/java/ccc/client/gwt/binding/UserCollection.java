@@ -26,15 +26,10 @@
  */
 package ccc.client.gwt.binding;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -45,6 +40,15 @@ import ccc.plugins.s11n.JsonKeys;
 public class UserCollection
     extends
         PagedCollection<User> {
+
+
+    /**
+     * Constructor.
+     */
+    public UserCollection() {
+        super(User.class);
+    }
+
 
     /**
      * TODO: Add a description for this method.
@@ -105,22 +109,5 @@ public class UserCollection
         return
             new Link(getLink("exists"))
             .build("uname", username, new GWTTemplateEncoder());
-    }
-
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _totalCount = json.getLong(JsonKeys.SIZE);
-        final Collection<Json> elementJson = json.getCollection(JsonKeys.ELEMENTS);
-        final ArrayList<User> elements = new ArrayList<User>();
-        for (final Json element : elementJson) {
-            final User u = new User();
-            u.fromJson(element);
-            elements.add(u);
-        }
-        _elements.addAll(elements);
     }
 }

@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Group;
+import ccc.api.temp.GroupSerializer;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -74,7 +75,7 @@ public class UpdateGroupAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _group.toJson(json);
+        new GroupSerializer().write(json, _group);
         return json.toString();
     }
 
@@ -83,7 +84,7 @@ public class UpdateGroupAction
     @Override
     protected void onOK(final Response response) {
         final Group newGroup =
-            new Group(
+            new GroupSerializer().read(
                 new GwtJson(JSONParser.parse(response.getText()).isObject()));
         final GwtEvent<?> event = new GroupUpdated(newGroup);
         fireEvent(event);

@@ -26,15 +26,15 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.types.Link;
 import ccc.api.types.Username;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -62,7 +62,8 @@ public abstract class UniqueUsernameAction
     protected String getPath() {
         return
             Globals.API_URL
-            + GLOBALS.users().exists(encode(_username.toString()));
+            + new Link(GLOBALS.users().getLink("exists"))
+                .build("uname", _username.toString(), new GWTTemplateEncoder());
     }
 
 
