@@ -33,6 +33,7 @@ import java.util.Map;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.FileSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
@@ -116,7 +117,7 @@ public abstract class GetImagesPagedAction
                         final Collection<File> files = new ArrayList<File>();
                         for (int i=0; i<result.size(); i++) {
                             files.add(
-                                new File(
+                                new FileSerializer().read(
                                     new GwtJson(result.get(i).isObject())));
                         }
 

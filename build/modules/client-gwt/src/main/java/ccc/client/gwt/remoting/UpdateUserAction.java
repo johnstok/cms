@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
+import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -67,7 +68,7 @@ public abstract class UpdateUserAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _userDetails.toJson(json);
+        new UserSerializer().write(json, _userDetails);
         return json.toString();
     }
 

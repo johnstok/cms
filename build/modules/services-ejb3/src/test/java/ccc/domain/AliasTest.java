@@ -27,7 +27,6 @@
 package ccc.domain;
 
 import junit.framework.TestCase;
-import ccc.api.core.Alias;
 import ccc.api.exceptions.CycleDetectedException;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
@@ -143,23 +142,6 @@ public class AliasTest extends TestCase {
         } catch (final CycleDetectedException e) {
             Exceptions.swallow(e);
         }
-    }
-
-    /**
-     * Test.
-     * @throws CycleDetectedException If the test fails.
-     */
-    public void testSnapshot() throws CycleDetectedException {
-
-        // ARRANGE
-        final ResourceEntity p = new FolderEntity("foo");
-        final AliasEntity alias = new AliasEntity("bar", p);
-
-        // ACT
-        final Alias o = alias.createSnapshot();
-
-        // ASSERT
-        assertEquals(p.getId(), o.getTargetId());
     }
 
     /**

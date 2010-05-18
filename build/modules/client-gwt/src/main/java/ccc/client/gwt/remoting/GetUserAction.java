@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
+import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -34,8 +35,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -76,7 +75,8 @@ public abstract class GetUserAction
                     public void onOK(final ccc.client.gwt.core.Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
-                        final User user = new User(new GwtJson(result));
+                        final User user =
+                            new UserSerializer().read(new GwtJson(result));
                         execute(user);
                     }
                 });

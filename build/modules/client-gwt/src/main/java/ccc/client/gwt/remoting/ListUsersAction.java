@@ -26,8 +26,15 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ccc.api.core.PagedCollection;
+import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
-import ccc.client.gwt.binding.UserCollection;
+import ccc.api.temp.PagedCollectionReader;
+import ccc.api.types.Link;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -35,8 +42,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -80,31 +85,27 @@ public abstract class ListUsersAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        String email    = null;
-        String username = null;
-        String groups   = null;
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("page",  new String[] {""+_pageNo});
+        params.put("count", new String[] {""+_pageSize});
+        params.put("sort",  new String[] {_sort});
+        params.put("order", new String[] {_order});
         if (null != _uc) {
             if (null != _uc.getEmail()) {
-                email=encode(_uc.getEmail());
+                params.put("email", new String[] {_uc.getEmail()});
             }
             if (null != _uc.getUsername()) {
-                username=encode(_uc.getUsername());
+                params.put("username", new String[] {_uc.getUsername()});
             }
             if (null != _uc.getGroups()) {
-                groups=encode(_uc.getGroups());
+                params.put("groups", new String[] {_uc.getGroups()});
             }
         }
 
         return
             Globals.API_URL
-            + GLOBALS.users().list(
-                _pageNo,
-                _pageSize,
-                _sort,
-                _order,
-                email,
-                username,
-                groups);
+            + new Link(GLOBALS.users().getLink("self"))
+                .build(params, new GWTTemplateEncoder());
     }
 
 
@@ -122,8 +123,9 @@ public abstract class ListUsersAction
 
                         final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-                        final UserCollection uc = new UserCollection();
-                        uc.fromJson(new GwtJson(obj));
+                        final PagedCollection<User> uc =
+                            PagedCollectionReader
+                            .read(new GwtJson(obj), User.class);
 
                         execute(uc);
                     }
@@ -136,5 +138,5 @@ public abstract class ListUsersAction
      * @param users The collection of users returned.
      * @param totalCount The total comments available on the server.
      */
-    protected abstract void execute(UserCollection users);
+    protected abstract void execute(PagedCollection<User> users);
 }

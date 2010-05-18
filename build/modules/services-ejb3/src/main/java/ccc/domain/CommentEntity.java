@@ -37,7 +37,6 @@ import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Link;
 import ccc.commons.NormalisingEncoder;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -231,9 +230,4 @@ public class CommentEntity
         }
         return mapped;
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) { createDto().toJson(json); }
 }

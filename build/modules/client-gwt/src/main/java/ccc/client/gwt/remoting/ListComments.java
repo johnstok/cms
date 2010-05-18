@@ -26,10 +26,17 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ccc.api.core.Comment;
+import ccc.api.core.PagedCollection;
+import ccc.api.temp.PagedCollectionReader;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
+import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.CommentCollection;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -84,7 +91,16 @@ public abstract class ListComments
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GLOBALS.comments().list(_page, _count, _status, _order, _sort);
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("page",  new String[] {""+_page});
+        params.put("count", new String[] {""+_count});
+        params.put("status", new String[] {_status.name()});
+        params.put("sort",  new String[] {_sort});
+        params.put("order", new String[] {_order.name()});
+
+        return
+            new Link(GLOBALS.comments().getLink("self"))
+            .build(params, new GWTTemplateEncoder());
     }
 
 
@@ -93,8 +109,8 @@ public abstract class ListComments
     protected void onOK(final Response response) {
         final JSONObject obj = JSONParser.parse(response.getText()).isObject();
 
-        final CommentCollection comments = new CommentCollection();
-        comments.fromJson(new GwtJson(obj));
+        final PagedCollection<Comment> comments =
+            PagedCollectionReader.read(new GwtJson(obj), Comment.class);
 
         execute(comments);
     }
@@ -105,5 +121,5 @@ public abstract class ListComments
      *
      * @param comments The page of comments returned.
      */
-    protected abstract void execute(CommentCollection comments);
+    protected abstract void execute(PagedCollection<Comment> comments);
 }

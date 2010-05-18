@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import ccc.api.core.Folder;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.ResourceSummarySerializer;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
@@ -85,7 +86,7 @@ public abstract class GetRootsAction
                             new ArrayList<ResourceSummary>();
                         for (int i=0; i<results.size(); i++) {
                             roots.add(
-                                new ResourceSummary(
+                                new ResourceSummarySerializer().read(
                                     new GwtJson(results.get(i).isObject())));
                         }
                         onSuccess(roots);

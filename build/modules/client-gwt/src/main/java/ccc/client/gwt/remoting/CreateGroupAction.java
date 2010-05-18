@@ -27,6 +27,9 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Group;
+import ccc.api.temp.GroupSerializer;
+import ccc.api.types.Link;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
@@ -34,7 +37,6 @@ import ccc.client.gwt.core.Response;
 import ccc.client.gwt.events.GroupCreated;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -64,7 +66,9 @@ public class CreateGroupAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GLOBALS.groups().list();
+        return
+            new Link(GLOBALS.groups().getLink("self"))
+            .build(new GWTTemplateEncoder());
     }
 
 
@@ -72,7 +76,7 @@ public class CreateGroupAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _group.toJson(json);
+        new GroupSerializer().write(json, _group);
         return json.toString();
     }
 
@@ -81,7 +85,7 @@ public class CreateGroupAction
     @Override
     protected void onOK(final Response response) {
         final Group newGroup =
-            new Group(
+            new GroupSerializer().read(
                 new GwtJson(JSONParser.parse(response.getText()).isObject()));
         final GwtEvent<?> event = new GroupCreated(newGroup);
         fireEvent(event);

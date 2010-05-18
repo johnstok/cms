@@ -28,6 +28,7 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.PageSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
@@ -89,8 +90,8 @@ public abstract class PageDeltaAction
                     public void onOK(final ccc.client.gwt.core.Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
-                        final Page delta = new Page();
-                        delta.fromJson(new GwtJson(result));
+                        final Page delta =
+                            new PageSerializer().read(new GwtJson(result));
                         execute(delta);
                     }
                 });

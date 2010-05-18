@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.Revision;
+import ccc.api.temp.RevisionSerializer;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -40,8 +41,6 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.plugins.s11n.JsonKeys;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -89,7 +88,8 @@ public final class ViewHistoryAction
                             new ArrayList<Revision>();
                         for (int i=0; i<result.size(); i++) {
                             history.add(
-                                new Revision(new GwtJson(result.get(i).isObject())));
+                                new RevisionSerializer().read(
+                                    new GwtJson(result.get(i).isObject())));
                         }
                         new HistoryDialog(
                             history, _selectionModel.tableSelection().getId(), _selectionModel)

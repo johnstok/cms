@@ -30,9 +30,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Jsonable2;
-
 
 /**
  * Base API class supporting s11n and linking.
@@ -41,25 +38,10 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public class Res
     implements
-        Serializable,
-        Jsonable2 {
+        Serializable {
 
     private final Map<String, String> _links = new HashMap<String, String>();
 
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { _links.putAll(links); }
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set("links", _links);
-    }
 
     /**
      * TODO: Add a description for this method.
@@ -80,5 +62,21 @@ public class Res
      */
     public void addLink(final String key, final String value) {
         _links.put(key, value);
+    }
+
+
+    public Map<String, String> getLinks() {
+        return new HashMap<String, String>(_links);
+    }
+
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param links
+     */
+    public void addLinks(final Map<String, String> links) {
+        _links.putAll(links);
     }
 }

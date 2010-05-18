@@ -33,9 +33,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -45,7 +42,6 @@ import ccc.plugins.s11n.Jsonable2;
  */
 public class Action
     implements
-        Jsonable2,
         Serializable {
 
     private UUID                _resourceId;
@@ -69,9 +65,9 @@ public class Action
      * @param parameters Additional parameters for the action.
      */
     public Action(final UUID resourceId,
-                     final CommandType command,
-                     final Date executeAfter,
-                     final Map<String, String> parameters) {
+                  final CommandType command,
+                  final Date executeAfter,
+                  final Map<String, String> parameters) {
         _resourceId = resourceId;
         _command = command;
         _executeAfter = new Date(executeAfter.getTime());
@@ -116,25 +112,5 @@ public class Action
      */
     public final Map<String, String> getParameters() {
         return _parameters;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.SUBJECT_ID, _resourceId);
-        json.set(JsonKeys.COMMAND, _command.name());
-        json.set(JsonKeys.EXECUTE_AFTER, _executeAfter);
-        json.set(JsonKeys.PARAMETERS, _parameters);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        _resourceId = json.getId(JsonKeys.SUBJECT_ID);
-        _command = CommandType.valueOf(json.getString(JsonKeys.COMMAND));
-        _executeAfter = json.getDate(JsonKeys.EXECUTE_AFTER);
-        _parameters = json.getStringMap(JsonKeys.PARAMETERS);
     }
 }

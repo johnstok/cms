@@ -42,6 +42,7 @@ import ccc.api.core.ServiceLocator;
 import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
+import ccc.api.temp.FailureSerializer;
 import ccc.api.types.ResourcePath;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -174,11 +175,13 @@ public class ContentServlet
             LOG.warn(e.getMessage());
             throw new AuthenticationRequiredException(path);
         } catch (final CCException e) {
+            final JsonImpl json = new JsonImpl();
+            new FailureSerializer().write(json, e.getFailure());
             LOG.warn(
                 "Exception retrieving path " + path
                 + " wc=" + workingCopy
                 + ", v=" + version
-                + " " + new JsonImpl(e.getFailure()).getDetail());
+                + " " + json.getDetail());
             throw new NotFoundException();
         }
     }

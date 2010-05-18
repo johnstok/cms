@@ -140,6 +140,7 @@ public class ActionsEJB
         final PagedCollection<ActionSummary> dc =
             new PagedCollection<ActionSummary>(
                 actions.countPending(),
+                ActionSummary.class,
                 ActionEntity.mapActions(
                     actions.pending(sort, sortOrder, pageNo, pageSize)));
         addLinks(dc);
@@ -161,6 +162,7 @@ public class ActionsEJB
         final PagedCollection<ActionSummary> dc =
             new PagedCollection<ActionSummary>(
                 actions.countCompleted(),
+                ActionSummary.class,
                 ActionEntity.mapActions(actions.completed(
                     sort, sortOrder, pageNo, pageSize)));
         addLinks(dc);
@@ -285,14 +287,17 @@ public class ActionsEJB
     private void addLinks(final PagedCollection<ActionSummary> actions) {
         actions.addLink(
             "self",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION);
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + "?{-join|&|count,page,sort,order}");
         actions.addLink(
             "pending",
-            ccc.api.core.ResourceIdentifiers.Action.COLLECTION);
+            ccc.api.core.ResourceIdentifiers.Action.COLLECTION
+            + "?{-join|&|count,page,sort,order}");
         actions.addLink(
             "completed",
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION
-            + ccc.api.core.ResourceIdentifiers.Action.COMPLETED);
+            + ccc.api.core.ResourceIdentifiers.Action.COMPLETED
+            + "?{-join|&|count,page,sort,order}");
         actions.addLink(
             "execute_all",
             ccc.api.core.ResourceIdentifiers.Action.COLLECTION

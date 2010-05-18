@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Folder;
+import ccc.api.temp.FolderSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -68,7 +69,7 @@ public class UpdateFolderAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        _folder.toJson(json);
+        new FolderSerializer().write(json, _folder);
         return json.toString();
     }
 }

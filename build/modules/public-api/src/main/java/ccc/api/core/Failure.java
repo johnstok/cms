@@ -32,9 +32,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.DBC;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable2;
 
 
 /**
@@ -42,7 +39,7 @@ import ccc.plugins.s11n.Jsonable2;
  *
  * @author Civic Computing Ltd.
  */
-public class Failure implements Jsonable2, Serializable {
+public class Failure implements Serializable {
 
     private UUID                _id;
     private String              _code;
@@ -65,16 +62,6 @@ public class Failure implements Jsonable2, Serializable {
         _code = DBC.require().notNull(code);
         _id   = DBC.require().notNull(id);
         _params.putAll(DBC.require().notNull(params));
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json JSON representation of a failure.
-     */
-    public Failure(final Json json) {
-        fromJson(json);
     }
 
 
@@ -145,23 +132,5 @@ public class Failure implements Jsonable2, Serializable {
      */
     public void setParams(final Map<String, String> params) {
         _params = new HashMap<String, String>(params);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        json.set(JsonKeys.CODE, getCode());
-        json.set(JsonKeys.ID, getExceptionId());
-        json.set(JsonKeys.PARAMETERS, getParams());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        setId(json.getId(JsonKeys.ID));
-        setCode(json.getString(JsonKeys.CODE));
-        setParams(json.getStringMap(JsonKeys.PARAMETERS));
     }
 }

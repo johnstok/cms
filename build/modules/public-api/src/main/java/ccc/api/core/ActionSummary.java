@@ -26,8 +26,6 @@
  */
 package ccc.api.core;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,7 +34,6 @@ import ccc.api.types.CommandType;
 import ccc.api.types.FailureCode;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
-import ccc.plugins.s11n.Json;
 
 
 /**
@@ -90,15 +87,6 @@ public final class ActionSummary extends Res {
         _fCode = fCode;
     }
 
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation of an action summary.
-     */
-    public ActionSummary(final Json json) {
-        fromJson(json);
-    }
 
     /**
      * Accessor.
@@ -195,7 +183,7 @@ public final class ActionSummary extends Res {
      *
      * @param id The id to set.
      */
-    private void setId(final UUID id) {
+    public void setId(final UUID id) {
         _id = id;
     }
 
@@ -205,7 +193,7 @@ public final class ActionSummary extends Res {
      *
      * @param type The type to set.
      */
-    private void setType(final CommandType type) {
+    public void setType(final CommandType type) {
         _type = type;
     }
 
@@ -215,7 +203,7 @@ public final class ActionSummary extends Res {
      *
      * @param actorUsername The actorUsername to set.
      */
-    private void setActorUsername(final Username actorUsername) {
+    public void setActorUsername(final Username actorUsername) {
         _actorUsername = actorUsername;
     }
 
@@ -225,7 +213,7 @@ public final class ActionSummary extends Res {
      *
      * @param executeAfter The executeAfter to set.
      */
-    private void setExecuteAfter(final Date executeAfter) {
+    public void setExecuteAfter(final Date executeAfter) {
         _executeAfter = executeAfter;
     }
 
@@ -235,7 +223,7 @@ public final class ActionSummary extends Res {
      *
      * @param subjectType The subjectType to set.
      */
-    private void setSubjectType(final ResourceType subjectType) {
+    public void setSubjectType(final ResourceType subjectType) {
         _subjectType = subjectType;
     }
 
@@ -245,7 +233,7 @@ public final class ActionSummary extends Res {
      *
      * @param subjectPath The subjectPath to set.
      */
-    private void setSubjectPath(final String subjectPath) {
+    public void setSubjectPath(final String subjectPath) {
         _subjectPath = subjectPath;
     }
 
@@ -255,40 +243,8 @@ public final class ActionSummary extends Res {
      *
      * @param code The fCode to set.
      */
-    private void setFCode(final FailureCode code) {
+    public void setFCode(final FailureCode code) {
         _fCode = code;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-        json.set(ID, getId());
-        json.set(TYPE, getType().name());
-        json.set(USERNAME, getActorUsername().toString());
-        json.set(EXECUTE_AFTER, getExecuteAfter());
-        json.set(SUBJECT_TYPE, getSubjectType().name());
-        json.set(SUBJECT_PATH, getSubjectPath());
-        json.set(STATUS, getStatus().name());
-        json.set(CODE, (null==_fCode)?null:_fCode.name());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        setId(json.getId(ID));
-        setType(CommandType.valueOf(json.getString(TYPE)));
-        setActorUsername(new Username(json.getString(USERNAME)));
-        setExecuteAfter(json.getDate(EXECUTE_AFTER));
-        setSubjectType(ResourceType.valueOf(json.getString(SUBJECT_TYPE)));
-        setSubjectPath(json.getString(SUBJECT_PATH));
-        setStatus(ActionStatus.valueOf(json.getString(STATUS)));
-        setFCode(
-            (null==json.getString(CODE))
-                ? null
-                : FailureCode.valueOf(json.getString(CODE)));
     }
 
 

@@ -30,8 +30,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import ccc.api.jaxrs.providers.JsonableCollectionWriter;
-
 import junit.framework.TestCase;
 
 
@@ -50,8 +48,8 @@ public class ResourceSummaryProviderTest
     public void testSizeCantBeDetermined() {
 
         // ARRANGE
-        final JsonableCollectionWriter rsp =
-            new JsonableCollectionWriter();
+        final StringCollectionWriter rsp =
+            new StringCollectionWriter();
 
         // ACT
         final long size = rsp.getSize(null, null, null, null, null);
@@ -67,8 +65,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsExactMatch() {
 
         // ARRANGE
-        final JsonableCollectionWriter rsp =
-            new JsonableCollectionWriter();
+        final StringCollectionWriter rsp =
+            new StringCollectionWriter();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Integer.class, _type);
@@ -84,8 +82,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionAcceptsSupertypeMatch() {
 
         // ARRANGE
-        final JsonableCollectionWriter rsp =
-            new JsonableCollectionWriter();
+        final StringCollectionWriter rsp =
+            new StringCollectionWriter();
 
         // ACT
         final boolean condition = rsp.isCollectionOfType(Number.class, _type);
@@ -101,8 +99,8 @@ public class ResourceSummaryProviderTest
     public void testIsCollectionRejectsRegularClasses() {
 
         // ARRANGE
-        final JsonableCollectionWriter rsp =
-            new JsonableCollectionWriter();
+        final StringCollectionWriter rsp =
+            new StringCollectionWriter();
         final Type type = Object.class;
 
         // ACT

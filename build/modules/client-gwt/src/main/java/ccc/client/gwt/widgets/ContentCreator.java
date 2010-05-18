@@ -52,16 +52,27 @@ import com.google.gwt.user.client.Window;
  */
 public final class ContentCreator implements EntryPoint {
 
+    /**
+     * Constructor.
+     */
     public ContentCreator() {
-        GlobalsImpl.setUserActions(GWT.<ActionNameConstants>create(ActionNameConstants.class));
-        GlobalsImpl.setUiConstants(GWT.<UIConstants>create(UIConstants.class));
-        GlobalsImpl.setUiMessages(GWT.<UIMessages>create(UIMessages.class));
-        GlobalsImpl.setActionConstants(GWT.<ActionStatusConstants>create(ActionStatusConstants.class));
-        GlobalsImpl.setCommandConstants(GWT.<CommandTypeConstants>create(CommandTypeConstants.class));
-        GlobalsImpl.setErrorDescriptions(GWT.<ErrorDescriptions>create(ErrorDescriptions.class));
-        GlobalsImpl.setErrorResolutions(GWT.<ErrorResolutions>create(ErrorResolutions.class));
+        GlobalsImpl.setUserActions(
+            GWT.<ActionNameConstants>create(ActionNameConstants.class));
+        GlobalsImpl.setUiConstants(
+            GWT.<UIConstants>create(UIConstants.class));
+        GlobalsImpl.setUiMessages(
+            GWT.<UIMessages>create(UIMessages.class));
+        GlobalsImpl.setActionConstants(
+            GWT.<ActionStatusConstants>create(ActionStatusConstants.class));
+        GlobalsImpl.setCommandConstants(
+            GWT.<CommandTypeConstants>create(CommandTypeConstants.class));
+        GlobalsImpl.setErrorDescriptions(
+            GWT.<ErrorDescriptions>create(ErrorDescriptions.class));
+        GlobalsImpl.setErrorResolutions(
+            GWT.<ErrorResolutions>create(ErrorResolutions.class));
 
-        GlobalsImpl.setEnableExitConfirmation(null == Window.Location.getParameter("dec"));
+        GlobalsImpl.setEnableExitConfirmation(
+            null == Window.Location.getParameter("dec"));
     }
 
     /** EVENT_BUS : HandlerManager. */

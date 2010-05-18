@@ -26,18 +26,13 @@
  */
 package ccc.api.core;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.temp.MimeTypeSerializer;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -51,7 +46,7 @@ public final class File
 
     private MimeType              _mimeType;
     private String                _path;
-    private Map<String, String>   _properties;
+    private Map<String, String>   _properties = new HashMap<String, String>();
     private String                _charset;
     private long                  _size;
     private boolean               _isImage;
@@ -159,16 +154,6 @@ public final class File
         _mimeType = mimeType;
         setMajorEdit(isMajorRevision);
         setComment(revisionComment);
-    }
-
-
-    /**
-     * Constructor.
-     *
-     * @param json The JSON representation for this class.
-     */
-    public File(final Json json) {
-        fromJson(json);
     }
 
 
@@ -412,36 +397,33 @@ public final class File
     }
 
 
-    /** {@inheritDoc} */
-    @Override public void toJson(final Json json) {
-        super.toJson(json);
-
-        json.set(
-            MIME_TYPE,
-            new MimeTypeSerializer().write(json.create(), getMimeType()));
-        json.set(PATH, getPath());
-        json.set(PROPERTIES, getProperties());
-        json.set(SIZE, Long.valueOf(getSize()));
-        json.set(DATA, getData());
-        json.set(MAJOR_CHANGE, Boolean.valueOf(isMajorEdit()));
-        json.set(COMMENT, getComment());
-        json.set(TEXT, getContent());
+    /**
+     * Mutator.
+     *
+     * @param path The path to set.
+     */
+    public void setPath(final String path) {
+        _path = path;
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
+    /**
+     * Mutator.
+     *
+     * @param properties The properties to set.
+     */
+    public void setProperties(final Map<String, String> properties) {
+        _properties = new HashMap<String, String>(properties);
+    }
 
-        setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
-        _path = json.getString(PATH);
-        _properties = json.getStringMap(PROPERTIES);
-        setSize(json.getLong(JsonKeys.SIZE).longValue());
-        setData(json.getId(JsonKeys.DATA));
-        setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
-        setComment(json.getString(COMMENT));
-        _content = json.getString(TEXT);
+
+    /**
+     * Mutator.
+     *
+     * @param content The content to set.
+     */
+    public void setContent(final String content) {
+        _content = content;
     }
 
 

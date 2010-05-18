@@ -38,6 +38,10 @@ import ccc.api.core.Alias;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.AliasSerializer;
+import ccc.api.temp.FolderSerializer;
+import ccc.api.temp.PageSerializer;
+import ccc.api.temp.ResourceSummarySerializer;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
@@ -540,7 +544,7 @@ public class ResourceSummaryModelData
     @Deprecated
     // FIXME Remove this method.
     protected static ResourceSummary parseResourceSummary(final Response response) {
-        return new ResourceSummary(
+        return new ResourceSummarySerializer().read(
             new GwtJson(JSONParser.parse(response.getText()).isObject()));
     }
 
@@ -583,7 +587,7 @@ public class ResourceSummaryModelData
         final String path = Globals.API_URL+GlobalsImpl.getAPI().aliases();
 
         final GwtJson json = new GwtJson();
-        alias.toJson(json);
+        new AliasSerializer().write(json, alias);
 
         return
             new Request(
@@ -612,7 +616,7 @@ public class ResourceSummaryModelData
         final Folder f = new Folder();
         f.setParent(parentFolder);
         f.setName(new ResourceName(name));
-        f.toJson(json);
+        new FolderSerializer().write(json, f);
 
         return
             new Request(
@@ -635,7 +639,7 @@ public class ResourceSummaryModelData
         final String path =  Globals.API_URL+GlobalsImpl.getAPI().pages();
 
         final GwtJson json = new GwtJson(); // FIXME: Broken.
-        page.toJson(json);
+        new PageSerializer().write(json, page);
 
         return
             new Request(

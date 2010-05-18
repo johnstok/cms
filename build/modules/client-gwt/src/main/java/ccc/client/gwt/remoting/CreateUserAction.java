@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
+import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -69,7 +70,7 @@ public class CreateUserAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _userDelta.toJson(json);
+        new UserSerializer().write(json, _userDelta);
         return json.toString();
     }
 
@@ -77,7 +78,7 @@ public class CreateUserAction
     @Override
     protected void onOK(final Response response) {
         final User newUser =
-            new User(
+            new UserSerializer().read(
                 new GwtJson(JSONParser.parse(response.getText()).isObject()));
         final GwtEvent<?> event = new UserCreated(newUser);
         fireEvent(event);

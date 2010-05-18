@@ -26,13 +26,8 @@
  */
 package ccc.client.gwt.binding;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -43,6 +38,14 @@ import ccc.plugins.s11n.JsonKeys;
 public class GroupCollection
     extends
         PagedCollection<Group> {
+
+
+    /**
+     * Constructor.
+     */
+    public GroupCollection() {
+        super(Group.class);
+    }
 
 
     /**
@@ -71,23 +74,5 @@ public class GroupCollection
             +"&sort="+sort
             +"&order="+order);
         return path.toString();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _totalCount = json.getLong(JsonKeys.SIZE).longValue();
-        final Collection<Json> elementJson =
-            json.getCollection(JsonKeys.ELEMENTS);
-        final ArrayList<Group> elements =
-            new ArrayList<Group>();
-        for (final Json element : elementJson) {
-            final Group g = new Group();
-            g.fromJson(element);
-            elements.add(g);
-        }
-        _elements.addAll(elements);
     }
 }

@@ -116,7 +116,7 @@ public final class PageTest extends TestCase {
                 null,
                 _rm,
                 Paragraph.fromText("header", "Header"));
-        final Page s = page.createSnapshot();
+        final Page s = page.forCurrentRevision();
 
         // ACT
         final Set<Paragraph> paras = new HashSet<Paragraph>(){{
@@ -164,7 +164,7 @@ public final class PageTest extends TestCase {
 
         // ARRANGE
         final PageEntity page = new PageEntity("foo", _rm);
-        page.setOrUpdateWorkingCopy(page.createSnapshot());
+        page.setOrUpdateWorkingCopy(page.forCurrentRevision());
 
         // ACT
         page.clearWorkingCopy();
@@ -189,7 +189,7 @@ public final class PageTest extends TestCase {
                 header);
 
         // ACT
-        final Page s = page.createSnapshot();
+        final Page s = page.forCurrentRevision();
 
         // ASSERT
         assertEquals(1, s.getParagraphs().size());
@@ -207,7 +207,7 @@ public final class PageTest extends TestCase {
             new PageEntity("Title", _rm);
 
         // ACT
-        final Page s = page.createSnapshot();
+        final Page s = page.forCurrentRevision();
 
         // ASSERT
         assertEquals(0, s.getParagraphs().size());

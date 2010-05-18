@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.temp.ResourceSummarySerializer;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -73,7 +74,8 @@ public abstract class GetChildrenAction
             new ArrayList<ResourceSummary>();
         for (int i=0; i<result.size(); i++) {
             children.add(
-                new ResourceSummary(new GwtJson(result.get(i).isObject())));
+                new ResourceSummarySerializer().read(
+                    new GwtJson(result.get(i).isObject())));
         }
 
         execute(children);

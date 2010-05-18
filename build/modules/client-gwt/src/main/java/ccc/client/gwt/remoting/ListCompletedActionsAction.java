@@ -26,12 +26,17 @@
  */
 package ccc.client.gwt.remoting;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ccc.api.core.ActionSummary;
+import ccc.api.core.PagedCollection;
+import ccc.api.temp.PagedCollectionReader;
 import ccc.api.types.DBC;
+import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
-import ccc.client.gwt.binding.ActionCollection;
+import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -39,8 +44,6 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 
@@ -83,9 +86,16 @@ public abstract class ListCompletedActionsAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
+        final Map<String, String[]> params = new HashMap<String, String[]>();
+        params.put("page",  new String[] {""+_page});
+        params.put("count", new String[] {""+_count});
+        params.put("sort",  new String[] {_sort});
+        params.put("order", new String[] {_order.name()});
+
         final String path =
             Globals.API_URL
-            + GLOBALS.actions().completed(_page, _count, _order, _sort);
+            + new Link(GLOBALS.actions().getLink("completed"))
+                .build(params, new GWTTemplateEncoder());
         return path;
     }
 
@@ -104,8 +114,9 @@ public abstract class ListCompletedActionsAction
                     public void onOK(final ccc.client.gwt.core.Response response) {
                         final JSONObject obj =
                             JSONParser.parse(response.getText()).isObject();
-                        final ActionCollection actions = new ActionCollection();
-                        actions.fromJson(new GwtJson(obj));
+                        final PagedCollection<ActionSummary> actions =
+                            PagedCollectionReader
+                            .read(new GwtJson(obj), ActionSummary.class);
 
                         execute(
                             actions.getElements(),

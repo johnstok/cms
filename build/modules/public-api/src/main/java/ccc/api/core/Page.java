@@ -30,12 +30,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.temp.ParagraphSerializer;
+import ccc.api.types.Link;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
-import ccc.api.types.Link;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -97,6 +94,7 @@ public class Page
      *
      * @return Returns the majorChange.
      */
+    // FIXME: Rename to isMajorChange()
     public final boolean getMajorChange() {
         return _majorChange;
     }
@@ -157,31 +155,6 @@ public class Page
         return null;
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public void toJson(final Json json) {
-        super.toJson(json);
-
-        json.setJsons(
-            JsonKeys.PARAGRAPHS,
-            new ParagraphSerializer().write(json, getParagraphs()));
-        json.set(JsonKeys.COMMENT, _comment);
-        json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(_majorChange));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-
-        for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
-            _paragraphs.add(new ParagraphSerializer().read(jsonPara));
-        }
-        _comment = json.getString(JsonKeys.COMMENT);
-        _majorChange = json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue();
-    }
 
     public static Page delta(final Set<Paragraph> paragraphs) {
         final Page p = new Page();

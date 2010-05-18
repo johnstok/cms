@@ -164,7 +164,9 @@ public class FoldersEJB
             getRepoFactory()
             .createResourceRepository()
             .roots());
-        return new PagedCollection<ResourceSummary>(roots.size(), roots);
+        return
+            new PagedCollection<ResourceSummary>(
+                roots.size(), ResourceSummary.class, roots);
     }
 
     /* ====================================================================
@@ -195,7 +197,9 @@ public class FoldersEJB
         }
         final List<ResourceSummary> entities =
             ResourceEntity.mapResources(filtered);
-        return new PagedCollection<ResourceSummary>(entities.size(), entities);
+        return
+            new PagedCollection<ResourceSummary>(
+                entities.size(), ResourceSummary.class, entities);
     }
 
 }

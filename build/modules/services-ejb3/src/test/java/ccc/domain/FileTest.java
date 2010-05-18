@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import ccc.api.core.File;
 import ccc.api.types.FilePropertyNames;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
@@ -111,33 +110,6 @@ public class FileTest extends TestCase {
 
         // ASSERT
         assertFalse(isImage);
-    }
-
-    /**
-     * Test.
-     */
-    public void testSnapshot() {
-
-        // ARRANGE
-        final Data data = new Data();
-        final FileEntity f =
-            new FileEntity(
-                new ResourceName("foo"),
-                "foo",
-                "desc",
-                data,
-                1,
-                new MimeType("foo", "bar"),
-                new HashMap<String, String>(),
-                _rm);
-
-        // ACT
-        final File o = f.createSnapshot();
-
-        // ASSERT
-        assertEquals(new MimeType("foo", "bar"), o.getMimeType());
-        assertEquals(1, o.getSize());
-        assertEquals(data.getId(), o.getData());
     }
 
     /**

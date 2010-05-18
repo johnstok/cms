@@ -31,6 +31,7 @@ import java.util.Map;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.temp.TemplateSerializer;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
@@ -85,7 +86,7 @@ public abstract class CreateTemplateAction
     @Override
     protected String getBody() {
         final Json json = new GwtJson();
-        _delta.toJson(json);
+        new TemplateSerializer().write(json, _delta);
         return json.toString();
     }
 

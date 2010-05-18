@@ -26,15 +26,10 @@
  */
 package ccc.client.gwt.binding;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ccc.api.core.Comment;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -46,6 +41,13 @@ public class CommentCollection
     extends
         PagedCollection<Comment> {
 
+
+    /**
+     * Constructor.
+     */
+    public CommentCollection() {
+        super(Comment.class);
+    }
 
 
     /**
@@ -70,23 +72,5 @@ public class CommentCollection
                 + ((null==status) ? "" : "&status="+status.name())
                 + ((null==order) ? "" : "&order="+order.name())
                 + ((null==sort) ? "" : "&sort="+sort);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void fromJson(final Json json) {
-        super.fromJson(json);
-        _totalCount = json.getLong(JsonKeys.SIZE).longValue();
-        final Collection<Json> elementJson =
-            json.getCollection(JsonKeys.ELEMENTS);
-        final ArrayList<Comment> elements =
-            new ArrayList<Comment>();
-        for (final Json element : elementJson) {
-            final Comment c = new Comment();
-            c.fromJson(element);
-            elements.add(c);
-        }
-        _elements.addAll(elements);
     }
 }

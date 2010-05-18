@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
+import ccc.api.temp.PageSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -68,7 +69,7 @@ public class UpdateWorkingCopyAction
     @Override
     protected String getBody() {
         final GwtJson json = new GwtJson();
-        _workingCopy.toJson(json);
+        new PageSerializer().write(json, _workingCopy);
         return json.toString();
     }
 }

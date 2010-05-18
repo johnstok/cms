@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.API;
+import ccc.api.temp.APISerializer;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -59,8 +60,7 @@ public class GetServicesAction
     @Override
     protected void onOK(final Response response) {
         final Json json = getParser().parseJson(response.getText());
-        final API api = new API();
-        api.fromJson(json);
+        final API api = new APISerializer().read(json);
         GlobalsImpl.setAPI(api);
     }
 }

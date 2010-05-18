@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.Template;
+import ccc.api.temp.TemplateSerializer;
 import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
@@ -96,8 +97,9 @@ public abstract class GetTemplatesAction
                         final Collection<Template> templates =
                             new ArrayList<Template>();
                         for (int i=0; i<result.size(); i++) {
-                            final Template t = new Template();
-                            t.fromJson(new GwtJson(result.get(i).isObject()));
+                            final Template t =
+                                new TemplateSerializer().read(
+                                    new GwtJson(result.get(i).isObject()));
                             templates.add(t);
                         }
                         execute(templates);

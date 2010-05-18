@@ -44,7 +44,6 @@ import ccc.api.types.ResourceType;
 import ccc.domain.sorting.Sorter;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.Jsonable;
 
 
 /**
@@ -409,18 +408,6 @@ public final class FolderEntity
             }
         }
         throw new RuntimeException("No aliases in this folder.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Jsonable createSnapshot() {
-        return new Jsonable(){
-            /** {@inheritDoc} */
-            @Override public void toJson(final Json json) {
-                json.set(JsonKeys.TITLE, getTitle());
-            }
-        };
     }
 
 

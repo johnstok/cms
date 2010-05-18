@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.Comment;
+import ccc.api.temp.CommentSerializer;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.Globals;
@@ -181,7 +182,7 @@ public final class CommentModelData
         final String path = Globals.API_URL + comment.self();
 
         final GwtJson json = new GwtJson();
-        comment.toJson(json);
+        new CommentSerializer().write(json, comment);
 
         return new Request(
             HttpMethod.PUT,
