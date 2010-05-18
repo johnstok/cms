@@ -183,3 +183,5 @@ decorator
 wildcard
 proxies
 deserialized
+serializers
+wildcards
