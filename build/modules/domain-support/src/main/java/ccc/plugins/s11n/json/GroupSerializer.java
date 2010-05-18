@@ -24,57 +24,54 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import ccc.api.core.Revision;
-import ccc.api.types.CommandType;
-import ccc.api.types.Username;
+import java.util.HashSet;
+import java.util.Map;
+
+import ccc.api.core.Group;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for {@link Revision}s.
+ * Serializer for {@link Group}s.
  *
  * @author Civic Computing Ltd.
  */
-public class RevisionSerializer
-    implements
-        Serializer<Revision> {
+public class GroupSerializer implements Serializer<Group> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Revision read(final Json json) {
+    public Group read(final Json json) {
         if (null==json) { return null; }
 
-        final Revision r =
-            new Revision(
-                CommandType.valueOf(json.getString(JsonKeys.COMMAND)),
-                new Username(json.getString(JsonKeys.USERNAME)),
-                json.getDate(JsonKeys.HAPPENED_ON),
-                json.getLong(JsonKeys.INDEX).longValue(),
-                json.getString(JsonKeys.COMMENT),
-                json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue());
+        final Group g = new Group();
 
-        return r;
+        final Map<String, String> links = json.getStringMap("links");
+        if (null!=links) { g.addLinks(links); }
+        g.setId(json.getId(JsonKeys.ID));
+        g.setName(
+            json.getString(JsonKeys.NAME));
+        g.setPermissions(
+            new HashSet<String>(json.getStrings(JsonKeys.PERMISSIONS)));
+
+        return g;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Revision instance) {
+    public Json write(final Json json, final Group instance) {
         if (null==instance) { return null; }
 
-        json.set(JsonKeys.COMMAND, instance.getCommand().name());
-        json.set(JsonKeys.USERNAME, instance.getActorUsername().toString());
-        json.set(JsonKeys.HAPPENED_ON, instance.getHappenedOn());
-        json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(instance.isMajor()));
-        json.set(JsonKeys.INDEX, Long.valueOf(instance.getIndex()));
-        json.set(JsonKeys.COMMENT, instance.getComment());
+        json.set("links", instance.getLinks());
+        json.set(JsonKeys.ID, instance.getId());
+        json.set(JsonKeys.NAME, instance.getName());
+        json.setStrings(JsonKeys.PERMISSIONS, instance.getPermissions());
 
         return json;
     }
-
 }

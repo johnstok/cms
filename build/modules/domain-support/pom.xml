@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-types</artifactId>
+            <artifactId>api-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         

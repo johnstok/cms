@@ -30,12 +30,12 @@ import java.util.Collection;
 
 import ccc.api.core.Group;
 import ccc.api.core.User;
-import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.EditUserDialog;
 import ccc.client.gwt.widgets.UserTable;
+import ccc.plugins.s11n.json.UserSerializer;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;

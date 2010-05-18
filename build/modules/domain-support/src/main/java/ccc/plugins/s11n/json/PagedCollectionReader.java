@@ -24,41 +24,44 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import ccc.api.types.Duration;
+import java.util.ArrayList;
+import java.util.Map;
+
+import ccc.api.core.PagedCollection;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for Durations.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class DurationSerializer implements Serializer<Duration> {
+public class PagedCollectionReader {
 
-
-    /** {@inheritDoc} */
-    @Override
-    public Duration read(final Json json) {
+    public static <T> PagedCollection<T> read(final Json json,
+                                              final Class<T> elementClass) {
         if (null==json) { return null; }
 
-        final Duration d = new Duration();
-        d.setTime(json.getLong(JsonKeys.SECONDS).longValue());
+        final Serializer<T> serializer =
+            SerializerFactory.create(elementClass);
 
-        return d;
-    }
+        final ArrayList<T> elements = new ArrayList<T>();
+        for (final Json jElem : json.getCollection(JsonKeys.ELEMENTS)) {
+            elements.add(serializer.read(jElem));
+        }
+        final PagedCollection<T> c =
+            new PagedCollection<T>(
+                json.getLong(JsonKeys.SIZE).longValue(),
+                elementClass,
+                elements);
 
+        final Map<String, String> links = json.getStringMap("links");
+        if (null!=links) { c.addLinks(links); }
 
-    /** {@inheritDoc} */
-    @Override
-    public Json write(final Json json, final Duration instance) {
-        if (null==instance) { return null; }
-
-        json.set(JsonKeys.SECONDS, Long.valueOf(instance.getTime()));
-
-        return json;
+        return c;
     }
 }

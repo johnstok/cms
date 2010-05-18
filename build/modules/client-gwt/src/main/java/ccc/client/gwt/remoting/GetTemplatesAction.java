@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.Template;
-import ccc.api.temp.TemplateSerializer;
 import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
@@ -43,6 +42,7 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.TemplateSerializer;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

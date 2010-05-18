@@ -27,13 +27,13 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.User;
-import ccc.api.temp.UserSerializer;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
+import ccc.plugins.s11n.json.UserSerializer;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;

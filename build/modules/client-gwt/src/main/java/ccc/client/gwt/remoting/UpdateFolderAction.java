@@ -27,12 +27,12 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Folder;
-import ccc.api.temp.FolderSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.FolderSerializer;
 
 
 /**

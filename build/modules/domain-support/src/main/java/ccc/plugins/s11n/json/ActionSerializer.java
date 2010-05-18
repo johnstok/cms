@@ -24,47 +24,57 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import ccc.api.types.MimeType;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
+
+import ccc.api.core.Action;
+import ccc.api.types.CommandType;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for MimeTypes.
+ * Serializer for {@link Action}s.
  *
  * @author Civic Computing Ltd.
  */
-public class MimeTypeSerializer
-    implements
-        Serializer<MimeType> {
+public class ActionSerializer implements Serializer<Action> {
 
 
     /** {@inheritDoc} */
     @Override
-    public MimeType read(final Json json) {
+    public Action read(final Json json) {
         if (null==json) { return null; }
 
-        final MimeType d =
-            new MimeType(
-                json.getString(JsonKeys.PRIMARY_TYPE),
-                json.getString(JsonKeys.SUB_TYPE));
+        final UUID resourceId =
+            json.getId(JsonKeys.SUBJECT_ID);
+        final CommandType command =
+            CommandType.valueOf(json.getString(JsonKeys.COMMAND));
+        final Date execAfter =
+            json.getDate(JsonKeys.EXECUTE_AFTER);
+        final Map<String, String> parameters =
+            json.getStringMap(JsonKeys.PARAMETERS);
 
-        return d;
+        final Action a = new Action(resourceId, command, execAfter, parameters);
+
+        return a;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final MimeType instance) {
+    public Json write(final Json json, final Action instance) {
         if (null==instance) { return null; }
 
-        json.set(JsonKeys.PRIMARY_TYPE, instance.getPrimaryType());
-        json.set(JsonKeys.SUB_TYPE, instance.getSubType());
+        json.set(JsonKeys.SUBJECT_ID, instance.getResourceId());
+        json.set(JsonKeys.COMMAND, instance.getCommand().name());
+        json.set(JsonKeys.EXECUTE_AFTER, instance.getExecuteAfter());
+        json.set(JsonKeys.PARAMETERS, instance.getParameters());
 
         return json;
     }
-
 }

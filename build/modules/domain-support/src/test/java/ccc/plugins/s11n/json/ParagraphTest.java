@@ -9,7 +9,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.api.types;
+package ccc.plugins.s11n.json;
 
 import static org.easymock.EasyMock.*;
 
@@ -19,8 +19,10 @@ import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
-import ccc.api.temp.ParagraphSerializer;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ParagraphType;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.ParagraphSerializer;
 
 
 /**

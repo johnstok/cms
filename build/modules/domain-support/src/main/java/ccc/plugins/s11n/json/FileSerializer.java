@@ -24,8 +24,10 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
+import static ccc.plugins.s11n.JsonKeys.*;
+import ccc.api.core.File;
 import ccc.api.core.Folder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
@@ -36,38 +38,53 @@ import ccc.plugins.s11n.JsonKeys;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderSerializer
+public class FileSerializer
     extends
-        ResourceSerializer<Folder> {
+        ResourceSerializer<File> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Folder read(final Json json) {
+    public File read(final Json json) {
         if (null==json) { return null; }
 
-        final Folder f = super.read(json);
+        final File f = super.read(json);
 
-        f.setIndexPage(json.getId(JsonKeys.INDEX_PAGE_ID));
-        f.setSortList(json.getStrings(JsonKeys.SORT_LIST));
+        f.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
+        f.setPath(json.getString(PATH));
+        f.setProperties(json.getStringMap(PROPERTIES));
+        f.setSize(json.getLong(JsonKeys.SIZE).longValue());
+        f.setData(json.getId(JsonKeys.DATA));
+        f.setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
+        f.setComment(json.getString(COMMENT));
+        f.setContent(json.getString(TEXT));
 
         return f;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected Folder createObject() { return new Folder(); }
+    @Override protected File createObject() { return new File(); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Folder instance) {
+    public Json write(final Json json, final File instance) {
         if (null==instance) { return null; }
 
         super.write(json, instance);
 
-        json.set(JsonKeys.INDEX_PAGE_ID, instance.getIndexPage());
-        json.setStrings(JsonKeys.SORT_LIST, instance.getSortList());
+        json.set(
+            MIME_TYPE,
+            new MimeTypeSerializer().write(
+                json.create(), instance.getMimeType()));
+        json.set(PATH, instance.getPath());
+        json.set(PROPERTIES, instance.getProperties());
+        json.set(SIZE, Long.valueOf(instance.getSize()));
+        json.set(DATA, instance.getData());
+        json.set(MAJOR_CHANGE, Boolean.valueOf(instance.isMajorEdit()));
+        json.set(COMMENT, instance.getComment());
+        json.set(TEXT, instance.getContent());
 
         return json;
     }

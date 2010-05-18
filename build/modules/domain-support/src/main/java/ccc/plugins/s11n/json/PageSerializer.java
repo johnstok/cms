@@ -24,62 +24,66 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
-import ccc.api.types.SearchResult;
+import ccc.api.core.Page;
+import ccc.api.types.Paragraph;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Serializer;
+import ccc.plugins.s11n.JsonKeys;
 
 
 /**
- * Serializer for {@link SearchResult}s.
+ * Serializer for {@link Resource}s.
  *
  * @author Civic Computing Ltd.
  */
-public class SearchResultSerializer implements Serializer<SearchResult> {
+public class PageSerializer
+    extends
+        ResourceSerializer<Page> {
 
 
     /** {@inheritDoc} */
     @Override
-    public SearchResult read(final Json json) {
+    public Page read(final Json json) {
         if (null==json) { return null; }
 
-        final Set<UUID> hits = new HashSet<UUID>();
-        for (final String hit : json.getStrings("hits")) {
-            hits.add(UUID.fromString(hit));
+        final Page p = super.read(json);
+
+        final Set<Paragraph> paragraphs = new HashSet<Paragraph>();
+        for (final Json jsonPara : json.getCollection(JsonKeys.PARAGRAPHS)) {
+            paragraphs.add(new ParagraphSerializer().read(jsonPara));
         }
+        p.setParagraphs(paragraphs);
+        p.setComment(json.getString(JsonKeys.COMMENT));
+        p.setMajorChange(json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue());
 
-        final int page = json.getInt("page");
-        final int size = json.getInt("size");
-        final int pageSize = json.getInt("page-size");
-        final String terms = json.getString("terms");
-
-        final SearchResult r =
-            new SearchResult(hits, size, pageSize, terms, page);
-
-        return r;
+        return p;
     }
 
 
     /** {@inheritDoc} */
+    @Override protected Page createObject() { return new Page(); }
+
+
+    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final SearchResult instance) {
+    public Json write(final Json json, final Page instance) {
         if (null==instance) { return null; }
 
-        final Set<String> hits = new HashSet<String>();
-        for (final UUID hit : instance.hits()) {
-            hits.add(hit.toString());
-        }
+        super.write(json, instance);
 
-        json.set("page", Long.valueOf(instance.getPageNo()));
-        json.set("size", Long.valueOf(instance.totalResults()));
-        json.set("page-size", Long.valueOf(instance.noOfResultsPerPage()));
-        json.set("terms", instance.getTerms());
-        json.setStrings("hits", hits);
+        json.setJsons(
+            JsonKeys.PARAGRAPHS,
+            new ParagraphSerializer().write(json, instance.getParagraphs()));
+        json.set(
+            JsonKeys.COMMENT,
+            instance.getComment());
+        json.set(
+            JsonKeys.MAJOR_CHANGE,
+            Boolean.valueOf(instance.getMajorChange()));
 
         return json;
     }

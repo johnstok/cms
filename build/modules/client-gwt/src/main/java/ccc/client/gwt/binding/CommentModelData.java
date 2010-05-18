@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.Comment;
-import ccc.api.temp.CommentSerializer;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.Globals;
@@ -45,6 +44,7 @@ import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.CommentUpdatedEvent;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.CommentSerializer;
 
 
 

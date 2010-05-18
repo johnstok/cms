@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.temp.ResourceSummarySerializer;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GWTTemplateEncoder;
@@ -39,6 +38,7 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
