@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
 import java.util.ArrayList;
 import java.util.Collection;

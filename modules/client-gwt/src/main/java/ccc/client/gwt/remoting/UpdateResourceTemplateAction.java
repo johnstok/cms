@@ -27,7 +27,6 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
-import ccc.api.temp.TempSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -36,6 +35,7 @@ import ccc.client.gwt.core.Response;
 import ccc.client.gwt.events.ResourceTemplateChanged;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.TempSerializer;
 
 
 /**

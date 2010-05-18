@@ -27,11 +27,11 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Template;
-import ccc.api.temp.TemplateSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
+import ccc.plugins.s11n.json.TemplateSerializer;
 
 
 /**

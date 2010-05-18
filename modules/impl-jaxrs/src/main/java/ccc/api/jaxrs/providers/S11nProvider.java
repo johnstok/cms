@@ -43,10 +43,10 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
 import ccc.api.core.PagedCollection;
-import ccc.api.temp.PagedCollectionSerializer;
-import ccc.api.temp.SerializerFactory;
 import ccc.plugins.s11n.Serializer;
 import ccc.plugins.s11n.json.JsonImpl;
+import ccc.plugins.s11n.json.PagedCollectionSerializer;
+import ccc.plugins.s11n.json.SerializerFactory;
 
 
 /**

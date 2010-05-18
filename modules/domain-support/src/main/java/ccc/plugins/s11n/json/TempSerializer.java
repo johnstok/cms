@@ -24,56 +24,21 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import java.util.Map;
-
-import ccc.api.core.Res;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.Serializer;
+import ccc.api.core.Resource;
 
 
 /**
- * Serializer for {@link Res}s.
- *
- * @param <T> The type of {@link Res} to serialize.
+ * Serializer for {@link Resource}s.
  *
  * @author Civic Computing Ltd.
  */
-public abstract class ResSerializer<T extends Res>
-    implements
-        Serializer<T> {
-
-
-    /** {@inheritDoc} */
-    @Override
-    public T read(final Json json) {
-        if (null==json) { return null; }
-
-        final T r = createObject();
-
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { r.addLinks(links); }
-
-        return r;
-    }
-
-
-    /**
-     * Create a new instance of type T.
-     *
-     * @return The newly created instance of T.
-     */
-    protected abstract T createObject();
-
+public class TempSerializer
+    extends
+        ResourceSerializer<Resource> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final T instance) {
-        if (null==instance) { return null; }
-
-        json.set("links", instance.getLinks());
-
-        return json;
-    }
+    protected ccc.api.core.Resource createObject() { return new Resource(); }
 }

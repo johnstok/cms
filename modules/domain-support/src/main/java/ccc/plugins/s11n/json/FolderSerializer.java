@@ -24,21 +24,51 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import ccc.api.core.Resource;
+import ccc.api.core.Folder;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
 
 
 /**
- * Serializer for {@link Resource}s.
+ * Serializer for {@link Folder}s.
  *
  * @author Civic Computing Ltd.
  */
-public class TempSerializer
+public class FolderSerializer
     extends
-        ResourceSerializer<Resource> {
+        ResourceSerializer<Folder> {
+
 
     /** {@inheritDoc} */
     @Override
-    protected ccc.api.core.Resource createObject() { return new Resource(); }
+    public Folder read(final Json json) {
+        if (null==json) { return null; }
+
+        final Folder f = super.read(json);
+
+        f.setIndexPage(json.getId(JsonKeys.INDEX_PAGE_ID));
+        f.setSortList(json.getStrings(JsonKeys.SORT_LIST));
+
+        return f;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override protected Folder createObject() { return new Folder(); }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json write(final Json json, final Folder instance) {
+        if (null==instance) { return null; }
+
+        super.write(json, instance);
+
+        json.set(JsonKeys.INDEX_PAGE_ID, instance.getIndexPage());
+        json.setStrings(JsonKeys.SORT_LIST, instance.getSortList());
+
+        return json;
+    }
 }

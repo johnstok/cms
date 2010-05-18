@@ -24,53 +24,45 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import java.util.HashSet;
-import java.util.Map;
-
-import ccc.api.core.Group;
+import ccc.api.core.Failure;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for {@link Group}s.
+ * Serializer for {@link Failure}s.
  *
  * @author Civic Computing Ltd.
  */
-public class GroupSerializer implements Serializer<Group> {
+public class FailureSerializer implements Serializer<Failure> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Group read(final Json json) {
+    public Failure read(final Json json) {
         if (null==json) { return null; }
 
-        final Group g = new Group();
+        final Failure f =
+            new Failure(
+                json.getId(JsonKeys.ID),
+                json.getString(JsonKeys.CODE),
+                json.getStringMap(JsonKeys.PARAMETERS));
 
-        final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { g.addLinks(links); }
-        g.setId(json.getId(JsonKeys.ID));
-        g.setName(
-            json.getString(JsonKeys.NAME));
-        g.setPermissions(
-            new HashSet<String>(json.getStrings(JsonKeys.PERMISSIONS)));
-
-        return g;
+        return f;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Group instance) {
+    public Json write(final Json json, final Failure instance) {
         if (null==instance) { return null; }
 
-        json.set("links", instance.getLinks());
-        json.set(JsonKeys.ID, instance.getId());
-        json.set(JsonKeys.NAME, instance.getName());
-        json.setStrings(JsonKeys.PERMISSIONS, instance.getPermissions());
+        json.set(JsonKeys.CODE, instance.getCode());
+        json.set(JsonKeys.ID, instance.getExceptionId());
+        json.set(JsonKeys.PARAMETERS, instance.getParams());
 
         return json;
     }

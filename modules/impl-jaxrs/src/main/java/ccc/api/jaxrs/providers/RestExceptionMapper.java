@@ -35,9 +35,9 @@ import ccc.api.exceptions.ConflictException;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
-import ccc.api.temp.FailureSerializer;
 import ccc.api.types.HttpStatusCode;
 import ccc.plugins.s11n.InvalidSnapshotException;
+import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
 
 

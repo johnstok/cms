@@ -26,8 +26,6 @@
  */
 package ccc.api.exceptions;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -65,8 +63,8 @@ public class CCException
                           final Map<String, String> params) {
         super(message, cause);
         _params.putAll(params);
-        _params.put(MESSAGE, ""+message); // NPE has NULL message :(
-        _params.put(CAUSE, (null==cause) ? null : ""+cause.getMessage());
+        _params.put("message", ""+message); // NPE has NULL message :(
+        _params.put("cause", (null==cause) ? null : ""+cause.getMessage());
     }
 
 
@@ -145,7 +143,7 @@ public class CCException
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        final String message = _params.get(MESSAGE);
+        final String message = _params.get("message");
         if (null!=message) { return message; }
         return super.getMessage();
     }

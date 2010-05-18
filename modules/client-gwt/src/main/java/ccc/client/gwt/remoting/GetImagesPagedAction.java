@@ -33,7 +33,6 @@ import java.util.Map;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
-import ccc.api.temp.FileSerializer;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
@@ -42,6 +41,7 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.FileSerializer;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

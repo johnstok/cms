@@ -30,7 +30,6 @@ import java.util.Collection;
 
 import ccc.api.core.ACL;
 import ccc.api.core.Group;
-import ccc.api.temp.ACLSerializer;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
@@ -38,6 +37,7 @@ import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.UpdateResourceAclDialog;
+import ccc.plugins.s11n.json.ACLSerializer;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;

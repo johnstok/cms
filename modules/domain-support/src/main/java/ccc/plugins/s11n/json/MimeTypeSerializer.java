@@ -24,56 +24,47 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import static ccc.plugins.s11n.JsonKeys.*;
-import ccc.api.core.Template;
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for {@link Template}s.
+ * Serializer for MimeTypes.
  *
  * @author Civic Computing Ltd.
  */
-public class TemplateSerializer
-    extends
-        ResourceSerializer<Template> {
+public class MimeTypeSerializer
+    implements
+        Serializer<MimeType> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Template read(final Json json) {
+    public MimeType read(final Json json) {
         if (null==json) { return null; }
 
-        final Template t = super.read(json);
+        final MimeType d =
+            new MimeType(
+                json.getString(JsonKeys.PRIMARY_TYPE),
+                json.getString(JsonKeys.SUB_TYPE));
 
-        t.setDefinition(json.getString(DEFINITION));
-        t.setBody(json.getString(BODY));
-        t.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
-
-        return t;
+        return d;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected Template createObject() { return new Template(); }
-
-
-    /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Template instance) {
+    public Json write(final Json json, final MimeType instance) {
         if (null==instance) { return null; }
 
-        super.write(json, instance);
-
-        json.set(DEFINITION, instance.getDefinition());
-        json.set(BODY,       instance.getBody());
-        json.set(
-            MIME_TYPE,
-            new MimeTypeSerializer().write(
-                json.create(), instance.getMimeType()));
+        json.set(JsonKeys.PRIMARY_TYPE, instance.getPrimaryType());
+        json.set(JsonKeys.SUB_TYPE, instance.getSubType());
 
         return json;
     }
+
 }

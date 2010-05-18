@@ -24,46 +24,57 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import ccc.api.core.Failure;
+import ccc.api.core.Revision;
+import ccc.api.types.CommandType;
+import ccc.api.types.Username;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for {@link Failure}s.
+ * Serializer for {@link Revision}s.
  *
  * @author Civic Computing Ltd.
  */
-public class FailureSerializer implements Serializer<Failure> {
+public class RevisionSerializer
+    implements
+        Serializer<Revision> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Failure read(final Json json) {
+    public Revision read(final Json json) {
         if (null==json) { return null; }
 
-        final Failure f =
-            new Failure(
-                json.getId(JsonKeys.ID),
-                json.getString(JsonKeys.CODE),
-                json.getStringMap(JsonKeys.PARAMETERS));
+        final Revision r =
+            new Revision(
+                CommandType.valueOf(json.getString(JsonKeys.COMMAND)),
+                new Username(json.getString(JsonKeys.USERNAME)),
+                json.getDate(JsonKeys.HAPPENED_ON),
+                json.getLong(JsonKeys.INDEX).longValue(),
+                json.getString(JsonKeys.COMMENT),
+                json.getBool(JsonKeys.MAJOR_CHANGE).booleanValue());
 
-        return f;
+        return r;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Failure instance) {
+    public Json write(final Json json, final Revision instance) {
         if (null==instance) { return null; }
 
-        json.set(JsonKeys.CODE, instance.getCode());
-        json.set(JsonKeys.ID, instance.getExceptionId());
-        json.set(JsonKeys.PARAMETERS, instance.getParams());
+        json.set(JsonKeys.COMMAND, instance.getCommand().name());
+        json.set(JsonKeys.USERNAME, instance.getActorUsername().toString());
+        json.set(JsonKeys.HAPPENED_ON, instance.getHappenedOn());
+        json.set(JsonKeys.MAJOR_CHANGE, Boolean.valueOf(instance.isMajor()));
+        json.set(JsonKeys.INDEX, Long.valueOf(instance.getIndex()));
+        json.set(JsonKeys.COMMENT, instance.getComment());
 
         return json;
     }
+
 }

@@ -41,7 +41,6 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import ccc.api.core.User;
-import ccc.api.temp.UserSerializer;
 import ccc.api.types.DBC;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Link;
@@ -49,6 +48,7 @@ import ccc.api.types.Password;
 import ccc.api.types.Username;
 import ccc.commons.NormalisingEncoder;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.UserSerializer;
 
 
 /**

@@ -32,7 +32,6 @@ import java.util.Map;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
-import ccc.api.temp.PagedCollectionReader;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
@@ -43,6 +42,7 @@ import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
+import ccc.plugins.s11n.json.PagedCollectionReader;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;

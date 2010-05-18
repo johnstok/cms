@@ -28,6 +28,5 @@
 
 <module>
     <source path="api/core" />
-    <source path="api/temp" excludes="PagedCollectionSerializer.java" />
-    <source path="plugins/s11n" excludes="json/JsonImpl.java" />
+    <source path="plugins/s11n" excludes="json/JsonImpl.java,json/PagedCollectionSerializer.java" />
 </module>

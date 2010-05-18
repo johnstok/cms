@@ -13,7 +13,6 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
-import ccc.api.temp.ResourceSummarySerializer;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -26,6 +25,7 @@ import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;

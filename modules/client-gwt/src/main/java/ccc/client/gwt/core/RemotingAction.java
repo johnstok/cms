@@ -34,12 +34,12 @@ import java.util.Map;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
-import ccc.api.temp.ActionSummarySerializer;
-import ccc.api.temp.ResourceSummarySerializer;
 import ccc.api.types.DBC;
 import ccc.client.gwt.remoting.TextParser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.ActionSummarySerializer;
+import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.http.client.Response;

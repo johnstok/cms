@@ -31,7 +31,6 @@ import java.util.Map;
 
 import ccc.api.core.Comment;
 import ccc.api.core.PagedCollection;
-import ccc.api.temp.PagedCollectionReader;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
@@ -40,6 +39,7 @@ import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
+import ccc.plugins.s11n.json.PagedCollectionReader;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;

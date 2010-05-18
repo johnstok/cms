@@ -31,7 +31,6 @@ import java.util.Map;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
-import ccc.api.temp.TemplateSerializer;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
@@ -41,6 +40,7 @@ import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.TemplateSerializer;
 
 
 /**

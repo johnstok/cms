@@ -24,61 +24,55 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
 import java.util.Map;
 
-import ccc.api.core.Comment;
-import ccc.api.types.CommentStatus;
+import ccc.api.core.Res;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.Serializer;
 
 
 /**
- * Serializer for {@link Comment}s.
+ * Serializer for {@link Res}s.
+ *
+ * @param <T> The type of {@link Res} to serialize.
  *
  * @author Civic Computing Ltd.
  */
-public class CommentSerializer implements Serializer<Comment> {
+public abstract class ResSerializer<T extends Res>
+    implements
+        Serializer<T> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Comment read(final Json json) {
+    public T read(final Json json) {
         if (null==json) { return null; }
 
-        final Comment c = new Comment();
+        final T r = createObject();
 
         final Map<String, String> links = json.getStringMap("links");
-        if (null!=links) { c.addLinks(links); }
-        c.setTimestamp(json.getDate(JsonKeys.DATE_CREATED));
-        c.setResourceId(json.getId(JsonKeys.TARGET_ID));
-        c.setBody(json.getString(JsonKeys.BODY));
-        c.setAuthor(json.getString(JsonKeys.AUTHOR));
-        c.setUrl(json.getString(JsonKeys.URL));
-        c.setId(json.getId(JsonKeys.ID));
-        c.setStatus(CommentStatus.valueOf(json.getString(JsonKeys.STATUS)));
-        c.setEmail(json.getString(JsonKeys.EMAIL));
+        if (null!=links) { r.addLinks(links); }
 
-        return c;
+        return r;
     }
 
 
+    /**
+     * Create a new instance of type T.
+     *
+     * @return The newly created instance of T.
+     */
+    protected abstract T createObject();
+
+
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Comment instance) {
+    public Json write(final Json json, final T instance) {
         if (null==instance) { return null; }
 
         json.set("links", instance.getLinks());
-        json.set(JsonKeys.DATE_CREATED, instance.getTimestamp());
-        json.set(JsonKeys.TARGET_ID, instance.getResourceId());
-        json.set(JsonKeys.BODY, instance.getBody());
-        json.set(JsonKeys.AUTHOR, instance.getAuthor());
-        json.set(JsonKeys.URL, instance.getUrl());
-        json.set(JsonKeys.ID, instance.getId());
-        json.set(JsonKeys.STATUS, instance.getStatus().name());
-        json.set(JsonKeys.EMAIL, instance.getEmail());
 
         return json;
     }

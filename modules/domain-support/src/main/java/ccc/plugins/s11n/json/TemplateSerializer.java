@@ -24,67 +24,55 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
 import static ccc.plugins.s11n.JsonKeys.*;
-import ccc.api.core.File;
-import ccc.api.core.Folder;
+import ccc.api.core.Template;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
- * Serializer for {@link Folder}s.
+ * Serializer for {@link Template}s.
  *
  * @author Civic Computing Ltd.
  */
-public class FileSerializer
+public class TemplateSerializer
     extends
-        ResourceSerializer<File> {
+        ResourceSerializer<Template> {
 
 
     /** {@inheritDoc} */
     @Override
-    public File read(final Json json) {
+    public Template read(final Json json) {
         if (null==json) { return null; }
 
-        final File f = super.read(json);
+        final Template t = super.read(json);
 
-        f.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
-        f.setPath(json.getString(PATH));
-        f.setProperties(json.getStringMap(PROPERTIES));
-        f.setSize(json.getLong(JsonKeys.SIZE).longValue());
-        f.setData(json.getId(JsonKeys.DATA));
-        f.setMajorEdit(json.getBool(MAJOR_CHANGE).booleanValue());
-        f.setComment(json.getString(COMMENT));
-        f.setContent(json.getString(TEXT));
+        t.setDefinition(json.getString(DEFINITION));
+        t.setBody(json.getString(BODY));
+        t.setMimeType(new MimeTypeSerializer().read(json.getJson(MIME_TYPE)));
 
-        return f;
+        return t;
     }
 
 
     /** {@inheritDoc} */
-    @Override protected File createObject() { return new File(); }
+    @Override protected Template createObject() { return new Template(); }
 
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final File instance) {
+    public Json write(final Json json, final Template instance) {
         if (null==instance) { return null; }
 
         super.write(json, instance);
 
+        json.set(DEFINITION, instance.getDefinition());
+        json.set(BODY,       instance.getBody());
         json.set(
             MIME_TYPE,
             new MimeTypeSerializer().write(
                 json.create(), instance.getMimeType()));
-        json.set(PATH, instance.getPath());
-        json.set(PROPERTIES, instance.getProperties());
-        json.set(SIZE, Long.valueOf(instance.getSize()));
-        json.set(DATA, instance.getData());
-        json.set(MAJOR_CHANGE, Boolean.valueOf(instance.isMajorEdit()));
-        json.set(COMMENT, instance.getComment());
-        json.set(TEXT, instance.getContent());
 
         return json;
     }

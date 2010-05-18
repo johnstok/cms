@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.Revision;
-import ccc.api.temp.RevisionSerializer;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -40,6 +39,7 @@ import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.RevisionSerializer;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

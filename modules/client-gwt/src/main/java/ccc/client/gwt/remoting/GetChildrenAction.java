@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.temp.ResourceSummarySerializer;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;

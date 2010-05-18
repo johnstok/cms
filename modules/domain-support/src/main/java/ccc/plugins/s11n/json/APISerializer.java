@@ -24,49 +24,21 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.temp;
+package ccc.plugins.s11n.json;
 
-import ccc.api.core.Alias;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
+import ccc.api.core.API;
 
 
 /**
- * Serializer for {@link Alias}s.
+ * Serializer for {@link Resource}s.
  *
  * @author Civic Computing Ltd.
  */
-public class AliasSerializer
+public class APISerializer
     extends
-        ResourceSerializer<Alias> {
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Alias read(final Json json) {
-        if (null==json) { return null; }
-
-        final Alias a = super.read(json);
-
-        a.setTargetId(json.getId(JsonKeys.TARGET_ID));
-
-        return a;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override protected Alias createObject() { return new Alias(); }
-
+        ResSerializer<API> {
 
     /** {@inheritDoc} */
     @Override
-    public Json write(final Json json, final Alias instance) {
-        if (null==instance) { return null; }
-
-        super.write(json, instance);
-
-        json.set(JsonKeys.TARGET_ID, instance.getTargetId());
-
-        return json;
-    }
+    protected API createObject() { return new API(); }
 }
