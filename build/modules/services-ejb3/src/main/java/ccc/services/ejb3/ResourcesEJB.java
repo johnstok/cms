@@ -47,7 +47,6 @@ import javax.ejb.TransactionAttribute;
 import ccc.api.core.ACL;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.Resource;
-import ccc.api.core.ResourceCriteria;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.core.Revision;
@@ -76,6 +75,7 @@ import ccc.domain.ResourceEntity;
 import ccc.domain.RevisionEntity;
 import ccc.domain.TemplateEntity;
 import ccc.domain.UserEntity;
+import ccc.persistence.ResourceCriteria;
 import ccc.persistence.ResourceRepository;
 import ccc.rest.extensions.ResourcesExt;
 
