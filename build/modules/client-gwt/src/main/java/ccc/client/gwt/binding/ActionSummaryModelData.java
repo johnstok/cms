@@ -35,6 +35,7 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
@@ -85,7 +86,7 @@ public class ActionSummaryModelData
     @Override @SuppressWarnings("unchecked") @Deprecated
     public <X> X get(final String property) {
 
-        final Property p = Property.valueOf(property);
+        final Action.Property p = Action.Property.valueOf(property);
 
         switch (p) {
 
@@ -129,7 +130,7 @@ public class ActionSummaryModelData
     @Override @Deprecated
     public Map<String, Object> getProperties() {
         final Map<String, Object> properties = new HashMap<String, Object>();
-        for (final Property p : Property.values()) {
+        for (final Action.Property p : Action.Property.values()) {
             properties.put(p.name(), get(p.name()));
         }
         return properties;
@@ -139,7 +140,7 @@ public class ActionSummaryModelData
     @Override @Deprecated
     public Collection<String> getPropertyNames() {
         final Set<String> names = new HashSet<String>();
-        for (final Property p : Property.values()) {
+        for (final Action.Property p : Action.Property.values()) {
             names.add(p.name());
         }
         return names;
@@ -155,34 +156,6 @@ public class ActionSummaryModelData
     @Override @Deprecated
     public <X> X set(final String property, final X value) {
         throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-    /**
-     * Property names.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public enum Property {
-        /** ID : Property. */
-        ID,
-        /** TYPE : Property. */
-        TYPE,
-        /** LOCALISED_TYPE : Property. */
-        LOCALISED_TYPE,
-        /** USERNAME : Property. */
-        USERNAME,
-        /** EXECUTE_AFTER : Property. */
-        EXECUTE_AFTER,
-        /** PATH : Property. */
-        PATH,
-        /** SUBJECT_TYPE : Property. */
-        SUBJECT_TYPE,
-        /** STATUS : Property. */
-        STATUS,
-        /** FAILURE : Property. */
-        FAILURE_CODE,
-        /** LOCALISED_STATUS : Property. */
-        LOCALISED_STATUS;
     }
 
     /**

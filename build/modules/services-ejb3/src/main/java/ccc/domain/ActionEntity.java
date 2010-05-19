@@ -59,10 +59,10 @@ import ccc.plugins.s11n.JsonKeys;
  */
 public class ActionEntity extends Entity {
 
-    private UserEntity                _actor;
+    private UserEntity          _actor;
     private CommandType         _type;
     private Map<String, String> _parameters;
-    private ResourceEntity            _subject;
+    private ResourceEntity      _subject;
     private Date                _executeAfter;
     private FailureCode         _code;
     private ActionStatus        _status = ActionStatus.SCHEDULED;
