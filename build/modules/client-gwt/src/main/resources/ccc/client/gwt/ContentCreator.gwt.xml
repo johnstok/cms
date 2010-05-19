@@ -65,6 +65,6 @@
 	<source path="concurrent" />
 
 	<!-- Specify the application specific style sheet. -->
-	<stylesheet src="gxt/2.0.4/resources/css/gxt-all.css" />
+	<stylesheet src="gxt/2.1.3/resources/css/gxt-all.css" />
 
 </module>

@@ -49,7 +49,7 @@ public final class ImagePaths {
 
     /** FOLDER : String. */
     public static final String FOLDER =
-        "static/gxt/2.0.4/resources/images/gxt/icons/folder.gif";
+        "static/gxt/2.1.3/resources/images/gxt/icons/folder.gif";
 
     /** PAGE : String. */
     public static final String PAGE = "static/images/icons/page.gif";
