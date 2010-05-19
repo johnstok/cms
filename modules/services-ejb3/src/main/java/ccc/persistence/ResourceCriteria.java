@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.api.core;
+package ccc.persistence;
 
 import java.io.Serializable;
 import java.util.Date;

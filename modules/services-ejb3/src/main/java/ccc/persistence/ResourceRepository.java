@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.core.ResourceCriteria;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SortOrder;
 import ccc.domain.FileEntity;
