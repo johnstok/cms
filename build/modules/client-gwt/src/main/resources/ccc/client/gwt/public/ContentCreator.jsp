@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="gwt:property" content="locale=<%= request.getLocale() %>" />
     
-    <link rel="stylesheet" type="text/css" href="static/gxt/2.0.4/resources/css/gxt-all.css" />
+    <link rel="stylesheet" type="text/css" href="static/gxt/2.1.3/resources/css/gxt-all.css" />
     <link rel="stylesheet" type="text/css" href="static/listview.css" />
     <link rel="stylesheet" type="text/css" href="static/js/codemirror/css/editor.css" />
     <!--                                           -->
