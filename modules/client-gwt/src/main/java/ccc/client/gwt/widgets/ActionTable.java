@@ -29,6 +29,7 @@ package ccc.client.gwt.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
@@ -95,7 +96,7 @@ public class ActionTable
         final ColumnModel cm = new ColumnModel(configs);
 
         _grid = new Grid<ActionSummaryModelData>(_actionStore, cm);
-        _grid.setAutoExpandColumn(ActionSummaryModelData.Property.PATH.name());
+        _grid.setAutoExpandColumn(Action.Property.PATH.name());
         _grid.setId("action-grid");
 
         add(_grid);
@@ -107,34 +108,34 @@ public class ActionTable
     private void createColumnConfigs(final List<ColumnConfig> configs) {
         addColumn(
             configs,
-            ActionSummaryModelData.Property.LOCALISED_TYPE.name(),
+            Action.Property.LOCALISED_TYPE.name(),
             UI_CONSTANTS.action(),
             TYPE_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.USERNAME.name(),
+            Action.Property.USERNAME.name(),
             UI_CONSTANTS.scheduledBy(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.EXECUTE_AFTER.name(),
+            Action.Property.EXECUTE_AFTER.name(),
             UI_CONSTANTS.scheduledFor(),
             SMALL_COLUMN)
             .setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
         addColumn(
             configs,
-            ActionSummaryModelData.Property.LOCALISED_STATUS.name(),
+            Action.Property.LOCALISED_STATUS.name(),
             UI_CONSTANTS.status(),
             SMALL_COLUMN);
         addColumn(
             configs,
-            ActionSummaryModelData.Property.FAILURE_CODE.name(),
+            Action.Property.FAILURE_CODE.name(),
             UI_CONSTANTS.failureCode(),
             SMALL_COLUMN);
 
         final ColumnConfig subjectTypeColumn = addColumn(
             configs,
-            ActionSummaryModelData.Property.SUBJECT_TYPE.name(),
+            Action.Property.SUBJECT_TYPE.name(),
             UI_CONSTANTS.resourceType(),
             SMALL_COLUMN);
         subjectTypeColumn.setRenderer(
@@ -142,7 +143,7 @@ public class ActionTable
 
         addColumn(
             configs,
-            ActionSummaryModelData.Property.PATH.name(),
+            Action.Property.PATH.name(),
             UI_CONSTANTS.resourcePath(),
             MEDIUM_COLUMN);
     }

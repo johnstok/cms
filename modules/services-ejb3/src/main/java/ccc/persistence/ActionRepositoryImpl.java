@@ -34,11 +34,11 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
+import ccc.api.core.Action;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
-import ccc.plugins.s11n.JsonKeys;
 
 
 /**
@@ -134,7 +134,7 @@ class ActionRepositoryImpl
     @Override
     public long countPending() {
         final Map<String, Object> params = new HashMap<String, Object>();
-        final String query = "select count(*) from ccc.domain.ActionEntity a "
+        final String query = "SELECT count(*) FROM ccc.domain.ActionEntity a "
                 + " WHERE a._status='SCHEDULED'";
         return _repo.scalarLong(query, params);
     }
@@ -143,15 +143,16 @@ class ActionRepositoryImpl
     /** {@inheritDoc} */
     @Override
     public List<ActionEntity> pending(final String sort,
-                                final SortOrder sortOrder,
-                                final int pageNo,
-                                final int pageSize) {
+                                      final SortOrder sortOrder,
+                                      final int pageNo,
+                                      final int pageSize) {
 
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("from ccc.domain.ActionEntity a WHERE a._status='SCHEDULED'");
-        query.append(" order by a.");
+        query.append("FROM ccc.domain.ActionEntity a ");
+        query.append("WHERE a._status='SCHEDULED'");
+        query.append(" ORDER BY a.");
         query.append(mapSortColumn(sort));
         query.append(" ");
         query.append(sortOrder.name());
@@ -166,16 +167,22 @@ class ActionRepositoryImpl
     }
 
     private String mapSortColumn(final String sort) {
-        if (JsonKeys.USERNAME.equals(sort)) {
-            return "_actor";
-        } else if (JsonKeys.TYPE.equals(sort)) {
-            return "_type";
-        } else if (JsonKeys.STATUS.equals(sort)) {
-            return "_status";
-        } else if (JsonKeys.CODE.equals(sort)) {
-            return "_code";
+        try {
+            final Action.Property p = Action.Property.valueOf(sort);
+            switch (p) {
+                case USERNAME:
+                    return "_actor";
+                case LOCALISED_TYPE:
+                    return "_type";
+                case LOCALISED_STATUS:
+                    return "_status";
+                case FAILURE_CODE:
+                    return "_code";
+                default:
+                    return "_executeAfter";
+            }
+        } catch (final IllegalArgumentException e) {
+            return "_executeAfter";
         }
-        return "_executeAfter";
     }
-
 }
