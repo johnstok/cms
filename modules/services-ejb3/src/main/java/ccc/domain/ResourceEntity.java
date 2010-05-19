@@ -1063,6 +1063,10 @@ public abstract class ResourceEntity
                     new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
+                    Folder.IMAGES,
+                    new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
                     Folder.EXISTS,
                     new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder())
