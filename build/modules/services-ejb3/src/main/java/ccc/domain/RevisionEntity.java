@@ -133,7 +133,7 @@ public abstract class RevisionEntity<T> extends Entity {
     public Revision mapRevision(final int index) {
         return
             new Revision(
-                CommandType.PAGE_UPDATE,
+                CommandType.PAGE_UPDATE, // FIXME - hard coded for all revisions
                 getActor().getUsername(),
                 getTimestamp(),
                 index,

@@ -92,7 +92,9 @@ public final class ViewHistoryAction
                                     new GwtJson(result.get(i).isObject())));
                         }
                         new HistoryDialog(
-                            history, _selectionModel.tableSelection().getId(), _selectionModel)
+                            history,
+                            _selectionModel.tableSelection().getType(), 
+                            _selectionModel)
                         .show();
                     }
                 });
