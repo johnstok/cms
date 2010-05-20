@@ -29,11 +29,10 @@ package ccc.client.gwt.views.gxt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
-import ccc.api.types.CommandType;
+import ccc.api.types.ResourceType;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.LogEntrySummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -62,7 +61,6 @@ public class HistoryDialog
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
-    private final UUID _id;
 
     /**
      * Constructor.
@@ -73,14 +71,13 @@ public class HistoryDialog
      * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<Revision> data,
-                         final UUID resourceId,
+                         final ResourceType resourceType,
                          final SingleSelectionModel ssm) {
-        super(new GlobalsImpl().uiConstants().resourceHistory(),
+        super(GlobalsImpl.uiConstants().resourceHistory(),
               new GlobalsImpl(),
               data,
               false);
 
-        _id = resourceId;
         _ssm = ssm;
         _toolBar = new HistoryToolBar(this);
         _toolBar.disable();
@@ -98,11 +95,8 @@ public class HistoryDialog
                     if (null==md) {
                         _toolBar.disable();
                     } else {
-                        final CommandType action = md.getAction();
-                        if (CommandType.PAGE_CREATE==action
-                            || CommandType.PAGE_UPDATE==action
-                            || CommandType.FILE_CREATE==action
-                            || CommandType.FILE_UPDATE==action) {
+                        if (ResourceType.PAGE==resourceType
+                            || ResourceType.FILE==resourceType) {
                             _toolBar.enable();
                         } else {
                             _toolBar.disable();
