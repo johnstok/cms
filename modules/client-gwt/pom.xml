@@ -139,12 +139,6 @@
             <version>${lib.version.gwt}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <version>${lib.version.gwt}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>
