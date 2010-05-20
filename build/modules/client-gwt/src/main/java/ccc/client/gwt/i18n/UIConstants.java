@@ -802,6 +802,14 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Template cannot be chosen for this resource.")
     String templateCannotBeChosen();
+    
+    /**
+     * "No template chosen for this resource.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("No template chosen for this resource.")
+    String noTemplateChosen();
 
     /**
      * "Edit comment".
