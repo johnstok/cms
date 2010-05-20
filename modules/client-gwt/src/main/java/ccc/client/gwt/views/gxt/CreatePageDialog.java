@@ -107,6 +107,8 @@ public class CreatePageDialog
         new ContentPanel(new RowLayout());
     private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
+    
+    private TemplateSummaryModelData _template = null;
 
 
     private final Text _description = new Text("");
@@ -149,7 +151,7 @@ public class CreatePageDialog
                 final TemplateSummaryModelData t =
                     (TemplateSummaryModelData)
                         gridEvent.getGrid().getSelectionModel().getSelectedItem();
-                updateSecondPage(t.getTemplate());
+                updateSecondPage(t);
             }
         };
         _templateGrid.addListener(Events.RowClick, gridEventlistener);
@@ -239,7 +241,9 @@ public class CreatePageDialog
                     setValue(Boolean.TRUE);
                     _templateGrid.disable();
                     _templateGrid.getSelectionModel().deselectAll();
-                    updateSecondPage(t);
+                    TemplateSummaryModelData sm = 
+                        new TemplateSummaryModelData(_t2);
+                    updateSecondPage(sm);
                 }
 
             }.execute();
@@ -250,7 +254,9 @@ public class CreatePageDialog
                         if (null != _t2) {
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            updateSecondPage(_t2);
+                            TemplateSummaryModelData sm = 
+                                new TemplateSummaryModelData(_t2);
+                            updateSecondPage(sm);
                         }
                     } else {
                         _secondWizardPage.removeAll();
@@ -273,8 +279,9 @@ public class CreatePageDialog
         };
     }
 
-    private void updateSecondPage(final Template t) {
-        final EditPagePanel second = new EditPagePanel(t);
+    private void updateSecondPage(final TemplateSummaryModelData t) {
+        _template = t;
+        final EditPagePanel second = new EditPagePanel(t.getTemplate());
         replaceCard(_secondWizardPage, second);
         _secondWizardPage = second;
         _description.setText(t.getDescription());
@@ -311,7 +318,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public TemplateSummaryModelData getSelectedTemplate() {
-        return _templateGrid.getSelectionModel().getSelectedItem();
+        return _template;
     }
 
     /** {@inheritDoc} */

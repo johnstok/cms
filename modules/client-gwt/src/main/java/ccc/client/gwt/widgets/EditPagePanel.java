@@ -42,7 +42,6 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.Link;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.widgets.PageElement.FieldType;
@@ -88,7 +87,6 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private final List<PageElement> _pageElements =
         new ArrayList<PageElement>();
     private Template _template;
-    private final Globals _globals = new GlobalsImpl();
     private int _fckCount = 0;
 
 

@@ -37,6 +37,7 @@ import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.events.PageCreated;
 import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
@@ -96,7 +97,11 @@ public class CreatePagePresenter
             final Set<Paragraph> paragraphs = getView().getParagraphs();
             final Page p = Page.delta(paragraphs);
             final TemplateSummaryModelData tData = getView().getSelectedTemplate();
-            // FIXME: tData can be NULL!
+            
+            if (tData == null) {
+                getView().alert(GlobalsImpl.uiConstants().noTemplateChosen());
+                return;
+            } 
             p.setTemplate(
                 tData.getTemplate().getId());
 
