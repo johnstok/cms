@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.HttpMethod;

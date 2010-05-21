@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import java.util.UUID;
-
 import ccc.api.types.DBC;
 import ccc.api.types.ResourcePath;
 import ccc.client.gwt.binding.ResourceSummaryModelData;

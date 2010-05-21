@@ -29,7 +29,6 @@ package ccc.client.gwt.remoting;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccc.api.core.Resource;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;

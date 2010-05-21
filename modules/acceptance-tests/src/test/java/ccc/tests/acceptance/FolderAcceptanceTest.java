@@ -50,8 +50,6 @@ import ccc.api.types.SortOrder;
  */
 public class FolderAcceptanceTest extends AbstractAcceptanceTest {
 
-    private static final int ONE_SECOND = 1000;
-
 
     /**
      * Test.

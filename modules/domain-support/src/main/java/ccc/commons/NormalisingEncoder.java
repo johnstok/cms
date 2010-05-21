@@ -31,7 +31,6 @@ import java.net.URLEncoder;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
-import ccc.api.types.Link;
 import ccc.api.types.Link.Encoder;
 
 public class NormalisingEncoder implements Encoder {

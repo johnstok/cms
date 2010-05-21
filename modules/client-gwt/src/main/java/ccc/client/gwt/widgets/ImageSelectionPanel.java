@@ -35,7 +35,6 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetImagesPagedAction;
 import ccc.client.gwt.views.gxt.FolderSelectionDialog;
@@ -82,8 +81,6 @@ public class ImageSelectionPanel extends ContentPanel {
     private ResourceSummaryModelData _folder = null;
     private  final ListView<ImageSummaryModelData> _view =
         new ListView<ImageSummaryModelData>();
-
-    private final Globals _globals = new GlobalsImpl();
 
     private ImageTriggerField _image;
 

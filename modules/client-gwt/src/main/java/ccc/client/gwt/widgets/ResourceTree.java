@@ -29,7 +29,6 @@ package ccc.client.gwt.widgets;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.SortOrder;
