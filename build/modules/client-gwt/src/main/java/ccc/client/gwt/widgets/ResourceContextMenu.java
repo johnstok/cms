@@ -460,9 +460,7 @@ public class ResourceContextMenu
                     @Override
                     protected void execute(final Page delta) {
                         new UpdatePageDialog(
-                            item.getId(),
                             delta,
-                            item.getName(),
                             ts,
                             _table)
                         .show(); // Ok, pop the dialog.
