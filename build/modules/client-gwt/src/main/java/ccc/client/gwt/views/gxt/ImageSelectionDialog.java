@@ -84,7 +84,7 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                                 final String alt,
                                 final String title,
                                 final String cccId) {
-        super(new GlobalsImpl().uiConstants().selectImage(),
+        super(GlobalsImpl.uiConstants().selectImage(),
               new GlobalsImpl());
         setLayout(new RowLayout());
         _elementid = elementid;

@@ -28,8 +28,6 @@ package ccc.client.gwt.core;
 
 import ccc.api.types.DBC;
 
-import com.google.gwt.http.client.RequestBuilder.Method;
-
 
 /**
  * A HTTP request.

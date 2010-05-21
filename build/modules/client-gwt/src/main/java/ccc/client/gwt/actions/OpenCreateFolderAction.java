@@ -29,7 +29,6 @@ package ccc.client.gwt.actions;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.presenters.CreateFolderPresenter;
 import ccc.client.gwt.views.gxt.CreateFolderDialog;
 

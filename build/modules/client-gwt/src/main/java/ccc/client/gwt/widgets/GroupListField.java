@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -49,7 +48,6 @@ import com.extjs.gxt.ui.client.widget.form.ListField;
 public class GroupListField extends ListField<BaseModelData> {
 
     private static final int GROUP_HEIGHT = 200;
-    private final Globals _globals = new GlobalsImpl();
 
     /**
      * Constructor.
