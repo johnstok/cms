@@ -30,7 +30,6 @@ package ccc.client.gwt.views.gxt;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import ccc.api.core.Page;
 import ccc.api.core.Template;
@@ -60,7 +59,6 @@ public class UpdatePageDialog
     extends
         AbstractBaseDialog {
 
-    private final UUID _pageId;
     private final Set<Paragraph> _paras;
     private final Template _template;
     private final ResourceTable _rt;
@@ -69,33 +67,30 @@ public class UpdatePageDialog
 
     private Button _saveDraftButton;
     private Button _applyNowButton;
+    private final ResourceSummaryModelData _modelData;
 
 
     /**
      * Constructor.
      *
-     * @param pageId UUID of the page to be updated.
      * @param page PageDelta of the page to be updated.
-     * @param pageName Name of the page to be updated.
      * @param template TemplateDelta of the template assigned to the page.
      * @param rt ResourceTable required in order to refresh the contents.
      */
-    public UpdatePageDialog(final UUID pageId,
-                            final Page page,
-                            final String pageName,
+    public UpdatePageDialog(final Page page,
                             final Template template,
                             final ResourceTable rt) {
         super(new GlobalsImpl().uiConstants().updateContent(),
               new GlobalsImpl());
         _rt = rt;
+        _modelData = rt().tableSelection();
         _paras = new HashSet<Paragraph>(page.getParagraphs());
         _template = template;
-        _pageId = pageId;
         _panel = new EditPagePanel(_template);
 
         setLayout(new FitLayout());
 
-        drawGUI(pageName);
+        drawGUI(_modelData.getName());
         // in case of FCKeditors add JS function for ready status checking.
         if (_panel.getFCKCount()>0) {
             _applyNowButton.disable();
@@ -180,8 +175,7 @@ public class UpdatePageDialog
         return new Runnable() {
             public void run() {
                 final PageCommentDialog commentDialog =
-                    new PageCommentDialog(
-                        _pageId, getParagraphs(), UpdatePageDialog.this);
+                    new PageCommentDialog(getParagraphs(), UpdatePageDialog.this);
                 commentDialog.show();
             }
         };
@@ -191,20 +185,18 @@ public class UpdatePageDialog
         return new Runnable() {
             public void run() {
                 final Page update = new Page();
-                update.setId(_pageId);
+                update.setId(getModelData().getId());
                 update.setParagraphs(getParagraphs());
-                // FIXME: Broken - this updates the currently selected page!!!
                 update.addLink(
                     Page.WORKING_COPY,
-                    rt().tableSelection().getDelegate().getLink(
+                    _modelData.getDelegate().getLink(
                         Page.WORKING_COPY));
 
                 new UpdateWorkingCopyAction(update) {
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {
-                        final ResourceSummaryModelData md =
-                            rt().tableSelection();
+                        final ResourceSummaryModelData md = getModelData();
                         md.setWorkingCopy(true);
                         rt().update(md);
                         hide();
@@ -234,6 +226,14 @@ public class UpdatePageDialog
         return _panel;
     }
 
+    /**
+     * Accessor.
+     *
+     * @return Returns The selected model data.
+     */
+    protected ResourceSummaryModelData getModelData() {
+        return _modelData;
+    }
 
     private Set<Paragraph> getParagraphs() {
         final Set<Paragraph> paragraphs = new HashSet<Paragraph>();

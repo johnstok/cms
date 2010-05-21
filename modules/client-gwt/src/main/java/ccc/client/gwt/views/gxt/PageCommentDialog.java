@@ -27,7 +27,6 @@
 package ccc.client.gwt.views.gxt;
 
 import java.util.Set;
-import java.util.UUID;
 
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
@@ -55,7 +54,6 @@ public class PageCommentDialog extends AbstractEditDialog {
     private static final int DIALOG_HEIGHT = 300;
     /** DIALOG_WIDTH : int. */
     private static final int DIALOG_WIDTH = 400;
-    private final UUID _pageId;
     private final Set<Paragraph> _paras;
     private final UpdatePageDialog _updatePageDialog;
     private final CheckBox _majorEdit = new CheckBox();
@@ -65,17 +63,14 @@ public class PageCommentDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param pageId The id of the page to be updated.
      * @param paras The updated paragraphs.
      * @param updatePageDialog The parent dialog.
      *
      */
-    public PageCommentDialog(final UUID pageId,
-                             final Set<Paragraph> paras,
+    public PageCommentDialog(final Set<Paragraph> paras,
                              final UpdatePageDialog updatePageDialog) {
         super(new GlobalsImpl().uiConstants().pageEditComment(),
               new GlobalsImpl());
-        _pageId = pageId;
         _paras = paras;
         _updatePageDialog = updatePageDialog;
         setModal(true);
@@ -112,22 +107,22 @@ public class PageCommentDialog extends AbstractEditDialog {
     private Runnable savePage() {
         return new Runnable() {
             public void run() {
+                final ResourceSummaryModelData md =
+                    _updatePageDialog.getModelData();
                 final Page update = new Page();
-                update.setId(_pageId);
+                update.setId(md.getId());
                 update.setParagraphs(_paras);
                 update.setComment(_comment.getValue());
                 update.setMajorChange(_majorEdit.getValue().booleanValue());
-                // FIXME: Broken - this updates the currently selected page!!!
                 update.addLink(
                     Resource.SELF,
-                    _updatePageDialog.rt().tableSelection().getDelegate().getLink(Resource.SELF));
+                    _updatePageDialog.getModelData().getDelegate().getLink(Resource.SELF));
 
                 new UpdatePageAction(update) {
                         /** {@inheritDoc} */
                         @Override protected void onNoContent(
                                                      final Response response) {
-                            final ResourceSummaryModelData md =
-                                _updatePageDialog.rt().tableSelection();
+                           
                             md.setWorkingCopy(false);
                             _updatePageDialog.rt().update(md);
                             hide();
