@@ -35,6 +35,7 @@ import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.remoting.ListUsersAction;
@@ -151,7 +152,7 @@ public class UserTable extends TablePanel {
                     final UserSummaryModelData userDTO =
                         grid.getSelectionModel().getSelectedItem();
 
-                    new ListGroups(1, 999, "name", "ASC") {
+                    new ListGroups(1, Globals.MAX_FETCH, "name", "ASC") {
                         @Override
                         protected void execute(final PagedCollection<Group> groups) {
                             new OpenEditUserDialogAction(
@@ -309,7 +310,6 @@ public class UserTable extends TablePanel {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void updatePager(final UserCriteria uc){
 
         final RpcProxy<PagingLoadResult<UserSummaryModelData>> proxy =

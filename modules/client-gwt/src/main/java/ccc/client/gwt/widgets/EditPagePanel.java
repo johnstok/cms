@@ -249,7 +249,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
             final UUID resourceId = UUID.fromString(id);
             ResourceSummary s = new ResourceSummary();
             s.addLink(
-                "absolute-path", 
+                "absolute-path",
                 new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
                 .build(new GWTTemplateEncoder()));
 

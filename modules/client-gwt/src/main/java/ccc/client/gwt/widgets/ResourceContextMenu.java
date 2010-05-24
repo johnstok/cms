@@ -43,6 +43,7 @@ import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.actions.PreviewAction;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.remoting.ApplyWorkingCopyAction;
 import ccc.client.gwt.remoting.ClearWorkingCopyAction;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
@@ -134,7 +135,7 @@ public class ResourceContextMenu
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new OpenCreateActionAction(_table);
-        _updateAclAction = new ListGroups(1,999,"name","ASC") {
+        _updateAclAction = new ListGroups(1, Globals.MAX_FETCH, "name", "ASC") {
             @Override
             protected void execute(final PagedCollection<Group> groups) {
                 new OpenUpdateResourceAclAction(_table, groups.getElements())

@@ -88,7 +88,8 @@ RemotingAction{
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final HashMap<String, String[]> params = new HashMap<String, String[]>();
+        final HashMap<String, String[]> params =
+            new HashMap<String, String[]>();
         params.put("parent", new String[] {_parent.getId().toString()});
         params.put("sort", new String[] {_sort});
         params.put("order", new String[] {_order.name()});

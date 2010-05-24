@@ -179,7 +179,8 @@ AbstractEditDialog {
 
             @Override
             protected String getPath() {
-                final HashMap<String, String[]> params = new HashMap<String, String[]>();
+                final HashMap<String, String[]> params =
+                    new HashMap<String, String[]>();
                 params.put("parent", new String[] {selection.getId().toString()});
                 params.put("sort", new String[] {"manual"});
                 params.put("order", new String[] {SortOrder.ASC.name()});

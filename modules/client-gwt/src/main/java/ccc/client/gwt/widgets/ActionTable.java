@@ -270,7 +270,6 @@ public class ActionTable
     }
 
 
-    @SuppressWarnings("unchecked")
     private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);

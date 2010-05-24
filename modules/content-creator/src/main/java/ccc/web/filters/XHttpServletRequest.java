@@ -89,7 +89,6 @@ class XHttpServletRequest
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration getAttributeNames() {
         return _delegate.getAttributeNames();
@@ -153,7 +152,6 @@ class XHttpServletRequest
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration getHeaderNames() {
         return _delegate.getHeaderNames();
@@ -161,7 +159,6 @@ class XHttpServletRequest
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration getHeaders(final String name) {
         return _delegate.getHeaders(name);
@@ -197,7 +194,6 @@ class XHttpServletRequest
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration getLocales() {
         return _delegate.getLocales();
@@ -226,7 +222,6 @@ class XHttpServletRequest
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Map getParameterMap() {
         return _delegate.getParameterMap();
@@ -234,7 +229,6 @@ class XHttpServletRequest
 
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     @Override
     public Enumeration getParameterNames() {
         return _delegate.getParameterNames();

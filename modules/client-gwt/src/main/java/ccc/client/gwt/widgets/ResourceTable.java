@@ -176,7 +176,6 @@ public class ResourceTable
      *
      * @param folder The parent folder for the records to display in the table.
      */
-    @SuppressWarnings("unchecked")
     public void displayResourcesFor(final ResourceSummaryModelData folder) {
 
         final RpcProxy<PagingLoadResult<ResourceSummaryModelData>> proxy =
@@ -308,7 +307,7 @@ public class ResourceTable
         // Assign a CSS style for each row with GridViewConfig
         final GridViewConfig vc = new GridViewConfig() {
             /** {@inheritDoc} */
-            @Override @SuppressWarnings("unchecked")
+            @Override
             public String getRowStyle(final ModelData model,
                                       final int rowIndex,
                                       final ListStore ds) {

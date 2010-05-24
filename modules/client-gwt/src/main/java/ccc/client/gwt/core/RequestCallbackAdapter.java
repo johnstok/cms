@@ -33,7 +33,7 @@ public final class RequestCallbackAdapter
 
     public void onResponseReceived(final Request request,
                                    final com.google.gwt.http.client.Response r) {
-        Response response = 
+        Response response =
             new Response(r.getText(), r.getStatusText(), r.getStatusCode());
 
         if (SessionTimeoutException.isTimedout(response.getText())) {

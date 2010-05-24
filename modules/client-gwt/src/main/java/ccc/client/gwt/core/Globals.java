@@ -153,6 +153,8 @@ public interface Globals {
     String API_URL = "api";
     /** MIN_USER_NAME_LENGTH : int. */
     int MIN_USER_NAME_LENGTH = 4;
+    /** MAX_FETCH : int. */
+    int MAX_FETCH = 999;
 
     /**
      * Retrieve an instance of the action status constants.

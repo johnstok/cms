@@ -58,7 +58,8 @@ public abstract class ComputeTemplateAction
      * @param actionName The name of this action.
      * @param resource The resource to invoke.
      */
-    public ComputeTemplateAction(final String actionName, final ResourceSummary resource) {
+    public ComputeTemplateAction(final String actionName,
+                                 final ResourceSummary resource) {
         _name     = actionName;
         _resource = resource;
     }

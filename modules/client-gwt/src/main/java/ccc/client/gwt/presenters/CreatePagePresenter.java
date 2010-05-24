@@ -96,12 +96,13 @@ public class CreatePagePresenter
 
             final Set<Paragraph> paragraphs = getView().getParagraphs();
             final Page p = Page.delta(paragraphs);
-            final TemplateSummaryModelData tData = getView().getSelectedTemplate();
-            
+            final TemplateSummaryModelData tData =
+                getView().getSelectedTemplate();
+
             if (tData == null) {
                 getView().alert(GlobalsImpl.uiConstants().noTemplateChosen());
                 return;
-            } 
+            }
             p.setTemplate(
                 tData.getTemplate().getId());
 

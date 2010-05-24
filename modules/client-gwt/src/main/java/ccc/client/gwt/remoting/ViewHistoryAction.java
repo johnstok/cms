@@ -93,7 +93,7 @@ public final class ViewHistoryAction
                         }
                         new HistoryDialog(
                             history,
-                            _selectionModel.tableSelection().getType(), 
+                            _selectionModel.tableSelection().getType(),
                             _selectionModel)
                         .show();
                     }

@@ -107,7 +107,7 @@ public class CreatePageDialog
         new ContentPanel(new RowLayout());
     private final ContentPanel _templatePanel =
         new ContentPanel(new RowLayout());
-    
+
     private TemplateSummaryModelData _template = null;
 
 
@@ -241,7 +241,7 @@ public class CreatePageDialog
                     setValue(Boolean.TRUE);
                     _templateGrid.disable();
                     _templateGrid.getSelectionModel().deselectAll();
-                    TemplateSummaryModelData sm = 
+                    TemplateSummaryModelData sm =
                         new TemplateSummaryModelData(_t2);
                     updateSecondPage(sm);
                 }
@@ -254,7 +254,7 @@ public class CreatePageDialog
                         if (null != _t2) {
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            TemplateSummaryModelData sm = 
+                            TemplateSummaryModelData sm =
                                 new TemplateSummaryModelData(_t2);
                             updateSecondPage(sm);
                         }
