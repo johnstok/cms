@@ -67,7 +67,7 @@ public class HistoryDialog
      *
      * @param data The history to display, as a collection of
      *  {@link Revision}.
-     * @param resourceId The UUID.
+     * @param resourceType The type of the resource.
      * @param ssm The selection model.
      */
     public HistoryDialog(final Collection<Revision> data,

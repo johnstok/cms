@@ -83,7 +83,7 @@ public class PageSerializer
             instance.getComment());
         json.set(
             JsonKeys.MAJOR_CHANGE,
-            Boolean.valueOf(instance.getMajorChange()));
+            Boolean.valueOf(instance.isMajorChange()));
 
         return json;
     }

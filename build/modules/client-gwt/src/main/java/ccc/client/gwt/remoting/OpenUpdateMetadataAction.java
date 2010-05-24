@@ -29,6 +29,7 @@ package ccc.client.gwt.remoting;
 import java.util.HashMap;
 import java.util.Map;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
@@ -62,7 +63,9 @@ public final class OpenUpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().uriMetadata().build(new GWTTemplateEncoder());
+        ResourceSummary delegate =
+            _selectionModel.tableSelection().getDelegate();
+        return delegate.uriMetadata().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

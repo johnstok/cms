@@ -33,6 +33,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
 import ccc.client.gwt.actions.OpenCreateUserAction;
@@ -227,7 +228,7 @@ public class MainMenu
                 rootMenu.add(createMenuItem(
                     "updateRoles-root-"+name,
                     _constants.updateRoles(),
-                    new ListGroups(1, Globals.MAX_FETCH, "name", "ASC") {
+                    new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
                         @Override
                         protected void execute(final PagedCollection<Group> groups) {
                             new OpenUpdateResourceAclAction(

@@ -94,8 +94,7 @@ public class Page
      *
      * @return Returns the majorChange.
      */
-    // FIXME: Rename to isMajorChange()
-    public final boolean getMajorChange() {
+    public final boolean isMajorChange() {
         return _majorChange;
     }
 

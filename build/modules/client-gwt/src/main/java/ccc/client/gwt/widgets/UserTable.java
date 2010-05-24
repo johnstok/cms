@@ -33,6 +33,7 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.Globals;
@@ -152,7 +153,10 @@ public class UserTable extends TablePanel {
                     final UserSummaryModelData userDTO =
                         grid.getSelectionModel().getSelectedItem();
 
-                    new ListGroups(1, Globals.MAX_FETCH, "name", "ASC") {
+                    new ListGroups(1,
+                                   Globals.MAX_FETCH,
+                                   "name",
+                                   SortOrder.ASC) {
                         @Override
                         protected void execute(final PagedCollection<Group> groups) {
                             new OpenEditUserDialogAction(
@@ -329,9 +333,9 @@ public class UserTable extends TablePanel {
                         (BasePagingLoadConfig) loadConfig;
 
                     final int page =  config.getOffset()/config.getLimit()+1;
-                    final String order = (
+                    final SortOrder order = (
                         config.getSortDir() == Style.SortDir.ASC
-                        ? "ASC" : "DESC");
+                        ? SortOrder.ASC : SortOrder.DESC);
 
                     new ListUsersAction(
                         uc,

@@ -33,12 +33,14 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
 import ccc.api.types.Link;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.json.PagedCollectionReader;
 
@@ -59,7 +61,7 @@ public abstract class ListUsersAction
     private int _pageNo;
     private int _pageSize;
     private String _sort;
-    private String _order; // FIXME: Should be type SortOrder.
+    private SortOrder _order;
 
     /**
      * Constructor.
@@ -74,7 +76,7 @@ public abstract class ListUsersAction
                      final int pageNo,
                      final int pageSize,
                      final String sort,
-                     final String order) {
+                     final SortOrder order) {
         _uc = uc;
         _pageNo = pageNo;
         _pageSize = pageSize;
@@ -89,7 +91,7 @@ public abstract class ListUsersAction
         params.put("page",  new String[] {""+_pageNo});
         params.put("count", new String[] {""+_pageSize});
         params.put("sort",  new String[] {_sort});
-        params.put("order", new String[] {_order});
+        params.put("order", new String[] {_order.name()});
         if (null != _uc) {
             if (null != _uc.getEmail()) {
                 params.put("email", new String[] {_uc.getEmail()});
@@ -119,9 +121,10 @@ public abstract class ListUsersAction
                 "",
                 new ResponseHandlerAdapter(USER_ACTIONS.viewUsers()) {
                     /** {@inheritDoc} */
-                    @Override public void onOK(final ccc.client.gwt.core.Response response) {
+                    @Override public void onOK(final Response response) {
 
-                        final JSONObject obj = JSONParser.parse(response.getText()).isObject();
+                        final JSONObject obj =
+                            JSONParser.parse(response.getText()).isObject();
 
                         final PagedCollection<User> uc =
                             PagedCollectionReader
@@ -136,7 +139,6 @@ public abstract class ListUsersAction
      * Handle the result of a successful call.
      *
      * @param users The collection of users returned.
-     * @param totalCount The total comments available on the server.
      */
     protected abstract void execute(PagedCollection<User> users);
 }

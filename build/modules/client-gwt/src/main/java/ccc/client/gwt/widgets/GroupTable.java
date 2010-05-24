@@ -31,6 +31,7 @@ import java.util.List;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.GroupModelData;
 import ccc.client.gwt.events.GroupUpdated;
@@ -170,9 +171,9 @@ public class GroupTable
 
                         final int page =
                             config.getOffset()/ config.getLimit()+1;
-                        final String order = (
+                        final SortOrder order = (
                             config.getSortDir() == Style.SortDir.ASC
-                            ? "ASC" : "DESC");
+                            ? SortOrder.ASC : SortOrder.DESC);
 
                         new ListGroups(page, config.getLimit(),
                             config.getSortField(),

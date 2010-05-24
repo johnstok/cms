@@ -62,7 +62,8 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _alias.getDelegate().targetName().build(new GWTTemplateEncoder());
+        ResourceSummary delegate = _alias.getDelegate();
+        return delegate.targetName().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */

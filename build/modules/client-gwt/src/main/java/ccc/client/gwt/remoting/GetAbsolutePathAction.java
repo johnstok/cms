@@ -33,6 +33,7 @@ import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
 
@@ -74,7 +75,7 @@ public abstract class GetAbsolutePathAction
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final ccc.client.gwt.core.Response response) {
+                    public void onOK(final Response response) {
                         final String path = response.getText();
                         execute(path);
                     }

@@ -53,7 +53,8 @@ public class MoveResourceAction
      * @param newParent The new parent folder the resource.
      * @param resource The resource to move.
      */
-    public MoveResourceAction(final ResourceSummary resource, final UUID newParent) {
+    public MoveResourceAction(final ResourceSummary resource,
+                              final UUID newParent) {
         super(UI_CONSTANTS.move(), HttpMethod.POST);
         _resource = resource;
         _parent = newParent;

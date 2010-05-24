@@ -32,6 +32,7 @@ import java.util.Map;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.Link;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GwtJson;
@@ -57,7 +58,7 @@ public abstract class ListGroups
     private int _pageNo;
     private int _pageSize;
     private String _sort;
-    private String _order; // FIXME: Should be type SortOrder.
+    private SortOrder _order;
 
 
     /**
@@ -71,7 +72,7 @@ public abstract class ListGroups
     public ListGroups(final int pageNo,
                       final int pageSize,
                       final String sort,
-                      final String order) {
+                      final SortOrder order) {
         _pageNo = pageNo;
         _pageSize = pageSize;
         _sort = sort;
@@ -86,7 +87,7 @@ public abstract class ListGroups
         params.put("page",  new String[] {""+_pageNo});
         params.put("count", new String[] {""+_pageSize});
         params.put("sort",  new String[] {_sort});
-        params.put("order", new String[] {_order});
+        params.put("order", new String[] {_order.name()});
         return
             Globals.API_URL
             + new Link(GLOBALS.groups().getLink("self"))

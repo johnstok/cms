@@ -42,7 +42,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Action to open the user editing dialog.
  *
  * @author Civic Computing Ltd.
  */
@@ -56,7 +56,10 @@ public class OpenEditUserDialogAction
 
     /**
      * Constructor.
-     * @param userTable The table displaying the users.
+     *
+     * @param user The selected user.
+     * @param userTable he table displaying the users.
+     * @param groups Collection of groups.
      */
     public OpenEditUserDialogAction(final User user,
                                     final UserTable userTable,

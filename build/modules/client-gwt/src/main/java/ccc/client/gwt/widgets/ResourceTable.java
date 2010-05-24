@@ -221,8 +221,8 @@ public class ResourceTable
                                 DataBinding.bindResourceSummary(children);
 
                             final PagingLoadResult<ResourceSummaryModelData> plr =
-                                new BasePagingLoadResult<ResourceSummaryModelData>
-                            (results, config.getOffset(), totalCount);
+                                new BasePagingLoadResult<ResourceSummaryModelData>(
+                            results, config.getOffset(), totalCount);
                             callback.onSuccess(plr);
                         }
                     }.execute();

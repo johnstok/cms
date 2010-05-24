@@ -30,6 +30,7 @@ import java.util.Collection;
 
 import ccc.api.core.ACL;
 import ccc.api.core.Group;
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
@@ -71,7 +72,9 @@ public final class OpenUpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().acl().build(new GWTTemplateEncoder());
+        ResourceSummary delegate =
+            _selectionModel.tableSelection().getDelegate();
+        return delegate.acl().build(new GWTTemplateEncoder());
     }
 
     /** {@inheritDoc} */
