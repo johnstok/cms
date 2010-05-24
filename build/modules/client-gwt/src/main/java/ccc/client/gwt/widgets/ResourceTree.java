@@ -83,7 +83,12 @@ public class ResourceTree extends AbstractResourceTree {
                     : ((ResourceSummaryModelData) loadConfig).getDelegate();
 
                     new GetChildrenPagedAction(
-                        parent, 1, 1000, "name", SortOrder.ASC, null) {
+                        parent,
+                        1,
+                        Globals.MAX_FETCH,
+                        "name",
+                        SortOrder.ASC,
+                        null) {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {

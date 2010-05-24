@@ -130,7 +130,6 @@ public abstract class Command<T> {
      *
      * @param actor The actor performing the command.
      */
-    @SuppressWarnings("unused")
     protected void authorize(final UserEntity actor) { /* NO OP */ }
 
     /**

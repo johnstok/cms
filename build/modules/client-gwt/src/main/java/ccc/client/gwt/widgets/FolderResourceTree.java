@@ -95,7 +95,7 @@ public class FolderResourceTree extends AbstractResourceTree {
                     new GetChildrenPagedAction(
                         ((ResourceSummaryModelData) loadConfig).getDelegate(),
                         1,
-                        1000,
+                        Globals.MAX_FETCH,
                         "name",
                         SortOrder.ASC,
                         ResourceType.FOLDER) {

@@ -193,7 +193,7 @@ public class GroupTable
                                         groups.getElements());
 
                                 final PagingLoadResult<GroupModelData> plr =
-                                    new BasePagingLoadResult<GroupModelData> (
+                                    new BasePagingLoadResult<GroupModelData>(
                                        results,
                                        config.getOffset(),
                                        (int) groups.getTotalCount());
@@ -207,8 +207,6 @@ public class GroupTable
         updatePager(proxy);
     }
 
-
-    @SuppressWarnings("unchecked")
     private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);

@@ -29,6 +29,7 @@ package ccc.client.gwt.actions;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.client.gwt.core.Action;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.presenters.CreateUserPresenter;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.CreateUserDialog;
@@ -45,7 +46,7 @@ public final class OpenCreateUserAction
 
     /** {@inheritDoc} */
     @Override public void execute() {
-        new ListGroups(1,999,"name","ASC") {
+        new ListGroups(1, Globals.MAX_FETCH, "name", "ASC") {
             @Override
             protected void execute(final PagedCollection<Group> groups) {
                 new CreateUserPresenter(

@@ -225,7 +225,7 @@ public class CommentTable
                                         comments.getElements());
 
                                 final PagingLoadResult<CommentModelData> plr =
-                                    new BasePagingLoadResult<CommentModelData> (
+                                    new BasePagingLoadResult<CommentModelData>(
                                         results,
                                         config.getOffset(),
                                         (int) comments.getTotalCount());
@@ -240,7 +240,6 @@ public class CommentTable
     }
 
 
-    @SuppressWarnings("unchecked")
     private void updatePager(final DataProxy proxy){
         final PagingLoader loader = new BasePagingLoader(proxy);
         loader.setRemoteSort(true);

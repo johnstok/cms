@@ -37,8 +37,8 @@ public class Response {
     String _text;
     String _statusText;
     int    _statusCode;
-    
-    
+
+
     /**
      * Constructor.
      *
@@ -53,7 +53,7 @@ public class Response {
         _statusCode = statusCode;
     }
 
-    
+
     /**
      * Accessor.
      *
@@ -63,7 +63,7 @@ public class Response {
         return _text;
     }
 
-    
+
     /**
      * Accessor.
      *
