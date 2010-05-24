@@ -66,8 +66,13 @@ under the License.
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation"/>
-
-
+    <module name="FileLength"/>
+    <module name="FileTabCharacter"/>
+	<module name="RegexpSingleline">
+	    <property name="format" value="\s+$"/>
+	    <property name="message" value="Line has trailing spaces."/>
+	</module>
+        
     <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
@@ -125,7 +130,7 @@ under the License.
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
-        <module name="FileLength"/>
+
         <module name="LineLength"/>
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
@@ -140,7 +145,6 @@ under the License.
         <module name="OperatorWrap"/>
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
-        <module name="TabCharacter"/>
         <module name="WhitespaceAfter"/>
         <!-- Disabled: doesn't play well with Generics. -->
         <!-- module name="WhitespaceAround"/ -->
@@ -191,10 +195,6 @@ under the License.
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
         <module name="FinalParameters"/>
-		<module name="RegexpSingleline">
-		    <property name="format" value="\s+$"/>
-		    <property name="message" value="Line has trailing spaces."/>
-		</module>
         <!-- module name="TodoComment"/ -->
         <module name="UpperEll"/>
 
