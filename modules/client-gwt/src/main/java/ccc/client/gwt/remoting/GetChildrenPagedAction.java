@@ -69,6 +69,7 @@ RemotingAction{
      * @param pageSize The number of results per page.
      * @param sort The column to sort.
      * @param order The sort order (ASC/DESC).
+     * @param type The resource type to fetch, null for all.
      */
     public GetChildrenPagedAction(final ResourceSummary parent,
                                   final int pageNo,

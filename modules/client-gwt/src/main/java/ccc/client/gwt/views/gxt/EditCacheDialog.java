@@ -71,7 +71,7 @@ public class EditCacheDialog extends AbstractEditDialog {
      */
     public EditCacheDialog(final ResourceSummaryModelData item,
                            final Duration ds) {
-        super(new GlobalsImpl().uiConstants().editCacheDuration(),
+        super(GlobalsImpl.uiConstants().editCacheDuration(),
               new GlobalsImpl());
         _item = item;
         setHeight(DIALOG_HEIGHT);
@@ -175,8 +175,8 @@ public class EditCacheDialog extends AbstractEditDialog {
                 final Resource r = new Resource();
                 r.setId(_item.getId());
                 r.setCacheDuration(updatedDs);
-                r.addLink(
-                    Resource.DURATION, _item.getDelegate().duration().toString());
+                r.addLink(Resource.DURATION,
+                          _item.getDelegate().duration().toString());
 
                 new UpdateCacheDurationAction(r){
                     @Override protected void onNoContent(final Response resp) {

@@ -83,7 +83,7 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn,
                 actor,
-                _page.getMajorChange(),
+                _page.isMajorChange(),
                 (_page.getComment() == null || _page.getComment().isEmpty())
                     ? "Created."
                     : _page.getComment());

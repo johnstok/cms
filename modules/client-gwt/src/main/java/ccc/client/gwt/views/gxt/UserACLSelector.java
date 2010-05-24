@@ -31,6 +31,7 @@ import java.util.List;
 
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.i18n.UIConstants;
@@ -162,9 +163,9 @@ public class UserACLSelector extends Window {
                         (BasePagingLoadConfig) loadConfig;
 
                     final int page =  config.getOffset()/ config.getLimit()+1;
-                    final String order = (
+                    final SortOrder order = (
                         config.getSortDir() == Style.SortDir.ASC
-                        ? "ASC" : "DESC");
+                        ? SortOrder.ASC : SortOrder.DESC);
 
                     new ListUsersAction(
                         null,

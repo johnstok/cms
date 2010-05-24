@@ -34,6 +34,7 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.json.TemplateSerializer;
 
@@ -75,13 +76,13 @@ public abstract class ComputeTemplateAction
 
                 /** {@inheritDoc} */
                 @Override
-                public void onNoContent(final ccc.client.gwt.core.Response response) {
+                public void onNoContent(final Response response) {
                     noTemplate();
                 }
 
                 /** {@inheritDoc} */
                 @Override
-                public void onOK(final ccc.client.gwt.core.Response response) {
+                public void onOK(final Response response) {
                     final Template ts =
                         new TemplateSerializer().read(
                             new GwtJson(

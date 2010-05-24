@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.HttpMethod;
@@ -61,7 +62,9 @@ public class IncludeInMainMenuAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().includeMM().build(new GWTTemplateEncoder());
+        ResourceSummary delegate =
+            _selectionModel.tableSelection().getDelegate();
+        return delegate.includeMM().build(new GWTTemplateEncoder());
     }
 
 

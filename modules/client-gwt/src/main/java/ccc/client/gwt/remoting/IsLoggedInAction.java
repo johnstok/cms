@@ -91,7 +91,7 @@ public class IsLoggedInAction
         };
 
 
-        new ListUsersAction(new UserCriteria(), 1, 1, "", "ASC") {
+        new ListUsersAction(new UserCriteria(), 1, 1, "", SortOrder.ASC) {
             /** {@inheritDoc} */
             @Override
             protected String getPath() {
@@ -134,7 +134,7 @@ public class IsLoggedInAction
         }.execute();
 
 
-        new ListGroups(1, 1, "", "ASC") {
+        new ListGroups(1, 1, "", SortOrder.ASC) {
             /** {@inheritDoc} */
             @Override
             protected String getPath() {

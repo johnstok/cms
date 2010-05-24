@@ -78,7 +78,7 @@ public class UpdatePageCommand
             new RevisionMetadata(
                 happenedOn,
                 actor,
-                _delta.getMajorChange(),
+                _delta.isMajorChange(),
                 _delta.getComment());
 
         page.setOrUpdateWorkingCopy(_delta);

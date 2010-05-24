@@ -232,8 +232,8 @@ public class ActionTable
                     DataBinding.bindActionSummary(comments);
 
                 final PagingLoadResult<ActionSummaryModelData> plr =
-                    new BasePagingLoadResult<ActionSummaryModelData>
-                (results, config.getOffset(), totalCount);
+                    new BasePagingLoadResult<ActionSummaryModelData>(
+                results, config.getOffset(), totalCount);
                 callback.onSuccess(plr);
             }
         };
@@ -262,8 +262,8 @@ public class ActionTable
                     DataBinding.bindActionSummary(actions.getElements());
 
                 final PagingLoadResult<ActionSummaryModelData> plr =
-                    new BasePagingLoadResult<ActionSummaryModelData>
-                (results, config.getOffset(), (int) actions.getTotalCount());
+                    new BasePagingLoadResult<ActionSummaryModelData>(
+                results, config.getOffset(), (int) actions.getTotalCount());
                 callback.onSuccess(plr);
             }
         };

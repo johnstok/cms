@@ -34,6 +34,7 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.json.PageSerializer;
 
@@ -87,7 +88,7 @@ public abstract class PageDeltaAction
                 new ResponseHandlerAdapter(_name) {
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final ccc.client.gwt.core.Response response) {
+                    public void onOK(final Response response) {
                         final JSONObject result =
                             JSONParser.parse(response.getText()).isObject();
                         final Page delta =

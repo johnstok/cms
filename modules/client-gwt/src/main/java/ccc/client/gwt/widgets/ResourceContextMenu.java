@@ -34,6 +34,7 @@ import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenCreateActionAction;
 import ccc.client.gwt.actions.OpenCreateAliasAction;
@@ -135,7 +136,10 @@ public class ResourceContextMenu
         _previewWorkingCopyAction = new PreviewAction(_table, true);
         _chooseTemplateAction = new ChooseTemplateAction(_table);
         _createActionAction = new OpenCreateActionAction(_table);
-        _updateAclAction = new ListGroups(1, Globals.MAX_FETCH, "name", "ASC") {
+        _updateAclAction = new ListGroups(1,
+            Globals.MAX_FETCH,
+            "name",
+            SortOrder.ASC) {
             @Override
             protected void execute(final PagedCollection<Group> groups) {
                 new OpenUpdateResourceAclAction(_table, groups.getElements())
