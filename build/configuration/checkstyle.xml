@@ -191,10 +191,10 @@ under the License.
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
         <module name="FinalParameters"/>
-        <module name="GenericIllegalRegexp">
-            <property name="format" value="\s+$"/>
-            <property name="message" value="Line has trailing spaces."/>
-        </module>
+		<module name="RegexpSingleline">
+		    <property name="format" value="\s+$"/>
+		    <property name="message" value="Line has trailing spaces."/>
+		</module>
         <!-- module name="TodoComment"/ -->
         <module name="UpperEll"/>
 
