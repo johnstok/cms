@@ -33,6 +33,7 @@ import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Request;
+import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
 import com.google.gwt.json.client.JSONParser;
@@ -79,7 +80,7 @@ public abstract class UniqueUsernameAction
                     USER_ACTIONS.checkUniqueUsername()) {
 
                     /** {@inheritDoc} */
-                    @Override public void onOK(final ccc.client.gwt.core.Response response) {
+                    @Override public void onOK(final Response response) {
                         final boolean exists =
                             JSONParser
                                 .parse(response.getText())

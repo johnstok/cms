@@ -50,8 +50,8 @@ public class RenameAction
     /**
      * Constructor.
      *
+     * @param resource The resource to update.
      * @param name The new name for this resource.
-     * @param id The id of the resource to update.
      * @param newPath The updated absolute path to the resource.
      */
     public RenameAction(final ResourceSummaryModelData resource,

@@ -228,7 +228,11 @@ public class MainMenu
                 rootMenu.add(createMenuItem(
                     "updateRoles-root-"+name,
                     _constants.updateRoles(),
-                    new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
+                    new ListGroups(1,
+                        Globals.MAX_FETCH,
+                        "name",
+                        SortOrder.ASC) {
+                        
                         @Override
                         protected void execute(final PagedCollection<Group> groups) {
                             new OpenUpdateResourceAclAction(

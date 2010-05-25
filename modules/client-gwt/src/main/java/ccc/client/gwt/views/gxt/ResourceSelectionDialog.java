@@ -91,9 +91,6 @@ public class ResourceSelectionDialog extends Window {
      * @return Returns the selected folder as {@link FolderDTO}
      */
     public ResourceSummaryModelData selectedResource() {
-        return
-            (null==_tree.treePanel().getSelectionModel().getSelectedItem())
-                ? null
-                : (ResourceSummaryModelData) _tree.treePanel().getSelectionModel().getSelectedItem();
+        return _tree.treePanel().getSelectionModel().getSelectedItem();
     }
 }

@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.api.types.Link;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
@@ -63,7 +64,8 @@ public class CreateWorkingCopyFromHistoricalVersionAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _dialog.getResource().revisions().build(new GWTTemplateEncoder());
+        Link link = _dialog.getResource().revisions();
+        return link.build(new GWTTemplateEncoder());
     }
 
 

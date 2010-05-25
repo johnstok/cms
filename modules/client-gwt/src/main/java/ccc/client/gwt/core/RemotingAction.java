@@ -42,7 +42,6 @@ import ccc.plugins.s11n.json.ActionSummarySerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;

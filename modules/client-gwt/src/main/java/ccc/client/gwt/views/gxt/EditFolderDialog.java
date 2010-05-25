@@ -181,12 +181,14 @@ AbstractEditDialog {
             protected String getPath() {
                 final HashMap<String, String[]> params =
                     new HashMap<String, String[]>();
-                params.put("parent", new String[] {selection.getId().toString()});
+                params.put("parent",
+                    new String[] {selection.getId().toString()});
                 params.put("sort", new String[] {"manual"});
                 params.put("order", new String[] {SortOrder.ASC.name()});
                 params.put("page", new String[] {"1"});
                 params.put("count", new String[] {"1000"});
-                return selection.getDelegate().list().build(params, new GWTTemplateEncoder());
+                return selection.getDelegate().list().build(
+                    params, new GWTTemplateEncoder());
             }
 
             /** {@inheritDoc} */

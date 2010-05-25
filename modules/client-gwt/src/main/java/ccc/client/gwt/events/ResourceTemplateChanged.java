@@ -47,6 +47,9 @@ public class ResourceTemplateChanged
 
     /**
      * Constructor.
+     *
+     * @param resource The id of the resource.
+     * @param template The id of the template.
      */
     public ResourceTemplateChanged(final UUID resource, final UUID template) {
         _newTemplate = template;

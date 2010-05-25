@@ -48,7 +48,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Action for retrieving the roots.
  *
  * @author Civic Computing Ltd.
  */
