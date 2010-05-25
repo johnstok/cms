@@ -61,7 +61,6 @@ public class ErrorHandlingFilter
 
     // TODO: Move to web.xml.
     private final String _loginUri = "/login.html";
-    private final String _errorPath = "/error.html";
 
 
     /** {@inheritDoc} */

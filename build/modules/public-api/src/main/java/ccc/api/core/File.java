@@ -328,9 +328,9 @@ public final class File
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param comment
+     * @param comment to set.
      */
     public void setComment(final String comment) {
         _comment = comment;
@@ -338,9 +338,9 @@ public final class File
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param isMajorEdit
+     * @param isMajorEdit to set.
      */
     public void setMajorEdit(final boolean isMajorEdit) {
         _isMajorEdit = isMajorEdit;
@@ -348,9 +348,9 @@ public final class File
 
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return Returns the isMajorEdit.
      */
     public boolean isMajorEdit() {
         return _isMajorEdit;
@@ -358,9 +358,9 @@ public final class File
 
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return Returns the comment.
      */
     public String getComment() {
         return _comment;
@@ -368,9 +368,9 @@ public final class File
 
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return Returns the input stream.
      */
     public InputStream getInputStream() {
         return _inputStream;
@@ -378,9 +378,9 @@ public final class File
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param inputStream
+     * @param inputStream The input stream to set.
      */
     public void setInputStream(final InputStream inputStream) {
         _inputStream = inputStream;

@@ -36,7 +36,7 @@ import ccc.plugins.s11n.Serializer;
 
 
 /**
- * TODO: Add a description for this type.
+ * Reader for paged collections {@link PagedCollection}.
  *
  * @author Civic Computing Ltd.
  */

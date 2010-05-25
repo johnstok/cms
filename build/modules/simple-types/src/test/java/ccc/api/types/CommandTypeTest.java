@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add a description for this type.
+ * Tests for {@link CommandTypeTest}.
  *
  * @author Civic Computing Ltd.
  */
