@@ -294,7 +294,7 @@ public class ActionSummaryModelData
          * @param action The resource whose WC has been applied.
          */
         public ActionCancelledCallback(final ActionSummaryModelData action) {
-            super(new GlobalsImpl().uiConstants().cancel());
+            super(GlobalsImpl.uiConstants().cancel());
             _event = new ActionCancelled(action);
         }
 
@@ -317,7 +317,7 @@ public class ActionSummaryModelData
          * Constructor.
          */
         public ActionCreatedCallback() {
-            super(new GlobalsImpl().uiConstants().createAction());
+            super(GlobalsImpl.uiConstants().createAction());
         }
 
         /** {@inheritDoc} */

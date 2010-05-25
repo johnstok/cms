@@ -149,22 +149,4 @@ public class ResourceSummarySerializer implements Serializer<ResourceSummary> {
         return json;
     }
 
-
-
-    private Set<String> mapString(final Set<UUID> uuids) {
-        final Set<String> strings = new HashSet<String>();
-        for (final UUID uuid : uuids) {
-            strings.add(uuid.toString());
-        }
-        return strings;
-    }
-
-
-    private Collection<? extends UUID> mapUuid(final Collection<String> s) {
-        final List<UUID> uuids = new ArrayList<UUID>();
-        for (final String string : s) {
-            uuids.add(UUID.fromString(string));
-        }
-        return uuids;
-    }
 }

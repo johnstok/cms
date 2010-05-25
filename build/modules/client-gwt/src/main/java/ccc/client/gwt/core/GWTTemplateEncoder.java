@@ -38,7 +38,7 @@ import com.google.gwt.http.client.URL;
 public final class GWTTemplateEncoder implements Encoder {
 
     /** {@inheritDoc} */
-    @Override public String encode(String string) {
+    @Override public String encode(final String string) {
         return URL.encodeComponent(string);
     }
 }

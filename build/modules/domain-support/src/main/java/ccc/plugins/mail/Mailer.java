@@ -36,6 +36,7 @@ import ccc.api.types.EmailAddress;
  */
 public interface Mailer {
 
+    /** NAME : String. */
     String NAME = "imailer";
 
     /**

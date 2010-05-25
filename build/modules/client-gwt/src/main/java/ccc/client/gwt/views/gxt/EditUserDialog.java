@@ -68,7 +68,6 @@ public class EditUserDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param userId The UUID of the selected user.
      * @param userDTO The userDTO of the selected user.
      * @param userTable The user table.
      * @param allGroups The list of all groups.
@@ -76,7 +75,7 @@ public class EditUserDialog extends AbstractEditDialog {
     public EditUserDialog(final User userDTO,
                           final UserTable userTable,
                           final Collection<Group> allGroups) {
-        super(new GlobalsImpl().uiConstants().editUser(), new GlobalsImpl());
+        super(GlobalsImpl.uiConstants().editUser(), new GlobalsImpl());
 
         _userDTO   = userDTO;
         _userTable = userTable;

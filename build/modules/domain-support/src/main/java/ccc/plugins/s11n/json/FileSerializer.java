@@ -28,7 +28,6 @@ package ccc.plugins.s11n.json;
 
 import static ccc.plugins.s11n.JsonKeys.*;
 import ccc.api.core.File;
-import ccc.api.core.Folder;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.JsonKeys;
 

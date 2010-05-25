@@ -35,7 +35,6 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import ccc.api.core.Action;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
@@ -82,7 +81,7 @@ class ActionRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public ActionEntity find(final UUID actionId) throws EntityNotFoundException {
+    public ActionEntity find(final UUID actionId) {
         return _repo.find(ActionEntity.class, actionId);
     }
 
@@ -104,7 +103,8 @@ class ActionRepositoryImpl
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();
 
-        query.append("from ccc.domain.ActionEntity a WHERE a._status!='SCHEDULED'");
+        query.append("from ccc.domain.ActionEntity a");
+        query.append(" WHERE a._status!='SCHEDULED'");
         query.append(" order by a.");
         query.append(mapSortColumn(sort));
         query.append(" ");
@@ -125,7 +125,7 @@ class ActionRepositoryImpl
     public long countCompleted() {
         final Map<String, Object> params = new HashMap<String, Object>();
         final String query = "select count(*) from ccc.domain.ActionEntity a "
-        		+ " WHERE a._status!='SCHEDULED'";
+            + " WHERE a._status!='SCHEDULED'";
         return _repo.scalarLong(query, params);
     }
 
