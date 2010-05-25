@@ -114,7 +114,8 @@ public class TemplateRevision
         final Template t = new Template();
         t.setBody(_body);
         t.setDefinition(_definition);
-        t.setMimeType(_mimeType); // FIXME: Make a copy.
+        t.setMimeType(new MimeType(_mimeType.getPrimaryType(),
+                                   _mimeType.getSubType()));
         return t;
     }
 }

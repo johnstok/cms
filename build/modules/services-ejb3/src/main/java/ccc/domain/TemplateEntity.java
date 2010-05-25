@@ -105,7 +105,8 @@ public class TemplateEntity
         final Template t = new Template();
         t.setBody(body);
         t.setDefinition(definiton);
-        t.setMimeType(mimeType); // FIXME: Make a copy.
+        t.setMimeType(new MimeType(mimeType.getPrimaryType(),
+            mimeType.getSubType()));
 
         update(t, metadata);
     }

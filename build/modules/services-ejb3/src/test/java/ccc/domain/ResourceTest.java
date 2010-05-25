@@ -1177,7 +1177,7 @@ public final class ResourceTest extends TestCase {
     /**
      * Test.
      */
-    public void testParentCanBeChanged() { // FIXME: Test parent index field.
+    public void testParentCanBeChanged() {
 
         // ARRANGE
         final ResourceEntity r = new PageEntity();
@@ -1190,12 +1190,13 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertEquals(f2, r.getParent());
+        assertEquals(Integer.valueOf(0), r.getIndex());
     }
 
     /**
      * Test.
      */
-    public void testParentCanBeCleared() { // FIXME: Test parent index field.
+    public void testParentCanBeCleared() {
 
         // ARRANGE
         final ResourceEntity r = new PageEntity();
@@ -1207,13 +1208,14 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertNull("Should be null.", r.getParent());
+        assertNull("Should be null.", r.getIndex());
     }
 
 
     /**
      * Test.
      */
-    public void testParentMutator() { // FIXME: Test parent index field.
+    public void testParentMutator() {
 
         // ARRANGE
         final ResourceEntity r = new PageEntity();
@@ -1224,6 +1226,7 @@ public final class ResourceTest extends TestCase {
 
         // ASSERT
         assertEquals(expected, r.getParent());
+        assertEquals(Integer.valueOf(0), r.getIndex());
     }
 
     /**
