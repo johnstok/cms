@@ -59,8 +59,8 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      */
     public UpdateCurrentUserDialog() {
-        super(new GlobalsImpl().uiConstants().editUser(), new GlobalsImpl());
-        _user    = new GlobalsImpl().currentUser();
+        super(GlobalsImpl.uiConstants().editUser(), new GlobalsImpl());
+        _user = new GlobalsImpl().currentUser();
 
         _username.setFieldLabel(constants().username());
         _username.setReadOnly(true);
@@ -129,23 +129,21 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
     private Runnable updateUser() {
         return new Runnable() {
             public void run() {
-                // FIXME: Don't set values on the stored user!!!
-                _user.setPassword(_password1.getValue());
-                _user.setEmail(_email.getValue());
-                _user.setName(_name.getValue());
 
-                new UpdateCurrentUserAction(_user){
+                final User user = new User();
+                user.setId(_user.getId());
+                user.setUsername(_user.getUsername());
+                user.setGroups(_user.getGroups());
+                user.setMetadata(_user.getMetadata());
+                user.setPassword(_password1.getValue());
+                user.setEmail(_email.getValue());
+                user.setName(_name.getValue());
+
+                new UpdateCurrentUserAction(user){
                     /** {@inheritDoc} */
                     @Override protected void onNoContent(
                                                      final Response response) {
                         // TODO Update current user should return a UserDto.
-                        final User user = new User();
-                        user.setEmail(_email.getValue());
-                        user.setId(_user.getId());
-                        user.setUsername(_user.getUsername());
-                        user.setName(_user.getName());
-                        user.setGroups(_user.getGroups());
-                        user.setMetadata(_user.getMetadata());
                         GLOBALS.currentUser(user);
                         hide();
                     }
