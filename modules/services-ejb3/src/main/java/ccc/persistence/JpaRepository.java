@@ -94,7 +94,7 @@ class JpaRepository implements Repository {
                                final Class<T> resultType,
                                final int pageNo,
                                final int pageSize,
-                               final Map<String,Object> params) {
+                               final Map<String, Object> params) {
         DBC.require().greaterThan(0, pageNo);
         DBC.require().greaterThan(0, pageSize);
 
@@ -120,7 +120,7 @@ class JpaRepository implements Repository {
     @Override
     public <T> T find(final String queryName,
                       final Class<T> resultType,
-                      final Object... params) throws EntityNotFoundException {
+                      final Object... params) {
 
         final Query q = _em.createNamedQuery(queryName);
         for (int i=0; i<params.length; i++) {
@@ -164,7 +164,7 @@ class JpaRepository implements Repository {
     /** {@inheritDoc} */
     @Override
     public long scalarLong(final String queryString,
-                           final Map<String,Object> params) {
+                           final Map<String, Object> params) {
         final Query q = _em.createQuery(queryString);
         for (final Entry<String, Object> entry : params.entrySet()) {
             q.setParameter(entry.getKey(), entry.getValue());

@@ -33,9 +33,14 @@ import java.text.Normalizer.Form;
 
 import ccc.api.types.Link.Encoder;
 
+/**
+ * TODO: Add a description for this type.
+ *
+ * @author Civic Computing Ltd.
+ */
 public class NormalisingEncoder implements Encoder {
     /** {@inheritDoc} */
-    @Override public String encode(String string) {
+    @Override public String encode(final String string) {
         try {
             return
                 URLEncoder.encode(

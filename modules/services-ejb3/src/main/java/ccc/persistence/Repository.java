@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.domain.Entity;
 
 
@@ -51,12 +50,9 @@ interface Repository {
      * @param type A class instance representing the object's type.
      * @param id The id of the object.
      *
-     * @throws EntityNotFoundException If no entity exists with the specified
-     *  uuid.
      * @return The object with the specified id.
      */
-    <T extends Entity> T find(Class<T> type, UUID id)
-    throws EntityNotFoundException;
+    <T extends Entity> T find(Class<T> type, UUID id);
 
 
     /**
@@ -86,7 +82,7 @@ interface Repository {
                         Class<T> resultType,
                         int pageNo,
                         int pageSize,
-                        Map<String,Object> params);
+                        Map<String, Object> params);
 
     /**
      * Query for a single long value.
@@ -96,7 +92,7 @@ interface Repository {
      *
      * @return The value as a long.
      */
-    long scalarLong(String queryString, Map<String,Object> params);
+    long scalarLong(String queryString, Map<String, Object> params);
 
 
     /**
@@ -121,14 +117,10 @@ interface Repository {
      * @param resultType The class representing the type of the resource.
      * @param params The query parameters.
      *
-     * @throws EntityNotFoundException If no entity is found for the specified
-     *  query.
-     *
      * @return The resource that matches the query, or NULL if no match is
      *  found.
      */
-    <T> T find(String queryName, Class<T> resultType, Object... params)
-    throws EntityNotFoundException;
+    <T> T find(String queryName, Class<T> resultType, Object... params);
 
 
     /**

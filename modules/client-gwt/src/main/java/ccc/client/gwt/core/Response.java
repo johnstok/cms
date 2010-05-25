@@ -34,19 +34,21 @@ package ccc.client.gwt.core;
  */
 public class Response {
 
-    String _text;
-    String _statusText;
-    int    _statusCode;
+    private String _text;
+    private String _statusText;
+    private int    _statusCode;
 
 
     /**
      * Constructor.
      *
-     * @param text
-     * @param statusText
-     * @param statusCode
+     * @param text Text
+     * @param statusText Status text
+     * @param statusCode Status code
      */
-    public Response(String text, String statusText, int statusCode) {
+    public Response(final String text,
+                    final String statusText,
+                    final int statusCode) {
         super();
         _text = text;
         _statusText = statusText;
