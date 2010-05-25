@@ -559,7 +559,8 @@ public class ResourceSummaryModelData
             HttpMethod.POST,
             Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
-            new WCAppliedCallback(GlobalsImpl.uiConstants().applyWorkingCopy(), this));
+            new WCAppliedCallback(
+                GlobalsImpl.uiConstants().applyWorkingCopy(), this));
     }
 
     /**
@@ -572,7 +573,8 @@ public class ResourceSummaryModelData
             HttpMethod.POST,
             Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
-            new WCClearedCallback(GlobalsImpl.uiConstants().deleteWorkingCopy(), this));
+            new WCClearedCallback(
+                GlobalsImpl.uiConstants().deleteWorkingCopy(), this));
     }
 
 
@@ -595,7 +597,7 @@ public class ResourceSummaryModelData
                 path,
                 json.toString(),
                 new AliasCreatedCallback(
-                    new GlobalsImpl().uiConstants().createAlias()));
+                    GlobalsImpl.uiConstants().createAlias()));
     }
 
 
@@ -624,7 +626,7 @@ public class ResourceSummaryModelData
                 path,
                 json.toString(),
                 new FolderCreatedCallback(
-                    new GlobalsImpl().uiConstants().createFolder()));
+                    GlobalsImpl.uiConstants().createFolder()));
     }
 
 
@@ -647,28 +649,27 @@ public class ResourceSummaryModelData
                 path,
                 json.toString(),
                 new PageCreatedCallback(
-                    new GlobalsImpl().uiConstants().createPage()));
+                    GlobalsImpl.uiConstants().createPage()));
     }
 
 
     /**
      * Rename a resource.
      *
-     * @param name
-     * @param id
-     * @param newPath
+     * @param name The name of the resource.
+     * @param newPath The new resource path.
      *
      * @return The HTTP request to rename a resource.
      */
     public Request rename(final String name,
-                                 final ResourcePath newPath) {
+                          final ResourcePath newPath) {
         return
             new Request(
                 HttpMethod.POST,
                 Globals.API_URL + _rs.rename().build(new GWTTemplateEncoder()),
                 name,
                 new ResourceRenamedCallback(
-                    new GlobalsImpl().uiConstants().rename(),
+                    GlobalsImpl.uiConstants().rename(),
                     name,
                     getId(),
                     newPath));
@@ -845,9 +846,9 @@ public class ResourceSummaryModelData
 
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The delegate.
      */
     public ResourceSummary getDelegate() { return _rs; }
 }

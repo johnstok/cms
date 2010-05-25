@@ -257,7 +257,7 @@ public final class Validations {
     /**
      * Check whether given resource's parent has a resource with given name.
      *
-     * @param id The id of the resource which parent folder to check.
+     * @param folder The folder to check.
      * @param name name Resource name
      * @return The Validator
      */

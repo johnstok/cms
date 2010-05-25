@@ -175,7 +175,8 @@ public class UpdatePageDialog
         return new Runnable() {
             public void run() {
                 final PageCommentDialog commentDialog =
-                    new PageCommentDialog(getParagraphs(), UpdatePageDialog.this);
+                    new PageCommentDialog(getParagraphs(),
+                                          UpdatePageDialog.this);
                 commentDialog.show();
             }
         };
