@@ -34,7 +34,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add a description for this type.
+ * Tests for the password hashing.
  *
  * @author Civic Computing Ltd.
  */

@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 
 
 /**
- * TODO: Add a description for this type.
+ * Tests for {@link ActionStatus}.
  *
  * @author Civic Computing Ltd.
  */

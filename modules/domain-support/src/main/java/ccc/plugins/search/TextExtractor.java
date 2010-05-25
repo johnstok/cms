@@ -30,7 +30,7 @@ import ccc.api.types.StreamAction;
 
 
 /**
- * TODO: Add a description for this type.
+ * An interface for various text extractors.
  *
  * @author Civic Computing Ltd.
  */
