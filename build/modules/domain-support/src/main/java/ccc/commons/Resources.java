@@ -50,6 +50,7 @@ public final class Resources {
 
     private Resources() { /* NO-OP */ }
 
+
     /**
      * Read a URL resource into memory as a string.
      *
@@ -68,6 +69,7 @@ public final class Resources {
             throw new RuntimeException(e);
         }
     }
+
 
     /**
      * Read an input stream into memory as a string.
@@ -106,21 +108,16 @@ public final class Resources {
         }
     }
 
+
     /**
      * Read a resource path into memory as properties.
      *
-     * <p><b>"/"-separated names; no leading "/" (all names are absolute)</b>
-     *
-     * @param resourcePath The path to the resource.
+     * @param resourcePath The absolute, '/'-separated path to the resource.
      * @return The resource as a properties object.
      */
     public static Properties readIntoProps(final String resourcePath) {
         final Properties p = new Properties();
-        final InputStream is =
-            Thread
-                .currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(resourcePath);
+        final InputStream is =open(resourcePath);
         if (null!=is) {
             try {
                 p.load(is);
@@ -137,22 +134,19 @@ public final class Resources {
         return p;
     }
 
+
     /**
      * Read a resource path into memory as a list of strings.
      * <p>One string per line in the resource.
      *
-     * @param resourcePath The path to the resource.
+     * @param resourcePath The absolute, '/'-separated path to the resource.
      * @param charset The character set to use when reading the resource.
      * @return The resource as a list of strings.
      */
     public static List<String> readIntoList(final String resourcePath,
                                             final Charset charset) {
         final List<String> strings = new ArrayList<String>();
-        final InputStream is =
-            Thread
-                .currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(resourcePath);
+        final InputStream is =open(resourcePath);
         if (null!=is) {
             try {
                 BufferedReader r = null;
@@ -182,6 +176,23 @@ public final class Resources {
         }
         return strings;
     }
+
+
+    /**
+     * Open an input stream on a resource.
+     *
+     * @param resourcePath The absolute, '/'-separated path to the resource.
+     *
+     * @return An input stream onto the specified resource.
+     */
+    public static InputStream open(final String resourcePath) {
+        return
+            Thread
+            .currentThread()
+            .getContextClassLoader()
+            .getResourceAsStream(resourcePath);
+    }
+
 
     /** UTF8 : Charset. */
     public static final Charset UTF8;
