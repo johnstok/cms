@@ -101,6 +101,6 @@ public class PdfLoaderTest
         pl.execute(Resources.open("foo.pdf"));
 
         // ASSERT
-        assertEquals("foo\n", pl.getText());
+        assertEquals("foo"+System.getProperty("line.separator"), pl.getText());
     }
 }
