@@ -73,7 +73,8 @@ public class ChangeTemplateForResourceCommand {
                         final Date happenedOn,
                         final UUID resourceId,
                         final UUID templateId) {
-        final ResourceEntity r = _repository.find(ResourceEntity.class, resourceId);
+        final ResourceEntity r =
+            _repository.find(ResourceEntity.class, resourceId);
         r.confirmLock(actor);
 
         final TemplateEntity t =

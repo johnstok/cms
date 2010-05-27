@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.commands;
 
 import ccc.persistence.ActionRepository;
 import ccc.persistence.CommentRepository;

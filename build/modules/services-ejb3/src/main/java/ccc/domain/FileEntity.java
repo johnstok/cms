@@ -337,14 +337,16 @@ public class FileEntity
     /**
      * Create a summary of a text file.
      *
+     * @param dataRepo The repository used to read the file's data.
+     *
      * @return The summary of the file.
      */
-    public File mapTextFile(final DataRepository _dm) {
+    public File mapTextFile(final DataRepository dataRepo) {
         final File fs =
             new File(
                 getId(),
                 (!isText())
-                    ? null : read(_dm, this),
+                    ? null : read(dataRepo, this),
                 getMimeType(),
                 currentRevision().isMajorChange(),
                 currentRevision().getComment());

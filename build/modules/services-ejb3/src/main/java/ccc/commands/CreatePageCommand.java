@@ -78,7 +78,8 @@ class CreatePageCommand extends CreateResourceCommand<PageEntity> {
         final TemplateEntity template =
             (null==_page.getTemplate())
                 ? null
-                : getRepository().find(TemplateEntity.class, _page.getTemplate());
+                : getRepository().find(
+                    TemplateEntity.class, _page.getTemplate());
 
         final RevisionMetadata rm =
             new RevisionMetadata(happenedOn,

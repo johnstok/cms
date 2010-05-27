@@ -136,9 +136,9 @@ public class AccessPermission {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Create a new permission entry.
      *
-     * @return
+     * @return The entry representing this permission.
      */
     public Entry createEntry() {
         final Entry e = new Entry();

@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.commands;
 
 import static org.easymock.EasyMock.*;
 
@@ -32,8 +32,6 @@ import java.util.Date;
 
 import ccc.api.core.Template;
 import ccc.api.types.MimeType;
-import ccc.commands.AbstractCommandTest;
-import ccc.commands.UpdateTemplateCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.TemplateEntity;
@@ -66,22 +64,24 @@ public class TemplateDaoImplTest
                 UserEntity.SYSTEM_USER,
                 true,
                 "Created."));
-        foo.lock(_user);
+        foo.lock(getUser());
         final Template td = new Template();
         td.setBody("newBody");
         td.setDefinition("newDefn");
         td.setMimeType(MimeType.BINARY_DATA);
 
-        expect(_repository.find(TemplateEntity.class, foo.getId())).andReturn(foo);
-        _audit.record(isA(LogEntry.class));
+        expect(
+            getRepository().find(
+                TemplateEntity.class, foo.getId())).andReturn(foo);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         final UpdateTemplateCommand ut =
-            new UpdateTemplateCommand(_repoFactory, foo.getId(), td);
+            new UpdateTemplateCommand(getRepoFactory(), foo.getId(), td);
 
 
         // ACT
-        ut.execute(_user, _now);
+        ut.execute(getUser(), getNow());
 
 
         // ASSERT

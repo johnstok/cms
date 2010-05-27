@@ -75,7 +75,8 @@ abstract class CreateResourceCommand<T>
         newResource.setDateCreated(happenedOn, actor);
         newResource.setDateChanged(happenedOn, actor);
 
-        final FolderEntity folder = getRepository().find(FolderEntity.class, folderId);
+        final FolderEntity folder =
+            getRepository().find(FolderEntity.class, folderId);
         if (null==folder) {
             throw new RuntimeException("No folder exists with id: "+folderId);
         }

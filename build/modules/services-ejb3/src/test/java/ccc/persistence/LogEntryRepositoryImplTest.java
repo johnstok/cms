@@ -74,7 +74,8 @@ public class LogEntryRepositoryImplTest
     public void testRecordCreate() {
 
         // ARRANGE
-        final PageEntity p = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        final PageEntity p = new PageEntity(
+            new ResourceName("foo"), "foo", null, _rm);
         final LogEntryRepository al = new LogEntryRepositoryImpl(_em);
         final LogEntry le = new LogEntry(
                                         _actor,
@@ -108,9 +109,11 @@ public class LogEntryRepositoryImplTest
     }
 
 
-    private final UserEntity _actor = new UserEntity(new Username("actor"), "password");
+    private final UserEntity _actor =
+        new UserEntity(new Username("actor"), "password");
     private final Date _happenedOn = new Date();
     private Repository _em;
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

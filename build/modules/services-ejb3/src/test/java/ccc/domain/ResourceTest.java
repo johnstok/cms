@@ -111,11 +111,14 @@ public final class ResourceTest extends TestCase {
     public void testAccessibilityCheckRespectsAclCombinations() {
 
         // ARRANGE
-        final UserEntity tom = new UserEntity(new Username("tom"), "password");
+        final UserEntity tom =
+            new UserEntity(new Username("tom"), "password");
         tom.addGroup(BAZ);
-        final UserEntity dick = new UserEntity(new Username("dick"), "password");
+        final UserEntity dick =
+            new UserEntity(new Username("dick"), "password");
         dick.addGroup(FOO);
-        final UserEntity harry = new UserEntity(new Username("harry"), "password");
+        final UserEntity harry =
+            new UserEntity(new Username("harry"), "password");
         harry.addGroup(FOO);
 
         final FolderEntity f = new FolderEntity();

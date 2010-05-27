@@ -63,9 +63,12 @@ public class IncludeInMainMenuCommand {
 
     /**
      * Constructor.
+     *
+     * @param repository The resource repository.
+     * @param audit      The audit log repository.
      */
     public IncludeInMainMenuCommand(final ResourceRepository repository,
-                                  final LogEntryRepository audit) {
+                                    final LogEntryRepository audit) {
         _repository = repository;
         _audit = audit;
     }

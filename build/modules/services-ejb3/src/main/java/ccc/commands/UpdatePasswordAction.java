@@ -66,8 +66,6 @@ public class UpdatePasswordAction {
      * @param password The new password.
      * @param actor The user who performed the command.
      * @param happenedOn When the command was performed.
-     *
-     * @throws CccCheckedException If the command fails.
      */
     public void execute(final UserEntity actor,
                         final Date happenedOn,

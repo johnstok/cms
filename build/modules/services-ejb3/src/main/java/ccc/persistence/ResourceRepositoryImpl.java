@@ -42,6 +42,7 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.commons.Exceptions;
 import ccc.domain.AliasEntity;
 import ccc.domain.FileEntity;
 import ccc.domain.FolderEntity;
@@ -185,11 +186,15 @@ class ResourceRepositoryImpl implements ResourceRepository {
     /** {@inheritDoc} */
     @Override
     public List<FolderEntity> roots() {
-        final List<FolderEntity> roots = new ArrayList<FolderEntity>();
+        final List<FolderEntity> roots =
+            new ArrayList<FolderEntity>();
+        final List<FolderEntity> allRoots =
+            list(QueryNames.ROOTS, FolderEntity.class);
 
         // Exclude the trash root.
-        for (final FolderEntity root : list(QueryNames.ROOTS, FolderEntity.class)) {
-            if (!PredefinedResourceNames.TRASH.equals(root.getName().toString())) {
+        for (final FolderEntity root : allRoots) {
+            if (!PredefinedResourceNames.TRASH.equals(
+                    root.getName().toString())) {
                 roots.add(root);
             }
         }
@@ -265,7 +270,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
     }
 
 
-    private <T extends ResourceEntity> List<T> discardDeleted(final List<T> all) {
+    private <T extends ResourceEntity> List<T> discardDeleted(
+                                                            final List<T> all) {
         final List<T> nondeleted = new ArrayList<T>();
         for (final T r : all) {
             if (!r.isDeleted()) { nondeleted.add(r); }
@@ -405,7 +411,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
                         break; // Append nothing.
                 }
             } catch (final RuntimeException e) {
-                /* Ignore bad data. */
+                Exceptions.swallow(e); // Ignore bad data.
             }
         }
     }

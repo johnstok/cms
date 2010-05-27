@@ -150,10 +150,8 @@ abstract class AbstractEJB {
      * @param userId The user's ID.
      *
      * @return The corresponding user.
-     *
-     * @throws EntityNotFoundException If a corresponding user doesn't exist.
      */
-    protected UserEntity userForId(final UUID userId) throws EntityNotFoundException {
+    protected UserEntity userForId(final UUID userId) {
         final UserEntity u = _users.find(userId);
         return u;
     }
@@ -163,12 +161,9 @@ abstract class AbstractEJB {
      * Accessor.
      * TODO: Throw 'invalid session exception instead.
      *
-     * @throws EntityNotFoundException If no user corresponds to the current
-     *  principal.
-     *
      * @return The currently logged in user.
      */
-    protected UserEntity currentUser() throws EntityNotFoundException {
+    protected UserEntity currentUser() {
         return _users.loggedInUser(_context.getCallerPrincipal());
     }
 
@@ -176,12 +171,9 @@ abstract class AbstractEJB {
     /**
      * Accessor.
      *
-     * @throws EntityNotFoundException If no user corresponds to the current
-     *  principal.
-     *
      * @return The currently logged in user's ID.
      */
-    protected UUID currentUserId() throws EntityNotFoundException {
+    protected UUID currentUserId() {
         return currentUser().getId();
     }
 

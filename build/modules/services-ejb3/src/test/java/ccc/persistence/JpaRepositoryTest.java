@@ -105,6 +105,8 @@ public class JpaRepositoryTest
 
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
-    private ResourceEntity _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+    private ResourceEntity _r =
+        new PageEntity(new ResourceName("foo"), "foo", null, _rm);
 }

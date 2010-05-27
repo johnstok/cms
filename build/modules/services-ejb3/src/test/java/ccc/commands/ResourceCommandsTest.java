@@ -60,14 +60,16 @@ public class ResourceCommandsTest
     public void testIncludeInMainMenu() {
 
         // ARRANGE
-        _r.lock(_user);
-        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
-        _audit.record(isA(LogEntry.class));
+        _r.lock(getUser());
+        expect(
+            getRepository().find(
+                ResourceEntity.class, _r.getId())).andReturn(_r);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new IncludeInMainMenuCommand(_repoFactory).execute(
-            _user, new Date(), _r.getId(), true);
+        new IncludeInMainMenuCommand(getRepoFactory()).execute(
+            getUser(), new Date(), _r.getId(), true);
 
         // ASSERT
         verifyAll();
@@ -82,16 +84,18 @@ public class ResourceCommandsTest
     public void testUpdateFullMetadata() {
 
         // ARRANGE
-        _r.lock(_user);
-        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
-        _audit.record(isA(LogEntry.class));
+        _r.lock(getUser());
+        expect(
+            getRepository().find(
+                ResourceEntity.class, _r.getId())).andReturn(_r);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         final Map<String, String> props = new HashMap<String, String>();
         props.put("bodyId", "example");
-        new UpdateResourceMetadataCommand(_repoFactory).execute(
-            _user,
+        new UpdateResourceMetadataCommand(getRepoFactory()).execute(
+            getUser(),
             new Date(),
             _r.getId(),
             "newTitle",
@@ -127,18 +131,19 @@ public class ResourceCommandsTest
                     UserEntity.SYSTEM_USER,
                     true,
                     "Created."));
-        _r.lock(_user);
+        _r.lock(getUser());
 
-        expect(_repository.find(ResourceEntity.class, _r.getId()))
+        expect(getRepository().find(ResourceEntity.class, _r.getId()))
             .andReturn(_r);
-        expect(_repository.find(TemplateEntity.class, defaultTemplate.getId()))
+        expect(getRepository().find(
+            TemplateEntity.class, defaultTemplate.getId()))
             .andReturn(defaultTemplate);
-        _audit.record(isA(LogEntry.class));
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new ChangeTemplateForResourceCommand(_repoFactory).execute(
-            _user, new Date(), _r.getId(), defaultTemplate.getId());
+        new ChangeTemplateForResourceCommand(getRepoFactory()).execute(
+            getUser(), new Date(), _r.getId(), defaultTemplate.getId());
 
         // ASSERT
         verifyAll();
@@ -155,18 +160,18 @@ public class ResourceCommandsTest
         final FolderEntity oldParent = new FolderEntity("old");
         final FolderEntity newParent = new FolderEntity("new");
         oldParent.add(_r);
-        _r.lock(_user);
+        _r.lock(getUser());
 
-        expect(_repository.find(ResourceEntity.class, _r.getId()))
+        expect(getRepository().find(ResourceEntity.class, _r.getId()))
             .andReturn(_r);
-        expect(_repository.find(FolderEntity.class, newParent.getId()))
+        expect(getRepository().find(FolderEntity.class, newParent.getId()))
             .andReturn(newParent);
-        _audit.record(isA(LogEntry.class));
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new MoveResourceCommand(_repository, _audit).execute(
-            _user, new Date(), _r.getId(), newParent.getId());
+        new MoveResourceCommand(getRepository(), getAudit()).execute(
+            getUser(), new Date(), _r.getId(), newParent.getId());
 
         // ASSERT
         verifyAll();
@@ -180,14 +185,17 @@ public class ResourceCommandsTest
     public void testRename() {
 
         // ARRANGE
-        _r.lock(_user);
-        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
-        _audit.record(isA(LogEntry.class));
+        _r.lock(getUser());
+        expect(
+            getRepository().find(
+                ResourceEntity.class, _r.getId())).andReturn(_r);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
-        new RenameResourceCommand(_repository, _audit, _r.getId(), "baz")
-            .execute(_user, new Date());
+        new RenameResourceCommand(
+            getRepository(), getAudit(), _r.getId(), "baz")
+            .execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();
@@ -221,21 +229,22 @@ public class ResourceCommandsTest
 
     /**
      * Test.
-     * @throws CccCheckedException If the command fails.
      */
     public void testUpdateCache() {
 
         // ARRANGE
         final int expecteduration = 3727;
-        _r.lock(_user);
-        expect(_repository.find(ResourceEntity.class, _r.getId())).andReturn(_r);
-        _audit.record(isA(LogEntry.class));
+        _r.lock(getUser());
+        expect(
+            getRepository().find(
+                ResourceEntity.class, _r.getId())).andReturn(_r);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         // ACT
         new UpdateCachingCommand(
-            _repository, _audit, _r.getId(), new Duration(0, 1, 2, 7))
-            .execute(_user, new Date());
+            getRepository(), getAudit(), _r.getId(), new Duration(0, 1, 2, 7))
+            .execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();
@@ -245,16 +254,17 @@ public class ResourceCommandsTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         super.setUp();
-        _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+        _r = new PageEntity(
+            new ResourceName("foo"), "foo", null, getRevisionMetadata());
         _parent = new FolderEntity("parent");
         _parent.add(_r);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() {
         super.tearDown();
         _parent = null;
         _r      = null;

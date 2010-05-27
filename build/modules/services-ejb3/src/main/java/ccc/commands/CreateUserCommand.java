@@ -76,7 +76,8 @@ public class CreateUserCommand {
                         final Date happenedOn,
                         final User delta) {
         final UserEntity user =
-            new UserEntity(delta.getUsername(), delta.getName(), delta.getPassword());
+            new UserEntity(
+                delta.getUsername(), delta.getName(), delta.getPassword());
         user.setEmail(new EmailAddress(delta.getEmail()));
         for (final UUID groupId : delta.getGroups()) {
             user.addGroup(_groups.find(groupId));

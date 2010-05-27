@@ -262,5 +262,6 @@ public class LockingTest
            new GroupEntity("ADMINISTRATOR", Permission.RESOURCE_UNLOCK));
     }};
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

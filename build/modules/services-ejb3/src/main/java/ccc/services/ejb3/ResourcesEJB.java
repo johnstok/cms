@@ -621,7 +621,8 @@ public class ResourcesEJB
     public Map<String, String> metadata(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
-        final ResourceEntity r = getResources().find(ResourceEntity.class, resourceId);
+        final ResourceEntity r =
+            getResources().find(ResourceEntity.class, resourceId);
         return r.getMetadata();
     }
 
@@ -632,7 +633,8 @@ public class ResourcesEJB
     public ResourceSummary retrieve(final UUID resourceId) {
         checkPermission(RESOURCE_READ);
 
-        final ResourceEntity r = getResources().find(ResourceEntity.class, resourceId);
+        final ResourceEntity r =
+            getResources().find(ResourceEntity.class, resourceId);
         checkRead(r);
 
         return r.mapResource();
@@ -717,8 +719,8 @@ public class ResourcesEJB
 
 
     private Collection<? extends ResourceEntity> filterAccessibleTo(
-                                            final UserEntity u,
-                                            final List<ResourceEntity> resources) {
+                                        final UserEntity u,
+                                        final List<ResourceEntity> resources) {
         final List<ResourceEntity> accessible = new ArrayList<ResourceEntity>();
         for (final ResourceEntity r : resources) {
             if (r.isReadableBy(u)) { accessible.add(r); }

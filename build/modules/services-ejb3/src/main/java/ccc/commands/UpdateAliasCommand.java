@@ -69,10 +69,12 @@ public class UpdateAliasCommand
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final AliasEntity alias = getRepository().find(AliasEntity.class, _aliasId);
+        final AliasEntity alias =
+            getRepository().find(AliasEntity.class, _aliasId);
         alias.confirmLock(actor);
 
-        final ResourceEntity target = getRepository().find(ResourceEntity.class, _targetId);
+        final ResourceEntity target =
+            getRepository().find(ResourceEntity.class, _targetId);
         alias.target(target);
 
         update(alias, actor, happenedOn);

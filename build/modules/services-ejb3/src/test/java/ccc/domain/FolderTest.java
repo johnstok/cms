@@ -429,7 +429,8 @@ public final class FolderTest extends TestCase {
         final ResourceEntity resource = new FolderEntity("foo");
 
         // ASSERT
-        assertEquals(FolderEntity.class, resource.as(FolderEntity.class).getClass());
+        assertEquals(
+            FolderEntity.class, resource.as(FolderEntity.class).getClass());
     }
 
     /**
@@ -525,7 +526,8 @@ public final class FolderTest extends TestCase {
         foo.add(bar);
 
         // ACT
-        final ResourceEntity expected = foo.getEntryWithName2(new ResourceName("bar"));
+        final ResourceEntity expected =
+            foo.getEntryWithName2(new ResourceName("bar"));
 
         // ASSERT
         assertSame(expected, bar);
@@ -545,7 +547,8 @@ public final class FolderTest extends TestCase {
         final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
-        final PageEntity expectedContent = content.navigateTo(path).as(PageEntity.class);
+        final PageEntity expectedContent =
+            content.navigateTo(path).as(PageEntity.class);
 
         // ASSERT
         assertSame(cd, expectedContent);
@@ -565,7 +568,8 @@ public final class FolderTest extends TestCase {
         final ResourcePath path = new ResourcePath("/ab/cd");
 
         // ACT
-        final FolderEntity expectedFolder = content.navigateTo(path).as(FolderEntity.class);
+        final FolderEntity expectedFolder =
+            content.navigateTo(path).as(FolderEntity.class);
 
         // ASSERT
         assertSame(cd, expectedFolder);
@@ -585,7 +589,8 @@ public final class FolderTest extends TestCase {
         final ResourcePath path = new ResourcePath("");
 
         // ACT
-        final FolderEntity expectedFolder = content.navigateTo(path).as(FolderEntity.class);
+        final FolderEntity expectedFolder =
+            content.navigateTo(path).as(FolderEntity.class);
 
         // ASSERT
         assertSame(content, expectedFolder);
@@ -705,5 +710,6 @@ public final class FolderTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

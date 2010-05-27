@@ -51,13 +51,15 @@ public class UnpublishResourceCommandTest
         s.lock(getUser());
         s.publish(getUser());
 
-        expect(getRepository().find(ResourceEntity.class, s.getId())).andReturn(s);
+        expect(
+            getRepository().find(ResourceEntity.class, s.getId())).andReturn(s);
         getAudit().record(isA(LogEntry.class));
 
         replayAll();
 
         final UnpublishResourceCommand c =
-            new UnpublishResourceCommand(getRepository(), getAudit(), s.getId());
+            new UnpublishResourceCommand(
+                getRepository(), getAudit(), s.getId());
 
         // ACT
         c.execute(getUser(), getNow());

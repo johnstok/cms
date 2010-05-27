@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2008 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,26 +24,26 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.commands;
 
 import static org.easymock.EasyMock.*;
+
+import java.util.Collections;
+
 import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
-import ccc.commands.AbstractCommandTest;
-import ccc.commands.ClearWorkingCopyCommand;
-import ccc.commands.UpdateWorkingCopyCommand;
 import ccc.domain.LogEntry;
 import ccc.domain.PageEntity;
-import ccc.domain.ResourceEntity;
 
 
 /**
- * Tests for working copy management.
+ * Tests for the {@link PageDaoImpl} class.
+ * TODO: Test create() method.
  *
  * @author Civic Computing Ltd.
  */
-public class WorkingCopyManagerTest
+public class PageDaoImplTest
     extends
         AbstractCommandTest {
 
@@ -51,31 +51,7 @@ public class WorkingCopyManagerTest
     /**
      * Test.
      */
-    public void testClearWorkingCopy() {
-
-        // ARRANGE
-        final PageEntity p = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
-        p.lock(_user);
-        p.setOrUpdateWorkingCopy(p.forCurrentRevision());
-
-        expect(_repository.find(ResourceEntity.class, p.getId())).andReturn(p);
-        _audit.record(isA(LogEntry.class));
-        replayAll();
-
-        // ACT
-        new ClearWorkingCopyCommand(_repository, _audit).execute(
-            _user, _now, p.getId());
-
-        // ASSERT
-        verifyAll();
-        assertFalse(p.hasWorkingCopy());
-    }
-
-
-    /**
-     * Test.
-     */
-    public void testUpdateWorkingCopy() {
+    public void testUpdatePage() {
 
         // ARRANGE
         final PageEntity page =
@@ -83,22 +59,39 @@ public class WorkingCopyManagerTest
                 new ResourceName("test"),
                 "test",
                 null,
-                _rm,
+                getRevisionMetadata(),
                 Paragraph.fromText("abc", "def"));
-        page.lock(_user);
-        final Page before = page.forCurrentRevision();
+        final Page delta =
+            Page.delta(
+                Collections.singleton(Paragraph.fromText("foo", "bar")));
+        delta.setComment("comment text");
+        delta.setMajorChange(false);
 
-        expect(_repository.find(PageEntity.class, page.getId())).andReturn(page);
-        _audit.record(isA(LogEntry.class));
+        page.lock(getUser());
+        final UpdatePageCommand updatePage =
+            new UpdatePageCommand(
+                getRepoFactory(), page.getId(), delta);
+
+        expect(
+            getRepository().find(
+                PageEntity.class, page.getId())).andReturn(page);
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
+
         // ACT
-        new UpdateWorkingCopyCommand(_repoFactory).execute(
-            _user, _now, page.getId(), before);
+        updatePage.execute(getUser(), getNow());
+
 
         // ASSERT
         verifyAll();
-        assertNotNull(
-            "Page must have a working copy", page.getOrCreateWorkingCopy());
+        assertEquals(1, page.currentRevision().getParagraphs().size());
+        assertEquals(
+            "foo",
+            page.currentRevision().getParagraphs().iterator().next().getName());
+        assertEquals(
+            "bar",
+            page.currentRevision().getParagraph("foo").getText());
+        assertFalse("Page must not have working copy", page.hasWorkingCopy());
     }
 }

@@ -100,7 +100,8 @@ public class ResourceCriteria implements Serializable {
      * @return Date changed before.
      */
     public Date getChangedBefore() {
-        return _changedBefore;
+        return
+            (null==_changedBefore) ? null : new Date(_changedBefore.getTime());
     }
 
     /**
@@ -109,7 +110,7 @@ public class ResourceCriteria implements Serializable {
      * @param date Date changed before.
      */
     public void setChangedBefore(final Date date) {
-        _changedBefore = date;
+        _changedBefore = (null==date) ? null : new Date(date.getTime());
     }
      /**
      * Accessor.
@@ -117,7 +118,8 @@ public class ResourceCriteria implements Serializable {
      * @return Date changed after.
      */
     public Date getChangedAfter() {
-        return _changedAfter;
+        return
+            (null==_changedAfter) ? null : new Date(_changedAfter.getTime());
     }
     /**
      * Mutator.
@@ -125,7 +127,7 @@ public class ResourceCriteria implements Serializable {
      * @param date Date changed after.
      */
     public void setChangedAfter(final Date date) {
-        _changedAfter = date;
+        _changedAfter =  (null==date) ? null : new Date(date.getTime());
     }
     /**
      * Mutator.

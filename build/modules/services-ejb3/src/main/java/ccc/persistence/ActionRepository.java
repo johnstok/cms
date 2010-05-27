@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
 import ccc.domain.ActionEntity;
 
@@ -103,12 +102,9 @@ public interface ActionRepository {
      *
      * @param actionId The action's ID.
      *
-     * @throws EntityNotFoundException If no action exists with the specified
-     *  ID.
-     *
      * @return The corresponding action.
      */
-    ActionEntity find(UUID actionId) throws EntityNotFoundException;
+    ActionEntity find(UUID actionId);
 
     /**
      * Persist a newly created action.

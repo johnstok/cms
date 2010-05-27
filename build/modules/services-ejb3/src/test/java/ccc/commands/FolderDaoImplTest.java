@@ -24,14 +24,12 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.services.impl;
+package ccc.commands;
 
 import static org.easymock.EasyMock.*;
 
 import java.util.Date;
 
-import ccc.commands.AbstractCommandTest;
-import ccc.commands.UpdateFolderCommand;
 import ccc.domain.FolderEntity;
 import ccc.domain.LogEntry;
 
@@ -52,23 +50,23 @@ public class FolderDaoImplTest
     public void testUpdateSortOrder() throws Exception {
 
         // ARRANGE
-        _f.lock(_user);
-        expect(_repository.find(FolderEntity.class, _f.getId()))
+        _f.lock(getUser());
+        expect(getRepository().find(FolderEntity.class, _f.getId()))
             .andReturn(_f);
-        expect(_repository.find(FolderEntity.class, _f.getId()))
+        expect(getRepository().find(FolderEntity.class, _f.getId()))
             .andReturn(_f);
-        _audit.record(isA(LogEntry.class));
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         final UpdateFolderCommand uf =
             new UpdateFolderCommand(
-                _repoFactory,
+                getRepoFactory(),
                 _f.getId(),
                 null,
                 null);
 
         // ACT
-        uf.execute(_user, new Date());
+        uf.execute(getUser(), new Date());
 
         // ASSERT
         verifyAll();
@@ -81,9 +79,12 @@ public class FolderDaoImplTest
 //
 //        // ARRANGE
 //        _f.lock(_user);
-//        final PageEntity foo = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
-//        final PageEntity bar = new PageEntity(new ResourceName("bar"), "bar", null, _rm);
-//        final PageEntity baz = new PageEntity(new ResourceName("baz"), "baz", null, _rm);
+//        final PageEntity foo =
+//            new PageEntity(new ResourceName("foo"), "foo", null, _rm);
+//        final PageEntity bar =
+//            new PageEntity(new ResourceName("bar"), "bar", null, _rm);
+//        final PageEntity baz =
+//            new PageEntity(new ResourceName("baz"), "baz", null, _rm);
 //        _f.add(foo);
 //        _f.add(bar);
 //        _f.add(baz);
@@ -122,14 +123,14 @@ public class FolderDaoImplTest
 
 
     /** {@inheritDoc} */
-    @Override protected void setUp() throws Exception {
+    @Override protected void setUp() {
         super.setUp();
         _f = new FolderEntity("foo");
     }
 
 
     /** {@inheritDoc} */
-    @Override protected void tearDown() throws Exception {
+    @Override protected void tearDown() {
         super.tearDown();
         _f = null;
     }

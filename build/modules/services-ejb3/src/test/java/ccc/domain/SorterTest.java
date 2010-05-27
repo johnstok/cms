@@ -50,7 +50,8 @@ public class SorterTest
     public void testname() {
 
         // ARRANGE
-        final List<ResourceEntity> resources = new ArrayList<ResourceEntity>() {{
+        final List<ResourceEntity> resources =
+            new ArrayList<ResourceEntity>() {{
             add(new FolderEntity("k"));
             add(new FolderEntity("z"));
             add(new FolderEntity("a"));
@@ -90,7 +91,8 @@ public class SorterTest
     public void testDateChangedAscOrdering() {
 
         // ARRANGE
-        final List<ResourceEntity> resources = new ArrayList<ResourceEntity>() {{
+        final List<ResourceEntity> resources =
+            new ArrayList<ResourceEntity>() {{
             add(new FolderEntity("z"));
             add(new FolderEntity("a"));
         }};
@@ -108,7 +110,8 @@ public class SorterTest
     public void testDateChangedDescOrdering() {
 
         // ARRANGE
-        final List<ResourceEntity> resources = new ArrayList<ResourceEntity>() {{
+        final List<ResourceEntity> resources =
+            new ArrayList<ResourceEntity>() {{
             add(new FolderEntity("z"));
             add(new FolderEntity("a"));
         }};

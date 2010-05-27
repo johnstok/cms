@@ -72,7 +72,8 @@ public class ClearWorkingCopyCommand {
     public void execute(final UserEntity actor,
                         final Date happenedOn,
                         final UUID resourceId) {
-        final ResourceEntity r = _repository.find(ResourceEntity.class, resourceId);
+        final ResourceEntity r =
+            _repository.find(ResourceEntity.class, resourceId);
         r.confirmLock(actor);
 
         if (r instanceof WCAware<?>) {

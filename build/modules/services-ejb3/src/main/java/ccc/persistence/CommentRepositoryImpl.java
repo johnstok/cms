@@ -136,7 +136,8 @@ public class CommentRepositoryImpl
 
     /** {@inheritDoc} */
     @Override
-    public long count(final ResourceEntity resource, final CommentStatus status) {
+    public long count(final ResourceEntity resource,
+                      final CommentStatus status) {
 
         final StringBuffer query = new StringBuffer();
         final Map<String, Object> params = new HashMap<String, Object>();

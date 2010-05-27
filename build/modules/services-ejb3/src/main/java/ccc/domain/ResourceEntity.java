@@ -141,8 +141,8 @@ public abstract class ResourceEntity
 
 
     /**
-     * Type-safe helper method to convert an instance of {@link ResourceEntity} to a
-     * subclass.
+     * Type-safe helper method to convert an instance of {@link ResourceEntity}
+     * to a subclass.
      *
      * @param <T> The type that this resource should be converted to.
      * @param resourceType The class representing the type that this resource
@@ -261,6 +261,7 @@ public abstract class ResourceEntity
      * by the {@link FolderEntity} class.</i>
      *
      * @param parent The folder containing this resource.
+     * @param index  The index of this resource relative to other children.
      */
     void setParent(final FolderEntity parent, final Integer index) {
         _parent = parent;
@@ -286,9 +287,8 @@ public abstract class ResourceEntity
      * Lock a resource.
      *
      * @param u The user who is locking the resource.
-     * @throws LockMismatchException If the resource is already locked.
      */
-    public void lock(final UserEntity u) throws LockMismatchException {
+    public void lock(final UserEntity u) {
         require().notNull(u);
         if (isLocked()) {
             throw new LockMismatchException(getId());
@@ -313,12 +313,8 @@ public abstract class ResourceEntity
      * method.
      *
      * @param user The user releasing the lock.
-     * @throws UnlockedException If the resource isn't locked.
-     * @throws InsufficientPrivilegesException If the user has insufficient
-     *  privileges to unlock the resource.
      */
-    public void unlock(final UserEntity user) throws InsufficientPrivilegesException,
-                                               UnlockedException {
+    public void unlock(final UserEntity user) {
 
         if (!isLocked()) {
             throw new UnlockedException(getId());
@@ -445,11 +441,8 @@ public abstract class ResourceEntity
      * nothing; otherwise an exception is thrown.
      *
      * @param user The user who should have the lock.
-     * @throws UnlockedException If the resource isn't locked.
-     * @throws LockMismatchException If the resource is locked by another user.
      */
-    public void confirmLock(final UserEntity user) throws UnlockedException,
-                                                    LockMismatchException {
+    public void confirmLock(final UserEntity user) {
         if (!isLocked()) {
             throw new UnlockedException(getId());
         }
@@ -593,7 +586,8 @@ public abstract class ResourceEntity
      * @param createdOn The date of creation.
      * @param createdBy The user who created.
      */
-    public void setDateCreated(final Date createdOn, final UserEntity createdBy) {
+    public void setDateCreated(final Date createdOn,
+                               final UserEntity createdBy) {
         require().notNull(createdOn);
         require().notNull(createdBy);
         _dateCreated = new Date(createdOn.getTime());
@@ -623,7 +617,8 @@ public abstract class ResourceEntity
      * @param changedOn The date the resource changed.
      * @param changedBy The user who changed the resource.
      */
-    public void setDateChanged(final Date changedOn, final UserEntity changedBy) {
+    public void setDateChanged(final Date changedOn,
+                               final UserEntity changedBy) {
         require().notNull(changedOn);
         require().notNull(changedBy);
         _dateChanged = new Date(changedOn.getTime());
@@ -839,7 +834,9 @@ public abstract class ResourceEntity
             new ACLSerializer().write(json.create(), getAcl()));
         json.set(
             JsonKeys.PUBLISHED_BY,
-            (null==getPublishedBy()) ? null : getPublishedBy().getId().toString());
+            (null==getPublishedBy())
+                ? null
+                : getPublishedBy().getId().toString());
         json.set(
             JsonKeys.INCLUDE_IN_MAIN_MENU,
             Boolean.valueOf(isIncludedInMainMenu()));
@@ -891,7 +888,9 @@ public abstract class ResourceEntity
         dto.setSecure(isSecure());
         dto.setTags(getTags());
         dto.setTemplate(
-            (null==computeTemplate(null)) ? null : computeTemplate(null).getId());
+            (null==computeTemplate(null))
+                ? null
+                : computeTemplate(null).getId());
         dto.setTitle(getTitle());
         dto.setType(getType());
         dto.setVisible(isVisible());
@@ -918,7 +917,7 @@ public abstract class ResourceEntity
      * @return The corresponding collection of ResourceSummary.
      */
     public static List<ResourceSummary> mapResources(
-                               final Collection<? extends ResourceEntity> resources) {
+                       final Collection<? extends ResourceEntity> resources) {
         final List<ResourceSummary> mapped =
             new ArrayList<ResourceSummary>();
         for (final ResourceEntity r : resources) {
@@ -1080,7 +1079,8 @@ public abstract class ResourceEntity
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 rs.addLink(
                     File.SELF_BINARY,
-                    new Link(ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
+                    new Link(
+                        ccc.api.core.ResourceIdentifiers.File.BINARY_ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 
