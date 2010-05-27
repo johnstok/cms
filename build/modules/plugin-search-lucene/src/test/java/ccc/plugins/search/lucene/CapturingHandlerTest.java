@@ -35,10 +35,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 
-import ccc.plugins.search.lucene.CapturingHandler;
-
-
-
 
 /**
  * Tests for the {@link CapturingHandler} class.

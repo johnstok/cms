@@ -28,10 +28,12 @@ package ccc.plugins.search.lucene;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -73,6 +75,42 @@ import ccc.plugins.search.TextExtractor;
 public class SimpleLuceneFS
     implements
         SimpleLucene {
+
+    /**
+     * CC-specific query parser.
+     *
+     * @author Civic Computing Ltd.
+     */
+    private static final class CCQueryParser
+        extends
+            QueryParser {
+
+        /**
+         * Constructs a query parser.
+         *
+         * @param matchVersion  Lucene version to match.
+         * @param f             The default field for query terms.
+         * @param a             Used to find terms in the query text.
+         */
+        CCQueryParser(final Version matchVersion,
+                              final String f,
+                              final Analyzer a) {
+            super(matchVersion, f, a);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        protected Query newRangeQuery(final String f,
+                                      final String min,
+                                      final String max,
+                                      final boolean inclusive) {
+            return NumericRangeQuery.newLongRange(f,
+                Long.valueOf(min),
+                Long.valueOf(max),
+                true,
+                true);
+        }
+    }
 
     private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
     private static final Logger LOG =
@@ -341,13 +379,13 @@ public class SimpleLuceneFS
             d.add(
                 new Field(
                     "path",
-                    path.toString().toLowerCase(),
+                    path.toString().toLowerCase(Locale.US),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
             d.add(
                 new Field(
                     "name",
-                    name.toString().toLowerCase(),
+                    name.toString().toLowerCase(Locale.US),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
             d.add(
@@ -452,23 +490,8 @@ public class SimpleLuceneFS
         wrapper.addAnalyzer("name", new KeywordAnalyzer());
         wrapper.addAnalyzer("title", new KeywordAnalyzer());
 
-        final QueryParser qp = new QueryParser(
-            LUCENE_VERSION,
-            DEFAULT_FIELD,
-            wrapper) {
-            /** {@inheritDoc} */
-            @Override
-            protected Query newRangeQuery(final String f,
-                                          final String min,
-                                          final String max,
-                                          final boolean inclusive) {
-                return NumericRangeQuery.newLongRange(f,
-                    Long.valueOf(min),
-                    Long.valueOf(max),
-                    true,
-                    true);
-            }
-        };
+        final QueryParser qp =
+            new CCQueryParser(LUCENE_VERSION, DEFAULT_FIELD, wrapper);
 
         return qp;
     }
