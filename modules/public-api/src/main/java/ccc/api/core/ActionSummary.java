@@ -249,10 +249,9 @@ public final class ActionSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @param id
-     * @return
+     * @return A link to this action.
      */
     public String self() {
         return getLink("self");

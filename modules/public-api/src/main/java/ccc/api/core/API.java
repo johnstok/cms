@@ -64,86 +64,86 @@ public class API
     public static final String ACTIONS = "actions";
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the actions collection.
      */
     public String actions() { return getLink(ACTIONS); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the aliases collection.
      */
     public String aliases() { return getLink(ALIASES); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the comments collection.
      */
     public String comments() { return getLink(COMMENTS); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the files collection.
      */
     public String files() { return getLink(FILES); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the actions collection.
      */
     public String folders() { return getLink(FOLDERS); }
 
     /**
      * TODO: Add a description for this method.
      *
-     * @return
+     * @return A link to the groups collection.
      */
     public String groups() { return getLink(GROUPS); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the pages collection.
      */
     public String pages() { return getLink(PAGES); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the resources collection.
      */
     public String resources() { return getLink(RESOURCES); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the search collection.
      */
     public String search() { return getLink(SEARCH); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the security collection.
      */
     public String security() { return getLink(SECURITY); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the templates collection.
      */
     public String templates() { return getLink(TEMPLATES); }
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the users collection.
      */
     public String users() { return getLink(USERS); }
 }

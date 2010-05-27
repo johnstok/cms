@@ -142,10 +142,10 @@ public class AccessPermission {
      */
     public Entry createEntry() {
         final Entry e = new Entry();
-        e._canRead = _canRead;
-        e._canWrite = _canWrite;
-        e._name = _principal.getName();
-        e._principal = _principal.getId();
+        e.setReadable(_canRead);
+        e.setWriteable(_canWrite);
+        e.setName(_principal.getName());
+        e.setPrincipal(_principal.getId());
         return e;
     }
 }

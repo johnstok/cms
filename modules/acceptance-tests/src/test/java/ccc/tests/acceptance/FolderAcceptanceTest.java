@@ -212,9 +212,9 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
         final User me = getUsers().retrieveCurrent();
         final ACL acl = new ACL();
         final Entry e = new Entry();
-        e._canRead = true;
-        e._canWrite = true;
-        e._principal = user.getId();
+        e.setReadable(true);
+        e.setWriteable(true);
+        e.setPrincipal(user.getId());
         acl.setUsers(Collections.singleton(e));
         getCommands().lock(folder.getId());
         getCommands().changeAcl(folder.getId(), acl);

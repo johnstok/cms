@@ -97,7 +97,9 @@ public class UpdateResourceAclCommand
         for (final Entry e : _acl.getGroups()) {
             r.addGroupPermission(
                 new AccessPermission(
-                    e._canRead, e._canWrite, getGroups().find(e._principal)));
+                    e.isReadable(),
+                    e.isWriteable(),
+                    getGroups().find(e.getPrincipal())));
         }
     }
 
@@ -107,7 +109,9 @@ public class UpdateResourceAclCommand
         for (final Entry e : _acl.getUsers()) {
             r.addUserPermission(
                 new AccessPermission(
-                    e._canRead, e._canWrite, getUsers().find(e._principal)));
+                    e.isReadable(),
+                    e.isWriteable(),
+                    getUsers().find(e.getPrincipal())));
         }
     }
 

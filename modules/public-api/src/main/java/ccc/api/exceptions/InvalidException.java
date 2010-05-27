@@ -39,6 +39,7 @@ public abstract class InvalidException
     extends
         CCException {
 
+    /** RESOURCE : String. */
     protected static final String RESOURCE = "resource";
 
 

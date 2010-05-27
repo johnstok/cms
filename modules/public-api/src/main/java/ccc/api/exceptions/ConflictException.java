@@ -39,7 +39,9 @@ public abstract class ConflictException
     extends
         CCException {
 
+    /** RES_NAME : String. */
     protected static final String RES_NAME = "existing_name";
+    /** RES_ID : String. */
     protected static final String RES_ID   = "existing_id";
 
 

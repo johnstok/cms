@@ -51,6 +51,8 @@ public class CycleDetectedException
 
     /**
      * Constructor.
+     *
+     * @param resource The resource for which a cycle was detected.
      */
     public CycleDetectedException(final UUID resource) {
         super(

@@ -596,9 +596,9 @@ public class Resource
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's metadata.
      */
     public Link uriMetadata() {
         return new Link(getLink(METADATA));
@@ -606,9 +606,9 @@ public class Resource
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's template.
      */
     public Link uriTemplate() {
         return new Link(getLink(TEMPLATE));
@@ -616,9 +616,9 @@ public class Resource
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's duration.
      */
     public Link duration() {
         return new Link(getLink(DURATION));
@@ -626,9 +626,9 @@ public class Resource
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource.
      */
     public final Link self() {
         return new Link(getLink(SELF));

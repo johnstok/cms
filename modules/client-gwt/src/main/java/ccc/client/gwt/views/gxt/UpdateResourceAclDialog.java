@@ -174,7 +174,7 @@ public class UpdateResourceAclDialog
         for (final Group g : allGroups) {
             final BaseModelData d = new BaseModelData();
             for (final Entry e : _acl.getGroups()){
-                if (e._principal.equals(g.getId())) {
+                if (e.getPrincipal().equals(g.getId())) {
                     d.set("name", g.getName());
                     d.set("id", g.getId());
                     gData.add(d);
@@ -252,17 +252,17 @@ public class UpdateResourceAclDialog
                 final List<Entry> newGroups = new ArrayList<Entry>();
                 for (final ModelData selected : _groupStore.getModels()) {
                     final Entry e = new Entry();
-                    e._canRead = true;
-                    e._canWrite = true;
-                    e._principal = selected.<UUID>get("id");
+                    e.setReadable(true);
+                    e.setWriteable(true);
+                    e.setPrincipal(selected.<UUID>get("id"));
                     newGroups.add(e);
                 }
                 final List<Entry> newUsers = new ArrayList<Entry>();
                 for (final UserSummaryModelData um : _userStore.getModels()) {
                     final Entry e = new Entry();
-                    e._canRead = true;
-                    e._canWrite = true;
-                    e._principal = um.getId();
+                    e.setReadable(true);
+                    e.setWriteable(true);
+                    e.setPrincipal(um.getId());
                     newUsers.add(e);
                 }
 

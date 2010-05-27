@@ -77,7 +77,8 @@ public final class ViewHistoryAction
                 "",
                 new ResponseHandlerAdapter(UI_CONSTANTS.viewHistory()){
                     /** {@inheritDoc} */
-                    @Override public void onOK(final ccc.client.gwt.core.Response response) {
+                    @Override public void onOK(
+                               final ccc.client.gwt.core.Response response) {
 
                         final JSONObject obj =
                             JSONParser.parse(response.getText()).isObject();

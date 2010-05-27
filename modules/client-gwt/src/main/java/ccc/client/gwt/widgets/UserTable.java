@@ -345,14 +345,16 @@ public class UserTable extends TablePanel {
                         order) {
 
                             @Override
-                            protected void execute(final PagedCollection<User> users) {
+                            protected void execute(
+                                           final PagedCollection<User> users) {
                                 final List<UserSummaryModelData> results =
-                                    DataBinding.bindUserSummary(users.getElements());
+                                    DataBinding
+                                        .bindUserSummary(users.getElements());
 
-                                final PagingLoadResult<UserSummaryModelData> plr =
-                                    new BasePagingLoadResult<UserSummaryModelData>(
-                                        results, config.getOffset(),
-                                        (int) users.getTotalCount());
+                            final PagingLoadResult<UserSummaryModelData> plr =
+                                new BasePagingLoadResult<UserSummaryModelData>(
+                                    results, config.getOffset(),
+                                    (int) users.getTotalCount());
                                 callback.onSuccess(plr);
                             }
                     }.execute();

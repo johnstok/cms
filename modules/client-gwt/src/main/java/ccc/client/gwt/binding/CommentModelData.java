@@ -124,50 +124,90 @@ public final class CommentModelData
     }
 
 
-    public final String getAuthor() {
+    /**
+     * Accessor.
+     *
+     * @return The comment's author.
+     */
+    public String getAuthor() {
         return _delegate.getAuthor();
     }
 
 
-    public final String getBody() {
+    /**
+     * Accessor.
+     *
+     * @return The comment's body text.
+     */
+    public String getBody() {
         return _delegate.getBody();
     }
 
 
-    public final UUID getResourceId() {
+    /**
+     * Accessor.
+     *
+     * @return The resource the comment refers to.
+     */
+    public UUID getResourceId() {
         return _delegate.getResourceId();
     }
 
 
-    public final CommentStatus getStatus() {
+    /**
+     * Accessor.
+     *
+     * @return The comment's status.
+     */
+    public CommentStatus getStatus() {
         return _delegate.getStatus();
     }
 
 
-    public final Date getTimestamp() {
+    /**
+     * Accessor.
+     *
+     * @return The date the comment was created.
+     */
+    public Date getTimestamp() {
         return _delegate.getTimestamp();
     }
 
 
-    public final String getUrl() {
+    /**
+     * Accessor.
+     *
+     * @return The comment's url.
+     */
+    public String getUrl() {
         return _delegate.getUrl();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public final UUID getId() {
+    public UUID getId() {
         return _delegate.getId();
     }
 
 
-    public final String getEmail() {
+    /**
+     * Accessor.
+     *
+     * @return The email address.
+     */
+    public String getEmail() {
         return _delegate.getEmail();
     }
 
 
-    public void setDelegate(final Comment updated) {
-        _delegate = updated;
+    /**
+     * Mutator.
+     *
+     * @param comment The comment delegated to.
+     */
+    public void setDelegate(final Comment comment) {
+        _delegate = comment;
     }
 
 

@@ -44,27 +44,33 @@ public class Res
 
 
     /**
-     * TODO: Add a description for this method.
+     * Get the link for a rel name.
      *
-     * @param key
-     * @return
+     * @param rel The rel name for the link.
+     *
+     * @return The corresponding link or NULL if no such link exists.
      */
-    public String getLink(final String key) {
-        return _links.get(key);
+    public String getLink(final String rel) {
+        return _links.get(rel);
     }
 
 
     /**
-     * TODO: Add a description for this method.
+     * Set the link for a rel name.
      *
-     * @param key
-     * @param value
+     * @param rel The rel name for the link.
+     * @param link The link to set.
      */
-    public void addLink(final String key, final String value) {
-        _links.put(key, value);
+    public void addLink(final String rel, final String link) {
+        _links.put(rel, link);
     }
 
 
+    /**
+     * Get a map of available links.
+     *
+     * @return All rel links for this object.
+     */
     public Map<String, String> getLinks() {
         return new HashMap<String, String>(_links);
     }
@@ -72,9 +78,9 @@ public class Res
 
 
     /**
-     * TODO: Add a description for this method.
+     * Add multiple rel links.
      *
-     * @param links
+     * @param links The links to add.
      */
     public void addLinks(final Map<String, String> links) {
         _links.putAll(links);

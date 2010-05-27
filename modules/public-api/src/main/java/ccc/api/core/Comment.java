@@ -216,9 +216,9 @@ public class Comment
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this comment.
      */
     public String self() { return getLink("self"); }
 }
