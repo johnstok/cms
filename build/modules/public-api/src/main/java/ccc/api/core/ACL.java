@@ -42,8 +42,8 @@ import ccc.api.types.DBC;
  */
 public final class ACL implements Serializable {
 
-    private Set<Entry> _users = new HashSet<Entry>();
-    private Set<Entry> _groups = new HashSet<Entry>();
+    private HashSet<Entry> _users = new HashSet<Entry>();
+    private HashSet<Entry> _groups = new HashSet<Entry>();
 
 
     /**
@@ -100,12 +100,17 @@ public final class ACL implements Serializable {
     }
 
 
+    /**
+     * An ACL entry.
+     *
+     * @author Civic Computing Ltd.
+     */
     public static class Entry implements Serializable {
 
-        public UUID    _principal;
-        public String  _name;
-        public boolean _canRead;
-        public boolean _canWrite;
+        private UUID    _principal;
+        private String  _name;
+        private boolean _canRead;
+        private boolean _canWrite;
 
 
         /**
@@ -114,13 +119,95 @@ public final class ACL implements Serializable {
         public Entry() { super(); }
 
 
+        /**
+         * Accessor.
+         *
+         * @return Returns the principal.
+         */
+        public UUID getPrincipal() {
+            return _principal;
+        }
+
+
+        /**
+         * Mutator.
+         *
+         * @param principal The principal to set.
+         */
+        public void setPrincipal(final UUID principal) {
+            _principal = principal;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the name.
+         */
+        public String getName() {
+            return _name;
+        }
+
+
+        /**
+         * Mutator.
+         *
+         * @param name The name to set.
+         */
+        public void setName(final String name) {
+            _name = name;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the canRead.
+         */
+        public boolean isReadable() {
+            return _canRead;
+        }
+
+
+        /**
+         * Mutator.
+         *
+         * @param canRead The canRead to set.
+         */
+        public void setReadable(final boolean canRead) {
+            _canRead = canRead;
+        }
+
+
+        /**
+         * Accessor.
+         *
+         * @return Returns the canWrite.
+         */
+        public boolean isWriteable() {
+            return _canWrite;
+        }
+
+
+        /**
+         * Mutator.
+         *
+         * @param canWrite The canWrite to set.
+         */
+        public void setWriteable(final boolean canWrite) {
+            _canWrite = canWrite;
+        }
+
+
         /** {@inheritDoc} */
         @Override
         public int hashCode() {
             final int prime = 31;
+            final int truePrime = 1231;
+            final int falsePrime = 1237;
             int result = 1;
-            result = prime * result + (_canRead ? 1231 : 1237);
-            result = prime * result + (_canWrite ? 1231 : 1237);
+            result = prime * result + (_canRead ? truePrime : falsePrime);
+            result = prime * result + (_canWrite ? truePrime : falsePrime);
             result = prime * result + ((_name == null) ? 0 : _name.hashCode());
             result =
                 prime
@@ -167,10 +254,17 @@ public final class ACL implements Serializable {
         }
 
 
+        /** {@inheritDoc} */
+        @Override
+        public String toString() {
+            return _principal+" [read="+_canRead+", write="+_canWrite+"]";
+        }
+
+
         /**
-         * TODO: Add a description for this method.
+         * Link.
          *
-         * @return
+         * @return A link to this ACL entry's principal.
          */
         @Deprecated
         // FIXME: _principal should be a reference to a user (with id & title).

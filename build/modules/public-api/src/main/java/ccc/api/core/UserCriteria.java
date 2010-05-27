@@ -124,8 +124,7 @@ public final class UserCriteria implements Serializable {
      *
      * @param username The username to set.
      */
-    public final void setUsername(final String username) {
-
+    public void setUsername(final String username) {
         _username = username;
     }
 
@@ -135,8 +134,7 @@ public final class UserCriteria implements Serializable {
      *
      * @param groups The groups to set.
      */
-    public final void setGroups(final String groups) {
-
+    public void setGroups(final String groups) {
         _groups = groups;
     }
 
@@ -146,8 +144,7 @@ public final class UserCriteria implements Serializable {
      *
      * @param email The email to set.
      */
-    public final void setEmail(final String email) {
-
+    public void setEmail(final String email) {
         _email = email;
     }
 
@@ -157,8 +154,7 @@ public final class UserCriteria implements Serializable {
      *
      * @param metadataKey The metadataKey to set.
      */
-    public final void setMetadataKey(final String metadataKey) {
-
+    public void setMetadataKey(final String metadataKey) {
         _metadataKey = metadataKey;
     }
 
@@ -168,8 +164,7 @@ public final class UserCriteria implements Serializable {
      *
      * @param metadataValue The metadataValue to set.
      */
-    public final void setMetadataValue(final String metadataValue) {
-
+    public void setMetadataValue(final String metadataValue) {
         _metadataValue = metadataValue;
     }
 

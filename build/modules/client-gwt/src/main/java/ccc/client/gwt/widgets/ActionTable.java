@@ -172,13 +172,15 @@ public class ActionTable
             new RpcProxy<PagingLoadResult<ActionSummaryModelData>>() {
 
                 @Override
-                protected void load(final Object loadConfig,
-                                    final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback) {
+                protected void load(
+    final Object loadConfig,
+    final AsyncCallback<PagingLoadResult<ActionSummaryModelData>> callback) {
 
                     if (null==loadConfig
                         || !(loadConfig instanceof BasePagingLoadConfig)) {
                         final PagingLoadResult<ActionSummaryModelData> plr =
-                           new BasePagingLoadResult<ActionSummaryModelData>(null);
+                           new BasePagingLoadResult<ActionSummaryModelData>(
+                               null);
                         callback.onSuccess(plr);
 
                     } else {
@@ -194,7 +196,8 @@ public class ActionTable
                         if (ActionTree.PENDING.equals(selected.get("id"))) {
                             getPendingActions(callback, config, page, order)
                                 .execute();
-                        } else if (ActionTree.COMPLETED.equals(selected.get("id"))){
+                        } else if (
+                            ActionTree.COMPLETED.equals(selected.get("id"))){
                             getCompletedActions(callback, config, page, order)
                                 .execute();
                         }
@@ -257,7 +260,8 @@ public class ActionTable
             }
 
             @Override
-            protected void execute(final PagedCollection<ActionSummary> actions) {
+            protected void execute(
+                               final PagedCollection<ActionSummary> actions) {
                 final List<ActionSummaryModelData> results =
                     DataBinding.bindActionSummary(actions.getElements());
 

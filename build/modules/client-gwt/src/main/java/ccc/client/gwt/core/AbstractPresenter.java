@@ -70,6 +70,13 @@ public abstract class AbstractPresenter<T, U> {
     }
 
 
+    /**
+     * Add a handler for the specified event type.
+     *
+     * @param <R> The type of handler to add.
+     * @param event The event the handler should be fired for.
+     * @param handler The handler to fire.
+     */
     protected <R extends EventHandler> void addHandler(
                                                  final GwtEvent.Type<R> event,
                                                  final R handler) {
@@ -77,6 +84,9 @@ public abstract class AbstractPresenter<T, U> {
     }
 
 
+    /**
+     * Clear all handlers for this presenter.
+     */
     protected void clearHandlers() {
         for (final HandlerRegistration hr : _handlers) {
             hr.removeHandler();

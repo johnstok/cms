@@ -75,10 +75,10 @@ public class ACLSerializer implements Serializer<ACL> {
         final Collection<Json> jsonEntries = new ArrayList<Json>();
         for (final Entry entry : entries) {
             final Json jsonEntry = json.create();
-            jsonEntry.set(JsonKeys.PRINCIPAL, entry._principal);
-            jsonEntry.set(JsonKeys.NAME, entry._name);
-            jsonEntry.set("can_read", entry._canRead);
-            jsonEntry.set("can_write", entry._canWrite);
+            jsonEntry.set(JsonKeys.PRINCIPAL, entry.getPrincipal());
+            jsonEntry.set(JsonKeys.NAME, entry.getName());
+            jsonEntry.set("can_read", entry.isReadable());
+            jsonEntry.set("can_write", entry.isWriteable());
             jsonEntries.add(jsonEntry);
         }
         return jsonEntries;
@@ -96,10 +96,10 @@ public class ACLSerializer implements Serializer<ACL> {
         final Set<Entry> entries = new HashSet<Entry>();
         for (final Json json : s) {
             final Entry e = new Entry();
-            e._principal = json.getId(JsonKeys.PRINCIPAL);
-            e._name      = json.getString(JsonKeys.NAME);
-            e._canRead   = json.getBool("can_read").booleanValue();
-            e._canWrite  = json.getBool("can_write").booleanValue();
+            e.setPrincipal(json.getId(JsonKeys.PRINCIPAL));
+            e.setName(json.getString(JsonKeys.NAME));
+            e.setReadable(json.getBool("can_read").booleanValue());
+            e.setWriteable(json.getBool("can_write").booleanValue());
             entries.add(e);
         }
         return entries;

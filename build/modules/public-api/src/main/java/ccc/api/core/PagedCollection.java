@@ -41,8 +41,8 @@ public class PagedCollection<T>
     extends
         Res {
 
-    protected long         _totalCount;
-    protected List<T>      _elements;
+    private long         _totalCount;
+    private List<T>      _elements;
     private final Class<T> _elementClass;
 
 

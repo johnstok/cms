@@ -155,6 +155,14 @@ public class Page
     }
 
 
+    /**
+     * Factory method - create a page for a set of paragraphs.
+     *
+     * @param paragraphs The paragraphs for the page.
+     *
+     * @return A new page containing the specified paragraphs.
+     */
+    @Deprecated
     public static Page delta(final Set<Paragraph> paragraphs) {
         final Page p = new Page();
         p.setParagraphs(paragraphs);
@@ -163,9 +171,9 @@ public class Page
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return The link to this Page's working copy.
      */
     public Link workingCopy() {
         return new Link(getLink(WORKING_COPY));

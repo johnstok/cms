@@ -116,9 +116,9 @@ public class Group
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link..
      *
-     * @return
+     * @return A link to this group.
      */
     public String self() { return getLink("self"); }
 }

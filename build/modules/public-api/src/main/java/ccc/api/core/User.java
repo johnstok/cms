@@ -259,17 +259,17 @@ public class User
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this user.
      */
     public String self() { return getLink(SELF); }
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this user's password.
      */
     public String uriPassword() { return getLink(PASSWORD); }
 

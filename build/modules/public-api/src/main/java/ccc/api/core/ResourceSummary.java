@@ -538,9 +538,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's name.
      */
     public Link rename() {
         return new Link(getLink(Resource.NAME));
@@ -548,9 +548,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's working copy.
      */
     public Link wc() {
         return new Link(getLink(Resource.WC));
@@ -558,9 +558,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the resource collection.
      */
     public Link list() {
         return new Link(getLink(Resource.LIST));
@@ -568,10 +568,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @param id
-     * @return
+     * @return A link to this resource's history.
      */
     public Link revisions() {
         return new Link(getLink(Resource.REVISIONS));
@@ -579,9 +578,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's absolute path.
      */
     public Link uriAbsPath() {
         return new Link(getLink(Resource.ABSOLUTE_PATH));
@@ -589,9 +588,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's 'include in menu' resource.
      */
     public Link includeMM() {
         return new Link(getLink(Resource.INCLUDE_MM));
@@ -599,9 +598,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the user who has locked this resource.
      */
     public Link lock() {
         return new Link(getLink(Resource.LOCK));
@@ -609,9 +608,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's parent.
      */
     public Link move() {
         return new Link(getLink(Resource.PARENT));
@@ -619,9 +618,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's duration.
      */
     public Link duration() {
         return new Link(getLink(Resource.DURATION));
@@ -629,9 +628,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's ACL.
      */
     public Link acl() {
         return new Link(getLink(Resource.ACL));
@@ -639,9 +638,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's publisher.
      */
     public Link uriPublish() {
         return new Link(getLink(Resource.PUBLISH));
@@ -649,9 +648,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's 'include in menu' resource.
      */
     public Link excludeMM() {
         return new Link(getLink(Resource.EXCLUDE_MM));
@@ -659,9 +658,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's metadata.
      */
     public Link uriMetadata() {
         return new Link(getLink(Resource.METADATA));
@@ -669,9 +668,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource's template.
      */
     public Link uriTemplate() {
         return new Link(getLink(Resource.TEMPLATE));
@@ -679,9 +678,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this folder's images collection.
      */
     public Link images() {
         return new Link(getLink(Folder.IMAGES));
@@ -689,9 +688,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this resource.
      */
     public Link self() {
         return new Link(getLink(Resource.SELF));
@@ -699,9 +698,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this file's binary resource.
      */
     public Link selfBinary() {
         return new Link(getLink(File.SELF_BINARY));
@@ -709,9 +708,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to the folder collection's 'exists' resource.
      */
     public Link exists() {
         return
@@ -720,9 +719,9 @@ public final class ResourceSummary extends Res {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Link.
      *
-     * @return
+     * @return A link to this alias' target name.
      */
     public Link targetName() {
         return

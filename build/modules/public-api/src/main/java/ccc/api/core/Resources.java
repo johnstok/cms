@@ -407,7 +407,10 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_SECURE)
-    @Deprecated() // FIXME Use resourceForPath() or lookup by ID. - used in ContentServlet.getSnapshot
+    @Deprecated
+    /* FIXME Use resourceForPath() or lookup by ID.
+     * used in ContentServlet.getSnapshot()
+     */
     Resource resourceForPathSecure(@PathParam("path") String path);
 
 
@@ -420,8 +423,11 @@ public interface Resources {
      * @return A summary of the corresponding resource.
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.PATH_SECURE)
-        // FIXME: Path is duplicate of resourceForPathSecure()
-    @Deprecated // FIXME: Lookup by ID. - used in ContentServlet.getSnapshot
+    @Deprecated
+    /*
+     * FIXME: Lookup by ID. - used in ContentServlet.getSnapshot()
+     * FIXME: Path is duplicate of resourceForPathSecure()
+     */
     Resource revisionForPath(
                  @PathParam("path") final String path,
                  @QueryParam("version") @DefaultValue("0") final int version);

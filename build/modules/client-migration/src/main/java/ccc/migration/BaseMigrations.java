@@ -247,9 +247,9 @@ public class BaseMigrations {
             final Set<Entry> groupEntries = new HashSet<Entry>();
             for (final UUID gId : groupList) {
                 final Entry e = new Entry(); // FIXME: Read perm's from cc6?
-                e._canRead = true;
-                e._canWrite = true;
-                e._principal = gId;
+                e.setReadable(true);
+                e.setWriteable(true);
+                e.setPrincipal(gId);
                 groupEntries.add(e);
             }
 
@@ -258,9 +258,9 @@ public class BaseMigrations {
             final Set<Entry> userList = new HashSet<Entry>();
             for (final Integer user : users) {
                 final Entry e = new Entry(); // FIXME: Read perm's from cc6?
-                e._canRead = true;
-                e._canWrite = true;
-                e._principal = userForLegacyId(user.intValue()).getId();
+                e.setReadable(true);
+                e.setWriteable(true);
+                e.setPrincipal(userForLegacyId(user.intValue()).getId());
                 userList.add(e);
             }
 

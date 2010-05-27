@@ -28,8 +28,6 @@ package ccc.api.exceptions;
 
 import java.util.UUID;
 
-import ccc.api.exceptions.UnauthorizedException;
-
 import junit.framework.TestCase;
 
 
@@ -59,7 +57,8 @@ public class UnauthorizedExceptionTest
 
         // ASSERT
         assertEquals(
-            "User " + user + " isn't authorized to access entity " + target + ".",
+            "User " + user
+            + " isn't authorized to access entity " + target + ".",
             withUser.getMessage());
         assertEquals(
             "User null isn't authorized to access entity " + target + ".",

@@ -57,8 +57,8 @@ public class ResourceAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
-    /** MAX_RANDOM_VALUE : int. */
     private static final int MAX_RANDOM_VALUE = 1000;
+    private static final int PAGE_SIZE = 20;
     private static final Logger LOG =
         Logger.getLogger(ResourceAcceptanceTest.class);
 
@@ -196,9 +196,9 @@ public class ResourceAcceptanceTest
         final User user = tempUser();
         final ACL acl = new ACL();
         final Entry e = new Entry();
-        e._canRead = true;
-        e._canWrite = true;
-        e._principal = user.getId();
+        e.setReadable(true);
+        e.setWriteable(true);
+        e.setPrincipal(user.getId());
 
         // ACT
         acl.setUsers(Collections.singleton(e));
@@ -210,7 +210,7 @@ public class ResourceAcceptanceTest
         assertEquals(0, actual.getGroups().size());
         assertEquals(1, actual.getUsers().size());
         assertEquals(
-            user.getId(), actual.getUsers().iterator().next()._principal);
+            user.getId(), actual.getUsers().iterator().next().getPrincipal());
     }
 
 
@@ -224,12 +224,12 @@ public class ResourceAcceptanceTest
         final ACL origAcl =
             getCommands().acl(folder.getId());
         final Entry e = new Entry();
-        e._canRead = true;
-        e._canWrite = true;
-        e._name = "SITE_BUILDER";
+        e.setReadable(true);
+        e.setWriteable(true);
+        e.setName("SITE_BUILDER");
         final List<Group> groups =
-            getGroups().query("SITE_BUILDER", 1, 20).getElements();
-        e._principal = groups.iterator().next().getId();
+            getGroups().query("SITE_BUILDER", 1, PAGE_SIZE).getElements();
+        e.setPrincipal(groups.iterator().next().getId());
         final ACL acl =
             new ACL()
                 .setGroups(Collections.singleton(e));

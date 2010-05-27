@@ -214,6 +214,11 @@ public class GlobalsImpl
     }
 
 
+    /**
+     * Mutator.
+     *
+     * @param userActions The action names to set.
+     */
     public static void setUserActions(final ActionNameConstants userActions) {
         USER_ACTIONS = userActions;
     }
@@ -223,7 +228,7 @@ public class GlobalsImpl
      *
      * @author Civic Computing Ltd.
      */
-    private class ExitHandler implements ClosingHandler {
+    public static class ExitHandler implements ClosingHandler {
 
         /** {@inheritDoc} */
         @Override
@@ -307,7 +312,9 @@ public class GlobalsImpl
      *
      * @param users The user collection to access.
      */
-    public static void users(final PagedCollection<User> users) { USERS = users; }
+    public static void users(final PagedCollection<User> users) {
+        USERS = users;
+    }
 
 
     /** {@inheritDoc} */
@@ -320,7 +327,9 @@ public class GlobalsImpl
      *
      * @param actions The action collection to access.
      */
-    public static void actions(final PagedCollection<ActionSummary> actions) { ACTIONS = actions; }
+    public static void actions(final PagedCollection<ActionSummary> actions) {
+        ACTIONS = actions;
+    }
 
 
     /** {@inheritDoc} */
@@ -333,7 +342,9 @@ public class GlobalsImpl
      *
      * @param comments The comment collection to access.
      */
-    public static void comments(final PagedCollection<Comment> comments) { COMMENTS = comments; }
+    public static void comments(final PagedCollection<Comment> comments) {
+        COMMENTS = comments;
+    }
 
 
     /** {@inheritDoc} */
@@ -346,7 +357,9 @@ public class GlobalsImpl
      *
      * @param groups The group collection to access.
      */
-    public static void groups(final PagedCollection<Group> groups) { GROUPS = groups; }
+    public static void groups(final PagedCollection<Group> groups) {
+        GROUPS = groups;
+    }
 
 
     /**
@@ -360,9 +373,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param create
+     * @param create The UI messages.
      */
     public static void setUiMessages(final UIMessages create) {
         UI_MESSAGES = create;
@@ -370,9 +383,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param create
+     * @param create The action statuses.
      */
     public static void setActionConstants(final ActionStatusConstants create) {
         ACTION_STATUSES = create;
@@ -380,9 +393,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param create
+     * @param create The command types.
      */
     public static void setCommandConstants(final CommandTypeConstants create) {
         COMMAND_TYPES = create;
@@ -390,9 +403,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param create
+     * @param create The error descriptions.
      */
     public static void setErrorDescriptions(final ErrorDescriptions create) {
         ERROR_DESCRIPTIONS = create;
@@ -400,9 +413,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param create
+     * @param create The error resolutions.
      */
     public static void setErrorResolutions(final ErrorResolutions create) {
         ERROR_RESOLUTIONS = create;
@@ -410,9 +423,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Mutator.
      *
-     * @param api
+     * @param api The remote API.
      */
     public static void setAPI(final API api) {
         API = api;
@@ -420,9 +433,9 @@ public class GlobalsImpl
 
 
     /**
-     * TODO: Add a description for this method.
+     * Accessor.
      *
-     * @return
+     * @return The remote API.
      */
     public static API getAPI() {
         return API;

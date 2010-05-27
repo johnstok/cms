@@ -32,7 +32,7 @@ import ccc.api.types.SortOrder;
 
 
 /**
- * TODO: Add a description for this type.
+ * A paged collection of actions.
  *
  * @author Civic Computing Ltd.
  */
@@ -50,7 +50,7 @@ public class ActionCollection
 
 
     /**
-     * TODO: Add a description for this method.
+     * Get the link that describes this collection.
      *
      * @return
      */
