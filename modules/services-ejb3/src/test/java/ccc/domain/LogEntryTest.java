@@ -89,8 +89,10 @@ public class LogEntryTest
 
 
 
-    private final UserEntity _actor = new UserEntity(new Username("actor"), "password");
+    private final UserEntity _actor =
+        new UserEntity(new Username("actor"), "password");
     private final Date _happenedOn = new Date();
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

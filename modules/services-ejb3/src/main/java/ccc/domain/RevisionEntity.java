@@ -151,7 +151,7 @@ public abstract class RevisionEntity<T> extends Entity {
      * @return The corresponding summaries.
      */
     public static List<Revision> mapRevisions(
-                         final Map<Integer, ? extends RevisionEntity<?>> revisions) {
+                 final Map<Integer, ? extends RevisionEntity<?>> revisions) {
         final List<Revision> mapped =
             new ArrayList<Revision>();
         for (final Map.Entry<Integer, ? extends RevisionEntity<?>> rev

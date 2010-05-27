@@ -279,7 +279,8 @@ public abstract class Command<T> {
      *
      * @return The result of the command, of type T.
      */
-    protected abstract T doExecute(final UserEntity actor, final Date happenedOn);
+    protected abstract T doExecute(final UserEntity actor,
+                                   final Date happenedOn);
 
 
     /**

@@ -51,7 +51,8 @@ public class IncludeInMainMenuCommandTest
         final Search s = new Search("foo");
         s.lock(getUser());
 
-        expect(getRepository().find(ResourceEntity.class, s.getId())).andReturn(s);
+        expect(getRepository().find(
+            ResourceEntity.class, s.getId())).andReturn(s);
         getAudit().record(isA(LogEntry.class));
 
         replayAll();
@@ -76,7 +77,8 @@ public class IncludeInMainMenuCommandTest
         final Search s = new Search("foo");
         s.lock(getUser());
 
-        expect(getRepository().find(ResourceEntity.class, s.getId())).andReturn(s);
+        expect(getRepository().find(
+            ResourceEntity.class, s.getId())).andReturn(s);
         getAudit().record(isA(LogEntry.class));
 
         replayAll();

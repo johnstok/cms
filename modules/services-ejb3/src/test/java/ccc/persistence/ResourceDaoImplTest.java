@@ -90,7 +90,8 @@ public class ResourceDaoImplTest
     public void testLookup() {
 
         // ARRANGE
-        final FolderEntity contentRoot = new FolderEntity(PredefinedResourceNames.CONTENT);
+        final FolderEntity contentRoot =
+            new FolderEntity(PredefinedResourceNames.CONTENT);
         final FolderEntity foo = new FolderEntity("foo");
         final PageEntity bar =
             new PageEntity(
@@ -112,7 +113,8 @@ public class ResourceDaoImplTest
 
 
         // ACT
-        final ResourceEntity resource = _rdao.lookup(new ResourcePath("/foo/bar"));
+        final ResourceEntity resource =
+            _rdao.lookup(new ResourcePath("/foo/bar"));
 
 
         verifyAll();
@@ -128,7 +130,8 @@ public class ResourceDaoImplTest
 //    public void testQueryAllLockedResources() {
 //
 //        // ARRANGE
-//        expect(_repository.list(QueryNames.LOCKED_RESOURCES, ResourceEntity.class))
+//        expect(_repository.list(
+//            QueryNames.LOCKED_RESOURCES, ResourceEntity.class))
 //            .andReturn(Collections.singletonList(_r));
 //        replayAll();
 //
@@ -143,10 +146,8 @@ public class ResourceDaoImplTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testFind() throws Exception {
+    public void testFind() {
 
         // ARRANGE
         final PageEntity bar =
@@ -184,7 +185,7 @@ public class ResourceDaoImplTest
 
     /** {@inheritDoc} */
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() {
         _repository = createStrictMock(Repository.class);
         _rdao = new ResourceRepositoryImpl(_repository);
         _r = new PageEntity(new ResourceName("foo"), "foo", null, _rm);
@@ -208,5 +209,6 @@ public class ResourceDaoImplTest
     private FolderEntity _parent;
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

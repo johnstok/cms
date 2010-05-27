@@ -29,7 +29,6 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.CommandType;
 import ccc.domain.FolderEntity;
@@ -59,15 +58,12 @@ class CreateFolderCommand extends CreateResourceCommand<FolderEntity> {
      * @param parentFolder The folder in which the new folder will be created.
      * @param name The name of the new folder.
      * @param title The title of the new folder.
-     *
-     * @throws EntityNotFoundException If the folder to update doesn't exist.
      */
     public CreateFolderCommand(final ResourceRepository repository,
                                final LogEntryRepository audit,
                                final UUID parentFolder,
                                final String name,
-                               final String title)
-                                               throws EntityNotFoundException  {
+                               final String title) {
         super(repository, audit);
         _parentFolder = parentFolder;
         _folder = getRepository().find(FolderEntity.class, parentFolder);
@@ -91,7 +87,7 @@ class CreateFolderCommand extends CreateResourceCommand<FolderEntity> {
 
     /** {@inheritDoc} */
     @Override
-    protected void authorize(final UserEntity actor) throws UnauthorizedException {
+    protected void authorize(final UserEntity actor) {
         if (!_folder.isWriteableBy(actor)) {
             throw new UnauthorizedException(_parentFolder, actor.getId());
         }

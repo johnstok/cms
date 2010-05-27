@@ -71,7 +71,8 @@ class LockResourceCommand extends Command<Void> {
     @Override
     protected Void doExecute(final UserEntity actor,
                              final Date happenedOn) {
-        final ResourceEntity r = getRepository().find(ResourceEntity.class, _resourceId);
+        final ResourceEntity r =
+            getRepository().find(ResourceEntity.class, _resourceId);
         r.lock(actor);
 
         final LogEntry le =

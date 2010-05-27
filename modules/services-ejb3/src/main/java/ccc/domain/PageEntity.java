@@ -115,7 +115,8 @@ public class PageEntity
             if (ParagraphType.TEXT == para.getType()) {
                 final CharConversion fixer = new CharConversion();
                 final Paragraph p =
-                    Paragraph.fromText(para.getName(), fixer.fix(para.getText()));
+                    Paragraph.fromText(
+                        para.getName(), fixer.fix(para.getText()));
                 paras.add(p);
             } else {
                 paras.add(para);

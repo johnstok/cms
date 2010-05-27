@@ -45,9 +45,8 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws CycleDetectedException If the test fails.
      */
-    public void testConvertToJson() throws CycleDetectedException {
+    public void testConvertToJson() {
 
         // ARRANGE
         final Json json = new JsonImpl();
@@ -100,9 +99,8 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws CycleDetectedException If the test fails.
      */
-    public void testDirectCircularDependency() throws CycleDetectedException {
+    public void testDirectCircularDependency() {
 
         // ARRANGE
         final AliasEntity a = new AliasEntity();
@@ -122,9 +120,8 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws CycleDetectedException If the test fails.
      */
-    public void testIndirectCircularDependency() throws CycleDetectedException {
+    public void testIndirectCircularDependency() {
 
         // ARRANGE
         final AliasEntity a = new AliasEntity();
@@ -146,9 +143,8 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws CycleDetectedException If the test fails.
      */
-    public void testCreateAliasWithTitle() throws CycleDetectedException {
+    public void testCreateAliasWithTitle() {
 
         // ARRANGE
         final PageEntity p = new PageEntity();
@@ -176,9 +172,8 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws CycleDetectedException If the test fails.
      */
-    public void testCreateAliasWithName() throws CycleDetectedException {
+    public void testCreateAliasWithName() {
 
         // ARRANGE
         final PageEntity p = new PageEntity();
@@ -192,9 +187,8 @@ public class AliasTest extends TestCase {
 
     /**
      * Test.
-     * @throws CycleDetectedException If the test fails.
      */
-    public void testNullTargetIsRejected() throws CycleDetectedException {
+    public void testNullTargetIsRejected() {
 
         // ACT
         try {

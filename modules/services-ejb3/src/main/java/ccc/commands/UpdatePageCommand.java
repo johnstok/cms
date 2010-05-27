@@ -55,8 +55,6 @@ public class UpdatePageCommand
      * @param repoFactory The repository factory for this command.
      * @param id The id of the page to update.
      * @param delta The changes to the page.
-     * @param comment Comment describing the change.
-     * @param isMajorEdit Is this a major change.
      */
     public UpdatePageCommand(final IRepositoryFactory repoFactory,
                              final UUID id,

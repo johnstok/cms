@@ -70,7 +70,8 @@ class PublishCommand extends Command<Void> {
     protected Void doExecute(final UserEntity publishedBy,
                              final Date happenedOn) {
 
-        final ResourceEntity r = getRepository().find(ResourceEntity.class, _resourceId);
+        final ResourceEntity r =
+            getRepository().find(ResourceEntity.class, _resourceId);
         r.confirmLock(publishedBy);
 
         r.publish(publishedBy);

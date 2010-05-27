@@ -29,7 +29,6 @@ package ccc.persistence;
 import java.util.List;
 import java.util.UUID;
 
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
 import ccc.domain.CommentEntity;
@@ -55,11 +54,9 @@ public interface CommentRepository {
     /**
      * Delete a comment.
      *
-     * @throws EntityNotFoundException If no comment has the specified ID.
-     *
      * @param commentId The ID of the comment to delete.
      */
-    void delete(UUID commentId) throws EntityNotFoundException;
+    void delete(UUID commentId);
 
 
     /**
@@ -67,11 +64,9 @@ public interface CommentRepository {
      *
      * @param commentId The ID of the comment to retrieve.
      *
-     * @throws EntityNotFoundException If no comment has the specified ID.
-     *
      * @return The corresponding comment.
      */
-    CommentEntity retrieve(UUID commentId) throws EntityNotFoundException;
+    CommentEntity retrieve(UUID commentId);
 
 
     /**

@@ -62,7 +62,7 @@ public class UpdateAliasCommandTest
 
         final UpdateAliasCommand c =
             new UpdateAliasCommand(
-                _repoFactory, bar.getId(), alias.getId());
+                getRepoFactory(), bar.getId(), alias.getId());
 
         // ACT
         c.execute(getUser(), getNow());

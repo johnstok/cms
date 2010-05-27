@@ -94,5 +94,6 @@ public final class TemplateTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

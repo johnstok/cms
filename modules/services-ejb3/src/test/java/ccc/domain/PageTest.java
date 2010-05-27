@@ -88,7 +88,8 @@ public final class PageTest extends TestCase {
 
         // ASSERT
         assertEquals(1, rev0.getParagraphs().size());
-        assertEquals("Header", rev0.getParagraphs().iterator().next().getText());
+        assertEquals(
+            "Header", rev0.getParagraphs().iterator().next().getText());
         assertEquals(1, rev1.getParagraphs().size());
         assertEquals(
             Boolean.TRUE, rev1.getParagraphs().iterator().next().getBoolean());
@@ -152,7 +153,10 @@ public final class PageTest extends TestCase {
             page.currentRevision().getParagraph("A boolean").getBoolean());
         final Date now = new Date();
         assertTrue(
-            page.currentRevision().getParagraph("A date").getDate().compareTo(now)
+            page.currentRevision()
+                .getParagraph("A date")
+                .getDate()
+                .compareTo(now)
             <= 0);
     }
 
@@ -354,7 +358,8 @@ public final class PageTest extends TestCase {
     public void testAdd33NewParagraphs() {
 
         // ARRANGE
-        final Paragraph[] paras = new Paragraph[PageEntity.MAXIMUM_PARAGRAPHS+1];
+        final Paragraph[] paras =
+            new Paragraph[PageEntity.MAXIMUM_PARAGRAPHS+1];
         for (int a=0; a < PageEntity.MAXIMUM_PARAGRAPHS+1; a++) {
             paras[a] =
                 Paragraph.fromText("header"+a, "<H1>Header"+a+"</H1>");
@@ -372,5 +377,6 @@ public final class PageTest extends TestCase {
     }
 
     private final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
 }

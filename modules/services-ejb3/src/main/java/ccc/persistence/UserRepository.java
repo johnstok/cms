@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.UserCriteria;
-import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.SortOrder;
 import ccc.domain.UserEntity;
 
@@ -82,23 +81,18 @@ public interface UserRepository {
      *
      * @param userId The UUID for the user.
      *
-     * @throws EntityNotFoundException If no user exists for the specified ID.
-     *
      * @return The user corresponding to 'userId'.
      */
-    UserEntity find(UUID userId) throws EntityNotFoundException;
+    UserEntity find(UUID userId);
 
     /**
      * Look up a user from a JAAS principal.
      *
      * @param p The principal.
      *
-     * @throws EntityNotFoundException If no user exists for the corresponding
-     *  principal.
-     *
      * @return The corresponding CCC user.
      */
-    UserEntity loggedInUser(final Principal p) throws EntityNotFoundException;
+    UserEntity loggedInUser(final Principal p);
 
 
     /**
@@ -113,11 +107,9 @@ public interface UserRepository {
      *
      * @param legacyId The legacy Id.
      *
-     * @throws EntityNotFoundException If no user exists for the specified ID.
-     *
      * @return The user corresponding to 'legacyId'.
      */
-    UserEntity userByLegacyId(String legacyId) throws EntityNotFoundException;
+    UserEntity userByLegacyId(String legacyId);
 
 
     /**

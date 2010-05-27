@@ -73,7 +73,8 @@ public class UpdateResourceAclCommand
     public Void doExecute(final UserEntity actor,
                           final Date happenedOn) {
 
-        final ResourceEntity r = getRepository().find(ResourceEntity.class, _id);
+        final ResourceEntity r =
+            getRepository().find(ResourceEntity.class, _id);
         r.confirmLock(actor);
 
         lookupGroups(r);

@@ -73,7 +73,8 @@ public class CreateCommentCommand
                                 final Date happenedOn) {
 
         final ResourceEntity r =
-            getRepository().find(ResourceEntity.class, _comment.getResourceId());
+            getRepository().find(
+                ResourceEntity.class, _comment.getResourceId());
 
         final CommentEntity c =
             new CommentEntity(r, _comment.getBody(), _comment.getAuthor());

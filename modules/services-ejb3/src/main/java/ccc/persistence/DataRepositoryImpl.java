@@ -72,7 +72,8 @@ class DataRepositoryImpl implements DataRepository {
             final Setting filestorePath =
                 settings.find(Setting.Name.FILE_STORE_PATH);
             return
-                new DataRepositoryImpl(new FsCoreData(filestorePath.getValue()));
+                new DataRepositoryImpl(
+                    new FsCoreData(filestorePath.getValue()));
 
         } catch (final EntityNotFoundException e) {
             throw new RuntimeException(

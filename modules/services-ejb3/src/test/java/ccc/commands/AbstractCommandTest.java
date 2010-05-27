@@ -37,10 +37,10 @@ import ccc.api.types.Username;
 import ccc.domain.RevisionMetadata;
 import ccc.domain.UserEntity;
 import ccc.persistence.GroupRepository;
+import ccc.persistence.IRepositoryFactory;
 import ccc.persistence.LogEntryRepository;
 import ccc.persistence.ResourceRepository;
 import ccc.persistence.UserRepository;
-import ccc.services.impl.SimpleRepositoryFactory;
 
 
 /**
@@ -52,19 +52,20 @@ public abstract class AbstractCommandTest
     extends
         TestCase {
 
-    protected final UserEntity _user =
+    private final UserEntity _user =
         new UserEntity(new Username("currentUser"), "password");
-    protected final Date _now = new Date();
+    private final Date _now = new Date();
 
-    protected final RevisionMetadata _rm =
-        new RevisionMetadata(new Date(), UserEntity.SYSTEM_USER, true, "Created.");
-    protected SimpleRepositoryFactory _repoFactory =
+    private final RevisionMetadata _rm =
+        new RevisionMetadata(
+            new Date(), UserEntity.SYSTEM_USER, true, "Created.");
+    private SimpleRepositoryFactory _repoFactory =
         new SimpleRepositoryFactory();
 
-    protected ResourceRepository _repository;
-    protected LogEntryRepository _audit;
-    protected GroupRepository _groups;
-    protected UserRepository _um;
+    private ResourceRepository _repository;
+    private LogEntryRepository _audit;
+    private GroupRepository _groups;
+    private UserRepository _um;
 
 
     /** Constructor. */
@@ -114,8 +115,38 @@ public abstract class AbstractCommandTest
     }
 
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the repoFactory.
+     */
+    public IRepositoryFactory getRepoFactory() {
+        return _repoFactory;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the revision metadata.
+     */
+    public RevisionMetadata getRevisionMetadata() {
+        return _rm;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the user repository.
+     */
+    public UserRepository getUserRepo() {
+        return _um;
+    }
+
+
     /** {@inheritDoc} */
-    @Override protected void setUp() throws Exception {
+    @Override protected void setUp() {
         _repository = createStrictMock(ResourceRepository.class);
         _audit = createStrictMock(LogEntryRepository.class);
         _groups = createStrictMock(GroupRepository.class);
@@ -128,7 +159,7 @@ public abstract class AbstractCommandTest
 
 
     /** {@inheritDoc} */
-    @Override protected void tearDown() throws Exception {
+    @Override protected void tearDown() {
         _repoFactory.setUserRepo(null);
         _repoFactory.setGroupRepo(null);
         _repoFactory.setLogEntryRepo(null);

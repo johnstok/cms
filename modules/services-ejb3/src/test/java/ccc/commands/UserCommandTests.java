@@ -47,21 +47,21 @@ public class UserCommandTests
 
     /**
      * Test.
-     *
      */
     public void testCreateUser() {
 
         // ARRANGE
         final Date now = new Date();
-        _um.create(isA(UserEntity.class));
-        _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
+        getUserRepo().create(isA(UserEntity.class));
+        getAudit().record(isA(LogEntry.class));
+        // TODO: Capture and test values.
         replayAll();
 
         final CreateUserCommand cu =
-            new CreateUserCommand(_repoFactory);
+            new CreateUserCommand(getRepoFactory());
 
         // ACT
-        final UserEntity u = cu.execute(_user, now, _uDelta);
+        final UserEntity u = cu.execute(getUser(), now, _uDelta);
 
         // ASSERT
         verifyAll();
@@ -72,22 +72,21 @@ public class UserCommandTests
     /**
      * Test.
      * TODO: Test the actual values of the created user.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testUpdateUser() throws Exception {
+    public void testUpdateUser() {
 
         // ARRANGE
         final Date now = new Date();
-        expect(_um.find(_user.getId())).andReturn(_user);
-        _audit.record(isA(LogEntry.class)); // TODO: Capture and test values.
+        expect(getUserRepo().find(getUser().getId())).andReturn(getUser());
+        getAudit().record(isA(LogEntry.class));
+        // TODO: Capture and test values.
         replayAll();
 
         final UpdateUserCommand uu =
-            new UpdateUserCommand(_repoFactory, _user.getId(), _uDelta);
+            new UpdateUserCommand(getRepoFactory(), getUser().getId(), _uDelta);
 
         // ACT
-        uu.execute(_user, now);
+        uu.execute(getUser(), now);
 
         // ASSERT
         verifyAll();
@@ -97,32 +96,30 @@ public class UserCommandTests
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testUpdateUserPassword() throws Exception {
+    public void testUpdateUserPassword() {
 
         // ARRANGE
         final Date now = new Date();
 
-        expect(_um.find(_user.getId())).andReturn(_user);
-        _audit.record(isA(LogEntry.class));
+        expect(getUserRepo().find(getUser().getId())).andReturn(getUser());
+        getAudit().record(isA(LogEntry.class));
         replayAll();
 
         final UpdatePasswordAction up =
-            new UpdatePasswordAction(_repoFactory);
+            new UpdatePasswordAction(getRepoFactory());
 
         // ACT
-        up.execute(_user, now, _user.getId(), "newPass");
+        up.execute(getUser(), now, getUser().getId(), "newPass");
 
         // ASSERT
         verifyAll();
-        assertTrue(_user.hasPassword("newPass"));
+        assertTrue(getUser().hasPassword("newPass"));
     }
 
 
     /** {@inheritDoc} */
-    @Override protected void setUp() throws Exception {
+    @Override protected void setUp() {
         super.setUp();
         _uDelta = new User();
         _uDelta.setEmail("new.email@civicuk.com");
@@ -133,7 +130,7 @@ public class UserCommandTests
 
 
     /** {@inheritDoc} */
-    @Override protected void tearDown() throws Exception {
+    @Override protected void tearDown() {
         super.tearDown();
         _uDelta = null;
     }

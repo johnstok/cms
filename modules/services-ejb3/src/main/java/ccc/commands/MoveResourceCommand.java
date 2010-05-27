@@ -73,10 +73,12 @@ public class MoveResourceCommand {
                         final Date happenedOn,
                         final UUID resourceId,
                         final UUID newParentId) {
-        final ResourceEntity resource = _repository.find(ResourceEntity.class, resourceId);
+        final ResourceEntity resource =
+            _repository.find(ResourceEntity.class, resourceId);
         resource.confirmLock(actor);
 
-        final FolderEntity newParent = _repository.find(FolderEntity.class, newParentId);
+        final FolderEntity newParent =
+            _repository.find(FolderEntity.class, newParentId);
         resource.getParent().remove(resource);
         newParent.add(resource);
 

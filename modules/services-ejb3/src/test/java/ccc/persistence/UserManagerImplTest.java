@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import ccc.api.core.UserCriteria;
 import ccc.api.core.User;
+import ccc.api.core.UserCriteria;
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Username;
 import ccc.domain.UserEntity;
@@ -76,7 +76,9 @@ public class UserManagerImplTest extends TestCase {
         // ARRANGE
         expect(Boolean.valueOf(
             _repository.exists(
-                QueryNames.USER_WITH_MATCHING_USERNAME, UserEntity.class, "blat")))
+                QueryNames.USER_WITH_MATCHING_USERNAME,
+                UserEntity.class,
+                "blat")))
             .andReturn(Boolean.FALSE);
         replayAll();
 

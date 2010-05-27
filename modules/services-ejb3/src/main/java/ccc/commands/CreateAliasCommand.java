@@ -76,7 +76,8 @@ class CreateAliasCommand
     @Override
     public AliasEntity doExecute(final UserEntity actor,
                            final Date happenedOn) {
-        final ResourceEntity target = getRepository().find(ResourceEntity.class, _targetId);
+        final ResourceEntity target =
+            getRepository().find(ResourceEntity.class, _targetId);
         if (target == null) {
             throw new RuntimeException("Target does not exists.");
         }

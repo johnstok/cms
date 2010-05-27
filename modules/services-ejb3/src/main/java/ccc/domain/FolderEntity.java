@@ -99,7 +99,8 @@ public final class FolderEntity
      */
     public void add(final ResourceEntity resource) {
         DBC.require().notNull(resource);
-        final ResourceEntity existingEntry = getEntryWithName(resource.getName());
+        final ResourceEntity existingEntry =
+            getEntryWithName(resource.getName());
         if (null!=existingEntry) {
             throw new ResourceExistsException(
                 existingEntry.getId(), existingEntry.getName());
@@ -160,7 +161,8 @@ public final class FolderEntity
      * @return A list of all the resources in this folder.
      */
     public List<ResourceEntity> getEntries() {
-        final List<ResourceEntity> entries = new ArrayList<ResourceEntity>(_entries);
+        final List<ResourceEntity> entries =
+            new ArrayList<ResourceEntity>(_entries);
         Sorter.sort(entries, ResourceOrder.MANUAL);
         return entries;
     }
@@ -187,7 +189,8 @@ public final class FolderEntity
         int to = from + count;
         to = (to>_entries.size()) ? _entries.size() : to;
 
-        final List<ResourceEntity> entries = new ArrayList<ResourceEntity>(_entries);
+        final List<ResourceEntity> entries =
+            new ArrayList<ResourceEntity>(_entries);
         Sorter.sort(entries, ResourceOrder.valueOf(sortOrder));
 
         return entries.subList(from, to);
