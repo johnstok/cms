@@ -229,7 +229,7 @@ public final class CommentModelData
             path,
             json.toString(),
             new CommentUpdatedCallback(
-                new GlobalsImpl().uiConstants().updateComment(),
+                GlobalsImpl.uiConstants().updateComment(),
                 comment));
     }
 
@@ -258,7 +258,7 @@ public final class CommentModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final ccc.client.gwt.core.Response response) {
+        public void onOK(final ccc.client.gwt.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(
                 new CommentUpdatedEvent(_comment));
         }
@@ -266,9 +266,9 @@ public final class CommentModelData
 
 
     /**
-     * TODO: Add a description for this method.
+     * Return the comment object backing this model data.
      *
-     * @return
+     * @return The delegate comment.
      */
     public Comment getDelegate() { return _delegate; }
 }
