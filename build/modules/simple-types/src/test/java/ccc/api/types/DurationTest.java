@@ -26,7 +26,6 @@
  */
 package ccc.api.types;
 
-import ccc.api.types.Duration;
 import junit.framework.TestCase;
 
 
@@ -37,20 +36,26 @@ import junit.framework.TestCase;
  */
 public class DurationTest extends TestCase {
 
+    private static final int SECS_IN_A_MINUTE = 60;
+    private static final int SECS_IN_A_HOUR = 60*SECS_IN_A_MINUTE;
+    private static final int SECS_IN_A_DAY = 24*SECS_IN_A_HOUR;
+    private static final int ONE_SECOND = 1;
+    private static final int TWO_SECONDS = 2;
+
     /**
      * Test.
      */
     public void testDurationEquality() {
 
         // ARRANGE
-        final Duration d = new Duration(1000);
+        final Duration d = new Duration(ONE_SECOND);
 
         // ACT
 
         // ASSERT
         assertTrue(d.equals(d));
-        assertTrue(d.equals(new Duration(1000)));
-        assertFalse(d.equals(new Duration(1001)));
+        assertTrue(d.equals(new Duration(ONE_SECOND)));
+        assertFalse(d.equals(new Duration(TWO_SECONDS)));
         assertFalse(d.equals(new Object()));
         assertFalse(d.equals(null));
     }
@@ -62,13 +67,13 @@ public class DurationTest extends TestCase {
     public void testTimeConstructor() {
 
         // ARRANGE
-        final Duration duration = new Duration(1000);
+        final Duration duration = new Duration(ONE_SECOND);
 
         // ACT
         final long time = duration.time();
 
         // ASSERT
-        assertEquals(1000, time);
+        assertEquals(ONE_SECOND, time);
     }
 
     /**
@@ -77,7 +82,7 @@ public class DurationTest extends TestCase {
     public void testFieldConstructor() {
 
         // ARRANGE
-        final Duration duration = new Duration(4, 2, 7, 31);
+        final Duration duration = new Duration(3, 3, 3, 3);
 
         // ACT
         final long seconds = duration.secondField();
@@ -86,10 +91,10 @@ public class DurationTest extends TestCase {
         final long days = duration.dayField();
 
         // ASSERT
-        assertEquals(31, seconds);
-        assertEquals(7, minutes);
-        assertEquals(2, hours);
-        assertEquals(4, days);
+        assertEquals(3, seconds);
+        assertEquals(3, minutes);
+        assertEquals(3, hours);
+        assertEquals(3, days);
     }
 
 
@@ -102,7 +107,11 @@ public class DurationTest extends TestCase {
         // ARRANGE
         // 33d 6h 15m 7s
         final Duration duration =
-            new Duration(33*86400+6*3600+15*60+59);
+            new Duration(
+                3*SECS_IN_A_DAY
+                + 3*SECS_IN_A_HOUR
+                + 3*SECS_IN_A_MINUTE
+                + 3);
 
         // ACT
         final long seconds = duration.secondField();
@@ -111,10 +120,10 @@ public class DurationTest extends TestCase {
         final long days = duration.dayField();
 
         // ASSERT
-        assertEquals(59, seconds);
-        assertEquals(15, minutes);
-        assertEquals(6, hours);
-        assertEquals(33, days);
+        assertEquals(3, seconds);
+        assertEquals(3, minutes);
+        assertEquals(3, hours);
+        assertEquals(3, days);
     }
 
     /**
@@ -124,7 +133,7 @@ public class DurationTest extends TestCase {
 
         // ARRANGE
         // 1d 0h 0m 0s
-        final Duration duration = new Duration(86400);
+        final Duration duration = new Duration(SECS_IN_A_DAY);
 
         // ACT
         final long seconds = duration.secondField();

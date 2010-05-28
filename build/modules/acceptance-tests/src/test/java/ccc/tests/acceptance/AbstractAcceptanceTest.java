@@ -68,6 +68,7 @@ import ccc.api.types.Username;
 public abstract class AbstractAcceptanceTest
     extends
         TestCase {
+    private static final int PAGE_SIZE = 20;
     private static final Logger LOG =
         Logger.getLogger(AbstractAcceptanceTest.class);
 
@@ -277,7 +278,7 @@ public abstract class AbstractAcceptanceTest
         final String email = username+"@abc.def";
         final String name = "testuser";
         final List<Group> groups =
-            getGroups().query("CONTENT_CREATOR", 1, 20).getElements();
+            getGroups().query("CONTENT_CREATOR", 1, PAGE_SIZE).getElements();
         final Group contentCreator = groups.iterator().next();
 
         // Create the user

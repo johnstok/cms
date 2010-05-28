@@ -53,7 +53,9 @@ public class MultipartFormTest extends TestCase {
         final String charEncoding = null;
         final int contentLength = 949;
         final String contentType =
-            "multipart/form-data;boundary=\"---------------------------1145133423187368413760068182\"";
+            "multipart/form-data;"
+            + "boundary=\"---------------------------"
+            + "1145133423187368413760068182\"";
 
 
         // ACT

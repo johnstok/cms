@@ -50,8 +50,6 @@ public class TxtExtractor
     /** {@inheritDoc} */
     @Override public void execute(final InputStream is) {
         try {
-            // Assume files are UTF-8.
-            // TODO Add icu4j character-set conversion
             _text = IO.toString(is, Charset.forName("UTF-8"));
 
         } catch (final Throwable e) {

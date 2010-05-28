@@ -26,7 +26,6 @@
  */
 package ccc.api.types;
 
-import ccc.api.types.Username;
 import junit.framework.TestCase;
 
 

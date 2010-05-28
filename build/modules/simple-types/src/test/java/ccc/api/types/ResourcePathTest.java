@@ -29,9 +29,6 @@ package ccc.api.types;
 
 import java.util.List;
 
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourcePath;
-
 import junit.framework.TestCase;
 
 
