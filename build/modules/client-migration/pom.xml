@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>build</artifactId>
 		<groupId>com.civicuk.cc</groupId>
-		<version>7.2.1-SNAPSHOT</version>
+		<version>7.3.0-SNAPSHOT</version>
 	</parent>
     <properties>
         <parent_basedir>${basedir}/../..</parent_basedir>
