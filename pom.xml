@@ -258,8 +258,8 @@
     </build>
 
     <scm>
-        <connection>scm:svn:http://svn.civiccomputing.com/CCC7</connection>
-        <developerConnection>scm:svn:http://svn.civiccomputing.com/CCC7</developerConnection>
+        <connection>scm:svn:http://svn.civiccomputing.com/ContentControl</connection>
+        <developerConnection>scm:svn:http://svn.civiccomputing.com/ContentControl</developerConnection>
     </scm>
 
     <distributionManagement>
