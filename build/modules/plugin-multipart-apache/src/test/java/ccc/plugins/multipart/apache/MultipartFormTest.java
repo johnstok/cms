@@ -26,6 +26,7 @@
  */
 package ccc.plugins.multipart.apache;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,6 +44,60 @@ import org.apache.commons.fileupload.FileItem;
  * @author Civic Computing Ltd.
  */
 public class MultipartFormTest extends TestCase {
+
+
+    /**
+     * Test.
+     */
+    public void testNonMultipartRequestIsRejected() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            new MultipartForm(
+                "UTF-8",
+                1,
+                "text/plain",
+                new ByteArrayInputStream(new byte[] {1}));
+            fail();
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            assertEquals("Not a multipart.", e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testMaxInMemorySizeIsConfigurable() {
+
+        // ARRANGE
+        final int kb256 = 256*1024;
+
+        // ACT
+
+        // ASSERT
+        assertEquals(kb256, MultipartForm.maxInMemorySize());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testMaxFileSizeIsConfigurable() {
+
+        // ARRANGE
+        final int mb32 = 16*1024*1024;
+
+        // ACT
+
+        // ASSERT
+        assertEquals(mb32, MultipartForm.maxFileSize());
+    }
+
 
     /**
      * Test.
@@ -77,6 +132,14 @@ public class MultipartFormTest extends TestCase {
             "Hello world!", f.getString("file"));
         assertEquals(
             "simple.txt", f.getString("fileName"));
+        assertEquals(
+            Arrays.asList(new String[] {
+                "file",
+                "path",
+                "fileName",
+                "comment",
+                "majorEdit"}),
+            f.getFormItemNames());
     }
 
     /**
@@ -116,17 +179,14 @@ public class MultipartFormTest extends TestCase {
         }
 
         public void delete() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
         public byte[] get() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
         public String getContentType() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
@@ -135,22 +195,18 @@ public class MultipartFormTest extends TestCase {
         }
 
         public InputStream getInputStream() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
         public String getName() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
         public OutputStream getOutputStream() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
         public long getSize() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
@@ -159,7 +215,6 @@ public class MultipartFormTest extends TestCase {
         }
 
         public String getString(final String arg0) {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
@@ -168,7 +223,6 @@ public class MultipartFormTest extends TestCase {
         }
 
         public boolean isInMemory() {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
@@ -177,12 +231,10 @@ public class MultipartFormTest extends TestCase {
         }
 
         public void setFormField(final boolean arg0) {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
 
         public void write(final File arg0) throws Exception {
-
             throw new UnsupportedOperationException("Method not implemented.");
         }
     }

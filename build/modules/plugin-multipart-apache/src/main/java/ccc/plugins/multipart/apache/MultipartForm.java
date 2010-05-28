@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
@@ -40,6 +41,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 import ccc.api.types.DBC;
+import ccc.commons.Resources;
 import ccc.plugins.multipart.MultipartFormData;
 
 
@@ -50,8 +52,8 @@ import ccc.plugins.multipart.MultipartFormData;
  */
 public class MultipartForm implements MultipartFormData {
 
-    private static final long MAX_FILE_SIZE      = 32*1024*1024; //  32mb
-    private static final int  MAX_IN_MEMORY_SIZE = 500*1024;     // 500kb
+    private static final Properties PROPS =
+        Resources.readIntoProps("uploadConfig.properties");
 
     private final Map<String, FileItem> _formItems =
         new HashMap<String, FileItem>();
@@ -176,20 +178,20 @@ public class MultipartForm implements MultipartFormData {
         final boolean isMultipart =
             FileUploadBase.isMultipartContent(context);
         if (!isMultipart) {
-            throw new RuntimeException("Not a multipart");
+            throw new RuntimeException("Not a multipart.");
         }
 
         // Create a factory for disk-based file items
         final DiskFileItemFactory factory = new DiskFileItemFactory();
 
         // Set factory constraints
-        factory.setSizeThreshold(MAX_IN_MEMORY_SIZE);
+        factory.setSizeThreshold(maxInMemorySize());
 
         // Create a new file upload handler
         final FileUpload upload = new FileUpload(factory);
 
         // Set overall request size constraint
-        upload.setFileSizeMax(MAX_FILE_SIZE);
+        upload.setFileSizeMax(maxFileSize());
 
         try {
             return upload.parseRequest(context);
@@ -211,5 +213,27 @@ public class MultipartForm implements MultipartFormData {
         final FileItem item = _files.get(key);
         if (null!=item) { return item; }
         return _formItems.get(key);
+    }
+
+    static int maxInMemorySize() {
+        final int defaultValue = 500*1024; // 500kb
+        final String propValue = PROPS.getProperty("max-in-memory");
+        try {
+            return DBC.ensure().greaterThan(
+                -1, Integer.valueOf(propValue).intValue());
+        } catch (final RuntimeException e) {
+            return defaultValue;
+        }
+    }
+
+    static int maxFileSize() {
+        final int defaultValue = 32*1024*1024; //  32mb
+        final String propValue = PROPS.getProperty("maxFileSize");
+        try {
+            return DBC.ensure().greaterThan(
+                0, Integer.valueOf(propValue).intValue());
+        } catch (final RuntimeException e) {
+            return defaultValue;
+        }
     }
 }
