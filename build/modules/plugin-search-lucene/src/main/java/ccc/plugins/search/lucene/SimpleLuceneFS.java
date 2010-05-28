@@ -54,6 +54,7 @@ import org.apache.lucene.search.similar.MoreLikeThis;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import ccc.api.exceptions.CCException;
 import ccc.api.types.DBC;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
@@ -63,7 +64,6 @@ import ccc.api.types.ResourcePath;
 import ccc.api.types.SearchResult;
 import ccc.commons.Exceptions;
 import ccc.plugins.markup.XHTML;
-import ccc.plugins.search.SearchException;
 import ccc.plugins.search.TextExtractor;
 
 
@@ -331,15 +331,15 @@ public class SimpleLuceneFS
 
     /** {@inheritDoc}*/
     @Override
-    public void startUpdate() throws SearchException {
+    public void startUpdate() {
         try {
             _writer = createWriter();
             clearIndex();
             LOG.info("Staring index update.");
         } catch (final IOException e) {
-            throw new SearchException(e);
+            throw new CCException("Failed to start index update.", e);
         } catch (final ParseException e) {
-            throw new SearchException(e);
+            throw new CCException("Failed to start index update.", e);
         }
     }
 

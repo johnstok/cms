@@ -89,10 +89,8 @@ public class SimpleLuceneFSTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testFindHandlesInvalidSearchTerm() throws Exception {
+    public void testFindHandlesInvalidSearchTerm() {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();
@@ -139,10 +137,8 @@ public class SimpleLuceneFSTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testSuccessfulIndexAndFind() throws Exception {
+    public void testSuccessfulIndexAndFind() {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();
@@ -290,10 +286,8 @@ public class SimpleLuceneFSTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testRollbackOfIndex() throws Exception {
+    public void testRollbackOfIndex() {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();
@@ -321,10 +315,8 @@ public class SimpleLuceneFSTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
-    public void testIndexParagraphs() throws Exception {
+    public void testIndexParagraphs() {
 
         // ARRANGE
         final UUID id = UUID.randomUUID();

@@ -123,7 +123,7 @@ public class SearchEngineEJB  implements SearchEngine {
             indexPages(lucene);
             indexFiles(lucene);
             lucene.commitUpdate();
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
             LOG.error("Error indexing resources.", e);
             lucene.rollbackUpdate();
         }
