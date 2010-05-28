@@ -51,6 +51,7 @@ public class Alias
      * @param name The alias' name.
      * @param targetId The alias' target.
      */
+    @Deprecated
     public Alias(final UUID parentId,
                     final ResourceName name,
                     final UUID targetId) {
@@ -65,6 +66,7 @@ public class Alias
      *
      * @param targetId The alias' target's id.
      */
+    @Deprecated
     public Alias(final UUID targetId) {
         _targetId = targetId;
     }

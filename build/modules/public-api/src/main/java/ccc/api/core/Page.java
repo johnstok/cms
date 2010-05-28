@@ -65,12 +65,13 @@ public class Page
      * @param comment The comment for a page update.
      * @param majorChange Is the update a major change.
      */
+    @Deprecated
     public Page(final UUID parentId,
-                   final String name,
-                   final UUID templateId,
-                   final String title,
-                   final String comment,
-                   final boolean majorChange) {
+                final String name,
+                final UUID templateId,
+                final String title,
+                final String comment,
+                final boolean majorChange) {
         setParent(parentId);
         setName(new ResourceName(name));
         setTemplate(templateId);

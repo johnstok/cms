@@ -101,7 +101,7 @@ public class Action
      * @return Returns the executeAfter.
      */
     public final Date getExecuteAfter() {
-        return new Date(_executeAfter.getTime());
+        return (null==_executeAfter) ? null : new Date(_executeAfter.getTime());
     }
 
 
