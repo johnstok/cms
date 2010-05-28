@@ -363,10 +363,17 @@ public class SimpleLuceneFSTest
         assertEquals(result.hits().size(), 1);
         assertEquals(id, result.hits().iterator().next());
 
-//        result = searchEngine.find("date:"+date.getTime(), 5, 0);
-//        assertEquals(1, result.totalResults());
-//        assertEquals(result.hits().size(), 1);
-//        assertEquals(id, result.hits().iterator().next());
+        StringBuilder sb = new StringBuilder();
+        sb.append("date:[");
+        sb.append(date.getTime());
+        sb.append(" TO ");
+        sb.append(date.getTime());
+        sb.append("]");
+        
+        result = searchEngine.find(sb.toString(), 5, 0);
+        assertEquals(1, result.totalResults());
+        assertEquals(result.hits().size(), 1);
+        assertEquals(id, result.hits().iterator().next());
 
 //        result = searchEngine.find("num:[0 TO 2]", 5, 0);
 //        assertEquals(1, result.totalResults());
