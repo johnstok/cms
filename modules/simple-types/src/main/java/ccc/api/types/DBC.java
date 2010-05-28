@@ -224,11 +224,12 @@ public final class DBC {
      * @param criteria The lower bound.
      * @param value    The value to test.
      */
-    public void greaterThan(final int criteria, final int value) {
+    public int greaterThan(final int criteria, final int value) {
         if (value<=criteria) {
             throw new IllegalArgumentException(
                 "Specified value must be greater than "
                 +criteria+".");
         }
+        return value;
     }
 }
