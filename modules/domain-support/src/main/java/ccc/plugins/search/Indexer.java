@@ -45,10 +45,8 @@ public interface Indexer {
 
     /**
      * Start a transaction.
-     *
-     * @throws SearchException If starting the transaction fails.
      */
-    void startUpdate() throws SearchException;
+    void startUpdate();
 
 
     /**
