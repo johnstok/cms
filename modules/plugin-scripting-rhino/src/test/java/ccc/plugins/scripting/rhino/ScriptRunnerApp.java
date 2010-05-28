@@ -32,7 +32,6 @@ import java.nio.charset.Charset;
 import ccc.commons.Resources;
 import ccc.plugins.scripting.Context;
 import ccc.plugins.scripting.Script;
-import ccc.plugins.scripting.rhino.ScriptRunner;
 
 
 /**

@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Helper class for building URIs.
  * <p>This class implements the URI template specification version 03:
- * http://bitworking.org/projects/URI-Templates/spec/draft-gregorio-uritemplate-03.html
+ * http://bitworking.org/projects/URI-Templates/spec/
  *
  * @author Civic Computing Ltd.
  */
@@ -99,7 +99,8 @@ public class Link {
      *
      * @return The URI, as a string.
      */
-    public String build(final Map<String, String[]> params, final Encoder encoder) {
+    public String build(final Map<String, String[]> params,
+                        final Encoder encoder) {
 
         final StringBuffer sb = new StringBuffer();
         StringBuffer pattern = new StringBuffer();
@@ -332,11 +333,29 @@ public class Link {
         return result.toString();
     }
 
+    /**
+     * Available URI operations.
+     *
+     * @author Civic Computing Ltd.
+     */
     private static enum Operation {
         VAR, JOIN, OPT, NEG, SUFFIX, PREFIX, LIST;
     }
 
+    /**
+     * URI encoder API.
+     *
+     * @author Civic Computing Ltd.
+     */
     public static interface Encoder {
+
+        /**
+         * Encode a URI.
+         *
+         * @param uri The URI to encode.
+         *
+         * @return The encoded URI.
+         */
         String encode(String string);
     }
 }

@@ -47,8 +47,6 @@ public class ContentServletAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
     public void testCommittedResponsesHandledDirectly() {
 
@@ -84,8 +82,6 @@ public class ContentServletAcceptanceTest
 
     /**
      * Test.
-     *
-     * @throws Exception If the test fails.
      */
     public void testUncommittedResponsesHandledByJsp() {
 

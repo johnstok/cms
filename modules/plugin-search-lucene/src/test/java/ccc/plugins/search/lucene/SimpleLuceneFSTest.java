@@ -279,7 +279,8 @@ public class SimpleLuceneFSTest
 //            "foo",
 //            new HashSet<Paragraph>());
 //        searchEngine.commitUpdate();
-//        final SearchResult result = searchEngine.similar(id1.toString(), 5, 0);
+//        final SearchResult result =
+//            searchEngine.similar(id1.toString(), 5, 0);
 //
 //        // ASSERT
 //        assertEquals(1, result.totalResults());
@@ -330,7 +331,7 @@ public class SimpleLuceneFSTest
         final Date date = new Date();
         final Set<Paragraph> paras =
             new HashSet<Paragraph>(){{
-                add(Paragraph.fromBoolean("bool", true));
+                add(Paragraph.fromBoolean("bool", Boolean.TRUE));
                 add(Paragraph.fromDate("date", date));
                 add(Paragraph.fromText("text", "text"));
                 add(Paragraph.fromNumber("num", 1));

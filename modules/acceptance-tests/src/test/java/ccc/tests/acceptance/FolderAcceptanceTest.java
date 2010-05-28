@@ -48,8 +48,10 @@ import ccc.api.types.SortOrder;
  *
  * @author Civic Computing Ltd.
  */
-public class FolderAcceptanceTest extends AbstractAcceptanceTest {
-
+public class FolderAcceptanceTest
+    extends
+        AbstractAcceptanceTest {
+    private static final int PAGE_SIZE = 1000;
 
     /**
      * Test.
@@ -85,7 +87,7 @@ public class FolderAcceptanceTest extends AbstractAcceptanceTest {
                 "name",
                 SortOrder.ASC,
                 1,
-                1000).getElements();
+                PAGE_SIZE).getElements();
 
         // ASSERT
         assertEquals(2, folders.size());

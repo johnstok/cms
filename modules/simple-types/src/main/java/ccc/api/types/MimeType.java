@@ -149,6 +149,7 @@ public class MimeType implements Serializable {
     /** JPEG : MimeType. */
     public static final MimeType JPEG =
         new MimeType("image", "jpeg");
+    /** TEXT : MimeType. */
     public static final MimeType TEXT =
         new MimeType("text", "plain");
 }

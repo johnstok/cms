@@ -112,7 +112,7 @@ public class SimpleLuceneFS
         }
     }
 
-    private static final Version LUCENE_VERSION = Version.LUCENE_CURRENT;
+    private static final Version LUCENE_VERSION = Version.LUCENE_30;
     private static final Logger LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
     private static final String DEFAULT_FIELD = "allcontent";
