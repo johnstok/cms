@@ -383,7 +383,6 @@
                         <configuration>
                             <finalName>ccc7</finalName>
                             <descriptors>
-                                <descriptor>assembly.xml</descriptor>
                                 <descriptor>applications.xml</descriptor>
                             </descriptors>
                         </configuration>
