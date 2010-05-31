@@ -162,16 +162,16 @@ public class VelocityProcessor implements TextProcessor {
                                                 : ctxt.getAll().entrySet()) {
                 context.put(extra.getKey(), extra.getValue());
             }
-            context.put("random", _random);
-            context.put("math", Math.class);
+            context.put("random",      _random);
+            context.put("math",        Math.class);
             context.put("collections", Collections.class);
-            context.put("calendar", Calendar.class);
-            context.put("html", XHTML.class);
-            context.put("uuid", UUID.class);
-            context.put("enums", new EnumTools());
-            context.put("hostname", HOSTNAME);
-            context.put("dateTool", new DateTool());
-            context.put("sortTool", new SortTool());
+            context.put("calendar",    Calendar.class);
+            context.put("html",        XHTML.class);
+            context.put("uuid",        UUID.class);
+            context.put("enums",       new EnumTools());
+            context.put("hostname",    HOSTNAME);
+            context.put("dateTool",    new DateTool());
+            context.put("sortTool",    new SortTool());
 
             final VelocityEngine ve = new VelocityEngine(velocityProperties);
             final ServiceLocator sl = (ServiceLocator) context.get("services");

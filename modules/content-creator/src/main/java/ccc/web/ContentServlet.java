@@ -43,6 +43,7 @@ import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ResourcePath;
+import ccc.commons.HTTP;
 import ccc.plugins.PluginFactory;
 import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -200,12 +201,13 @@ public class ContentServlet
                                   final ccc.api.core.Resource rs) {
         final Context context = new Context();
 
-        context.add("user", loggedInUser());
+        context.add("user",     loggedInUser());
         context.add("request",  request);
         context.add("response", response);
         context.add("services", createServiceLocator());
         context.add("resource", rs);
-        context.add("mail", getMailer());
+        context.add("mail",     getMailer());
+        context.add("http",     HTTP.class);
         return context;
     }
 

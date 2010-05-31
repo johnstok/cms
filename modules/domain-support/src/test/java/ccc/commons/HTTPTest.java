@@ -51,4 +51,34 @@ public class HTTPTest
         // ASSERT
 
     }
+
+
+    /**
+     * Test.
+     */
+    public void testEncodeURL() {
+
+        // ARRANGE
+
+        // ACT
+        final String encoded = HTTP.encode("/foo&bar?baz:", "utf-8");
+
+        // ASSERT
+        assertEquals("%2Ffoo%26bar%3Fbaz%3A", encoded);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testDecodeURL() {
+
+        // ARRANGE
+
+        // ACT
+        final String decoded = HTTP.decode("%2Ffoo%26bar%3Fbaz%3A", "utf-8");
+
+        // ASSERT
+        assertEquals("/foo&bar?baz:", decoded);
+    }
 }

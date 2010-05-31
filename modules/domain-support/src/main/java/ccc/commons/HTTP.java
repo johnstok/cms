@@ -35,9 +35,11 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import ccc.api.exceptions.CCException;
 import ccc.api.types.HttpStatusCode;
 import ccc.api.types.MimeType;
 
@@ -194,5 +196,41 @@ public final class HTTP {
             sb.append('&');
         }
         return sb.toString();
+    }
+
+
+    /**
+     * Encode a string using the <code>application/x-www-form-urlencoded</code>
+     * format.
+     *
+     * @param string The string to encode.
+     * @param charset The charset used to generate encoded values.
+     *
+     * @return The encoded string.
+     */
+    public static String encode(final String string, final String charset) {
+        try {
+            return URLEncoder.encode(string, charset);
+        } catch (final UnsupportedEncodingException e) {
+            throw new CCException("Invalid charset.", e);
+        }
+    }
+
+
+    /**
+     * Decode a string encoded with the
+     * <code>application/x-www-form-urlencoded</code> format.
+     *
+     * @param string The string to decode.
+     * @param charset The charset used to interpret encoded values.
+     *
+     * @return The decoded string.
+     */
+    public static String decode(final String string, final String charset) {
+        try {
+            return URLDecoder.decode(string, charset);
+        } catch (final UnsupportedEncodingException e) {
+            throw new CCException("Invalid charset.", e);
+        }
     }
 }
