@@ -215,9 +215,14 @@ public class ActionsEJB
     @RolesAllowed({ACTION_SCHEDULE})
     public void start() {
         LOG.debug("Starting scheduler.");
-        _context.getTimerService().createTimer(
-            INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
-        LOG.debug("Started scheduler.");
+
+        if (isRunning()) {
+            LOG.debug("Scheduler already running.");
+        } else {
+            _context.getTimerService().createTimer(
+                INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
+            LOG.debug("Started scheduler.");
+        }
     }
 
 

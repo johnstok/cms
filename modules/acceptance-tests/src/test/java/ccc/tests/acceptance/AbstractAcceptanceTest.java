@@ -48,6 +48,7 @@ import ccc.api.core.Page;
 import ccc.api.core.Pages;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
+import ccc.api.core.SearchEngine;
 import ccc.api.core.Security;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
@@ -184,6 +185,16 @@ public abstract class AbstractAcceptanceTest
      */
     protected Aliases getAliases() {
         return _sl.getAliases();
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the search engine.
+     */
+    protected SearchEngine getSearch() {
+        return _sl.getSearch();
     }
 
 

@@ -146,9 +146,14 @@ public class SearchEngineEJB  implements SearchEngine {
     @RolesAllowed({SEARCH_SCHEDULE})
     public void start() {
         LOG.debug("Starting indexer.");
-        _context.getTimerService().createTimer(
-            INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
-        LOG.debug("Started indexer.");
+
+        if (isRunning()) {
+            LOG.debug("Indexer already running.");
+        } else {
+            _context.getTimerService().createTimer(
+                INITIAL_DELAY_SECS, TIMEOUT_DELAY_SECS, TIMER_NAME);
+            LOG.debug("Started indexer.");
+        }
     }
 
 
