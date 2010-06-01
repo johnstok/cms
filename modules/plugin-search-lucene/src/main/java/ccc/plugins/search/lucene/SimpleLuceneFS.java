@@ -104,11 +104,27 @@ public class SimpleLuceneFS
                                       final String min,
                                       final String max,
                                       final boolean inclusive) {
-            return NumericRangeQuery.newLongRange(f,
-                Long.valueOf(min),
-                Long.valueOf(max),
-                true,
-                true);
+            try {
+                return NumericRangeQuery.newLongRange(f,
+                    Long.valueOf(min),
+                    Long.valueOf(max),
+                    true,
+                    true);
+            } catch (final NumberFormatException e) {
+                Exceptions.swallow(e);
+            }
+
+            try {
+                return NumericRangeQuery.newDoubleRange(f,
+                    Double.valueOf(min),
+                    Double.valueOf(max),
+                    true,
+                    true);
+            } catch (final NumberFormatException e) {
+                Exceptions.swallow(e);
+            }
+
+            return super.newRangeQuery(f, min, max, inclusive);
         }
     }
 
@@ -148,12 +164,12 @@ public class SimpleLuceneFS
                              final int pageNo) {
         if (searchTerms == null || searchTerms.trim().equals("")) {
             return
-            new SearchResult(
-                new HashSet<UUID>(),
-                0,
-                nofOfResultsPerPage,
-                searchTerms,
-                pageNo);
+                new SearchResult(
+                    new HashSet<UUID>(),
+                    0,
+                    nofOfResultsPerPage,
+                    searchTerms,
+                    pageNo);
         }
 
         final int maxHits = (pageNo+1)*nofOfResultsPerPage;
@@ -439,20 +455,20 @@ public class SimpleLuceneFS
         } else if (paragraph.getType() == ParagraphType.NUMBER
             && paragraph.getNumber() != null) {
             final NumericField nf =
-                new NumericField(paragraph.getName(), 8, Field.Store.YES, true);
+                new NumericField(paragraph.getName(), 4, Field.Store.NO, true);
             nf.setDoubleValue(paragraph.getNumber().doubleValue());
             d.add(nf);
         } else if (paragraph.getType() == ParagraphType.DATE
             && paragraph.getDate() != null) {
            final NumericField nf =
-               new NumericField(paragraph.getName(), 8, Field.Store.YES, true);
+               new NumericField(paragraph.getName(), 4, Field.Store.NO, true);
            nf.setLongValue(paragraph.getDate().getTime());
            d.add(nf);
         } else if (paragraph.getType() == ParagraphType.BOOLEAN
             && paragraph.getBoolean() != null) {
             final Field f = new Field(paragraph.getName(),
                 ""+paragraph.getBoolean().booleanValue(),
-                Field.Store.YES,
+                Field.Store.NO,
                 Field.Index.ANALYZED);
             d.add(f);
         }
@@ -488,7 +504,7 @@ public class SimpleLuceneFS
         wrapper.addAnalyzer("id", new KeywordAnalyzer());
         wrapper.addAnalyzer("path", new KeywordAnalyzer());
         wrapper.addAnalyzer("name", new KeywordAnalyzer());
-        wrapper.addAnalyzer("title", new KeywordAnalyzer());
+//        wrapper.addAnalyzer("title", new KeywordAnalyzer());
 
         final QueryParser qp =
             new CCQueryParser(LUCENE_VERSION, DEFAULT_FIELD, wrapper);
