@@ -1,46 +1,15 @@
 #!/bin/bash
 
+echo
+echo "Configuring database settings."
+
 SED=sed
 [ "`uname`" != Linux ] && type gsed >&/dev/null && SED=gsed
 
-
-echo "CC7 Database connection configuration tool"
-echo "Choose database type"
-echo "1. H2"
-echo "2. Oracle"
-echo "3. MySQL"
-echo "4. MS SQL"
-echo -n "Please enter option [1 - 4] "
-read dbtype
-
-echo -n "$A Enter database connection URL: "
-read DB_URL
-
-echo -n "$A Enter database username: "
-read DB_USERNAME
-echo -n "$A Enter database password: "
-read DB_PASSWORD
-
-errors="0"
-if [ "$DB_URL" == "" ]
-then
-    echo "No database connection URL entered"
-    errors="1"
-fi
-if [ "$DB_USERNAME" == "" ]
-then
-    echo "No database username entered"
-    errors="1"
-fi
-if [ "$DB_PASSWORD" == "" ]
-then
-    echo "No database password entered"
-    errors="1"
-fi
-if [ "$errors" == 1 ]
-then
-exit
-fi
+dbtype=$1
+DB_URL=$2
+DB_USERNAME=$3
+DB_PASSWORD=$4
 
 case "$dbtype" in
         1)
@@ -60,8 +29,7 @@ case "$dbtype" in
                 driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
                 ;;
         *)
-                echo Invalid option selected;
-                exit
+                echo WARNING Invalid database type selected - ignoring;
                 ;;
 esac
 

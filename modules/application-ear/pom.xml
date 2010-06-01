@@ -214,7 +214,7 @@
                                             <arg value="${application.db-password}" />
                                             <arg value="-d" />
                                             <arg value="-v" />
-                                            <arg value="2" />
+                                            <arg value="${ccc.db.version}" />
                                         </java>
 
                                         <java classname="ccc.cli.Users" fork="true" failonerror="true" classpath="${migration_classpath}">
@@ -237,8 +237,6 @@
                                             <arg value="migration" />
                                             <arg value="-p" />
                                             <arg value="migration" />
-                                            <arg value="-a" />
-                                            <arg value="${application.prefix}" />
                                             <arg value="-o" />
                                             <arg value="http://localhost:8080/${application.prefix}" />
                                         </java>
@@ -381,9 +379,9 @@
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <configuration>
-                            <finalName>ccc7</finalName>
+                            <finalName>cc7</finalName>
                             <descriptors>
-                                <descriptor>applications.xml</descriptor>
+                                <descriptor>assemblies/applications.xml</descriptor>
                             </descriptors>
                         </configuration>
                         <executions>

@@ -27,17 +27,28 @@
 -->
 
 <assembly>
-	<id>applications</id>
+	<id>release</id>
 	<formats>
 		<format>zip</format>
 	</formats>
     <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>../../installer</directory>
+            <lineEnding>keep</lineEnding>
+            <filtered>true</filtered>
+            <outputDirectory>installer</outputDirectory>
+            <fileMode>544</fileMode>
+        </fileSet>
+    </fileSets>
     <files>
         <file>
             <source>../shell-tools/target/client-shell-${project.version}-jar-with-dependencies.jar</source>
+            <destName>client-shell-${project.version}.jar</destName>
         </file>
         <file>
             <source>target/${application.name}.ear</source>
+            <destName>cc-${project.version}.ear</destName>
         </file>
     </files>
 </assembly>

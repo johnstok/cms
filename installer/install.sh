@@ -1,27 +1,46 @@
+#!/bin/bash
+
+script_dir=`dirname $0`
+
+echo
 echo "CC7 install tool"
 
-echo -n "$A CC version: "
-read cc_version
+cc_version="${project.version}"
+app_name="cc7"
 
-echo -n "$A DB username: "
+echo
+echo "Database connection"
+echo -n " DB username: "
 read db_user
-
-echo -n "$A DB password: "
+echo -n " DB password: "
 read db_password
-
-echo -n "$A DB url: "
+echo -n " DB url: "
 read db_url
+echo " Choose database type"
+echo " 1. H2"
+echo " 2. Oracle"
+echo " 3. MySQL"
+echo " 4. MS SQL"
+echo -n " Please enter option [1 - 4]: "
+read db_type
+db_version="${ccc.db.version}"
 
-echo -n "$A DB version: "
-read db_version
+echo
+echo "Mail configuration"
+echo -n " Enter a username: "
+read mail_username
+echo -n " Enter a password: "
+read mail_password
+echo -n " Enter a host: "
+read mail_host
 
-echo -n "$A CC initial user's username: "
+echo
+echo "Initial user"
+echo -n " CC initial user's username: "
 read cc_username
-
-echo -n "$A CC initial user's password: "
+echo -n " CC initial user's password: "
 read cc_password
-
-echo -n "$A CC initial user's email: "
+echo -n " CC initial user's email: "
 read cc_email
 
 mkdir filestore
@@ -30,6 +49,26 @@ chmod a+w filestore
 mkdir lucene
 chmod a+w lucene
 
-java -cp shell-tools-$cc_version-jar-with-dependencies.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password -v $db_version
-java -cp shell-tools-$cc_version-jar-with-dependencies.jar ccc.cli.Users    -c $db_url -u $db_user -p $db_password -ne $cc_email -np $cc_password -nu $cc_username
-java -cp shell-tools-$cc_version-jar-with-dependencies.jar ccc.cli.Settings -c $db_url -u $db_user -p $db_password -path `pwd`/
+mkdir cc-$cc_version
+unzip cc-$cc_version.ear -d cc-$cc_version > /dev/null
+
+cd cc-$cc_version
+../$script_dir/rename.sh cc7 $app_name
+../$script_dir/dbconfig.sh $db_type $db_url $db_user $db_password
+../$script_dir/mailconfig.sh $mail_host $mail_username $mail_password
+cd ..
+
+echo
+echo "Creating database schema."
+java -cp client-shell-$cc_version.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password -v $db_version
+
+echo
+echo "Creating initial user."
+java -cp client-shell-$cc_version.jar ccc.cli.Users    -c $db_url -u $db_user -p $db_password -ne $cc_email -np $cc_password -nu $cc_username
+
+echo
+echo "Saving further configuration."
+java -cp client-shell-$cc_version.jar ccc.cli.Settings -c $db_url -u $db_user -p $db_password -path `pwd`/
+
+echo
+echo "Success."
