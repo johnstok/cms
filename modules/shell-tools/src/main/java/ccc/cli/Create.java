@@ -126,18 +126,8 @@ public final class Create extends CccApp {
         private String _password;
 
         @Option(
-            name="-a", required=true, usage="App name.")
-        private String _app;
-
-        @Option(
             name="-o", required=true, usage="The URL for file upload.")
         private String _uploadUrl;
-
-        @Option(
-            name="-jn",
-            required=false,
-            usage="optional JNDI provider URL, defaults to localhost")
-            private String _providerURL;
 
 
         /**
@@ -157,26 +147,6 @@ public final class Create extends CccApp {
          */
         String getPassword() {
             return _password;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the app.
-         */
-        String getApp() {
-            return _app;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the JNDI provider URL.
-         */
-        String getProviderURL() {
-            return _providerURL;
         }
 
 
