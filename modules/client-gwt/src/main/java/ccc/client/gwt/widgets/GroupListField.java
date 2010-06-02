@@ -36,6 +36,9 @@ import ccc.api.core.Group;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 
@@ -70,7 +73,13 @@ public class GroupListField extends ListField<BaseModelData> {
         setFieldLabel(GlobalsImpl.uiConstants().roles());
         setHeight(GROUP_HEIGHT);
         setStore(gData);
-        setSelection(selected);
         setDisplayField("name");
+
+        // Workaround a GXT bug - see CC-1090.
+        addListener(Events.Render, new Listener<BaseEvent>() {
+            public void handleEvent(final BaseEvent baseEvent) {
+                setSelection(selected);
+            }
+        });
     }
 }
