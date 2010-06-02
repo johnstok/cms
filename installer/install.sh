@@ -1,12 +1,15 @@
 #!/bin/bash
 
 script_dir=`dirname $0`
+cc_version="${project.version}"
+db_version="${ccc.db.version}"
 
 echo
 echo "CC7 install tool"
 
-cc_version="${project.version}"
-app_name="cc7"
+echo
+echo -n "Application name: "
+read app_name
 
 echo
 echo "Database connection"
@@ -23,7 +26,6 @@ echo " 3. MySQL"
 echo " 4. MS SQL"
 echo -n " Please enter option [1 - 4]: "
 read db_type
-db_version="${ccc.db.version}"
 
 echo
 echo "Mail configuration"
@@ -60,15 +62,15 @@ cd ..
 
 echo
 echo "Creating database schema."
-java -cp client-shell-$cc_version.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password -v $db_version
+java -cp $script_dir/../client-shell-$cc_version.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password -v $db_version
 
 echo
 echo "Creating initial user."
-java -cp client-shell-$cc_version.jar ccc.cli.Users    -c $db_url -u $db_user -p $db_password -ne $cc_email -np $cc_password -nu $cc_username
+java -cp $script_dir/../client-shell-$cc_version.jar ccc.cli.Users    -c $db_url -u $db_user -p $db_password -ne $cc_email -np $cc_password -nu $cc_username
 
 echo
 echo "Saving further configuration."
-java -cp client-shell-$cc_version.jar ccc.cli.Settings -c $db_url -u $db_user -p $db_password -path `pwd`/
+java -cp $script_dir/../client-shell-$cc_version.jar ccc.cli.Settings -c $db_url -u $db_user -p $db_password -path `pwd`/
 
 echo
 echo "Success."

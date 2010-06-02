@@ -1,12 +1,15 @@
 #!/bin/bash
 
 script_dir=`dirname $0`
+cc_version="${project.version}"
+db_version="${ccc.db.version}"
 
 echo
 echo "CC7 upgrade tool"
 
-cc_version="${project.version}"
-app_name="cc7"
+echo
+echo -n "Application name: "
+read app_name
 
 echo
 echo "Database connection"
@@ -23,7 +26,6 @@ echo " 3. MySQL"
 echo " 4. MS SQL"
 echo -n " Please enter option [1 - 4]: "
 read db_type
-db_version="${ccc.db.version}"
 
 echo
 echo "Mail configuration"
@@ -42,6 +44,10 @@ cd cc-$cc_version
 ../$script_dir/dbconfig.sh $db_type $db_url $db_user $db_password
 ../$script_dir/mailconfig.sh $mail_host $mail_username $mail_password
 cd ..
+
+echo
+echo "Upgrading database schema."
+java -cp $script_dir/../client-shell-$cc_version.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password -v $db_version
 
 echo
 echo "Success."

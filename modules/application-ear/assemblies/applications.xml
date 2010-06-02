@@ -34,7 +34,7 @@
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>../../installer</directory>
+            <directory>${basedir}/../../installer</directory>
             <lineEnding>keep</lineEnding>
             <filtered>true</filtered>
             <outputDirectory>installer</outputDirectory>
