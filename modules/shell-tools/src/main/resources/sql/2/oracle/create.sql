@@ -57,6 +57,8 @@ INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_READ',   
 INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_UPDATE',       (SELECT id FROM groups WHERE name='CONTENT_CREATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_DELETE',       (SELECT id FROM groups WHERE name='CONTENT_CREATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('FOLDER_UPDATE',         (SELECT id FROM groups WHERE name='CONTENT_CREATOR'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('GROUP_READ',            (SELECT id FROM groups WHERE name='CONTENT_CREATOR'));
+INSERT INTO group_permissions (permission, group_id) VALUES ('USER_READ',             (SELECT id FROM groups WHERE name='CONTENT_CREATOR'));
 
 INSERT INTO group_permissions (permission, group_id) VALUES ('TEMPLATE_CREATE',       (SELECT id FROM groups WHERE name='SITE_BUILDER'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('TEMPLATE_UPDATE',       (SELECT id FROM groups WHERE name='SITE_BUILDER'));
@@ -64,11 +66,9 @@ INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_CACHE_UPD
 
 INSERT INTO group_permissions (permission, group_id) VALUES ('MIGRATE',               (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('GROUP_CREATE',          (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
-INSERT INTO group_permissions (permission, group_id) VALUES ('GROUP_READ',            (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('GROUP_UPDATE',          (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('USER_CREATE',           (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('USER_UPDATE',           (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
-INSERT INTO group_permissions (permission, group_id) VALUES ('USER_READ',             (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_CREATE',         (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('RESOURCE_ACL_UPDATE',   (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
 INSERT INTO group_permissions (permission, group_id) VALUES ('SEARCH_SCHEDULE',       (SELECT id FROM groups WHERE name='ADMINISTRATOR'));
