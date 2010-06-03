@@ -1,4 +1,4 @@
-password=`uuidgen`
+password=`python -c 'import uuid; print uuid.uuid4()'`
 
 mysql -h $1 -u $2 -p -e "\
 CREATE DATABASE $3 CHARACTER SET utf8 COLLATE utf8_bin;\

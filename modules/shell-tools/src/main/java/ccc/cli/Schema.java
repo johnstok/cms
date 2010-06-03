@@ -53,6 +53,7 @@ public class Schema
         CccApp {
 
     private static final int    NEW_DB_VERSION = -1;
+    private static final int    LATEST_DB_VERSION = 2;
     private static final Logger LOG = Logger.getLogger(Schema.class);
 
     @Option(
@@ -72,8 +73,8 @@ public class Schema
     private String _conString;
 
     @Option(
-        name="-v", required=true, usage="Version of the database to build.")
-        private int _version;
+        name="-v", usage="Version of the database to build.")
+        private int _version = LATEST_DB_VERSION;
 
     @Option(
         name="-d", required=false, usage="Drop existing tables first.")

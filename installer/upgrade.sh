@@ -2,7 +2,6 @@
 
 script_dir=`dirname $0`
 cc_version="${project.version}"
-db_version="${ccc.db.version}"
 
 echo
 echo "CC7 upgrade tool"
@@ -47,7 +46,7 @@ cd ..
 
 echo
 echo "Upgrading database schema."
-java -cp $script_dir/../client-shell-$cc_version.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password -v $db_version
+java -cp $script_dir/../client-shell-$cc_version.jar ccc.cli.Schema   -c $db_url -u $db_user -p $db_password
 
 echo
 echo "Success."

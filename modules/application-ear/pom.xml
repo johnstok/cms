@@ -213,8 +213,6 @@
                                             <arg value="-p" />
                                             <arg value="${application.db-password}" />
                                             <arg value="-d" />
-                                            <arg value="-v" />
-                                            <arg value="${ccc.db.version}" />
                                         </java>
 
                                         <java classname="ccc.cli.Users" fork="true" failonerror="true" classpath="${migration_classpath}">
