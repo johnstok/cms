@@ -61,7 +61,6 @@ public class ErrorDialog extends AbstractEditDialog {
                         final String resolution,
                         final Globals globals) {
         super(GlobalsImpl.uiConstants().error(), globals);
-        setPanelId("error-panel");
 
         getPanel().add(_message);
         _message.setHTML(
@@ -70,19 +69,16 @@ public class ErrorDialog extends AbstractEditDialog {
                 .couldNotComplete("<b>", "</b><br><br>"));
 
         _action.setFieldLabel(constants().action());
-        _action.setId("error-action");
         _action.setReadOnly(true);
         _action.setValue(action);
         addField(_action);
 
         _error.setFieldLabel(constants().details());
-        _error.setId("error-details");
         _error.setReadOnly(true);
         _error.setValue(error);
         addField(_error);
 
         _resolution.setFieldLabel(constants().resolution());
-        _resolution.setId("error-resolution");
         _resolution.setReadOnly(true);
         _resolution.setValue(resolution);
         addField(_resolution);
