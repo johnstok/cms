@@ -30,7 +30,6 @@ package ccc.domain.sorting;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import ccc.api.types.DBC;
 import ccc.domain.ResourceEntity;
 
 /**
@@ -46,10 +45,17 @@ public final class AscendingIndexComparator
     /** {@inheritDoc} */
     @Override
     public int compare(final ResourceEntity o1, final ResourceEntity o2) {
-        DBC.require().notNull(o1);
-        DBC.require().notNull(o2);
 
-        return o1.getIndex().compareTo(o2.getIndex());
+        final Integer aPos =
+            (null==o1 || null==o1.getIndex())
+                ? Integer.valueOf(-1)
+                : o1.getIndex();
+        final Integer bPos =
+            (null==o2 || null==o2.getIndex())
+                ? Integer.valueOf(-1)
+                : o2.getIndex();
+
+        return aPos.compareTo(bPos);
     }
 
 }
