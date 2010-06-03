@@ -255,8 +255,10 @@ public interface ResourceIdentifiers {
         String SEARCH_LEGACY      = COLLECTION + "/by-legacy-id/{id}";
         /** SEARCH_METADATA : String. */
         String SEARCH_METADATA    = COLLECTION + "/by-metadata-key/{id}";
+        /** TEXT_SIMPLE : String. */
+        String TEXT_SIMPLE        = COLLECTION + "/text-content";
         /** TEXT : String. */
-        String TEXT               = COLLECTION + "/text-content{path:.*}";
+        String TEXT               = TEXT_SIMPLE + "{path:.*}";
         /** PATH_SECURE : String. */
         String PATH_SECURE        = COLLECTION + "/by-path-secure{path:.*}";
         /** PATH_WC : String. */

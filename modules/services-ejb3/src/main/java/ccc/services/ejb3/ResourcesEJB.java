@@ -596,20 +596,20 @@ public class ResourcesEJB
 
         final StringBuilder sb = new StringBuilder();
         final ResourcePath rp = new ResourcePath(absolutePath);
-        ResourceEntity r;
+
         try {
-            r = getResources().lookup(rp);
-        } catch (final EntityNotFoundException e) {
-            return null;
-        }
-        if (r instanceof FileEntity) {
-            final FileEntity f = (FileEntity) r;
-            if (f.isText()) {
-                getRepoFactory().createDataRepository().retrieve(
-                    f.getData(),
-                    new ReadToStringAction(sb, charset)
-                );
+            final ResourceEntity r = getResources().lookup(rp);
+            if (r instanceof FileEntity) {
+                final FileEntity f = (FileEntity) r;
+                if (f.isText()) {
+                    getRepoFactory().createDataRepository().retrieve(
+                        f.getData(),
+                        new ReadToStringAction(sb, charset)
+                    );
+                }
             }
+        } catch (final EntityNotFoundException e) {
+            Exceptions.swallow(e);
         }
         return sb.toString();
     }

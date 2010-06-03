@@ -361,6 +361,51 @@ public class FileUploadAcceptanceTest
     /**
      * Test.
      */
+    public void testGetFileContentsFromPath() {
+
+        // ARRANGE
+        final String fName = UUID.randomUUID().toString();
+        final ResourceSummary filesFolder =
+            getCommands().resourceForPath("/files");
+        final ResourceSummary rs =
+            getFiles().createTextFile(
+                new File(
+                    filesFolder.getId(),
+                    fName,
+                    MimeType.TEXT,
+                    true,
+                    "",
+                    "Hello!"));
+
+        // ACT
+        final String content =
+            getCommands().fileContentsFromPath(rs.getAbsolutePath(), "UTF-8");
+
+        // ASSERT
+        assertEquals("Hello!", content);
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testGetFileContentsIsEmptyForMissingPath() {
+
+        // ARRANGE
+
+        // ACT
+        final String content =
+            getCommands().fileContentsFromPath(
+                "/this/path/doesnt/exist", "UTF-8");
+
+        // ASSERT
+        assertEquals("", content);
+    }
+
+
+    /**
+     * Test.
+     */
     public void testUpdateFileRequiresLock() {
 
         // ARRANGE

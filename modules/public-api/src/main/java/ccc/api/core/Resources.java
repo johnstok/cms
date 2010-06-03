@@ -396,7 +396,7 @@ public interface Resources {
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.Resource.TEXT)
     String fileContentsFromPath(@PathParam("path") String absolutePath,
-                                @DefaultValue("UTF-8") String charset);
+                                @QueryParam("charset") @DefaultValue("UTF-8") String charset);
 
 
     /**

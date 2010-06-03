@@ -36,6 +36,7 @@ import ccc.api.jaxrs.ResourcesImpl;
 import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.types.DBC;
 import ccc.api.types.HttpStatusCode;
+import ccc.commons.HTTP;
 
 
 /**
@@ -88,6 +89,38 @@ class ResourcesDecorator
             return
             (ResourceSummary) response.getEntity(ResourceSummary.class);
         }
+        final String errorEntity =
+            (String) response.getEntity(String.class);
+        throw new RestExceptionMapper().fromResponse(errorEntity);
+
+    }
+
+
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    @Override
+    public String fileContentsFromPath(final String absolutePath, final String charset) {
+        /* This method works around an encoding issue in REST-EASY 1.1. */
+        final String uri =
+            ccc.api.core.ResourceIdentifiers.Resource.TEXT_SIMPLE
+            + absolutePath
+            + "?charset=" + HTTP.encode(charset, "UTF-8");
+        final ClientRequest request = new ClientRequest(_base+uri, _http);
+
+        BaseClientResponse response;
+        try {
+            response = (BaseClientResponse) request.get();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        if (response.getStatus() == HttpStatusCode.OK) {
+            return
+            (String) response.getEntity(String.class);
+        } else if (response.getStatus() == HttpStatusCode.NO_CONTENT) {
+            return null;
+        }
+
         final String errorEntity =
             (String) response.getEntity(String.class);
         throw new RestExceptionMapper().fromResponse(errorEntity);
