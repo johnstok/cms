@@ -122,6 +122,13 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
+
+                if (!_title.getValue().matches("[^<^>]*")) {
+                    getGlobals().alert(
+                        constants().titlesMustNotContainBrackets());
+                    return;
+                }
+
                 Validate.callTo(updateMetaData())
                     .check(Validations.notEmpty(_title))
                     .check(_metadataPanel.validateMetadataValues())

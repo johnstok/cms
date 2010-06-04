@@ -1779,4 +1779,12 @@ public interface UIConstants extends Constants {
      */
     @DefaultStringValue("Navigator")
     String navigator();
+
+    /**
+     * "The title field may not contain brackets.".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("The title field may not contain brackets.")
+    String titlesMustNotContainBrackets();
 }
