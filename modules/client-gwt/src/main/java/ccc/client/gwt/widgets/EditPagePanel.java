@@ -36,10 +36,10 @@ import java.util.UUID;
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
+import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
-import ccc.api.types.Link;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
@@ -246,12 +246,11 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
         final ImageTriggerField image = c.image();
         final String id = para.getText();
         if (id != null && !id.trim().equals("")) {
-            final UUID resourceId = UUID.fromString(id);
-            ResourceSummary s = new ResourceSummary();
+            final ResourceSummary s = new ResourceSummary();
             s.addLink(
                 "absolute-path",
                 new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
-                .build(new GWTTemplateEncoder()));
+                .build("id", id, new GWTTemplateEncoder()));
 
             new GetAbsolutePathAction(GlobalsImpl.uiConstants().selectImage(),
                                       s) {
@@ -259,7 +258,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                     final File fs = new File(
                         new MimeType("image", "*"),
                         path,
-                        resourceId,
+                        UUID.fromString(id),
                         new ResourceName("img"),
                         "",
                         new HashMap<String, String>());
