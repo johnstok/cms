@@ -71,7 +71,7 @@ public class EmailAddress implements Serializable {
      */
     public void setText(final String text) {
         DBC.require().toBeTrue(isValidText(text), "Invalid email: "+text);
-        _text = text;
+        _text = text.trim();
     }
 
 
@@ -84,7 +84,7 @@ public class EmailAddress implements Serializable {
      * otherwise.
      */
     public static boolean isValidText(final String email) {
-        return (email != null) && email.matches(VALID_EMAIL);
+        return (email != null) && email.trim().matches(VALID_EMAIL);
     }
 
 
