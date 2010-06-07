@@ -82,10 +82,10 @@ public interface Resources {
         @QueryParam("tag") String tag,
         @QueryParam("before") Long before,
         @QueryParam("after") Long after,
-        @QueryParam("mainmenu") String mainMenu,
+        @QueryParam("mainmenu") String mainMenu, // FIXME: Should be boolean.
         @QueryParam("type") String type,
-        @QueryParam("locked") String locked,
-        @QueryParam("published") String published,
+        @QueryParam("locked") String locked,  // FIXME: Should be boolean.
+        @QueryParam("published") String published,  // FIXME: Should be boolean.
         @QueryParam("sort") String sort,
         @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,

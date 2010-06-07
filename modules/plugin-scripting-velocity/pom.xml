@@ -29,16 +29,6 @@
             <artifactId>velocity</artifactId>
             <version>${lib.version.velocity}</version>
         </dependency>
-        <dependency>
-            <groupId>velocity-tools</groupId>
-            <artifactId>velocity-tools-generic</artifactId>
-            <version>${lib.version.velocity-tools}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${lib.version.commons-beanutils}</version>
-        </dependency>
     </dependencies>
     
 </project>

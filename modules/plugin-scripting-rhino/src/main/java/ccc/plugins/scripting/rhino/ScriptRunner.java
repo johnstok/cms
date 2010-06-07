@@ -51,11 +51,11 @@ import ccc.plugins.scripting.TextProcessor;
 public class ScriptRunner implements TextProcessor {
 
     /** OUT : String. */
-    public static final String OUT = "ccc.scriptrunner.out";
+    static final String OUT = "ccc.scriptrunner.out";
     /** ERR : String. */
-    public static final String ERR = "ccc.scriptrunner.err";
+    static final String ERR = "ccc.scriptrunner.err";
     /** IN : String. */
-    public static final String IN = "ccc.scriptrunner.in";
+    static final String IN = "ccc.scriptrunner.in";
 
     private ArrayList<String> _allowedClasses = null;
 

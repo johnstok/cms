@@ -94,6 +94,18 @@
             <version>${project.version}</version>
         </dependency>
         
+        <!-- Temp -->
+        <dependency>
+            <groupId>velocity-tools</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+            <version>${lib.version.velocity-tools}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${lib.version.commons-beanutils}</version>
+        </dependency>
+        
         <!-- Plugins -->
         <dependency>
             <groupId>${project.groupId}</groupId>

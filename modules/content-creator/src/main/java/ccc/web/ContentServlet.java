@@ -30,12 +30,18 @@ package ccc.web;
 import static ccc.commons.Strings.*;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.apache.velocity.tools.generic.DateTool;
+import org.apache.velocity.tools.generic.SortTool;
 
 import ccc.api.core.MemoryServiceLocator;
 import ccc.api.core.ServiceLocator;
@@ -43,8 +49,11 @@ import ccc.api.core.User;
 import ccc.api.exceptions.CCException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.ResourcePath;
+import ccc.commons.EnumTools;
+import ccc.commons.Environment;
 import ccc.commons.HTTP;
 import ccc.plugins.PluginFactory;
+import ccc.plugins.markup.XHTML;
 import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
 import ccc.plugins.scripting.Context;
@@ -62,6 +71,8 @@ public class ContentServlet
     extends
         AbstractCCCServlet {
     private static final Logger LOG = Logger.getLogger(ContentServlet.class);
+
+    private final Random _random = new Random();
 
     private boolean _respectVisibility = true;
 
@@ -201,13 +212,24 @@ public class ContentServlet
                                   final ccc.api.core.Resource rs) {
         final Context context = new Context();
 
-        context.add("user",     loggedInUser());
-        context.add("request",  request);
-        context.add("response", response);
-        context.add("services", createServiceLocator());
-        context.add("resource", rs);
-        context.add("mail",     getMailer());
-        context.add("http",     HTTP.class);
+        context.add("user",        loggedInUser());
+        context.add("request",     request);
+        context.add("response",    response);
+        context.add("services",    createServiceLocator());
+        context.add("resource",    rs);
+        context.add("mail",        getMailer());
+        context.add("http",        HTTP.class);
+        context.add("random",      _random);
+        context.add("math",        Math.class);
+        context.add("collections", Collections.class);
+        context.add("calendar",    Calendar.class);
+        context.add("html",        XHTML.class);
+        context.add("uuid",        UUID.class);
+        context.add("enums",       new EnumTools());
+        context.add("hostname",    Environment.getHostname());
+        context.add("dateTool",    new DateTool()); // FIXME: Remove.
+        context.add("sortTool",    new SortTool()); // FIXME: Remove.
+
         return context;
     }
 
