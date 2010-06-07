@@ -28,11 +28,9 @@ package ccc.migration;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -51,6 +49,7 @@ import ccc.api.jaxrs.providers.RestExceptionMapper;
 import ccc.api.jaxrs.providers.S11nProvider;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
+import ccc.commons.HTTP;
 
 
 /**
@@ -67,7 +66,6 @@ public class FileUploader
 
     private final HttpClient _client;
     private final String _filesUrl;
-    private MimetypesFileTypeMap _mimemap;
 
 
     /**
@@ -81,12 +79,6 @@ public class FileUploader
         DBC.require().notEmpty(hostUrl);
         _filesUrl = hostUrl+"/ccc/api/secure/files/bin";
         _client   = httpClient;
-
-        final InputStream mimes =
-            Thread.currentThread().
-            getContextClassLoader().
-            getResourceAsStream("ccc7mime.types");
-        _mimemap = new MimetypesFileTypeMap(mimes);
     }
 
 
@@ -113,7 +105,7 @@ public class FileUploader
                 originalDescription,
                 originalLastUpdate,
                 ps,
-                _mimemap.getContentType(file),
+                HTTP.determineMimetype(file.getName()).toString(),
                 null,
                 publish);
 

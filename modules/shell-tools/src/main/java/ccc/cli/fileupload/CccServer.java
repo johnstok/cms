@@ -43,6 +43,7 @@ import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.cli.FileUpload;
+import ccc.commons.HTTP;
 
 
 /**
@@ -87,8 +88,10 @@ public class CccServer implements Server {
                            final boolean publish) {
 
         try {
+            final MimeType type = HTTP.determineMimetype(localFile.getName());
+
             final ccc.api.core.File f = new ccc.api.core.File(
-                new MimeType("application", "octet-stream"),
+                type,
                 null,
                 null,
                 ResourceName.escape(localFile.getName()),
@@ -101,6 +104,7 @@ public class CccServer implements Server {
             f.setInputStream(new FileInputStream(localFile));
             f.setSize(localFile.length());
             f.setPublished(publish);
+            f.setComment("Uploaded.");
 
             _uploader.create(f);
         } catch (final FileNotFoundException e) {

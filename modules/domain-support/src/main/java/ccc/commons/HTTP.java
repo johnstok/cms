@@ -39,7 +39,13 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import javax.activation.MimeTypeParseException;
+import javax.activation.MimetypesFileTypeMap;
+
+import org.apache.log4j.Logger;
+
 import ccc.api.exceptions.CCException;
+import ccc.api.types.DBC;
 import ccc.api.types.HttpStatusCode;
 import ccc.api.types.MimeType;
 
@@ -50,6 +56,7 @@ import ccc.api.types.MimeType;
  * @author Civic Computing Ltd.
  */
 public final class HTTP {
+    private static final Logger LOG = Logger.getLogger(HTTP.class);
     private static final int FIVE_SECONDS = 5*1000;
 
     private HTTP() { super(); }
@@ -231,6 +238,30 @@ public final class HTTP {
             return URLDecoder.decode(string, charset);
         } catch (final UnsupportedEncodingException e) {
             throw new CCException("Invalid charset.", e);
+        }
+    }
+
+    /**
+     * Guess the mime type of a file from its name.
+     *
+     * @param filename The name of the file.
+     *
+     * @return The corresponding mime type.
+     */
+    public static MimeType determineMimetype(final String filename) {
+        DBC.require().notEmpty(filename);
+
+        try {
+            final MimetypesFileTypeMap typeMap =
+                new MimetypesFileTypeMap(Resources.open("ccc7mime.types"));
+            final javax.activation.MimeType mt =
+                new javax.activation.MimeType(typeMap.getContentType(filename));
+            final String primary = mt.getPrimaryType();
+            final String sub     = mt.getSubType();
+            return new MimeType(primary, sub);
+        } catch (final MimeTypeParseException e) {
+            LOG.warn("Couldn't determine mime-type for file: " + filename, e);
+            return MimeType.BINARY_DATA;
         }
     }
 }

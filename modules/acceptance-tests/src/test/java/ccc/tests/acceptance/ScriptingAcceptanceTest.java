@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -109,6 +109,6 @@ public class ScriptingAcceptanceTest
         final String pContent = getBrowser().previewContent(script, false);
 
         // ASSERT
-        assertTrue(0 < Integer.valueOf(pContent).intValue());
+        assertTrue(0 <= Integer.valueOf(pContent).intValue());
     }
 }
