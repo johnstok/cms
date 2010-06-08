@@ -1064,7 +1064,8 @@ public abstract class ResourceEntity
                 rs.addLink(
                     Folder.IMAGES,
                     new Link(ccc.api.core.ResourceIdentifiers.File.IMAGES)
-                    .build("id", getId().toString(), new NormalisingEncoder()));
+                    .build("id", getId().toString(), new NormalisingEncoder())
+                    + "?{-join|&|count,page}");
                 rs.addLink(
                     Folder.EXISTS,
                     new Link(ccc.api.core.ResourceIdentifiers.Folder.ELEMENT)

@@ -89,9 +89,10 @@ public abstract class GetImagesPagedAction
         final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("count", new String[] {""+_pageSize});
         params.put("page", new String[] {""+_pageNo});
-        return
+        final String path =
             Globals.API_URL
             + _parent.images().build(params, new GWTTemplateEncoder());
+        return path;
     }
 
 
