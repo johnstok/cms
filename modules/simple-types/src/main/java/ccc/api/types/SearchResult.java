@@ -26,7 +26,7 @@
  */
 package ccc.api.types;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,7 +38,7 @@ import java.util.UUID;
  */
 public class SearchResult {
 
-    private Set<UUID> _hits = new HashSet<UUID>();
+    private final Set<UUID> _hits = new LinkedHashSet<UUID>();
     private int _totalResults = 0;
     private String _terms = "";
     private int _pageNo;
@@ -61,7 +61,7 @@ public class SearchResult {
                         final int noOfResultsPerPage,
                         final String terms,
                         final int pageNo) {
-        _hits = hits;
+        hits(hits);
         _totalResults = totalResults;
         _noOfResultsPerPage = noOfResultsPerPage;
         _terms = terms;
@@ -103,7 +103,8 @@ public class SearchResult {
      * @param hits Set of UUID.
      */
     public void hits(final Set<UUID> hits) {
-        _hits = hits;
+        _hits.clear();
+        _hits.addAll(hits);
     }
 
 

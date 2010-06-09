@@ -27,13 +27,14 @@
 package ccc.plugins.search.lucene;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.KeywordAnalyzer;
 import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -46,12 +47,14 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similar.MoreLikeThis;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 
 import ccc.api.exceptions.CCException;
@@ -62,6 +65,7 @@ import ccc.api.types.ParagraphType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 import ccc.commons.Exceptions;
 import ccc.plugins.markup.XHTML;
 import ccc.plugins.search.TextExtractor;
@@ -76,62 +80,11 @@ public class SimpleLuceneFS
     implements
         SimpleLucene {
 
-    /**
-     * CC-specific query parser.
-     *
-     * @author Civic Computing Ltd.
-     */
-    private static final class CCQueryParser
-        extends
-            QueryParser {
-
-        /**
-         * Constructs a query parser.
-         *
-         * @param matchVersion  Lucene version to match.
-         * @param f             The default field for query terms.
-         * @param a             Used to find terms in the query text.
-         */
-        CCQueryParser(final Version matchVersion,
-                              final String f,
-                              final Analyzer a) {
-            super(matchVersion, f, a);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        protected Query newRangeQuery(final String f,
-                                      final String min,
-                                      final String max,
-                                      final boolean inclusive) {
-            try {
-                return NumericRangeQuery.newLongRange(f,
-                    Long.valueOf(min),
-                    Long.valueOf(max),
-                    true,
-                    true);
-            } catch (final NumberFormatException e) {
-                Exceptions.swallow(e);
-            }
-
-            try {
-                return NumericRangeQuery.newDoubleRange(f,
-                    Double.valueOf(min),
-                    Double.valueOf(max),
-                    true,
-                    true);
-            } catch (final NumberFormatException e) {
-                Exceptions.swallow(e);
-            }
-
-            return super.newRangeQuery(f, min, max, inclusive);
-        }
-    }
-
+    private static final String  SORT_FIELD_PREFIX = "_";
     private static final Version LUCENE_VERSION = Version.LUCENE_30;
-    private static final Logger LOG =
+    private static final String  DEFAULT_FIELD = "allcontent";
+    private static final Logger  LOG =
         Logger.getLogger(SimpleLuceneFS.class.getName());
-    private static final String DEFAULT_FIELD = "allcontent";
 
     private final String _indexPath;
     private IndexWriter _writer;
@@ -144,16 +97,6 @@ public class SimpleLuceneFS
      */
     public SimpleLuceneFS(final String indexPath)  {
         _indexPath = indexPath;
-    }
-
-
-    private IndexWriter createWriter() throws IOException {
-        final IndexWriter writer =
-            new IndexWriter(
-                FSDirectory.open(new java.io.File(_indexPath)),
-                new StandardAnalyzer(LUCENE_VERSION),
-                IndexWriter.MaxFieldLength.UNLIMITED);
-        return writer;
     }
 
 
@@ -176,7 +119,7 @@ public class SimpleLuceneFS
         final CapturingHandler capturingHandler =
             new CapturingHandler(nofOfResultsPerPage, pageNo);
 
-        find(searchTerms, maxHits, capturingHandler);
+        find(searchTerms, maxHits, null, capturingHandler);
 
         return new SearchResult(
             capturingHandler.getHits(),
@@ -185,6 +128,45 @@ public class SimpleLuceneFS
             searchTerms,
             pageNo);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult find(final String searchTerms,
+                             final String sort,
+                             final SortOrder order,
+                             final int nofOfResultsPerPage,
+                             final int pageNo) {
+
+        final Sort sorter =
+            new Sort(
+                new SortField(sort, SortField.STRING_VAL, (SortOrder.DESC==order)));
+
+        if (searchTerms == null || searchTerms.trim().equals("")) {
+            return
+                new SearchResult(
+                    new HashSet<UUID>(),
+                    0,
+                    nofOfResultsPerPage,
+                    searchTerms,
+                    pageNo);
+        }
+
+        final int maxHits = (pageNo+1)*nofOfResultsPerPage;
+        final CapturingHandler capturingHandler =
+            new CapturingHandler(nofOfResultsPerPage, pageNo);
+
+        find(searchTerms, maxHits, sorter, capturingHandler);
+
+        return new SearchResult(
+            capturingHandler.getHits(),
+            capturingHandler.getTotalResultsCount(),
+            nofOfResultsPerPage,
+            searchTerms,
+            pageNo);
+
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -210,6 +192,7 @@ public class SimpleLuceneFS
 
     private void find(final String searchTerms,
                       final int maxHits,
+                      final Sort sorter,
                       final CapturingHandler sh) {
         IndexSearcher searcher = null;
         try {
@@ -217,9 +200,19 @@ public class SimpleLuceneFS
                 new IndexSearcher(
                     FSDirectory.open(new java.io.File(_indexPath)));
 
-            final TopDocs docs = searcher.search(
+            TopDocs docs;
+            if (null==sorter) {
+                docs = searcher.search(
                     createParser().parse(searchTerms),
+                    null,
                     maxHits);
+            } else {
+                docs = searcher.search(
+                    createParser().parse(searchTerms),
+                    null,
+                    maxHits,
+                    sorter);
+            }
 
             sh.handle(searcher, docs);
         } catch (final IOException e) {
@@ -280,6 +273,7 @@ public class SimpleLuceneFS
         }
     }
 
+
     /**
      * Retrieves lucene document for given page.
      *
@@ -299,6 +293,7 @@ public class SimpleLuceneFS
         return hits.scoreDocs[0].doc;
     }
 
+
     /**
      * Removes all entries from the lucene index.
      *
@@ -315,6 +310,7 @@ public class SimpleLuceneFS
         _writer.expungeDeletes();
         LOG.info("Deleted all existing documents.");
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -333,6 +329,7 @@ public class SimpleLuceneFS
         _writer = null;
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void rollbackUpdate() {
@@ -344,6 +341,7 @@ public class SimpleLuceneFS
             LOG.error("Error rolling back lucene write.", e);
         }
     }
+
 
     /** {@inheritDoc}*/
     @Override
@@ -358,6 +356,7 @@ public class SimpleLuceneFS
             throw new CCException("Failed to start index update.", e);
         }
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -377,7 +376,6 @@ public class SimpleLuceneFS
                 }
             }
 
-            indexTags(tags, d);
 
             d.add(
                 new Field(
@@ -404,12 +402,9 @@ public class SimpleLuceneFS
                     name.toString().toLowerCase(Locale.US),
                     Field.Store.YES,
                     Field.Index.NOT_ANALYZED));
-            d.add(
-                new Field(
-                    "title",
-                    title,
-                    Field.Store.YES,
-                    Field.Index.ANALYZED));
+
+            addStringField(d, "title", title);
+            addStringsField(d, "tags", tags);
 
             _writer.addDocument(d);
             LOG.debug("Added document.");
@@ -420,58 +415,120 @@ public class SimpleLuceneFS
     }
 
 
-    private void indexTags(final Set<String> tags, final Document d) {
+    private void indexParagraph(final Document d, final Paragraph paragraph) {
+        if ((paragraph.getType() == ParagraphType.TEXT
+            || paragraph.getType() == ParagraphType.LIST)
+            && paragraph.getText() != null) {
+            addStringField(
+                d,
+                paragraph.getName(),
+                XHTML.cleanUpContent(paragraph.getText()));
 
+        } else if (paragraph.getType() == ParagraphType.NUMBER
+                   && paragraph.getNumber() != null) {
+            addDoubleField(
+                d,
+                paragraph.getName(),
+                paragraph.getNumber().doubleValue());
+
+        } else if (paragraph.getType() == ParagraphType.DATE
+                   && paragraph.getDate() != null) {
+           addDateField(
+               d,
+               paragraph.getName(),
+               paragraph.getDate());
+
+        } else if (paragraph.getType() == ParagraphType.BOOLEAN
+                   && paragraph.getBoolean() != null) {
+            addBooleanField(
+                d,
+                paragraph.getName(),
+                paragraph.getBoolean().booleanValue());
+        }
+    }
+
+
+    private void addStringsField(final Document d,
+                                 final String fieldName,
+                                 final Collection<String> fieldValue) {
         final StringBuilder tagBuilder = new StringBuilder();
-        for (final String tag : tags) {
+        for (final String tag : fieldValue) {
             if (tagBuilder.length() > 0) {
                 tagBuilder.append(",");
             }
             tagBuilder.append(tag);
         }
         if (tagBuilder.length()>0) {
-            d.add(
-                new Field(
-                    "tags",
-                    tagBuilder.toString(),
-                    Field.Store.NO,
-                    Field.Index.ANALYZED));
+            addStringField(d, fieldName, tagBuilder.toString());
         }
     }
 
 
-    private void indexParagraph(final Document d, final Paragraph paragraph) {
-
-        if ((paragraph.getType() == ParagraphType.TEXT
-            || paragraph.getType() == ParagraphType.LIST)
-            && paragraph.getText() != null) {
-            d.add(
-                new Field(
-                    paragraph.getName(),
-                    XHTML.cleanUpContent(paragraph.getText()),
-                    Field.Store.NO,
-                    Field.Index.ANALYZED));
-
-        } else if (paragraph.getType() == ParagraphType.NUMBER
-            && paragraph.getNumber() != null) {
-            final NumericField nf =
-                new NumericField(paragraph.getName(), 4, Field.Store.NO, true);
-            nf.setDoubleValue(paragraph.getNumber().doubleValue());
-            d.add(nf);
-        } else if (paragraph.getType() == ParagraphType.DATE
-            && paragraph.getDate() != null) {
-           final NumericField nf =
-               new NumericField(paragraph.getName(), 4, Field.Store.NO, true);
-           nf.setLongValue(paragraph.getDate().getTime());
-           d.add(nf);
-        } else if (paragraph.getType() == ParagraphType.BOOLEAN
-            && paragraph.getBoolean() != null) {
-            final Field f = new Field(paragraph.getName(),
-                ""+paragraph.getBoolean().booleanValue(),
+    private void addStringField(final Document d,
+                                final String fieldName,
+                                final String fieldValue) {
+        d.add(
+            new Field(
+                fieldName,
+                fieldValue,
                 Field.Store.NO,
-                Field.Index.ANALYZED);
-            d.add(f);
-        }
+                Field.Index.ANALYZED));
+        d.add(
+            new Field(
+                SORT_FIELD_PREFIX+fieldName,
+                fieldValue,
+                Field.Store.NO,
+                Field.Index.NOT_ANALYZED));
+    }
+
+
+    private void addDoubleField(final Document d,
+                                final String fieldName,
+                                final double fieldValue) {
+        final NumericField nf =
+            new NumericField(fieldName, Field.Store.NO, true);
+        nf.setDoubleValue(fieldValue);
+        d.add(nf);
+        d.add(
+            new Field(
+                SORT_FIELD_PREFIX+fieldName,
+                NumericUtils.doubleToPrefixCoded(fieldValue),
+                Field.Store.NO,
+                Field.Index.NOT_ANALYZED));
+    }
+
+
+    private void addDateField(final Document d,
+                              final String fieldName,
+                              final Date fieldValue) {
+        final NumericField nf =
+            new NumericField(fieldName, Field.Store.NO, true);
+        nf.setLongValue(fieldValue.getTime());
+        d.add(nf);
+        d.add(
+            new Field(
+                SORT_FIELD_PREFIX+fieldName,
+                NumericUtils.longToPrefixCoded(fieldValue.getTime()),
+                Field.Store.NO,
+                Field.Index.NOT_ANALYZED));
+    }
+
+
+    private void addBooleanField(final Document d,
+                                 final String fieldName,
+                                 final boolean fieldValue) {
+        d.add(
+            new Field(
+                fieldName,
+                ""+fieldValue,
+                Field.Store.NO,
+                Field.Index.ANALYZED));
+        d.add(
+            new Field(
+                SORT_FIELD_PREFIX+fieldName,
+                ""+fieldValue,
+                Field.Store.NO,
+                Field.Index.NOT_ANALYZED));
     }
 
 
@@ -497,6 +554,7 @@ public class SimpleLuceneFS
         }
     }
 
+
     private QueryParser createParser() {
         final PerFieldAnalyzerWrapper wrapper =
             new PerFieldAnalyzerWrapper(new StandardAnalyzer(LUCENE_VERSION));
@@ -504,7 +562,6 @@ public class SimpleLuceneFS
         wrapper.addAnalyzer("id", new KeywordAnalyzer());
         wrapper.addAnalyzer("path", new KeywordAnalyzer());
         wrapper.addAnalyzer("name", new KeywordAnalyzer());
-//        wrapper.addAnalyzer("title", new KeywordAnalyzer());
 
         final QueryParser qp =
             new CCQueryParser(LUCENE_VERSION, DEFAULT_FIELD, wrapper);
@@ -512,4 +569,13 @@ public class SimpleLuceneFS
         return qp;
     }
 
+
+    private IndexWriter createWriter() throws IOException {
+        final IndexWriter writer =
+            new IndexWriter(
+                FSDirectory.open(new java.io.File(_indexPath)),
+                new StandardAnalyzer(LUCENE_VERSION),
+                IndexWriter.MaxFieldLength.UNLIMITED);
+        return writer;
+    }
 }

@@ -27,7 +27,7 @@
 package ccc.plugins.search.lucene;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,7 +42,7 @@ import org.apache.lucene.search.TopDocs;
  */
 public class CapturingHandler {
 
-    private final Set<UUID> _hits = new HashSet<UUID>();
+    private final Set<UUID> _hits = new LinkedHashSet<UUID>();
     private final int       _noOfResultsPerPage;
     private final int       _pageNo;
     private int             _searchResultCount = 0;
