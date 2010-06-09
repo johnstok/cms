@@ -26,6 +26,7 @@
  */
 package ccc.plugins.s11n.json;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -70,7 +71,7 @@ public class ParagraphSerializer
 
             case NUMBER:
                 return Paragraph.fromNumber(
-                    name, json.getBigDecimal(JsonKeys.NUMBER));
+                    name, new BigDecimal(json.getString(JsonKeys.TEXT)));
 
             default:
                 throw new IllegalArgumentException(

@@ -37,7 +37,6 @@ import junit.framework.TestCase;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.json.ParagraphSerializer;
 
 
 /**
@@ -163,8 +162,7 @@ public final class ParagraphTest extends TestCase {
         // ARRANGE
         expect(_json.getString("name")).andReturn("bar");
         expect(_json.getString("type")).andReturn("NUMBER");
-        expect(_json.getBigDecimal("number"))
-            .andReturn(new BigDecimal("123.456"));
+        expect(_json.getString("text")).andReturn("123.456");
         replay(_json);
 
         // ACT

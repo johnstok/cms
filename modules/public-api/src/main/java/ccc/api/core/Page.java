@@ -66,7 +66,7 @@ public class Page
      * @param majorChange Is the update a major change.
      */
     public Page(final UUID parentId,
-                   final String name,
+                   final String name, // FIXME: Should be a resource name.
                    final UUID templateId,
                    final String title,
                    final String comment,
