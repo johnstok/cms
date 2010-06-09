@@ -31,6 +31,7 @@ import java.nio.charset.Charset;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Username;
 import ccc.cli.FileUpload;
+import ccc.cli.Scheduling;
 import ccc.commons.Resources;
 
 
@@ -55,7 +56,7 @@ public class ShellToolsAcceptanceTest
      *
      * @throws Exception If the test fails.
      */
-    public void testHostnameProperty() throws Exception {
+    public void testSuccessfulFileUpload() throws Exception {
 
         // ARRANGE
         final ResourceSummary f = tempFolder();
@@ -85,5 +86,73 @@ public class ShellToolsAcceptanceTest
                 Resources.open("upload/hello.txt"), Charset.forName("UTF-8")),
             contents);
         assertEquals(new Username("migration"), rs.getPublishedBy());
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testCheckIfActionSchedulerIsRunning() {
+
+        // ARRANGE
+        final Scheduling s = new Scheduling();
+
+        s.setAction("running");
+        s.setUsername("migration");
+        s.setPassword("migration");
+        s.setBaseUrl("http://localhost");
+
+        // ACT
+        s.run();
+
+        // ASSERT
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testActionSchedulerHandlesBadPassword() {
+
+        // ARRANGE
+        final Scheduling s = new Scheduling();
+
+        s.setAction("running");
+        s.setUsername("migration");
+        s.setPassword("foo");
+        s.setBaseUrl("http://localhost");
+
+        // ACT
+        try {
+            s.run();
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            assertEquals("Failed to authenticate.", e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test.
+     */
+    public void testActionSchedulerHandlesBadCommand() {
+
+        // ARRANGE
+        final Scheduling s = new Scheduling();
+
+        s.setAction("foo");
+        s.setUsername("migration");
+        s.setPassword("migration");
+        s.setBaseUrl("http://localhost");
+
+        // ACT
+        try {
+            s.run();
+
+            // ASSERT
+        } catch (final RuntimeException e) {
+            assertEquals("Invalid command: foo", e.getMessage());
+        }
     }
 }
