@@ -3,7 +3,7 @@ java.text
 ccc.api.types
 ccc.api.dto
 ccc.api.core
-ccc.mail.Mailer
+ccc.plugins.mail.Mailer
 java.io.FileInputStream
 java.lang.Object
 java.lang.String
