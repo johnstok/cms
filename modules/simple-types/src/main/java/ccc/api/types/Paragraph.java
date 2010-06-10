@@ -337,7 +337,6 @@ public final class Paragraph implements Serializable {
     public static String escape(final String string) {
         return string.replace("\u0026",       "&amp;")  // &
                      .replace("\u005C\u0022", "&quot;") // "
-                     .replace("'",            "&#39;")  // '
                      .replace("\u003c",       "&lt;")   // <
                      .replace("\u003e",       "&gt;");  // >
     }

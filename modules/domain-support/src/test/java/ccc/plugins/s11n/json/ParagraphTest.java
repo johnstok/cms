@@ -49,15 +49,15 @@ public final class ParagraphTest extends TestCase {
     /**
      * Test.
      */
-    public void testEscapeApostrophe() {
+    public void testEscape() {
 
         // ARRANGE
 
         // ACT
-        final String escaped = Paragraph.escape("Neil's pic");
+        final String escaped = Paragraph.escape("'<&>\"");
 
         // ASSERT
-        assertEquals("Neil&#39;s pic", escaped);
+        assertEquals("'&lt;&amp;&gt;&quot;", escaped);
     }
 
 

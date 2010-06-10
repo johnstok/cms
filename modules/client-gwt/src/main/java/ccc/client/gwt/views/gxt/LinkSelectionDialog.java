@@ -165,12 +165,12 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                     link.removeAttribute('class') ;
                 }
             } else {
-                var linkURL = "<a href='"+selectedUrl+"' title='"+title+"'";
+                var linkURL = "<a href=\""+selectedUrl+"\" title=\""+title+"\"";
                 if (uuid != null) {
-                    linkURL = linkURL +" class='ccc:"+uuid+"'";
+                    linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
                 }
                 if (openInNew) {
-                    linkURL = linkURL +" target='_blank'";
+                    linkURL = linkURL +" target=\"_blank\"";
                 }
                 linkURL = linkURL +">"+ innerText +"</a>";
                 return instance.InsertHtml(linkURL);

@@ -107,12 +107,12 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                                     <ImageSummaryModelData> be) {
                 final ImageSummaryModelData md = be.getSelectedItem();
                 if (md != null) {
-                    final String path = Paragraph.escape(md.getPath());
+                    final String path = md.getPath();
                     final String appContext =
                         new GlobalsImpl().getSetting("application.context");
                     _urlField.setValue(appContext + path);
-                    _titleField.setValue(Paragraph.escape(md.getTitle()));
-                    _altField.setValue(Paragraph.escape(md.getTitle()));
+                    _titleField.setValue(md.getTitle());
+                    _altField.setValue(md.getTitle());
                     _uuid = md.getId().toString();
                 }
             }
@@ -173,9 +173,9 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
                 if (_urlField.getValue() != null
                     && !_urlField.getValue().equals("")) {
                     jsniSetUrl(
-                        _urlField.getValue(),
-                        _titleField.getValue(),
-                        _altField.getValue(),
+                        Paragraph.escape(_urlField.getValue()),
+                        Paragraph.escape(_titleField.getValue()),
+                        Paragraph.escape(_altField.getValue()),
                         _uuid,
                         _elementid);
                     hide();
@@ -194,11 +194,11 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
      if ($wnd.FCKeditorAPI) {
             var instance = $wnd.FCKeditorAPI.GetInstance(elementID);
             if (instance != null) {
-                var linkURL = "<img title='"+title+"' alt='"
-                +alt+"' src='"+selectedUrl+"'"
+                var linkURL = "<img title=\""+title+"\" alt=\""
+                +alt+"\" src=\""+selectedUrl+"\""
 
                 if (uuid != null) {
-                    linkURL = linkURL +" class='ccc:"+uuid+"'";
+                    linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
                 }
                 linkURL = linkURL +"/>";
                 return instance.InsertHtml(linkURL);
