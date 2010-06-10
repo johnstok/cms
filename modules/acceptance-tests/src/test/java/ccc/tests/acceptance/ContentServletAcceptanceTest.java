@@ -45,6 +45,46 @@ public class ContentServletAcceptanceTest
     extends
         AbstractAcceptanceTest {
 
+//    /**
+//     * Test.
+//     */
+//    public void testForwardedRequestsForMissingResourcesReturn404() {
+//
+//        // ARRANGE
+//        final Resource metadata = new Resource();
+//        metadata.setTitle("foo");
+//        metadata.setDescription("foo");
+//        metadata.setTags(new HashSet<String>());
+//        metadata.setMetadata(Collections.singletonMap("executable", "true"));
+//        final String fName = UUID.randomUUID().toString();
+//        final ResourceSummary filesFolder =
+//            getCommands().resourceForPath("/files");
+//        final ResourceSummary script =
+//            getFiles().createTextFile(
+//                new File(
+//                    filesFolder.getId(),
+//                    fName,
+//                    MimeType.TEXT,
+//                    true,
+//                    "",
+//                    "request.getRequestDispatcher(\"/doesnt/exist\")"
+//                    + ".forward(request,  response);"));
+//        getCommands().lock(script.getId());
+//        getCommands().updateMetadata(script.getId(), metadata);
+//        getCommands().publish(script.getId());
+//
+//        // ACT
+//        try {
+//            getBrowser().previewContent(script, false);
+//            fail();
+//
+//        // ASSERT
+//        } catch (final RuntimeException e) {
+//            assertTrue(e.getMessage().startsWith("404"));
+//        }
+//    }
+
+
     /**
      * Test.
      */
