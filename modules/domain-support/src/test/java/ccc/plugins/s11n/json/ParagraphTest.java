@@ -46,6 +46,20 @@ import ccc.plugins.s11n.Json;
  */
 public final class ParagraphTest extends TestCase {
 
+    /**
+     * Test.
+     */
+    public void testEscapeApostrophe() {
+
+        // ARRANGE
+
+        // ACT
+        final String escaped = Paragraph.escape("Neil's pic");
+
+        // ASSERT
+        assertEquals("Neil&#39;s pic", escaped);
+    }
+
 
     /**
      * Test.

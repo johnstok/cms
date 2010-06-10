@@ -333,11 +333,13 @@ public final class Paragraph implements Serializable {
      * @param string The string to escape.
      * @return The escaped string.
      */
+    // FIXME: Duplicate of XHTML.escape()
     public static String escape(final String string) {
-        return string.replace("\u0026", "&amp;")        // &
+        return string.replace("\u0026",       "&amp;")  // &
                      .replace("\u005C\u0022", "&quot;") // "
-                     .replace("\u003c", "&lt;")         // <
-                     .replace("\u003e", "&gt;");        // >
+                     .replace("'",            "&#39;")  // '
+                     .replace("\u003c",       "&lt;")   // <
+                     .replace("\u003e",       "&gt;");  // >
     }
 
 
