@@ -69,7 +69,7 @@ public class CommentsAcceptanceTest
         assertEquals("Hello world", actual.getBody());
         assertEquals("http://www.google.com", actual.getUrl());
         assertEquals(folder.getId(), actual.getResourceId());
-        assertEquals(CommentStatus.PENDING, actual.getStatus());
+        assertEquals(CommentStatus.APPROVED, actual.getStatus());
         assertEquals("test@example.com", actual.getEmail());
     }
 

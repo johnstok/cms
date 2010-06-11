@@ -87,6 +87,7 @@ public class CreateCommentCommand
             }
         }
         c.setEmail(new EmailAddress(_comment.getEmail()));
+        c.setStatus(_comment.getStatus());
 
         getComments().create(c);
 
