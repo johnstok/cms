@@ -30,11 +30,15 @@ package ccc.cli;
 
 import static ccc.api.types.PredefinedResourceNames.*;
 
+import java.util.Collections;
+import java.util.HashSet;
+
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.Option;
 
 import ccc.api.core.Folder;
 import ccc.api.core.Folders;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
 import ccc.api.exceptions.CCException;
@@ -97,12 +101,26 @@ public final class Create extends CccApp {
                 new Folder(content.getId(), new ResourceName(IMAGES)));
             resources.createSearch(content.getId(), "search");
 
-            // TODO: Remove. Should set 'publish' root via UI
             resources.lock(content.getId());
             resources.publish(content.getId());
+            final Resource cMetadata = new Resource();
+            cMetadata.setTitle(content.getTitle());
+            cMetadata.setDescription(content.getDescription());
+            cMetadata.setTags(new HashSet<String>());
+            cMetadata.setMetadata(
+                Collections.singletonMap("searchable", "true"));
+            resources.updateMetadata(content.getId(), cMetadata);
             resources.unlock(content.getId());
+
             resources.lock(assets.getId());
             resources.publish(assets.getId());
+            final Resource aMetadata = new Resource();
+            aMetadata.setTitle(assets.getTitle());
+            aMetadata.setDescription(assets.getDescription());
+            aMetadata.setTags(new HashSet<String>());
+            aMetadata.setMetadata(
+                Collections.singletonMap("searchable", "false"));
+            resources.updateMetadata(assets.getId(), aMetadata);
             resources.unlock(assets.getId());
 
             LOG.info("Created default folder structure.");
