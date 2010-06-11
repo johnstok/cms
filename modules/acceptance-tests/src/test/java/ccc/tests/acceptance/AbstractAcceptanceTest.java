@@ -316,6 +316,16 @@ public abstract class AbstractAcceptanceTest
     }
 
 
+    /**
+     * Create a short unique ID.
+     *
+     * @return The UID as a string.
+     */
+    protected String uid() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+
     /** {@inheritDoc} */
     @Override
     protected void setUp() {

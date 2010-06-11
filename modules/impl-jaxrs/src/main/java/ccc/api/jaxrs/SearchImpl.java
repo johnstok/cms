@@ -34,6 +34,7 @@ import org.jboss.resteasy.annotations.cache.NoCache;
 import ccc.api.core.SearchEngine;
 import ccc.api.types.DBC;
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -122,6 +123,21 @@ public class SearchImpl
                                 final int page) {
         try {
             return _delegate.similar(uuid, noOfResultsPerPage, page);
+        } catch (final RuntimeException cfe) {
+            throw convertException(cfe);
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public SearchResult find(final String searchTerms,
+                             final String sort,
+                             final SortOrder order,
+                             final int resultCount,
+                             final int page) {
+        try {
+            return _delegate.find(searchTerms, sort, order, resultCount, page);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }

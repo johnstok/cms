@@ -29,7 +29,6 @@ package ccc.tests.acceptance;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
@@ -213,7 +212,7 @@ public class UserManagementAcceptanceTest
     public void testUsernamesSupportNonAsciiChars() {
 
         final Username username =
-            new Username(UUID.randomUUID().toString().substring(0, 8)+"ЊЋЌ");
+            new Username(uid()+"ЊЋЌ");
         final String email = "foo@abc.def";
         final String name = "testuser";
         final List<Group> groups =
@@ -238,6 +237,7 @@ public class UserManagementAcceptanceTest
         assertEquals(siteBuilder.getId(), us.getGroups().iterator().next());
         // TODO: Test metadata set correctly.
     }
+
 
     /**
      * Test.
@@ -305,7 +305,7 @@ public class UserManagementAcceptanceTest
     public void testUsernameSensitiveExists() {
 
         // ARRANGE
-        final String uuid = UUID.randomUUID().toString().substring(0, 8);
+        final String uuid = uid();
         final Username originalUsername = new Username(uuid+"A");
         final Username testUsername = new Username(uuid+"a");
         final String email = originalUsername+"@abc.def";

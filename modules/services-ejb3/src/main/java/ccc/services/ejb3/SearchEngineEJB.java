@@ -52,6 +52,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ParagraphType;
 import ccc.api.types.PredefinedResourceNames;
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 import ccc.domain.FileEntity;
 import ccc.domain.PageEntity;
 import ccc.domain.ResourceEntity;
@@ -110,6 +111,18 @@ public class SearchEngineEJB  implements SearchEngine {
                              final int resultCount,
                              final int page) {
         return createIndex().find(searchTerms, resultCount, page);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @PermitAll
+    public SearchResult find(final String searchTerms,
+                             final String sort,
+                             final SortOrder order,
+                             final int resultCount,
+                             final int page) {
+        return createIndex().find(searchTerms, sort, order, resultCount, page);
     }
 
 
@@ -302,5 +315,4 @@ public class SearchEngineEJB  implements SearchEngine {
         final String indexPathValue = indexPath.getValue();
         return indexPathValue;
     }
-
 }

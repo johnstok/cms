@@ -34,6 +34,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -49,7 +50,7 @@ public interface SearchEngine extends Scheduler {
     String NAME = "Search";
 
     /**
-     * Find the entities that match the specified search terms..
+     * Find the entities that match the specified search terms.
      *
      * @param searchTerms The terms to match.
      * @param noOfResultsPerPage The number of results to return.
@@ -58,8 +59,27 @@ public interface SearchEngine extends Scheduler {
      */
     @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.FIND)
     SearchResult find(
-              @QueryParam("terms") final String searchTerms,
-              @QueryParam("count") @DefaultValue("20")int noOfResultsPerPage,
+              @QueryParam("terms") String searchTerms,
+              @QueryParam("count") @DefaultValue("20") int noOfResultsPerPage,
+              @QueryParam("page") @DefaultValue("0") int page);
+
+    /**
+     * Find the results that match the specified search terms.
+     *
+     * @param searchTerms The terms to match.
+     * @param sort The field to sort on.
+     * @param order The order of the sort.
+     * @param resultCount The number of results to return.
+     * @param page The page of results to return (first page has index of 0).
+     *
+     * @return The SearchResult object with set entities and total count.
+     */
+    @GET @Path(ccc.api.core.ResourceIdentifiers.SearchEngine.FIND_SORT)
+    SearchResult find(
+              @QueryParam("terms") String searchTerms,
+              @QueryParam("sort") String sort,
+              @QueryParam("order") @DefaultValue("ASC") SortOrder order,
+              @QueryParam("count") @DefaultValue("20") int resultCount,
               @QueryParam("page") @DefaultValue("0") int page);
 
     /**

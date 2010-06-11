@@ -26,6 +26,14 @@
  */
 package ccc.tests.acceptance;
 
+import java.util.Collections;
+import java.util.HashSet;
+
+import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
+import ccc.api.types.SearchResult;
+import ccc.api.types.SortOrder;
+
 
 
 /**
@@ -36,6 +44,37 @@ package ccc.tests.acceptance;
 public class SearchEngineAcceptanceTest
     extends
         AbstractAcceptanceTest {
+
+
+    /**
+     * Test.
+     */
+    public void testFind() {
+
+        // ARRANGE
+        final String searchTerm = "veryunlikelysearchterm"+uid();
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(searchTerm);
+        metadata.setDescription(searchTerm);
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
+    }
 
 
     /**

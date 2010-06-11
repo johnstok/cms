@@ -57,6 +57,8 @@ public interface ResourceIdentifiers {
         String COLLECTION = "/secure/search";
         /** FIND : String. */
         String FIND       = "/find";
+        /** FIND_SORT : String. */
+        String FIND_SORT       = "/find_sort";
         /** SIMILAR : String. */
         String SIMILAR    = "/similar";
         /** INDEX : String. */
