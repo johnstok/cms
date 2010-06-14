@@ -94,7 +94,8 @@ public abstract class ListComments
         final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("page",  new String[] {""+_page});
         params.put("count", new String[] {""+_count});
-        params.put("status", new String[] {_status.name()});
+        params.put(
+            "status", new String[] {(null==_status) ? null : _status.name()});
         params.put("sort",  new String[] {_sort});
         params.put("order", new String[] {_order.name()});
 
