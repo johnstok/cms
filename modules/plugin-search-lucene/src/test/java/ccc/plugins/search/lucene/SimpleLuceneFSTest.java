@@ -174,6 +174,7 @@ public class SimpleLuceneFSTest
     public void testIndexAndSortedFind() {
 
         // ARRANGE
+        final UUID capM = UUID.randomUUID();
         final UUID a = UUID.randomUUID();
         final UUID m = UUID.randomUUID();
         final UUID z = UUID.randomUUID();
@@ -200,6 +201,14 @@ public class SimpleLuceneFSTest
             "foo,foo",
             new HashSet<Paragraph>());
         searchEngine.createDocument(
+            capM,
+            new ResourcePath("/M"),
+            new ResourceName("M"),
+            "M",
+            new HashSet<String>(),
+            "foo",
+            new HashSet<Paragraph>());
+        searchEngine.createDocument(
             a,
             new ResourcePath("/a"),
             new ResourceName("a"),
@@ -212,11 +221,12 @@ public class SimpleLuceneFSTest
             searchEngine.find("foo", "_title", SortOrder.ASC, 5, 0);
 
         // ASSERT
-        assertEquals(3, result.totalResults());
-        assertEquals(result.hits().size(), 3);
+        assertEquals(4, result.totalResults());
+        assertEquals(4, result.hits().size());
         final Iterator<UUID> i = result.hits().iterator();
+        assertEquals(capM, i.next());
         assertEquals(a, i.next());
-        assertEquals(m, i.next());
+        assertEquals(m, i.next()); // More relevant than capM.
         assertEquals(z, i.next());
     }
 
