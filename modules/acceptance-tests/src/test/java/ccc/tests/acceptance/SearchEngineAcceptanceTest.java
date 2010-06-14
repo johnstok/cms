@@ -49,37 +49,6 @@ public class SearchEngineAcceptanceTest
     /**
      * Test.
      */
-    public void testFind() {
-
-        // ARRANGE
-        final String searchTerm = "veryunlikelysearchterm"+uid();
-        final ResourceSummary parent = getCommands().resourceForPath("");
-        final ResourceSummary page   = tempPage(parent.getId(), null);
-
-        final Resource metadata = new Resource();
-        metadata.setTitle(searchTerm);
-        metadata.setDescription(searchTerm);
-        metadata.setTags(new HashSet<String>());
-        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
-        getCommands().lock(page.getId());
-        getCommands().updateMetadata(page.getId(), metadata);
-        getCommands().publish(page.getId());
-
-        getSearch().index();
-
-        // ACT
-        final SearchResult result =
-            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
-
-        // ASSERT
-        assertEquals(1, result.totalResults());
-        assertEquals(page.getId(), result.hits().iterator().next());
-    }
-
-
-    /**
-     * Test.
-     */
     public void testStartStopActionScheduler() {
 
         // ARRANGE
@@ -117,5 +86,39 @@ public class SearchEngineAcceptanceTest
         }
 
         // ASSERT
+    }
+
+
+    /**
+     * Test.
+     * @throws Exception If the test fails.
+     */
+    public void testFind() throws Exception {
+
+        // ARRANGE
+        final int tenSecs = 10000;
+        Thread.sleep(tenSecs); // Allow any previous indexing to complete.
+        final String searchTerm = "veryunlikelysearchterm"+uid();
+        final ResourceSummary parent = getCommands().resourceForPath("");
+        final ResourceSummary page   = tempPage(parent.getId(), null);
+
+        final Resource metadata = new Resource();
+        metadata.setTitle(searchTerm);
+        metadata.setDescription(searchTerm);
+        metadata.setTags(new HashSet<String>());
+        metadata.setMetadata(Collections.singletonMap("searchable", "true"));
+        getCommands().lock(page.getId());
+        getCommands().updateMetadata(page.getId(), metadata);
+        getCommands().publish(page.getId());
+
+        getSearch().index();
+
+        // ACT
+        final SearchResult result =
+            getSearch().find(searchTerm, "title", SortOrder.ASC, 10, 0);
+
+        // ASSERT
+        assertEquals(1, result.totalResults());
+        assertEquals(page.getId(), result.hits().iterator().next());
     }
 }
