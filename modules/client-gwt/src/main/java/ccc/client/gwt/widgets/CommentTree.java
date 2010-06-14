@@ -28,7 +28,7 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.types.CommentStatus;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.i18n.UIConstants;
 
@@ -48,7 +48,7 @@ public class CommentTree extends Tree {
     private static final int USER_TREE_HEIGHT = 300;
 
     private final CommentTable _commentTable = new CommentTable();
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
 
     /**

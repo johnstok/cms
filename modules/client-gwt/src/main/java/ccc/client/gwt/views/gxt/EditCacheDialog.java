@@ -30,6 +30,7 @@ import ccc.api.core.Resource;
 import ccc.api.types.Duration;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateCacheDurationAction;
 import ccc.client.gwt.validation.Validate;
@@ -71,7 +72,7 @@ public class EditCacheDialog extends AbstractEditDialog {
      */
     public EditCacheDialog(final ResourceSummaryModelData item,
                            final Duration ds) {
-        super(GlobalsImpl.uiConstants().editCacheDuration(),
+        super(I18n.UI_CONSTANTS.editCacheDuration(),
               new GlobalsImpl());
         _item = item;
         setHeight(DIALOG_HEIGHT);

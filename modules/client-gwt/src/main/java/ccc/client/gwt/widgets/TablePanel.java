@@ -28,6 +28,7 @@ package ccc.client.gwt.widgets;
 
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.UIConstants;
 
@@ -49,7 +50,7 @@ public abstract class TablePanel extends ContentPanel {
         GlobalsImpl.userActions();
 
     /** UI_CONSTANTS : UIConstants. */
-    protected static final UIConstants UI_CONSTANTS = GlobalsImpl.uiConstants();
+    protected static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
 
     /** PAGING_ROW_COUNT : int. */
     protected static final int PAGING_ROW_COUNT = 20;

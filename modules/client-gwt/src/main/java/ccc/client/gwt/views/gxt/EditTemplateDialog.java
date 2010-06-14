@@ -37,6 +37,7 @@ import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.DialogMode;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
@@ -46,6 +47,7 @@ import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.validation.Validator;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
 
@@ -106,7 +108,7 @@ public class EditTemplateDialog
      */
     public EditTemplateDialog(final UUID parentFolderId,
                               final SingleSelectionModel ssm) {
-        super(new GlobalsImpl().uiConstants().editTemplate(),
+        super(I18n.UI_CONSTANTS.editTemplate(),
               new GlobalsImpl());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
@@ -140,7 +142,7 @@ public class EditTemplateDialog
     public EditTemplateDialog(final Template model,
                               final ResourceSummaryModelData proxy,
                               final SingleSelectionModel ssm) {
-        super(new GlobalsImpl().uiConstants().editTemplate(),
+        super(I18n.UI_CONSTANTS.editTemplate(),
             new GlobalsImpl());
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
@@ -330,7 +332,7 @@ public class EditTemplateDialog
                         }.execute();
                         break;
                     default:
-                        getGlobals().alert(constants().error());
+                        ContentCreator.WINDOW.alert(constants().error());
                     break;
                 }
             }

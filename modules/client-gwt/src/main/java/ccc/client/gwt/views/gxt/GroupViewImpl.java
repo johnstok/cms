@@ -34,10 +34,11 @@ import java.util.Set;
 import ccc.api.types.Permission;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.presenters.GroupPresenter.GroupView;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -72,9 +73,9 @@ public class GroupViewImpl
      * @param globals The globals implementation.
      */
     public GroupViewImpl(final Globals globals) {
-        super(GlobalsImpl.uiConstants().createGroup(), globals);
+        super(I18n.UI_CONSTANTS.createGroup(), globals);
 
-        _name.setFieldLabel(GlobalsImpl.uiConstants().name());
+        _name.setFieldLabel(I18n.UI_CONSTANTS.name());
         _name.setAllowBlank(false);
         addField(_name);
 
@@ -85,7 +86,7 @@ public class GroupViewImpl
             _permGroup.add(cb);
         }
         _permGroup.setOrientation(Orientation.VERTICAL);
-        _permGroup.setFieldLabel(GlobalsImpl.uiConstants().permissions());
+        _permGroup.setFieldLabel(I18n.UI_CONSTANTS.permissions());
 
         addField(_permGroup);
     }
@@ -168,5 +169,7 @@ public class GroupViewImpl
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        ContentCreator.WINDOW.alert(message);
+    }
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,52 +21,27 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.overlays;
+package ccc.client.gwt.core;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import ccc.client.gwt.i18n.ErrorDescriptions;
+import ccc.client.gwt.i18n.ErrorResolutions;
+import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.gwt.i18n.UIMessages;
+
 
 
 /**
- * An CCC failure.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public class FailureOverlay
-    extends
-        JavaScriptObject {
+public class I18n {
 
-    /**
-     * Constructor.
-     */
-    protected FailureOverlay() { super(); }
-
-
-    /**
-     * Accessor for the failure's ID.
-     *
-     * @return The ID as a string.
-     */
-    public final native String getId() /*-{ return this.id; }-*/;
-
-
-    /**
-     * Accessor for the failure code.
-     *
-     * @return The code as an integer.
-     */
-    public final native String getCode() /*-{ return this.code; }-*/;
-
-
-    /**
-     * Factory method for failure overlay objects.
-     *
-     * @param json The JSON string used to construct the object.
-     * @return An overlay object representing the JSON.
-     */
-    public static native FailureOverlay fromJson(final String json) /*-{
-        return eval('(' + json + ')');
-    }-*/;
+    public static UIConstants UI_CONSTANTS;
+    public static UIMessages UI_MESSAGES;
+    public static ErrorDescriptions ERROR_DESCRIPTIONS;
+    public static ErrorResolutions ERROR_RESOLUTIONS;
 }

@@ -28,6 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 import ccc.client.gwt.widgets.ImageTriggerField;
 
@@ -50,8 +51,7 @@ public class ImageChooserDialog extends AbstractBaseDialog {
      */
     public ImageChooserDialog(final ImageTriggerField image) {
 
-        super(new GlobalsImpl().uiConstants().selectImage(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.selectImage(), new GlobalsImpl());
         _imagePanel.setImage(image);
         add(_imagePanel);
         addButton(getCancel());

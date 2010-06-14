@@ -33,6 +33,7 @@ import ccc.api.core.Resource;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdatePageAction;
 import ccc.client.gwt.validation.Validate;
@@ -69,7 +70,7 @@ public class PageCommentDialog extends AbstractEditDialog {
      */
     public PageCommentDialog(final Set<Paragraph> paras,
                              final UpdatePageDialog updatePageDialog) {
-        super(new GlobalsImpl().uiConstants().pageEditComment(),
+        super(I18n.UI_CONSTANTS.pageEditComment(),
               new GlobalsImpl());
         _paras = paras;
         _updatePageDialog = updatePageDialog;

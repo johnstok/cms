@@ -27,12 +27,8 @@
 package ccc.client.gwt.core;
 
 import ccc.client.gwt.events.Error;
+import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.widgets.ContentCreator;
-import ccc.plugins.s11n.Json;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 
 
 /**
@@ -75,8 +71,7 @@ public class ResponseHandlerAdapter
     /** {@inheritDoc} */
     @Override
     public void onBadRequest(final Response response) {
-        onFailed(new RuntimeException(response.getText()));
-//        onFailed(new InvalidException(toJson(response)));
+        onFailed(toRemoteException(response));
     }
 
 
@@ -98,36 +93,31 @@ public class ResponseHandlerAdapter
     }
 
 
-
     /** {@inheritDoc} */
     @Override
     public void onConflict(final Response response) {
-        onFailed(new RuntimeException(response.getText()));
-//        onFailed(new ConflictException(toJson(response)));
+        onFailed(toRemoteException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onError(final Response response) {
-        onFailed(new RuntimeException(response.getText()));
-//        onFailed(new InternalError(toJson(response)));
+        onFailed(toRemoteException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onNotFound(final Response response) {
-        onFailed(new RuntimeException(response.getText()));
-//        onFailed(new EntityNotFoundException(toJson(response)));
+        onFailed(toRemoteException(response));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void onUnauthorized(final Response response) {
-        onFailed(new RuntimeException(response.getText()));
-//        onFailed(new UnauthorizedException(toJson(response)));
+        onFailed(toRemoteException(response));
     }
 
 
@@ -145,10 +135,7 @@ public class ResponseHandlerAdapter
     }
 
 
-    private Json toJson(final Response response) {
-        final JSONValue value = JSONParser.parse(response.getText());
-        final JSONObject object = value.isObject();
-        final Json json = new GwtJson(object);
-        return json;
+    private RemoteException toRemoteException(final Response response) {
+        return new RemoteException(FailureOverlay.fromJson(response.getText()));
     }
 }

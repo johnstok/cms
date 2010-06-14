@@ -32,6 +32,7 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.core.RemoteException;
 import ccc.client.gwt.core.SessionTimeoutException;
@@ -39,6 +40,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
@@ -84,7 +86,7 @@ public class UploadFileDialog extends AbstractEditDialog {
      */
     public UploadFileDialog(final ResourceSummaryModelData parentFolder,
                             final SingleSelectionModel ssm) {
-        super(new GlobalsImpl().uiConstants().uploadFileTo()
+        super(I18n.UI_CONSTANTS.uploadFileTo()
             +": "+parentFolder.getName(), new GlobalsImpl());
 
         _parent = parentFolder;
@@ -134,7 +136,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                     // TODO: Handle 404 with notfound.jsp
 
                     if (SessionTimeoutException.isTimedout(response)) {
-                        getGlobals().unexpectedError(
+                        ContentCreator.EX_HANDLER.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().uploadFile());
 
@@ -143,7 +145,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             JSONParser.parse(be.getResultHtml()).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // Error
-                            getGlobals().unexpectedError(
+                            ContentCreator.EX_HANDLER.unexpectedError(
                                 new RemoteException(
                                     FailureOverlay.fromJson(response)),
                                 getUiConstants().uploadFile());

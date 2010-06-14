@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.i18n.UIMessages;
@@ -65,7 +66,6 @@ public abstract class AbstractBaseDialog
     private final Globals _globals;
     private final UIConstants _constants;
     private final UIMessages  _messages;
-    private final UIConstants _uiConstants;
     private final ActionNameConstants _userActions;
 
     private final Button _cancel;
@@ -80,9 +80,8 @@ public abstract class AbstractBaseDialog
         super();
 
         _globals = globals;
-        _constants = GlobalsImpl.uiConstants();
-        _messages  = _globals.uiMessages();
-        _uiConstants = GlobalsImpl.uiConstants();
+        _constants = I18n.UI_CONSTANTS;
+        _messages  = I18n.UI_MESSAGES;
         _userActions = GlobalsImpl.userActions();
 
         _cancel = cancelButton();
@@ -181,7 +180,7 @@ public abstract class AbstractBaseDialog
      * @return Returns the uiConstants.
      */
     protected UIConstants getUiConstants() {
-        return _uiConstants;
+        return _constants;
     }
 
 

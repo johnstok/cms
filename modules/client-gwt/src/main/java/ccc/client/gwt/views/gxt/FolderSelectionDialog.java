@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.widgets.FolderResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -61,7 +62,7 @@ public class FolderSelectionDialog extends Window {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
-        setHeading(GlobalsImpl.uiConstants().selectFolder());
+        setHeading(I18n.UI_CONSTANTS.selectFolder());
         setWidth(WIDTH);
         setHeight(HEIGHT);
         setMinWidth(Globals.MIN_WIDTH);
@@ -69,7 +70,7 @@ public class FolderSelectionDialog extends Window {
         _tree = new FolderResourceTree(_globals);
         add(_tree.treePanel());
         final Button save = new Button(
-            GlobalsImpl.uiConstants().ok(),
+            I18n.UI_CONSTANTS.ok(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {

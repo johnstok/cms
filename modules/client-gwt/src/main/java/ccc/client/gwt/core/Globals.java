@@ -33,9 +33,6 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
-import ccc.client.gwt.i18n.ErrorDescriptions;
-import ccc.client.gwt.i18n.ErrorResolutions;
-import ccc.client.gwt.i18n.UIMessages;
 
 
 /**
@@ -44,36 +41,6 @@ import ccc.client.gwt.i18n.UIMessages;
  * @author Civic Computing Ltd.
  */
 public interface Globals {
-
-    /**
-     * Install an exception handler for exceptions that would otherwise escape
-     * to the browser.
-     */
-    void installUnexpectedExceptionHandler();
-
-
-    /**
-     * Factory for {@link UIMessages} objects.
-     *
-     * @return A new instance of {@link UIMessages}.
-     */
-    UIMessages uiMessages();
-
-    /**
-     * Factory for alert dialogs.
-     *
-     * @param string The message for the dialog.
-     */
-    void alert(final String string);
-
-    /**
-     * Factory for confirm dialogs.
-     *
-     * @param string The message for the dialog.
-     *
-     * @return True if the user confirmed the action, false otherwise.
-     */
-    boolean confirm(final String string);
 
     /**
      * Determine the URL for the application's host.
@@ -89,38 +56,6 @@ public interface Globals {
      */
     String appURL();
 
-    /**
-     * Report an unexpected exception to the user.
-     *
-     * @param e The exception to report.
-     * @param action The action being performed.
-     */
-    void unexpectedError(final Throwable e, final String action);
-
-    /**
-     * Configure the app to request confirmation from the user if they try to
-     * navigate away from the app.
-     */
-    void enableExitConfirmation();
-
-    /**
-     * Disable app confirmation from the user if they try to navigate away from
-     * the app.
-     */
-    void disableExitConfirmation();
-
-    /**
-     * Redirect to another url. Use with caution the application will exit and
-     * all local state will be lost.
-     *
-     * @param relativeURL The host-relative URL.
-     */
-    void redirectTo(final String relativeURL);
-
-    /**
-     * Refresh the application.
-     */
-    void refresh();
 
     /**
      * Accessor.
@@ -169,20 +104,6 @@ public interface Globals {
      * @return An CommandTypeConstants object.
      */
     CommandTypeConstants commandTypeConstants();
-
-    /**
-     * Retrieve an instance of the error description constants.
-     *
-     * @return An ErrorDescriptions object.
-     */
-    ErrorDescriptions errorDescriptions();
-
-    /**
-     * Retrieve an instance of the error resolution constants.
-     *
-     * @return An ErrorResolutions object.
-     */
-    ErrorResolutions errorResolutions();
 
     /**
      * Retrieve a setting value.

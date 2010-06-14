@@ -27,8 +27,13 @@
 package ccc.client.gwt.widgets;
 
 
+import ccc.client.gwt.core.ExceptionHandler;
+import ccc.client.gwt.core.GWTExceptionHandler;
+import ccc.client.gwt.core.GWTWindow;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
+import ccc.client.gwt.core.Window;
 import ccc.client.gwt.events.Error;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
@@ -43,8 +48,8 @@ import ccc.client.gwt.remoting.IsLoggedInAction;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 
 
 /**
@@ -52,43 +57,55 @@ import com.google.gwt.user.client.Window;
  */
 public final class ContentCreator implements EntryPoint {
 
+    /** EVENT_BUS : HandlerManager. */
+    public static final HandlerManager EVENT_BUS =
+        new HandlerManager("Event bus");
+    /** WINDOW : Window. */
+    public static final Window WINDOW =
+        new GWTWindow();
+    /** EX_HANDLER : ExceptionHandler. */
+    public static final ExceptionHandler EX_HANDLER =
+        new GWTExceptionHandler(WINDOW);
+
+    private GlobalsImpl _globals = new GlobalsImpl();
+
+
     /**
      * Constructor.
      */
     public ContentCreator() {
+
+        I18n.UI_CONSTANTS =
+            GWT.<UIConstants>create(UIConstants.class);
+        I18n.UI_MESSAGES =
+            GWT.<UIMessages>create(UIMessages.class);
+        I18n.ERROR_DESCRIPTIONS =
+            GWT.<ErrorDescriptions>create(ErrorDescriptions.class);
+        I18n.ERROR_RESOLUTIONS =
+            GWT.<ErrorResolutions>create(ErrorResolutions.class);
+
         GlobalsImpl.setUserActions(
             GWT.<ActionNameConstants>create(ActionNameConstants.class));
-        GlobalsImpl.setUiConstants(
-            GWT.<UIConstants>create(UIConstants.class));
-        GlobalsImpl.setUiMessages(
-            GWT.<UIMessages>create(UIMessages.class));
         GlobalsImpl.setActionConstants(
             GWT.<ActionStatusConstants>create(ActionStatusConstants.class));
         GlobalsImpl.setCommandConstants(
             GWT.<CommandTypeConstants>create(CommandTypeConstants.class));
-        GlobalsImpl.setErrorDescriptions(
-            GWT.<ErrorDescriptions>create(ErrorDescriptions.class));
-        GlobalsImpl.setErrorResolutions(
-            GWT.<ErrorResolutions>create(ErrorResolutions.class));
 
-        GlobalsImpl.setEnableExitConfirmation(
-            null == Window.Location.getParameter("dec"));
+        if (!(null == WINDOW.getParameter("dec"))) { // 'dec' param is missing.
+            WINDOW.enableExitConfirmation();
+        }
     }
-
-    /** EVENT_BUS : HandlerManager. */
-    public static final HandlerManager EVENT_BUS =
-        new HandlerManager("Event bus");
-    private GlobalsImpl _globals = new GlobalsImpl();
 
 
     /**
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        _globals.installUnexpectedExceptionHandler();
+        installUnexpectedExceptionHandler();
         EVENT_BUS.addHandler(Error.TYPE, new Error.ErrorHandler() {
             @Override public void onError(final Error event) {
-                _globals.unexpectedError(event.getException(), event.getName());
+                ContentCreator.EX_HANDLER.unexpectedError(
+                    event.getException(), event.getName());
             }
         });
 
@@ -111,5 +128,17 @@ public final class ContentCreator implements EntryPoint {
                 new IsLoggedInAction().execute();
             }
         }.execute();
+    }
+
+
+    private void installUnexpectedExceptionHandler() {
+        GWT.setUncaughtExceptionHandler(
+            new UncaughtExceptionHandler(){
+                public void onUncaughtException(final Throwable e) {
+                    ContentCreator.EX_HANDLER.unexpectedError(
+                        e, _globals.userActions().unknownAction());
+                }
+            }
+        );
     }
 }

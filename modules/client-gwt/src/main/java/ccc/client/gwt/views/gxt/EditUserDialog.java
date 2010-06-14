@@ -37,6 +37,7 @@ import java.util.UUID;
 import ccc.api.core.Group;
 import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.widgets.GroupListField;
@@ -75,7 +76,7 @@ public class EditUserDialog extends AbstractEditDialog {
     public EditUserDialog(final User userDTO,
                           final UserTable userTable,
                           final Collection<Group> allGroups) {
-        super(GlobalsImpl.uiConstants().editUser(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editUser(), new GlobalsImpl());
 
         _userDTO   = userDTO;
         _userTable = userTable;

@@ -44,6 +44,7 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.presenters.CreateGroupPresenter;
@@ -80,7 +81,7 @@ public class MainMenu
     private static final String CONTENT = "content";
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _constants = GlobalsImpl.uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final User _user;
 
     /**
@@ -232,7 +233,7 @@ public class MainMenu
                         Globals.MAX_FETCH,
                         "name",
                         SortOrder.ASC) {
-                        
+
                         @Override
                         protected void execute(final PagedCollection<Group> groups) {
                             new OpenUpdateResourceAclAction(
@@ -269,7 +270,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    _globals.alert(sb.toString());
+                    ContentCreator.WINDOW.alert(sb.toString());
                 }
 
             });

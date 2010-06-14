@@ -36,6 +36,7 @@ import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
 import ccc.client.gwt.validation.Validate;
@@ -80,7 +81,7 @@ public class UpdatePageDialog
     public UpdatePageDialog(final Page page,
                             final Template template,
                             final ResourceTable rt) {
-        super(new GlobalsImpl().uiConstants().updateContent(),
+        super(I18n.UI_CONSTANTS.updateContent(),
               new GlobalsImpl());
         _rt = rt;
         _modelData = rt().tableSelection();

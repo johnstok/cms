@@ -29,12 +29,14 @@ package ccc.client.gwt.views.gxt;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.core.RemoteException;
 import ccc.client.gwt.core.SessionTimeoutException;
 import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -74,7 +76,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
      * @param file The file to update.
      */
     public UpdateFileDialog(final ResourceSummary file) {
-        super(GlobalsImpl.uiConstants().updateFile(),
+        super(I18n.UI_CONSTANTS.updateFile(),
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_UPLOAD_HEIGHT);
         // Create a FormPanel and point it at a service.
@@ -114,7 +116,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
                     if (
                         SessionTimeoutException.isTimedout(response)) {
-                        getGlobals().unexpectedError(
+                        ContentCreator.EX_HANDLER.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().updateFile());
 
@@ -123,7 +125,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                             JSONParser.parse(response).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // Error
-                            getGlobals().unexpectedError(
+                            ContentCreator.EX_HANDLER.unexpectedError(
                                 new RemoteException(
                                     FailureOverlay.fromJson(response)),
                                 getUiConstants().uploadFile());

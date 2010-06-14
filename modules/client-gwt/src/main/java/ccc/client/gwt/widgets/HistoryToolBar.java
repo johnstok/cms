@@ -27,7 +27,7 @@
 package ccc.client.gwt.widgets;
 
 import ccc.client.gwt.actions.PreviewHistoricalAction;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.remoting.CreateWorkingCopyFromHistoricalVersionAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
@@ -42,7 +42,7 @@ public class HistoryToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final HistoryDialog _historyDialog;
 
     /**

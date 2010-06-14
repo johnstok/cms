@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.views.CreateFolder;
@@ -58,7 +59,7 @@ public class CreateFolderDialog
      * Constructor.
      */
     public CreateFolderDialog() {
-        super(new GlobalsImpl().uiConstants().createFolder(),
+        super(I18n.UI_CONSTANTS.createFolder(),
               new GlobalsImpl());
 
         setHeight(Globals.DEFAULT_MIN_HEIGHT);

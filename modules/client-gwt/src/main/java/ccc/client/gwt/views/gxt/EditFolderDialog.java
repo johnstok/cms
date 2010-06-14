@@ -43,6 +43,7 @@ import ccc.client.gwt.binding.ResourceSummaryModelData.Property;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetChildrenAction;
@@ -106,7 +107,7 @@ AbstractEditDialog {
      */
     public EditFolderDialog(final SingleSelectionModel ssm,
                             final ResourceSummaryModelData folder) {
-        super(new GlobalsImpl().uiConstants().edit(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.edit(), new GlobalsImpl());
 
         _currentIndexPage = folder.getIndexPageId();
         _folder = folder;

@@ -30,6 +30,7 @@ package ccc.client.gwt.views.gxt;
 import static ccc.client.gwt.validation.Validations.*;
 import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateCurrentUserAction;
 import ccc.client.gwt.validation.Validate;
@@ -59,7 +60,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
      *
      */
     public UpdateCurrentUserDialog() {
-        super(GlobalsImpl.uiConstants().editUser(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editUser(), new GlobalsImpl());
         _user = new GlobalsImpl().currentUser();
 
         _username.setFieldLabel(constants().username());

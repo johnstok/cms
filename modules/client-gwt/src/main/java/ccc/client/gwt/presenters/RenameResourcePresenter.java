@@ -32,11 +32,12 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.events.ResourceRenamed;
 import ccc.client.gwt.events.ResourceRenamed.RenamedHandler;
 import ccc.client.gwt.remoting.RenameAction;
 import ccc.client.gwt.views.RenameResource;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -94,8 +95,8 @@ public class RenameResourcePresenter
             .execute();
 
         } else {
-            getGlobals().alert(
-                GlobalsImpl.uiConstants().resourceNameIsInvalid());
+            ContentCreator.WINDOW.alert(
+                I18n.UI_CONSTANTS.resourceNameIsInvalid());
         }
     }
 

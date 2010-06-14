@@ -32,6 +32,7 @@ import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -56,8 +57,8 @@ public final class LogoutAction
     @Override
     protected void onNoContent(final Response response) {
         GLOBALS.currentUser(null);
-        GLOBALS.disableExitConfirmation();
-        GLOBALS.redirectTo(Globals.APP_URL);
+        ContentCreator.WINDOW.disableExitConfirmation();
+        ContentCreator.WINDOW.redirectTo(Globals.APP_URL);
     }
 
 

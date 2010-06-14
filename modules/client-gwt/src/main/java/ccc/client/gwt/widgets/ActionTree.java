@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.i18n.UIConstants;
 
@@ -55,7 +55,7 @@ public class ActionTree extends Tree {
     private static final int ACTION_TREE_HEIGHT = 300;
 
     private final ActionTable _actionTable = new ActionTable();
-    private final UIConstants _uiConstants = new GlobalsImpl().uiConstants();
+    private final UIConstants _uiConstants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
 
     /**

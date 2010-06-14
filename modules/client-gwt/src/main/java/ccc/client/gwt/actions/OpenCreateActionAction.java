@@ -31,6 +31,7 @@ import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreateActionPresenter;
 import ccc.client.gwt.views.gxt.CreateActionDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Create an action.
@@ -56,7 +57,7 @@ public final class OpenCreateActionAction
     public void execute() {
         final ResourceSummaryModelData item = _ssm.tableSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noResourceSelected());
+            ContentCreator.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateActionPresenter(
                 GLOBALS,

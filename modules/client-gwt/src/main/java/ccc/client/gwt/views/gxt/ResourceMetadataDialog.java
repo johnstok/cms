@@ -32,11 +32,13 @@ import java.util.Map;
 import ccc.api.core.Resource;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.MetadataGrid;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
@@ -75,7 +77,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
     public ResourceMetadataDialog(final ResourceSummaryModelData resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
-        super(new GlobalsImpl().uiConstants().metadata(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.metadata(), new GlobalsImpl());
 
         _ssm = ssm;
         _resource = resource;
@@ -124,7 +126,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
             @Override public void componentSelected(final ButtonEvent ce) {
 
                 if (!_title.getValue().matches("[^<^>]*")) {
-                    getGlobals().alert(
+                    ContentCreator.WINDOW.alert(
                         constants().titlesMustNotContainBrackets());
                     return;
                 }

@@ -44,7 +44,7 @@ public interface Action {
     ActionNameConstants USER_ACTIONS = GlobalsImpl.userActions();
 
     /** UI_CONSTANTS : UIConstants. */
-    UIConstants UI_CONSTANTS = GlobalsImpl.uiConstants();
+    UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
 
     /**
      * Perform the action.

@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Map;
 
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.GetPropertyAction;
 
@@ -52,7 +53,7 @@ public class AboutDialog extends AbstractBaseDialog{
      *
      */
     public AboutDialog() {
-        super(new GlobalsImpl().uiConstants().about(),
+        super(I18n.UI_CONSTANTS.about(),
             new GlobalsImpl());
 
         setWidth(ABOUT_WIDTH);

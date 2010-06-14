@@ -35,7 +35,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.GetImagesPagedAction;
 import ccc.client.gwt.views.gxt.FolderSelectionDialog;
 
@@ -125,7 +125,7 @@ public class ImageSelectionPanel extends ContentPanel {
                         }});
                     folderSelect.show();
                 }});
-        toolBar.add(new Text(GlobalsImpl.uiConstants().folder()));
+        toolBar.add(new Text(I18n.UI_CONSTANTS.folder()));
         toolBar.add(_folderField);
         toolBar.add(new SeparatorToolItem());
 
@@ -179,7 +179,7 @@ public class ImageSelectionPanel extends ContentPanel {
                         (BasePagingLoadConfig) loadConfig;
 
                     new GetImagesPaged(
-                        GlobalsImpl.uiConstants().selectImage(),
+                        I18n.UI_CONSTANTS.selectImage(),
                         _folder.getDelegate(),
                         config,
                         callback).execute();

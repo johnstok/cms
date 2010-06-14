@@ -28,6 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.views.EditTextFile;
@@ -75,7 +76,7 @@ public class EditTextFileDialog
      */
     public EditTextFileDialog() {
 
-        super(new GlobalsImpl().uiConstants().edit(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.edit(), new GlobalsImpl());
 
         setHeight(DIALOG_HEIGHT);
 

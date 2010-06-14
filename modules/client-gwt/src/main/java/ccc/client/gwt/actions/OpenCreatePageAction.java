@@ -35,6 +35,7 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreatePagePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Create a page.
@@ -60,7 +61,7 @@ public final class OpenCreatePageAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.treeSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
+            ContentCreator.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
             return;
         }
         new GetTemplatesAction(UI_CONSTANTS.createPage()){

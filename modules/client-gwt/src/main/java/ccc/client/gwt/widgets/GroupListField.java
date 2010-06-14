@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -70,7 +70,7 @@ public class GroupListField extends ListField<BaseModelData> {
             if (selectedGroups.contains(g.getId())) { selected.add(d); }
         }
 
-        setFieldLabel(GlobalsImpl.uiConstants().roles());
+        setFieldLabel(I18n.UI_CONSTANTS.roles());
         setHeight(GROUP_HEIGHT);
         setStore(gData);
         setDisplayField("name");

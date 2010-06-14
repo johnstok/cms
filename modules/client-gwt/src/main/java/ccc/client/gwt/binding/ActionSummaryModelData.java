@@ -46,6 +46,7 @@ import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.ActionCancelled;
@@ -294,7 +295,7 @@ public class ActionSummaryModelData
          * @param action The resource whose WC has been applied.
          */
         public ActionCancelledCallback(final ActionSummaryModelData action) {
-            super(GlobalsImpl.uiConstants().cancel());
+            super(I18n.UI_CONSTANTS.cancel());
             _event = new ActionCancelled(action);
         }
 
@@ -317,7 +318,7 @@ public class ActionSummaryModelData
          * Constructor.
          */
         public ActionCreatedCallback() {
-            super(GlobalsImpl.uiConstants().createAction());
+            super(I18n.UI_CONSTANTS.createAction());
         }
 
         /** {@inheritDoc} */

@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.i18n.UIConstants;
 
@@ -61,7 +61,7 @@ public class UserTree extends Tree {
 
     private final UserTable _userTable = new UserTable();
     private final GroupTable _groupTable = new GroupTable();
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
 
     /**

@@ -31,6 +31,7 @@ import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreateFolderPresenter;
 import ccc.client.gwt.views.gxt.CreateFolderDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Create a folder.
@@ -56,7 +57,7 @@ public final class OpenCreateFolderAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.treeSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
+            ContentCreator.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateFolderPresenter(
                 GLOBALS,

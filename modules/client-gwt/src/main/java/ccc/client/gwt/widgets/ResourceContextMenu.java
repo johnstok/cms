@@ -419,7 +419,7 @@ public class ResourceContextMenu
                         updateFile(item);
                         break;
                     default:
-                        getGlobals().alert(
+                        ContentCreator.WINDOW.alert(
                             getConstants().noEditorForResource());
                 }
             }
@@ -454,7 +454,7 @@ public class ResourceContextMenu
             /** {@inheritDoc} */
             @Override
             protected void noTemplate() {
-                getGlobals().alert(getConstants().noTemplateFound());
+                ContentCreator.WINDOW.alert(getConstants().noTemplateFound());
             }
 
             /** {@inheritDoc} */

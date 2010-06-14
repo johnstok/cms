@@ -34,6 +34,7 @@ import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateAliasAction;
 import ccc.client.gwt.validation.Validate;
@@ -75,7 +76,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                              final String targetName,
                              final String aliasName,
                              final ResourceSummary targetRoot) {
-        super(new GlobalsImpl().uiConstants().updateAlias(),
+        super(I18n.UI_CONSTANTS.updateAlias(),
               new GlobalsImpl());
 
         _aliasId = aliasId;

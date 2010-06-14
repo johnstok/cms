@@ -102,7 +102,7 @@ public class FolderResourceTree extends AbstractResourceTree {
 
                         /** {@inheritDoc} */
                         @Override protected void onFailure(final Throwable t) {
-                            _globals.unexpectedError(
+                            ContentCreator.EX_HANDLER.unexpectedError(
                                 t, GlobalsImpl.userActions().unknownAction());
                             callback.onFailure(t);
                         }

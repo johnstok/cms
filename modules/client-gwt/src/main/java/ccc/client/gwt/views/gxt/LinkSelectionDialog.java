@@ -30,6 +30,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -83,7 +84,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
                                final String innerText,
                                final String cccId,
                                final boolean openInNew) {
-        super(new GlobalsImpl().uiConstants().selectResource(),
+        super(I18n.UI_CONSTANTS.selectResource(),
             new GlobalsImpl());
         _targetRoot = targetRoot;
         _elementid = elementid;

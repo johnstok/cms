@@ -29,6 +29,7 @@ package ccc.client.gwt.views.gxt;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.views.RenameResource;
@@ -59,7 +60,7 @@ public class RenameDialog
      * Constructor.
      */
     public RenameDialog() {
-        super(new GlobalsImpl().uiConstants().rename(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.rename(), new GlobalsImpl());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 
         setPanelId("RenamePanel");

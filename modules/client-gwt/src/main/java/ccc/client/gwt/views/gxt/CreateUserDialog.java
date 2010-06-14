@@ -37,10 +37,12 @@ import ccc.api.types.Username;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.remoting.UniqueUsernameAction;
 import ccc.client.gwt.views.CreateUser;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.GroupListField;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -76,7 +78,7 @@ public class CreateUserDialog
      * @param allGroups The list of all groups.
      */
     public CreateUserDialog(final Collection<Group> allGroups) {
-        super(new GlobalsImpl().uiConstants().createUser(),
+        super(I18n.UI_CONSTANTS.createUser(),
              new GlobalsImpl());
 
         setLabelWidth(LABEL_WIDTH); // Long labels, should fit to one line.
@@ -241,5 +243,7 @@ public class CreateUserDialog
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        ContentCreator.WINDOW.alert(message);
+    }
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,52 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.overlays;
-
-import com.google.gwt.core.client.JavaScriptObject;
+package ccc.client.gwt.core;
 
 
 /**
- * An CCC failure.
+ * API for handling client exceptions.
  *
  * @author Civic Computing Ltd.
  */
-public class FailureOverlay
-    extends
-        JavaScriptObject {
+public interface ExceptionHandler {
 
     /**
-     * Constructor.
-     */
-    protected FailureOverlay() { super(); }
-
-
-    /**
-     * Accessor for the failure's ID.
+     * Report an unexpected exception to the user.
      *
-     * @return The ID as a string.
+     * @param e The exception to report.
+     * @param action The action being performed.
      */
-    public final native String getId() /*-{ return this.id; }-*/;
-
-
-    /**
-     * Accessor for the failure code.
-     *
-     * @return The code as an integer.
-     */
-    public final native String getCode() /*-{ return this.code; }-*/;
-
-
-    /**
-     * Factory method for failure overlay objects.
-     *
-     * @param json The JSON string used to construct the object.
-     * @return An overlay object representing the JSON.
-     */
-    public static native FailureOverlay fromJson(final String json) /*-{
-        return eval('(' + json + ')');
-    }-*/;
+    void unexpectedError(final Throwable e, final String action);
 }

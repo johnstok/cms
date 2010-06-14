@@ -31,6 +31,7 @@ import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreateAliasPresenter;
 import ccc.client.gwt.views.gxt.CreateAliasDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Create an alias.
@@ -56,7 +57,7 @@ public final class OpenCreateAliasAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noResourceSelected());
+            ContentCreator.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateAliasPresenter(
                 GLOBALS,

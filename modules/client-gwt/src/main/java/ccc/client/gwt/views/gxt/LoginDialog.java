@@ -27,6 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.LoginAction;
 import ccc.client.gwt.widgets.ButtonSelectionListenerAction;
 
@@ -57,7 +58,7 @@ public class LoginDialog extends AbstractEditDialog {
      * Constructor.
      */
     public LoginDialog() {
-        super(new GlobalsImpl().uiConstants().login(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.login(), new GlobalsImpl());
         LoginDialog.this.setHeading(
             constants().login()
             + " - "

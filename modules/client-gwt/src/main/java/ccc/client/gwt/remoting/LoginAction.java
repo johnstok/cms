@@ -37,6 +37,7 @@ import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.LoginDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -77,7 +78,7 @@ public class LoginAction
     @Override protected void onOK(final Response response) {
         final boolean success = parseBoolean(response);
         if (success) {
-            GLOBALS.refresh();
+            ContentCreator.WINDOW.refresh();
         } else {
             _dialog.loginFailed();
         }

@@ -30,6 +30,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.widgets.ResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -63,7 +64,7 @@ public class ResourceSelectionDialog extends Window {
         setModal(true);
         setBodyStyle("backgroundColor: white;");
         setScrollMode(Scroll.AUTOY);
-        setHeading(GlobalsImpl.uiConstants().selectResource());
+        setHeading(I18n.UI_CONSTANTS.selectResource());
         setWidth(DIALOG_WIDTH);
         setMinWidth(Globals.MIN_WIDTH);
         setHeight(DIALOG_HEIGHT);
@@ -73,7 +74,7 @@ public class ResourceSelectionDialog extends Window {
         add(_tree.treePanel());
 
         final Button save = new Button(
-            GlobalsImpl.uiConstants().save(),
+            I18n.UI_CONSTANTS.save(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {

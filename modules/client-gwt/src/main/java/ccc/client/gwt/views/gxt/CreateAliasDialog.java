@@ -31,9 +31,11 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.views.CreateAlias;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -70,7 +72,7 @@ public class CreateAliasDialog
      */
     public CreateAliasDialog() {
 
-        super(new GlobalsImpl().uiConstants().createAlias(),
+        super(I18n.UI_CONSTANTS.createAlias(),
               new GlobalsImpl());
         setHeight(DIALOG_HEIGHT);
 
@@ -185,5 +187,7 @@ public class CreateAliasDialog
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        ContentCreator.WINDOW.alert(message);
+    }
 }

@@ -36,6 +36,7 @@ import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.views.ChangeResourceTemplate;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
@@ -81,7 +82,7 @@ public class ChooseTemplateDialog
      * Constructor.
      */
     public ChooseTemplateDialog() {
-        super(new GlobalsImpl().uiConstants().chooseTemplate(),
+        super(I18n.UI_CONSTANTS.chooseTemplate(),
               new GlobalsImpl());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
 

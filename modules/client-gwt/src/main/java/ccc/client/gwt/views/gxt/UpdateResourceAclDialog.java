@@ -38,6 +38,7 @@ import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.UpdateResourceAclAction;
@@ -108,7 +109,7 @@ public class UpdateResourceAclDialog
     public UpdateResourceAclDialog(final ResourceSummary resource,
                                    final ACL acl,
                                    final Collection<Group> allGroups) {
-        super(new GlobalsImpl().uiConstants().updateRoles(),
+        super(I18n.UI_CONSTANTS.updateRoles(),
               new GlobalsImpl());
         _resource = resource;
         _acl = acl;

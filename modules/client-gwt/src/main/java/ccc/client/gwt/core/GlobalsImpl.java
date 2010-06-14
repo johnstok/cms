@@ -38,18 +38,8 @@ import ccc.api.core.User;
 import ccc.client.gwt.i18n.ActionNameConstants;
 import ccc.client.gwt.i18n.ActionStatusConstants;
 import ccc.client.gwt.i18n.CommandTypeConstants;
-import ccc.client.gwt.i18n.ErrorDescriptions;
-import ccc.client.gwt.i18n.ErrorResolutions;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.i18n.UIMessages;
-import ccc.client.gwt.views.gxt.ErrorDialog;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
 
 
 /**
@@ -64,18 +54,11 @@ public class GlobalsImpl
     private static final Map<String, String> SETTINGS =
         new HashMap<String, String>();
 
-    private static UIConstants UI_CONSTANTS;
-    private static UIMessages UI_MESSAGES;
+
     private static ActionStatusConstants ACTION_STATUSES;
     private static CommandTypeConstants COMMAND_TYPES;
-    private static ErrorDescriptions ERROR_DESCRIPTIONS;
-    private static ErrorResolutions ERROR_RESOLUTIONS;
+
     private static ActionNameConstants USER_ACTIONS;
-
-    private static boolean ENABLE_EXIT_CONFIRMATION = false;
-
-    private HandlerRegistration _handlerRegistration = null;
-
     private static PagedCollection<User> USERS;
     private static PagedCollection<ActionSummary> ACTIONS;
     private static PagedCollection<Comment> COMMENTS;
@@ -83,19 +66,6 @@ public class GlobalsImpl
 
     private static API API;
 
-
-    /** {@inheritDoc} */
-    @Override
-    public void alert(final String string) {
-        Window.alert(string);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean confirm(final String string) {
-        return Window.confirm(string);
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -115,22 +85,6 @@ public class GlobalsImpl
         UserStore.currentUser(user);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void disableExitConfirmation() {
-        if (_handlerRegistration != null) {
-            _handlerRegistration.removeHandler();
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void enableExitConfirmation() {
-        if (ENABLE_EXIT_CONFIRMATION) {
-            _handlerRegistration =
-                Window.addWindowClosingHandler(new ExitHandler());
-        }
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -138,71 +92,6 @@ public class GlobalsImpl
         return GWT.getHostPageBaseURL();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void installUnexpectedExceptionHandler() {
-        GWT.setUncaughtExceptionHandler(
-            new UncaughtExceptionHandler(){
-                public void onUncaughtException(final Throwable e) {
-                    unexpectedError(e, USER_ACTIONS.unknownAction());
-                }
-            }
-        );
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void redirectTo(final String relativeURL) {
-        redirect(hostURL()+relativeURL);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void refresh() {
-        Window.Location.reload();
-    }
-
-
-    /**
-     * Accessor for the {@link UIConstants} object.
-     *
-     * @return A new instance of {@link UIConstants}.
-     */
-    public static UIConstants uiConstants() {
-       return UI_CONSTANTS;
-    }
-
-
-    /**
-     * Mutator for the {@link UIConstants} object.
-     *
-     * @param uiConstants The new UI constants.
-     */
-    public static void setUiConstants(final UIConstants uiConstants) {
-       UI_CONSTANTS = uiConstants;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public UIMessages uiMessages() {
-        return UI_MESSAGES;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void unexpectedError(final Throwable e, final String action) {
-        // FIXME Convert type comparison to multiple methods.
-        if (e instanceof RemoteException) {
-            final RemoteException re = (RemoteException) e;
-            new ErrorDialog(re, action, this).show();
-        } else if (e instanceof SessionTimeoutException) {
-            alert(uiConstants().sessionTimeOutPleaseRestart());
-        } else {
-            GWT.log("An unexpected error occured.", e);
-            new ErrorDialog(e, action, this).show();
-        }
-    }
 
     /**
      * Accessor for the {@link ActionNameConstants} object.
@@ -223,23 +112,6 @@ public class GlobalsImpl
         USER_ACTIONS = userActions;
     }
 
-    /**
-     * Handler for window closing.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class ExitHandler implements ClosingHandler {
-
-        /** {@inheritDoc} */
-        @Override
-        public void onWindowClosing(final ClosingEvent event) {
-            event.setMessage(uiConstants().exitWarning());
-        }
-    }
-
-    private void redirect(final String url) {
-        Window.Location.assign(url);
-    }
 
     /**
      * User Summary shared by all instances of {@link GlobalsImpl}.
@@ -272,18 +144,6 @@ public class GlobalsImpl
     @Override
     public CommandTypeConstants commandTypeConstants() {
         return COMMAND_TYPES;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ErrorDescriptions errorDescriptions() {
-        return ERROR_DESCRIPTIONS;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ErrorResolutions errorResolutions() {
-        return ERROR_RESOLUTIONS;
     }
 
     /** {@inheritDoc} */
@@ -363,26 +223,6 @@ public class GlobalsImpl
 
 
     /**
-     * Set whether an 'exit confirmation' dialog should be displayed.
-     *
-     * @param enabled True if the dialog should be displayed, false otherwise.
-     */
-    public static void setEnableExitConfirmation(final boolean enabled) {
-        ENABLE_EXIT_CONFIRMATION = enabled;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param create The UI messages.
-     */
-    public static void setUiMessages(final UIMessages create) {
-        UI_MESSAGES = create;
-    }
-
-
-    /**
      * Mutator.
      *
      * @param create The action statuses.
@@ -399,26 +239,6 @@ public class GlobalsImpl
      */
     public static void setCommandConstants(final CommandTypeConstants create) {
         COMMAND_TYPES = create;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param create The error descriptions.
-     */
-    public static void setErrorDescriptions(final ErrorDescriptions create) {
-        ERROR_DESCRIPTIONS = create;
-    }
-
-
-    /**
-     * Mutator.
-     *
-     * @param create The error resolutions.
-     */
-    public static void setErrorResolutions(final ErrorResolutions create) {
-        ERROR_RESOLUTIONS = create;
     }
 
 

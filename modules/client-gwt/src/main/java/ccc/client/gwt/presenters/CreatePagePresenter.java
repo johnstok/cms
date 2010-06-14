@@ -37,7 +37,7 @@ import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.events.PageCreated;
 import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
@@ -100,7 +100,7 @@ public class CreatePagePresenter
                 getView().getSelectedTemplate();
 
             if (tData == null) {
-                getView().alert(GlobalsImpl.uiConstants().noTemplateChosen());
+                getView().alert(I18n.UI_CONSTANTS.noTemplateChosen());
                 return;
             }
             p.setTemplate(

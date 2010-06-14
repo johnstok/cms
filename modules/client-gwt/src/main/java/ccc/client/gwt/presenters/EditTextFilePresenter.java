@@ -36,6 +36,7 @@ import ccc.client.gwt.events.TextFileUpdated;
 import ccc.client.gwt.events.TextFileUpdated.UpdatedHandler;
 import ccc.client.gwt.remoting.EditTextFileAction;
 import ccc.client.gwt.views.EditTextFile;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -94,7 +95,7 @@ public class EditTextFilePresenter
             new EditTextFileAction(dto).execute();
 
         } else {
-            getGlobals().alert(
+            ContentCreator.WINDOW.alert(
                 getView().getValidationResult().getErrorText());
         }
     }

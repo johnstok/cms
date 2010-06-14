@@ -36,11 +36,13 @@ import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.i18n.UIMessages;
 import ccc.client.gwt.remoting.ResourceNameExistsAction;
 import ccc.client.gwt.remoting.ValidateFieldAction;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.xml.client.Document;
@@ -83,10 +85,10 @@ public final class Validations {
     static final Globals GLOBALS = new GlobalsImpl();
 
     /** UI_CONSTANTS : UIConstants. */
-    static final UIConstants UI_CONSTANTS = GlobalsImpl.uiConstants();
+    static final UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;
 
     /** UI_MESSAGES : UIMessages. */
-    static final UIMessages UI_MESSAGES = GLOBALS.uiMessages();
+    static final UIMessages UI_MESSAGES = I18n.UI_MESSAGES;
 
     private Validations() {
         super();
@@ -100,7 +102,7 @@ public final class Validations {
     public static ErrorReporter reportErrors() {
         return new ErrorReporter() {
             public void report(final List<String> errors) {
-                GLOBALS.alert(errors.toString());
+                ContentCreator.WINDOW.alert(errors.toString());
             }
         };
     }

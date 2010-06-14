@@ -35,6 +35,7 @@ import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.EditTextFilePresenter;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.plugins.s11n.json.FileSerializer;
 
@@ -85,7 +86,7 @@ extends
                 new EditTextFileDialog(),
                 dto);
         } else {
-            GLOBALS.alert(
+            ContentCreator.WINDOW.alert(
                 UI_CONSTANTS.noEditorForResource());
         }
     }

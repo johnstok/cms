@@ -30,6 +30,7 @@ import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.events.UserCreated;
 import ccc.client.gwt.events.UserCreated.UserCreatedHandler;
@@ -63,7 +64,7 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
                                 final Globals globals) {
         _view = view;
         _globals     = globals;
-        _messages    = _globals.uiMessages();
+        _messages    = I18n.UI_MESSAGES;
         render(ContentCreator.EVENT_BUS.addHandler(UserCreated.TYPE, this));
     }
 

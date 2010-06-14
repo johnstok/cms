@@ -30,6 +30,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.MoveResourceAction;
@@ -76,7 +77,7 @@ public class MoveDialog extends AbstractEditDialog {
     public MoveDialog(final ResourceSummaryModelData item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
-        super(new GlobalsImpl().uiConstants().move(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.move(), new GlobalsImpl());
         setHeight(Globals.DEFAULT_MIN_HEIGHT);
         _ssm = ssm;
 

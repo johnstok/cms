@@ -48,6 +48,7 @@ import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -560,7 +561,7 @@ public class ResourceSummaryModelData
             Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
             new WCAppliedCallback(
-                GlobalsImpl.uiConstants().applyWorkingCopy(), this));
+                I18n.UI_CONSTANTS.applyWorkingCopy(), this));
     }
 
     /**
@@ -574,7 +575,7 @@ public class ResourceSummaryModelData
             Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
             new WCClearedCallback(
-                GlobalsImpl.uiConstants().deleteWorkingCopy(), this));
+                I18n.UI_CONSTANTS.deleteWorkingCopy(), this));
     }
 
 
@@ -597,7 +598,7 @@ public class ResourceSummaryModelData
                 path,
                 json.toString(),
                 new AliasCreatedCallback(
-                    GlobalsImpl.uiConstants().createAlias()));
+                    I18n.UI_CONSTANTS.createAlias()));
     }
 
 
@@ -626,7 +627,7 @@ public class ResourceSummaryModelData
                 path,
                 json.toString(),
                 new FolderCreatedCallback(
-                    GlobalsImpl.uiConstants().createFolder()));
+                    I18n.UI_CONSTANTS.createFolder()));
     }
 
 
@@ -649,7 +650,7 @@ public class ResourceSummaryModelData
                 path,
                 json.toString(),
                 new PageCreatedCallback(
-                    GlobalsImpl.uiConstants().createPage()));
+                    I18n.UI_CONSTANTS.createPage()));
     }
 
 
@@ -669,7 +670,7 @@ public class ResourceSummaryModelData
                 Globals.API_URL + _rs.rename().build(new GWTTemplateEncoder()),
                 name,
                 new ResourceRenamedCallback(
-                    GlobalsImpl.uiConstants().rename(),
+                    I18n.UI_CONSTANTS.rename(),
                     name,
                     getId(),
                     newPath));

@@ -42,7 +42,7 @@ import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.widgets.PageElement.FieldType;
 
@@ -252,8 +252,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                 new Link(ccc.api.core.ResourceIdentifiers.Resource.PATH)
                 .build("id", id, new GWTTemplateEncoder()));
 
-            new GetAbsolutePathAction(GlobalsImpl.uiConstants().selectImage(),
-                                      s) {
+            new GetAbsolutePathAction(I18n.UI_CONSTANTS.selectImage(), s) {
                 @Override protected void execute(final String path) {
                     final File fs = new File(
                         new MimeType("image", "*"),
@@ -776,7 +775,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
 
     private void addStaticFields() {
         _name = new TextField<String>();
-        _name.setFieldLabel(GlobalsImpl.uiConstants().name());
+        _name.setFieldLabel(I18n.UI_CONSTANTS.name());
         _name.setAllowBlank(false);
         add(_name, new FormData("95%"));
     }

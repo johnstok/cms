@@ -35,6 +35,7 @@ import ccc.client.gwt.events.CommentUpdatedEvent;
 import ccc.client.gwt.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.client.gwt.remoting.UpdateCommentAction;
 import ccc.client.gwt.views.gxt.CommentView;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -99,7 +100,7 @@ public class UpdateCommentPresenter
             new UpdateCommentAction(updated).execute();
 
         } else {
-            getGlobals().alert(result.getErrors().get(0));
+            ContentCreator.WINDOW.alert(result.getErrors().get(0));
         }
     }
 

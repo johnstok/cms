@@ -84,7 +84,7 @@ public class DeleteResourceAction
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        return GLOBALS.confirm(
+        return ContentCreator.WINDOW.confirm(
             "Are sure you want to delete the selected resource?");
     }
 }

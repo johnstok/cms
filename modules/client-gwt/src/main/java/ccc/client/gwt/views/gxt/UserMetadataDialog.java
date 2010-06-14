@@ -30,6 +30,7 @@ import java.util.Map;
 
 import ccc.api.core.User;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.UpdateUserAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
@@ -60,7 +61,7 @@ public class UserMetadataDialog extends AbstractEditDialog {
      * @param user The user.
      */
     public UserMetadataDialog(final User user) {
-        super(new GlobalsImpl().uiConstants().metadata(), new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.metadata(), new GlobalsImpl());
         setHeight(HEIGHT);
         _user = user;
 

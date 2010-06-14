@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -26,46 +26,47 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.api.types.DBC;
-import ccc.client.gwt.overlays.FailureOverlay;
+import ccc.client.gwt.views.gxt.ErrorDialog;
+
+import com.google.gwt.core.client.GWT;
 
 
 /**
- * An exception class representing a remote failure.
+ * GWT implementation of the {@link ExceptionHandler} API.
  *
  * @author Civic Computing Ltd.
  */
-public class RemoteException
-    extends
-        Exception {
+public class GWTExceptionHandler
+    implements
+        ExceptionHandler {
 
-    private final FailureOverlay _failure;
+    private final Window _window;
 
 
     /**
      * Constructor.
      *
-     * @param failure The remote failure.
+     * @param window The main application window.
      */
-    public RemoteException(final FailureOverlay failure) {
-        DBC.require().notNull(failure);
-        _failure = failure;
+    public GWTExceptionHandler(final Window window) {
+        _window = window;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public String getMessage() {
-        return _failure.getCode()+": "+_failure.getId();
-    }
+    public void unexpectedError(final Throwable e, final String action) {
 
-
-    /**
-     * Get the code for the exception.
-     *
-     * @return The failure code.
-     */
-    public String getCode() {
-        return _failure.getCode();
+        // FIXME Convert type comparison to multiple methods.
+        if (e instanceof RemoteException) {
+            final RemoteException re = (RemoteException) e;
+            new ErrorDialog(re, action, new GlobalsImpl()).show();
+        } else if (e instanceof SessionTimeoutException) {
+            _window.alert(
+                I18n.UI_CONSTANTS.sessionTimeOutPleaseRestart());
+        } else {
+            GWT.log("An unexpected error occured.", e);
+            new ErrorDialog(e, action, new GlobalsImpl()).show();
+        }
     }
 }

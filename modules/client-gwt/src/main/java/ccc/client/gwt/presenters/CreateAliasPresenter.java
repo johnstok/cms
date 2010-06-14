@@ -32,12 +32,14 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.Globals;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.events.AliasCreated;
 import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
 import ccc.client.gwt.remoting.CreateAliasAction;
 import ccc.client.gwt.remoting.ResourceNameExistsAction;
 import ccc.client.gwt.views.CreateAlias;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -93,8 +95,8 @@ public class CreateAliasPresenter
                 new ResourceName(getView().getAliasName())) {
                 @Override protected void execute(final boolean nameExists) {
                     if (nameExists) {
-                        getGlobals().alert(
-                            getGlobals().uiMessages().
+                        ContentCreator.WINDOW.alert(
+                            I18n.UI_MESSAGES.
                             nameExistsInFolder(getView().getAliasName()));
                     } else {
                         createAlias().run();

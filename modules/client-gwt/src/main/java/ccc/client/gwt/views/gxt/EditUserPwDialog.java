@@ -31,6 +31,7 @@ import static ccc.client.gwt.validation.Validations.*;
 import ccc.api.core.User;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
 import ccc.client.gwt.validation.Validate;
@@ -59,8 +60,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
      * @param userDTO The userDTO of the selected user.
      */
     public EditUserPwDialog(final UserSummaryModelData userDTO) {
-        super(new GlobalsImpl().uiConstants().editUserPw(),
-              new GlobalsImpl());
+        super(I18n.UI_CONSTANTS.editUserPw(), new GlobalsImpl());
 
         _userDTO = userDTO;
 

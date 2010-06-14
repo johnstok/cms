@@ -36,6 +36,7 @@ import ccc.client.gwt.events.ResourceCreated;
 import ccc.client.gwt.events.ResourceCreated.ResourceCreatedHandler;
 import ccc.client.gwt.remoting.CreateTextFileAction;
 import ccc.client.gwt.views.CreateTextFile;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -90,7 +91,7 @@ public class CreateTextFilePresenter
             new CreateTextFileAction(dto).execute();
 
         } else {
-            getGlobals().alert(
+            ContentCreator.WINDOW.alert(
                 view.getValidationResult().getErrorText());
         }
     }

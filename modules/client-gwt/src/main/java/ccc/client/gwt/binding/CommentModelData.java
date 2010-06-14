@@ -36,9 +36,9 @@ import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.HttpMethod;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.CommentUpdatedEvent;
@@ -229,7 +229,7 @@ public final class CommentModelData
             path,
             json.toString(),
             new CommentUpdatedCallback(
-                GlobalsImpl.uiConstants().updateComment(),
+                I18n.UI_CONSTANTS.updateComment(),
                 comment));
     }
 

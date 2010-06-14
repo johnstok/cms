@@ -33,6 +33,7 @@ import java.util.Map;
 import ccc.api.types.CommandType;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -64,7 +65,7 @@ public class CreateActionPanel
         LayoutContainer {
 
     private final Globals _globals = new GlobalsImpl();
-    private final UIConstants _uiConstants = GlobalsImpl.uiConstants();
+    private final UIConstants _uiConstants = I18n.UI_CONSTANTS;
 
     private final DataList _list = new DataList();
     private final LayoutContainer _parameters = new LayoutContainer();
@@ -115,7 +116,7 @@ public class CreateActionPanel
                             break;
 
                         default:
-                            _globals.alert("Unsupported action!");
+                            ContentCreator.WINDOW.alert("Unsupported action!");
                             return;
                     }
 
@@ -242,7 +243,7 @@ public class CreateActionPanel
 
         /** {@inheritDoc} */
         public void populateForm(final LayoutContainer form) {
-            final UIConstants uiConstants = GlobalsImpl.uiConstants();
+            final UIConstants uiConstants = I18n.UI_CONSTANTS;
 
             _title.setHtml("<b>"+uiConstants.update()+"</b><br><br><i>"
                 +uiConstants.appliesTheSelectedResourcesWorkingCopy()

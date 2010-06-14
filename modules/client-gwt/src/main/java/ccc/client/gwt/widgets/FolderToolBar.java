@@ -33,7 +33,7 @@ import ccc.client.gwt.actions.OpenCreateFolderAction;
 import ccc.client.gwt.actions.OpenCreatePageAction;
 import ccc.client.gwt.actions.OpenCreateTemplateAction;
 import ccc.client.gwt.actions.OpenCreateTextFileAction;
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.i18n.UIConstants;
 
@@ -47,7 +47,7 @@ public class FolderToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
 
     /**
      * Constructor.

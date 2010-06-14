@@ -41,6 +41,7 @@ import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.LoginDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -71,7 +72,7 @@ public class IsLoggedInAction
     @Override
     protected void onOK(final Response response) {
         if (parseBoolean(response)) {
-            GLOBALS.enableExitConfirmation();
+            ContentCreator.WINDOW.enableExitConfirmation();
             loadServices();
         } else {
             new LoginDialog().show();

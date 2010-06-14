@@ -39,9 +39,11 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
 import ccc.client.gwt.views.CreatePage;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 
@@ -127,7 +129,7 @@ public class CreatePageDialog
      */
     public CreatePageDialog(final Collection<Template> list,
                             final ResourceSummaryModelData parent) {
-        super(new GlobalsImpl().uiConstants().createPage(),
+        super(I18n.UI_CONSTANTS.createPage(),
               new GlobalsImpl());
         _parent = parent;
 
@@ -241,7 +243,7 @@ public class CreatePageDialog
                     setValue(Boolean.TRUE);
                     _templateGrid.disable();
                     _templateGrid.getSelectionModel().deselectAll();
-                    TemplateSummaryModelData sm =
+                    final TemplateSummaryModelData sm =
                         new TemplateSummaryModelData(_t2);
                     updateSecondPage(sm);
                 }
@@ -254,7 +256,7 @@ public class CreatePageDialog
                         if (null != _t2) {
                             _templateGrid.disable();
                             _templateGrid.getSelectionModel().deselectAll();
-                            TemplateSummaryModelData sm =
+                            final TemplateSummaryModelData sm =
                                 new TemplateSummaryModelData(_t2);
                             updateSecondPage(sm);
                         }
@@ -290,7 +292,9 @@ public class CreatePageDialog
 
     /** {@inheritDoc} */
     @Override
-    public void alert(final String message) { getGlobals().alert(message); }
+    public void alert(final String message) {
+        ContentCreator.WINDOW.alert(message);
+    }
 
     /** {@inheritDoc} */
     @Override

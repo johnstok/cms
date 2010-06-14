@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.i18n.UIConstants;
 import ccc.client.gwt.remoting.CancelActionAction;
 
@@ -40,7 +40,7 @@ public class ActionToolBar
     extends
         AbstractToolBar {
 
-    private final UIConstants _constants = new GlobalsImpl().uiConstants();
+    private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final ActionTable _actionTable;
 
     /**

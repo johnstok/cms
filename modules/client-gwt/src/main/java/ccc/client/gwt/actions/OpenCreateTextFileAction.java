@@ -31,6 +31,7 @@ import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreateTextFilePresenter;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
+import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Create a text file.
@@ -56,7 +57,7 @@ public final class OpenCreateTextFileAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.treeSelection();
         if (item == null) {
-            GLOBALS.alert(UI_CONSTANTS.noFolderSelected());
+            ContentCreator.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateTextFilePresenter(
                 GLOBALS,

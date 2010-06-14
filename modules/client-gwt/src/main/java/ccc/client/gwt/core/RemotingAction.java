@@ -186,7 +186,7 @@ public abstract class RemotingAction
      * @param throwable The throwable.
      */
     protected void onFailure(final Throwable throwable) {
-        new GlobalsImpl().unexpectedError(throwable, getActionName());
+        ContentCreator.EX_HANDLER.unexpectedError(throwable, getActionName());
     }
 
 
