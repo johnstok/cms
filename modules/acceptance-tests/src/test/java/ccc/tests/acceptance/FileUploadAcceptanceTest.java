@@ -168,14 +168,15 @@ public class FileUploadAcceptanceTest
         f.setInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3, 4}));
         f.setSize(5);
         f.setPublished(false);
-        f.setComment("Testing 1, 2, 3.");
 
         // ACT
         final ResourceSummary rs = getFiles().create(f);
 
         // ASSERT
+        final File actual = getFiles().retrieve(rs.getId());
         assertEquals(fName, rs.getName());
         assertEquals(filesFolder.getId(), rs.getParent());
+        assertEquals(null, actual.getComment());
     }
 
     /**
