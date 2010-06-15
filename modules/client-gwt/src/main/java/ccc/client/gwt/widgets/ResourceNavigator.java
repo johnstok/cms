@@ -30,12 +30,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
+import ccc.api.types.SortOrder;
 import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.I18n;
+import ccc.client.gwt.remoting.ListGroups;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -53,7 +57,7 @@ public class ResourceNavigator extends ContentPanel {
 
     private final Globals _globals = new GlobalsImpl();
     private final LeftRightPane _view;
-    private final Tree _usersTree;
+    private Tree _usersTree = null;
     private final Tree _actionTree;
     private final CommentTree _commentTree;
     private final List<EnhancedResourceTree> _rootTrees =
@@ -99,8 +103,13 @@ public class ResourceNavigator extends ContentPanel {
             );
         }
 
-        _usersTree = new UserTree(_view);
+        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
+            @Override
+            protected void execute(final PagedCollection<Group> groups) {
+            }}.execute();
+
         if (user.hasPermission(Permission.USER_READ)) {
+            _usersTree = new UserTree(_view);
             final ContentPanel usersPanel = new ContentPanel();
             setPanel(usersPanel, "user-navigator",
                 I18n.UI_CONSTANTS.users(), _usersTree);

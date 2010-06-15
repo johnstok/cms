@@ -27,9 +27,14 @@
 
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.Group;
+import ccc.api.core.PagedCollection;
+import ccc.api.types.SortOrder;
+import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.gwt.remoting.ListGroups;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -45,24 +50,15 @@ public class UserTree extends Tree {
 
     /** USERS : String. */
     public static final String USERS = "Users";
-    /** ALL : String. */
-    public static final String ALL = "All";
-    /** CONTENT_CREATOR : String. */
-    public static final String CONTENT_CREATOR = "Content creator";
-    /** SITE_BUILDER : String. */
-    public static final String SITE_BUILDER = "Site Builder";
-    /** ADMINISTRATOR : String. */
-    public static final String ADMINISTRATOR = "Administrator";
+
     /** SEARCH : String. */
     public static final String SEARCH = "Search";
-    /** USER_TREE_HEIGHT : int.
-     * TODO load USER_TREE_HEIGHT from properties file*/
-    private static final int USER_TREE_HEIGHT = 300;
 
     private final UserTable _userTable = new UserTable();
     private final GroupTable _groupTable = new GroupTable();
     private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
+    private final ModelData _users = getNewItem(_constants.users(), USERS);
 
     /**
      * Constructor.
@@ -73,53 +69,25 @@ public class UserTree extends Tree {
         _view = view;
 
         _tree.setDisplayProperty("name");
-        _tree.setHeight(USER_TREE_HEIGHT);
         _tree.setIconProvider(new ModelIconProviderImplementation());
         _tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         _tree.setStyleAttribute(BACKGROUND_ATTRIBUTE, BACKGROUND_COLOUR);
         _tree.getSelectionModel().addSelectionChangedListener(
             new UserSelectedListener());
 
-        final ModelData users = getNewItem(_constants.users(), USERS);
-        _store.add(users, ADD_ALL_CHILDREN);
-        _tree.setLeaf(users, IS_NOT_LEAF);
-        _tree.setExpanded(users, EXPANDED);
+        _store.add(_users, ADD_ALL_CHILDREN);
+        _tree.setLeaf(_users, IS_NOT_LEAF);
+        _tree.setExpanded(_users, EXPANDED);
 
         final ModelData groups = getNewItem(_constants.groups(), "Groups");
         _store.add(groups, DONT_ADD_CHILDREN);
         _tree.setLeaf(groups, IS_LEAF);
 
-        final ModelData all = getNewItem(_constants.all(), ALL);
-        _store.add(users, all, DONT_ADD_CHILDREN);
-        _tree.setLeaf(all, IS_NOT_LEAF);
-
-        final ModelData creator = getNewItem(
-            _constants.contentCreator(),
-            CONTENT_CREATOR,
-            ImagePaths.USER);
-        _store.add(all, creator, DONT_ADD_CHILDREN);
-        _tree.setLeaf(creator, IS_LEAF);
-
-        final ModelData builder = getNewItem(
-            _constants.siteBuilder(),
-            SITE_BUILDER,
-            ImagePaths.USER);
-        _store.add(all, builder, DONT_ADD_CHILDREN);
-        _tree.setLeaf(builder, IS_LEAF);
-
-        final ModelData admin = getNewItem(
-            _constants.administrator(),
-            ADMINISTRATOR,
-            ImagePaths.ADMINISTRATOR);
-        _store.add(all, admin, DONT_ADD_CHILDREN);
-        _tree.setLeaf(admin, IS_LEAF);
-
         final ModelData search = getNewItem(
             _constants.search(),
             SEARCH,
             ImagePaths.SEARCH);
-        _store.add(users, search, DONT_ADD_CHILDREN);
-        _tree.setLeaf(all, IS_NOT_LEAF);
+        _store.add(_users, search, DONT_ADD_CHILDREN);
     }
 
     /**
@@ -137,13 +105,14 @@ public class UserTree extends Tree {
                                      selectionChangedEvent) {
             final ModelData selectedItem =
                 selectionChangedEvent.getSelectedItem();
-
-            if ("Groups".equals(selectedItem.get("id"))) {
-                _view.setRightHandPane(_groupTable);
-                _groupTable.displayGroups();
-            } else {
-                _view.setRightHandPane(_userTable);
-                _userTable.displayUsersFor(selectedItem);
+            if (selectedItem != null) {
+                if ("Groups".equals(selectedItem.get("id"))) {
+                    _view.setRightHandPane(_groupTable);
+                    _groupTable.displayGroups();
+                } else {
+                    _view.setRightHandPane(_userTable);
+                    _userTable.displayUsersFor(selectedItem);
+                }
             }
         }
     }
@@ -153,6 +122,29 @@ public class UserTree extends Tree {
      */
     @Override
     public void showTable() {
+        new ListGroups(1, Globals.MAX_FETCH, "name", SortOrder.ASC) {
+            @Override
+            protected void execute(final PagedCollection<Group> groups) {
+                _store.removeAll(_users);
+                for (Group group : groups.getElements()) {
+                    ModelData userModel = null;
+                    if ("ADMINISTRATOR".equals(group.getName())) {
+                        userModel = getNewItem(
+                            group.getName(),
+                            group.getName(),
+                            ImagePaths.ADMINISTRATOR);
+                    } else {
+                        userModel = getNewItem(
+                            group.getName(),
+                            group.getName(),
+                            ImagePaths.USER);
+                    }
+
+                    _store.add(_users, userModel, DONT_ADD_CHILDREN);
+                    _tree.setLeaf(userModel, IS_LEAF);
+                }
+
+            }}.execute();
         _view.setRightHandPane(_userTable);
     }
 }

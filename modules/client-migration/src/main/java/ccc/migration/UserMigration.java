@@ -42,6 +42,7 @@ import ccc.api.core.User;
 import ccc.api.core.Users;
 import ccc.api.exceptions.CCException;
 import ccc.api.types.EmailAddress;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -139,7 +140,11 @@ public class UserMigration {
                 groupList.add(cachedGroups.get(role).getId());
 
             } else { // Group not cached
-                final PagedCollection<Group> gs = groups.query(role, 1, 999);
+                final PagedCollection<Group> gs = groups.query(role,
+                    "name",
+                    SortOrder.ASC,
+                    1,
+                    999);
                 if (0==gs.getTotalCount()) { // Doesn't exist.
                     final Group g = new Group();
                     g.setName(role);

@@ -263,19 +263,11 @@ public class UserTable extends TablePanel {
             _toolBar.disable();
         }
 
-        if (UserTree.ALL.equals(selectedItem.get("id"))) {
+        if (UserTree.USERS.equals(selectedItem.get("id"))) {
             updatePager(null);
-        } else if (UserTree.CONTENT_CREATOR.equals(selectedItem.get("id"))){
+        } else {
             final UserCriteria uc = new UserCriteria();
-            uc.setGroups("CONTENT_CREATOR");
-            updatePager(uc);
-        } else if (UserTree.SITE_BUILDER.equals(selectedItem.get("id"))) {
-            final UserCriteria uc = new UserCriteria();
-            uc.setGroups("SITE_BUILDER");
-            updatePager(uc);
-        } else if(UserTree.ADMINISTRATOR.equals(selectedItem.get("id"))) {
-            final UserCriteria uc = new UserCriteria();
-            uc.setGroups("ADMINISTRATOR");
+            uc.setGroups((String) selectedItem.get("id"));
             updatePager(uc);
         }
     }

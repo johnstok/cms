@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
+import ccc.api.types.SortOrder;
 
 
 /**
@@ -100,7 +101,7 @@ public class GroupsAcceptanceTest
 
         // ACT
         final PagedCollection<Group> actual =
-            getGroups().query("ADMINISTRATOR", 1, 20);
+            getGroups().query("ADMINISTRATOR", "name", SortOrder.ASC, 1, 20);
 
         // ASSERT
         assertEquals(1, actual.getTotalCount());

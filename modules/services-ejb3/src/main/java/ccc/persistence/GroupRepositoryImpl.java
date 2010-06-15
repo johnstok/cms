@@ -34,6 +34,7 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import ccc.api.types.DBC;
+import ccc.api.types.SortOrder;
 import ccc.domain.GroupEntity;
 
 
@@ -87,6 +88,8 @@ public class GroupRepositoryImpl
     /** {@inheritDoc} */
     @Override
     public Collection<GroupEntity> list(final String name,
+                                        final String sort,
+                                        final SortOrder order,
                                         final int pageNo,
                                         final int pageSize) {
         final Map<String, Object> params = new HashMap<String, Object>();
@@ -95,6 +98,18 @@ public class GroupRepositoryImpl
         query.append(GroupEntity.class.getName());
         query.append(" g");
         appendCriteria(query, name, params);
+
+        if (null != sort) {
+            boolean knownSort = true;
+            if ("name".equalsIgnoreCase(sort)) {
+                query.append(" order by upper(g._name) ");
+            } else {
+                knownSort = false;
+            }
+            if (knownSort) {
+                query.append(order.name());
+            }
+        }
 
         return _repo.listDyn(
             query.toString(),

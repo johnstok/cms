@@ -33,6 +33,7 @@ import java.util.Random;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
+import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 
 
@@ -146,7 +147,11 @@ public class UserManagementAcceptanceTest
         final String name = "testuser";
 
         final List<Group> groups =
-            getGroups().query("SITE_BUILDER", 1, PAGE_SIZE).getElements();
+            getGroups().query("SITE_BUILDER",
+                              "name",
+                              SortOrder.ASC,
+                              1,
+                              PAGE_SIZE).getElements();
         final Group siteBuilder = groups.iterator().next();
 
         final User us = tempUser();
@@ -183,7 +188,11 @@ public class UserManagementAcceptanceTest
         final String name = "testuser";
 
         final List<Group> groups =
-            getGroups().query("SITE_BUILDER", 1, PAGE_SIZE).getElements();
+            getGroups().query("SITE_BUILDER",
+                              "name",
+                              SortOrder.ASC,
+                              1,
+                              PAGE_SIZE).getElements();
         final Group siteBuilder = groups.iterator().next();
 
         // Create the user
@@ -216,7 +225,11 @@ public class UserManagementAcceptanceTest
         final String email = "foo@abc.def";
         final String name = "testuser";
         final List<Group> groups =
-            getGroups().query("SITE_BUILDER", 1, PAGE_SIZE).getElements();
+            getGroups().query("SITE_BUILDER",
+                "name",
+                SortOrder.ASC,
+                1,
+                PAGE_SIZE).getElements();
         final Group siteBuilder = groups.iterator().next();
 
         // Create the user
