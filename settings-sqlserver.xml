@@ -27,6 +27,11 @@
                 <application.db-username>ci</application.db-username>
                 <application.db-password>17c8a25fb9bf</application.db-password>
                 <ccc.db.exc-sorter></ccc.db.exc-sorter>
+                
+                
+                <!-- LDAP properties -->
+                <application.ldap.provider_url></application.ldap.provider_url>
+                <application.ldap.base_dn></application.ldap.base_dn>
 
             </properties>
         </profile>

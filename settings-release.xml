@@ -42,6 +42,11 @@
                 <application.mail.password>[specify your password]</application.mail.password>
                 <application.mail.auth>false</application.mail.auth>
                 <application.mail.debug>false</application.mail.debug>
+                
+                
+                <!-- LDAP properties -->
+                <application.ldap.provider_url></application.ldap.provider_url>
+                <application.ldap.base_dn></application.ldap.base_dn>
 
             </properties>
         </profile>

@@ -29,9 +29,14 @@ package ccc.security;
 
 import java.security.acl.Group;
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.AuthenticationException;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.InitialDirContext;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -58,13 +63,14 @@ public class CCCLoginModule implements LoginModule {
 
     private static final Logger LOG = Logger.getLogger(CCCLoginModule.class);
 
-    private CallbackHandler _cbHandler;
-    private Object[] _user;
-    private Set<String> _permissions;
-    private Group _permGroup;
-    private Subject _subject;
-    private Group _callerPrincipal;
-    private Database _db;
+    private CallbackHandler     _cbHandler;
+    private Object[]            _user;
+    private Set<String>         _permissions;
+    private Group               _permGroup;
+    private Subject             _subject;
+    private Group               _callerPrincipal;
+    private Database            _db;
+    private Map<String, ?>      _options;
 
     /**
      * Constructor.
@@ -112,6 +118,7 @@ public class CCCLoginModule implements LoginModule {
                            final Map<String, ?> options) {
         _subject = subject;
         _cbHandler = callbackHandler;
+        _options = options;
         _db.setOptions(options);
     }
 
@@ -145,7 +152,8 @@ public class CCCLoginModule implements LoginModule {
             _permGroup = createPerms(_permissions);
 
             final boolean passwordOk =
-                UserEntity.matches(
+                ldapAuth(nc.getName(), pc.getPassword())
+                || UserEntity.matches(
                     (byte[]) _user[1],
                     new String(pc.getPassword()),
                     (String) _user[2]);
@@ -158,6 +166,53 @@ public class CCCLoginModule implements LoginModule {
             LOG.error("Login failed", e); // TODO: do we need to log & throw?
             throw new LoginException("login failed: "+e.getMessage());
         }
+    }
+
+
+    private boolean ldapAuth(final String username, final char[] password) {
+        LOG.debug("Attempting LDAP authentication.");
+
+        final String providerUrl = (String) _options.get("ldapProviderUrl");
+        final String baseDn      = (String) _options.get("baseDn");
+
+        if (null==providerUrl || providerUrl.trim().length()==0
+            || null==baseDn || baseDn.trim().length()==0) {
+            LOG.debug("LDAP authentication not configured.");
+            return false;
+        }
+
+        try {
+            final Hashtable<String, Object> env =
+                new Hashtable<String, Object>();
+            env.put(
+                Context.INITIAL_CONTEXT_FACTORY,
+                "com.sun.jndi.ldap.LdapCtxFactory");
+            env.put(
+                Context.PROVIDER_URL,
+                providerUrl);
+            env.put(
+                Context.SECURITY_AUTHENTICATION,
+                "simple");
+            env.put(
+                Context.SECURITY_PRINCIPAL,
+                "uid="+username+","+baseDn);
+            env.put(
+                Context.SECURITY_CREDENTIALS, password);
+
+            // Perform the authentication.
+            new InitialDirContext(env);
+
+            LOG.debug("LDAP auhtentication succeeded.");
+            return true;
+
+        } catch (final AuthenticationException e) {
+            LOG.warn("LDAP auhtentication failed: "+e.getMessage());
+        } catch (final NamingException e) {
+            LOG.warn("LDAP auhtentication failed.", e);
+        } catch (final RuntimeException e) {
+            LOG.warn("LDAP auhtentication failed.", e);
+        }
+        return false;
     }
 
     /** {@inheritDoc} */
