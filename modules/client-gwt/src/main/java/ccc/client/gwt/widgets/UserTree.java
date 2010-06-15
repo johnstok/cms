@@ -51,9 +51,6 @@ public class UserTree extends Tree {
     /** USERS : String. */
     public static final String USERS = "Users";
 
-    /** SEARCH : String. */
-    public static final String SEARCH = "Search";
-
     private final UserTable _userTable = new UserTable();
     private final GroupTable _groupTable = new GroupTable();
     private final UIConstants _constants = I18n.UI_CONSTANTS;
@@ -82,12 +79,6 @@ public class UserTree extends Tree {
         final ModelData groups = getNewItem(_constants.groups(), "Groups");
         _store.add(groups, DONT_ADD_CHILDREN);
         _tree.setLeaf(groups, IS_LEAF);
-
-        final ModelData search = getNewItem(
-            _constants.search(),
-            SEARCH,
-            ImagePaths.SEARCH);
-        _store.add(_users, search, DONT_ADD_CHILDREN);
     }
 
     /**

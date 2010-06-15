@@ -224,7 +224,6 @@ public class UserTable extends TablePanel {
         _toolBar.add(new SeparatorToolItem());
         _toolBar.add(_searchButton);
         _toolBar.setId("toolbar");
-        _toolBar.disable();
     }
 
     private List<ColumnConfig> createColumnConfigs(
@@ -256,13 +255,7 @@ public class UserTable extends TablePanel {
     public void displayUsersFor(final ModelData selectedItem) {
         _lastSelected = selectedItem;
         _detailsStore.removeAll();
-
-        if (UserTree.SEARCH.equals(selectedItem.get("id"))) {
-            _toolBar.enable();
-        } else {
-            _toolBar.disable();
-        }
-
+        _searchString.setValue(null);
         if (UserTree.USERS.equals(selectedItem.get("id"))) {
             updatePager(null);
         } else {
@@ -276,8 +269,7 @@ public class UserTable extends TablePanel {
      * Refresh user list unless the last list was created through a search.
      */
     public void refreshUsers() {
-        if (_lastSelected != null
-                && !UserTree.SEARCH.equals(_lastSelected.get("id"))) {
+        if (_lastSelected != null){
             displayUsersFor(_lastSelected);
         }
     }
@@ -296,6 +288,9 @@ public class UserTable extends TablePanel {
             _detailsStore.removeAll();
             if (_radioGroup.getValue() == _usernameRadio) {
                 final UserCriteria uc = new UserCriteria();
+                if (!UserTree.USERS.equals(_lastSelected.get("id"))) {
+                    uc.setGroups((String) _lastSelected.get("id"));
+                }
                 uc.setUsername(_searchString.getValue().replace('*', '%'));
                 updatePager(uc);
             } else if (_radioGroup.getValue() == _emailRadio) {
