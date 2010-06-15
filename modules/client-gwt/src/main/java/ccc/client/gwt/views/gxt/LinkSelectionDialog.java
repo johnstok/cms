@@ -151,31 +151,17 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
             if (selection.HasAncestorNode('A')) {
                 var link = selection.MoveToAncestorNode( 'A' ) ;
-                if ( link )
-                    selection.SelectNode( link ) ;
-                link.href = selectedUrl;
-                link.setAttribute('_fcksavedurl', selectedUrl);
-                link.innerHTML = innerText;
-                link.title = title;
-                if (openInNew) {
-                    link.target = "_blank";
-                }
-                if (uuid != null) {
-                    link.setAttribute( 'class', "ccc:"+uuid) ;
-                } else {
-                    link.removeAttribute('class') ;
-                }
-            } else {
-                var linkURL = "<a href=\""+selectedUrl+"\" title=\""+title+"\"";
-                if (uuid != null) {
-                    linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
-                }
-                if (openInNew) {
-                    linkURL = linkURL +" target=\"_blank\"";
-                }
-                linkURL = linkURL +">"+ innerText +"</a>";
-                return instance.InsertHtml(linkURL);
+                link.parentNode.removeChild(link);
             }
+            var linkURL = "<a href=\""+selectedUrl+"\" title=\""+title+"\"";
+            if (uuid != null) {
+                linkURL = linkURL +" class=\"ccc:"+uuid+"\"";
+            }
+            if (openInNew) {
+                linkURL = linkURL +" target=\"_blank\"";
+            }
+            linkURL = linkURL +">"+ innerText +"</a>";
+            return instance.InsertHtml(linkURL);
         }
         return null;
 
