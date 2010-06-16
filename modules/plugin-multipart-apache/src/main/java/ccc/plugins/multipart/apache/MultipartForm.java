@@ -38,6 +38,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 import ccc.api.types.DBC;
@@ -195,6 +197,10 @@ public class MultipartForm implements MultipartFormData {
 
         try {
             return upload.parseRequest(context);
+        } catch (final FileSizeLimitExceededException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (final SizeLimitExceededException e) {
+            throw new RuntimeException(e.getMessage(), e);
         } catch (final FileUploadException e) {
             throw new RuntimeException("Failed to parse multipart request.", e);
         }

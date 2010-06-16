@@ -45,8 +45,8 @@ import com.google.gwt.user.client.ui.HTML;
  * @author Civic Computing Ltd.
  */
 public class ErrorDialog extends AbstractEditDialog {
-    private static final int DIALOG_WIDTH  = 375;
-    private static final int DIALOG_HEIGHT = 300;
+    private static final int DIALOG_WIDTH  = 450;
+    private static final int DIALOG_HEIGHT = 375;
     private static final int DIALOG_MIN_HEIGHT = 100;
     private static final int PANEL_HEIGHT = 140;
 
@@ -127,13 +127,15 @@ public class ErrorDialog extends AbstractEditDialog {
                        final Globals globals) {
         this(
             action,
-            lookupError(e.getCode()),
-            lookupResolution(e.getCode()),
+            lookupError(e),
+            lookupResolution(e),
             globals);
     }
 
 
-    private static String lookupResolution(final String code) {
+    private static String lookupResolution(final RemoteException e) {
+
+        final String code = e.getCode();
 
         if ("ccc.api.exceptions.UnlockedException".equals(code)) {
             return I18n.ERROR_RESOLUTIONS.unlocked();
@@ -151,7 +153,9 @@ public class ErrorDialog extends AbstractEditDialog {
     }
 
 
-    private static String lookupError(final String code) {
+    private static String lookupError(final RemoteException e) {
+
+        final String code = e.getCode();
 
         if ("ccc.api.exceptions.UnlockedException".equals(code)) {
             return I18n.ERROR_DESCRIPTIONS.unlocked();
@@ -165,7 +169,7 @@ public class ErrorDialog extends AbstractEditDialog {
             return I18n.ERROR_DESCRIPTIONS.invalidCommand();
         }
 
-        return I18n.ERROR_DESCRIPTIONS.unknown();
+        return I18n.ERROR_DESCRIPTIONS.unknown()+"\n\n"+e.getMessage();
     }
 
 

@@ -36,6 +36,7 @@ import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.exceptions.InvalidException;
 import ccc.api.exceptions.UnauthorizedException;
 import ccc.api.types.HttpStatusCode;
+import ccc.api.types.MimeType;
 import ccc.plugins.s11n.InvalidSnapshotException;
 import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -53,6 +54,19 @@ public class RestExceptionMapper
     /** {@inheritDoc} */
     @Override
     public Response toResponse(final CCException e) {
+        return toResponse(e, MimeType.JSON);
+    }
+
+    /**
+     * Convert an exception to a JAX-RS response.
+     *
+     * @param e The exception to convert.
+     * @param responseType The mime type for the response.
+     *
+     * @return The corresponding JAX-RS response.
+     */
+    public Response toResponse(final CCException e,
+                               final MimeType responseType) {
 
         int statusCode = HttpStatusCode.ERROR;
 
@@ -72,9 +86,9 @@ public class RestExceptionMapper
 
         return
             Response.status(statusCode)
-                    .type("application/json")
-                    .entity(e.getFailure())
-                    .build();
+                .type(responseType.toString())
+                .entity(e.getFailure())
+                .build();
     }
 
     /**

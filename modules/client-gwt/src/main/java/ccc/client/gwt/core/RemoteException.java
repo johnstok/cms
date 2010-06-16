@@ -56,7 +56,10 @@ public class RemoteException
     /** {@inheritDoc} */
     @Override
     public String getMessage() {
-        return _failure.getCode()+": "+_failure.getId();
+        return
+            "Code: "+_failure.getCode()
+            + "\nID: "+_failure.getId()
+            + "\nMessage: "+_failure.getMessage();
     }
 
 

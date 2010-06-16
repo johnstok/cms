@@ -69,4 +69,13 @@ public class FailureOverlay
     public static native FailureOverlay fromJson(final String json) /*-{
         return eval('(' + json + ')');
     }-*/;
+
+
+    /**
+     * Accessor for the error message.
+     *
+     * @return The error message as a string.
+     */
+    public final native String getMessage()
+        /*-{ return this.parameters.message; }-*/;
 }
