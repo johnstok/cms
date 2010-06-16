@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.remoting;
 
+import com.google.gwt.user.client.Timer;
+
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Comment;
@@ -52,6 +54,9 @@ import ccc.client.gwt.widgets.ContentCreator;
 public class IsLoggedInAction
     extends
         RemotingAction {
+
+    private static final int KEEP_ALIVE = 600000;
+
 
     /**
      * Constructor.
@@ -149,5 +154,17 @@ public class IsLoggedInAction
                 l.countDown();
             }
         }.execute();
+
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                new GetCurrentUserAction() {
+                    protected void onOK(Response response) {
+                        //NO-OP
+                    };
+                }.execute();
+            }
+        };
+        timer.scheduleRepeating(KEEP_ALIVE);
     }
 }
