@@ -229,8 +229,6 @@ public class ResourceAcceptanceTest
         e.setName("SITE_BUILDER");
         final List<Group> groups =
             getGroups().query("SITE_BUILDER",
-                              "name",
-                              SortOrder.ASC,
                               1,
                               PAGE_SIZE).getElements();
         e.setPrincipal(groups.iterator().next().getId());

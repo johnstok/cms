@@ -103,8 +103,6 @@ public class GroupsEJB
     @RolesAllowed(Permission.GROUP_READ)
     public PagedCollection<Group> query(
         final String name,
-        final String sort,
-        final SortOrder order,
         final int pageNo,
         final int pageSize) {
 
@@ -112,8 +110,6 @@ public class GroupsEJB
         final long totalCount = gr.totalCount(name);
 
         final Collection<GroupEntity> groups = gr.list(name,
-                                                       sort,
-                                                       order,
                                                        pageNo,
                                                        pageSize);
 

@@ -38,7 +38,6 @@ import ccc.api.core.Group;
 import ccc.api.core.Groups;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.DBC;
-import ccc.api.types.SortOrder;
 
 
 /**
@@ -106,12 +105,10 @@ public class GroupsImpl
     /** {@inheritDoc} */
     @Override
     public PagedCollection<Group> query(final String name,
-        final String sort,
-        final SortOrder order,
         final int pageNo,
         final int pageSize) {
         try {
-            return _groups.query(name, sort, order, pageNo, pageSize);
+            return _groups.query(name, pageNo, pageSize);
         } catch (final RuntimeException cfe) {
             throw convertException(cfe);
         }

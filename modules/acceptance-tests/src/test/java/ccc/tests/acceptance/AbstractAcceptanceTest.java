@@ -58,7 +58,6 @@ import ccc.api.http.ProxyServiceLocator;
 import ccc.api.http.SiteBrowser;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
-import ccc.api.types.SortOrder;
 import ccc.api.types.Username;
 
 
@@ -291,8 +290,6 @@ public abstract class AbstractAcceptanceTest
         final String name = "testuser";
         final List<Group> groups =
             getGroups().query("CONTENT_CREATOR",
-                "name",
-                SortOrder.ASC,
                 1,
                 PAGE_SIZE).getElements();
         final Group contentCreator = groups.iterator().next();

@@ -141,8 +141,6 @@ public class UserMigration {
 
             } else { // Group not cached
                 final PagedCollection<Group> gs = groups.query(role,
-                    "name",
-                    SortOrder.ASC,
                     1,
                     999);
                 if (0==gs.getTotalCount()) { // Doesn't exist.

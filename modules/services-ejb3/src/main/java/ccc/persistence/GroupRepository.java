@@ -29,7 +29,6 @@ package ccc.persistence;
 import java.util.Collection;
 import java.util.UUID;
 
-import ccc.api.types.SortOrder;
 import ccc.domain.GroupEntity;
 
 /**
@@ -62,16 +61,12 @@ public interface GroupRepository {
      * List groups.
      *
      * @param name Filter groups based on name. NULL disables the filter.
-     * @param sort The sort results be sorted in.
-     * @param order The order results be sorted in.
      * @param pageNo The page of results to return.
      * @param pageSize The number of results in a page.
      *
      * @return A list of groups matching the search criteria.
      */
     Collection<GroupEntity> list(String name,
-        String sort,
-        SortOrder order,
         int pageNo,
         int pageSize);
 

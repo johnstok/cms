@@ -38,8 +38,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import ccc.api.types.SortOrder;
-
 
 
 
@@ -60,8 +58,6 @@ public interface Groups {
      * List available groups.
      *
      * @param name Filter based on group name. NULL disables filter.
-     * @param sort The column to sort.
-     * @param order The sort order (ASC/DESC).
      * @param pageNo The page to display.
      * @param pageSize The number of results per page.
      *
@@ -70,8 +66,6 @@ public interface Groups {
     @GET @Path(ccc.api.core.ResourceIdentifiers.Group.COLLECTION)
     PagedCollection<Group> query(
         @QueryParam("name") String name,
-        @QueryParam("sort") String sort,
-        @QueryParam("order") @DefaultValue("ASC") SortOrder order,
         @QueryParam("page") @DefaultValue("1") int pageNo,
         @QueryParam("count") @DefaultValue("20") int pageSize);
 

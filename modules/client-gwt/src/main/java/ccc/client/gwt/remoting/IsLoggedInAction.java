@@ -159,7 +159,7 @@ public class IsLoggedInAction
             @Override
             public void run() {
                 new GetCurrentUserAction() {
-                    protected void onOK(Response response) {
+                    protected void onOK(final Response response) {
                         //NO-OP
                     };
                 }.execute();
