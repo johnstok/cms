@@ -66,8 +66,7 @@ public class HistoryDialog
     /**
      * Constructor.
      *
-     * @param data The history to display, as a collection of
-     *  {@link Revision}.
+     * @param data The history to display, as a collection of {@link Revision}s.
      * @param resourceType The type of the resource.
      * @param ssm The selection model.
      */

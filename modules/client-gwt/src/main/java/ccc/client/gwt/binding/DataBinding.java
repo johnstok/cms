@@ -76,7 +76,7 @@ public final class DataBinding {
         final List<LogEntrySummaryModelData> boundData =
             new ArrayList<LogEntrySummaryModelData>();
         for (final Revision les : arg0) {
-            boundData.add(new LogEntrySummaryModelData(les, GLOBALS));
+            boundData.add(new LogEntrySummaryModelData(les));
         }
         return boundData;
     }

@@ -81,6 +81,7 @@ public final class Revision implements Serializable {
      *
      * @return Returns the action.
      */
+    @Deprecated // This method is due to be removed in 7.3.0
     public CommandType getCommand() {
         return _command;
     }

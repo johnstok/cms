@@ -30,13 +30,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.Set;
 
 import ccc.api.core.Revision;
-import ccc.api.types.CommandType;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.i18n.CommandTypeConstants;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -54,18 +50,14 @@ public class LogEntrySummaryModelData
     public static final String EXPAND_PROPERTY = Property.COMMENT.name();
 
     private final Revision _les;
-    private Globals _globals;
 
     /**
      * Constructor.
      *
      * @param les The log entry summary to wrap.
-     * @param globals The globals.
      */
-    public LogEntrySummaryModelData(final Revision les,
-                                    final Globals globals) {
+    public LogEntrySummaryModelData(final Revision les) {
         _les = les;
-        _globals = globals;
     }
 
     /** {@inheritDoc} */
@@ -78,12 +70,6 @@ public class LogEntrySummaryModelData
 
             case USERNAME:
                 return (X) _les.getActorUsername();
-
-            case COMMAND:
-                return (X) _les.getCommand();
-
-            case LOCALISED_ACTION:
-                return (X) getLocalisedAction();
 
             case COMMENT:
                 return (X) _les.getComment();
@@ -103,6 +89,7 @@ public class LogEntrySummaryModelData
         }
     }
 
+
     /** {@inheritDoc} */
     @Override @Deprecated
     public Map<String, Object> getProperties() {
@@ -112,6 +99,7 @@ public class LogEntrySummaryModelData
         }
         return properties;
     }
+
 
     /** {@inheritDoc} */
     @Override @Deprecated
@@ -123,11 +111,13 @@ public class LogEntrySummaryModelData
         return names;
     }
 
+
     /** {@inheritDoc} */
     @Override @Deprecated
     public <X> X remove(final String property) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
+
 
     /** {@inheritDoc} */
     @Override @Deprecated
@@ -135,16 +125,13 @@ public class LogEntrySummaryModelData
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+
     /**
      * Property names.
      *
      * @author Civic Computing Ltd.
      */
     public enum Property {
-        /** COMMAND : Property. */
-        COMMAND,
-        /** LOCALISED_ACTION : Property. */
-        LOCALISED_ACTION,
         /** USERNAME : Property. */
         USERNAME,
         /** HAPPENED_ON : Property. */
@@ -157,31 +144,6 @@ public class LogEntrySummaryModelData
         INDEX;
     }
 
-    /**
-     * Accessor.
-     *
-     * @return The action.
-     */
-    public CommandType getAction() {
-        return _les.getCommand();
-    }
-
-    /**
-     * Looks up for localised string for the {@link CommandType}.
-     *
-     * @return The localised string or name of the enum if nothing found.
-     */
-    public String getLocalisedAction() {
-        final CommandTypeConstants types = _globals.commandTypeConstants();
-
-        String local = null;
-        try {
-            local = types.getString(_les.getCommand().camelCaseName());
-        } catch (final MissingResourceException e) {
-            local = _les.getCommand().name();
-        }
-        return local;
-    }
 
     /**
      * Accessor.
