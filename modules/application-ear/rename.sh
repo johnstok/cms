@@ -23,7 +23,6 @@ replace_name "$1" "$2" META-INF/jboss-app.xml
 replace_name "$1" "$2" services-ejb3.jar/META-INF/persistence.xml
 replace_name "$1" "$2" auth-config.xml
 replace_name "$1" "$2" auth-service.xml
-replace_name "$1" "$2" mail-service.xml
 replace_name "$1" "$2" oracle-ds.xml
 replace_name "$1" "$2" mysql-ds.xml
 replace_name "$1" "$2" h2-ds.xml

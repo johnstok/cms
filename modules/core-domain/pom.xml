@@ -79,6 +79,12 @@
         	<artifactId>tagsoup</artifactId>
         	<version>${lib.version.tagsoup}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jvnet.mock-javamail</groupId>
+            <artifactId>mock-javamail</artifactId>
+            <version>1.7</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
 </project>

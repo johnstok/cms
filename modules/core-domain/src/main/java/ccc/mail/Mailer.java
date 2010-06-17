@@ -27,6 +27,7 @@
 package ccc.mail;
 
 import java.util.Date;
+import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -39,8 +40,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 
-import ccc.commons.JNDI;
-import ccc.commons.Registry;
+import ccc.commons.Resources;
 import ccc.types.DBC;
 import ccc.types.EmailAddress;
 
@@ -53,19 +53,27 @@ import ccc.types.EmailAddress;
 public class Mailer
     extends
         Authenticator {
+
     private static final Logger LOG = Logger.getLogger(Mailer.class);
     private final Session _session;
+
 
     /**
      * Constructor.
      *
-     * @param location The location in registry, for example java:/mail/appname
+     * @param location DEPRECATED - any value passed will be ignored.
      */
     public Mailer(final String location) {
-        final Registry r = new JNDI();
-        final Session session = r.get(location);
+
+        final Properties config = Resources.readIntoProps("mail.properties");
+        LOG.debug("Mail configuration: "+config);
+
+        final Session session =
+            Session.getInstance(config, new PropertiesAuthenticator(config));
+
         _session = DBC.require().notNull(session);
     }
+
 
     /**
      * Sends a plain text message to the specified recipient.
@@ -109,7 +117,8 @@ public class Mailer
             return false;
         }
     }
-    
+
+
     /**
      * Enable debugging for this mailer.
      *
@@ -118,6 +127,4 @@ public class Mailer
     public void setDebug(final boolean debug) {
         _session.setDebug(debug);
     }
-
-    
 }

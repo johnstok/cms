@@ -39,6 +39,7 @@
                 <application.mail.host>[specify your mail host]</application.mail.host>
                 <application.mail.username>[specify your username]</application.mail.username>
                 <application.mail.password>[specify your password]</application.mail.password>
+                <application.mail.auth>false</application.mail.auth>
                 <application.mail.debug>false</application.mail.debug>
 
             </properties>

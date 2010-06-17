@@ -15,6 +15,5 @@ unzip application-ear-"$cc_version".ear -d ./cc-$cc_version.ear
 cd cc-$cc_version.ear
 ../rename.sh cc7 $app_name
 ../dbconfig.sh
-../mailconfig.sh
 cd ..
 
