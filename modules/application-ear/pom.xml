@@ -48,7 +48,6 @@
                         <security-domain>java:/jaas/${application.prefix}</security-domain>
                         <data-sources>
                             <data-source>database-ds.xml</data-source>
-                            <data-source>mail-service.xml</data-source>
                             <data-source>auth-service.xml</data-source>
                         </data-sources>
 

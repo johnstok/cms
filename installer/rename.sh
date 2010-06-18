@@ -21,7 +21,6 @@ replace_name "$1" "$2" META-INF/jboss-app.xml
 replace_name "$1" "$2" services-ejb3.jar/META-INF/persistence.xml
 replace_name "$1" "$2" auth-config.xml
 replace_name "$1" "$2" auth-service.xml
-replace_name "$1" "$2" mail-service.xml
 replace_name "$1" "$2" database-ds.xml
 replace_name "$1" "$2" content-creator.war/WEB-INF/web.xml
 replace_name "$1" "$2" content-creator.war/WEB-INF/classes/build.properties
