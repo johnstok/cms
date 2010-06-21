@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.validation;
+package ccc.client.validation;
 
 import java.util.ArrayList;
 import java.util.List;

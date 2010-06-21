@@ -38,9 +38,9 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemoteException;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.validation.Validate;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 

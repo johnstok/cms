@@ -30,4 +30,5 @@
     <source path="client/concurrent" />
     <source path="client/core" />
     <source path="client/i18n" />
+    <source path="client/validation" />
 </module>

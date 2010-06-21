@@ -26,21 +26,19 @@
  */
 package ccc.client.i18n;
 
-import com.google.gwt.i18n.client.Constants;
 
 /**
  * Constants for i18n.
  *
  * @author Civic Computing Ltd
  */
-public interface UIConstants extends Constants {
+public interface UIConstants {
 
     /**
      * "Update Page".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update Page")
     String updateContent();
 
     /**
@@ -48,7 +46,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Cancel")
     String cancel();
 
     /**
@@ -56,7 +53,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Save")
     String save();
 
     /**
@@ -64,7 +60,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit")
     String edit();
 
     /**
@@ -72,7 +67,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Type")
     String type();
 
     /**
@@ -80,7 +74,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Title")
     String title();
 
     /**
@@ -88,7 +81,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Actions")
     String actions();
 
     /**
@@ -96,7 +88,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Help")
     String help();
 
     /**
@@ -104,7 +95,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Manual")
     String manual();
 
     /**
@@ -112,7 +102,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create template")
     String createTemplate();
 
     /**
@@ -120,7 +109,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Assets")
     String assets();
 
     /**
@@ -128,7 +116,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Description")
     String description();
 
     /**
@@ -136,7 +123,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Body")
     String body();
 
     /**
@@ -144,7 +130,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Error!")
     String error();
 
     /**
@@ -152,7 +137,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Preview")
     String preview();
 
     /**
@@ -160,7 +144,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Tools")
     String tools();
 
     /**
@@ -168,7 +151,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Options")
     String options();
 
     /**
@@ -176,7 +158,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Default Template")
     String defaultTemplate();
 
     /**
@@ -184,7 +165,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Upload file")
     String uploadFile();
 
     /**
@@ -192,7 +172,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("File Name")
     String fileName();
 
     /**
@@ -200,7 +179,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("File")
     String file();
 
     /**
@@ -208,7 +186,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Upload File to")
     String uploadFileTo();
 
     /**
@@ -216,7 +193,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Upload")
     String upload();
 
     /**
@@ -224,7 +200,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Local file")
     String localFile();
 
     /**
@@ -232,7 +207,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create folder")
     String createFolder();
 
     /**
@@ -240,7 +214,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Choose template")
     String chooseTemplate();
 
     /**
@@ -248,7 +221,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Template")
     String template();
 
     /**
@@ -256,7 +228,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create alias")
     String createAlias();
 
     /**
@@ -264,7 +235,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Target")
     String target();
 
     /**
@@ -272,7 +242,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Name")
     String name();
 
     /**
@@ -280,7 +249,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Folder")
     String folder();
 
     /**
@@ -288,7 +256,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Name must not be empty.")
     String nameMustNotBeEmpty();
 
     /**
@@ -296,7 +263,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Name exists already.")
     String nameExistsAlready();
 
     /**
@@ -304,7 +270,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Folder must not be empty.")
     String folderMustNotBeEmpty();
 
     /**
@@ -312,7 +277,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create user")
     String createUser();
 
     /**
@@ -320,7 +284,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Email")
     String email();
 
     /**
@@ -328,7 +291,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Username")
     String username();
 
     /**
@@ -336,7 +298,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Users")
     String users();
 
     /**
@@ -344,7 +305,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit user")
     String editUser();
 
     /**
@@ -352,7 +312,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Content creator")
     String contentCreator();
 
     /**
@@ -360,7 +319,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Site builder")
     String siteBuilder();
 
     /**
@@ -368,7 +326,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Administrator")
     String administrator();
 
     /**
@@ -376,7 +333,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Roles")
     String roles();
 
     /**
@@ -384,7 +340,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Next")
     String next();
 
     /**
@@ -392,7 +347,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Previous")
     String previous();
 
     /**
@@ -400,7 +354,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create page")
     String createPage();
 
     /**
@@ -408,7 +361,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit Template")
     String editTemplate();
 
     /**
@@ -416,7 +368,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Log out")
     String logout();
 
     /**
@@ -424,7 +375,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Password")
     String password();
 
     /**
@@ -432,7 +382,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("New password")
     String newPassword();
 
     /**
@@ -440,7 +389,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Confirm Password")
     String confirmPassword();
 
     /**
@@ -448,7 +396,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Confirm new password")
     String confirmNewPassword();
 
     /**
@@ -456,7 +403,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Not allowed action")
     String notAllowedAction();
 
     /**
@@ -464,7 +410,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Passwords did not match")
     String passwordsDidNotMatch();
 
     /**
@@ -472,7 +417,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Locked by")
     String lockedBy();
 
     /**
@@ -480,7 +424,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Template was not found")
     String noTemplateFound();
 
     /**
@@ -488,7 +431,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Use default template")
     String useDefaultTemplate();
 
     /**
@@ -496,7 +438,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Move")
     String move();
 
     /**
@@ -504,7 +445,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update Alias")
     String updateAlias();
 
     /**
@@ -512,7 +452,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Rename")
     String rename();
 
     /**
@@ -520,7 +459,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Original name")
     String originalName();
 
     /**
@@ -528,7 +466,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("New name")
     String newName();
 
     /**
@@ -536,7 +473,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update Tags")
     String updateTags();
 
     /**
@@ -544,7 +480,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Tags")
     String tags();
 
     /**
@@ -552,7 +487,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Published by")
     String publishedBy();
 
     /**
@@ -560,7 +494,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Publish")
     String publish();
 
     /**
@@ -568,7 +501,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Unpublish")
     String unpublish();
 
     /**
@@ -576,7 +508,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Yes")
     String yes();
 
     /**
@@ -584,7 +515,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No")
     String no();
 
     /**
@@ -592,7 +522,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Select a resource")
     String selectResource();
 
     /**
@@ -600,7 +529,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Select a folder")
     String selectFolder();
 
     /**
@@ -608,7 +536,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update file")
     String updateFile();
 
     /**
@@ -616,7 +543,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Add to menu")
     String addToMainMenu();
 
     /**
@@ -624,7 +550,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Remove from menu")
     String removeFromMainMenu();
 
     /**
@@ -632,7 +557,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Menu")
     String menu();
 
     /**
@@ -640,7 +564,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Regular expression validation failed for: ")
     String regexpValidationFailed();
 
     /**
@@ -648,7 +571,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(" cannot be empty")
     String cannotBeEmpty();
 
     /**
@@ -656,7 +578,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("is not valid")
     String isNotValid();
 
     /**
@@ -664,7 +585,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("is too short")
     String isTooShort();
 
     /**
@@ -672,7 +592,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("OK")
     String ok();
 
     /**
@@ -680,7 +599,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Login")
     String login();
 
     /**
@@ -688,7 +606,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update metadata")
     String updateMetadata();
 
     /**
@@ -696,7 +613,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Folder sort order")
     String folderSortOrder();
 
     /**
@@ -704,7 +620,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Manual order")
     String manualOrder();
 
     /**
@@ -712,7 +627,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Resource Details")
     String resourceDetails();
 
     /**
@@ -720,7 +634,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("is not valid date")
     String isNotValidDate();
 
     /**
@@ -728,7 +641,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Draft")
     String draft();
 
     /**
@@ -736,7 +648,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Major edit")
     String majorEdit();
 
     /**
@@ -744,7 +655,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Comment")
     String comment();
 
     /**
@@ -752,7 +662,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Page edit comment")
     String pageEditComment();
 
     /**
@@ -760,7 +669,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("View history")
     String viewHistory();
 
     /**
@@ -768,7 +676,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Delete working copy")
     String deleteWorkingCopy();
 
     /**
@@ -776,7 +683,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Preview working copy")
     String previewWorkingCopy();
 
     /**
@@ -784,7 +690,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Unlock")
     String unlock();
 
     /**
@@ -792,7 +697,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Lock")
     String lock();
 
     /**
@@ -800,7 +704,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Template cannot be chosen for this resource.")
     String templateCannotBeChosen();
 
     /**
@@ -808,7 +711,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No template chosen for this resource.")
     String noTemplateChosen();
 
     /**
@@ -816,7 +718,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit comment")
     String editComment();
 
     /**
@@ -824,7 +725,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("User")
     String user();
 
     /**
@@ -832,7 +732,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Time")
     String time();
 
     /**
@@ -840,7 +739,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Action")
     String action();
 
     /**
@@ -848,7 +746,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Resource history")
     String resourceHistory();
 
     /**
@@ -856,7 +753,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Publish on")
     String publishOn();
 
     /**
@@ -864,7 +760,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Revert")
     String revert();
 
     /**
@@ -872,7 +767,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create action")
     String createAction();
 
     /**
@@ -880,7 +774,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String update();
 
     /**
@@ -888,7 +781,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Created")
     String created();
 
     /**
@@ -896,7 +788,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Changed")
     String changed();
 
     /**
@@ -904,7 +795,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Date created")
     String dateCreated();
 
     /**
@@ -912,7 +802,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Date changed")
     String dateChanged();
 
     /**
@@ -920,7 +809,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("ascending")
     String ascending();
 
     /**
@@ -928,7 +816,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("descending")
     String descending();
 
     /**
@@ -936,7 +823,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("alphanumeric")
     String alphanumeric();
 
     /**
@@ -944,7 +830,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No folder selected")
     String noFolderSelected();
 
     /**
@@ -952,7 +837,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No resource selected")
     String noResourceSelected();
 
     /**
@@ -960,7 +844,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Search")
     String search();
 
     /**
@@ -968,8 +851,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "Use * for wild card searches, for example Joh* finds John")
     String searchToolTip();
 
     /**
@@ -977,7 +858,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("User Details")
     String userDetails();
 
     /**
@@ -985,7 +865,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Search Field")
     String searchField();
 
     /**
@@ -993,7 +872,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit user password")
     String editUserPw();
 
     /**
@@ -1001,7 +879,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit user metadata")
     String editUserMetadata();
 
     /**
@@ -1009,7 +886,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Content root")
     String contentRoot();
 
     /**
@@ -1017,7 +893,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update roles")
     String updateRoles();
 
     /**
@@ -1025,7 +900,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Details")
     String details();
 
     /**
@@ -1033,7 +907,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Apply working copy")
     String applyWorkingCopy();
 
     /**
@@ -1041,7 +914,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("must not contain < or > character")
     String mustNotContainBrackets();
 
     /**
@@ -1049,10 +921,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "Password is too weak - "
-        + "it should be at least 10 characters and contain both upper and "
-        + "lower case alphabets, number and non-alphanumeric character.")
     String passwordTooWeak();
 
     /**
@@ -1060,8 +928,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "Password is too short - the minimum length is 10 characters.")
     String passwordTooShort();
 
     /**
@@ -1069,7 +935,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Please choose an action.")
     String pleaseChooseAnAction();
 
     /**
@@ -1077,7 +942,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Please specify a date and time.")
     String pleaseSpecifyDateAndTime();
 
     /**
@@ -1085,7 +949,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Date")
     String date();
 
     /**
@@ -1093,7 +956,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("The folder name")
     String theFolderName();
 
     /**
@@ -1101,7 +963,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Login failed.")
     String loginFailed();
 
     /**
@@ -1109,7 +970,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Key")
     String key();
 
     /**
@@ -1117,7 +977,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Value")
     String value();
 
     /**
@@ -1125,7 +984,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("New")
     String newLabel();
 
     /**
@@ -1133,7 +991,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Remove")
     String remove();
 
     /**
@@ -1141,7 +998,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Apply now")
     String applyNow();
 
     /**
@@ -1149,7 +1005,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Save draft")
     String saveDraft();
 
     /**
@@ -1157,7 +1012,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No empty keys are allowed.\n")
     String noEmptyKeysAllowed();
 
     /**
@@ -1165,7 +1019,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No empty values are allowed.\n")
     String noEmptyValuesAllowed();
 
     /**
@@ -1173,7 +1026,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Keys must not contain brackets.\n")
     String keysMustNotContainBrackets();
 
     /**
@@ -1181,7 +1033,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Values must not contain brackets.\n")
     String valuesMustNotContainBrackets();
 
     /**
@@ -1189,7 +1040,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Metadata")
     String metadata();
 
     /**
@@ -1197,7 +1047,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Action details")
     String actionDetails();
 
     /**
@@ -1205,7 +1054,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Scheduled by")
     String scheduledBy();
 
     /**
@@ -1213,7 +1061,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Scheduled for")
     String scheduledFor();
 
     /**
@@ -1221,7 +1068,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Status")
     String status();
 
     /**
@@ -1229,7 +1075,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Resource type")
     String resourceType();
 
     /**
@@ -1237,7 +1082,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Resource path")
     String resourcePath();
 
     /**
@@ -1245,7 +1089,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Pending")
     String pending();
 
     /**
@@ -1253,7 +1096,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Completed")
     String completed();
 
     /**
@@ -1261,7 +1103,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Publishes the selected resource.")
     String publishesSelectedResource();
 
     /**
@@ -1269,7 +1110,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Unpublishes the selected resource.")
     String unpublishesSelectedResource();
 
     /**
@@ -1277,9 +1117,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "This action will exit the application - "
-        + "any unsaved work will be lost!")
     String exitWarning();
 
     /**
@@ -1287,7 +1124,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Applies the selected resource's working copy.")
     String appliesTheSelectedResourcesWorkingCopy();
 
     /**
@@ -1295,8 +1131,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "Your session timed out - please restart the application.")
     String sessionTimeOutPleaseRestart();
 
 
@@ -1305,7 +1139,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("An unexpected error occured.")
     String unexpectedErrorOccured();
 
     /**
@@ -1313,7 +1146,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit cache duration")
     String editCacheDuration();
 
     /**
@@ -1321,7 +1153,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Cache duration")
     String cacheDuration();
 
     /**
@@ -1329,7 +1160,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Days")
     String days();
 
     /**
@@ -1337,7 +1167,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Hours")
     String hours();
 
     /**
@@ -1345,7 +1174,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Minutes")
     String minutes();
 
     /**
@@ -1353,7 +1181,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Seconds")
     String seconds();
 
     /**
@@ -1361,7 +1188,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Select image")
     String selectImage();
 
     /**
@@ -1369,7 +1195,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Mime Sub-type")
     String mimeSubType();
 
     /**
@@ -1377,7 +1202,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Mime Primary Type")
     String mimePrimaryType();
 
     /**
@@ -1385,7 +1209,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Resolution")
     String resolution();
 
     /**
@@ -1393,7 +1216,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("This action has already been completed.")
     String thisActionHasAlreadyCompleted();
 
     /**
@@ -1401,7 +1223,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Use default setting")
     String useDefaultSetting();
 
     /**
@@ -1410,9 +1231,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "is not valid resource name - "
-        + "it should contain only alphanumeric or -_ characters")
     String isNotValidResourceName();
 
     /**
@@ -1420,7 +1238,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("All")
     String all();
 
     /**
@@ -1429,9 +1246,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue(
-        "is not valid user name - "
-        + "it should contain only alphanumeric characters")
     String isNotValidUserName();
 
     /**
@@ -1439,7 +1253,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Path")
     String path();
 
     /**
@@ -1447,7 +1260,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Index page")
     String indexPage();
 
     /**
@@ -1455,7 +1267,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("{none}")
     String none();
 
     /**
@@ -1463,7 +1274,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Assets root")
     String assetsRoot();
 
     /**
@@ -1471,7 +1281,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("No editor available for this resource.")
     String noEditorForResource();
 
     /**
@@ -1479,7 +1288,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("must not contain , character")
     String mustNotContainComma();
 
     /**
@@ -1487,7 +1295,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("About")
     String about();
 
     /**
@@ -1495,7 +1302,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Failure code")
     String failureCode();
 
     /**
@@ -1503,7 +1309,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Your details")
     String yourDetails();
 
     /**
@@ -1511,17 +1316,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("<p>This host is private property. It is not a "
-        + "public access server. If you are not in legal possession "
-        + "of an account, disconnect immediately.</p><br/><p>Your session is "
-        + "being recorded. If you disagree with this, disconnect immediately."
-        + "</p><br/><p>Detailed information available on you may be gathered "
-        + "if you proceed past this point, including (but not limited to) "
-        + "cross-reference information available online, port scanning "
-        + "results, and various system audit trails.</p><br/><p>These will be "
-        + "used to track any attempted break-in and notify the relevant "
-        + "authorities. If you disagree to any of this, disconnect "
-        + "immediately.</p><br/>")
     String disclaimer();
 
     /**
@@ -1529,7 +1323,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("The specified resource name is invalid")
     String resourceNameIsInvalid();
 
     /**
@@ -1537,7 +1330,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Delete")
     String delete();
 
     /**
@@ -1545,7 +1337,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update text file")
     String updateTextFile();
 
     /**
@@ -1553,7 +1344,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Edit inline")
     String editInline();
 
     /**
@@ -1561,7 +1351,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create text file")
     String createTextFile();
 
     /**
@@ -1569,7 +1358,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Content")
     String content();
 
     /**
@@ -1577,7 +1365,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Full name")
     String fullName();
 
     /**
@@ -1585,7 +1372,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Open in new window")
     String openInNewWindow();
 
     /**
@@ -1593,7 +1379,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Syntax")
     String syntax();
 
     /**
@@ -1601,7 +1386,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("text")
     String text();
 
     /**
@@ -1609,7 +1393,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Definition XML")
     String definitionXML();
 
     /**
@@ -1617,7 +1400,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Get children paged")
     String getChildrenPaged();
 
     /**
@@ -1625,7 +1407,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Approved")
     String approved();
 
     /**
@@ -1633,7 +1414,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Comments")
     String comments();
 
     /**
@@ -1641,7 +1421,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Comment details")
     String commentDetails();
 
     /**
@@ -1649,7 +1428,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Url")
     String url();
 
     /**
@@ -1657,7 +1435,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Author")
     String author();
 
     /**
@@ -1665,7 +1442,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update comment")
     String updateComment();
 
     /**
@@ -1673,7 +1449,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Spam")
     String spam();
 
     /**
@@ -1681,7 +1456,6 @@ public interface UIConstants extends Constants {
     *
     * @return The constant, in the appropriate locale.
     */
-    @DefaultStringValue("Text of the link")
     String textOfTheLink();
 
     /**
@@ -1689,7 +1463,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Alternative text")
     String alternativeText();
 
     /**
@@ -1697,7 +1470,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Groups")
     String groups();
 
     /**
@@ -1705,7 +1477,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Add")
     String add();
 
     /**
@@ -1713,7 +1484,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Select groups")
     String selectGroups();
 
     /**
@@ -1721,7 +1491,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Select users")
     String selectUsers();
 
     /**
@@ -1729,7 +1498,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create group")
     String createGroup();
 
     /**
@@ -1737,7 +1505,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Comment not valid")
     String commentNotValid();
 
     /**
@@ -1745,7 +1512,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Web site address is not valid.")
     String websiteAddressNotValid();
 
     /**
@@ -1753,7 +1519,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Permissions")
     String permissions();
 
     /**
@@ -1761,7 +1526,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update group")
     String updateGroup();
 
     /**
@@ -1769,7 +1533,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Not a valid password, it should not contains spaces.")
     String isNotValidPassword();
 
     /**
@@ -1777,7 +1540,6 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Navigator")
     String navigator();
 
     /**
@@ -1785,6 +1547,5 @@ public interface UIConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("The title field may not contain brackets.")
     String titlesMustNotContainBrackets();
 }

@@ -39,11 +39,11 @@ import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
-import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 import ccc.client.gwt.widgets.ResourceTable;
+import ccc.client.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

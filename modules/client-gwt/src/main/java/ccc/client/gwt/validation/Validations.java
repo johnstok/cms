@@ -43,6 +43,9 @@ import ccc.client.gwt.remoting.ValidateFieldAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
+import ccc.client.validation.ErrorReporter;
+import ccc.client.validation.Validate;
+import ccc.client.validation.Validator;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.xml.client.Document;

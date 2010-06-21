@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,51 +21,25 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
 package ccc.client.i18n;
 
-import com.google.gwt.i18n.client.ConstantsWithLookup;
-
 
 /**
- * UI constants describing action statuses.
+ * Basic API for looking up a constant.
  *
  * @author Civic Computing Ltd.
  */
-public interface ActionStatusConstants extends ConstantsWithLookup {
+public interface ConstantMap {
+
 
     /**
-     * "Scheduled".
+     * Get the string constant for a given key.
      *
-     * @return The constant, in the appropriate locale.
+     * @param key The constant's key.
+     * @return The constant's value, as a string.
      */
-    @DefaultStringValue("Scheduled")
-    String scheduled();
-
-    /**
-     * "Complete".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Complete")
-    String complete();
-
-    /**
-     * "Failed".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Failed")
-    String failed();
-
-    /**
-     * "Cancelled".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Cancelled")
-    String cancelled();
-
+    String getString(String key);
 }

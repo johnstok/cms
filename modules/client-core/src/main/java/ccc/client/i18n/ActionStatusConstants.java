@@ -26,54 +26,41 @@
  */
 package ccc.client.i18n;
 
-import ccc.api.types.Username;
-
-import com.google.gwt.i18n.client.Messages;
-
 
 /**
- * Messages for i18n.
+ * UI constants describing action statuses.
  *
  * @author Civic Computing Ltd.
  */
-public interface UIMessages extends Messages {
+public interface ActionStatusConstants
+    extends
+        ConstantMap {
 
     /**
-     * "User with username ''{0}'' already exists.".
+     * "Scheduled".
      *
-     * @param username The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage("User with username ''{0}'' already exists.")
-    String userWithUsernameAlreadyExists(Username username);
+    String scheduled();
 
     /**
-     * "A resource with name ''{0}'' already exists in the parent folder.".
+     * "Complete".
      *
-     * @param name The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage(
-        "A resource with name ''{0}'' already exists in the parent folder.")
-    String nameExistsInParentFolder(String name);
+    String complete();
 
     /**
-     * "A resource with name ''{0}'' already exists in this folder.".
+     * "Failed".
      *
-     * @param name The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage(
-        "A resource with name ''{0}'' already exists in this folder.")
-    String nameExistsInFolder(String name);
+    String failed();
 
     /**
-     * "A template with name ''{0}'' already exists in this folder.".
+     * "Cancelled".
      *
-     * @param name The param to display.
      * @return The constant, in the appropriate locale.
      */
-    @DefaultMessage(
-        "A template with name ''{0}'' already exists in this folder.")
-    String templateWithNameAlreadyExistsInThisFolder(String name);
+    String cancelled();
 }

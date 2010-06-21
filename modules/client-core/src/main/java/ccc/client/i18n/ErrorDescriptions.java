@@ -26,22 +26,19 @@
  */
 package ccc.client.i18n;
 
-import com.google.gwt.i18n.client.Messages;
-
 
 /**
  * Messages for i18n.
  *
  * @author Civic Computing Ltd.
  */
-public interface ErrorDescriptions extends Messages {
+public interface ErrorDescriptions {
 
     /**
      * "The resource that you tried to update is not locked.".
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("The resource that you tried to update is not locked.")
     String unlocked();
 
     /**
@@ -52,7 +49,6 @@ public interface ErrorDescriptions extends Messages {
      * @param htmlSuffix HTML appended after the message.
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("{0}Your action could not be completed.{1}")
     String couldNotComplete(String htmlPrefix, String htmlSuffix);
 
     /**
@@ -60,7 +56,6 @@ public interface ErrorDescriptions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Unknown error.")
     String unknown();
 
     /**
@@ -68,7 +63,6 @@ public interface ErrorDescriptions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("A resource already exists with the specified name.")
     String exists();
 
     /**
@@ -76,8 +70,6 @@ public interface ErrorDescriptions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage(
-        "The resource you tried to update is locked by another user.")
     String lockMismatch();
 
     /**
@@ -85,8 +77,6 @@ public interface ErrorDescriptions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage(
-        "Creating this relationship would cause a circular dependency.")
     String cycle();
 
     /**
@@ -94,7 +84,5 @@ public interface ErrorDescriptions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage(
-    "Command parameters were not valid.")
     String invalidCommand();
 }

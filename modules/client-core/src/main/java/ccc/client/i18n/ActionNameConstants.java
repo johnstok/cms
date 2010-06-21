@@ -26,21 +26,19 @@
  */
 package ccc.client.i18n;
 
-import com.google.gwt.i18n.client.Constants;
 
 /**
  * Constants for i18n.
  *
  * @author Civic Computing Ltd
  */
-public interface ActionNameConstants extends Constants {
+public interface ActionNameConstants {
 
     /**
      * "Unknown action".
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Unknown action")
     @Deprecated
     String unknownAction();
 
@@ -49,7 +47,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Check unique resource name")
     String checkUniqueResourceName();
 
     /**
@@ -57,7 +54,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Validate page fields")
     String validatePageFields();
 
     /**
@@ -65,7 +61,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Read properties")
     String readProperties();
 
     /**
@@ -73,7 +68,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Check unique username")
     String checkUniqueUsername();
 
     /**
@@ -81,7 +75,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Check unique template name")
     String checkUniqueTemplateName();
 
     /**
@@ -89,7 +82,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("View actions")
     String viewActions();
 
     /**
@@ -97,7 +89,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("View users")
     String viewUsers();
 
     /**
@@ -106,7 +97,6 @@ public interface ActionNameConstants extends Constants {
      * @return The constant, in the appropriate locale.
      */
     @Deprecated
-    @DefaultStringValue("Internal action")
     String internalAction();
 
     /**
@@ -114,7 +104,6 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Load data")
     String loadData();
 
     /**
@@ -122,6 +111,5 @@ public interface ActionNameConstants extends Constants {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("View comments")
     String viewComments();
 }

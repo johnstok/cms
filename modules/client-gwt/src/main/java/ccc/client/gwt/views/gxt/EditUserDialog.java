@@ -39,9 +39,9 @@ import ccc.api.core.User;
 import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
-import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.gwt.widgets.UserTable;
+import ccc.client.validation.Validate;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

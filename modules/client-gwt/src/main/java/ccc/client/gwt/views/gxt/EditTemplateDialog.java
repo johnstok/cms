@@ -43,13 +43,13 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
 import ccc.client.gwt.remoting.TemplateNameExistsAction;
 import ccc.client.gwt.remoting.UpdateTemplateAction;
-import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
-import ccc.client.gwt.validation.Validator;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
+import ccc.client.validation.Validate;
+import ccc.client.validation.Validator;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

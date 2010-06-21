@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,25 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.validation;
+package ccc.client.gwt.i18n;
+
+import ccc.client.i18n.UIMessages;
+
+import com.google.gwt.i18n.client.Messages;
 
 
 /**
- * API for a client side validator.
+ * UIMessages sub-interface for use with GWT i18n features.
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated
-public interface Validator {
-
-    /**
-     * Perform validation.
-     *
-     * @param validate The validation object used by the validator.
-     */
-    void validate(Validate validate);
-
+public interface GWTUIMessages
+    extends
+        UIMessages,
+        Messages {
+    /* No further methods. */
 }

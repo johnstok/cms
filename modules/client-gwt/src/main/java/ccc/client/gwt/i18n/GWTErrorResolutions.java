@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,26 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.validation;
+package ccc.client.gwt.i18n;
 
-import java.util.List;
+import ccc.client.i18n.ErrorResolutions;
+
+import com.google.gwt.i18n.client.Messages;
 
 
 /**
- * API for reporting validation errors.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated
-public interface ErrorReporter {
+public interface GWTErrorResolutions
+    extends
+        ErrorResolutions,
+        Messages {
 
-    /**
-     * Report the specified errors.
-     *
-     * @param errors The errors, as a list of strings.
-     */
-    void report(List<String> errors);
 }

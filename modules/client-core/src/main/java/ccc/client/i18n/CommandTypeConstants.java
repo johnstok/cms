@@ -26,14 +26,15 @@
  */
 package ccc.client.i18n;
 
-import com.google.gwt.i18n.client.ConstantsWithLookup;
 
 /**
  * UI constants describing available commands.
  *
  * @author Civic Computing Ltd.
  */
-public interface CommandTypeConstants extends ConstantsWithLookup {
+public interface CommandTypeConstants
+    extends
+        ConstantMap {
 
     // Resource
     /**
@@ -41,7 +42,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Rename")
     String resourceRename();
 
     /**
@@ -49,7 +49,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Move")
     String resourceMove();
 
     /**
@@ -57,7 +56,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Delete")
     String resourceDelete();
 
     /**
@@ -65,7 +63,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Publish")
     String resourcePublish();
 
     /**
@@ -73,7 +70,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Unpublish")
     String resourceUnpublish();
 
     /**
@@ -81,7 +77,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Lock")
     String resourceLock();
 
     /**
@@ -89,7 +84,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Unlock")
     String resourceUnlock();
 
     /**
@@ -97,7 +91,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Change template")
     String resourceChangeTemplate();
 
     /**
@@ -105,7 +98,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update tags")
     String resourceUpdateTags();
 
     /**
@@ -113,7 +105,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Include in main menu")
     String resourceIncludeInMm();
 
     /**
@@ -121,7 +112,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Remove from main menu")
     String resourceRemoveFromMm();
 
     /**
@@ -129,7 +119,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update metadata")
     String resourceUpdateMetadata();
 
     /**
@@ -137,7 +126,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Change roles")
     String resourceChangeRoles();
 
     /**
@@ -145,7 +133,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update cache")
     String resourceUpdateCache();
 
     /**
@@ -153,7 +140,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Clear working copy")
     String resourceClearWc();
 
     /**
@@ -161,7 +147,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update working copy")
     String resourceUpdateWc();
 
 
@@ -171,7 +156,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Reorder")
     String folderReorder();
 
     /**
@@ -179,7 +163,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update sort order")
     String folderUpdateSortOrder();
 
     /**
@@ -187,7 +170,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String folderUpdate();
 
     /**
@@ -195,7 +177,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String folderCreate();
 
     // User
@@ -204,7 +185,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String userCreate();
 
     /**
@@ -212,7 +192,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String userUpdate();
 
     /**
@@ -220,7 +199,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Change password")
     String userChangePassword();
 
     // Page
@@ -229,7 +207,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String pageUpdate();
 
     /**
@@ -237,7 +214,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String pageCreate();
 
     // Template
@@ -246,7 +222,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String templateCreate();
 
     /**
@@ -254,7 +229,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String templateUpdate();
 
     // File
@@ -263,7 +237,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String fileCreate();
 
     /**
@@ -271,7 +244,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String fileUpdate();
 
      // Search
@@ -280,7 +252,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String searchCreate();
 
     // Alias
@@ -289,7 +260,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String aliasCreate();
 
     /**
@@ -297,7 +267,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Update")
     String aliasUpdate();
 
     // Action
@@ -306,7 +275,6 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Create")
     String actionCreate();
 
     /**
@@ -314,6 +282,5 @@ public interface CommandTypeConstants extends ConstantsWithLookup {
      *
      * @return The constant, in the appropriate locale.
      */
-    @DefaultStringValue("Cancel")
     String actionCancel();
 }

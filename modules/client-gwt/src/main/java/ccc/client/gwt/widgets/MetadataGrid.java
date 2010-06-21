@@ -9,9 +9,9 @@ import java.util.Map;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.validation.Validate;
-import ccc.client.gwt.validation.Validator;
 import ccc.client.i18n.UIConstants;
+import ccc.client.validation.Validate;
+import ccc.client.validation.Validator;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;

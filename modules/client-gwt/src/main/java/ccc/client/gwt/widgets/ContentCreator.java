@@ -35,6 +35,13 @@ import ccc.client.gwt.core.GWTExceptionHandler;
 import ccc.client.gwt.core.GWTWindow;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.events.Error;
+import ccc.client.gwt.i18n.GWTActionNameConstants;
+import ccc.client.gwt.i18n.GWTActionStatusConstants;
+import ccc.client.gwt.i18n.GWTCommandTypeConstants;
+import ccc.client.gwt.i18n.GWTErrorDescriptions;
+import ccc.client.gwt.i18n.GWTErrorResolutions;
+import ccc.client.gwt.i18n.GWTUIConstants;
+import ccc.client.gwt.i18n.GWTUIMessages;
 import ccc.client.gwt.remoting.GetPropertyAction;
 import ccc.client.gwt.remoting.GetServicesAction;
 import ccc.client.gwt.remoting.IsLoggedInAction;
@@ -76,20 +83,20 @@ public final class ContentCreator implements EntryPoint {
     public ContentCreator() {
 
         I18n.UI_CONSTANTS =
-            GWT.<UIConstants>create(UIConstants.class);
+            GWT.<UIConstants>create(GWTUIConstants.class);
         I18n.UI_MESSAGES =
-            GWT.<UIMessages>create(UIMessages.class);
+            GWT.<UIMessages>create(GWTUIMessages.class);
         I18n.ERROR_DESCRIPTIONS =
-            GWT.<ErrorDescriptions>create(ErrorDescriptions.class);
+            GWT.<ErrorDescriptions>create(GWTErrorDescriptions.class);
         I18n.ERROR_RESOLUTIONS =
-            GWT.<ErrorResolutions>create(ErrorResolutions.class);
+            GWT.<ErrorResolutions>create(GWTErrorResolutions.class);
 
         GlobalsImpl.setUserActions(
-            GWT.<ActionNameConstants>create(ActionNameConstants.class));
+            GWT.<ActionNameConstants>create(GWTActionNameConstants.class));
         GlobalsImpl.setActionConstants(
-            GWT.<ActionStatusConstants>create(ActionStatusConstants.class));
+            GWT.<ActionStatusConstants>create(GWTActionStatusConstants.class));
         GlobalsImpl.setCommandConstants(
-            GWT.<CommandTypeConstants>create(CommandTypeConstants.class));
+            GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
         if (!(null == WINDOW.getParameter("dec"))) { // 'dec' param is missing.
             WINDOW.enableExitConfirmation();

@@ -26,23 +26,19 @@
  */
 package ccc.client.i18n;
 
-import com.google.gwt.i18n.client.Messages;
-
 
 /**
  * Messages for i18n.
  *
  * @author Civic Computing Ltd.
  */
-public interface ErrorResolutions extends Messages {
+public interface ErrorResolutions {
 
     /**
      * "Lock the selected resource and then try to perform the action again.".
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage(
-        "Lock the selected resource and then try to perform the action again.")
     String unlocked();
 
     /**
@@ -50,7 +46,6 @@ public interface ErrorResolutions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Contact your system administrator.")
     String contactSysAdmin();
 
     /**
@@ -58,7 +53,6 @@ public interface ErrorResolutions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Try using a different name.")
     String exists();
 
     /**
@@ -66,7 +60,6 @@ public interface ErrorResolutions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Ask the user who locked the resource to unlock it.")
     String lockMismatch();
 
     /**
@@ -74,7 +67,6 @@ public interface ErrorResolutions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Choose a different resource.")
     String cycle();
 
     /**
@@ -82,6 +74,5 @@ public interface ErrorResolutions extends Messages {
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Verify command parameters.")
     String invalidCommand();
 }

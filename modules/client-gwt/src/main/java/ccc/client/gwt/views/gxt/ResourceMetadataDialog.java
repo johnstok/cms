@@ -36,10 +36,10 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
-import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.MetadataGrid;
+import ccc.client.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
