@@ -24,15 +24,15 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Comment;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.client.gwt.i18n.ActionStatusConstants;
-import ccc.client.gwt.i18n.CommandTypeConstants;
+import ccc.client.i18n.ActionStatusConstants;
+import ccc.client.i18n.CommandTypeConstants;
 
 
 /**

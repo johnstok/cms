@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.core.I18n;
 import ccc.client.gwt.remoting.CancelActionAction;
+import ccc.client.i18n.UIConstants;
 
 
 /**

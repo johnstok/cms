@@ -29,7 +29,7 @@ package ccc.client.gwt.views.gxt;
 import java.util.Collection;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;

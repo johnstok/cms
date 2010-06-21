@@ -26,8 +26,10 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.UIConstants;
 
 
 /**

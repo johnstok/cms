@@ -32,9 +32,9 @@ import java.util.List;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.SortOrder;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;

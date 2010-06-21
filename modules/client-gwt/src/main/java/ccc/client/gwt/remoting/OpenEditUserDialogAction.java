@@ -30,9 +30,9 @@ import java.util.Collection;
 
 import ccc.api.core.Group;
 import ccc.api.core.User;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.views.gxt.EditUserDialog;
 import ccc.client.gwt.widgets.UserTable;
 import ccc.plugins.s11n.json.UserSerializer;

@@ -28,10 +28,10 @@ package ccc.client.gwt.presenters;
 
 import ccc.api.core.File;
 import ccc.api.types.MimeType;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.events.ResourceCreated;
 import ccc.client.gwt.events.ResourceCreated.ResourceCreatedHandler;
 import ccc.client.gwt.remoting.CreateTextFileAction;

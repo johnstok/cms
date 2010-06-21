@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 /**
  * API for handling HTTP responses.

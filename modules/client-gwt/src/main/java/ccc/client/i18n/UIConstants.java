@@ -24,7 +24,7 @@
  * Changes: see subversion log
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.i18n;
+package ccc.client.i18n;
 
 import com.google.gwt.i18n.client.Constants;
 

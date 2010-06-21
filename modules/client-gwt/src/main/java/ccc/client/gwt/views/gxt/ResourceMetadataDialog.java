@@ -30,10 +30,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import ccc.api.core.Resource;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
 import ccc.client.gwt.validation.Validate;

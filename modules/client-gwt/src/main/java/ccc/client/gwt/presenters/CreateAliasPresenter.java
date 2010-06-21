@@ -28,12 +28,12 @@ package ccc.client.gwt.presenters;
 
 import ccc.api.core.Alias;
 import ccc.api.types.ResourceName;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.events.AliasCreated;
 import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
 import ccc.client.gwt.remoting.CreateAliasAction;

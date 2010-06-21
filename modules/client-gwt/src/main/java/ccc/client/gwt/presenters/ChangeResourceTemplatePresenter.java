@@ -30,10 +30,10 @@ import java.util.Collection;
 
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.events.ResourceTemplateChanged;
 import ccc.client.gwt.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.client.gwt.remoting.UpdateResourceTemplateAction;

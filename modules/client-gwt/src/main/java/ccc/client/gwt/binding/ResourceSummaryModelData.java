@@ -43,14 +43,14 @@ import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
+import ccc.client.core.Request;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.HttpMethod;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Request;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.AliasCreated;
 import ccc.client.gwt.events.FolderCreated;
@@ -704,7 +704,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final ccc.client.gwt.core.Response response) {
+        public void onNoContent(final ccc.client.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
@@ -728,7 +728,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final ccc.client.gwt.core.Response response) {
+        public void onOK(final ccc.client.core.Response response) {
             final ResourceSummaryModelData rs =
                 new ResourceSummaryModelData(parseResourceSummary(response));
             ContentCreator.EVENT_BUS.fireEvent(new PageCreated(rs));
@@ -754,7 +754,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final ccc.client.gwt.core.Response response) {
+        public void onOK(final ccc.client.core.Response response) {
             final ResourceSummaryModelData rs =
                 new ResourceSummaryModelData(parseResourceSummary(response));
             ContentCreator.EVENT_BUS.fireEvent(new FolderCreated(rs));
@@ -780,7 +780,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final ccc.client.gwt.core.Response response) {
+        public void onOK(final ccc.client.core.Response response) {
             final ResourceSummaryModelData newAlias =
                 new ResourceSummaryModelData(parseResourceSummary(response));
             ContentCreator.EVENT_BUS.fireEvent(new AliasCreated(newAlias));
@@ -811,7 +811,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final ccc.client.gwt.core.Response response) {
+        public void onNoContent(final ccc.client.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
@@ -840,7 +840,7 @@ public class ResourceSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final ccc.client.gwt.core.Response response) {
+        public void onNoContent(final ccc.client.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }

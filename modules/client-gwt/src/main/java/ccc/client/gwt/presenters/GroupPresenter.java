@@ -30,10 +30,10 @@ package ccc.client.gwt.presenters;
 import java.util.Set;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Validatable;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.View;
+import ccc.client.core.Editable;
+import ccc.client.core.Validatable;
+import ccc.client.core.ValidationResult;
+import ccc.client.core.View;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 

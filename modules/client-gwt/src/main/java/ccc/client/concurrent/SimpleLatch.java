@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.concurrent;
+package ccc.client.concurrent;
 
 import ccc.api.types.DBC;
 

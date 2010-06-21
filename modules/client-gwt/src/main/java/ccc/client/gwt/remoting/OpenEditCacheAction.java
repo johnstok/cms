@@ -27,10 +27,10 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.EditCacheDialog;
 import ccc.plugins.s11n.json.DurationSerializer;

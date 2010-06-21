@@ -35,9 +35,10 @@ import ccc.api.core.Comment;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.ActionStatusConstants;
-import ccc.client.gwt.i18n.CommandTypeConstants;
+import ccc.client.core.Globals;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.ActionStatusConstants;
+import ccc.client.i18n.CommandTypeConstants;
 
 import com.google.gwt.core.client.GWT;
 

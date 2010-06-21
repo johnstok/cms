@@ -27,11 +27,11 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Security;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.HttpMethod;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.widgets.ContentCreator;
 
 

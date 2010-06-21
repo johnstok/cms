@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.EditController;
+import ccc.client.core.EditController;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

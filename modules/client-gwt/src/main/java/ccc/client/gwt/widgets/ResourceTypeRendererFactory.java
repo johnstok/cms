@@ -27,9 +27,9 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.types.ResourceType;
+import ccc.client.core.ImagePaths;
 import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.ImagePaths;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;

@@ -26,6 +26,9 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.client.core.Response;
+import ccc.client.core.ResponseHandler;
+import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.events.Error;
 import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.widgets.ContentCreator;

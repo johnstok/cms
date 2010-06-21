@@ -27,10 +27,10 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.Comment;
+import ccc.client.core.Globals;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.events.CommentUpdatedEvent;
 import ccc.client.gwt.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.client.gwt.remoting.UpdateCommentAction;

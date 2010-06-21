@@ -32,10 +32,10 @@ import java.util.UUID;
 
 import ccc.api.core.Alias;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateAliasAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;

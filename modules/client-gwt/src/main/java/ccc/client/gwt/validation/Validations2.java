@@ -24,11 +24,10 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.gwt.validation;
 
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
-import ccc.client.gwt.validation.Validations;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NamedNodeMap;

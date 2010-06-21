@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,51 +21,24 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.i18n;
+package ccc.client.core;
 
-import com.google.gwt.i18n.client.ConstantsWithLookup;
 
 
 /**
- * UI constants describing action statuses.
+ * Simple object validation API.
  *
  * @author Civic Computing Ltd.
  */
-public interface ActionStatusConstants extends ConstantsWithLookup {
+public interface Validatable {
 
     /**
-     * "Scheduled".
+     * Confirm whether the object is valid.
      *
-     * @return The constant, in the appropriate locale.
+     * @return Validation result object.
      */
-    @DefaultStringValue("Scheduled")
-    String scheduled();
-
-    /**
-     * "Complete".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Complete")
-    String complete();
-
-    /**
-     * "Failed".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Failed")
-    String failed();
-
-    /**
-     * "Cancelled".
-     *
-     * @return The constant, in the appropriate locale.
-     */
-    @DefaultStringValue("Cancelled")
-    String cancelled();
-
+    ValidationResult getValidationResult();
 }

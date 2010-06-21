@@ -27,12 +27,12 @@
 package ccc.client.gwt.views.gxt;
 
 import ccc.api.types.CommentStatus;
+import ccc.client.core.Globals;
+import ccc.client.core.Validatable;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.EnumModelData;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.Validatable;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.presenters.UpdateCommentPresenter;
+import ccc.client.gwt.validation.Validations2;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

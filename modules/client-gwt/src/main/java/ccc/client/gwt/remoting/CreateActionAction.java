@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.types.CommandType;
+import ccc.client.core.Request;
 import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Request;
 
 
 /**

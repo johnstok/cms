@@ -27,12 +27,12 @@
 
 package ccc.client.gwt.views.gxt;
 
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.i18n.UIMessages;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.UIConstants;
+import ccc.client.i18n.UIMessages;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

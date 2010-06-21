@@ -24,7 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.i18n;
+package ccc.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 
@@ -34,54 +34,67 @@ import com.google.gwt.i18n.client.Messages;
  *
  * @author Civic Computing Ltd.
  */
-public interface ErrorResolutions extends Messages {
+public interface ErrorDescriptions extends Messages {
 
     /**
-     * "Lock the selected resource and then try to perform the action again.".
+     * "The resource that you tried to update is not locked.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("The resource that you tried to update is not locked.")
+    String unlocked();
+
+    /**
+     * "{0}Your action could not be completed.{1}".
+     *
+     *
+     * @param htmlPrefix HTML appended before the message.
+     * @param htmlSuffix HTML appended after the message.
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("{0}Your action could not be completed.{1}")
+    String couldNotComplete(String htmlPrefix, String htmlSuffix);
+
+    /**
+     * "Unknown error.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("Unknown error.")
+    String unknown();
+
+    /**
+     * "A resource already exists with the specified name.".
+     *
+     * @return The message, in the appropriate locale.
+     */
+    @DefaultMessage("A resource already exists with the specified name.")
+    String exists();
+
+    /**
+     * "The resource you tried to update is locked by another user.".
      *
      * @return The message, in the appropriate locale.
      */
     @DefaultMessage(
-        "Lock the selected resource and then try to perform the action again.")
-    String unlocked();
-
-    /**
-     * "Contact your system administrator.".
-     *
-     * @return The message, in the appropriate locale.
-     */
-    @DefaultMessage("Contact your system administrator.")
-    String contactSysAdmin();
-
-    /**
-     * "Try using a different name.".
-     *
-     * @return The message, in the appropriate locale.
-     */
-    @DefaultMessage("Try using a different name.")
-    String exists();
-
-    /**
-     * "Ask the user who locked the resource to unlock it.".
-     *
-     * @return The message, in the appropriate locale.
-     */
-    @DefaultMessage("Ask the user who locked the resource to unlock it.")
+        "The resource you tried to update is locked by another user.")
     String lockMismatch();
 
     /**
-     * "Choose a different resource.".
+     * "Creating this relationship would cause a circular dependency.".
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Choose a different resource.")
+    @DefaultMessage(
+        "Creating this relationship would cause a circular dependency.")
     String cycle();
 
     /**
-     * "Verify command parameters.".
+     * "Command parameters were not valid.".
      *
      * @return The message, in the appropriate locale.
      */
-    @DefaultMessage("Verify command parameters.")
+    @DefaultMessage(
+    "Command parameters were not valid.")
     String invalidCommand();
 }

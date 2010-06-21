@@ -27,9 +27,9 @@
 package ccc.client.gwt.views.gxt;
 
 import ccc.api.types.Paragraph;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;

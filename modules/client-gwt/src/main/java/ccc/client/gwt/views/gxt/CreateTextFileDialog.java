@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import ccc.client.gwt.core.Editable;
+import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
+import ccc.client.gwt.validation.Validations2;
 import ccc.client.gwt.views.CreateTextFile;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;

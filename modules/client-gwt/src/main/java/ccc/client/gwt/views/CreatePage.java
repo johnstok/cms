@@ -30,10 +30,10 @@ package ccc.client.gwt.views;
 import java.util.Set;
 
 import ccc.api.types.Paragraph;
+import ccc.client.core.Editable;
+import ccc.client.core.Validatable;
+import ccc.client.core.View;
 import ccc.client.gwt.binding.TemplateSummaryModelData;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Validatable;
-import ccc.client.gwt.core.View;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 

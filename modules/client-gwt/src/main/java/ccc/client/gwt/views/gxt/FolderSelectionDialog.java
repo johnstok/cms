@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.widgets.FolderResourceTree;
 
 import com.extjs.gxt.ui.client.Style.Scroll;

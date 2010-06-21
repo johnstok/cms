@@ -34,13 +34,13 @@ import java.util.Set;
 
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
+import ccc.client.core.Editable;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.binding.TemplateSummaryModelData;
-import ccc.client.gwt.core.Editable;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.ValidationResult;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
 import ccc.client.gwt.views.CreatePage;
 import ccc.client.gwt.widgets.ContentCreator;

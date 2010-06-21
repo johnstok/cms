@@ -31,12 +31,12 @@ import java.util.UUID;
 
 import ccc.api.core.Template;
 import ccc.api.types.ResourceName;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.TemplateSummaryModelData;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.views.ChangeResourceTemplate;
 
 import com.extjs.gxt.ui.client.Style.SortDir;

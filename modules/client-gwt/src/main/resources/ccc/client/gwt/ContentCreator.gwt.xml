@@ -35,7 +35,7 @@
 	<inherits name="com.googlecode.gwt.math.Math" />
 	<inherits name='com.extjs.gxt.ui.GXT' />
 	<inherits name="ccc.API" />
-	<inherits name="ccc.Types" />
+	<inherits name="ccc.client" />
     
 
 	<!-- Supported locales.

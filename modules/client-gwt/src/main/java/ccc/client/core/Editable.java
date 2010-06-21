@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,24 +24,24 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
-
-import ccc.client.gwt.i18n.ErrorDescriptions;
-import ccc.client.gwt.i18n.ErrorResolutions;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.i18n.UIMessages;
-
+package ccc.client.core;
 
 
 /**
- * TODO: Add a description for this type.
+ * Simple API for editable objects.
  *
  * @author Civic Computing Ltd.
  */
-public class I18n {
+public interface Editable {
 
-    public static UIConstants UI_CONSTANTS;
-    public static UIMessages UI_MESSAGES;
-    public static ErrorDescriptions ERROR_DESCRIPTIONS;
-    public static ErrorResolutions ERROR_RESOLUTIONS;
+    /**
+     * Confirm the edits.
+     */
+    void save();
+
+
+    /**
+     * Discard the edits.
+     */
+    void cancel();
 }

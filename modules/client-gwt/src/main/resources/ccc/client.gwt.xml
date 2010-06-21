@@ -27,5 +27,7 @@
 -->
 
 <module>
-    <source path="api/types" />
+    <source path="client/concurrent" />
+    <source path="client/core" />
+    <source path="client/i18n" />
 </module>

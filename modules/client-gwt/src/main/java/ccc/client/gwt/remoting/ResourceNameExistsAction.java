@@ -28,9 +28,9 @@ package ccc.client.gwt.remoting;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 
 import com.google.gwt.json.client.JSONParser;
 

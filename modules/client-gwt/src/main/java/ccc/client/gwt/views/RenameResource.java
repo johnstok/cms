@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.views;
 
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Validatable;
-import ccc.client.gwt.core.View;
+import ccc.client.core.Editable;
+import ccc.client.core.Validatable;
+import ccc.client.core.View;
 
 
 /**

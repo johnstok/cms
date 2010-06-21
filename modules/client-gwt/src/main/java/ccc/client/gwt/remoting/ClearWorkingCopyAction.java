@@ -26,8 +26,8 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.client.core.Request;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.SingleSelectionModel;
 
 /**

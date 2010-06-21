@@ -41,19 +41,19 @@ import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
 import ccc.api.types.Link;
 import ccc.api.types.ResourceType;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
+import ccc.client.core.Request;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.HttpMethod;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.ActionCancelled;
 import ccc.client.gwt.events.ActionCreated;
-import ccc.client.gwt.i18n.ActionStatusConstants;
-import ccc.client.gwt.i18n.CommandTypeConstants;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.i18n.ActionStatusConstants;
+import ccc.client.i18n.CommandTypeConstants;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -301,7 +301,7 @@ public class ActionSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onNoContent(final ccc.client.gwt.core.Response response) {
+        public void onNoContent(final ccc.client.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(_event);
         }
     }
@@ -323,7 +323,7 @@ public class ActionSummaryModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final ccc.client.gwt.core.Response response) {
+        public void onOK(final ccc.client.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(new ActionCreated());
         }
     }

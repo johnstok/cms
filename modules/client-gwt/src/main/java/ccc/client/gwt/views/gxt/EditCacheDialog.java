@@ -28,10 +28,10 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.Resource;
 import ccc.api.types.Duration;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateCacheDurationAction;
 import ccc.client.gwt.validation.Validate;
 import ccc.client.gwt.validation.Validations;

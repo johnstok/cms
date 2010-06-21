@@ -28,14 +28,14 @@ package ccc.client.gwt.widgets;
 
 import ccc.api.core.User;
 import ccc.api.types.Permission;
+import ccc.client.core.I18n;
 import ccc.client.gwt.actions.OpenCreateFileAction;
 import ccc.client.gwt.actions.OpenCreateFolderAction;
 import ccc.client.gwt.actions.OpenCreatePageAction;
 import ccc.client.gwt.actions.OpenCreateTemplateAction;
 import ccc.client.gwt.actions.OpenCreateTextFileAction;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.UIConstants;
 
 
 /**

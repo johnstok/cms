@@ -30,8 +30,8 @@ import java.util.Collection;
 import java.util.UUID;
 
 import ccc.api.core.Template;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.View;
+import ccc.client.core.Editable;
+import ccc.client.core.View;
 
 
 /**

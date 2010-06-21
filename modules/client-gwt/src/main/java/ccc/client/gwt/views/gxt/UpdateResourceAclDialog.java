@@ -36,10 +36,10 @@ import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.UpdateResourceAclAction;
 

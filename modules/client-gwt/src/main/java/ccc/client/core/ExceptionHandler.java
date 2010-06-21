@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,20 +24,21 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 
 /**
- * Simple object validation API.
+ * API for handling client exceptions.
  *
  * @author Civic Computing Ltd.
  */
-public interface Validatable {
+public interface ExceptionHandler {
 
     /**
-     * Confirm whether the object is valid.
+     * Report an unexpected exception to the user.
      *
-     * @return Validation result object.
+     * @param e The exception to report.
+     * @param action The action being performed.
      */
-    ValidationResult getValidationResult();
+    void unexpectedError(final Throwable e, final String action);
 }

@@ -31,9 +31,9 @@ import java.util.Date;
 import java.util.Map;
 
 import ccc.api.types.CommandType;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Validatable;
-import ccc.client.gwt.core.View;
+import ccc.client.core.Editable;
+import ccc.client.core.Validatable;
+import ccc.client.core.View;
 
 
 /**

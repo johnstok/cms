@@ -27,9 +27,9 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.API;
+import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.Response;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.APISerializer;
 

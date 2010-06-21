@@ -35,6 +35,10 @@ import java.util.Map;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.DBC;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.Request;
+import ccc.client.core.Response;
 import ccc.client.gwt.remoting.TextParser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
@@ -154,14 +158,14 @@ public abstract class RemotingAction
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onNoContent(final ccc.client.gwt.core.Response response) {
+                    public void onNoContent(final ccc.client.core.Response response) {
                         RemotingAction.this.onNoContent(response);
                     }
 
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final ccc.client.gwt.core.Response response) {
+                    public void onOK(final ccc.client.core.Response response) {
                         RemotingAction.this.onOK(response);
                     }
                 });
@@ -190,7 +194,7 @@ public abstract class RemotingAction
     }
 
 
-    private void onUnsupported(final ccc.client.gwt.core.Response response) {
+    private void onUnsupported(final ccc.client.core.Response response) {
         onFailure(
             new RuntimeException(// TODO Add UnsupportedResponseException
                 "Unsupported response: "
@@ -231,7 +235,7 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected void onNoContent(final ccc.client.gwt.core.Response response) {
+    protected void onNoContent(final ccc.client.core.Response response) {
         onUnsupported(response);
     }
 
@@ -241,7 +245,7 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected void onOK(final ccc.client.gwt.core.Response response) {
+    protected void onOK(final ccc.client.core.Response response) {
         onUnsupported(response);
     }
 
@@ -265,7 +269,7 @@ public abstract class RemotingAction
      *
      * @return The resource summary.
      */
-    protected ResourceSummary parseResourceSummary(final ccc.client.gwt.core.Response response) {
+    protected ResourceSummary parseResourceSummary(final ccc.client.core.Response response) {
         return
             new ResourceSummarySerializer().read(
                 new GwtJson(
@@ -297,7 +301,7 @@ public abstract class RemotingAction
      *
      * @return A boolean.
      */
-    protected boolean parseBoolean(final ccc.client.gwt.core.Response response) {
+    protected boolean parseBoolean(final ccc.client.core.Response response) {
         final JSONBoolean b = JSONParser.parse(response.getText()).isBoolean();
         return b.booleanValue();
     }
@@ -330,7 +334,7 @@ public abstract class RemotingAction
      * @param response The response to parse.
      * @return A map.
      */
-    protected Map<String, String> parseMapString(final ccc.client.gwt.core.Response response) {
+    protected Map<String, String> parseMapString(final ccc.client.core.Response response) {
         final JSONValue value = JSONParser.parse(response.getText());
         final JSONObject result = value.isObject();
         final Json json = new GwtJson(result);

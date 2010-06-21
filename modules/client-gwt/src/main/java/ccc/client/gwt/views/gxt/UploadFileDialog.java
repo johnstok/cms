@@ -28,14 +28,14 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ImagePaths;
+import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.ImagePaths;
 import ccc.client.gwt.core.RemoteException;
-import ccc.client.gwt.core.SessionTimeoutException;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.client.gwt.validation.Validate;

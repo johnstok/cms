@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,31 +21,22 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 
 /**
- * TODO: Add a description for this type.
+ * A controller used for editing data.
  *
  * @author Civic Computing Ltd.
  */
-public enum HttpMethod {
+@Deprecated
+public interface EditController {
 
-    /** GET : HttpMethod. */
-    GET,
-
-    /** POST : HttpMethod. */
-    POST,
-
-    /** PUT : HttpMethod. */
-    PUT,
-
-    /** DELETE : HttpMethod. */
-    DELETE;
-
-    /** OVERRIDE_HEADER : String. */
-    public static final String OVERRIDE_HEADER = "X-HTTP-Method-Override";
+    /**
+     * Perform the edit.
+     */
+    void submit();
 }

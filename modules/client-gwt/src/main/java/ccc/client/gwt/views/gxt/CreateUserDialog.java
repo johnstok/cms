@@ -34,13 +34,13 @@ import java.util.UUID;
 
 import ccc.api.core.Group;
 import ccc.api.types.Username;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.ValidationResult;
-import ccc.client.gwt.core.Validations2;
 import ccc.client.gwt.remoting.UniqueUsernameAction;
+import ccc.client.gwt.validation.Validations2;
 import ccc.client.gwt.views.CreateUser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.GroupListField;

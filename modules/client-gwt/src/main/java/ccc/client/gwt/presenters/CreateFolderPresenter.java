@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.presenters;
 
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.events.FolderCreated;
 import ccc.client.gwt.events.FolderCreated.FolderCreatedHandler;
 import ccc.client.gwt.remoting.CreateFolderAction;

@@ -28,16 +28,16 @@ package ccc.client.gwt.presenters;
 
 import ccc.api.core.User;
 import ccc.api.types.Username;
-import ccc.client.gwt.core.Editable;
-import ccc.client.gwt.core.Globals;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.ValidationResult;
+import ccc.client.core.Editable;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.events.UserCreated;
 import ccc.client.gwt.events.UserCreated.UserCreatedHandler;
-import ccc.client.gwt.i18n.UIMessages;
 import ccc.client.gwt.remoting.CreateUserAction;
 import ccc.client.gwt.views.CreateUser;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.i18n.UIMessages;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 

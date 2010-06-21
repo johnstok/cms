@@ -33,11 +33,11 @@ import java.util.List;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.LogEntrySummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.widgets.HistoryToolBar;
 

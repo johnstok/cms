@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.client.core.I18n;
+
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -33,13 +35,13 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 
 
 /**
- * GWT implementation of the {@link ccc.client.gwt.core.Window} API.
+ * GWT implementation of the {@link ccc.client.core.Window} API.
  *
  * @author Civic Computing Ltd.
  */
 public class GWTWindow
     implements
-        ccc.client.gwt.core.Window {
+        ccc.client.core.Window {
 
     private HandlerRegistration _handlerRegistration = null;
 

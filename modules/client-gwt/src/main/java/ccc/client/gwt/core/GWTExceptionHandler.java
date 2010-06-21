@@ -26,6 +26,10 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.client.core.ExceptionHandler;
+import ccc.client.core.I18n;
+import ccc.client.core.SessionTimeoutException;
+import ccc.client.core.Window;
 import ccc.client.gwt.views.gxt.ErrorDialog;
 
 import com.google.gwt.core.client.GWT;

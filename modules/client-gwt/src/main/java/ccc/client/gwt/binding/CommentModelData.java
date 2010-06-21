@@ -35,11 +35,11 @@ import java.util.UUID;
 import ccc.api.core.Comment;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.I18n;
+import ccc.client.core.Request;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.HttpMethod;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Request;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.client.gwt.events.CommentUpdatedEvent;
 import ccc.client.gwt.widgets.ContentCreator;
@@ -258,7 +258,7 @@ public final class CommentModelData
 
         /** {@inheritDoc} */
         @Override
-        public void onOK(final ccc.client.gwt.core.Response response) {
+        public void onOK(final ccc.client.core.Response response) {
             ContentCreator.EVENT_BUS.fireEvent(
                 new CommentUpdatedEvent(_comment));
         }

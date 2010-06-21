@@ -2,6 +2,9 @@ package ccc.client.gwt.core;
 
 import static ccc.api.types.HttpStatusCode.*;
 import ccc.api.types.DBC;
+import ccc.client.core.Response;
+import ccc.client.core.ResponseHandler;
+import ccc.client.core.SessionTimeoutException;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;

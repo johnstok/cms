@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.UIConstants;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.UIConstants;
 
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 

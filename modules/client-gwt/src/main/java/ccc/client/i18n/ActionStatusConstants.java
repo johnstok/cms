@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,24 +21,51 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.i18n;
+
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 
 
 /**
- * API for handling client exceptions.
+ * UI constants describing action statuses.
  *
  * @author Civic Computing Ltd.
  */
-public interface ExceptionHandler {
+public interface ActionStatusConstants extends ConstantsWithLookup {
 
     /**
-     * Report an unexpected exception to the user.
+     * "Scheduled".
      *
-     * @param e The exception to report.
-     * @param action The action being performed.
+     * @return The constant, in the appropriate locale.
      */
-    void unexpectedError(final Throwable e, final String action);
+    @DefaultStringValue("Scheduled")
+    String scheduled();
+
+    /**
+     * "Complete".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Complete")
+    String complete();
+
+    /**
+     * "Failed".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Failed")
+    String failed();
+
+    /**
+     * "Cancelled".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    @DefaultStringValue("Cancelled")
+    String cancelled();
+
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,64 +24,29 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 
 /**
- * TODO: Add a description for this type.
+ * Basic API for MVP Views.
+ *
+ * @param <T> The type of presenter for the view.
  *
  * @author Civic Computing Ltd.
  */
-public class Response {
-
-    private String _text;
-    private String _statusText;
-    private int    _statusCode;
+public interface View<T> {
 
 
     /**
-     * Constructor.
-     *
-     * @param text Text
-     * @param statusText Status text
-     * @param statusCode Status code
+     * Hide the view.
      */
-    public Response(final String text,
-                    final String statusText,
-                    final int statusCode) {
-        super();
-        _text = text;
-        _statusText = statusText;
-        _statusCode = statusCode;
-    }
+    void hide();
 
 
     /**
-     * Accessor.
+     * Show the view.
      *
-     * @return Returns the _text.
+     * @param presenter The presenter to set.
      */
-    public String getText() {
-        return _text;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _statusText.
-     */
-    public String getStatusText() {
-        return _statusText;
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the _statusCode.
-     */
-    public int getStatusCode() {
-        return _statusCode;
-    }
+    void show(T presenter);
 }

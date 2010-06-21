@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 import ccc.client.gwt.widgets.ImageTriggerField;
 

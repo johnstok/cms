@@ -29,10 +29,10 @@ package ccc.client.gwt.views.gxt;
 
 import static ccc.client.gwt.validation.Validations.*;
 import ccc.api.core.User;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Response;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
 import ccc.client.gwt.validation.Validate;
 

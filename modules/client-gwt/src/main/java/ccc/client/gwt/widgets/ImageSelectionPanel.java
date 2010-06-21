@@ -32,10 +32,10 @@ import java.util.List;
 
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.GetImagesPagedAction;
 import ccc.client.gwt.views.gxt.FolderSelectionDialog;
 

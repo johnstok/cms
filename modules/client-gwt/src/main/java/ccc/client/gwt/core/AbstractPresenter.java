@@ -29,6 +29,7 @@ package ccc.client.gwt.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccc.client.core.Globals;
 import ccc.client.gwt.widgets.ContentCreator;
 
 import com.google.gwt.event.shared.EventHandler;

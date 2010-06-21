@@ -27,24 +27,24 @@
 package ccc.client.gwt.widgets;
 
 
-import ccc.client.gwt.core.ExceptionHandler;
+import ccc.client.core.ExceptionHandler;
+import ccc.client.core.I18n;
+import ccc.client.core.Response;
+import ccc.client.core.Window;
 import ccc.client.gwt.core.GWTExceptionHandler;
 import ccc.client.gwt.core.GWTWindow;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.I18n;
-import ccc.client.gwt.core.Response;
-import ccc.client.gwt.core.Window;
 import ccc.client.gwt.events.Error;
-import ccc.client.gwt.i18n.ActionNameConstants;
-import ccc.client.gwt.i18n.ActionStatusConstants;
-import ccc.client.gwt.i18n.CommandTypeConstants;
-import ccc.client.gwt.i18n.ErrorDescriptions;
-import ccc.client.gwt.i18n.ErrorResolutions;
-import ccc.client.gwt.i18n.UIConstants;
-import ccc.client.gwt.i18n.UIMessages;
 import ccc.client.gwt.remoting.GetPropertyAction;
 import ccc.client.gwt.remoting.GetServicesAction;
 import ccc.client.gwt.remoting.IsLoggedInAction;
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.ActionStatusConstants;
+import ccc.client.i18n.CommandTypeConstants;
+import ccc.client.i18n.ErrorDescriptions;
+import ccc.client.i18n.ErrorResolutions;
+import ccc.client.i18n.UIConstants;
+import ccc.client.i18n.UIMessages;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.core.I18n;
+import ccc.client.core.I18n;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;

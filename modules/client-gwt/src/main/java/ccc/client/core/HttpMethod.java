@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,24 +24,28 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 
 /**
- * Simple API for editable objects.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-public interface Editable {
+public enum HttpMethod {
 
-    /**
-     * Confirm the edits.
-     */
-    void save();
+    /** GET : HttpMethod. */
+    GET,
 
+    /** POST : HttpMethod. */
+    POST,
 
-    /**
-     * Discard the edits.
-     */
-    void cancel();
+    /** PUT : HttpMethod. */
+    PUT,
+
+    /** DELETE : HttpMethod. */
+    DELETE;
+
+    /** OVERRIDE_HEADER : String. */
+    public static final String OVERRIDE_HEADER = "X-HTTP-Method-Override";
 }

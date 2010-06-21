@@ -28,8 +28,8 @@ package ccc.client.gwt.widgets;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
+import ccc.client.core.Globals;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Globals;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

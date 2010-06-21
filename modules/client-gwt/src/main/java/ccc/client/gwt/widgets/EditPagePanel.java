@@ -40,9 +40,9 @@ import ccc.api.types.Link;
 import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.I18n;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.widgets.PageElement.FieldType;
 

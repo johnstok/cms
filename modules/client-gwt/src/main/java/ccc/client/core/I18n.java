@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,22 +21,27 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
+
+import ccc.client.i18n.ErrorDescriptions;
+import ccc.client.i18n.ErrorResolutions;
+import ccc.client.i18n.UIConstants;
+import ccc.client.i18n.UIMessages;
+
 
 
 /**
- * A controller used for editing data.
+ * TODO: Add a description for this type.
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated
-public interface EditController {
+public class I18n {
 
-    /**
-     * Perform the edit.
-     */
-    void submit();
+    public static UIConstants UI_CONSTANTS;
+    public static UIMessages UI_MESSAGES;
+    public static ErrorDescriptions ERROR_DESCRIPTIONS;
+    public static ErrorResolutions ERROR_RESOLUTIONS;
 }

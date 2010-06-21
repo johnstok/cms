@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import java.util.ArrayList;
 
-import ccc.client.gwt.core.Globals;
+import ccc.client.core.Globals;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
