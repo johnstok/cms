@@ -101,6 +101,7 @@
         <module>modules/public-api</module>
         <module>modules/domain-support</module>
         <module>modules/client-gwt</module>
+        <module>modules/client-core</module>
         <module>modules/client-jaxrs</module>
         <module>modules/client-migration</module>
         <module>modules/services-ejb3</module>

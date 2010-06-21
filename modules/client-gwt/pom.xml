@@ -31,6 +31,7 @@
                                     <pathelement location="${basedir}/../public-api/src/main/java" />
                                     <pathelement location="${basedir}/../simple-types/src/main/java" />
                                     <pathelement location="${basedir}/../domain-support/src/main/java" />
+                                    <pathelement location="${basedir}/../client-core/src/main/java" />
                                     <pathelement path="${compile_classpath}" />
                                 </path>
                                 <property name="gwt_compile_classpath" refid="gwt.compile.classpath" />
@@ -103,12 +104,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>api-plugins</artifactId>
+            <artifactId>client-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         
