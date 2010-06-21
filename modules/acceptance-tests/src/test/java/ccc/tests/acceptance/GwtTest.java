@@ -39,16 +39,17 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import ccc.api.core.ResourceIdentifiers.Alias;
+import ccc.client.core.I18n;
 import ccc.client.core.Request;
+import ccc.client.core.RequestExecutor;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandler;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.RequestExecutor;
 import ccc.client.gwt.events.Error;
 import ccc.client.gwt.remoting.GetServicesAction;
-import ccc.client.gwt.remoting.TextParser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.i18n.ActionNameConstants;
+import ccc.client.remoting.TextParser;
 import ccc.commons.Testing;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.JsonImpl;
@@ -66,7 +67,7 @@ public class GwtTest extends TestCase {
      */
     public void testGetServices() {
 
-        GlobalsImpl.setUserActions(Testing.stub(ActionNameConstants.class));
+        I18n.USER_ACTIONS = Testing.stub(ActionNameConstants.class);
 
         ContentCreator.EVENT_BUS.addHandler(
             Error.TYPE,

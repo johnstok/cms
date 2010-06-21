@@ -68,7 +68,6 @@ public final class OpenCreatePageAction
             @Override protected void execute(
                                  final Collection<Template> templates) {
                 new CreatePagePresenter(
-                    GLOBALS,
                     new CreatePageDialog(templates, item),
                     item);
             }

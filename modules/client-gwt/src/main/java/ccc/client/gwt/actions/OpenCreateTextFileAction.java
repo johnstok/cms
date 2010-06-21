@@ -60,7 +60,6 @@ public final class OpenCreateTextFileAction
             ContentCreator.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateTextFilePresenter(
-                GLOBALS,
                 new CreateTextFileDialog(),
                 item);
         }

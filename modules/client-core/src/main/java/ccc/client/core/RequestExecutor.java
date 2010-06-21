@@ -25,9 +25,8 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.client.gwt.core;
+package ccc.client.core;
 
-import ccc.client.core.Request;
 
 /**
  * Sends an HTTP request to a host server.

@@ -92,7 +92,7 @@ public final class Validations2 {
      * @return True if the input is valid, false otherwise.
      */
     public static boolean notValidResourceName(final String name) {
-        return name.matches(Validations.VALID_CHARACTERS);
+        return name.matches(AbstractValidations.VALID_CHARACTERS);
     }
 
     /**
@@ -103,7 +103,7 @@ public final class Validations2 {
      * @return True if the input is valid, false otherwise.
      */
     public static boolean notValidUserName(final String name) {
-        return name.matches(Validations.VALID_USERNAME_CHARACTERS);
+        return name.matches(AbstractValidations.VALID_USERNAME_CHARACTERS);
     }
 
     /**
@@ -114,7 +114,7 @@ public final class Validations2 {
      * @return True if the input is valid, false otherwise.
      */
     public static boolean notValidPassword(final String password) {
-        return password.matches(Validations.VALID_PASSWORD_CHARACTERS);
+        return password.matches(AbstractValidations.VALID_PASSWORD_CHARACTERS);
     }
 
     /**
@@ -137,7 +137,7 @@ public final class Validations2 {
      * @return True if the input is valid, false otherwise.
      */
     public static boolean notValidURL(final String url) {
-        return url.matches(Validations.VALID_URL);
+        return url.matches(AbstractValidations.VALID_URL);
     }
 
 
@@ -162,7 +162,7 @@ public final class Validations2 {
      */
     public static boolean noBrackets(final String text) {
         return text != null
-               && !text.matches(Validations.NO_BRACKETS);
+               && !text.matches(AbstractValidations.NO_BRACKETS);
     }
 
     /**
@@ -187,7 +187,7 @@ public final class Validations2 {
      */
     public static boolean passwordStrength(final String pw) {
         return pw != null
-               && pw.trim().length() >= Validations.MIN_PASSWORD_LENGTH
+               && pw.trim().length() >= AbstractValidations.MIN_PASSWORD_LENGTH
                && Password.isStrong(pw);
     }
 

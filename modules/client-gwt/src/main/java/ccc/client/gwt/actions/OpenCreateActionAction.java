@@ -60,7 +60,6 @@ public final class OpenCreateActionAction
             ContentCreator.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateActionPresenter(
-                GLOBALS,
                 new CreateActionDialog(),
                 item);
         }

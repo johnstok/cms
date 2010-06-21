@@ -29,7 +29,6 @@ package ccc.client.gwt.presenters;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
@@ -56,14 +55,12 @@ public class RenameResourcePresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public RenameResourcePresenter(final Globals globals,
-                                   final RenameResource view,
+    public RenameResourcePresenter(final RenameResource view,
                                    final ResourceSummaryModelData model) {
-        super(globals, view, model);
+        super(view, model);
 
         addHandler(ResourceRenamed.TYPE, this);
 

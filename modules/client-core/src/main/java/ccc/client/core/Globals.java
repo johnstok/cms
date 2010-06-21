@@ -31,8 +31,6 @@ import ccc.api.core.Comment;
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
-import ccc.client.i18n.ActionStatusConstants;
-import ccc.client.i18n.CommandTypeConstants;
 
 
 /**
@@ -41,36 +39,6 @@ import ccc.client.i18n.CommandTypeConstants;
  * @author Civic Computing Ltd.
  */
 public interface Globals {
-
-    /**
-     * Determine the URL for the application's host.
-     *
-     * @return The host url as a string.
-     */
-    String hostURL();
-
-    /**
-     * Determine the URL for the application.
-     *
-     * @return The host url as a string.
-     */
-    String appURL();
-
-
-    /**
-     * Accessor.
-     *
-     * @return The current logged in user.
-     */
-    User currentUser();
-
-    /**
-     * Mutator.
-     *
-     * @param user The current logged in user.
-     */
-    void currentUser(final User user);
-
 
     /** DEFAULT_WIDTH : int. */
     int DEFAULT_WIDTH = 640;
@@ -91,19 +59,38 @@ public interface Globals {
     /** MAX_FETCH : int. */
     int MAX_FETCH = 999;
 
-    /**
-     * Retrieve an instance of the action status constants.
-     *
-     * @return An ActionStatusConstants object.
-     */
-    ActionStatusConstants actionStatusConstants();
 
     /**
-     * Retrieve an instance of the command type constants.
+     * Determine the URL for the application's host.
      *
-     * @return An CommandTypeConstants object.
+     * @return The host url as a string.
      */
-    CommandTypeConstants commandTypeConstants();
+    String hostURL();
+
+
+    /**
+     * Determine the URL for the application.
+     *
+     * @return The host url as a string.
+     */
+    String appURL();
+
+
+    /**
+     * Accessor.
+     *
+     * @return The current logged in user.
+     */
+    User currentUser();
+
+
+    /**
+     * Mutator.
+     *
+     * @param user The current logged in user.
+     */
+    void currentUser(final User user);
+
 
     /**
      * Retrieve a setting value.
@@ -115,12 +102,14 @@ public interface Globals {
      */
     String getSetting(String settingName);
 
+
     /**
      * TODO: Add a description for this method.
      *
      * @return
      */
     PagedCollection<User> users();
+
 
     /**
      * TODO: Add a description for this method.
@@ -129,12 +118,14 @@ public interface Globals {
      */
     PagedCollection<ActionSummary> actions();
 
+
     /**
      * TODO: Add a description for this method.
      *
      * @return
      */
     PagedCollection<Comment> comments();
+
 
     /**
      * TODO: Add a description for this method.

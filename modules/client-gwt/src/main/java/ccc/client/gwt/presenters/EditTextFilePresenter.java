@@ -30,7 +30,6 @@ import ccc.api.core.File;
 import ccc.api.core.Resource;
 import ccc.api.types.MimeType;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.TextFileUpdated;
 import ccc.client.gwt.events.TextFileUpdated.UpdatedHandler;
@@ -54,14 +53,12 @@ public class EditTextFilePresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public EditTextFilePresenter(final Globals globals,
-                                 final EditTextFile view,
+    public EditTextFilePresenter(final EditTextFile view,
                                  final File model) {
-        super(globals, view, model);
+        super(view, model);
 
         addHandler(TextFileUpdated.TYPE, this);
 

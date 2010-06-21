@@ -60,7 +60,6 @@ public final class OpenCreateAliasAction
             ContentCreator.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateAliasPresenter(
-                GLOBALS,
                 new CreateAliasDialog(),
                 item);
         }

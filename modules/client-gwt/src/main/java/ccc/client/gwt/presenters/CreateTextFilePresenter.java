@@ -29,7 +29,6 @@ package ccc.client.gwt.presenters;
 import ccc.api.core.File;
 import ccc.api.types.MimeType;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.ResourceCreated;
@@ -55,14 +54,12 @@ public class CreateTextFilePresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateTextFilePresenter(final Globals globals,
-                                   final CreateTextFile view,
+    public CreateTextFilePresenter(final CreateTextFile view,
                                    final ResourceSummaryModelData model) {
-        super(globals, view, model);
+        super(view, model);
         addHandler(ResourceCreated.TYPE, this);
         getView().show(this);
     }

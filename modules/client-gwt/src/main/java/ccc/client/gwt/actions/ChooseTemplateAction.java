@@ -75,7 +75,6 @@ public final class ChooseTemplateAction
                 @Override protected void execute(
                                  final Collection<Template> templates) {
                     new ChangeResourceTemplatePresenter(
-                        GLOBALS,
                         new ChooseTemplateDialog(),
                         item,
                         templates);

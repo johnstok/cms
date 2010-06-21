@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.client.gwt.remoting.TextParser;
+import ccc.client.remoting.TextParser;
 import ccc.plugins.s11n.Json;
 
 import com.google.gwt.json.client.JSONObject;

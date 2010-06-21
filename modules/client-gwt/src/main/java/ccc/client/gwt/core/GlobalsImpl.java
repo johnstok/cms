@@ -36,6 +36,7 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.client.core.Globals;
+import ccc.client.core.I18n;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -55,11 +56,6 @@ public class GlobalsImpl
     private static final Map<String, String> SETTINGS =
         new HashMap<String, String>();
 
-
-    private static ActionStatusConstants ACTION_STATUSES;
-    private static CommandTypeConstants COMMAND_TYPES;
-
-    private static ActionNameConstants USER_ACTIONS;
     private static PagedCollection<User> USERS;
     private static PagedCollection<ActionSummary> ACTIONS;
     private static PagedCollection<Comment> COMMENTS;
@@ -95,22 +91,12 @@ public class GlobalsImpl
 
 
     /**
-     * Accessor for the {@link ActionNameConstants} object.
-     *
-     * @return A new instance of {@link ActionNameConstants}.
-     */
-    public static ActionNameConstants userActions() {
-        return USER_ACTIONS;
-    }
-
-
-    /**
      * Mutator.
      *
      * @param userActions The action names to set.
      */
     public static void setUserActions(final ActionNameConstants userActions) {
-        USER_ACTIONS = userActions;
+        I18n.USER_ACTIONS = userActions;
     }
 
 
@@ -135,23 +121,13 @@ public class GlobalsImpl
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ActionStatusConstants actionStatusConstants() {
-        return ACTION_STATUSES;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CommandTypeConstants commandTypeConstants() {
-        return COMMAND_TYPES;
-    }
 
     /** {@inheritDoc} */
     @Override
     public String getSetting(final String settingName) {
         return SETTINGS.get(settingName);
     }
+
 
     /**
      * Provide additional settings for this global object.
@@ -229,7 +205,7 @@ public class GlobalsImpl
      * @param create The action statuses.
      */
     public static void setActionConstants(final ActionStatusConstants create) {
-        ACTION_STATUSES = create;
+        I18n.ACTION_STATUSES = create;
     }
 
 
@@ -239,7 +215,7 @@ public class GlobalsImpl
      * @param create The command types.
      */
     public static void setCommandConstants(final CommandTypeConstants create) {
-        COMMAND_TYPES = create;
+        I18n.COMMAND_TYPES = create;
     }
 
 

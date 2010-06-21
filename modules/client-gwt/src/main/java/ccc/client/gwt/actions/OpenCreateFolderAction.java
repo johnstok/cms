@@ -60,7 +60,6 @@ public final class OpenCreateFolderAction
             ContentCreator.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateFolderPresenter(
-                GLOBALS,
                 new CreateFolderDialog(),
                 item);
         }

@@ -55,6 +55,6 @@ public final class OpenRenameAction
     /** {@inheritDoc} */
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        new RenameResourcePresenter(GLOBALS, new RenameDialog(), item);
+        new RenameResourcePresenter(new RenameDialog(), item);
     }
 }

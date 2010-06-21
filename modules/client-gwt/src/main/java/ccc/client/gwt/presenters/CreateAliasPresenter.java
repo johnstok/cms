@@ -29,7 +29,6 @@ package ccc.client.gwt.presenters;
 import ccc.api.core.Alias;
 import ccc.api.types.ResourceName;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -58,14 +57,12 @@ public class CreateAliasPresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateAliasPresenter(final Globals globals,
-                                 final CreateAlias view,
-                                 final ResourceSummaryModelData model) {
-        super(globals, view, model);
+    public CreateAliasPresenter(final CreateAlias view,
+                                final ResourceSummaryModelData model) {
+        super(view, model);
         addHandler(AliasCreated.TYPE, this);
         getView().setTargetName(model.getName());
         getView().show(this);

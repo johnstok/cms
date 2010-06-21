@@ -31,7 +31,6 @@ import java.util.Collection;
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.ResourceTemplateChanged;
@@ -56,17 +55,15 @@ public class ChangeResourceTemplatePresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      * @param templates The templates to choose from.
      */
     public ChangeResourceTemplatePresenter(
-                               final Globals globals,
                                final ChangeResourceTemplate view,
                                final ResourceSummaryModelData model,
                                final Collection<Template> templates) {
-        super(globals, view, model);
+        super(view, model);
 
         addHandler(ResourceTemplateChanged.TYPE, this);
 

@@ -143,7 +143,7 @@ public final class ContentCreator implements EntryPoint {
             new UncaughtExceptionHandler(){
                 public void onUncaughtException(final Throwable e) {
                     ContentCreator.EX_HANDLER.unexpectedError(
-                        e, _globals.userActions().unknownAction());
+                        e, I18n.USER_ACTIONS.unknownAction());
                 }
             }
         );

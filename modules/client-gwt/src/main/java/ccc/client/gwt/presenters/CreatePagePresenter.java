@@ -33,7 +33,6 @@ import ccc.api.core.Page;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -63,14 +62,12 @@ public class CreatePagePresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreatePagePresenter(final Globals globals,
-                                 final CreatePage view,
-                                 final ResourceSummaryModelData model) {
-        super(globals, view, model);
+    public CreatePagePresenter(final CreatePage view,
+                               final ResourceSummaryModelData model) {
+        super(view, model);
         addHandler(PageCreated.TYPE, this);
         getView().show(this);
     }

@@ -29,7 +29,6 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
@@ -82,7 +81,7 @@ public abstract class AbstractBaseDialog
         _globals = globals;
         _constants = I18n.UI_CONSTANTS;
         _messages  = I18n.UI_MESSAGES;
-        _userActions = GlobalsImpl.userActions();
+        _userActions = I18n.USER_ACTIONS;
 
         _cancel = cancelButton();
 

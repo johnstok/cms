@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.client.gwt.remoting;
+package ccc.client.remoting;
 
 import ccc.plugins.s11n.Json;
 

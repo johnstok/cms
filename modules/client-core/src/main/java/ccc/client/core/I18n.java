@@ -26,6 +26,9 @@
  */
 package ccc.client.core;
 
+import ccc.client.i18n.ActionNameConstants;
+import ccc.client.i18n.ActionStatusConstants;
+import ccc.client.i18n.CommandTypeConstants;
 import ccc.client.i18n.ErrorDescriptions;
 import ccc.client.i18n.ErrorResolutions;
 import ccc.client.i18n.UIConstants;
@@ -34,7 +37,7 @@ import ccc.client.i18n.UIMessages;
 
 
 /**
- * TODO: Add a description for this type.
+ * Service locator for i18n.
  *
  * @author Civic Computing Ltd.
  */
@@ -44,4 +47,7 @@ public class I18n {
     public static UIMessages UI_MESSAGES;
     public static ErrorDescriptions ERROR_DESCRIPTIONS;
     public static ErrorResolutions ERROR_RESOLUTIONS;
+    public static ActionStatusConstants ACTION_STATUSES;
+    public static CommandTypeConstants COMMAND_TYPES;
+    public static ActionNameConstants USER_ACTIONS;
 }

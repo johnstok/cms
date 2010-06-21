@@ -27,7 +27,6 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.Comment;
-import ccc.client.core.Globals;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.AbstractPresenter;
@@ -53,14 +52,12 @@ public class UpdateCommentPresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public UpdateCommentPresenter(final Globals globals,
-                                  final CommentView view,
+    public UpdateCommentPresenter(final CommentView view,
                                   final CommentModelData model) {
-        super(globals, view, model);
+        super(view, model);
 
         addHandler(CommentUpdatedEvent.TYPE, this);
 

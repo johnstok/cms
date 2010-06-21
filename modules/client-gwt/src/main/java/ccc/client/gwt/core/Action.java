@@ -43,7 +43,7 @@ public interface Action {
     Globals GLOBALS = new GlobalsImpl();
 
     /** USER_ACTIONS : ActionNameConstants. */
-    ActionNameConstants USER_ACTIONS = GlobalsImpl.userActions();
+    ActionNameConstants USER_ACTIONS = I18n.USER_ACTIONS;
 
     /** UI_CONSTANTS : UIConstants. */
     UIConstants UI_CONSTANTS = I18n.UI_CONSTANTS;

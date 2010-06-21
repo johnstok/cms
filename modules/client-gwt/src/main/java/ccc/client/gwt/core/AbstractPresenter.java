@@ -29,7 +29,6 @@ package ccc.client.gwt.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccc.client.core.Globals;
 import ccc.client.gwt.widgets.ContentCreator;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -48,7 +47,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
  */
 public abstract class AbstractPresenter<T, U> {
 
-    private final Globals _globals;
     private final T _view;
     private final U _model;
     private final List<HandlerRegistration> _handlers =
@@ -58,14 +56,11 @@ public abstract class AbstractPresenter<T, U> {
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public AbstractPresenter(final Globals globals,
-                             final T view,
+    public AbstractPresenter(final T view,
                              final U model) {
-        _globals = globals;
         _view = view;
         _model = model;
     }
@@ -93,16 +88,6 @@ public abstract class AbstractPresenter<T, U> {
             hr.removeHandler();
         }
         _handlers.clear();
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return Returns the globals.
-     */
-    public Globals getGlobals() {
-        return _globals;
     }
 
 

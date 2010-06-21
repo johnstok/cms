@@ -82,7 +82,6 @@ extends
         final File dto = new FileSerializer().read(new GwtJson(result));
         if (dto.getContent() != null) {
             new EditTextFilePresenter(
-                GLOBALS,
                 new EditTextFileDialog(),
                 dto);
         } else {

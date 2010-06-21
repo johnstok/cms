@@ -183,7 +183,7 @@ public class ActionSummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedStatus() {
-        final ActionStatusConstants types = _globals.actionStatusConstants();
+        final ActionStatusConstants types = I18n.ACTION_STATUSES;
 
         String local = null;
         try {
@@ -200,7 +200,7 @@ public class ActionSummaryModelData
      * @return The localised string or name of the enum if nothing found.
      */
     public String getLocalisedType() {
-        final CommandTypeConstants types = _globals.commandTypeConstants();
+        final CommandTypeConstants types = I18n.COMMAND_TYPES;
 
         String local = null;
         try {

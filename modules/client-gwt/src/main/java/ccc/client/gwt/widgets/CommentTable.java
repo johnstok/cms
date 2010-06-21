@@ -126,7 +126,6 @@ public class CommentTable
                         grid.getSelectionModel().getSelectedItem();
 
                     new UpdateCommentPresenter(
-                        GLOBALS,
                         new CommentView(
                             UI_CONSTANTS.updateComment(), GLOBALS),
                         commentModel);

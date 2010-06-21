@@ -29,7 +29,6 @@ package ccc.client.gwt.presenters;
 import ccc.api.core.User;
 import ccc.api.types.Username;
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.events.UserCreated;
@@ -52,18 +51,14 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
     private HandlerRegistration _hReg;
 
     private final UIMessages _messages;
-    private final Globals   _globals;
 
     /**
      * Constructor.
      *
      * @param view The create user dialog this controller will manage.
-     * @param globals The globals factory for this controller.
      */
-    public CreateUserPresenter(final CreateUser view,
-                                final Globals globals) {
+    public CreateUserPresenter(final CreateUser view) {
         _view = view;
-        _globals     = globals;
         _messages    = I18n.UI_MESSAGES;
         render(ContentCreator.EVENT_BUS.addHandler(UserCreated.TYPE, this));
     }

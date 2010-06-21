@@ -51,7 +51,7 @@ public final class OpenCreateUserAction
             @Override
             protected void execute(final PagedCollection<Group> groups) {
                 new CreateUserPresenter(
-                    new CreateUserDialog(groups.getElements()), GLOBALS);
+                    new CreateUserDialog(groups.getElements()));
             }}.execute();
         }
 }

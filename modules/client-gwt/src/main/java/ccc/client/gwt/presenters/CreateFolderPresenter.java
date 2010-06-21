@@ -27,7 +27,6 @@
 package ccc.client.gwt.presenters;
 
 import ccc.client.core.Editable;
-import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
@@ -54,14 +53,12 @@ public class CreateFolderPresenter
     /**
      * Constructor.
      *
-     * @param globals Implementation of the Globals API.
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateFolderPresenter(final Globals globals,
-                                 final CreateFolder view,
+    public CreateFolderPresenter(final CreateFolder view,
                                  final ResourceSummaryModelData model) {
-        super(globals, view, model);
+        super(view, model);
         addHandler(FolderCreated.TYPE, this);
         getView().show(this);
     }
