@@ -69,10 +69,9 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     /**
      * Constructor.
      *
-     * @param aliasId The id of the alias to edit.
-     * @param aliasName The name of the alias being edited.
-     * @param targetName The target name.
-     * @param targetRoot The root of the target resource
+     * @param alias The alias being edited.
+     * @param targetName The name of the target resource.
+     * @param targetRoot The root of the target resource.
      */
     public UpdateAliasDialog(final ResourceSummary alias,
                              final String targetName,

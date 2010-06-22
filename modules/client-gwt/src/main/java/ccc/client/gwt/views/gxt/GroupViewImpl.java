@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,7 +39,6 @@ import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.presenters.GroupPresenter.GroupView;
-import ccc.client.gwt.validation.Validations2;
 import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -160,9 +161,11 @@ public class GroupViewImpl
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(_name.getValue())) {
-            result.addError(constants().nameMustNotBeEmpty());
-        }
+
+        result.addError(
+            VALIDATOR.notEmpty(
+                _name.getValue(), _name.getFieldLabel()));
+
         return result;
     }
 

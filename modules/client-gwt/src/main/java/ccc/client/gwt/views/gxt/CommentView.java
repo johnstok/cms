@@ -26,13 +26,13 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.types.CommentStatus;
 import ccc.client.core.Globals;
 import ccc.client.core.Validatable;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.EnumModelData;
 import ccc.client.gwt.presenters.UpdateCommentPresenter;
-import ccc.client.gwt.validation.Validations2;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -204,18 +204,23 @@ public class CommentView
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
                 _url.setValue("http://"+url);
             }
-            if (!Validations2.notValidURL(_url.getValue())) {
-                result.addError(constants().websiteAddressNotValid());
-            }
         }
-        if (!Validations2.notEmpty(_author.getValue())) {
-            result.addError(constants().commentNotValid());
-        }
-        if (!Validations2.notEmpty(_email.getValue())
-            || !Validations2.notValidEmail(_email.getValue())) {
-            result.addError(_email.getFieldLabel()
-            +" "+constants().isNotValid());
-        }
+
+        result.addError(
+            VALIDATOR.notValidURL(_url.getValue()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _author.getValue(), _author.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _email.getValue(), _email.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _body.getValue(), _body.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notValidEmail(
+                _email.getValue(), _email.getFieldLabel()));
+
         return result;
     }
 

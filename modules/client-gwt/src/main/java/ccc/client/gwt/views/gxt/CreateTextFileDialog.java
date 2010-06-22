@@ -26,11 +26,11 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.validation.Validations2;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
@@ -166,25 +166,22 @@ public class CreateTextFileDialog
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
 
-        if (!Validations2.notEmpty(_fileName.getValue())) {
-            result.addError(
-                _fileName.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        } else if (!Validations2.notValidResourceName(_fileName.getValue())) {
-            result.addError(getUiConstants().resourceNameIsInvalid());
-        }
-        if (!Validations2.notEmpty(_mimePrimaryType.getValue())) {
-            result.addError(
-                _mimePrimaryType.getFieldLabel()
-                +getUiConstants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(_mimeSubType.getValue())) {
-            result.addError(
-                _mimeSubType.getFieldLabel()+getUiConstants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(_cme.getEditorCode())) {
-            result.addError(
-                getUiConstants().content()+getUiConstants().cannotBeEmpty());
-        }
+        result.addError(
+            VALIDATOR.notEmpty(
+                _fileName.getValue(), _fileName.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notValidResourceName(
+                _fileName.getValue(), _fileName.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _mimePrimaryType.getValue(), _mimePrimaryType.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _mimeSubType.getValue(), _mimeSubType.getFieldLabel()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                _cme.getEditorCode(), getUiConstants().content()));
+
         return result;
     }
 

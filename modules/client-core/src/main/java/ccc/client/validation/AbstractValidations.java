@@ -81,6 +81,22 @@ public abstract class AbstractValidations {
 
 
     /**
+     * Validates a URL.
+     *
+     * @param url The URL.
+     *
+     * @return True if the input is valid, false otherwise.
+     */
+    public String notValidURL(final String url) {
+        // N.B. java.net.URI is not available in GWT JRE.
+        if(null==url || !url.matches(AbstractValidations.VALID_URL)) {
+            return UI_CONSTANTS.websiteAddressNotValid();
+        }
+        return null;
+    }
+
+
+    /**
      * Validates that value is not empty.
      *
      * @param value The string to validate.
@@ -105,7 +121,7 @@ public abstract class AbstractValidations {
      * @return The error message as a string or NULL if the value is valid.
      */
     public String notValidResourceName(final String value, final String label) {
-        if(!value.matches(VALID_CHARACTERS)) {
+        if(null==value || !value.matches(VALID_CHARACTERS)) {
             return label + " " + UI_CONSTANTS.isNotValidResourceName();
         }
         return null;

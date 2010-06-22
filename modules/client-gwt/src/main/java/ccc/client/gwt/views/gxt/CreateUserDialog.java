@@ -27,6 +27,8 @@
 package ccc.client.gwt.views.gxt;
 
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +42,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UniqueUsernameAction;
-import ccc.client.gwt.validation.Validations2;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.views.CreateUser;
@@ -180,49 +181,45 @@ public class CreateUserDialog
     @Override
     public ValidationResult getValidationResult() {
         final ValidationResult result = new ValidationResult();
-        if (!Validations2.notEmpty(getUsername())) {
-            result.addError(constants().username()+" "
-                +constants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(getName())) {
-            result.addError(constants().nameMustNotBeEmpty());
-        }
-        if (!Validations2.notEmpty(getEmail())) {
-            result.addError(constants().email()+" "
-                +constants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(getPassword1())) {
-            result.addError(constants().password()+" "
-                +constants().cannotBeEmpty());
-        }
-        if (!Validations2.notEmpty(getPassword2())) {
-            result.addError(constants().confirmPassword()+" "
-                +constants().cannotBeEmpty());
-        }
+
+        result.addError(
+            VALIDATOR.notEmpty(
+                getUsername(), constants().username()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                getName(), constants().name()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                getEmail(), constants().email()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                getPassword1(), constants().password()));
+        result.addError(
+            VALIDATOR.notEmpty(
+                getPassword2(), constants().confirmPassword()));
         if (!result.getErrors().isEmpty()) {
             return result;
         }
-        if (!Validations2.minLength(getUsername(),
-            Globals.MIN_USER_NAME_LENGTH)) {
-            result.addError(constants().username()+" "
-                +constants().isTooShort());
-        }
-        if (!Validations2.notValidPassword(getPassword1())) {
-            result.addError(constants().isNotValidPassword());
-        }
-        if (!Validations2.notValidUserName(getUsername())) {
-            result.addError(constants().isNotValidUserName());
-        }
-        if (!Validations2.notValidEmail(getEmail())) {
-            result.addError(constants().email()+" "+constants().isNotValid());
-        }
-        if (!Validations2.match(getPassword1(), getPassword2())) {
-            result.addError(constants().passwordsDidNotMatch());
-        }
-        if (!Validations2.passwordStrength(getPassword1())) {
-            result.addError(constants().passwordTooWeak());
-        }
+
+        result.addError(
+            VALIDATOR.notValidUserName(
+                getUsername(), constants().username()));
+        result.addError(
+            VALIDATOR.notValidEmail(
+                getEmail(), constants().email()));
+        result.addError(
+            VALIDATOR.passwordStrength(getPassword1()));
+        result.addError(
+            VALIDATOR.matchingPasswords(getPassword1(), getPassword2()));
+        result.addError(
+            VALIDATOR.minLength(
+                getUsername(),
+                constants().username(),
+                Globals.MIN_USER_NAME_LENGTH));
+
+        // FIXME: Async validation.
         uniqueUsername(new Username(getUsername()), result);
+
         return result;
     }
 
