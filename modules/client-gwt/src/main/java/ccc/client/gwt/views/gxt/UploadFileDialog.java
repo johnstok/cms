@@ -26,21 +26,21 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
 import ccc.client.core.SessionTimeoutException;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemoteException;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.ContentCreator;
-import ccc.client.validation.Validate;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
@@ -173,23 +173,28 @@ public class UploadFileDialog extends AbstractEditDialog {
                 if (!getPanel().isValid()) {
                     return;
                 }
-                Validate.callTo(submit())
-                .check(Validations.notEmpty(_fileName))
-                .check(Validations.notValidResourceName(_fileName))
-                .stopIfInError()
-                    .check(Validations.uniqueResourceName(_parent, _fileName))
-                .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _fileName.getValue(), _fileName.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notValidResourceName(
+                        _fileName.getValue(), _fileName.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                submit();
             }
         };
     }
 
 
-    private Runnable submit() {
-        return new Runnable() {
-            public void run() {
-                _image.setVisible(true);
-                getPanel().submit();
-            }
-        };
+    private void submit() {
+        _image.setVisible(true);
+        getPanel().submit();
     }
 }

@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.presenters;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,8 +43,6 @@ import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.PageCreated;
 import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
 import ccc.client.gwt.remoting.CreatePageAction;
-import ccc.client.gwt.validation.Validations;
-import ccc.client.validation.Validate;
 import ccc.client.views.CreatePage;
 
 
@@ -89,6 +89,14 @@ public class CreatePagePresenter
     @Override
     public void save() {
         final ValidationResult vr = getView().getValidationResult();
+        vr.addError(
+            VALIDATOR.notEmpty(
+                getView().getName(), I18n.UI_CONSTANTS.name()));
+        vr.addError(
+            VALIDATOR.notValidResourceName(
+                getView().getName(), I18n.UI_CONSTANTS.name()));
+
+
         if (vr.isValid()) {
 
             final Set<Paragraph> paragraphs = getView().getParagraphs();
@@ -101,43 +109,28 @@ public class CreatePagePresenter
             }
             p.setTemplate(tData.getId());
 
-            Validate.callTo(createPage(paragraphs))
-                .check(Validations.notEmpty(
-                    getView().getName(), I18n.UI_CONSTANTS.name()))
-                .stopIfInError()
-                .check(Validations.notValidResourceName(
-                    getView().getName(), I18n.UI_CONSTANTS.name()))
-                .stopIfInError()
-                .check(Validations.uniqueResourceName(
-                    getModel(),  getView().getName()))
-                .stopIfInError()
-                .check(Validations.validateFields(p))
-                .callMethodOr(Validations.reportErrors());
+            createPage(paragraphs);
+
         } else {
             getView().alert(vr.getErrorText());
         }
     }
 
-    private Runnable createPage(final Set<Paragraph> paragraphs) {
-        return new Runnable() {
-            public void run() {
+    private void createPage(final Set<Paragraph> paragraphs) {
+        final UUID template =
+            (null==getView().getSelectedTemplate())
+            ? null
+                :getView().getSelectedTemplate().getId();
 
-                final UUID template =
-                    (null==getView().getSelectedTemplate())
-                    ? null
-                        :getView().getSelectedTemplate().getId();
+        final Page page = Page.delta(paragraphs);
+        page.setParent(getModel().getId());
+        page.setComment(getView().getComment());
+        page.setMajorChange(getView().getMajorEdit());
+        page.setTitle(getView().getName());
+        page.setTemplate(template);
+        page.setName(new ResourceName(getView().getName()));
 
-                final Page page = Page.delta(paragraphs);
-                page.setParent(getModel().getId());
-                page.setComment(getView().getComment());
-                page.setMajorChange(getView().getMajorEdit());
-                page.setTitle(getView().getName());
-                page.setTemplate(template);
-                page.setName(new ResourceName(getView().getName()));
-
-                new CreatePageAction(page).execute();
-            }
-        };
+        new CreatePageAction(page).execute();
     }
 
 

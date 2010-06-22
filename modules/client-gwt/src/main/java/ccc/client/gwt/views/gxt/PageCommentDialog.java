@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.Set;
 
 import ccc.api.core.Page;
@@ -33,11 +35,11 @@ import ccc.api.core.Resource;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdatePageAction;
-import ccc.client.gwt.validation.Validations;
-import ccc.client.validation.Validate;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -98,40 +100,45 @@ public class PageCommentDialog extends AbstractEditDialog {
             @Override
             public void componentSelected(final ButtonEvent ce) {
 
-                Validate.callTo(savePage())
-                .check(Validations.noBrackets(_comment))
-                .callMethodOr(Validations.reportErrors());
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.noBrackets(
+                        _comment.getValue(), _comment.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                savePage();
             }
         };
     }
 
-    private Runnable savePage() {
-        return new Runnable() {
-            public void run() {
-                final ResourceSummaryModelData md =
-                    _updatePageDialog.getModelData();
-                final Page update = new Page();
-                update.setId(md.getId());
-                update.setParagraphs(_paras);
-                update.setComment(_comment.getValue());
-                update.setMajorChange(_majorEdit.getValue().booleanValue());
-                update.addLink(
-                    Resource.SELF,
-                    _updatePageDialog.getModelData().getDelegate().getLink(Resource.SELF));
+    private void savePage() {
+        final ResourceSummaryModelData md =
+            _updatePageDialog.getModelData();
+        final Page update = new Page();
+        update.setId(md.getId());
+        update.setParagraphs(_paras);
+        update.setComment(_comment.getValue());
+        update.setMajorChange(_majorEdit.getValue().booleanValue());
+        update.addLink(
+            Resource.SELF,
+            _updatePageDialog
+                .getModelData().getDelegate().getLink(Resource.SELF));
 
-                new UpdatePageAction(update) {
-                        /** {@inheritDoc} */
-                        @Override protected void onNoContent(
-                                                     final Response response) {
+        new UpdatePageAction(update) {
+                /** {@inheritDoc} */
+                @Override protected void onNoContent(
+                                             final Response response) {
 
-                            md.setWorkingCopy(false);
-                            _updatePageDialog.rt().update(md);
-                            hide();
-                            _updatePageDialog.hide();
-                        }
-                }.execute();
-                hide(); // TODO: Why is this here?
-            }
-        };
+                    md.setWorkingCopy(false);
+                    _updatePageDialog.rt().update(md);
+                    hide();
+                    _updatePageDialog.hide();
+                }
+        }.execute();
+        hide(); // TODO: Why is this here?
     }
 }

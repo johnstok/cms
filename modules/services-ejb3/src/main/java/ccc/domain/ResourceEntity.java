@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.ACL;
+import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
@@ -1042,6 +1043,10 @@ public abstract class ResourceEntity
                 rs.addLink(
                     Resource.SELF,
                     new Link(ccc.api.core.ResourceIdentifiers.Alias.ELEMENT)
+                    .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Alias.TARGET_NAME,
+                    new Link(ccc.api.core.ResourceIdentifiers.Alias.TARGET_NAME)
                     .build("id", getId().toString(), new NormalisingEncoder()));
                 break;
 

@@ -27,7 +27,7 @@
 package ccc.client.gwt.views.gxt;
 
 
-import static ccc.client.gwt.validation.Validations.*;
+import static ccc.client.core.InternalServices.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -37,11 +37,12 @@ import java.util.UUID;
 import ccc.api.core.Group;
 import ccc.api.core.User;
 import ccc.client.core.I18n;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
+import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.gwt.widgets.UserTable;
-import ccc.client.validation.Validate;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -109,12 +110,24 @@ public class EditUserDialog extends AbstractEditDialog {
     @Override protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(updateUser())
-                    .check(notEmpty(_email))
-                    .check(notEmpty(_name))
-                    .stopIfInError()
-                    .check(notValidEmail(_email))
-                    .callMethodOr(reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _email.getValue(), _email.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _name.getValue(), _name.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notValidEmail(
+                        _email.getValue(), _email.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                updateUser();
             }
         };
     }
@@ -125,28 +138,24 @@ public class EditUserDialog extends AbstractEditDialog {
      *
      * @return
      */
-    private Runnable updateUser() {
-        return new Runnable() {
-            public void run() {
-                _userDTO.setEmail(_email.getValue());
-                _userDTO.setName(_name.getValue());
+    private void updateUser() {
+        _userDTO.setEmail(_email.getValue());
+        _userDTO.setName(_name.getValue());
 
-                final Set<UUID> validGroups = new HashSet<UUID>();
-                for (final BaseModelData selected : _groups.getSelection()) {
-                    validGroups.add(selected.<UUID>get("id"));
-                }
-                _userDTO.setGroups(validGroups);
+        final Set<UUID> validGroups = new HashSet<UUID>();
+        for (final BaseModelData selected : _groups.getSelection()) {
+            validGroups.add(selected.<UUID>get("id"));
+        }
+        _userDTO.setGroups(validGroups);
 
-                new UpdateUserAction(_userDTO){
-                    /** {@inheritDoc} */
-                    @Override protected void done() {
-                        // TODO: Just update the edited row model data.
-                        _userTable.refreshUsers();
-                        hide();
-                    }
-
-                }.execute();
+        new UpdateUserAction(_userDTO){
+            /** {@inheritDoc} */
+            @Override protected void done() {
+                // TODO: Just update the edited row model data.
+                _userTable.refreshUsers();
+                hide();
             }
-        };
+
+        }.execute();
     }
 }

@@ -26,20 +26,21 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.Collection;
 import java.util.Map;
 
 import ccc.api.core.Resource;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.MetadataGrid;
-import ccc.client.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -125,54 +126,55 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
 
+                final ValidationResult vr = new ValidationResult();
                 if (!_title.getValue().matches("[^<^>]*")) {
-                    ContentCreator.WINDOW.alert(
-                        constants().titlesMustNotContainBrackets());
+                    vr.addError(constants().titlesMustNotContainBrackets());
+                }
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _title.getValue(), _title.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.validateMetadataValues(
+                        _metadataPanel.currentMetadata()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 
-                Validate.callTo(updateMetaData())
-                    .check(Validations.notEmpty(_title))
-                    .check(_metadataPanel.validateMetadataValues())
-                    .stopIfInError()
-                    .callMethodOr(Validations.reportErrors());
+                updateMetaData();
             }
         };
     }
 
-    private Runnable updateMetaData() {
-        return new Runnable() {
+    private void updateMetaData() {
+        final Map<String, String> metadata =
+            _metadataPanel.currentMetadata();
+        final String tags =
+            (null==_tags.getValue()) ? "" : _tags.getValue();
+        final String title = _title.getValue();
+        final String description = _description.getValue();
 
-            public void run() {
-                final Map<String, String> metadata =
-                    _metadataPanel.currentMetadata();
-                final String tags =
-                    (null==_tags.getValue()) ? "" : _tags.getValue();
-                final String title = _title.getValue();
-                final String description = _description.getValue();
+        final Resource r = new Resource();
+        r.setId(_resource.getId());
+        r.setTitle(title);
+        r.setDescription(description);
+        r.setMetadata(metadata);
+        r.setTags(ResourceSummaryModelData.parseTagString(tags));
+        r.addLink(
+            Resource.METADATA,
+            _resource.getDelegate().uriMetadata().toString());
 
-                final Resource r = new Resource();
-                r.setId(_resource.getId());
-                r.setTitle(title);
-                r.setDescription(description);
-                r.setMetadata(metadata);
-                r.setTags(ResourceSummaryModelData.parseTagString(tags));
-                r.addLink(
-                    Resource.METADATA,
-                    _resource.getDelegate().uriMetadata().toString());
-
-                new UpdateMetadataAction(r) {
-                        /** {@inheritDoc} */
-                        @Override protected void onNoContent(
-                                                     final Response response) {
-                            _resource.setTags(tags);
-                            _resource.setTitle(title);
-                            _resource.setDescription(description);
-                            _ssm.update(_resource);
-                            ResourceMetadataDialog.this.hide();
-                        }
-                }.execute();
-            }
-        };
+        new UpdateMetadataAction(r) {
+                /** {@inheritDoc} */
+                @Override protected void onNoContent(
+                                             final Response response) {
+                    _resource.setTags(tags);
+                    _resource.setTitle(title);
+                    _resource.setDescription(description);
+                    _ssm.update(_resource);
+                    ResourceMetadataDialog.this.hide();
+                }
+        }.execute();
     }
 }

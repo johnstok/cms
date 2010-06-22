@@ -27,18 +27,20 @@
 package ccc.client.gwt.views.gxt;
 
 
+import static ccc.client.core.InternalServices.*;
 
 import java.util.UUID;
 
 import ccc.api.core.Alias;
+import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateAliasAction;
-import ccc.client.gwt.validation.Validations;
-import ccc.client.validation.Validate;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -60,7 +62,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     private final TriggerField<String> _targetName =
         new TriggerField<String>();
 
-    private final UUID _aliasId;
+    private final ResourceSummary _alias;
     private UUID _targetId;
     private final ResourceSummary _targetRoot;
 
@@ -72,14 +74,13 @@ public class UpdateAliasDialog extends AbstractEditDialog {
      * @param targetName The target name.
      * @param targetRoot The root of the target resource
      */
-    public UpdateAliasDialog(final UUID aliasId,
+    public UpdateAliasDialog(final ResourceSummary alias,
                              final String targetName,
-                             final String aliasName,
                              final ResourceSummary targetRoot) {
         super(I18n.UI_CONSTANTS.updateAlias(),
               new GlobalsImpl());
 
-        _aliasId = aliasId;
+        _alias = alias;
         _targetRoot = targetRoot;
         setLayout(new FitLayout());
 
@@ -87,7 +88,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
 
         _aliasName.setFieldLabel(constants().name());
         _aliasName.setId("AliasName");
-        _aliasName.setValue(aliasName);
+        _aliasName.setValue(_alias.getName());
         _aliasName.setReadOnly(true);
         _aliasName.disable();
         addField(_aliasName);
@@ -123,35 +124,41 @@ public class UpdateAliasDialog extends AbstractEditDialog {
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(createAlias())
-                    .check(Validations.notEmpty(_aliasName))
-                    .check(Validations.notEmpty(_targetName))
-                    .stopIfInError()
-                    .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _aliasName.getValue(), _aliasName.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _targetName.getValue(), _targetName.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                createAlias();
             }
         };
     }
 
 
-    private Runnable createAlias() {
-        return new Runnable() {
-            public void run() {
-                // Target has not been changed.
-                if (null == _targetId) {
-                    hide();
-                } else {
-                    final Alias a = new Alias(_targetId);
-                    a.setId(_aliasId);
+    private void createAlias() {
+        // Target has not been changed.
+        if (null == _targetId) {
+            hide();
+        } else {
+            final Alias a = new Alias(_targetId);
+            a.setId(_alias.getId());
+            a.addLink(Resource.SELF, _alias.getLink(Resource.SELF));
 
-                    new UpdateAliasAction(a){
-                        /** {@inheritDoc} */
-                        @Override protected void onNoContent(
-                                                      final Response response) {
-                            hide();
-                        }
-                    }.execute();
+            new UpdateAliasAction(a){
+                /** {@inheritDoc} */
+                @Override protected void onNoContent(final Response response) {
+                    hide();
                 }
-            }
-        };
+            }.execute();
+        }
     }
 }

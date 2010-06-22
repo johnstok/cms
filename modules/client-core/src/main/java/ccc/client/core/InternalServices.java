@@ -26,8 +26,9 @@
  */
 package ccc.client.core;
 
-import ccc.client.events.SimpleBus;
 import ccc.client.events.Bus;
+import ccc.client.events.SimpleBus;
+import ccc.client.validation.AbstractValidations;
 
 
 /**
@@ -39,4 +40,6 @@ public class InternalServices {
 
     /** NEW_BUS : Bus. */
     public static final Bus<CoreEvents> CORE_BUS = new SimpleBus<CoreEvents>();
+
+    public static AbstractValidations VALIDATOR;
 }

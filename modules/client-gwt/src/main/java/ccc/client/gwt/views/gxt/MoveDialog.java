@@ -26,16 +26,17 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.MoveResourceAction;
-import ccc.client.gwt.validation.Validations;
-import ccc.client.validation.Validate;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -127,28 +128,31 @@ public class MoveDialog extends AbstractEditDialog {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
                 if (null==_parent) { return; }
-                Validate.callTo(move())
-                    .check(Validations.notEmpty(_parentFolder))
-                    .stopIfInError()
-                    .check(Validations.uniqueResourceName(
-                        _parent.getDelegate(), _targetName))
-                    .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _parentFolder.getValue(),
+                        _parentFolder.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                move();
             }
         };
     }
 
-    private Runnable move() {
-        return new Runnable() {
-            public void run() {
-                new MoveResourceAction(_target.getDelegate(), _parent.getId()){
-                    /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                                     final Response response) {
-                        _ssm.move(_target, _parent, _ssm.treeSelection());
-                        hide();
-                    }
-                }.execute();
+    private void move() {
+        new MoveResourceAction(_target.getDelegate(), _parent.getId()){
+            /** {@inheritDoc} */
+            @Override protected void onNoContent(
+                                             final Response response) {
+                _ssm.move(_target, _parent, _ssm.treeSelection());
+                hide();
             }
-        };
+        }.execute();
     }
 }

@@ -37,15 +37,8 @@ import java.util.List;
  */
 public class ValidationResult {
 
-    private List<String> _errors;
+    private final List<String> _errors= new ArrayList<String>();
 
-    /**
-     * Constructor.
-     *
-     */
-    public ValidationResult() {
-        _errors = new ArrayList<String>();
-    }
 
     /**
      * Accessor.
@@ -53,9 +46,9 @@ public class ValidationResult {
      * @return Returns the errors.
      */
     public final List<String> getErrors() {
-
         return _errors;
     }
+
 
     /**
      * Mutator.
@@ -63,18 +56,21 @@ public class ValidationResult {
      * @param errors The errors to set.
      */
     public final void setErrors(final List<String> errors) {
-
-        _errors = errors;
+        _errors.clear();
+        if (null!=errors) { _errors.addAll(errors); }
     }
+
 
     /**
      * Add a new error to the errors list.
+     * <p>NULL input parameters will be ignored.
      *
      * @param error The new error to add.
      */
     public void addError(final String error) {
-        _errors.add(error);
+        if (null!=error) { _errors.add(error); }
     }
+
 
     /**
      * Accessor.
@@ -84,6 +80,7 @@ public class ValidationResult {
     public final boolean isValid() {
         return _errors.size() == 0;
     }
+
 
     /**
      * Return a string of errors messages.
@@ -100,5 +97,4 @@ public class ValidationResult {
         }
         return sb.toString();
     }
-
 }

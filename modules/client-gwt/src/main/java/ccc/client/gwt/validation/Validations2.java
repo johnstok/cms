@@ -28,6 +28,7 @@ package ccc.client.gwt.validation;
 
 import ccc.api.types.EmailAddress;
 import ccc.api.types.Password;
+import ccc.client.validation.AbstractValidations;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NamedNodeMap;

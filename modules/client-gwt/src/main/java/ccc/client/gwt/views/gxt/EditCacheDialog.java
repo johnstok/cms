@@ -26,15 +26,16 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
 import ccc.api.core.Resource;
 import ccc.api.types.Duration;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateCacheDurationAction;
-import ccc.client.gwt.validation.Validations;
-import ccc.client.validation.Validate;
+import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -127,65 +128,76 @@ public class EditCacheDialog extends AbstractEditDialog {
 
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(updateCache())
-                .check(Validations.emptyOrNumber(_days))
-                .check(Validations.emptyOrNumber(_hours))
-                .check(Validations.emptyOrNumber(_minutes))
-                .check(Validations.emptyOrNumber(_seconds))
-                .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.emptyOrNumber(
+                        _days.getValue(), _days.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.emptyOrNumber(
+                        _hours.getValue(), _hours.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.emptyOrNumber(
+                        _minutes.getValue(), _minutes.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.emptyOrNumber(
+                        _seconds.getValue(), _seconds.getFieldLabel()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                updateCache();
             }
         };
     }
 
-    private Runnable updateCache() {
-        return new Runnable() {
-            public void run() {
-                boolean isDurationSet = false;
-                long days = 0L;
-                long hours = 0L;
-                long minutes = 0L;
-                long seconds = 0L;
+    private void updateCache() {
+        boolean isDurationSet = false;
+        long days = 0L;
+        long hours = 0L;
+        long minutes = 0L;
+        long seconds = 0L;
 
-                if (_days.getValue() != null
-                        && !_days.getValue().trim().equals("")) {
-                    isDurationSet = true;
-                    days = Long.parseLong(_days.getValue());
-                }
-                if (_hours.getValue() != null
-                        && !_hours.getValue().trim().equals("")) {
-                    isDurationSet = true;
-                    hours = Long.parseLong(_hours.getValue());
-                }
-                if (_minutes.getValue() != null
-                        && !_minutes.getValue().trim().equals("")) {
-                    isDurationSet = true;
-                    minutes = Long.parseLong(_minutes.getValue());
-                }
-                if (_seconds.getValue() != null
-                        && !_seconds.getValue().trim().equals("")) {
-                    isDurationSet = true;
-                    seconds = Long.parseLong(_seconds.getValue());
-                }
+        if (_days.getValue() != null
+                && !_days.getValue().trim().equals("")) {
+            isDurationSet = true;
+            days = Long.parseLong(_days.getValue());
+        }
+        if (_hours.getValue() != null
+                && !_hours.getValue().trim().equals("")) {
+            isDurationSet = true;
+            hours = Long.parseLong(_hours.getValue());
+        }
+        if (_minutes.getValue() != null
+                && !_minutes.getValue().trim().equals("")) {
+            isDurationSet = true;
+            minutes = Long.parseLong(_minutes.getValue());
+        }
+        if (_seconds.getValue() != null
+                && !_seconds.getValue().trim().equals("")) {
+            isDurationSet = true;
+            seconds = Long.parseLong(_seconds.getValue());
+        }
 
-                Duration updatedDs = null;
+        Duration updatedDs = null;
 
-                if (isDurationSet && !_useDefault.getValue().booleanValue()) {
-                    updatedDs = new Duration(days, hours, minutes, seconds);
-                }
+        if (isDurationSet && !_useDefault.getValue().booleanValue()) {
+            updatedDs = new Duration(days, hours, minutes, seconds);
+        }
 
-                final Resource r = new Resource();
-                r.setId(_item.getId());
-                r.setCacheDuration(updatedDs);
-                r.addLink(Resource.DURATION,
-                          _item.getDelegate().duration().toString());
+        final Resource r = new Resource();
+        r.setId(_item.getId());
+        r.setCacheDuration(updatedDs);
+        r.addLink(Resource.DURATION,
+                  _item.getDelegate().duration().toString());
 
-                new UpdateCacheDurationAction(r){
-                    @Override protected void onNoContent(final Response resp) {
-                        hide();
-                    }
-                }.execute();
+        new UpdateCacheDurationAction(r){
+            @Override protected void onNoContent(final Response resp) {
+                hide();
             }
-        };
+        }.execute();
     }
 
     /**

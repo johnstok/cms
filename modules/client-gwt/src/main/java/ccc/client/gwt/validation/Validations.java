@@ -27,8 +27,7 @@
 package ccc.client.gwt.validation;
 
 
-import ccc.client.validation.Validate;
-import ccc.client.validation.Validator;
+import ccc.client.validation.AbstractValidations;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.NamedNodeMap;
@@ -43,41 +42,29 @@ import com.google.gwt.xml.client.impl.DOMParseException;
  *
  * @author Civic Computing Ltd.
  */
-@Deprecated
 public final class Validations
     extends
         AbstractValidations {
 
-    private Validations() {
-        super();
-    }
-
-    /**
-     * Validates that xml is valid.
-     *
-     * @param definition The string to validate.
-     * @return The Validator
-     */
-    public static Validator notValidXML(final String definition) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                try {
-                    final Document d = XMLParser.parse(definition);
-                    final NodeList l = d.getElementsByTagName("option");
-                    for (int n=0; n<l.getLength(); n++) {
-                        final NamedNodeMap al = l.item(n).getAttributes();
-                        final Node value = al.getNamedItem("value");
-                        if (value != null
-                            && value.getNodeValue().indexOf(',') != -1) {
-                            validate.addMessage("XML option value "
-                                + UI_CONSTANTS.mustNotContainComma());
-                        }
-                    }
-                } catch (final DOMParseException e) {
-                    validate.addMessage("XML "+UI_CONSTANTS.isNotValid());
+    /** {@inheritDoc} */
+    @Override
+    public String notValidXML(final String definition) {
+        try {
+            final Document d = XMLParser.parse(definition);
+            final NodeList l = d.getElementsByTagName("option");
+            for (int n=0; n<l.getLength(); n++) {
+                final NamedNodeMap al = l.item(n).getAttributes();
+                final Node value = al.getNamedItem("value");
+                if (value != null
+                    && value.getNodeValue().indexOf(',') != -1) {
+                    return
+                        "XML option value "
+                        + UI_CONSTANTS.mustNotContainComma();
                 }
-                validate.next();
             }
-        };
+        } catch (final DOMParseException e) {
+            return "XML "+UI_CONSTANTS.isNotValid();
+        }
+        return null;
     }
 }

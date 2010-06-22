@@ -48,6 +48,7 @@ import ccc.client.gwt.i18n.GWTUIMessages;
 import ccc.client.gwt.remoting.GetPropertyAction;
 import ccc.client.gwt.remoting.GetServicesAction;
 import ccc.client.gwt.remoting.IsLoggedInAction;
+import ccc.client.gwt.validation.Validations;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -100,6 +101,8 @@ public final class ContentCreator implements EntryPoint {
             GWT.<ActionStatusConstants>create(GWTActionStatusConstants.class));
         GlobalsImpl.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
+
+        InternalServices.VALIDATOR = new Validations();
 
         if (!(null == WINDOW.getParameter("dec"))) { // 'dec' param is missing.
             WINDOW.enableExitConfirmation();

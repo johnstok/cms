@@ -39,11 +39,9 @@ import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 import ccc.client.gwt.widgets.ResourceTable;
-import ccc.client.validation.Validate;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -152,9 +150,7 @@ public class UpdatePageDialog
                 final Page p = Page.delta(getParagraphs());
                 p.setTemplate(_panel.template().getId());
 
-                Validate.callTo(updatePage())
-                    .check(Validations.validateFields(p))
-                    .callMethodOr(Validations.reportErrors());
+                updatePage();
             }
         };
     }
@@ -165,48 +161,38 @@ public class UpdatePageDialog
                 final Page p = Page.delta(getParagraphs());
                 p.setTemplate(_panel.template().getId());
 
-                Validate.callTo(saveDraft())
-                    .check(Validations.validateFields(p))
-                    .callMethodOr(Validations.reportErrors());
+                saveDraft();
             }
         };
     }
 
-    private Runnable updatePage() {
-        return new Runnable() {
-            public void run() {
-                final PageCommentDialog commentDialog =
-                    new PageCommentDialog(getParagraphs(),
-                                          UpdatePageDialog.this);
-                commentDialog.show();
-            }
-        };
+    private void updatePage() {
+        final PageCommentDialog commentDialog =
+            new PageCommentDialog(getParagraphs(),
+                                  UpdatePageDialog.this);
+        commentDialog.show();
     }
 
-    private Runnable saveDraft() {
-        return new Runnable() {
-            public void run() {
-                final Page update = new Page();
-                update.setId(getModelData().getId());
-                update.setParagraphs(getParagraphs());
-                update.addLink(
-                    Page.WORKING_COPY,
-                    _modelData.getDelegate().getLink(
-                        Page.WORKING_COPY));
+    private void saveDraft() {
+        final Page update = new Page();
+        update.setId(getModelData().getId());
+        update.setParagraphs(getParagraphs());
+        update.addLink(
+            Page.WORKING_COPY,
+            _modelData.getDelegate().getLink(
+                Page.WORKING_COPY));
 
-                new UpdateWorkingCopyAction(update) {
-                    /** {@inheritDoc} */
-                    @Override protected void onNoContent(
-                                                     final Response response) {
-                        final ResourceSummaryModelData md = getModelData();
-                        md.setWorkingCopy(true);
-                        rt().update(md);
-                        hide();
-                    }
-
-                }.execute();
+        new UpdateWorkingCopyAction(update) {
+            /** {@inheritDoc} */
+            @Override protected void onNoContent(
+                                             final Response response) {
+                final ResourceSummaryModelData md = getModelData();
+                md.setWorkingCopy(true);
+                rt().update(md);
+                hide();
             }
-        };
+
+        }.execute();
     }
 
     /**

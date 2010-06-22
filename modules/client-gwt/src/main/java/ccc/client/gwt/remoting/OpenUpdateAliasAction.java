@@ -62,7 +62,7 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        ResourceSummary delegate = _alias.getDelegate();
+        final ResourceSummary delegate = _alias.getDelegate();
         return delegate.targetName().build(new GWTTemplateEncoder());
     }
 
@@ -70,8 +70,7 @@ public class OpenUpdateAliasAction
     @Override
     protected void onOK(final Response response) {
         final String targetName = response.getText();
-        new UpdateAliasDialog(
-            _alias.getId(), targetName, _alias.getName(), _targetRoot)
+        new UpdateAliasDialog(_alias.getDelegate(), targetName, _targetRoot)
         .show();
     }
 

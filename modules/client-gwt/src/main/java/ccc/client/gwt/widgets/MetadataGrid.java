@@ -10,8 +10,6 @@ import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.i18n.UIConstants;
-import ccc.client.validation.Validate;
-import ccc.client.validation.Validator;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -167,41 +165,5 @@ public class MetadataGrid extends ContentPanel {
         if (newHeight > (Globals.DEFAULT_HEIGHT - GRID_HEIGHT)) {
             _grid.setHeight(height);
         }
-    }
-
-    /**
-     * Factory method for metadata validators.
-     *
-     * @return A new instance of the metaDataValues validator.
-     */
-    public Validator validateMetadataValues() {
-        final Map<String, String> data = currentMetadata();
-        return new Validator() {
-            public void validate(final Validate validate) {
-                final StringBuilder sb = new StringBuilder();
-                for (final Map.Entry<String, String> datum : data.entrySet()) {
-                    if (null==datum.getKey()
-                        || datum.getKey().trim().length() < 1) {
-                        sb.append(_constants.noEmptyKeysAllowed());
-                    }
-                    if (null==datum.getValue()
-                        || datum.getValue().trim().length() < 1) {
-                        sb.append(_constants.noEmptyValuesAllowed());
-                    }
-                    if (!datum.getKey().matches("[^<^>]*")) {
-                        sb.append(
-                            _constants.keysMustNotContainBrackets());
-                    }
-                    if (!datum.getValue().matches("[^<^>]*")) {
-                        sb.append(
-                            _constants.valuesMustNotContainBrackets());
-                    }
-                }
-                if (sb.length() > 0) {
-                    validate.addMessage(sb.toString());
-                }
-                validate.next();
-            }
-        };
     }
 }

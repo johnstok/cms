@@ -27,6 +27,8 @@
 
 package ccc.client.gwt.views.gxt;
 
+import static ccc.client.core.InternalServices.*;
+
 import java.util.UUID;
 
 import ccc.api.core.Resource;
@@ -37,19 +39,16 @@ import ccc.api.types.ResourceName;
 import ccc.client.core.DialogMode;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
+import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
-import ccc.client.gwt.remoting.TemplateNameExistsAction;
 import ccc.client.gwt.remoting.UpdateTemplateAction;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
-import ccc.client.validation.Validate;
-import ccc.client.validation.Validator;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -256,87 +255,78 @@ public class EditTemplateDialog
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                Validate.callTo(createTemplates())
-                    .check(Validations.notEmpty(
-                        _definition.getEditorCode(), "Definition"))
-                    .check(Validations.notEmpty(_name))
-                    .check(Validations.notValidResourceName(_name))
-                    .check(Validations.notEmpty(_body.getEditorCode(), "body"))
-                    .check(Validations.notEmpty(_mimePrimary))
-                    .check(Validations.notEmpty(_mimeSub))
-                    .stopIfInError()
-                    .check(Validations.notValidXML(_definition.getEditorCode()))
-                    .check(uniqueTemplateName(_name))
-                    .callMethodOr(Validations.reportErrors());
+
+                final ValidationResult vr = new ValidationResult();
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _definition.getEditorCode(), "Definition")); // FIXME: I18n.
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _name.getValue(), _name.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _body.getEditorCode(), "body")); // FIXME: I18n.
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _mimePrimary.getValue(), _mimePrimary.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notEmpty(
+                        _mimeSub.getValue(), _mimeSub.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notValidResourceName(
+                        _name.getValue(), _name.getFieldLabel()));
+                vr.addError(
+                    VALIDATOR.notValidXML(_definition.getEditorCode()));
+
+                if (!vr.isValid()) {
+                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    return;
+                }
+
+                createTemplates();
             }
         };
     }
 
-    private Validator uniqueTemplateName(final TextField<String> name) {
-        return new Validator() {
-            public void validate(final Validate validate) {
-                if (_mode == DialogMode.UPDATE) {
-                    validate.next();
-                } else {
-                    new TemplateNameExistsAction(name.getValue()){
 
-                        @Override
-                        protected void execute(final boolean nameExists) {
-                            if (nameExists) {
-                                validate.addMessage(
-        getMessages().templateWithNameAlreadyExistsInThisFolder(name.getValue())
-                                );
-                            }
-                            validate.next();
+    private void createTemplates() {
+        final Template delta = model();
+        switch (_mode) {
+            case CREATE:
+
+                delta.setTitle(_name.getValue());
+                delta.setDescription(_name.getValue());
+                delta.setName(new ResourceName(_name.getValue()));
+                delta.setParent(_parentFolderId);
+
+                new CreateTemplateAction(delta){
+                        @Override protected void execute(
+                                     final ResourceSummary template) {
+                            _ssm.create(
+                                new ResourceSummaryModelData(template));
+                            hide();
                         }
                     }.execute();
-                }
-            }
-        };
-    }
+                break;
+            case UPDATE:
 
-    private Runnable createTemplates() {
-        return new Runnable() {
-            public void run() {
-                final Template delta = model();
-                switch (_mode) {
-                    case CREATE:
+                delta.setId(_id);
+                delta.addLink(
+                    Resource.SELF, _model.getLink(Resource.SELF));
 
-                        delta.setTitle(_name.getValue());
-                        delta.setDescription(_name.getValue());
-                        delta.setName(new ResourceName(_name.getValue()));
-                        delta.setParent(_parentFolderId);
-
-                        new CreateTemplateAction(delta){
-                                @Override protected void execute(
-                                             final ResourceSummary template) {
-                                    _ssm.create(
-                                        new ResourceSummaryModelData(template));
-                                    hide();
-                                }
-                            }.execute();
-                        break;
-                    case UPDATE:
-
-                        delta.setId(_id);
-                        delta.addLink(
-                            Resource.SELF, _model.getLink(Resource.SELF));
-
-                        new UpdateTemplateAction(delta) {
-                            /** {@inheritDoc} */
-                            @Override protected void onNoContent(
-                                                     final Response response) {
-                                _ssm.update(_proxy);
-                                hide();
-                            }
-                        }.execute();
-                        break;
-                    default:
-                        ContentCreator.WINDOW.alert(constants().error());
-                    break;
-                }
-            }
-        };
+                new UpdateTemplateAction(delta) {
+                    /** {@inheritDoc} */
+                    @Override protected void onNoContent(
+                                             final Response response) {
+                        _ssm.update(_proxy);
+                        hide();
+                    }
+                }.execute();
+                break;
+            default:
+                ContentCreator.WINDOW.alert(constants().error());
+            break;
+        }
     }
 
 

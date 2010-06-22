@@ -34,9 +34,7 @@ import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemoteException;
 import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.validation.Validations;
 import ccc.client.gwt.widgets.ContentCreator;
-import ccc.client.validation.Validate;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -147,8 +145,8 @@ public class UpdateFileDialog extends AbstractEditDialog {
                 if (!getPanel().isValid()) {
                     return;
                 }
-                Validate.callTo(submit())
-                .callMethodOr(Validations.reportErrors());
+
+                submit();
             }
         };
     }
