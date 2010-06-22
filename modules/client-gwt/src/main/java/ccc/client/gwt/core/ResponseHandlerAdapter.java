@@ -26,12 +26,13 @@
  */
 package ccc.client.gwt.core;
 
+import ccc.client.core.CoreEvents;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandler;
 import ccc.client.core.SessionTimeoutException;
-import ccc.client.gwt.events.Error;
+import ccc.client.events.Event;
 import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -134,7 +135,10 @@ public class ResponseHandlerAdapter
     /** {@inheritDoc} */
     @Override
     public void onFailed(final Throwable throwable) {
-        ContentCreator.EVENT_BUS.fireEvent(new Error(throwable, _name));
+        InternalServices.CORE_BUS.fireEvent(
+            new Event<CoreEvents>(CoreEvents.ERROR)
+                .addProperty("exception", throwable)
+                .addProperty("name",      _name));
     }
 
 

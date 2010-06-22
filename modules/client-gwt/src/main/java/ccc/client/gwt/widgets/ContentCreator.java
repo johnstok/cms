@@ -27,14 +27,17 @@
 package ccc.client.gwt.widgets;
 
 
+import ccc.client.core.CoreEvents;
 import ccc.client.core.ExceptionHandler;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.Window;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.core.GWTExceptionHandler;
 import ccc.client.gwt.core.GWTWindow;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.events.Error;
 import ccc.client.gwt.i18n.GWTActionNameConstants;
 import ccc.client.gwt.i18n.GWTActionStatusConstants;
 import ccc.client.gwt.i18n.GWTCommandTypeConstants;
@@ -108,13 +111,23 @@ public final class ContentCreator implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
+
         installUnexpectedExceptionHandler();
-        EVENT_BUS.addHandler(Error.TYPE, new Error.ErrorHandler() {
-            @Override public void onError(final Error event) {
-                ContentCreator.EX_HANDLER.unexpectedError(
-                    event.getException(), event.getName());
-            }
-        });
+
+        InternalServices.CORE_BUS.registerHandler(
+            new EventHandler<CoreEvents>() {
+                @Override
+                public void handle(final Event<CoreEvents> event) {
+                    switch (event.getType()) {
+                        case ERROR:
+                            ContentCreator.EX_HANDLER.unexpectedError(
+                                event.<Throwable>getProperty("exception"),
+                                event.<String>getProperty("name"));
+                        default:
+                            break;
+                    }
+                }
+            });
 
         new GetServicesAction() {
             /** {@inheritDoc} */

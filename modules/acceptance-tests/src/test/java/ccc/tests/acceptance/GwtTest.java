@@ -39,15 +39,17 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import ccc.api.core.ResourceIdentifiers.Alias;
+import ccc.client.core.CoreEvents;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
 import ccc.client.core.RequestExecutor;
 import ccc.client.core.Response;
 import ccc.client.core.ResponseHandler;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.events.Error;
 import ccc.client.gwt.remoting.GetServicesAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.remoting.TextParser;
 import ccc.commons.Testing;
@@ -69,15 +71,21 @@ public class GwtTest extends TestCase {
 
         I18n.USER_ACTIONS = Testing.stub(ActionNameConstants.class);
 
-        ContentCreator.EVENT_BUS.addHandler(
-            Error.TYPE,
-            new Error.ErrorHandler() {
-                /** {@inheritDoc} */
-                @Override public void onError(final Error event) {
-                    throw new RuntimeException(
-                        "Test failed.", event.getException());
+        InternalServices.CORE_BUS.registerHandler(
+            new EventHandler<CoreEvents>() {
+                @Override
+                public void handle(final Event<CoreEvents> event) {
+                    switch (event.getType()) {
+                        case ERROR:
+                            throw new RuntimeException(
+                                "Test failed.",
+                                event.<Throwable>getProperty("exception"));
+                        default:
+                            break;
+                    }
                 }
             });
+
 
         new GetServicesAction()
             .setExecutor(new HttpClientRequestExecutor())
