@@ -30,13 +30,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccc.api.core.Page;
+import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.binding.TemplateSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.PageCreated;
 import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
@@ -93,21 +93,20 @@ public class CreatePagePresenter
 
             final Set<Paragraph> paragraphs = getView().getParagraphs();
             final Page p = Page.delta(paragraphs);
-            final TemplateSummaryModelData tData =
-                getView().getSelectedTemplate();
+            final Template tData = getView().getSelectedTemplate();
 
             if (tData == null) {
                 getView().alert(I18n.UI_CONSTANTS.noTemplateChosen());
                 return;
             }
-            p.setTemplate(
-                tData.getTemplate().getId());
+            p.setTemplate(tData.getId());
 
             Validate.callTo(createPage(paragraphs))
-                .check(Validations.notEmpty(getView().getName()))
+                .check(Validations.notEmpty(
+                    getView().getName(), I18n.UI_CONSTANTS.name()))
                 .stopIfInError()
                 .check(Validations.notValidResourceName(
-                    getView().getName()))
+                    getView().getName(), I18n.UI_CONSTANTS.name()))
                 .stopIfInError()
                 .check(Validations.uniqueResourceName(
                     getModel(),  getView().getName()))
@@ -132,9 +131,9 @@ public class CreatePagePresenter
                 page.setParent(getModel().getId());
                 page.setComment(getView().getComment());
                 page.setMajorChange(getView().getMajorEdit());
-                page.setTitle(getView().getName().getValue());
+                page.setTitle(getView().getName());
                 page.setTemplate(template);
-                page.setName(new ResourceName(getView().getName().getValue()));
+                page.setName(new ResourceName(getView().getName()));
 
                 new CreatePageAction(page).execute();
             }

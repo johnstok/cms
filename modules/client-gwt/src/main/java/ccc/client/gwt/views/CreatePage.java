@@ -29,13 +29,11 @@ package ccc.client.gwt.views;
 
 import java.util.Set;
 
+import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.View;
-import ccc.client.gwt.binding.TemplateSummaryModelData;
-
-import com.extjs.gxt.ui.client.widget.form.TextField;
 
 /**
  * MVP view for creating a page.
@@ -56,14 +54,14 @@ public interface CreatePage extends View<Editable>, Validatable {
      *
      * @return The selected template.
      */
-    TemplateSummaryModelData getSelectedTemplate();
+    Template getSelectedTemplate();
 
     /**
      * Accessor.
      *
      * @return The name.
      */
-    TextField<String> getName();
+    String getName();
 
     /**
      * Accessor.

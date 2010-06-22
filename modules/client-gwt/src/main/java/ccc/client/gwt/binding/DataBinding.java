@@ -44,7 +44,11 @@ import ccc.client.core.Globals;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.BeanModelLookup;
+import com.extjs.gxt.ui.client.data.BeanModelMarker;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.BeanModelMarker.BEAN;
 
 
 /**
@@ -134,16 +138,26 @@ public final class DataBinding {
      * Create model data objects for a collection of template summaries.
      *
      * @param list The template summaries.
+     *
      * @return The corresponding model data objects.
      */
-    public static List<TemplateSummaryModelData> bindTemplateDelta(
+    public static List<BeanModel> bindTemplateDelta(
                                      final Collection<Template> list) {
-        final List<TemplateSummaryModelData> boundData =
-            new ArrayList<TemplateSummaryModelData>();
-        for (final Template ts : list) {
-            boundData.add(new TemplateSummaryModelData(ts));
-        }
-        return boundData;
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Template.class).createModel(list);
+    }
+
+
+    /**
+     * Create a model data object for a single template.
+     *
+     * @param template The template to bind.
+     *
+     * @return The bean model wrapper for the template.
+     */
+    public static BeanModel bindTemplate(final Template template) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Template.class).createModel(template);
     }
 
 
@@ -220,5 +234,10 @@ public final class DataBinding {
             boundData.add(new GroupModelData(as));
         }
         return boundData;
+    }
+
+    @BEAN(Template.class)
+    public interface CustomerBeanModel extends BeanModelMarker {
+        /* No methods. */
     }
 }

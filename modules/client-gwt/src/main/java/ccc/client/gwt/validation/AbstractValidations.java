@@ -125,11 +125,24 @@ public class AbstractValidations {
      * @return The Validator
      */
     public static Validator notValidResourceName(final TextField<String> name) {
+        return notValidResourceName(name.getValue(), name.getFieldLabel());
+    }
+
+    /**
+     * Validates resource name. Fails if name contains spaces etc.
+     *
+     * @param value The value to test.
+     * @param label The field label.
+     *
+     * @return The Validator
+     */
+    public static Validator notValidResourceName(final String value,
+                                                 final String label) {
         return new Validator() {
             public void validate(final Validate validate) {
-                if(!name.getValue().matches(VALID_CHARACTERS)) {
+                if(!value.matches(VALID_CHARACTERS)) {
                     validate.addMessage(
-                        name.getFieldLabel()
+                        label
                         + " "+UI_CONSTANTS.isNotValidResourceName()
                     );
                 }
@@ -161,21 +174,38 @@ public class AbstractValidations {
     /**
      * Checks that the folder does not contain given resource name.
      *
-     * @param folder FolderDTO to check
-     * @param name Resource name
+     * @param folder FolderDTO to check.
+     * @param name Resource name.
+     *
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final ResourceSummaryModelData folder, final TextField<String> name) {
+    public static Validator uniqueResourceName(
+                                       final ResourceSummaryModelData folder,
+                                       final TextField<String> name) {
+        return uniqueResourceName(folder, name.getValue());
+    }
+
+    /**
+     * Checks that the folder does not contain given resource name.
+     *
+     * @param folder FolderDTO to check
+     * @param value The value to test.
+     *
+     * @return The Validator
+     */
+    public static Validator uniqueResourceName(
+                                       final ResourceSummaryModelData folder,
+                                       final String value) {
 
         return new Validator() {
             public void validate(final Validate validate) {
                 // FIXME: Conversion to type ResourceName can fail.
                 new ResourceNameExistsAction(folder.getDelegate(),
-                                             new ResourceName(name.getValue())){
+                    new ResourceName(value)){
                     @Override protected void execute(final boolean nameExists) {
                         if (nameExists) {
                             validate.addMessage(
-                                UI_MESSAGES.nameExistsInFolder(name.getValue())
+                                UI_MESSAGES.nameExistsInFolder(value)
                             );
                         }
                         validate.next();
@@ -212,7 +242,8 @@ public class AbstractValidations {
      * @param name name Resource name
      * @return The Validator
      */
-    public static Validator uniqueResourceName(final ResourceSummary folder, final TextField<String> name) {
+    public static Validator uniqueResourceName(final ResourceSummary folder,
+                                               final TextField<String> name) {
         return new Validator() {
             public void validate(final Validate validate) {
                 // FIXME: Conversion to type ResourceName can fail.
@@ -239,7 +270,8 @@ public class AbstractValidations {
      * @param min The minimum length of the String
      * @return The Validator
      */
-    public static Validator minLength(final TextField<String> input, final int min) {
+    public static Validator minLength(final TextField<String> input,
+                                      final int min) {
         return new Validator() {
             public void validate(final Validate validate) {
                 if(null == input.getValue()
@@ -311,7 +343,8 @@ public class AbstractValidations {
      * @param pw2 The password to check.
      * @return A new instance of the password validator.
      */
-    public static Validator matchingPasswords(final String pw1, final String pw2) {
+    public static Validator matchingPasswords(final String pw1,
+                                              final String pw2) {
         return new Validator() {
             public void validate(final Validate validate) {
                 if (pw1 != null && !pw1.equals(pw2)) {
