@@ -24,11 +24,7 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-
-package ccc.client.gwt.views;
-
-import java.util.Set;
-import java.util.UUID;
+package ccc.client.views;
 
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
@@ -36,60 +32,53 @@ import ccc.client.core.View;
 
 
 /**
- * API for create user dialogs.
+ * MVP View for creating a text file.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreateUser extends View<Editable>, Validatable {
+public interface CreateTextFile extends View<Editable>, Validatable {
+
 
     /**
      * Accessor.
      *
-     * @return Returns the username.
+     * @return The text of the file.
      */
-    String getUsername();
+    String getText();
 
     /**
      * Accessor.
      *
-     * @return Returns the full name.
+     * @return The text file name.
      */
     String getName();
 
     /**
      * Accessor.
      *
-     * @return Returns the password1.
+     * @return The mime primary type of the text file.
      */
-    String getPassword1();
+    String getPrimaryMime();
 
     /**
      * Accessor.
      *
-     * @return Returns the password2.
+     * @return The mime sub type of the text file.
      */
-    String getPassword2();
+    String getSubMime();
 
     /**
      * Accessor.
      *
-     * @return Returns the email.
+     * @return The comment.
      */
-    String getEmail();
+    String getComment();
 
     /**
      * Accessor.
      *
-     * @return Returns the groups.
+     * @return The boolean value for major edit.
      */
-    Set<UUID> getGroups();
-
-
-    /**
-     * Display an alert with the specified message.
-     *
-     * @param message The message to display.
-     */
-    void alert(String message);
-
+    boolean isMajorEdit();
 }
+

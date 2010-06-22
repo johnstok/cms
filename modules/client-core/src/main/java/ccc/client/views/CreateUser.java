@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,10 +21,14 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
+
+package ccc.client.views;
+
+import java.util.Set;
+import java.util.UUID;
 
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
@@ -32,27 +36,60 @@ import ccc.client.core.View;
 
 
 /**
- * MVP view for creating a folder.
+ * API for create user dialogs.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreateFolder
-    extends
-        View<Editable>,
-        Validatable {
+public interface CreateUser extends View<Editable>, Validatable {
 
     /**
      * Accessor.
      *
-     * @return The folder name.
+     * @return Returns the username.
+     */
+    String getUsername();
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the full name.
      */
     String getName();
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the password1.
+     */
+    String getPassword1();
 
     /**
-     * Mutator.
+     * Accessor.
      *
-     * @param name The new folder name to set.
+     * @return Returns the password2.
      */
-    void setName(String name);
+    String getPassword2();
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the email.
+     */
+    String getEmail();
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the groups.
+     */
+    Set<UUID> getGroups();
+
+
+    /**
+     * Display an alert with the specified message.
+     *
+     * @param message The message to display.
+     */
+    void alert(String message);
+
 }

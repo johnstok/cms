@@ -33,4 +33,5 @@
     <source path="client/events" />
     <source path="client/remoting" />
     <source path="client/validation" />
+    <source path="client/views" />
 </module>

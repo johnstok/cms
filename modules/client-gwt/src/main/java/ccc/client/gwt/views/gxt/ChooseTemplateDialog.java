@@ -37,7 +37,7 @@ import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.DisplayFields;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.views.ChangeResourceTemplate;
+import ccc.client.views.ChangeResourceTemplate;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BeanModel;

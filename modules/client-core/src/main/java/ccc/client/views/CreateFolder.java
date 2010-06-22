@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
+package ccc.client.views;
 
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
@@ -32,28 +32,27 @@ import ccc.client.core.View;
 
 
 /**
- * MVP View for updating a resource's name.
+ * MVP view for creating a folder.
  *
  * @author Civic Computing Ltd.
  */
-public interface RenameResource
+public interface CreateFolder
     extends
         View<Editable>,
         Validatable {
+
+    /**
+     * Accessor.
+     *
+     * @return The folder name.
+     */
+    String getName();
 
 
     /**
      * Mutator.
      *
-     * @param name The new resource name to set.
+     * @param name The new folder name to set.
      */
     void setName(String name);
-
-
-    /**
-     * Accessor.
-     *
-     * @return The current resource name.
-     */
-    String getName();
 }

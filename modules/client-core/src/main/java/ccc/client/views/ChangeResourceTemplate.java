@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,79 +21,47 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
+package ccc.client.views;
 
+import java.util.Collection;
+import java.util.UUID;
+
+import ccc.api.core.Template;
 import ccc.client.core.Editable;
-import ccc.client.core.Validatable;
 import ccc.client.core.View;
 
 
 /**
- * MVP View for updating a text file content.
+ * MVP View for changing a resource's template.
  *
  * @author Civic Computing Ltd.
  */
-public interface EditTextFile extends View<Editable>, Validatable {
-
-
-    /**
-     * Mutator.
-     *
-     * @param text The new text to set.
-     */
-    void setText(final String text);
-
-
-    /**
-     * Accessor.
-     *
-     * @return The current text of the file.
-     */
-    String getText();
-
-    /**
-     * Accessor.
-     *
-     * @return The comment.
-     */
-    String getComment();
-
-    /**
-     * Accessor.
-     *
-     * @return The boolean value for major edit.
-     */
-    boolean isMajorEdit();
-
-    /**
-     * Accessor.
-     *
-     * @return The mime primary type of the text file.
-     */
-    String getPrimaryMime();
-
-    /**
-     * Accessor.
-     *
-     * @return The mime sub type of the text file.
-     */
-    String getSubMime();
+public interface ChangeResourceTemplate
+    extends
+        View<Editable> {
 
     /**
      * Mutator.
      *
-     * @param sub The new sub mime type to set.
+     * @param templates The list of available templates to choose from.
      */
-    void setSubMime(String sub);
+    void setTemplates(Collection<Template> templates);
 
     /**
      * Mutator.
      *
-     * @param primary The new primary mime type to set.
+     * @param templateId The currently selected template.
      */
-    void setPrimaryMime(String primary);
+    void setSelectedTemplate(UUID templateId);
+
+    /**
+     * Accessor.
+     *
+     * @return The currently selected template.
+     */
+    UUID getSelectedTemplate();
+
 }
-

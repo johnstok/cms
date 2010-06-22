@@ -35,8 +35,8 @@ import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.ResourceRenamed;
 import ccc.client.gwt.events.ResourceRenamed.RenamedHandler;
 import ccc.client.gwt.remoting.RenameAction;
-import ccc.client.gwt.views.RenameResource;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.views.RenameResource;
 
 
 /**

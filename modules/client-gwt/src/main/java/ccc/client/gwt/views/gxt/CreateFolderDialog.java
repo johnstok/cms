@@ -32,7 +32,7 @@ import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.validation.Validations2;
-import ccc.client.gwt.views.CreateFolder;
+import ccc.client.views.CreateFolder;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

@@ -34,9 +34,9 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.events.UserCreated;
 import ccc.client.gwt.events.UserCreated.UserCreatedHandler;
 import ccc.client.gwt.remoting.CreateUserAction;
-import ccc.client.gwt.views.CreateUser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.i18n.UIMessages;
+import ccc.client.views.CreateUser;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 

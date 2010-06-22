@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright (c) 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,48 +24,44 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
 
+package ccc.client.views;
+
+import java.util.Set;
+
+import ccc.api.core.Template;
+import ccc.api.types.Paragraph;
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.View;
 
-
 /**
- * MVP View for creating a text file.
+ * MVP view for creating a page.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreateTextFile extends View<Editable>, Validatable {
-
+public interface CreatePage extends View<Editable>, Validatable {
 
     /**
-     * Accessor.
+     * Display an alert with the specified message.
      *
-     * @return The text of the file.
+     * @param message The message to display.
      */
-    String getText();
+    void alert(String message);
 
     /**
      * Accessor.
      *
-     * @return The text file name.
+     * @return The selected template.
+     */
+    Template getSelectedTemplate();
+
+    /**
+     * Accessor.
+     *
+     * @return The name.
      */
     String getName();
-
-    /**
-     * Accessor.
-     *
-     * @return The mime primary type of the text file.
-     */
-    String getPrimaryMime();
-
-    /**
-     * Accessor.
-     *
-     * @return The mime sub type of the text file.
-     */
-    String getSubMime();
 
     /**
      * Accessor.
@@ -77,8 +73,15 @@ public interface CreateTextFile extends View<Editable>, Validatable {
     /**
      * Accessor.
      *
-     * @return The boolean value for major edit.
+     * @return The major edit.
      */
-    boolean isMajorEdit();
-}
+    boolean getMajorEdit();
 
+    /**
+     * Accessor.
+     *
+     * @return The paragraphs.
+     */
+    Set<Paragraph> getParagraphs();
+
+}

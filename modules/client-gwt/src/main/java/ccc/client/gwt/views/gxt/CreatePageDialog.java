@@ -42,10 +42,10 @@ import ccc.client.gwt.binding.DisplayFields;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
-import ccc.client.gwt.views.CreatePage;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
+import ccc.client.views.CreatePage;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.SortDir;

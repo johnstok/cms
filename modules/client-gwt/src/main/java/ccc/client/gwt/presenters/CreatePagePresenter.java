@@ -42,8 +42,8 @@ import ccc.client.gwt.events.PageCreated;
 import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
 import ccc.client.gwt.remoting.CreatePageAction;
 import ccc.client.gwt.validation.Validations;
-import ccc.client.gwt.views.CreatePage;
 import ccc.client.validation.Validate;
+import ccc.client.views.CreatePage;
 
 
 /**

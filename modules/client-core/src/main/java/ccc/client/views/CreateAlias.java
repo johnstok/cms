@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.client.gwt.views;
+package ccc.client.views;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Editable;

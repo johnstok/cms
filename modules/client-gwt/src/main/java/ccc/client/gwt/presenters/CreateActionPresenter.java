@@ -33,7 +33,7 @@ import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.ActionCreated;
 import ccc.client.gwt.events.ActionCreated.ActionCreatedHandler;
 import ccc.client.gwt.remoting.CreateActionAction;
-import ccc.client.gwt.views.CreateAction;
+import ccc.client.views.CreateAction;
 
 
 /**

@@ -34,8 +34,8 @@ import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.TextFileUpdated;
 import ccc.client.gwt.events.TextFileUpdated.UpdatedHandler;
 import ccc.client.gwt.remoting.EditTextFileAction;
-import ccc.client.gwt.views.EditTextFile;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.views.EditTextFile;
 
 
 /**

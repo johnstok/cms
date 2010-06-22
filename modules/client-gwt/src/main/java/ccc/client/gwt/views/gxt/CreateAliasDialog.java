@@ -34,8 +34,8 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.validation.Validations2;
-import ccc.client.gwt.views.CreateAlias;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.views.CreateAlias;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;

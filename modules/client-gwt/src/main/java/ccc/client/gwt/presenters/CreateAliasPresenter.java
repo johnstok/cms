@@ -37,8 +37,8 @@ import ccc.client.gwt.events.AliasCreated;
 import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
 import ccc.client.gwt.remoting.CreateAliasAction;
 import ccc.client.gwt.remoting.ResourceNameExistsAction;
-import ccc.client.gwt.views.CreateAlias;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.views.CreateAlias;
 
 
 /**

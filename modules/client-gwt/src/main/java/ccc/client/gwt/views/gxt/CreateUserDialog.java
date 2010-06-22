@@ -41,9 +41,9 @@ import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UniqueUsernameAction;
 import ccc.client.gwt.validation.Validations2;
-import ccc.client.gwt.views.CreateUser;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.GroupListField;
+import ccc.client.views.CreateUser;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

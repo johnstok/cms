@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,54 +21,39 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
+package ccc.client.views;
 
-package ccc.client.gwt.views;
-
-import java.util.Date;
-import java.util.Map;
-
-import ccc.api.types.CommandType;
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.View;
 
 
 /**
- * API for create action dialogs.
+ * MVP View for updating a resource's name.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreateAction extends View<Editable>, Validatable {
+public interface RenameResource
+    extends
+        View<Editable>,
+        Validatable {
+
 
     /**
-     * Display an alert with the specified message.
+     * Mutator.
      *
-     * @param message The message to display.
+     * @param name The new resource name to set.
      */
-    void alert(String message);
+    void setName(String name);
 
-    /**
-     * Accessor.
-     *
-     * @return The command type.
-     */
-    CommandType getCommandType();
 
     /**
      * Accessor.
      *
-     * @return The date.
+     * @return The current resource name.
      */
-    Date getDate();
-
-    /**
-     * Accessor.
-     *
-     * @return The action parameters.
-     */
-    Map<String, String> getActionParameters();
-
+    String getName();
 }

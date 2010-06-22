@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2010 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,44 +24,35 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
+package ccc.client.views;
 
-package ccc.client.gwt.views;
-
-import java.util.Set;
-
-import ccc.api.core.Template;
-import ccc.api.types.Paragraph;
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.View;
 
+
 /**
- * MVP view for creating a page.
+ * MVP View for updating a text file content.
  *
  * @author Civic Computing Ltd.
  */
-public interface CreatePage extends View<Editable>, Validatable {
+public interface EditTextFile extends View<Editable>, Validatable {
+
 
     /**
-     * Display an alert with the specified message.
+     * Mutator.
      *
-     * @param message The message to display.
+     * @param text The new text to set.
      */
-    void alert(String message);
+    void setText(final String text);
 
-    /**
-     * Accessor.
-     *
-     * @return The selected template.
-     */
-    Template getSelectedTemplate();
 
     /**
      * Accessor.
      *
-     * @return The name.
+     * @return The current text of the file.
      */
-    String getName();
+    String getText();
 
     /**
      * Accessor.
@@ -73,15 +64,36 @@ public interface CreatePage extends View<Editable>, Validatable {
     /**
      * Accessor.
      *
-     * @return The major edit.
+     * @return The boolean value for major edit.
      */
-    boolean getMajorEdit();
+    boolean isMajorEdit();
 
     /**
      * Accessor.
      *
-     * @return The paragraphs.
+     * @return The mime primary type of the text file.
      */
-    Set<Paragraph> getParagraphs();
+    String getPrimaryMime();
 
+    /**
+     * Accessor.
+     *
+     * @return The mime sub type of the text file.
+     */
+    String getSubMime();
+
+    /**
+     * Mutator.
+     *
+     * @param sub The new sub mime type to set.
+     */
+    void setSubMime(String sub);
+
+    /**
+     * Mutator.
+     *
+     * @param primary The new primary mime type to set.
+     */
+    void setPrimaryMime(String primary);
 }
+

@@ -31,10 +31,10 @@ import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.validation.Validations2;
-import ccc.client.gwt.views.CreateTextFile;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
+import ccc.client.views.CreateTextFile;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

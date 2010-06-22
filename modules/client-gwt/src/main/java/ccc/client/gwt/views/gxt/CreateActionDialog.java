@@ -34,10 +34,10 @@ import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.views.CreateAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.CreateActionPanel;
 import ccc.client.i18n.UIConstants;
+import ccc.client.views.CreateAction;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;

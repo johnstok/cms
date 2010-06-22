@@ -33,8 +33,8 @@ import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.FolderCreated;
 import ccc.client.gwt.events.FolderCreated.FolderCreatedHandler;
 import ccc.client.gwt.remoting.CreateFolderAction;
-import ccc.client.gwt.views.CreateFolder;
 import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.views.CreateFolder;
 
 
 /**

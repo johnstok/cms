@@ -36,7 +36,7 @@ import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.events.ResourceTemplateChanged;
 import ccc.client.gwt.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.client.gwt.remoting.UpdateResourceTemplateAction;
-import ccc.client.gwt.views.ChangeResourceTemplate;
+import ccc.client.views.ChangeResourceTemplate;
 
 
 /**

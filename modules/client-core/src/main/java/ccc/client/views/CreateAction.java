@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,47 +21,54 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.views;
 
-import java.util.Collection;
-import java.util.UUID;
+package ccc.client.views;
 
-import ccc.api.core.Template;
+import java.util.Date;
+import java.util.Map;
+
+import ccc.api.types.CommandType;
 import ccc.client.core.Editable;
+import ccc.client.core.Validatable;
 import ccc.client.core.View;
 
 
 /**
- * MVP View for changing a resource's template.
+ * API for create action dialogs.
  *
  * @author Civic Computing Ltd.
  */
-public interface ChangeResourceTemplate
-    extends
-        View<Editable> {
+public interface CreateAction extends View<Editable>, Validatable {
 
     /**
-     * Mutator.
+     * Display an alert with the specified message.
      *
-     * @param templates The list of available templates to choose from.
+     * @param message The message to display.
      */
-    void setTemplates(Collection<Template> templates);
-
-    /**
-     * Mutator.
-     *
-     * @param templateId The currently selected template.
-     */
-    void setSelectedTemplate(UUID templateId);
+    void alert(String message);
 
     /**
      * Accessor.
      *
-     * @return The currently selected template.
+     * @return The command type.
      */
-    UUID getSelectedTemplate();
+    CommandType getCommandType();
+
+    /**
+     * Accessor.
+     *
+     * @return The date.
+     */
+    Date getDate();
+
+    /**
+     * Accessor.
+     *
+     * @return The action parameters.
+     */
+    Map<String, String> getActionParameters();
 
 }
