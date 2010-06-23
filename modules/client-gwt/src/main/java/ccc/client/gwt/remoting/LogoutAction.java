@@ -56,7 +56,7 @@ public final class LogoutAction
     /** {@inheritDoc} */
     @Override
     protected void onNoContent(final Response response) {
-        GLOBALS.currentUser(null);
+        new GlobalsImpl().currentUser(null);
         ContentCreator.WINDOW.disableExitConfirmation();
         ContentCreator.WINDOW.redirectTo(Globals.APP_URL);
     }

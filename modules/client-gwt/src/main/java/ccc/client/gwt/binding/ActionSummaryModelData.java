@@ -44,14 +44,13 @@ import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
-import ccc.client.gwt.events.ActionCancelled;
-import ccc.client.gwt.events.ActionCreated;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
 import ccc.plugins.s11n.JsonKeys;
@@ -287,7 +286,7 @@ public class ActionSummaryModelData
      */
     public static class ActionCancelledCallback extends ResponseHandlerAdapter {
 
-        private final ActionCancelled _event;
+        private final Event<CommandType> _event;
 
         /**
          * Constructor.
@@ -296,13 +295,14 @@ public class ActionSummaryModelData
          */
         public ActionCancelledCallback(final ActionSummaryModelData action) {
             super(I18n.UI_CONSTANTS.cancel());
-            _event = new ActionCancelled(action);
+            _event = new Event<CommandType>(CommandType.ACTION_CANCEL);
+            _event.addProperty("action", action);
         }
 
         /** {@inheritDoc} */
         @Override
         public void onNoContent(final ccc.client.core.Response response) {
-            ContentCreator.EVENT_BUS.fireEvent(_event);
+            InternalServices.REMOTING_BUS.fireEvent(_event);
         }
     }
 
@@ -324,7 +324,9 @@ public class ActionSummaryModelData
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            ContentCreator.EVENT_BUS.fireEvent(new ActionCreated());
+            final Event<CommandType> event =
+                new Event<CommandType>(CommandType.ACTION_CREATE);
+            InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }
 }

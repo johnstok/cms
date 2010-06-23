@@ -27,13 +27,14 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.events.ResourceTemplateChanged;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.Json;
 import ccc.plugins.s11n.json.TempSerializer;
 
@@ -80,8 +81,10 @@ public class UpdateResourceTemplateAction
     /** {@inheritDoc} */
     @Override
     protected void onNoContent(final Response response) {
-        ContentCreator.EVENT_BUS.fireEvent(
-            new ResourceTemplateChanged(
-                _resource.getId(), _resource.getTemplate()));
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.RESOURCE_CHANGE_TEMPLATE);
+        event.addProperty("resource", _resource.getId());
+        event.addProperty("template", _resource.getTemplate());
+        InternalServices.REMOTING_BUS.fireEvent(event);
     }
 }

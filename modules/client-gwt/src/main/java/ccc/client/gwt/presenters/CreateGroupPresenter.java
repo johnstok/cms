@@ -28,10 +28,9 @@ package ccc.client.gwt.presenters;
 
 
 import ccc.api.core.Group;
-import ccc.client.gwt.events.GroupCreated;
-import ccc.client.gwt.events.GroupCreated.GroupCreatedHandler;
+import ccc.api.types.CommandType;
+import ccc.client.events.Event;
 import ccc.client.gwt.remoting.CreateGroupAction;
-import ccc.client.gwt.widgets.ContentCreator;
 
 
 
@@ -45,9 +44,7 @@ import ccc.client.gwt.widgets.ContentCreator;
  */
 public class CreateGroupPresenter
     extends
-        GroupPresenter
-    implements
-        GroupCreatedHandler {
+        GroupPresenter {
 
     /**
      * Constructor.
@@ -56,7 +53,7 @@ public class CreateGroupPresenter
      */
     public CreateGroupPresenter(final GroupView view) {
         super(view);
-        render(ContentCreator.EVENT_BUS.addHandler(GroupCreated.TYPE, this));
+        render();
     }
 
 
@@ -73,7 +70,14 @@ public class CreateGroupPresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final GroupCreated event) {
-        dispose();
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case GROUP_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

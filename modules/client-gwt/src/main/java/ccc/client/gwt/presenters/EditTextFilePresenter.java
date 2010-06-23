@@ -28,11 +28,11 @@ package ccc.client.gwt.presenters;
 
 import ccc.api.core.File;
 import ccc.api.core.Resource;
+import ccc.api.types.CommandType;
 import ccc.api.types.MimeType;
 import ccc.client.core.Editable;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.TextFileUpdated;
-import ccc.client.gwt.events.TextFileUpdated.UpdatedHandler;
 import ccc.client.gwt.remoting.EditTextFileAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.EditTextFile;
@@ -47,8 +47,7 @@ public class EditTextFilePresenter
     extends
         AbstractPresenter<EditTextFile, File>
     implements
-        Editable,
-        UpdatedHandler {
+        Editable {
 
     /**
      * Constructor.
@@ -60,8 +59,6 @@ public class EditTextFilePresenter
                                  final File model) {
         super(view, model);
 
-        addHandler(TextFileUpdated.TYPE, this);
-
         getView().show(this);
         getView().setText(model.getContent());
         getView().setPrimaryMime(model.getMimeType().getPrimaryType());
@@ -72,7 +69,6 @@ public class EditTextFilePresenter
     /** {@inheritDoc} */
     @Override
     public void cancel() {
-
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -97,9 +93,17 @@ public class EditTextFilePresenter
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void onUpdated(final TextFileUpdated event) {
-        getView().hide();
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case FILE_UPDATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

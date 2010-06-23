@@ -34,8 +34,7 @@ import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.ValidationResult;
 import ccc.client.core.View;
-
-import com.google.gwt.event.shared.HandlerRegistration;
+import ccc.client.gwt.core.AbstractPresenter;
 
 
 /**
@@ -44,11 +43,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Civic Computing Ltd.
  */
 public abstract class GroupPresenter
+    extends
+        AbstractPresenter<GroupPresenter.GroupView, Group>
     implements
         Editable {
-
-    private final GroupView _view;
-    private HandlerRegistration _hReg;
 
 
     /**
@@ -57,17 +55,25 @@ public abstract class GroupPresenter
      * @param view The MVP view for this presenter.
      */
     public GroupPresenter(final GroupView view) {
-        _view = view;
+        super(view, new Group());
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param view The MVP view for this presenter.
+     * @param group The group to update.
+     */
+    public GroupPresenter(final GroupView view, final Group group) {
+        super(view, group);
     }
 
     /**
      * Render this presenter.
-     *
-     * @param hReg The registration of the success event handler.
      */
-    protected final void render(final HandlerRegistration hReg) {
-        _hReg = hReg;
-        _view.show(this);
+    protected final void render() {
+        getView().show(this);
     }
 
 
@@ -77,9 +83,9 @@ public abstract class GroupPresenter
      * @return True if the data is valid; false otherwise.
      */
     protected final boolean valid() {
-        final ValidationResult vr = _view.getValidationResult();
+        final ValidationResult vr = getView().getValidationResult();
         if (!vr.isValid()) {
-            _view.alert(vr.getErrors().get(0));
+            getView().alert(vr.getErrors().get(0));
         }
         return vr.isValid();
     }
@@ -98,8 +104,8 @@ public abstract class GroupPresenter
      * @param dto The DTO that will provide the view's data.
      */
     protected final void bind(final Group dto) {
-        _view.setName(dto.getName());
-        _view.setPermissions(dto.getPermissions());
+        getView().setName(dto.getName());
+        getView().setPermissions(dto.getPermissions());
     }
 
 
@@ -109,17 +115,8 @@ public abstract class GroupPresenter
      * @param dto The DTO that will receive the view's data.
      */
     protected final void unbind(final Group dto) {
-        dto.setName(_view.getName());
-        dto.setPermissions(_view.getPermissions());
-    }
-
-
-    /**
-     * Dispose of this presenter.
-     */
-    protected final void dispose() {
-        _hReg.removeHandler();
-        _view.hide();
+        dto.setName(getView().getName());
+        dto.setPermissions(getView().getPermissions());
     }
 
 

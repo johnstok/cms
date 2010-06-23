@@ -48,7 +48,9 @@ public class SimpleBus<T extends Enum<T>> implements Bus<T> {
     /** {@inheritDoc} */
     public synchronized void fireEvent(final Event<T> event) {
         DBC.require().notNull(event);
-        for (final EventHandler<T> handler : _handlers) {
+        final Set<EventHandler<T>> handlers =
+            new HashSet<EventHandler<T>>(_handlers);
+        for (final EventHandler<T> handler : handlers) {
             handler.handle(event);
         }
     }

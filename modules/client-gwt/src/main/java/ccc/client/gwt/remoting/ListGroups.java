@@ -37,6 +37,7 @@ import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.Request;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -90,7 +91,7 @@ public abstract class ListGroups
         params.put("order", new String[] {_order.name()});
         return
             Globals.API_URL
-            + new Link(GLOBALS.groups().getLink("self"))
+            + new Link(new GlobalsImpl().groups().getLink("self"))
                 .build(params, new GWTTemplateEncoder());
     }
 

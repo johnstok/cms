@@ -27,12 +27,12 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.File;
+import ccc.api.types.CommandType;
 import ccc.api.types.MimeType;
 import ccc.client.core.Editable;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.ResourceCreated;
-import ccc.client.gwt.events.ResourceCreated.ResourceCreatedHandler;
 import ccc.client.gwt.remoting.CreateTextFileAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateTextFile;
@@ -47,8 +47,7 @@ public class CreateTextFilePresenter
     extends
         AbstractPresenter<CreateTextFile, ResourceSummaryModelData>
     implements
-        Editable,
-        ResourceCreatedHandler {
+        Editable {
 
 
     /**
@@ -60,7 +59,6 @@ public class CreateTextFilePresenter
     public CreateTextFilePresenter(final CreateTextFile view,
                                    final ResourceSummaryModelData model) {
         super(view, model);
-        addHandler(ResourceCreated.TYPE, this);
         getView().show(this);
     }
 
@@ -96,8 +94,15 @@ public class CreateTextFilePresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final ResourceCreated event) {
-        clearHandlers();
-        getView().hide();
+    public void handle(final Event<CommandType> event) {
+
+        switch (event.getType()) {
+            case FILE_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

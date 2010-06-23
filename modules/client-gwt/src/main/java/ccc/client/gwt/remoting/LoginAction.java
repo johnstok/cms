@@ -76,7 +76,7 @@ public class LoginAction
 
     /** {@inheritDoc} */
     @Override protected void onOK(final Response response) {
-        final boolean success = parseBoolean(response);
+        final boolean success = getParser().parseBoolean(response.getText());
         if (success) {
             ContentCreator.WINDOW.refresh();
         } else {

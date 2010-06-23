@@ -39,6 +39,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -106,7 +107,7 @@ public abstract class ListUsersAction
 
         return
             Globals.API_URL
-            + new Link(GLOBALS.users().getLink("self"))
+            + new Link(new GlobalsImpl().users().getLink("self"))
                 .build(params, new GWTTemplateEncoder());
     }
 

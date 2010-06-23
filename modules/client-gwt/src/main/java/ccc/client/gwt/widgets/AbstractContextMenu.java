@@ -27,9 +27,9 @@
 
 package ccc.client.gwt.widgets;
 
+import ccc.client.core.Action;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.i18n.UIConstants;
 

@@ -26,14 +26,14 @@
  */
 package ccc.client.gwt.presenters;
 
+import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.ResourceRenamed;
-import ccc.client.gwt.events.ResourceRenamed.RenamedHandler;
 import ccc.client.gwt.remoting.RenameAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.RenameResource;
@@ -48,8 +48,7 @@ public class RenameResourcePresenter
     extends
         AbstractPresenter<RenameResource, ResourceSummaryModelData>
     implements
-        Editable,
-        RenamedHandler {
+        Editable {
 
 
     /**
@@ -61,8 +60,6 @@ public class RenameResourcePresenter
     public RenameResourcePresenter(final RenameResource view,
                                    final ResourceSummaryModelData model) {
         super(view, model);
-
-        addHandler(ResourceRenamed.TYPE, this);
 
         getView().setName(getModel().getName());
         getView().show(this);
@@ -100,7 +97,14 @@ public class RenameResourcePresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onRename(final ResourceRenamed event) {
-        getView().hide();
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case RESOURCE_RENAME:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

@@ -29,8 +29,8 @@ package ccc.client.gwt.actions;
 import java.util.Collection;
 
 import ccc.api.core.Template;
+import ccc.client.core.Action;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreatePagePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;

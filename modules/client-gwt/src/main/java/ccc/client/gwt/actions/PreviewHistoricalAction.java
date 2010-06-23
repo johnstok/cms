@@ -26,8 +26,9 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.client.core.Action;
 import ccc.client.gwt.binding.LogEntrySummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 
@@ -65,7 +66,7 @@ public final class PreviewHistoricalAction
                                   _historyDialog.getResource()) {
             @Override protected void execute(final String path) {
                 final String url =
-                    GLOBALS.appURL()
+                    new GlobalsImpl().appURL()
                     + "preview"
                     + path
                     + "?v="

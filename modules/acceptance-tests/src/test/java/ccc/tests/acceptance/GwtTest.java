@@ -29,6 +29,7 @@ package ccc.tests.acceptance;
 import static ccc.api.types.HttpStatusCode.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -109,6 +110,19 @@ public class GwtTest extends TestCase {
         @Override
         public Json parseJson(final String text) {
             return new JsonImpl(text);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean parseBoolean(final String text) {
+            return Boolean.valueOf(text).booleanValue();
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public Map<String, String> parseMapString(final String text) {
+            final Json json = parseJson(text);
+            return json.getStringMap("properties");
         }
     }
 

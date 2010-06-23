@@ -26,8 +26,11 @@
  */
 package ccc.client.core;
 
+import ccc.api.types.CommandType;
+import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
 import ccc.client.events.SimpleBus;
+import ccc.client.remoting.TextParser;
 import ccc.client.validation.AbstractValidations;
 
 
@@ -38,8 +41,12 @@ import ccc.client.validation.AbstractValidations;
  */
 public class InternalServices {
 
-    /** NEW_BUS : Bus. */
-    public static final Bus<CoreEvents> CORE_BUS = new SimpleBus<CoreEvents>();
+    public static Bus<CoreEvents>  CORE_BUS     = new SimpleBus<CoreEvents>();
+    public static Bus<CommandType> REMOTING_BUS = new SimpleBus<CommandType>();
 
     public static AbstractValidations VALIDATOR;
+    public static RequestExecutor     EXECUTOR;
+    public static TextParser          PARSER;
+    public static Encoder             ENCODER;
+    public static ExceptionHandler    EX_HANDLER;
 }

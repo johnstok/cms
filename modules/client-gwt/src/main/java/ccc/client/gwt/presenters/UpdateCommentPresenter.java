@@ -27,11 +27,12 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.Comment;
+import ccc.api.types.CommandType;
+import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.CommentUpdatedEvent;
-import ccc.client.gwt.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.client.gwt.remoting.UpdateCommentAction;
 import ccc.client.gwt.views.gxt.CommentView;
 import ccc.client.gwt.widgets.ContentCreator;
@@ -46,7 +47,7 @@ public class UpdateCommentPresenter
     extends
         AbstractPresenter<CommentView, CommentModelData>
     implements
-        CommentUpdatedHandler {
+        Editable {
 
 
     /**
@@ -59,25 +60,19 @@ public class UpdateCommentPresenter
                                   final CommentModelData model) {
         super(view, model);
 
-        addHandler(CommentUpdatedEvent.TYPE, this);
-
-        getView().setPresenter(this);
-
         getView().setAuthor(model.getAuthor());
         getView().setBody2(model.getBody());
         getView().setStatus(model.getStatus());
         getView().setUrl2(model.getUrl());
         getView().setEmail(model.getEmail());
 
-        getView().show();
+        getView().show(this);
     }
 
 
-    /**
-     * Update the comment.
-     *
-     */
-    public void update() {
+    /** {@inheritDoc} */
+    @Override
+    public void save() {
 
         final ValidationResult result = getView().getValidationResult();
 
@@ -104,7 +99,19 @@ public class UpdateCommentPresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onUpdate(final CommentUpdatedEvent event) {
-        getView().hide();
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case COMMENT_UPDATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void cancel() { dispose(); }
 }

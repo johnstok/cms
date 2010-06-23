@@ -26,14 +26,11 @@
  */
 package ccc.client.gwt.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ccc.client.gwt.widgets.ContentCreator;
-
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
+import ccc.api.types.CommandType;
+import ccc.client.core.Editable;
+import ccc.client.core.InternalServices;
+import ccc.client.core.View;
+import ccc.client.events.EventHandler;
 
 
 
@@ -45,12 +42,12 @@ import com.google.gwt.event.shared.HandlerRegistration;
  *
  * @author Civic Computing Ltd.
  */
-public abstract class AbstractPresenter<T, U> {
+public abstract class AbstractPresenter<T extends View<? extends Editable>, U>
+    implements
+        EventHandler<CommandType> {
 
     private final T _view;
     private final U _model;
-    private final List<HandlerRegistration> _handlers =
-        new ArrayList<HandlerRegistration>();
 
 
     /**
@@ -63,20 +60,7 @@ public abstract class AbstractPresenter<T, U> {
                              final U model) {
         _view = view;
         _model = model;
-    }
-
-
-    /**
-     * Add a handler for the specified event type.
-     *
-     * @param <R> The type of handler to add.
-     * @param event The event the handler should be fired for.
-     * @param handler The handler to fire.
-     */
-    protected <R extends EventHandler> void addHandler(
-                                                 final GwtEvent.Type<R> event,
-                                                 final R handler) {
-        _handlers.add(ContentCreator.EVENT_BUS.addHandler(event, handler));
+        InternalServices.REMOTING_BUS.registerHandler(this);
     }
 
 
@@ -84,10 +68,16 @@ public abstract class AbstractPresenter<T, U> {
      * Clear all handlers for this presenter.
      */
     protected void clearHandlers() {
-        for (final HandlerRegistration hr : _handlers) {
-            hr.removeHandler();
-        }
-        _handlers.clear();
+        InternalServices.REMOTING_BUS.unregisterHandler(this);
+    }
+
+
+    /**
+     * Dispose of this presenter.
+     */
+    protected final void dispose() {
+        clearHandlers();
+        _view.hide();
     }
 
 

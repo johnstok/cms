@@ -30,11 +30,11 @@ import java.util.Collection;
 
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
+import ccc.api.types.CommandType;
 import ccc.client.core.Editable;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.ResourceTemplateChanged;
-import ccc.client.gwt.events.ResourceTemplateChanged.ResTemChangedHandler;
 import ccc.client.gwt.remoting.UpdateResourceTemplateAction;
 import ccc.client.views.ChangeResourceTemplate;
 
@@ -48,8 +48,7 @@ public class ChangeResourceTemplatePresenter
     extends
         AbstractPresenter<ChangeResourceTemplate, ResourceSummaryModelData>
     implements
-        Editable,
-        ResTemChangedHandler {
+        Editable {
 
 
     /**
@@ -64,8 +63,6 @@ public class ChangeResourceTemplatePresenter
                                final ResourceSummaryModelData model,
                                final Collection<Template> templates) {
         super(view, model);
-
-        addHandler(ResourceTemplateChanged.TYPE, this);
 
         getView().setTemplates(templates);
         getView().setSelectedTemplate(getModel().getTemplateId());
@@ -95,8 +92,15 @@ public class ChangeResourceTemplatePresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onTemlateChanged(final ResourceTemplateChanged event) {
-        clearHandlers();
-        getView().hide();
+    public void handle(final Event<CommandType> event) {
+
+        switch (event.getType()) {
+            case RESOURCE_CHANGE_TEMPLATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

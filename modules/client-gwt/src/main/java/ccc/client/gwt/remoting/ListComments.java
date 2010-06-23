@@ -37,6 +37,7 @@ import ccc.api.types.Link;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.json.PagedCollectionReader;
@@ -100,7 +101,7 @@ public abstract class ListComments
         params.put("order", new String[] {_order.name()});
 
         return
-            new Link(GLOBALS.comments().getLink("self"))
+            new Link(new GlobalsImpl().comments().getLink("self"))
             .build(params, new GWTTemplateEncoder());
     }
 

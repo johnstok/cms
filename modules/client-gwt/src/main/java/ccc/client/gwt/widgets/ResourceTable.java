@@ -33,29 +33,16 @@ import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.User;
+import ccc.api.types.CommandType;
+import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.events.AliasCreated;
-import ccc.client.gwt.events.FolderCreated;
-import ccc.client.gwt.events.PageCreated;
-import ccc.client.gwt.events.ResourceCreated;
-import ccc.client.gwt.events.ResourceDeleted;
-import ccc.client.gwt.events.ResourceRenamed;
-import ccc.client.gwt.events.ResourceTemplateChanged;
-import ccc.client.gwt.events.WorkingCopyApplied;
-import ccc.client.gwt.events.WorkingCopyCleared;
-import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
-import ccc.client.gwt.events.FolderCreated.FolderCreatedHandler;
-import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
-import ccc.client.gwt.events.ResourceCreated.ResourceCreatedHandler;
-import ccc.client.gwt.events.ResourceDeleted.ResourceDeletedHandler;
-import ccc.client.gwt.events.ResourceRenamed.RenamedHandler;
-import ccc.client.gwt.events.ResourceTemplateChanged.ResTemChangedHandler;
-import ccc.client.gwt.events.WorkingCopyApplied.WCAppliedHandler;
-import ccc.client.gwt.events.WorkingCopyCleared.WCClearedHandler;
 import ccc.client.gwt.remoting.GetChildrenPagedAction;
 
 import com.extjs.gxt.ui.client.Style;
@@ -91,16 +78,8 @@ public class ResourceTable
     extends
         TablePanel
     implements
-        SingleSelectionModel,
-        ResourceDeletedHandler,
-        ResourceCreatedHandler,
-        ResTemChangedHandler,
-        RenamedHandler,
-        PageCreatedHandler,
-        FolderCreatedHandler,
-        AliasCreatedHandler,
-        WCClearedHandler,
-        WCAppliedHandler {
+        EventHandler<CommandType>,
+        SingleSelectionModel {
 
     private ListStore<ResourceSummaryModelData> _detailsStore =
         new ListStore<ResourceSummaryModelData>();
@@ -122,15 +101,7 @@ public class ResourceTable
         final FolderResourceTree tree,
         final User user) {
 
-        ContentCreator.EVENT_BUS.addHandler(ResourceDeleted.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(ResourceCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(PageCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(FolderCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(AliasCreated.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(WorkingCopyCleared.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(WorkingCopyApplied.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(ResourceRenamed.TYPE, this);
-        ContentCreator.EVENT_BUS.addHandler(ResourceTemplateChanged.TYPE, this);
+        InternalServices.REMOTING_BUS.registerHandler(this);
 
         _root = root;
         _tree = tree;
@@ -463,77 +434,57 @@ public class ResourceTable
 
     /** {@inheritDoc} */
     @Override
-    public void onApply(final WorkingCopyApplied event) {
-        final ResourceSummaryModelData item = event.getResource();
-        item.setWorkingCopy(false);
-        update(item);
-    }
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case RESOURCE_DELETE:
+                delete(event.<UUID>getProperty("resource"));
+                break;
 
+            case FILE_CREATE:
+            case PAGE_CREATE:
+            case FOLDER_CREATE:
+            case ALIAS_CREATE:
+                final ResourceSummaryModelData resourceModelData =
+                    new ResourceSummaryModelData(
+                        event.<ResourceSummary>getProperty("resource"));
+                create(resourceModelData);
+                break;
 
-    /** {@inheritDoc} */
-    @Override
-    public void onClear(final WorkingCopyCleared event) {
-        final ResourceSummaryModelData item = event.getResource();
-        item.setWorkingCopy(false);
-        update(item);
-    }
+            case RESOURCE_RENAME:
+                final ResourceSummaryModelData md1 =
+                    _detailsStore.findModel("UUID", event.getProperty("id"));
+                md1.setAbsolutePath(
+                    event.<ResourcePath>getProperty("path").toString());
+                md1.setName(
+                    event.<String>getProperty("name"));
+                update(md1);
+                break;
 
+            case RESOURCE_CHANGE_TEMPLATE:
+                final ResourceSummaryModelData md2 =
+                    _detailsStore.findModel(
+                        "UUID", event.getProperty("resource"));
+                if (null==md2) { return; } // Not present in table.
+                md2.setTemplateId(event.<UUID>getProperty("template"));
+                update(md2);
+                break;
 
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final AliasCreated event) {
-        create(event.getResource());
-    }
+            case RESOURCE_CLEAR_WC:
+                final ResourceSummaryModelData item1 =
+                    event.getProperty("resource");
+                item1.setWorkingCopy(false);
+                update(item1);
+                break;
 
+            case RESOURCE_APPLY_WC:
+                final ResourceSummaryModelData item2 =
+                    event.getProperty("resource");
+                item2.setWorkingCopy(false);
+                update(item2);
+                break;
 
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final FolderCreated event) {
-        create(event.getResource());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final PageCreated event) {
-        create(event.getResource());
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onRename(final ResourceRenamed event) {
-        final ResourceSummaryModelData md =
-            _detailsStore.findModel("UUID", event.getId());
-        md.setAbsolutePath(event.getPath());
-        md.setName(event.getName());
-        update(md);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onTemlateChanged(final ResourceTemplateChanged event) {
-        final ResourceSummaryModelData md =
-            _detailsStore.findModel("UUID", event.getResource());
-        if (null==md) { return; } // Not present in table.
-        md.setTemplateId(event.getNewTemplate());
-        update(md);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onCreate(final ResourceCreated event) {
-        final ResourceSummaryModelData resourceModelData =
-            new ResourceSummaryModelData(event.getResource());
-        create(resourceModelData);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void onDelete(final ResourceDeleted event) {
-        delete(event.getResource());
+            default:
+                break;
+        }
     }
 }

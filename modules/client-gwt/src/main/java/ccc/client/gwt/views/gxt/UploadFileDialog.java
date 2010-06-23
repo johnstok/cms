@@ -32,6 +32,7 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
+import ccc.client.core.InternalServices;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -136,7 +137,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                     // TODO: Handle 404 with notfound.jsp
 
                     if (SessionTimeoutException.isTimedout(response)) {
-                        ContentCreator.EX_HANDLER.unexpectedError(
+                        InternalServices.EX_HANDLER.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().uploadFile());
 
@@ -145,7 +146,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             JSONParser.parse(be.getResultHtml()).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // Error
-                            ContentCreator.EX_HANDLER.unexpectedError(
+                            InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
                                     FailureOverlay.fromJson(response)),
                                 getUiConstants().uploadFile());

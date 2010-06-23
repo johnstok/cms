@@ -33,6 +33,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
 
@@ -63,7 +64,7 @@ public abstract class UniqueUsernameAction
     protected String getPath() {
         return
             Globals.API_URL
-            + new Link(GLOBALS.users().getLink("exists"))
+            + new Link(new GlobalsImpl().users().getLink("exists"))
                 .build("uname", _username.toString(), new GWTTemplateEncoder());
     }
 

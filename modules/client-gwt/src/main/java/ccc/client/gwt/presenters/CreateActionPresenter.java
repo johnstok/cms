@@ -26,12 +26,12 @@
  */
 package ccc.client.gwt.presenters;
 
+import ccc.api.types.CommandType;
 import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.ActionCreated;
-import ccc.client.gwt.events.ActionCreated.ActionCreatedHandler;
 import ccc.client.gwt.remoting.CreateActionAction;
 import ccc.client.views.CreateAction;
 
@@ -45,8 +45,7 @@ public class CreateActionPresenter
     extends
         AbstractPresenter<CreateAction, ResourceSummaryModelData>
     implements
-        Editable,
-        ActionCreatedHandler {
+        Editable {
 
 
     /**
@@ -58,14 +57,7 @@ public class CreateActionPresenter
     public CreateActionPresenter(final CreateAction view,
                                  final ResourceSummaryModelData model) {
         super(view, model);
-        addHandler(ActionCreated.TYPE, this);
         getView().show(this);
-    }
-
-
-    private void hide() {
-        clearHandlers();
-        getView().hide();
     }
 
 
@@ -92,7 +84,18 @@ public class CreateActionPresenter
         }
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final ActionCreated event) { hide(); }
+    public void handle(final Event<CommandType> event) {
+
+        switch (event.getType()) {
+            case ACTION_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
+    }
 }

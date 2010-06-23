@@ -30,6 +30,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 
@@ -67,7 +68,7 @@ public class PublishAction
     @Override
     protected void onNoContent(final Response response) {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        item.setPublished(GLOBALS.currentUser().getUsername());
+        item.setPublished(new GlobalsImpl().currentUser().getUsername());
         _selectionModel.update(item);
     }
 }

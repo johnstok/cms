@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.widgets;
 
-import ccc.client.gwt.core.Action;
+import ccc.client.core.Action;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.widget.button.Button;

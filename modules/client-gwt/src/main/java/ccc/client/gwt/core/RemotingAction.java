@@ -27,32 +27,21 @@
 
 package ccc.client.gwt.core;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import ccc.api.core.ActionSummary;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
+import ccc.api.types.Link.Encoder;
+import ccc.client.core.Action;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
 import ccc.client.core.RequestExecutor;
 import ccc.client.core.Response;
-import ccc.client.gwt.widgets.ContentCreator;
+import ccc.client.events.Bus;
+import ccc.client.events.Event;
 import ccc.client.remoting.TextParser;
-import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.json.ActionSummarySerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
-
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 
 
 /**
@@ -64,10 +53,12 @@ public abstract class RemotingAction
     implements
         Action {
 
-    private String          _actionName;
-    private HttpMethod      _method;
-    private RequestExecutor _executor = new GwtRequestExecutor();
-    private TextParser      _parser   = new GWTTextParser();
+    private String           _actionName;
+    private HttpMethod       _method;
+    private RequestExecutor  _executor = InternalServices.EXECUTOR;
+    private TextParser       _parser   = InternalServices.PARSER;
+    private Encoder          _encoder  = InternalServices.ENCODER;
+    private Bus<CommandType> _bus      = InternalServices.REMOTING_BUS;
 
 
     /**
@@ -159,14 +150,14 @@ public abstract class RemotingAction
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onNoContent(final ccc.client.core.Response response) {
+                    public void onNoContent(final Response response) {
                         RemotingAction.this.onNoContent(response);
                     }
 
 
                     /** {@inheritDoc} */
                     @Override
-                    public void onOK(final ccc.client.core.Response response) {
+                    public void onOK(final Response response) {
                         RemotingAction.this.onOK(response);
                     }
                 });
@@ -191,11 +182,11 @@ public abstract class RemotingAction
      * @param throwable The throwable.
      */
     protected void onFailure(final Throwable throwable) {
-        ContentCreator.EX_HANDLER.unexpectedError(throwable, getActionName());
+        InternalServices.EX_HANDLER.unexpectedError(throwable, getActionName());
     }
 
 
-    private void onUnsupported(final ccc.client.core.Response response) {
+    private void onUnsupported(final Response response) {
         onFailure(
             new RuntimeException(// TODO Add UnsupportedResponseException
                 "Unsupported response: "
@@ -236,7 +227,7 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected void onNoContent(final ccc.client.core.Response response) {
+    protected void onNoContent(final Response response) {
         onUnsupported(response);
     }
 
@@ -246,7 +237,7 @@ public abstract class RemotingAction
      *
      * @param response The server response.
      */
-    protected void onOK(final ccc.client.core.Response response) {
+    protected void onOK(final Response response) {
         onUnsupported(response);
     }
 
@@ -259,7 +250,7 @@ public abstract class RemotingAction
      * @return The encoded string.
      */
     protected String encode(final String string) {
-        return URL.encodeComponent(string);
+        return _encoder.encode(string);
     }
 
 
@@ -270,77 +261,10 @@ public abstract class RemotingAction
      *
      * @return The resource summary.
      */
-    protected ResourceSummary parseResourceSummary(final ccc.client.core.Response response) {
+    protected ResourceSummary parseResourceSummary(final Response response) {
         return
             new ResourceSummarySerializer().read(
-                new GwtJson(
-                    JSONParser.parse(response.getText()).isObject()));
-    }
-
-
-    /**
-     * Parse the response as a list of strings.
-     *
-     * @param response The response to parse.
-     *
-     * @return The list of strings.
-     */
-    protected List<String> parseListString(final Response response) {
-        final List<String> strings = new ArrayList<String>();
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        for (int i=0; i<result.size(); i++) {
-            strings.add(result.get(i).isString().stringValue());
-        }
-        return strings;
-    }
-
-
-    /**
-     * Parse the response as a boolean.
-     *
-     * @param response The response to parse.
-     *
-     * @return A boolean.
-     */
-    protected boolean parseBoolean(final ccc.client.core.Response response) {
-        final JSONBoolean b = JSONParser.parse(response.getText()).isBoolean();
-        return b.booleanValue();
-    }
-
-
-    /**
-     * Parse the response as a collection of action summaries.
-     *
-     * @param response The response to parse.
-     *
-     * @return A collection of action summaries.
-     */
-    protected Collection<ActionSummary> parseActionSummaryCollection(
-                                                      final Response response) {
-        final JSONArray result = JSONParser.parse(response.getText()).isArray();
-        final Collection<ActionSummary> actions =
-            new ArrayList<ActionSummary>();
-        for (int i=0; i<result.size(); i++) {
-            actions.add(
-                new ActionSummarySerializer().read(
-                    new GwtJson(result.get(i).isObject())));
-        }
-        return actions;
-    }
-
-
-    /**
-     * Parse the response as a map.
-     *
-     * @param response The response to parse.
-     * @return A map.
-     */
-    protected Map<String, String> parseMapString(final ccc.client.core.Response response) {
-        final JSONValue value = JSONParser.parse(response.getText());
-        final JSONObject result = value.isObject();
-        final Json json = new GwtJson(result);
-
-        return json.getStringMap("properties");
+                _parser.parseJson(response.getText()));
     }
 
 
@@ -349,7 +273,7 @@ public abstract class RemotingAction
      *
      * @param event The event to submit.
      */
-    protected void fireEvent(final GwtEvent<?> event) {
-        ContentCreator.EVENT_BUS.fireEvent(event);
+    protected void fireEvent(final Event<CommandType> event) {
+        _bus.fireEvent(event);
     }
 }

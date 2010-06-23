@@ -27,10 +27,9 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.Group;
-import ccc.client.gwt.events.GroupUpdated;
-import ccc.client.gwt.events.GroupUpdated.GroupUpdatedHandler;
+import ccc.api.types.CommandType;
+import ccc.client.events.Event;
 import ccc.client.gwt.remoting.UpdateGroupAction;
-import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -43,11 +42,7 @@ import ccc.client.gwt.widgets.ContentCreator;
  */
 public class UpdateGroupPresenter
     extends
-        GroupPresenter
-    implements
-        GroupUpdatedHandler {
-
-    private final Group _group;
+        GroupPresenter {
 
 
     /**
@@ -57,10 +52,9 @@ public class UpdateGroupPresenter
      * @param group The group to update.
      */
     public UpdateGroupPresenter(final GroupView view, final Group group) {
-        super(view);
-        _group = group;
+        super(view, group);
         bind(group);
-        render(ContentCreator.EVENT_BUS.addHandler(GroupUpdated.TYPE, this));
+        render();
     }
 
 
@@ -69,8 +63,8 @@ public class UpdateGroupPresenter
     public void save() {
         if (valid()) {
             final Group group = new Group();
-            group.setId(_group.getId());
-            group.addLink("self", _group.getLink("self"));
+            group.setId(getModel().getId());
+            group.addLink("self", getModel().getLink("self"));
             unbind(group);
             new UpdateGroupAction(group).execute();
         }
@@ -79,7 +73,14 @@ public class UpdateGroupPresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onUpdate(final GroupUpdated event) {
-        dispose();
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case GROUP_UPDATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

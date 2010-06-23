@@ -33,15 +33,15 @@ import java.util.UUID;
 
 import ccc.api.core.Page;
 import ccc.api.core.Template;
+import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.PageCreated;
-import ccc.client.gwt.events.PageCreated.PageCreatedHandler;
 import ccc.client.gwt.remoting.CreatePageAction;
 import ccc.client.views.CreatePage;
 
@@ -55,8 +55,7 @@ public class CreatePagePresenter
     extends
         AbstractPresenter<CreatePage, ResourceSummaryModelData>
     implements
-        Editable,
-        PageCreatedHandler {
+        Editable {
 
 
     /**
@@ -68,14 +67,7 @@ public class CreatePagePresenter
     public CreatePagePresenter(final CreatePage view,
                                final ResourceSummaryModelData model) {
         super(view, model);
-        addHandler(PageCreated.TYPE, this);
         getView().show(this);
-    }
-
-
-    private void hide() {
-        clearHandlers();
-        getView().hide();
     }
 
 
@@ -136,6 +128,15 @@ public class CreatePagePresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final PageCreated event) { hide(); }
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case PAGE_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
+    }
 
 }

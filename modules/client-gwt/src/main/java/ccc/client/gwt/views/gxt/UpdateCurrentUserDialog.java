@@ -151,7 +151,7 @@ public class UpdateCurrentUserDialog extends AbstractEditDialog {
             @Override protected void onNoContent(
                                              final Response response) {
                 // TODO Update current user should return a UserDto.
-                GLOBALS.currentUser(user);
+                new GlobalsImpl().currentUser(user);
                 hide();
             }
 

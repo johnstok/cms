@@ -40,6 +40,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
@@ -95,7 +96,7 @@ public abstract class ListCompletedActionsAction
 
         final String path =
             Globals.API_URL
-            + new Link(GLOBALS.actions().getLink("completed"))
+            + new Link(new GlobalsImpl().actions().getLink("completed"))
                 .build(params, new GWTTemplateEncoder());
         return path;
     }

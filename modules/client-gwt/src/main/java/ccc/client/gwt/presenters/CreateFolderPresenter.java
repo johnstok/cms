@@ -26,12 +26,12 @@
  */
 package ccc.client.gwt.presenters;
 
+import ccc.api.types.CommandType;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.FolderCreated;
-import ccc.client.gwt.events.FolderCreated.FolderCreatedHandler;
 import ccc.client.gwt.remoting.CreateFolderAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateFolder;
@@ -46,8 +46,7 @@ public class CreateFolderPresenter
     extends
         AbstractPresenter<CreateFolder, ResourceSummaryModelData>
     implements
-        Editable,
-        FolderCreatedHandler {
+        Editable {
 
 
     /**
@@ -59,15 +58,9 @@ public class CreateFolderPresenter
     public CreateFolderPresenter(final CreateFolder view,
                                  final ResourceSummaryModelData model) {
         super(view, model);
-        addHandler(FolderCreated.TYPE, this);
         getView().show(this);
     }
 
-
-    private void hide() {
-        clearHandlers();
-        getView().hide();
-    }
 
 
     /** {@inheritDoc} */
@@ -93,5 +86,14 @@ public class CreateFolderPresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final FolderCreated event) { hide(); }
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case FOLDER_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
+    }
 }

@@ -28,7 +28,6 @@ package ccc.client.gwt.widgets;
 
 
 import ccc.client.core.CoreEvents;
-import ccc.client.core.ExceptionHandler;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
@@ -36,8 +35,11 @@ import ccc.client.core.Window;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.core.GWTExceptionHandler;
+import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GWTTextParser;
 import ccc.client.gwt.core.GWTWindow;
 import ccc.client.gwt.core.GlobalsImpl;
+import ccc.client.gwt.core.GwtRequestExecutor;
 import ccc.client.gwt.i18n.GWTActionNameConstants;
 import ccc.client.gwt.i18n.GWTActionStatusConstants;
 import ccc.client.gwt.i18n.GWTCommandTypeConstants;
@@ -60,7 +62,6 @@ import ccc.client.i18n.UIMessages;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.event.shared.HandlerManager;
 
 
 /**
@@ -68,15 +69,9 @@ import com.google.gwt.event.shared.HandlerManager;
  */
 public final class ContentCreator implements EntryPoint {
 
-    /** EVENT_BUS : HandlerManager. */
-    public static final HandlerManager EVENT_BUS =
-        new HandlerManager("Event bus");
     /** WINDOW : Window. */
     public static final Window WINDOW =
         new GWTWindow();
-    /** EX_HANDLER : ExceptionHandler. */
-    public static final ExceptionHandler EX_HANDLER =
-        new GWTExceptionHandler(WINDOW);
 
     private GlobalsImpl _globals = new GlobalsImpl();
 
@@ -102,7 +97,11 @@ public final class ContentCreator implements EntryPoint {
         GlobalsImpl.setCommandConstants(
             GWT.<CommandTypeConstants>create(GWTCommandTypeConstants.class));
 
-        InternalServices.VALIDATOR = new Validations();
+        InternalServices.VALIDATOR  = new Validations();
+        InternalServices.EXECUTOR   = new GwtRequestExecutor();
+        InternalServices.PARSER     = new GWTTextParser();
+        InternalServices.ENCODER    = new GWTTemplateEncoder();
+        InternalServices.EX_HANDLER = new GWTExceptionHandler(WINDOW);
 
         if (!(null == WINDOW.getParameter("dec"))) { // 'dec' param is missing.
             WINDOW.enableExitConfirmation();
@@ -123,7 +122,7 @@ public final class ContentCreator implements EntryPoint {
                 public void handle(final Event<CoreEvents> event) {
                     switch (event.getType()) {
                         case ERROR:
-                            ContentCreator.EX_HANDLER.unexpectedError(
+                            InternalServices.EX_HANDLER.unexpectedError(
                                 event.<Throwable>getProperty("exception"),
                                 event.<String>getProperty("name"));
                         default:
@@ -147,7 +146,8 @@ public final class ContentCreator implements EntryPoint {
         new GetPropertyAction() {
             /** {@inheritDoc} */
             @Override protected void onOK(final Response response) {
-                _globals.setSettings(parseMapString(response));
+                _globals.setSettings(
+                    getParser().parseMapString(response.getText()));
                 new IsLoggedInAction().execute();
             }
         }.execute();
@@ -158,7 +158,7 @@ public final class ContentCreator implements EntryPoint {
         GWT.setUncaughtExceptionHandler(
             new UncaughtExceptionHandler(){
                 public void onUncaughtException(final Throwable e) {
-                    ContentCreator.EX_HANDLER.unexpectedError(
+                    InternalServices.EX_HANDLER.unexpectedError(
                         e, I18n.USER_ACTIONS.unknownAction());
                 }
             }

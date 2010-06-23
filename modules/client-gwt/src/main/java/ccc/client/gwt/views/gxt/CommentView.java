@@ -31,6 +31,7 @@ import ccc.api.types.CommentStatus;
 import ccc.client.core.Globals;
 import ccc.client.core.Validatable;
 import ccc.client.core.ValidationResult;
+import ccc.client.core.View;
 import ccc.client.gwt.binding.EnumModelData;
 import ccc.client.gwt.presenters.UpdateCommentPresenter;
 
@@ -52,7 +53,8 @@ public class CommentView
     extends
         AbstractEditDialog
     implements
-        Validatable {
+        Validatable,
+        View<UpdateCommentPresenter> {
 
     private final TextField<String> _author = new TextField<String>();
     private final TextField<String> _email = new TextField<String>();
@@ -145,7 +147,7 @@ public class CommentView
     protected SelectionListener<ButtonEvent> saveAction() {
         return new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                _presenter.update();
+                _presenter.save();
             }
         };
     }
@@ -186,14 +188,6 @@ public class CommentView
         return _url.getValue();
     }
 
-    /**
-     * Mutator.
-     *
-     * @param presenter The MVP presenter.
-     */
-    public void setPresenter(final UpdateCommentPresenter presenter) {
-        _presenter = presenter;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -224,6 +218,7 @@ public class CommentView
         return result;
     }
 
+
     /**
      * Mutator.
      *
@@ -232,6 +227,7 @@ public class CommentView
     public void setEmail(final String email) {
         _email.setValue(email);
     }
+
 
     /**
      * Accessor.
@@ -242,4 +238,18 @@ public class CommentView
         return _email.getValue();
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public void show(final UpdateCommentPresenter presenter) {
+        _presenter = presenter;
+        show();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void cancel() {
+        _presenter.cancel();
+    }
 }

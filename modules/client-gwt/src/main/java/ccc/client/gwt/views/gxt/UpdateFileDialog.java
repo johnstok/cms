@@ -30,11 +30,11 @@ import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
+import ccc.client.core.InternalServices;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemoteException;
 import ccc.client.gwt.overlays.FailureOverlay;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -114,7 +114,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
 
                     if (
                         SessionTimeoutException.isTimedout(response)) {
-                        ContentCreator.EX_HANDLER.unexpectedError(
+                        InternalServices.EX_HANDLER.unexpectedError(
                             new SessionTimeoutException(be.getResultHtml()),
                             getUiConstants().updateFile());
 
@@ -123,7 +123,7 @@ public class UpdateFileDialog extends AbstractEditDialog {
                             JSONParser.parse(response).isObject();
 
                         if (o.containsKey(JsonKeys.CODE)) { // Error
-                            ContentCreator.EX_HANDLER.unexpectedError(
+                            InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
                                     FailureOverlay.fromJson(response)),
                                 getUiConstants().uploadFile());

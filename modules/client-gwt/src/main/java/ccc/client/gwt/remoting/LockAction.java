@@ -31,6 +31,7 @@ import ccc.client.core.HttpMethod;
 import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 
@@ -59,7 +60,7 @@ public class LockAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        ResourceSummary delegate =
+        final ResourceSummary delegate =
             _selectionModel.tableSelection().getDelegate();
         return delegate.lock().build(new GWTTemplateEncoder());
     }
@@ -69,7 +70,7 @@ public class LockAction
     protected void onNoContent(final Response response) {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         item.setLocked(
-            GLOBALS.currentUser().getUsername());
+            new GlobalsImpl().currentUser().getUsername());
         _selectionModel.update(item);
     }
 }

@@ -136,10 +136,19 @@ public abstract class AbstractBaseDialog
         new SelectionListener<ButtonEvent>() {
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                hide();
+                cancel();
             }
+
         });
         return cancel;
+    }
+
+
+    /**
+     * Cancel this dialog's action.
+     */
+    public void cancel() {
+        hide();
     }
 
 

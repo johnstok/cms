@@ -27,15 +27,15 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Group;
+import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.Response;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.events.GroupUpdated;
 import ccc.plugins.s11n.json.GroupSerializer;
 
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.json.client.JSONParser;
 
 
@@ -86,7 +86,11 @@ public class UpdateGroupAction
         final Group newGroup =
             new GroupSerializer().read(
                 new GwtJson(JSONParser.parse(response.getText()).isObject()));
-        final GwtEvent<?> event = new GroupUpdated(newGroup);
+
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.GROUP_UPDATE);
+        event.addProperty("group", newGroup);
+
         fireEvent(event);
     }
 }

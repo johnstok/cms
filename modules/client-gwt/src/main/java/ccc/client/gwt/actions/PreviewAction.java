@@ -26,8 +26,9 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.client.core.Action;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
+import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 
 import com.google.gwt.user.client.Window;
@@ -60,7 +61,7 @@ public final class PreviewAction
     public void execute() {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
         final String url =
-            GLOBALS.appURL()
+            new GlobalsImpl().appURL()
                 + "preview"
                 + item.getAbsolutePath()
                 + ((_useWorkingCopy) ? "?wc" : "");

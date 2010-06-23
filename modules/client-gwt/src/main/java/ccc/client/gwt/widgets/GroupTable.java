@@ -31,11 +31,13 @@ import java.util.List;
 
 import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
+import ccc.api.types.CommandType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.GroupModelData;
-import ccc.client.gwt.events.GroupUpdated;
-import ccc.client.gwt.events.GroupUpdated.GroupUpdatedHandler;
 import ccc.client.gwt.presenters.UpdateGroupPresenter;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
@@ -71,7 +73,7 @@ public class GroupTable
     extends
         TablePanel
     implements
-        GroupUpdatedHandler {
+        EventHandler<CommandType> {
 
     private ListStore<GroupModelData> _detailsStore =
         new ListStore<GroupModelData>();
@@ -86,7 +88,7 @@ public class GroupTable
      * Constructor.
      */
     GroupTable() {
-        ContentCreator.EVENT_BUS.addHandler(GroupUpdated.TYPE, this);
+        InternalServices.REMOTING_BUS.registerHandler(this);
 
         setHeading(UI_CONSTANTS.groups());
         setLayout(new FitLayout());
@@ -221,11 +223,23 @@ public class GroupTable
 
     /** {@inheritDoc} */
     @Override
-    public void onUpdate(final GroupUpdated event) {
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case GROUP_UPDATE:
+                updateGroup(event.<Group>getProperty("group"));
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    private void updateGroup(final Group group) {
         final GroupModelData gMD =
-            _detailsStore.findModel(JsonKeys.ID, event.getGroup().getId());
+            _detailsStore.findModel(JsonKeys.ID, group.getId());
         if (null!=gMD) {
-            gMD.setDelegate(event.getGroup());
+            gMD.setDelegate(group);
             _detailsStore.update(gMD);
         }
     }

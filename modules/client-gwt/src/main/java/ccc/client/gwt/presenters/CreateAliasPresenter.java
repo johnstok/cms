@@ -27,14 +27,14 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.Alias;
+import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.AbstractPresenter;
-import ccc.client.gwt.events.AliasCreated;
-import ccc.client.gwt.events.AliasCreated.AliasCreatedHandler;
 import ccc.client.gwt.remoting.CreateAliasAction;
 import ccc.client.gwt.remoting.ResourceNameExistsAction;
 import ccc.client.gwt.widgets.ContentCreator;
@@ -50,8 +50,7 @@ public class CreateAliasPresenter
     extends
         AbstractPresenter<CreateAlias, ResourceSummaryModelData>
     implements
-        Editable,
-        AliasCreatedHandler {
+        Editable {
 
 
     /**
@@ -63,16 +62,10 @@ public class CreateAliasPresenter
     public CreateAliasPresenter(final CreateAlias view,
                                 final ResourceSummaryModelData model) {
         super(view, model);
-        addHandler(AliasCreated.TYPE, this);
         getView().setTargetName(model.getName());
         getView().show(this);
     }
 
-
-    private void hide() {
-        clearHandlers();
-        getView().hide();
-    }
 
 
     /** {@inheritDoc} */
@@ -122,5 +115,14 @@ public class CreateAliasPresenter
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final AliasCreated event) { hide(); }
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case ALIAS_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
+    }
 }

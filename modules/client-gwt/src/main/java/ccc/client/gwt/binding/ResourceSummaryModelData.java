@@ -38,6 +38,7 @@ import ccc.api.core.Alias;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourcePath;
@@ -46,19 +47,14 @@ import ccc.api.types.Username;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
-import ccc.client.gwt.events.AliasCreated;
-import ccc.client.gwt.events.FolderCreated;
-import ccc.client.gwt.events.PageCreated;
-import ccc.client.gwt.events.ResourceRenamed;
-import ccc.client.gwt.events.WorkingCopyApplied;
-import ccc.client.gwt.events.WorkingCopyCleared;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.json.AliasSerializer;
 import ccc.plugins.s11n.json.FolderSerializer;
 import ccc.plugins.s11n.json.PageSerializer;
@@ -684,7 +680,7 @@ public class ResourceSummaryModelData
      */
     public static class ResourceRenamedCallback extends ResponseHandlerAdapter {
 
-        private final ResourceRenamed _event;
+        private final Event<CommandType> _event;
 
         /**
          * Constructor.
@@ -699,13 +695,16 @@ public class ResourceSummaryModelData
                                        final UUID id,
                                        final ResourcePath newPath) {
             super(name);
-            _event = new ResourceRenamed(rName, newPath.toString(), id);
+            _event = new Event<CommandType>(CommandType.RESOURCE_RENAME);
+            _event.addProperty("name", rName);
+            _event.addProperty("path", newPath);
+            _event.addProperty("id", id);
         }
 
         /** {@inheritDoc} */
         @Override
         public void onNoContent(final ccc.client.core.Response response) {
-            ContentCreator.EVENT_BUS.fireEvent(_event);
+            InternalServices.REMOTING_BUS.fireEvent(_event);
         }
     }
 
@@ -729,9 +728,11 @@ public class ResourceSummaryModelData
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummaryModelData rs =
-                new ResourceSummaryModelData(parseResourceSummary(response));
-            ContentCreator.EVENT_BUS.fireEvent(new PageCreated(rs));
+            final ResourceSummary rs = parseResourceSummary(response);
+            final Event<CommandType> event =
+                new Event<CommandType>(CommandType.PAGE_CREATE);
+            event.addProperty("resource", rs);
+            InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }
 
@@ -755,9 +756,11 @@ public class ResourceSummaryModelData
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummaryModelData rs =
-                new ResourceSummaryModelData(parseResourceSummary(response));
-            ContentCreator.EVENT_BUS.fireEvent(new FolderCreated(rs));
+            final ResourceSummary rs = parseResourceSummary(response);
+            final Event<CommandType> event =
+                new Event<CommandType>(CommandType.FOLDER_CREATE);
+            event.addProperty("resource", rs);
+            InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }
 
@@ -781,9 +784,11 @@ public class ResourceSummaryModelData
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummaryModelData newAlias =
-                new ResourceSummaryModelData(parseResourceSummary(response));
-            ContentCreator.EVENT_BUS.fireEvent(new AliasCreated(newAlias));
+            final ResourceSummary newAlias = parseResourceSummary(response);
+            final Event<CommandType> event =
+                new Event<CommandType>(CommandType.ALIAS_CREATE);
+            event.addProperty("resource", newAlias);
+            InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }
 
@@ -795,7 +800,7 @@ public class ResourceSummaryModelData
      */
     public static class WCAppliedCallback extends ResponseHandlerAdapter {
 
-        private final WorkingCopyApplied _event;
+        private final Event<CommandType> _event;
 
         /**
          * Constructor.
@@ -806,13 +811,14 @@ public class ResourceSummaryModelData
         public WCAppliedCallback(final String name,
                                  final ResourceSummaryModelData resource) {
             super(name);
-            _event = new WorkingCopyApplied(resource);
+            _event = new Event<CommandType>(CommandType.RESOURCE_APPLY_WC);
+            _event.addProperty("resource", resource);
         }
 
         /** {@inheritDoc} */
         @Override
         public void onNoContent(final ccc.client.core.Response response) {
-            ContentCreator.EVENT_BUS.fireEvent(_event);
+            InternalServices.REMOTING_BUS.fireEvent(_event);
         }
     }
 
@@ -824,7 +830,7 @@ public class ResourceSummaryModelData
      */
     private static class WCClearedCallback extends ResponseHandlerAdapter {
 
-        private final WorkingCopyCleared _event;
+        private final Event<CommandType> _event;
 
         /**
          * Constructor.
@@ -835,13 +841,14 @@ public class ResourceSummaryModelData
         public WCClearedCallback(final String name,
                                  final ResourceSummaryModelData resource) {
             super(name);
-            _event = new WorkingCopyCleared(resource);
+            _event = new Event<CommandType>(CommandType.RESOURCE_CLEAR_WC);
+            _event.addProperty("resource", resource);
         }
 
         /** {@inheritDoc} */
         @Override
         public void onNoContent(final ccc.client.core.Response response) {
-            ContentCreator.EVENT_BUS.fireEvent(_event);
+            InternalServices.REMOTING_BUS.fireEvent(_event);
         }
     }
 

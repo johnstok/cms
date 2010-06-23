@@ -33,11 +33,13 @@ import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
 import ccc.api.types.SortOrder;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.events.ActionCancelled;
-import ccc.client.gwt.events.ActionCancelled.ActionCancelledHandler;
 import ccc.client.gwt.remoting.ListCompletedActionsAction;
 import ccc.client.gwt.remoting.ListPendingActionsAction;
 
@@ -69,7 +71,7 @@ public class ActionTable
     extends
         TablePanel
     implements
-        ActionCancelledHandler {
+        EventHandler<CommandType> {
 
     private static final int MEDIUM_COLUMN = 200;
     private static final int TYPE_COLUMN = 150;
@@ -83,6 +85,9 @@ public class ActionTable
      * Constructor.
      */
     public ActionTable() {
+
+        InternalServices.REMOTING_BUS.registerHandler(this);
+
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         setId("action-details");
@@ -302,11 +307,20 @@ public class ActionTable
         _actionStore.update(action);
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void onCancel(final ActionCancelled event) {
-        final ActionSummaryModelData action = event.getAction();
-        action.setStatus(ActionStatus.CANCELLED);
-        update(action);
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case ACTION_CANCEL:
+                final ActionSummaryModelData action =
+                    event.getProperty("action");
+                action.setStatus(ActionStatus.CANCELLED);
+                update(action);
+                break;
+
+            default:
+                break;
+        }
     }
 }

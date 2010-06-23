@@ -64,7 +64,8 @@ public class AboutDialog extends AbstractBaseDialog{
             /** {@inheritDoc} */
             @Override
             protected void onOK(final Response response) {
-                final Map<String, String> map = parseMapString(response);
+                final Map<String, String> map =
+                    getParser().parseMapString(response.getText());
 
                 _version = map.get("ccc-version");
                 _build = map.get("buildNumber");

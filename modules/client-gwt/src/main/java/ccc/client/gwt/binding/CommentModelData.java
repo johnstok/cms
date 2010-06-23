@@ -33,16 +33,17 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.Comment;
+import ccc.api.types.CommandType;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.DBC;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.ResponseHandlerAdapter;
-import ccc.client.gwt.events.CommentUpdatedEvent;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.CommentSerializer;
 
@@ -259,8 +260,10 @@ public final class CommentModelData
         /** {@inheritDoc} */
         @Override
         public void onOK(final ccc.client.core.Response response) {
-            ContentCreator.EVENT_BUS.fireEvent(
-                new CommentUpdatedEvent(_comment));
+            final Event<CommandType> event =
+                new Event<CommandType>(CommandType.COMMENT_UPDATE);
+            event.addProperty("comment", _comment);
+            InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }
 

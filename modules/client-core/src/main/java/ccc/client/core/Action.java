@@ -24,10 +24,8 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
-import ccc.client.core.Globals;
-import ccc.client.core.I18n;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.UIConstants;
 
@@ -38,9 +36,6 @@ import ccc.client.i18n.UIConstants;
  * @author Civic Computing Ltd.
  */
 public interface Action {
-
-    /** GLOBALS : IGlobals. */
-    Globals GLOBALS = new GlobalsImpl();
 
     /** USER_ACTIONS : ActionNameConstants. */
     ActionNameConstants USER_ACTIONS = I18n.USER_ACTIONS;

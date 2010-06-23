@@ -26,8 +26,6 @@
  */
 package ccc.client.gwt.remoting;
 
-import com.google.gwt.user.client.Timer;
-
 import ccc.api.core.API;
 import ccc.api.core.ActionSummary;
 import ccc.api.core.Comment;
@@ -44,6 +42,8 @@ import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 import ccc.client.gwt.widgets.ContentCreator;
+
+import com.google.gwt.user.client.Timer;
 
 
 /**
@@ -76,7 +76,7 @@ public class IsLoggedInAction
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        if (parseBoolean(response)) {
+        if (getParser().parseBoolean(response.getText())) {
             ContentCreator.WINDOW.enableExitConfirmation();
             loadServices();
         } else {
@@ -155,10 +155,11 @@ public class IsLoggedInAction
             }
         }.execute();
 
-        Timer timer = new Timer() {
+        final Timer timer = new Timer() {
             @Override
             public void run() {
                 new GetCurrentUserAction() {
+                    @Override
                     protected void onOK(final Response response) {
                         //NO-OP
                     };

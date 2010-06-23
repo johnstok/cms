@@ -31,12 +31,14 @@ import java.util.List;
 
 import ccc.api.core.Comment;
 import ccc.api.core.PagedCollection;
+import ccc.api.types.CommandType;
 import ccc.api.types.CommentStatus;
 import ccc.api.types.SortOrder;
+import ccc.client.core.InternalServices;
+import ccc.client.events.Event;
+import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.events.CommentUpdatedEvent;
-import ccc.client.gwt.events.CommentUpdatedEvent.CommentUpdatedHandler;
 import ccc.client.gwt.presenters.UpdateCommentPresenter;
 import ccc.client.gwt.remoting.ListComments;
 import ccc.client.gwt.views.gxt.CommentView;
@@ -73,7 +75,7 @@ public class CommentTable
     extends
         TablePanel
     implements
-        CommentUpdatedHandler {
+        EventHandler<CommandType> {
 
     private ListStore<CommentModelData> _detailsStore =
         new ListStore<CommentModelData>();
@@ -89,7 +91,7 @@ public class CommentTable
      */
     CommentTable() {
 
-        ContentCreator.EVENT_BUS.addHandler(CommentUpdatedEvent.TYPE, this);
+        InternalServices.REMOTING_BUS.registerHandler(this);
 
         setHeading(UI_CONSTANTS.commentDetails());
         setLayout(new FitLayout());
@@ -252,11 +254,22 @@ public class CommentTable
 
     /** {@inheritDoc} */
     @Override
-    public void onUpdate(final CommentUpdatedEvent event) {
-        final Comment updatedComment = event.getComment();
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case COMMENT_UPDATE:
+                updateComment(event.<Comment>getProperty("comment"));
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    private void updateComment(final Comment comment) {
         final CommentModelData commentBinding =
-            _detailsStore.findModel("id", updatedComment.getId());
-        commentBinding.setDelegate(updatedComment);
+            _detailsStore.findModel("id", comment.getId());
+        commentBinding.setDelegate(comment);
         _detailsStore.update(commentBinding);
     }
 }

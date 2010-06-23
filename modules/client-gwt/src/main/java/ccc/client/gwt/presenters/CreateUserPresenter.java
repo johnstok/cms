@@ -27,30 +27,28 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.core.User;
+import ccc.api.types.CommandType;
 import ccc.api.types.Username;
 import ccc.client.core.Editable;
-import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.events.UserCreated;
-import ccc.client.gwt.events.UserCreated.UserCreatedHandler;
+import ccc.client.events.Event;
+import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.remoting.CreateUserAction;
-import ccc.client.gwt.widgets.ContentCreator;
-import ccc.client.i18n.UIMessages;
 import ccc.client.views.CreateUser;
-
-import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * A controller for user creation.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateUserPresenter implements Editable, UserCreatedHandler {
+public class CreateUserPresenter
+    extends
+        AbstractPresenter<CreateUser, User>
+    implements
+        Editable {
 
-    private final CreateUser _view;
-    private HandlerRegistration _hReg;
+//    private final UIMessages _messages;
 
-    private final UIMessages _messages;
 
     /**
      * Constructor.
@@ -58,20 +56,19 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
      * @param view The create user dialog this controller will manage.
      */
     public CreateUserPresenter(final CreateUser view) {
-        _view = view;
-        _messages    = I18n.UI_MESSAGES;
-        render(ContentCreator.EVENT_BUS.addHandler(UserCreated.TYPE, this));
+        super(view, new User());
+//        _messages = I18n.UI_MESSAGES;
+        render();
     }
+
 
     /**
      * Render this presenter.
-     *
-     * @param hReg The registration of the success event handler.
      */
-    protected final void render(final HandlerRegistration hReg) {
-        _hReg = hReg;
-        _view.show(this);
+    protected final void render() {
+        getView().show(this);
     }
+
 
     /** {@inheritDoc} */
     @Override
@@ -79,23 +76,16 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
         dispose();
     }
 
-    /**
-     * Dispose of this presenter.
-     */
-    protected final void dispose() {
-        _hReg.removeHandler();
-        _view.hide();
-    }
 
+//    /**
+//     * Accessor.
+//     *
+//     * @return Returns the messages.
+//     */
+//    UIMessages getMessages() {
+//        return _messages;
+//    }
 
-    /**
-     * Accessor.
-     *
-     * @return Returns the messages.
-     */
-    UIMessages getMessages() {
-        return _messages;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -114,9 +104,9 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
      * @return True if the data is valid; false otherwise.
      */
     protected final boolean valid() {
-        final ValidationResult vr = _view.getValidationResult();
+        final ValidationResult vr = getView().getValidationResult();
         if (!vr.isValid()) {
-            _view.alert(vr.getErrorText());
+            getView().alert(vr.getErrorText());
         }
         return vr.isValid();
     }
@@ -128,20 +118,23 @@ public class CreateUserPresenter implements Editable, UserCreatedHandler {
      * @param dto The DTO that will receive the view's data.
      */
     protected final void unbind(final User dto) {
-        dto.setEmail(_view.getEmail());
-        dto.setUsername(new Username(_view.getUsername()));
-        dto.setName(_view.getName());
-        dto.setPassword(_view.getPassword1());
-        dto.setGroups(_view.getGroups());
+        dto.setEmail(getView().getEmail());
+        dto.setUsername(new Username(getView().getUsername()));
+        dto.setName(getView().getName());
+        dto.setPassword(getView().getPassword1());
+        dto.setGroups(getView().getGroups());
     }
-
 
 
     /** {@inheritDoc} */
     @Override
-    public void onCreate(final UserCreated event) {
-        dispose();
+    public void handle(final Event<CommandType> event) {
+        switch(event.getType()) {
+            case USER_CREATE:
+                dispose();
+                return;
+            default:
+                return;
+        }
     }
-
-
 }

@@ -30,8 +30,8 @@ import java.util.Collection;
 
 import ccc.api.core.Template;
 import ccc.api.types.ResourceType;
+import ccc.client.core.Action;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.Action;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.ChangeResourceTemplatePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;

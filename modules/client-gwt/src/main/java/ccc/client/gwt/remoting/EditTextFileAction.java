@@ -27,13 +27,14 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
+import ccc.client.events.Event;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.events.TextFileUpdated;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.json.FileSerializer;
 
 
@@ -75,6 +76,8 @@ public class EditTextFileAction
     /** {@inheritDoc} */
     @Override
     protected void onNoContent(final Response response) {
-        ContentCreator.EVENT_BUS.fireEvent(new TextFileUpdated());
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.FILE_UPDATE);
+        InternalServices.REMOTING_BUS.fireEvent(event);
     }
 }

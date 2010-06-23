@@ -27,14 +27,16 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Resource;
+import ccc.api.types.CommandType;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
+import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.events.ResourceDeleted;
 import ccc.client.gwt.widgets.ContentCreator;
 
 /**
@@ -77,7 +79,10 @@ public class DeleteResourceAction
     @Override
     protected void onNoContent(final Response response) {
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        ContentCreator.EVENT_BUS.fireEvent(new ResourceDeleted(item.getId()));
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.RESOURCE_DELETE);
+        event.addProperty("resource", item.getId());
+        InternalServices.REMOTING_BUS.fireEvent(event);
     }
 
 
