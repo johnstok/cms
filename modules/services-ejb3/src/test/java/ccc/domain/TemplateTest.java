@@ -29,6 +29,7 @@ package ccc.domain;
 import java.util.Date;
 
 import junit.framework.TestCase;
+import ccc.api.core.Template;
 import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
@@ -91,6 +92,45 @@ public final class TemplateTest extends TestCase {
         assertEquals("Hello world", t.getBody());
         assertEquals("<fields/>", t.getDefinition());
         assertEquals(ResourceType.TEMPLATE, t.getType());
+    }
+
+    /**
+     * Test.
+     */
+    public void testFindSpecificRevision() {
+
+        // ARRANGE
+        final TemplateEntity t =
+            new TemplateEntity(
+                new ResourceName("testName"),
+                "foo!",
+                "bar",
+                "Hello world",
+                "<fields/>",
+                MimeType.HTML,
+                _rm);
+        Template delta = t.forCurrentRevision();
+        delta.setBody("Modified world");
+        delta.setDefinition("<fields></fields>");
+        delta.setMimeType(MimeType.TEXT);
+        t.update(delta, _rm);
+
+        // ACT
+        Template old = t.forSpecificRevision(0);
+        Template current = t.forSpecificRevision(1);
+
+        // ASSERT
+        assertNotNull("current revision must not be null", current);
+        assertNotNull("old revision must not be null", old);
+
+        assertEquals("Modified world", current.getBody());
+        assertEquals("Hello world", old.getBody());
+
+        assertEquals("<fields></fields>", current.getDefinition());
+        assertEquals("<fields/>", old.getDefinition());
+
+        assertEquals(MimeType.TEXT, current.getMimeType());
+        assertEquals(MimeType.HTML, old.getMimeType());
     }
 
     private final RevisionMetadata _rm =

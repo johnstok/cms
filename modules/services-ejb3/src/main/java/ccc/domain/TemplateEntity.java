@@ -175,8 +175,12 @@ public class TemplateEntity
     /** {@inheritDoc} */
     @Override
     public Template forSpecificRevision(final int revNo) {
-        // TODO: Return correct revision.
-        return summarize();
+        TemplateRevision rev = revision(revNo);
+        Template dto = summarize();
+        dto.setDefinition(rev.getDefinition());
+        dto.setBody(rev.getBody());
+        dto.setMimeType(rev.getMimeType());
+        return dto;
     }
 
     /** {@inheritDoc} */
