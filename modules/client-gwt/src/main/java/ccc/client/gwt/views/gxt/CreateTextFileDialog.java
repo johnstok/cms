@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
@@ -65,7 +65,7 @@ public class CreateTextFileDialog
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
-    private CodeMirrorEditor _cme;
+    private final CodeMirrorEditor _cme;
 
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 650;
@@ -112,7 +112,8 @@ public class CreateTextFileDialog
         _cme = new CodeMirrorEditor(
             "textEditEditorID",
             this,
-            CodeMirrorEditor.Type.TEXT);
+            CodeMirrorEditor.Type.TEXT,
+            false);
         addField(_cme.parserSelector(getUiConstants()));
         addField(_cme);
 

@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 
 import java.util.UUID;
 
@@ -93,11 +93,11 @@ public class EditTemplateDialog
     private Template _model;
     private UUID _id;
     private UUID _parentFolderId = null;
-    private DialogMode _mode;
+    private final DialogMode _mode;
     private final SingleSelectionModel _ssm;
     private ResourceSummaryModelData _proxy;
-    private String _definitionString;
-    private String _bodyString;
+    private final String _definitionString;
+    private final String _bodyString;
 
     /**
      * Constructor.
@@ -221,7 +221,8 @@ public class EditTemplateDialog
         _definition = new CodeMirrorEditor(
             "definition",
             this,
-            CodeMirrorEditor.Type.DEFINITION);
+            CodeMirrorEditor.Type.DEFINITION,
+            false);
         _second.add(_definition, new FormData("95%"));
     }
 
@@ -237,7 +238,8 @@ public class EditTemplateDialog
         _body = new CodeMirrorEditor(
             "body",
             this,
-            CodeMirrorEditor.Type.BODY);
+            CodeMirrorEditor.Type.BODY,
+            false);
         _third.add(_body, new FormData("95%"));
     }
 

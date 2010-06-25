@@ -40,7 +40,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Action to open specific revision of a templtate.
  *
  * @author Civic Computing Ltd.
  */
@@ -57,7 +57,8 @@ public class OpenTemplateRevisionAction
      * @param template The template to update.
      * @param index The index
      */
-    public OpenTemplateRevisionAction(ResourceSummary template, long index) {
+    public OpenTemplateRevisionAction(final ResourceSummary template,
+                                      final long index) {
         super(UI_CONSTANTS.editTemplate());
         _template = template;
         _index = index;

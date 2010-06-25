@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.*;
+import static ccc.client.core.InternalServices.VALIDATOR;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
@@ -63,7 +63,7 @@ public class EditTextFileDialog
     /** TEXT_AREA_HEIGHT : int. */
     protected static final int TEXT_AREA_HEIGHT = 300;
 
-    private CodeMirrorEditor _cme;
+    private final CodeMirrorEditor _cme;
     private String _text;
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
@@ -102,7 +102,8 @@ public class EditTextFileDialog
 
         _cme = new CodeMirrorEditor("textEditEditorID",
             this,
-            CodeMirrorEditor.Type.TEXT);
+            CodeMirrorEditor.Type.TEXT,
+            false);
         addField(_cme.parserSelector(getUiConstants()));
         addField(_cme);
 
