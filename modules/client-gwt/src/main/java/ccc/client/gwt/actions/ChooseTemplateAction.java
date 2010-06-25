@@ -31,12 +31,12 @@ import java.util.Collection;
 import ccc.api.core.Template;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.ChangeResourceTemplatePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
-import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Chooses template for the resource.
@@ -64,7 +64,7 @@ public final class ChooseTemplateAction
         final ResourceSummaryModelData item = _selectionModel.tableSelection();
 
         if (item == null) {
-            ContentCreator.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
             return;
         }
 
@@ -81,7 +81,7 @@ public final class ChooseTemplateAction
                 }
             }.execute();
         } else {
-            ContentCreator.WINDOW.alert(UI_CONSTANTS.templateCannotBeChosen());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.templateCannotBeChosen());
 
         }
     }

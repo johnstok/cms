@@ -27,6 +27,7 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -35,7 +36,6 @@ import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.EditTextFilePresenter;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.ResourceTable;
 import ccc.plugins.s11n.json.FileSerializer;
 
@@ -85,7 +85,7 @@ extends
                 new EditTextFileDialog(),
                 dto);
         } else {
-            ContentCreator.WINDOW.alert(
+            InternalServices.WINDOW.alert(
                 UI_CONSTANTS.noEditorForResource());
         }
     }

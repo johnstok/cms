@@ -31,7 +31,6 @@ import ccc.client.core.CoreEvents;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
-import ccc.client.core.Window;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.core.GWTExceptionHandler;
@@ -69,10 +68,6 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
  */
 public final class ContentCreator implements EntryPoint {
 
-    /** WINDOW : Window. */
-    public static final Window WINDOW =
-        new GWTWindow();
-
     private GlobalsImpl _globals = new GlobalsImpl();
 
 
@@ -101,10 +96,12 @@ public final class ContentCreator implements EntryPoint {
         InternalServices.EXECUTOR   = new GwtRequestExecutor();
         InternalServices.PARSER     = new GWTTextParser();
         InternalServices.ENCODER    = new GWTTemplateEncoder();
-        InternalServices.EX_HANDLER = new GWTExceptionHandler(WINDOW);
+        InternalServices.WINDOW     = new GWTWindow();
+        InternalServices.EX_HANDLER =
+            new GWTExceptionHandler(InternalServices.WINDOW);
 
-        if (!(null == WINDOW.getParameter("dec"))) { // 'dec' param is missing.
-            WINDOW.enableExitConfirmation();
+        if (null!=InternalServices.WINDOW.getParameter("dec")) { // 'dec' param is missing.
+            InternalServices.WINDOW.enableExitConfirmation();
         }
     }
 

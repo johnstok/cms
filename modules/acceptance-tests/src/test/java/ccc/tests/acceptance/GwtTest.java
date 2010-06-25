@@ -123,6 +123,10 @@ public class GwtTest extends TestCase {
             final Json json = parseJson(text);
             return json.getStringMap("properties");
         }
+
+        /** {@inheritDoc} */
+        @Override
+        public Json newJson() { return new JsonImpl(); }
     }
 
 

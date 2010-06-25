@@ -36,13 +36,13 @@ import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.DisplayFields;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.EditPagePanel;
 import ccc.client.gwt.widgets.PageElement;
 import ccc.client.views.CreatePage;
@@ -292,7 +292,7 @@ public class CreatePageDialog
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        ContentCreator.WINDOW.alert(message);
+        InternalServices.WINDOW.alert(message);
     }
 
     /** {@inheritDoc} */

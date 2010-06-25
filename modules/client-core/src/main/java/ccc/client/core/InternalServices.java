@@ -50,6 +50,7 @@ public class InternalServices {
     public static TextParser          PARSER;
     public static Encoder             ENCODER;
     public static ExceptionHandler    EX_HANDLER;
+    public static Window              WINDOW;
 
     public static API API;
 }

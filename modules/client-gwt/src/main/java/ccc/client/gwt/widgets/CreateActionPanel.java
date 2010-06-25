@@ -33,6 +33,7 @@ import java.util.Map;
 import ccc.api.types.CommandType;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.i18n.UIConstants;
 
@@ -116,7 +117,7 @@ public class CreateActionPanel
                             break;
 
                         default:
-                            ContentCreator.WINDOW.alert("Unsupported action!");
+                            InternalServices.WINDOW.alert("Unsupported action!");
                             return;
                     }
 

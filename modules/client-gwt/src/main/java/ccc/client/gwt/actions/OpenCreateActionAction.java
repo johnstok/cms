@@ -27,11 +27,11 @@
 package ccc.client.gwt.actions;
 
 import ccc.client.core.Action;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.CreateActionPresenter;
 import ccc.client.gwt.views.gxt.CreateActionDialog;
-import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Create an action.
@@ -57,7 +57,7 @@ public final class OpenCreateActionAction
     public void execute() {
         final ResourceSummaryModelData item = _ssm.tableSelection();
         if (item == null) {
-            ContentCreator.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
+            InternalServices.WINDOW.alert(UI_CONSTANTS.noResourceSelected());
         } else {
             new CreateActionPresenter(
                 new CreateActionDialog(),

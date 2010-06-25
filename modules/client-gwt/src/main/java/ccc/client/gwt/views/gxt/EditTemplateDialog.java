@@ -38,6 +38,7 @@ import ccc.api.types.MimeType;
 import ccc.api.types.ResourceName;
 import ccc.client.core.DialogMode;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
@@ -46,7 +47,6 @@ import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
 import ccc.client.gwt.remoting.UpdateTemplateAction;
 import ccc.client.gwt.widgets.CodeMirrorEditor;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.CodeMirrorEditor.EditorListener;
 import ccc.client.gwt.widgets.CodeMirrorEditor.Type;
 
@@ -279,7 +279,7 @@ public class EditTemplateDialog
                     VALIDATOR.notValidXML(_definition.getEditorCode()));
 
                 if (!vr.isValid()) {
-                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    InternalServices.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 
@@ -324,7 +324,7 @@ public class EditTemplateDialog
                 }.execute();
                 break;
             default:
-                ContentCreator.WINDOW.alert(constants().error());
+                InternalServices.WINDOW.alert(constants().error());
             break;
         }
     }

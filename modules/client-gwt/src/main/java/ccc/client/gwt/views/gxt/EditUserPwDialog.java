@@ -30,12 +30,12 @@ package ccc.client.gwt.views.gxt;
 import static ccc.client.core.InternalServices.*;
 import ccc.api.core.User;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
-import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -96,7 +96,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
                         _password1.getValue(), _password2.getValue()));
 
                 if (!vr.isValid()) {
-                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    InternalServices.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 

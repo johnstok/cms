@@ -70,4 +70,9 @@ public class GWTTextParser
         final Json json = parseJson(text);
         return json.getStringMap("properties");
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Json newJson() { return new GwtJson(); }
 }

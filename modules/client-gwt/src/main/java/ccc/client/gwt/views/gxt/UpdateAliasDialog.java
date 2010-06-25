@@ -35,12 +35,12 @@ import ccc.api.core.Alias;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateAliasAction;
-import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -133,7 +133,7 @@ public class UpdateAliasDialog extends AbstractEditDialog {
                         _targetName.getValue(), _targetName.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    InternalServices.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 

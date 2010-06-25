@@ -32,12 +32,12 @@ import java.util.Map;
 import ccc.api.core.Security;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.views.gxt.LoginDialog;
-import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -78,7 +78,7 @@ public class LoginAction
     @Override protected void onOK(final Response response) {
         final boolean success = getParser().parseBoolean(response.getText());
         if (success) {
-            ContentCreator.WINDOW.refresh();
+            InternalServices.WINDOW.refresh();
         } else {
             _dialog.loginFailed();
         }

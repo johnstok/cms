@@ -37,10 +37,10 @@ import java.util.UUID;
 import ccc.api.core.Group;
 import ccc.api.core.User;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.GroupListField;
 import ccc.client.gwt.widgets.UserTable;
 
@@ -123,7 +123,7 @@ public class EditUserDialog extends AbstractEditDialog {
                         _email.getValue(), _email.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    InternalServices.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 

@@ -37,6 +37,7 @@ import ccc.api.types.ResourceType;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenCreateActionAction;
 import ccc.client.gwt.actions.OpenCreateAliasAction;
@@ -419,7 +420,7 @@ public class ResourceContextMenu
                         updateFile(item);
                         break;
                     default:
-                        ContentCreator.WINDOW.alert(
+                        InternalServices.WINDOW.alert(
                             getConstants().noEditorForResource());
                 }
             }
@@ -454,7 +455,7 @@ public class ResourceContextMenu
             /** {@inheritDoc} */
             @Override
             protected void noTemplate() {
-                ContentCreator.WINDOW.alert(getConstants().noTemplateFound());
+                InternalServices.WINDOW.alert(getConstants().noTemplateFound());
             }
 
             /** {@inheritDoc} */

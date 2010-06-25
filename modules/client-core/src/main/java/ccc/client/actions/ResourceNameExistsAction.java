@@ -24,19 +24,17 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceName;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-
-import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * TODO: Add a description for this type.
+ * Check that a resource name exists.
  *
  * @author Civic Computing Ltd.
  */
@@ -63,7 +61,7 @@ public abstract class ResourceNameExistsAction
     @Override
     protected String getPath() {
         return _folder.exists().build(
-            "name", _resourceName.toString(), new GWTTemplateEncoder());
+            "name", _resourceName.toString(), InternalServices.ENCODER);
 
     }
 
@@ -71,7 +69,7 @@ public abstract class ResourceNameExistsAction
     @Override
     protected void onOK(final Response response) {
         final boolean nameExists =
-            JSONParser.parse(response.getText()).isBoolean().booleanValue();
+            InternalServices.PARSER.parseBoolean(response.getText());
         execute(nameExists);
     }
 

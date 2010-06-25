@@ -33,13 +33,13 @@ import java.util.Map;
 
 import ccc.api.core.Resource;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.gwt.widgets.MetadataGrid;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
@@ -138,7 +138,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
                         _metadataPanel.currentMetadata()));
 
                 if (!vr.isValid()) {
-                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    InternalServices.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 

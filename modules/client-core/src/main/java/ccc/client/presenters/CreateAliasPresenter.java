@@ -24,20 +24,20 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
 import ccc.api.core.Alias;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourceName;
+import ccc.client.actions.CreateAliasAction;
+import ccc.client.actions.ResourceNameExistsAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.remoting.CreateAliasAction;
-import ccc.client.gwt.remoting.ResourceNameExistsAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateAlias;
 
 
@@ -48,7 +48,7 @@ import ccc.client.views.CreateAlias;
  */
 public class CreateAliasPresenter
     extends
-        AbstractPresenter<CreateAlias, ResourceSummaryModelData>
+        AbstractPresenter<CreateAlias, ResourceSummary>
     implements
         Editable {
 
@@ -60,7 +60,7 @@ public class CreateAliasPresenter
      * @param model Model implementation.
      */
     public CreateAliasPresenter(final CreateAlias view,
-                                final ResourceSummaryModelData model) {
+                                final ResourceSummary model) {
         super(view, model);
         getView().setTargetName(model.getName());
         getView().show(this);
@@ -85,7 +85,7 @@ public class CreateAliasPresenter
                 new ResourceName(getView().getAliasName())) {
                 @Override protected void execute(final boolean nameExists) {
                     if (nameExists) {
-                        ContentCreator.WINDOW.alert(
+                        InternalServices.WINDOW.alert(
                             I18n.UI_MESSAGES.
                             nameExistsInFolder(getView().getAliasName()));
                     } else {

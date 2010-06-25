@@ -27,11 +27,11 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.types.ActionStatus;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.widgets.ActionTable;
-import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -60,11 +60,11 @@ public class CancelActionAction
     @Override protected boolean beforeExecute() {
         final ActionSummaryModelData action = _table.getSelectedItem();
         if (null==action) {
-            ContentCreator.WINDOW.alert(
+            InternalServices.WINDOW.alert(
                 UI_CONSTANTS.pleaseChooseAnAction());
             return false;
         } else if (ActionStatus.SCHEDULED!=action.getStatus()) {
-            ContentCreator.WINDOW.alert(
+            InternalServices.WINDOW.alert(
                 UI_CONSTANTS.thisActionHasAlreadyCompleted());
             return false;
         }

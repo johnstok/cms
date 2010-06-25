@@ -31,10 +31,10 @@ import static ccc.client.core.InternalServices.*;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateAlias;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -188,6 +188,6 @@ public class CreateAliasDialog
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        ContentCreator.WINDOW.alert(message);
+        InternalServices.WINDOW.alert(message);
     }
 }

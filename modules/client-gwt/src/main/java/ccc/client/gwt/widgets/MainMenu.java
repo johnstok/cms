@@ -37,6 +37,7 @@ import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.gwt.actions.ChooseTemplateAction;
 import ccc.client.gwt.actions.OpenAboutAction;
 import ccc.client.gwt.actions.OpenCreateUserAction;
@@ -270,7 +271,7 @@ public class MainMenu
                         sb.append(_constants.publishedBy()
                             +" "+root.getPublishedBy()+"\n");
                     }
-                    ContentCreator.WINDOW.alert(sb.toString());
+                    InternalServices.WINDOW.alert(sb.toString());
                 }
 
             });

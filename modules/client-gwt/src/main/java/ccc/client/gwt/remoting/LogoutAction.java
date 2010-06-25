@@ -29,10 +29,10 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.Security;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.widgets.ContentCreator;
 
 
 /**
@@ -57,8 +57,8 @@ public final class LogoutAction
     @Override
     protected void onNoContent(final Response response) {
         new GlobalsImpl().currentUser(null);
-        ContentCreator.WINDOW.disableExitConfirmation();
-        ContentCreator.WINDOW.redirectTo(Globals.APP_URL);
+        InternalServices.WINDOW.disableExitConfirmation();
+        InternalServices.WINDOW.redirectTo(Globals.APP_URL);
     }
 
 

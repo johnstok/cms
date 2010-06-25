@@ -70,4 +70,12 @@ public interface TextParser {
      */
     @Deprecated
     Map<String, String> parseMapString(final String text);
+
+
+    /**
+     * Create a new JSON object.
+     *
+     * @return The new object.
+     */
+    Json newJson();
 }

@@ -37,11 +37,11 @@ import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
 import ccc.client.concurrent.SimpleLatch;
 import ccc.client.core.Globals;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.views.gxt.LoginDialog;
-import ccc.client.gwt.widgets.ContentCreator;
 
 import com.google.gwt.user.client.Timer;
 
@@ -77,7 +77,7 @@ public class IsLoggedInAction
     @Override
     protected void onOK(final Response response) {
         if (getParser().parseBoolean(response.getText())) {
-            ContentCreator.WINDOW.enableExitConfirmation();
+            InternalServices.WINDOW.enableExitConfirmation();
             loadServices();
         } else {
             new LoginDialog().show();

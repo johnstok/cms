@@ -31,10 +31,10 @@ import ccc.api.types.CommandType;
 import ccc.api.types.MimeType;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
+import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.remoting.CreateTextFileAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateTextFile;
 
 
@@ -86,7 +86,7 @@ public class CreateTextFilePresenter
             new CreateTextFileAction(dto).execute();
 
         } else {
-            ContentCreator.WINDOW.alert(
+            InternalServices.WINDOW.alert(
                 view.getValidationResult().getErrorText());
         }
     }

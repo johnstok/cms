@@ -37,9 +37,9 @@ import ccc.api.types.Permission;
 import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.presenters.GroupPresenter.GroupView;
-import ccc.client.gwt.widgets.ContentCreator;
 
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -173,6 +173,6 @@ public class GroupViewImpl
     /** {@inheritDoc} */
     @Override
     public void alert(final String message) {
-        ContentCreator.WINDOW.alert(message);
+        InternalServices.WINDOW.alert(message);
     }
 }

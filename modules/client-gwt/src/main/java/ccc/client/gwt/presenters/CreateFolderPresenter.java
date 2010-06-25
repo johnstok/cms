@@ -30,10 +30,10 @@ import ccc.api.types.CommandType;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.remoting.CreateFolderAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateFolder;
 
 
@@ -78,7 +78,7 @@ public class CreateFolderPresenter
                 getView().getName())
             .execute();
         } else {
-            ContentCreator.WINDOW.alert(
+            InternalServices.WINDOW.alert(
                 I18n.UI_CONSTANTS.resourceNameIsInvalid());
         }
     }

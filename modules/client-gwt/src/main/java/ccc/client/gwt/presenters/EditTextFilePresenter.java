@@ -32,9 +32,9 @@ import ccc.api.types.CommandType;
 import ccc.api.types.MimeType;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
+import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.gwt.remoting.EditTextFileAction;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.EditTextFile;
 
 
@@ -88,7 +88,7 @@ public class EditTextFilePresenter
             new EditTextFileAction(dto).execute();
 
         } else {
-            ContentCreator.WINDOW.alert(
+            InternalServices.WINDOW.alert(
                 getView().getValidationResult().getErrorText());
         }
     }

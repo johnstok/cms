@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.Alias;
 import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
@@ -55,7 +54,6 @@ import ccc.client.events.Event;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.AliasSerializer;
 import ccc.plugins.s11n.json.FolderSerializer;
 import ccc.plugins.s11n.json.PageSerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
@@ -576,29 +574,6 @@ public class ResourceSummaryModelData
 
 
     /**
-     * Create a new alias.
-     *
-     * @param alias The alias to create.
-     *
-     * @return The HTTP request to create an alias.
-     */
-    public static Request createAlias(final Alias alias) {
-        final String path = Globals.API_URL+GlobalsImpl.getAPI().aliases();
-
-        final GwtJson json = new GwtJson();
-        new AliasSerializer().write(json, alias);
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                json.toString(),
-                new AliasCreatedCallback(
-                    I18n.UI_CONSTANTS.createAlias()));
-    }
-
-
-    /**
      * Create a new folder.
      *
      * @param name The new folder's name.
@@ -760,34 +735,6 @@ public class ResourceSummaryModelData
             final Event<CommandType> event =
                 new Event<CommandType>(CommandType.FOLDER_CREATE);
             event.addProperty("resource", rs);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
-    }
-
-
-    /**
-     * Callback handler for creating an alias.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class AliasCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         */
-        public AliasCreatedCallback(final String name) {
-            super(name);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummary newAlias = parseResourceSummary(response);
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.ALIAS_CREATE);
-            event.addProperty("resource", newAlias);
             InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }

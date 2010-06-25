@@ -37,7 +37,6 @@ import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.widgets.ContentCreator;
 
 /**
  * Publish a resource.
@@ -89,7 +88,7 @@ public class DeleteResourceAction
     /** {@inheritDoc} */
     @Override
     protected boolean beforeExecute() {
-        return ContentCreator.WINDOW.confirm(
+        return InternalServices.WINDOW.confirm(
             "Are sure you want to delete the selected resource?");
     }
 }

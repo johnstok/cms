@@ -40,7 +40,6 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.widgets.ContentCreator;
 import ccc.plugins.s11n.JsonKeys;
 import ccc.plugins.s11n.json.FailureSerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
@@ -186,7 +185,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                         _fileName.getValue(), _fileName.getFieldLabel()));
 
                 if (!vr.isValid()) {
-                    ContentCreator.WINDOW.alert(vr.getErrorText());
+                    InternalServices.WINDOW.alert(vr.getErrorText());
                     return;
                 }
 
