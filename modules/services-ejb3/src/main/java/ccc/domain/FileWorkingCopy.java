@@ -26,6 +26,7 @@
  */
 package ccc.domain;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class FileWorkingCopy
     private MimeType _mimeType;
     private long _size;
     private Data _data;
-    private Map<String, String> _properties;
+    private Map<String, String> _properties = new HashMap<String, String>();
 
 
     /** Constructor: for persistence only. */
@@ -151,5 +152,15 @@ public class FileWorkingCopy
             }
         }
         return false;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the properties.
+     */
+    public Map<String, String> getProperties() {
+        return new HashMap<String, String>(_properties);
     }
 }
