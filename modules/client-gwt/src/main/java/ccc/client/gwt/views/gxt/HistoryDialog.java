@@ -96,6 +96,7 @@ public class HistoryDialog
                         _toolBar.disable();
                     } else {
                         if (ResourceType.PAGE==resourceType
+                            || ResourceType.TEMPLATE==resourceType
                             || ResourceType.FILE==resourceType) {
                             _toolBar.enable();
                         } else {

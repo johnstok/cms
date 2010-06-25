@@ -580,6 +580,16 @@ public final class ResourceSummary extends Res {
     /**
      * Link.
      *
+     * @return A link to this resource's history.
+     */
+    public Link templateRevision() {
+        return new Link(getLink(Template.REVISION));
+    }
+
+
+    /**
+     * Link.
+     *
      * @return A link to this resource's absolute path.
      */
     public Link uriAbsPath() {

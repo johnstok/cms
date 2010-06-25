@@ -26,10 +26,13 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
 import ccc.client.gwt.binding.LogEntrySummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
+import ccc.client.gwt.remoting.OpenTemplateRevisionAction;
 import ccc.client.gwt.views.gxt.HistoryDialog;
 
 import com.google.gwt.user.client.Window;
@@ -61,28 +64,33 @@ public final class PreviewHistoricalAction
         if (null==item) {
             return;
         }
+        ResourceSummary resource = _historyDialog.getResource();
 
-        new GetAbsolutePathAction(UI_CONSTANTS.preview(),
-                                  _historyDialog.getResource()) {
-            @Override protected void execute(final String path) {
-                final String url =
-                    new GlobalsImpl().appURL()
-                    + "preview"
-                    + path
-                    + "?v="
-                    + item.getIndex();
-                Window.open(
-                    url,
-                    "ccc_preview",
-                    "menubar=no,"
-                    + "width=640,"
-                    + "height=480,"
-                    + "location=yes,"
-                    + "toolbar=no,"
-                    + "resizable=yes,"
-                    + "scrollbars=yes,"
-                    + "status=no");
-            }
-        }.execute();
+        if (resource != null && resource.getType() == ResourceType.TEMPLATE) {
+            new OpenTemplateRevisionAction(resource, item.getIndex()).execute();
+        } else {
+            new GetAbsolutePathAction(UI_CONSTANTS.preview(),
+                resource) {
+                @Override protected void execute(final String path) {
+                    final String url =
+                        new GlobalsImpl().appURL()
+                        + "preview"
+                        + path
+                        + "?v="
+                        + item.getIndex();
+                    Window.open(
+                        url,
+                        "ccc_preview",
+                        "menubar=no,"
+                        + "width=640,"
+                        + "height=480,"
+                        + "location=yes,"
+                        + "toolbar=no,"
+                        + "resizable=yes,"
+                        + "scrollbars=yes,"
+                        + "status=no");
+                }
+            }.execute();
+        }
     }
 }

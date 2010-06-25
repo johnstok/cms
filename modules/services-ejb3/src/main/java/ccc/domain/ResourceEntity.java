@@ -27,7 +27,7 @@
 
 package ccc.domain;
 
-import static ccc.api.types.DBC.*;
+import static ccc.api.types.DBC.require;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,6 +46,7 @@ import ccc.api.core.Folder;
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.core.ACL.Entry;
 import ccc.api.exceptions.InsufficientPrivilegesException;
 import ccc.api.exceptions.LockMismatchException;
@@ -88,9 +89,9 @@ public abstract class ResourceEntity
     private FolderEntity         _parent            = null;
     private Integer        _parentIndex       = null;
     private UserEntity           _lockedBy          = null;
-    private Set<String>    _tags              = new HashSet<String>();
-    private Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
-    private Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
+    private final Set<String>    _tags              = new HashSet<String>();
+    private final Set<AccessPermission> _groupAcl   = new HashSet<AccessPermission>();
+    private final Set<AccessPermission> _userAcl    = new HashSet<AccessPermission>();
     private UserEntity           _publishedBy       = null;
     private boolean        _includeInMainMenu = false;
     private Date           _dateCreated       = new Date();
@@ -100,7 +101,7 @@ public abstract class ResourceEntity
     private boolean        _deleted           = false;
     private UserEntity           _changedBy         = null;
     private UserEntity           _createdBy         = null;
-    private Map<String, String> _metadata = new HashMap<String, String>();
+    private final Map<String, String> _metadata = new HashMap<String, String>();
 
 
     /** Constructor: for persistence only. */
@@ -1095,6 +1096,11 @@ public abstract class ResourceEntity
                     Resource.SELF,
                     new Link(ccc.api.core.ResourceIdentifiers.Template.ELEMENT)
                     .build("id", getId().toString(), new NormalisingEncoder()));
+                rs.addLink(
+                    Template.REVISION,
+                    new Link(ccc.api.core.ResourceIdentifiers.Template.REVISION)
+                    .build("id", getId().toString(), new NormalisingEncoder())
+                    + "{revision}");
                 break;
 
             default:

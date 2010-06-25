@@ -137,4 +137,8 @@ public class Template
 
     /** EXISTS : String. */
     public static final String EXISTS = "template-exists";
+
+    /** REVISION : String. */
+    public static final String REVISION = "revision";
+
 }

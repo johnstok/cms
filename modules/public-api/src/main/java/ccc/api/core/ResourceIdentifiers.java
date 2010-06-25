@@ -91,6 +91,8 @@ public interface ResourceIdentifiers {
         String ELEMENT    = COLLECTION + "/{id}";
         /** EXISTS : String. */
         String EXISTS     = COLLECTION + "/{name}/exists";
+        /** REVISION : String. */
+        String REVISION   = ELEMENT + "/{revision}";
     }
 
     /**
