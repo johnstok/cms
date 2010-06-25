@@ -30,9 +30,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ccc.api.core.ResourceSummary;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.ResourceMetadataDialog;
 

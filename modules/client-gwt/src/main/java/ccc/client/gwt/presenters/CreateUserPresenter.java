@@ -29,10 +29,10 @@ package ccc.client.gwt.presenters;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
+import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.remoting.CreateUserAction;
 import ccc.client.views.CreateUser;
 

@@ -30,11 +30,11 @@ package ccc.client.gwt.presenters;
 import java.util.Set;
 
 import ccc.api.core.Group;
+import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.Validatable;
 import ccc.client.core.ValidationResult;
 import ccc.client.core.View;
-import ccc.client.gwt.core.AbstractPresenter;
 
 
 /**

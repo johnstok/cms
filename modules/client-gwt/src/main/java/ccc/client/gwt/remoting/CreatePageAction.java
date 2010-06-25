@@ -27,9 +27,9 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.Page;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.RemotingAction;
 
 
 /**

@@ -29,11 +29,11 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.plugins.s11n.json.UserSerializer;
 
 import com.google.gwt.json.client.JSONParser;

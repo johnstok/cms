@@ -28,11 +28,11 @@ package ccc.client.gwt.presenters;
 
 import ccc.api.core.Comment;
 import ccc.api.types.CommandType;
+import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
 import ccc.client.gwt.binding.CommentModelData;
-import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.remoting.UpdateCommentAction;
 import ccc.client.gwt.views.gxt.CommentView;
 import ccc.client.gwt.widgets.ContentCreator;

@@ -28,7 +28,7 @@ package ccc.client.gwt.views.gxt;
 
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.core.RemoteException;
+import ccc.client.core.RemoteException;
 
 import com.extjs.gxt.ui.client.event.BoxComponentEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;

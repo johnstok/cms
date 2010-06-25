@@ -24,58 +24,43 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.overlays;
+package ccc.client.remoting;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import ccc.api.core.API;
+import ccc.client.core.InternalServices;
+import ccc.client.core.RemotingAction;
+import ccc.client.core.Response;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.APISerializer;
 
 
 /**
- * An CCC failure.
+ * Create a new user.
  *
  * @author Civic Computing Ltd.
  */
-public class FailureOverlay
+public class GetServicesAction
     extends
-        JavaScriptObject {
+        RemotingAction {
 
     /**
      * Constructor.
      */
-    protected FailureOverlay() { super(); }
+    public GetServicesAction() {
+        super(USER_ACTIONS.internalAction());
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    protected String getPath() {
+        return "";
+    }
 
-    /**
-     * Accessor for the failure's ID.
-     *
-     * @return The ID as a string.
-     */
-    public final native String getId() /*-{ return this.id; }-*/;
-
-
-    /**
-     * Accessor for the failure code.
-     *
-     * @return The code as an integer.
-     */
-    public final native String getCode() /*-{ return this.code; }-*/;
-
-
-    /**
-     * Factory method for failure overlay objects.
-     *
-     * @param json The JSON string used to construct the object.
-     * @return An overlay object representing the JSON.
-     */
-    public static native FailureOverlay fromJson(final String json) /*-{
-        return eval('(' + json + ')');
-    }-*/;
-
-
-    /**
-     * Accessor for the error message.
-     *
-     * @return The error message as a string.
-     */
-    public final native String getMessage()
-        /*-{ return this.parameters.message; }-*/;
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final Json json = getParser().parseJson(response.getText());
+        final API api = new APISerializer().read(json);
+        InternalServices.API = api;
+    }
 }

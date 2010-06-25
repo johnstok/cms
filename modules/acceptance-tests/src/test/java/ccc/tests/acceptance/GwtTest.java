@@ -49,9 +49,8 @@ import ccc.client.core.Response;
 import ccc.client.core.ResponseHandler;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.remoting.GetServicesAction;
 import ccc.client.i18n.ActionNameConstants;
+import ccc.client.remoting.GetServicesAction;
 import ccc.client.remoting.TextParser;
 import ccc.commons.Testing;
 import ccc.plugins.s11n.Json;
@@ -93,7 +92,7 @@ public class GwtTest extends TestCase {
             .setParser(new ServerTextParser())
             .execute();
 
-        assertEquals(Alias.COLLECTION, GlobalsImpl.getAPI().aliases());
+        assertEquals(Alias.COLLECTION, InternalServices.API.aliases());
     }
 
 

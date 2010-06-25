@@ -27,11 +27,11 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.core.File;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.presenters.EditTextFilePresenter;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;

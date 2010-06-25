@@ -37,6 +37,7 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
+import ccc.client.core.InternalServices;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -60,9 +61,6 @@ public class GlobalsImpl
     private static PagedCollection<ActionSummary> ACTIONS;
     private static PagedCollection<Comment> COMMENTS;
     private static PagedCollection<Group> GROUPS;
-
-    private static API API;
-
 
     /** {@inheritDoc} */
     @Override
@@ -225,7 +223,7 @@ public class GlobalsImpl
      * @param api The remote API.
      */
     public static void setAPI(final API api) {
-        API = api;
+        InternalServices.API = api;
     }
 
 
@@ -235,6 +233,6 @@ public class GlobalsImpl
      * @return The remote API.
      */
     public static API getAPI() {
-        return API;
+        return InternalServices.API;
     }
 }

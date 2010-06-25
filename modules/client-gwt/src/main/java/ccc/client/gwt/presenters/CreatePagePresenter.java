@@ -36,12 +36,12 @@ import ccc.api.core.Template;
 import ccc.api.types.CommandType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
+import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.remoting.CreatePageAction;
 import ccc.client.views.CreatePage;
 

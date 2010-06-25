@@ -27,9 +27,9 @@
 package ccc.client.gwt.remoting;
 
 import ccc.api.types.ActionStatus;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.gwt.binding.ActionSummaryModelData;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.widgets.ActionTable;
 import ccc.client.gwt.widgets.ContentCreator;
 

@@ -26,6 +26,7 @@
  */
 package ccc.client.core;
 
+import ccc.api.core.API;
 import ccc.api.types.CommandType;
 import ccc.api.types.Link.Encoder;
 import ccc.client.events.Bus;
@@ -49,4 +50,6 @@ public class InternalServices {
     public static TextParser          PARSER;
     public static Encoder             ENCODER;
     public static ExceptionHandler    EX_HANDLER;
+
+    public static API API;
 }

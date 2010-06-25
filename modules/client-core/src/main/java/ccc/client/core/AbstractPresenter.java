@@ -24,12 +24,9 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 import ccc.api.types.CommandType;
-import ccc.client.core.Editable;
-import ccc.client.core.InternalServices;
-import ccc.client.core.View;
 import ccc.client.events.EventHandler;
 
 

@@ -25,19 +25,12 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.client.gwt.core;
+package ccc.client.core;
 
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.api.types.Link.Encoder;
-import ccc.client.core.Action;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.InternalServices;
-import ccc.client.core.Request;
-import ccc.client.core.RequestExecutor;
-import ccc.client.core.Response;
 import ccc.client.events.Bus;
 import ccc.client.events.Event;
 import ccc.client.remoting.TextParser;

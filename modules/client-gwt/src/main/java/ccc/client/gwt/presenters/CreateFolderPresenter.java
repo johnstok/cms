@@ -27,11 +27,11 @@
 package ccc.client.gwt.presenters;
 
 import ccc.api.types.CommandType;
+import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.remoting.CreateFolderAction;
 import ccc.client.gwt.widgets.ContentCreator;
 import ccc.client.views.CreateFolder;

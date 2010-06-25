@@ -37,9 +37,9 @@ import ccc.api.core.UserCriteria;
 import ccc.api.types.SortOrder;
 import ccc.client.concurrent.SimpleLatch;
 import ccc.client.core.Globals;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 import ccc.client.gwt.widgets.ContentCreator;
 

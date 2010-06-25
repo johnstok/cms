@@ -27,10 +27,10 @@
 package ccc.client.gwt.remoting;
 
 import ccc.client.core.HttpMethod;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.core.SingleSelectionModel;
 
 

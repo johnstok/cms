@@ -48,7 +48,6 @@ import ccc.client.gwt.i18n.GWTErrorResolutions;
 import ccc.client.gwt.i18n.GWTUIConstants;
 import ccc.client.gwt.i18n.GWTUIMessages;
 import ccc.client.gwt.remoting.GetPropertyAction;
-import ccc.client.gwt.remoting.GetServicesAction;
 import ccc.client.gwt.remoting.IsLoggedInAction;
 import ccc.client.gwt.validation.Validations;
 import ccc.client.i18n.ActionNameConstants;
@@ -58,6 +57,7 @@ import ccc.client.i18n.ErrorDescriptions;
 import ccc.client.i18n.ErrorResolutions;
 import ccc.client.i18n.UIConstants;
 import ccc.client.i18n.UIMessages;
+import ccc.client.remoting.GetServicesAction;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

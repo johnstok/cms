@@ -31,11 +31,11 @@ import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
 import ccc.client.core.InternalServices;
+import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.RemoteException;
-import ccc.client.gwt.overlays.FailureOverlay;
 import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.FailureSerializer;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -125,7 +125,9 @@ public class UpdateFileDialog extends AbstractEditDialog {
                         if (o.containsKey(JsonKeys.CODE)) { // Error
                             InternalServices.EX_HANDLER.unexpectedError(
                                 new RemoteException(
-                                    FailureOverlay.fromJson(response)),
+                                    new FailureSerializer().read(
+                                        InternalServices.PARSER.parseJson(
+                                            response))),
                                 getUiConstants().uploadFile());
                         } else {
                             hide();

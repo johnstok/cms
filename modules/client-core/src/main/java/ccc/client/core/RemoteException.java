@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,51 +21,54 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
+package ccc.client.core;
 
-package ccc.client.gwt.tests;
-
-import ccc.api.types.FailureCode;
-import ccc.client.gwt.overlays.FailureOverlay;
-
-import com.google.gwt.junit.client.GWTTestCase;
+import ccc.api.core.Failure;
+import ccc.api.types.DBC;
 
 
 /**
- * Tests for the {@link FailureOverlay} class.
+ * An exception class representing a remote failure.
  *
  * @author Civic Computing Ltd.
  */
-public class FailureOverlayGwtTest
+public class RemoteException
     extends
-        GWTTestCase {
+        Exception {
+
+    private final Failure _failure;
+
 
     /**
-     * Test.
+     * Constructor.
+     *
+     * @param failure The remote failure.
      */
-    public void testConstructFromJson() {
-
-        // ARRANGE
-
-        // ACT
-        final FailureOverlay failure = FailureOverlay.fromJson(EXAMPLE);
-
-        // ASSERT
-        assertEquals("f4c9925b-6d2b-4fb3-902e-6c0d7ad82e28", failure.getId());
-        assertEquals(FailureCode.UNEXPECTED, failure.getCode());
+    public RemoteException(final Failure failure) {
+        DBC.require().notNull(failure);
+        _failure = failure;
     }
+
 
     /** {@inheritDoc} */
     @Override
-    public String getModuleName() {
-        return "ccc.contentcreator.ContentCreator";
+    public String getMessage() {
+        return
+            "Code: "+_failure.getCode()
+            + "\nID: "+_failure.getId()
+            + "\nMessage: "+_failure.getParams().get("message");
     }
 
-    private static final String EXAMPLE =
-          "{"
-        +     "\"id\":\"f4c9925b-6d2b-4fb3-902e-6c0d7ad82e28\","
-        +     "\"code\":\""+FailureCode.UNEXPECTED.name()+"\""
-        + "}";
+
+    /**
+     * Get the code for the exception.
+     *
+     * @return The failure code.
+     */
+    public String getCode() {
+        return _failure.getCode();
+    }
 }

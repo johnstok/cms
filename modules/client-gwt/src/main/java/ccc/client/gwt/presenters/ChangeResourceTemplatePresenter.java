@@ -31,10 +31,10 @@ import java.util.Collection;
 import ccc.api.core.Resource;
 import ccc.api.core.Template;
 import ccc.api.types.CommandType;
+import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.events.Event;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.core.AbstractPresenter;
 import ccc.client.gwt.remoting.UpdateResourceTemplateAction;
 import ccc.client.views.ChangeResourceTemplate;
 

@@ -24,15 +24,10 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.core;
+package ccc.client.core;
 
-import ccc.client.core.CoreEvents;
-import ccc.client.core.InternalServices;
-import ccc.client.core.Response;
-import ccc.client.core.ResponseHandler;
-import ccc.client.core.SessionTimeoutException;
 import ccc.client.events.Event;
-import ccc.client.gwt.overlays.FailureOverlay;
+import ccc.plugins.s11n.json.FailureSerializer;
 
 
 /**
@@ -143,6 +138,8 @@ public class ResponseHandlerAdapter
 
 
     private RemoteException toRemoteException(final Response response) {
-        return new RemoteException(FailureOverlay.fromJson(response.getText()));
+        return new RemoteException(
+            new FailureSerializer().read(
+                InternalServices.PARSER.parseJson(response.getText())));
     }
 }

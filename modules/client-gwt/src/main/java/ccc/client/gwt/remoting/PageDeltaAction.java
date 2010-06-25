@@ -30,12 +30,12 @@ import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Request;
 import ccc.client.core.Response;
+import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
-import ccc.client.gwt.core.RemotingAction;
-import ccc.client.gwt.core.ResponseHandlerAdapter;
 import ccc.plugins.s11n.json.PageSerializer;
 
 import com.google.gwt.json.client.JSONObject;

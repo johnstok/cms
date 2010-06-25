@@ -32,10 +32,10 @@ import java.util.Map;
 import ccc.api.core.Security;
 import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.RemotingAction;
 import ccc.client.gwt.views.gxt.LoginDialog;
 import ccc.client.gwt.widgets.ContentCreator;
 
