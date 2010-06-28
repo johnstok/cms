@@ -26,6 +26,8 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.ResourceSummary;
+import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.actions.PreviewHistoricalAction;
 import ccc.client.gwt.remoting.CreateWorkingCopyFromHistoricalVersionAction;
@@ -60,12 +62,16 @@ public class HistoryToolBar
             new PreviewHistoricalAction(_historyDialog));
         addSeparator();
         if (_historyDialog.hasLock()) {
-            addButton(
-                "create-historical-wc",
-                _constants.revert(),
-                new CreateWorkingCopyFromHistoricalVersionAction(
-                    _historyDialog));
-            addSeparator();
+            ResourceSummary resource = _historyDialog.getResource();
+            if(resource != null
+               && resource.getType()!=ResourceType.TEMPLATE) {
+                addButton(
+                    "create-historical-wc",
+                    _constants.revert(),
+                    new CreateWorkingCopyFromHistoricalVersionAction(
+                        _historyDialog));
+                addSeparator();
+            }
         }
     }
 

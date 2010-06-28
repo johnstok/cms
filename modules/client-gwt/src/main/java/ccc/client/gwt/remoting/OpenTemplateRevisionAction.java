@@ -40,7 +40,7 @@ import com.google.gwt.json.client.JSONParser;
 
 
 /**
- * Action to open specific revision of a templtate.
+ * Action to open specific revision of a template.
  *
  * @author Civic Computing Ltd.
  */
