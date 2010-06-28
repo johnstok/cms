@@ -275,6 +275,9 @@ public class SimpleLuceneFSTest
         final SearchResult result =
             searchEngine.find("foo", "_bar", SortOrder.ASC, 5, 0);
 
+        final SearchResult reversedResult =
+            searchEngine.find("foo", "_bar", SortOrder.DESC, 5, 0);
+
         // ASSERT
         assertEquals(3, result.totalResults());
         assertEquals(result.hits().size(), 3);
@@ -282,6 +285,13 @@ public class SimpleLuceneFSTest
         assertEquals(a, i.next());
         assertEquals(m, i.next());
         assertEquals(z, i.next());
+
+        assertEquals(3, reversedResult.totalResults());
+        assertEquals(reversedResult.hits().size(), 3);
+        final Iterator<UUID> u = reversedResult.hits().iterator();
+        assertEquals(z, u.next());
+        assertEquals(m, u.next());
+        assertEquals(a, u.next());
     }
 
 
