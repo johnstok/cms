@@ -24,35 +24,36 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
-
+package ccc.client.presenters;
 
 import ccc.api.core.Group;
 import ccc.api.types.CommandType;
+import ccc.client.actions.UpdateGroupAction;
 import ccc.client.events.Event;
-import ccc.client.gwt.remoting.CreateGroupAction;
-
 
 
 /**
- * MVP presenter for group creation.
+ * MVP presenter for group update.
  *
  * TODO: Known issue: if multiple dialogs are open simultaneously they will all
- *  be disposed on a successful create.
+ *  be disposed on a successful update.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateGroupPresenter
+public class UpdateGroupPresenter
     extends
         GroupPresenter {
+
 
     /**
      * Constructor.
      *
      * @param view The view for this presenter.
+     * @param group The group to update.
      */
-    public CreateGroupPresenter(final GroupView view) {
-        super(view);
+    public UpdateGroupPresenter(final GroupView view, final Group group) {
+        super(view, group);
+        bind(group);
         render();
     }
 
@@ -62,8 +63,10 @@ public class CreateGroupPresenter
     public void save() {
         if (valid()) {
             final Group group = new Group();
+            group.setId(getModel().getId());
+            group.addLink("self", getModel().getLink("self"));
             unbind(group);
-            new CreateGroupAction(group).execute();
+            new UpdateGroupAction(group).execute();
         }
     }
 
@@ -72,7 +75,7 @@ public class CreateGroupPresenter
     @Override
     public void handle(final Event<CommandType> event) {
         switch (event.getType()) {
-            case GROUP_CREATE:
+            case GROUP_UPDATE:
                 dispose();
                 break;
 

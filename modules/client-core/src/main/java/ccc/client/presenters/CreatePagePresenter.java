@@ -24,26 +24,36 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
+import static ccc.client.core.InternalServices.*;
+
+import java.util.Set;
+import java.util.UUID;
+
+import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.types.CommandType;
+import ccc.api.types.Paragraph;
+import ccc.api.types.ResourceName;
+import ccc.client.actions.CreatePageAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
+import ccc.client.core.I18n;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.remoting.CreateActionAction;
-import ccc.client.views.CreateAction;
+import ccc.client.views.CreatePage;
 
 
 /**
- * MVP Presenter for creating action.
+ * MVP Presenter for creating page.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateActionPresenter
+public class CreatePagePresenter
     extends
-        AbstractPresenter<CreateAction, ResourceSummaryModelData>
+        AbstractPresenter<CreatePage, ResourceSummary>
     implements
         Editable {
 
@@ -54,8 +64,8 @@ public class CreateActionPresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public CreateActionPresenter(final CreateAction view,
-                                 final ResourceSummaryModelData model) {
+    public CreatePagePresenter(final CreatePage view,
+                               final ResourceSummary model) {
         super(view, model);
         getView().show(this);
     }
@@ -71,26 +81,56 @@ public class CreateActionPresenter
     @Override
     public void save() {
         final ValidationResult vr = getView().getValidationResult();
+        vr.addError(
+            VALIDATOR.notEmpty(
+                getView().getName(), I18n.UI_CONSTANTS.name()));
+        vr.addError(
+            VALIDATOR.notValidResourceName(
+                getView().getName(), I18n.UI_CONSTANTS.name()));
+
+
         if (vr.isValid()) {
 
-            new CreateActionAction(
-                getModel().getId(),
-                getView().getCommandType(),
-                getView().getDate(),
-                getView().getActionParameters())
-            .execute();
+            final Set<Paragraph> paragraphs = getView().getParagraphs();
+            final Page p = Page.delta(paragraphs);
+            final Template tData = getView().getSelectedTemplate();
+
+            if (tData == null) {
+                getView().alert(I18n.UI_CONSTANTS.noTemplateChosen());
+                return;
+            }
+            p.setTemplate(tData.getId());
+
+            createPage(paragraphs);
+
         } else {
             getView().alert(vr.getErrorText());
         }
+    }
+
+    private void createPage(final Set<Paragraph> paragraphs) {
+        final UUID template =
+            (null==getView().getSelectedTemplate())
+            ? null
+                :getView().getSelectedTemplate().getId();
+
+        final Page page = Page.delta(paragraphs);
+        page.setParent(getModel().getId());
+        page.setComment(getView().getComment());
+        page.setMajorChange(getView().getMajorEdit());
+        page.setTitle(getView().getName());
+        page.setTemplate(template);
+        page.setName(new ResourceName(getView().getName()));
+
+        new CreatePageAction(page).execute();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
-
         switch (event.getType()) {
-            case ACTION_CREATE:
+            case PAGE_CREATE:
                 dispose();
                 break;
 
@@ -98,4 +138,5 @@ public class CreateActionPresenter
                 break;
         }
     }
+
 }

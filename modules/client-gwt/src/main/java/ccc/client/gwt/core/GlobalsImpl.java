@@ -57,10 +57,6 @@ public class GlobalsImpl
     private static final Map<String, String> SETTINGS =
         new HashMap<String, String>();
 
-    private static PagedCollection<User> USERS;
-    private static PagedCollection<ActionSummary> ACTIONS;
-    private static PagedCollection<Comment> COMMENTS;
-    private static PagedCollection<Group> GROUPS;
 
     /** {@inheritDoc} */
     @Override
@@ -139,7 +135,7 @@ public class GlobalsImpl
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<User> users() { return USERS; }
+    public PagedCollection<User> users() { return InternalServices.USERS; }
 
 
     /**
@@ -148,13 +144,15 @@ public class GlobalsImpl
      * @param users The user collection to access.
      */
     public static void users(final PagedCollection<User> users) {
-        USERS = users;
+        InternalServices.USERS = users;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<ActionSummary> actions() { return ACTIONS; }
+    public PagedCollection<ActionSummary> actions() {
+        return InternalServices.ACTIONS;
+    }
 
 
     /**
@@ -163,13 +161,15 @@ public class GlobalsImpl
      * @param actions The action collection to access.
      */
     public static void actions(final PagedCollection<ActionSummary> actions) {
-        ACTIONS = actions;
+        InternalServices.ACTIONS = actions;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<Comment> comments() { return COMMENTS; }
+    public PagedCollection<Comment> comments() {
+        return InternalServices.COMMENTS;
+    }
 
 
     /**
@@ -178,13 +178,13 @@ public class GlobalsImpl
      * @param comments The comment collection to access.
      */
     public static void comments(final PagedCollection<Comment> comments) {
-        COMMENTS = comments;
+        InternalServices.COMMENTS = comments;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public PagedCollection<Group> groups() { return GROUPS; }
+    public PagedCollection<Group> groups() { return InternalServices.GROUPS; }
 
 
     /**
@@ -193,7 +193,7 @@ public class GlobalsImpl
      * @param groups The group collection to access.
      */
     public static void groups(final PagedCollection<Group> groups) {
-        GROUPS = groups;
+        InternalServices.GROUPS = groups;
     }
 
 

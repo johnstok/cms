@@ -24,27 +24,29 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
+import java.util.Collection;
+
+import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
+import ccc.api.core.Template;
 import ccc.api.types.CommandType;
+import ccc.client.actions.UpdateResourceTemplateAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
-import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.remoting.CreateFolderAction;
-import ccc.client.views.CreateFolder;
+import ccc.client.views.ChangeResourceTemplate;
 
 
 /**
- * MVP Presenter for creating folders.
+ * MVP Presenter for changing a resource's template.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateFolderPresenter
+public class ChangeResourceTemplatePresenter
     extends
-        AbstractPresenter<CreateFolder, ResourceSummaryModelData>
+        AbstractPresenter<ChangeResourceTemplate, ResourceSummary>
     implements
         Editable {
 
@@ -54,13 +56,18 @@ public class CreateFolderPresenter
      *
      * @param view View implementation.
      * @param model Model implementation.
+     * @param templates The templates to choose from.
      */
-    public CreateFolderPresenter(final CreateFolder view,
-                                 final ResourceSummaryModelData model) {
+    public ChangeResourceTemplatePresenter(
+                               final ChangeResourceTemplate view,
+                               final ResourceSummary model,
+                               final Collection<Template> templates) {
         super(view, model);
+
+        getView().setTemplates(templates);
+        getView().setSelectedTemplate(getModel().getTemplateId());
         getView().show(this);
     }
-
 
 
     /** {@inheritDoc} */
@@ -69,26 +76,26 @@ public class CreateFolderPresenter
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
+
     /** {@inheritDoc} */
     @Override
     public void save() {
-        if (getView().getValidationResult().isValid()) {
-            new CreateFolderAction(
-                getModel().getId(),
-                getView().getName())
-            .execute();
-        } else {
-            InternalServices.WINDOW.alert(
-                I18n.UI_CONSTANTS.resourceNameIsInvalid());
-        }
+        final Resource r = new Resource();
+        r.setId(getModel().getId());
+        r.setTemplate(getView().getSelectedTemplate());
+        r.addLink(
+            Resource.TEMPLATE,
+            getModel().getLink(Resource.TEMPLATE));
+        new UpdateResourceTemplateAction(r).execute();
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
+
         switch (event.getType()) {
-            case FOLDER_CREATE:
+            case RESOURCE_CHANGE_TEMPLATE:
                 dispose();
                 break;
 

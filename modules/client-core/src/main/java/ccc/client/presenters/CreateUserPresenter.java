@@ -24,16 +24,16 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
 import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.Username;
+import ccc.client.actions.CreateUserAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
-import ccc.client.gwt.remoting.CreateUserAction;
 import ccc.client.views.CreateUser;
 
 /**

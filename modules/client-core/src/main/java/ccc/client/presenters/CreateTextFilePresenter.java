@@ -24,17 +24,17 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
 import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.MimeType;
+import ccc.client.actions.CreateTextFileAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.remoting.CreateTextFileAction;
 import ccc.client.views.CreateTextFile;
 
 
@@ -45,7 +45,7 @@ import ccc.client.views.CreateTextFile;
  */
 public class CreateTextFilePresenter
     extends
-        AbstractPresenter<CreateTextFile, ResourceSummaryModelData>
+        AbstractPresenter<CreateTextFile, ResourceSummary>
     implements
         Editable {
 
@@ -57,7 +57,7 @@ public class CreateTextFilePresenter
      * @param model Model implementation.
      */
     public CreateTextFilePresenter(final CreateTextFile view,
-                                   final ResourceSummaryModelData model) {
+                                   final ResourceSummary model) {
         super(view, model);
         getView().show(this);
     }

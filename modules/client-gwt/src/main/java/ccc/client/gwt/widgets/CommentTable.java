@@ -39,9 +39,9 @@ import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.presenters.UpdateCommentPresenter;
 import ccc.client.gwt.remoting.ListComments;
 import ccc.client.gwt.views.gxt.CommentView;
+import ccc.client.presenters.UpdateCommentPresenter;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.Style;
@@ -130,7 +130,7 @@ public class CommentTable
                     new UpdateCommentPresenter(
                         new CommentView(
                             UI_CONSTANTS.updateComment(), GLOBALS),
-                        commentModel);
+                        commentModel.getDelegate());
                 }
             }
         );

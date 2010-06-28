@@ -33,9 +33,9 @@ import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreatePagePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
+import ccc.client.presenters.CreatePagePresenter;
 
 /**
  * Create a page.
@@ -69,7 +69,7 @@ public final class OpenCreatePageAction
                                  final Collection<Template> templates) {
                 new CreatePagePresenter(
                     new CreatePageDialog(templates, item),
-                    item);
+                    item.getDelegate());
             }
         }.execute();
     }

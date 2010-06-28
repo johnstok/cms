@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,45 +21,63 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.presenters;
 
-import java.util.UUID;
 
-import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.api.core.Group;
+import ccc.api.types.CommandType;
+import ccc.client.actions.CreateGroupAction;
+import ccc.client.events.Event;
+
 
 
 /**
- * Create a folder.
+ * MVP presenter for group creation.
+ *
+ * TODO: Known issue: if multiple dialogs are open simultaneously they will all
+ *  be disposed on a successful create.
  *
  * @author Civic Computing Ltd.
  */
-public final class CreateFolderAction
+public class CreateGroupPresenter
     extends
-        RemotingAction {
-
-    private final String _name;
-    private final UUID _parentFolder;
+        GroupPresenter {
 
     /**
      * Constructor.
      *
-     * @param name The folder's name.
-     * @param parentFolder The folder's parent folder.
+     * @param view The view for this presenter.
      */
-    public CreateFolderAction(final UUID parentFolder, final String name) {
-        _parentFolder = parentFolder;
-        _name = name;
+    public CreateGroupPresenter(final GroupView view) {
+        super(view);
+        render();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return ResourceSummaryModelData.createFolder(_name, _parentFolder);
+    public void save() {
+        if (valid()) {
+            final Group group = new Group();
+            unbind(group);
+            new CreateGroupAction(group).execute();
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void handle(final Event<CommandType> event) {
+        switch (event.getType()) {
+            case GROUP_CREATE:
+                dispose();
+                break;
+
+            default:
+                break;
+        }
     }
 }

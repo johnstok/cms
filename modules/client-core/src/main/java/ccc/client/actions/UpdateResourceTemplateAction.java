@@ -24,65 +24,65 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import ccc.api.core.File;
-import ccc.api.core.ResourceSummary;
+import ccc.api.core.Resource;
 import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.FileSerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.TempSerializer;
 
 
 /**
- * Action creating a text file on the server.
+ * Remote action for resource's template updating.
  *
  * @author Civic Computing Ltd.
  */
-public final class CreateTextFileAction
+public class UpdateResourceTemplateAction
     extends
         RemotingAction {
 
+    private final Resource _resource;
 
-    private File _dto;
+
     /**
      * Constructor.
      *
-     * @param dto Text file DTO.
+     * @param resource The resource to update.
      */
-    public CreateTextFileAction(final File dto) {
-        super(UI_CONSTANTS.createTextFile(), HttpMethod.POST);
-        _dto = dto;
+    public UpdateResourceTemplateAction(final Resource resource) {
+        super(UI_CONSTANTS.chooseTemplate(), HttpMethod.PUT);
+        _resource = resource;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GlobalsImpl.getAPI().files();
+        return _resource.uriTemplate().build(InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final GwtJson json = new GwtJson();
-        new FileSerializer().write(json, _dto);
+        final Json json = InternalServices.PARSER.newJson();
+        new TempSerializer().write(json, _resource);
         return json.toString();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final ResourceSummary rs = parseResourceSummary(response);
+    protected void onNoContent(final Response response) {
         final Event<CommandType> event =
-            new Event<CommandType>(CommandType.FILE_CREATE);
-        event.addProperty("resource", rs);
+            new Event<CommandType>(CommandType.RESOURCE_CHANGE_TEMPLATE);
+        event.addProperty("resource", _resource.getId());
+        event.addProperty("template", _resource.getTemplate());
         InternalServices.REMOTING_BUS.fireEvent(event);
     }
 }

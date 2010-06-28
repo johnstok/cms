@@ -34,9 +34,9 @@ import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.EditTextFilePresenter;
 import ccc.client.gwt.views.gxt.EditTextFileDialog;
 import ccc.client.gwt.widgets.ResourceTable;
+import ccc.client.presenters.EditTextFilePresenter;
 import ccc.plugins.s11n.json.FileSerializer;
 
 import com.google.gwt.json.client.JSONObject;

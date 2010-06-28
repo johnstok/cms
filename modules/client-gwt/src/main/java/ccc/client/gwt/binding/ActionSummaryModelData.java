@@ -27,7 +27,6 @@
 package ccc.client.gwt.binding;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -39,7 +38,6 @@ import ccc.api.core.Action;
 import ccc.api.core.ActionSummary;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
-import ccc.api.types.Link;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Globals;
 import ccc.client.core.HttpMethod;
@@ -48,12 +46,8 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 
@@ -243,41 +237,6 @@ public class ActionSummaryModelData
                 new ActionCancelledCallback(this));
     }
 
-    /**
-     * Create a new action.
-     *
-     * @param subject The action's subject.
-     * @param command The command to apply.
-     * @param executeAfter The earliest the command can execute.
-     * @param params The command's parameters.
-     *
-     * @return The HTTP request to create the action.
-     */
-    // FIXME: Should pass an action here.
-    public static Request createAction(final UUID subject,
-                                       final CommandType command,
-                                       final Date executeAfter,
-                                       final Map<String, String> params) {
-
-        final String path =
-            Globals.API_URL
-            + new Link(new GlobalsImpl().actions().getLink("self"))
-                .build(new GWTTemplateEncoder());
-
-        final GwtJson json = new GwtJson();
-        json.set(JsonKeys.SUBJECT_ID, subject);
-        json.set(JsonKeys.COMMAND, command.name());
-        json.set(JsonKeys.EXECUTE_AFTER, executeAfter);
-        json.set(JsonKeys.PARAMETERS, params);
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                json.toString(),
-                new ActionCreatedCallback());
-    }
-
 
     /**
      * Callback handler for applying a working copy.
@@ -303,30 +262,6 @@ public class ActionSummaryModelData
         @Override
         public void onNoContent(final ccc.client.core.Response response) {
             InternalServices.REMOTING_BUS.fireEvent(_event);
-        }
-    }
-
-
-    /**
-     * Callback handler for applying a working copy.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class ActionCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         */
-        public ActionCreatedCallback() {
-            super(I18n.UI_CONSTANTS.createAction());
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.ACTION_CREATE);
-            InternalServices.REMOTING_BUS.fireEvent(event);
         }
     }
 }

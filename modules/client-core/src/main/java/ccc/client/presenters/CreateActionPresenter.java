@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2010 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -24,28 +24,26 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
-import ccc.api.core.Comment;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
+import ccc.client.actions.CreateActionAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
-import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.CommentModelData;
-import ccc.client.gwt.remoting.UpdateCommentAction;
-import ccc.client.gwt.views.gxt.CommentView;
+import ccc.client.views.CreateAction;
 
 
 /**
- * MVP presenter for updating comments.
+ * MVP Presenter for creating action.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateCommentPresenter
+public class CreateActionPresenter
     extends
-        AbstractPresenter<CommentView, CommentModelData>
+        AbstractPresenter<CreateAction, ResourceSummary>
     implements
         Editable {
 
@@ -56,43 +54,33 @@ public class UpdateCommentPresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public UpdateCommentPresenter(final CommentView view,
-                                  final CommentModelData model) {
+    public CreateActionPresenter(final CreateAction view,
+                                 final ResourceSummary model) {
         super(view, model);
-
-        getView().setAuthor(model.getAuthor());
-        getView().setBody2(model.getBody());
-        getView().setStatus(model.getStatus());
-        getView().setUrl2(model.getUrl());
-        getView().setEmail(model.getEmail());
-
         getView().show(this);
     }
 
 
     /** {@inheritDoc} */
     @Override
+    public void cancel() {
+        throw new UnsupportedOperationException("Method not implemented.");
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void save() {
+        final ValidationResult vr = getView().getValidationResult();
+        if (vr.isValid()) {
 
-        final ValidationResult result = getView().getValidationResult();
-
-        if (result.isValid()) {
-            final Comment updated =
-                new Comment(
-                    getView().getAuthor(),
-                    getView().getBody2(),
-                    getModel().getResourceId(),
-                    getModel().getTimestamp(),
-                    getView().getUrl2());
-            updated.setId(getModel().getId());
-            updated.setStatus(getView().getStatus());
-            updated.setEmail(getView().getEmail());
-            updated.addLink("self", getModel().getDelegate().self());
-
-            new UpdateCommentAction(updated).execute();
-
+            new CreateActionAction(
+                getModel().getId(),
+                getView().getCommandType(),
+                getView().getDate(),
+                getView().getActionParameters())
+            .execute();
         } else {
-            InternalServices.WINDOW.alert(result.getErrors().get(0));
+            getView().alert(vr.getErrorText());
         }
     }
 
@@ -100,8 +88,9 @@ public class UpdateCommentPresenter
     /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
+
         switch (event.getType()) {
-            case COMMENT_UPDATE:
+            case ACTION_CREATE:
                 dispose();
                 break;
 
@@ -109,9 +98,4 @@ public class UpdateCommentPresenter
                 break;
         }
     }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void cancel() { dispose(); }
 }

@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,21 +21,22 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
-import ccc.api.core.File;
-import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
-import ccc.api.types.MimeType;
+import ccc.api.types.ResourceName;
+import ccc.api.types.ResourcePath;
+import ccc.client.actions.RenameAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
+import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
-import ccc.client.gwt.remoting.EditTextFileAction;
-import ccc.client.views.EditTextFile;
+import ccc.client.views.RenameResource;
 
 
 /**
@@ -43,11 +44,12 @@ import ccc.client.views.EditTextFile;
  *
  * @author Civic Computing Ltd.
  */
-public class EditTextFilePresenter
+public class RenameResourcePresenter
     extends
-        AbstractPresenter<EditTextFile, File>
+        AbstractPresenter<RenameResource, ResourceSummary>
     implements
         Editable {
+
 
     /**
      * Constructor.
@@ -55,14 +57,12 @@ public class EditTextFilePresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public EditTextFilePresenter(final EditTextFile view,
-                                 final File model) {
+    public RenameResourcePresenter(final RenameResource view,
+                                   final ResourceSummary model) {
         super(view, model);
 
+        getView().setName(getModel().getName());
         getView().show(this);
-        getView().setText(model.getContent());
-        getView().setPrimaryMime(model.getMimeType().getPrimaryType());
-        getView().setSubMime(model.getMimeType().getSubType());
     }
 
 
@@ -76,20 +76,21 @@ public class EditTextFilePresenter
     /** {@inheritDoc} */
     @Override
     public void save() {
-        final EditTextFile view = getView();
+        if (getView().getValidationResult().isValid()) {
 
-        if (view.getValidationResult().isValid()) {
-            final File dto = new File(getModel().getId(),
-                view.getText(),
-                new MimeType(view.getPrimaryMime(), view.getSubMime()),
-                view.isMajorEdit(),
-                view.getComment());
-            dto.addLink(Resource.SELF, getModel().self().toString());
-            new EditTextFileAction(dto).execute();
+            final ResourcePath p =
+                new ResourcePath(getModel().getAbsolutePath());
+            final ResourcePath newPath =
+                p.parent().append(new ResourceName(getView().getName()));
+
+            new RenameAction(getModel(),
+                             getView().getName(),
+                             newPath)
+            .execute();
 
         } else {
             InternalServices.WINDOW.alert(
-                getView().getValidationResult().getErrorText());
+                I18n.UI_CONSTANTS.resourceNameIsInvalid());
         }
     }
 
@@ -98,7 +99,7 @@ public class EditTextFilePresenter
     @Override
     public void handle(final Event<CommandType> event) {
         switch (event.getType()) {
-            case FILE_UPDATE:
+            case RESOURCE_RENAME:
                 dispose();
                 break;
 

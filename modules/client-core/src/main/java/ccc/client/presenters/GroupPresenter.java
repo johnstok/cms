@@ -25,7 +25,7 @@
  *-----------------------------------------------------------------------------
  */
 
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
 import java.util.Set;
 

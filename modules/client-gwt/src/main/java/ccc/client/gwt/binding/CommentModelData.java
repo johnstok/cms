@@ -33,19 +33,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import ccc.api.core.Comment;
-import ccc.api.types.CommandType;
 import ccc.api.types.CommentStatus;
-import ccc.api.types.DBC;
-import ccc.client.core.Globals;
-import ccc.client.core.HttpMethod;
-import ccc.client.core.I18n;
-import ccc.client.core.InternalServices;
-import ccc.client.core.Request;
-import ccc.client.core.ResponseHandlerAdapter;
-import ccc.client.events.Event;
-import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.JsonKeys;
-import ccc.plugins.s11n.json.CommentSerializer;
 
 
 
@@ -209,62 +198,6 @@ public final class CommentModelData
      */
     public void setDelegate(final Comment comment) {
         _delegate = comment;
-    }
-
-
-    /**
-     * Update this comment.
-     *
-     * @param comment The new comment data.
-     *
-     * @return The HTTP request to perform the update.
-     */
-    public static Request update(final Comment comment) {
-        final String path = Globals.API_URL + comment.self();
-
-        final GwtJson json = new GwtJson();
-        new CommentSerializer().write(json, comment);
-
-        return new Request(
-            HttpMethod.PUT,
-            path,
-            json.toString(),
-            new CommentUpdatedCallback(
-                I18n.UI_CONSTANTS.updateComment(),
-                comment));
-    }
-
-
-
-    /**
-     * Callback handler for updating a comment.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class CommentUpdatedCallback extends ResponseHandlerAdapter {
-
-        private final Comment _comment;
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         * @param comment The updated comment.
-         */
-        public CommentUpdatedCallback(final String name,
-                                      final Comment comment) {
-            super(name);
-            _comment = DBC.require().notNull(comment);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.COMMENT_UPDATE);
-            event.addProperty("comment", _comment);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
     }
 
 

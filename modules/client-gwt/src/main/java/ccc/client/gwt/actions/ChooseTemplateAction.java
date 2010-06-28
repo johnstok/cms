@@ -34,9 +34,9 @@ import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.ChangeResourceTemplatePresenter;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
+import ccc.client.presenters.ChangeResourceTemplatePresenter;
 
 /**
  * Chooses template for the resource.
@@ -76,12 +76,13 @@ public final class ChooseTemplateAction
                                  final Collection<Template> templates) {
                     new ChangeResourceTemplatePresenter(
                         new ChooseTemplateDialog(),
-                        item,
+                        item.getDelegate(),
                         templates);
                 }
             }.execute();
         } else {
-            InternalServices.WINDOW.alert(UI_CONSTANTS.templateCannotBeChosen());
+            InternalServices.WINDOW.alert(
+                UI_CONSTANTS.templateCannotBeChosen());
 
         }
     }

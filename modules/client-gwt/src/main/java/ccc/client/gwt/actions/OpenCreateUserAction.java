@@ -31,9 +31,9 @@ import ccc.api.core.PagedCollection;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Action;
 import ccc.client.core.Globals;
-import ccc.client.gwt.presenters.CreateUserPresenter;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.CreateUserDialog;
+import ccc.client.presenters.CreateUserPresenter;
 
 
 /**

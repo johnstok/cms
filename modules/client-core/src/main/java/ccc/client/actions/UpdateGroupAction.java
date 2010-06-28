@@ -24,67 +24,72 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import ccc.api.core.Resource;
+import ccc.api.core.Group;
 import ccc.api.types.CommandType;
+import ccc.api.types.DBC;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.json.TempSerializer;
+import ccc.plugins.s11n.json.GroupSerializer;
 
 
 /**
- * Remote action for resource's template updating.
+ * Remote action for creating a group.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateResourceTemplateAction
+public class UpdateGroupAction
     extends
         RemotingAction {
 
-    private final Resource _resource;
+    private final Group _group;
 
 
     /**
      * Constructor.
      *
-     * @param resource The resource to update.
+     * @param group The updated group.
      */
-    public UpdateResourceTemplateAction(final Resource resource) {
-        super(UI_CONSTANTS.chooseTemplate(), HttpMethod.PUT);
-        _resource = resource;
+    public UpdateGroupAction(final Group group) {
+        super(UI_CONSTANTS.createGroup(), HttpMethod.PUT);
+        DBC.require().notNull(group);
+        DBC.require().notNull(group.getId());
+        _group = group;
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _resource.uriTemplate().build(new GWTTemplateEncoder());
+        return _group.self();
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final Json json = new GwtJson();
-        new TempSerializer().write(json, _resource);
+        final Json json = InternalServices.PARSER.newJson();
+        new GroupSerializer().write(json, _group);
         return json.toString();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onOK(final Response response) {
+        final Group newGroup =
+            new GroupSerializer().read(
+                InternalServices.PARSER.parseJson(response.getText()));
+
         final Event<CommandType> event =
-            new Event<CommandType>(CommandType.RESOURCE_CHANGE_TEMPLATE);
-        event.addProperty("resource", _resource.getId());
-        event.addProperty("template", _resource.getTemplate());
-        InternalServices.REMOTING_BUS.fireEvent(event);
+            new Event<CommandType>(CommandType.GROUP_UPDATE);
+        event.addProperty("group", newGroup);
+
+        fireEvent(event);
     }
 }

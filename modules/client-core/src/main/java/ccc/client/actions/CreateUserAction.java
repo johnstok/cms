@@ -24,72 +24,64 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import ccc.api.core.Group;
+import ccc.api.core.User;
 import ccc.api.types.CommandType;
-import ccc.api.types.DBC;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.GroupSerializer;
-
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.UserSerializer;
 
 
 /**
- * Remote action for creating a group.
+ * Create a new user.
  *
  * @author Civic Computing Ltd.
  */
-public class UpdateGroupAction
+public class CreateUserAction
     extends
         RemotingAction {
 
-    private final Group _group;
-
+    private final User _userDelta;
 
     /**
      * Constructor.
      *
-     * @param group The updated group.
+     * @param userDelta The user's details.
      */
-    public UpdateGroupAction(final Group group) {
-        super(UI_CONSTANTS.createGroup(), HttpMethod.PUT);
-        DBC.require().notNull(group);
-        DBC.require().notNull(group.getId());
-        _group = group;
+    public CreateUserAction(final User userDelta) {
+        super(UI_CONSTANTS.createUser(), HttpMethod.POST);
+        _userDelta = userDelta;
     }
-
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _group.self();
+        return InternalServices.API.users();
     }
-
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final GwtJson json = new GwtJson();
-        new GroupSerializer().write(json, _group);
+        final Json json = InternalServices.PARSER.newJson();
+        new UserSerializer().write(json, _userDelta);
         return json.toString();
     }
-
 
     /** {@inheritDoc} */
     @Override
     protected void onOK(final Response response) {
-        final Group newGroup =
-            new GroupSerializer().read(
-                new GwtJson(JSONParser.parse(response.getText()).isObject()));
+        final User newUser =
+            new UserSerializer().read(
+                InternalServices.PARSER.parseJson(response.getText()));
 
         final Event<CommandType> event =
-            new Event<CommandType>(CommandType.GROUP_UPDATE);
-        event.addProperty("group", newGroup);
+            new Event<CommandType>(CommandType.USER_CREATE);
+        event.addProperty("user", newUser);
 
         fireEvent(event);
     }

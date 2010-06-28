@@ -47,7 +47,6 @@ import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateGroupPresenter;
 import ccc.client.gwt.remoting.GetRootsAction;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.remoting.LockAction;
@@ -61,6 +60,7 @@ import ccc.client.gwt.remoting.UnpublishAction;
 import ccc.client.gwt.remoting.ViewHistoryAction;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
 import ccc.client.i18n.UIConstants;
+import ccc.client.presenters.CreateGroupPresenter;
 
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;

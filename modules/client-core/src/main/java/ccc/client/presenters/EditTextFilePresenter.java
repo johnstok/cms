@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2009 Civic Computing Ltd.
+ * Copyright (c) 2009 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,52 +21,48 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see the subversion log.
+ * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
-import java.util.Collection;
-
+import ccc.api.core.File;
 import ccc.api.core.Resource;
-import ccc.api.core.Template;
 import ccc.api.types.CommandType;
+import ccc.api.types.MimeType;
+import ccc.client.actions.EditTextFileAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
+import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.remoting.UpdateResourceTemplateAction;
-import ccc.client.views.ChangeResourceTemplate;
+import ccc.client.views.EditTextFile;
 
 
 /**
- * MVP Presenter for changing a resource's template.
+ * MVP presenter for renaming resources.
  *
  * @author Civic Computing Ltd.
  */
-public class ChangeResourceTemplatePresenter
+public class EditTextFilePresenter
     extends
-        AbstractPresenter<ChangeResourceTemplate, ResourceSummaryModelData>
+        AbstractPresenter<EditTextFile, File>
     implements
         Editable {
-
 
     /**
      * Constructor.
      *
      * @param view View implementation.
      * @param model Model implementation.
-     * @param templates The templates to choose from.
      */
-    public ChangeResourceTemplatePresenter(
-                               final ChangeResourceTemplate view,
-                               final ResourceSummaryModelData model,
-                               final Collection<Template> templates) {
+    public EditTextFilePresenter(final EditTextFile view,
+                                 final File model) {
         super(view, model);
 
-        getView().setTemplates(templates);
-        getView().setSelectedTemplate(getModel().getTemplateId());
         getView().show(this);
+        getView().setText(model.getContent());
+        getView().setPrimaryMime(model.getMimeType().getPrimaryType());
+        getView().setSubMime(model.getMimeType().getSubType());
     }
 
 
@@ -80,22 +76,29 @@ public class ChangeResourceTemplatePresenter
     /** {@inheritDoc} */
     @Override
     public void save() {
-        final Resource r = new Resource();
-        r.setId(getModel().getId());
-        r.setTemplate(getView().getSelectedTemplate());
-        r.addLink(
-            Resource.TEMPLATE,
-            getModel().getDelegate().getLink(Resource.TEMPLATE));
-        new UpdateResourceTemplateAction(r).execute();
+        final EditTextFile view = getView();
+
+        if (view.getValidationResult().isValid()) {
+            final File dto = new File(getModel().getId(),
+                view.getText(),
+                new MimeType(view.getPrimaryMime(), view.getSubMime()),
+                view.isMajorEdit(),
+                view.getComment());
+            dto.addLink(Resource.SELF, getModel().self().toString());
+            new EditTextFileAction(dto).execute();
+
+        } else {
+            InternalServices.WINDOW.alert(
+                getView().getValidationResult().getErrorText());
+        }
     }
 
 
     /** {@inheritDoc} */
     @Override
     public void handle(final Event<CommandType> event) {
-
         switch (event.getType()) {
-            case RESOURCE_CHANGE_TEMPLATE:
+            case FILE_UPDATE:
                 dispose();
                 break;
 

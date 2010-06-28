@@ -30,8 +30,8 @@ import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateTextFilePresenter;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
+import ccc.client.presenters.CreateTextFilePresenter;
 
 /**
  * Create a text file.
@@ -61,7 +61,7 @@ public final class OpenCreateTextFileAction
         } else {
             new CreateTextFilePresenter(
                 new CreateTextFileDialog(),
-                item);
+                item.getDelegate());
         }
     }
 }

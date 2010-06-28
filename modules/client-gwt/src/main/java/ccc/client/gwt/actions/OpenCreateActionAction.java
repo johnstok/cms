@@ -30,8 +30,8 @@ import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
-import ccc.client.gwt.presenters.CreateActionPresenter;
 import ccc.client.gwt.views.gxt.CreateActionDialog;
+import ccc.client.presenters.CreateActionPresenter;
 
 /**
  * Create an action.
@@ -61,7 +61,7 @@ public final class OpenCreateActionAction
         } else {
             new CreateActionPresenter(
                 new CreateActionDialog(),
-                item);
+                item.getDelegate());
         }
     }
 }

@@ -24,60 +24,72 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import ccc.api.core.File;
+import ccc.api.core.Group;
 import ccc.api.types.CommandType;
+import ccc.api.types.Link;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GWTTemplateEncoder;
-import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.FileSerializer;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.GroupSerializer;
 
 
 /**
- * Action for updating the text file's content.
+ * Remote action for creating a group.
  *
  * @author Civic Computing Ltd.
  */
-public class EditTextFileAction
+public class CreateGroupAction
     extends
         RemotingAction {
 
-    private final File _dto;
+    private final Group _group;
+
 
     /**
      * Constructor.
      *
-     * @param dto The dto of the file.
+     * @param group The updated group.
      */
-    public EditTextFileAction(final File dto) {
-        super(UI_CONSTANTS.updateTextFile(), HttpMethod.POST);
-        _dto = dto;
+    public CreateGroupAction(final Group group) {
+        super(UI_CONSTANTS.createGroup(), HttpMethod.POST);
+        _group = group;
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _dto.self().build(new GWTTemplateEncoder());
+        return
+            new Link(InternalServices.GROUPS.getLink("self"))
+            .build(InternalServices.ENCODER);
     }
+
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final GwtJson json = new GwtJson();
-        new FileSerializer().write(json, _dto);
+        final Json json = InternalServices.PARSER.newJson();
+        new GroupSerializer().write(json, _group);
         return json.toString();
     }
 
+
     /** {@inheritDoc} */
     @Override
-    protected void onNoContent(final Response response) {
+    protected void onOK(final Response response) {
+        final Group newGroup =
+            new GroupSerializer().read(
+                InternalServices.PARSER.parseJson(response.getText()));
+
         final Event<CommandType> event =
-            new Event<CommandType>(CommandType.FILE_UPDATE);
-        InternalServices.REMOTING_BUS.fireEvent(event);
+            new Event<CommandType>(CommandType.GROUP_CREATE);
+        event.addProperty("group", newGroup);
+
+        fireEvent(event);
     }
 }

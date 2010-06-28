@@ -24,55 +24,64 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
-
+import ccc.api.core.File;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
+import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
-import ccc.client.core.Request;
-import ccc.client.gwt.binding.ActionSummaryModelData;
+import ccc.client.core.Response;
+import ccc.client.events.Event;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.FileSerializer;
 
 
 /**
- * Create a scheduled action.
+ * Action creating a text file on the server.
  *
  * @author Civic Computing Ltd.
  */
-public final class CreateActionAction
+public final class CreateTextFileAction
     extends
         RemotingAction {
 
-    private UUID _resourceId;
-    private CommandType _command;
-    private Date _executeAfter;
-    private Map<String, String> _actionParameters;
 
-
+    private File _dto;
     /**
      * Constructor.
-     * @param actionParameters Additional parameters for the action.
-     * @param executeAfter The date that the action will be performed.
-     * @param command The command the action will invoke.
-     * @param resourceId The resource the action will operate on.
+     *
+     * @param dto Text file DTO.
      */
-    public CreateActionAction(final UUID resourceId,
-                              final CommandType command,
-                              final Date executeAfter,
-                              final Map<String, String> actionParameters) {
-        _resourceId = resourceId;
-        _command = command;
-        _executeAfter = executeAfter;
-        _actionParameters = actionParameters;
+    public CreateTextFileAction(final File dto) {
+        super(UI_CONSTANTS.createTextFile(), HttpMethod.POST);
+        _dto = dto;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected Request getRequest() {
-        return ActionSummaryModelData.createAction(
-            _resourceId, _command, _executeAfter, _actionParameters);
+    protected String getPath() {
+        return InternalServices.API.files();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getBody() {
+        final Json json = InternalServices.PARSER.newJson();
+        new FileSerializer().write(json, _dto);
+        return json.toString();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onOK(final Response response) {
+        final ResourceSummary rs = parseResourceSummary(response);
+        final Event<CommandType> event =
+            new Event<CommandType>(CommandType.FILE_CREATE);
+        event.addProperty("resource", rs);
+        InternalServices.REMOTING_BUS.fireEvent(event);
     }
 }

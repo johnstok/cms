@@ -24,29 +24,27 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.presenters;
+package ccc.client.presenters;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourcePath;
+import ccc.client.actions.CreateFolderAction;
 import ccc.client.core.AbstractPresenter;
 import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
-import ccc.client.gwt.remoting.RenameAction;
-import ccc.client.views.RenameResource;
+import ccc.client.views.CreateFolder;
 
 
 /**
- * MVP presenter for renaming resources.
+ * MVP Presenter for creating folders.
  *
  * @author Civic Computing Ltd.
  */
-public class RenameResourcePresenter
+public class CreateFolderPresenter
     extends
-        AbstractPresenter<RenameResource, ResourceSummaryModelData>
+        AbstractPresenter<CreateFolder, ResourceSummary>
     implements
         Editable {
 
@@ -57,13 +55,12 @@ public class RenameResourcePresenter
      * @param view View implementation.
      * @param model Model implementation.
      */
-    public RenameResourcePresenter(final RenameResource view,
-                                   final ResourceSummaryModelData model) {
+    public CreateFolderPresenter(final CreateFolder view,
+                                 final ResourceSummary model) {
         super(view, model);
-
-        getView().setName(getModel().getName());
         getView().show(this);
     }
+
 
 
     /** {@inheritDoc} */
@@ -72,22 +69,14 @@ public class RenameResourcePresenter
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
-
     /** {@inheritDoc} */
     @Override
     public void save() {
         if (getView().getValidationResult().isValid()) {
-
-            final ResourcePath p =
-                new ResourcePath(getModel().getAbsolutePath());
-            final ResourcePath newPath =
-                p.parent().append(new ResourceName(getView().getName()));
-
-            new RenameAction(getModel(),
-                             getView().getName(),
-                             newPath)
+            new CreateFolderAction(
+                getModel().getId(),
+                getView().getName())
             .execute();
-
         } else {
             InternalServices.WINDOW.alert(
                 I18n.UI_CONSTANTS.resourceNameIsInvalid());
@@ -99,7 +88,7 @@ public class RenameResourcePresenter
     @Override
     public void handle(final Event<CommandType> event) {
         switch (event.getType()) {
-            case RESOURCE_RENAME:
+            case FOLDER_CREATE:
                 dispose();
                 break;
 

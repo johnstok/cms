@@ -38,9 +38,9 @@ import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.binding.GroupModelData;
-import ccc.client.gwt.presenters.UpdateGroupPresenter;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
+import ccc.client.presenters.UpdateGroupPresenter;
 import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.Style;

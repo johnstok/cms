@@ -34,13 +34,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import ccc.api.core.Folder;
-import ccc.api.core.Page;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
-import ccc.api.types.ResourceName;
-import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
 import ccc.client.core.Globals;
@@ -54,8 +50,6 @@ import ccc.client.events.Event;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.FolderSerializer;
-import ccc.plugins.s11n.json.PageSerializer;
 import ccc.plugins.s11n.json.ResourceSummarySerializer;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -570,173 +564,6 @@ public class ResourceSummaryModelData
             "",
             new WCClearedCallback(
                 I18n.UI_CONSTANTS.deleteWorkingCopy(), this));
-    }
-
-
-    /**
-     * Create a new folder.
-     *
-     * @param name The new folder's name.
-     * @param parentFolder The parent folder.
-     *
-     * @return The HTTP request to create a folder.
-     */
-    // FIXME: Should pass a folder here.
-    public static Request createFolder(final String name,
-                                       final UUID parentFolder) {
-        final String path = Globals.API_URL+GlobalsImpl.getAPI().folders();
-
-        final GwtJson json = new GwtJson();
-        final Folder f = new Folder();
-        f.setParent(parentFolder);
-        f.setName(new ResourceName(name));
-        new FolderSerializer().write(json, f);
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                json.toString(),
-                new FolderCreatedCallback(
-                    I18n.UI_CONSTANTS.createFolder()));
-    }
-
-
-    /**
-     * Create a new page.
-     *
-     * @param page The page to create.
-     *
-     * @return The HTTP request to create a folder.
-     */
-    public static Request createPage(final Page page) {
-        final String path =  Globals.API_URL+GlobalsImpl.getAPI().pages();
-
-        final GwtJson json = new GwtJson(); // FIXME: Broken.
-        new PageSerializer().write(json, page);
-
-        return
-            new Request(
-                HttpMethod.POST,
-                path,
-                json.toString(),
-                new PageCreatedCallback(
-                    I18n.UI_CONSTANTS.createPage()));
-    }
-
-
-    /**
-     * Rename a resource.
-     *
-     * @param name The name of the resource.
-     * @param newPath The new resource path.
-     *
-     * @return The HTTP request to rename a resource.
-     */
-    public Request rename(final String name,
-                          final ResourcePath newPath) {
-        return
-            new Request(
-                HttpMethod.POST,
-                Globals.API_URL + _rs.rename().build(new GWTTemplateEncoder()),
-                name,
-                new ResourceRenamedCallback(
-                    I18n.UI_CONSTANTS.rename(),
-                    name,
-                    getId(),
-                    newPath));
-    }
-
-
-    /**
-     * Callback handler for renaming a resource.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class ResourceRenamedCallback extends ResponseHandlerAdapter {
-
-        private final Event<CommandType> _event;
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         * @param newPath The resource's new path.
-         * @param id The resource's ID.
-         * @param rName The resource's new name.
-         */
-        public ResourceRenamedCallback(final String name,
-                                       final String rName,
-                                       final UUID id,
-                                       final ResourcePath newPath) {
-            super(name);
-            _event = new Event<CommandType>(CommandType.RESOURCE_RENAME);
-            _event.addProperty("name", rName);
-            _event.addProperty("path", newPath);
-            _event.addProperty("id", id);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onNoContent(final ccc.client.core.Response response) {
-            InternalServices.REMOTING_BUS.fireEvent(_event);
-        }
-    }
-
-
-    /**
-     * Callback handler for creating a page.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class PageCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         */
-        public PageCreatedCallback(final String name) {
-            super(name);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummary rs = parseResourceSummary(response);
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.PAGE_CREATE);
-            event.addProperty("resource", rs);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
-    }
-
-
-    /**
-     * Callback handler for creating a folder.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static class FolderCreatedCallback extends ResponseHandlerAdapter {
-
-        /**
-         * Constructor.
-         *
-         * @param name The action name.
-         */
-        public FolderCreatedCallback(final String name) {
-            super(name);
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onOK(final ccc.client.core.Response response) {
-            final ResourceSummary rs = parseResourceSummary(response);
-            final Event<CommandType> event =
-                new Event<CommandType>(CommandType.FOLDER_CREATE);
-            event.addProperty("resource", rs);
-            InternalServices.REMOTING_BUS.fireEvent(event);
-        }
     }
 
 

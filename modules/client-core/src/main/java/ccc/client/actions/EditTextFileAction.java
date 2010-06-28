@@ -24,67 +24,59 @@
  * Changes: see subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.client.gwt.remoting;
+package ccc.client.actions;
 
-import ccc.api.core.User;
+import ccc.api.core.File;
 import ccc.api.types.CommandType;
 import ccc.client.core.HttpMethod;
+import ccc.client.core.InternalServices;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
 import ccc.client.events.Event;
-import ccc.client.gwt.core.GlobalsImpl;
-import ccc.client.gwt.core.GwtJson;
-import ccc.plugins.s11n.json.UserSerializer;
-
-import com.google.gwt.json.client.JSONParser;
+import ccc.plugins.s11n.Json;
+import ccc.plugins.s11n.json.FileSerializer;
 
 
 /**
- * Create a new user.
+ * Action for updating the text file's content.
  *
  * @author Civic Computing Ltd.
  */
-public class CreateUserAction
+public class EditTextFileAction
     extends
         RemotingAction {
 
-    private final User _userDelta;
+    private final File _dto;
 
     /**
      * Constructor.
      *
-     * @param userDelta The user's details.
+     * @param dto The dto of the file.
      */
-    public CreateUserAction(final User userDelta) {
-        super(UI_CONSTANTS.createUser(), HttpMethod.POST);
-        _userDelta = userDelta;
+    public EditTextFileAction(final File dto) {
+        super(UI_CONSTANTS.updateTextFile(), HttpMethod.POST);
+        _dto = dto;
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return GlobalsImpl.getAPI().users();
+        return _dto.self().build(InternalServices.ENCODER);
     }
 
     /** {@inheritDoc} */
     @Override
     protected String getBody() {
-        final GwtJson json = new GwtJson();
-        new UserSerializer().write(json, _userDelta);
+        final Json json = InternalServices.PARSER.newJson();
+        new FileSerializer().write(json, _dto);
         return json.toString();
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void onOK(final Response response) {
-        final User newUser =
-            new UserSerializer().read(
-                new GwtJson(JSONParser.parse(response.getText()).isObject()));
-
+    protected void onNoContent(final Response response) {
         final Event<CommandType> event =
-            new Event<CommandType>(CommandType.USER_CREATE);
-        event.addProperty("user", newUser);
-
-        fireEvent(event);
+            new Event<CommandType>(CommandType.FILE_UPDATE);
+        InternalServices.REMOTING_BUS.fireEvent(event);
     }
 }
