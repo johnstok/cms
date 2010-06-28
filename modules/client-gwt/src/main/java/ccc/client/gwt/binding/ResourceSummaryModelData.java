@@ -559,7 +559,7 @@ public class ResourceSummaryModelData
      */
     public Request clearWorkingCopy() {
         return new Request(
-            HttpMethod.POST,
+            HttpMethod.DELETE,
             Globals.API_URL + _rs.wc().build(new GWTTemplateEncoder()),
             "",
             new WCClearedCallback(

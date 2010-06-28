@@ -181,7 +181,7 @@ public class Page
 
 
     /** WORKING_COPY : String. */
-    public static final String WORKING_COPY = "wc";
+    public static final String WORKING_COPY = "wc_p";
     /** VALIDATOR : String. */
     public static final String VALIDATOR = "page-validator";
 }
