@@ -204,6 +204,8 @@ public class FileUploadAcceptanceTest
         assertEquals(fName, rs.getName());
         assertEquals("/files/"+fName, rs.getAbsolutePath());
         assertEquals("Hello!", getBrowser().previewContent(rs, false));
+        final File f = getFiles().retrieve(rs.getId());
+        assertEquals("UTF-8", f.getProperties().get("text.charset"));
     }
 
 
