@@ -3,7 +3,7 @@
     <groupId>com.civicuk.cc</groupId>
     <artifactId>build</artifactId>
     <packaging>pom</packaging>
-    <version>7.2.5</version>
+    <version>7.2.6-SNAPSHOT</version>
     <name>build</name>
     <url>http://maven.apache.org</url>
 
@@ -259,8 +259,8 @@
     </build>
 
     <scm>
-        <connection>scm:svn:http://svn.civiccomputing.com/ContentControl/tags/release-7.2.5</connection>
-        <developerConnection>scm:svn:http://svn.civiccomputing.com/ContentControl/tags/release-7.2.5</developerConnection>
+        <connection>scm:svn:http://svn.civiccomputing.com/ContentControl</connection>
+        <developerConnection>scm:svn:http://svn.civiccomputing.com/ContentControl</developerConnection>
     </scm>
 
     <distributionManagement>
