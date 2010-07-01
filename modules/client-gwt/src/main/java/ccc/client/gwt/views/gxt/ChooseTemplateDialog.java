@@ -35,7 +35,6 @@ import ccc.client.core.Editable;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.DisplayFields;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.views.ChangeResourceTemplate;
 
@@ -91,7 +90,8 @@ public class ChooseTemplateDialog
 //        _selectedTemplate.setTemplate("<tpl for=\".\">"
 //            +"<div class=x-combo-list-item id={NAME}>{NAME}</div></tpl>");
 //        _selectedTemplate.setId("default-template");
-        _selectedTemplate.setDisplayField(DisplayFields.TEMPLATE);
+        _selectedTemplate.setDisplayField(
+            DataBinding.TemplateBeanModel.NAME);
         _selectedTemplate.setForceSelection(true);
         _selectedTemplate.setEditable(false);
         _selectedTemplate.setTriggerAction(TriggerAction.ALL);
@@ -137,7 +137,7 @@ public class ChooseTemplateDialog
     public void setTemplates(final Collection<Template> templates) {
         _store.add(_none);
         _store.add(DataBinding.bindTemplateDelta(templates));
-        _store.sort(DisplayFields.TEMPLATE, SortDir.ASC);
+        _store.sort(DataBinding.TemplateBeanModel.NAME, SortDir.ASC);
         _selectedTemplate.setStore(_store);
     }
 

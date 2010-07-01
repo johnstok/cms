@@ -37,17 +37,16 @@ import ccc.api.types.SortOrder;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
-import ccc.client.gwt.binding.CommentModelData;
 import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.remoting.ListComments;
 import ccc.client.gwt.views.gxt.CommentView;
 import ccc.client.presenters.UpdateCommentPresenter;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
@@ -77,10 +76,10 @@ public class CommentTable
     implements
         EventHandler<CommandType> {
 
-    private ListStore<CommentModelData> _detailsStore =
-        new ListStore<CommentModelData>();
+    private ListStore<BeanModel> _detailsStore =
+        new ListStore<BeanModel>();
 
-    private final Grid<CommentModelData> _grid;
+    private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
 
     private static final int COLUMN_WIDTH = 200;
@@ -99,12 +98,12 @@ public class CommentTable
         final Menu contextMenu = new Menu();
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
-        gp.setRenderer(new ContextMenuRenderer<CommentModelData>());
+        gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<CommentModelData>(_detailsStore, cm);
+        _grid = new Grid<BeanModel>(_detailsStore, cm);
 
         contextMenu.add(createUpdateCommentMenu(_grid));
 
@@ -117,20 +116,19 @@ public class CommentTable
     }
 
 
-    private MenuItem createUpdateCommentMenu(
-                                         final Grid<CommentModelData> grid) {
+    private MenuItem createUpdateCommentMenu(final Grid<BeanModel> grid) {
         final MenuItem updateComment =
             new MenuItem(UI_CONSTANTS.updateComment());
         updateComment.addSelectionListener(
             new SelectionListener<MenuEvent>() {
                 @Override public void componentSelected(final MenuEvent ce) {
-                    final CommentModelData commentModel =
+                    final BeanModel commentModel =
                         grid.getSelectionModel().getSelectedItem();
 
                     new UpdateCommentPresenter(
                         new CommentView(
                             UI_CONSTANTS.updateComment(), GLOBALS),
-                        commentModel.getDelegate());
+                        commentModel.<Comment>getBean());
                 }
             }
         );
@@ -145,13 +143,13 @@ public class CommentTable
         configs.add(gp);
 
         final ColumnConfig authorColumn = new ColumnConfig();
-        authorColumn.setId(JsonKeys.AUTHOR);
+        authorColumn.setId(DataBinding.CommentBeanModel.AUTHOR);
         authorColumn.setHeader(UI_CONSTANTS.author());
         authorColumn.setWidth(COLUMN_WIDTH);
         configs.add(authorColumn);
 
         final ColumnConfig urlColumn = new ColumnConfig();
-        urlColumn.setId(JsonKeys.URL);
+        urlColumn.setId(DataBinding.CommentBeanModel.URL);
         urlColumn.setHeader(UI_CONSTANTS.url());
         urlColumn.setWidth(COLUMN_WIDTH);
         configs.add(urlColumn);
@@ -159,13 +157,13 @@ public class CommentTable
         final ColumnConfig timestampColumn = new ColumnConfig();
         timestampColumn.setDateTimeFormat(
             DateTimeFormat.getMediumDateTimeFormat());
-        timestampColumn.setId(JsonKeys.DATE_CREATED);
+        timestampColumn.setId(DataBinding.CommentBeanModel.DATE_CREATED);
         timestampColumn.setHeader(UI_CONSTANTS.dateCreated());
         timestampColumn.setWidth(COLUMN_WIDTH);
         configs.add(timestampColumn);
 
         final ColumnConfig statusColumn = new ColumnConfig();
-        statusColumn.setId(JsonKeys.STATUS);
+        statusColumn.setId(DataBinding.CommentBeanModel.STATUS);
         statusColumn.setHeader(UI_CONSTANTS.status());
         statusColumn.setWidth(COLUMN_WIDTH);
         configs.add(statusColumn);
@@ -182,17 +180,17 @@ public class CommentTable
     public void displayComments(final CommentStatus status) {
         _detailsStore.removeAll();
 
-        final DataProxy<PagingLoadResult<CommentModelData>> proxy =
-            new RpcProxy<PagingLoadResult<CommentModelData>>() {
+        final DataProxy<PagingLoadResult<BeanModel>> proxy =
+            new RpcProxy<PagingLoadResult<BeanModel>>() {
 
                 @Override
                 protected void load(final Object loadConfig,
-                                    final AsyncCallback<PagingLoadResult<CommentModelData>> callback) {
+                                    final AsyncCallback<PagingLoadResult<BeanModel>> callback) {
 
                     if (null==loadConfig
                         || !(loadConfig instanceof BasePagingLoadConfig)) {
-                        final PagingLoadResult<CommentModelData> plr =
-                           new BasePagingLoadResult<CommentModelData>(null);
+                        final PagingLoadResult<BeanModel> plr =
+                           new BasePagingLoadResult<BeanModel>(null);
                         callback.onSuccess(plr);
 
                     } else {
@@ -219,14 +217,15 @@ public class CommentTable
                             }
 
                             @Override
-                            protected void execute(final PagedCollection<Comment> comments) {
+                            protected void execute(
+                                   final PagedCollection<Comment> comments) {
 
-                                final List<CommentModelData> results =
+                                final List<BeanModel> results =
                                     DataBinding.bindCommentSummary(
                                         comments.getElements());
 
-                                final PagingLoadResult<CommentModelData> plr =
-                                    new BasePagingLoadResult<CommentModelData>(
+                                final PagingLoadResult<BeanModel> plr =
+                                    new BasePagingLoadResult<BeanModel>(
                                         results,
                                         config.getOffset(),
                                         (int) comments.getTotalCount());
@@ -241,10 +240,12 @@ public class CommentTable
     }
 
 
-    private void updatePager(final DataProxy proxy){
-        final PagingLoader loader = new BasePagingLoader(proxy);
+    private void updatePager(
+                         final DataProxy<PagingLoadResult<BeanModel>> proxy){
+            final PagingLoader<PagingLoadResult<BeanModel>> loader =
+                new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy);
         loader.setRemoteSort(true);
-        _detailsStore = new ListStore<CommentModelData>(loader);
+        _detailsStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
@@ -267,9 +268,11 @@ public class CommentTable
 
 
     private void updateComment(final Comment comment) {
-        final CommentModelData commentBinding =
-            _detailsStore.findModel("id", comment.getId());
-        commentBinding.setDelegate(comment);
+        final BeanModel commentBinding =
+            _detailsStore.findModel(
+                DataBinding.CommentBeanModel.ID, comment.getId());
+        final BeanModel bm = DataBinding.bindCommentSummary(comment);
+        commentBinding.setProperties(bm.getProperties());
         _detailsStore.update(commentBinding);
     }
 }

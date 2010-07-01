@@ -72,17 +72,13 @@ public final class DataBinding {
     /**
      * Convert a collection of log entry summaries to model data.
      *
-     * @param arg0 The summaries
+     * @param revisions The revisions.
      * @return The model data.
      */
-    public static List<LogEntrySummaryModelData> bindLogEntrySummary(
-                                       final Collection<Revision> arg0) {
-        final List<LogEntrySummaryModelData> boundData =
-            new ArrayList<LogEntrySummaryModelData>();
-        for (final Revision les : arg0) {
-            boundData.add(new LogEntrySummaryModelData(les));
-        }
-        return boundData;
+    public static List<BeanModel> bindLogEntrySummary(
+                                       final Collection<Revision> revisions) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Revision.class).createModel(revisions);
     }
 
 
@@ -118,19 +114,27 @@ public final class DataBinding {
 
 
     /**
+     * Create model data object for a user.
+     *
+     * @param user The user to bind.
+     * @return The corresponding bean model.
+     */
+    public static BeanModel bindUserSummary(final User user) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(User.class).createModel(user);
+    }
+
+
+    /**
      * Create model data objects for a collection of user summaries.
      *
      * @param result The user summaries.
      * @return The corresponding model data objects.
      */
-    public static List<UserSummaryModelData> bindUserSummary(
+    public static List<BeanModel> bindUserSummary(
                                          final Collection<User> result) {
-        final List<UserSummaryModelData> boundData =
-            new ArrayList<UserSummaryModelData>();
-        for (final User us : result) {
-            boundData.add(new UserSummaryModelData(us));
-        }
-        return boundData;
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(User.class).createModel(result);
     }
 
 
@@ -215,29 +219,126 @@ public final class DataBinding {
     }
 
 
-    public static List<CommentModelData> bindCommentSummary(
-                                    final Collection<Comment> comments) {
-        final List<CommentModelData> boundData =
-            new ArrayList<CommentModelData>();
-        for (final Comment as : comments) {
-            boundData.add(new CommentModelData(as));
-        }
-        return boundData;
+    /**
+     * Bind a collection of comments.
+     *
+     * @param comments The comments to bind.
+     *
+     * @return The corresponding gxt models.
+     */
+    public static List<BeanModel> bindCommentSummary(
+                                        final Collection<Comment> comments) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Comment.class).createModel(comments);
     }
 
 
-    public static List<GroupModelData> bindGroupSummary(
-                                    final Collection<Group> groups) {
-        final List<GroupModelData> boundData =
-            new ArrayList<GroupModelData>();
-        for (final Group as : groups) {
-            boundData.add(new GroupModelData(as));
-        }
-        return boundData;
+    /**
+     * Bind a single comment.
+     *
+     * @param comment The comment to bind.
+     *
+     * @return The corresponding gxt model.
+     */
+    public static BeanModel bindCommentSummary(final Comment comment) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Comment.class).createModel(comment);
     }
 
+
+    /**
+     * Bind a single group.
+     *
+     * @param group The group to bind.
+     *
+     * @return The corresponding gxt model.
+     */
+    public static BeanModel bindGroupSummary(final Group group) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Group.class).createModel(group);
+    }
+
+
+    /**
+     * Bind a collection of groups.
+     *
+     * @param groups The groups to bind.
+     *
+     * @return The corresponding gxt models.
+     */
+    public static List<BeanModel> bindGroupSummary(
+                                            final Collection<Group> groups) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(Group.class).createModel(groups);
+    }
+
+
+    /**
+     * GXT model for a template.
+     */
     @BEAN(Template.class)
-    public interface CustomerBeanModel extends BeanModelMarker {
-        /* No methods. */
+    public interface TemplateBeanModel extends BeanModelMarker {
+        /** NAME : String. */
+        String NAME = "name";
+    }
+
+
+    /**
+     * GXT model for a user.
+     */
+    @BEAN(User.class)
+    public interface UserBeanModel extends BeanModelMarker {
+        /** EMAIL : String. */
+        String EMAIL = "email";
+        /** USERNAME : String. */
+        String USERNAME = "username";
+    }
+
+
+    /**
+     * GXT model for a group.
+     */
+    @BEAN(Group.class)
+    public interface GroupBeanModel extends BeanModelMarker {
+        /** NAME : String. */
+        String NAME = "name";
+        /** ID : String. */
+        String ID   = "id";
+    }
+
+
+    /**
+     * GXT model for a comment.
+     */
+    @BEAN(Comment.class)
+    public interface CommentBeanModel extends BeanModelMarker {
+        /** ID : String. */
+        String ID           = "id";
+        /** AUTHOR : String. */
+        String AUTHOR       = "author";
+        /** URL : String. */
+        String URL          = "url";
+        /** DATE_CREATED : String. */
+        String DATE_CREATED = "timestamp";
+        /** STATUS : String. */
+        String STATUS       = "status";
+    }
+
+
+    /**
+     * GXT model for a revision.
+     */
+    @BEAN(Revision.class)
+    public interface RevisionBeanModel extends BeanModelMarker {
+        /** USERNAME : String. */
+        String USERNAME      = "actorUsername";
+        /** HAPPENED_ON : String. */
+        String HAPPENED_ON   = "happenedOn";
+        /** COMMENT : String. */
+        String COMMENT       = "comment";
+        /** IS_MAJOR_EDIT : String. */
+        String IS_MAJOR_EDIT = "major";
+        /** INDEX : String. */
+        String INDEX         = "index";
     }
 }

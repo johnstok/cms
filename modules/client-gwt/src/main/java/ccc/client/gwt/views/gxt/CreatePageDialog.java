@@ -39,7 +39,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.DisplayFields;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
@@ -136,7 +135,7 @@ public class CreatePageDialog
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         final ColumnConfig templateNameColumn = new ColumnConfig();
-        templateNameColumn.setId(DisplayFields.TEMPLATE);
+        templateNameColumn.setId(DataBinding.TemplateBeanModel.NAME);
         templateNameColumn.setHeader(getUiConstants().name());
         templateNameColumn.setWidth(NAME_COLUMN_WIDTH);
         configs.add(templateNameColumn);
@@ -163,7 +162,7 @@ public class CreatePageDialog
 
         _templatesStore.add(DataBinding.bindTemplateDelta(list));
         _templatesStore.sort(
-            DisplayFields.TEMPLATE, SortDir.ASC);
+            DataBinding.TemplateBeanModel.NAME, SortDir.ASC);
 
         _templatePanel.setHeaderVisible(true);
         _templatePanel.setHeading(getUiConstants().template());

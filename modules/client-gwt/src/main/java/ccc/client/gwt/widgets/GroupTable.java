@@ -37,16 +37,15 @@ import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
 import ccc.client.events.EventHandler;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.GroupModelData;
 import ccc.client.gwt.remoting.ListGroups;
 import ccc.client.gwt.views.gxt.GroupViewImpl;
 import ccc.client.presenters.UpdateGroupPresenter;
-import ccc.plugins.s11n.JsonKeys;
 
 import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
@@ -75,10 +74,10 @@ public class GroupTable
     implements
         EventHandler<CommandType> {
 
-    private ListStore<GroupModelData> _detailsStore =
-        new ListStore<GroupModelData>();
+    private ListStore<BeanModel> _detailsStore =
+        new ListStore<BeanModel>();
 
-    private final Grid<GroupModelData> _grid;
+    private final Grid<BeanModel> _grid;
     private final PagingToolBar _pagerBar;
 
     private static final int COLUMN_WIDTH = 400;
@@ -96,12 +95,12 @@ public class GroupTable
         final Menu contextMenu = new Menu();
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);
-        gp.setRenderer(new ContextMenuRenderer<GroupModelData>());
+        gp.setRenderer(new ContextMenuRenderer());
         final List<ColumnConfig> configs = createColumnConfigs(gp);
 
         final ColumnModel cm = new ColumnModel(configs);
 
-        _grid = new Grid<GroupModelData>(_detailsStore, cm);
+        _grid = new Grid<BeanModel>(_detailsStore, cm);
 
         contextMenu.add(createUpdateGroupItem(_grid));
 
@@ -114,17 +113,17 @@ public class GroupTable
     }
 
 
-    private MenuItem createUpdateGroupItem(final Grid<GroupModelData> grid) {
+    private MenuItem createUpdateGroupItem(final Grid<BeanModel> grid) {
         final MenuItem updateGroup = new MenuItem(UI_CONSTANTS.updateGroup());
         updateGroup.addSelectionListener(
             new SelectionListener<MenuEvent>() {
                 @Override public void componentSelected(final MenuEvent ce) {
-                    final GroupModelData groupModel =
+                    final BeanModel groupModel =
                         grid.getSelectionModel().getSelectedItem();
 
                     new UpdateGroupPresenter(
                         new GroupViewImpl(GLOBALS),
-                        groupModel.getDelegate());
+                        groupModel.<Group>getBean());
                 }
             }
         );
@@ -139,7 +138,7 @@ public class GroupTable
         configs.add(gp);
 
         final ColumnConfig nameColumn = new ColumnConfig();
-        nameColumn.setId(JsonKeys.NAME);
+        nameColumn.setId(DataBinding.GroupBeanModel.NAME);
         nameColumn.setHeader(UI_CONSTANTS.name());
         nameColumn.setWidth(COLUMN_WIDTH);
         configs.add(nameColumn);
@@ -154,17 +153,18 @@ public class GroupTable
     public void displayGroups() {
         _detailsStore.removeAll();
 
-        final DataProxy<PagingLoadResult<GroupModelData>> proxy =
-            new RpcProxy<PagingLoadResult<GroupModelData>>() {
+        final DataProxy<PagingLoadResult<BeanModel>> proxy =
+            new RpcProxy<PagingLoadResult<BeanModel>>() {
 
                 @Override
                 protected void load(final Object loadConfig,
-                                    final AsyncCallback<PagingLoadResult<GroupModelData>> callback) {
+                                    final AsyncCallback<
+                                        PagingLoadResult<BeanModel>> callback) {
 
                     if (null==loadConfig
                         || !(loadConfig instanceof BasePagingLoadConfig)) {
-                        final PagingLoadResult<GroupModelData> plr =
-                           new BasePagingLoadResult<GroupModelData>(null);
+                        final PagingLoadResult<BeanModel> plr =
+                           new BasePagingLoadResult<BeanModel>(null);
                         callback.onSuccess(plr);
 
                     } else {
@@ -191,12 +191,12 @@ public class GroupTable
                             protected void execute(
                                        final PagedCollection<Group> groups) {
 
-                                final List<GroupModelData> results =
+                                final List<BeanModel> results =
                                     DataBinding.bindGroupSummary(
                                         groups.getElements());
 
-                                final PagingLoadResult<GroupModelData> plr =
-                                    new BasePagingLoadResult<GroupModelData>(
+                                final PagingLoadResult<BeanModel> plr =
+                                    new BasePagingLoadResult<BeanModel>(
                                        results,
                                        config.getOffset(),
                                        (int) groups.getTotalCount());
@@ -210,10 +210,13 @@ public class GroupTable
         updatePager(proxy);
     }
 
-    private void updatePager(final DataProxy proxy){
-        final PagingLoader loader = new BasePagingLoader(proxy);
+
+    private void updatePager(
+                         final DataProxy<PagingLoadResult<BeanModel>> proxy){
+        final PagingLoader<PagingLoadResult<BeanModel>> loader =
+            new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy);
         loader.setRemoteSort(true);
-        _detailsStore = new ListStore<GroupModelData>(loader);
+        _detailsStore = new ListStore<BeanModel>(loader);
         _pagerBar.bind(loader);
         loader.load(0, PAGING_ROW_COUNT);
         final ColumnModel cm = _grid.getColumnModel();
@@ -236,10 +239,12 @@ public class GroupTable
 
 
     private void updateGroup(final Group group) {
-        final GroupModelData gMD =
-            _detailsStore.findModel(JsonKeys.ID, group.getId());
+        final BeanModel gMD =
+            _detailsStore.findModel(
+                DataBinding.GroupBeanModel.ID, group.getId());
         if (null!=gMD) {
-            gMD.setDelegate(group);
+            final BeanModel bm = DataBinding.bindGroupSummary(group);
+            gMD.setProperties(bm.getProperties());
             _detailsStore.update(gMD);
         }
     }

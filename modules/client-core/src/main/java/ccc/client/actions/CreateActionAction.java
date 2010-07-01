@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import ccc.api.core.Action;
 import ccc.api.types.CommandType;
 import ccc.api.types.Link;
 import ccc.client.core.Globals;
@@ -41,7 +42,7 @@ import ccc.client.core.Request;
 import ccc.client.core.ResponseHandlerAdapter;
 import ccc.client.events.Event;
 import ccc.plugins.s11n.Json;
-import ccc.plugins.s11n.JsonKeys;
+import ccc.plugins.s11n.json.ActionSerializer;
 
 
 /**
@@ -81,25 +82,19 @@ public final class CreateActionAction
     @Override
     protected Request getRequest() {
         return createAction(
-            _resourceId, _command, _executeAfter, _actionParameters);
+            new Action(
+                _resourceId, _command, _executeAfter, _actionParameters));
     }
 
 
     /**
      * Create a new action.
      *
-     * @param subject The action's subject.
-     * @param command The command to apply.
-     * @param executeAfter The earliest the command can execute.
-     * @param params The command's parameters.
+     * @param action The action to create.
      *
      * @return The HTTP request to create the action.
      */
-    // FIXME: Should pass an action here.
-    public Request createAction(final UUID subject,
-                                final CommandType command,
-                                final Date executeAfter,
-                                final Map<String, String> params) {
+    public Request createAction(final Action action) {
 
         final String path =
             Globals.API_URL
@@ -107,10 +102,7 @@ public final class CreateActionAction
                 .build(InternalServices.ENCODER);
 
         final Json json = InternalServices.PARSER.newJson();
-        json.set(JsonKeys.SUBJECT_ID, subject);
-        json.set(JsonKeys.COMMAND, command.name());
-        json.set(JsonKeys.EXECUTE_AFTER, executeAfter);
-        json.set(JsonKeys.PARAMETERS, params);
+        new ActionSerializer().write(json, action);
 
         return
             new Request(

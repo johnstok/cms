@@ -27,9 +27,9 @@
 package ccc.client.gwt.actions;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
-import ccc.client.gwt.binding.LogEntrySummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.remoting.OpenTemplateRevisionAction;
@@ -59,12 +59,12 @@ public final class PreviewHistoricalAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final LogEntrySummaryModelData item = _historyDialog.selectedItem();
+        final Revision item = _historyDialog.selectedItem();
 
         if (null==item) {
             return;
         }
-        ResourceSummary resource = _historyDialog.getResource();
+        final ResourceSummary resource = _historyDialog.getResource();
 
         if (resource != null && resource.getType() == ResourceType.TEMPLATE) {
             new OpenTemplateRevisionAction(resource, item.getIndex()).execute();

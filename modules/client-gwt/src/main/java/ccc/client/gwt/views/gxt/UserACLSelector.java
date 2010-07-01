@@ -33,7 +33,6 @@ import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.types.SortOrder;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.remoting.ListUsersAction;
 import ccc.client.i18n.UIConstants;
 
@@ -43,6 +42,7 @@ import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
@@ -67,7 +67,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class UserACLSelector extends Window {
 
-    private final ListStore<UserSummaryModelData> _store;
+    private final ListStore<BeanModel> _store;
     private static final int WIDTH = 400;
     private static final int HEIGHT = 485;
     private static final int PANEL_HEIGHT = 450;
@@ -76,8 +76,8 @@ public class UserACLSelector extends Window {
     private final PagingToolBar _pagerBar;
     private final UIConstants _constants;
 
-    private Grid<UserSummaryModelData> _addUserGrid;
-    private CheckBoxSelectionModel<UserSummaryModelData> _addUserSM;
+    private Grid<BeanModel> _addUserGrid;
+    private CheckBoxSelectionModel<BeanModel> _addUserSM;
 
 
     /**
@@ -86,7 +86,7 @@ public class UserACLSelector extends Window {
      * @param store The parent store.
      * @param constants UI Constants.
      */
-    public UserACLSelector(final ListStore<UserSummaryModelData> store,
+    public UserACLSelector(final ListStore<BeanModel> store,
                         final UIConstants constants) {
         _store = store;
         _constants = constants;
@@ -98,16 +98,16 @@ public class UserACLSelector extends Window {
         setHeading(_constants.selectUsers());
 
 
-        final RpcProxy<PagingLoadResult<UserSummaryModelData>> proxy =
+        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
             createProxy();
 
-        final PagingLoader<PagingLoadResult<UserSummaryModelData>> loader =
+        final PagingLoader<PagingLoadResult<BeanModel>> loader =
             new BasePagingLoader<PagingLoadResult
-            <UserSummaryModelData>>(proxy);
+            <BeanModel>>(proxy);
 
-        _addUserGrid = new Grid<UserSummaryModelData>(
-           new ListStore<UserSummaryModelData>(loader), defineAddUserCM());
-        _addUserGrid.setAutoExpandColumn("USERNAME");
+        _addUserGrid = new Grid<BeanModel>(
+           new ListStore<BeanModel>(loader), defineAddUserCM());
+        _addUserGrid.setAutoExpandColumn(DataBinding.UserBeanModel.USERNAME);
         _addUserGrid.setSelectionModel(_addUserSM);
         _addUserGrid.addPlugin(_addUserSM);
         _addUserGrid.setBorders(false);
@@ -123,7 +123,7 @@ public class UserACLSelector extends Window {
 
         _pagerBar = new PagingToolBar(PAGER_LIMIT);
         loader.setRemoteSort(true);
-        loader.setSortField("USERNAME");
+        loader.setSortField(DataBinding.UserBeanModel.USERNAME);
         _pagerBar.bind(loader);
         loader.load(0, PAGER_LIMIT);
 
@@ -133,9 +133,9 @@ public class UserACLSelector extends Window {
 
             @Override
             public void componentSelected(final ButtonEvent ce) {
-                final List<UserSummaryModelData> items =
+                final List<BeanModel> items =
                     _addUserGrid.getSelectionModel().getSelectedItems();
-                for (final UserSummaryModelData m : items) {
+                for (final BeanModel m : items) {
                     _store.add(m);
                 }
                 hide();
@@ -146,17 +146,17 @@ public class UserACLSelector extends Window {
     }
 
 
-    private RpcProxy<PagingLoadResult<UserSummaryModelData>> createProxy() {
-        return new RpcProxy<PagingLoadResult<UserSummaryModelData>>() {
+    private RpcProxy<PagingLoadResult<BeanModel>> createProxy() {
+        return new RpcProxy<PagingLoadResult<BeanModel>>() {
 
             @Override
             protected void load(final Object loadConfig,
                                 final AsyncCallback<PagingLoadResult
-                                <UserSummaryModelData>> callback) {
+                                <BeanModel>> callback) {
                 if (null==loadConfig
                     || !(loadConfig instanceof BasePagingLoadConfig)) {
-                    final PagingLoadResult<UserSummaryModelData> plr =
-                        new BasePagingLoadResult<UserSummaryModelData>(null);
+                    final PagingLoadResult<BeanModel> plr =
+                        new BasePagingLoadResult<BeanModel>(null);
                     callback.onSuccess(plr);
                 } else {
                     final BasePagingLoadConfig config =
@@ -175,12 +175,14 @@ public class UserACLSelector extends Window {
                         order) {
 
                         @Override
-                        protected void execute(final PagedCollection<User> users) {
-                            final List<UserSummaryModelData> results =
-                                DataBinding.bindUserSummary(users.getElements());
+                        protected void execute(
+                                           final PagedCollection<User> users) {
+                            final List<BeanModel> results =
+                                DataBinding.bindUserSummary(
+                                    users.getElements());
 
-                            final PagingLoadResult<UserSummaryModelData> plr =
-                                new BasePagingLoadResult<UserSummaryModelData>(
+                            final PagingLoadResult<BeanModel> plr =
+                                new BasePagingLoadResult<BeanModel>(
                                     results, config.getOffset(),
                                     (int) users.getTotalCount());
                             callback.onSuccess(plr);
@@ -196,12 +198,14 @@ public class UserACLSelector extends Window {
     private ColumnModel defineAddUserCM() {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        _addUserSM = new CheckBoxSelectionModel<UserSummaryModelData>();
+        _addUserSM = new CheckBoxSelectionModel<BeanModel>();
         _addUserSM.setSelectionMode(SelectionMode.MULTI);
         configs.add(_addUserSM.getColumn());
-        final ColumnConfig keyColumn = new ColumnConfig("USERNAME",
-            _constants.name(),
-            100);
+        final ColumnConfig keyColumn =
+            new ColumnConfig(
+                DataBinding.UserBeanModel.USERNAME,
+                _constants.name(),
+                100);
         final TextField<String> keyField = new TextField<String>();
         keyField.setReadOnly(true);
         configs.add(keyColumn);

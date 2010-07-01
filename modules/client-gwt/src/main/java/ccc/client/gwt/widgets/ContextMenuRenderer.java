@@ -27,8 +27,8 @@
 package ccc.client.gwt.widgets;
 
 import ccc.client.core.ImagePaths;
-import ccc.client.gwt.binding.CccModelData;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -36,32 +36,29 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 
 
 /**
- * Renderer for a table's contextual menu icon for comment table.
+ * Renderer for a table's contextual menu icon.
  *
  * @author Civic Computing Ltd.
- * @param <T> The model.
  */
-public class ContextMenuRenderer<T extends CccModelData>
+public class ContextMenuRenderer
     implements
-        GridCellRenderer<T> {
+        GridCellRenderer<BeanModel> {
 
 
     /** {@inheritDoc} */
     @Override
-    public Object render(final T model,
+    public Object render(final BeanModel model,
                          final String property,
                          final ColumnData d,
                          final int rowIndex,
                          final int colIndex,
-                         final ListStore<T> store,
-                         final Grid<T> grid) {
-
+                         final ListStore<BeanModel> store,
+                         final Grid<BeanModel> grid) {
         d.cellAttr = "rowspan='2'";
         final StringBuilder html = new StringBuilder();
-        html.append("<img class='action' id='");
-        html.append(model.getId());
-        html.append("_cog");
-        html.append("' src='"+ImagePaths.COG_GO+"'/>&#160;");
+        html.append("<img class='action' src='");
+        html.append(ImagePaths.COG_GO);
+        html.append("'/>&#160;");
         return html.toString();
     }
 }

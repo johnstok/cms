@@ -35,13 +35,13 @@ import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.LogEntrySummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.widgets.HistoryToolBar;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -58,7 +58,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class HistoryDialog
     extends
-        AbstractTableDialog<Revision, LogEntrySummaryModelData> {
+        AbstractTableDialog<Revision, BeanModel> {
 
     private final ToolBar _toolBar;
     private final SingleSelectionModel _ssm;
@@ -84,13 +84,13 @@ public class HistoryDialog
         setTopComponent(_toolBar);
         getDataStore().add(DataBinding.bindLogEntrySummary(getData()));
         getDataStore().sort(
-            LogEntrySummaryModelData.Property.HAPPENED_ON.name(), SortDir.DESC);
-        getGrid().setAutoExpandColumn(LogEntrySummaryModelData.EXPAND_PROPERTY);
+            DataBinding.RevisionBeanModel.HAPPENED_ON, SortDir.DESC);
+        getGrid().setAutoExpandColumn(DataBinding.RevisionBeanModel.COMMENT);
         getGrid().addListener(
             Events.RowClick,
             new Listener<GridEvent<?>>(){
                 public void handleEvent(final GridEvent<?> be) {
-                    final LogEntrySummaryModelData md =
+                    final BeanModel md =
                         getGrid().getSelectionModel().getSelectedItem();
                     if (null==md) {
                         _toolBar.disable();
@@ -117,14 +117,14 @@ public class HistoryDialog
 
         final ColumnConfig userColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.USERNAME.name(),
+                DataBinding.RevisionBeanModel.USERNAME,
                 getUiConstants().user(),
                 100);
         configs.add(userColumn);
 
         final ColumnConfig timeColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.HAPPENED_ON.name(),
+                DataBinding.RevisionBeanModel.HAPPENED_ON,
                 getUiConstants().time(),
                 150);
         timeColumn.setDateTimeFormat(DateTimeFormat.getMediumDateTimeFormat());
@@ -132,14 +132,14 @@ public class HistoryDialog
 
         final ColumnConfig majorEditColumn =
             new ColumnConfig(
-                LogEntrySummaryModelData.Property.IS_MAJOR_EDIT.name(),
+                DataBinding.RevisionBeanModel.IS_MAJOR_EDIT,
                 getUiConstants().majorEdit(),
                 70);
         configs.add(majorEditColumn);
 
         final ColumnConfig commentColumn = new ColumnConfig();
         commentColumn.setId(
-            LogEntrySummaryModelData.Property.COMMENT.name());
+            DataBinding.RevisionBeanModel.COMMENT);
         commentColumn.setHeader(getUiConstants().comment());
         configs.add(commentColumn);
 
@@ -153,9 +153,9 @@ public class HistoryDialog
      *
      * @return The selected item.
      */
-    public LogEntrySummaryModelData selectedItem() {
-        final LogEntrySummaryModelData selected =
-            getGrid().getSelectionModel().getSelectedItem();
+    public Revision selectedItem() {
+        final Revision selected =
+            getGrid().getSelectionModel().getSelectedItem().getBean();
         return selected;
     }
 

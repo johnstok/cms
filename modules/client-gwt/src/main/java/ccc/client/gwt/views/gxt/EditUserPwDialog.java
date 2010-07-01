@@ -33,7 +33,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.UserSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateUserPasswordAction;
 
@@ -53,14 +52,14 @@ public class EditUserPwDialog extends AbstractEditDialog {
     private final TextField<String> _password1 = new TextField<String>();
     private final TextField<String> _password2 = new TextField<String>();
 
-    private final UserSummaryModelData _userDTO;
+    private final User _userDTO;
 
     /**
      * Constructor.
      *
      * @param userDTO The userDTO of the selected user.
      */
-    public EditUserPwDialog(final UserSummaryModelData userDTO) {
+    public EditUserPwDialog(final User userDTO) {
         super(I18n.UI_CONSTANTS.editUserPw(), new GlobalsImpl());
 
         _userDTO = userDTO;
@@ -116,7 +115,7 @@ public class EditUserPwDialog extends AbstractEditDialog {
         update.setId(_userDTO.getId());
         update.setPassword(_password1.getValue());
         update.addLink(
-            User.PASSWORD, _userDTO.getDelegate().uriPassword());
+            User.PASSWORD, _userDTO.uriPassword());
 
         new UpdateUserPasswordAction(update) {
             @Override protected void onNoContent(final Response r) {

@@ -38,7 +38,7 @@ import ccc.api.core.User;
 import ccc.api.core.ACL.Entry;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
-import ccc.client.gwt.binding.UserSummaryModelData;
+import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.GetUserAction;
 import ccc.client.gwt.remoting.UpdateResourceAclAction;
@@ -47,7 +47,7 @@ import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -76,15 +76,16 @@ public class UpdateResourceAclDialog
     extends
         AbstractEditDialog {
 
-    private CheckBoxSelectionModel<ModelData> _groupSM;
-    private final ListStore<ModelData> _groupStore = new ListStore<ModelData>();
-    private Grid<ModelData> _groupGrid;
+    private CheckBoxSelectionModel<BaseModelData> _groupSM;
+    private final ListStore<BaseModelData> _groupStore =
+        new ListStore<BaseModelData>();
+    private Grid<BaseModelData> _groupGrid;
     private final ContentPanel _groupGridPanel = new ContentPanel();
 
-    private CheckBoxSelectionModel<UserSummaryModelData> _userSM;
-    private ListStore<UserSummaryModelData> _userStore =
-        new ListStore<UserSummaryModelData>();
-    private Grid<UserSummaryModelData> _userGrid;
+    private CheckBoxSelectionModel<BeanModel> _userSM;
+    private ListStore<BeanModel> _userStore =
+        new ListStore<BeanModel>();
+    private Grid<BeanModel> _userGrid;
     private final ContentPanel _userGridPanel = new ContentPanel();
 
     private final ResourceSummary _resource;
@@ -126,14 +127,14 @@ public class UpdateResourceAclDialog
 
     private void createUsersPanel() {
 
-        final List<UserSummaryModelData> uData =
-            new ArrayList<UserSummaryModelData>();
+        final List<BeanModel> uData =
+            new ArrayList<BeanModel>();
         for (final Entry e : _acl.getUsers()) {
             new GetUserAction(e.user()) { // FIXME: remove these calls.
                 @Override
                 protected void execute(final User user) {
-                    final UserSummaryModelData d =
-                        new UserSummaryModelData(user);
+                    final BeanModel d =
+                        DataBinding.bindUserSummary(user);
                     uData.add(d);
                     _userStore.add(d);
                 }
@@ -150,8 +151,8 @@ public class UpdateResourceAclDialog
         final ColumnModel ucm = defineUserColumnModel();
 
         _userStore.add(uData);
-        _userGrid = new Grid<UserSummaryModelData>(_userStore, ucm);
-        _userGrid.setAutoExpandColumn("USERNAME");
+        _userGrid = new Grid<BeanModel>(_userStore, ucm);
+        _userGrid.setAutoExpandColumn(DataBinding.UserBeanModel.USERNAME);
         _userGrid.setSelectionModel(_userSM);
         _userGrid.addPlugin(_userSM);
         _userGrid.setBorders(false);
@@ -171,13 +172,13 @@ public class UpdateResourceAclDialog
 
     private void createGroupPanel(final Collection<Group> allGroups) {
 
-        final List<ModelData> gData = new ArrayList<ModelData>();
+        final List<BaseModelData> gData = new ArrayList<BaseModelData>();
         for (final Group g : allGroups) {
             final BaseModelData d = new BaseModelData();
             for (final Entry e : _acl.getGroups()){
                 if (e.getPrincipal().equals(g.getId())) {
-                    d.set("name", g.getName());
-                    d.set("id", g.getId());
+                    d.set(DataBinding.GroupBeanModel.NAME, g.getName());
+                    d.set(DataBinding.GroupBeanModel.ID, g.getId());
                     gData.add(d);
                 }
             }
@@ -193,8 +194,8 @@ public class UpdateResourceAclDialog
         final ColumnModel cm = defineGroupColumnModel();
 
         _groupStore.add(gData);
-        _groupGrid = new Grid<ModelData>(_groupStore, cm);
-        _groupGrid.setAutoExpandColumn("name");
+        _groupGrid = new Grid<BaseModelData>(_groupStore, cm);
+        _groupGrid.setAutoExpandColumn(DataBinding.GroupBeanModel.NAME);
         _groupGrid.setSelectionModel(_groupSM);
         _groupGrid.addPlugin(_groupSM);
         _groupGrid.setBorders(false);
@@ -215,11 +216,14 @@ public class UpdateResourceAclDialog
     private ColumnModel defineGroupColumnModel() {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        _groupSM = new CheckBoxSelectionModel<ModelData>();
+        _groupSM = new CheckBoxSelectionModel<BaseModelData>();
         configs.add(_groupSM.getColumn());
 
         final ColumnConfig keyColumn =
-            new ColumnConfig("name", constants().name(), 100);
+            new ColumnConfig(
+                DataBinding.GroupBeanModel.NAME,
+                constants().name(),
+                100);
         final TextField<String> keyField = new TextField<String>();
         keyField.setReadOnly(true);
         configs.add(keyColumn);
@@ -230,11 +234,14 @@ public class UpdateResourceAclDialog
     private ColumnModel defineUserColumnModel() {
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-        _userSM = new CheckBoxSelectionModel<UserSummaryModelData>();
+        _userSM = new CheckBoxSelectionModel<BeanModel>();
         configs.add(_userSM.getColumn());
 
         final ColumnConfig keyColumn =
-            new ColumnConfig("USERNAME", constants().name(), 100);
+            new ColumnConfig(
+                DataBinding.UserBeanModel.USERNAME,
+                constants().name(),
+                100);
         final TextField<String> keyField = new TextField<String>();
         keyField.setReadOnly(true);
         configs.add(keyColumn);
@@ -251,7 +258,7 @@ public class UpdateResourceAclDialog
             public void componentSelected(final ButtonEvent ce) {
 
                 final List<Entry> newGroups = new ArrayList<Entry>();
-                for (final ModelData selected : _groupStore.getModels()) {
+                for (final BaseModelData selected : _groupStore.getModels()) {
                     final Entry e = new Entry();
                     e.setReadable(true);
                     e.setWriteable(true);
@@ -259,11 +266,11 @@ public class UpdateResourceAclDialog
                     newGroups.add(e);
                 }
                 final List<Entry> newUsers = new ArrayList<Entry>();
-                for (final UserSummaryModelData um : _userStore.getModels()) {
+                for (final BeanModel um : _userStore.getModels()) {
                     final Entry e = new Entry();
                     e.setReadable(true);
                     e.setWriteable(true);
-                    e.setPrincipal(um.getId());
+                    e.setPrincipal(um.<User>getBean().getId());
                     newUsers.add(e);
                 }
 
@@ -303,7 +310,7 @@ public class UpdateResourceAclDialog
         final Button remove = new Button(constants().remove());
         remove.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                for (final ModelData item
+                for (final BaseModelData item
                         : _groupGrid.getSelectionModel().getSelectedItems()) {
                     _groupStore.remove(item);
                 }
@@ -332,7 +339,7 @@ public class UpdateResourceAclDialog
         final Button remove = new Button(constants().remove());
         remove.addSelectionListener(new SelectionListener<ButtonEvent>() {
             @Override public void componentSelected(final ButtonEvent ce) {
-                for (final UserSummaryModelData item
+                for (final BeanModel item
                     : _userGrid.getSelectionModel().getSelectedItems()) {
                     _userStore.remove(item);
                 }
