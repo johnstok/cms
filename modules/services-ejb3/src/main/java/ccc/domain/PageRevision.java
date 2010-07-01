@@ -46,6 +46,8 @@ public class PageRevision
         RevisionEntity<Page> {
 
     private Set<Paragraph> _content = new HashSet<Paragraph>();
+    private PageEntity     _page    = null;
+    private Integer        _revNo   = null;
 
 
     /** Constructor: for persistence only. */

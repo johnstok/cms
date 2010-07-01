@@ -89,6 +89,19 @@
             column="actor_id"
             not-null="true"
             foreign-key="FK_PAGE_REV_USER_ACTOR_ID" />
+        <many-to-one
+            name="_page"
+            column="page_id"
+            insert="false"
+            update="false"
+            not-null="true" />
+        <property
+            name="_revNo"
+            column="revision_no"
+            type="integer"
+            insert="false"
+            update="false"
+            not-null="true"  />
     </class>
     
 </hibernate-mapping>
