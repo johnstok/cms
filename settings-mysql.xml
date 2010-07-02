@@ -22,10 +22,10 @@
                 
                 <!-- Database properties -->
                 <ccc.db.connection.url>jdbc:mysql://helios:3306/ci?characterEncoding=UTF-8</ccc.db.connection.url>
-                <ccc.db.driver>com.mysql.jdbc.Driver</ccc.db.driver>
                 <application.db-dialect>org.hibernate.dialect.MySQL5InnoDBDialect</application.db-dialect>
                 <application.db-username>ci</application.db-username>
                 <application.db-password>c97b6a3a38ff</application.db-password>
+                <ccc.db.datasource>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</ccc.db.datasource>
                 <ccc.db.exc-sorter></ccc.db.exc-sorter>
                 
                 

@@ -22,10 +22,10 @@
                 
                 <!-- Database properties -->
                 <ccc.db.connection.url>jdbc:oracle:thin:@poseidon:1521:dev</ccc.db.connection.url>
-                <ccc.db.driver>oracle.jdbc.driver.OracleDriver</ccc.db.driver>
                 <application.db-dialect>org.hibernate.dialect.Oracle9Dialect</application.db-dialect>
                 <application.db-username>ci</application.db-username>
                 <application.db-password>bf46dbdc2e1e</application.db-password>
+                <ccc.db.datasource>oracle.jdbc.xa.client.OracleXADataSource</ccc.db.datasource>
                 <ccc.db.exc-sorter></ccc.db.exc-sorter>
                 
                 

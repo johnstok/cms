@@ -15,7 +15,7 @@
         <lib.version.easymock>2.4</lib.version.easymock>
         <lib.version.log4j>1.2.14</lib.version.log4j>
         <lib.version.oracle>10.2.0.4.0</lib.version.oracle>
-        <lib.version.mysql>5.1.6</lib.version.mysql>
+        <lib.version.mysql>5.1.13</lib.version.mysql>
         <lib.version.sqlserver>2.0</lib.version.sqlserver>
         <lib.version.args4j>2.0.12</lib.version.args4j>
         <lib.version.dbutils>1.1</lib.version.dbutils>
@@ -30,7 +30,7 @@
         <lib.version.jboss>5.1.0.GA</lib.version.jboss>
         <lib.version.jboss-legacy>4.2.2.GA</lib.version.jboss-legacy>
         <lib.version.slf4j>1.5.8</lib.version.slf4j>
-        <lib.version.h2>1.1.118</lib.version.h2>
+        <lib.version.h2>1.2.138</lib.version.h2>
         <lib.version.selenium>1.0.1</lib.version.selenium>
         <lib.version.json>20080701</lib.version.json>
         <lib.version.javamail>1.4</lib.version.javamail>

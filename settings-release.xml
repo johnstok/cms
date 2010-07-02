@@ -31,10 +31,10 @@
                 
                 <!-- Database properties -->
                 <ccc.db.connection.url>[specify your URL]</ccc.db.connection.url>
-                <ccc.db.driver>[specify your driver]</ccc.db.driver>
                 <application.db-dialect>[specify your dialect]</application.db-dialect>
                 <application.db-username>[specify your user]</application.db-username>
                 <application.db-password>[specify your password]</application.db-password>
+                <ccc.db.datasource>[specify your datasource]</ccc.db.datasource>
                 <ccc.db.exc-sorter></ccc.db.exc-sorter>
                 
                 <application.mail.host>[specify your mail host]</application.mail.host>
