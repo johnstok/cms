@@ -57,7 +57,7 @@ public class FileUpload extends CccApp {
     private String _username;
 
     @Option(
-        name="-p", required=true, usage="Password for connecting to CCC.")
+        name="-p", required=false, usage="Password for connecting to CCC.")
     private String _password;
 
     @Option(
@@ -99,12 +99,19 @@ public class FileUpload extends CccApp {
         }
     }
 
+    /**
+     * Upload a file.
+     *
+     * @throws IOException
+     */
     public void run() throws IOException {
 
         final ProxyServiceLocator sl =
             new ProxyServiceLocator(getUploadUrl());
 
-        sl.getSecurity().login(getUsername(), getPassword());
+        if (!sl.getSecurity().login(getUsername(), getPassword())) {
+            throw new RuntimeException("Failed to authenticate.");
+        }
 
         final Server server = new CccServer(
             new ResourcePath(getRemotePath()),
@@ -171,6 +178,9 @@ public class FileUpload extends CccApp {
      * @return Returns the password.
      */
     String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC");
+        }
         return _password;
     }
 

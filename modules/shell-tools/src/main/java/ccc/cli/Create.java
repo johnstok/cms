@@ -28,7 +28,13 @@ package ccc.cli;
 
 
 
-import static ccc.api.types.PredefinedResourceNames.*;
+import static ccc.api.types.PredefinedResourceNames.ASSETS;
+import static ccc.api.types.PredefinedResourceNames.CONTENT;
+import static ccc.api.types.PredefinedResourceNames.CSS;
+import static ccc.api.types.PredefinedResourceNames.FILES;
+import static ccc.api.types.PredefinedResourceNames.IMAGES;
+import static ccc.api.types.PredefinedResourceNames.TEMPLATES;
+import static ccc.api.types.PredefinedResourceNames.TRASH;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -51,11 +57,6 @@ import ccc.api.types.ResourceName;
 public final class Create extends CccApp {
     private static final Logger LOG = Logger.getLogger(Create.class);
 
-    private static Options options;
-
-    private Create() { /* NO-OP */ }
-
-
     /**
      * Entry point for this application.
      *
@@ -64,19 +65,27 @@ public final class Create extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        options  = parseOptions(args, Options.class);
+        Create c  = parseOptions(args, Create.class);
 
-        final ProxyServiceLocator sl =
-            new ProxyServiceLocator(options.getUploadUrl());
 
-        sl.getSecurity().login(options.getUsername(), options.getPassword());
 
-        createSchemaStructure(sl);
+        c.createSchemaStructure();
 
         report("Finished in ");
     }
 
-    private static void createSchemaStructure(final ProxyServiceLocator sl) {
+    /**
+     * Create schema structure.
+     *
+     */
+    public void createSchemaStructure() {
+        final ProxyServiceLocator sl =
+            new ProxyServiceLocator(getUploadUrl());
+
+        if (!sl.getSecurity().login(getUsername(), getPassword())) {
+            throw new RuntimeException("Failed to authenticate.");
+        }
+
         try {
 
             final Folders folders = sl.getFolders();
@@ -129,52 +138,48 @@ public final class Create extends CccApp {
         }
     }
 
-    /**
-     * Options for the default layout tool.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static class Options {
-        @Option(
-            name="-u", required=true, usage="Username for connecting to CCC.")
+    @Option(
+        name="-u", required=true, usage="Username for connecting to CCC.")
         private String _username;
 
-        @Option(
-            name="-p", required=true, usage="Password for connecting to CCC.")
+    @Option(
+        name="-p", required=false, usage="Password for connecting to CCC.")
         private String _password;
 
-        @Option(
-            name="-o", required=true, usage="The URL for file upload.")
+    @Option(
+        name="-o", required=true, usage="The URL for file upload.")
         private String _uploadUrl;
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the username.
-         */
-        String getUsername() {
-            return _username;
+    /**
+     * Accessor.
+     *
+     * @return Returns the username.
+     */
+    String getUsername() {
+        return _username;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC");
         }
+        return _password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the password.
-         */
-        String getPassword() {
-            return _password;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the uploadUrl.
-         */
-        public String getUploadUrl() {
-            return _uploadUrl;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the uploadUrl.
+     */
+    public String getUploadUrl() {
+        return _uploadUrl;
     }
 }

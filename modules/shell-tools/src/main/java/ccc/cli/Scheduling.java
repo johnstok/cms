@@ -62,6 +62,10 @@ public final class Scheduling extends CccApp {
     }
 
 
+    /**
+     * Execute scheduling command.
+     *
+     */
     public void run() {
 
         services = new ProxyServiceLocator(getBaseUrl());
@@ -99,7 +103,7 @@ public final class Scheduling extends CccApp {
     private String _username;
 
     @Option(
-        name="-p", required=true, usage="Password for connecting to CCC.")
+        name="-p", required=false, usage="Password for connecting to CCC.")
     private String _password;
 
     @Option(
@@ -127,6 +131,9 @@ public final class Scheduling extends CccApp {
      * @return Returns the password.
      */
     String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC");
+        }
         return _password;
     }
 

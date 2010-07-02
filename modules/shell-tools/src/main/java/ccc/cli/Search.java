@@ -40,10 +40,7 @@ import ccc.api.http.ProxyServiceLocator;
 public final class Search extends CccApp {
     private static final Logger LOG = Logger.getLogger(Search.class);
 
-    private static Options options;
     private static ServiceLocator services;
-
-    private Search() { super(); }
 
 
     /**
@@ -54,33 +51,47 @@ public final class Search extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        options  = parseOptions(args, Options.class);
+        final Search s = parseOptions(args, Search.class);
 
-        services = new ProxyServiceLocator(options.getBaseUrl());
+        try {
+            s.run();
+        } catch (final RuntimeException e) {
+            LOG.error("Error performing command.", e);
+            System.exit(1);
+        }
+    }
 
-        services.getSecurity().login(
-            options.getUsername(), options.getPassword());
+    /**
+     * Execute run search command.
+     *
+     */
+    public void run() {
+        services = new ProxyServiceLocator(getBaseUrl());
+
+        if (!services.getSecurity().login(getUsername(), getPassword())) {
+            throw new RuntimeException("Failed to authenticate.");
+        }
 
         final SearchEngine s = services.getSearch();
 
-        if ("start".equals(options.getAction())) {
+        if ("start".equals(getAction())) {
             s.start();
             LOG.info("Started.");
 
-        } else if ("stop".equals(options.getAction())) {
+        } else if ("stop".equals(getAction())) {
             s.stop();
             LOG.info("Stopped.");
 
-        } else if ("index".equals(options.getAction())) {
+        } else if ("index".equals(getAction())) {
             s.index();
             LOG.info("Indexing completed.");
 
-        } else if ("running".equals(options.getAction())) {
+        } else if ("running".equals(getAction())) {
             final boolean running = s.isRunning();
             LOG.info("Running: "+running+".");
 
         } else {
-            LOG.error("Invalid command.");
+            throw new RuntimeException("Invalid command: "+getAction());
         }
 
         services.getSecurity().logout();
@@ -88,66 +99,62 @@ public final class Search extends CccApp {
         report("Finished in ");
     }
 
-    /**
-     * Options for the search scheduler tool.
-     *
-     * @author Civic Computing Ltd.
-     */
-    static class Options {
-        @Option(
-            name="-u", required=true, usage="Username for connecting to CCC.")
+    @Option(
+        name="-u", required=true, usage="Username for connecting to CCC.")
         private String _username;
 
-        @Option(
-            name="-p", required=true, usage="Password for connecting to CCC.")
+    @Option(
+        name="-p", required=false, usage="Password for connecting to CCC.")
         private String _password;
 
-        @Option(
-            name="-b", required=true, usage="Base URL for the application.")
+    @Option(
+        name="-b", required=true, usage="Base URL for the application.")
         private String _baseUrl;
 
-        @Option(
-            name="-c", required=true, usage="Action to perform.")
+    @Option(
+        name="-c", required=true, usage="Action to perform.")
         private String _action;
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the username.
-         */
-        String getUsername() {
-            return _username;
+    /**
+     * Accessor.
+     *
+     * @return Returns the username.
+     */
+    String getUsername() {
+        return _username;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC");
         }
+        return _password;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the password.
-         */
-        String getPassword() {
-            return _password;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the base URL for the app.
+     */
+    String getBaseUrl() {
+        return _baseUrl;
+    }
 
 
-        /**
-         * Accessor.
-         *
-         * @return Returns the base URL for the app.
-         */
-        String getBaseUrl() {
-            return _baseUrl;
-        }
-
-
-        /**
-         * Accessor.
-         *
-         * @return Returns the action.
-         */
-        String getAction() {
-            return _action;
-        }
+    /**
+     * Accessor.
+     *
+     * @return Returns the action.
+     */
+    String getAction() {
+        return _action;
     }
 }

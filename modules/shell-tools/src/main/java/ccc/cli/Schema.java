@@ -26,7 +26,7 @@
  */
 package ccc.cli;
 
-import static ccc.commons.Exceptions.*;
+import static ccc.commons.Exceptions.swallow;
 
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -48,6 +48,11 @@ import ccc.commons.Resources;
  *
  * @author Civic Computing Ltd.
  */
+/**
+ * TODO: Add a description for this type.
+ *
+ * @author Civic Computing Ltd.
+ */
 public class Schema
     extends
         CccApp {
@@ -64,7 +69,7 @@ public class Schema
 
     @Option(
         name="-p",
-        required=true,
+        required=false,
         usage="Password for connecting to CCC DB.")
     private String _password;
 
@@ -80,6 +85,63 @@ public class Schema
         name="-d", required=false, usage="Drop existing tables first.")
     private boolean _drop = false;
 
+    /**
+     * Accessor.
+     *
+     * @return Returns the username.
+     */
+    String getUsername() {
+        return _username;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param username The username to set.
+     */
+    public void setUsername(final String username) {
+        _username = username;
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the version.
+     */
+    int getVersion() {
+        return _version;
+    }
+
+    /**
+     * Mutator.
+     *
+     * @param version The version to set.
+     */
+    public void setVersion(final int version) {
+
+        _version = version;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the drop value.
+     */
+    boolean isDrop() {
+        return _drop;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param drop The drop value to set.
+     */
+    public void setDrop(final boolean drop) {
+        _drop = drop;
+    }
+
 
     private void create() {
         final DatabaseVendor vendor =
@@ -90,12 +152,11 @@ public class Schema
                 vendor.driverClassName(),
                 _conString,
                 _username,
-                _password);
+                getPassword());
         LOG.info("Connected to "+_conString);
 
         int currentVersion = currentVersion(newConnection);
         LOG.info("Current database version: "+currentVersion);
-
         try {
             if (_drop) {
                 doDrop(vendor, newConnection, currentVersion);
@@ -227,6 +288,29 @@ public class Schema
      * @param args String array of application arguments.
      */
     public static final void main(final String[] args) {
-        parseOptions(args, Schema.class).create();
+        Schema s = parseOptions(args, Schema.class);
+        s.create();
+    }
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the password.
+     */
+    String getPassword() {
+        if (_password == null) {
+            return readConsolePassword("Password for connecting to CCC DB");
+        }
+        return _password;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param password The password to set.
+     */
+    public void setPassword(final String password) {
+        _password = password;
     }
 }
