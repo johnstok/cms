@@ -34,7 +34,6 @@ import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.remoting.GetImagesPagedAction;
 import ccc.client.gwt.views.gxt.FolderSelectionDialog;
@@ -42,6 +41,7 @@ import ccc.client.gwt.views.gxt.FolderSelectionDialog;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
@@ -75,12 +75,10 @@ public class ImageSelectionPanel extends ContentPanel {
     private final PagingToolBar _pagerBar;
 
     private static final int PANEL_HEIGHT = 478;
-//    private static final int PANEL_WIDTH = 700;
     private static final int IMAGES_PER_PAGE = 20;
 
     private ResourceSummaryModelData _folder = null;
-    private  final ListView<ImageSummaryModelData> _view =
-        new ListView<ImageSummaryModelData>();
+    private  final ListView<BeanModel> _view = new ListView<BeanModel>();
 
     private ImageTriggerField _image;
 
@@ -91,11 +89,11 @@ public class ImageSelectionPanel extends ContentPanel {
      */
     public ImageSelectionPanel() {
 
-        final RpcProxy<PagingLoadResult<ImageSummaryModelData>> proxy =
+        final RpcProxy<PagingLoadResult<BeanModel>> proxy =
             createProxy();
 
-        final PagingLoader<PagingLoadResult<ImageSummaryModelData>> loader =
-           new BasePagingLoader<PagingLoadResult<ImageSummaryModelData>>(proxy);
+        final PagingLoader<PagingLoadResult<BeanModel>> loader =
+           new BasePagingLoader<PagingLoadResult<BeanModel>>(proxy);
         loader.setRemoteSort(true);
 
         final ToolBar toolBar = new ToolBar();
@@ -109,7 +107,8 @@ public class ImageSelectionPanel extends ContentPanel {
                 public void handleEvent(final ComponentEvent be) {
                     final FolderSelectionDialog folderSelect =
                         new FolderSelectionDialog();
-                    folderSelect.addListener(Events.Hide,
+                    folderSelect.addListener(
+                        Events.Hide,
                         new Listener<WindowEvent>() {
                         public void handleEvent(final WindowEvent be2) {
                             final Button b = be2.getButtonClicked();
@@ -129,14 +128,12 @@ public class ImageSelectionPanel extends ContentPanel {
         toolBar.add(_folderField);
         toolBar.add(new SeparatorToolItem());
 
-        final ListStore<ImageSummaryModelData> listStore =
-            new ListStore<ImageSummaryModelData>(loader);
+        final ListStore<BeanModel> listStore = new ListStore<BeanModel>(loader);
 
         setCollapsible(false);
         setAnimCollapse(false);
         setId("images-view");
         setHeaderVisible(false);
-//        setWidth(PANEL_WIDTH);
         setAutoWidth(true);
         setHeight(PANEL_HEIGHT);
         setLayout(new FitLayout());
@@ -160,19 +157,19 @@ public class ImageSelectionPanel extends ContentPanel {
     }
 
 
-    private RpcProxy<PagingLoadResult<ImageSummaryModelData>> createProxy() {
+    private RpcProxy<PagingLoadResult<BeanModel>> createProxy() {
 
-        return new RpcProxy<PagingLoadResult<ImageSummaryModelData>>() {
+        return new RpcProxy<PagingLoadResult<BeanModel>>() {
 
             @Override
             protected void load(final Object loadConfig,
                                 final AsyncCallback<PagingLoadResult
-                                <ImageSummaryModelData>> callback) {
+                                <BeanModel>> callback) {
                 if (null == _folder
                     || null==loadConfig
                     || !(loadConfig instanceof BasePagingLoadConfig)) {
-                    final PagingLoadResult<ImageSummaryModelData> plr =
-                        new BasePagingLoadResult<ImageSummaryModelData>(null);
+                    final PagingLoadResult<BeanModel> plr =
+                        new BasePagingLoadResult<BeanModel>(null);
                     callback.onSuccess(plr);
                 } else {
                     final BasePagingLoadConfig config =
@@ -199,15 +196,14 @@ public class ImageSelectionPanel extends ContentPanel {
             GetImagesPagedAction {
 
         private final BasePagingLoadConfig _config;
-        private final AsyncCallback<PagingLoadResult
-        <ImageSummaryModelData>> _callback;
+        private final AsyncCallback<PagingLoadResult<BeanModel>> _callback;
 
 
         private GetImagesPaged(final String actionName,
                                final ResourceSummary parent,
                                final BasePagingLoadConfig config,
                                final AsyncCallback<PagingLoadResult
-                                   <ImageSummaryModelData>> callback) {
+                                   <BeanModel>> callback) {
 
             super(actionName, parent,
                 config.getOffset()/config.getLimit()+1,
@@ -219,28 +215,29 @@ public class ImageSelectionPanel extends ContentPanel {
         @Override
         protected void execute(final Collection<File> images,
                                final int totalCount) {
-            final List<ImageSummaryModelData> results =
+            final List<BeanModel> results =
                 loadModel(_image, images);
-            final PagingLoadResult<ImageSummaryModelData> plr =
-                new BasePagingLoadResult<ImageSummaryModelData>(
+            final PagingLoadResult<BeanModel> plr =
+                new BasePagingLoadResult<BeanModel>(
                     results, _config.getOffset(), totalCount);
             _callback.onSuccess(plr);
         }
     }
 
-    private List<ImageSummaryModelData> loadModel(final ImageTriggerField image,
-        final Collection<File> arg0) {
-        final List<ImageSummaryModelData> models =
-            DataBinding.bindFileSummary(arg0);
+    private List<BeanModel> loadModel(final ImageTriggerField image,
+                                      final Collection<File> files) {
+        final List<BeanModel> models =
+            DataBinding.bindFileSummary(files);
         if (image != null && models != null && models.size() > 0) {
 
-            final ImageSummaryModelData fs = image.getFSModel();
+            final BeanModel fs = image.getFSModel();
 
             if (fs != null) {
-                final List<ImageSummaryModelData> selection =
-                    new ArrayList<ImageSummaryModelData>();
-                for (final ImageSummaryModelData item : models) {
-                    if (item.getId().equals(fs.getId())) {
+                final List<BeanModel> selection =
+                    new ArrayList<BeanModel>();
+                for (final BeanModel item : models) {
+                    if (item.<File>getBean().getId().equals(
+                            fs.<File>getBean().getId())) {
                         selection.add(item);
                     }
                 }
@@ -255,23 +252,29 @@ public class ImageSelectionPanel extends ContentPanel {
      *
      * @return Returns the list view.
      */
-    public ListView<ImageSummaryModelData> getView() {
+    public ListView<BeanModel> getView() {
         return _view;
     }
 
 
-    // TODO: Property names aren't type safe.
-    private native String getTemplate() /*-{
-
-    return ['<tpl for=".">',
-     '<div class="thumb-wrap" id="{NAME}" style="border: 1px solid white">',
-     '<div class="thumb">',
-     '<img src="preview/{PATH}?thumb=200" title="{TITLE}"></div>',
-     '<span class="x-editable">{SHORT_NAME} {WIDTH}x{HEIGHT}px</span></div>',
-     '</tpl>',
-     '<div class="x-clear"></div>'].join("");
-
-     }-*/;
+    private String getTemplate() {
+        return
+            "<tpl for=\".\">"
+            + "<div class=\"thumb-wrap\" id=\"{"
+            + DataBinding.FileBeanModel.NAME
+            + "}\" style=\"border: 1px solid white\">"
+            + "<div class=\"thumb\">"
+            + "<img src=\"preview/{"
+            + DataBinding.FileBeanModel.PATH
+            + "}?thumb=200\" title=\"{"
+            + DataBinding.FileBeanModel.TITLE + "}\"></div>"
+            + "<span class=\"x-editable\">{"
+            + DataBinding.FileBeanModel.SHORT_NAME + "} {"
+            + DataBinding.FileBeanModel.WIDTH + "}x{"
+            + DataBinding.FileBeanModel.HEIGHT + "}px</span></div>"
+            + "</tpl>"
+            + "<div class=\"x-clear\"></div>";
+     }
 
 
 

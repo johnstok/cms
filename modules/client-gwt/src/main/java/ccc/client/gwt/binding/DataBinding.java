@@ -166,19 +166,29 @@ public final class DataBinding {
 
 
     /**
-     * Create model data objects for a collection of file DTOs.
+     * Create model data objects for a collection of files.
      *
-     * @param arg0 The file DTOs.
+     * @param files The files to bind.
+     *
      * @return The corresponding model data objects.
      */
-    public static List<ImageSummaryModelData> bindFileSummary(
-                                           final Collection<File> arg0) {
-        final List<ImageSummaryModelData> boundData =
-            new ArrayList<ImageSummaryModelData>();
-        for (final File fs : arg0) {
-            boundData.add(new ImageSummaryModelData(fs));
-        }
-        return boundData;
+    public static List<BeanModel> bindFileSummary(
+                                           final Collection<File> files) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(File.class).createModel(files);
+    }
+
+
+    /**
+     * Create a model data object for a file.
+     *
+     * @param file The file to bind.
+     *
+     * @return The corresponding model data object.
+     */
+    public static BeanModel bindFileSummary(final File file) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(File.class).createModel(file);
     }
 
 
@@ -340,5 +350,25 @@ public final class DataBinding {
         String IS_MAJOR_EDIT = "major";
         /** INDEX : String. */
         String INDEX         = "index";
+    }
+
+
+    /**
+     * GXT model for a file.
+     */
+    @BEAN(File.class)
+    public interface FileBeanModel extends BeanModelMarker {
+        /** NAME : String. */
+        String NAME = "name";
+        /** PATH : String. */
+        String PATH = "path";
+        /** TITLE : String. */
+        String TITLE = "title";
+        /** SHORT_NAME : String. */
+        String SHORT_NAME = "title";
+        /** WIDTH : String. */
+        String WIDTH = "width";
+        /** HEIGHT : String. */
+        String HEIGHT = "height";
     }
 }

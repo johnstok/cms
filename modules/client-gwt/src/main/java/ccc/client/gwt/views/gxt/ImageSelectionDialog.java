@@ -26,12 +26,13 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.File;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
-import ccc.client.gwt.binding.ImageSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.ImageSelectionPanel;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -100,21 +101,20 @@ public class ImageSelectionDialog extends AbstractBaseDialog {
         setHeight(DIALOG_HEIGHT);
         setWidth(DIALOG_WIDTH);
         setFrame(true);
-        final ListViewSelectionModel<ImageSummaryModelData> selectionModel =
+        final ListViewSelectionModel<BeanModel> selectionModel =
             _imagePanel.getView().getSelectionModel();
         selectionModel.addListener(Events.SelectionChange,
-            new Listener<SelectionChangedEvent<ImageSummaryModelData>>() {
-            public void handleEvent(final SelectionChangedEvent
-                                    <ImageSummaryModelData> be) {
-                final ImageSummaryModelData md = be.getSelectedItem();
+            new Listener<SelectionChangedEvent<BeanModel>>() {
+            public void handleEvent(final SelectionChangedEvent<BeanModel> be) {
+                final BeanModel md = be.getSelectedItem();
                 if (md != null) {
-                    final String path = md.getPath();
+                    final String path = md.<File>getBean().getPath();
                     final String appContext =
                         new GlobalsImpl().getSetting("application.context");
                     _urlField.setValue(appContext + path);
-                    _titleField.setValue(md.getTitle());
-                    _altField.setValue(md.getTitle());
-                    _uuid = md.getId().toString();
+                    _titleField.setValue(md.<File>getBean().getTitle());
+                    _altField.setValue(md.<File>getBean().getTitle());
+                    _uuid = md.<File>getBean().getId().toString();
                 }
             }
         });

@@ -41,7 +41,7 @@ import ccc.api.types.MimeType;
 import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 import ccc.client.core.I18n;
-import ccc.client.gwt.binding.ImageSummaryModelData;
+import ccc.client.gwt.binding.DataBinding;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.remoting.GetAbsolutePathAction;
 import ccc.client.gwt.widgets.PageElement.FieldType;
@@ -49,6 +49,7 @@ import ccc.client.gwt.widgets.PageElement.FieldType;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -261,8 +262,7 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
                         new ResourceName("img"),
                         "",
                         new HashMap<String, String>());
-                    final ImageSummaryModelData model =
-                        new ImageSummaryModelData(fs);
+                    final BeanModel model = DataBinding.bindFileSummary(fs);
                     image.setValue(path);
                     image.setFSModel(model);
                 }
@@ -321,9 +321,9 @@ public class EditPagePanel extends FormPanel { // TODO: Should extend CCC class
     private Paragraph extractImage(final PageElement c) {
         final ImageTriggerField image = c.image();
         String id = "";
-        final ImageSummaryModelData model = image.getFSModel();
+        final BeanModel model = image.getFSModel();
         if (model != null) {
-            id = model.getId().toString();
+            id = model.<File>getBean().getId().toString();
         }
 
         final Paragraph p =
