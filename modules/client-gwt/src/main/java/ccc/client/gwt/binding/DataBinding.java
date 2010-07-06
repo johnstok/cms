@@ -213,19 +213,16 @@ public final class DataBinding {
 
 
     /**
-     * Create model data objects for a collection of action summaries.
+     * Bind a collection of action summaries.
      *
-     * @param actions The action summaries.
-     * @return The corresponding model data objects.
+     * @param actions The action summaries to bind.
+     *
+     * @return The corresponding gxt models.
      */
-    public static List<ActionSummaryModelData> bindActionSummary(
+    public static List<BeanModel> bindActionSummary(
                                       final Collection<ActionSummary> actions) {
-        final List<ActionSummaryModelData> boundData =
-            new ArrayList<ActionSummaryModelData>();
-        for (final ActionSummary as : actions) {
-            boundData.add(new ActionSummaryModelData(as, GLOBALS));
-        }
-        return boundData;
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(ActionSummary.class).createModel(actions);
     }
 
 
@@ -370,5 +367,13 @@ public final class DataBinding {
         String WIDTH = "width";
         /** HEIGHT : String. */
         String HEIGHT = "height";
+    }
+
+
+    /**
+     * GXT model for a file.
+     */
+    @BEAN(ActionSummary.class)
+    public interface ActionSummaryBeanModel extends BeanModelMarker {
     }
 }

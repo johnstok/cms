@@ -26,11 +26,13 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.ActionSummary;
 import ccc.api.types.ResourceType;
+import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
-import ccc.client.gwt.binding.ActionSummaryModelData;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -51,21 +53,31 @@ public final class ResourceTypeRendererFactory  {
      */
     private static final class ActionSummaryRenderer
         implements
-            GridCellRenderer<ActionSummaryModelData> {
+            GridCellRenderer<BeanModel> {
+
 
         /** {@inheritDoc} */
         @Override
-        public Object render(final ActionSummaryModelData model,
+        public Object render(final BeanModel model,
                              final String property,
                              final ColumnData config,
                              final int rowIndex,
                              final int colIndex,
-                             final ListStore<ActionSummaryModelData> store,
-                             final Grid<ActionSummaryModelData> grid) {
-
-            return resolveIcon(model.getSubjectType());
+                             final ListStore<BeanModel> store,
+                             final Grid<BeanModel> grid) {
+            if (ActionSummary.TYPE.equals(property)) {
+                return
+                    I18n.getLocalisedType(
+                        model.<ActionSummary>getBean().getType());
+            } else if (ActionSummary.STATUS.equals(property)) {
+                return
+                    I18n.getLocalisedStatus(
+                        model.<ActionSummary>getBean().getStatus());
+            }
+            return resolveIcon(model.<ActionSummary>getBean().getSubjectType());
         }
     }
+
 
     /**
      * GridCellRenderer for ResourceSummaryModelData.
@@ -86,10 +98,10 @@ public final class ResourceTypeRendererFactory  {
                              final int colIndex,
                              final ListStore<ResourceSummaryModelData> store,
                              final Grid<ResourceSummaryModelData> grid) {
-
             return resolveIcon(model.getType());
         }
     }
+
 
     private ResourceTypeRendererFactory() {
         // no-op
@@ -106,18 +118,19 @@ public final class ResourceTypeRendererFactory  {
         return new ResourceSummaryRenderer();
     }
 
+
     /**
      * Creates a  GridCellRenderer for ResourceSummaryModelData.
      *
      * @return Renderer.
      */
-    public static GridCellRenderer<ActionSummaryModelData>
+    public static GridCellRenderer<BeanModel>
             rendererForActionSummary() {
         return new ActionSummaryRenderer();
     }
 
-    private static String resolveIcon(final ResourceType type) {
 
+    private static String resolveIcon(final ResourceType type) {
         if (type.equals(ResourceType.PAGE)) {
             return "<img src='"+ImagePaths.PAGE+"'/>&#160;";
         } else  if (type.equals(ResourceType.FOLDER)) {
@@ -133,5 +146,4 @@ public final class ResourceTypeRendererFactory  {
         }
         return "unknown";
     }
-
 }

@@ -26,6 +26,10 @@
  */
 package ccc.client.core;
 
+import java.util.MissingResourceException;
+
+import ccc.api.types.ActionStatus;
+import ccc.api.types.CommandType;
 import ccc.client.i18n.ActionNameConstants;
 import ccc.client.i18n.ActionStatusConstants;
 import ccc.client.i18n.CommandTypeConstants;
@@ -50,4 +54,65 @@ public class I18n {
     public static ActionStatusConstants ACTION_STATUSES;
     public static CommandTypeConstants COMMAND_TYPES;
     public static ActionNameConstants USER_ACTIONS;
+
+
+    /**
+     * Looks up for localised string for the {@link ActionStatus}.
+     *
+     * @param status The status to localise.
+     *
+     * @return The localised string or name of the enum if nothing found.
+     */
+    public static String getLocalisedStatus(final ActionStatus status) {
+        final ActionStatusConstants types = ACTION_STATUSES;
+
+        String local = null;
+        try {
+            local = types.getString(camelCase(status.name()));
+        } catch (final MissingResourceException e) {
+            local = status.name();
+        }
+        return local;
+    }
+
+    /**
+     * Looks up for localised string for the command type.
+     *
+     * @param command The command to localise.
+     *
+     * @return The localised string or name of the enum if nothing found.
+     */
+    public static String getLocalisedType(final CommandType command) {
+        final CommandTypeConstants types = COMMAND_TYPES;
+
+        String local = null;
+        try {
+            local = types.getString(camelCase(command.name()));
+        } catch (final MissingResourceException e) {
+            local = command.name();
+        }
+        return local;
+    }
+
+
+    /**
+     * Convert a string to 'camel case'.
+     *
+     * @param string The string to convert to camel case.
+     *
+     * @return The string in camel case.
+     */
+    public static String camelCase(final String string) {
+        final StringBuilder sb = new StringBuilder();
+        final char[] chars = string.toCharArray();
+        for (int i=0; i<chars.length; i++) {
+            if ('_'==chars[i]) {
+                i++;
+                sb.append(Character.toUpperCase(chars[i]));
+            } else {
+                sb.append(Character.toLowerCase(chars[i]));
+            }
+        }
+        return sb.toString();
+    }
 }

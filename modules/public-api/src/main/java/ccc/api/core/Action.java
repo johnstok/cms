@@ -113,33 +113,4 @@ public class Action
     public final Map<String, String> getParameters() {
         return _parameters;
     }
-
-
-    /**
-     * Property names.
-     *
-     * @author Civic Computing Ltd.
-     */
-    public static enum Property {
-        /** ID : Property. */
-        ID,
-        /** TYPE : Property. */
-        TYPE,
-        /** LOCALISED_TYPE : Property. */
-        LOCALISED_TYPE,
-        /** USERNAME : Property. */
-        USERNAME,
-        /** EXECUTE_AFTER : Property. */
-        EXECUTE_AFTER,
-        /** PATH : Property. */
-        PATH,
-        /** SUBJECT_TYPE : Property. */
-        SUBJECT_TYPE,
-        /** STATUS : Property. */
-        STATUS,
-        /** FAILURE : Property. */
-        FAILURE_CODE,
-        /** LOCALISED_STATUS : Property. */
-        LOCALISED_STATUS;
-    }
 }
