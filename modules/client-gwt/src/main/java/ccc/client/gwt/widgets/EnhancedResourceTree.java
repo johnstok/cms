@@ -27,7 +27,6 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.User;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.ResourceSummaryModelData;
 
@@ -56,17 +55,15 @@ public class EnhancedResourceTree extends FolderResourceTree {
      *
      * @param root The root of the tree.
      * @param view LeftRightPane of the surrounding view.
-     * @param user UserSummary of currently logged in user.
      * @param globals An instance of the globals interface.
      */
     EnhancedResourceTree(final ResourceSummary root,
                          final LeftRightPane view,
-                         final User user,
                          final Globals globals) {
 
         super(globals);
 
-        _rt = new ResourceTable(root, this, user);
+        _rt = new ResourceTable(root, this);
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 

@@ -92,31 +92,11 @@ public class MainMenu
      */
     public MainMenu(final User user) {
         _user = user;
-        if (_user.hasPermission(Permission.USER_CREATE)) {
-            addMenu(
-                "users-menu",
-                _constants.users(),
-                createMenuItem(
-                    "create-user-menu-item",
-                    _constants.createUser(),
-                    new OpenCreateUserAction()),
-                createMenuItem(
-                    "create-group-menu-item",
-                    _constants.createGroup(),
-                    new Action(){
-                        @Override public void execute() {
-                            new CreateGroupPresenter(
-                                new GroupViewImpl(_globals));
-                        }
-                    }));
-        }
 
-//        if (_user.hasPermission(Globals.ADMINISTRATOR)
-//                || _user.hasPermission(Globals.SITE_BUILDER)) {
-            createContentRootMenu(CONTENT, _constants.contentRoot());
-//        }
+        createUserMenu();
+        createContentRootMenu(CONTENT, _constants.contentRoot());
 
-        addMenu(
+        addMenu(null,
             "tools-menu",
             _constants.tools(),
             createMenuItem(
@@ -129,7 +109,7 @@ public class MainMenu
                 new LogoutAction())
         );
 
-        addMenu(
+        addMenu(null,
             "help-menu",
             _constants.help(),
             createMenuItem(
@@ -141,6 +121,35 @@ public class MainMenu
                 _constants.manual(),
                 new OpenHelpAction())
         );
+    }
+
+    private void createUserMenu() {
+
+        final Menu itemMenu = new Menu();
+        if (_user.hasPermission(Permission.USER_CREATE)
+            ||_user.hasPermission(Permission.GROUP_CREATE)) {
+            final Button item = new Button(_constants.users());
+            item.setId("users-menu");
+            item.setMenu(itemMenu);
+            add(item);
+        }
+        if (_user.hasPermission(Permission.USER_CREATE)) {
+            itemMenu.add(createMenuItem(
+                    "create-user-menu-item",
+                    _constants.createUser(),
+                    new OpenCreateUserAction()));
+        }
+        if (_user.hasPermission(Permission.GROUP_CREATE)) {
+            itemMenu.add(createMenuItem(
+                    "create-group-menu-item",
+                    _constants.createGroup(),
+                    new Action(){
+                        @Override public void execute() {
+                            new CreateGroupPresenter(
+                                new GroupViewImpl(_globals));
+                        }
+                    }));
+        }
     }
 
     private void createContentRootMenu(final String rootName,
@@ -198,7 +207,6 @@ public class MainMenu
         } else {
             if (root.getLockedBy().equals(_user.getUsername())
                     || _user.hasPermission(Permission.RESOURCE_UNLOCK)) {
-
                 rootMenu.add(createMenuItem(
                     "unlock-root-"+name,
                     _constants.unlock(),
@@ -207,17 +215,22 @@ public class MainMenu
             if (root.getLockedBy().equals(_user.getUsername())) {
                 if (root.getPublishedBy() == null
                         || root.getPublishedBy().toString().equals("")) {
-                    rootMenu.add(createMenuItem(
-                        "publish-root-"+name,
-                        _constants.publish(),
-                        new PublishAction(ssm)));
+                    if (_user.hasPermission(Permission.RESOURCE_PUBLISH)) {
+                        rootMenu.add(createMenuItem(
+                            "publish-root-"+name,
+                            _constants.publish(),
+                            new PublishAction(ssm)));
+                    }
                 } else {
-                    rootMenu.add(createMenuItem(
-                        "unpublish-root-"+name,
-                        _constants.unpublish(),
-                        new UnpublishAction(ssm)));
+                    if (_user.hasPermission(Permission.RESOURCE_UNPUBLISH)) {
+                        rootMenu.add(createMenuItem(
+                            "unpublish-root-"+name,
+                            _constants.unpublish(),
+                            new UnpublishAction(ssm)));
+                    }
                 }
-                if (CONTENT.equals(root.getName())) {
+                if (CONTENT.equals(root.getName())
+                     && _user.hasPermission(Permission.RESOURCE_UPDATE)) {
                     rootMenu.add(createMenuItem(
                         "chooseTemplate-root-"+name,
                         _constants.chooseTemplate(),
@@ -241,14 +254,18 @@ public class MainMenu
                                 ssm, groups.getElements())
                             .execute();
                         }}));
-                rootMenu.add(createMenuItem(
-                    "updateMetadata-root-"+name,
-                    _constants.updateMetadata(),
-                    new OpenUpdateMetadataAction(ssm)));
-                rootMenu.add(createMenuItem(
-                    "cacheDuration-root-"+name,
-                    _constants.cacheDuration(),
-                    new OpenEditCacheAction(ssm)));
+                if (_user.hasPermission(Permission.RESOURCE_UPDATE))  {
+                    rootMenu.add(createMenuItem(
+                        "updateMetadata-root-"+name,
+                        _constants.updateMetadata(),
+                        new OpenUpdateMetadataAction(ssm)));
+                }
+                if (_user.hasPermission(Permission.RESOURCE_CACHE_UPDATE))  {
+                    rootMenu.add(createMenuItem(
+                        "cacheDuration-root-"+name,
+                        _constants.cacheDuration(),
+                        new OpenEditCacheAction(ssm)));
+                }
             }
         }
     }

@@ -92,14 +92,19 @@ public class AbstractContextMenu
     /**
      * Creates and adds a menu item to the context menu.
      *
+     * @param permission The permission required to add the item.
      * @param id The id of the menu item.
      * @param text The text of the menu item.
      * @param action The action  of the menu item.
      */
-    protected void addMenuItem(final String id,
+    protected void addMenuItem(final String permission,
+                               final String id,
                                final String text,
                                final Action action) {
-        final MenuItem menuItem = createMenuItem(id, text, action);
-        add(menuItem);
+        if (_globals.currentUser().hasPermission(permission)) {
+            final MenuItem menuItem = createMenuItem(id, text, action);
+            add(menuItem);
+        }
     }
+
 }

@@ -33,6 +33,7 @@ import ccc.api.core.ActionSummary;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.ActionStatus;
 import ccc.api.types.CommandType;
+import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
@@ -93,7 +94,9 @@ public class ActionTable
         setHeading(UI_CONSTANTS.actionDetails());
         setLayout(new FitLayout());
 
-        setTopComponent(new ActionToolBar(this));
+        if (GLOBALS.currentUser().hasPermission(Permission.ACTION_CANCEL)) {
+            setTopComponent(new ActionToolBar(this));
+        }
 
         createColumnConfigs(configs);
 

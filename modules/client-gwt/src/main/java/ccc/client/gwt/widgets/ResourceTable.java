@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ccc.api.core.ResourceSummary;
-import ccc.api.core.User;
 import ccc.api.types.CommandType;
 import ccc.api.types.ResourcePath;
 import ccc.api.types.ResourceType;
@@ -95,22 +94,20 @@ public class ResourceTable
      *
      * @param root ResourceSummary
      * @param tree FolderResourceTree
-     * @param user UserSummary of currently logged in user.
      */
     ResourceTable(final ResourceSummary root,
-        final FolderResourceTree tree,
-        final User user) {
+        final FolderResourceTree tree) {
 
         InternalServices.REMOTING_BUS.registerHandler(this);
 
         _root = root;
         _tree = tree;
-        final ToolBar toolBar = new FolderToolBar(this, user);
+        final ToolBar toolBar = new FolderToolBar(this);
         setTopComponent(toolBar);
         setHeading(UI_CONSTANTS.resourceDetails());
         setLayout(new FitLayout());
 
-        final Menu contextMenu = new ResourceContextMenu(this, user);
+        final Menu contextMenu = new ResourceContextMenu(this);
         final List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
         final ContextActionGridPlugin gp =
             new ContextActionGridPlugin(contextMenu);

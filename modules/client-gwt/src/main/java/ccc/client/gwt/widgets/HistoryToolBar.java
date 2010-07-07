@@ -27,6 +27,7 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.core.ResourceSummary;
+import ccc.api.types.Permission;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.actions.PreviewHistoricalAction;
@@ -55,22 +56,22 @@ public class HistoryToolBar
     public HistoryToolBar(final HistoryDialog historyDialog) {
         _historyDialog = historyDialog;
 
-        addSeparator();
-        addButton(
+        addSeparator(null);
+        addButton(null,
             "preview-historical",
             _constants.preview(),
             new PreviewHistoricalAction(_historyDialog));
-        addSeparator();
+        addSeparator(null);
         if (_historyDialog.hasLock()) {
             ResourceSummary resource = _historyDialog.getResource();
             if(resource != null
                && resource.getType()!=ResourceType.TEMPLATE) {
-                addButton(
+                addButton(Permission.RESOURCE_UPDATE,
                     "create-historical-wc",
                     _constants.revert(),
                     new CreateWorkingCopyFromHistoricalVersionAction(
                         _historyDialog));
-                addSeparator();
+                addSeparator(Permission.RESOURCE_UPDATE);
             }
         }
     }

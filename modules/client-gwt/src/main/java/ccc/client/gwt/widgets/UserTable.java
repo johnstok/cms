@@ -33,6 +33,7 @@ import ccc.api.core.Group;
 import ccc.api.core.PagedCollection;
 import ccc.api.core.User;
 import ccc.api.core.UserCriteria;
+import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
 import ccc.client.core.Globals;
 import ccc.client.gwt.binding.DataBinding;
@@ -132,9 +133,11 @@ public class UserTable extends TablePanel {
         _grid = new Grid<BeanModel>(_detailsStore, cm);
         _grid.setId("UserGrid");
 
-        contextMenu.add(createEditUserMenu(_grid));
-        contextMenu.add(createEditPwMenu(_grid));
-        contextMenu.add(createEditMetadataMenu(_grid));
+        if (GLOBALS.currentUser().hasPermission(Permission.USER_UPDATE)) {
+            contextMenu.add(createEditUserMenu(_grid));
+            contextMenu.add(createEditPwMenu(_grid));
+            contextMenu.add(createEditMetadataMenu(_grid));
+        }
 
         _grid.setContextMenu(contextMenu);
         _grid.addPlugin(gp);

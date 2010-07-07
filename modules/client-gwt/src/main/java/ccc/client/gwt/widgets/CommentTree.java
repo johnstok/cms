@@ -47,7 +47,7 @@ public class CommentTree extends Tree {
     /** USER_TREE_HEIGHT : int. */
     private static final int USER_TREE_HEIGHT = 300;
 
-    private final CommentTable _commentTable = new CommentTable();
+    private final CommentTable _commentTable;
     private final UIConstants _constants = I18n.UI_CONSTANTS;
     private final LeftRightPane _view;
 
@@ -58,6 +58,7 @@ public class CommentTree extends Tree {
      */
     CommentTree(final LeftRightPane view) {
         _view = view;
+        _commentTable = new CommentTable();
 
         _tree.setDisplayProperty("name");
         _tree.setHeight(USER_TREE_HEIGHT);

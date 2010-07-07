@@ -26,7 +26,6 @@
  */
 package ccc.client.gwt.widgets;
 
-import ccc.api.core.User;
 import ccc.api.types.Permission;
 import ccc.client.core.I18n;
 import ccc.client.gwt.actions.OpenCreateFileAction;
@@ -53,36 +52,37 @@ public class FolderToolBar
      * Constructor.
      *
      * @param ssm The selection model to use.
-     * @param user UserSummary currently logged in user.
      */
-    FolderToolBar(final SingleSelectionModel ssm, final User user) {
-        addSeparator();
-        addButton(
+    FolderToolBar(final SingleSelectionModel ssm) {
+        addSeparator(null);
+        addButton(Permission.FILE_CREATE,
             "uploadFile",
             _constants.uploadFile(),
             new OpenCreateFileAction(ssm));
-        addSeparator();
-        addButton(
+        addSeparator(Permission.FILE_CREATE);
+
+        addButton(Permission.FOLDER_CREATE,
             "Create folder",
             _constants.createFolder(),
             new OpenCreateFolderAction(ssm));
-        addSeparator();
-        addButton(
+        addSeparator(Permission.FOLDER_CREATE);
+
+        addButton(Permission.PAGE_CREATE,
             "Create page",
             _constants.createPage(),
             new OpenCreatePageAction(ssm));
-        addSeparator();
-        if (user.hasPermission(Permission.TEMPLATE_CREATE)) {
-            addButton(
-                "Create template",
-                _constants.createTemplate(),
-                new OpenCreateTemplateAction(ssm));
-            addSeparator();
-            addButton(
-                "Create text file",
-                _constants.createTextFile(),
-                new OpenCreateTextFileAction(ssm));
-            addSeparator();
-        }
+        addSeparator(Permission.PAGE_CREATE);
+
+        addButton(Permission.TEMPLATE_CREATE,
+            "Create template",
+            _constants.createTemplate(),
+            new OpenCreateTemplateAction(ssm));
+        addSeparator(Permission.TEMPLATE_CREATE);
+
+        addButton(Permission.FILE_CREATE,
+            "Create text file",
+            _constants.createTextFile(),
+            new OpenCreateTextFileAction(ssm));
+        addSeparator(Permission.FILE_CREATE);
     }
 }

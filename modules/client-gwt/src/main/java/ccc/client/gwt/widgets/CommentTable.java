@@ -33,6 +33,7 @@ import ccc.api.core.Comment;
 import ccc.api.core.PagedCollection;
 import ccc.api.types.CommandType;
 import ccc.api.types.CommentStatus;
+import ccc.api.types.Permission;
 import ccc.api.types.SortOrder;
 import ccc.client.core.InternalServices;
 import ccc.client.events.Event;
@@ -105,9 +106,10 @@ public class CommentTable
 
         _grid = new Grid<BeanModel>(_detailsStore, cm);
 
-        contextMenu.add(createUpdateCommentMenu(_grid));
-
-        _grid.setContextMenu(contextMenu);
+        if (GLOBALS.currentUser().hasPermission(Permission.COMMENT_UPDATE)) {
+            contextMenu.add(createUpdateCommentMenu(_grid));
+            _grid.setContextMenu(contextMenu);
+        }
         _grid.addPlugin(gp);
         add(_grid);
 

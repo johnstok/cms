@@ -79,7 +79,7 @@ public class ResourceNavigator extends ContentPanel {
 
         for (final ResourceSummary root : roots) {
             final EnhancedResourceTree enhancedResourceTree =
-                new EnhancedResourceTree(root, _view, user, _globals);
+                new EnhancedResourceTree(root, _view, _globals);
             _rootTrees.add(enhancedResourceTree);
             final ContentPanel contentPanel = new ContentPanel();
             contentPanel.getHeader().setId(root.getName()+"-navigator");

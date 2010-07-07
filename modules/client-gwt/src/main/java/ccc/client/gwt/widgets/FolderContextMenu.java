@@ -26,6 +26,7 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.types.Permission;
 import ccc.client.gwt.actions.OpenCreateFileAction;
 import ccc.client.gwt.actions.OpenCreateFolderAction;
 import ccc.client.gwt.actions.OpenCreatePageAction;
@@ -40,8 +41,8 @@ import ccc.client.gwt.core.SingleSelectionModel;
  * @author Civic Computing Ltd.
  */
 public class FolderContextMenu
-    extends
-        AbstractContextMenu {
+extends
+AbstractContextMenu {
 
     /**
      * Constructor.
@@ -49,19 +50,19 @@ public class FolderContextMenu
      * @param ssm The selection model to use.
      */
     public FolderContextMenu(final SingleSelectionModel ssm) {
-        addMenuItem(
+        addMenuItem(Permission.FILE_CREATE,
             "upload-file",
             getConstants().uploadFile(),
             new OpenCreateFileAction(ssm));
-        addMenuItem(
+        addMenuItem(Permission.FOLDER_CREATE,
             "create-folder",
             getConstants().createFolder(),
             new OpenCreateFolderAction(ssm));
-        addMenuItem(
+        addMenuItem(Permission.PAGE_CREATE,
             "create-page",
             getConstants().createPage(),
             new OpenCreatePageAction(ssm));
-        addMenuItem(
+        addMenuItem(Permission.TEMPLATE_CREATE,
             "create-template",
             getConstants().createTemplate(),
             new OpenCreateTemplateAction(ssm));
