@@ -27,7 +27,10 @@
 package ccc.client.gwt.core;
 
 import ccc.client.core.I18n;
+import ccc.client.gwt.remoting.LogoutAction;
 
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -95,6 +98,12 @@ public class GWTWindow
     public void enableExitConfirmation() {
         _handlerRegistration =
             Window.addWindowClosingHandler(new ExitHandler());
+
+            Window.addCloseHandler(new CloseHandler<Window>() {
+                @Override
+                public void onClose(final CloseEvent<Window> arg0) {
+                    new LogoutAction().execute();
+                }});
     }
 
 
