@@ -26,9 +26,10 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.ImagePaths;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -41,19 +42,19 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
  * @author Civic Computing Ltd.
  */
 public class ResourceWorkingCopyRenderer
-    implements GridCellRenderer<ResourceSummaryModelData> {
+    implements GridCellRenderer<BeanModel> {
 
     /** {@inheritDoc} */
     @Override
-    public Object render(final ResourceSummaryModelData model,
+    public Object render(final BeanModel model,
                          final String property,
                          final ColumnData config,
                          final int rowIndex,
                          final int colIndex,
-                         final ListStore<ResourceSummaryModelData> store,
-                         final Grid<ResourceSummaryModelData> grid) {
+                         final ListStore<BeanModel> store,
+                         final Grid<BeanModel> grid) {
 
-        if (model.hasWorkingCopy()) {
+        if (model.<ResourceSummary>getBean().isHasWorkingCopy()) {
             return "<img src='"+ImagePaths.TICK+"'/>&#160;";
         }
         return "";

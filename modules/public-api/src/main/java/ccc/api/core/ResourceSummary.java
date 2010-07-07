@@ -27,9 +27,11 @@
 package ccc.api.core;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.ResourceType;
 import ccc.api.types.Username;
@@ -288,6 +290,16 @@ public final class ResourceSummary extends Res {
 
 
     /**
+     * Retrieve the relative path to a resource's revision data.
+     *
+     * @return The path as a string.
+     */
+    public String revisionsPath() {
+        return revisions().toString();
+    }
+
+
+    /**
      * Mutator.
      *
      * @param hasWorkingCopy The hasWorkingCopy to set.
@@ -384,6 +396,33 @@ public final class ResourceSummary extends Res {
      */
     public void setTags(final Set<String> tags) {
         _tags = tags;
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param tags The tags to set.
+     */
+    @Deprecated
+    public void setTags(final String tags) {
+        setTags(parseTagString(tags));
+    }
+
+
+    private Set<String> parseTagString(final String tags) {
+        DBC.require().notNull(tags);
+        DBC.require().containsNoBrackets(tags);
+
+        final String[] tagArray = tags.split(",");
+        final Set<String> parsed = new HashSet<String>();
+        for(final String tag : tagArray) {
+            if (tag.trim().length() < 1) {
+                continue;
+            }
+            parsed.add(tag.trim());
+        }
+        return parsed;
     }
 
 
@@ -534,6 +573,22 @@ public final class ResourceSummary extends Res {
      */
     public void setFolderCount(final int count) {
         _folderCount = count;
+    }
+
+
+    /**
+     * Increase the folder count by 1.
+     */
+    public void incrementFolderCount() {
+        setFolderCount(getFolderCount()+1);
+    }
+
+
+    /**
+     * Decrease the folder count by 1.
+     */
+    public void decrementFolderCount() {
+        setFolderCount(getFolderCount()-1);
     }
 
 
@@ -737,4 +792,38 @@ public final class ResourceSummary extends Res {
         return
             new Link(getLink(Alias.TARGET_NAME));
     }
+
+
+    /** UUID : String. */
+    public static final String UUID          = "id";
+    /** PARENT : String. */
+    public static final String PARENT        = "parent";
+    /** NAME : String. */
+    public static final String NAME          = "name";
+    /** PUBLISHED : String. */
+    public static final String PUBLISHED     = "publishedBy";
+    /** TITLE : String. */
+    public static final String TITLE         = "title";
+    /** LOCKED : String. */
+    public static final String LOCKED        = "lockedBy";
+    /** TYPE : String. */
+    public static final String TYPE          = "type";
+    /** CHILD_COUNT : String. */
+    public static final String CHILD_COUNT   = "childCount";
+    /** FOLDER_COUNT : String. */
+    public static final String FOLDER_COUNT  = "folderCount";
+    /** MM_INCLUDE : String. */
+    public static final String MM_INCLUDE    = "includeInMainMenu";
+    /** WORKING_COPY : String. */
+    public static final String WORKING_COPY  = "hasWorkingCopy";
+    /** DATE_CHANGED : String. */
+    public static final String DATE_CHANGED  = "dateChanged";
+    /** DATE_CREATED : String. */
+    public static final String DATE_CREATED  = "dateCreated";
+    /** ABSOLUTE_PATH : String. */
+    public static final String ABSOLUTE_PATH = "absolutePath";
+    /** INDEX_PAGE_ID : String. */
+    public static final String INDEX_PAGE_ID = "indexPageId";
+    /** DESCRIPTION : String. */
+    public static final String DESCRIPTION   = "description";
 }

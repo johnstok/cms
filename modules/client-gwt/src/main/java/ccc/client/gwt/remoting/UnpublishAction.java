@@ -26,10 +26,10 @@
  */
 package ccc.client.gwt.remoting;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.HttpMethod;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.SingleSelectionModel;
 
@@ -60,15 +60,19 @@ public class UnpublishAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        return _selectionModel.tableSelection().getDelegate().uriPublish().build(new GWTTemplateEncoder());
+        return
+            _selectionModel
+                .tableSelection()
+                .uriPublish()
+                .build(new GWTTemplateEncoder());
     }
 
 
     /** {@inheritDoc} */
     @Override
     protected void onNoContent(final Response response) {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
-        item.setPublished(null);
+        final ResourceSummary item = _selectionModel.tableSelection();
+        item.setPublishedBy(null);
         _selectionModel.update(item);
     }
 }

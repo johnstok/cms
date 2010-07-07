@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.views.gxt;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
 import ccc.client.core.I18n;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.widgets.FolderResourceTree;
 
@@ -68,17 +68,14 @@ public class FolderSelectionDialog extends Window {
         setMinWidth(Globals.MIN_WIDTH);
         setLayout(new FitLayout());
         _tree = new FolderResourceTree(_globals);
-        add(_tree.treePanel());
+        add(_tree.asComponent());
         final Button save = new Button(
             I18n.UI_CONSTANTS.ok(),
             new SelectionListener<ButtonEvent>() {
                 @Override
                 public void componentSelected(final ButtonEvent ce) {
-                    final ResourceSummaryModelData item =
-                        _tree.treePanel().getSelectionModel().getSelectedItem();
-                    if (null==item) {
-                        return; // No selection made.
-                    }
+                    final ResourceSummary item = _tree.getSelectedItem();
+                    if (null==item) { return; /* No selection made. */ }
                     hide(ce.getButton());
                 }});
         save.setId("FolderSelectSave");
@@ -90,7 +87,7 @@ public class FolderSelectionDialog extends Window {
      *
      * @return Returns the selected folder as {@link FolderDTO}
      */
-    public ResourceSummaryModelData selectedFolder() {
-        return _tree.treePanel().getSelectionModel().getSelectedItem();
+    public ResourceSummary selectedFolder() {
+        return _tree.getSelectedItem();
     }
 }

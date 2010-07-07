@@ -26,7 +26,7 @@
  */
 package ccc.client.gwt.core;
 
-import ccc.client.gwt.binding.ResourceSummaryModelData;
+import ccc.api.core.ResourceSummary;
 
 
 /**
@@ -41,7 +41,7 @@ public interface SingleSelectionModel {
      *
      * @return The selected model data.
      */
-    ResourceSummaryModelData tableSelection();
+    ResourceSummary tableSelection();
 
 
     /**
@@ -49,7 +49,7 @@ public interface SingleSelectionModel {
      *
      * @return The selected model data.
      */
-    ResourceSummaryModelData treeSelection();
+    ResourceSummary treeSelection();
 
 
     /**
@@ -58,7 +58,7 @@ public interface SingleSelectionModel {
      * @param model The model to update
      */
     @Deprecated
-    void update(ResourceSummaryModelData model);
+    void update(ResourceSummary model);
 
 
     /**
@@ -69,9 +69,9 @@ public interface SingleSelectionModel {
      * @param oldParent The old parent.
      */
     @Deprecated
-    void move(ResourceSummaryModelData model,
-              ResourceSummaryModelData newParent,
-              ResourceSummaryModelData oldParent);
+    void move(ResourceSummary model,
+              ResourceSummary newParent,
+              ResourceSummary oldParent);
 
 
     /**
@@ -80,5 +80,5 @@ public interface SingleSelectionModel {
      * @param model The model to create.
      */
     @Deprecated
-    void create(ResourceSummaryModelData model);
+    void create(ResourceSummary model);
 }

@@ -27,10 +27,10 @@
 package ccc.client.gwt.widgets;
 
 import ccc.api.core.ActionSummary;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.core.ImagePaths;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 
 import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -86,19 +86,19 @@ public final class ResourceTypeRendererFactory  {
      */
     private static final class ResourceSummaryRenderer
         implements
-            GridCellRenderer<ResourceSummaryModelData> {
+            GridCellRenderer<BeanModel> {
 
 
         /** {@inheritDoc} */
         @Override
-        public String render(final ResourceSummaryModelData model,
+        public String render(final BeanModel model,
                              final String property,
                              final ColumnData config,
                              final int rowIndex,
                              final int colIndex,
-                             final ListStore<ResourceSummaryModelData> store,
-                             final Grid<ResourceSummaryModelData> grid) {
-            return resolveIcon(model.getType());
+                             final ListStore<BeanModel> store,
+                             final Grid<BeanModel> grid) {
+            return resolveIcon(model.<ResourceSummary>getBean().getType());
         }
     }
 
@@ -113,7 +113,7 @@ public final class ResourceTypeRendererFactory  {
      *
      * @return Renderer.
      */
-    public static GridCellRenderer<ResourceSummaryModelData>
+    public static GridCellRenderer<BeanModel>
             rendererForResourceSummary() {
         return new ResourceSummaryRenderer();
     }

@@ -29,7 +29,6 @@ package ccc.client.gwt.views.gxt;
 import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -61,7 +60,7 @@ public class LinkSelectionDialog extends AbstractEditDialog {
 
     private final String _elementid;
 
-    private ResourceSummaryModelData _md = null;
+    private ResourceSummary _md = null;
     private String _uuid = null;
 
     private final ResourceSummary _targetRoot;

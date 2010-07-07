@@ -83,33 +83,29 @@ public final class DataBinding {
 
 
     /**
-     * Create model data objects for a collection of resource summaries.
+     * Convert a collection of resource summaries to model data.
      *
-     * @param arg0 The resource summaries.
-     * @return The corresponding model data objects.
+     * @param resources The resources.
+     *
+     * @return The model data.
      */
-    public static List<ResourceSummaryModelData> bindResourceSummary(
-                                       final Collection<ResourceSummary> arg0) {
-        final List<ResourceSummaryModelData> boundData =
-            new ArrayList<ResourceSummaryModelData>();
-        for (final ResourceSummary fs : arg0) {
-            final ResourceSummaryModelData md = bindResourceSummary(fs);
-            boundData.add(md);
-        }
-        return boundData;
+    public static List<BeanModel> bindResourceSummary(
+                               final Collection<ResourceSummary> resources) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(ResourceSummary.class).createModel(resources);
     }
 
 
     /**
-     * Create a model data object from a resource summary.
+     * Convert a resource summary to model data.
      *
-     * @param rs The resource summary.
-     * @return The corresponding model data object.
+     * @param rs The resource.
+     *
+     * @return The model data.
      */
-    public static ResourceSummaryModelData bindResourceSummary(
-                                                     final ResourceSummary rs) {
-        final ResourceSummaryModelData md = new ResourceSummaryModelData(rs);
-        return md;
+    public static BeanModel bindResourceSummary(final ResourceSummary rs) {
+        final BeanModelLookup ml = BeanModelLookup.get();
+        return ml.getFactory(ResourceSummary.class).createModel(rs);
     }
 
 
@@ -371,9 +367,17 @@ public final class DataBinding {
 
 
     /**
-     * GXT model for a file.
+     * GXT model for an action summary.
      */
     @BEAN(ActionSummary.class)
     public interface ActionSummaryBeanModel extends BeanModelMarker {
+    }
+
+
+    /**
+     * GXT model for a resource summary.
+     */
+    @BEAN(ResourceSummary.class)
+    public interface ResourceSummaryBeanModel extends BeanModelMarker {
     }
 }

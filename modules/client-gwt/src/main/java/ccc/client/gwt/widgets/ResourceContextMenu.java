@@ -26,10 +26,11 @@
  */
 package ccc.client.gwt.widgets;
 
-import static ccc.client.gwt.views.gxt.AbstractBaseDialog.CONTEXT_MENU_WIDTH;
+import static ccc.client.gwt.views.gxt.AbstractBaseDialog.*;
 import ccc.api.core.Group;
 import ccc.api.core.Page;
 import ccc.api.core.PagedCollection;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.core.User;
 import ccc.api.types.Permission;
@@ -45,7 +46,6 @@ import ccc.client.gwt.actions.OpenMoveAction;
 import ccc.client.gwt.actions.OpenRenameAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
 import ccc.client.gwt.actions.PreviewAction;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.ApplyWorkingCopyAction;
 import ccc.client.gwt.remoting.ClearWorkingCopyAction;
@@ -117,6 +117,7 @@ public class ResourceContextMenu
      * Constructor.
      *
      * @param tbl The table this menu will work for.
+     * @param user The UserSummary of the currently logged in user.
      */
     ResourceContextMenu(final ResourceTable tbl) {
         _table = tbl;
@@ -167,7 +168,7 @@ public class ResourceContextMenu
 
     private void refreshMenuItems(final MenuEvent be) {
         removeAll();
-        final ResourceSummaryModelData item = _table.tableSelection();
+        final ResourceSummary item = _table.tableSelection();
         if (item == null) { // don't display menu if no item is selected.
             be.setCancelled(false);
             return;
@@ -175,18 +176,18 @@ public class ResourceContextMenu
 
         addPreview();
         addViewHistory();
-        if (null==item.getLocked()
-            || "".equals(item.getLocked().toString())) {
+        if (null==item.getLockedBy()
+            || "".equals(item.getLockedBy().toString())) {
             addLockResource();
         } else {
-            if (item.getLocked().equals(_globals.currentUser().getUsername())
+            if (item.getLockedBy().equals(_globals.currentUser().getUsername())
                  || _globals.currentUser().hasPermission(
                      Permission.RESOURCE_UNLOCK)) {
                 addUnlockResource();
             }
-            if (item.getLocked().equals(_globals.currentUser().getUsername())) {
-                if (item.getPublished() == null
-                        || "".equals(item.getPublished().toString())) {
+            if (item.getLockedBy().equals(_globals.currentUser().getUsername())) {
+                if (item.getPublishedBy() == null
+                        || "".equals(item.getPublishedBy().toString())) {
                     addPublishResource();
                 } else {
                     addUnpublishResource();
@@ -229,12 +230,12 @@ public class ResourceContextMenu
                 addCreateAction();
                 addEditCache();
 
-                if (item.isIncludedInMainMenu()) {
+                if (item.isIncludeInMainMenu()) {
                     addRemoveFromMainMenu();
                 } else {
                     addIncludeInMainMenu();
                 }
-                if (item.hasWorkingCopy()) {
+                if (item.isHasWorkingCopy()) {
                     add(new SeparatorMenuItem());
                     addPreviewWorkingCopy();
                     addDeleteWorkingCopy();
@@ -397,7 +398,7 @@ public class ResourceContextMenu
 
     private void addEditResource() {
         final MenuItem update = new MenuItem();
-        final ResourceSummaryModelData item = _table.tableSelection();
+        final ResourceSummary item = _table.tableSelection();
         update.setId("edit-resource");
         update.setText(getConstants().edit());
         update.addSelectionListener(new SelectionListener<MenuEvent>() {
@@ -421,7 +422,7 @@ public class ResourceContextMenu
                 }
             }
         });
-        User user = _globals.currentUser();
+        final User user = _globals.currentUser();
         if ((user.hasPermission(Permission.TEMPLATE_UPDATE)
                 && item.getType() == ResourceType.TEMPLATE)
                 || (user.hasPermission(Permission.PAGE_UPDATE)
@@ -432,7 +433,6 @@ public class ResourceContextMenu
                         && item.getType() == ResourceType.FILE)) {
             add(update);
         }
-
     }
 
 
@@ -445,19 +445,19 @@ public class ResourceContextMenu
 
 
 
-    private void updateFile(final ResourceSummaryModelData item) {
-        new UpdateFileDialog(item.getDelegate()).show();
+    private void updateFile(final ResourceSummary item) {
+        new UpdateFileDialog(item).show();
     }
 
     // TODO: Factor these methods to actions
-    private void updateAlias(final ResourceSummaryModelData item) {
+    private void updateAlias(final ResourceSummary item) {
         new OpenUpdateAliasAction(item, _table.root()).execute();
     }
 
-    private void updatePage(final ResourceSummaryModelData item) {
+    private void updatePage(final ResourceSummary item) {
         // Get the template for the page.
         new ComputeTemplateAction(
-            getConstants().updateContent(), item.getDelegate()) {
+            getConstants().updateContent(), item) {
 
             /** {@inheritDoc} */
             @Override
@@ -469,7 +469,7 @@ public class ResourceContextMenu
             // Get a delta to edit.
             @Override protected void template(final Template ts) {
                 new PageDeltaAction(
-                    getConstants().updateContent(), item.getDelegate()){
+                    getConstants().updateContent(), item){
                     @Override
                     protected void execute(final Page delta) {
                         new UpdatePageDialog(
@@ -485,7 +485,7 @@ public class ResourceContextMenu
         }.execute();
     }
 
-    private void updateTemplate(final ResourceSummaryModelData item) {
+    private void updateTemplate(final ResourceSummary item) {
         new OpenUpdateTemplateAction(item, _table).execute();
     }
 }

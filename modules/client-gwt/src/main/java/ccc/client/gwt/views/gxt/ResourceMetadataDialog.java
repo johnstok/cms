@@ -30,13 +30,14 @@ import static ccc.client.core.InternalServices.*;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.UpdateMetadataAction;
@@ -59,7 +60,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 public class ResourceMetadataDialog extends AbstractEditDialog {
 
 
-    private ResourceSummaryModelData _resource;
+    private ResourceSummary _resource;
     private SingleSelectionModel _ssm;
 
     private final TextField<String> _title = new TextField<String>();
@@ -75,7 +76,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
      * @param data The metadata.
      * @param ssm The selection model.
      */
-    public ResourceMetadataDialog(final ResourceSummaryModelData resource,
+    public ResourceMetadataDialog(final ResourceSummary resource,
                           final Collection<Map.Entry<String, String>> data,
                           final SingleSelectionModel ssm) {
         super(I18n.UI_CONSTANTS.metadata(), new GlobalsImpl());
@@ -96,7 +97,7 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
         _tags.setFieldLabel(constants().tags());
         _tags.setAllowBlank(true);
         _tags.setId("tags");
-        _tags.setValue(resource.getTags());
+        _tags.setValue(tagString(resource.getTags()));
 
         addField(_title);
         addField(_description);
@@ -160,10 +161,10 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
         r.setTitle(title);
         r.setDescription(description);
         r.setMetadata(metadata);
-        r.setTags(ResourceSummaryModelData.parseTagString(tags));
+        r.setTags(tags);
         r.addLink(
             Resource.METADATA,
-            _resource.getDelegate().uriMetadata().toString());
+            _resource.uriMetadata().toString());
 
         new UpdateMetadataAction(r) {
                 /** {@inheritDoc} */
@@ -176,5 +177,21 @@ public class ResourceMetadataDialog extends AbstractEditDialog {
                     ResourceMetadataDialog.this.hide();
                 }
         }.execute();
+    }
+
+
+    private String tagString(final Set<String> tags) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String tag : tags) {
+            sb.append(tag);
+            sb.append(',');
+        }
+
+        String tagString = sb.toString();
+        if (tagString.endsWith(",")) {
+            tagString = tagString.substring(0, tagString.length()-1);
+        }
+
+        return tagString;
     }
 }

@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.core.Editable;
@@ -39,7 +40,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.ComputeTemplateAction;
 import ccc.client.gwt.widgets.EditPagePanel;
@@ -116,7 +116,7 @@ public class CreatePageDialog
     private final CheckBox _majorEdit = new CheckBox();
     private final TextArea _comment = new TextArea();
 
-    private final ResourceSummaryModelData _parent;
+    private final ResourceSummary _parent;
 
     /**
      * Constructor.
@@ -127,7 +127,7 @@ public class CreatePageDialog
      * @param parent The Folder in which page will created.
      */
     public CreatePageDialog(final Collection<Template> list,
-                            final ResourceSummaryModelData parent) {
+                            final ResourceSummary parent) {
         super(I18n.UI_CONSTANTS.createPage(),
               new GlobalsImpl());
         _parent = parent;
@@ -228,7 +228,7 @@ public class CreatePageDialog
             setId(getUiConstants().useDefaultTemplate());
 
             new ComputeTemplateAction(
-                getUiConstants().createPage(), _parent.getDelegate()) {
+                getUiConstants().createPage(), _parent) {
 
                 /** {@inheritDoc} */
                 @Override

@@ -38,11 +38,11 @@ import ccc.client.core.Globals;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.remoting.GetChildrenPagedAction;
 import ccc.client.gwt.remoting.GetRootsAction;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -68,20 +68,21 @@ public class FolderResourceTree extends AbstractResourceTree {
 
     /** {@inheritDoc} */
     @Override
-    protected RpcProxy<List<ResourceSummaryModelData>> createProxy() {
-        final RpcProxy<List<ResourceSummaryModelData>> proxy =
-            new RpcProxy<List<ResourceSummaryModelData>>() {
+    protected RpcProxy<List<BeanModel>> createProxy() {
+        final RpcProxy<List<BeanModel>> proxy =
+            new RpcProxy<List<BeanModel>>() {
 
             @Override
             protected void load(
                 final Object loadConfig,
-                final AsyncCallback<List<ResourceSummaryModelData>> callback) {
+                final AsyncCallback<List<BeanModel>> callback) {
 
-                if (null==loadConfig
-                    || !(loadConfig instanceof ResourceSummaryModelData)) {
-                    new GetRootsAction() { // TODO: UseGetResourceForPathAction instead.
+                if (null==loadConfig || !(loadConfig instanceof BeanModel)) {
+                    // TODO: UseGetResourceForPathAction instead.
+                    new GetRootsAction() {
                         @Override
-                        protected void onSuccess(final Collection<ResourceSummary> roots) {
+                        protected void onSuccess(
+                                     final Collection<ResourceSummary> roots) {
                             for (final ResourceSummary rr : roots) {
                                 if (rr.getName().equals("content")) {
                                     callback.onSuccess(
@@ -94,7 +95,7 @@ public class FolderResourceTree extends AbstractResourceTree {
                     }.execute();
                 } else {
                     new GetChildrenPagedAction(
-                        ((ResourceSummaryModelData) loadConfig).getDelegate(),
+                        ((BeanModel) loadConfig).<ResourceSummary>getBean(),
                         1,
                         Globals.MAX_FETCH,
                         "name",
@@ -109,8 +110,9 @@ public class FolderResourceTree extends AbstractResourceTree {
                         }
 
                         @Override
-                        protected void execute(final Collection<ResourceSummary> children,
-                                               final int totalCount) {
+                        protected void execute(
+                                   final Collection<ResourceSummary> children,
+                                   final int totalCount) {
                             callback.onSuccess(
                                 DataBinding.bindResourceSummary(children));
                         }
@@ -123,11 +125,12 @@ public class FolderResourceTree extends AbstractResourceTree {
 
     /** {@inheritDoc} */
     @Override
-    protected BaseTreeLoader<ResourceSummaryModelData> createLoader() {
-        return new BaseTreeLoader<ResourceSummaryModelData>(createProxy()) {
+    protected BaseTreeLoader<BeanModel> createLoader() {
+        return new BaseTreeLoader<BeanModel>(createProxy()) {
             @Override
-            public boolean hasChildren(final ResourceSummaryModelData parent) {
-                final int folderCount = parent.getFolderCount();
+            public boolean hasChildren(final BeanModel parent) {
+                final int folderCount =
+                    parent.<ResourceSummary>getBean().getFolderCount();
                 return folderCount > 0;
             }
         };

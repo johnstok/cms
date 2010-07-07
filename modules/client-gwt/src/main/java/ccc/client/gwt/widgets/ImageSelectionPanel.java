@@ -34,7 +34,6 @@ import ccc.api.core.File;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.remoting.GetImagesPagedAction;
 import ccc.client.gwt.views.gxt.FolderSelectionDialog;
 
@@ -77,7 +76,7 @@ public class ImageSelectionPanel extends ContentPanel {
     private static final int PANEL_HEIGHT = 478;
     private static final int IMAGES_PER_PAGE = 20;
 
-    private ResourceSummaryModelData _folder = null;
+    private ResourceSummary _folder = null;
     private  final ListView<BeanModel> _view = new ListView<BeanModel>();
 
     private ImageTriggerField _image;
@@ -177,7 +176,7 @@ public class ImageSelectionPanel extends ContentPanel {
 
                     new GetImagesPaged(
                         I18n.UI_CONSTANTS.selectImage(),
-                        _folder.getDelegate(),
+                        _folder,
                         config,
                         callback).execute();
                 }

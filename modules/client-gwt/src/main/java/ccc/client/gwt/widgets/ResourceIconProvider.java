@@ -26,9 +26,10 @@
  */
 package ccc.client.gwt.widgets;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.ImagePaths;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
 
 /**
@@ -38,12 +39,12 @@ import com.extjs.gxt.ui.client.data.ModelStringProvider;
  */
 final class ResourceIconProvider
     implements
-        ModelStringProvider<ResourceSummaryModelData> {
+        ModelStringProvider<BeanModel> {
 
     /** {@inheritDoc} */
-    public String getStringValue(final ResourceSummaryModelData model,
+    public String getStringValue(final BeanModel model,
                                  final String property) {
-        switch (model.getType()) {
+        switch (model.<ResourceSummary>getBean().getType()) {
             case FOLDER:
                 return  ImagePaths.FOLDER;
             case PAGE:

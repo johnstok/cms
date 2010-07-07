@@ -33,7 +33,6 @@ import ccc.api.core.Group;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -72,8 +71,8 @@ public final class OpenUpdateResourceAclAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        ResourceSummary delegate =
-            _selectionModel.tableSelection().getDelegate();
+        final ResourceSummary delegate =
+            _selectionModel.tableSelection();
         return delegate.acl().build(new GWTTemplateEncoder());
     }
 
@@ -84,9 +83,9 @@ public final class OpenUpdateResourceAclAction
         final JSONObject o = JSONParser.parse(response.getText()).isObject();
         final ACL acl = new ACLSerializer().read(new GwtJson(o));
 
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
         new UpdateResourceAclDialog(
-            item.getDelegate(),
+            item,
             acl,
             _groups)
         .show();

@@ -28,10 +28,10 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.CreatePageDialog;
@@ -59,7 +59,7 @@ public final class OpenCreatePageAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.treeSelection();
+        final ResourceSummary item = _selectionModel.treeSelection();
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
             return;
@@ -69,7 +69,7 @@ public final class OpenCreatePageAction
                                  final Collection<Template> templates) {
                 new CreatePagePresenter(
                     new CreatePageDialog(templates, item),
-                    item.getDelegate());
+                    item);
             }
         }.execute();
     }

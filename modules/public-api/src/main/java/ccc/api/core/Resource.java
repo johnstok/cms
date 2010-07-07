@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ccc.api.types.DBC;
 import ccc.api.types.Duration;
 import ccc.api.types.Link;
 import ccc.api.types.ResourceName;
@@ -435,6 +436,32 @@ public class Resource
             (null==tags)
                 ? new HashSet<String>()
                 : new HashSet<String>(tags);
+    }
+
+
+    /**
+     * Mutator.
+     *
+     * @param tags The tags to set.
+     */
+    public void setTags(final String tags) {
+        setTags(parseTagString(tags));
+    }
+
+
+    private Set<String> parseTagString(final String tags) {
+        DBC.require().notNull(tags);
+        DBC.require().containsNoBrackets(tags);
+
+        final String[] tagArray = tags.split(",");
+        final Set<String> parsed = new HashSet<String>();
+        for(final String tag : tagArray) {
+            if (tag.trim().length() < 1) {
+                continue;
+            }
+            parsed.add(tag.trim());
+        }
+        return parsed;
     }
 
 

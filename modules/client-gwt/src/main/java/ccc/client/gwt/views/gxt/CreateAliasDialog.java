@@ -33,7 +33,6 @@ import ccc.client.core.Editable;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.views.CreateAlias;
 
@@ -62,7 +61,7 @@ public class CreateAliasDialog
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private ResourceSummaryModelData _parent = null;
+    private ResourceSummary _parent = null;
     private Editable _presenter;
     private static final int DIALOG_HEIGHT = 200;
 
@@ -181,7 +180,7 @@ public class CreateAliasDialog
     /** {@inheritDoc} */
     @Override
     public ResourceSummary getParent2() {
-       return (null==_parent) ? null : _parent.getDelegate();
+       return (null==_parent) ? null : _parent;
     }
 
 

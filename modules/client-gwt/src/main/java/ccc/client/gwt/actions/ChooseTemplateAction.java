@@ -28,11 +28,11 @@ package ccc.client.gwt.actions;
 
 import java.util.Collection;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.ResourceType;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetTemplatesAction;
 import ccc.client.gwt.views.gxt.ChooseTemplateDialog;
@@ -61,7 +61,7 @@ public final class ChooseTemplateAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
 
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
@@ -76,7 +76,7 @@ public final class ChooseTemplateAction
                                  final Collection<Template> templates) {
                     new ChangeResourceTemplatePresenter(
                         new ChooseTemplateDialog(),
-                        item.getDelegate(),
+                        item,
                         templates);
                 }
             }.execute();

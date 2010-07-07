@@ -35,7 +35,6 @@ import ccc.api.core.Revision;
 import ccc.api.types.ResourceType;
 import ccc.client.core.I18n;
 import ccc.client.gwt.binding.DataBinding;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.widgets.HistoryToolBar;
@@ -165,9 +164,9 @@ public class HistoryDialog
      *
      */
     public void workingCopyCreated() {
-        final ResourceSummaryModelData selectedInMainWindow =
+        final ResourceSummary selectedInMainWindow =
             _ssm.tableSelection();
-        selectedInMainWindow.setWorkingCopy(true);
+        selectedInMainWindow.setHasWorkingCopy(true);
         _ssm.update(selectedInMainWindow);
     }
 
@@ -178,7 +177,7 @@ public class HistoryDialog
      * @return True is selection is locked.
      */
     public boolean hasLock() {
-        return null!=_ssm.tableSelection().getLocked();
+        return null!=_ssm.tableSelection().getLockedBy();
     }
 
 
@@ -188,6 +187,6 @@ public class HistoryDialog
      * @return The id for the resource.
      */
     public ResourceSummary getResource() {
-        return _ssm.tableSelection().getDelegate();
+        return _ssm.tableSelection();
     }
 }

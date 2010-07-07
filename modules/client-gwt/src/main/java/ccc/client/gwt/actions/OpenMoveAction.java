@@ -28,7 +28,6 @@ package ccc.client.gwt.actions;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.MoveDialog;
 
@@ -58,7 +57,7 @@ public final class OpenMoveAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
         new MoveDialog(item, _selectionModel, _root).show();
     }
 }

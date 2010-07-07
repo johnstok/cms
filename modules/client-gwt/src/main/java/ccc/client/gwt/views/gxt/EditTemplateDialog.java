@@ -27,7 +27,7 @@
 
 package ccc.client.gwt.views.gxt;
 
-import static ccc.client.core.InternalServices.VALIDATOR;
+import static ccc.client.core.InternalServices.*;
 
 import java.util.UUID;
 
@@ -41,7 +41,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.CreateTemplateAction;
@@ -95,7 +94,7 @@ public class EditTemplateDialog
     private UUID _parentFolderId = null;
     private final DialogMode _mode;
     private final SingleSelectionModel _ssm;
-    private ResourceSummaryModelData _proxy;
+    private ResourceSummary _proxy;
     private final String _definitionString;
     private final String _bodyString;
 
@@ -139,7 +138,7 @@ public class EditTemplateDialog
      * @param ssm The selection model.
      */
     public EditTemplateDialog(final Template model,
-                              final ResourceSummaryModelData proxy,
+                              final ResourceSummary proxy,
                               final SingleSelectionModel ssm) {
         super(I18n.UI_CONSTANTS.editTemplate(),
             new GlobalsImpl());
@@ -304,8 +303,7 @@ public class EditTemplateDialog
                 new CreateTemplateAction(delta){
                         @Override protected void execute(
                                      final ResourceSummary template) {
-                            _ssm.create(
-                                new ResourceSummaryModelData(template));
+                            _ssm.create(template);
                             hide();
                         }
                     }.execute();

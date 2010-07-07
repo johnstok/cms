@@ -36,7 +36,6 @@ import ccc.client.core.InternalServices;
 import ccc.client.core.RemoteException;
 import ccc.client.core.SessionTimeoutException;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.GwtJson;
 import ccc.client.gwt.core.SingleSelectionModel;
@@ -68,7 +67,7 @@ import com.google.gwt.user.client.ui.Image;
 public class UploadFileDialog extends AbstractEditDialog {
 
     private final TextField<String>   _fileName = new TextField<String>();
-    private final ResourceSummaryModelData _parent;
+    private final ResourceSummary _parent;
     private final HiddenField<String> _path = new HiddenField<String>();
     private final FileUploadField           _file = new FileUploadField();
 
@@ -84,7 +83,7 @@ public class UploadFileDialog extends AbstractEditDialog {
      * @param parentFolder The folder in which this file should be saved.
      * @param ssm The selection model.
      */
-    public UploadFileDialog(final ResourceSummaryModelData parentFolder,
+    public UploadFileDialog(final ResourceSummary parentFolder,
                             final SingleSelectionModel ssm) {
         super(I18n.UI_CONSTANTS.uploadFileTo()
             +": "+parentFolder.getName(), new GlobalsImpl());
@@ -158,7 +157,7 @@ public class UploadFileDialog extends AbstractEditDialog {
                             final ResourceSummary rs =
                                 new ResourceSummarySerializer()
                                     .read(new GwtJson(json));
-                            ssm.create(new ResourceSummaryModelData(rs));
+                            ssm.create(rs);
                         }
                     }
                 }

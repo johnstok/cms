@@ -32,11 +32,11 @@ import java.util.List;
 import java.util.Set;
 
 import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
 import ccc.client.core.Response;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateWorkingCopyAction;
 import ccc.client.gwt.widgets.EditPagePanel;
@@ -66,7 +66,7 @@ public class UpdatePageDialog
 
     private Button _saveDraftButton;
     private Button _applyNowButton;
-    private final ResourceSummaryModelData _modelData;
+    private final ResourceSummary _modelData;
 
 
     /**
@@ -179,15 +179,15 @@ public class UpdatePageDialog
         update.setParagraphs(getParagraphs());
         update.addLink(
             Page.WORKING_COPY,
-            _modelData.getDelegate().getLink(
+            _modelData.getLink(
                 Page.WORKING_COPY));
 
         new UpdateWorkingCopyAction(update) {
             /** {@inheritDoc} */
             @Override protected void onNoContent(
                                              final Response response) {
-                final ResourceSummaryModelData md = getModelData();
-                md.setWorkingCopy(true);
+                final ResourceSummary md = getModelData();
+                md.setHasWorkingCopy(true);
                 rt().update(md);
                 hide();
             }
@@ -219,7 +219,7 @@ public class UpdatePageDialog
      *
      * @return Returns The selected model data.
      */
-    protected ResourceSummaryModelData getModelData() {
+    protected ResourceSummary getModelData() {
         return _modelData;
     }
 

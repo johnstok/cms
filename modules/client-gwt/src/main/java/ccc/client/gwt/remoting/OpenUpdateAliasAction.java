@@ -29,7 +29,6 @@ package ccc.client.gwt.remoting;
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.RemotingAction;
 import ccc.client.core.Response;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GWTTemplateEncoder;
 import ccc.client.gwt.views.gxt.UpdateAliasDialog;
 
@@ -44,7 +43,7 @@ public class OpenUpdateAliasAction
     extends
         RemotingAction {
 
-    private final ResourceSummaryModelData _alias;
+    private final ResourceSummary _alias;
     private final ResourceSummary _targetRoot;
 
     /**
@@ -52,7 +51,7 @@ public class OpenUpdateAliasAction
      * @param alias The alias to update.
      * @param targetRoot The target root of the alias.
      */
-    public OpenUpdateAliasAction(final ResourceSummaryModelData alias,
+    public OpenUpdateAliasAction(final ResourceSummary alias,
                              final ResourceSummary targetRoot) {
         super(UI_CONSTANTS.updateAlias());
         _alias = alias;
@@ -62,7 +61,7 @@ public class OpenUpdateAliasAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        final ResourceSummary delegate = _alias.getDelegate();
+        final ResourceSummary delegate = _alias;
         return delegate.targetName().build(new GWTTemplateEncoder());
     }
 
@@ -70,7 +69,7 @@ public class OpenUpdateAliasAction
     @Override
     protected void onOK(final Response response) {
         final String targetName = response.getText();
-        new UpdateAliasDialog(_alias.getDelegate(), targetName, _targetRoot)
+        new UpdateAliasDialog(_alias, targetName, _targetRoot)
         .show();
     }
 

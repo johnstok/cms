@@ -63,8 +63,8 @@ public final class OpenUpdateMetadataAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        ResourceSummary delegate =
-            _selectionModel.tableSelection().getDelegate();
+        final ResourceSummary delegate =
+            _selectionModel.tableSelection();
         return delegate.uriMetadata().build(new GWTTemplateEncoder());
     }
 

@@ -32,12 +32,12 @@ import java.util.Set;
 
 import ccc.api.core.Page;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.Paragraph;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdatePageAction;
 
@@ -116,7 +116,7 @@ public class PageCommentDialog extends AbstractEditDialog {
     }
 
     private void savePage() {
-        final ResourceSummaryModelData md =
+        final ResourceSummary md =
             _updatePageDialog.getModelData();
         final Page update = new Page();
         update.setId(md.getId());
@@ -126,14 +126,14 @@ public class PageCommentDialog extends AbstractEditDialog {
         update.addLink(
             Resource.SELF,
             _updatePageDialog
-                .getModelData().getDelegate().getLink(Resource.SELF));
+                .getModelData().getLink(Resource.SELF));
 
         new UpdatePageAction(update) {
                 /** {@inheritDoc} */
                 @Override protected void onNoContent(
                                              final Response response) {
 
-                    md.setWorkingCopy(false);
+                    md.setHasWorkingCopy(false);
                     _updatePageDialog.rt().update(md);
                     hide();
                     _updatePageDialog.hide();

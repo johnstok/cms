@@ -33,7 +33,6 @@ import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.MoveResourceAction;
@@ -63,8 +62,8 @@ public class MoveDialog extends AbstractEditDialog {
     private final TriggerField<String> _parentFolder =
         new TriggerField<String>();
 
-    private final ResourceSummaryModelData _target;
-    private ResourceSummaryModelData _parent = null;
+    private final ResourceSummary _target;
+    private ResourceSummary _parent = null;
 
     private final SingleSelectionModel _ssm;
 
@@ -75,7 +74,7 @@ public class MoveDialog extends AbstractEditDialog {
      * @param ssm The selection model.
      * @param root Resource root for the selection dialog.
      */
-    public MoveDialog(final ResourceSummaryModelData item,
+    public MoveDialog(final ResourceSummary item,
                       final SingleSelectionModel ssm,
                       final ResourceSummary root) {
         super(I18n.UI_CONSTANTS.move(), new GlobalsImpl());
@@ -146,7 +145,7 @@ public class MoveDialog extends AbstractEditDialog {
     }
 
     private void move() {
-        new MoveResourceAction(_target.getDelegate(), _parent.getId()){
+        new MoveResourceAction(_target, _parent.getId()){
             /** {@inheritDoc} */
             @Override protected void onNoContent(
                                              final Response response) {

@@ -83,8 +83,8 @@ public class OpenEditCacheAction
     /** {@inheritDoc} */
     @Override
     protected String getPath() {
-        ResourceSummary delegate =
-            _selectionModel.tableSelection().getDelegate();
+        final ResourceSummary delegate =
+            _selectionModel.tableSelection();
         return delegate.duration().build(new GWTTemplateEncoder());
     }
 }

@@ -26,8 +26,8 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 
@@ -59,7 +59,7 @@ public final class PreviewAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.tableSelection();
+        final ResourceSummary item = _selectionModel.tableSelection();
         final String url =
             new GlobalsImpl().appURL()
                 + "preview"

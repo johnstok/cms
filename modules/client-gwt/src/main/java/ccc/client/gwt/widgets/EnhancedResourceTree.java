@@ -28,8 +28,8 @@ package ccc.client.gwt.widgets;
 
 import ccc.api.core.ResourceSummary;
 import ccc.client.core.Globals;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
@@ -67,35 +67,33 @@ public class EnhancedResourceTree extends FolderResourceTree {
         _view = view;
         _contextMenu = new FolderContextMenu(_rt);
 
-        treePanel().getSelectionModel().addSelectionChangedListener(
-            new SelectionChangedListener<ResourceSummaryModelData>(){
-
-                @Override
-                public void selectionChanged(
-                     final SelectionChangedEvent<ResourceSummaryModelData> se) {
-                    final ResourceSummaryModelData item = se.getSelectedItem();
+        addSelectionChangedListener(
+            new SelectionChangedListener<BeanModel>(){
+                @Override public void selectionChanged(
+                     final SelectionChangedEvent<BeanModel> se) {
+                    final BeanModel item = se.getSelectedItem();
                     if (item != null) {
-                        _rt.displayResourcesFor(item);
+                        _rt.displayResourcesFor(
+                            item.<ResourceSummary>getBean());
                     }
                 }
             }
         );
 
-        final Listener<TreePanelEvent<ResourceSummaryModelData>> listener =
-            new Listener<TreePanelEvent<ResourceSummaryModelData>>() {
-                @Override
-                public void handleEvent(
-                           final TreePanelEvent<ResourceSummaryModelData> be) {
+        final Listener<TreePanelEvent<BeanModel>> listener =
+            new Listener<TreePanelEvent<BeanModel>>() {
+                @Override public void handleEvent(
+                           final TreePanelEvent<BeanModel> be) {
                     _rt.displayResourcesFor(
-                        treePanel().getSelectionModel().getSelectedItem());
+                        getSelectedItem());
                 }
             };
 
-        treePanel().addListener(Events.SelectionChange, listener);
+        addListener(Events.SelectionChange, listener);
 
         _contextMenu.setId("navigator-menu");
-        treePanel().setContextMenu(_contextMenu);
-        treePanel().setStyleAttribute("overflow", "hidden");
+        setContextMenu(_contextMenu);
+        setStyleAttribute("overflow", "hidden");
     }
 
 

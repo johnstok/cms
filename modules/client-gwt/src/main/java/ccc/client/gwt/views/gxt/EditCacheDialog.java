@@ -28,12 +28,12 @@ package ccc.client.gwt.views.gxt;
 
 import static ccc.client.core.InternalServices.*;
 import ccc.api.core.Resource;
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.Duration;
 import ccc.client.core.I18n;
 import ccc.client.core.InternalServices;
 import ccc.client.core.Response;
 import ccc.client.core.ValidationResult;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.remoting.UpdateCacheDurationAction;
 
@@ -56,7 +56,7 @@ public class EditCacheDialog extends AbstractEditDialog {
 
     private static final int DIALOG_HEIGHT = 240;
     private static final int DIALOG_WIDTH = 375;
-    private final ResourceSummaryModelData _item;
+    private final ResourceSummary _item;
     private final TextField<String> _seconds = new TextField<String>();
     private final TextField<String> _minutes = new TextField<String>();
     private final TextField<String> _hours = new TextField<String>();
@@ -71,7 +71,7 @@ public class EditCacheDialog extends AbstractEditDialog {
      * @param item The resource to rename.
      * @param ds The Duration summary of the resource.
      */
-    public EditCacheDialog(final ResourceSummaryModelData item,
+    public EditCacheDialog(final ResourceSummary item,
                            final Duration ds) {
         super(I18n.UI_CONSTANTS.editCacheDuration(),
               new GlobalsImpl());
@@ -191,7 +191,7 @@ public class EditCacheDialog extends AbstractEditDialog {
         r.setId(_item.getId());
         r.setCacheDuration(updatedDs);
         r.addLink(Resource.DURATION,
-                  _item.getDelegate().duration().toString());
+                  _item.duration().toString());
 
         new UpdateCacheDurationAction(r){
             @Override protected void onNoContent(final Response resp) {

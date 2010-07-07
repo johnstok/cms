@@ -26,9 +26,9 @@
  */
 package ccc.client.gwt.actions;
 
+import ccc.api.core.ResourceSummary;
 import ccc.client.core.Action;
 import ccc.client.core.InternalServices;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.views.gxt.CreateTextFileDialog;
 import ccc.client.presenters.CreateTextFilePresenter;
@@ -55,13 +55,13 @@ public final class OpenCreateTextFileAction
 
     /** {@inheritDoc} */
     public void execute() {
-        final ResourceSummaryModelData item = _selectionModel.treeSelection();
+        final ResourceSummary item = _selectionModel.treeSelection();
         if (item == null) {
             InternalServices.WINDOW.alert(UI_CONSTANTS.noFolderSelected());
         } else {
             new CreateTextFilePresenter(
                 new CreateTextFileDialog(),
-                item.getDelegate());
+                item);
         }
     }
 }

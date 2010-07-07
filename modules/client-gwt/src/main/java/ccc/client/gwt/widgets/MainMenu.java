@@ -44,7 +44,6 @@ import ccc.client.gwt.actions.OpenCreateUserAction;
 import ccc.client.gwt.actions.OpenHelpAction;
 import ccc.client.gwt.actions.OpenUpdateCurrentUserAction;
 import ccc.client.gwt.actions.OpenUpdateFolderAction;
-import ccc.client.gwt.binding.ResourceSummaryModelData;
 import ccc.client.gwt.core.GlobalsImpl;
 import ccc.client.gwt.core.SingleSelectionModel;
 import ccc.client.gwt.remoting.GetRootsAction;
@@ -298,28 +297,27 @@ public class MainMenu
 
         final SingleSelectionModel ssm =
             new SingleSelectionModel() {
-                private final ResourceSummaryModelData _md =
-                    new ResourceSummaryModelData(root);
+                private final ResourceSummary _md = root;
 
-                    public void create(final ResourceSummaryModelData model) {
+                    public void create(final ResourceSummary model) {
                         /* No-op */
                     }
-                    public void delete(final ResourceSummaryModelData model) {
+                    public void delete(final ResourceSummary model) {
                         /* No-op */
                     }
-                    public void move(final ResourceSummaryModelData model,
-                                     final ResourceSummaryModelData newParent,
-                                     final ResourceSummaryModelData oldParent) {
+                    public void move(final ResourceSummary model,
+                                     final ResourceSummary newParent,
+                                     final ResourceSummary oldParent) {
                         /* No-op */
                     }
-                    public ResourceSummaryModelData tableSelection() {
+                    public ResourceSummary tableSelection() {
                         return _md;
                     }
-                    public ResourceSummaryModelData treeSelection() {
+                    public ResourceSummary treeSelection() {
                         throw new UnsupportedOperationException(
                             "Method not implemented.");
                     }
-                    public void update(final ResourceSummaryModelData model) {
+                    public void update(final ResourceSummary model) {
                         /* No-op */
                     }
 
