@@ -101,7 +101,8 @@ public class AbstractContextMenu
                                final String id,
                                final String text,
                                final Action action) {
-        if (_globals.currentUser().hasPermission(permission)) {
+        if (permission == null
+                || _globals.currentUser().hasPermission(permission)) {
             final MenuItem menuItem = createMenuItem(id, text, action);
             add(menuItem);
         }
