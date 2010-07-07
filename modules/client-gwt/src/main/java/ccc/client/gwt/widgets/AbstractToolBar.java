@@ -84,8 +84,8 @@ public class AbstractToolBar
                              final String id,
                              final String text,
                              final Action action) {
-        if (permission != null
-            && _globals.currentUser().hasPermission(permission)) {
+        if (permission == null
+            || _globals.currentUser().hasPermission(permission)) {
             final Button toolItem = new Button(text);
             toolItem.setId(id);
             toolItem.addListener(Events.Select, new ListenerAction(action));
@@ -105,8 +105,8 @@ public class AbstractToolBar
                            final String id,
                            final String text,
                            final MenuItem... children) {
-        if (permission != null
-            && _globals.currentUser().hasPermission(permission)) {
+        if (permission == null
+            || _globals.currentUser().hasPermission(permission)) {
             final Button item = new Button(text);
             item.setId(id);
             final Menu itemMenu = new Menu();
