@@ -210,10 +210,10 @@ public class ResourcesEJB
     /** {@inheritDoc} */
     @Override
     @PermitAll
-    public void publish(final UUID resourceId) {
+    public ResourceSummary publish(final UUID resourceId) {
         checkPermission(RESOURCE_PUBLISH);
 
-        execute(
+        return execute(
             commands().publishResource(resourceId));
     }
 

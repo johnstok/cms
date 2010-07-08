@@ -27,7 +27,7 @@
 
 package ccc.domain;
 
-import static ccc.api.types.DBC.require;
+import static ccc.api.types.DBC.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -976,6 +976,7 @@ public abstract class ResourceEntity
                 (getChangedBy() != null)
                     ? getChangedBy().getUsername() : null
             );
+        rs.setVisible(isVisible());
 
         rs.addLink(
             Resource.REVISIONS,

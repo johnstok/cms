@@ -32,6 +32,7 @@ import java.util.UUID;
 import ccc.api.core.Alias;
 import ccc.api.core.File;
 import ccc.api.core.Page;
+import ccc.api.core.ResourceSummary;
 import ccc.api.core.Template;
 import ccc.api.exceptions.EntityNotFoundException;
 import ccc.api.types.DBC;
@@ -247,7 +248,7 @@ public class CommandFactory {
      *
      * @return The corresponding command.
      */
-    public Command<Void> publishResource(final UUID resourceId) {
+    public Command<ResourceSummary> publishResource(final UUID resourceId) {
         return new PublishCommand(
             _repository,
             _audit,

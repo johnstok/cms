@@ -56,6 +56,7 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.GridView;
 import com.extjs.gxt.ui.client.widget.grid.GridViewConfig;
@@ -208,13 +209,16 @@ public class ResourceTable
 
 
     private void createColumnConfigs(final List<ColumnConfig> configs) {
+
+        final GridCellRenderer<BeanModel> rsRenderer =
+            ResourceTypeRendererFactory.rendererForResourceSummary();
+
         final ColumnConfig typeColumn =
             new ColumnConfig(
                 ResourceSummary.TYPE,
                 UI_CONSTANTS.type(),
                 40);
-        typeColumn.setRenderer(
-            ResourceTypeRendererFactory.rendererForResourceSummary());
+        typeColumn.setRenderer(rsRenderer);
         configs.add(typeColumn);
 
         final ColumnConfig workingCopyColumn =
@@ -224,7 +228,7 @@ public class ResourceTable
                 40);
         workingCopyColumn.setSortable(false);
         workingCopyColumn.setMenuDisabled(true);
-        workingCopyColumn.setRenderer(new ResourceWorkingCopyRenderer());
+        workingCopyColumn.setRenderer(rsRenderer);
         configs.add(workingCopyColumn);
 
         final ColumnConfig mmIncludeColumn =
@@ -232,8 +236,17 @@ public class ResourceTable
                 ResourceSummary.MM_INCLUDE,
                 UI_CONSTANTS.menu(),
                 40);
-        mmIncludeColumn.setRenderer(new ResourceIncludedInMainMenuRenderer());
+        mmIncludeColumn.setRenderer(rsRenderer);
         configs.add(mmIncludeColumn);
+
+        final ColumnConfig visibleColumn =
+            new ColumnConfig(
+                ResourceSummary.VISIBLE,
+                UI_CONSTANTS.visible(),
+                45);
+        visibleColumn.setRenderer(rsRenderer);
+        visibleColumn.setHidden(true);
+        configs.add(visibleColumn);
 
         final ColumnConfig lockedColumn =
             new ColumnConfig(
@@ -375,6 +388,10 @@ public class ResourceTable
     @Override
     public void handle(final Event<CommandType> event) {
         switch (event.getType()) {
+            case RESOURCE_PUBLISH:
+                mergeAndUpdate(event.<ResourceSummary>getProperty("resource"));
+                break;
+
             case RESOURCE_DELETE:
                 delete(event.<UUID>getProperty("resource"));
                 break;
@@ -424,6 +441,17 @@ public class ResourceTable
 
             default:
                 break;
+        }
+    }
+
+
+    private void mergeAndUpdate(final ResourceSummary rs) {
+        final BeanModel tBean =
+            _detailsStore.findModel(ResourceSummary.UUID, rs.getId());
+        if (null!=tBean) {
+            tBean.setProperties(
+                DataBinding.bindResourceSummary(rs).getProperties());
+            update(tBean.<ResourceSummary>getBean());
         }
     }
 }

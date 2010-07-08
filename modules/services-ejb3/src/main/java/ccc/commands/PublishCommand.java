@@ -29,6 +29,7 @@ package ccc.commands;
 import java.util.Date;
 import java.util.UUID;
 
+import ccc.api.core.ResourceSummary;
 import ccc.api.types.CommandType;
 import ccc.api.types.DBC;
 import ccc.domain.LogEntry;
@@ -44,7 +45,7 @@ import ccc.plugins.s11n.json.JsonImpl;
  *
  * @author Civic Computing Ltd.
  */
-class PublishCommand extends Command<Void> {
+class PublishCommand extends Command<ResourceSummary> {
 
     private final UUID _resourceId;
 
@@ -67,8 +68,8 @@ class PublishCommand extends Command<Void> {
 
     /** {@inheritDoc} */
     @Override
-    protected Void doExecute(final UserEntity publishedBy,
-                             final Date happenedOn) {
+    protected ResourceSummary doExecute(final UserEntity publishedBy,
+                                        final Date happenedOn) {
 
         final ResourceEntity r =
             getRepository().find(ResourceEntity.class, _resourceId);
@@ -86,7 +87,7 @@ class PublishCommand extends Command<Void> {
                 new JsonImpl(r).getDetail());
         getAudit().record(le);
 
-        return null;
+        return r.mapResource();
     }
 
 

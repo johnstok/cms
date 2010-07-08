@@ -73,6 +73,7 @@ public class UnpublishAction
     protected void onNoContent(final Response response) {
         final ResourceSummary item = _selectionModel.tableSelection();
         item.setPublishedBy(null);
+        item.setVisible(false);
         _selectionModel.update(item);
     }
 }

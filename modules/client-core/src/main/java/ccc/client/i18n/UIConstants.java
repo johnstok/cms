@@ -1548,4 +1548,11 @@ public interface UIConstants {
      * @return The constant, in the appropriate locale.
      */
     String titlesMustNotContainBrackets();
+
+    /**
+     * "Visible".
+     *
+     * @return The constant, in the appropriate locale.
+     */
+    String visible();
 }

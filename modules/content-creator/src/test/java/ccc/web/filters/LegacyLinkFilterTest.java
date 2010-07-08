@@ -30,18 +30,14 @@ package ccc.web.filters;
 
 import static org.easymock.EasyMock.*;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.FilterChain;
 
 import junit.framework.TestCase;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
-import ccc.api.types.ResourceType;
 import ccc.commons.Testing;
 import ccc.web.rendering.RedirectRequiredException;
 
@@ -87,11 +83,13 @@ public class LegacyLinkFilterTest
     public void testHandlesSimpleNumberedPages() throws Exception {
 
         // ARRANGE
+        final ResourceSummary rs = new ResourceSummary();
+        rs.setAbsolutePath("/foo");
         final LegacyLinkFilter f = new LegacyLinkFilter(_resources);
         final String badPath = "/1234.html";
 
         // EXPECT
-        expect(_resources.resourceForLegacyId("1234")).andReturn(RS);
+        expect(_resources.resourceForLegacyId("1234")).andReturn(rs);
         replayAll();
 
 
@@ -106,7 +104,7 @@ public class LegacyLinkFilterTest
         // ASSERT
         } catch (final RedirectRequiredException rre) {
             assertTrue(rre.isPermanent());
-            assertEquals(RS.getAbsolutePath(), rre.getTarget());
+            assertEquals(rs.getAbsolutePath(), rre.getTarget());
         }
         verifyAll();
     }
@@ -120,11 +118,13 @@ public class LegacyLinkFilterTest
     public void testHandlesComplexNumberedPages() throws Exception {
 
         // ARRANGE
+        final ResourceSummary rs = new ResourceSummary();
+        rs.setAbsolutePath("/foo");
         final LegacyLinkFilter f = new LegacyLinkFilter(_resources);
         final String badPath = "/141.1.81.htm";
 
         // EXPECT
-        expect(_resources.resourceForLegacyId("141")).andReturn(RS);
+        expect(_resources.resourceForLegacyId("141")).andReturn(rs);
         replayAll();
 
 
@@ -139,7 +139,7 @@ public class LegacyLinkFilterTest
             // ASSERT
         } catch (final RedirectRequiredException rre) {
             assertTrue(rre.isPermanent());
-            assertEquals(RS.getAbsolutePath(), rre.getTarget());
+            assertEquals(rs.getAbsolutePath(), rre.getTarget());
         }
         verifyAll();
     }
@@ -237,27 +237,9 @@ public class LegacyLinkFilterTest
     public void testHandlesControllerStyleUrls() throws Exception {
 
         // ARRANGE
-        expect(_resources.resourceForLegacyId("415")).andStubReturn(
-            new ResourceSummary(
-                UUID.randomUUID(),
-                null,
-                "bar",
-                null,
-                "", null,
-                ResourceType.PAGE,
-                0,
-                0,
-                false,
-                false,
-                new Date(),
-                new Date(),
-                null,
-                new HashSet<String>(),
-                "/bar",
-                null,
-                "",
-                null,
-                null));
+        final ResourceSummary rs = new ResourceSummary();
+        rs.setAbsolutePath("/bar");
+        expect(_resources.resourceForLegacyId("415")).andStubReturn(rs);
         replayAll();
 
         final LegacyLinkFilter f = new LegacyLinkFilter(_resources);
@@ -316,25 +298,4 @@ public class LegacyLinkFilterTest
 
 
     private Resources _resources;
-    private static final ResourceSummary RS = new ResourceSummary(
-        UUID.randomUUID(),
-        UUID.randomUUID(),
-        "foo",
-        null,
-        "foo",
-        null,
-        ResourceType.PAGE,
-        0,
-        0,
-        false,
-        false,
-        new Date(),
-        new Date(),
-        null,
-        new HashSet<String>(),
-        "/bar/foo",
-        null,
-        "",
-        null,
-        null);
 }

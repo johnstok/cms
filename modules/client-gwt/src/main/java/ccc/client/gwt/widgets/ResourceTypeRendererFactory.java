@@ -98,7 +98,31 @@ public final class ResourceTypeRendererFactory  {
                              final int colIndex,
                              final ListStore<BeanModel> store,
                              final Grid<BeanModel> grid) {
-            return resolveIcon(model.<ResourceSummary>getBean().getType());
+
+            if (ResourceSummary.VISIBLE.equals(property)) {
+                if (model.<ResourceSummary>getBean().isVisible()) {
+                    return "<img src='"+ImagePaths.TICK+"'/>&#160;";
+                }
+                return "";
+
+            } else if (ResourceSummary.MM_INCLUDE.equals(property)) {
+                if (model.<ResourceSummary>getBean().isIncludeInMainMenu()) {
+                    return "<img src='"+ImagePaths.TICK+"'/>&#160;";
+                }
+                return "";
+
+            } else if (ResourceSummary.TYPE.equals(property)) {
+                return resolveIcon(model.<ResourceSummary>getBean().getType());
+
+            } else if (ResourceSummary.WORKING_COPY.equals(property)) {
+                if (model.<ResourceSummary>getBean().isHasWorkingCopy()) {
+                    return "<img src='"+ImagePaths.TICK+"'/>&#160;";
+                }
+                return "";
+
+            }
+
+            return ""+model.get(property);
         }
     }
 

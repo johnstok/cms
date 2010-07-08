@@ -280,7 +280,7 @@ public interface Resources {
      * @param resourceId The id of the resource to update.
      */
     @POST @Path(ccc.api.core.ResourceIdentifiers.Resource.PUBLISH)
-    void publish(@PathParam("id") UUID resourceId);
+    ResourceSummary publish(@PathParam("id") UUID resourceId); // FIXME: Should return a Resource.
 
 
     /**

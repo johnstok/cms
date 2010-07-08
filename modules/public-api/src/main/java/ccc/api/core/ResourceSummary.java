@@ -45,27 +45,28 @@ import ccc.api.types.Username;
  */
 public final class ResourceSummary extends Res {
 
-    private UUID _id;
-    private UUID _parent;
-    private String _name;
-    private Username _publishedBy;
-    private Username _createdBy;
-    private Username _changedBy;
-    private String _title;
-    private Username _lockedBy;
+    private UUID         _id;
+    private UUID         _parent;
+    private String       _name;
+    private Username     _publishedBy;
+    private String       _title;
+    private Username     _lockedBy;
     private ResourceType _type;
-    private int    _childCount;
-    private int    _folderCount;
-    private boolean _includeInMainMenu;
-    private boolean _hasWorkingCopy;
-    private Date _dateCreated;
-    private Date _dateChanged;
-    private UUID _templateId;
-    private Set<String> _tags;
-    private String _absolutePath;
-    private UUID _indexPageId;
-    private String _description;
+    private int          _childCount;
+    private int          _folderCount;
+    private boolean      _includeInMainMenu;
+    private boolean      _hasWorkingCopy;
+    private Date         _dateCreated;
+    private Date         _dateChanged;
+    private boolean      _isVisible;
 
+    private Username     _createdBy;
+    private Username     _changedBy;
+    private UUID         _templateId;
+    private Set<String>  _tags;
+    private String       _absolutePath;
+    private UUID         _indexPageId;
+    private String       _description;
 
     /**
      * Constructor.
@@ -794,6 +795,26 @@ public final class ResourceSummary extends Res {
     }
 
 
+    /**
+     * Mutator.
+     *
+     * @param visible Is the resource visible.
+     */
+    public void setVisible(final boolean visible) {
+        _isVisible = visible;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns true if the resource is visible; false otherwise.
+     */
+    public boolean isVisible() {
+        return _isVisible;
+    }
+
+
     /** UUID : String. */
     public static final String UUID          = "id";
     /** PARENT : String. */
@@ -826,4 +847,6 @@ public final class ResourceSummary extends Res {
     public static final String INDEX_PAGE_ID = "indexPageId";
     /** DESCRIPTION : String. */
     public static final String DESCRIPTION   = "description";
+    /** VISIBLE : String. */
+    public static final String VISIBLE       = "visible";
 }
