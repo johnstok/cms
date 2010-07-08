@@ -24,7 +24,7 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.api.types;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -33,8 +33,9 @@ import java.text.Normalizer.Form;
 
 import ccc.api.types.Link.Encoder;
 
+
 /**
- * TODO: Add a description for this type.
+ * Full implementation of a URI template encoder.
  *
  * @author Civic Computing Ltd.
  */
@@ -46,10 +47,11 @@ public class NormalisingEncoder implements Encoder {
                 URLEncoder.encode(
                     Normalizer.normalize(string, Form.NFKC),
                     "UTF-8")
-                .replace("+", "%20")
-                .replace("%3A", ":"); // FIXME: Replace remaining reserved chars.
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+                .replace("+", "%20");
+                /* RFC-3986 & application/x-www-form-urlencoded encode ' '
+                 * (space char) differently.                                  */
+        } catch (final UnsupportedEncodingException e) {
+            throw new RuntimeException(e); // All JVMs should have UTF8.
         }
     }
 }

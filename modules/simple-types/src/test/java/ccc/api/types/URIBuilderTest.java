@@ -24,13 +24,10 @@
  * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.commons;
+package ccc.api.types;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import ccc.api.types.Link;
-import ccc.commons.NormalisingEncoder;
 
 import junit.framework.TestCase;
 
@@ -45,6 +42,7 @@ public class URIBuilderTest
     extends
         TestCase {
 
+
     /**
      * Test.
      */
@@ -54,20 +52,24 @@ public class URIBuilderTest
         final Link b = new Link("/foo/{id}/baz");
 
         // ACT
-        String uri = b.build("id", "bar", new NormalisingEncoder());
+        final String uri = b.build("id", "bar", new NormalisingEncoder());
 
         // ASSERT
         assertEquals("/foo/bar/baz", uri);
     }
-    
-    public void testDraft3Tests() throws Exception {
+
+
+    /**
+     * Test.
+     */
+    public void testDraft3Tests() {
 
         // ARRANGE
-        Map<String, String[]> params = new HashMap<String, String[]>();
+        final Map<String, String[]> params = new HashMap<String, String[]>();
         params.put("foo",     new String[] {"\u03d3"});
         params.put("bar",     new String[] {"fred"});
         params.put("baz",     new String[] {"10,20,30"});
-        params.put("qux",     new String[] {"10","20","30"});
+        params.put("qux",     new String[] {"10", "20", "30"});
         params.put("corge",   new String[] {});
         params.put("grault",  new String[] {""});
         params.put("garply",  new String[] {"a/b/c"});
@@ -75,25 +77,32 @@ public class URIBuilderTest
         params.put("fred",    new String[] {"fred", "", "wilma"});
         params.put("plugh",   new String[] {"\u017F\u0307", "\u0073\u0307"});
         params.put("1-a_b.c", new String[] {"200"});
-        String[][] tests = {
+        final String[][] tests = {
             {"http://example.org/?q={bar}", "http://example.org/?q=fred"},
             {"/{xyzzy}", "/"},
-            {"http://example.org/?{-join|&|foo,bar,xyzzy,baz}", "http://example.org/?foo=%CE%8E&bar=fred&baz=10%2C20%2C30"},
-            {"http://example.org/?d={-list|,|qux}", "http://example.org/?d=10,20,30"},
-            {"http://example.org/?d={-list|&d=|qux}", "http://example.org/?d=10&d=20&d=30"},
-            {"http://example.org/{bar}{bar}/{garply}", "http://example.org/fredfred/a%2Fb%2Fc"},
-            {"http://example.org/{bar}{-prefix|/|fred}", "http://example.org/fred/fred//wilma"},
+            {"http://example.org/?{-join|&|foo,bar,xyzzy,baz}",
+                "http://example.org/?foo=%CE%8E&bar=fred&baz=10%2C20%2C30"},
+            {"http://example.org/?d={-list|,|qux}",
+                "http://example.org/?d=10,20,30"},
+            {"http://example.org/?d={-list|&d=|qux}",
+                "http://example.org/?d=10&d=20&d=30"},
+            {"http://example.org/{bar}{bar}/{garply}",
+                "http://example.org/fredfred/a%2Fb%2Fc"},
+            {"http://example.org/{bar}{-prefix|/|fred}",
+                "http://example.org/fred/fred//wilma"},
             {"{-neg|:|corge}{-suffix|:|plugh}", ":%E1%B9%A1:%E1%B9%A1:"},
             {"../{waldo}/", "../ben%20%26%20jerrys/"},
-            {"telnet:192.0.2.16{-opt|:80|grault}", "telnet:192.0.2.16:80"},
+            {"telnet:192.0.2.16:{-opt|80|grault}", "telnet:192.0.2.16:80"},
             {":{1-a_b.c}:", ":200:"},
         };
 
         // ACT
-        for (String[] test : tests) {
-            
+        for (final String[] test : tests) {
+
         // ASSERT
-            assertEquals(test[1], new Link(test[0]).build(params, new NormalisingEncoder()));
+            assertEquals(
+                test[1],
+                new Link(test[0]).build(params, new NormalisingEncoder()));
         }
     }
 }

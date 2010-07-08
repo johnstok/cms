@@ -34,9 +34,9 @@ import ccc.api.core.Template;
 import ccc.api.types.DBC;
 import ccc.api.types.Link;
 import ccc.api.types.MimeType;
+import ccc.api.types.NormalisingEncoder;
 import ccc.api.types.ResourceName;
 import ccc.api.types.ResourceType;
-import ccc.commons.NormalisingEncoder;
 
 
 /**

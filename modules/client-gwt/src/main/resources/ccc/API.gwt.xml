@@ -28,6 +28,6 @@
 
 <module>
     <source path="api/core" />
-    <source path="api/types" />
+    <source path="api/types" excludes="NormalisingEncoder.java" />
     <source path="plugins/s11n" excludes="json/JsonImpl.java,json/PagedCollectionSerializer.java" />
 </module>
