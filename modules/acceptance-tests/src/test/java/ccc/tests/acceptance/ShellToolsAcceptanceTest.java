@@ -76,14 +76,15 @@ public class ShellToolsAcceptanceTest
         // ASSERT
         final ResourceSummary rs =
             getCommands().resourceForPath(
-                f.getAbsolutePath()+"/hello.txt");
+                f.getAbsolutePath()+"/example/hello.txt");
         final String contents =
             getCommands().fileContentsFromPath(
-                f.getAbsolutePath()+"/hello.txt", "UTF-8");
+                f.getAbsolutePath()+"/example/hello.txt", "UTF-8");
 
         assertEquals(
             Resources.readIntoString(
-                Resources.open("upload/hello.txt"), Charset.forName("UTF-8")),
+                Resources.open("upload/example/hello.txt"),
+                Charset.forName("UTF-8")),
             contents);
         assertEquals(new Username("migration"), rs.getPublishedBy());
     }

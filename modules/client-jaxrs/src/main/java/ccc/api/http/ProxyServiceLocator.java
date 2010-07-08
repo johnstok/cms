@@ -89,6 +89,7 @@ public class ProxyServiceLocator implements ServiceLocator {
         pFactory.addMessageBodyWriter(UuidCollectionWriter.class);
         pFactory.addMessageBodyWriter(FileReader.class);
         pFactory.addMessageBodyWriter(S11nProvider.class);
+        pFactory.addMessageBodyWriter(BooleanProvider.class);
 
         // Readers
         pFactory.addMessageBodyReader(UUIDProvider.class);
