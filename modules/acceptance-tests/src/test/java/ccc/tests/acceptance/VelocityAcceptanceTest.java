@@ -183,6 +183,7 @@ public class VelocityAcceptanceTest
         final String pContent = getBrowser().previewContent(page, false);
 
         // ASSERT
-        assertTrue(0 < Integer.valueOf(pContent).intValue());
+        assertTrue(0 <= Integer.valueOf(pContent).intValue());
+        assertTrue(10 > Integer.valueOf(pContent).intValue());
     }
 }
