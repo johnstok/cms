@@ -26,6 +26,7 @@
  */
 package ccc.web;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import ccc.api.core.Alias;
@@ -38,7 +39,9 @@ import ccc.api.core.Resources;
 import ccc.api.core.Template;
 import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
+import ccc.api.types.MimeType;
 import ccc.plugins.scripting.Script;
+import ccc.web.rendering.ByteArrayBody;
 import ccc.web.rendering.FileBody;
 import ccc.web.rendering.NotFoundException;
 import ccc.web.rendering.PageBody;
@@ -54,6 +57,8 @@ import ccc.web.rendering.SearchBody;
  * @author Civic Computing Ltd.
  */
 public class TmpRenderer {
+
+    private static final String DEFAULT_CHARSET = "UTF-8";
 
     private final Templates _templates;
     private final Resources _resources;
@@ -113,7 +118,7 @@ public class TmpRenderer {
                 new Response(
                     new SearchBody(
                         new Script(t.getBody(), tId.toString())));
-            r.setCharSet("UTF-8");
+            r.setCharSet(DEFAULT_CHARSET);
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
             return r;
@@ -140,14 +145,19 @@ public class TmpRenderer {
 
 
     private Response render(final Page s) {
+        final UUID tId = s.getTemplate();
+
+        if (null==tId) {
+            return templateMissingResponse();
+        }
+
         try {
-            final UUID tId = s.getTemplate();
             final Template t = _templates.retrieve(tId);
             final Response r =
                 new Response(
                     new PageBody(
                         new Script(t.getBody(), tId.toString())));
-            r.setCharSet("UTF-8");
+            r.setCharSet(DEFAULT_CHARSET);
             r.setMimeType(t.getMimeType());
             r.setExpiry(s.getCacheDuration());
             if (s.isCacheable()) {
@@ -158,6 +168,22 @@ public class TmpRenderer {
         } catch (final CCException e) {
             // TODO Auto-generated catch block
             throw new RuntimeException(e);
+        }
+    }
+
+
+    private Response templateMissingResponse() {
+        try {
+            final Response r =
+                new Response(
+                    new ByteArrayBody(
+                        "No template available.".getBytes(DEFAULT_CHARSET)));
+            r.setCharSet(DEFAULT_CHARSET);
+            r.setMimeType(MimeType.TEXT);
+            r.setExpiry(null);
+            return r;
+        } catch (final UnsupportedEncodingException e) {
+            throw new RuntimeException("Failed to create response.", e);
         }
     }
 
