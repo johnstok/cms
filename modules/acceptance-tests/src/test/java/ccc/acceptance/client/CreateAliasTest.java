@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2009 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,40 +21,47 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-package ccc.plugins.s11n;
+package ccc.acceptance.client;
 
+import ccc.acceptance.client.views.CreateAliasFake;
+import ccc.api.core.ResourceSummary;
+import ccc.client.presenters.CreateAliasPresenter;
+import ccc.tests.acceptance.AbstractAcceptanceTest;
 
 
 /**
- * Exception indicating an attempt to change a snapshot to an invalid state.
+ * Tests for the {@link CreateAliasPresenter} class.
  *
  * @author Civic Computing Ltd.
  */
-public class InvalidSnapshotException
+public class CreateAliasTest
     extends
-        RuntimeException {
+        AbstractAcceptanceTest {
 
     /**
-     * Constructor.
-     *
-     * @param cause The cause of the exception.
+     * Test.
      */
-    public InvalidSnapshotException(final Throwable cause) {
-        super("Invalid snapshot", cause);
-    }
+    public void testCreateAliasSuccess() {
 
+        // ARRANGE
+        final ResourceSummary rs = getCommands().resourceForPath("");
+        final ResourceSummary welcome =
+            getCommands().resourceForPath("/welcome");
 
-    /**
-     * Constructor.
-     *
-     * @param detail The details of the exception.
-     * @param cause The cause of the exception.
-     */
-    public InvalidSnapshotException(final String detail,
-                                    final Throwable cause) {
-        super("Invalid snapshot:\n"+detail, cause);
+        final CreateAliasPresenter p =
+            new CreateAliasPresenter(
+                new CreateAliasFake("welcome", rs),
+                welcome);
+
+        // ACT
+        p.save();
+
+        // ASSERT
+        assertEquals(
+            "A resource with name 'welcome' already exists in this folder.",
+            getWindow().getLatestAlert());
     }
 }
