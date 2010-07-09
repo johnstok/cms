@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,35 +21,39 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-
 package ccc.commons;
 
+import java.net.InetAddress;
+
+import junit.framework.TestCase;
+
+
 /**
- * Tools for helping with Java5 enum's.
+ * Tests for the {@link Environment} class.
  *
  * @author Civic Computing Ltd.
  */
-public final class EnumTools {
+public class EnvironmentTest
+    extends
+        TestCase {
 
     /**
-     * Retrieve an enum constant.
+     * Test.
      *
-     * @param className The enum's class.
-     * @param value The enum's name.
-     *
-     * @return The corresponding enum.
+     * @throws Exception If the test fails.
      */
-    @SuppressWarnings("unchecked")
-    public Enum<?> of(final String className, final String value) {
-        try {
-            return
-                Enum.valueOf(
-                    (Class<Enum>) Class.forName(className), value);
-        } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public void testHostnameProperty() throws Exception {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertEquals(
+            Environment.getHostname(),
+            InetAddress.getLocalHost().getHostName());
     }
 }

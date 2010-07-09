@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (c) 2008 Civic Computing Ltd.
+ * Copyright © 2010 Civic Computing Ltd.
  * All rights reserved.
  *
  * This file is part of Content Control.
@@ -21,35 +21,54 @@
  * Modified by   $Author$
  * Modified on   $Date$
  *
- * Changes: see subversion log.
+ * Changes: see the subversion log.
  *-----------------------------------------------------------------------------
  */
-
 package ccc.commons;
 
+import junit.framework.TestCase;
+import ccc.api.types.SortOrder;
+
+
 /**
- * Tools for helping with Java5 enum's.
+ * Tests for the {@link EnumTools} class.
  *
  * @author Civic Computing Ltd.
  */
-public final class EnumTools {
+public class EnumToolsTest
+    extends
+        TestCase {
 
     /**
-     * Retrieve an enum constant.
-     *
-     * @param className The enum's class.
-     * @param value The enum's name.
-     *
-     * @return The corresponding enum.
+     * Test.
      */
-    @SuppressWarnings("unchecked")
-    public Enum<?> of(final String className, final String value) {
+    public void testLookupEnum() {
+
+        // ARRANGE
+
+        // ACT
+        final Enum<?> order =
+            new EnumTools().of(SortOrder.class.getName(), "ASC");
+
+        // ASSERT
+        assertEquals(SortOrder.ASC, order);
+    }
+
+    /**
+     * Test.
+     */
+    public void testLookupMissingEnum() {
+
+        // ARRANGE
+
+        // ACT
         try {
-            return
-                Enum.valueOf(
-                    (Class<Enum>) Class.forName(className), value);
-        } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            new EnumTools().of("not.AnEnum", "ASC");
+            fail();
+
+        // ASSERT
+        } catch (final RuntimeException e) {
+            assertTrue(e.getCause() instanceof ClassNotFoundException);
         }
     }
 }
