@@ -28,13 +28,7 @@ package ccc.cli;
 
 
 
-import static ccc.api.types.PredefinedResourceNames.ASSETS;
-import static ccc.api.types.PredefinedResourceNames.CONTENT;
-import static ccc.api.types.PredefinedResourceNames.CSS;
-import static ccc.api.types.PredefinedResourceNames.FILES;
-import static ccc.api.types.PredefinedResourceNames.IMAGES;
-import static ccc.api.types.PredefinedResourceNames.TEMPLATES;
-import static ccc.api.types.PredefinedResourceNames.TRASH;
+import static ccc.api.types.PredefinedResourceNames.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -44,11 +38,17 @@ import org.kohsuke.args4j.Option;
 
 import ccc.api.core.Folder;
 import ccc.api.core.Folders;
+import ccc.api.core.Page;
+import ccc.api.core.Pages;
 import ccc.api.core.Resource;
 import ccc.api.core.ResourceSummary;
 import ccc.api.core.Resources;
+import ccc.api.core.Template;
+import ccc.api.core.Templates;
 import ccc.api.exceptions.CCException;
 import ccc.api.http.ProxyServiceLocator;
+import ccc.api.types.MimeType;
+import ccc.api.types.Paragraph;
 import ccc.api.types.ResourceName;
 
 /**
@@ -65,7 +65,7 @@ public final class Create extends CccApp {
     public static void main(final String[] args) {
         LOG.info("Starting.");
 
-        Create c  = parseOptions(args, Create.class);
+        final Create c  = parseOptions(args, Create.class);
 
 
 
@@ -90,6 +90,8 @@ public final class Create extends CccApp {
 
             final Folders folders = sl.getFolders();
             final Resources resources = sl.getResources();
+            final Templates templates = sl.getTemplates();
+            final Pages pages = sl.getPages();
 
             final ResourceSummary content = folders.createRoot(CONTENT);
             folders.createRoot(TRASH);
@@ -97,7 +99,7 @@ public final class Create extends CccApp {
             final ResourceSummary assets = folders.create(
                 new Folder(content.getId(), new ResourceName(ASSETS)));
 
-            folders.create(
+            final ResourceSummary tFolder = folders.create(
                 new Folder(assets.getId(), new ResourceName(TEMPLATES)));
             folders.create(
                 new Folder(assets.getId(), new ResourceName(CSS)));
@@ -131,6 +133,42 @@ public final class Create extends CccApp {
                 Collections.singletonMap("searchable", "false"));
             resources.updateMetadata(assets.getId(), aMetadata);
             resources.unlock(assets.getId());
+
+            final Template t = new Template();
+            t.setBody(
+                "<html>\n"
+                    + "    <head><title>$resource.getTitle()</title></head>\n"
+                    + "    <body>"
+                    + "$resource.getParagraph('content').getText()"
+                    + "</body>\n"
+                    + "</html>");
+            t.setDefinition(
+                "<fields>\n"
+                    + "    <field name=\"content\" type=\"html\" />\n"
+                    + "</fields>");
+            t.setName(new ResourceName("simple"));
+            t.setTitle("Simple template");
+            t.setDescription("Simple template with a single HTML field.");
+            t.setMimeType(MimeType.HTML);
+            t.setParent(tFolder.getId());
+            final ResourceSummary ts = templates.create(t);
+
+            final Page p = new Page();
+            p.setParagraphs(
+                Collections.singleton(
+                    Paragraph.fromText(
+                        "content",
+                        "<br><br><center><h1>"
+                            + "Welcome to Content Control!</h1></center>")));
+            p.setName(new ResourceName("welcome"));
+            p.setTemplate(ts.getId());
+            p.setTitle("Welcome");
+            p.setParent(content.getId());
+            final ResourceSummary ps = pages.create(p);
+            resources.lock(ps.getId());
+            resources.publish(ps.getId());
+            resources.unlock(ps.getId());
+
 
             LOG.info("Created default folder structure.");
         } catch (final CCException e) {
